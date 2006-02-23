@@ -1,0 +1,28 @@
+With the new Default Monster Kit feature it has become very easy to create a Monster which should match the text given in the source, this can be done in under 5 clicks. The old Default Monster Mode worked by way of bonuses and so operated outside of the rules for building a character, because the KIT method works entirely within the rules it is an excellent way to troubleshoot errors in the races. 
+
+What we have found is that our files contain many errors. They fall into three categories, errors in the kit, errors in the race line or errors in the published text. Errors in our implementation can be fixed but errors we find in the source material needs to be complied into one location, thats what this directory is for.
+
+Because our data can be spread out into several files (race, kit, and templates etc..) it makes more sense to have this directory follow the structure of the source files, for example in the MSRD creatures starting with Ape are detailed in the file: msrd/basics/msrdcreatures.rtf, so in this directory we will create a file: msrd/basics/msrdcreatures.txt. In it we will list the validation, if nothing is wrong with the creature list it like so:
+
+Ape: valid
+
+If there is a problem detail the issue, example:
+
+Greater and Elder Fire Elemental: looks like they have the wrong INT score, they should be 8 and 10 respectively (not 6) if they follow the pattern of the other three Elemental types. Without an INT of 10 the Elder does not have enough skill points  for the skills in it's entry.
+
+Noticed I grouped them together, as long as things are clear there is no need to break it down into exhaustive detail, if a group of creatures are valid they can be grouped as well, example:
+
+Elemental, Earth (All sizes): valid
+
+or
+
+Ape through Bear: valid
+
+If the problem you are detailing is a data issue which can be fixed by us please flag it as such, start the entry with DATA: and put it after any comments meant for the publisher.
+
+Our goal here is to validate all the monsters and fix any data errors, any data errors which have been fixed should be deleted from these reports once fixed. When we have completed the validation and all we have left are publishing errors we will send this off to WotC.
+
+Thanks everyone!
+-- 
+~ Eddy Anthony (MoSaT)
+~ PCGen Content Silverback

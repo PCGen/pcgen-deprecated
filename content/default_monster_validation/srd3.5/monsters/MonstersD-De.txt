@@ -1,0 +1,32 @@
+MonstersD-De
+
+Commit test -EA
+
+Darkmantle
+Delver
+Demon (Babau)
+Demon (Balor)
+Demon (Bebilith)
+Demon (Dretch)
+Demon (Glabrezu)
+Demon (Hezrou)
+Demon (Marilith)
+Demon (Nalfeshnee)
+Demon (Quasit)
+Demon (Retriever)
+Demon (Succubus)
+Demon (Vrock)
+Derro
+Destrachan
+Devil (Barbed (hamatula))
+Devil (Bearded (barbazu))
+Devil (Bone (osyluth))
+Devil (Chain (kyton))
+Devil (Erinyes)
+Devil (Hellcat (bezekira))
+Devil (Horned (cornugon))
+Devil (Ice (gelugon))
+Devil (Imp)
+Devil (Lemure)
+Devil (Pit Fiend)
+Devourer

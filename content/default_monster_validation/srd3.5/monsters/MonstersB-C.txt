@@ -1,0 +1,22 @@
+MonstersB-C
+
+Barghest: Unspent Skill Points: 1
+Barghest (Greater): Unspent Skill Points: 2
+Basilisk: Valid
+Basilisk (Abyssal/Greater): Valid
+Behir: Valid
+Belker: Secondary attacks should be +7 not +4 because of Multiattack feat
+Blink Dog: Unspent Skill Points: 1
+Bodak: Valid
+Bralani: Valid
+Bugbear: Valid
+Bulette: Valid
+
+Centaur: Valid
+Chaos Beast: Valid
+Chimera: Valid
+Choker: Valid
+Chuul: Valid
+Cloaker: Valid
+Cockatrice: Valid
+Couatl: Valid

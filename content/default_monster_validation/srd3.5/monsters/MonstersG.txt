@@ -1,0 +1,32 @@
+MonstersG
+
+Gargoyle: Valid
+Genie (Djinni): Valid
+Genie (Efreeti): Valid
+Genie (Janni): Valid
+Ghaele: Valid
+Ghoul: Valid
+Ghoul (Ghast): Valid
+Giant (Cloud): Valid
+Giant (Fire): Valid
+Giant (Frost): Valid
+ > Frost Giant Jarl: Valid
+Giant (Hill): Valid
+Giant (Stone): Valid
+Giant (Storm): Not enough skill points
+Gibbering Mouther: Valid
+Girallon: Valid
+Gnoll: Valid
+Gnome: Valid
+Gnome (Svirfneblin): Valid
+Goblin: Ride listed at +4, should be +5
+Golem (Clay): Valid
+Golem (Flesh): Valid
+Golem (Iron): Valid
+Golem (Stone): Valid
+Gorgon: Valid
+Gray Render: Valid
+Grick: Valid
+Griffon: Valid
+Grimlock: Valid
+

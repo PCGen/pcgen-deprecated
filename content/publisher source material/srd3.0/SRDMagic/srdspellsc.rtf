@@ -1,0 +1,883 @@
+{\rtf1\ansi\ansicpg1252\uc1 \deff0\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman{\*\falt Courier New};}{\f28\fswiss\fcharset128\fprq2{\*\panose 020b0604020202020204}Arial Unicode MS;}
+{\f29\fswiss\fcharset128\fprq2{\*\panose 00000000000000000000}@Arial Unicode MS;}{\f36\froman\fcharset238\fprq2 Times New Roman CE{\*\falt Courier New};}{\f37\froman\fcharset204\fprq2 Times New Roman Cyr{\*\falt Courier New};}
+{\f39\froman\fcharset161\fprq2 Times New Roman Greek{\*\falt Courier New};}{\f40\froman\fcharset162\fprq2 Times New Roman Tur{\*\falt Courier New};}{\f41\froman\fcharset177\fprq2 Times New Roman (Hebrew){\*\falt Courier New};}
+{\f42\froman\fcharset178\fprq2 Times New Roman (Arabic){\*\falt Courier New};}{\f43\froman\fcharset186\fprq2 Times New Roman Baltic{\*\falt Courier New};}{\f262\fswiss\fcharset0\fprq2 Arial Unicode MS Western;}
+{\f260\fswiss\fcharset238\fprq2 Arial Unicode MS CE;}{\f261\fswiss\fcharset204\fprq2 Arial Unicode MS Cyr;}{\f263\fswiss\fcharset161\fprq2 Arial Unicode MS Greek;}{\f264\fswiss\fcharset162\fprq2 Arial Unicode MS Tur;}
+{\f265\fswiss\fcharset177\fprq2 Arial Unicode MS (Hebrew);}{\f266\fswiss\fcharset178\fprq2 Arial Unicode MS (Arabic);}{\f267\fswiss\fcharset186\fprq2 Arial Unicode MS Baltic;}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;
+\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;
+\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \snext0 Normal;}{
+\s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 1;}{\*\cs10 \additive Default Paragraph Font;}{
+\s15\ql \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\f28\hich\af28\dbch\af28\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext15 Normal (Web);}}{\info{\title Spells (C)}
+{\subject SRD}{\author AKSmith}{\operator AKSmith}{\creatim\yr2002\mo7\dy22\hr16\min44}{\revtim\yr2002\mo12\dy12\hr15\min20}{\version63}{\edmins206}{\nofpages7}{\nofwords7858}{\nofchars44791}{\*\company Wizards of the Coast}{\nofcharsws55006}{\vern8283}}
+\widowctrl\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\formshade\horzdoc\dgmargin\dghspace180\dgvspace180\dghorigin1800\dgvorigin1440\dghshow1\dgvshow1
+\jexpand\viewkind1\viewscale100\pgbrdrhead\pgbrdrfoot\splytwnine\ftnlytwnine\htmautsp\nolnhtadjtbl\useltbaln\alntblind\lytcalctblwd\lyttblrtgr\lnbrkrule \fet0\sectd \linex0\endnhere\sectlinegrid360\sectdefaultcl {\*\pnseclvl1
+\pnucrm\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang{\pntxta )}}{\*\pnseclvl5
+\pndec\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang
+{\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}\pard\plain \s15\ql \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs24\lang1033\langfe1033\loch\af28\hich\af28\dbch\af28\cgrid\langnp1033\langfenp1033 {\fs20 \hich\af28\dbch\af28\loch\f28 This material is Open Game Content, and is licensed for public use under the terms of the Open Game License v1.0a.}{
+\fs20\ul\dbch\af0 
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {SPELLS (C)
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Call Lightning
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation [Electricity]
+\par Level: Drd 3
+\par Components: V, S
+\par Casting Time: 10 minutes, plus 1 action per bolt called
+\par Range: Long (400 ft. + 40 ft./level)
+\par Effect: See text
+\par Duration: 10 minutes/level
+\par Saving Throw: Reflex half
+\par Spell Resistance: Yes
+\par To cast call lightning, the character must be in a stormy area (including a whirlwind formed by a djinn or air elemental of 7 HD o
+r more). The character is then able to call bolts of lightning as long as the character remains in the stormy area. (The spell ends if the character leaves the stormy area.) The character can call down one bolt every 10 minutes. The character need not cal
+l a bolt of lightning immediately\emdash 
+other actions, even spellcasting, can be performed. However, the character must use a standard action (concentrating on the spell) to call each bolt. A bolt causes 1d10 points of electrical damage per caster level (maximum 10d10).
+\par The bolt of lightning strikes down in a vertical stroke at whatever target point the character chooses, within range (measured from the c
+haracter's position at the time). The bolt takes the shortest possible unobstructed path between a nearby cloud and the target. Any creature within a 10-foot radius of the path or the point where the lightning strikes is affected.
+\par This spell can be used only outdoors. It does not function indoors, underground, or underwater.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Calm Animals
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Enchantment (Compulsion) [Mind-Affecting]
+\par Level: Animal 1, Drd 1
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Targets: Animals, beasts, or magical beasts with Intelligence 1 or 2 within 30 ft. of each other
+\par Duration: 1 minute/level
+\par Saving Throw: Will negates (see text)
+\par Spell Resistance: Yes
+\par This spell affects animals, beasts, and magical beasts, rendering them docile and harmless. Only crea
+tures with Intelligence scores of 1 or 2 can be affected by this spell. All the subjects must be of the same species and within a 30-foot sphere. Roll 2d4 + caster level to determine the total number of HD affected. Animals trained to attack or guard, dir
+e animals, beasts, and magical beasts are allowed saving throws. Animals not trained to attack or guard are not.
+\par The affected creatures remain where they are and do not attack or flee. They are not helpless and defend themselves normally if attacked. Any threat breaks the spell on the threatened creatures.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Calm Emotions
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Enchantment (Compulsion) [Mind-Affecting]
+\par Level: Clr 2, Law 2
+\par Components: V, S, DF
+\par Casting Time: 1 action
+\par Range: Medium (100 ft. + 10 ft./level)
+\par Targets: 1d6 creatures/level, all of whom must be within 30 ft. of each other
+\par Duration: Concentration, up to 1 round/level (D)
+\par Saving Throw: Will negates
+\par Spell Resistance: Yes
+\par This spell calms agitated creatures. The character has no control over the affected creatures, but this spell can stop creatu
+res from fighting. Creatures so affected cannot take violent actions (although they can defend themselves) or do anything destructive, except to protect themselves. Any aggressive action or life-threatening damage against calmed creatures immediately brea
+ks the spell on the threatened creatures.
+\par This spell automatically suppresses (but does not dispel) mind-affecting spells, as well as negating a bard\rquote s ability to inspire courage or a barbarian\rquote s rage. While the calm emotions spell lasts, a suppressed spell
+ has no effect. When the calm emotions spell ends, the original spell takes hold of the creature again, provided its duration has not expired in the meantime.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cat\rquote s Grace
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Transmutation
+\par Level: Brd 2, Sor/Wiz 2
+\par Components: V, S, M
+\par Casting Time: 1 action
+\par Range: Touch
+\par Target: Creature touched
+\par Duration: 1 hour/level
+\par Saving Throw: Will Negates (harmless)
+\par Spell Resistance: Yes
+\par The spell grants an enhancement bonus to Dexterity of 1d4+1 points.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cause Fear
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy [Fear, Mind-Affecting]
+\par Level: Brd 1, Clr 1, Death 1, Sor/Wiz 1
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Target: One living creature
+\par Duration: 1d4 rounds
+\par Saving Throw: Will negates
+\par Spell Resistance: Yes
+\par The affected creature becomes frightened. It suffers a \endash 2 mo
+rale penalty on attack rolls, weapon damage rolls, and saving throws. It flees from the character as well as it can. If unable to flee, the creature may fight. Creatures with 6 or more Hit Dice are immune. Cause fear counters remove fear.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Chain Lightning
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation [Electricity]
+\par Level: Air 6, Sor/Wiz 6
+\par Components: V, S, F
+\par Casting Time: 1 action
+\par Range: Long (400 ft. + 40 ft./level)
+\par Targets: One primary target plus one secondary target/level (each must be within 30 ft. of the primary target)
+\par Duration: Instantaneous
+\par Saving Throw: Reflex half
+\par Spell Resistance: Yes
+\par This spell creates an electrical discharge from the character's fingertips. Chain lightning strikes one object or creature initially, then arcs to other targets.
+\par The bolt deals 1d6 poi
+nts of electricity damage per caster level (maximum 20d6) on the primary target. After the bolt strikes, lightning can arc to as many secondary targets as the character has levels. The secondary bolts each strike one target and deal half as many dice of d
+a
+mage as the primary (rounded down). All subjects can attempt Reflex saving throws for half damage. The character chooses secondary targets as the character likes, but they must all be within 30 feet of the primary target, and no target can be struck more 
+than once. The character can choose to affect fewer secondary targets than the maximum.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Change Self
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Illusion (Glamer)
+\par Level: Sor/Wiz 1, Trickery 1
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Personal
+\par Target: The character
+\par Duration: 10 minutes/level (D)
+\par The character can make his or herself\emdash including clothing, armor, weapons, and equipment\emdash 
+look different. The character can seem 1 foot shorter or taller, thin, fat, or in between. The character cannot change the character's body type.  Otherwise, the extent of the apparent change is up to the character.
+\par The spell does not provide the abilities or mannerisms of the chosen form. It does not alter the perceived tactile (touch) or audible (sound) properties of the character or the character's equipment.
+\par If the character uses this spell to create a disguise, the character gets a +10 bonus on the Disguise check.
+\par Note: Creatures get Will saves to recognize the glamer as an illusion if they interact with it.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Changestaff
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Transmutation
+\par Level: Drd 7, Plant 7
+\par Components: V, S, F
+\par Casting Time: 1 full round
+\par Range: Touch
+\par Target: The character's touched staff
+\par Duration: 1 hour/level (D)
+\par Saving Throw: None
+\par Spell Resistance: No
+\par The chara
+cter changes a specially prepared quarterstaff into a Huge treantlike creature, about 24 feet tall. When the character concludes the casting of the spell, the character's staff turns into a creature that looks and fights just like a treant. The staff-trea
+n
+t defends the character and obeys any spoken commands. However, it is not a true treant; it cannot converse with actual treants or control trees. If the staff-treant is reduced to 0 hit points or less, it crumbles to powder and the staff is destroyed. Oth
+erwise, the staff can be used as the focus for another casting of the spell. The staff-treant is always at full strength when created, despite any wounds it may have suffered the last time it appeared.
+\par Focus: The quarterstaff, which must be specially prepared. Preparing the staff takes 28 days. The character cannot adventure or engage in other strenuous activity during the preparation period.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Chaos Hammer
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation [Chaotic]
+\par Level: Chaos 4
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Medium (100 ft. + 10 ft./level)
+\par Area: 20-ft.-radius burst
+\par Duration: Instantaneous
+\par Saving Throw: Will half (see text)
+\par Spell Resistance: Yes
+\par Only lawful and neutral (not chaotic) creatures are harmed by the spell.
+\par The spell deals 1d8 points of damage per two caster levels (maxim
+um 5d8) to lawful creatures and staggers them for 1d6 rounds. A staggered character can take only partial actions. A successful Will save reduces the damage by half and negates the stagger effect.
+\par The spell deals only half damage against creatures who are neither lawful nor chaotic, and they are not staggered. They can reduce the damage by half again with a successful Will save.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Charm Monster
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Enchantment (Charm) [Mind-Affecting]
+\par Level: Brd 3, Sor/Wiz 4
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Target: One living creature
+\par Duration: 1 day/level
+\par Saving Throw: Will negates
+\par Spell Resistance: Yes
+\par This charm makes a creature regard the character as a trusted friend and ally. If the creature is currently being threatened or attacked by the character or the character's allies, however, he receives a +5 bonus on his saving throw.
+\par The spell does not ena
+ble the character to control the charmed creature as if the creature were an automaton, but the subject perceives the character's words and actions in the most favorable way. The character can try to give the subject orders, but the character must win an 
+opposed Charisma check to convince the subject to do anything he or she wouldn\rquote 
+t ordinarily do. (Retries not allowed.) A charmed creature never obeys suicidal or obviously harmful orders. Any act by the character or the character's apparent allies that thre
+atens the charmed creature breaks the spell. Note also that the character must speak the creature\rquote s language to communicate the character's commands, or else be good at pantomiming.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Charm Person
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Enchantment (Charm) [Mind-Affecting]
+\par Level: Brd 1, Sor/Wiz 1
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Target: One person
+\par Duration: 1 hour/level
+\par Saving Throw: Will negates
+\par Spell Resistance: Yes
+\par This charm makes a humanoid of Medium-size or smaller regard the character as a trust
+ed friend and ally. If the creature is currently being threatened or attacked by the character or the character's allies, however, he receives a +5 bonus on his saving throw.
+\par The spell does not enable the character to control the charmed person as if the p
+erson were an automaton, but the subject perceives the character's words and actions in the most favorable way. The character can try to give the subject orders, but the character must win an opposed Charisma check to convince the subject to do anything h
+e or she wouldn\rquote 
+t ordinarily do. (Retries not allowed.) A charmed person never obeys suicidal or obviously harmful orders. Any act by the character or the character's apparent allies that threatens the charmed person breaks the spell. Note also that the cha
+racter must speak the person\rquote s language to communicate the character's commands, or else be good at pantomiming.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Charm Person or Animal
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Enchantment (Charm) [Mind-Affecting]
+\par Level: Drd 2
+\par Target: One person or animal
+\par As charm person, except that it can also affect an animal.
+\par This charm makes a humanoid or animal of Medium-size or smaller regard the character as a trusted friend and ally. If the creature is currently being threatened or attacked by the character or the character's allies, however, he receives
+ a +5 bonus on his saving throw.
+\par The spell does not enable the character to control the charmed person as if the person were an automaton, but the subject perceives the character's words and actions in the most favorable way. The character can try to give 
+the subject orders, but the character must win an opposed Charisma check to convince the subject to do anything he or she wouldn\rquote 
+t ordinarily do. (Retries not allowed.) A charmed creature never obeys suicidal or obviously harmful orders. Any act by the cha
+racter or the character's apparent allies that threatens the charmed creature breaks the spell. Note also that the character must speak the creature\rquote s language to communicate the character's commands, or else be good at pantomiming.
+\par 
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Chill Metal
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Transmutation [Cold]
+\par Level: Drd 2
+\par Components: V, S, DF
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Target: Metal equipment of one creature/two levels, no two of which can be more than 30 ft. apart; or 25 lb. of metal/level, none of which can be more than 30 ft. away from any of the rest
+\par Duration: 7 rounds
+\par Saving Throw: Will negates (object)
+\par Spell Resistance: Yes (object)
+\par Unattended, nonmagical metal gets no saving throw. Enchanted metal is allowed a saving throw against the spell. An item in a creature\rquote s possession uses the creature\rquote s saving throw (unless its own is higher).
+\par A creature takes cold damage if its equipment is chilled. It takes full damage if its armor is affected or if it\rquote 
+s holding, touching, wearing, or carrying metal weighing one-fifth of its weight. The creature takes minimum damage (1 point or 2 points; see the table) if it\rquote s not wearing metal armor and the metal that it\rquote 
+s carrying weighs less than one-fifth of its weight.
+\par On the first round of the spell, the metal becomes chilly and uncomfortable to touch but deals no damage (this is also the effect on the last round of the spell\rquote s durat
+ion). During the second (and also the next-to-last) round, icy coldness causes pain and damage. In the third, fourth, and fifth rounds, the metal is freezing cold, causing more damage, as shown below:
+\par Round \tab Temperature Damage
+\par ----- \tab ----------- ------
+\par 1 \tab Cold None
+\par 2 \tab Icy 1d4 points
+\par 3\endash 5 \tab Freezing 2d4 points
+\par 6 \tab Icy 1d4 points
+\par 7 \tab Cold None
+\par Any heat intense enough to damage the creature negates cold damage from the spell (and vice versa) on a point-for-point basis. Underwater, chill metal deals no damage, but ice immediately forms around the affected metal, making it more buoyant.
+\par Chill metal counters and dispels heat metal.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Chill Touch
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy
+\par Level: Sor/Wiz 1
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Touch
+\par Targets: Creature or creatures touched (up to one/level)
+\par Duration: Instantaneous
+\par Saving Throw: Fortitude partial
+\par Spell Resistance: Yes
+\par A touch from the character's hand disrupts the life force of living creatures. Each touch channels negative energy that deals 1d6 points
+ of damage and possibly also 1 point of temporary Strength damage. (A successful Fortitude saving throw negates the Strength damage.) The character can use this melee touch attack up to one time per level.
+\par Undead touched by the character suffer no damage or Strength loss, but they must make successful Will saving throws or flee as if panicked for 1d4 rounds +1 round per caster level.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Circle of Death
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy [Death]
+\par Level: Sor/Wiz 6
+\par Components: V, S, M
+\par Casting Time: 1 action
+\par Range: Medium (100 ft. + 10 ft./level)
+\par Area: Several living creatures within a 50-ft.-radius burst
+\par Duration: Instantaneous
+\par Saving Throw: Fortitude negates
+\par Spell Resistance: Yes
+\par The spell slays 1d4 HD worth of living creatures per caster level (maximum 20d4). Creatures with the fewest 
+HD are affected first; among creatures with equal HD, those who are closest to the point of origin of the burst are affected first. No creature with 9 or more HD is affected, and HD that are not sufficient to affect a creature are wasted.
+\par Material Component: Minimum value of 500 gp.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Circle of Doom
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy
+\par Level: Clr 5, Destruction 5
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: 20 ft.
+\par Area: All living enemies and undead creatures within a 20-ft.-radius burst centered on the character
+\par Duration: Instantaneous
+\par Saving Throw: Fortitude half
+\par Spell Resistance: Yes
+\par Negative energy bursts in all directions from the point of origin, dealing 1d8 points of damage +1 point per caster level (maximum +20) to nearby living enemies.
+\par Like inflict spells, circle of doom cures undead in its area rather than harming them.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Clairaudience/Clairvoyance
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Divination
+\par Level: Brd 3, Knowledge 3, Sor/Wiz 3
+\par Components: V, S, F/DF
+\par Casting Time: 1 action
+\par Range: See text
+\par Effect: Magical sensor
+\par Duration: 1 minute/level (D)
+\par Saving Throw: None
+\par Spell Resistance: No
+\par Clairaudience/clairvoyance enables the character to concentrate upon some locale and hear or see (the character's choice) almost as if the character were there. Distance is not a factor, but the locale must be known\emdash 
+a place familiar to the character or an obvious one. The spell does not allow magically enhanced senses to work through it. If the chosen locale is magically dark, the character sees nothing. If it is naturally pitch black, the character can see in a 10-f
+oot radius around the center of the spell\rquote 
+s effect. Lead sheeting or magical protection blocks the spell, and the character senses that the spell is so blocked. The spell creates an invisible sensor that can be dispelled. The spell functions only on the pla
+ne of existence the character is currently occupying.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Clenched Fist
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation
+\par Level: Sor/Wiz 8, Strength 8
+\par Components: V, S, F/DF
+\par Casting Time: 1 action
+\par Range: Medium (100 ft. + 10 ft./level)
+\par Effect: 10-ft. hand
+\par Duration: 1 round/level (D)
+\par Saving Throw: None
+\par Spell Resistance: Yes
+\par This spell creates a Large magic hand. This floating, disembodied hand moves and attacks as directed by the character. (The character directs it as a free action.) The floating hand can move up to 60 feet and can attack in the sam
+e round.  Since the hand is directed by the character, its ability to notice or attack invisible or concealed creatures is no better than the character's.  The hand attacks once per round, and its attack bonus equals the character's level + the character'
+s
+ Intelligence, Wisdom, or Charisma modifier (for a wizard, cleric, or sorcerer, respectively), +11 for the hand's Strength score (33), -1 for being Large. The hand's damage is 1d8+12, and any creature struck must make a Fortitude save (against this spell'
+s save DC) or be stunned for 1 round. A stunned creature can't act and loses any Dexterity bonus to AC. Attackers gain +2 bonuses to attack it.
+\par The hand is 10 feet long and about that wide with its fingers outstretched. It has as many hit points as the char
+acter when undamaged, and its AC is 20 (-1 size, +11 natural). It takes damage as a normal creature, but most magical effects that don't cause damage do not affect it. The hand cannot push through a wall of force or enter an antimagic field. It suffers th
+e full effects of a prismatic wall or prismatic sphere. The hand makes saving throws as its caster. Disintegrate or a successful dispel magic destroys the hand.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cloak of Chaos
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Abjuration [Chaotic]
+\par Level: Chaos 8, Clr 8
+\par Components: V, S, F
+\par Casting Time: 1 action
+\par Range: 20 ft.
+\par Targets: One creature/level in a 20-ft.-radius burst centered on the character
+\par Duration: 1 round/level (D)
+\par Saving Throw: See text
+\par Spell Resistance: Yes (harmless)
+\par A random pattern of color surrounds the subjects, protecting them from attacks, granting them resistance to spells cast by lawful creatures, and confusing lawful creatures when they strike the subjects. This abjuration has four effects:
+\par First, the warded creatures gain a +4 deflection bonus to AC and a +4 resistance bonus to saves. This benefit applies against all attacks, not just against attacks by lawful creatures.
+\par Second, the warded creatures gain SR 25 against lawful spells and spells cast by lawful creatures.
+\par Third, the abjuration blocks possession and mental influence.
+\par Finally, if a lawful creature succeeds with a melee attack against a warded creature, the offending attacker is confused for 1 round (Will save negates, as confusion, but against the save DC of cloak of chaos).
+\par Focus: Worth at least 500 gp.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Clone
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy
+\par Level: Sor/Wiz 8
+\par Components: V, S, M, F
+\par Casting Time: 10 minutes
+\par Range: 0 ft.
+\par Effect: One clone
+\par Duration: Instantaneous
+\par Saving Throw: None
+\par Spell Resistance: No
+\par This spell makes an inert duplicate of a creature. If the original individual has been slain, the original\rquote s soul transfers to the clone, creating a replacement (provided the soul is free and willing to return). The original\rquote 
+s physical remains, should they still exist, become inert matter and cannot thereafter be restored to life. If the original has reached the end of its natural life span, any cloning attempt fails.
+\par To create the duplicate, the character must have a piece of flesh taken from the original\rquote s living body, with a volume of at least 1 cubic inch. The piece of flesh need
+ not be fresh, but it must be kept from rotting. Once the spell is cast, the duplicate must be grown in a laboratory for 2d4 months.
+\par When the clone is completed, if the original is dead, the original\rquote s soul enters the clone. The clone has the personality, 
+memories, skills, and levels the original had at the time the piece of flesh was taken. However, the replacement must be at least one level lower than the original was at the time of death. If the original was 1st level, the clone\rquote 
+s Constitution score drop
+s by 1; if this would give the clone a Constitution score of 0, the spell fails. If the original creature has lost levels since the flesh sample was taken and died at a lower level than the clone would otherwise be, the clone is at the level at which the 
+original died.
+\par The spell duplicates only the original\rquote s body and mind, not its equipment.
+\par A duplicate can be grown while the original still lives, or when the original soul is unavailable, but the resulting creature is merely a soulless bit of inert flesh, which rots if not somehow preserved.
+\par Arcane Material Components: The piece of flesh and 1,000 gp.
+\par Focus: cost 500 gp.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cloudkill
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Creation)
+\par Level: Sor/Wiz 5
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Medium (100 ft. + 10 ft./level)
+\par Effect: Cloud spreads 30 ft. wide and 20 ft. high
+\par Duration: 1 minute/level
+\par Saving Throw: See text
+\par Spell Resistance: Yes
+\par A bank of yellowish green poisonous fog billows out from the point the character designates. The fog obscures all sight, including darkv
+ision, beyond 5 feet. A creature within 5 feet has one-half concealment (attacks suffer a 20% miss chance). Creatures farther away have total concealment (50% miss chance, and the attacker can\rquote t use sight to locate the target). The fog\rquote 
+s vapors kill any li
+ving creature with 3 or fewer HD (no save) and cause creatures with 4 to 6 HD to make Fortitude saving throws or die. Living creatures above 6 HD, and creatures of 4 to 6 HD who make their saving throws, take 1d10 points of poison damage each round while 
+in the cloud. Holding one\rquote s breath doesn\rquote t help. 
+\par The cloudkill moves away from the character at 10 feet per round, rolling along the surface of the ground. (Figure out the cloud\rquote s new spread each round based on its new point of origin, 10 feet farther away
+ from the point of origin where the character cast the spell.) Because the vapors are heavier than air, they sink to the lowest level of the land, even pouring down openings. It cannot penetrate liquids, nor can it be cast underwater.
+\par A moderate wind (11+ mph) disperses the fog in 4 rounds; a strong wind (21+ mph) disperses the fog in 1 round.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Color Spray
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Illusion (Pattern) [Mind-Affecting]
+\par Level: Sor/Wiz 1
+\par Components: V, S, M
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Area: Cone
+\par Duration: Instantaneous (see text)
+\par Saving Throw: Will negates
+\par Spell Resistance: Yes
+\par A cone of colors springs forth from the character's hand. The closest 1d6 creatures in the cone are affected. The spell affects each subject according to its HD:
+\par Up to 2: Unconscious for 2d4 rounds, then blinded for 1d4 rounds, and then stunned for 1 round. (Only living creatures are knocked unconscious.)
+\par 3 or 4: Blinded for 1d4 rounds, then stunned for 1 round.
+\par 5 or more: Stunned for 1 round.
+\par In addition to the obvious effects, a blinded creature suffers a 50% miss chance in combat (all opponents have full concealment), loses any Dexterity bonus to AC, grants a +2 bonus to attackers\rquote 
+ attack rolls (they are effectively invisible), moves at half speed, and suffers a \endash 4 penalty on Search checks and most Strength- and Dexterity-based skills.
+\par A stunned creature can\rquote t act and loses any Dexterity bonus to AC. Attackers gain +2 bonuses to attack it.
+\par Sightless creatures are not affected by color spray. 
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Command
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Enchantment (Compulsion) [Language-Dependent, Mind-Affecting]
+\par Level: Clr 1
+\par Components: V
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Target: One living creature
+\par Duration: 1 round
+\par Saving Throw: Will negates
+\par Spell Resistance: Yes
+\par The character gives the subject a one-word command, which the subject obeys to the best of his or her ability. A very reasonable command causes the subject to suffer a penalty on the saving throw (from \endash 1 to \endash 4, at the DM\rquote 
+s discretion). A command of \'93Die\'94 causes the subject to fake death. A command of "Suicide" fails because "suicide" is generally used as a noun, not as a command.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Command Plants
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Enchantment (Charm) [Mind-Affecting]
+\par Level: Drd 8, Plant 8
+\par Components: V
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Targets: Plants and plant creatures (see text)
+\par Duration: 1 day/level or 1 hour/level (see text)
+\par Saving Throw: See text
+\par Spell Resistance: See text
+\par Plants, fungi, plant creatures, and fungus creatures do the character's bidding.
+\par Charm: 
+Against plant creatures and fungus creatures, command plants functions as a mass charm spell. The character can command a number of plant creatures whose combined level or HD do not exceed three times the character's level (or at least one creature regard
+less of HD). No two affected creatures can be more than 30 feet from each other, and each is allowed a Will saving throw to negate the effect. Spell resistance applies. The effect lasts 1 day per caster level. This is a charm effect.
+\par Animate: The spell imbues trees or other large, inanimate vegetable life with mobility. The animated plants then attack whomever or whatever the character first designates. Animated plants gain humanlike senses. The plants\rquote 
+ AC, speed, attacks, and special 
+abilities vary with their size and form, as described for animated objects. The character can animate two trees, four shrubs, or eight vines. All plants to be affected must be within 60 feet of each other. The character can animate different types of plan
+ts if desired. Creatures who have the plants in their possession can prevent the effect with Will saves or spell resistance. The effect lasts 1 hour per caster level.
+\par Entangle: the character imbues all plants within range with semimobility, which allows the
+m to entwine around creatures in the area. This duplicates the effect of an entangle spell. Spell resistance does not keep creatures from being entangled. The effect lasts 1 hour per caster level.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Commune
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Divination
+\par Level: Clr 5
+\par Components: V, S, M, DF, XP
+\par Casting Time: 10 minutes
+\par Range: Personal
+\par Target: The character
+\par Duration: 1 round/level
+\par The character can contact the character's deity\emdash or agents thereof\emdash and ask questions that can be answered by a simple yes or no. (A cleric of no particular deity contac
+ts a philosophically allied deity.) The character is allowed one such question per caster level. The answers given are correct within the limits of the entity\rquote 
+s knowledge. "Unclear" is a legitimate answer. In cases where a one-word answer would be misleading or contrary to the deity\rquote 
+s interests, the DM should give a short phrase (five words or less) as an answer instead. The spell, at best, provides information to aid character decisions. The entities contacted structure their answers to further their own p
+urposes. If the character doesn't focus on the conversation, discusses the answers at length with other parties, or leaves to undertake another task, the spell ends.
+\par XP Cost: 100 XP.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Commune with Nature
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Divination
+\par Level: Animal 5, Drd 5
+\par Components: V, S
+\par Casting Time: 10 minutes
+\par Range: Personal
+\par Target: The character
+\par Duration: Instantaneous
+\par The character gains knowledge of the surrounding territory. The character instantly gains knowledge of up to three facts from among the following subjects: the ground or 
+terrain, plants, minerals, bodies of water, people, general animal population, presence of woodland creatures, presence of powerful unnatural creatures, or the general state of the natural setting. 
+\par In outdoor settings, the spell operates in a radius of one mile per caster level. In natural underground settings the range is limited to 100 feet per caster level. The spell does not function where nature has been replaced by construction or settlement.
+
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Comprehend Languages
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Divination
+\par Level: Clr 1, Sor/Wiz 1
+\par Components: V, S, M/DF
+\par Casting Time: 1 action
+\par Range: Personal
+\par Target: The character
+\par Duration: 10 minutes/level
+\par The character can understand the spoken words of creatures or read otherwise incomprehensible written messages. The character must touch the
+ creature or the writing. Note that the ability to read does not necessarily impart insight into the material, merely its literal meaning. Note also that the spell enables the character to understand or read an unknown language, not speak or write it.
+
+\par Written material can be read at the rate of one page (250 words) per minute. Magical writing cannot be read, other than to know it is magical. It does not decipher codes or reveal messages concealed in otherwise normal text.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cone of Cold
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation [Cold]
+\par Level: Sor/Wiz 5, Water 6
+\par Components: V, S, M/DF
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Area: Cone
+\par Duration: Instantaneous
+\par Saving Throw: Reflex half
+\par Spell Resistance: Yes
+\par Cone of cold creates an area of extreme cold, originating at the character's hand and extending outward in a cone. It causes 1d6 points of cold damage per caster level (maximum 15d6).
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Confusion
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Enchantment (Compulsion)
+\par [Mind-Affecting]
+\par Level: Brd 3, Sor/Wiz 4, Trickery 4
+\par Components: V, S, M/DF
+\par Casting Time: 1 action
+\par Range: Medium (100 ft. + 10 ft./level)
+\par Targets: All creatures in a 15-ft. radius
+\par Duration: 1 round/level
+\par Saving Throw: Will negates
+\par Spell Resistance: Yes
+\par Creatures affected by this spell behave randomly, as indicated on the following table:
+\par 1d10 \tab Behavior
+\par ---- \tab --------
+\par 1 \tab Wander away for 1 minute (unless prevented)
+\par 2\endash 6 \tab Do nothing for 1 round
+\par 7\endash 9 \tab Attack nearest creature for 1 round
+\par 10 \tab Act normally for 1 round
+\par Except on a result of 1, roll again each round to see what the subject does that round. Wanderin
+g creatures leave the scene as if disinterested. Attackers are not at any special advantage when attacking them. Behavior is checked at the beginning of each creature\rquote 
+s turn. Any confused creature who is attacked automatically attacks its attackers on its next turn.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Consecrate
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation
+\par Level: Clr 2
+\par Components: V, S, M, DF
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Area: 20-ft.-radius emanation
+\par Duration: 2 hours/level
+\par Saving Throw: None
+\par Spell Resistance: No
+\par This spell blesses an area with positive energy. All Charisma checks made to turn undead within this area gain a +3 sacred bonus. Undead entering this area suffer minor disruption, giving them a \endash 
+1 sacred penalty on attack rolls, damage rolls, and saving throws. Undead cannot be created within or summoned into a consecrated area.
+\par If the consecrated area contains a permanent fixture dedicated to the character's deity, pantheon, or aligned higher power, the modifiers listed above are doubled (+6 sacred bonus to turning, \endash 2 penalty to unde
+ad rolls). The character cannot consecrate an area with a similar fixture of a deity other than the character's own patron.
+\par Consecrate counters and dispels desecrate.
+\par Material Components: Worth 25 gp.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Contact Other Plane
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Divination
+\par Level: Brd 5, Sor/Wiz 5
+\par Components: V
+\par Casting Time: 10 minutes
+\par Range: Personal
+\par Target: The character
+\par Duration: Concentration
+\par The character sends his or her mind to another plane of existence in order to receive advice and information from powers there. (See the accompanying table for possible consequences and results of the attempt.) 
+\par \tab \tab \tab \tab \tab Avoid Effective\tab \tab True\tab \tab Don\rquote t \tab \tab Random
+\par Plane Contacted\tab \tab \tab \tab Int/Cha Decrease\tab Answer \tab \tab Know \tab Lie \tab Answer
+\par --------------- \tab \tab \tab ---------------- \tab ------ \tab \tab ----- \tab -----\tab ------
+\par Elemental Plane \tab \tab \tab DC 7/1 week \tab \tab 01\endash 34 \tab \tab 35\endash 62 \tab 63\endash 83 \tab 84\endash 100
+\par (appropriate) \tab \tab \tab \tab (DC 7/1 week) \tab \tab (01\endash 68) \tab (69\endash 75)\tab (76\endash 98)\tab (99\endash 100)
+\par Positive/Negative Energy Plane \tab \tab DC 8/1 week \tab \tab 01\endash 39 \tab \tab 40\endash 65 \tab 66\endash 86 \tab 87\endash 100
+\par Astral Plane \tab \tab \tab \tab DC 9/1 week \tab \tab 01\endash 44 \tab \tab 45\endash 67 \tab 68\endash 88 \tab 89\endash 100
+\par Outer Plane, demideity \tab \tab \tab DC 10/2 weeks \tab \tab 01\endash 49 \tab \tab 50\endash 70 \tab 71\endash 91 \tab 92\endash 100
+\par Outer Plane, lesser deity \tab \tab DC 12/3 weeks \tab \tab 01\endash 60 \tab \tab 61\endash 75 \tab 76\endash 95 \tab 96\endash 100
+\par Outer Plane, intermediate deity \tab DC 14/4 weeks \tab \tab 01\endash 73 \tab \tab 74\endash 81 \tab 82\endash 98 \tab 99\endash 100
+\par Outer Plane, greater deity \tab \tab DC 16/5 weeks \tab \tab 01\endash 88 \tab \tab 89\endash 90 \tab 91\endash 99 \tab 100
+\par Avoid Effective Intelligence/Charisma Decrease: The character must succeed at an Intelligence check against
+ this DC in order to avoid effective Intelligence and Charisma decrease. If the check fails, the character's Intelligence and Charisma scores fall to 8 for the stated duration, and the character becomes unable to cast arcane spells. If the character loses
+ Intelligence and Charisma, the effect strikes as soon as the first question is asked, and no answer is received. (The entries in parentheses are for questions that pertain to the appropriate Elemental Plane.)
+\par Results of a Successful Contact: The DM rolls d% for the result shown on the table:
+\par True Answer: The character gets a true, one-word answer. Questions not capable of being answered in this way are answered randomly.
+\par Don\rquote t Know: The entity tells the character that it doesn\rquote t know.
+\par Lie: The entity intentionally lies to the character.
+\par Random Answer: The entity tries to lie but doesn\rquote t know the answer, so it makes one up.
+\par The powers reply in a language the character understands, but they resent such contact and give only brief answers to the character's que
+stions. (The DM answers all questions with "yes," "no," "maybe," "never," "irrelevant," or some other one-word answer.) The character must concentrate on maintaining the spell (a standard action) in order to ask questions at the rate of one per round. A q
+uestion is answered by the power during the same round. For every two caster levels, the character may ask one question.
+\par The character can contact an Elemental Plane or some plane farther removed. Contact with minds far removed from the character's home pla
+ne increases the probability of suffering an effective decrease to Intelligence and Charisma, but the chance of the power knowing the answer, as well as the probability of the being telling the correct answer, are likewise increased by moving to distant p
+lanes. Once the Outer Planes are reached, the power of the deity contacted determines the effects. 
+\par 
+\par On rare occasions, this divination may be blocked by an act of certain deities or forces.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Contagion
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy
+\par Level: Clr 3, Destruction 3, Drd 3, Sor/Wiz 4
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Touch
+\par Target: Living creature touched
+\par Duration: Instantaneous
+\par Saving Throw: Fortitude negates
+\par Spell Resistance: Yes
+\par The subject contracts a disease, which strikes immediately (no incubation period). The character infects the subject with blinding sickness, cackle fever, filth fever, mindfire, red ache, the shakes, or slimy doom.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Contingency
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation
+\par Level: Sor/Wiz 6
+\par Components: V, S, M, F
+\par Casting Time: At least 10 minutes (see text)
+\par Range: Personal
+\par Target: The character
+\par Duration: 1 day/level or until discharged
+\par The character can place another spell upon the character's person so that the latter spell comes into effect under some condition the character dictates whe
+n casting contingency. The contingency spell and the companion spell are cast at the same time. The 10-minute casting time is the minimum total for both castings; if the companion spell has a casting time longer than 10 minutes, use that casting time inst
+ead.
+\par The spell to be brought into effect by the contingency must be one that affects the character's person (feather fall, levitate, fly, teleport, and so forth) and be of a spell level no higher than one-third the character's caster level (rounded down, ma
+ximum 6th level).
+\par The conditions needed to bring the spell into effect must be clear, although they can be general. In all cases, the contingency immediately brings into effect the second spell, the latter being "cast" instantaneously when the prescribed c
+ircumstances occur. Note that if complicated or convoluted conditions are prescribed, the whole spell combination (contingency and the companion magic) may fail when called on. The companion spell occurs based solely on the stated conditions, regardless o
+f whether the character wants it to.
+\par The character can use only one contingency spell at a time; if a second is cast, the first one (if still active) is dispelled.
+\par Focus: Worth at least 1,500 gp. The character must carry the focus for the contingency to work.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Continual Flame
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation (Light)
+\par Level: Clr 3, Sor/Wiz 2
+\par Components: V, S, M
+\par Casting Time: 1 action
+\par Range: 0 ft.
+\par Effect: Illusory flame
+\par Duration: Permanent
+\par Saving Throw: None
+\par Spell Resistance: No
+\par A flame, equivalent in brightness to a torch, springs forth from an object that the character touches. The flame looks like a regular flame, but it creates no heat and doesn\rquote 
+t use oxygen. The flame can be covered and hidden but not smothered or quenched.
+\par Material Component: Worth 50 gp.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Control Plants
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Transmutation
+\par Level: Drd 4, Plant 4, Rgr 3
+\par Components: V, S, DF
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Area: Plants within a 25 ft. + 5 ft/2 levels-radius spread, centered on the character
+\par Duration: 1 minute/level
+\par Saving Throw: Will negates (see text)
+\par Spell Resistance: No
+\par The character can converse, in very rudimentary terms, with all sorts of plants and plantlike creatures (including fungi, molds, and plantlike monsters). The character 
+automatically exercises limited control over normal plants. Plantlike creatures can negate the control effect with a Will save.
+\par The spell does not enable plants to uproot themselves and move about, but it does allow them to move their branches, stems, and leaves. 
+\par The plants can duplicate the effect of an entangle spell or free creatures trapped by that spell.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Control Undead
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy
+\par Level: Sor/Wiz 7
+\par Components: V, S, M
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Targets: Up to 2 HD of undead creatures/level, no two of which can be more than 30 ft. apart
+\par Duration: 1 minute/level
+\par Saving Throw: Will negates
+\par Spell Resistance: Yes
+\par This spell enables the character to command undead creatures for a short period of time. The character commands
+ the creatures by voice. Telepathic communication is not possible, but the creatures understand the character no matter what language the character speaks. Even if vocal communication is impossible the controlled undead do not attack the character. At the
+ end of the spell, the controlled undead revert to their normal behavior. Intelligent undead remember that the character controlled them.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Control Water
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Transmutation
+\par Level: Brd 5, Clr 4, Sor/Wiz 6, Water 4
+\par Components: V, S, M/DF
+\par Casting Time: 1 action
+\par Range: Long (400 ft. + 40 ft./level)
+\par Area: Water in a volume of 10 ft./level x 10 ft./level x 2 ft./level (S)
+\par Duration: 10 minutes/level (D)
+\par Saving Throw: None
+\par Spell Resistance: No
+\par Depending on the version the character chose, the control water spell raises or lowers water.
+\par Lower Water: This causes water (or similar liquid) to sink away to a minimum depth of 1 inch. The depth can be lowered by up to 2 feet per caster level. The water is lowered within a squarish depression whose sides are up to 10 feet long per
+ caster level. In extremely large and deep bodies of water the spell creates a whirlpool that sweeps ships downward, putting them at risk and rendering them unable to leave by normal movement for the duration of the spell. When cast on water elementals an
+d other water-based creatures, this spell acts as a slow spell. The spell has no effect on other creatures.
+\par Raise Water: This causes water (or similar liquid) to rise in height, just as the lower water version causes it to lower. Boats raised in this way sl
+ide down the sides of the hump that the spell creates. If the area affected by the spell includes land near the raised water, the water can spill over onto dry land.
+\par For either version, the character may reduce one horizontal dimension by half and double the other horizontal dimension.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Control Weather
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Transmutation
+\par Level: Air 7, Brd 6, Clr 7, Drd 7, Sor/Wiz 6
+\par Components: V, S
+\par Casting Time: 10 minutes (see text)
+\par Range: Two miles
+\par Area: Two-mile-radius circle, centered on the character (see text)
+\par Duration: 4d12 hours (see text)
+\par Saving Throw: None
+\par Spell Resistance: No
+\par The character changes the weather in the local area. It takes 10 minutes to cast the spell and an additional 10 minutes for the effects to manifest. The current, natural weather conditions are
+ determined by the DM. The character can call forth weather appropriate to the climate and season of the area the character is in.
+\par Season \tab Possible Weather
+\par ------ \tab ----------------
+\par Spring \tab Tornado, thunderstorm, sleet storm, or hot weather
+\par Summer \tab Torrential rain, heat wave, or hailstorm
+\par Autumn \tab Hot or cold weather, fog, or sleet
+\par Winter \tab Frigid cold, blizzard, or thaw
+\par The character controls the general tendencies of the weather, such as the direction and intensity of the wind. The character cannot control s
+pecific applications of the weather. When the character selects a certain weather condition to occur, the weather assumes that condition 10 minutes later (changing gradually). The weather continues as the character left it for the duration, or until the c
+haracter uses a standard action to designate a new kind of weather (which fully manifests itself 10 minutes later). Contradictory conditions are not possible simultaneously.
+\par Control weather can do away with atmospheric phenomena (naturally occurring or otherwise) as well as create them.
+\par Druids casting this spell double the duration and affect a circle with a three-mile radius.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Control Winds
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Transmutation
+\par Level: Air 5, Drd 5
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: 40 ft./level
+\par Area: 40 ft./level radius centered on the character
+\par Duration: 10 minutes/level
+\par Saving Throw: Fortitude negates
+\par Spell Resistance: No
+\par The character alters wind force in the area surrounding the character. The character can make the wind blow in a certain direction or manner, increa
+se its strength, or decrease its strength. The new wind direction and strength persist until the spell ends or the character chooses to alter his or her handiwork, which requires concentration. The character may create an "eye" of calm air up to 80 feet i
+n diameter at the center of the area if the character so desires, and the character may choose to limit the effect to any circular area less than the character's full range.
+\par Wind Direction: The character may choose one of four basic wind patterns to function over the spell\rquote s area:
+\par A downdraft blows from the center outward in equal strength in all directions. 
+\par An updraft blows from the outer edges in toward the center in equal strength from all directions, veering upward before impinging on the eye in the center. 
+\par A rotation causes the winds to circle the center in clockwise or counterclockwise fashion. 
+\par A blast simply causes the winds to blow in one direction across the entire area from one side to the other. 
+\par Wind Force: For every three caster levels, the character can increase or decrease wind force by one level of strength. Each round, a creature in the wind must make a Fortitude save or suffer the effect.
+\par Strong winds (21+ mph) make sailing difficult. A severe wind (31+ mph) causes minor ship and building damage. A windstorm (51+ mph) drives most flying creatures from the skies, uproots small trees, knocks down light wooden structures, tears off roofs, and
+ endangers ships. Hurricane force winds (75+ mph) destroy wooden buildings, sometimes uproot even large trees, and cause most ships to founder. A tornado (175+ mph) destroys all nonfortified buildings and often uproots large trees.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Create Food and Water
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Creation)
+\par Level: Clr 3
+\par Components: V, S
+\par Casting Time: 10 minutes
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Effect: Food and water to sustain three humans or one horse/level for 1 day
+\par Duration: 24 hours (see text)
+\par Saving Throw: None
+\par Spell Resistance: No
+\par The food that this spell creates is simple fare of the character's choice. The food decays and becomes inedible within 24 hours, although it can be kept fresh for another 24 hours by casting a purify food and water spell on it. The water created by th
+is spell is just like clean rain water. The water doesn\rquote t go bad as the food does.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Create Greater Undead
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy [Evil]
+\par Level: Clr 8, Death 8
+\par Components: V, S, M
+\par Casting Time: 1 hour
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Target: One corpse
+\par Duration: Instantaneous
+\par Saving Throw: None
+\par Spell Resistance: No
+\par This spell allows the character to create powerful and intelligent sorts of undead. The type of undead created is based on the character's level. The following types of undead can be created by casters of the specified levels:
+\par Cleric Level \tab Undead Created
+\par ------------ \tab --------------
+\par 15 or lower \tab Mummy
+\par 16\endash 17 \tab \tab Spectre
+\par 18\endash 19 \tab \tab Vampire
+\par 20 \tab \tab Ghost*
+\par *Ghosts created by this spell have three ghostly powers in addition to manifestation: malevolence, horrific appearance, and corrupting gaze.
+\par Certain types of undead, such as liches, cannot be created by this spell. 
+\par The character may create less powerful undead than the character's level would indicate if the character chooses. 
+\par Created undead are not automatically under the control of their animator. The character may attempt to command the undead as it forms with a turning check.
+\par This spell must be cast at night.
+\par Material Components: The spell must be cast on a dead body and uses a material component worth 50gp per corpse.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Create Undead
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Necromancy [Evil]
+\par Level: Clr 6, Death 6, Evil 6
+\par Components: V, S, M
+\par Casting Time: 1 hour
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Target: One corpse
+\par Duration: Instantaneous
+\par Saving Throw: None
+\par Spell Resistance: No
+\par This evil spell allows the character to create powerful kinds of undead: ghasts, ghouls, shadow, wights, and wraiths. The following types of undead can be created by casters of the specified levels:
+\par Cleric Level \tab Undead Created
+\par ------------ \tab --------------
+\par 11 or lower \tab Ghoul
+\par 12\endash 13 \tab \tab Shadow
+\par 14\endash 15 \tab \tab Ghast
+\par 16\endash 19 \tab \tab Wight
+\par 20 \tab \tab Wraith
+\par The character may create less powerful undead than the character's level would indicate if the character chooses. 
+\par Created undead are not automatically under the control of their animator. The character may attempt to command the undead as it forms with a turning check.
+\par This spell must be cast at night.
+\par Material Components: The spell must be cast on a dead body and uses a material component worth 50gp per corpse.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Create Water
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Creation)
+\par Level: Clr 0, Drd 0, Pal 1
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Close (25 ft. + 5 ft./2 levels)
+\par Effect: Up to 2 gallons of water/level
+\par Duration: Instantaneous
+\par Saving Throw: None
+\par Spell Resistance: No
+\par This spell generates wholesome, drinkable water, just like clean rain water. Water can be created in an area as small as will actually contain the liquid, or in an area three times as large (possibly creating a downpour or filling many small receptacles).
+
+\par Water weighs about 8 pounds per gallon. One cubic foot of water contains roughly 8 gallons and weighs about 60 pounds.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Creeping Doom
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Summoning)
+\par Level: Animal 8, Drd 7
+\par Components: V, S
+\par Casting Time: 1 full round
+\par Range: Close (25 ft. + 5 ft./2 levels)/100 ft. (see text)
+\par Effect: 1,000 insects that fill a 10-ft.-radius spread
+\par Duration: 1 minute/level
+\par Saving Throw: None
+\par Spell Resistance: No
+\par The cha
+racter calls forth a mass of 1,000 venomous, biting and stinging spiders, scorpions, beetles, and centipedes. This carpetlike mass swarms in a square 20 feet on a side. Upon the character's command, the swarm creeps forth at 10 feet per round toward any p
+r
+ey within 100 feet, moving in the direction the character commands. Each vermin in the creeping doom effect automatically bites a creature for 1 point of damage and then dies. Each creature takes enough damage to kill it, destroying that number of vermin 
+in the process. These attacks are nonmagical attacks, so creatures with damage reduction are safe.
+\par If there aren\rquote t enough vermin to kill all the creatures in the spell\rquote s effect, damage is distributed among the survivors equally.
+\par If creeping doom travels more than 100 feet away from the character, it loses 50 of its number for each additional 10 feet it travels. Anything that would deter or destroy normal insects is effective against these insects.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Crushing Hand
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Evocation
+\par Level: Sor/Wiz 9, Strength 9
+\par Components: V, S, M, F/DF
+\par Casting Time: 1 action
+\par Range: Medium (100 ft. + 10 ft./level)
+\par Effect: 10-ft. hand
+\par Duration: 1 round/level (D)
+\par Saving Throw: None
+\par Spell Resistance: Yes
+\par Creates a Large magic hand that appears between the character and one opponent.
+\par The hand can interpose itself, push, or crush one opponent that the character selects.
+\par When interposing the floating, disembodied hand moves to remain between the character and the opponent, regardless of where the character moves or how the opponent trie
+s to get around it, providing nine-tenths cover (+10 AC) for the character against that opponent. Nothing can fool the hand-it sticks with the selected opponent in spite of darkness, invisibility, polymorphing, or any other attempt to hide or disguise him
+self. The hand does not pursue an opponent, however.
+\par When pushing, the hand pursues and pushes away the opponent that the character designates. Treat this as a bull rush with a +18 bonus on the Strength check (+12 for Strength 35, +4 for being Large, and +2
+ for charging bonus, which it always gets). The hand always moves with the opponent to push him back the full distance allowed, and it has no speed limit.  A very strong creature could not push the hand out of its way, but it could push the hand up agains
+t the character by successfully bull rushing the hand.
+\par When grappling the hand can grapple one opponent that the character selects. The hand gets one grappling attack per round. Its attack bonus to make contact is the character's level + the character's Int
+elligence, Wisdom, or Charisma modifier (for wizards, clerics, and sorcerers, respectively), +12 for the hand's Strength score (35), -1 for being Large. Its grapple check is this same figure, except with +4 for being Large instead of -1.  The hand deals 2
+d6+12 points of grapple damage (normal, not subdual).
+\par The hand is 10 feet long and about that wide with its fingers outstretched. It has as many hit points as the character when undamaged, and its AC is 20 (-1 size, +11 natural). It takes damage as a normal
+ creature, but most magical effects that don't cause damage do not affect it. The hand cannot push through a wall of force or enter an antimagic field. It suffers the full effects of a prismatic wall or prismatic sphere. The hand makes saving throws as it
+s caster. Disintegrate or a successful dispel magic destroys the hand.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cure Critical Wounds
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Healing)
+\par Level: Brd 4, Clr 4, Drd 5, Healing 4
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Touch
+\par Target: Creature touched
+\par Duration: Instantaneous
+\par Saving Throw: Will half (harmless) (see text)
+\par Spell Resistance: Yes (harmless
+\par When laying the character's hand upon a living creature, the character channels positive energy that cures 4d8 points of damage +1 point per caster level (up to +20).
+\par Since undead are powered by negative energy, this spell deals damage to them instead of curing their wounds. An undead creature can attempt a Will save to take half damage.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cure Light Wounds
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Healing)
+\par Level: Brd 1, Clr 1, Drd 1, Healing 1, Pal 1, Rgr 2
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Touch
+\par Target: Creature touched
+\par Duration: Instantaneous
+\par Saving Throw: Will half (harmless) (see text)
+\par Spell Resistance: Yes (harmless)
+\par When laying the character's hand upon a living creature, the character channels positive energy that cures 1d8 points of damage +1 point per caster level (up to +5).
+\par Since undead are powered by negative energy, this spell deals damage to them instead of curing their wounds. An undead creature can attempt a Will save to take half damage.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cure Minor Wounds
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Healing)
+\par Level: Clr 0, Drd 0
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Touch
+\par Target: Creature touched
+\par Duration: Instantaneous
+\par Saving Throw: Will half (harmless) (see text)
+\par Spell Resistance: Yes (harmless
+\par When laying the character's hand upon a living creature, the character channels positive energy that cures 1 point of damage.
+\par Since undead are powered by negative energy, this spell deals damage to them instead of curing their wounds. An undead creature can attempt a Will save to take half damage.
+\par 
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cure Moderate Wounds
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Healing)
+\par Level: Brd 2, Clr 2, Drd 3, Healing 2, Pal 3, Rgr 3
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Touch
+\par Target: Creature touched
+\par Duration: Instantaneous
+\par Saving Throw: Will half (harmless) (see text)
+\par Spell Resistance: Yes (harmless
+\par When laying the character's hand upon a living creature, the character channels positive energy that cures 2d8 points of damage +1 point per caster level (up to +10).
+\par Since undead are powered by negative energy, this spell deals damage to them instead of curing their wounds. An undead creature can attempt a Will save to take half damage.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Cure Serious Wounds
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Conjuration (Healing)
+\par Level: Brd 3, Clr 3, Drd 4, Pal 4, Rgr 4, Healing 3
+\par Components: V, S
+\par Casting Time: 1 action
+\par Range: Touch
+\par Target: Creature touched
+\par Duration: Instantaneous
+\par Saving Throw: Will half (harmless) (see text)
+\par Spell Resistance: Yes (harmless
+\par When laying the character's hand upon a living creature, the character channels positive energy that cures 3d8 points of damage +1 point per caster level (up to +15).
+\par Since undead are powered by negative energy, this spell deals damage to them instead of curing their wounds. An undead creature can attempt a Will save to take half damage.
+\par 
+\par }\pard\plain \s1\ql \li0\ri0\keepn\widctlpar\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \i\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Curse Water
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {Transmutation [Evil]
+\par Level: Clr 1
+\par Components: V, S, M
+\par Casting Time: 1 minute
+\par Range: Touch
+\par Target: Flask of water touched
+\par Duration: Instantaneous
+\par Saving Throw: Will negates (object)
+\par Spell Resistance: Yes (object)
+\par This transmutation imbues a flask (1 pint) of water with negative energy, turning it into unholy water. Unholy water damages good outsiders the way holy water damages undead.
+\par Material Component: Worth 25 gp.
+\par }}

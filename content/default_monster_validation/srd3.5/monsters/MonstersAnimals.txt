@@ -1,0 +1,76 @@
+MonstersAnimals
+
+Ape: Valid
+
+Baboon: Valid
+Badger: Valid
+Bat: Valid
+Bear (Black): Valid
+Bear (Brown): Valid
+Bear (Polar): Valid
+Bison: Valid
+Boar: Valid
+
+Camel: Valid
+Cat: Valid
+Cheetah: Valid
+Crocodile: Unspent Skill Points: 1
+Crocodile (Giant): Unspent Skill Points: 1
+
+Dog: Jump listed at +7, should be +9
+Dog (Riding): Jump listed at +8, should be +10
+Donkey: Valid
+
+Eagle: Valid
+Elephant: Listen listed at +12, should be +13
+
+Hawk: Valid
+Horse (Heavy): Valid
+Horse (Light): Valid
+Horse (Warhorse Heavy): Valid
+Horse (Warhorse Light): Valid
+Hyena: Valid
+
+Leopard: Jump listed at +11, should be +15
+Lion: Valid
+Lizard: Climb listed at +12, should be +10
+Lizard (Monitor): Valid
+
+Manta Ray: Valid
+Monkey: Valid
+Mule: Not enough skill points by -2
+
+Octopus: Grapple listed at +2, I've got -2
+Octopus (Giant): Valid
+Owl: Not enough skill points by -4
+
+Pony: Not enough skill points (-5)
+Pony (War): Not enough skill points (-5)
+Porpoise: Valid
+
+Rat: Not enough skill points (-2)
+Raven: Valid
+Rhinoceros: Valid
+
+Shark (Medium): Valid
+Shark (Large): Unspent Skill Points: 1
+Shark (Huge): Will listed at +4, should be +6
+Snake (Constrictor): Valid
+Snake (Constrictor/Giant): Valid
+Snake (Viper/Tiny): Unspent Skill Points: 2
+Snake (Viper/Small): Valid
+Snake (Viper/Medium): Valid
+Snake (Viper/Large): Valid
+Snake (Viper/Huge): Valid
+Squid: Valid
+Squid (Giant): Valid
+
+Tiger
+Toad: Valid
+
+Weasel: Not enough skill points (-1)
+Whale (Baleen): Valid
+Whale (Cachalot): Unspent Skill Points: 2
+Whale (Orca): Valid
+Wolf: Valid
+Wolverine: Valid

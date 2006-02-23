@@ -1,0 +1,32 @@
+<?php
+
+require_once('include/header.php.inc');
+
+?>
+
+    <div id="content" class="content">
+
+        <h1>Support: Discussion Forums</h1>
+
+        <p>For complex issues which may need extended discussion in order to resolve them, it is best to use one of the project's <a href="https://sourceforge.net/forum/?group_id=25576" title="You must log into SourceForge in order to participate in the support forums.">discussion forums</a>. This creates a lasting record of the discussion, and makes it easy for people who encounter the same issue later to find a solution without re-starting the whole discussion from the beginning.</p>
+
+        <ul>
+            <li><a href="https://sourceforge.net/forum/forum.php?forum_id=80537">Developers</a> - Discussion of development and coding issues (developers only)</li>
+            <li><a href="https://sourceforge.net/forum/forum.php?forum_id=80536">Help</a> - Hints and tips for PCGen users</li>
+            <li><a href="https://sourceforge.net/forum/forum.php?forum_id=80535">Open Discussion</a> - General discussion</li>
+            <li><a href="https://sourceforge.net/forum/forum.php?forum_id=124661">Projects</a> - For discussion of specific projects</li>
+        </ul>
+
+        <p>It is important to post your comments to the appropriate forum. For example, an issue pertaining to code reuse should be posted to the Developers forum, not to the Help or Open Discussion forums.</p>
+
+        <h2>Monitoring A Discussion Forum</h2>
+
+        <p>If you would like to be notified when a forum has new messages posted to it, enter the forum and click the &quot;Monitor This Forum&quot; link above the forum topic listings. If you want to stop monitoring a forum, click the &quot;Stop Monitoring This Forum&quot; link. You may view a list of all forums you are currently monitoring by clicking the &quot;my sf.net&quot; button at the top of the SourceForge page.</p>
+
+    </div> <!-- div content -->
+
+<?php
+
+require_once('include/footer.php.inc');
+
+?>

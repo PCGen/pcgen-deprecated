@@ -1,0 +1,231 @@
+/* Printer Friendly Style */
+
+/* main tags */
+
+body
+{
+    font-family: "Trebuchet MS", Trebuchet, "Lucida Sans", Verdana, Arial, Helvetica, Helvet, sans-serif;
+    background-color: rgb(255,255,255);
+    color: (0,0,0);
+}
+
+a,a:visited,a:active
+{
+    background-color: inherit;
+    color: rgb(0,0,51);
+    font-weight: bold;
+    border-bottom: 1px solid rgb(0,0,51);
+    text-decoration: none;
+}
+
+a:hover
+{
+    background-color: inherit;
+    color: rgb(51,51,102);
+    border-bottom: 1px solid rgb(51,51,102);
+    text-decoration: none;
+}
+
+/* pagehead :: the top section of the page, including the image banner */
+
+#pagehead
+{
+    font-family: "Trebuchet MS", Trebuchet, "Lucida Sans", Verdana, Arial, Helvetica, Helvet, sans-serif;
+    background-color: rgb(255,255,255);
+    color: inherit;
+}
+
+#pagehead h1
+{
+}
+
+#pagehead p
+{
+}
+
+/* pagemenu :: a simple single line menubar   */
+
+#pagemenu
+{
+    text-align: left;
+}
+
+#pagemenu ul
+{
+    margin: 0px 10px;
+}
+
+#pagemenu ul li
+{
+}
+
+#pagemenu a
+{
+    font-family: Arial, Helvetica, Helvet, Geneva, "Lucida Sans", sans-serif;
+    background-color: inherit;
+    color: rgb(0,0,0);
+    text-decoration: underline;
+}
+
+#pagemenu a:hover
+{
+    background-color: rgb(255,255,255);
+    color: rgb(0,0,0);
+}
+
+#pagemenu a:active
+{
+    background-color: rgb(255,255,255);
+    color: rgb(0,0,0);
+}
+
+/* pagebody :: main content area of the page */
+
+#pagebody
+{
+    font-family: "Trebuchet MS", Trebuchet, "Lucida Sans", Verdana, Arial, Helvetica, Helvet, sans-serif;
+    margin-right: 1em;
+}
+
+#pagebody h1
+{
+}
+
+#pagebody h2
+{
+    border-bottom: 1px solid rgb(0,0,0);
+}
+
+#pagebody h2 a
+{
+}
+
+#pagebody h3
+{
+    border-bottom: 1px dotted rgb(153,153,153);
+}
+
+#pagebody h3 a
+{
+}
+
+#pagebody p
+{
+}
+
+#pagebody li
+{
+}
+
+#pagebody .published
+{
+    border: 2px solid rgb(0,0,0);
+    background-color: rgb(0,0,0);
+    color: rgb(255,255,255);
+}
+
+.newslink a, .newslink a:visited, .newslink a:active
+{
+    font-weight: bold;
+    background-color: inherit;
+    color: rgb(0,0,51);
+    border-bottom: 1px solid rgb(0,0,51);
+}
+
+.newslink a:hover
+{
+    background-color: inherit;
+    color: rgb(51,51,102);
+    border-bottom: 1px solid rgb(51,51,102);
+}
+
+/* pagebar :: bar on right side of page */
+
+#pagebar
+{
+    position: static;
+    font-family: "Trebuchet MS", Trebuchet, "Lucida Sans", Arial, Verdana, Geneva, Helvetica, Helvet, sans-serif;
+    right: 0px;
+    top: 0px;
+    width: auto;
+    margin-top: 45px;
+    margin-left: 18px;
+    margin-right: 45px;
+}
+
+#pagebar h1
+{
+    border-top: 1px dotted rgb(153,153,153);
+}
+
+#pagebar h2
+{
+    border-top: 1px dotted rgb(153,153,153);
+}
+
+#pagebar img
+{
+    border: none;
+}
+
+#pagebar p
+{
+}
+
+#pagebar a
+{
+    background-color: inherit;
+    color: rgb(51,51,51);
+    text-decoration: underline;
+}
+
+/* tabs */
+
+div.tabs
+{
+}
+
+.content
+{
+    background-color: rgb(255,255,255);
+    color: inherit;
+    border: 1px solid rgb(102,102,102);
+    padding: 1em;
+}
+
+.tab
+{
+    background-color: rgb(255,255,255);
+    color: rgb(51,51,51);
+    border: 1px solid rgb(51,51,51);
+}
+
+.tabHover
+{
+    background-color: rgb(0,0,0);
+    color: rgb(255,255,255);
+}
+
+.tabActive
+{
+    background-color: rgb(255,255,255);
+    color: rgb(0,0,0);
+}
+
+div.tabsClone .tab, div.tabsClone .tabActive
+{
+}
+
+div.tabsClone .tabActive
+{
+}
+
+a.removeTab
+{
+}
+
+/* assorted  */
+
+#clear
+{
+}

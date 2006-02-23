@@ -1,0 +1,33 @@
+MonstersIntro-A
+
+Aboleth: Swim listed at +8, should be +16 - most creatures with a swim speed include the +8 swim to avoid hazards in the entry listing
+ > Aboleth Mage: 
+ 	- There is only 1 wizard bonus feat in the list, there should be two which means one of the others should be removed
+ 	- Fort listed at +15, should be +14. Will listed at +15, should be +16
+ 	- Not enough skill points and some ranks are higher than the max rank for cross class skills to allow
+Achaierai: Valid
+Allip: Valid
+Angel (Astral Deva): Valid
+Angel (Planetar): Valid
+Angel (Solar): Knowledge skills listed at +33, should be +31
+Animated Object (Tiny): Valid
+Animated Object (Small): Valid
+Animated Object (Medium): Valid
+Animated Object (Large): Valid
+Animated Object (Huge): Valid
+Animated Object (Gargantuan): Valid
+Animated Object (Colossal): Valid
+Ankheg: Valid
+Aranea: Valid
+Archon (Hound): Valid
+ > Hound Archon Hero: Valid
+Archon (Lantern): Valid
+Archon (Trumpet): Valid
+Arrowhawk (Adult): Valid
+Arrowhawk (Elder): Valid
+Arrowhawk (Juvenile): Valid
+Assassin Vine: The stat block lists Low-light vision which contradicts later text which says the Vine has no visiual sense organs
+Athach: Climb and Jump totals do not account for the -3 penalty from the Hide Armor, Bite attack total does not take Multiweapon Fighting into account
+Avoral: Valid
+Azer: Valid
+

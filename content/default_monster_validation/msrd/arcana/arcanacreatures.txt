@@ -1,0 +1,165 @@
+General: "DATA: Feat Pool off" will appear on some entries. These are usually creatures that have multiples of 4 hit dice or get an INT bonus to the feat pool. In modern monsters gain their feats at a rate of 1 per 4 HD after the first, meaning at 5th, 9th, etc. I do have a tracker for that. -- Frank
+
+Ash Wraith: valid
+
+Big Cat: valid
+
+Boar: valid
+
+Breathsnatcher: valid
+
+Gotthammer (Avenging Angel): valid
+
+Demonic Auto: valid. (has 10 skill points left)
+
+Advanced Demonic Auto (Semi Truck): valid. (has 7 skill points left)
+
+Donkey: valid
+
+Dragon (Wyrmling): used 56 skill points - allowed 48 skill points (first HD doesn't get any skill points)
+
+Very Young Dragon: valid (has 8 skill points left)
+
+Young Dragon: valid (has 35 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that.
+
+Juvenile Dragon: valid. (has 67 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pops up twice.
+
+Young Adult Dragon: valid. (has 87 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pop up twice.
+
+Adult Dragon: valid. (has 127 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pop up twice.
+
+Mature Adult Dragon: valid. (has 149 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pop up twice.
+
+Old Dragon: valid. (has 198 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pop up twice.
+
+Very Old Dragon: valid. (has 253 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pop up twice.
+
+Ancient Dragon:  valid. (has 308 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pop up twice.
+
+Dragon King/Queen:  valid. (has 372 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pop up twice.
+
+Dragon Emperor/Empress:  valid. (has 442 skill points left) DATA: Spell Casting ability missing, Tir has a tracker for that. Feat Pool off. PROBLEM:Hidden Feat chooser pop up twice.
+
+Drow: valid
+
+Dryad: used 60 skill points - allowed 48 skill points, Knowledge (Earth and Life sciences) exceeds max skill rank, has 1 feat left to choose DATA: Feat Pool off
+
+Dwarf: used 9 skill points - allowed 6 skill points, feat Educated (Mechanical, Structural) should be Builder (Craft (Mechanical), Craft (Structural))
+
+Eagle: Skills Listen and Spot exceed max. Skill Rank
+
+Efreeti: valid. DATA: Feat Pool off
+
+Elephant: valid
+
+Advanced Elephant (Mastadon): valid
+
+Elf: valid
+
+Gear Golem (any): valid
+
+Gnome: valid. (has 1 skill point left)
+
+Gremlin: Skills Disble Device and Move Silently exceed max. skill rank
+
+Grendelspawn Hunter: valid
+
+Grendelspawn Queen: used 38 skill points - allowed 35 skill points
+
+Halfling: valid
+
+Biochemical Homunculus: valid
+
+Digitial Homunculus: valid
+
+Flesh Homunculus: valid
+
+Mechanical Homunculus: used 12 skill points - allowed 10 skill points
+
+Leechwalker: valid
+
+Living Dumpster (any): valid
+
+Lizard: valid
+
+Giant Lizard: valid
+
+Octopus (any): valid
+
+Orc: valid 
+
+Otyugh: valid
+
+Advanced Otyugh: Tentacle Rake attack bonus is 14, should be 15 (BAB +9, STR +8, SIZE -2), secondary Bite attack should be +10 instead of +9 accordingly DATA: Feat Pool off
+
+Sraosha (Platonic of Contract Enforcement): valid. (has 13 skill points left)
+
+Porpoise: valid
+
+Dire Rat: valid
+
+Advanced Dire Rat: used 16 skill points - allowed 10-15 skill points
+
+Retriever (any): valid
+
+Roach Thrall: has 5 feats - allowed 2(INT modifier) +0(HD). One weapon proficiency is a bonus feat, that leaves 2 feats too many.
+
+Dreamghast (Sidhe): valid. DATA: Feat Pool off
+
+Faun (Sidhe): Skill Disguise should be +10 instead of +12. DATA: Feat Pool off
+
+Skunk Ape: valid
+
+Animating Spirit (Poltergeist): Intimidate skill exceeds max. Skill Rank
+
+Frightful Spirit (Apparition): valid
+
+Groaning Spirit (Banshee): valid
+
+Possessing Spirit (Haunt): valid
+
+Weakening Spirit (Fetch): valid. DATA: Feat Pool off
+
+Squid: Skills Listen and Spot exceed max. skill rank. Maybe Alertness should be applied?
+
+Giant Squid: valid
+
+Monstrous Spider Swarm: valid
+
+Piranha Swarm: valid
+
+Sentient Killer Bee Swarm: valid. (has 3 skill points left)
+
+Shadowmoth Swarm: valid
+
+Skeletal Rat Swarm: valid
+
+West Nile Mosquito Swarm: Skills Listen and Spot exceed max. Skill Rank
+
+Chemical Toxyderm: valid. DATA: Feat Pool off
+
+Advanced Chemical Toxyderm:  valid. (has 4 skill points left) DATA: Feat Pool off
+
+Garbage Toxyderm: valid
+
+Advanced Garbage Toxyderm: Slam attack bonus is +41, should be +40 (BAB +31, STR +13, SIZE -4)
+
+Nuclear Toxyderm: valid
+
+Advanced Nuclear Toxyderm: valid
+
+Urban Wendigo: used 13 skill points - allowed 12 skill points
+
+Vivilor (1st): valid
+
+Vivilor (2nd): used 16 skill points - allowed 12 skill points
+
+Vivilor (3rd): used 22 skill points - allowed 18 skill points
+
+Vivilor (4th): used 34 skill points - allowed 30 skill points, Skills Listen and Spot exceed max. Skill Rank
+
+Vivilor (5th): used 46 skill points - allowed 42 skill points, Skills Climb, Jump, Listen and Spot exceed max. Skill Rank
+
+Vrock: Skill Concentration is +14, should be +11. DATA:Feat Pool off
+
+Vrock Lord: valid. (has 3 Skill points left) DATA: Feat Pool off

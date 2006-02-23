@@ -1,0 +1,21 @@
+MonstersDi-Do
+
+Digester
+Dinosaur (Deinonychus)
+Dinosaur (Elasmosaurus)
+Dinosaur (Megaraptor)
+Dinosaur (Triceratops)
+Dinosaur (Tyrannosaurus)
+Dire Animal (Dire Ape)
+Dire Animal (Dire Badger)
+Dire Animal (Dire Bat)
+Dire Animal (Dire Bear)
+Dire Animal (Dire Boar)
+Dire Animal (Dire Lion)
+Dire Animal (Dire Rat)
+Dire Animal (Dire Shark)
+Dire Animal (Dire Tiger)
+Dire Animal (Dire Weasel)
+Dire Animal (Dire Wolf)
+Dire Animal (Dire Wolverine)
+Doppelganger

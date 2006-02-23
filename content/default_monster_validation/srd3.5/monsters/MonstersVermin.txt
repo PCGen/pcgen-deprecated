@@ -1,0 +1,34 @@
+Monsters - Vermin
+
+Giant Ant (Worker): Valid
+Giant Ant (Soldier): Valid
+Giant Ant (Queen): Valid
+Giant Bee: Valid
+Giant Bombardier Beetle: Valid
+Giant Fire Beetle: Valid
+Giant Stag Beetle: Valid
+Giant Praying Mantis: Valid
+
+Monstrous Centipede (Tiny): Valid
+Monstrous Centipede (Small): Valid
+Monstrous Centipede (Medium): Valid
+Monstrous Centipede (Large): Valid
+Monstrous Centipede (Huge): Valid
+Monstrous Centipede (Gargantuan): Valid
+Monstrous Centipede (Colossal): Entry lists AC: 20 (+2 Dex), with a Dex at 13 this should be AC: 19 (+1 Dex)
+
+Monstrous Scorpion (Tiny): Valid
+Monstrous Scorpion (Small): Valid
+Monstrous Scorpion (Medium): Valid
+Monstrous Scorpion (Large): Valid
+Monstrous Scorpion (Huge): Valid
+Monstrous Scorpion (Gargantuan): Valid
+Monstrous Scorpion (Colossal): Text lists Hide at -12, should be -13, probably left off the -1 dex modifier
+
+Monstrous Spider (Tiny): Listed Jump is not calculated correctly
+Monstrous Spider (Small): Listed Jump is not calculated correctly
+Monstrous Spider (Medium): Valid
+Monstrous Spider (Large): Valid
+Monstrous Spider (Huge): Bite +9 should be Bite +8
+Monstrous Spider (Gargantuan): Climb +14 should be Climb +15
+Monstrous Spider (Colossal): Climb +16 should be Climb +18, Spot +7 should be Spot +4

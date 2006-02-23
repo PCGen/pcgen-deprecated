@@ -1,0 +1,40 @@
+MonstersS
+
+Sahuagin: Valid
+Salamander (Average):Unspent Feat Points: 1, Unspent Skill Points: 60, Craft (Blacksmithing) listed at +19, should be +18 (+12[RANK] +2[STAT] +4[Racial])
+Salamander (Flamebrother): Unspent Skill Points: 42
+Salamander (Noble): Unspent Skill Points: 114, longspear damage should be 2d6 because it is Large.
+Satyr: Valid
+Sea Cat: Valid
+Shadow: Valid
+ >Greater Shadow: Valid
+Shadow Mastiff: Valid
+Shambling Mound: Valid
+Shield Guardian: Valid
+Shocker Lizard: Swim listed at +10, should be +8 (or there are not enough skill points to add 2 ranks to swim)
+Skeleton (Human Warrior): Valid
+Skeleton (Wolf): Valid
+Skeleton (Owlbear): Valid
+Skeleton (Troll): Valid
+Skeleton (Chimera): Valid
+Skeleton (Ettin): Valid
+Skeleton (Advanced Megaraptor): Valid
+Skeleton (Cloud Giant): Valid
+Skeleton (Young Adult Red Dragon): Will listed at +8, should be +11
+Skum: Not enough skill points for the listed skills (need 10 more)
+Spectre: Valid
+Sphinx (Androsphinx): Not enough feat points for the listed feats
+Sphinx (Criosphinx): Unspent Skill Points: 9
+Sphinx (Gynosphinx): Unspent Skill Points: 4, Listen and Spot are listed at 2 points higher than they can go at max ranks
+Sphinx (Hieracosphinx): Valid
+Spider Eater: Valid
+Sprite (Grig): Valid
+Sprite (Nixie): Valid
+Sprite (Pixie): Valid
+Stirge: Valid
+Swarm (Bat): Valid
+Swarm (Centipede): Valid
+Swarm (Hellwasp): Valid
+Swarm (Locust): Valid
+Swarm (Rat): Valid
+Swarm (Spider): Listen listed at +4, should be 0

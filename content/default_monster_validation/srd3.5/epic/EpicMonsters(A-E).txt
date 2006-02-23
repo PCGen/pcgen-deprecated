@@ -1,0 +1,31 @@
+EpicMonsters(A-E)
+
+Abomination (Anaxim)
+Abomination (Atropal)
+Abomination (Chichimec)
+Abomination (Dream Larva)
+Abomination (Hecatoncheires)
+Abomination (Infernal)
+Abomination (Phaethon)
+Abomination (Phane)
+Abomination (Xixecal)
+
+Behemoth (Eagle)
+Behemoth (Gorilla)
+Brachyurus
+
+Colossus (Flesh)
+Colossus (Iron)
+Colossus (Stone)
+
+Demilich
+Devastation Vermin (Devastation Beetle): Jump listed at +31, should be +32
+Devastation Vermin (Devastation Centipede): Hide listed at +1, should be +5
+Devastation Vermin (Devastation Scorpion): Climb, Hide, and Spot are all 4 points higher than they should be. Were they meant to have a +8 racial bonus instead of the +4 the description gives them?
+Devastation Vermin (Devastation Spider/Web-Spinning): Spot listed at +8, should be +4
+Devastation Vermin (Devastation Spider/Hunting) Spot listed at +12, should be +8
+
+Elemental (Air Primal)
+Elemental (Earth Primal)
+Elemental (Fire Primal)
+Elemental (Water Primal)

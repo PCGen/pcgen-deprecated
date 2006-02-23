@@ -1,0 +1,30 @@
+MonstersE-F.rtf
+
+Eagle (Giant): Valid
+
+Elementals:
+Air Elemental (All sizes): valid
+Earth Elemental (All sizes): valid
+Fire Elemental, Small: valid
+Fire Elemental, Medium: valid
+Fire Elemental, Large: valid
+Fire Elemental, Huge: valid
+Greater and Elder Fire Elemental: looks like they have the wrong INT score, they should be 8 and 10 respectively (not 6) if they follow the pattern of the other three Elemental types. Without an INT of 10 the Elder does not have enough skill points  for the skills in it's entry.
+Water Elemental (All sizes): valid
+
+Ethereal Filcher: Sleight of Hand cannot be used untrained and it appears that there are no points to put ranks into it, thus it does not appear on the OS
+Ethereal Marauder: Valid
+Ettercap: Valid
+Ettin: Valid
+
+Elf: Not enough skill points for listed skills
+Elf (Drow): Valid
+
+Formian (Worker): Unspent Skill Points: 4, Climb listed at +10, should be +5
+Formian (Warrior): Unspent Skill Points: 16
+Formian (Taskmaster): Unspent Skill Points: 9
+Formian (Myrmarch)
+Formian (Queen)
+Frost Worm: Valid
+Fungus (Shrieker): Valid
+Fungus (Violet): Valid

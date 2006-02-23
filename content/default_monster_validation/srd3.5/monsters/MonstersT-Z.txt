@@ -1,0 +1,45 @@
+MonstersT-Z
+
+Tarrasque: Unspent Skill Points: 16
+Tendriculos: Reflex listed at +2, should be -1, Hide listed at +9 should be +5
+Thoqqua: Valid
+Titan: 2 skill point short of what is needed for the listed skills
+Tojanida (Adult): Unspent Skill Points: 14
+Tojanida (Elder): Unspent Skill Points: 2
+Tojanida (Juvenile): Unspent Skill Points: 12, Search and Spot are not maxed out
+Treant: Unspent Skill Points: 2
+Triton: Valid
+Troglodyte: Valid
+Troll:
+Troll Hunter: Valid
+
+Unicorn: Valid
+Celestial Charger, 7th-Level Cleric: should have the Extraplanar subtype, Unspent Skill Points: 2
+
+Vampire Spawn: Not enough skill points for the 4 ranks of Craft or Profession
+Vargouille: Valid
+
+Wight: Unspent Skill Points: 6
+Will o Wisp: Valid
+Winter Wolf: Valid
+Worg: Unspent Skill Points: 2
+Wraith: Valid
+Wraith (Dread): Valid
+Wyvern: Valid
+
+Xill: Unspent Skill Points: 1
+Xorn (Minor): Unspent Skill Points: 6, If the existing skills are maxed out and the +4 racial bonus on Spot and Search from All Around Vision is included I get: Hide +10; Intimidate +6; Knowledge (Dungeoneering) +6; Listen +6; Move Silently +6; Search +10; Spot +10; Survival +6
+Xorn (Average): Unspent Skill Points: 8, Skills probably do not include the +4 racial bonus on Spot and Search from All Around Vision,
+Xorn (Elder): Valid
+
+Yeth Hound: Has 12 unspent skill points which would take it up to the skill levels listed... if it were not for the pesky max rank 6
+Yrthak: Valid
+
+Zombie (Kobold): Valid
+Zombie (Human Commoner): Valid
+Zombie (Troglodyte): Valid
+Zombie (Bugbear): Valid
+Zombie (Ogre) Valid
+Zombie (Minotaur) Valid
+Zombie (Wyvern): AC lists +2 for size, a Large creature should only have a -1 size penalty
+Zombie (Gray Render): Valid

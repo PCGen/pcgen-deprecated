@@ -1,0 +1,366 @@
+/* Default style */
+
+/* MAIN TAGS */
+
+body
+{
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+.ahem
+{
+  display: none;
+}
+
+abbr, acronym
+{
+    cursor: help;
+    font-weight: bold;
+}
+
+/* PAGEHEAD :: The top section of the page, including the image banner */
+
+#pagehead
+{
+    height: 56px;
+    padding: 5px 0px 5px 15px;
+    white-space: nowrap;
+}
+
+#pagehead h1
+{
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+
+#pagehead p
+{
+    font-size: 12px;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+/* PAGEMENU :: A simple single line menubar   */
+
+#pagemenu
+{
+    height: 23px;
+    text-align: center;
+    white-space : nowrap;
+}
+
+#pagemenu ul
+{
+    list-style: none;
+    padding: 0;
+    margin: 0px 235px 0px 10px;
+}
+
+#pagemenu ul li
+{
+    display: inline;
+    margin: 0px 0px 0px 0px;
+    vertical-align: middle;
+}
+
+#pagemenu a
+{
+    font-size: 12px;
+    border-bottom-width: 0px;
+    text-decoration: none;
+    padding: 4px 5px 6px 5px;
+}
+
+/* PAGEBODY :: Main Content Area of the Page */
+
+#pagebody
+{
+    margin-left: 15px;
+    margin-right: 219px;
+    voice-family: "\"}\"";
+    voice-family: inherit;
+    margin-right: 221px;
+}
+    html>body #centercontent
+{
+    margin-right: 221px;
+}
+
+#pagebody h1
+{
+    margin-top: 0px;
+    font-size: 130%;
+}
+
+#pagebody h2
+{
+    font-size: 116%;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#pagebody h2 a
+{
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+    border: 0px;
+}
+
+#pagebody h3
+{
+    font-size: 104%;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-left: 0px;
+}
+
+#pagebody h3 a
+{
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+    border: 0px;
+}
+
+#pagebody h4
+{
+    font-size: 100%;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#pagebody h5
+{
+    font-size: 96%;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#pagebody h6
+{
+    font-size: 92%;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#pagebody p
+{
+    font-size: 100%;
+    margin-top: 0px;
+    margin-bottom: 6px;
+    padding-top: 6px;
+    padding-left: 0px;
+    padding-bottom: 6px;
+    line-height: 150%;
+}
+
+#pagebody li
+{
+    font-size: 100%;
+    margin-top: 0px;
+    padding-top: 2px;
+    padding-left: 10px;
+    padding-bottom: 0px;
+    line-height: 150%;
+}
+
+#pagebody .published
+{
+    float: right;
+    font-size: 85%;
+    margin-left: 5px;
+    padding: 1px 5px 1px 5px;
+    -moz-border-radius: 0px 0px 4px 4px;
+}
+
+.newslink a, .newslink a:visited, .newslink a:active
+{
+    font-weight: bold;
+    font-style: normal;
+    border-bottom-width: 0px;
+    text-decoration: none;
+}
+
+.newslink a:hover
+{
+    border-bottom-width: 1px;
+    text-decoration: none;
+}
+
+/* PAGEBAR :: Bar on Right Side of Page */
+
+#pagebar
+{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 200px;
+    font-size: 90%;
+}
+
+#pagebar h1
+{
+    font-size: 116%;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#pagebar h2
+{
+    font-size: 112%;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#pagebar h3
+{
+    font-size: 108%;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 2px;
+}
+
+#pagebar h4
+{
+    font-size: 104%;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 2px;
+}
+
+#pagebar h5
+{
+    font-size: 100%;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#pagebar h6
+{
+    font-size: 96%;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#pagebar img
+{
+    float: right;
+    margin: 2px 8px 8px 0px;
+    padding: 0px;
+}
+
+#pagebar p
+{
+    font-size: 85%;
+    margin-top: 0px;
+    margin-bottom: 6px;
+}
+
+#pagebar a
+{
+    border-bottom-width: 0;
+    text-decoration: none;
+}
+
+/* TABS */
+
+div.tabs
+{
+    position: absolute;
+    top: 100px;
+    white-space: nowrap;
+    font-family: "Lucida Sans", Arial, Verdana, Geneva, "Trebuchet MS", Trebuchet, Helvetica, Helvet, sans-serif;
+    font-size: 12px;
+    line-height: 23px;
+    font-weight: normal;
+    cursor: default !important;
+    font-weight: 700 !important;
+    z-index: 100;
+}
+
+.content
+{
+    position: relative;
+    top: 30px;
+    width: 96%;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    -moz-border-radius: 0px 4px 4px 4px;
+    z-index: 80;
+}
+
+.tab
+{
+    background-color: rgb(204,204,204);
+    color: rgb(51,51,51);
+    border: 1px solid rgb(102,102,102);
+    border-bottom-width: 0 !important;
+    -moz-border-radius: 4px 4px 0px 0px;
+    padding: 2px 5px 1px 5px;
+    z-index: 100;
+}
+
+.tabHover
+{
+    background-color: rgb(102,102,102);
+    color: rgb(255,255,255);
+    border: 1px solid rgb(102,102,102);
+    border-top: 2px solid rgb(102,102,102);
+    border-bottom-width: 0 !important;
+    z-index: 90;
+}
+
+.tabActive
+{
+    background-color: rgb(255,255,255);
+    color: rgb(102,102,102);
+    padding: 3px 5px 2px 5px;
+    border-bottom-width: 0 !important;
+    z-index: 100;
+}
+
+div.tabsClone .tab, div.tabsClone .tabActive
+{
+    border-top-width: 0 !important;
+    border-bottom-width: 1px !important;
+}
+
+div.tabsClone .tabActive
+{
+    top: -2px;
+}
+
+a.removeTab
+{
+    font-size: smaller;
+    text-decoration: none;
+}
+
+/* ASSORTED  */
+
+#clear
+{
+    clear:both;
+}

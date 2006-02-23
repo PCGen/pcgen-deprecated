@@ -1,0 +1,95 @@
+General: "DATA: Feat Pool off" will appear on some entries. These are usually creatures that have multiples of 4 hit dice. In modern monsters gain their feats at a rate of 1 per 4 HD after the first, meaning at 5th, 9th, etc. I do have a tracker for that. -- Frank
+
+Ape: valid
+
+Bat: valid (PCGen shows "Gear needs to be equipped" because it has no natural attacks)
+
+Bear: Climb skill is way too high. Could be that the Bear was designed with a Climb movement that would grant a +8 bonus, which was later dropped (or is missing in the stats).
+
+Bugbear: valid (has 3 skill points left)
+
+Cat: Jump skill is way too high. Maybe Jump should get bonus from DEX instead of STR as Climb does?
+
+Crocodile (any): valid
+
+Deinonychus: used 26 skill points - allowed 10-15 skill points, thats 11 points too many. Could be that SIZE L wasn't figured into Hide skill (4 points)
+
+Dog (any): valid
+
+Ferret: valid
+
+Festergog (Vomit Fiend): valid
+
+Rotlord (Carrion Fiend): Bite attack damage Bonus is STR*1.5, where the bite is a secondary attack, but if that really is meant by design, then this is a DATA: issue
+
+Skinhusker (Bladefiend): Armband attack is 1 too high. Could be that SIZE L was not calculated in.
+
+Flesh Golem (any): valid
+
+Gargoyle: valid
+
+Gnoll: valid
+
+Goblin: Move Silently skill should be +4 but is already at +5 without any skillranks. Could be that the species bonus was not calculated in. Alertness is a bonus feat, so the Goblin doesn't have the 1 feat it is allowed. This should probably be Personal Firearms Proficiency, as the default entry makes use of the Colt Python.
+
+Hawk: valid. (has 2-7 skill points left. Could be that the WIS bonus is not calculated rightly into Spot and Listen, as these are the only skills the hawk has.)
+
+Herd Animal: valid
+
+Horse: valid
+
+Invisible Stalker: valid. (has 2 skill points left)
+
+Advanced Invisible Stalker: valid. (has 1 skill point left)
+
+Kobold: Alertness is a bonus feat, so the Kobold doesn't have the 1 feat it is allowed. This should probably be Personal Firearms Proficiency, as the default entry makes use of the Pathfinder revolver.
+
+Medusa: valid
+
+Minotaur: valid
+
+Monkey: used 25 skill points - allowed 10-15 skill points. Should Balance get a +8 species bonus and Climb use DEX instead of STR as cats do?
+
+Monstrous Flytrap: Bite attack TOHIT is 16, should be 15 (3/4 of 11 hit dice is 8.25, STR bonus +9, SIZE penalty -2 = 15.25, rounded down to 15)
+
+Advanced Monstrous Flytrap: valid
+
+Monstrous Spider (any): valid. (PROBLEM:PCGen shows template choose selection window twice)
+
+Mummy: valid
+
+Ogre: valid. (has 3 skill points left) DATA:Feat Pool off
+
+Owl: valid
+
+Puppeteer: valid. (has 2 skill points left)
+
+Rat: valid
+
+Raven: valid (has 2 skill points left)
+
+Robot (Diminutive, Tiny): valid. (PROBLEMS:PCGen shows "Gear needs to be equipped" because it has no natural attacks, PCGen shows template choose selection window twice)
+
+Shark: valid
+
+Constrictor Snake: valid
+
+Tiny Viper: valid
+
+Terrestrial Effluvium: Slam attack TOHIT is +37 should be +33 (3/4 of 33 HD is a BAB of +24, STR +17, SIZE -8 =33), Slam attack damge bonus is +19. STR 44 should be +17.
+
+Tiger: valid
+
+Toad: valid. (has 1 skill point left, PCGen shows "Gear needs to be equipped" because it has no natural attacks)
+
+Tooth Fairy: valid
+
+Troglodyte: valid
+
+Troll: valid (has 4 skill points left)
+
+Wolf: Bite attack TOHIT is +3 should be +2 (3/4 of 2 HD is a BAB of +1, STR +1 =2)
+
+Wyrm (Hatchling): valid. DATA:Feat Pool off
+
+Wyrm (Adult): valid. (has 1 skill point left). DATA:Feat Pool off

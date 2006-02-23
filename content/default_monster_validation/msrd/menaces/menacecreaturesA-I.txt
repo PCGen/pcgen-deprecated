@@ -1,0 +1,75 @@
+General: "DATA: Feat Pool off" will appear on some entries. These are usually creatures that have multiples of 4 hit dice or get an INT bonus to the Feat Pool. In modern monsters gain their feats at a rate of 1 per 4 HD after the first, meaning at 5th, 9th, etc. I do have a tracker for that. -- Frank
+
+Acid Rainer: valid. DATA: Feat Pool off
+
+Advanced Acid Rainer: used 51 skill points, has only 50 available.
+
+Alien Probe: valid
+
+Giant Anaconda (any): valid
+
+Animated Object (any): valid
+
+Boar (Wild Pig): valid
+
+Bodak: valid. (has 4 skill points left)
+
+Advanced Bodak: used 42 skill points, has only 40 available. DATA: Feat Pool off
+
+Cat Folk: valid. (has 6 skill points left)
+
+Charred One (any): valid
+
+Chemical Golem (any): valid
+
+Chimpanzee: valid
+
+Crawfordsville Monster (any): valid
+
+Crawling Claw: valid
+
+Demonic Machine: valid. (has 8 skill points left)
+
+Advanced Demonic Machine: Skills Bluff, Listen, Sense Motive and Spot all have 14 skill ranks. Max. Skill Rank at 8 HD is 11.
+
+Dimensional Horror (any): valid
+
+Plesiosaur: valid
+
+Pteradon: valid
+
+Tyrannosaur: valid
+
+Doom Hag: valid
+
+Dread Tree (any): valid
+
+Drop Bear: valid
+
+Elohim: valid (has 2 skill points left)
+
+Etoile: valid (has 12 skill points left)
+
+Fleshraker (Knife Fiend): valid
+
+Harriken (Headsnatcher Fiend): valid. DATA:Feat Pool off
+
+Jumping Jack (Blood Fiend): Jump skill is +8, should be +7.
+
+Kwevencha (Spider Fiend): valid. (has 4 skill points left) DATA: Feat Pool off
+
+Murdergaunt (Whistling Fiend): Hide skill exceeds max. skill rank for 9 HD creature. Armspike attack TOHIT is +8, should be +12 (BAB +9, STR +4, SIZE -1)
+
+Stygilor (Tumor Fiend): valid.
+
+Fire Wisp (any): valid. (both have 4 skill points left)
+
+Grimlock: used 23 skill points, has only 22 available.
+
+Harpy: valid. (has 7 skill points left)
+
+Hippopotamus: valid. (has 4 skill points left. Could be that +4 species bonus to swim was not figured in)
+
+Infester (any): Spot skill exceeds max. skill rank for 1 HD creature, INT is 1 but vermin do not have an intelligence score.
+
+Intellect Devourer: valid

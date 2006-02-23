@@ -1,0 +1,97 @@
+General: "DATA: Feat Pool off" will appear on some entries. These are usually creatures that have multiples of 4 hit dice or get an INT bonus to the Feat Pool. In modern monsters gain their feats at a rate of 1 per 4 HD after the first, meaning at 5th, 9th, etc. I do have a tracker for that. -- Frank
+
+Jynx: valid. (has 3 skill points left)
+
+Kinory: has too many feats. Archaic Weapon Prof, Multiattack and Simple Weapon Prof =3. One of the Weapon profs can be chosen as bonus feat, so that makes 2. Allowed is 1 + 0(INT 11, no bonus) + 0(2HD, no increase) =1. The creature also possesses no weapons that might grant a weapon prof just because a creature is considered proficient with all weapons it has in its statblock.
+
+Litter Brute: valid
+
+Advanced Litter Brute: Slam Attack bonus is +13. Should be +11 (BAB +7, STR +6, SIZE -2)
+
+Luciferan: valid. (has 13 skill points left; Personal Firearms Proficiency is not listed as a feat although the default entry possesses a Colt Python - this may be covered by "They are proficient with their natural weapons and any weapon mentioned in their entries." from the Creaturetypes.rtf)
+
+Giant Man-O-War: Hide skill is +9, should be +7.
+
+Mapinguary (any): valid. (has 2 skill points left)
+
+Megalodon: Swim skill bonus is +15, should be +18 (STR +10, +8 for haveing a swim move)
+
+Advanced Megalodon: Swim skill bonus is +20, should be +22 (STR +14, +8 for haveing a swim move)
+
+Mongolian Death Worm: Spot skill bonus is +6. It takes a skill rank of 7 to get there. That exceeds max. skill rank by 2. (As opposed to the advanced creature, the basic one does not have the Alertness feat.
+
+Advanced Mongolian Death Worm: valid
+
+Monitor Lizard: valid
+
+Montauk Monster (any): valid
+
+Mothfolk: Hide skill rank of 6 exceeds max. skill rank
+
+Neothelid: used 81 skill points, has only 80 available.
+
+Night Terror: valid
+
+Robot (Small): valid. (PCGen shows "Gear needs to be equipped" because of missing natural attacks/equipment)
+
+Robot (Medium): valid
+
+Robot (Police Assault Drone): ranged attack bonus for Mossberg shotgun is +2, should be +0 (BAB +1, DEX -1)
+
+Rod: valid
+
+Rogue Tulpa: valid. (has 2 skill points left)
+
+Advanced Rogue Tulpa: has 8 skill points left, Bite attack bonus is +6, should be +16 (Primary claw attack is +21, secondary bite should be 5 lower)
+
+Sasquatch (Weren): valid. (has 1 skill point left)
+
+Satanic Ichor (any): valid
+
+Scorpion: has 3 skill points left. Hide skill is listed as +15, but has +20 already without skill ranks. Could be that the species and size bonuses were not figured in, then it would also need 3 skill ranks (fixing that problem) and have a final score of +23.
+
+Sea Serpent (any): valid. DATA: Feat Pool off
+
+Sewer Sludge (any): valid
+
+Shark (Huge): valid
+
+Skin Feaster: valid. DATA: Feat Pool off
+
+Advanced Skin Feaster: valid. (has 8 skill points left)
+
+Snake (Cobra/Black Mamba): Bite attack bonus is +5, should be +4 (BAB +1, DEX +3), Defense is 14, should be 15 (defense split up lists size -1, when size is M)
+
+Hoop Snake: Balance and Climb should be 7, both are already 13 without ranks, Hide should be 8, is already 9, Listen and Spot	should be 4, are already 5. Could be that species bonuses were not figured in. DATA: If the spcies bonuses were not figured in, we need to apply: Balance 2 ranks, Climb 3 ranks, Hide 3 ranks, Listen 3 ranks, Spot 3 ranks in the kit and give a skill pool bonus of 4 to the race
+
+Advanced Hoop Snake: Balance should be 6, is already 12 without ranks, Hide should be 3, is already 4, Listen and Spot should be 4, are already 5. Could be that species bonuses were not figured in. DATA: If the species bonuses were not figured in, we need to apply: Balance 2 ranks, Climb 3 ranks, Hide 3 ranks, Listen 3 ranks, Sport 3 ranks in the kit and give a skill pool bonus of 4 to the race
+
+Tiny Star Doppleganger: Skill Move Silently +11 would take 10 ranks to achieve, but that would exceed max. skill ranks and the creature only has 2 skill points left.
+
+Small Star Doppleganger: Skill Move Silently +7 exceeds max. skill rank
+
+Medium-size Star Doppleganger: valid
+
+Large Star Doppleganger: valid. (has 6 skill points left) DATA: Feat Pool off
+
+Huge Star Doppleganger: valid. (has 12 skill points left) DATA: Feat Pool off
+
+Thought Eater: valid
+
+Thunderbird (Chick): valid
+
+Thunderbird (Adult): valid
+
+Toxic Sludge (any): valid
+
+Udoroot (any): valid. (PCGen shows "Gear needs to be equipped" because of missing natural attacks/equipment)
+
+Whisperer in the Dark: used 64 skill points, has only 62 available.
+
+Yeti: valid. DATA: Feat Pool off
+
+Abominable Snowman (Advanced Yeti): valid. (has 7 skill points left) DATA: Feat Pool off
+
+Zap: valid
+
+Zeikune: valid

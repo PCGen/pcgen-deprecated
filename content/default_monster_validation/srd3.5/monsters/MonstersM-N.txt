@@ -1,0 +1,33 @@
+MonstersM-N
+
+Magmin: Slam damage should be 1d3+2
+Manticore: Unspent Skill Points: 1
+Medusa: Valid
+Mephit (Air): Valid
+Mephit (Dust): Valid
+Mephit (Earth): Valid
+Mephit (Fire): Valid
+Mephit (Ice): Valid
+Mephit (Magma): Valid
+Mephit (Ooze): Valid
+Mephit (Salt): Valid
+Mephit (Steam): Valid
+Mephit (Water): Valid
+Merfolk: Valid
+Mimic: Valid
+Minotaur: Valid
+Mohrg: Initiative  listed at +9, should be +8
+Mummy: Valid
+ > Mummy Lord: AC should be 29 because the Armors MaxDex is 0, Unspent Feat Points: 1
+
+Naga (Dark): Unspent Skill Points: 12
+Naga (Guardian): Valid
+Naga (Spirit): Valid
+Naga (Water): Valid
+Night Hag: Valid
+Nightmare: Valid
+ > Nightmare, Cauchemar: Bluff and Knowledge (arcana) are not Nightmare class skills and can't be raised this high
+Nightshade (Nightcrawler): Unspent Skill Points: 12
+Nightshade (Nightwalker): Valid
+Nightshade (Nightwing): Valid
+Nymph: Valid

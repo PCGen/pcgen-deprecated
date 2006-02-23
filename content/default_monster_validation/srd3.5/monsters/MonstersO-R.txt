@@ -1,0 +1,29 @@
+MonstersO-R
+
+Ogre: Valid
+Ogre Mage: Valid
+Ooze (Black Pudding): Valid
+Ooze (Gelatinous Cube): Valid
+Ooze (Gray): Valid
+Ooze (Ochre Jelly): Valid
+Orc: Valid
+Otyugh: Valid
+Owl (Giant): Valid
+Owlbear: Not enough skill point for listed skills
+
+Pegasus: Unspent Skill Points: 1, Sense Motive listed at +9 but can only go to +8 because of max ranks
+Phantom Fungus: Valid
+Phase Spider: Not enough skill point for listed skills
+Phasm: Not enough skill point for listed skills
+Planetouched (Aasimar): The skill point only work out if the listed skills are considered class skills, they are not for the Warrior class
+Planetouched (Tiefling): The skill point only work out if the listed skills are considered class skills, they are not for the Warrior class
+Pseudodragon: Unspent Skill Points: 5, skills are too high by 1 point, looks like it was made as if it's max rank was 6
+Purple Worm: Valid
+
+Rakshasa
+Rast: Valid
+Ravid: Valid
+Remorhaz: Valid
+Roc: Valid
+Roper: Unspent Skill Points: 2, How does it have a +11 to hit with a ranged strand attack? I get +9 if I treat it as a melee attack
+Rust Monster: Valid

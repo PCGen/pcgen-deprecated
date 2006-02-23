@@ -1,0 +1,28 @@
+MonstersH-I
+
+Halfling, Climb should be 0 not +2 (-2 Armor penalty for studded leather)
+Hobgoblin: Hide listed at +3, should be +1 (-2 for the Armor)
+
+Hag (Annis): Valid
+Hag (Green): Valid
+Hag (Sea): Valid
+Harpy: Valid
+ > Harpy Archer, 7th-Level Fighter: Longbow should be +21/+16/+11 and 1d8+3 damage
+Hell Hound: Valid
+ > Nessian Warhound, missing in PCGen
+Hippogriff: Valid
+Homunculus: Valid
+Howler: Valid
+Hydra (Eight Headed): Valid
+Hydra (Eleven Headed): Valid
+Hydra (Five Headed): Valid
+Hydra (Nine Headed): Valid
+Hydra (Seven Headed): Valid
+Hydra (Six Headed): Valid
+Hydra (Ten Headed): Valid
+Hydra (Twelve Headed): Valid
+
+Inevitable (Kolyarut): Sense Motive listed at +12, should be +10
+Inevitable (Marut): Valid
+Inevitable (Zelekhut): Sense Motive listed at +12, should be +10
+Invisible Stalker: Valid
