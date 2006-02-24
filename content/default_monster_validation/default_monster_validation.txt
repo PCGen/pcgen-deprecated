@@ -1,4 +1,4 @@
-With the new Default Monster Kit feature it has become very easy to create a Monster which should match the text given in the source, this can be done in under 5 clicks. The old Default Monster Mode worked by way of bonuses and so operated outside of the rules for building a character, because the KIT method works entirely within the rules it is an excellent way to troubleshoot errors in the races. 
+With the new Default Monster Kit feature it has become very easy to create a Monster which should match the text given in the source, this can be done in under 5 clicks. The old Default Monster Mode worked by way of bonuses and so operated outside of the rules for building a character, because the KIT method works entirely within the rules it is an excellent way to troubleshoot errors in the races.
 
 What we have found is that our files contain many errors. They fall into three categories, errors in the kit, errors in the race line or errors in the published text. Errors in our implementation can be fixed but errors we find in the source material needs to be complied into one location, thats what this directory is for.
 
