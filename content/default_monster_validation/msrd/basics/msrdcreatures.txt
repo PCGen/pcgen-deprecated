@@ -1,4 +1,4 @@
-General: "DATA: Feat Pool off" will appear on some entries. These are usually creatures that have multiples of 4 hit dice. In modern monsters gain their feats at a rate of 1 per 4 HD after the first, meaning at 5th, 9th, etc. I do have a tracker for that. -- Frank
+General: "DATA: Feat Pool off" will appear on some entries. These are usually creatures that have multiples of 4 hit dice. In modern monsters gain their feats at a rate of 1 per 4 HD after the first, meaning at 5th, 9th, etc. I do have a tracker for that. - Frank
 
 Ape: valid
 
