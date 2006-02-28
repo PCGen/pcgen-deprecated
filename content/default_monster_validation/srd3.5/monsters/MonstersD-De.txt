@@ -1,9 +1,7 @@
 MonstersD-De
 
-Commit test -EA
-
-Darkmantle
-Delver
+Darkmantle: Valid
+Delver: Valid
 Demon (Babau)
 Demon (Balor)
 Demon (Bebilith)
@@ -16,7 +14,7 @@ Demon (Quasit)
 Demon (Retriever)
 Demon (Succubus)
 Demon (Vrock)
-Derro
+Derro: Valid
 Destrachan
 Devil (Barbed (hamatula))
 Devil (Bearded (barbazu))
