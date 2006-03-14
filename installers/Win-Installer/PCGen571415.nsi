@@ -97,8 +97,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen"
-!define SIMPVER "595"
-!define APPNAMEANDVERSION "PCGen 5.9.5"
+!define SIMPVER "596"
+!define APPNAMEANDVERSION "PCGen 5.9.6 Alpha"
 !define APPDIR "PCGen${SIMPVER}"
 !define TargetVer "1.4"
 !define OverVer "1.6"
@@ -518,12 +518,30 @@ SubSection "Alpha"
 
 	SectionEnd
 
+	Section "Bloodstone Press"
+
+	SectionIn 1 7
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\bloodstonepress\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\bloodstonepress\*.*"
+
+	SectionEnd
+
 	Section "Dog House Rules"
 
 	SectionIn 1 7
 
 	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\doghouserules\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\doghouserules\*.*"
+
+	SectionEnd
+
+	Section "EN Publishing"
+
+	SectionIn 1 7
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\en_publishing\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\en_publishing\*.*"
 
 	SectionEnd
 
