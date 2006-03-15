@@ -39,7 +39,7 @@ $title = basename($_SERVER['PHP_SELF'], '.php');
         <li><a href="https://sourceforge.net/projects/pcgen/">SF Project Page</a></li>
         <li><a href="https://sourceforge.net/tracker/?atid=384719&amp;group_id=25576&amp;func=browse" title="You must log into SourceForge in order to report a bug.">Report Bug</a></li>
         <li><a href="https://sourceforge.net/tracker/?atid=384722&amp;group_id=25576&amp;func=browse" title="You must log into SourceForge in order to request a new feature.">Request Feature</a></li>
-        <li><a href="https://sourceforge.net/cvs/?group_id=25576" title="SourceForge CVS Repository">CVS</a></li>
+        <li><a href="http://svn.sourceforge.net/viewcvs.cgi/pcgen/" title="SourceForge SVN Repository">SVN</a></li>
     </ul>
 </div> <!-- div pagemenu -->
 
@@ -91,6 +91,5 @@ foreach ($tabs as $tab)
 
 ?>
 
-            <li><a href="http://gmgen.sourceforge.net/wiki/">Old Wiki</a></li>
         </ul>
     </div> <!-- div tabs -->

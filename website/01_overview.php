@@ -6,13 +6,21 @@ require_once('include/header.php.inc');
 
     <div id="content" class="content">
 
+        <h1>Major Links</h1>
+        <ul>
+	        <li><a href="http://www.legolas.org/pcgen/pytw/#Welcome">Project Wiki</a> - This is the <b>main</b> source of project information</li>
+	        <li><a href="http://groups.yahoo.com/group/pcgen">Main User Community Group</a></li>
+	        <li><a href="https://sourceforge.net/project/project_donations.php?group_id=25576">Donate to PCGen!</a></li>
+	        <li><a href="https://sourceforge.net/projects/pcgen/">Sourceforge Project Page</a></li>
+		</ul>
+
         <h1>PCGen Overview</h1>
 
-        <p>PCGen is a Java-based RPG character generator and maintenance program that works on most personal computers (Windows, Mac OS X, Linux, etc.). All datafiles are ASCII so they can be modified by users. All of this is work is performed uner the watchful gaze of the PCGen <a href="http://www.legolas.org/pcgen/docs/acknowledgments/bod.html">Board Of Directors</a>.</p>
+        <p>PCGen is a Java-based RPG character generator and maintenance program that works on most personal computers (Windows, Mac OS X, Linux, etc.). All datafiles are ASCII so they can be modified by users. All of this is work is performed uner the watchful gaze of the PCGen <a href="http://www.legolas.org/pcgen/pytw/#BoD">Board Of Directors</a>.</p>
 
         <h2>Publishers</h2>
 
-        <p>Are you a publisher, concerned about how PCGen may affect your product? Your concerns are understandable. Please read this <a href="https://sourceforge.net/docman/display_doc.php?docid=21131&group_id=25576" title="An open letter from Bryan McRoberts to all D20 publishers.">open letter from Bryan McRoberts</a>, the creator of PCGen. You may also be reassured to see the list of <a href="http://www.legolas.org/pcgen/docs/acknowledgments/sources.html" title="Books currently available in PCGen, sorted by publisher.">other publishers</a> which have chosen to improve their game by allowing its use with PCGen.</p>
+        <p>Are you a publisher, concerned about how PCGen may affect your product? Your concerns are understandable. Please read this <a href="https://sourceforge.net/docman/display_doc.php?docid=21131&group_id=25576" title="An open letter from Bryan McRoberts to all D20 publishers.">open letter from Bryan McRoberts</a>, the creator of PCGen. You may also be reassured to see the list of <a href="http://www.legolas.org/pcgen/docs/acknowledgments/sources.html" title="Books currently available in PCGen, sorted by publisher.">other publishers</a> which have chosen to improve their game by allowing its use with PCGen.  See <a href="http://www.legolas.org/pcgen/pytw/#Publishers">Publishers Wiki page</a> for more details</p>
 
         <h2>PCGen Features</h2>
 
