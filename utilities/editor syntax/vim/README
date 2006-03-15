@@ -1,0 +1,12 @@
+Ensure that the following line appears in the filetypedetect augroup in the
+filetype.vim in your .vim directory (i.e. ~/.vim/filetype.vim ) e.g.
+
+augroup filetypedetect
+  au! BufNewFile,BufRead *.lst          setfiletype pcgenlst
+augroup END
+
+Then place the pcgenlst.vim file in the syntax subdir
+
+~/.vim/syntax/pcgenlst.vim
+
+see :help syn-files for further details
