@@ -275,6 +275,7 @@ Chaotic
 Charisma
 CE
 CG
+Consumable
 COPY
 Charm
 Climb
