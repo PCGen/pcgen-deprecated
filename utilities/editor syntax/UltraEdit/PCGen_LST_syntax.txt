@@ -49,8 +49,9 @@ DOMAINS
 DURATION
 DR
 EFFECTS
-EFFECTTYPE
+EFFECTTYPE 
 EQMOD
+EQUIPBUY
 EXCHANGELEVEL
 EXCLASS
 EXCLUSIVE
@@ -250,6 +251,7 @@ var
 Abjuration
 AC
 Acid
+Advanced
 Affecting
 Air
 ALL
@@ -342,6 +344,7 @@ Incantation
 INITIATIVE
 Innate
 INT
+Incorporeal
 Instantaneous
 Intelligence
 ItemCreation
@@ -367,6 +370,7 @@ Metamagic
 Mind
 MIN
 Morale
+NAME
 Natural
 NaturalArmor
 Necromancy
@@ -411,6 +415,7 @@ Simple
 Slashing
 Sonic
 Special
+Species
 Specific
 Spellcaster
 Staff
@@ -463,6 +468,7 @@ PREDEFAULTMONSTER
 PREDEITY
 PREDEITYDOMAIN
 PREDOMAIN
+PREDR
 PREFEAT
 PREGENDER
 PREHANDSEQ
