@@ -37,7 +37,7 @@ Readonly my $SEPERATE_ALPHA     => 0;
 # Release version identification
 # ------------------------------------------
 
-Readonly my $VER_NUMBER         => '596';
+Readonly my $VER_NUMBER         => '598';
 Readonly my $VER_NUMBER_SUFIX   => '';
 
 Readonly my $RELEASE_NAME       => "pcgen$VER_NUMBER$VER_NUMBER_SUFIX";
@@ -284,7 +284,13 @@ else {
         partial_destination         => "$DEST_PARTIAL_FOLDER/plugins",
         partial_files_to_keep_ref   => [
             # directories
-            qr{ [/] (?: lstplugins | outputplugins ) [/]    }xmsi,
+            qr{ [/] (?: lstplugins
+                      | bonusplugins
+                      | outputplugins
+                      | jepplugins
+                      | preplugins
+                      | systemlstplugins
+                    ) [/] }xmsi,
 
             # file
             qr{ [/] CharacterSheet\.jar                  \z }xmsi,
@@ -294,7 +300,13 @@ else {
             {   destination         => "$DEST_NSIS_BASE_FOLDER/plugins",
                 files_to_keep_ref   => [
                     # directories
-                    qr{ [/] (?: lstplugins | outputplugins ) [/]    }xmsi,
+            qr{ [/] (?: lstplugins
+                      | bonusplugins
+                      | outputplugins
+                      | jepplugins
+                      | preplugins
+                      | systemlstplugins
+                    ) [/] }xmsi,
 
                     # file
                     qr{ [/] CharacterSheet\.jar                  \z }xmsi,
@@ -303,7 +315,13 @@ else {
             {   destination         => "$DEST_NSIS_OPTION_FOLDER/plugin/gmgen/plugins",
                 files_to_skip_ref   => [
                     # directories
-                    qr{ [/] (?: lstplugins | outputplugins ) [/]    }xmsi,
+            qr{ [/] (?: lstplugins
+                      | bonusplugins
+                      | outputplugins
+                      | jepplugins
+                      | preplugins
+                      | systemlstplugins
+                    ) [/] }xmsi,
 
                     # file
                     qr{ [/] CharacterSheet\.jar                  \z }xmsi,
