@@ -2,29 +2,29 @@ MonstersD-De
 
 Darkmantle: Valid
 Delver: Valid
-Demon (Babau)
-Demon (Balor)
-Demon (Bebilith)
-Demon (Dretch)
-Demon (Glabrezu)
-Demon (Hezrou)
-Demon (Marilith)
-Demon (Nalfeshnee)
-Demon (Quasit)
-Demon (Retriever)
-Demon (Succubus)
-Demon (Vrock)
+Demon (Babau): Valid
+Demon (Balor): Unspent Skill Points: 23
+Demon (Bebilith): +8 to Climb because of Climb speed not accounted for
+Demon (Dretch): Valid
+Demon (Glabrezu): Move Silently should be 15 not 18 (because of max ranks)
+Demon (Hezrou): hide should be 9 not 13 (because of max ranks)
+Demon (Marilith): Valid
+Demon (Nalfeshnee): Valid
+Demon (Quasit): Unspent Skill Points: 1
+Demon (Retriever): As a Huge Construct the Retriever should have +40hp not +80hp
+Demon (Succubus): Valid
+Demon (Vrock): Valid
 Derro: Valid
-Destrachan
-Devil (Barbed (hamatula))
-Devil (Bearded (barbazu))
-Devil (Bone (osyluth))
-Devil (Chain (kyton))
-Devil (Erinyes)
-Devil (Hellcat (bezekira))
-Devil (Horned (cornugon))
-Devil (Ice (gelugon))
-Devil (Imp)
-Devil (Lemure)
-Devil (Pit Fiend)
-Devourer
+Destrachan: Valid
+Devil (Barbed (hamatula)): Valid
+Devil (Bearded (barbazu)): Unspent Skill Points: 2
+Devil (Bone (osyluth)): Valid
+Devil (Chain (kyton)): Valid
+Devil (Erinyes): Valid
+Devil (Hellcat (bezekira)): Valid
+Devil (Horned (cornugon)): Unspent Skill Points: 3
+Devil (Ice (gelugon)): Valid
+Devil (Imp): Valid
+Devil (Lemure): Valid
+Devil (Pit Fiend): Valid
+Devourer: Valid
