@@ -1,18 +1,18 @@
 PsionicMonsters
 
-Astral Construct (1st Level)
-Astral Construct (2nd Level)
-Astral Construct (3rd Level)
-Astral Construct (4th Level)
-Astral Construct (5th Level)
-Astral Construct (6th Level)
-Astral Construct (7th Level)
-Astral Construct (8th Level)
-Astral Construct (9th Level)
+Astral Construct (1st Level): Valid
+Astral Construct (2nd Level): Valid
+Astral Construct (3rd Level): Valid
+Astral Construct (4th Level): Base Attack should be +3 not +5
+Astral Construct (5th Level): Base Attack should be +5 not +7
+Astral Construct (6th Level): Base Attack should be +7 not +9
+Astral Construct (7th Level): Base Attack should be +9 not +11
+Astral Construct (8th Level): Base Attack should be +12 not +14
+Astral Construct (9th Level): Base Attack should be +14 not +16
 
-Aboleth (Psionic)
+Aboleth (Psionic): Valid
 
-Blue
+Blue: how do you get 10 hit points from 1d4+1 plus 4?, Unspent Skill Points: 4, Reflex save should be +1
 Brain Mole
 
 Caller in Darkness
