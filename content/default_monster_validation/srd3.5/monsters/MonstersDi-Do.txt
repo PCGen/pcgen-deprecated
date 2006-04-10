@@ -1,21 +1,21 @@
 MonstersDi-Do
 
-Digester
-Dinosaur (Deinonychus)
-Dinosaur (Elasmosaurus)
-Dinosaur (Megaraptor)
-Dinosaur (Triceratops)
-Dinosaur (Tyrannosaurus)
-Dire Animal (Dire Ape)
-Dire Animal (Dire Badger)
-Dire Animal (Dire Bat)
-Dire Animal (Dire Bear)
-Dire Animal (Dire Boar)
-Dire Animal (Dire Lion)
-Dire Animal (Dire Rat)
-Dire Animal (Dire Shark)
-Dire Animal (Dire Tiger)
-Dire Animal (Dire Weasel)
-Dire Animal (Dire Wolf)
-Dire Animal (Dire Wolverine)
-Doppelganger
+Digester: Valid
+Dinosaur (Deinonychus): Valid
+Dinosaur (Elasmosaurus): Valid
+Dinosaur (Megaraptor): Fortitude should be +11
+Dinosaur (Triceratops): Valid
+Dinosaur (Tyrannosaurus): Valid
+Dire Animal (Dire Ape): Unspent Skill Points: 1
+Dire Animal (Dire Badger): Valid
+Dire Animal (Dire Bat): Valid
+Dire Animal (Dire Bear): Not enough skill points
+Dire Animal (Dire Boar): Valid
+Dire Animal (Dire Lion): Unspent Skill Points: 3, Move Silently should be +6 (+2[STAT] +4[RACIAL])
+Dire Animal (Dire Rat): Valid
+Dire Animal (Dire Shark): Unspent Feat Points: 1
+Dire Animal (Dire Tiger): Unspent Skill Points: 2
+Dire Animal (Dire Weasel): Valid
+Dire Animal (Dire Wolf): Unspent Skill Points: 4
+Dire Animal (Dire Wolverine): Valid
+Doppelganger: Not enough skill points

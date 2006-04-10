@@ -1,11 +1,10 @@
 MonstersDr-Dw
 
-Dragon Turtle
-Dragonne
-Drider (Cleric)
-Drider (Sorcerer)
-Drider (Wizard)
-Dryad
-Dwarf (Deep)
-Dwarf (Duergar)
+Dragon Turtle: Valid
+Dragonne: Valid
+Drider (Cleric): Valid
+Drider (Sorcerer): Valid
+Drider (Wizard): Valid
+Dryad: Valid
+Dwarf (Duergar): Valid
 
