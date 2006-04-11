@@ -13,12 +13,12 @@ Astral Construct (9th Level): Base Attack should be +14 not +16
 Aboleth (Psionic): Valid
 
 Blue: how do you get 10 hit points from 1d4+1 plus 4?, Unspent Skill Points: 4, Reflex save should be +1
-Brain Mole
+Brain Mole: Valid
 
-Caller in Darkness
-Cerebrilith
-Couatl (Psionic)
-Crysmal
+Caller in Darkness: Unspent Skill Points: 2, Incorporeal Touch to hit should be +10 due to Weapon Finesse
+Cerebrilith: Unspent Skill Points: 2
+Couatl (Psionic): Valid
+Crysmal: Valid
 
 Folugub
 
