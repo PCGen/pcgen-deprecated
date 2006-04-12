@@ -20,38 +20,24 @@ Cerebrilith: Unspent Skill Points: 2
 Couatl (Psionic): Valid
 Crysmal: Valid
 
-Folugub
+Folugub: Valid
 
-Gray Glutton
+Gray Glutton: Valid
 
-Intellect Devourer
+Intellect Devourer: Valid
 
-Neothelid
+Neothelid: Valid
 
-Psicrystal (Artiste)
-Psicrystal (Bully)
-Psicrystal (Coward)
-Psicrystal (Friendly)
-Psicrystal (Hero)
-Psicrystal (Liar)
-Psicrystal (Meticulous)
-Psicrystal (Nimble)
-Psicrystal (Observant)
-Psicrystal (Poised)
-Psicrystal (Resolved)
-Psicrystal (Sage)
-Psicrystal (Single Minded)
-Psicrystal (Sneaky)
-Psicrystal (Sympathetic)
+Psicrystal: not valid as a kit, needs to be created with a master.
 
-Phthisic
-Psion Killer
-Puppeteer
-Puppeteer (Flesh Harrower)
+Phthisic: Valid
+Psion Killer: Valid
+Puppeteer: Valid
+Puppeteer (Flesh Harrower): AC should be 17 (+1 for small size)
 
-Temporal Filcher
-Thought Eater
-Thought Slayer
+Temporal Filcher: Valid
+Thought Eater: Valid
+Thought Slayer: Valid
 
-Udoroot
-Unbodied
+Udoroot: Unspent Feat Points: 1
+Unbodied: Valid
