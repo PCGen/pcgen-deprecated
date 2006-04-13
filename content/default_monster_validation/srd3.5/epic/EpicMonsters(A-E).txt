@@ -10,13 +10,13 @@ Abomination (Phaethon)
 Abomination (Phane)
 Abomination (Xixecal)
 
-Behemoth (Eagle)
-Behemoth (Gorilla)
-Brachyurus
+Behemoth (Eagle): Unspent Skill Points: 2
+Behemoth (Gorilla): Unspent Skill Points: 12
+Brachyurus: Unspent Skill Points: 20
 
-Colossus (Flesh)
-Colossus (Iron)
-Colossus (Stone)
+Colossus (Flesh): Initiativve should be -2
+Colossus (Iron): Valid
+Colossus (Stone): Valid
 
 Demilich
 Devastation Vermin (Devastation Beetle): Jump listed at +31, should be +32

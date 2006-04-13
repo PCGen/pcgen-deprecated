@@ -12,16 +12,16 @@ Hoary Hunter: Unspent Skill Points: 2
 Hoary Hunter (Hoary Steed): Valid
 Hunefer: Valid
 
-Lavawight
-Legendary Animal (Legendary Bear)
-Legendary Animal (Legendary Tiger)
-Leshay
-Living Vault
+Lavawight: Unspent Skill Points: 2
+Legendary Animal (Legendary Bear): Valid
+Legendary Animal (Legendary Tiger): Valid
+Leshay: Unspent Skill Points: 278
+Living Vault: Valid
 
-Mercane
-Mu Spore
+Mercane: Unspent Skill Points: 9
+Mu Spore: Hit dice should be: (35d8)+405 (562 hp)
 
-Neh Thalggu
+Neh Thalggu: Unspent Skill Points: 4
 
 Prismasaurus
 Pseudonatural Troll
