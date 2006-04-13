@@ -1,6 +1,6 @@
 EpicMonsters(A-E)
 
-Abomination (Anaxim)
+Abomination (Anaxim): HP should be 430, Initiative should be +11, AC should be 42 (+5 CHA from Divine Rank)
 Abomination (Atropal)
 Abomination (Chichimec)
 Abomination (Dream Larva)

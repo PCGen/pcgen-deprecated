@@ -1,16 +1,16 @@
 EpicMonsters(G-W)
 
 Genius Loci
-Gibbering Orb
-Gloom
-Golem (Adamantine)
-Golem (Mithral)
+Gibbering Orb: Unspent Skill Points: 299, no explanation for the +12 Insight bonus to AC given
+Gloom: Unspent Skill Points: 8, no explanation for the +12 Insight bonus to AC given
+Golem (Adamantine): Valid
+Golem (Mithral): Valid
 
-Ha Naga
-Hagunemnon
-Hoary Hunter
-Hoary Hunter (Hoary Steed)
-Hunefer
+Ha Naga: Valid
+Hagunemnon: Should have Improved Critical feat to qualify for Devastating Critical and Overwhelming Critical but does not, the slam attack has the stats as if he does though.
+Hoary Hunter: Unspent Skill Points: 2
+Hoary Hunter (Hoary Steed): Valid
+Hunefer: Valid
 
 Lavawight
 Legendary Animal (Legendary Bear)
