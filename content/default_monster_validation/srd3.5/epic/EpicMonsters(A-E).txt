@@ -1,14 +1,14 @@
 EpicMonsters(A-E)
 
 Abomination (Anaxim): HP should be 430, Initiative should be +11, AC should be 42 (+5 CHA from Divine Rank)
-Abomination (Atropal)
-Abomination (Chichimec)
-Abomination (Dream Larva)
-Abomination (Hecatoncheires)
-Abomination (Infernal)
-Abomination (Phaethon)
-Abomination (Phane)
-Abomination (Xixecal)
+Abomination (Atropal): AC should be 67 (+16 CHA from Divine Rank)
+Abomination (Chichimec): AC should be 62 ( +7 Dex, +22 natural, +13 natural for an outsider w/t divine rank and  +10 CHA from divine rank)
+Abomination (Dream Larva): AC should be 78 ( -1 size, +3 Dex, +53 natural, +13 CHA from Divine Rank)
+Abomination (Hecatoncheires): Superior Initiative feat not listed in feat block, not enough skill points
+Abomination (Infernal): AC should be 72 ( -1 size, +7 Dex, +47 natural, +9 CHA)  Unspent Skill Points: 6
+Abomination (Phaethon): AC should be 74 ( -4 size, +7 Dex, +47 natural, +14 CHA)
+Abomination (Phane): AC should be 63 ( -1 size, +7 Dex, +13 natural, +34 misc)
+Abomination (Xixecal): AC should be 83 ( -8 size, +1 Dex, +68 natural, +12 CHA)
 
 Behemoth (Eagle): Unspent Skill Points: 2
 Behemoth (Gorilla): Unspent Skill Points: 12
@@ -18,14 +18,14 @@ Colossus (Flesh): Initiativve should be -2
 Colossus (Iron): Valid
 Colossus (Stone): Valid
 
-Demilich
+Demilich: Unspent Skill Points: 224
 Devastation Vermin (Devastation Beetle): Jump listed at +31, should be +32
 Devastation Vermin (Devastation Centipede): Hide listed at +1, should be +5
 Devastation Vermin (Devastation Scorpion): Climb, Hide, and Spot are all 4 points higher than they should be. Were they meant to have a +8 racial bonus instead of the +4 the description gives them?
 Devastation Vermin (Devastation Spider/Web-Spinning): Spot listed at +8, should be +4
 Devastation Vermin (Devastation Spider/Hunting) Spot listed at +12, should be +8
 
-Elemental (Air Primal)
-Elemental (Earth Primal)
-Elemental (Fire Primal)
-Elemental (Water Primal)
+Elemental (Air Primal): Not enough skill points
+Elemental (Earth Primal): Not enough skill points
+Elemental (Fire Primal): Not enough skill points
+Elemental (Water Primal): Not enough skill points

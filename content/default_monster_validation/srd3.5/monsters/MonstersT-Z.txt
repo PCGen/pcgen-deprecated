@@ -10,7 +10,7 @@ Tojanida (Juvenile): Unspent Skill Points: 12, Search and Spot are not maxed out
 Treant: Unspent Skill Points: 2
 Triton: Valid
 Troglodyte: Valid
-Troll:
+Troll:: Valid
 Troll Hunter: Valid
 
 Unicorn: Valid

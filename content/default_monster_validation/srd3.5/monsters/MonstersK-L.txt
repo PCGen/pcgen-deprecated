@@ -11,25 +11,3 @@ Leonal: Unspent Skill Points: 13
 Lillend: Valid
 Lizardfolk: Valid
 Locathah: Valid
-
-Lycanthrope (Werebear Bear Form)
-Lycanthrope (Werebear Human Form)
-Lycanthrope (Werebear Hybrid Form)
-Lycanthrope (Wereboar Boar Form)
-Lycanthrope (Wereboar Human Form)
-Lycanthrope (Wereboar Hybrid Form)
-Lycanthrope (Wererat Dire Rat Form)
-Lycanthrope (Wererat Human Form)
-Lycanthrope (Wererat Hybrid Form)
-Lycanthrope (Weretiger Human Form)
-Lycanthrope (Weretiger Hybrid Form)
-Lycanthrope (Weretiger Tiger Form)
-Lycanthrope (Werewolf Human Form)
-Lycanthrope (Werewolf Hybrid Form)
-Lycanthrope (Werewolf Wolf Form)
-Lycanthrope (Hill Giant Dire Wereboar Dire Boar Form)
-Lycanthrope (Hill Giant Dire Wereboar Giant Form)
-Lycanthrope (Hill Giant Dire Wereboar Hybrid Boar Form)
-Lycanthrope (Werewolf Lord Human Form)
-Lycanthrope (Werewolf Lord Dire Wolf Form)
-Lycanthrope (Werewolf Lord Hybrid Form)

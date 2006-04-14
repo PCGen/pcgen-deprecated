@@ -23,23 +23,23 @@ Mu Spore: Hit dice should be: (35d8)+405 (562 hp)
 
 Neh Thalggu: Unspent Skill Points: 4
 
-Prismasaurus
-Pseudonatural Troll
+Prismasaurus: Valid
+Pseudonatural Troll: Grapple should be +42, Rake should be at +37, Hide should be +12
 
 Ruin Swarm: Valid
 
-Shadow of the Void
-Shape of Fire
-Sirrush
-Sirrush (Three Headed)
+Shadow of the Void: Not enough feat points for listed feats (14 listed, should only have 12), Hide should be +43, Unspent Skill Points: 8
+Shape of Fire: Not enough feat points for listed feats (14 listed, should only have 12), Hide should be +43, Unspent Skill Points: 8
+Sirrush: Valid
+Sirrush (Three Headed): Hide should be +61
 
-Tayellah
-Thorciasid
-Titan (Elder)
-Treant (Elder)
+Tayellah: Valid
+Thorciasid: Valid
+Titan (Elder): Valid
+Treant (Elder): Unspent Skill Points: 2
 
-Umbral Blot
-Uvuudaum
-Vermiurge
-Winterwight
-Worm That Walks
+Umbral Blot: Unspent Skill Points: 40
+Uvuudaum: Saves should be: Fort +40, Ref +37, Will +41
+Vermiurge: Not enough skill points (need 2 more for listed skills)
+Winterwight: Unspent Feat Points: 2
+Worm That Walks: Unspent Skill Points: 23
