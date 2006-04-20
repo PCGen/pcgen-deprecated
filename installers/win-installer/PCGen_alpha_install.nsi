@@ -34,8 +34,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen Alpha Source"
-!define SIMPVER "581"
-!define APPNAMEANDVERSION "PCGen 5.8.1 Alpha Source"
+!define SIMPVER "5100rc1"
+!define APPNAMEANDVERSION "PCGen 5.10.0 RC1 Alpha Source"
 !define APPDIR "PCGen${SIMPVER}"
 !define OutName "pcgen${SIMPVER}_alpha_win_install"
 ;!define OutDir "C:\Documents and Settings\Lisa\Desktop"
@@ -106,106 +106,119 @@ Function .onInit
 
  FunctionEnd
 
-SubSection /e "Data" Section1
+SubSection /e "Alpha" 
 
 	Section "Avalanch Press"
 
-	SetOutPath "$R1\avalanchepress\"
+	SetOutPath "$INSTDIR\avalanchepress\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\avalanchepress\*.*"
 
 	SectionEnd
 
 	Section "Bastion Press"
 
-	SetOutPath "$R1\bastionpress\"
+	SetOutPath "$INSTDIR\bastionpress\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\bastionpress\*.*"
 
 	SectionEnd
 
-;	Section "Behemoth3"
-;
-;	SetOutPath "$R1\behemoth3\"
-;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\behemoth3\*.*"
-;
-;	SectionEnd
+	Section "Behemoth3"
 
-	Section "Dog House Rules"
+	SetOutPath "$INSTDIR\behemoth3\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\behemoth3\*.*"
 
-	SetOutPath "$R1\doghouserules\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\doghouserules\*.*"
+	SectionEnd
+
+	Section "Bloodstone Press"
+
+	SetOutPath "$INSTDIR\bloodstonepress\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\bloodstonepress\*.*"
+
+	SectionEnd
+
+;       	Section "Dog House Rules"
+;       
+;       	SetOutPath "$INSTDIR\doghouserules\"
+;       	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\doghouserules\*.*"
+;       
+;       	SectionEnd
+
+	Section "EN Publishing"
+
+	SetOutPath "$INSTDIR\en_publishing\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\en_publishing\*.*"
 
 	SectionEnd
 
 	Section "Fantasy Flight Games"
 
-	SetOutPath "$R1\fantasyflightgames\"
+	SetOutPath "$INSTDIR\fantasyflightgames\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\fantasyflightgames\*.*"
 
 	SectionEnd
 
 	Section "Green Ronin Publishing"
 
-	SetOutPath "$R1\greenronin\"
+	SetOutPath "$INSTDIR\greenronin\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\greenronin\*.*"
 
 	SectionEnd
 
 	Section "Malhavoc Press"
 
-	SetOutPath "$R1\malhavocpress\"
+	SetOutPath "$INSTDIR\malhavocpress\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\malhavocpress\*.*"
 
 	SectionEnd
 
 	Section "Mongoose"
 
-	SetOutPath "$R1\mongoose\"
+	SetOutPath "$INSTDIR\mongoose\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\mongoose\*.*"
 
 	SectionEnd
 
-;	Section "Necromancer Games"
-;
-;	SetOutPath "$R1\necromancergames\"
-;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\necromancergames\*.*"
-;
-;	SectionEnd
+	Section "Necromancer Games"
+
+	SetOutPath "$INSTDIR\necromancergames\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\necromancergames\*.*"
+
+	SectionEnd
 
 	Section "Panda Head"
 
-	SetOutPath "$R1\pandahead\"
+	SetOutPath "$INSTDIR\pandahead\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\pandahead\*.*"
 
 	SectionEnd
 
-;	Section "Parent's Basement Games"
-;
-;	SetOutPath "$R1\parentsbasementgames\"
-;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\parentsbasementgames\*.*"
-;
-;	SectionEnd
+	Section "Parent's Basement Games"
+
+	SetOutPath "$INSTDIR\parentsbasementgames\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\parentsbasementgames\*.*"
+
+	SectionEnd
 
 	Section "Pinnacle Entertainment"
 
-	SetOutPath "$R1\pinnacleentertainment\"
+	SetOutPath "$INSTDIR\pinnacleentertainment\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\pinnacleentertainment\*.*"
 
 	SectionEnd
 
 	Section "RPG Objects"
 
-	SetOutPath "$R1\rpgobjects\"
+	SetOutPath "$INSTDIR\rpgobjects\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\rpgobjects\*.*"
 
 	SectionEnd
 
 	Section "Soverign Press"
 
-	SetOutPath "$R1\sovereignpress\"
+	SetOutPath "$INSTDIR\sovereignpress\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\sovereignpress\*.*"
 
 	SectionEnd
-
 
 SubSectionEnd
 
