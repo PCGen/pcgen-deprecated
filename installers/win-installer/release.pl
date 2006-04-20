@@ -31,13 +31,13 @@ use Fatal qw( mkpath rmtree unlink );
 # ------------------------------------------
 
 Readonly my $CREATE_ZIP         => 1;
-Readonly my $SEPERATE_ALPHA     => 0;
+Readonly my $SEPERATE_ALPHA     => 1;
 
 # ------------------------------------------
 # Release version identification
 # ------------------------------------------
 
-Readonly my $VER_NUMBER         => '598';
+Readonly my $VER_NUMBER         => '5100rc1';
 Readonly my $VER_NUMBER_SUFIX   => '';
 
 Readonly my $RELEASE_NAME       => "pcgen$VER_NUMBER$VER_NUMBER_SUFIX";

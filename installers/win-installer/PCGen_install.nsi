@@ -97,8 +97,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen"
-!define SIMPVER "598"
-!define APPNAMEANDVERSION "PCGen 5.9.8 Beta"
+!define SIMPVER "5100rc1"
+!define APPNAMEANDVERSION "PCGen 5.10.0 RC1"
 !define APPDIR "PCGen${SIMPVER}"
 !define TargetVer "1.4"
 !define OverVer "1.6"
@@ -375,14 +375,14 @@ SubSection "d20OGL"
 
 	SectionEnd
 
-;	Section "RPGObjects"
-;
-;	SectionIn 1 2
-;
-;	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\rpgobjects\"
-;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\rpgobjects\*.*"
-;
-;	SectionEnd
+	Section "RPGObjects"
+
+	SectionIn 1 2
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\rpgobjects\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\rpgobjects\*.*"
+
+	SectionEnd
 
 	Section "SRD"
 
@@ -489,153 +489,153 @@ SubSection "Permissioned"
 
 SubSectionEnd
 
-SubSection "Alpha" 
-
-	Section "Avalanch Press"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\avalanchepress\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\avalanchepress\*.*"
-
-	SectionEnd
-
-	Section "Bastion Press"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\bastionpress\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\bastionpress\*.*"
-
-	SectionEnd
-
-	Section "Behemoth3"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\behemoth3\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\behemoth3\*.*"
-
-	SectionEnd
-
-	Section "Bloodstone Press"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\bloodstonepress\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\bloodstonepress\*.*"
-
-	SectionEnd
-
-;       	Section "Dog House Rules"
-;       
-;       	SectionIn 1 7
-;       
-;       	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\doghouserules\"
-;       	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\doghouserules\*.*"
-;       
-;       	SectionEnd
-
-	Section "EN Publishing"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\en_publishing\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\en_publishing\*.*"
-
-	SectionEnd
-
-	Section "Fantasy Flight Games"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\fantasyflightgames\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\fantasyflightgames\*.*"
-
-	SectionEnd
-
-	Section "Green Ronin Publishing"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\greenronin\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\greenronin\*.*"
-
-	SectionEnd
-
-	Section "Malhavoc Press"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\malhavocpress\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\malhavocpress\*.*"
-
-	SectionEnd
-
-	Section "Mongoose"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\mongoose\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\mongoose\*.*"
-
-	SectionEnd
-
-	Section "Necromancer Games"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\necromancergames\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\necromancergames\*.*"
-
-	SectionEnd
-
-	Section "Panda Head"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\pandahead\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\pandahead\*.*"
-
-	SectionEnd
-
-	Section "Parent's Basement Games"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\parentsbasementgames\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\parentsbasementgames\*.*"
-
-	SectionEnd
-
-	Section "Pinnacle Entertainment"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\pinnacleentertainment\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\pinnacleentertainment\*.*"
-
-	SectionEnd
-
-	Section "RPG Objects"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\rpgobjects\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\rpgobjects\*.*"
-
-	SectionEnd
-
-	Section "Soverign Press"
-
-	SectionIn 1 7
-
-	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\sovereignpress\"
-	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\sovereignpress\*.*"
-
-	SectionEnd
-
-SubSectionEnd
+;SubSection "Alpha" 
+;
+;	Section "Avalanch Press"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\avalanchepress\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\avalanchepress\*.*"
+;
+;	SectionEnd
+;
+;	Section "Bastion Press"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\bastionpress\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\bastionpress\*.*"
+;
+;	SectionEnd
+;
+;	Section "Behemoth3"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\behemoth3\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\behemoth3\*.*"
+;
+;	SectionEnd
+;
+;	Section "Bloodstone Press"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\bloodstonepress\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\bloodstonepress\*.*"
+;
+;	SectionEnd
+;
+;;       	Section "Dog House Rules"
+;;       
+;;       	SectionIn 1 7
+;;       
+;;       	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\doghouserules\"
+;;       	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\doghouserules\*.*"
+;;       
+;;       	SectionEnd
+;
+;	Section "EN Publishing"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\en_publishing\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\en_publishing\*.*"
+;
+;	SectionEnd
+;
+;	Section "Fantasy Flight Games"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\fantasyflightgames\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\fantasyflightgames\*.*"
+;
+;	SectionEnd
+;
+;	Section "Green Ronin Publishing"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\greenronin\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\greenronin\*.*"
+;
+;	SectionEnd
+;
+;	Section "Malhavoc Press"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\malhavocpress\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\malhavocpress\*.*"
+;
+;	SectionEnd
+;
+;	Section "Mongoose"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\mongoose\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\mongoose\*.*"
+;
+;	SectionEnd
+;
+;	Section "Necromancer Games"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\necromancergames\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\necromancergames\*.*"
+;
+;	SectionEnd
+;
+;	Section "Panda Head"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\pandahead\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\pandahead\*.*"
+;
+;	SectionEnd
+;
+;	Section "Parent's Basement Games"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\parentsbasementgames\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\parentsbasementgames\*.*"
+;
+;	SectionEnd
+;
+;	Section "Pinnacle Entertainment"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\pinnacleentertainment\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\pinnacleentertainment\*.*"
+;
+;	SectionEnd
+;
+;	Section "RPG Objects"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\rpgobjects\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\rpgobjects\*.*"
+;
+;	SectionEnd
+;
+;	Section "Soverign Press"
+;
+;	SectionIn 1 7
+;
+;	SetOutPath "$INSTDIR\${APPDIR}\data\alpha\sovereignpress\"
+;	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\sovereignpress\*.*"
+;
+;	SectionEnd
+;
+;SubSectionEnd
 
 SubSectionEnd
 
