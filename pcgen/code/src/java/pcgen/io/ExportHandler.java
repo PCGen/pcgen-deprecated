@@ -1728,6 +1728,7 @@ public final class ExportHandler
 			addToTokenMap(new DomainToken());
 			addToTokenMap(new DRToken());
 			addToTokenMap(new EqToken());
+			addToTokenMap(new EqTypeToken());
 			addToTokenMap(new FeatToken());
 			addToTokenMap(new FeatListToken());
 			addToTokenMap(new GameModeToken());
