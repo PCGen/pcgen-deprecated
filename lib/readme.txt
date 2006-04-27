@@ -13,7 +13,8 @@ kunststoff.jar -- Kunststoff Look and Feel 2.0.2, optional java look and feel. P
 MRJ141Stubs.jar -- MRJ Adapter http://www.roydesign.net/mrjadapter/ Used by Gmgen
 readme.txt -- this file
 RngPack-1.1a.jar -- RngPack http://www.honeylocust.com/RngPack/ used by JEP/PJEP
-skinlf.jar -- Skinnable look and feel 1.2.9, skinnable java look and feel. Pcgen has explicit code support for it.
+skinlf.jar -- Skinnable look and feel 6.2, skinnable java look and feel. Pcgen has explicit code support for it. http://skinlf.l2fprod.com/
+wraplf.jar -- Used to support anti-aliasing on jdk < 5.0, seems to not support mac? http://wraplf.l2fprod.com/
 xalan-2.5.2.jar -- from fop 0.20.5 distribution, used by fop
 xercesImpl-2.5.0.jar -- from fop 0.20.5 distribution, used by fop
 xml-apis.jar -- from fop 0.20.5 distribution, used by fop
