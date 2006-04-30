@@ -1,13 +1,13 @@
-; Current Ver: $Revision: 1.28 $
-; Last Editor: $Author: ericbeaudoin $
-; Last Edited: $Date: 2006/02/26 04:39:14 $
+; Current Ver: $Revision$
+; Last Editor: $Author$
+; Last Edited: $Date$
 ;
 ;	This script is licensed under the following license
 
 
 
 ; Script Created with Venis IX 2.2.3	http://www.spaceblue.com/venis/info.php (recomended)
-; 										NSIS 2.04				http://nsis.sourceforge.net
+; NSIS 2.04				http://nsis.sourceforge.net
 
 
 
@@ -97,8 +97,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen"
-!define SIMPVER "5100rc1"
-!define APPNAMEANDVERSION "PCGen 5.10.0 RC1"
+!define SIMPVER "5100"
+!define APPNAMEANDVERSION "PCGen 5.10.0"
 !define APPDIR "PCGen${SIMPVER}"
 !define TargetVer "1.4"
 !define OverVer "1.6"

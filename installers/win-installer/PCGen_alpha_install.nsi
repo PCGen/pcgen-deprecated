@@ -1,13 +1,13 @@
-; Current Ver: $Revision: 1.15 $
-; Last Editor: $Author: ericbeaudoin $
-; Last Edited: $Date: 2006/02/25 19:39:22 $
+; Current Ver: $Revision$
+; Last Editor: $Author$
+; Last Edited: $Date$
 ;
 ; This script is licensed under the following license
 
 
 
 ; Script Created with Venis IX 2.2.3	http://www.spaceblue.com/venis/info.php (recomended)
-; 										NSIS 2.04				http://nsis.sourceforge.net
+; NSIS 2.04				http://nsis.sourceforge.net
 
 
 
@@ -34,8 +34,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen Alpha Source"
-!define SIMPVER "5100rc1"
-!define APPNAMEANDVERSION "PCGen 5.10.0 RC1 Alpha Source"
+!define SIMPVER "5100"
+!define APPNAMEANDVERSION "PCGen 5.10.0 Alpha Source"
 !define APPDIR "PCGen${SIMPVER}"
 !define OutName "pcgen${SIMPVER}_alpha_win_install"
 ;!define OutDir "C:\Documents and Settings\Lisa\Desktop"
