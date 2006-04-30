@@ -1,4 +1,4 @@
-$Id: @readme.txt,v 1.1 2004/10/02 18:27:29 ericbeaudoin Exp $
+$Id$
 
 Project: pcgen
 Module:  win-installer
