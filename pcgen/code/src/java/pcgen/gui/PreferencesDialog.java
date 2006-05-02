@@ -962,6 +962,7 @@ final class PreferencesDialog extends JDialog
 				else
 				{
 					abilitiesRolledButton.setSelected(true);
+					abilityRolledModeCombo.setSelectedItem(gameMode.getRollMethodExpressionName());
 				}
 
 				break;
