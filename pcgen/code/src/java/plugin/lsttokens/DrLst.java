@@ -4,6 +4,7 @@
  */
 package plugin.lsttokens;
 
+import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.core.prereq.Prerequisite;
@@ -31,7 +32,15 @@ public class DrLst implements GlobalLstToken {
 		if (anInt > -9) {
 			try {
 				PreParserFactory factory = PreParserFactory.getInstance();
-				Prerequisite r = factory.parse("PRELEVEL:" + anInt);
+
+				String preLevelString = "PRELEVEL:" + anInt;
+				if (obj instanceof PCClass)
+				{
+					// Classes handle this differently
+					preLevelString = "PRECLASS:1," + obj.getKeyName() + "=" + anInt;
+				}
+				Prerequisite r = factory.parse(preLevelString);
+				
 				preReqs.add(r);
 			}
 			catch (PersistenceLayerException notUsed) {
