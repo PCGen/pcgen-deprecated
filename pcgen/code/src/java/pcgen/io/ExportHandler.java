@@ -2640,14 +2640,6 @@ public final class ExportHandler
 				replaceTokenFollowers(aString, output, aPC);
 			}
 
-			//TODO:DJ: Create pcgen.io.exportTokens.ArmorToken
-			//
-			// Not an ARMOR token unless ARMOR. or ARMOR#. ARMORQUI is most likely a variable name
-			//
-			else if (aString.startsWith("ARMOR") && ((aString.charAt(5) == '.') || Character.isDigit(aString.charAt(5))))
-			{
-				len = replaceTokenArmor(aString, len, output, aPC);
-			}
 			else
 			{
 				len = aString.trim().length();
