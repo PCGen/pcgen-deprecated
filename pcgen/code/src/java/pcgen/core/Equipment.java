@@ -4664,7 +4664,11 @@ public final class Equipment extends PObject implements Serializable, EquipmentC
 	{
 		if (isWeapon())
 		{
-			return getExpandedWeaponProf(aPC).getName();
+			WeaponProf wp = getExpandedWeaponProf(aPC);
+			if (wp != null)
+			{
+				return wp.getName();
+			}
 		}
 		if (profName == null || profName.length() == 0)
 		{
