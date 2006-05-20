@@ -907,14 +907,14 @@ final class PCGVer2Creator implements IOConstants
 				buffer.append(aClass.getHitPoint(lvl).toString());
 				appendSpecials(buffer, specials.get(aClass.getKeyName() + TAG_SAVE + lvl), TAG_SAVES, TAG_SAVE, lvl);
 				appendSpecials(buffer, specials.get(aClass.getKeyName() + TAG_SPECIALTY + lvl), TAG_SPECIALTIES,
-				    TAG_SPECIALTY, lvl);
+					TAG_SPECIALTY, lvl);
 				appendSpecials(buffer, specials.get(aClass.getKeyName() + TAG_SA + lvl), TAG_SPECIALABILITIES, TAG_SA,
-				    lvl);
+					lvl);
 
 				if (lvl == 0)
 				{
 					appendSpecials(buffer, specials.get(aClass.getKeyName() + TAG_SA + (lvl - 1)),
-					    TAG_SPECIALABILITIES, TAG_SA, -1);
+						TAG_SPECIALABILITIES, TAG_SA, -1);
 				}
 
 				//
@@ -1831,10 +1831,10 @@ final class PCGVer2Creator implements IOConstants
 		if (SettingsHandler.getSaveOutputSheetWithPC())
 		{
 			buffer.append(TAG_HTMLOUTPUTSHEET).append(':');
-			buffer.append(EntityEncoder.encode(SettingsHandler.getSelectedCharacterHTMLOutputSheet(aPC)));
+			buffer.append(EntityEncoder.encode(SettingsHandler.getSelectedCharacterHTMLOutputSheet(null)));
 			buffer.append(LINE_SEP);
 			buffer.append(TAG_PDFOUTPUTSHEET).append(':');
-			buffer.append(EntityEncoder.encode(SettingsHandler.getSelectedCharacterPDFOutputSheet(aPC)));
+			buffer.append(EntityEncoder.encode(SettingsHandler.getSelectedCharacterPDFOutputSheet(null)));
 			buffer.append(LINE_SEP);
 		}
 	}
@@ -2127,7 +2127,7 @@ final class PCGVer2Creator implements IOConstants
 				}
 				buffer.append(LINE_SEP);
 			}
-			
+
 		}
 	}
 
@@ -2166,8 +2166,8 @@ final class PCGVer2Creator implements IOConstants
 					spellKey = aCharacterSpell.getOwner().getSpellKey();
 
 					if (aSpellInfo.getBook().equals(Globals.getDefaultSpellBook())
-					    && aClass.isAutoKnownSpell(aCharacterSpell.getSpell().getKeyName(),
-					        aCharacterSpell.getSpell().getFirstLevelForKey(spellKey, aPC), aPC) && aPC.getAutoSpells())
+						&& aClass.isAutoKnownSpell(aCharacterSpell.getSpell().getKeyName(),
+							aCharacterSpell.getSpell().getFirstLevelForKey(spellKey, aPC), aPC) && aPC.getAutoSpells())
 					{
 						continue;
 					}
@@ -2737,7 +2737,7 @@ final class PCGVer2Creator implements IOConstants
 					for (int j = 0; j < la.getAssociatedCount(true); ++j)
 					{
 						buffer.append('|').append(TAG_CHOICE).append(':').append(EntityEncoder.encode(
-						        la.getAssociated(j, true)));
+								la.getAssociated(j, true)));
 					}
 
 					buffer.append(']');
