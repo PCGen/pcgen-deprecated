@@ -191,7 +191,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 			serial = pc.getSerial();
 			forceRefresh();
 			// Commented out for [ 1461012 ] EquipSet temp bonuses setting
-			// as the currently selected equipset controls if temp mods 
+			// as the currently selected equipset controls if temp mods
 			// are applied or not.
 			//pc.setUseTempMods(true);
 		}
@@ -334,14 +334,14 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 		/* commented out until we fix temp mods, do not delete
 		useTempMods.setSelected(pc.getUseTempMods());
 		*/
-		
+
 		updateTempModDisabledWarning();
 
 		needsUpdate = false;
 	}
 
 	/**
-	 * Update the warning message displayed if temporary 
+	 * Update the warning message displayed if temporary
 	 * mods are turned off in the equipset.
 	 */
 	private void updateTempModDisabledWarning()
@@ -725,7 +725,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 		public void singleClickEvent() {
 			// Do Nothing
 		}
-		
+
 		public void doubleClickEvent()
 		{
 			applyBonusButton();
@@ -741,7 +741,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 		public void singleClickEvent() {
 			// Do Nothing
 		}
-		
+
 		public void doubleClickEvent()
 		{
 			removeBonusButton();
@@ -1038,7 +1038,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 					for (Iterator iter = aBonus.getPrereqList().iterator(); iter.hasNext();)
 					{
 						Prerequisite prereq = (Prerequisite) iter.next();
-						if (!prereq.getKind().equalsIgnoreCase("apply"))
+						if (prereq.getKind() == null || !prereq.getKind().equalsIgnoreCase("apply"))
 						{
 							newB.addPreReq(new Prerequisite(prereq));
 						}
@@ -1446,7 +1446,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 		removeBonusButton = new JButton("Remove");
 		removeBonusButton.setEnabled(false);
 
-		tempModsDisabledWarning = new JLabel("");		
+		tempModsDisabledWarning = new JLabel("");
 		/* commented out until we fix temp mods, do not delete
 		iPanel.add(useTempMods, BorderLayout.WEST);
 		*/
@@ -1672,7 +1672,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 		}
 
 		/**
-		 * Get the level 
+		 * Get the level
 		 * @return level
 		 */
 		public int getLevel()
@@ -2611,7 +2611,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 							for (Iterator iter = aBonus.getPrereqList().iterator(); iter.hasNext() && passesApply;)
 							{
 								Prerequisite element = (Prerequisite) iter.next();
-								if (element.getKind().equalsIgnoreCase("APPLY"))
+								if (element.getKind() != null && element.getKind().equalsIgnoreCase("APPLY"))
 								{
 									if (!PrereqHandler.passes(element, aEq, pc))
 										passesApply = false;
