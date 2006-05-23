@@ -33,6 +33,7 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
             $ver    = substr($title, $found);
             $verNum = split("\.", $ver);
             $isProd = false;
+            $isSnapshot = false;
             if (count($verNum > 1))
             {
               if ($verNum[1] % 2 == 0)
@@ -43,9 +44,13 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
                 }
               }
             }
+            if (strpos(strtolower($title), "snapshot") != 0)
+            {
+            	$isSnapshot = true;
+            }
 
 
-			if (($outCount < $maxRecs) && (($viewProd && $isProd) || (!$viewProd && !$isProd)))
+			if (($outCount < $maxRecs) && !$isSnapshot && (($viewProd && $isProd) || (!$viewProd && !$isProd)))
 			{
               $pub    = date("Y-m-d", strtotime($item['pubdate']));
 
