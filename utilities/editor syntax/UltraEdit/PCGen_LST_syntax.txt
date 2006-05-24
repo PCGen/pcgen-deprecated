@@ -353,6 +353,7 @@ Illusion
 Incantation
 INITIATIVE
 Innate
+Insight
 INT
 Incorporeal
 Instantaneous
