@@ -19,4 +19,28 @@
     <preGoal name="maven-javadoc-plugin:report">
     	<attainGoal name="javacc:javacc-generate"/>
     </preGoal>
+    
+    
+    <goal name="pcgen:package-clean">
+    	<ant:mkdir dir="${basedir}/target/distributions" />
+    	<ant:delete>
+    		<fileset dir="${basedir}/target/distributions" includes="*.zip, *.tgz"/>
+    	</ant:delete>
+    </goal>
+    
+    <goal name="pcgen:package" prereqs="pcgen:package-clean">
+    	<ant:mkdir dir="${basedir}/target/distributions" />
+    	
+    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-all.zip" 
+    		includes="pcgen.jar, pcgen.bat, pcgen.sh, pcgen_low_mem.bat, plugins/**, data/**, outputsheets/**, docs/**, system/**, lib/**" 
+    		excludes="lib/emma/**, lib/test/**" />
+    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-code.zip" 
+    		includes="pcgen.jar, pcgen.bat, pcgen.sh, pcgen_low_mem.bat, plugins/**" />
+    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-content.zip" 
+    		includes="data/**, outputsheets/**, docs/**, system/**" />
+    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-libraries.zip" 
+    		includes="lib/**" 
+    		excludes="lib/emma/**, lib/test/**"/>
+    </goal>
+    
 </project>    
