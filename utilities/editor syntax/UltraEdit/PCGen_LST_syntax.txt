@@ -256,6 +256,7 @@ Advanced
 Affecting
 Air
 ALL
+Amulet
 Ammunition
 ANYPC
 Arcane
@@ -266,11 +267,15 @@ BASECOST
 Ballistic
 Base
 BaseMaterial
+Belt
 Bludgeoning
+Boot
 Bow
+Bracer
 Buckler
 Burrow
 Calling
+Cape
 CHA
 Chaotic
 Charisma
@@ -316,6 +321,7 @@ EquipmentCircumstance
 Evil
 Evocation
 Exotic
+Eyegear
 Fear
 Fighter
 Figment
@@ -330,12 +336,14 @@ Fortitude partial
 FX
 General
 Glamer
+Glove
 Good
 Goods
 GrenadeLauncher
 GT
 GTEQ
 harmless
+Headgear
 Healing
 Heavy
 HMG
@@ -405,6 +413,7 @@ Reflex negates
 Reflex partial
 Resistance
 Ring
+Robe
 RocketLauncher
 Scroll
 SECONDARY
@@ -412,6 +421,7 @@ SECONDARYATTACKS
 See text
 Shadow
 Shield
+Shirt
 SHORTRANGE
 Simple
 Slashing
@@ -437,6 +447,7 @@ Tower
 Transmutation
 TwoHanded
 Universal
+Vial
 Walk
 Wand
 Water
