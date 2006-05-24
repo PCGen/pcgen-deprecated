@@ -89,6 +89,22 @@ public class VariableProcessorEq extends VariableProcessor
 						Logging.debugPrint(jepIndent + "internal variable for: '" + element + "' = " + d);
 					}
 				}
+				else
+				{
+					try
+					{
+						d = new Float(foo.substring(1));
+						if (!d.isNaN())
+						{
+							retVal = d;
+							Logging.debugPrint(jepIndent + "internal variable for: '" + element + "' = " + d);
+						}
+					}
+					catch (NumberFormatException nfe)
+					{
+						// What we got back was not a number
+					}
+				}
 			}
 		}
 

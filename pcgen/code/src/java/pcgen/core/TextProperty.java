@@ -38,7 +38,7 @@ public abstract class TextProperty extends PObject implements Serializable, Comp
 	/** Constructor */
 	public TextProperty()
 	{
-	    // Empty Constructor
+		// Empty Constructor
 	}
 
 	/**
@@ -119,9 +119,9 @@ public abstract class TextProperty extends PObject implements Serializable, Comp
 		}
 		return text;
 	}
-	
+
 	/**
-	 * Parse the property, replace the %CHOICE 
+	 * Parse the property, replace the %CHOICE
 	 * @param text
 	 * @return Parsed property, with replaced the %CHOICE
 	 */
@@ -146,23 +146,23 @@ public abstract class TextProperty extends PObject implements Serializable, Comp
 	 * @param pc
 	 * @return Get the parsed text (%CHOICEs replaced)
 	 */
-	public String getParsedText(final PlayerCharacter pc)
+	public String getParsedText(final PlayerCharacter pc, final VariableContainer anOwner)
 	{
-		return getParsedText(pc, parse(getText()));
+		return getParsedText(pc, parse(getText()), anOwner);
 	}
 
-	protected String getParsedText(final PlayerCharacter pc, final String fullDesc)
+	protected String getParsedText(final PlayerCharacter pc, final String fullDesc, final VariableContainer anOwner)
 	{
-	    if (fullDesc==null || fullDesc.equals("")) {
-	        return "";
-	    }
+		if (fullDesc==null || fullDesc.equals("")) {
+			return "";
+		}
 
 		String retString = "";
 		if(pcQualifiesFor(pc))
 		{
-		    // full desc will look like "description|var1|var2|var3|..."
+			// full desc will look like "description|var1|var2|var3|..."
 			StringTokenizer varTok = new StringTokenizer(fullDesc, "|");
-		    // take the description as the first token
+			// take the description as the first token
 			final String description = varTok.nextToken();
 			if(varTok.hasMoreTokens()) {
 				// Create an array of all of the variables
@@ -175,10 +175,11 @@ public abstract class TextProperty extends PObject implements Serializable, Comp
 					for (int j = 0; j < varValue.length; ++j)
 					{
 						final String varToken = varTok.nextToken();
-						final int value = pc.getVariable(varToken, true, true, "", "", 0).intValue();
+//						final int value = pc.getVariable(varToken, true, true, "", "", 0).intValue();
+						final int value = anOwner.getVariableValue(varToken, "", pc).intValue();
 						if (value != 0)
 						{
-						    atLeastOneNonZero = true;
+							atLeastOneNonZero = true;
 						}
 						varValue[j] = value;
 					}
@@ -213,7 +214,7 @@ public abstract class TextProperty extends PObject implements Serializable, Comp
 					retString = newAbility.toString();
 				}
 				else {
-				    retString = "";
+					retString = "";
 				}
 			}
 			else {
