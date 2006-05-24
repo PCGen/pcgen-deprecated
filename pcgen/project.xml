@@ -17,8 +17,8 @@
     <shortDescription>PCGen PRG character generator.</shortDescription>
 
     <repository>
-        <connection>scm:svn:https://svn.sourceforge.net/svnroot/pcgen/Trunk/pcgen</connection>
-        <url>https://svn.sourceforge.net/svnroot/pcgen/Trunk/pcgen</url>
+        <connection>scm:svn:https://svn.sourceforge.net/svnroot/pcgen/Branches/5.10.x/pcgen</connection>
+        <url>https://svn.sourceforge.net/svnroot/pcgen/Branches/5.10.x/pcgen</url>
     </repository>
 
     <developers>
