@@ -493,7 +493,7 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 			}
 		}
 
-		if (!pcHasIt && (anAbility != null))
+		if ((anAbility != null))
 		{
 			if (anAbility.getCost(pc) > pc.getFeats())
 			{
@@ -552,7 +552,7 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 		public void singleClickEvent() {
 			// Do Nothing
 		}
-		
+
 		public void doubleClickEvent()
 		{
 			// We run this after the event has been processed so that
@@ -576,7 +576,7 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 		public void singleClickEvent() {
 			// Do Nothing
 		}
-		
+
 		public void doubleClickEvent()
 		{
 			// We run this after the event has been processed so that
@@ -1260,11 +1260,11 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 	}
 
 	/**
-	 * Build the panel with the controls to add a spell to a 
+	 * Build the panel with the controls to add a spell to a
 	 * prepared list.
-	 * @param button 
-	 * @param title 
-	 *  
+	 * @param button
+	 * @param title
+	 *
 	 * @return The panel.
 	 */
 	private JPanel buildModSpellPanel(JButton button, String title)
@@ -1280,11 +1280,11 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 	}
 
 	/**
-	 * Build the panel with the controls to add a spell to a 
+	 * Build the panel with the controls to add a spell to a
 	 * prepared list.
-	 * @param button 
-	 * @param title 
-	 *  
+	 * @param button
+	 * @param title
+	 *
 	 * @return The panel.
 	 */
 	private JPanel buildDelSpellPanel(JButton button, String title)
@@ -1477,7 +1477,7 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 		private static final int COL_DESCRIPTION = 6;
 		private static final int COL_CHOICES = 7;
 		private static final int COL_SRC = 8;
-		
+
 		private static final int MODEL_TYPE_AVAIL = 0;
 		private static final int MODEL_TYPE_SELECTED = 1;
 
@@ -1594,7 +1594,7 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 		{
 			PObjectNode fn = (PObjectNode) node;
 			Object retVal = null;
-			
+
 			Ability feat = null;
 			Object temp = fn.getItem();
 			if (temp instanceof Ability)
@@ -1673,7 +1673,7 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 
 			return retVal;
 		}
-	
+
 		/**
 		 * There must be a root object, though it can be hidden
 		 * to make it's existence basically a convenient way to
@@ -1820,7 +1820,7 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 
 					//Does anyone know why we don't call
 					//aFN.setIsValid(aFeat.passesPreReqToGain()) here?
-					if (qFilter == null || 
+					if (qFilter == null ||
 							( aFeat.getName().toLowerCase().indexOf(qFilter) >= 0 ||
 							  aFeat.getType().toLowerCase().indexOf(qFilter) >= 0 ))
 					{
@@ -2373,14 +2373,14 @@ public final class InfoFeats extends FilterAdapterPanel implements CharacterInfo
 		private boolean getColumnViewOption(String colName, boolean defaultVal) {
 			return SettingsHandler.getPCGenOption("InfoFeats.viewcol." + colName, defaultVal);
 		}
-		
+
 		private void setColumnViewOption(String colName, boolean val) {
 			SettingsHandler.setPCGenOption("InfoFeats.viewcol." + colName, val);
 		}
 
 		public void resetMColumn(int col, TableColumn column) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	}
 
