@@ -215,7 +215,7 @@
     </reports>
 
     <build>
-        <nagEmailAddress>jdempsey@acslink.net.au</nagEmailAddress>
+        <nagEmailAddress>pcgen-devel@lists.sourceforge.net</nagEmailAddress>
         <sourceDirectory>code/src/java</sourceDirectory>
         <unitTestSourceDirectory>code/src/test</unitTestSourceDirectory>
         <unitTest>
