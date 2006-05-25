@@ -99,7 +99,7 @@ public final class FeatLoader extends AbilityLoader
 				"\tOUTPUTNAME:Weapon Proficiency\tTYPE:General\tCATEGORY:FEAT" +
 				"\tVISIBLE:NO\tMULT:YES\tSTACK:YES\tDESC:You attack with this" +
 				" specific weapon normally, non-proficiency incurs a -4 to"    +
-			        " hit penalty.\tSOURCE:PCGen Internal";
+					" hit penalty.\tSOURCE:PCGen Internal";
 			try
 			{
 				parseLine(null, aLine, firstSource);
@@ -127,6 +127,10 @@ public final class FeatLoader extends AbilityLoader
 	 */
 	protected void finishObject(PObject target)
 	{
+		if (target == null)
+		{
+			return;
+		}
 		if (includeObject(target))
 		{
 			final Ability anAbility = Globals.getAbilityKeyed("FEAT", target.getKeyName());
@@ -145,6 +149,10 @@ public final class FeatLoader extends AbilityLoader
 					}
 				}
 			}
+		}
+		else
+		{
+			excludedObjects.add(target.getKeyName());
 		}
 	}
 }
