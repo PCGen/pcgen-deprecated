@@ -13,6 +13,7 @@ require_once('include/header.php.inc');
 	        <li><a href="https://sourceforge.net/project/project_donations.php?group_id=25576">Donate to PCGen!</a></li>
 	        <li><a href="https://sourceforge.net/projects/pcgen/">Sourceforge Project Page</a></li>
    	        <li><a href="http://pcgen.sourceforge.net/banners/">Our Fantastic Images and Banners</a></li>
+   	        <li><a href="http://sites.gizoogle.com/index2.php?url=http%3A%2F%2Fpcgen.sourceforge.net%2F01_overview.php">PCGen is the Shizzle Nizzle</a></li>
 		</ul>
 
         <h1>PCGen Overview</h1>
