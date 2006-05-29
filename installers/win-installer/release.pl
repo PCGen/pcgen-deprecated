@@ -37,7 +37,7 @@ Readonly my $SEPERATE_ALPHA     => 1;
 # Release version identification
 # ------------------------------------------
 
-Readonly my $VER_NUMBER         => '5100rc1';
+Readonly my $VER_NUMBER         => '5101rc1';
 Readonly my $VER_NUMBER_SUFIX   => '';
 
 Readonly my $RELEASE_NAME       => "pcgen$VER_NUMBER$VER_NUMBER_SUFIX";
@@ -47,17 +47,17 @@ Readonly my $RELEASE_NAME       => "pcgen$VER_NUMBER$VER_NUMBER_SUFIX";
 # ------------------------------------------
 
 # Main folder for the source files
-Readonly my $SRC_BRANCH         => 'D:/CVS/release/5.9.x';
+Readonly my $SRC_BRANCH         => 'D:/CVS/release/5.10.x';
 
 # Release notes
-Readonly my $SRC_RELEASE_NOTES  => "$SRC_BRANCH/pcgen-release-notes-$VER_NUMBER.html";
+Readonly my $SRC_RELEASE_NOTES  => "$SRC_BRANCH/installers/release-notes/pcgen-release-notes-$VER_NUMBER.html";
 
 # Sub folders needed (there are variables for these
 # since they are all part of different repository)
-Readonly my $SRC_PCGEN          => "$SRC_BRANCH/SVN/pcgen";
-Readonly my $SRC_DATA           => "$SRC_BRANCH/SVN/pcgen/data";
-Readonly my $SRC_OUTPUTSHEETS   => "$SRC_BRANCH/SVN/pcgen/outputsheets";
-Readonly my $SRC_DOCS           => "$SRC_BRANCH/SVN/pcgen/docs";
+Readonly my $SRC_PCGEN          => "$SRC_BRANCH/pcgen";
+Readonly my $SRC_DATA           => "$SRC_BRANCH/pcgen/data";
+Readonly my $SRC_OUTPUTSHEETS   => "$SRC_BRANCH/pcgen/outputsheets";
+Readonly my $SRC_DOCS           => "$SRC_BRANCH/pcgen/docs";
 
 Readonly my $SRC_NSIS_LICENCE_FILE
     => 'D:/CVS/release/nsis_dir/win-installer/PCGenLicense.txt';
@@ -413,10 +413,12 @@ else {
 
         other_copies_ref => [
             {   destination         => "$DEST_NSIS_BASE_FOLDER/data",
-                files_to_keep_ref   => [ qr{ [/] customsources [/] }xmsi ],
+                files_to_keep_ref   => [ qr{ [/] customsources [/] }xmsi,
+                                         qr{ [/] my_dataset [/]    }xmsi, ],
             },
             {   destination         => "$DEST_NSIS_OPTION_FOLDER/data",
-                files_to_skip_ref   => [ qr{ [/] customsources [/] }xmsi ],
+                files_to_skip_ref   => [ qr{ [/] customsources [/] }xmsi,
+                                         qr{ [/] my_dataset [/]    }xmsi, ],
             },
         ],
     });

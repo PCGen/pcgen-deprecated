@@ -97,8 +97,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen"
-!define SIMPVER "5100"
-!define APPNAMEANDVERSION "PCGen 5.10.0"
+!define SIMPVER "5101rc1"
+!define APPNAMEANDVERSION "PCGen 5.10.1 RC1"
 !define APPDIR "PCGen${SIMPVER}"
 !define TargetVer "1.4"
 !define OverVer "1.6"
