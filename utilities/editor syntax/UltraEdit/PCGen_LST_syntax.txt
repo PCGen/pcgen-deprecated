@@ -395,6 +395,7 @@ NUMBER
 object
 Pattern
 PC
+Perform
 Permanent
 Personal
 PersonalFirearm
@@ -469,6 +470,7 @@ Yes
 /C5"PRExxx tags"
 PREALIGN
 PREAPPLY
+PREARMORTYPE
 PREATT
 PREBASESIZEEQ
 PREBASESIZEGT
