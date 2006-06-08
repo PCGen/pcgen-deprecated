@@ -58,6 +58,7 @@ import java.util.StringTokenizer;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -1664,10 +1665,11 @@ public final class InfoGear extends FilterAdapterPanel implements CharacterInfoT
 
 	private void initActionListeners()
 	{
-		gold.addFocusListener(new FocusAdapter()
+		gold.setInputVerifier(new InputVerifier()
 			{
-				public void focusLost(FocusEvent evt)
+				public boolean shouldYieldFocus(JComponent input)
 				{
+					boolean valueOk = verify(input);
 					if (gold.getText().length() > 0)
 					{
 						if (pc != null)
@@ -1680,6 +1682,12 @@ public final class InfoGear extends FilterAdapterPanel implements CharacterInfoT
 					{
 						gold.setText(pc.getGold().toString());
 					}
+					return valueOk;
+				}
+				
+				public boolean verify(JComponent input)
+				{
+					return true;
 				}
 			});
 		addComponentListener(new ComponentAdapter()
