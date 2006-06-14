@@ -1669,7 +1669,13 @@ public class PObject implements Cloneable, Serializable, Comparable,
 
 		if (bonusList != null)
 		{
-			retVal.bonusList = (ArrayList) bonusList.clone();
+			retVal.bonusList = new ArrayList();
+			for (Iterator iter = bonusList.iterator(); iter.hasNext();)
+			{
+				BonusObj orig = (BonusObj) iter.next();
+				retVal.bonusList.add(orig.clone());
+				
+			}
 			retVal.ownBonuses();
 		}
 
