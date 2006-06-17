@@ -517,8 +517,10 @@ public final class CustomData
 		bw.newLine();
 		bw.write("#");
 		bw.newLine();
-		bw.write("SOURCELONG:Custom|SOURCESHORT:Custom");
+		bw.write("SOURCELONG:Custom");
 		bw.newLine();
+		bw.write("SOURCESHORT:Custom");
+		bw.newLine();	
 	}
 
 	private static void writeCustomLanguages()
