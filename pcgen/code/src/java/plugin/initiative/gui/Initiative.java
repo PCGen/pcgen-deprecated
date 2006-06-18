@@ -1945,7 +1945,6 @@ public class Initiative extends javax.swing.JPanel
 				    combatantTable.getColumnModel().getColumnIndex("Name"));
 
 			if ((name != null) && (name.length() > 0)
-			    && (tpaneInfo.getSelectedIndex() != tpaneInfo.indexOfTab("Events"))
 			    && (tpaneInfo.indexOfTab(name) >= 0))
 			{
 				tpaneInfo.setSelectedIndex(tpaneInfo.indexOfTab(name));
