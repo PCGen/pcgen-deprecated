@@ -9,7 +9,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.     See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -64,9 +64,6 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 	public static final int         MONKBONUS    = 4;
 	private static final BigDecimal BIG_ONE      = new BigDecimal("1.00");
 	private static String           lastVariable = null;
-	//Note: These are never actually set to a non empty/zero value. Code will be removed after 5.9.7
-//	private static String           loopVariable = "";
-//	private static int              loopValue    = 0;
 
 	// List of Armor Proficiencies
 	private final ArrayList armorProfList = new ArrayList();
@@ -8032,6 +8029,10 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 			}
 			first = false;
 		}
+
+		// karianna bug 1184888
+		adjustMoveRates();
+
 		setDirty(true);
 
 		return inTmpl;
@@ -10451,6 +10452,9 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 
 		setQualifyListStable(false);
 
+        // karianna bug 1184888
+        adjustMoveRates();
+        
 		// re-evaluate non-spellcaster spell lists
 		getSpellList();
 		calcActiveBonuses();
