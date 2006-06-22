@@ -1,7 +1,13 @@
 <project xmlns:maven="jelly:maven" xmlns:j="jelly:core"
     xmlns:ant="jelly:ant" xmlns:u="jelly:util">
 	<goal name="generate-jars">
+		<ant:ant dir="${basedir}" antfile="build.xml" target="scripts">
+			<property name="build.classes.dir" value="${maven.build.dest}"/>
+		</ant:ant>
 		<ant:ant dir="${basedir}" antfile="build.xml" target="build-plugins">
+			<property name="build.classes.dir" value="${maven.build.dest}"/>
+		</ant:ant>
+		<ant:ant dir="${basedir}" antfile="build.xml" target="manifest">
 			<property name="build.classes.dir" value="${maven.build.dest}"/>
 		</ant:ant>
 	</goal>
@@ -29,16 +35,40 @@
     </goal>
     
     <goal name="pcgen:package" prereqs="pcgen:package-clean">
+		<j:new className="java.util.Date" var="timestamp" />
+		<j:new className="java.text.SimpleDateFormat" var="format">
+			<j:arg type="java.lang.String" value="yyyyMMdd.HHmm" />
+		</j:new>
+		<j:invokeStatic className="java.util.TimeZone" method="getTimeZone" var="timezone">
+			<j:arg type="java.lang.String" value="UTC" />
+		</j:invokeStatic>
+		<j:invoke on="${format}" var="formattedDate" method="setTimeZone">
+			<j:arg type="java.util.TimeZone" value="${timezone}" />
+		</j:invoke>
+		<j:invoke on="${format}" var="formattedDate" method="format">
+			<j:arg type="java.util.Date" value="${timestamp}" />
+		</j:invoke>
+
     	<ant:mkdir dir="${basedir}/target/distributions" />
     	
-    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-all.zip" 
-    		includes="pcgen.jar, pcgen.bat, pcgen.sh, pcgen_low_mem.bat, plugins/**, data/**, outputsheets/**, docs/**, system/**, lib/**" 
-    		excludes="lib/emma/**, lib/test/**" />
-    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-code.zip" 
-    		includes="pcgen.jar, pcgen.bat, pcgen.sh, pcgen_low_mem.bat, plugins/**" />
-    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-content.zip" 
-    		includes="data/**, outputsheets/**, docs/**, system/**" />
-    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-libraries.zip" 
+    	<ant:zip destfile="target/distributions/pcgen-5.10.x-all-no-libs-${formattedDate}.zip">
+    	  <fileset dir="${basedir}/target">
+		    <include name="pcgen.jar"/>
+		  </fileset>
+    	  <fileset dir="${basedir}/code/bin">
+		    <include name="pcgen.sh"/>
+		    <include name="pcgen.bat"/>
+		    <include name="pcgen_low_mem.bat"/>
+		  </fileset>
+		  <fileset dir="${basedir}" >
+		    <include name="plugins/**"/>
+		    <include name="data/**"/>
+		    <include name="outputsheets/**"/>
+		    <include name="docs/**"/>
+		    <include name="system/**"/>
+		  </fileset>
+    	</ant:zip> 
+    	<ant:zip basedir="${basedir}" destfile="target/distributions/pcgen-5.10.x-libraries-${formattedDate}.zip" 
     		includes="lib/**" 
     		excludes="lib/emma/**, lib/test/**"/>
     </goal>
