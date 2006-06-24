@@ -517,9 +517,7 @@ public final class CustomData
 		bw.newLine();
 		bw.write("#");
 		bw.newLine();
-		bw.write("SOURCELONG:Custom");
-		bw.newLine();
-		bw.write("SOURCESHORT:Custom");
+		bw.write("SOURCELONG:Custom\tSOURCESHORT:Custom");
 		bw.newLine();	
 	}
 
