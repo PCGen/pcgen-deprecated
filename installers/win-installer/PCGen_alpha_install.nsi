@@ -34,8 +34,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen Alpha Source"
-!define SIMPVER "5101rc1"
-!define APPNAMEANDVERSION "PCGen 5.10.1 RC1 Alpha Source"
+!define SIMPVER "5101rc2"
+!define APPNAMEANDVERSION "PCGen 5.10.1 RC2 Alpha Source"
 !define APPDIR "PCGen${SIMPVER}"
 !define OutName "pcgen${SIMPVER}_alpha_win_install"
 ;!define OutDir "C:\Documents and Settings\Lisa\Desktop"
