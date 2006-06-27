@@ -19,6 +19,7 @@ require_once('include/header.php.inc');
             <li><a href="http://groups.yahoo.com/group/pcgenview">PCGenView</a> - Group for Palm program to display the PCGen characters</li>
             <li><a href="http://groups.yahoo.com/group/PCGScry/">PCGScry</a> - Group for Pocket PC program to display the PCGen characters</li>
             <li><a href="http://groups.yahoo.com/group/pcgen-xml">PCGen-XML</a> - Group for design of future XML schema for PCGen</li>
+            <li><a href="http://groups.yahoo.com/group/pcgen_international">PCGen International</a> - Group for Development of non-English Content for PCGen</li>
         </ul>
 
         <p>It is important to send your question to the appropriate mailing list. For example, an issue pertaining to a list file design problem should be directed to the PCGenListFileHelp list, not the PCGenView list.</p>
