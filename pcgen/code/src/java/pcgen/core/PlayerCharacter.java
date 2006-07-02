@@ -13180,7 +13180,7 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 				continue;
 			}
 
-			processBonus(aBonus);
+			processBonus(aBonus, new ArrayList());
 		}
 	}
 
@@ -14198,8 +14198,16 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 	 * - Once recursed in, it adds the computed bonus to activeBonusMap
 	 * @param aBonus
 	 */
-	private void processBonus(final BonusObj aBonus)
+	private void processBonus(final BonusObj aBonus, final ArrayList prevProcessed)
 	{
+		// Make sure we don't get into an infinite loop - can occur due to LST coding or best guess dependancy mapping 
+		if (prevProcessed.contains(aBonus))
+		{
+			Logging.debugPrint("Ignoring bonus loop for " + aBonus + " as it was already processed. Bonuses already processed: " + prevProcessed);
+			return;
+		}
+		prevProcessed.add(aBonus);
+
 		final List aList = new ArrayList();
 
 		// Go through all bonuses and check to see if they add to
@@ -14226,7 +14234,7 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 			final BonusObj newBonus = (BonusObj) ab.next();
 
 			// recursivly call itself
-			processBonus(newBonus);
+			processBonus(newBonus, prevProcessed);
 		}
 
 		// Double check that it hasn't been processed yet
@@ -14242,6 +14250,7 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 
 		if (anObj == null)
 		{
+			prevProcessed.remove(aBonus);
 			return;
 		}
 
@@ -14253,6 +14262,7 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 			setActiveBonusStack(iBonus, bString, getActiveBonusMap());
 			Logging.debugPrint("BONUS: " + anObj.getName() + " : " + iBonus + " : " + bString);
 		}
+		prevProcessed.remove(aBonus);
 	}
 
 	private boolean qualifiesForFeat(final Ability aFeat)
