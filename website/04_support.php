@@ -10,7 +10,7 @@ require_once('include/header.php.inc');
 
         <h2>Online Documentation</h2>
 
-        <p>Before asking someone for help, please read <a href="http://www.legolas.org/pcgen/docs/" title="PCGen Documentation">the documentation</a> (this documentation is also included in the full PCGen download archive). There is a very strong chance that your question has already been asked and answered, and that the answer is waiting for you in the PCGen docs. Imagine the pride you will feel at being able to solve your own problem.</p>
+        <p>Before asking someone for help, please read <a href="autobuilds/pcgen-docs/" title="PCGen Documentation">the documentation</a> (this documentation is also included in the full PCGen download archive). There is a very strong chance that your question has already been asked and answered, and that the answer is waiting for you in the PCGen docs. Imagine the pride you will feel at being able to solve your own problem.</p>
 
         <h2>Technical Support Overview</h2>
 
