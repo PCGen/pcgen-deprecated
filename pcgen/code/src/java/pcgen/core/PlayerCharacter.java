@@ -7891,36 +7891,43 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 			return null;
 		}
 
-		for (Iterator i = inTemplate.getLevelMods().iterator(); i.hasNext(); )
+		// If we are importing these levels will have been saved with the
+		// character so don't apply them again.
+		if ( ! isImporting() )
 		{
-			String modString = (String)i.next();
-			StringTokenizer tok = new StringTokenizer(modString, "|");
-			while (tok.hasMoreTokens())
+			for (Iterator i = inTemplate.getLevelMods().iterator(); i.hasNext(); )
 			{
-				final String colString = tok.nextToken();
-				if (colString.startsWith("ADD"))
+				String modString = (String) i.next();
+				StringTokenizer tok = new StringTokenizer(modString, "|");
+				while (tok.hasMoreTokens())
 				{
-					final String className = tok.nextToken();
-					final int level = getVariableValue(tok.nextToken(), "").intValue();
+					final String colString = tok.nextToken();
+					if (colString.startsWith("ADD"))
+					{
+						final String className = tok.nextToken();
+						final int level = getVariableValue(tok.nextToken(), "").
+							intValue();
 
-					PCClass aClass = Globals.getClassNamed(className);
+						PCClass aClass = Globals.getClassNamed(className);
 
-					boolean tempShowHP = SettingsHandler.getShowHPDialogAtLevelUp();
-					SettingsHandler.setShowHPDialogAtLevelUp(false);
-					boolean tempFeatDlg = SettingsHandler.getShowFeatDialogAtLevelUp();
-					SettingsHandler.setShowFeatDialogAtLevelUp(false);
-					int tempChoicePref = SettingsHandler.getSingleChoicePreference();
-					SettingsHandler.setSingleChoicePreference(Constants.CHOOSER_SINGLECHOICEMETHOD_SELECTEXIT);
+						boolean tempShowHP = SettingsHandler.getShowHPDialogAtLevelUp();
+						SettingsHandler.setShowHPDialogAtLevelUp(false);
+						boolean tempFeatDlg = SettingsHandler.
+							getShowFeatDialogAtLevelUp();
+						SettingsHandler.setShowFeatDialogAtLevelUp(false);
+						int tempChoicePref = SettingsHandler.getSingleChoicePreference();
+						SettingsHandler.setSingleChoicePreference(Constants.
+							CHOOSER_SINGLECHOICEMETHOD_SELECTEXIT);
 
-					incrementClassLevel(level, aClass, true, true);
+						incrementClassLevel(level, aClass, true, true);
 
-					SettingsHandler.setSingleChoicePreference(tempChoicePref);
-					SettingsHandler.setShowFeatDialogAtLevelUp(tempFeatDlg);
-					SettingsHandler.setShowHPDialogAtLevelUp(tempShowHP);
+						SettingsHandler.setSingleChoicePreference(tempChoicePref);
+						SettingsHandler.setShowFeatDialogAtLevelUp(tempFeatDlg);
+						SettingsHandler.setShowHPDialogAtLevelUp(tempShowHP);
+					}
 				}
 			}
 		}
-
 		this.setArmorProfListStable(false);
 		List l = inTmpl.getSafeListFor(ListKey.KITS);
 		for (int i1 = 0; i1 < l.size(); i1++)
