@@ -37,7 +37,7 @@ Readonly my $SEPERATE_ALPHA     => 1;
 # Release version identification
 # ------------------------------------------
 
-Readonly my $VER_NUMBER         => '5101rc2';
+Readonly my $VER_NUMBER         => '5101';
 Readonly my $VER_NUMBER_SUFIX   => '';
 
 Readonly my $RELEASE_NAME       => "pcgen$VER_NUMBER$VER_NUMBER_SUFIX";

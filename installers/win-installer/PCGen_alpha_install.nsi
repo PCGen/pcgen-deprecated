@@ -34,8 +34,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen Alpha Source"
-!define SIMPVER "5101rc2"
-!define APPNAMEANDVERSION "PCGen 5.10.1 RC2 Alpha Source"
+!define SIMPVER "5101"
+!define APPNAMEANDVERSION "PCGen 5.10.1 Alpha Source"
 !define APPDIR "PCGen${SIMPVER}"
 !define OutName "pcgen${SIMPVER}_alpha_win_install"
 ;!define OutDir "C:\Documents and Settings\Lisa\Desktop"
@@ -150,6 +150,13 @@ SubSection /e "Alpha"
 
 	SectionEnd
 
+	Section "Fantasy Community Council"
+
+	SetOutPath "$INSTDIR\fantasycommunitycouncil\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\fantasycommunitycouncil\*.*"
+
+	SectionEnd
+
 	Section "Fantasy Flight Games"
 
 	SetOutPath "$INSTDIR\fantasyflightgames\"
@@ -178,6 +185,13 @@ SubSection /e "Alpha"
 
 	SectionEnd
 
+	Section "Mythic Dreams Studios"
+
+	SetOutPath "$INSTDIR\mythicdreamsstudios\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\mythicdreamsstudios\*.*"
+
+	SectionEnd
+
 	Section "Necromancer Games"
 
 	SetOutPath "$INSTDIR\necromancergames\"
@@ -189,6 +203,13 @@ SubSection /e "Alpha"
 
 	SetOutPath "$INSTDIR\pandahead\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\pandahead\*.*"
+
+	SectionEnd
+
+	Section "Paradigm Concepts"
+
+	SetOutPath "$INSTDIR\paradigmconcepts\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\paradigmconcepts\*.*"
 
 	SectionEnd
 
@@ -213,10 +234,17 @@ SubSection /e "Alpha"
 
 	SectionEnd
 
-	Section "Soverign Press"
+	Section "Sovereign Press"
 
 	SetOutPath "$INSTDIR\sovereignpress\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\sovereignpress\*.*"
+
+	SectionEnd
+
+	Section "The Game Mechanics"
+
+	SetOutPath "$INSTDIR\thegamemechanics\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\thegamemechanics\*.*"
 
 	SectionEnd
 

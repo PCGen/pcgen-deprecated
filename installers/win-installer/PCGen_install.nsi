@@ -97,8 +97,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen"
-!define SIMPVER "5101rc2"
-!define APPNAMEANDVERSION "PCGen 5.10.1 RC2"
+!define SIMPVER "5101"
+!define APPNAMEANDVERSION "PCGen 5.10.1"
 !define APPDIR "PCGen${SIMPVER}"
 !define TargetVer "1.4"
 !define OverVer "1.6"
@@ -258,6 +258,15 @@ SubSection "d20OGL"
 
 	SectionEnd
 
+	Section "Alea Publishing Group"
+
+	SectionIn 1 2
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\aleapublishinggroup\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\aleapublishinggroup\*.*"
+
+	SectionEnd
+
 	Section "Avalanch Press"
 
 	SectionIn 1 2
@@ -303,7 +312,7 @@ SubSection "d20OGL"
 
 	SectionEnd
 
-	Section "Fantasy Community Council"
+	Section "Dog House Rules"
 
 	SectionIn 1 2
 
@@ -312,7 +321,7 @@ SubSection "d20OGL"
 
 	SectionEnd
 
-	Section "Dog House Rules"
+	Section "Fantasy Community Council"
 
 	SectionIn 1 2
 
@@ -327,6 +336,15 @@ SubSection "d20OGL"
 
 	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\fantasyflightgames\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\fantasyflightgames\*.*"
+
+	SectionEnd
+
+	Section "Gallantry Productions"
+
+	SectionIn 1 2
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\gallantryproductions\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\gallantryproductions\*.*"
 
 	SectionEnd
 
@@ -375,12 +393,48 @@ SubSection "d20OGL"
 
 	SectionEnd
 
+	Section "Necromancer Games"
+
+	SectionIn 1 2 3 6
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\necromancergames\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\necromancergames\*.*"
+
+	SectionEnd
+
+	Section "PCGen OGL"
+
+	SectionIn 1 2 3 6
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\pcgen\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\pcgen\*.*"
+
+	SectionEnd
+	
 	Section "RPGObjects"
 
 	SectionIn 1 2
 
 	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\rpgobjects\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\rpgobjects\*.*"
+
+	SectionEnd
+	
+	Section "Silven Publishing"
+
+	SectionIn 1 2
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\silvenpublishing\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\silvenpublishing\*.*"
+
+	SectionEnd
+	
+	Section "Silverthorne Games"
+
+	SectionIn 1 2
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\silverthornegames\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\silverthornegames\*.*"
 
 	SectionEnd
 
@@ -401,6 +455,15 @@ SubSection "d20OGL"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\srd35\*.*"
 
 	SectionEnd
+	
+	Section "ST Cooley Publishing"
+
+	SectionIn 1 2
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\stcooleypublishing\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\stcooleypublishing\*.*"
+
+	SectionEnd
 
 	Section "Sword and Sorcery Studios"
 
@@ -408,6 +471,15 @@ SubSection "d20OGL"
 
 	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\swordandsorcerystudios\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\swordandsorcerystudios\*.*"
+
+	SectionEnd
+	
+	Section "Swords Edge Publishing"
+
+	SectionIn 1 2
+
+	SetOutPath "$INSTDIR\${APPDIR}\data\d20ogl\swordsedgepublishing\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\d20ogl\swordsedgepublishing\*.*"
 
 	SectionEnd
 
@@ -659,7 +731,7 @@ SubSection /e "PlugIns" Section3
 
 	SectionEnd
 
-	Section "Optionnal Plugins"
+	Section "Optional Plugins"
 
 	SectionIn 1 2 3
 	SetOutPath "$INSTDIR\${APPDIR}\plugins"
