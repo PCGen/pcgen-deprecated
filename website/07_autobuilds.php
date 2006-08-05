@@ -19,7 +19,7 @@ require_once('include/header.php.inc');
         Note: the files are date stamped so the newer ones are further down the list.</p>
         <ul>
           <li><a href="http://pcgen.sourceforge.net/autobuilds/">Autobuild report</a>
-          <li><a href="https://sourceforge.net/project/showfiles.php?group_id=25576&package_id=191558&release_id=419203">Download Autobuild</a>
+          <li><a href="http://pcgen.sourceforge.net/autobuilds/download.html">Download Autobuild</a>
         </ul>
 
         <h2>PCGen Production Autobuilds (5.10.x)</h2>
