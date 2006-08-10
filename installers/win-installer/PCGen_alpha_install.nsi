@@ -1,13 +1,13 @@
-; Current Ver: $Revision: 1.15 $
-; Last Editor: $Author: ericbeaudoin $
-; Last Edited: $Date: 2006/02/25 19:39:22 $
+; Current Ver: $Revision$
+; Last Editor: $Author$
+; Last Edited: $Date$
 ;
 ; This script is licensed under the following license
 
 
 
 ; Script Created with Venis IX 2.2.3	http://www.spaceblue.com/venis/info.php (recomended)
-; 										NSIS 2.04				http://nsis.sourceforge.net
+; NSIS 2.04				http://nsis.sourceforge.net
 
 
 
@@ -34,8 +34,8 @@
 ; Begin Script ----------------------------------------------------------------------------
 ; Define constants
 !define APPNAME "PCGen Alpha Source"
-!define SIMPVER "5100rc1"
-!define APPNAMEANDVERSION "PCGen 5.10.0 RC1 Alpha Source"
+!define SIMPVER "5101"
+!define APPNAMEANDVERSION "PCGen 5.10.1 Alpha Source"
 !define APPDIR "PCGen${SIMPVER}"
 !define OutName "pcgen${SIMPVER}_alpha_win_install"
 ;!define OutDir "C:\Documents and Settings\Lisa\Desktop"
@@ -150,6 +150,13 @@ SubSection /e "Alpha"
 
 	SectionEnd
 
+	Section "Fantasy Community Council"
+
+	SetOutPath "$INSTDIR\fantasycommunitycouncil\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\fantasycommunitycouncil\*.*"
+
+	SectionEnd
+
 	Section "Fantasy Flight Games"
 
 	SetOutPath "$INSTDIR\fantasyflightgames\"
@@ -178,6 +185,13 @@ SubSection /e "Alpha"
 
 	SectionEnd
 
+	Section "Mythic Dreams Studios"
+
+	SetOutPath "$INSTDIR\mythicdreamsstudios\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\mythicdreamsstudios\*.*"
+
+	SectionEnd
+
 	Section "Necromancer Games"
 
 	SetOutPath "$INSTDIR\necromancergames\"
@@ -189,6 +203,13 @@ SubSection /e "Alpha"
 
 	SetOutPath "$INSTDIR\pandahead\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\pandahead\*.*"
+
+	SectionEnd
+
+	Section "Paradigm Concepts"
+
+	SetOutPath "$INSTDIR\paradigmconcepts\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\paradigmconcepts\*.*"
 
 	SectionEnd
 
@@ -213,10 +234,17 @@ SubSection /e "Alpha"
 
 	SectionEnd
 
-	Section "Soverign Press"
+	Section "Sovereign Press"
 
 	SetOutPath "$INSTDIR\sovereignpress\"
 	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\sovereignpress\*.*"
+
+	SectionEnd
+
+	Section "The Game Mechanics"
+
+	SetOutPath "$INSTDIR\thegamemechanics\"
+	File /r "${SrcDir}\PCGen_${SIMPVER}c\data\alpha\thegamemechanics\*.*"
 
 	SectionEnd
 
