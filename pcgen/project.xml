@@ -6,12 +6,15 @@
     <name>PCGen Production Branch</name>
     <currentVersion>5.10.0</currentVersion>
     <organization>
-        <name>PCGen</name>
-        <url>http://pcgen.sourceforge.net/</url>
+        <name>SourceForge</name>
+        <url>http://sourceforge.net/</url>
+        <logo>http://sflogo.sourceforge.net/sflogo.php?group_id=25576&amp;type=2</logo>
     </organization>
     <inceptionYear>2003</inceptionYear>
     <package>pcgen</package>
     <logo>http://pcgen.sourceforge.net/banners/PCGen_FullBanner_486x60.png</logo>
+    <url>http://pcgen.sourceforge.net/</url>
+	<issueTrackingUrl>http://pcgen.sourceforge.net/06_trackers.php</issueTrackingUrl>
 
     <description>PCGen RPG character generator.</description>
     <shortDescription>PCGen RPG character generator.</shortDescription>
@@ -68,7 +71,7 @@
         </developer>
         <developer>
             <name>Stefan Radermacher</name>
-            <id>Zaister</id>
+            <id>zaister</id>
             <email>radermacher@netcologne.de</email>
             <organization>PCGen</organization>
             <roles>
@@ -82,10 +85,18 @@
             <email>jdempsey@users.sourceforge.net</email>
             <organization>PCGen</organization>
             <roles>
-                <role>Code Gibbon</role>
+                <role>Code Silverback</role>
             </roles>
-            <url>http://perrenland.org</url>
+            <url>http://ratik.rpga-apac.com</url>
             <timezone>+10</timezone>
+        </developer>
+        <developer>
+            <name>Devon Jones</name>
+            <id>soulcatcher</id>
+            <roles>
+                <role>Architecture Silverback</role>
+                <role>Code 2nd</role>
+            </roles>
         </developer>
         <developer>
             <name>Aaron Divinsky</name>
@@ -115,6 +126,15 @@
             <name>Tir Gwaith</name>
             <id>tir-gwaith</id>
         </developer>
+        <developer>
+            <name>Jonas Karlsson</name>
+            <id>jujutsunerd</id>
+        </developer>
+        <developer>
+            <name>Terry FitzSimons</name>
+            <id>fitzs</id>
+        </developer>
+        
     </developers>
 
     <dependencies>
@@ -240,10 +260,11 @@
         <!-- <report>maven-pmd-plugin</report> -->
         <!-- <report>maven-simian-plugin</report> -->
         <report>maven-tasklist-plugin</report>
+        <report>pcgen-docs-plugin</report>
     </reports>
 
     <build>
-        <nagEmailAddress>pcgen-devel@lists.sourceforge.net</nagEmailAddress>
+        <nagEmailAddress>jdempsey@users.sourceforge.net</nagEmailAddress>
         <sourceDirectory>code/src/java</sourceDirectory>
         <unitTestSourceDirectory>code/src/test</unitTestSourceDirectory>
         <unitTest>
