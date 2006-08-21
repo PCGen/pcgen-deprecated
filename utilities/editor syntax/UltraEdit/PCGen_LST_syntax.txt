@@ -402,6 +402,7 @@ PersonalFirearm
 Phantasm
 Piercing
 Poison
+Polymorph
 Potion
 Prestige
 PRIMARY
@@ -501,6 +502,7 @@ PREMULT
 PRERACE
 PRERACETYPE
 PRESA
+PRESHIELDPROF
 PRESIZEEQ
 PRESIZEGT
 PRESIZEGTEQ
