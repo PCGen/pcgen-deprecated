@@ -31,13 +31,13 @@ use Fatal qw( mkpath rmtree unlink );
 # ------------------------------------------
 
 Readonly my $CREATE_ZIP         => 1;
-Readonly my $SEPERATE_ALPHA     => 1;
+Readonly my $SEPERATE_ALPHA     => 0;
 
 # ------------------------------------------
 # Release version identification
 # ------------------------------------------
 
-Readonly my $VER_NUMBER         => '5101';
+Readonly my $VER_NUMBER         => '5110';
 Readonly my $VER_NUMBER_SUFIX   => '';
 
 Readonly my $RELEASE_NAME       => "pcgen$VER_NUMBER$VER_NUMBER_SUFIX";
@@ -47,7 +47,7 @@ Readonly my $RELEASE_NAME       => "pcgen$VER_NUMBER$VER_NUMBER_SUFIX";
 # ------------------------------------------
 
 # Main folder for the source files
-Readonly my $SRC_BRANCH         => 'D:/CVS/release/5.10.x';
+Readonly my $SRC_BRANCH         => 'E:/Projects/pcgen-release';
 
 # Release notes
 Readonly my $SRC_RELEASE_NOTES  => "$SRC_BRANCH/installers/release-notes/pcgen-release-notes-$VER_NUMBER.html";
@@ -60,13 +60,13 @@ Readonly my $SRC_OUTPUTSHEETS   => "$SRC_BRANCH/pcgen/outputsheets";
 Readonly my $SRC_DOCS           => "$SRC_BRANCH/pcgen/docs";
 
 Readonly my $SRC_NSIS_LICENCE_FILE
-    => 'D:/CVS/release/nsis_dir/win-installer/PCGenLicense.txt';
+    => "$SRC_BRANCH/installers/win-installer/PCGenLicense.txt";
 
 # ------------------------------------------
 # Destination folder and file information
 # ------------------------------------------
 
-Readonly my $DEST_BASE_FOLDER   => 'D:/CVS/release';
+Readonly my $DEST_BASE_FOLDER   => "$SRC_BRANCH/../release";
 
 Readonly my $DEST_FULL_FOLDER
     => "$DEST_BASE_FOLDER/$RELEASE_NAME" . '_full';
