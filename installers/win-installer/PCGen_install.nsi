@@ -13,15 +13,15 @@
 
 ; Known issues
 ; ver fixed		Problem
-; 1.5			PCGen install directory is not romoved under full uninstall
-; 1.6			Need option to keep character and customsources directory
-; 1.24			PCGen 5.9.3 Alpha
-;			Reviewed and corrected the data sections
-;			The command prompt boxes are now launched minimized from the shortcuts
-;			There is no longer any GMGen notion in PCGen. I've renamed the section
-;				Optionnal Plugins
-; 1.25			Test to see if the commit notification works
-; 1.26			Version for release 5.9.4 Alpha
+; 1.5					PCGen install directory is not romoved under full uninstall
+; 1.6					Need option to keep character and customsources directory
+; 1.24				PCGen 5.9.3 Alpha
+;							Reviewed and corrected the data sections
+;							The command prompt boxes are now launched minimized from the shortcuts
+;							There is no longer any GMGen notion in PCGen. I've renamed the section
+;							Optionnal Plugins
+; 1.25				Test to see if the commit notification works
+; 1.26				Version for release 5.9.4 Alpha
 
 ; Outstanding Issues
 ;		Need file association for .pcg files
@@ -45,28 +45,28 @@
 ;     	Added missing steps in the instructions
 ;     	Corrected a typo with the pcgen-release-notes-${SIMPVER}
 ; 1.10	Version used for pcgen580rc1'
-;		Alpha data sets are now separated
+;				Alpha data sets are now separated
 ; 1.11	Updated registry information, so that their is a PCGen\PCGen ver listing
-;		Removed Alpha data sources from main install, as per SpaceMonkey
+;				Removed Alpha data sources from main install, as per SpaceMonkey
 ; 1.12	Fixed the build instructions that I broke, testing with pcgen580rc2 to
-;		ensure that these really work (glasswalkertheurge)
-;		verified seperated alpha install
+;				ensure that these really work (glasswalkertheurge)
+;				verified seperated alpha install
 ; 1.13  RC3 Release
 ;       Added Behemoth3 in d20ogl (SpaceMonkey)
 ; 1.16  RC4 Release (SpaceMonkey)
 ;       Added !insertmacro MUI_PAGE_DIRECTORY (I though I had already fixed that...)
 ; 1.17	Changed the OverVer tp "1.6", this will allow users to use Java 1.5 on their
-;		machines, unfortunatly minor rev levels are not tracked, so if some future
-;		1.5.x does not work, I will have to revisit this.  (GlassWalkerTheurge)
+;				machines, unfortunatly minor rev levels are not tracked, so if some future
+;				1.5.x does not work, I will have to revisit this.  (GlassWalkerTheurge)
 
 
 
 ; Instructions for compilation
 ;  1.	Download latest version
 ;  2.	Extract version to ${SrcDir}\PCGen_${SIMPVER}b
-;		[where ${SIMPVER} is the simple version number i.e. "5714".]
-;		These directorys will now be refered to	as b and c.
-;  a.	If you choose another path, you must change ${SrcDir} to the match
+;			[where ${SIMPVER} is the simple version number i.e. "5714".]
+;			These directorys will now be refered to	as b and c.
+;  		a.	If you choose another path, you must change ${SrcDir} to the match
 ;  3.	create a directory called ${SrcDir}\PCGen_${SIMPVER}c
 ;  4.	create a directory called ${SrcDir}\Local and put all the icons and the splash screen in it
 ;  5.	copy the data directory from b to c
@@ -74,18 +74,18 @@
 ;  7.	erase the custom sources directory in the data directory of c
 ;  8.	create a "plugin" directory in the c directory
 ;  9.	create the following directorys in the plugin directory on c;
-;		gmgen, pdf, skin
+;			gmgen, pdf, skin
 ; 10.	in the gmgen directory on c, create a directory called plugins
 ; 11.	in this directory, move everthing from the b plugin directory except
-;		CharacterSheet.jar, the Export*.jar, GameMode*.jar and Lst*.jar
+;			CharacterSheet.jar, the Export*.jar, GameMode*.jar and Lst*.jar
 ; 12.	in the pdf directory, create a lib and an outputsheets directories
 ; 13.	in the lib directory move the following file from the b lib directory;
-;		fop.jar, fop.license.txt, jdom.jar, jdom.license.txt, xml-apis.jar,
-;		xml-apis.readme.txt
+;			fop.jar, fop.license.txt, jdom.jar, jdom.license.txt, xml-apis.jar,
+;			xml-apis.readme.txt
 ; 14.	in the outputsheets directory, move all the \pdf\ folder from outputsheets in the b dir
 ; 15.	in the skin directory, create a lib directory
 ; 16.	from the b lib directory move everything except the following files;
-;		jep.jar
+;			jep.jar
 ; 17.	go to the b docs acknowledgments directory
 ; 18.	remove the html tags from the ogl license and the gnu license file
 ; 19.	save these files as one text file called PCGenLicense.txt
@@ -103,17 +103,20 @@
 !define TargetVer "1.5"
 !define OverVer "1.6"
 !define OutName "pcgen${SIMPVER}_win_install"
-;!define OutDir "C:\Documents and Settings\Lisa\Desktop"
-!define OutDir "E:\Projects\release"
-;!define SrcDir "D:\@Download\PCGen"
-!define SrcDir "E:\Projects\release\nsis_dir"
+!define OutDir "E:\Work\PCGen\Installer\Build\nsis_dir"
+;;!define OutDir "E:\Projects\release"
+!define SrcDir "E:\Work\PCGen\Installer\Build\nsis_dir"
+;;!define SrcDir "E:\Projects\release\nsis_dir"
 
 ; Main Install settings
 Name "${APPNAMEANDVERSION}"
 InstallDir "$PROGRAMFILES\${APPNAME}"
 InstallDirRegKey HKLM "Software\${APPNAME}\${APPDIR}" ""
 OutFile "${OutDir}\${OutName}.exe"
-; SetCompressor lzma
+;This will save a little less than 1mb, it should be left enabled <Ed
+SetCompressor lzma
+;This will force the installer to do a CRC check prior to install,
+;it is safer, so should be left on. <Ed
 CRCCheck on
 
 ; Install Type Settings
@@ -834,10 +837,19 @@ Section Uninstall
 	MessageBox MB_YESNO|MB_ICONEXCLAMATION "Do you wish a full uninstall? $\nThis will remove all versions of pcgen from your computer." IDYES Full IDNO Partial
 
 	Full:
-	; Clean up PCGen program directory
+	MessageBox MB_YESNO "This option could be dangerous, if you have other versions of ${APPNAME}, or if ${APPNAMEANDVERSION} was installed to a directory other than the default.  Do you wish to proceed?" IDYES Proceed IDNO Save
+	
+	Proceed:
+	; Clean up PCGen program directorys
+	; This is a safer mode
 	RMDir /r "$INSTDIR"
-	Goto End
+	; Delete Shortcut Directory
+	RMDir /r "$SMPROGRAMS\PCGen"
+	;Remove registry entry
+	DeleteRegKey HKLM "Software\${APPNAME}"
 
+	Goto End
+	
 	Partial:
 	MessageBox MB_YESNO "Do you wish to save, your characters, custom sources etc? $\nAnswering no will delete ${APPDIR}." IDYES Save IDNO NoSave
 
@@ -846,15 +858,28 @@ Section Uninstall
 	CreateDirectory "$INSTDIR\${APPDIR}_Save\characters"
 	CreateDirectory "$INSTDIR\${APPDIR}_Save\customsources"
 	CreateDirectory "$INSTDIR\${APPDIR}_Save\options"
-	CopyFiles /SILENT "$INSTDIR\${APPDIR}\characters\*.*" "$INSTDIR\${APPDIR}_Save\characters\"
-	CopyFiles /SILENT "$INSTDIR\${APPDIR}\data\customsources\*.*" "$INSTDIR\${APPDIR}_Save\customsources\"
-	CopyFiles /SILENT "$INSTDIR\${APPDIR}\*.ini" "$INSTDIR\${APPDIR}_Save\options\"
+	CreateDirectory "$INSTDIR\${APPDIR}_Save\GMGen"
+	CopyFiles /SILENT "$INSTDIR\${APPDIR}\characters\*.*" 					"$INSTDIR\${APPDIR}_Save\characters\"
+	CopyFiles /SILENT "$INSTDIR\${APPDIR}\data\customsources\*.*" 	"$INSTDIR\${APPDIR}_Save\customsources\"
+	CopyFiles /SILENT "$INSTDIR\${APPDIR}\*.ini" 										"$INSTDIR\${APPDIR}_Save\options\"
+	;Ed> This has not been tested, Please test.
+	CopyFiles /SILENT "$INSTDIR\${APPDIR}\plugins\Notes\*.*" 				"$INSTDIR\${APPDIR}_Save\GMGen\"
 	MessageBox MB_ICONINFORMATION|MB_OK "A shortcut will be created on your desktop to the saved files."
 	CreateShortCut "$DESKTOP\${APPDIR}_Save.lnk" "$INSTDIR\${APPDIR}_Save"
 
 	NoSave:
-	; Clean up PCGen program directory
-	RMDir /r "$INSTDIR\${APPDIR}"
+	; Clean up PCGen program directory by deleting folders.
+	;Ed>This method is used, as a safer alternative
+	RMDir /r "$INSTDIR\${APPDIR}\characters"
+	RMDir /r "$INSTDIR\${APPDIR}\data"
+	RMDir /r "$INSTDIR\${APPDIR}\docs"
+	RMDir /r "$INSTDIR\${APPDIR}\lib"
+	RMDir /r "$INSTDIR\${APPDIR}\Local"
+	RMDir /r "$INSTDIR\${APPDIR}\outputsheets"
+	RMDir /r "$INSTDIR\${APPDIR}\plugins"
+	RMDir /r "$INSTDIR\${APPDIR}\system"
+	;Ed>below would be the removal of all files in the PCGen root directory, on a file by file basis.
+	;Delete /REBOOTOK "pcgen.exe"
 
 	End:
 
