@@ -262,6 +262,7 @@ ANYPC
 Arcane
 Archaic
 Armor
+AttackOption
 BAB
 BASECOST
 Ballistic
@@ -321,6 +322,7 @@ EquipmentCircumstance
 Evil
 Evocation
 Exotic
+Extraordinary
 Eyegear
 Fear
 Fighter
@@ -380,6 +382,7 @@ Metal
 Metamagic
 Mind
 MIN
+ModifyAC
 Morale
 NAME
 Natural
@@ -433,12 +436,14 @@ Special
 Species
 Specific
 Spellcaster
+SpellLike
 Staff
 Standard
 STR
 Strength
 Suit
 Summoning
+Supernatural
 Swim
 Teleportation
 THEN
@@ -471,6 +476,7 @@ Yes
 /C5"PRExxx tags"
 PREALIGN
 PREAPPLY
+PREARMORPROF
 PREARMORTYPE
 PREATT
 PREBASESIZEEQ
@@ -483,6 +489,7 @@ PRECHECKBASE
 PRECLASS
 PREDEFAULTMONSTER
 PREDEITY
+PREDEITYALIGN
 PREDEITYDOMAIN
 PREDOMAIN
 PREDR
@@ -562,6 +569,7 @@ RACE
 RANK
 SETTING
 SKILL
+SOURCEDATE
 SOURCELONG
 SOURCESHORT
 SOURCEWEB
