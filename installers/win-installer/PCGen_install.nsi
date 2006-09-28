@@ -58,6 +58,13 @@
 ; 1.17	Changed the OverVer tp "1.6", this will allow users to use Java 1.5 on their
 ;				machines, unfortunatly minor rev levels are not tracked, so if some future
 ;				1.5.x does not work, I will have to revisit this.  (GlassWalkerTheurge)
+;	1.18	Working on fixing FREQs for installer
+;				1378109 - Normal install, should now remove folders and files only
+;					- Full install is still dangerous, but user is double warned
+;				1483179 - GMGen info is now saved
+;				1453142 - PCGen is removed from start folder under full install
+;					- Not in normal install, as this would remove other instances of PCGen
+;				
 
 
 
@@ -879,7 +886,12 @@ Section Uninstall
 	RMDir /r "$INSTDIR\${APPDIR}\plugins"
 	RMDir /r "$INSTDIR\${APPDIR}\system"
 	;Ed>below would be the removal of all files in the PCGen root directory, on a file by file basis.
-	;Delete /REBOOTOK "pcgen.exe"
+	;Delete /REBOOTOK "pcgen.jar"
+	Delete /REBOOTOK "pcgen.jar"
+	Delete /REBOOTOK "pcgen-release-notes-${SIMPVER}.html"
+	Delete /REBOOTOK "pcgen.bat"
+	Delete /REBOOTOK "pcgen.sh"
+	Delete /REBOOTOK "pcgen_low_mem.bat"
 
 	End:
 
