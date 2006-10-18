@@ -20,13 +20,14 @@ use warnings;
 use Fatal qw( open close );         # Force some built-ins to die on error
 use English qw( -no_match_vars );   # No more funky punctuation variables
 
-# Version information
-my $CVS_id = '$Id$';
-my ( $CVS_build, $CVS_date ) = ( $CVS_id =~ m{ v [ ] \d [.] ( \d+ ) [ ] ( \d{4}[/]\d\d[/]\d\d )}xms );
-$CVS_build += 100;
-$CVS_date =~ tr{/}{.};
-my $VERSION      = "1.35 (build $CVS_build)";
-my $VERSION_DATE = $CVS_date;
+# Version information               # Converting to SVN Id parsing using array - Tir Gwaith
+my $SVN_id = '$Id$';
+my @SVN_array = split ' ', $SVN_id;
+my $SVN_build = $SVN_array[2];
+my $SVN_date = $SVN_array[3];
+$SVN_date =~ tr{-}{.};
+my $VERSION      = "1.35 (build $SVN_build)";
+my $VERSION_DATE = $SVN_date;
 my ($SCRIPTNAME) = ( $PROGRAM_NAME =~ m{ ( [^/\\]* ) \z }xms );
 my $VERSION_LONG = "$SCRIPTNAME version: $VERSION -- $VERSION_DATE";
 
