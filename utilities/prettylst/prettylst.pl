@@ -21,7 +21,7 @@ use Fatal qw( open close );         # Force some built-ins to die on error
 use English qw( -no_match_vars );   # No more funky punctuation variables
 
 # Version information
-my $CVS_id = '$Id: prettylst.pl,v 1.465 2006/05/11 23:43:27 Eric Exp $';
+my $CVS_id = '$Id$';
 my ( $CVS_build, $CVS_date ) = ( $CVS_id =~ m{ v [ ] \d [.] ( \d+ ) [ ] ( \d{4}[/]\d\d[/]\d\d )}xms );
 $CVS_build += 100;
 $CVS_date =~ tr{/}{.};
@@ -1604,6 +1604,7 @@ my %master_order = (
         'BONUS:WIELDCATEGORY:*',
         'REP:*',
         'SPELLLIST',
+        'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
         @PRE_Tags,
         'PRERACETYPE',
@@ -1701,6 +1702,7 @@ my %master_order = (
         'SPECIALS',
         'SPELL',
         'SPELLS:*',
+        'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
         'VFEAT:*',
         'AUTO:ARMORPROF',
@@ -2132,6 +2134,7 @@ my %master_order = (
         'STACK',
         'MULT',
         'CHOOSE',
+        'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
         'MOVE',
         'MOVECLONE',
@@ -2382,6 +2385,7 @@ my %master_order = (
         'REQSKILL',
         'SKILL',
         'SPELL',
+        'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
         'WEAPONPROF',
         '#EXTRAFILE',
@@ -2481,6 +2485,7 @@ my %master_order = (
         'RACETYPE',
         'RACESUBTYPE',
         'TYPE',
+        'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
         'HITDICEADVANCEMENT',
         'LEVELADJUSTMENT',
@@ -2728,6 +2733,7 @@ my %master_order = (
         'SPECIALS',
         'SPELL',
         'SPELLS:*',
+        'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
         'VFEAT:*',
         'AUTO:ARMORPROF',
@@ -2760,6 +2766,7 @@ my %master_order = (
         'REMOVEABLE',
         'DR:*',
         'LEVELADJUSTMENT',
+        'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
         'SOURCELONG',
         'SOURCESHORT',
@@ -3500,6 +3507,7 @@ my %tagheader = (
         'TARGETAREA'            => 'Target Area',
         'TEMPDESC'              => 'Temporary effect description',
         'TEMPLATE'              => 'Template',
+        'TEMPLATE:.CLEAR'       => 'Clear Templates',
         'TYPE'                  => 'Type',
         'TYPE:.CLEAR'           => 'Clear Types',
         'UDAM'                  => 'Unarmed Damage',
