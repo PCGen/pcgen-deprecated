@@ -13196,6 +13196,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.35 -- Not yet released
 
+[ 1335912 ] New tag: TEMPLATE:.CLEAR
+
 [ 1580059 ] SKILLLIST tag
 
 [ 1173567 ] Convert old style PREALIGN to new style
