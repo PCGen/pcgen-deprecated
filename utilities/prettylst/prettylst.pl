@@ -1603,7 +1603,6 @@ my %master_order = (
         'BONUS:WEAPONPROF:*',
         'BONUS:WIELDCATEGORY:*',
         'REP:*',
-        'SKILLLIST',
         'SPELLLIST',
         'TEMPLATE:*',
         @PRE_Tags,
@@ -1611,6 +1610,7 @@ my %master_order = (
         '!PRERACETYPE',
         'STARTSKILLPTS',
         'MODTOSKILLS',
+        'SKILLLIST',
         'CSKILL:.CLEAR',
         'CSKILL',
         'CCSKILL',
@@ -3473,6 +3473,7 @@ my %tagheader = (
         'SCHOOL:.CLEAR'         => 'Clear School',
         'SCHOOL'                => 'School',
         'SIZE'                  => 'Size',
+        'SKILLLIST'             => 'Use Class Skill List',
         'SOURCE'                => 'Source Index',
         'SOURCEPAGE:.CLEAR'     => 'Clear Source Page',
         'SOURCEPAGE'            => 'Source Page',
@@ -11229,6 +11230,7 @@ BEGIN {
                         MODTOSKILLS     => 1,    #
                         MONSKILL        => 1,    # [ 1097487 ] MONSKILL in class.lst
                         MONNONSKILLHD   => 1,
+                        SKILLLIST       => 1,    # [ 1580059 ] SKILLLIST tag
                         STARTSKILLPTS   => 1,
                     );
                     my %spell_tags = (
@@ -13184,6 +13186,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.35 -- Not yet released
+
+[ 1580059 ] SKILLLIST tag
 
 [ 1173567 ] Convert old style PREALIGN to new style
 
