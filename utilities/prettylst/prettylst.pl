@@ -1937,6 +1937,8 @@ my %master_order = (
         'TYPE:*',
         'ALTTYPE',
         'CONTAINS',
+        'NUMPAGES',
+        'PAGEUSAGE',
         'COST',
         'WT',
         'SLOTS',
@@ -3381,7 +3383,9 @@ my %tagheader = (
         'NAMEISPI'              => 'Product Identity?',
         'NATURALARMOR'          => 'Natural Armor',
         'NATURALATTACKS'        => 'Natural Attacks',
+        'NUMPAGES'              => 'Number of Pages',                     # [ 1450980 ] New Spellbook tags
         'OUTPUTNAME'            => 'Output Name',
+        'PAGEUSAGE'             => 'Page Usage',                          # [ 1450980 ] New Spellbook tags
         'PRE:.CLEAR',           => 'Clear Prereq.',
         'PREALIGN'              => 'Required AL',
         '!PREALIGN'             => 'Restricted AL',
@@ -13195,6 +13199,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.35 -- Not yet released
+
+[ 1450980 ] New Spellbook tags
 
 [ 1335912 ] New tag: TEMPLATE:.CLEAR
 
