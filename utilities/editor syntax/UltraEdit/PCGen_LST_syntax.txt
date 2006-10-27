@@ -109,6 +109,7 @@ PANTHEON
 PLUS
 PROF
 PROFICIENCY
+PROHIBITCOST
 PROHIBITSPELL
 QTY
 RACENAME
@@ -173,6 +174,7 @@ VISION
 WEAPONAUTO
 WEAPONBONUS
 WEIGHT
+WIELD
 WORSHIPPERS
 WT
 XPCOST
@@ -350,6 +352,7 @@ Healing
 Heavy
 HMG
 if
+if interacted with
 IF
 Illusion
 Incantation
@@ -363,6 +366,7 @@ Intelligence
 ItemCreation
 Knowledge
 Lawful
+Large
 LE
 LG
 Light
@@ -412,6 +416,7 @@ PRIMARY
 PROJECTILE
 Profession
 Projectile
+Racial
 Ranged
 Reflex
 Reflex half
@@ -445,6 +450,8 @@ Suit
 Summoning
 Supernatural
 Swim
+Synergy
+SynergyBonus
 Teleportation
 THEN
 Thrown
@@ -473,6 +480,7 @@ Wondrous
 Wooden
 Yes
 Yes 
+You
 /C5"PRExxx tags"
 PREALIGN
 PREAPPLY
@@ -493,6 +501,7 @@ PREDEITYALIGN
 PREDEITYDOMAIN
 PREDOMAIN
 PREDR
+PREEQUIP
 PREFEAT
 PREGENDER
 PREHANDSEQ
@@ -500,6 +509,7 @@ PREHANDSGT
 PREHANDSGTEQ
 PREHANDSLT
 PREHANDSLTEQ
+PREHD
 PREITEM
 PRELANG
 PRELEVEL
