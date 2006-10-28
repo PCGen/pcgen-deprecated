@@ -102,6 +102,7 @@ my %validfiletype = (
     'SOURCELONG'   => 0,
     'SOURCESHORT'  => 0,
     'SOURCEWEB'    => 0,
+    'SOURCEDATE'   => 0,                  #[ 1584007 ] New Tag: SOURCEDATE in PCC
     'SPELL'        => \&FILETYPE_parse,
     'TEMPLATE'     => \&FILETYPE_parse,
     'WEAPONPROF'   => \&FILETYPE_parse,
@@ -1492,6 +1493,15 @@ for my $pre_tag (@PRE_Tags) {
     $PRE_Tags{$pre_tag_name} = 1;
 }
 
+my @SOURCE_Tags = (
+    'SOURCELONG',
+    'SOURCESHORT',
+    'SOURCEWEB',
+    'SOURCEPAGE:.CLEAR',
+    'SOURCEPAGE',
+);
+
+
 
 # Order for the tags for each line type.
 my %master_order = (
@@ -1532,11 +1542,7 @@ my %master_order = (
         'SPELLBOOK',
         'HASSUBCLASS',
         'EXCLASS',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE:.CLEAR',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'LANGAUTO',
         'LANGBONUS',
         'WEAPONBONUS',
@@ -1793,10 +1799,7 @@ my %master_order = (
         'PANTHEON',
         'TITLE',
         'WORSHIPPERS',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         @PRE_Tags,
         'BONUS:CHECKS:*',
         'BONUS:CASTERLEVEL:*',
@@ -1919,10 +1922,7 @@ my %master_order = (
         'BONUS:WEAPON:*',
         'BONUS:WEAPONPROF:*',
         'BONUS:WIELDCATEGORY:*',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'DESCISPI',
         'DESC',
         'SPELLLEVEL:DOMAIN',
@@ -1964,11 +1964,7 @@ my %master_order = (
         'RANGE',
         'REACH',
         'SIZE',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE:.CLEAR',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'SPELLFAILURE',
         'ADD:DOMAIN',
         'ADD:FEAT',
@@ -2049,10 +2045,7 @@ my %master_order = (
         'REPLACES',
         'COSTPRE',
         'NAMEOPT',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         @PRE_Tags,
         'ADDPROF',
         'VISION',
@@ -2214,11 +2207,7 @@ my %master_order = (
         'DR',
         'REP',
         'COST',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE:.CLEAR',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'NATURALATTACKS',
         'BENEFIT',
         'TEMPDESC',
@@ -2359,6 +2348,7 @@ my %master_order = (
         'SOURCELONG',
         'SOURCESHORT',
         'SOURCEWEB',
+        'SOURCEDATE',            # [ 1584007 ] New Tag: SOURCEDATE in PCC
         'COPYRIGHT',
         'LICENSE',
         'HELP',
@@ -2493,10 +2483,7 @@ my %master_order = (
         'HITDICEADVANCEMENT',
         'LEVELADJUSTMENT',
         'CR',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'SPELL:*',
         'SPELLS:*',
         'CHOOSE',
@@ -2520,10 +2507,7 @@ my %master_order = (
         'VISIBLE',
         @PRE_Tags,
         'BONUS:SKILL:*',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'CHOOSE',
         'DEFINE',
         'VFEAT:*',
@@ -2578,6 +2562,7 @@ my %master_order = (
         'SOURCELONG',
         'SOURCESHORT',
         'SOURCEWEB',
+        'SOURCEDATE',                # [ 1584007 ] New Tag: SOURCEDATE in PCC
     ],
 
     'SPELL' => [
@@ -2627,11 +2612,7 @@ my %master_order = (
         'DR',
         'MULT',
         'CHOOSE',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE:.CLEAR',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'TEMPDESC',
     ],
 
@@ -2771,10 +2752,7 @@ my %master_order = (
         'LEVELADJUSTMENT',
         'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'SA:.CLEAR',
         'SA:*',
         'DEFINE:*',
@@ -2883,10 +2861,7 @@ my %master_order = (
         'TYPE',
         'HANDS',
         @PRE_Tags,
-        'SOURCELONG',
-        'SOURCESHORT',
-        'SOURCEWEB',
-        'SOURCEPAGE',
+        @SOURCE_Tags,
         'BONUS:CASTERLEVEL:*',
         'BONUS:CHECKS:*',
         'BONUS:COMBAT:*',
@@ -3492,6 +3467,7 @@ my %tagheader = (
         'SOURCELONG'            => 'Source, Long Desc.',
         'SOURCESHORT'           => 'Source, Short Desc.',
         'SOURCEWEB'             => 'Source URI',
+        'SOURCEDATE'            => 'Source Pub. Date',
         'SPELLBOOK'             => 'Spellbook',
         'SPELLFAILURE'          => '% of Spell Failure',
         'SPELLLIST'             => 'Use Spell List',
@@ -3939,7 +3915,8 @@ if ($cl_options{input_path}) {
                     if ($conversion_enable{'SOURCE line replacement'}
                         && (   $tag eq 'SOURCELONG'
                             || $tag eq 'SOURCESHORT'
-                            || $tag eq 'SOURCEWEB' )
+                            || $tag eq 'SOURCEWEB'
+                            || $tag eq 'SOURCEDATE' )
                         )
                     {
                         my $path = File::Basename::dirname($pcc_file_name);
@@ -13199,6 +13176,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.35 -- Not yet released
+
+Moved SOURCExxx tag info into array - all lines use same tag order for SOURCE tags now.
+
+[ 1584007 ] New Tag: SOURCEDATE in PCC
 
 [ 1450980 ] New Spellbook tags
 
