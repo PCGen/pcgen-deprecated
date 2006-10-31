@@ -164,6 +164,7 @@ my %conversion_enable = (
        'ALL:PRERACE needs a ,'              => 0,               #
        'ALL:Willpower to Will'              => 0,               #[ 1398237 ] ALL: Convert Willpower to Will
        'ALL:New SOURCExxx tag format'       => 1,               #[ 1444527 ] New SOURCE tag format
+       'RACE:Remove MFEAT and HITDICE'      => 0,              #[ 1514765 ] Conversion to remove old defaultmonster tags
 
        'Export lists'                       => 0,               # Export various lists of entities
        'SOURCE line replacement'            => 1,
@@ -9859,6 +9860,55 @@ BEGIN {
 
     sub additionnal_line_parsing {
         my ( $line_ref, $filetype, $file_for_error, $line_for_error, $line_info ) = @_;
+
+    ##################################################################
+    # [ 1514765 ] Conversion to remove old defaultmonster tags
+    #
+    # In RACE files, remove all MFEAT and HITDICE tags, but only if 
+    # there is a MONSTERCLASS present.
+
+    # We remove MFEAT or warn of missing MONSTERCLASS tag.
+    if (   $conversion_enable{'RACE:Remove MFEAT and HITDICE'}
+           && exists $line_ref->{'MFEAT'} 
+       ) { if ( exists $line_ref->{'MONSTERCLASS'}
+              ) { for my $tag ( @{ $line_ref->{'MFEAT'} } ) {
+                    ewarn (WARNING,
+                      qq{Removing "$tag".},
+                      $file_for_error,
+                      $line_for_error
+                    );
+                  }
+                  delete $line_ref->{'MFEAT'};
+                }
+           else {ewarn (WARNING,
+                  qq{MONSTERCLASS missing on same line as MFEAT, need to look at by hand.},
+                      $file_for_error,
+                      $line_for_error
+                    );
+                }
+         }
+
+    # We remove HITDICE or warn of missing MONSTERCLASS tag.
+    if (   $conversion_enable{'RACE:Remove MFEAT and HITDICE'}
+           && exists $line_ref->{'HITDICE'} 
+       ) { if ( exists $line_ref->{'MONSTERCLASS'}
+              ) { for my $tag ( @{ $line_ref->{'HITDICE'} } ) {
+                    ewarn (WARNING,
+                      qq{Removing "$tag".},
+                      $file_for_error,
+                      $line_for_error
+                    );
+                  }
+                  delete $line_ref->{'HITDICE'};
+                }
+           else {ewarn (WARNING,
+                  qq{MONSTERCLASS missing on same line as HITDICE, need to look at by hand.},
+                      $file_for_error,
+                      $line_for_error
+                    );
+                }
+         }
+
 
         ##################################################################
         # [ 1444527 ] New SOURCE tag format
