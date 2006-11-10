@@ -593,7 +593,7 @@ my %tag_fix_value = (
     SPELLSTAT      => { map { $_ => 1 } ( @valid_system_stats, 'SPELL' ) },
     USEUNTRAINED   => { YES => 1, NO => 1 },
     USEMASTERSKILL => { YES => 1, NO => 1 },
-    VISIBLE        => { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1 },
+    VISIBLE        => { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1, CSHEET => 1, GUI => 1 }, #[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
 );
 
 # This hash is used to convert 1 character choices to proper fix values.
@@ -604,7 +604,6 @@ my %tag_proper_value_for = (
     'Q'    =>   'QUALIFY',
     'P'    =>   'PROFICIENT',
     'R'    =>   'REQUIRED',
-
 );
 
 #####################################
@@ -9869,6 +9868,7 @@ BEGIN {
 
     # We remove MFEAT or warn of missing MONSTERCLASS tag.
     if (   $conversion_enable{'RACE:Remove MFEAT and HITDICE'}
+           && $filetype eq "RACE"
            && exists $line_ref->{'MFEAT'} 
        ) { if ( exists $line_ref->{'MONSTERCLASS'}
               ) { for my $tag ( @{ $line_ref->{'MFEAT'} } ) {
@@ -9890,6 +9890,7 @@ BEGIN {
 
     # We remove HITDICE or warn of missing MONSTERCLASS tag.
     if (   $conversion_enable{'RACE:Remove MFEAT and HITDICE'}
+           && $filetype eq "RACE"
            && exists $line_ref->{'HITDICE'} 
        ) { if ( exists $line_ref->{'MONSTERCLASS'}
               ) { for my $tag ( @{ $line_ref->{'HITDICE'} } ) {
