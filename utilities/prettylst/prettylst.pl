@@ -570,6 +570,7 @@ my %valid_game_modes = map { $_ => 1 } (
 my %tag_fix_value = (
     ACHECK         => { YES => 1, NO => 1, WEIGHT => 1, PROFICIENT => 1, DOUBLE => 1 },
     ALIGN          => { map { $_ => 1 } @valid_system_alignments },
+    APPLY          => { INSTANT => 1, PERMANENT => 1 },
     BONUSSPELLSTAT => { map { $_ => 1 } ( @valid_system_stats, 'NONE' ) },
     DESCISIP       => { YES => 1, NO => 1 },
     EXCLUSIVE      => { YES => 1, NO => 1 },
@@ -2294,6 +2295,7 @@ my %master_order = (
     'KIT STARTPACK' => [
         'STARTPACK',
         'VISIBLE',
+        'APPLY',
         'EQUIPBUY',
         'EQUIPSELL',
         @PRE_Tags,
@@ -3248,6 +3250,7 @@ my %tagheader = (
         'ALTDAMAGE'             => 'Alternative Damage',
         'ALTEQMOD'              => 'Alternative Modifier',
         'ALTTYPE'               => 'Alternative Type',
+        'APPLY'                 => 'Apply method to char',              #[ 1593879 ] New Kit tag: APPLY
         'ATTACKCYCLE'           => 'Attack Cycle',
         'AUTO'                  => 'Auto',
         'AUTO:ARMORPROF'        => 'Automaticaly Gained Armor Prof.',
@@ -13227,6 +13230,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.35 -- Not yet released
+
+[ 1593879 ] New Kit tag: APPLY
+
+[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
 
 Moved SOURCExxx tag info into array - all lines use same tag order for SOURCE tags now.
 
