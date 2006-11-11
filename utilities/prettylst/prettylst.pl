@@ -2128,7 +2128,8 @@ my %master_order = (
         'SPELL:*',
         'SPELLS:*',
         'DESCISPI',
-        'DESC',
+        'DESC:.CLEAR',             # [ 1594651 ] New Tag: Feat.lst: DESC:.CLEAR and multiple DESC tags
+        'DESC:*',                  # [ 1594651 ] New Tag: Feat.lst: DESC:.CLEAR and multiple DESC tags
         'STACK',
         'MULT',
         'CHOOSE',
@@ -13236,6 +13237,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.35 -- Not yet released
+
+[ 1594651 ] New Tag: Feat.lst: DESC:.CLEAR and multiple DESC tags
+
+[ 1593868 ] New equipment tag "QUALITY"
 
 [ 1593879 ] New Kit tag: APPLY
 
