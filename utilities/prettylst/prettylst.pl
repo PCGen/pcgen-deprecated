@@ -574,6 +574,7 @@ my %tag_fix_value = (
     BONUSSPELLSTAT => { map { $_ => 1 } ( @valid_system_stats, 'NONE' ) },
     DESCISIP       => { YES => 1, NO => 1 },
     EXCLUSIVE      => { YES => 1, NO => 1 },
+    FORMATCAT      => { FRONT => 1, MIDDLE => 1, PARENS => 1 },        # [ 1594671 ] New tag: equipmod FORMATCAT
     FREE           => { YES => 1, NO => 1 },
     KEYSTAT        => { map { $_ => 1 } @valid_system_stats },
     HASSUBCLASS    => { YES => 1, NO => 1 },
@@ -2037,6 +2038,8 @@ my %master_order = (
         '000ModifierName',
         'NAMEISPI',
         'OUTPUTNAME',
+        'FORMATCAT',
+        'NAMEOPT',
         'KEY',
         'TYPE',
         'PLUS',
@@ -2046,7 +2049,6 @@ my %master_order = (
         'IGNORES',
         'REPLACES',
         'COSTPRE',
-        'NAMEOPT',
         @SOURCE_Tags,
         @PRE_Tags,
         'ADDPROF',
@@ -3567,10 +3569,11 @@ my %tagheader = (
         'BONUS:EQMWEAPON' => 'BONUS:EQMWEAPON',
         'CHARGES'         => 'Nb of Charges',
         'COSTPRE'         => 'Cost before resizing',
+        'FORMATCAT'       => 'Naming Format',              #[ 1594671 ] New tag: equipmod FORMATCAT
         'IGNORES'         => 'Keys to ignore',
         'ITYPE'           => 'Type granted',
         'KEY'             => 'Unique Key',
-        'NAMEOPT'         => 'Choose Naming Option',
+        'NAMEOPT'         => 'Naming Option',
         'PLUS'            => 'Plus',
         'REPLACES'        => 'Keys to replace',
     },
@@ -13237,6 +13240,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.35 -- Not yet released
+
+[ 1594671 ] New tag: equipmod FORMATCAT
 
 [ 1594651 ] New Tag: Feat.lst: DESC:.CLEAR and multiple DESC tags
 
