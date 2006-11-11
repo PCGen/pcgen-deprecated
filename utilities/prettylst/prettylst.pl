@@ -2021,6 +2021,7 @@ my %master_order = (
         'BONUS:WEAPONPROF:*',
         'BONUS:WIELDCATEGORY:*',
         'LANGAUTO',
+        'QUALITY:*',                    # [ 1593868 ] New equipment tag "QUALITY"
         'SPROP:*',
         'SA:.CLEAR',
         'SA:*',
@@ -3250,7 +3251,6 @@ my %tagheader = (
         'ALTDAMAGE'             => 'Alternative Damage',
         'ALTEQMOD'              => 'Alternative Modifier',
         'ALTTYPE'               => 'Alternative Type',
-        'APPLY'                 => 'Apply method to char',              #[ 1593879 ] New Kit tag: APPLY
         'ATTACKCYCLE'           => 'Attack Cycle',
         'AUTO'                  => 'Auto',
         'AUTO:ARMORPROF'        => 'Automaticaly Gained Armor Prof.',
@@ -3320,12 +3320,13 @@ my %tagheader = (
         'DEFINE'                => 'Define',
         'DEITY'                 => 'Deity',
         'DESC'                  => 'Description',
+        'DESC:.CLEAR'           => 'Clear Description',
         'DESCISPI'              => 'Desc is PI?',
         'DESCRIPTOR'            => 'Spell Descriptors',
         'DOMAINS'               => 'Domains',
         'DR'                    => 'Damage Reduction',
         'DURATION'              => 'Duration',
-        'EFFECTS'               => 'Description',
+#        'EFFECTS'               => 'Description',            Deprecated a long time ago for TARGETAREA
         'EQMOD'                 => 'Modifier',
         'EXCLASS'               => 'Ex Class',
         'FACE'                  => 'Face/Space',
@@ -3349,7 +3350,7 @@ my %tagheader = (
         'LEGS'                  => 'Nb Legs',
         'LEVEL',                => 'Level',
         'LEVELADJUSTMENT'       => 'Level Adjustment',
-        'LONGNAME'              => 'Long Name',
+#        'LONGNAME'              => 'Long Name',                        # Deprecated in favor of OUTPUTNAME
         'MAXCOST'               => 'Maximum Cost',
         'MAXDEX'                => 'Maximum DEX Bonus',
         'MAXLEVEL'              => 'Max Level',
@@ -3488,7 +3489,7 @@ my %tagheader = (
         'STAT'                  => 'Key Attribute',
         'SUBSCHOOL'             => 'Sub-School',
         'SYNERGY'               => 'Synergy Skill',
-        'TARGETAREA'            => 'Target Area',
+        'TARGETAREA'            => 'Target Area or Effect',
         'TEMPDESC'              => 'Temporary effect description',
         'TEMPLATE'              => 'Template',
         'TEMPLATE:.CLEAR'       => 'Clear Templates',
@@ -3550,6 +3551,7 @@ my %tagheader = (
     'EQUIPMENT' => {
         '000EquipmentName' => '# Equipment Name',
         'BASEITEM'         => 'Base Item for EQMOD',
+        'QUALITY'          => 'Quality and value',
         'SLOTS'            => 'Slot Needed',
         'WIELD'            => 'Wield Category',
     },
@@ -3570,6 +3572,10 @@ my %tagheader = (
         'NAMEOPT'         => 'Choose Naming Option',
         'PLUS'            => 'Plus',
         'REPLACES'        => 'Keys to replace',
+    },
+
+    'KIT STARTPACK' => {
+        'APPLY'    => 'Apply method to char',              #[ 1593879 ] New Kit tag: APPLY
     },
 
     'MASTERBONUSRACE' => {
