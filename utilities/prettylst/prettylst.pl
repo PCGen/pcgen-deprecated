@@ -13287,6 +13287,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.35 -- Not yet released
 
+[ 1593904 ] KIT lines can have any standard PRE tag
+
 [ 1596402 ] New Kit GEAR tag: LOOKUP
 
 [ 1596400 ] New Kit line_type: TABLE, with VALUES tag
