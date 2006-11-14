@@ -1191,6 +1191,12 @@ my %master_file_type = (
             Format          => FIRST_COLUMN,
             Header          => NO_HEADER,
         },
+        {   Linetype        => 'KIT SELECT',
+            RegEx           => qr{^SELECT:([^\t]*)},
+            Mode            => SUB,
+            Format          => FIRST_COLUMN,
+            Header          => NO_HEADER,
+        },
         {   Linetype        => 'KIT SKILL',
             RegEx           => qr{^SKILL:([^\t]*)},
             Mode            => SUB,
@@ -1205,6 +1211,12 @@ my %master_file_type = (
         },
         {   Linetype        => 'KIT SPELLS',
             RegEx           => qr{^SPELLS:([^\t]*)},
+            Mode            => SUB,
+            Format          => FIRST_COLUMN,
+            Header          => NO_HEADER,
+        },
+        {   Linetype        => 'KIT TABLE',
+            RegEx           => qr{^TABLE:([^\t]*)},
             Mode            => SUB,
             Format          => FIRST_COLUMN,
             Header          => NO_HEADER,
@@ -2222,25 +2234,28 @@ my %master_order = (
 
     'KIT ALIGN' => [
         'ALIGN',
-        'PRERACE',
+        'OPTION',
+        @PRE_Tags,
     ],
 
     'KIT CLASS' => [
         'CLASS',
         'LEVEL',
         'SUBCLASS',
+        'OPTION',
     ],
 
     'KIT DEITY' => [
         'DEITY',
         'DOMAIN',
+        'OPTION',
     ],
 
     'KIT FEAT' => [
         'FEAT',
-        'PRERACE',
-        'PRESTAT',
         'FREE',
+        'OPTION',
+        @PRE_Tags,
     ],
 
     'KIT GEAR' => [
@@ -2250,18 +2265,23 @@ my %master_order = (
         'MAXCOST',
         'LOCATION',
         'EQMOD',
+        'LOOKUP',
         'LEVEL',
         'SPROP',
-        'PREDEFAULTMONSTER',
-        'PRERACE',
+        'OPTION',
+        @PRE_Tags,
     ],
 
     'KIT KIT' => [
         'KIT',
+        'OPTION',
+        @PRE_Tags,
     ],
 
     'KIT LANGAUTO' => [
         'LANGAUTO',
+        'OPTION',
+        @PRE_Tags,
     ],
 
     'KIT NAME' => [
@@ -2271,17 +2291,20 @@ my %master_order = (
     'KIT PROF' => [
         'PROF',
         'RACIAL',
-        'PRERACE',
-        'PREMULT',
+        @PRE_Tags,
     ],
 
     'KIT RACE' => [
         'RACE',
-        'PRERACE',
+        @PRE_Tags,
     ],
 
     'KIT REGION' => [
         'REGION',
+    ],
+
+    'KIT SELECT' => [
+        'SELECT',
     ],
 
     'KIT SKILL' => [
@@ -2289,11 +2312,15 @@ my %master_order = (
         'RANK',
         'FREE',
         'COUNT',
+        'OPTION',
+        @PRE_Tags,
     ],
 
     'KIT SPELLS' => [
         'SPELLS',
         'COUNT',
+        'OPTION',
+        @PRE_Tags,
     ],
 
     'KIT STARTPACK' => [
@@ -2308,10 +2335,17 @@ my %master_order = (
 
     'KIT STAT' => [
         'STAT',
+        'OPTION',
+    ],
+
+    'KIT TABLE' => [
+        'TABLE',
+        'VALUES',
     ],
 
     'KIT TEMPLATE' => [
         'TEMPLATE',
+        'OPTION',
     ],
 
     'LANGUAGE' => [
@@ -3580,6 +3614,15 @@ my %tagheader = (
 
     'KIT STARTPACK' => {
         'APPLY'    => 'Apply method to char',              #[ 1593879 ] New Kit tag: APPLY
+    },
+
+    'KIT SELECT' => {
+        'SELECT'   => 'Select choice',
+    },
+
+    'KIT TABLE' => {
+        'TABLE'   => '# Table name',
+        'VALUES'  => 'Table Values',
     },
 
     'MASTERBONUSRACE' => {
@@ -13243,6 +13286,16 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.35 -- Not yet released
+
+[ 1596402 ] New Kit GEAR tag: LOOKUP
+
+[ 1596400 ] New Kit line_type: TABLE, with VALUES tag
+
+[ 1593894 ] New Kit tag: OPTION
+
+[ 1593885 ] New Kit line_type tag: SELECT
+
+[ 1593872 ] False warning: No SKILL entry for CSKILL:ALL
 
 [ 1594671 ] New tag: equipmod FORMATCAT
 
