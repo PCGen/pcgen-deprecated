@@ -6951,6 +6951,9 @@ BEGIN {
         ) {
             my @skills = split /[|]/, $tag_value;
 
+            # ALL is a valid use in BONUS:SKILL, xCSKILL  - [ 1593872 ] False warning: No SKILL entry for CSKILL:ALL
+            @skills = grep { $_ ne 'ALL' } @skills;
+
             # We need to filter out %CHOICE for the SKILL tag
             if ( $tag_name eq 'SKILL' ) {
                 @skills = grep { $_ ne '%CHOICE' } @skills;
