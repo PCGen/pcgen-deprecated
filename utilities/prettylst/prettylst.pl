@@ -523,6 +523,7 @@ my @valid_system_var_names      = qw(
     UseAlternateDamage      VEHICLECRUISINGMPH          VEHICLEDEFENSE
     VEHICLEHANDLING         VEHICLEHARDNESS             VEHICLESPEED
     VEHICLETOPMPH           VEHICLEWOUNDPOINTS          Wealth
+    CR                      CL                          ECL
 
     Action                      ActionLVL                   ArmorQui
     ClassDefense                DamageThreshold             DenseMuscle
@@ -1220,6 +1221,7 @@ my %master_file_type = (
             Mode            => SUB,
             Format          => FIRST_COLUMN,
             Header          => NO_HEADER,
+            ValidateKeep    => YES,
         },
         {   Linetype        => 'KIT TEMPLATE',
             RegEx           => qr{^TEMPLATE:([^\t]*)},
@@ -3613,7 +3615,8 @@ my %tagheader = (
     },
 
     'KIT STARTPACK' => {
-        'APPLY'    => 'Apply method to char',              #[ 1593879 ] New Kit tag: APPLY
+        'STARTPACK'   => 'Kit Name',
+        'APPLY'       => 'Apply method to char',              #[ 1593879 ] New Kit tag: APPLY
     },
 
     'KIT SELECT' => {
