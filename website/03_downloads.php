@@ -8,6 +8,8 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
     {
         $rss = fetch_rss($url);
         $outCount = 0;
+        $prevVerNum = array(0,0,0);
+        
 
 //        echo "<p>Channel: " . $rss->channel['title'] . "</p>";
 
@@ -49,6 +51,12 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
             	$isSnapshot = true;
             }
 
+            if ($viewProd && $isProd && ($verNum[0] == $prevVerNum[0]) 
+            	&& ($verNum[1] == $prevVerNum[1]))
+            {
+            	// When showing multiple prod versions, get the latest patch from each
+            	$isProd = false;
+            }
 
 			if (($outCount < $maxRecs) && !$isSnapshot && (($viewProd && $isProd) || (!$viewProd && !$isProd)))
 			{
@@ -72,6 +80,11 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
 //              echo "<span class=\"newslink\">$pub</span></p>\n";
               echo "\n";
               $outCount++;
+              
+              if ($isProd)
+              {
+              	$prevVerNum = $verNum;
+              }
             }
         }
     }
@@ -92,12 +105,12 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <p>This is the most recent Production PCGen Release. Production releases are stable releases suitable for
         general use. If you are using PCGen data sets from Code Monkey Publishing, you should be using a
         production release of PCGen.
-        <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=21689" style="font-size: 80%;">[View Older Production Releases]</a>
+        <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=129606" style="font-size: 80%;">[View Older Production Releases]</a>
         </p>
 
 <?php
 
-writePcgenFileItems("http://sourceforge.net/export/rss2_projfiles.php?group_id=25576&rss_limit=30", true, 1);
+writePcgenFileItems("http://sourceforge.net/export/rss2_projfiles.php?group_id=25576&rss_limit=30", true, 2);
 
 ?>
         <br />
