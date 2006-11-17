@@ -3735,6 +3735,10 @@ if ($cl_options{input_path}) {
         open $filehandle_for{KIT}, '>', 'kit.csv';
         print { $filehandle_for{KIT} } qq{"Kit Startpack Name","Line","Filename"\n};
 
+        # Will hold the list of all kit Tables found in KIT filetypes
+        open $filehandle_for{TABLE}, '>', 'kit-table.csv';
+        print { $filehandle_for{TABLE} } qq{"Table Name","Line","Filename"\n};
+
         # Will hold the list of all language found in LANGUAGE linetypes
         open $filehandle_for{LANGUAGE}, '>', 'language.csv';
         print { $filehandle_for{LANGUAGE} } qq{"Language Name","Line","Filename"\n};
@@ -10802,6 +10806,12 @@ BEGIN {
                 my ($kitname)
                     = ( $line_ref->{ $master_order{$filetype}[0] }[0] =~ /\A STARTPACK: (.*) \z/xms );
                 print { $filehandle_for{KIT} } qq{"$kitname","$line_for_error","$filename"\n};
+            }
+
+            if ( $filetype eq 'KIT TABLE' ) {
+                my ($tablename)
+                    = ( $line_ref->{ $master_order{$filetype}[0] }[0] =~ /\A TABLE: (.*) \z/xms );
+                print { $filehandle_for{TABLE} } qq{"$tablename","$line_for_error","$filename"\n};
             }
 
             if ( $filetype eq 'LANGUAGE' ) {
