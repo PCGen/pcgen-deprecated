@@ -136,6 +136,32 @@
 		<a name="CHASCORE"></a>
 		<p class="indent2"><code>CHASCORE</code></p>
 		<p class="indent3">This is the character's actual Charisma score.</p><br />
+
+		<a name="CL"></a>
+		<p class="indent2"><code>CL</code></p>
+		<p class="indent3">Class Level of this class.</p><br />
+
+		<a name="CLname"></a>
+		<p class="indent2"><code>CL=name</code></p>
+		<p class="indent3">Class Level of the named class.</p>
+		<p class="indent3"><font color="#FF0000"><strong>Update:</strong></font></p>
+		<p class="indent3">This can now be done with the <a href="globalfilesformulas.html#ClassLevel">cl()</a> JEP function.</p><br />
+
+		<a name="CLASSname"></a>
+		<p class="indent2"><code>CLASS=name</code></p>
+		<p class="indent3">Returns a 1 if the character has the named class, otherwise 0.
+			Replace { with ( and } with ). e.g.
+		CLASS=Ranger {Special} would check for Ranger (Special) since ( and ) have other meanings in DEFINE variables.
+		If used within a JEP formula you will need to enclose it in a variable function
+		 e.g. var(&quot;CLASS=Ranger {Special}&quot;)</p><br />
+
+		<a name="CLASSLEVELname"></a>
+		<p class="indent2"><code>CLASSLEVEL=name</code></p>
+		<p class="indent3">Class Level of the named class, replacing ( with { and ) with }. e.g.
+		CLASSLEVEL=Warrior {Ruby} would return the level of Warrior (Ruby)
+		since ( and ) have other meanings in DEFINE variables.
+		If used within a JEP formula you will need to enclose it in a variable function
+		 e.g. var(&quot;CLASSLEVEL=Warrior {Ruby}&quot;)</p><br />
 		
 		<a name="CON"></a>
 		<p class="indent2"><code>CON</code></p>
@@ -194,33 +220,6 @@
 		<a name="COUNTSTATS"></a>
 		<p class="indent2"><code>COUNT[STATS]</code></p>
 		<p class="indent3">This is the number of defined stats.</p><br />
-		
-		<a name="CL"></a>
-		<p class="indent2"><code>CL</code></p>
-		<p class="indent3">Class Level of this class.</p><br />
-		
-		<a name="CLname"></a>
-		<p class="indent2"><code>CL=name</code></p>
-		<p class="indent3">Class Level of the named class.</p>
-		<p class="indent3"><font color="#FF0000"><strong>Update:</strong></font></p>
-		<p class="indent3">This can now be done with the <a href="globalfilesformulas.html#ClassLevel">cl()</a> JEP function.</p><br />
-		
-		
-		<a name="CLASSname"></a>
-		<p class="indent2"><code>CLASS=name</code></p>
-		<p class="indent3">Returns a 1 if the character has the named class, otherwise 0.
-			Replace { with ( and } with ). e.g. 
-		CLASS=Ranger {Special} would check for Ranger (Special) since ( and ) have other meanings in DEFINE variables. 
-		If used within a JEP formula you will need to enclose it in a variable function 
-		 e.g. var(&quot;CLASS=Ranger {Special}&quot;)</p><br />
-		
-		<a name="CLASSLEVELname"></a>
-		<p class="indent2"><code>CLASSLEVEL=name</code></p>
-		<p class="indent3">Class Level of the named class, replacing ( with { and ) with }. e.g. 
-		CLASSLEVEL=Warrior {Ruby} would return the level of Warrior (Ruby) 
-		since ( and ) have other meanings in DEFINE variables. 
-		If used within a JEP formula you will need to enclose it in a variable function 
-		 e.g. var(&quot;CLASSLEVEL=Warrior {Ruby}&quot;)</p><br />
 		
 		<a name="CR"></a>
 		<p class="indent2"><code>CR</code></p>

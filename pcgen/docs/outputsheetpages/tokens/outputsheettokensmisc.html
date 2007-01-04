@@ -132,6 +132,18 @@
 		<p class="indent2"><code>BONUSLIST.COMBAT.AC</code></p>
 		<p class="indent3">Would list all COMBAT.AC bonuses as a comma-space delimited list.</p>
 
+		<p></p><a name="BR"></a><hr>
+		<p class="indent0"><strong>Token Name:</strong> BR</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<p class="indent2">Adds a carriage return to the output. Normally only used on text output
+		sheets and inside manualwhitespace sections.</p>
+		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>2|BR|3</code></p>
+		<p class="indent3">Then the output would
+look like:<br/>
+
+<code>2<br/>3</code></p>
+
 		<p></p><a name="COUNT"></a><hr>
 		<p class="indent0"><strong>Token Name:</strong> COUNT[x]</p>
 		<p class="indent1"><strong> Variables Used (x):</strong> Text (Count Type).</p>
@@ -185,6 +197,7 @@
 				is number 1 and the -1 Spellbook should not be used anymore).</li>
 			<li>SPELLTIMES%class.%book.%level.%spell - The number of times the referenced spell has been memorized.</li>
 			<li>STATS - The number of stats a character has.</li>
+			<li>TEMPBONUSNAMES - The number of Temporary Bonus Tab items a character has.</li>
 			<li>TEMPLATES - The number of templates a character has.</li>
 			<li>VFEATS - This has been deprecated, use VFEATS.VISIBLE instead.</li>
 			<li>VFEATS.ALL - The number of both visible and hidden virtual feats a character has.</li>
@@ -397,6 +410,19 @@
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>IIF(EVEN:%spell)</code></p>
 		<p class="indent3">Would be true if the spell line was even.</p>
+
+		<p class="indent0"><strong>Token Name:</strong> IIF(UNEVEN)</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<p class="indent2">True if the variable is an uneven number.</p>
+		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>IIF(VAR.IF(VAR("COUNT[SKILLTYPE=Strength]")>0;1;0):1)</code></p>
+		<p class="indent3">Evaluates to true if number of skills with type of Strength are
+							greater than 0
+
+							Notice the use of semi-colon where a comma should normally be
+							used. This is because the comma is a delimeter at a higher level.
+
+							Byngl</p>
 
 		<p></p>
 		<p class="indent0"><strong>Token Name:</strong> IIF(HASEQUIP)</p>

@@ -153,6 +153,8 @@
 		<p class="indent3">Sets the Paladins spell caster level to half his class level after he reaches level 4.</p>
 
 		<p class="indent3">(Note that the syntax used in this last example is only valid in a class line)</p>
+			<p class="indent2"><code>CLASS:Defender.MOD &lt;tab&gt; SPELLSTAT:INT &lt;tab&gt; BONUSSPELLSTAT:NONE &lt;tab&gt; SPELLTYPE:Arcane &lt;tab&gt; SPELLBOOK:NO &lt;tab&gt; BONUS:CASTERLEVEL|Defender|TL &lt;tab&gt; SPELLLIST:1|Channeler</code></p>
+				<p class="indent3">Modifying the class Defender changes all of these tags to determine bonus spells and maximum casting level.</p>
 
 		<p class="indent1"><strong>Additional qualifier:</strong> .RESET</p>
 
@@ -185,21 +187,14 @@
 		
 
 		<p></p><a name="CHECKS"></a><hr>
-
 		<p class="indent0"><strong>Tag Name:</strong> BONUS:CHECKS|x,x|y</p>
-
 		<p class="indent1"><strong>Variables Used (x):</strong> Text (Any check defined in the GameMode - e.g. Fortitude,Reflex,Willpower)</p>
-
 		<p class="indent1"><strong>Variables Used (y):</strong> Number, variable or formula (Save Bonus)</p>
-
 		<p class="indent1"><strong>What it does:</strong></p>
-
 		<p class="indent2">Adds to indicated saving throw.</p>
 
 		<p class="indent1"><strong>Example:</strong></p>
-
 		<p class="indent2"><code>BONUS:CHECKS|Fortitude,Reflex|1</code></p>
-
 		<p class="indent3">Adds one to &quot;Fortitude&quot; and &quot;Reflex&quot; saves.</p>
 
 		
@@ -1118,7 +1113,7 @@
 
 		<p class="indent3">Decreases the feat pool by one if the character has the feat Alertness.</p>
 
-		
+
 
 		<p></p><a name="HD"></a><hr>
 

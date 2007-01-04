@@ -25,6 +25,29 @@
 		<h1>Spell Files</h1>
 		
 		<p>The first field is the name of the spell.</p>
+
+
+		<p></p><a name="BONUSPPCOST"></a><hr>
+		<p class="new">*** NEW 5.10.1</p>
+		<p class="indent0"><strong>Tag Name:</strong> BONUS:PPCOST|x|y</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text (Spell Name)</p>
+		<p class="indent1"><strong>Variables Used (y):</strong> Number (Power Points)</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<p class="indent2">It is possible to scale some spells to increase range, duration, damage, etc.
+							Scaling uses more PPs. For every one point in extra power applied to the
+							spell the spells Effective Caster Level for damage purpose is raised 1
+							level. Maximum level applied is equal to the Caster current level.</p>
+		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>BONUS:PPCOST|Blade Barrier|3</code></p>
+		<p class="indent3">A Clr9/Good9/War9 costs 11 PP to launch a Blade Barrier for 6d6 damage. By
+							putting 3 more point the Effective Caster Level to 9d6 for a total of
+							14 PP. The maximum extra PP is 3 for this example. Damage can not be raised
+							over the Casters actual level.</p>
+		<p class="indent2"><code>BONUS:PPCOST|Lightning Bolt|2</code></p>
+		<p class="indent3">A Sor/Wiz 9 costs 5 PP to launch a Lightning Bolt for 3d6 damage. By
+							putting 2 more point the Effective Caster Level is 5d6 damage
+							for a total of 7 PP. The maximum extra PP is 7 for this example getting
+							the maximum of 10d6 damage.</p>
 		
 		<p></p><a name="CASTERLEVEL"></a><hr>
 		<p class="new">*** New 5.4</p>
@@ -217,6 +240,19 @@
 		<p class="indent3">This spell can be used in a potion.</p>
 		<p class="indent2"><code>ITEM:[Scroll]</code></p>
 		<p class="indent3">This spell can NOT be used in a scroll.</p>
+
+
+		<p></p><a name="PPCOST"></a><hr>
+		<p class="new">*** NEW 5.10.1</p>
+		<p class="indent0"><strong>Tag Name:</strong> PPCOST:x</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Number</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<p class="indent2">This is a point pool cost to purchase/cast the spell
+							(works with SKILLTOTAL=>skill name<)</p>
+		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>PPCOST:9</code></p>
+		<p class="indent3">This spell costs 9 points to use.</p>
+
 
 		<p></p><a name="RANGE"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> RANGE:x</p>

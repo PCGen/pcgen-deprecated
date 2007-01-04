@@ -189,6 +189,36 @@
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>BABMINVAL:1</code></p>
 		<p class="indent3">Sets the starting minimum value for the BAB progressions to 1.</p>
+		<p class="indent3">&nbsp;</p>
+
+		<p></p><a name="BASEDICE"></a><hr>
+		<p class="indent0"><strong>Tag Name:</strong> BASEDICE:x </p>
+		<p class="indent1"><strong>Variables Used:</strong> (x) die format </p>
+	    <p class="indent1"><strong>Uses the following sub tags: </strong> UP DOWN    </p>
+	    <p class="indent1"><strong>What it does:</strong></p>
+	    <p class="indent2">Determines the next higher or lower value die in a progression set <br>
+			<strong>NOTE:</strong> This uses the UP and DOWN tags with comma (,) separators and tabs to separate the tags themselves.</p>
+		<p class="indent1"><strong>Example: </strong></p>
+        <p class="indent2"><code>BASEDICE:1d6 UP:1d8,2d6,3d6,4d6,6d6,8d6,12d6 DOWN:1d4,1d3,1d2,1</code></p>
+        <p class="indent3">This states the base die is a d6 and determines that the next lowest die would be a d4, then a d3 and the next highest would be a d8, then 2d. </p>
+
+		<p></p><a name="BONUS_ACFLAT"></a><hr>
+        <p class="indent0"><strong>Tag Name:</strong> BONUS_ACFLAT</p>
+        <p class="indent1"><strong>Variables used (x):</strong> formula</p>
+        <p class="indent1"><strong>What it does:</strong></p>
+        <p class="indent2">This period (.) separator value makes the Flat AC display correctly based upon the set formula </p>
+        <p class="indent1"><strong>Example: </strong> </p>
+        <p class="indent2"><code>BONUS_ACFLAT:COMBAT.AC.TOTAL.!Ability.PRESTAT:1,DEX=10.!PRESA:1,Uncanny Dodge.MIN=0</code></p>
+        <p class="indent3">The codes takes the entire AC value and removes the Dex (ability) to result in the Flat Footed AC but does not remove the Dex bonus if the class has the uncanny dodge special ability. </p>
+
+        <p></p><a name="BONUS_ACTOUCH"></a><hr>
+        <p class="indent0"><strong>Tag Name:</strong> BONUS_ACTOUCH:x</p>
+        <p class="indent1"><strong>Variables used (x):</strong> formula<strong></strong></p>
+        <p class="indent1"><strong>What it does: </strong></p>
+        <p class="indent2">It makes the Touch AC display correctly based up formulas</p>
+        <p class="indent1"><strong>Example: </strong></p>
+        <p class="indent2"><code>BONUS_ACTOUCH:COMBAT.AC.TOTAL.!Armor.!NaturalArmor</code></p>
+        <p class="indent3">The codes takes the entire AC value and removes the Armor and Natural armor to result in the Touch AC</p>
 
 		<p></p><a name="BONUSFEATLEVELSTARTINTERVAL"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> BONUSFEATLEVELSTARTINTERVAL:x|y</p>
@@ -423,6 +453,17 @@
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>DISTANCEUNIT:ft.</code></p>
 		<p class="indent3">Defines the distance unit abbreviation as &quot;ft.&quot;.</p>
+
+		<p></p><a name="DOWN"></a><hr>
+		<p class="indent0"><strong>Tag Name:</strong> DOWN:x,x</p>
+		<p class="indent1"><strong>Varibles used:</strong> (x) alpha numerical</p>
+		<p class="indent1"><strong>What it does: </strong></p>
+		<p class="indent2">This comma (,) delimited value determines the next die value in an incremental set</p>
+		<p class="indent1"><strong>Where it is used: </strong> </p>
+		<p class="indent2"><a href="#BASEDICE">BASEDICE</a> Line </p>
+		<p class="indent1"><strong>Example: </strong> </p>
+		<p class="indent2"><code>DOWN:1d4,1d3,1d2,1</code></p>
+		<p class="indent3">The next die in the progression will be 1d4, then 1d3 if chosen again, etc.</p>
 		
 		<p></p><a name="FINESSEABLE"></a><hr>
 		<p class="new">*** New 5.5.2</p>
@@ -656,6 +697,21 @@
 		<p class="indent1"><strong>Where it is used:</strong></p>
 		<p class="indent2">TAB Line.</p>
 
+		<p></p><a name="PLUSCOST"></a><hr>
+		<p class="indent0"><strong>Tag Name:</strong>PLUSCOST:x</p>
+		<p class="indent1"><strong>Variables used (x):</strong> formula</p>
+		<p class="indent1"> <strong class=""> What it does: </strong> </p>
+		<p class="indent2">Defines base item costs and modifier costs based upon the formula entered.</p>
+		<p class="indent1"><strong>Example: </strong></p>
+		<p class="indent2"><code>PLUSCOST:AMMUNITION|BASEQTY*40*PLUS*PLUS</code></p>
+		<p class="indent3">Ammunition will be based upon quantity times 40 times the plus value desired and times the plus value desired again to result in the final cost. </p>
+		<p class="indent2"><code>PLUSCOST:ARMOR|1000*PLUS*PLUS</code> </p>
+		<p class="indent3">Takes the armor cost and then takes 1000 times the plus value and then times the plus value to come up with the resulting cost. </p>
+		<p class="indent2"><code>PLUSCOST:SHIELD|1000*PLUS*PLUS</code> </p>
+		<p class="indent3">Takes the shield cost and then takes 1000 times the plus value and then times the plus value to come up with the resulting cost. </p>
+		<p class="indent2"><code>PLUSCOST:WEAPON|(2000*PLUS*PLUS)+(2000*ALTPLUS*ALTPLUS)</code> </p>
+		<p class="indent3">Takes the weapon cost and then takes 2000 times the plus value and then times the plus value to come up with the resulting cost, if the weapon has an alternate head (double weapon) it also calculates the cost using the same formula. </p>
+
 		<p></p><a name="POINTPOOLNAME"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> POINTPOOLNAME:x</p>
 		<p class="indent1">
@@ -669,6 +725,16 @@
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>POINTPOOLNAME:Harp</code></p>
 		<p class="indent3">Means that PCGEN will use the Harp Point Pool default for stat creation.</p>
+		<p></p>
+		<p class="indent1">When POINTPOOLNAME trigger tag is present in miscinfo file Summary Tab
+							Will display total points/points remaining (i.e. Development Points 160/135)
+							on the same line as the stat total and stat mod total</p>
+		<p></p>
+		<p class="indent1">Skills Tab - Instead of skill points by class/level requirement to spend
+							skill points, it's just a pool this is also populated by the classes
+							STARTSKILLPTS and miscinfo SKILLMULTIPLIER</p>
+		<p></p>
+		<p class="indent1">Feats Tab - Will show total point pool as reported on the skills tab</p>
 
 		<p></p><a name="RANKMODFORMULA"></a><hr>
 		<p class="new">*** New 5.8.0</p>
@@ -930,6 +996,17 @@
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>UNITSET:Imperial</code></p>
 		<p class="indent3">Defines a Unit Set named Imperial.</p>
+
+		<p></p><a name="UP"></a><hr>
+		<p class="indent0"><strong>Tag Name:</strong> UP:x,x </p>
+		<p class="indent1"><strong>Varibles used:</strong> (x) alpha numerical </p>
+		<p class="indent1"><strong>What it does: </strong> </p>
+		<p class="indent2">This comma (,) delimited value determines the next die value in an incremental set </p>
+		<p class="indent1"><strong>Where it is used: </strong> </p>
+		<p class="indent2"><a href="#BASEDICE">BASEDICE</a> Line </p>
+		<p class="indent1"><strong>Example: </strong> </p>
+		<p class="indent2"><code>UP:1d8,2d6,3d6,4d6,6d6,8d6,12d6</code> </p>
+		<p class="indent3">Determines the next die in the progression will be 1d8, then 2d6 if chosen again, etc. </p>
 		
 		<p></p><a name="VISIBLE"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> VISIBLE:x</p>
@@ -957,6 +1034,37 @@
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>WEAPONNONPROFPENALTY:-4</code></p>
 		<p class="indent3">Defines a -4 penalty to attack for not being proficient in a weapon.</p>
+
+        <p></p><a name="WEAPONREACH"></a><hr>
+		<p class="new">*** New 5.11.6</p>
+		<p class="indent0"><strong>Tag Name:</strong> WEAPONREACH:x</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Formula (Weapon Reach)</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<p class="indent2">Defines the formula used to calculate a weapons reach. 
+		Three variables are used in the formula, RACEREACH, REACH and REACHMULT. 
+		RACEREACH is the value of the <a href="../datafilestagpages/datafilesraces.html#REACH">REACH</a> 
+		tag set in the PC's race. REACH is the value of the <a href="../datafilestagpages/datafilesequipment.html#REACH">REACH</a> 
+		tag set in the Weapon, if no REACH tag is present the value defaults to 5. 
+		REACHMULT is the value of the <a href="../datafilestagpages/datafilesequipment.html#REACHMULT">REACHMULT</a> 
+		tag set in the weapon, if no REACHMULT tag is present the value is 1.</p>
+		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>WEAPONREACH:(RACEREACH+(max(0,REACH-5)))*REACHMULT</code></p>
+		<p class="indent3">This is the standard formula used in the 35e gameMode.</p>
+
+        <p></p><a name="WEAPONTYPE"></a><hr>
+		<p class="indent0"><strong> Tag Name:</strong> WEAPONTYPE:x|y</p>
+		<p class="indent1"><strong>Variables used (x):</strong> text | (y) letter to define type</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<p class="indent2">Defines a weapon type and gives it a defined letter(s) for output sheets.</p>
+		<p class="indent1">Example: </p>
+		<p class="indent2"><code>WEAPONTYPE:Bludgeoning|B </code></p>
+		<p class="indent3">Bludgeoning weapons will be represented by a letter &ldquo;B&rdquo; on the preview and output sheets. </p>
+		<p class="indent2"><code>WEAPONTYPE:Slashing|S </code></p>
+		<p class="indent3">Slashing weapons will be represented by a letter &ldquo;S&rdquo; on the preview and output sheets. </p>
+		<p class="indent2"><code>WEAPONTYPE:Electricity|E </code></p>
+		<p class="indent3">Electricity weapons/attacks will be represented by a letter &ldquo;E&rdquo; on the preview and output sheets. </p>
+		<p class="indent2"><code>WEAPONTYPE:Sonic|So </code></p>
+		<p class="indent3">Sonic weapons/attacks will be represented by a letter &ldquo;So&rdquo; on the preview and output sheets. </p>
 
 		<p></p><a name="WEIGHTFACTOR"></a><hr>
 		<p class="new">*** New 5.9.5</p>

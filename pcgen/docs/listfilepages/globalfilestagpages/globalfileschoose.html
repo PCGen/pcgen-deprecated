@@ -1,17 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
-
-
 <html>
 
 	<!--
 
 		PCGen Documentation Project
 
-		
-
 		$Header: /cvsroot/pcgendocs/pcgendocs/docs/listfilepages/globalfilestagpages/globalfileschoose.html,v 1.13 2006/02/24 02:03:25 eddyanthony Exp $
-
 		$Author$
 
 		$Date$
@@ -21,17 +16,13 @@
 		
 
 		Contributors:
-
 		Shane Molnar - shaneATcliftonmotelDOTcomDOTau
-
 		Eddy Anthony - eddybaATmindspringDOTcom
-
 		Aaron Divinsky - boomer70ATyahooDOTcom
 
 		
 
 		Description:
-
 		Provides information on the use of PCGen global CHOOSE Tag.
 
 	-->
@@ -457,29 +448,41 @@
 		
 
 		<p></p><a name="NUMCHOICES"></a><hr>
-
 		<p class="indent0"><strong>Tag Name:</strong> CHOOSE:NUMCHOICES=x</p>
-
 		<p class="indent1"><strong>Variables Used (x):</strong> Number (The maximum number of times the CHOOSE can be selected)</p>
-
 		<p class="indent1"><strong>What it does:</strong></p>
-
 		<p class="indent2">NUMCHOICES is not a choose, but a pre-fix for any Choose. 
-
 		It sets the number of choices that a feat can be selected at most.</p>
-
 		<p class="indent1"><strong>Example:</strong></p>
-
 		<p class="indent2"><code>MULT:YES</code></p>
-
 		<p class="indent2"><code>STACK:YES</code></p>
-
 		<p class="indent2"><code>CHOOSE:NUMCHOICES=3|SKILLSNAMED|Spot|Listen|Search</code></p>
-
 		<p class="indent3">The user can select the same choice more than once, 
-
 		but the user will never be allowed to select the feat more than 3 times.</p>
+		<p class="indent2"><code>CHOOSE:NUMCHOICES=1|SKILLSNAMED|Craft%|3</code></p>
+		<p class="indent3">The user can select the this choice once, the user will be allowed to select
+		the Craft subskill 3 times.</p>
+		<p class="indent2"><code>CHOOSE:NUMCHOICES=3|SKILLSNAMED|TYPE.Knowledge$|2</code></p>
+		<p class="indent3">The user can select the this choice three times, the user will be allowed to select the
+		Knowledge subskill twice each time.</p>
 
+
+		<p></p><a name="PROFICIENCY"></a><hr/>
+		<p class="new">*** New 5.10</p>
+		<p class="indent0"><strong>Tag Name:</strong> CHOOSE:PROFICIENCY|x|y|z|z</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> ARMOR (Choose Armor Proficiencies)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> SHIELD (Choose Shield Proficiencies)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> WEAPON (Choose Weapon Proficiencies)</p>
+		<p class="indent1"><strong>Variables Used (y):</strong> PC (Choose from proficiencies already possessed by PC)</p>
+		<p class="indent1"><strong>Variables Used (y):</strong> ALL (Choose from all proficiencies)</p>
+		<p class="indent1"><strong>Variables Used (y):</strong> UNIQUE (Choose from all proficiencies not already possessed by PC)</p>
+		<p class="indent1"><strong>Variables Used (z):</strong> Text (Proficiency to add to list)</p>
+		<p class="indent1"><strong>Variables Used (z):</strong> TYPE= (Type of proficiency)</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<p class="indent2">This will produce a list of all proficiencies that match the criteria specified.</p>
+		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>CHOOSE:PROFICIENCY|WEAPON|UNIQUE|TYPE=Exotic</code></p>
+		<p class="indent3">This will produce a list of all exotic weapon proficiencies the PC does not have.</p>
 		
 		<p></p><a name="RACE"></a><hr>
 
@@ -530,21 +533,17 @@
 		<p class="indent3">This will produce a list of all Special Abilities that start with Turn or Rebuke possessed by the character.</p>
 
 
-
 		<p></p><a name="SCHOOLS"></a><hr>
-
 		<p class="indent0"><strong>Tag Name:</strong> CHOOSE:SCHOOLS</p>
-
 		<p class="indent1"><strong>What it does:</strong></p>
-
 		<p class="indent2">This will produce a list of all schools of magic from System\schools.lst.</p>
-
 		<p class="indent1"><strong>Example:</strong></p>
-
 		<p class="indent2"><code>CHOOSE:SCHOOLS</code></p>
-
 		<p class="indent3">This will produce a list of all schools of magic (abjuration, evocation, etc.).</p>
-
+		<p class="indent2"><code>Damnation - Arcane Power &lt;tab&gt; STACK:NO &lt;tab&gt; MULT:YES &lt;tab&gt;
+		CHOOSE:SCHOOLS|1 &lt;tab&gt; BONUS:CASTERLEVEL|SCHOOL.%LIST|1</code></p>
+		<p class="indent3">This feat will produce a list of all schools of magic (abjuration, evocation, etc.),
+		can be taken more than once, will not stack.</p>
 
 
 		<p></p><a name="SHIELDPROF"></a><hr>
@@ -900,33 +899,21 @@
 			</li>
 
 		</ul>
-
 		<p class="indent1"><strong>Example:</strong></p>
-
 		<p class="indent2"><code>CHOOSE:WEAPONPROF|1|Dagger|Club</code></p>
-
 		<p class="indent3">Choice of either a Dagger or Club proficiency.</p>
-
 		<p class="indent2"><code>CHOOSE:WEAPONPROF|3|DEITYWEAPON</code></p>
-
 		<p class="indent3">Choice of three of those allowed by the Deity.</p>
-
 		<p class="indent2"><code>CHOOSE:WEAPONPROF|2|Dagger|Sword (Long)|Spear|Halberd</code></p>
-
 		<p class="indent3">Choice of two of the Dagger, Long Sword, Spear and Halbard.</p>
-
 		<p class="indent2"><code>CHOOSE:WEAPONPROF|10|FEAT=Martial Weapon Proficiency</code></p>
-
 		<p class="indent3">Choice of ten Martial Weapons.</p>
-
 		<p class="indent2"><code>CHOOSE:WEAPONPROF|1|WIELD.OneHanded|WIELD.Light</code></p>
-
 		<p class="indent3">Choice of all weapons which have a WIELD tag of either OneHanded or Light.</p>
-
 		<p class="indent2"><code>CHOOSE:WEAPONPROF|1|WIELD.OneHanded|!TYPE.Exotic</code></p>
-
 		<p class="indent3">Choice of all weapons which have a WIELD tag of OneHanded which are not Exotic.</p>
-
+		<p class="indent2"><code>CHOOSE:WEAPONPROFS|3 &lt;tab&gt; BONUS:COMBAT|TOHIT.%LIST|1|TYPE=Talent</code></p>
+		<p class="indent3">Choice 3 weapons proficiencies which will be inserted in the %LIST giving you an additional +1 to-hit with them.</p>
 
 
 		<p></p><a name="WEAPONPROFS"></a><hr>
