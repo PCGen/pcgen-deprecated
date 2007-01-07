@@ -328,7 +328,7 @@ class LevelAbilityFeat extends LevelAbility
 					{
 						if (anAbility != null)
 						{
-							anAbility.applyBonus((String) bonii.next(), chosenItem, aPC);
+							anAbility.applyBonus((String) bonii.next(), chosenItem, aPC, false);
 						}
 					}
 				}

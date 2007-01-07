@@ -675,7 +675,7 @@ public class LevelAbilityAbility extends LevelAbility
 					{
 						if (ab != null)
 						{
-							ab.applyBonus((String) bonii.next(), choice, aPC);
+							ab.applyBonus((String) bonii.next(), choice, aPC, false);
 						}
 					}
 				}

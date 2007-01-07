@@ -122,7 +122,7 @@ final class LevelAbilityList extends LevelAbility
 			{
 				for (Iterator e1 = selectedBonusList.iterator(); e1.hasNext();)
 				{
-					owner.applyBonus((String) e1.next(), "", aPC);
+					owner.applyBonus((String) e1.next(), "", aPC, false);
 				}
 			}
 		}

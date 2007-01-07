@@ -586,7 +586,7 @@ public class PObjectUtilities
 				{
 					final String bString = (String) e.next();
 					obj.addAssociated(objPrefix + chosenItem);
-					obj.applyBonus(bString, chosenItem, aPC);
+					obj.applyBonus(bString, chosenItem, aPC, false);
 				}
 			}
 			else if ("SPELLLIST".equals(choiceType))
@@ -606,7 +606,7 @@ public class PObjectUtilities
 				{
 					final String bString = (String) e.next();
 					obj.addAssociated(objPrefix + chosenItem);
-					obj.applyBonus("ARMORPROF=" + bString, chosenItem, aPC);
+					obj.applyBonus("ARMORPROF=" + bString, chosenItem, aPC, false);
 				}
 			}
 			else if (multiples && !stacks)

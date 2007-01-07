@@ -90,7 +90,7 @@ public class SimpleSpellLevelChoiceManager extends AbstractSimpleChoiceManager
 			while (e.hasNext())
 			{
 				final String bonusString = (String) e.next();
-				pobject.applyBonus(bonusString, chooseString, aPC);
+				pobject.applyBonus(bonusString, chooseString, aPC, false);
 			}
 		}
 

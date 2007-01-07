@@ -12012,7 +12012,7 @@ public final class PlayerCharacter extends Observable implements Cloneable, Vari
 						// has multiple bonuses, don't add any more copies.
 						if (aTok.countTokens() > 0
 							|| listindex >= cnt
-							|| anObj.getBonusList().size() > 1)
+							|| aBonus.isAddOnceOnly())
 						{
 							break;
 						}

@@ -60,7 +60,8 @@ public abstract class BonusObj implements Serializable, Cloneable
 	private int     pcLevel              = -1;
 	private int     typeOfBonus          = Bonus.BONUS_UNDEFINED;
     private String  stringRepresentation;
-
+    private boolean addOnceOnly          = false;
+    
 	/**
 	 * Set Applied
 	 * @param aBool
@@ -774,6 +775,28 @@ public abstract class BonusObj implements Serializable, Cloneable
 		}
 
 		return false;
+	}
+
+	/**
+	 * Should this bonus only be added once no matter how many associated 
+	 * values are present in the PObject owning this bonus?
+	 *  
+	 * @return the addOnceOnly
+	 */
+	public boolean isAddOnceOnly()
+	{
+		return addOnceOnly;
+	}
+
+	/**
+	 * Should this bonus only be added once no matter how many associated 
+	 * values are present in the PObject owning this bonus?
+	 * 
+	 * @param addOnceOnly the addOnceOnly to set
+	 */
+	public void setAddOnceOnly(boolean addOnceOnly)
+	{
+		this.addOnceOnly = addOnceOnly;
 	}
 
 	protected boolean parseToken(final String token)
