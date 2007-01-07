@@ -23,6 +23,8 @@
  */
 package pcgen.core;
 
+import java.util.Iterator;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import pcgen.AbstractCharacterTestCase;
@@ -172,8 +174,9 @@ public class PObjectTest extends AbstractCharacterTestCase
 		aPC.calcActiveBonuses();
 		assertEquals("Should get 7 bonus known spells", (3*2)+1, (int) aPC
 			.getTotalBonusTo("SPELLKNOWN", "CLASS.TestPsion;LEVEL.1"));
-		for (Object bonus : pObj.getBonusList())
+		for (Iterator bIter = pObj.getBonusList().iterator(); bIter.hasNext();)
 		{
+			BonusObj bonus = (BonusObj) bIter.next();
 			((BonusObj) bonus).setAddOnceOnly(true);
 		}
 		aPC.calcActiveBonuses();
