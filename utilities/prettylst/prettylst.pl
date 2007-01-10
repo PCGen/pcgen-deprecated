@@ -2,7 +2,7 @@
 
 # * Copyright
 
-# Copyright 2002 to 2006 by Éric Beaudoin <beaudoer@videotron.ca>.
+# Copyright 2002 to 2006 by ï¿½ric Beaudoin <beaudoer@videotron.ca>.
 
 # All rights reserved.  You can redistribute and/or modify
 # this program under the same terms as Perl itself.
@@ -1399,6 +1399,19 @@ my @PRE_Tags = (
     'PREMULT',
     '!PREMULT',
     'PRERACE',
+    'PREREACH',
+    '!PREREACH',
+    'PREREACHEQ',
+    '!PREREACHEQ',
+    'PREREACHGT',
+    '!PREREACHGT',
+    'PREREACHGTEQ',
+    '!PREREACHGTEQ',
+    'PREREACHLT',
+    '!PREREACHLT',
+    'PREREACHLTEQ',
+    '!PREREACHLTEQ',
+    'PREREACHNEQ',
     '!PRERACE',
     'PREREGION',
     '!PREREGION',
@@ -3447,6 +3460,9 @@ my %tagheader = (
         'PRERACE'               => 'Required Race',
         '!PRERACE'              => 'Prohibited Race',
         'PRERACETYPE'           => 'Reg. Race Type',
+        'PREREACH'              => 'Minimum Reach',
+        'PREREACHEQ'            => 'Required Reach',
+        'PREREACHGT'            => 'Minimum Reach',
         'PREREGION'             => 'Required Region',
         'PRERULE'               => 'Req. Rule (in options)',
         'PRESA'                 => 'Req. Special Ability',

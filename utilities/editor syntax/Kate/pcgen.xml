@@ -458,6 +458,12 @@
       <item> PREMULT </item>
       <item> PRERACE </item>
       <item> PRERACETYPE </item>
+      <item> PREREACH </item>
+      <item> PREREACHEQ </item>
+      <item> PREREACHGT </item>
+      <item> PREREACHGTEQ </item>
+      <item> PREREACHLT </item>
+      <item> PREREACHLTEQ </item>
       <item> PRESA </item>
       <item> PRESIZEEQ </item>
       <item> PRESIZEGT </item>
