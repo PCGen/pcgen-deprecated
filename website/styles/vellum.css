@@ -447,3 +447,17 @@ a:hover
 {
     clear:both;
 }
+
+
+#pagebody div.downloadbar {position: relative; border-top: 1px solid #008000; background: #0a0 url("http://pcgen.sourceforge.net/images/pcgen_dl_bg.png") repeat-x bottom left; font-size: 82.3%; color: #456; padding: .3em .5em 1.7em .5em; margin: 0 0 -.5em 1em; width: 17em;}
+#pagebody div.downloadbar a {color: #fff !important; padding: 0 40px 0 0 !important}
+#pagebody div.downloadbar a:hover {color: #efe !important;}
+#pagebody div.downloadbar small
+{
+        color: #fff;
+        padding: 20px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background: url("http://pcgen.sourceforge.net/images/pcgen_dl_arrow.png")  bottom left no-repeat;
+}
