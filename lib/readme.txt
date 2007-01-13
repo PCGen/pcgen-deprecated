@@ -24,7 +24,7 @@ lnf/kunststoff.jar -- Kunststoff Look and Feel 2.0.2, optional java look and fee
 lnf/wraplf.jar -- Used to support anti-aliasing on jdk < 5.0, seems to not support mac? http://wraplf.l2fprod.com/
 
 test/clover.jar -- Code coverage tool, not open source, we have a license. There is an ant task that runs it. http://www.cenqua.com/clover/
-test/junit.jar -- Java Unit test 3.8.1, used by test classes. http://junit.sourceforge.net/junit3.8.1/index.html
+test/junit-4.1.jar -- Java Unit test 4.1, used by test classes. http://junit.org/
 test/xmlunit1.0.jar -- Used by some junit tests. http://xmlunit.sourceforge.net/
 
 javacc.jar -- Java Compiler Compiler 3.2, used by 'dice rolling' functions; only needed for development. https://javacc.dev.java.net/
