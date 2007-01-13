@@ -163,6 +163,16 @@ public class ArmorToken extends Token
 
                 break;
             }
+			else if (tokens[i].equals("NAME"))
+			{
+				property = tokens[i];
+				if (i < (tokens.length - 1))
+				{
+					property += "." + tokens[i + 1];
+				}
+
+				break;
+			}
             else if (i < (tokens.length - 1))
             {
                 try
@@ -401,7 +411,7 @@ public class ArmorToken extends Token
         
         if (property.startsWith("NAME"))
         {
-            if (eq.isEquipped())
+            if (eq.isEquipped() && !property.equals("NAMENOSTAR"))
             {
                 retString = retString + "*";
             }
