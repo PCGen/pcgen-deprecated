@@ -4,7 +4,7 @@
     <id>pcgen_prod</id>
     <groupId>pcgen</groupId>
     <name>PCGen Production Branch</name>
-    <currentVersion>5.10.0</currentVersion>
+    <currentVersion>5.10.2RC1</currentVersion>
     <organization>
         <name>SourceForge</name>
         <url>http://sourceforge.net/</url>
@@ -21,7 +21,7 @@
 
     <repository>
         <connection>scm:svn:https://svn.sourceforge.net/svnroot/pcgen/Branches/5.10.x/pcgen</connection>
-        <url>https://svn.sourceforge.net/svnroot/pcgen/Branches/5.10.x/pcgen</url>
+        <url>http://pcgen.svn.sourceforge.net/viewvc/pcgen/branches/5.10.x/pcgen</url>
     </repository>
 
     <developers>
@@ -231,6 +231,19 @@
             <type>plugin</type>
             <url>http://emma.sourceforge.net/maven-emma-plugin/</url>
         </dependency>
+        <!-- Maven -->
+		<dependency>
+			<groupId>commons-jelly</groupId>
+			<artifactId>commons-jelly-tags-interaction</artifactId>
+			<version>1.1</version>
+			<url>http://jakarta.apache.org/commons/jelly/libs/interaction/index.html</url>
+		</dependency>
+		<dependency>
+			<groupId>jline</groupId>
+			<artifactId>jline</artifactId>
+			<version>0.9.9</version>
+			<url>http://jline.sourceforge.net/</url>
+		</dependency>
 <!--
         <dependency>
             <groupId>maven-plugins</groupId>
