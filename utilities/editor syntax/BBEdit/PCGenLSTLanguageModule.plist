@@ -35,6 +35,7 @@
 <string>ALLOWAUTORESIZE</string>
 <string>ALLOWEDMODES</string>
 <string>ALTCRITICAL</string>
+<string>ALTCRITMULT</string>
 <string>ALTCRITRANGE</string>
 <string>ALTDAMAGE</string>
 <string>ALTEQMOD</string>
@@ -148,6 +149,7 @@
 <string>CONSCORE</string>
 <string>CONTAINS</string>
 <string>CONTEXT</string>
+<string>COPY</string>
 <string>COPYMASTERBAB</string>
 <string>COPYMASTERCHECK</string>
 <string>COPYMASTERHP</string>
@@ -261,7 +263,9 @@
 <string>FINESSABLE</string>
 <string>FOLLOWER</string>
 <string>FOLLOWERS</string>
+<string>FOLLOWERADJUSTMENT</string>
 <string>FOLLOWERALIGN</string>
+<string>FORGET</string>
 <string>FORMATCAT</string>
 <string>Fortitude</string>
 <string>FORTITUDE</string>
@@ -373,6 +377,7 @@
 <string>Manifester</string>
 <string>MANIFESTER</string>
 <string>MARTIAL</string>
+<string>MASTERBONUSRACE</string>
 <string>MAX</string>
 <string>MAXAGE</string>
 <string>MAXDEX</string>
@@ -447,6 +452,7 @@
 <string>POSTMOVEADD</string>
 <string>POWERPOINTS</string>
 <string>PRE</string>
+<string>PREAGESET</string>
 <string>PREALIGN</string>
 <string>PREAPPLY</string>
 <string>PREATT</string>
@@ -495,6 +501,7 @@
 <string>PREMULT</string>
 <string>PRERACE</string>
 <string>PRERACETYPE</string>
+<string>PREREACH</string>
 <string>PREREGION</string>
 <string>PRERULE</string>
 <string>PRESA</string>
@@ -665,6 +672,9 @@
 <string>SUBRACE</string>
 <string>SUBREGION</string>
 <string>SUBSCHOOL</string>
+<string>SUBSTITUTIONCLASS</string>
+<string>SUBSTITUTIONCLASSLEVEL</string>
+<string>SUBSTITUTIONLEVEL</string>
 <string>SUMMARY</string>
 <string>SWITCH</string>
 <string>SWITCHRACE</string>
@@ -715,6 +725,7 @@
 <string>WEAPONNONPROFPENALTY</string>
 <string>WEAPONPROF</string>
 <string>WEAPONPROFS</string>
+<string>WEAPONREACH</string>
 <string>WEAPONTYPE</string>
 <string>WEIGHT</string>
 <string>WEIGHTADD</string>
