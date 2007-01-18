@@ -27,11 +27,11 @@ require_once('include/header.php.inc');
         the project is checked for changes and if any have been made a new build is generated.
         This branch is only active when there is work going on to release a production fix release, 
         or when we are nearing a new full production release. The builds currently show the work we 
-        are doing towards the 5.10.1 release. Note: the files are date stamped so the newer ones are 
+        are doing towards the 5.10.2 release. Note: the files are date stamped so the newer ones are 
         further down the list.</p>
         <ul>
           <li><a href="http://pcgen.sourceforge.net/autobuilds-prod/">Autobuild report</a>
-          <li><a href="https://sourceforge.net/project/showfiles.php?group_id=25576&package_id=191558&release_id=419532">Download Autobuild</a>
+          <li><a href="http://pcgen.sourceforge.net/autobuilds-pro/download.html">Download Autobuild</a>
         </ul>
 
     </div> <!-- div content -->
