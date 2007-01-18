@@ -31,7 +31,7 @@ require_once('include/header.php.inc');
         further down the list.</p>
         <ul>
           <li><a href="http://pcgen.sourceforge.net/autobuilds-prod/">Autobuild report</a>
-          <li><a href="http://pcgen.sourceforge.net/autobuilds-pro/download.html">Download Autobuild</a>
+          <li><a href="http://pcgen.sourceforge.net/autobuilds-prod/download.html">Download Autobuild</a>
         </ul>
 
     </div> <!-- div content -->
