@@ -83,7 +83,7 @@
 
 	<!-- Run release.pl to create the .zip files and to prepare the nsis directory for the Windows installer -->	
 	<goal name="pcgen:genrelease">
-		<ant:exec dir="${basedir}/installers/win-installer" executable="perl">
+		<ant:exec dir="${basedir}/../installers/win-installer" executable="perl">
 		  <arg line="release.pl ${pom.currentVersion}"/>
 		</ant:exec>	
 	</goal>
@@ -116,7 +116,7 @@
 		    	<include name="*.jar"/>
 		    </fileset>
 		</ant:copy>
-		<ant:exec dir="${basedir}/installers/win-installer" executable="perl">
+		<ant:exec dir="${basedir}/../installers/win-installer" executable="perl">
 		  <arg line="gendigest.pl ${maven.build.dir}"/>
 		</ant:exec>	
 
