@@ -9975,8 +9975,6 @@ BEGIN {
               $file_for_error,
               $line_for_error
           );
-        # XXXX Tir is working here XXXXX
-
           my $ttag;
           $ttag = $line_ref->{'ALTCRITICAL'}[0];
           $ttag =~ s/ALTCRITICAL/ALTCRITMULT/;
