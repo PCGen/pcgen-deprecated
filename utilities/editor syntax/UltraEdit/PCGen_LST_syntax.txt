@@ -12,6 +12,7 @@ ALIGN
 ALTCRITICAL
 ALTCRITRANGE
 ALTDAMAGE
+ALTEQMOD
 ALTTYPE
 ARMORTYPE
 ASSIGNTOALL
@@ -131,11 +132,7 @@ SKILLMULT
 SCHOOL
 SKILLLIST
 SLOTS
-SOURCE
-SOURCELONG
-SOURCEPAGE
-SOURCESHORT
-SOURCEWEB
+SOURCE SOURCEDATE SOURCELONG SOURCEPAGE SOURCESHORT SOURCEWEB
 SPECIALS
 SPECIALTYKNOWN
 SPELL
@@ -180,6 +177,7 @@ WT
 XPCOST
 XTRASKILLPTSPERLVL
 /C2"Sub tags"
+ANY
 ARMORPROF
 BASE
 CASTERLEVEL
@@ -251,6 +249,9 @@ TL
 var
 /C4"Other Known Words"
 %CHOICE
+1 full round
+1 standard action
+1 swift action
 Abjuration
 AC
 Acid
@@ -258,6 +259,7 @@ Advanced
 Affecting
 Air
 ALL
+Alchemical
 Amulet
 Ammunition
 ANYPC
@@ -284,6 +286,7 @@ Chaotic
 Charisma
 CE
 CG
+Concentration
 Consumable
 COPY
 Charm
@@ -314,6 +317,7 @@ Divination
 Divine
 Dodge
 Dorje
+Double
 Earth
 Enchantment
 Enhancement
@@ -327,7 +331,6 @@ Exotic
 Extraordinary
 Eyegear
 Fear
-Fighter
 Figment
 Finesseable
 Fire
@@ -339,6 +342,7 @@ Fortitude negates
 Fortitude partial
 FX
 General
+Giant
 Glamer
 Glove
 Good
@@ -350,6 +354,8 @@ harmless
 Headgear
 Healing
 Heavy
+Human
+Humanoid
 HMG
 if
 if interacted with
@@ -387,6 +393,7 @@ Metamagic
 Mind
 MIN
 ModifyAC
+Monstrous Humanoid
 Morale
 NAME
 Natural
@@ -399,6 +406,10 @@ No
 None
 NotRanged
 NUMBER
+OneHanded
+One creature
+One living creature
+One willing creature
 object
 Pattern
 PC
@@ -418,19 +429,24 @@ Profession
 Projectile
 Racial
 Ranged
+Ray
+Reach
 Reflex
 Reflex half
 Reflex negates
 Reflex partial
 Resistance
+Resizable
 Ring
 Robe
 RocketLauncher
 Scroll
+Scrying
 SECONDARY
 SECONDARYATTACKS
 See text
 Shadow
+Shapechanger
 Shield
 Shirt
 SHORTRANGE
@@ -462,11 +478,13 @@ Tower
 Transmutation
 TwoHanded
 Universal
+Unlimited
 Vial
 Walk
 Wand
 Water
 Weapon
+Weapon touched
 WEIGHTADD
 WEIGHTDIV
 Will disbelief
@@ -544,7 +562,40 @@ PREVARLT
 PREVARLTEQ
 PREVISION
 PREWEAPONPROF
-/C6"placeholders"
+/C6"Data Names"
+Arcane Archer
+Arcane Trickster
+Archmage
+Assassin
+Barbarian
+Bard
+Blackguard
+Cleric
+Dragon Disciple
+Druid
+Duelist
+Dwarf
+Dwarven Defender
+Eldritch Knight
+Elf
+Fighter
+Halfling
+Half Elf
+Half Orc
+Hierophant
+Horizon Walker
+Human
+Loremaster
+Monk
+Mystic Theurge
+Paladin
+Ranger
+Rogue
+Shadowdancer
+Sorcerer
+Thaumaturgist
+Wizard
+/C7"placeholders"
 XfooX
 /L2"PCGen data file" File Extensions = PCC Line Comment = # String Chars = "
 /Delimiters =	():[]={}<>;!|,./+-*
