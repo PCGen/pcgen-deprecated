@@ -26,7 +26,7 @@ my @SVN_array = split ' ', $SVN_id;
 my $SVN_build = $SVN_array[2];
 my $SVN_date = $SVN_array[3];
 $SVN_date =~ tr{-}{.};
-my $VERSION      = "1.35 (build $SVN_build)";
+my $VERSION      = "1.36 (build $SVN_build)";
 my $VERSION_DATE = $SVN_date;
 my ($SCRIPTNAME) = ( $PROGRAM_NAME =~ m{ ( [^/\\]* ) \z }xms );
 my $VERSION_LONG = "$SCRIPTNAME version: $VERSION -- $VERSION_DATE";
@@ -164,7 +164,8 @@ my %conversion_enable = (
        'ALL:PRERACE needs a ,'              => 0,               #
        'ALL:Willpower to Will'              => 0,               #[ 1398237 ] ALL: Convert Willpower to Will
        'ALL:New SOURCExxx tag format'       => 1,               #[ 1444527 ] New SOURCE tag format
-       'RACE:Remove MFEAT and HITDICE'      => 0,              #[ 1514765 ] Conversion to remove old defaultmonster tags
+       'RACE:Remove MFEAT and HITDICE'      => 0,               #[ 1514765 ] Conversion to remove old defaultmonster tags
+       'EQUIP: ALTCRITICAL to ALTCRITMULT'  => 1,               #[ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT'
 
        'Export lists'                       => 0,               # Export various lists of entities
        'SOURCE line replacement'            => 1,
@@ -1980,7 +1981,7 @@ my %master_order = (
         'CRITMULT',
         'CRITRANGE',
         'ALTCRITMULT',
-        'ALTCRITICAL',
+#        'ALTCRITICAL',        # Removed [ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT
         'ALTCRITRANGE',
         'FUMBLERANGE',
         'DAMAGE',
@@ -2972,6 +2973,10 @@ my %master_order = (
 ######################## Conversion #############################
 # Tags that must be seen as valid to allow convertion.
 
+if ( $conversion_enable{'EQUIP: ALTCRITICAL to ALTCRITMULT'} ) {
+	push @{ $master_order{'EQUIPMENT'} }, 'ALTCRITICAL';
+}
+
 if ( $conversion_enable{'BIOSET:generate the new files'} ) {
     push @{ $master_order{'RACE'} }, 'AGE', 'HEIGHT', 'WEIGHT';
 }
@@ -3301,7 +3306,7 @@ my %tagheader = (
         'AGE'                   => 'Age',
         'AGESET'                => 'Age Set',
         'ALTCRITMULT'           => 'Alternative Critical',
-        'ALTCRITICAL'           => 'Alternative Critical',
+#        'ALTCRITICAL'           => 'Alternative Critical',
         'ALTCRITRANGE'          => 'Alternative Critical Range',
         'ALTDAMAGE'             => 'Alternative Damage',
         'ALTEQMOD'              => 'Alternative Modifier',
@@ -9947,6 +9952,41 @@ BEGIN {
         my ( $line_ref, $filetype, $file_for_error, $line_for_error, $line_info ) = @_;
 
     ##################################################################
+    # [ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT'
+    #
+    # In EQUIPMENT files, take ALTCRITICAL and replace with ALTCRITMULT'
+
+    if (   $conversion_enable{'EQUIP: ALTCRITICAL to ALTCRITMULT'}
+        && $filetype eq "EQUIPMENT"
+        && exists $line_ref->{'ALTCRITICAL'} 
+    ) {
+      # Throw warning if both ALTCRITICAL and ALTCRITMULT are on the same line,
+      #   then remove ALTCRITICAL.
+      if ( exists $line_ref->{ALTCRITMULT} ) {
+          ewarn( WARNING, 
+              qq{Removing ALTCRITICAL, ALTCRITMULT already present on same line.}, 
+              $file_for_error, 
+              $line_for_error 
+          );
+          delete $line_ref->{'ALTCRITICAL'};
+      } else {
+          ewarn( WARNING,
+              qq{Change ALTCRITICAL for ALTCRITMULT in "$line_ref->{'ALTCRITICAL'}[0]"},
+              $file_for_error,
+              $line_for_error
+          );
+        # XXXX Tir is working here XXXXX
+
+          my $ttag;
+          $ttag = $line_ref->{'ALTCRITICAL'}[0];
+          $ttag =~ s/ALTCRITICAL/ALTCRITMULT/;
+          $line_ref->{'ALTCRITMULT'}[0] = $ttag;
+          delete $line_ref->{'ALTCRITICAL'};
+        }
+     }
+
+
+    ##################################################################
     # [ 1514765 ] Conversion to remove old defaultmonster tags
     #
     # In RACE files, remove all MFEAT and HITDICE tags, but only if 
@@ -13318,7 +13358,15 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
-=head2 v1.35 -- Not yet released
+=head2 v1.36 -- NOT YET RELEASED
+
+[ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT
+
+Add PREREACH tag
+
+[ 1625250 ] New tag REACHMULT:x
+
+=head2 v1.35 
 
 [ 1593904 ] KIT lines can have any standard PRE tag
 
