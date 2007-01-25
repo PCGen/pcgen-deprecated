@@ -1531,6 +1531,21 @@ my @SOURCE_Tags = (
     'SOURCEPAGE',
 );
 
+my @QUALIFY_Tags = (
+    'QUALIFY:ABILITY',
+    'QUALIFY:CLASS',
+    'QUALIFY:DEITY',
+    'QUALIFY:DOMAIN',
+    'QUALIFY:EQUIPMENT',
+    'QUALIFY:EQMOD',
+    'QUALIFY:FEAT',
+    'QUALIFY:RACE',
+    'QUALIFY:SPELL',
+    'QUALIFY:SKILL',
+    'QUALIFY:TEMPLATE',
+    'QUALIFY:WEAPONPROF',
+);
+
 
 
 # Order for the tags for each line type.
@@ -1749,7 +1764,7 @@ my %master_order = (
         'AUTO:WEAPONPROF:*',
         'LANGAUTO',
         'ADDDOMAINS',
-        'QUALIFY',
+        @QUALIFY_Tags,
         'WEAPONBONUS',
         'FEATAUTO:.CLEAR',
         'FEATAUTO:*',
@@ -1831,6 +1846,7 @@ my %master_order = (
         'WORSHIPPERS',
         @SOURCE_Tags,
         @PRE_Tags,
+        @QUALIFY_Tags,
         'BONUS:CHECKS:*',
         'BONUS:CASTERLEVEL:*',
         'BONUS:COMBAT:*',
@@ -1888,6 +1904,7 @@ my %master_order = (
         'NAMEISPI',
         'OUTPUTNAME',
         @PRE_Tags,
+        @QUALIFY_Tags,
         'CSKILL:.CLEAR',
         'CSKILL',
         'CCSKILL',
@@ -1973,6 +1990,7 @@ my %master_order = (
         'WT',
         'SLOTS',
         @PRE_Tags,
+        @QUALIFY_Tags,
         'DEFINE:*',
         'ACCHECK',
         'BASEITEM',
@@ -2081,6 +2099,7 @@ my %master_order = (
         'COSTPRE',
         @SOURCE_Tags,
         @PRE_Tags,
+        @QUALIFY_Tags,
         'ADDPROF',
         'VISION',
         'SR',
@@ -2154,6 +2173,7 @@ my %master_order = (
         'TYPE',
         'VISIBLE',
         @PRE_Tags,
+        @QUALIFY_Tags,
         'SA:.CLEAR',
         'SA:*',
         'DEFINE:*',
@@ -2372,6 +2392,7 @@ my %master_order = (
         'TYPE',
         'SOURCEPAGE',
         @PRE_Tags,
+        @QUALIFY_Tags,
     ],
 
     'MASTERBONUSRACE' => [
@@ -2456,6 +2477,7 @@ my %master_order = (
         'REACH',
         'VISION',
         @PRE_Tags,
+        @QUALIFY_Tags,
         'LANGAUTO',
         'LANGBONUS:.CLEAR',
         'LANGBONUS',
@@ -2564,6 +2586,7 @@ my %master_order = (
         'TYPE',
         'VISIBLE',
         @PRE_Tags,
+        @QUALIFY_Tags,
         'BONUS:SKILL:*',
         @SOURCE_Tags,
         'CHOOSE',
@@ -2709,6 +2732,7 @@ my %master_order = (
     'SUBCLASSLEVEL' => [
         'SUBCLASSLEVEL',
         'REPEATLEVEL',
+        @QUALIFY_Tags,
         'UATT',
         'UDAM',
         'UMULT',
@@ -2816,7 +2840,7 @@ my %master_order = (
         'DEFINE:*',
         'LEVEL:*',
         @PRE_Tags,
-        'QUALIFY',
+        @QUALIFY_Tags,
         'BONUS:CASTERLEVEL:*',
         'BONUS:CHECKS:*',
         'BONUS:COMBAT:*',
@@ -3159,6 +3183,22 @@ my %token_BONUS_tag = map { $_ => 1 } (
     'WEAPON',
     'WEAPONPROF',
     'WIELDCATEGORY',
+);
+
+
+my %token_QUALIFY_tag = map { $_ => 1 } (
+    'ABILITY',
+    'CLASS',
+    'DEITY',
+    'DOMAIN',
+    'EQUIPMENT',
+    'EQMOD',
+    'FEAT',
+    'RACE',
+    'SPELL',
+    'SKILL',
+    'TEMPLATE',
+    'WEAPONPROF',
 );
 
 # List of types that are valid in BONUS:SLOTS
@@ -3512,6 +3552,17 @@ my %tagheader = (
         'PROFICIENCY'           => 'Required Proficiency',
         'PROHIBITED'            => 'Spell Scoll Prohibited',
         'PROHIBITSPELL'         => 'Group of Prohibited Spells',
+        'QUALIFY:CLASS'         => 'Qualify for Class',
+        'QUALIFY:DEITY'         => 'Qualify for Deity',
+        'QUALIFY:DOMAIN'        => 'Qualify for Domain',
+        'QUALIFY:EQUIPMENT'     => 'Qualify for Equipment',
+        'QUALIFY:EQMOD'         => 'Qualify for Equip Modifier',
+        'QUALIFY:FEAT'          => 'Qualify for Feat',
+        'QUALIFY:RACE'          => 'Qualify for Race',
+        'QUALIFY:SPELL'         => 'Qualify for Spell',
+        'QUALIFY:SKILL'         => 'Qualify for Skill',
+        'QUALIFY:TEMPLATE'      => 'Qualify for Template',
+        'QUALIFY:WEAPONPROF'    => 'Qualify for Weapon Proficiency',
         'RACESUBTYPE'           => 'Race Subtype',
         'RACETYPE'              => 'Main Race Type',
         'RANGE'                 => 'Range',
@@ -5852,6 +5903,35 @@ sub parse_tag {
                 $no_more_error = 1;
             }
         }
+    }
+
+    if ( $tag eq 'QUALIFY' ) {
+       my ($qualify_type) = ($value =~ /^([^=:|]+)/ );
+       if ($qualify_type && exists $token_QUALIFY_tag{$qualify_type} ) {
+            $tag .= ':' . $qualify_type;
+            $value =~ s/^$qualify_type(.*)/$1/;
+       }
+       elsif ($qualify_type) {
+       	# No valid Qualify type found
+       $count_tags{"Invalid"}{"Total"}{"$tag:$qualify_type"}++;
+       	$count_tags{"Invalid"}{$linetype}{"$tag:$qualify_type"}++;
+       	ewarn( NOTICE,
+       		qq{Invalid QUALIFY:$qualify_type tag "$tag_text" found in $linetype.},
+       		$file_for_error,
+       		$line_for_error
+       	);
+       	$no_more_error = 1;
+       }
+       else {
+       	$count_tags{"Invalid"}{"Total"}{"QUALIFY"}++;
+       	$count_tags{"Invalid"}{$linetype}{"QUALIFY"}++;
+       	ewarn( NOTICE,
+       		qq{Invalid QUALIFY tag "$tag_text" found in $linetype},
+       		$file_for_error,
+       		$line_for_error
+       	);
+       	$no_more_error = 1;
+       }
     }
 
     if ( $tag eq 'BONUS' ) {
