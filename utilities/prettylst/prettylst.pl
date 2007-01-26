@@ -13427,11 +13427,17 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =item * Add more cross-reference checks
 
+=item * Add Ability object support (planned for v.1.37)
+
 =back
 
 =head1 KNOWN BUGS
 
 =over 8
+
+=item * KIT object references not found durring cross-reference checks.
+
+=item * .FORGET and .MOD erroneously reporting missing KEY.
 
 =item * The script is still unwilling to do the coffee...
 
