@@ -13438,6 +13438,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.36 -- NOT YET RELEASED
 
+[ 1630261 ] Change syntax for QUALIFY tag
+
 [ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT
 
 Add PREREACH tag
