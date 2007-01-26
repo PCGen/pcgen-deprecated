@@ -12895,7 +12895,7 @@ __END__
 
 prettylst.pl -- Reformat the PCGEN .lst files
 
-Version: 1.35
+Version: 1.36
 
 =head1 DESCRIPTION
 
