@@ -1,0 +1,1156 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>C:\pcgen\svn\pcgen\Trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</title>
+<link rel="stylesheet" href="C:/pcgen/svn/pcgen/Trunk/utilities/prettylst/prettylst.pl.css" type="text/css" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;C:\pcgen\svn\pcgen\Trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#installation">INSTALLATION</a></li>
+	<ul>
+
+		<li><a href="#get_perl">Get Perl</a></li>
+		<li><a href="#put_the_script_somewhere">Put the script somewhere</a></li>
+	</ul>
+
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#parameters">PARAMETERS</a></li>
+	<li><a href="#manifest">MANIFEST</a></li>
+	<li><a href="#copyright">COPYRIGHT</a></li>
+	<li><a href="#to_do">TO DO</a></li>
+	<li><a href="#known_bugs">KNOWN BUGS</a></li>
+	<li><a href="#version_history">VERSION HISTORY</a></li>
+	<ul>
+
+		<li><a href="#v1_36___2007_01_26">v1.36 - - 2007.01.26</a></li>
+		<li><a href="#v1_35">v1.35</a></li>
+		<li><a href="#v1_34__2005_01_19">v1.34 - 2005.01.19</a></li>
+		<li><a href="#v1_33__2004_08_29">v1.33 - 2004.08.29</a></li>
+		<li><a href="#v1_32__2004_07_06">v1.32 - 2004.07.06</a></li>
+		<li><a href="#v1_31__2003_10_29">v1.31 - 2003.10.29</a></li>
+		<li><a href="#v1_30__2003_10_14">v1.30 - 2003.10.14</a></li>
+		<li><a href="#v1_29__2003_08_23">v1.29 - 2003.08.23</a></li>
+		<li><a href="#v1_28__2003_05_04">v1.28 - 2003.05.04</a></li>
+		<li><a href="#v1_27__2003_04_03">v1.27 - 2003.04.03</a></li>
+		<li><a href="#v1_26__2002_02_27">v1.26 - 2002.02.27</a></li>
+		<li><a href="#v1_25__2003_01_27">v1.25 - 2003.01.27</a></li>
+		<li><a href="#v1_24__2003_01_14">v1.24 - 2003.01.14</a></li>
+		<li><a href="#v1_23__2003_01_06">v1.23 - 2003.01.06</a></li>
+		<li><a href="#v1_22__2002_12_31">v1.22 - 2002.12.31</a></li>
+		<li><a href="#v1_21__2002_12_28">v1.21 - 2002.12.28</a></li>
+		<li><a href="#v1_20__2002_12_19">v1.20 - 2002.12.19</a></li>
+		<li><a href="#v1_19__2002_12_12">v1.19 - 2002.12.12</a></li>
+		<li><a href="#v1_18__2002_08_31">v1.18 - 2002.08.31</a></li>
+		<li><a href="#v1_17__2002_08_17">v1.17 - 2002.08.17</a></li>
+		<li><a href="#v1_16__2002_06_28">v1.16 - 2002.06.28</a></li>
+		<li><a href="#v1_15__2002_06_20">v1.15 - 2002.06.20</a></li>
+		<li><a href="#v1_14__2002_06_08">v1.14 - 2002.06.08</a></li>
+		<li><a href="#v1_13__2002_05_11">v1.13 - 2002.05.11</a></li>
+		<li><a href="#v1_12__2002_03_23">v1.12 - 2002.03.23</a></li>
+		<li><a href="#v1_11__2002_03_07">v1.11 - 2002.03.07</a></li>
+		<li><a href="#v1_10__2002_02_27">v1.10 - 2002.02.27</a></li>
+		<li><a href="#v1_09__2002_02_20">v1.09 - 2002.02.20</a></li>
+		<li><a href="#v1_08__2002_02_17">v1.08 - 2002.02.17</a></li>
+		<li><a href="#v1_07__2002_02_08">v1.07 - 2002.02.08</a></li>
+		<li><a href="#v1_06__2002_02_07">v1.06 - 2002.02.07</a></li>
+		<li><a href="#v1_05__2002_02_06">v1.05 - 2002.02.06</a></li>
+		<li><a href="#v1_04__2002_02_05">v1.04 - 2002.02.05</a></li>
+		<li><a href="#v1_03__2002_02_03">v1.03 - 2002.02.03</a></li>
+		<li><a href="#v1_02__2002_02_03">v1.02 - 2002.02.03</a></li>
+		<li><a href="#v1_01__2002_02_02">v1.01 - 2002.02.02</a></li>
+		<li><a href="#v1_00__2002_01_27">v1.00 - 2002.01.27</a></li>
+	</ul>
+
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>prettylst.pl -- Reformat the PCGEN .lst files</p>
+<p>Version: 1.35</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p><strong>prettylst.pl</strong> is a script that parse a PCGEN .lst files and generate
+new ones with the proper ordering of the fields. The original order was
+given by Mynex. Nowadays, it's Tir-Gwait that is the
+head-honcho-master-lst-monkey (well, he decide the order anyway :-).</p>
+<p>The script is also able to do some conversions of the .lst so that old
+versions are compatibled with the latest release of PCGEN.</p>
+<p>
+</p>
+<hr />
+<h1><a name="installation">INSTALLATION</a></h1>
+<p>
+</p>
+<h2><a name="get_perl">Get Perl</a></h2>
+<p>I'm using ActivePerl v5.8.6 (build 811) but any standard distribution with version 5.5 and
+over should work. The script has been tested on Windows 98, Windows 2000, Windows XP and FreeBSD.</p>
+<p>To my knowledge, I'm using only one module that is not included in the standard distribution: Text::Balanced
+(this module is included in the 5.8 standard distribution and maybe with some others).</p>
+<p>To get Perl use &lt;<a href="http://www.activestate.com/Products/ActivePerl/">http://www.activestate.com/Products/ActivePerl/</a>&gt; or &lt;<a href="http://www.cpan.org/ports/index.html">http://www.cpan.org/ports/index.html</a>&gt;
+To get Text::Balanced use &lt;<a href="http://search.cpan.org/author/DCONWAY/Text-Balanced-1.89/lib/Text/Balanced.pm">http://search.cpan.org/author/DCONWAY/Text-Balanced-1.89/lib/Text/Balanced.pm</a>&gt; or
+use the following command if you use the ActivePerl distribution:</p>
+<pre>
+  ppm install text-balanced</pre>
+<p>
+</p>
+<h2><a name="put_the_script_somewhere">Put the script somewhere</a></h2>
+<p>Once Perl is installed on your computer, you just have to find a home for the script. After that,
+all you have to do is type <strong>perl prettylst.pl</strong> with the proper parameters to make it
+work.</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<pre>
+  # parse all the files in PATH, create the new ones in NEWPATH
+  # and produce a report of the TAG in usage
+  perl prettylst.pl -inputpath=&lt;PATH&gt; -outputpath=&lt;NEWPATH&gt; -report
+  perl prettylst.pl -i=&lt;PATH&gt; -o=&lt;NEWPATH&gt; -r</pre>
+<pre>
+  # parse all the files in PATH and write the error messages in ERROR_FILE
+  # without creating any new files
+  perl prettylst.pl -inputpath=&lt;PATH&gt; -outputerror=&lt;ERROR_FILE&gt;
+  perl prettylst.pl -i=&lt;PATH&gt; -e=&lt;ERROR_FILE&gt;</pre>
+<pre>
+  # parse all the files in PATH and write the error messages in ERROR_FILE
+  # without creating any new files
+  # A compilation of cross-checking (xcheck) errors will not be displayed and
+  # only the messages of warning level notice or worst will be outputed.
+  perl prettylst.pl -noxcheck -warninglevel=notice -inputpath=&lt;PATH&gt; -outputerror=&lt;ERROR_FILE&gt;
+  perl prettylst.pl -nx -wl=notice -i=&lt;PATH&gt; -e=&lt;ERROR_FILE&gt;</pre>
+<pre>
+  # parse all the files in PATH and created new ones in NEWPATH
+  # by applaying the convertion pcgen5713. The output is redirected
+  # to ERROR_FILE
+  perl prettylst.pl -inputpath=&lt;PATH&gt; -outputpath=&lt;NEWPATH&gt; \
+                    -outputerror=&lt;ERROR_FILE&gt; -convert=pcgen5713
+  perl prettylst.pl -i=&lt;PATH&gt; -o=&lt;NEWPATH&gt; -e=&lt;ERROR_FILE&gt; -c=pcgen5713</pre>
+<pre>
+  # display the usage guide lines
+  perl prettylst.pl -help
+  perl prettylst.pl -h
+  perl prettylst.pl -?</pre>
+<pre>
+  # display the complete documentation
+  perl prettylst.pl -man</pre>
+<pre>
+  # generate and attemp to display a html file for
+  # the complete documentation
+  perl prettylst.pl -htmlhelp</pre>
+<p>
+</p>
+<hr />
+<h1><a name="parameters">PARAMETERS</a></h1>
+<dl>
+<dt><strong><a name="item__2dinputpath_or__2do"><strong>-inputpath</strong> or <strong>-o</strong></a></strong>
+
+<dd>
+<p>Path to an input directory that will be scanned for .pcc files. A list of
+files to parse will be built from the .pcc files found. Only the known filetypes will
+be parsed.</p>
+</dd>
+<dd>
+<p>If <strong>-inputpath</strong> is given without any <strong>-outputpath</strong>, the script parse the files, produce the
+warning messages but doesn't write any new files.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dbasepath_or__2db"><strong>-basepath</strong> or <strong>-b</strong></a></strong>
+
+<dd>
+<p>Path to the base directory use to replace the @ character in the .PCC files. If no <strong>-basepath</strong> option is given,
+the value of <strong>-inputpath</strong> is used to replace the @ character.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dsystempath_or__2ds"><strong>-systempath</strong> or <strong>-s</strong></a></strong>
+
+<dd>
+<p>Path to the <strong>pcgen/system</strong> used for the .lst files in <strong>-inputpath</strong>. This directory should contain the
+game mode files. These files will be parse to get a list of valid alignment abbreviations, valid statistic
+abbriviations, valid game modes and globaly defined variables.</p>
+</dd>
+<dd>
+<p>If the <strong>-gamemode</strong> parameter is used, only the system files found in the proper game mode directory will
+be parsed.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2doutputpath_or__2do"><strong>-outputpath</strong> or <strong>-o</strong></a></strong>
+
+<dd>
+<p>Only used when <strong>-inputpath</strong> is defined. <strong>-outputpath</strong> define where the new files will
+be writen. The directory tree from the <strong>-inputpath</strong> will be reproduce as well.</p>
+</dd>
+<dd>
+<p>Note: the output directory must be created before calling the script.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2doutputerror_or__2de"><strong>-outputerror</strong> or <strong>-e</strong></a></strong>
+
+<dd>
+<p>Redirect STDERR to a file. All the warning and errors found by this script are printed
+to STDERR.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dgamemode_or__2dgm"><strong>-gamemode</strong> or <strong>-gm</strong></a></strong>
+
+<dd>
+<p>Apply a filter on the GAMEMODE values and only read and/or reformat the files that
+meet the filter.</p>
+</dd>
+<dd>
+<p>e.g. -gamemode=35e</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dconvert_or__2dc"><strong>-convert</strong> or <strong>-c</strong></a></strong>
+
+<dd>
+<p>Activate some convertions on the files. The converted files are written in the directory specified
+by <strong>-outputpath</strong>. If no <strong>-outputpath</strong> is provided, the convertions messages are displayed but
+no actual convertions are done.</p>
+</dd>
+<dd>
+<p>Only one convertion may be activate at a time.</p>
+</dd>
+<dd>
+<p>Here are the list of the valid convertions so far:</p>
+</dd>
+<dl>
+<dt><strong><a name="item_pcgen5713"><strong>pcgen5713</strong></a></strong>
+
+<dd>
+<p>Use to apply the convertions that bring the .lst files from v5.7.4 of PCGEN
+to vertion 5.7.13.</p>
+</dd>
+<ul>
+<li><strong><a name="item__5b_1070084__5d_convert_spell_to_spells">[ 1070084 ] Convert SPELL to SPELLS</a></strong>
+
+<p>The old SPELL tags have been deprecated and must be replaced by SPELLS. This conversion
+does only part of the job since not all the information needed by the new SPELLS tags
+is present in the old SPELL tags.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1070084&group_id=36698&atid=450221">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+<li><strong><a name="item__5b_1070344__5d_hitdicesize_to_hitdie_in_templates">[ 1070344 ] HITDICESIZE to HITDIE in templates.lst</a></strong>
+
+<p>The old HITDICESIZE tag has been deprecated and my be replaced by the new HITDIE. HITDICESIZE
+was only present in the TEMPLATE files.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/?func=detail&atid=578825&aid=1070344&group_id=36698">http://sourceforge.net/tracker/</a>&gt;</p>
+</li>
+<li><strong><a name="item__5b_731973__5d_all_3a_new_preclass_syntax">[ 731973 ] ALL: new PRECLASS syntax</a></strong>
+
+<p>All the PRECLASS tag -- including the ones found within BONUS tags -- are converted to the new
+syntax -- <strong>PRECLASS:&lt;number of classes&gt;,&lt;list of classes&gt;=&lt;level&gt;</strong>.</p>
+<p>Note: this conversion was done a long time ago (pcgen511) but I've reactivated it since
+a lot of old PRECLASS format have reaappear in the data sets resently.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=731973&group_id=36698&atid=450221">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen574"><strong>pcgen574</strong></a></strong>
+
+<dd>
+<p>Use to apply the convertions that bring the .lst files from v5.6.x or v5.7.x of PCGEN
+to vertion 5.7.4.</p>
+</dd>
+<ul>
+<li><strong><a name="item__5b_876536__5d_all_spell_casting_classes_need_cast">[ 876536 ] All spell casting classes need CASTERLEVEL</a></strong>
+
+<p>Add BONUS:CASTERLEVEL tags to casting that do not already have it.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=876536&group_id=36698&atid=417816">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+<li><strong><a name="item__5b_1006285__5d_convertion_move_3a_3cnumber_3e_to_">[ 1006285 ] Convertion MOVE:&lt;number&gt; to MOVE:Walk,&lt;Number&gt;</a></strong>
+
+<p>The old MOVE tags are changed to the proper syntax i.e. the syntax that
+identify the type of move. In this case, we assume that if no move
+type were given, the move type is Walk.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/?func=detail&atid=450221&aid=1006285&group_id=36698">http://sourceforge.net/tracker/</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen56"><strong>pcgen56</strong></a></strong>
+
+<dd>
+<p>Use to apply the convertions that bring the .lst files from v5.4.x of PCGEN
+to vertion 5.6.</p>
+</dd>
+<ul>
+<li><strong><a name="item__5b_892746__5d_keys_entries_were_changed_in_the_ma">[ 892746 ] KEYS entries were changed in the main files</a></strong>
+
+<p>Attempt at automaticaly conerting the KEYS entries that were changed in the
+main xSRD files. Not all the changes were covered though.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=892746&group_id=36698&atid=578825">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen555"><strong>pcgen555</strong></a></strong>
+
+<dd>
+<p>Use to apply the convertions that bring the .lst files from v5.4.x of PCGEN
+to vertion 5.5.5.</p>
+</dd>
+<ul>
+<li><strong><a name="item__5b_865826__5d_remove_the_deprecated_move_tag_in_e">[ 865826 ] Remove the deprecated MOVE tag in EQUIPMENT files</a></strong>
+
+<p>The MOVE tags are removed from the equipments files since they are now useless there.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/?func=detail&atid=450221&aid=865826&group_id=36698">http://sourceforge.net/tracker/</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen541"><strong>pcgen541</strong></a></strong>
+
+<dd>
+<p>Use to apply the convertions that bring the .lst files from v5.4 of PCGEN
+to vertion 5.4.1.</p>
+</dd>
+<ul>
+<li><strong><a name="item__5b_845853__5d_size_is_no_longer_valid_in_the_weap">[ 845853 ] SIZE is no longer valid in the weaponprof files</a></strong>
+
+<p>SIZE is removed WEAPONPROF files and is not replaced.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=845853&group_id=36698&atid=578825">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen54"><strong>pcgen54</strong></a></strong>
+
+<dd>
+<p>Use this switch to convert from PCGEN 5.2 files to PCGGEN 5.4.</p>
+</dd>
+<dd>
+<p><strong>WARNING</strong>: Do <strong>not</strong> use this switch with <strong>CMP</strong> files! You will break them.</p>
+</dd>
+<ul>
+<li><strong><a name="item__5b_707325__5d_pcc_3a_game_is_now_gamemode">[ 707325 ] PCC: GAME is now GAMEMODE</a></strong>
+
+<p>Strait change from one tag to the other. Why? Beats me but it sure helps the convertion script
+buisiness to prosper :-).</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/?func=detail&atid=450221&aid=707325&group_id=36698">http://sourceforge.net/tracker/</a>&gt;</p>
+</li>
+<li><strong><a name="item__5b_784363__5d_add_type_3dbase_2ereplace_to_most_b">[ 784363 ] Add TYPE=Base.REPLACE to most BONUS:COMBAT|BAB</a></strong>
+
+<p>This change is needed to allow user to completely replace the BAB formulas with something
+of their choice. For example, users can now have a customized class with
+<strong>BONUS:COMBAT|BAB|TL|TYPE=Base</strong> that would replace all the other Base bonus to BAB
+(because it is greater).</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/?func=detail&atid=450221&aid=784363&group_id=36698">http://sourceforge.net/tracker/</a>&gt;</p>
+</li>
+<li><strong><a name="item__5b_825005__5d_convert_gamemode_3adnd_to_gamemode_">[ 825005 ] convert GAMEMODE:DnD to GAMEMODE:3e</a></strong>
+
+<p>PCGEN is droping the d20 licence. Because of that, the DnD keyword can no longer be used
+as a game mode. As of PCGEN 5.4, the change to the system files were done and all the
+.PCC files that linked to <strong>GAMEMODE:DnD</strong> must now link to <strong>GAMEMODE:3e</strong>.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/?func=detail&atid=578825&aid=825005&group_id=36698">http://sourceforge.net/tracker/</a>&gt;</p>
+<p><strong>WARNING</strong>: Do <strong>not</strong> use this convertion with <strong>CMP</strong> files! You will break them.</p>
+</li>
+<li><strong><a name="item__5b_831569__5d_race_3acskill_to_moncskill">[ 831569 ] RACE:CSKILL to MONCSKILL</a></strong>
+
+<p>The new MONCSKILL tag along with the MFEAT and MONSTERCLASS are used when the default monsters
+opotion is enabled in the PCGEN pref. Otherwise, the FEAT and CSKILL tags are used.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/?func=detail&atid=578825&aid=831569&group_id=36698">http://sourceforge.net/tracker/</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen534"><strong>pcgen534</strong></a></strong>
+
+<dd>
+<p>The following convertions were done on the .lst files between version 5.1.1 and 5.3.4 of PCGEN. See
+the links for more information about the convertions in question.</p>
+</dd>
+<ul>
+<li><strong>[ 707325 ] PCC: GAME is now GAMEMODE</strong>
+
+<p>All the <strong>GAME</strong> tags in the <strong>.PCC</strong> files are converted to <strong>GAMEMODE</strong> tags.</p>
+<p>&lt;<a href="https://sourceforge.net/tracker/?func=detail&atid=450221&aid=707325&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=450221&aid=707325&group_id=36698</a>&gt;</p>
+</li>
+<li><strong>[ 784363 ] Add TYPE=Base.REPLACE to most BONUS:COMBAT|BAB</strong>
+
+<p>All the <strong>BONUS:COMABAT|BAB</strong> related to classes now have a <strong>TYPE=Base.REPLACE</strong> added to them. This is
+an important convertion if you want to mix files with the files included with PCGEN. If this is not done,
+the BAB calculation will be all out of wack and you won't really now why.</p>
+<p>&lt;<a href="https://sourceforge.net/tracker/?func=detail&atid=450221&aid=784363&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=450221&aid=784363&group_id=36698</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen511"><strong>pcgen511</strong></a></strong>
+
+<dd>
+<p>The following convertions were done on the .lst files between version 4.3.4 and 5.1.1 of PCGEN. See
+the links for more information about the convertions in question.</p>
+</dd>
+<ul>
+<li><strong><a name="item__5b_699834__5d_incorrect_loading_of_multiple_visio">[ 699834 ] Incorrect loading of multiple vision types</a></strong>
+
+<li><strong><a name="item__5b_728038__5d_bonus_3avision_must_replace_vision_">[ 728038 ] BONUS:VISION must replace VISION:.ADD</a></strong>
+
+<p>The <strong>VISION</strong> tag used to allow the <strong>,</strong> as a separator. This is no longer the case. Only the <strong>|</strong>
+can now be used as a separator. This convertion will replace all the <strong>,</strong> by <strong>|</strong> in the <strong>VISION</strong>
+tags except for those using the <strong>VISION:.ADD</strong> syntax. The <strong>VISION:.ADD</strong> tags are replaced by
+<strong>BONUS:VISION</strong> tags.</p>
+<p>&lt;<a href="https://sourceforge.net/tracker/?func=detail&atid=417816&aid=699834&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=417816&aid=699834&group_id=36698</a>&gt;
+&lt;<a href="https://sourceforge.net/tracker/?func=detail&atid=450221&aid=728038&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=450221&aid=728038&group_id=36698</a>&gt;</p>
+</li>
+<li><strong>[ 731973 ] ALL: new PRECLASS syntax</strong>
+
+<p>All the PRECLASS tag -- including the ones found within BONUS tags -- are converted to the new
+syntax -- <strong>PRECLASS:&lt;number of classes&gt;,&lt;list of classes&gt;=&lt;level&gt;</strong>.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=731973&group_id=36698&atid=450221">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen438"><strong>pcgen438</strong></a></strong>
+
+<dd>
+<p>The following convertions were done on the .lst files between version 4.3.3 and 4.3.4 of PCGEN. See
+the links for more information about the convertions in question.</p>
+</dd>
+<ul>
+<li><strong><a name="item__5b_686169__5d_remove_attacks_3a_tag">[ 686169 ] remove ATTACKS: tag</a></strong>
+
+<p>The <strong>ATTACKS</strong> tags in the EQUIPMENT line types are replaced by <strong>BONUS:COMBAT|ATTACKS|</strong> tags.</p>
+<p>&lt;<a href="https://sourceforge.net/tracker/?func=detail&atid=450221&aid=686169&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=450221&aid=686169&group_id=36698</a>&gt;</p>
+</li>
+<li><strong><a name="item__5b_695677__5d_equipment_3a_slots_for_gloves_2c_br">[ 695677 ] EQUIPMENT: SLOTS for gloves, bracers and boots</a></strong>
+
+<p>The equipment of type Glove, Bracer and Boot need a <strong>SLOTS:2</strong> tag if the pair must
+be equiped to give the bonus. The convertion look at the equipement name and add
+the <strong>SLOTS:2</strong> tag is the item is in the plural form. If the equipment name is in the
+singular, a message is printed to show that fact but the SLOTS:2 tag is not added.</p>
+<p>&lt;<a href="https://sourceforge.net/tracker/?func=detail&atid=450221&aid=695677&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=450221&aid=695677&group_id=36698</a>&gt;</p>
+</li>
+<li><strong><a name="item_prestat_now_only_accepts_the_format_prestat_3a1_2c">PRESTAT now only accepts the format PRESTAT:1,&lt;stat&gt;=&lt;n&gt;</a></strong>
+
+<p>The <strong>PRESTAT</strong> no longer accept the old syntax. Now, every <strong>PRESTAT</strong> tag needs a leading
+number and coma before the stats enumaration. e.g. <strong>PRESTAT:STR=13</strong> becaumes <strong>PRESTAT:1,STR=13</strong>.</p>
+<p>No tracker found.</p>
+</li>
+</ul>
+<dt><strong><a name="item_pcgen433"><strong>pcgen433</strong></a></strong>
+
+<dd>
+<p>This convert the references to equipement names and path that were changed with the release 4.3.3 of
+PCGEN. This only change the path values in the .PCC, the files stay in the directories they are found.</p>
+</dd>
+</li>
+</dl>
+<dt><strong><a name="item__2dold_source_tag"><strong>-old_source_tag</strong></a></strong>
+
+<dd>
+<p>From PCGen version 5.9.6, there is a new format for the SOURCExxx tag that use the tab instead of the |. prettylst.pl
+automaticaly convert the SOURCExxx tags to the new format. The <strong>-old_source_tag</strong> option must be used if
+you want to keep the old format in place.</p>
+</dd>
+</li>
+</dl>
+<dl>
+<dt><strong><a name="item__2dreport_or__2dr"><strong>-report</strong> or <strong>-r</strong></a></strong>
+
+<dd>
+<p>Produce a report of the valid tags found in all the .lst and .pcc files. The report for
+the invalid tags is always printed.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dxcheck_or__2dx"><strong>-xcheck</strong> or <strong>-x</strong></a></strong>
+
+<dd>
+<p><strong>This option is now on by default</strong></p>
+</dd>
+<dd>
+<p>Verify the existance of values refered by other tags and produce a report of the
+missing/inconsistant values.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dnojep"><strong>-nojep</strong></a></strong>
+
+<dd>
+<p>Disable the new parse_jep function for the formula. This makes the script use the
+old style formula parser.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dnoxcheck_or__2dnx"><strong>-noxcheck</strong> or <strong>-nx</strong></a></strong>
+
+<dd>
+<p>Disable the cross-check validations.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dwarninglevel_or__2dwl"><strong>-warninglevel</strong> or <strong>-wl</strong></a></strong>
+
+<dd>
+<p>Select the level of warning that should be displayed. The more critical levels include
+the less critical ones. ex. <strong>-wl=informational</strong> will output messages of level
+informational, notice, warning and error but will not output the debug level messages.</p>
+</dd>
+<dd>
+<p>The possible levels are:</p>
+</dd>
+<dl>
+<dt><strong><a name="item_error_2c_err_or_3"><strong>error</strong>, <strong>err</strong> or <strong>3</strong></a></strong>
+
+<dd>
+<p>Critical errors that need to be checked otherwise the resulting .lst files will not
+work properly with PCGen.</p>
+</dd>
+</li>
+<dt><strong><a name="item_warning_2c_warn_or_4"><strong>warning</strong>, <strong>warn</strong> or <strong>4</strong></a></strong>
+
+<dd>
+<p>Important messages that should be verified. All the conversion messages are
+at this level.</p>
+</dd>
+</li>
+<dt><strong><a name="item_notice_or_5"><strong>notice</strong> or <strong>5</strong></a></strong>
+
+<dd>
+<p>The normal messages including common syntax mistakes and unknown tags.</p>
+</dd>
+</li>
+<dt><strong><a name="item_6"><strong>informational</strong>, <strong>info</strong> or <strong>6</strong> (default)</a></strong>
+
+<dd>
+<p>Can be very noisy. Include messages that warn about style, best practice and deprecated tags.</p>
+</dd>
+</li>
+<dt><strong><a name="item_debug_or_7"><strong>debug</strong> or <strong>7</strong></a></strong>
+
+<dd>
+<p>Messages used by the programmer to debug the script.</p>
+</dd>
+</li>
+</dl>
+<dt><strong><a name="item__2dexportlist"><strong>-exportlist</strong></a></strong>
+
+<dd>
+<p>Generate files which list objects with a reference on the file and line where they are located.
+This is very useful when correcting the problems found by the -x options.</p>
+</dd>
+<dd>
+<p>The files generated are:</p>
+</dd>
+<ul>
+<li><strong><a name="item_class_2ecsv">class.csv</a></strong>
+
+<li><strong><a name="item_domain_2ecsv">domain.csv</a></strong>
+
+<li><strong><a name="item_equipment_2ecsv">equipment.csv</a></strong>
+
+<li><strong><a name="item_equipmod_2ecsv">equipmod.csv</a></strong>
+
+<li><strong><a name="item_feat_2ecsv">feat.csv</a></strong>
+
+<li><strong><a name="item_language_2ecsv">language.csv</a></strong>
+
+<li><strong><a name="item_pcc_2ecsv">pcc.csv</a></strong>
+
+<li><strong><a name="item_skill_2ecsv">skill.csv</a></strong>
+
+<li><strong><a name="item_spell_2ecsv">spell.csv</a></strong>
+
+<li><strong><a name="item_variable_2ecsv">variable.csv</a></strong>
+
+<p></p>
+</li>
+</ul>
+<dt><strong><a name="item__2dmissingheader_or__2dmh"><strong>-missingheader</strong> or <strong>-mh</strong></a></strong>
+
+<dd>
+<p>List all the requested headers (with the get_header function) that are not
+defined in the %tagheader hash. When a header is not defined, the tag name
+is used as is in the generated header lines.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dhelp_2c__2dh_or__2d_3f"><strong>-help</strong>, <strong>-h</strong> or <strong>-?</strong></a></strong>
+
+<dd>
+<p>Print a brief help message and exits.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dman"><strong>-man</strong></a></strong>
+
+<dd>
+<p>Prints the manual page and exits. You might want to pipe the output to your favorite pager
+(e.g. more).</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dhtmlhelp"><strong>-htmlhelp</strong></a></strong>
+
+<dd>
+<p>Generate a .html file with the complete documentation (as it is)
+for the script and tries to display it in a browser. The display portion only
+works on the Windows platform.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="manifest">MANIFEST</a></h1>
+<p>The distribution of this script includes the following files:</p>
+<ul>
+<li><strong><a name="item_prettylst_2epl">prettylst.pl</a></strong>
+
+<p>The script itself.</p>
+</li>
+<li><strong><a name="item_prettylst_2epl_2ehtml">prettylst.pl.html</a></strong>
+
+<p>HMTL version of the perldoc for the script. You can generate this file
+by typing <code>perl prettylst.pl -htmlhelp</code>.</p>
+</li>
+<li><strong><a name="item_prettylst_2epl_2ecss">prettylst.pl.css</a></strong>
+
+<p>Style sheet files for prettylst.pl.html</p>
+</li>
+<li><strong><a name="item_prettylst_2drelease_2dnotes_2d135_2ehtml">prettylst-release-notes-135.html</a></strong>
+
+<p>The release notes for the curent version.</p>
+</li>
+<li><strong><a name="item_prettylst_2epl_2esig">prettylst.pl.sig</a></strong>
+
+<p>PGP signature for the script. You can get a copy of my
+key here: &lt;<a href="http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D5D2">http://pgp.mit.edu:11371/pks/lookup</a>&gt;</p>
+</li>
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="copyright">COPYRIGHT</a></h1>
+<p>Copyright 2002 to 2006 by &Eacute;ric &quot;Space Monkey&quot; Beaudoin -- &lt;<a href="mailto:mailto:beaudoer@videotron.ca">mailto:beaudoer@videotron.ca</a>&gt;</p>
+<p>All rights reserved.  You can redistribute and/or modify
+this program under the same terms as Perl itself.</p>
+<p>See <a href="http://www.perl.com/perl/misc/Artistic.html">http://www.perl.com/perl/misc/Artistic.html</a>.</p>
+<p>
+</p>
+<hr />
+<h1><a name="to_do">TO DO</a></h1>
+<ul>
+<li><strong><a name="item_add_better_examples">Add better examples</a></strong>
+
+<li><strong><a name="item_add_more_cross_2dreference_checks">Add more cross-reference checks</a></strong>
+
+<li><strong><a name="item_support">Add Ability object support (planned for v.1.37)</a></strong>
+
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="known_bugs">KNOWN BUGS</a></h1>
+<ul>
+<li><strong><a name="item_kit_object_references_not_found_durring_cross_2dre">KIT object references not found durring cross-reference checks.</a></strong>
+
+<li><strong><a name="item__2eforget_and__2emod_erroneously_reporting_missing">.FORGET and .MOD erroneously reporting missing KEY.</a></strong>
+
+<li><strong><a name="item_the_script_is_still_unwilling_to_do_the_coffee_2e_">The script is still unwilling to do the coffee...</a></strong>
+
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="version_history">VERSION HISTORY</a></h1>
+<p>
+</p>
+<h2><a name="v1_36___2007_01_26">v1.36 -- -- 2007.01.26</a></h2>
+<p>[ 1637309 ] REACH, FACE &amp; LEGS are now Template tags</p>
+<p>[ 1630261 ] Change syntax for QUALIFY tag</p>
+<p>[ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT</p>
+<p>Add PREREACH tag</p>
+<p>[ 1625250 ] New tag REACHMULT:x</p>
+<p>
+</p>
+<h2><a name="v1_35">v1.35</a></h2>
+<p>[ 1593904 ] KIT lines can have any standard PRE tag</p>
+<p>[ 1596402 ] New Kit GEAR tag: LOOKUP</p>
+<p>[ 1596400 ] New Kit line_type: TABLE, with VALUES tag</p>
+<p>[ 1593894 ] New Kit tag: OPTION</p>
+<p>[ 1593885 ] New Kit line_type tag: SELECT</p>
+<p>[ 1593872 ] False warning: No SKILL entry for CSKILL:ALL</p>
+<p>[ 1594671 ] New tag: equipmod FORMATCAT</p>
+<p>[ 1594651 ] New Tag: Feat.lst: DESC:.CLEAR and multiple DESC tags</p>
+<p>[ 1593868 ] New equipment tag &quot;QUALITY&quot;</p>
+<p>[ 1593879 ] New Kit tag: APPLY</p>
+<p>[ 1593907 ] False warning: Invalid value &quot;CSHEET&quot; for tag &quot;VISIBLE&quot;</p>
+<p>Moved SOURCExxx tag info into array - all lines use same tag order for SOURCE tags now.</p>
+<p>[ 1584007 ] New Tag: SOURCEDATE in PCC</p>
+<p>[ 1450980 ] New Spellbook tags</p>
+<p>[ 1335912 ] New tag: TEMPLATE:.CLEAR</p>
+<p>[ 1580059 ] SKILLLIST tag</p>
+<p>[ 1173567 ] Convert old style PREALIGN to new style</p>
+<p>[ 1105603 ] New VARs in gameMode files</p>
+<p>[ 1117152 ] VFEAT and TEMPLATE use</p>
+<p>[ 1119767 ] Invalid value &quot;R&quot; for tag &quot;MODS&quot;</p>
+<p>[ 1123650 ] HITDIE tag in class lines</p>
+<p>[ 1152687 ] SPELLLEVEL:CLASS in feats.lst</p>
+<p>[ 1153255 ] FUMBLERANGE new tag</p>
+<p>[ 1156423 ] BONUS:WIELDCATEGORY</p>
+<p>[ 1173534 ] .CLEAR syntax issue</p>
+<p>[ 1173794 ] BONUS:WEAPONPROF order in race file</p>
+<p>Eliminated a lot of false positive with references to SUBCLASS</p>
+<p>Psionic is now valid in ADD:SPELLCASTER</p>
+<p>Clean up the valid game modes</p>
+<p>[ 1326008 ] Add tag: HIDETYPE to the PCC tag list</p>
+<p>[ 1326016 ] New tag: PRERULE</p>
+<p>[ 1325996 ] Add tag: ADD:EQUIP(y,y)z</p>
+<p>[ 1325943 ] ADD:SKILL(Speak Language)1&quot; found in FEAT</p>
+<p>[ 1238595 ] New tag: PRECSKILL</p>
+<p>[ 1326349 ] Missing TYPE:.CLEAR tag in FEAT</p>
+<p>[ 1223873 ] WEAPONAUTO is no longer valid</p>
+<p>[ 1326374 ] Add JEP operators</p>
+<p>[ 1224428 ] No RACE entry for &quot;SWITCHRACE:xxx&quot;</p>
+<p>[ 1282532 ] ClassDefense and Reputation</p>
+<p>[ 1292967 ] TITLE and WORSHIPPERS in deity.lst</p>
+<p>[ 1327238 ] Add CHANGEPROF to TEMPLATE tag list</p>
+<p>[ 1324532 ] Biosettings.lst</p>
+<p>[ 1309116 ] LANGAUTO missing in CLASS Level</p>
+<p>Removed all the sub prototypes [Perl Best Practices]</p>
+<p>mywarn has been completely replaced with ewarn</p>
+<p>[ 1324512 ] BONUSSPELLSTAT is not in the CLASS tag list</p>
+<p>[ 1355958 ] New tag: SCHOOL:.CLEAR</p>
+<p>[ 1353231 ] New tag: RACETYPE</p>
+<p>[ 1353233 ] New tag: RACESUBTYPE</p>
+<p>[ 1355994 ] KIT file refinements</p>
+<p>[ 1356139 ] UDAM missing in FEAT tag list</p>
+<p>[ 1356143 ] ADD:Language missing in TEMPLATE tag</p>
+<p>[ 1356158 ] SPELL is invalid as value for SPELLSTAT in CLASS</p>
+<p>[ 1356999 ] Use of uninitialized value in string eq</p>
+<p>[ 1359467 ] .COPY=&lt;name&gt; not used for validation</p>
+<p>[ 1361057 ] Missing variables for the Modern game mode</p>
+<p>[ 1361066 ] Do not x-check outside the -inputpath</p>
+<p>Added system files parsing to find the variables names, game moes, and
+abbreviations for stats and alignments</p>
+<p>[ 1362206 ] [CLASS Level]Missing TEMPDESC tag</p>
+<p>[ 1362222 ] [RACE]Missing KIT tag</p>
+<p>[ 1362223 ] [CLASS Level]Missing BONUS:SLOTS</p>
+<p>prettylst.pl no longer tolerate old style formula parser</p>
+<p>[ 1364343 ] Multiple PRESPELLCAST tags</p>
+<p>PRERACE:&lt;number&gt;,&lt;list of races&gt; is officialy the way to go</p>
+<p>PRERACE:&lt;list of races&gt; to PRERACE:1,&lt;list of races&gt; conversion</p>
+<p>[ 1367569 ] SYSTEM: Validate BONUS:CHECK with statsandchecks.lst values</p>
+<p>[ 1366753 ] [KIT] The tag FREE is missing in the KIT FEAT tag list</p>
+<p>[ 1398237 ] ALL: Convert Willpower to Will</p>
+<p>Filter out the Subversion system directories</p>
+<p>The SOURCExxx tags are now separated by tabs instead of |</p>
+<p>The -old_source_tag option has been added to use | instead of tab in the SOURCExxx lines</p>
+<p>Implemented a &quot;fix&quot; for the /../ in directories</p>
+<p>[ 1440104 ] Ignore specific hidden files and directories</p>
+<p>[ 1444527 ] New SOURCE tag format</p>
+<p>[ 1483739 ] [CMP] SOURCEx changes for 5.10 compatibility</p>
+<p>[ 1418243 ] RANGE:.CLEAR is missing in SPELL tag list</p>
+<p>[ 1461407 ] ITEM: spell tag order</p>
+<p>
+</p>
+<h2><a name="v1_34__2005_01_19">v1.34 -- 2005.01.19</a></h2>
+<p>[ 1028284 ] Verified if , are present in object names</p>
+<p>[ 1028919 ] Report with GAMEMODE</p>
+<p>[ 1028285 ] Convert old style PRExxx tags to new style</p>
+<p>[ 1039028 ] [PCC]New Xcrawl Game Mode</p>
+<p>[ 1070084 ] Convert SPELL to SPELLS</p>
+<p>[ 1037456 ] Move BONUS:DC on class line to the spellcasting portion</p>
+<p>[ 1027589 ] TEMPDESC (tag from 5.5.1) in skills.lst</p>
+<p>[ 1066352 ] BONUS:COMBAT|INITIATIVE on MASTERBONUSRACE line</p>
+<p>[ 1066355 ] BONUS tags in spells.lst</p>
+<p>[ 1066359 ] BONUS:UDAM in class.lst</p>
+<p>[ 1048297 ] New Tag: MONNONSKILLHD</p>
+<p>[ 1077285 ] ALTCRITRANGE tag</p>
+<p>[ 1079504 ] PREWIELD in eqmod file</p>
+<p>[ 1083339 ] RATEOFFIRE in equip.lst</p>
+<p>[ 1080142 ] natural attacks with TYPE:Natural</p>
+<p>[ 1093382 ] Warning for missing param. in SPELLS</p>
+<p>Added x-ref check for FOLLOWER and MASTERBONUSRACE in COMPANIONMODE file type</p>
+<p>Added x-ref check for RACE with the PRERACE and !PRERACE tags</p>
+<p>[ 1093134 ] BONUS:FEAT|POOL|x</p>
+<p>[ 1094126 ] Make -xcheck option on by default</p>
+<p>[ 1097487 ] MONSKILL in class.lst</p>
+<p>[ 1104117 ] BL is a valid variable, like CL</p>
+<p>[ 1104126 ] SPELLCASTER.Psionic is valid spellcasting class type</p>
+<p>General work on KIT support</p>
+<p>Three new file types added to exportlist: DEITY, KIT and TEMPLATE</p>
+<p>DEITY, STARTPACK KIT and TEMPLATE are now validated by the x-check code</p>
+<p>[ 1355926 ] DESC on equipment files</p>
+<p>
+</p>
+<h2><a name="v1_33__2004_08_29">v1.33 -- 2004.08.29</a></h2>
+<p>[ 876536 ] All spell casting classes need CASTERLEVEL</p>
+<p>[ 1003585 ] PCC: The script should not remove INCLUDE and EXCLUDE</p>
+<p>The script can no longer read CLASSSPELL and CLASSSKILL files.</p>
+<p>The functions CLASS_parse, CLASSSPELL_parse and GENERIC_parse have been removed since
+they were no longer used.</p>
+<p>[ 1004050 ] Spycrat is a new valid GAMEMODE</p>
+<p>[ 971744 ] 5.7+ TEMPLATE in feats.lst</p>
+<p>[ 976475 ] Missing LANGBONUS tag in CLASS Level</p>
+<p>[ 1004081 ] Missing global BONUS:CASTERLEVEL</p>
+<p>Major code reengeering to allow a better PRExxx tag validation</p>
+<p>[ 1004893 ] ADD:SPELLCASTER is valid in RACE</p>
+<p>[ 1005363 ] Validate NATURALATTACKS tag</p>
+<p>[ 1005651 ] ADD:Language in a feat file</p>
+<p>[ 1005653 ] Multiple variable names in a BONUS:VAR tag</p>
+<p>[ 1005655 ] BONUS:SLOTS in race files</p>
+<p>[ 1005658 ] BONUS:MOVEMULT</p>
+<p>[ 1006285 ] Convertion MOVE:&lt;number&gt; to MOVE:Walk,&lt;Number&gt;</p>
+<p>[ 1005661 ] ADD:SPELLCASTER in feat .lst</p>
+<p>[ 1006985 ] Spycraft gameMode DEFINEd VARiables</p>
+<p>[ 1006371 ] SA tag in Skill .lst</p>
+<p>[ 976474 ] DEITY tag is missing from CLASS Level</p>
+<p>Added the -gamemode parameter</p>
+<p>
+</p>
+<h2><a name="v1_32__2004_07_06">v1.32 -- 2004.07.06</a></h2>
+<p>[ 832164 ] Adding NoProfReq to AUTO:WEAPONPROF for most races</p>
+<p>[ 832171 ] AUTO:* needs to be separate tags</p>
+<p>Added the -c=skillbonusfix to add BONUS:SKILL|Climb|8|TYPE=Racial if it is not already
+present and the race has a MOVE:Climb entry. Same thing with Swim.</p>
+<p>[ 845853 ] SIZE is no longer valid in the weaponprof files</p>
+<p>[ 833509 ] All the PRExxx tags missing must be added</p>
+<p>[ 849366 ] VFEAT with inline PRExxx</p>
+<p>Added the ability to export the LANGUAGE entities when using the -exportlist option</p>
+<p>[ 865826 ] Remove the deprecated MOVE tag in EQUIPMENT files</p>
+<p>[ 865948 ] Properly check files with same name but different directory</p>
+<p>[ 849365 ] CLASSES:ALL</p>
+<p>[ 849369 ] SPELLCASTER.Arcane=1</p>
+<p>[ 879467 ] AUTO:EQUIP in equipment files</p>
+<p>[ 882797 ] SUBCLASS -- NAMEISPI: tag</p>
+<p>[ 882799 ] SUBCLASSLEVEL -- add SPELLLEVEL:CLASS tag</p>
+<p>[ 892746 ] KEYS entries were changed in the main files</p>
+<p>[ 892748 ] Track the EQMOD keys with -x flag</p>
+<p>Track the variable names with the -x flag (phase 1)</p>
+<p>Put BONUS:CASTERLEVEL on the spell CLASS line</p>
+<p>Removed a bunch of old convertion code that is no longer used</p>
+<p>[ 971746 ] &quot;PREVARGTEQ&quot; can be used more than once in feats.lst</p>
+<p>[ 971778 ] BONUS:UDAM| tag</p>
+<p>Implemetend a workaroud for a perl bug =&gt; [perl #30058] Perl 5.8.4 chokes on perl -e 'BEGIN { my %x=(); }'</p>
+<p>[ 902439 ] PREVISION not in FEAT tag list</p>
+<p>[ 975999 ] [tab][space][tab] breaks prettylst</p>
+<p>[ 974710 ] AUTO:WEAPONPROF usable multiple times</p>
+<p>[ 971782 ] FACE tag in races.lst</p>
+<p>Removed a warning message for CHOOSE:SPELLLEVEL</p>
+<p>Add the <strong>-nowarning</strong> option to suppress the warning messages</p>
+<p>[ 974693 ] PROHIBITED class tag</p>
+<p>
+</p>
+<h2><a name="v1_31__2003_10_29">v1.31 -- 2003.10.29</a></h2>
+<p>[ 823221 ] SPELL multiple time on equipment</p>
+<p>[ 823763 ] BONUS:DC in class level</p>
+<p>[ 823764 ] ADD:FEAT in domain list</p>
+<p>[ 824975 ] spells.lst - DESCISPI:[YES/NO]</p>
+<p>[ 825005 ] convert GAMEMODE:DnD to GAMEMODE:3e</p>
+<p>[ 829329 ] Lines get deleted when the line type is not know</p>
+<p>[ 829335 ] New LANGAUTO line type for KIT files</p>
+<p>[ 829380 ] New Game Mode</p>
+<p>[ 831569 ] RACE:CSKILL to MONCSKILL</p>
+<p>[ 832139 ] CLASS Level: missing NATURALATTACKS</p>
+<p>
+</p>
+<h2><a name="v1_30__2003_10_14">v1.30 -- 2003.10.14</a></h2>
+<p>[ 804091 ] ADD:FEAT warning</p>
+<p>[ 807329 ] PRESIZE warning (for template.lst)</p>
+<p>[ 813333 ] MONCSKILL and MONCCSKILL in race.lst</p>
+<p>[ 813334 ] PREMULT</p>
+<p>[ 813335 ] ACHECK:DOUBLE</p>
+<p>[ 813337 ] BONUS:DC</p>
+<p>[ 813504 ] SPELLLEVEL:DOMAIN in domains.lst</p>
+<p>[ 814200 ] PRESKILL in SPELL files</p>
+<p>[ 817399 ] Tags usable in SUBCLASS</p>
+<p>[ 823042 ] not finding files issue</p>
+<p>A new <strong>-baspath</strong> option was added to specify the path that must replace the @ characters in
+the .PCC files when that path is different from <strong>-inputpath</strong>.</p>
+<p>[ 823166 ] Missing PREVARNEQ tag</p>
+<p>[ 823194 ] PREBASESIZExxx tags</p>
+<p>
+</p>
+<h2><a name="v1_29__2003_08_23">v1.29 -- 2003.08.23</a></h2>
+<p>New tags were added as a result of the big CMP push.</p>
+<p>The script now detect the tags that have no values (with the -x option).</p>
+<p>PRECLASS:Spellcaster, Spellcaster.Arcane and Spellcaster.Devine are now understood.</p>
+<p>Removed the 4.3.3 dir restructure convertion code.</p>
+<p>I've activated the KIT files reformating.</p>
+<p>The CLASS lines are now reformated in four lines. A new line with all the spell related
+tags follow the skill tags.</p>
+<p>[ 707325 ] PCC: GAME is now GAMEMODE <a href="https://sourceforge.net/tracker/?func=detail&atid=450221&aid=707325&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=450221&aid=707325&group_id=36698</a></p>
+<p>New set_ewarn_header function</p>
+<p>New function to take RACE and TEMPLATE that are on multiple lines and bring them back to one line</p>
+<p>[ 779821 ] Add quote removal <a href="https://sourceforge.net/tracker/?func=detail&atid=578825&aid=779821&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=578825&aid=779821&group_id=36698</a></p>
+<p>[ 784363 ] Add TYPE=Base.REPLACE to most BONUS:COMBAT|BAB <a href="https://sourceforge.net/tracker/?func=detail&atid=450221&aid=784363&group_id=36698">https://sourceforge.net/tracker/?func=detail&atid=450221&aid=784363&group_id=36698</a></p>
+<p>
+</p>
+<h2><a name="v1_28__2003_05_04">v1.28 -- 2003.05.04</a></h2>
+<p>New line type MASTERBONUSRACE</p>
+<p>New validation for the FEAT line type (CHOSE &lt;=&gt; MULT &lt;=&gt; STACK)</p>
+<p>[ 728038 ] BONUS:VISION must replace VISION:.ADD</p>
+<p>[ 711565 ] BONUS:MOVE replaced with BONUS:MOVEADD (Not definitive yet)</p>
+<p>New validation for PRECLASS (make sure the number is there and the class exists)</p>
+<p>[ 731973 ] ALL: new PRECLASS syntax</p>
+<p>
+</p>
+<h2><a name="v1_27__2003_04_03">v1.27 -- 2003.04.03</a></h2>
+<p>The <strong>-inputpath</strong> option is now mandantory</p>
+<p>[ 686169 ] remove ATTACKS: tag</p>
+<p>[ 695677 ] EQUIPMENT: SLOTS for gloves, bracers and boots</p>
+<p>[ 707325 ] PCC: GAME is now GAMEMODE</p>
+<p>[ 699834 ] Incorrect loading of multiple vision types</p>
+<p>PRESTAT now only accepts the format PRESTAT:1,&lt;stat&gt;=&lt;n&gt;</p>
+<p>
+</p>
+<h2><a name="v1_26__2002_02_27">v1.26 -- 2002.02.27</a></h2>
+<p>[ 677962 ] The DMG wands have no charge</p>
+<p>Removed the invalid PREBAB tag</p>
+<p>Change the order for the FEAT line type</p>
+<p>Dir path convertion for the new SRD files</p>
+<p>Upgraded to ActivePerl 635</p>
+<p>New EQUIPMENT tag order</p>
+<p>Weapon name convertion for PCGEN 4.3.3 for SRD compliance</p>
+<p>New <strong>-convert</strong> parameter</p>
+<p>
+</p>
+<h2><a name="v1_25__2003_01_27">v1.25 -- 2003.01.27</a></h2>
+<p>[ 670554 ] SYNERGY to BONUS:SKILL format</p>
+<p>Fixed the CLASSSPELL conversion that was not working with the new parser</p>
+<p>Fixed a problem with the Export Lists function (for DOMAIN)</p>
+<p>Change the BIOSET convertion code so that the new bioset files are
+generated in the output directory</p>
+<p>New SKILL line tags order</p>
+<p>
+</p>
+<h2><a name="v1_24__2003_01_14">v1.24 -- 2003.01.14</a></h2>
+<p>BIOSET generation from the AGE, HEIGHT and WEIGHT tags</p>
+<p>Added the BIOSET file definition for FILETYPE_parse</p>
+<p>New order for SPELL tags</p>
+<p>
+</p>
+<h2><a name="v1_23__2003_01_06">v1.23 -- 2003.01.06</a></h2>
+<p>I'm removed the useles -debug option</p>
+<p>Add a bunch of new tags in the SUBCLASSLEVEL (everything in CLASS Level)</p>
+<p>I'm now running Perl Dev Kit 5</p>
+<p>
+</p>
+<h2><a name="v1_22__2002_12_31">v1.22 -- 2002.12.31</a></h2>
+<p>The FEAT validation code now deal with |CHECKMULT properly</p>
+<p>The FEAT validation code now ignores , between () for ADD:FEAT and PREFEAT</p>
+<p>Fixed remaining tr!/!\\! so that they are used only on MSWin32 systems</p>
+<p>The new set_mywan_filename is called after each section header to empty the $previousfile
+variable within the mywarn closure</p>
+<p>
+</p>
+<h2><a name="v1_21__2002_12_28">v1.21 -- 2002.12.28</a></h2>
+<p>FEAT validation added for the tags FEAT, MFEAT, VFEAT, PREFEAT and ADD:FEAT</p>
+<p>[ 657059 ] Verify pipe is the only delimiter:VISION</p>
+<p>The tr!/!\\! on the file names printed by mywarn is done only for MSWin32 OS</p>
+<p>
+</p>
+<h2><a name="v1_20__2002_12_19">v1.20 -- 2002.12.19</a></h2>
+<p>[ 653596 ] Add a TYPE tag for all SPELLs (first part, change on hold)</p>
+<p>Added the -missingheader command line option to list all the header that do not
+have definitions in the %tagheader hash</p>
+<p>Only the first SOURCExxx line is replaced when the SOURCE line replacement option
+is active</p>
+<p>All the filetypes except CLASSSKILL and CLASSSPELL have been
+migrated to FILETYPE_parse (KIT is only validated for now)</p>
+<p>New .CLEAR code (TAG:.CLEAR are all different tags now)</p>
+<p>
+</p>
+<h2><a name="v1_19__2002_12_12">v1.19 -- 2002.12.12</a></h2>
+<p>[ 602874 ] SAVES tag deprecated, replaced by 3 BONUS:CHECKS|BASE.savename|x|PREDEFAULTMONSTER:Y</p>
+<p>The CVS files beginning with .# are now ignored by prettylst</p>
+<p>Code to correct the BONUS:STAT|WIL typo (should be BONUS:STAT|WIS)</p>
+<p>New NAMEISPI tag in every files</p>
+<p>New get_header function</p>
+<p>The BONUS:xxx are now considered differents tags (like the ADD:xxx)</p>
+<p>[ 609763 ] Convert the old PRECHECKxxx</p>
+<p>Added coded to check and standerdize tags with limited possible values</p>
+<p>SA:.CLEAR is now a sperate tag than SA: in order to facilitate the sorting</p>
+<p>Got rid of the old %validpcctag (replaced by the generic %valid_tags)</p>
+<p>[ 619312 ] RACENAME deprecated, convert to OUTPUTNAME</p>
+<p>[ 613604 ] CASTAS:name to SPELLLIST:x|name</p>
+<p>Added code to standardise the SOURCExxx line in the .lst files
+based of the SOURCExxx tags found in the same directory.</p>
+<p>Added code to convert the CLASSSKILL files into CLASS CSKILL</p>
+<p>[ 620419 ] Added code to flag and display the SA entries that include ','</p>
+<p>[ 624885 ] CLASS: remove AGESET tag</p>
+<p>[ 626133 ] Convert CLASS lines into 3 lines</p>
+<p>Changed the report sort order so that !PRExxx entries are now sorted
+right after the corresponding PRExxx.</p>
+<p>Added code for CSKILL, LANGAUTO and LANGBONUS tag validation</p>
+<p>[ 641912 ] Convert CLASSSPELL to SPELL</p>
+<p>New FILETYPE_parser</p>
+<p>Removed the now useless -taginfixed option.</p>
+<p>New ###Block pragma. It forces a new block for the entities that have
+block formatting (FILETYPE_parse only)</p>
+<p>Added the KIT filetype</p>
+<p>Convertion code for EFFECTS to DESC and EFFECTTYPE to TARGETAREA in the SPELL files</p>
+<p>
+</p>
+<h2><a name="v1_18__2002_08_31">v1.18 -- 2002.08.31</a></h2>
+<p>Conversion of the stat tags in TEMPLATE (STR, DEX, etc.) by BONUS:STAT|...</p>
+<p>Removing TYPE=Ability from BONUS:STAT|xxx|y|TYPE=Ability in RACE</p>
+<p>Added the COPYRIGHT tags for the PCC files</p>
+<p>Conversion of nameCHECK to BONUS:CHECKS|BASE.name in CLASS</p>
+<p>Conversion of BAB to BONUS:COMBAT|BAB in CLASS</p>
+<p>Remove the GOLD tag from CLASS and TEMPLATE for OGL compliance</p>
+<p>New tag MODTOSKILLS</p>
+<p>Deprecated INTMODTOSKILLS</p>
+<p>Fixed a bug with #EXTRAFILE that was introduced in parse_tag</p>
+<p>
+</p>
+<h2><a name="v1_17__2002_08_17">v1.17 -- 2002.08.17</a></h2>
+<p>New file type COMPANIONMOD</p>
+<p>New tag INFOTEXT</p>
+<p>Added convertion code for the STATADJx tags</p>
+<p>Add a few of the missing GLOBAL tags</p>
+<p>Removed a few illigal BONUS type</p>
+<p>[ 571276 ] &quot;PRESKILL:1,Knowledge %&quot; replace by &quot;PRESKILL:1,TYPE.Knowledge&quot; in the CLASS lines</p>
+<p>[ xxx ] &quot;SUBSA:blah&quot; must become &quot;SA:.CLEAR.blah&quot;. The new SA tags
+must be put before the existing SA tags.</p>
+<p>
+</p>
+<h2><a name="v1_16__2002_06_28">v1.16 -- 2002.06.28</a></h2>
+<p>Add code to correct the convertion mistake and also corrected the convertion matrice
+for the new SKILL tags.</p>
+<p>First phase of cross-check validation.</p>
+<p>Corrected a bug with the line number.</p>
+<p>Add convertion for PRETYPE:Magic to PRETYPE:EQMODTYPE=MagicalEnhancement in the
+EQUIPMOD files.</p>
+<p>Add -x option to do x-check validation.</p>
+<p>Add validation for the .MOD entries.</p>
+<p>Add convertion for SR to SPELLRES in SPELL files.</p>
+<p>
+</p>
+<h2><a name="v1_15__2002_06_20">v1.15 -- 2002.06.20</a></h2>
+<p>New option <strong>-outputerror</strong> to redirect STDERR in a file</p>
+<p>Preserve the leading spaces on the first column when the pragma #prettylst:leadingspaces:ignore
+is used. The pragma #prettylst:leadingspaces:trim restore normal space triming.</p>
+<p>Replace the deprecated PREVAR for PREVARGT.</p>
+<p>Add new DOMAIN tags</p>
+<p>Add new DEITY tags</p>
+<p>Add new RACE tags</p>
+<p>PCGEN now check to see if existing comment line exists before adding a new one. Existing
+header lines are genereted to reflect the curent TAGs in used.</p>
+<p>Add new SKILL tags</p>
+<p>Add new SPELL tags</p>
+<p>Add new CLASS tags</p>
+<p>
+</p>
+<h2><a name="v1_14__2002_06_08">v1.14 -- 2002.06.08</a></h2>
+<p>The files are now written if there is no other change then the CF corrections</p>
+<p>Add the internal WriteLog function</p>
+<p>Change the order for the RACE filetype as requested by Andrew McDougall (tir-gwaith)</p>
+<p>RACE filetype: convert INIT:xx to BONUS:COMBAT|Initiative|xx and deprecate INIT</p>
+<p>CLASS filetype: convert ADD:INIT|xx to BONUS:COMBAT|Initiative|xx and deprecate ADD:INIT</p>
+<p>RACE filetype: added code to remove AC and replace it by BONUS:COMBAT|AC|xx|TYPE=NaturalArmor
+when needed</p>
+<p>EQUIPMENT filetype: added code to replace all the Cost by COST</p>
+<p>Add code to deal with .MOD in all the files except CLASS and CLASSSPELL</p>
+<p>
+</p>
+<h2><a name="v1_13__2002_05_11">v1.13 -- 2002.05.11</a></h2>
+<p>Now parse the BONUS tags.</p>
+<p>Change the sort of the CLASS Level lines. Multiple tags on the same type are no
+longer on the same column.</p>
+<p>Skip empty files.</p>
+<p>
+</p>
+<h2><a name="v1_12__2002_03_23">v1.12 -- 2002.03.23</a></h2>
+<p>Add code to replace the BONUS:FEAT, BONUS:VFEAT and FEAT in the EQUIPMENT by
+VFEAT.</p>
+<p>Remove the empty columns for the CLASS lines.</p>
+<p>Added the parse_tag function for all the tags.</p>
+<p>Deprecate the NATURALARMOR tag and added code to convert to
+BONUS:COMBAT|AC|x|Type=Natural</p>
+<p>
+</p>
+<h2><a name="v1_11__2002_03_07">v1.11 -- 2002.03.07</a></h2>
+<p>Add code to deal with the CR-CR-LF stuff in the .lst files</p>
+<p>The comment generated by PCGEN now contains the CVS Revision and Author tags</p>
+<p>The CLASS level lines have a new sort order.</p>
+<p>Remove CCOST and RREPLACE from tags (these were typos)</p>
+<p>Change findfullpath for the new behavior of the @ character in file paths.</p>
+<p>Added code to check the GAME and TYPE tags in the .PCC files</p>
+<p>Added code to verify the existance of every file for each .PCC</p>
+<p>
+</p>
+<h2><a name="v1_10__2002_02_27">v1.10 -- 2002.02.27</a></h2>
+<p>Bug fixes</p>
+<p>
+</p>
+<h2><a name="v1_09__2002_02_20">v1.09 -- 2002.02.20</a></h2>
+<p>Add a optional check to see if a TAG has been put in a fixed column. If such ':' is
+found in one of the fixed column, a warning is printed.</p>
+<p>Check for all file extention to find the unlinked files that are not .lst</p>
+<p>Add support fot the &quot;pragma&quot; tag #EXTRAFILE</p>
+<p>Add code to convert SKILL to BONUS:SKILL in RACE files</p>
+<p>The DEITY tag in the CLASS files was deprecated</p>
+<p>
+</p>
+<h2><a name="v1_08__2002_02_17">v1.08 -- 2002.02.17</a></h2>
+<p>Only write the .pcc files that have an extra 0x0d character or white spaces at the
+end of the line.</p>
+<p>Add support for the new SOURCEPAGE, SOURCEWEB, SOURCELONG and SOURCESHORT tags.</p>
+<p>Add conversion code that replace the SOURCE:p. tags by SOURCEPAGE:p. tags.</p>
+<p>Add convertion code that remove the ROOT tags in the SKILL files and add the
+new format of the TYPE tag.</p>
+<p>Remove the ROOT tag from the SKILL filetype. This tag is now deprecate.</p>
+<p>Romove any quote found.</p>
+<p>
+</p>
+<h2><a name="v1_07__2002_02_08">v1.07 -- 2002.02.08</a></h2>
+<p>Bug with the WEAPONBONUS tag being there twice for the RACE filetype</p>
+<p>Add code to detect if one of the tags is there more then once for
+a particular filetype</p>
+<p>The odd end of lines (CR-CR-LF) are striped when the files that get rewriten</p>
+<p>Produce a list of files not found in the .PCC files</p>
+<p>
+</p>
+<h2><a name="v1_06__2002_02_07">v1.06 -- 2002.02.07</a></h2>
+<p>Add support for CLASSSPELL</p>
+<p>Add support for TEMPLATE</p>
+<p>Add support for WEAPONPROF</p>
+<p>The script now adds a dummy SOURCE:p. tag in some files when none are found.</p>
+<p>
+</p>
+<h2><a name="v1_05__2002_02_06">v1.05 -- 2002.02.06</a></h2>
+<p>Add support for CLASSSKILL files (OK, this one was not very hard...)</p>
+<p>Add support for DIETY files</p>
+<p>Add support for DOMAIN files</p>
+<p>Add support for FEAT files</p>
+<p>Add support for LANGUAGE files</p>
+<p>Add support for SKILL files</p>
+<p>Add support for SPELL files</p>
+<p>Unknown tags are kept (including duplicates)</p>
+<p>
+</p>
+<h2><a name="v1_04__2002_02_05">v1.04 -- 2002.02.05</a></h2>
+<p>Add support for RACE files</p>
+<p>Add support for EQUIMOD files</p>
+<p>Most files are now parse by a Generic parser</p>
+<p>Unknown tags are kept (including duplicates)</p>
+<p>
+</p>
+<h2><a name="v1_03__2002_02_03">v1.03 -- 2002.02.03</a></h2>
+<p>Change the sort order for the additionnal lines</p>
+<p>
+</p>
+<h2><a name="v1_02__2002_02_03">v1.02 -- 2002.02.03</a></h2>
+<p>No more empty white spaces between the columns in for the level advancement lines</p>
+<p>
+</p>
+<h2><a name="v1_01__2002_02_02">v1.01 -- 2002.02.02</a></h2>
+<p>Add support for the CLASS files</p>
+<p>Check and remove extra space at the end of each tab separated TAG</p>
+<p>Add special case for the ADD:adlib tags</p>
+<p>
+</p>
+<h2><a name="v1_00__2002_01_27">v1.00 -- 2002.01.27</a></h2>
+<p>First working version. Only the EQUIPMENT file are supported.</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;C:\pcgen\svn\pcgen\Trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>

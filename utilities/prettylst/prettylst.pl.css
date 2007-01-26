@@ -1,0 +1,145 @@
+BODY {
+    font: small verdana, arial, helvetica, sans-serif;
+    color: black;
+    background-color: white;
+}
+
+A:link      {color: #0000FF}
+A:visited   {color: #666666}
+A:active    {color: #FF0000}
+
+
+H1 {
+    font: bold large verdana, arial, helvetica, sans-serif;
+    color: black;
+}
+
+
+H2 {
+    font: bold large verdana, arial, helvetica, sans-serif;
+    color: maroon;
+}
+
+
+H3 {
+    font: bold medium verdana, arial, helvetica, sans-serif;
+        color: blue;
+}
+
+
+H4 {
+    font: bold small verdana, arial, helvetica, sans-serif;
+        color: maroon;
+}
+
+
+H5 {
+    font: bold small verdana, arial, helvetica, sans-serif;
+        color: blue;
+}
+
+
+H6 {
+    font: bold small verdana, arial, helvetica, sans-serif;
+        color: black;
+}
+
+
+UL {
+    font: small verdana, arial, helvetica, sans-serif;
+        color: black;
+}
+
+
+OL {
+    font: small verdana, arial, helvetica, sans-serif;
+        color: black;
+}
+
+
+LI
+{
+    font: small verdana, arial, helvetica, sans-serif;
+    color: black;
+}
+
+TH {
+    font: small verdana, arial, helvetica, sans-serif;
+    color: blue;
+}
+
+
+TD {
+    font: small verdana, arial, helvetica, sans-serif;
+    color: black;
+}
+
+TD.foot {
+    font: medium sans-serif;
+    color: #eeeeee;
+    background-color="#cc0066"
+}
+
+DL {
+    font: small verdana, arial, helvetica, sans-serif;
+    color: black;
+}
+
+
+DD {
+    font: small verdana, arial, helvetica, sans-serif;
+    color: black;
+}
+
+
+DT {
+    font: small verdana, arial, helvetica, sans-serif;
+        color: black;
+}
+
+
+CODE {
+    font: small Courier, monospace;
+}
+
+
+PRE {
+    font: small Courier, monospace;
+}
+
+
+P.indent {
+    font: small verdana, arial, helvetica, sans-serif;
+    color: black;
+    background-color: white;
+    list-style-type : circle;
+    list-style-position : inside;
+    margin-left : 16.0pt;
+}
+
+PRE.programlisting
+{
+    list-style-type : disc;
+    margin-left : 16.0pt;
+    margin-top : -14.0pt;
+}
+
+
+INPUT {
+    font: bold small verdana, arial, helvetica, sans-serif;
+    color: black;
+    background-color: white;
+}
+
+
+TEXTAREA {
+    font: bold small verdana, arial, helvetica, sans-serif;
+    color: black;
+    background-color: white;
+}
+
+.BANNER {
+    background-color: "#cccccc";
+    font: bold medium verdana, arial, helvetica, sans-serif;
+
+}

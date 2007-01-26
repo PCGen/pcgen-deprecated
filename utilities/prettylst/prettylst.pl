@@ -13445,7 +13445,7 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
-=head2 v1.36 -- NOT YET RELEASED
+=head2 v1.36 -- -- 2007.01.26
 
 [ 1637309 ] REACH, FACE & LEGS are now Template tags
 
