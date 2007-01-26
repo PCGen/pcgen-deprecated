@@ -2828,6 +2828,9 @@ my %master_order = (
         'HITDICESIZE',
         'CR',
         'SIZE',
+        'FACE',
+        'REACH',
+        'LEGS',
         'VISIBLE',
         'REMOVEABLE',
         'DR:*',
@@ -2907,7 +2910,7 @@ my %master_order = (
         'AUTO:WEAPONPROF:*',
         'REMOVE',
         'CHANGEPROF',
-        'HEIGHT',
+#        'HEIGHT',
         'KIT',
         'LANGAUTO:.CLEAR',
         'LANGAUTO:*',
@@ -2924,7 +2927,7 @@ my %master_order = (
         'RACESUBTYPE',
         'TYPE',
         'VISION',
-        'WEIGHT',
+#        'WEIGHT',
         'HD:*',
         'WEAPONBONUS',
         'GENDERLOCK',
@@ -13437,6 +13440,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.36 -- NOT YET RELEASED
+
+[ 1637309 ] REACH, FACE & LEGS are now Template tags
 
 [ 1630261 ] Change syntax for QUALIFY tag
 
