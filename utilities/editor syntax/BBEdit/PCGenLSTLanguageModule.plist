@@ -12,6 +12,7 @@
 <string>ABB</string>
 <string>ABILITIES</string>
 <string>ABILITY</string>
+<string>ABILITYCATEGORY</string>
 <string>AC</string>
 <string>ACABBREV</string>
 <string>ACCHECK</string>
@@ -46,6 +47,7 @@
 <string>ANY</string>
 <string>ANYPC</string>
 <string>APPLIEDTO</string>
+<string>APPLY</string>
 <string>Arcane</string>
 <string>ARMORPROF</string>
 <string>ARMORTYPE</string>
@@ -95,6 +97,7 @@
 <string>CASTAS</string>
 <string>CASTERLEVEL</string>
 <string>CASTTIME</string>
+<string>CATEGORY</string>
 <string>CATCHPHRASE</string>
 <string>CCSKILL</string>
 <string>CCSKILLLIST</string>
@@ -319,6 +322,7 @@
 <string>INITCOMP</string>
 <string>INITIATIVE</string>
 <string>Innate</string>
+<string>INSTANT</string>
 <string>INT</string>
 <string>INTERESTS</string>
 <string>INTMAX0</string>
@@ -452,6 +456,7 @@
 <string>POSTMOVEADD</string>
 <string>POWERPOINTS</string>
 <string>PRE</string>
+<string>PREABILITY</string>
 <string>PREAGESET</string>
 <string>PREALIGN</string>
 <string>PREAPPLY</string>
