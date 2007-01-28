@@ -8,12 +8,12 @@ require_once('include/header.php.inc');
 
         <h1>Major Links</h1>
         <ul>
+	        <li><a href="03_get_pcgen.php">Get PCGen</a> - Download PCGen </li>
 	        <li><a href="http://www.legolas.org/pcgen/pytw/#Welcome">Project Wiki</a> - This is the <b>main</b> source of project information</li>
 	        <li><a href="http://groups.yahoo.com/group/pcgen">Main User Community Group</a></li>
 	        <li><a href="https://sourceforge.net/project/project_donations.php?group_id=25576">Donate to PCGen!</a></li>
 	        <li><a href="https://sourceforge.net/projects/pcgen/">Sourceforge Project Page</a></li>
    	        <li><a href="http://pcgen.sourceforge.net/banners/">Our Fantastic Images and Banners</a></li>
-   	        <li><a href="http://sites.gizoogle.com/index2.php?url=http%3A%2F%2Fpcgen.sourceforge.net%2F01_overview.php">PCGen is the Shizzle Nizzle</a></li>
 		</ul>
 
         <h1>PCGen Overview</h1>
