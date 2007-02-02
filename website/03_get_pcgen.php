@@ -128,6 +128,10 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=21689" style="font-size: 80%;">[View Older Alpha and Beta Releases]</a>
         </p>
 
+		<p><b>Note:</b>Due a bug in the SourceForge RSS feed, only very old downloads are being shown 
+		below (as at 2 Feb 07). In the meantime you can access the latest build directly at 
+		<a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=21689&release_id=482521" style="font-size: 80%;">[PCGen Unstable 5.11.7 Alpha]</a>
+		</p>
 <?php
 
 writePcgenFileItems("http://sourceforge.net/export/rss2_projfiles.php?group_id=25576&rss_limit=20", false, 5);
