@@ -11,7 +11,7 @@ require_once('include/header.php.inc');
         intervals. They are not manually tested at all prior to upload, but are instead an excellent tool to 
         allow people to test what we are currently working on. As a result, unless you like living on the edge, 
         it is best to use one of our regular releases available from the 
-        <a href="http://pcgen.sourceforge.net/03_downloads.php">downloads page</a> .</p>
+        <a href="http://pcgen.sourceforge.net/03_get_pcgen.php">downloads page</a> .</p>
         
         <h2>PCGen Development Autobuilds (5.11.x)</h2>
         <p>These are regular scheduled builds from the development branch of PCGen. Every eight hours, 
