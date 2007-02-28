@@ -80,6 +80,7 @@ ITEMCREATE
 ITYPE
 KEY
 KEYSTAT
+KIT
 KNOWN
 KNOWNSPELLS
 KNOWNSPELLSFROMSPECIALTY
@@ -330,6 +331,7 @@ EQ
 EquipmentCircumstance
 Evil
 Evocation
+Ex
 Exotic
 Extraordinary
 Eyegear
@@ -456,6 +458,7 @@ SHORTRANGE
 Simple
 Slashing
 Sonic
+Sp
 Special
 Species
 Specific
@@ -465,6 +468,7 @@ Staff
 Standard
 STR
 Strength
+Su
 Suit
 Summoning
 Supernatural
