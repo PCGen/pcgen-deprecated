@@ -84,6 +84,7 @@ print STDERR "$VERSION_LONG\n";
 # Valid filetype are the only ones that will be parsed
 # Some filetype are valid but not parse yet (no function name)
 my %validfiletype = (
+    'ABILITY'      => \&FILETYPE_parse,
     'BIOSET'       => \&FILETYPE_parse,
     'CLASS'        => \&FILETYPE_parse,
     'COMPANIONMOD' => \&FILETYPE_parse,
@@ -111,6 +112,7 @@ my %validfiletype = (
 
 # The file type that will be rewritten.
 my %writefiletype = (
+    'ABILITY'      => 1,
     'BIOSET'       => 1,
     'CLASS'        => 1,
     'CLASS Level'  => 1,
@@ -966,6 +968,17 @@ if( $cl_options{old_source_tag} ) {
 # Information needed to parse the line type
 my %master_file_type = (
 
+    ABILITY => [
+        \%SOURCE_file_type_def,
+        {   Linetype        => 'ABILITY',
+            RegEx           => qr(^([^\t:]+)),
+            Mode            => MAIN,
+            Format          => BLOCK,
+            Header          => BLOCK_HEADER,
+            ValidateKeep    => YES,
+        },
+    ],
+
     BIOSET => [
         \%SOURCE_file_type_def,
         {   Linetype        => 'BIOSET AGESET',
@@ -1305,6 +1318,8 @@ my %master_file_type = (
 # line type will get the same sort order.
 my @PRE_Tags = (
     'PRE:.CLEAR',
+    'PREABILITY:*',
+    '!PREABILITY',
     'PREAGESET',
     '!PREAGESET',
     'PREALIGN',
@@ -1554,6 +1569,116 @@ my @QUALIFY_Tags = (
 
 # Order for the tags for each line type.
 my %master_order = (
+    'ABILITY' => [
+        '000AbilityName',
+        'NAMEISPI',
+        'OUTPUTNAME',
+        'KEY',
+        'CATEGORY',
+        'TYPE:.CLEAR',
+        'TYPE',
+        'VISIBLE',
+        @PRE_Tags,
+        @QUALIFY_Tags,
+        'SA:.CLEAR',
+        'SA:*',
+        'DEFINE:*',
+        'SPELL:*',
+        'SPELLS:*',
+        'DESCISPI',
+        'DESC:.CLEAR',
+        'DESC:*',
+        'STACK',
+        'MULT',
+        'CHOOSE',
+        'TEMPLATE:.CLEAR',
+        'TEMPLATE:*',
+        'MOVE',
+        'MOVECLONE',
+        'AUTO:ARMORPROF',
+        'AUTO:EQUIP',
+        'AUTO:FEAT',
+        'AUTO:SHIELDPROF',
+        'AUTO:WEAPONPROF:*',
+        'UDAM',
+        'VFEAT:*',
+        'ADD',
+        'ADD:CLASSSKILLS',
+        'ADD:FAVOREDCLASS',
+        'ADD:FEAT:*',
+        'ADD:FORCEPOINT',
+        'ADD:Language',
+        'ADD:LIST',
+        'ADD:SPECIAL',
+        'ADD:SPELLCASTER',
+        'ADD:SKILL',
+        'ADD:WEAPONPROFS',
+        'ADDSPELLLEVEL',
+        'LANGAUTO',
+        'BONUS:CASTERLEVEL:*',
+        'BONUS:CHECKS:*',
+        'BONUS:COMBAT:*',
+        'BONUS:DAMAGE:*',
+        'BONUS:DC:*',
+        'BONUS:DEFINE:*',
+        'BONUS:DOMAIN:*',
+        'BONUS:DR:*',
+        'BONUS:EQM:*',
+        'BONUS:EQMARMOR:*',
+        'BONUS:EQMWEAPON:*',
+        'BONUS:ESIZE:*',
+        'BONUS:FEAT:*',
+        'BONUS:HD:*',
+        'BONUS:HP:*',
+        'BONUS:LANGUAGES:*',
+        'BONUS:MISC:*',
+        'BONUS:MOVEADD:*',
+        'BONUS:MOVEMULT:*',
+        'BONUS:POSTMOVEADD:*',
+        'BONUS:POSTRANGEADD:*',
+        'BONUS:PCLEVEL:*',
+        'BONUS:RANGEADD:*',
+        'BONUS:RANGEMULT:*',
+        'BONUS:REPUTATION:*',
+        'BONUS:RING:*',
+        'BONUS:SCHOOL:*',
+        'BONUS:SIZEMOD:*',
+        'BONUS:SKILL:*',
+        'BONUS:SKILLPOINTS:*',
+        'BONUS:SKILLPOOL:*',
+        'BONUS:SKILLRANK:*',
+        'BONUS:SLOTS:*',
+        'BONUS:SPELL:*',
+        'BONUS:SPELLCAST:*',
+        'BONUS:SPELLCASTMULT:*',
+        'BONUS:SPELLKNOWN:*',
+        'BONUS:VISION:*',
+        'BONUS:STAT:*',
+        'BONUS:TOHIT:*',
+        'BONUS:UDAM:*',
+        'BONUS:VAR:*',
+        'BONUS:WEAPON:*',
+        'BONUS:WEAPONPROF:*',
+        'BONUS:WIELDCATEGORY:*',
+        'FOLLOWERS',
+        'COMPANIONLIST:*',
+        'CSKILL:.CLEAR',
+        'CSKILL',
+        'CCSKILL',
+        'VISION',
+        'SR',
+        'DR',
+        'REP',
+        'COST',
+        'KIT',
+        @SOURCE_Tags,
+        'NATURALATTACKS',
+        'BENEFIT',
+        'TEMPDESC',
+        'SPELLLEVEL:CLASS:*',
+        'SPELLLEVEL:DOMAIN:*',
+    ],
+
     'BIOSET AGESET' => [
         'AGESET',
         'BONUS:STAT:*',
@@ -3075,6 +3200,10 @@ if ( 0 && $conversion_enable{'TEMPLATE:HITDICESIZE to HITDIE'} ) {
 # Working variables
 my %column_with_no_tag = (
 
+    'ABILITY' => [
+        '000AbilityName',
+    ],
+
     'CLASS' => [
         '000ClassName',
     ],
@@ -3352,6 +3481,7 @@ my %tagheader = (
 
         'DESC'                  => 'Description',
 
+        '000AbilityName'        => '# Ability Name',
         '000FeatName'           => '# Feat Name',
 
         '000LanguageName'       => '# Language',
@@ -3440,6 +3570,7 @@ my %tagheader = (
         'CAST'                  => 'Cast',
         'CASTAS'                => 'Cast As',
         'CASTTIME'              => 'Casting Time',
+        'CATEGORY'              => 'Category of Ability',
         'CCSKILL'               => 'Cross-class Skill',
         'CHANGEPROF'            => 'Change Weapon Prof. Category',
         'CHOOSE'                => 'Choose',
@@ -3480,15 +3611,16 @@ my %tagheader = (
         'HITDIE'                => 'Hit Dice Size',
         'HITDICEADVANCEMENT'    => 'Hit Dice Advancement',
         'HITDICESIZE'           => 'Hit Dice Size',
-        'ITEM',                 => 'Item',
-        'KIT',                  => 'Apply Kit',
+        'ITEM'                  => 'Item',
+        'KEY'                   => 'Unique Key',
+        'KIT'                   => 'Apply Kit',
         'KNOWN'                 => 'Known',
         'KNOWNSPELLS'           => 'Automaticaly Known Spell Levels',
         'LANGAUTO'              => 'Automatic Languages',
         'LANGBONUS'             => 'Bonus Languages',
         'LANGBONUS:.CLEAR'      => 'Clear Bonus Languages',
         'LEGS'                  => 'Nb Legs',
-        'LEVEL',                => 'Level',
+        'LEVEL'                 => 'Level',
         'LEVELADJUSTMENT'       => 'Level Adjustment',
 #        'LONGNAME'              => 'Long Name',                        # Deprecated in favor of OUTPUTNAME
         'MAXCOST'               => 'Maximum Cost',
@@ -3505,7 +3637,9 @@ my %tagheader = (
         'NUMPAGES'              => 'Number of Pages',                     # [ 1450980 ] New Spellbook tags
         'OUTPUTNAME'            => 'Output Name',
         'PAGEUSAGE'             => 'Page Usage',                          # [ 1450980 ] New Spellbook tags
-        'PRE:.CLEAR',           => 'Clear Prereq.',
+        'PRE:.CLEAR'            => 'Clear Prereq.',
+        'PREABILITY'            => 'Required Ability',
+        '!PREABILITY'           => 'Restricted Ability',
         'PREALIGN'              => 'Required AL',
         '!PREALIGN'             => 'Restricted AL',
         'PREATT'                => 'Req. Att.',
@@ -3526,7 +3660,8 @@ my %tagheader = (
         'PRECSKILL'             => 'Required Class Skill',
         '!PRECSKILL'            => 'Prohibited Class SKill',
         'PREDEITY'              => 'Required Deity',
-        'PREDEITYDOMAIN'        => 'Required Domain',
+        'PREDEITYDOMAIN'        => 'Required Deitys Domain',
+        'PREDOMAIN'             => 'Required Domain',
         'PREDSIDEPTS'           => 'Req. Dark Side',
         'PREDR'                 => 'Req. Damage Resistance',
         'PREEQUIP'              => 'Req. Equipement',
@@ -9905,6 +10040,100 @@ sub validate_line {
             ) if !( exists $line_ref->{'CLASSES'} || exists $line_ref->{'DOMAINS'} );
         }
     }
+    elsif ( $linetype eq "ABILITY" ) {
+
+        # On an ABILITY line type:
+        # 0) MUST contain CATEGORY tag
+        # 1) if it has MULT:YES, it  _has_ to have CHOOSE
+        # 2) if it has CHOOSE, it _has_ to have MULT:YES
+        # 3) if it has STACK:YES, it _has_ to have MULT:YES (and CHOOSE)
+        if ( !$line_ref->{'CATEGORY'} ) {
+           ewarn(WARNING,
+                 qq(The CATEGORY tag is required in ABILITY "$line_ref->{'000AbilitytName'}[0]"),
+                 $file_for_error,
+                 $line_for_error
+           );
+        }
+        my ( $hasCHOOSE, $hasMULT, $hasSTACK );
+
+        $hasCHOOSE = 1 if exists $line_ref->{'CHOOSE'};
+        $hasMULT   = 1 if exists $line_ref->{'MULT'} && $line_ref->{'MULT'}[0] =~ /^MULT:Y/i;
+        $hasSTACK  = 1 if exists $line_ref->{'STACK'} && $line_ref->{'STACK'}[0] =~ /^STACK:Y/i;
+
+        if ( $hasMULT && !$hasCHOOSE ) {
+            ewarn(INFO,
+                  qq(The CHOOSE tag is mandantory when MULT:YES is present in ABILITY "$line_ref->{'000AbilitytName'}[0]"),
+                  $file_for_error,
+                  $line_for_error
+            );
+        }
+        elsif ( $hasCHOOSE && !$hasMULT && $line_ref->{'CHOOSE'}[0] !~ /CHOOSE:SPELLLEVEL/i ) {
+
+            # The CHOOSE:SPELLLEVEL is exampted from this particular rule.
+            ewarn(INFO,
+                  qq(The MULT:YES tag is mandantory when CHOOSE is present in ABILITY "$line_ref->{'000AbilitytName'}[0]"),
+                  $file_for_error,
+                  $line_for_error
+            );
+        }
+
+        if ( $hasSTACK && !$hasMULT ) {
+            ewarn(INFO,
+                  qq(The MULT:YES tag is mandantory when STACK:YES is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
+                  $file_for_error,
+                  $line_for_error
+            );
+        }
+
+        # We identify the feats that can have sub-entities. e.g. Spell Focus(Spellcraft)
+        if ($hasCHOOSE) {
+
+            # The CHOSE type tells us the type of sub-entities
+            my $choose    = $line_ref->{'CHOOSE'}[0];
+            my $ability_name = $line_ref->{'000AbilityName'}[0];
+            $ability_name =~ s/.MOD$//;
+
+            if ( $choose =~ /^CHOOSE:(?:NUMCHOICES=\d+\|)?(FEAT=[^|]*)/ ) {
+                $valid_sub_entities{'ABILITY'}{$ability_name} = $1;
+            }
+            elsif ( $choose =~ /^CHOOSE:(?:NUMCHOICES=\d+\|)?FEATLIST/ ) {
+                $valid_sub_entities{'ABILITY'}{$ability_name} = 'FEAT';
+            }
+            elsif ( $choose =~ /^CHOOSE:(?:NUMCHOICES=\d+\|)?(?:WEAPONPROFS|Exotic|Martial)/ ) {
+                $valid_sub_entities{'ABILITY'}{$ability_name} = 'WEAPONPROF';
+            }
+            elsif ( $choose =~ /^CHOOSE:(?:NUMCHOICES=\d+\|)?SKILLSNAMED/ ) {
+                $valid_sub_entities{'ABILITY'}{$ability_name} = 'SKILL';
+            }
+            elsif ( $choose =~ /^CHOOSE:(?:NUMCHOICES=\d+\|)?SCHOOLS/ ) {
+                $valid_sub_entities{'ABILITY'}{$ability_name} = 'SPELL_SCHOOL';
+            }
+            elsif ( $choose =~ /^CHOOSE:(?:NUMCHOICES=\d+\|)?SPELLLIST/ ) {
+                $valid_sub_entities{'ABILITY'}{$ability_name} = 'SPELL';
+            }
+            elsif ($choose =~ /^CHOOSE:(?:NUMCHOICES=\d+\|)?SPELLLEVEL/
+                || $choose =~ /^CHOOSE:(?:NUMCHOICES=\d+\|)?HP/ )
+            {
+
+                # Ad-Lib is a special case that means "Don't look for
+                # anything else".
+                $valid_sub_entities{'ABILITY'}{$ability_name} = 'Ad-Lib';
+            }
+            elsif ( $choose =~ /^CHOOSE:(?:COUNT=\d+\|)?(.*)/ ) {
+
+                # ad-hod/special list of thingy
+                # It adds to the valid entities instead of the
+                # valid sub-entities.
+                # We do this when we find a CHOOSE but we do not
+                # know what it is for.
+                for my $sub_type ( split '\|', $1 ) {
+                    $valid_entities{'ABILITY'}{"$ability_name($sub_type)"}  = $1;
+                    $valid_entities{'ABILITY'}{"$ability_name ($sub_type)"} = $1;
+                }
+            }
+        }
+    }
+
     elsif ( $linetype eq "FEAT" ) {
 
         # On a FEAT line type:
