@@ -1,7 +1,6 @@
 /*
- * PrereqObject.java
- *  Copyright 2007 Tom Parker <thpr@users.sourceforge.net>
- *  Copyright 2006 Aaron Divinsky <boomer70@yahoo.com>
+ * PrereqObject.java Copyright 2007 Tom Parker <thpr@users.sourceforge.net>
+ * Copyright 2006 Aaron Divinsky <boomer70@yahoo.com>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -30,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 import pcgen.base.lang.UnreachableError;
-import pcgen.cdom.restriction.Restriction;
 import pcgen.core.Constants;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;

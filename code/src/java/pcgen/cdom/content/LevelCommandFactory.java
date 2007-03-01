@@ -1,0 +1,71 @@
+/*
+ * Copyright 2007 (C) Tom Parker <thpr@users.sourceforge.net>
+ * 
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+package pcgen.cdom.content;
+
+import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.core.PCClass;
+
+public class LevelCommandFactory extends ConcretePrereqObject
+{
+
+	private final CDOMSimpleSingleRef<PCClass> pcClass;
+
+	private final int levels;
+
+	public LevelCommandFactory(CDOMSimpleSingleRef<PCClass> cl, int lvls)
+	{
+		pcClass = cl;
+		levels = lvls;
+	}
+
+	public int getLevelCount()
+	{
+		return levels;
+	}
+
+	public PCClass getPCClass()
+	{
+		return pcClass.resolvesTo();
+	}
+
+	public String getLSTformat()
+	{
+		return pcClass.getLSTformat();
+	}
+
+	public int hashCode()
+	{
+		return pcClass.hashCode() * 29 + levels;
+	}
+
+	public boolean equals(Object o)
+	{
+		if (this == o)
+		{
+			return true;
+		}
+		if (!(o instanceof LevelCommandFactory))
+		{
+			return false;
+		}
+		LevelCommandFactory lcf = (LevelCommandFactory) o;
+		return levels == lcf.levels && pcClass.equals(lcf.pcClass);
+	}
+
+}
