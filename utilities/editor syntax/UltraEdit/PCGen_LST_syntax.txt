@@ -128,6 +128,7 @@ RATEOFFIRE
 REACH
 REGION
 REMOVABLE
+REPEATLEVEL
 REPLACES
 SA
 SAVEINFO
@@ -330,6 +331,7 @@ Enchantment
 Enhancement
 Electricity
 ELSE
+Epic
 EQ
 EquipmentCircumstance
 Evil
@@ -398,6 +400,7 @@ Medium
 Melee
 Metal
 Metamagic
+Metapsionic
 Mind
 MIN
 ModifyAC
@@ -435,6 +438,7 @@ PRIMARY
 PROJECTILE
 Profession
 Projectile
+Psionic
 Racial
 Ranged
 Ray
@@ -562,6 +566,12 @@ PRESPELLCAST
 PRESPELLSCHOOL
 PRESPELLSCHOOLSUB
 PRESPELLTYPE
+PRESREQ
+PRESRGT
+PRESRGTEQ
+PRESRLT
+PRESRLTEQ
+PRESRNEQ
 PRESTAT
 PRESUBCLASS
 PRETEMPLATE
@@ -589,6 +599,7 @@ Druid
 Duelist
 Dwarf
 Dwarven Defender
+Egoist
 Eldritch Knight
 Elf
 Fighter
@@ -598,15 +609,24 @@ Half Orc
 Hierophant
 Horizon Walker
 Human
+Kineticist
 Loremaster
 Monk
 Mystic Theurge
+Nomad
 Paladin
+Psion
+Psychic Warrior
 Ranger
 Rogue
+Seer
 Shadowdancer
+Shaper
 Sorcerer
+Soulknife
+Telepath
 Thaumaturgist
+Wilder
 Wizard
 /C7"placeholders"
 XfooX
