@@ -13453,7 +13453,9 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
-=head2 v1.37 -- NOT RELEASED YED
+=head2 v1.37 -- NOT RELEASED YET
+
+[ 1326023 ] New tag: BONUS:MONSKILLPTS|LOCKNUMBER|x
 
 [ 1661050 ] New PREAGESET tag
 
