@@ -1,25 +1,24 @@
 /*
  * Copyright (c) Thomas Parker, 2004-2007
  * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or (at
- * your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
- * General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 26, 2004
  * 
- * Current Ver: $Revision: 1650 $
- * Last Editor: $Author: thpr $
- * Last Edited: $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
+ * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
+ * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
  * 
  */
 package pcgen.base.graph.core;
@@ -310,13 +309,14 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 	}
 
 	/**
-	 * Tests to see if this Graph is equal to the provided Object.  This will
-	 * return true if the given Object is also a Graph, and that Graph contains 
+	 * Tests to see if this Graph is equal to the provided Object. This will
+	 * return true if the given Object is also a Graph, and that Graph contains
 	 * equal Nodes and Edges.
 	 * 
-	 * @param o The Object to be tested for equality with this Graph
-	 * @return true if the given Object is a Graph that contains equal Nodes
-	 * and Edges to this Graph; false otherwise
+	 * @param o
+	 *            The Object to be tested for equality with this Graph
+	 * @return true if the given Object is a Graph that contains equal Nodes and
+	 *         Edges to this Graph; false otherwise
 	 */
 	public boolean equals(Object other)
 	{
@@ -331,23 +331,23 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 		{
 			return false;
 		}
-		//(potentially wasteful, but defensive copy)
+		// (potentially wasteful, but defensive copy)
 		otherNodeList = new ArrayList<N>(otherNodeList);
 		if (otherNodeList.retainAll(nodeList))
 		{
-			//Other Graph contains extra nodes
+			// Other Graph contains extra nodes
 			return false;
 		}
-		//Here, the node lists are identical...
+		// Here, the node lists are identical...
 		List<ET> otherEdgeList = otherGraph.getEdgeList();
 		int thisEdgeSize = edgeList.size();
 		if (thisEdgeSize != otherEdgeList.size())
 		{
 			return false;
 		}
-		//(potentially wasteful, but defensive copy)
+		// (potentially wasteful, but defensive copy)
 		otherEdgeList = new ArrayList<ET>(otherEdgeList);
-		//possible that the Other Graph contains extra edges
+		// possible that the Other Graph contains extra edges
 		return !otherEdgeList.retainAll(edgeList);
 	}
 
@@ -358,7 +358,7 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 	 */
 	public int hashCode()
 	{
-		//This is really simple, but it works... and prevents a deep hash
+		// This is really simple, but it works... and prevents a deep hash
 		return nodeList.size() + edgeList.size() * 23;
 	}
 }

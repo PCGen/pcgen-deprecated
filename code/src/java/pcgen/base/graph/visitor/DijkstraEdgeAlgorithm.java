@@ -1,19 +1,19 @@
 /*
  * Copyright (c) Thomas Parker, 2004-2007
  * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or (at
- * your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
- * General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 27, 2004
  */
@@ -88,7 +88,8 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	/**
 	 * Creates a new DijkstraEdgeAlgorithm to traverse the given Graph.
 	 * 
-	 * @param g The Graph this DijkstraEdgeAlgorithm will traverse.
+	 * @param g
+	 *            The Graph this DijkstraEdgeAlgorithm will traverse.
 	 */
 	public DijkstraEdgeAlgorithm(Graph<N, ET> g)
 	{
@@ -96,14 +97,16 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	}
 
 	/**
-	 * Creates a new DijkstraEdgeAlgorithm to traverse the given Graph.
-	 * The Graph will only be traversed until the distance traversed over
-	 * any individual path is equal to the given limit.  (Note this is 
-	 * distance of any individual destination Node or Edge from the source
-	 * Node or Edge, not a cumulative distance traversed over all paths)
+	 * Creates a new DijkstraEdgeAlgorithm to traverse the given Graph. The
+	 * Graph will only be traversed until the distance traversed over any
+	 * individual path is equal to the given limit. (Note this is distance of
+	 * any individual destination Node or Edge from the source Node or Edge, not
+	 * a cumulative distance traversed over all paths)
 	 * 
-	 * @param g The Graph this DijkstraEdgeAlgorithm will traverse.
-	 * @param limit The distance limit for any traversal.
+	 * @param g
+	 *            The Graph this DijkstraEdgeAlgorithm will traverse.
+	 * @param limit
+	 *            The distance limit for any traversal.
 	 */
 	public DijkstraEdgeAlgorithm(Graph<N, ET> g, double limit)
 	{
@@ -135,12 +138,15 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 
 	/**
 	 * Returns true if the given Edge can be traversed by this
-	 * DijkstraEdgeAlgorithm.  This check is performed in context 
-	 * to the given Node and interface type for the given Node.
+	 * DijkstraEdgeAlgorithm. This check is performed in context to the given
+	 * Node and interface type for the given Node.
 	 * 
-	 * @param edge The Edge to potentially be traversed
-	 * @param gn The contextual Node connected to the edge
-	 * @param type The connection type of the given Node
+	 * @param edge
+	 *            The Edge to potentially be traversed
+	 * @param gn
+	 *            The contextual Node connected to the edge
+	 * @param type
+	 *            The connection type of the given Node
 	 * @return true if the given Edge can be traversed; false otherwise
 	 */
 	protected boolean canTraverseEdge(ET edge, N gn, int type)
@@ -155,10 +161,11 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	 * 
 	 * Results of this calculation are available from the getDistanceTo methods.
 	 * 
-	 * Calling a calculateFrom*() method a second time without calling clear() will 
-	 * result in an UnsupportedOperationException being thrown.
+	 * Calling a calculateFrom*() method a second time without calling clear()
+	 * will result in an UnsupportedOperationException being thrown.
 	 * 
-	 * @param gn The source Edge to be used for distance calculation.
+	 * @param gn
+	 *            The source Edge to be used for distance calculation.
 	 */
 	public void calculateFromEdge(ET ge)
 	{
@@ -193,10 +200,11 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	 * 
 	 * Results of this calculation are available from the getDistanceTo methods.
 	 * 
-	 * Calling a calculateFrom*() method a second time without calling clear() will 
-	 * result in an UnsupportedOperationException being thrown.
+	 * Calling a calculateFrom*() method a second time without calling clear()
+	 * will result in an UnsupportedOperationException being thrown.
 	 * 
-	 * @param gn The source Node to be used for distance calculation.
+	 * @param gn
+	 *            The source Node to be used for distance calculation.
 	 */
 	public void calculateFromNode(N gn)
 	{
@@ -294,13 +302,17 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	}
 
 	/**
-	 * Returns the separation between the two given edges through the given Node.
+	 * Returns the separation between the two given edges through the given
+	 * Node.
 	 * 
-	 * @param source The source edge for separation calculation
-	 * @param other The node being traversed
-	 * @param thisEdge The sink edge for separation calcualtion
-	 * @return The distance traversed through the node between the given
-	 * source Edge and sink Edge
+	 * @param source
+	 *            The source edge for separation calculation
+	 * @param other
+	 *            The node being traversed
+	 * @param thisEdge
+	 *            The sink edge for separation calcualtion
+	 * @return The distance traversed through the node between the given source
+	 *         Edge and sink Edge
 	 */
 	protected double calculateEdgeSeparation(ET source, N other, ET thisEdge)
 	{
@@ -308,15 +320,16 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	}
 
 	/**
-	 * Returns the distance to the given Edge from the source node
-	 * or edge provided in the calculateFrom() method.
+	 * Returns the distance to the given Edge from the source node or edge
+	 * provided in the calculateFrom() method.
 	 * 
-	 * The distance is defined as Double.NaN if the given Edge is
-	 * not in the Graph that was traversed.  The distance is defined
-	 * as Double.POSITIVE_INFINITY if the given Edge cannot be reached
-	 * from the source node.
+	 * The distance is defined as Double.NaN if the given Edge is not in the
+	 * Graph that was traversed. The distance is defined as
+	 * Double.POSITIVE_INFINITY if the given Edge cannot be reached from the
+	 * source node.
 	 * 
-	 * @param edge The Edge for which the distance is desired
+	 * @param edge
+	 *            The Edge for which the distance is desired
 	 * @return the distance from the source node to the given Edge
 	 */
 	public double getDistanceTo(ET edge)
@@ -331,15 +344,16 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	}
 
 	/**
-	 * Returns the distance to the given Node from the source node
-	 * or edge provided in the calculateFrom() method.
+	 * Returns the distance to the given Node from the source node or edge
+	 * provided in the calculateFrom() method.
 	 * 
-	 * The distance is defined as Double.NaN if the given node is
-	 * not in the Graph that was traversed.  The distance is defined
-	 * as Double.POSITIVE_INFINITY if the given node cannot be reached
-	 * from the source node.
+	 * The distance is defined as Double.NaN if the given node is not in the
+	 * Graph that was traversed. The distance is defined as
+	 * Double.POSITIVE_INFINITY if the given node cannot be reached from the
+	 * source node.
 	 * 
-	 * @param node The node for which the distance is desired
+	 * @param node
+	 *            The node for which the distance is desired
 	 * @return the distance from the source node to the given node
 	 */
 	public double getDistanceTo(N node)
@@ -357,9 +371,10 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	 * Returns the closest Edge to the source Node or Edge which is also
 	 * connected to the given Node.
 	 * 
-	 * @param node The node to find the closest edge attached to it.
+	 * @param node
+	 *            The node to find the closest edge attached to it.
 	 * @return The closest Edge to the source Node or Edge which is also
-	 * connected to the given Node
+	 *         connected to the given Node
 	 */
 	public ET getClosestEdgeOnNode(N node)
 	{
@@ -383,8 +398,8 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	}
 
 	/**
-	 * Clears the distance results so that this DijkstraEdgeAlgorithm 
-	 * may have the calculateFrom method called.
+	 * Clears the distance results so that this DijkstraEdgeAlgorithm may have
+	 * the calculateFrom method called.
 	 */
 	public void clear()
 	{

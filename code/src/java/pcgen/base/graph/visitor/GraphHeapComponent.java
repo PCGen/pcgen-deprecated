@@ -1,21 +1,19 @@
 /*
  * Copyright (c) Thomas Parker, 2004, 2005.
  * 
- * This file is part of RPG-MapGen
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or (at
- * your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
- * General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 27, 2004
  */
@@ -65,9 +63,12 @@ public class GraphHeapComponent<N, ET extends Edge<N>> implements
 	/**
 	 * Creates a new GraphHeapComponent with the given depth, edge, and node.
 	 * 
-	 * @param d The depth for this GraphHeapComponent
-	 * @param ge The edge for this GraphHeapComponent
-	 * @param gn The node for this GraphHeapComponent
+	 * @param d
+	 *            The depth for this GraphHeapComponent
+	 * @param ge
+	 *            The edge for this GraphHeapComponent
+	 * @param gn
+	 *            The node for this GraphHeapComponent
 	 */
 	public GraphHeapComponent(double d, ET ge, N gn)
 	{
@@ -87,7 +88,7 @@ public class GraphHeapComponent<N, ET extends Edge<N>> implements
 	}
 
 	/**
-	 * Returns a master index for this GraphHeapComponent.  This is used to
+	 * Returns a master index for this GraphHeapComponent. This is used to
 	 * create a unique identifier for each GraphHeapComponent object.
 	 */
 	private static synchronized int getIndex()
@@ -97,13 +98,13 @@ public class GraphHeapComponent<N, ET extends Edge<N>> implements
 
 	/**
 	 * Compares the given GraphHeapComponents to this GraphHeapComponent.
-	 * Returns -1 if the given GraphHeapComponent is less than this 
-	 * GraphHeapComponent, 0 if the given GraphHeapComponent is equal to
-	 * this GraphHeapComponent, and 1 if the given GraphHeapComponent is
-	 * greater than this GraphHeapComponent.
+	 * Returns -1 if the given GraphHeapComponent is less than this
+	 * GraphHeapComponent, 0 if the given GraphHeapComponent is equal to this
+	 * GraphHeapComponent, and 1 if the given GraphHeapComponent is greater than
+	 * this GraphHeapComponent.
 	 * 
-	 * @return an integer indicating if the given GraphHeapComponent is 
-	 * less than, equal to, or greater than this GraphHeapComponent.
+	 * @return an integer indicating if the given GraphHeapComponent is less
+	 *         than, equal to, or greater than this GraphHeapComponent.
 	 */
 	public int compareTo(GraphHeapComponent<N, ET> secondGHC)
 	{
