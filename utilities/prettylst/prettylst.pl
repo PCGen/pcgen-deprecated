@@ -10064,7 +10064,7 @@ sub validate_line {
         # 3) if it has STACK:YES, it _has_ to have MULT:YES (and CHOOSE)
         if ( !$line_ref->{'CATEGORY'} ) {
            ewarn(WARNING,
-                 qq(The CATEGORY tag is required in ABILITY "$line_ref->{'000AbilitytName'}[0]"),
+                 qq(The CATEGORY tag is required in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                  $file_for_error,
                  $line_for_error
            );
