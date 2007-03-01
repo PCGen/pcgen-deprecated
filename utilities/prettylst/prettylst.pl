@@ -2688,6 +2688,7 @@ my %master_order = (
         'BONUS:CHECKS',
         'BONUS:COMBAT:*',
         'BONUS:DAMAGE:*',
+        'BONUS:DR:*',
         'BONUS:FEAT:*',
         'BONUS:HP',
         'BONUS:MOVEADD',
@@ -2697,8 +2698,10 @@ my %master_order = (
         'BONUS:SKILL:*',
         'BONUS:STAT:*',
         'BONUS:UDAM:*',
-        'BONUS:VAR',
+        'BONUS:VAR:*',
+        'BONUS:VISION',
         'BONUS:WEAPON',
+        'BONUS:WEAPONPROF:*',
         'BONUS:WIELDCATEGORY:*',
         'DR',
         'MULT',
@@ -13470,6 +13473,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+[ 1671363 ] missing SPELL line tags
 
 [ 1671361 ] new PCC tag; ISMATURE:<YES/NO>
 
