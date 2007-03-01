@@ -2263,6 +2263,8 @@ my %master_order = (
         'BONUS:WEAPON:*',
         'BONUS:WEAPONPROF:*',
         'BONUS:WIELDCATEGORY:*',
+        'FOLLOWERS',
+        'COMPANIONLIST:*',
         'CSKILL:.CLEAR',
         'CSKILL',
         'CCSKILL',
