@@ -3215,19 +3215,27 @@ my %token_BONUS_MONSKILLPTS_types = map { $_ => 1 } (
 # List of types that are valid in BONUS:SLOTS
 my %token_BONUS_SLOTS_types = map { $_ => 1 } (
     'AMULET',
+    'ARMOR',
     'BELT',
     'BOOT',
     'BRACER',
     'CAPE',
+    'CLOTHING',
     'EYEGEAR',
     'GLOVE',
     'HANDS',
     'HEADGEAR',
     'LEGS',
-    'ROBE',
+    'PSIONICTATTOO',
     'RING',
+    'ROBE',
+    'SHIELD',
     'SHIRT',
     'SUIT',
+    'TATTOO',
+    'TRANSPORTATION',
+    'VEHICLE',
+    'WEAPON',
 
     # Special value for the CHOOSE tag
     'LIST',
@@ -13454,6 +13462,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+[ 1671353 ] add missing BONUS:SLOTS parameters
 
 [ 1326023 ] New tag: BONUS:MONSKILLPTS|LOCKNUMBER|x
 
