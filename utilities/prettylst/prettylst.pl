@@ -3414,10 +3414,11 @@ my %tagheader = (
         'BONUS:MOVEMULT'        => 'Multiply base more',
         'BONUS:POSTMOVEADD'     => 'Add to magical move',
         'BONUS:PCLEVEL'         => 'Caster level bonus',
-        'BONUS:POSTRANGEADD'    => 'BONUS:EQMWEAPON',
-        'BONUS:RANGEADD'        => 'BONUS:RANGEADD',
+        'BONUS:POSTRANGEADD'    => 'Bonus to Range',
+        'BONUS:RANGEADD'        => 'Bonus to base range',
         'BONUS:RANGEMULT'       => '% bonus to range',
-        'BONUS:REPUTATION'      => 'BONUS:REPUTATION',
+        'BONUS:REPUTATION'      => 'Bonus to Reputation',
+        'BONUS:SIZEMOD'         => 'Adjust PC Size',
         'BONUS:SKILL'           => 'Bonus to skill',
         'BONUS:SKILLPOINTS'     => 'Bonus to skill point/L',
         'BONUS:SKILLPOOL'       => 'Bonus to skill point for a level',
@@ -3477,6 +3478,7 @@ my %tagheader = (
         'HITDICEADVANCEMENT'    => 'Hit Dice Advancement',
         'HITDICESIZE'           => 'Hit Dice Size',
         'ITEM',                 => 'Item',
+        'KIT',                  => 'Apply Kit',
         'KNOWN'                 => 'Known',
         'KNOWNSPELLS'           => 'Automaticaly Known Spell Levels',
         'LANGAUTO'              => 'Automatic Languages',
@@ -3683,8 +3685,13 @@ my %tagheader = (
     },
 
     'COMPANIONMOD' => {
-        '000Follower' => '# Class of the Master',
-        'FOLLOWER'    => 'Added Value',
+        '000Follower'     => '# Class of the Master',
+        'COPYMASTERBAB'   => 'Copy Masters BAB',
+        'COPYMASTERHP'    => 'HP formula based on Master',
+        'COPYMASTERSAVES' => 'Copy Masters Saves',
+        'FOLLOWER'        => 'Added Value',
+        'SWITCHRACE'      => 'Change Racetype',
+        'USEMASTERSKILL'  => 'Use Masters skills?',
     },
 
     'DEITY' => {
