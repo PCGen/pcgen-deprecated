@@ -1189,6 +1189,12 @@ my %master_file_type = (
             Format          => FIRST_COLUMN,
             Header          => NO_HEADER,
         },
+        {   Linetype        => 'KIT ABILITY',
+            RegEx           => qr{^ABILITY:([^\t]*)},
+            Mode            => SUB,
+            Format          => FIRST_COLUMN,
+            Header          => NO_HEADER,
+        },
         {   Linetype        => 'KIT NAME',
             RegEx           => qr{^NAME:([^\t]*)},
             Mode            => SUB,
@@ -2456,6 +2462,12 @@ my %master_order = (
     'KIT LANGAUTO' => [
         'LANGAUTO',
         'OPTION',
+        @PRE_Tags,
+    ],
+
+    'KIT ABILITY' => [
+        'ABILITY',
+        'LEVELABILITY',
         @PRE_Tags,
     ],
 
