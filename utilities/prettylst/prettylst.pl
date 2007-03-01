@@ -3741,6 +3741,12 @@ my %tagheader = (
         'PRESPELLSCHOOLSUB'     => 'Required Sub-school',
         '!PRESPELLSCHOOLSUB'    => 'Prohibited Sub-school',
         'PRESPELLTYPE'          => 'Req. Spell Type',
+        'PRESREQ'               => 'Req. Spell Resist',
+        'PRESRGT'               => 'SR Must be Greater',
+        'PRESRGTEQ'             => 'SR Min. Value',
+        'PRESRLT'               => 'SR Must be Lower',
+        'PRESRLTEQ'             => 'SR Max. Value',
+        'PRESRNEQ'              => 'Prohibited SR Value',
         'PRESTAT'               => 'Required Stat',
         '!PRESTAT',             => 'Prohibited Stat',
         'PRETEMPLATE'           => 'Required Template',
@@ -13735,8 +13741,6 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =item * Add more cross-reference checks
 
-=item * Add Ability object support (planned for v.1.37)
-
 =back
 
 =head1 KNOWN BUGS
@@ -13754,6 +13758,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+Ability file now supported, including LEVELABLITY in Kits.  No real checking yet.
+
+[ 1671827 ] PRESRxx enhancement
 
 [ 1666665 ] Add support for ABILITY files
 
