@@ -2942,6 +2942,7 @@ my %master_order = (
         'RACETYPE',
         'RACESUBTYPE',
         'TYPE',
+        'ADDLEVEL',
         'VISION',
 #        'WEIGHT',
         'HD:*',
@@ -2951,6 +2952,7 @@ my %master_order = (
         'SPELLS:*',
         'SPELLLEVEL:CLASS:*',
         'ADD:SPELLCASTER',
+        'HANDS',
         'NATURALATTACKS',
         'TEMPDESC',
     ],
@@ -13475,6 +13477,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+[ 1671364 ] missing valid TEMPLATE tags
 
 [ 1671363 ] missing SPELL line tags
 
