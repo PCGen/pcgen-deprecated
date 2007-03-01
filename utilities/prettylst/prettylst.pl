@@ -26,7 +26,7 @@ my @SVN_array = split ' ', $SVN_id;
 my $SVN_build = $SVN_array[2];
 my $SVN_date = $SVN_array[3];
 $SVN_date =~ tr{-}{.};
-my $VERSION      = "1.36 (build $SVN_build)";
+my $VERSION      = "1.37 (build $SVN_build)";
 my $VERSION_DATE = $SVN_date;
 my ($SCRIPTNAME) = ( $PROGRAM_NAME =~ m{ ( [^/\\]* ) \z }xms );
 my $VERSION_LONG = "$SCRIPTNAME version: $VERSION -- $VERSION_DATE";
@@ -1304,6 +1304,8 @@ my %master_file_type = (
 # line type will get the same sort order.
 my @PRE_Tags = (
     'PRE:.CLEAR',
+    'PREAGESET',
+    '!PREAGESET',
     'PREALIGN',
     '!PREALIGN',
     'PREARMORPROF:*',
@@ -13444,6 +13446,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =back
 
 =head1 VERSION HISTORY
+
+=head2 v1.37 -- NOT RELEASED YED
+
+[ 1661050 ] New PREAGESET tag
 
 =head2 v1.36 -- -- 2007.01.26
 
