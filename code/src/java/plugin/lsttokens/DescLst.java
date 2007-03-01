@@ -12,6 +12,7 @@ import pcgen.core.Constants;
 import pcgen.core.Description;
 import pcgen.core.PObject;
 import pcgen.io.EntityEncoder;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 
@@ -20,11 +21,12 @@ import pcgen.persistence.lst.prereq.PreParserFactory;
  * 
  * @author djones4
  */
-public class DescLst implements GlobalLstToken
+public class DescLst extends AbstractToken implements GlobalLstToken
 {
 	/**
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "DESC"; //$NON-NLS-1$
@@ -70,7 +72,7 @@ public class DescLst implements GlobalLstToken
 			final String token = tok.nextToken();
 			if (PreParserFactory.isPreReqString(token)) //$NON-NLS-1$
 			{
-				desc.addPrerequisites(token, '|');
+				desc.addPrerequisite(getPrerequisite(token));
 			}
 			else
 			{

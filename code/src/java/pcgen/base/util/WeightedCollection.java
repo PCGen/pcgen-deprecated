@@ -1,26 +1,24 @@
 /*
- * WeightedCollection.java
- * Copyright 2007 (c) Tom Parker <thpr@sourceforge.net>
- *  Derived from WeightedList.java
- *  Copyright 2006 (C) Aaron Divinsky <boomer70@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
- * Current Ver: $Revision: 1609 $
- * Last Editor: $Author: $
- * Last Edited: $Date: 2006-11-10 00:41:21 -0500 (Fri, 10 Nov 2006) $
+ * WeightedCollection.java Copyright 2007 (c) Tom Parker <thpr@sourceforge.net>
+ * Derived from WeightedList.java Copyright 2006 (C) Aaron Divinsky
+ * <boomer70@yahoo.com>
+ * 
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ * 
+ * Current Ver: $Revision: 1609 $ Last Editor: $Author: $ Last Edited: $Date:
+ * 2006-11-10 00:41:21 -0500 (Fri, 10 Nov 2006) $
  */
 package pcgen.base.util;
 
@@ -330,8 +328,8 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		 * CONSIDER Currently, this is ORDER SENSITIVE, which is probably bad
 		 * for a collection? This needs to be seriously thought through to
 		 * determine how exactly this should work... especially given that there
-		 * is no solution for sorting a WeightedCollection and thus it is not possible
-		 * to actually sort before doing the comparison. - thpr 2/5/07
+		 * is no solution for sorting a WeightedCollection and thus it is not
+		 * possible to actually sort before doing the comparison. - thpr 2/5/07
 		 */
 		return o instanceof WeightedCollection
 			&& theData.equals(((WeightedCollection) o).theData);
@@ -475,15 +473,9 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 			else if (o instanceof WeightedItem)
 			{
 				WeightedItem wi = (WeightedItem) o;
-				if (theElement == null)
-				{
-					return theWeight == wi.theWeight && wi.theElement == null;
-				}
-				else
-				{
-					return theWeight == wi.theWeight
-						&& theElement.equals(wi.theElement);
-				}
+				return theWeight == wi.theWeight
+					&& (theElement == null && wi.theElement == null || 
+						theElement != null && theElement.equals(wi.theElement));
 			}
 			return false;
 		}

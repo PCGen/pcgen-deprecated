@@ -402,6 +402,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * @return true if the given Object is a Graph that contains equal Nodes and
 	 *         Edges to this Graph; false otherwise
 	 */
+	@Override
 	public boolean equals(Object other)
 	{
 		if (!(other instanceof Graph))
@@ -452,6 +453,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * 
 	 * @return the hashCode for this Graph.
 	 */
+	@Override
 	public int hashCode()
 	{
 		// This is really simple, but it works... and prevents a deep hash

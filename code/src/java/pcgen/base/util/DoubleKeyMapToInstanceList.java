@@ -309,6 +309,7 @@ public class DoubleKeyMapToInstanceList<K1, K2, V> implements Cloneable
 		return mtmtl.size();
 	}
 
+	@Override
 	public Object clone() throws CloneNotSupportedException
 	{
 		DoubleKeyMapToInstanceList<K1, K2, V> dkm =
