@@ -3218,7 +3218,7 @@ public final class Equipment extends PObject implements Serializable,
 	 */
 	public boolean equals(final Object o) {
 		return (o != null) && (o instanceof Equipment)
-				&& ((o == this) || getName().equals(((Equipment) o).getName()));
+				&& ((o == this) || getKeyName().equals(((Equipment) o).getKeyName()));
 	}
 
 	/**

@@ -28,6 +28,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import pcgen.cdom.base.ConcretePrereqObject;
+
 /**
  * This class represents a possible choice for a follower.  This is basically
  * a Race with a "FOLLOWERADJUSTMENT" that modifies the owner's effective
@@ -35,7 +37,7 @@ import java.util.List;
  * 
  * @author boomer70
  */
-public class FollowerOption extends PrereqObject implements Comparable<FollowerOption>
+public class FollowerOption extends ConcretePrereqObject implements Comparable<FollowerOption>
 {
 	private String theRaceKey;
 	private Race theRace = null;

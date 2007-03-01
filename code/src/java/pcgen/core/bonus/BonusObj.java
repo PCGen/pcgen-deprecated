@@ -32,11 +32,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.core.Constants;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
-import pcgen.core.PrereqObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
 import pcgen.util.Delta;
@@ -46,7 +46,7 @@ import pcgen.util.Delta;
  *
  * @author  Greg Bingleman <byngl@hotmail.com>
  **/
-public abstract class BonusObj extends PrereqObject implements Serializable, Cloneable
+public abstract class BonusObj extends ConcretePrereqObject implements Serializable, Cloneable
 {
 	private List<Object>    bonusInfo       = new ArrayList<Object>();
 	private Map<String, String>     dependMap  = new HashMap<String, String>();

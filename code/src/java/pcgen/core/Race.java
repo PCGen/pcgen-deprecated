@@ -23,6 +23,7 @@
 package pcgen.core;
 
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1180,5 +1181,24 @@ public final class Race extends PObject
 	private String getBonusSkillList()
 	{
 		return bonusSkillList;
+	}
+	
+	private BigDecimal faceWidth = null;
+	private BigDecimal faceHeight = null;
+	
+	public void setFace(BigDecimal width, BigDecimal height)
+	{
+		faceWidth = width;
+		faceHeight = height;
+	}
+	
+	public BigDecimal getFaceWidth()
+	{
+		return faceWidth;
+	}
+
+	public BigDecimal getFaceHeight()
+	{
+		return faceHeight;
 	}
 }
