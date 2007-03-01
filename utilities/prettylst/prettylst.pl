@@ -2273,6 +2273,7 @@ my %master_order = (
         'DR',
         'REP',
         'COST',
+        'KIT',
         @SOURCE_Tags,
         'NATURALATTACKS',
         'BENEFIT',
@@ -13477,6 +13478,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+[ 1658571 ] KIT in feats and prettylst
 
 [ 1671364 ] missing valid TEMPLATE tags
 
