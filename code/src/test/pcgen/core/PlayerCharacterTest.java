@@ -631,21 +631,21 @@ public class PlayerCharacterTest extends AbstractCharacterTestCase
 		guiSkill.addClassList("MyClass");
 		guiSkill.setName("GUI");
 		guiSkill.setTypeInfo("INT");
-		guiSkill.setVisibility(Visibility.DISPLAY_ONLY);
+		guiSkill.setVisibility(Visibility.DISPLAY);
 		guiSkill.modRanks(1.0, pcClass, true, pc);
 		pc.addSkill(guiSkill);
 
 		outputSkill.addClassList("MyClass");
 		outputSkill.setName("Output");
 		outputSkill.setTypeInfo("INT");
-		outputSkill.setVisibility(Visibility.OUTPUT_ONLY);
+		outputSkill.setVisibility(Visibility.EXPORT);
 		outputSkill.modRanks(1.0, pcClass, true, pc);
 		pc.addSkill(outputSkill);
 
 		defaultSkill.addClassList("MyClass");
 		defaultSkill.setName("Default");
 		defaultSkill.setTypeInfo("INT");
-		defaultSkill.setVisibility(Visibility.DEFAULT);
+		defaultSkill.setVisibility(Visibility.YES);
 		defaultSkill.modRanks(1.0, pcClass, true, pc);
 		pc.addSkill(defaultSkill);
 
@@ -654,14 +654,14 @@ public class PlayerCharacterTest extends AbstractCharacterTestCase
 		assertEquals("Full skill list should have all 3 skills", 3, skillList
 			.size());
 
-		skillList = pc.getPartialSkillList(Visibility.DISPLAY_ONLY);
+		skillList = pc.getPartialSkillList(Visibility.DISPLAY);
 		assertEquals("GUI skill list should have 2 skills", 2, skillList.size());
 
-		skillList = pc.getPartialSkillList(Visibility.OUTPUT_ONLY);
+		skillList = pc.getPartialSkillList(Visibility.EXPORT);
 		assertEquals("Output skill list should have 2 skills", 2, skillList
 			.size());
 
-		skillList = pc.getPartialSkillList(Visibility.DEFAULT);
+		skillList = pc.getPartialSkillList(Visibility.YES);
 		assertEquals("Full skill list should have 3 skills", 3, skillList
 			.size());
 

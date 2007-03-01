@@ -69,7 +69,7 @@ public class AbilityListTokenTest extends AbstractCharacterTestCase
 				TestHelper.makeAbility("Perform (Dance)", "FEAT",
 					"General.Fighter");
 		ab1.setMultiples("NO");
-		ab1.setVisibility(Visibility.DEFAULT);
+		ab1.setVisibility(Visibility.YES);
 		AbilityCategory aCategory =
 				SettingsHandler.getGame().getAbilityCategory(ab1.getCategory());
 		if (aCategory == null)
