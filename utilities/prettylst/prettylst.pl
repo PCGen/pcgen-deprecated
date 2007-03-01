@@ -118,6 +118,7 @@ my %writefiletype = (
     'CLASS Level'  => 1,
     'COMPANIONMOD' => 1,
     'COPYRIGHT'    => 0,
+    'COVER'        => 0,
     'DEITY'        => 1,
     'DOMAIN'       => 1,
     'EQUIPMENT'    => 1,
@@ -2121,6 +2122,7 @@ my %master_order = (
         '000EquipmentName',
         'NAMEISPI',
         'OUTPUTNAME',
+        'KEY',
         'PROFICIENCY',
         'TYPE:.CLEAR',
         'TYPE:*',
@@ -2579,6 +2581,7 @@ my %master_order = (
         'SOURCESHORT',
         'SOURCEWEB',
         'SOURCEDATE',            # [ 1584007 ] New Tag: SOURCEDATE in PCC
+        'COVER',
         'COPYRIGHT',
         'LICENSE',
         'HELP',
@@ -3840,8 +3843,8 @@ my %tagheader = (
     'COMPANIONMOD' => {
         '000Follower'     => '# Class of the Master',
         'COPYMASTERBAB'   => 'Copy Masters BAB',
+        'COPYMASTERCHECK' => 'Copy Masters Checks',
         'COPYMASTERHP'    => 'HP formula based on Master',
-        'COPYMASTERSAVES' => 'Copy Masters Saves',
         'FOLLOWER'        => 'Added Value',
         'SWITCHRACE'      => 'Change Racetype',
         'USEMASTERSKILL'  => 'Use Masters skills?',
@@ -3864,6 +3867,7 @@ my %tagheader = (
         'QUALITY'          => 'Quality and value',
         'SLOTS'            => 'Slot Needed',
         'WIELD'            => 'Wield Category',
+        'MODS'             => 'Requires Modification?',
     },
 
     'EQUIPMOD' => {
