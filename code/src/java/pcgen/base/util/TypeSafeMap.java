@@ -1,25 +1,24 @@
 /*
  * Copyright (c) Thomas Parker, 2006-2007.
  * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or (at
- * your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
- * General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Nov 10, 2006
- *
- * Current Ver: $Revision: 1650 $
- * Last Editor: $Author: thpr $
- * Last Edited: $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
+ * 
+ * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
+ * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
  * 
  */
 package pcgen.base.util;
@@ -37,16 +36,17 @@ import java.util.Set;
 import pcgen.base.enumeration.TypeSafeConstant;
 
 /**
- * This is an implementation of the java.util.Map Interface which is designed
- * to be used with a TypeSafeConstant as the key to the Map.  
+ * @author Thomas Parker (thpr [at] yahoo.com)
  * 
- * **WARNING** This TypeSafeMap assumes that the TypeSafeConstant class used
- * as keys in this Graph all have ordinals which are greater than or equal
- * to zero.  Also, the internal structure of this TypeSafeMap will become 
- * unreasonable if the TypeSafeConstant does not have ordinals which begin
- * at zero and are incremented in steps of one.  It is recommended that this
- * TypeSafeMap not be used with a TypeSafeConstant that does not meet these
- * criteria
+ * This is an implementation of the java.util.Map Interface which is designed to
+ * be used with a TypeSafeConstant as the key to the Map.
+ * 
+ * **WARNING** This TypeSafeMap assumes that the TypeSafeConstant class used as
+ * keys in this Graph all have ordinals which are greater than or equal to zero.
+ * Also, the internal structure of this TypeSafeMap will become unreasonable if
+ * the TypeSafeConstant does not have ordinals which begin at zero and are
+ * incremented in steps of one. It is recommended that this TypeSafeMap not be
+ * used with a TypeSafeConstant that does not meet these criteria
  * 
  * Note: When using an identity based Class which cannot be extended (such as
  * Class itself) as a key, one should use an IdentityHashMap rather than trying
@@ -69,14 +69,14 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 	private Object[] array;
 
 	/**
-	 * Object to represent the value of null (must be distinct from
-	 * a key not being present in the Map)
+	 * Object to represent the value of null (must be distinct from a key not
+	 * being present in the Map)
 	 */
 	private final Object nullValue = new Object();
 
 	/*
-	 * CONSIDER Should there be some way to initialize the size here? Can there be a
-	 * method of looking up how many constants there are? What about
+	 * CONSIDER Should there be some way to initialize the size here? Can there
+	 * be a method of looking up how many constants there are? What about
 	 * initializing the constants as well? Could this be done by reflection if
 	 * certain methods are present as static methods?
 	 * 
@@ -149,7 +149,8 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 	/**
 	 * Returns true if this TypeSafeMap contains the given Value for any Key.
 	 * 
-	 * @return true if this TypeSafeMap contains the given Value; false otherwise
+	 * @return true if this TypeSafeMap contains the given Value; false
+	 *         otherwise
 	 */
 	public boolean containsValue(Object arg0)
 	{
@@ -175,10 +176,9 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 		return new EntrySet<K, V>();
 	}
 
-
 	/**
-	 * Returns the Value in this TypeSafeMap for the given Key.  Returns
-	 * null if the given Key is not present in this TypeSafeMap.
+	 * Returns the Value in this TypeSafeMap for the given Key. Returns null if
+	 * the given Key is not present in this TypeSafeMap.
 	 * 
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
