@@ -1189,8 +1189,8 @@ my %master_file_type = (
             Format          => FIRST_COLUMN,
             Header          => NO_HEADER,
         },
-        {   Linetype        => 'KIT ABILITY',
-            RegEx           => qr{^ABILITY:([^\t]*)},
+        {   Linetype        => 'KIT LEVELABILITY',
+            RegEx           => qr{^LEVELABILITY:([^\t]*)},
             Mode            => SUB,
             Format          => FIRST_COLUMN,
             Header          => NO_HEADER,
@@ -2465,9 +2465,9 @@ my %master_order = (
         @PRE_Tags,
     ],
 
-    'KIT ABILITY' => [
-        'ABILITY',
+    'KIT LEVELABILITY' => [
         'LEVELABILITY',
+        'ABILITY',
         @PRE_Tags,
     ],
 
@@ -2589,6 +2589,7 @@ my %master_order = (
         'HIDETYPE',
 
         # These tags load files
+        'ABILITY',
         'CLASS',
         'CLASSSKILL',
         'CLASSSPELL',
