@@ -23,9 +23,9 @@
  */
 package pcgen.core.utils;
 
-import pcgen.util.HashMapToList;
-
 import java.util.List;
+
+import pcgen.base.util.HashMapToList;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>

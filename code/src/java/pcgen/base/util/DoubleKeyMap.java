@@ -196,6 +196,20 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	}
 
 	/**
+	 * Removes all objects with the given primary key from the DoubleKeyMap.
+	 * 
+	 * @param key1
+	 *            The primary key used to remove the value in this DoubleKeyMap.
+	 * @return the Map of objects stored in this DoubleKeyMap for the given
+	 *         primary keys. null if this DoubleKeyMap does not have an object
+	 *         stored with the given primary key.
+	 */
+	public Map<K2, V> removeAll(K1 key1)
+	{
+		return map.remove(key1);
+	}
+
+	/**
 	 * Returns a Set of the primary keys for this DoubleKeyMap
 	 * 
 	 * Note: This Set is reference-semantic. The ownership of the Set is

@@ -50,6 +50,8 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.HashMapToList;
 import pcgen.core.Ability.Nature;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
@@ -80,8 +82,6 @@ import pcgen.io.exporttoken.BonusToken;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Delta;
-import pcgen.util.DoubleKeyMap;
-import pcgen.util.HashMapToList;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 import pcgen.util.enumeration.AttackType;

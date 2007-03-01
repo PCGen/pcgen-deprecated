@@ -3,7 +3,7 @@ package pcgen.core.utils;
 import java.util.Map;
 import java.util.Set;
 
-import pcgen.util.DoubleKeyMap;
+import pcgen.base.util.DoubleKeyMap;
 
 public class MapKeyMapToObject
 {

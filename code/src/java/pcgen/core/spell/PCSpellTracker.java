@@ -22,10 +22,10 @@
  */
 package pcgen.core.spell;
 
+import pcgen.base.util.DoubleKeyMap;
 import pcgen.core.CharacterDomain;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
-import pcgen.util.DoubleKeyMap;
 
 import java.util.HashMap;
 import java.util.Iterator;
