@@ -1789,8 +1789,13 @@ my %master_order = (
         'COPYMASTERCHECK',
         'COPYMASTERHP',
         'USEMASTERSKILL',
+        'PRERACE',
+        '!PRERACE',
+        'KIT',
+        'AUTO:ARMORPROF',
         'SA:.CLEAR',
         'SA:*',
+        'ADD:Language',
         'DEFINE:*',
         'BONUS:CHECKS:*',
         'BONUS:COMBAT:*',
@@ -13462,6 +13467,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+[ 1671356 ] Missing valid tags for Companion support
 
 [ 1671353 ] add missing BONUS:SLOTS parameters
 
