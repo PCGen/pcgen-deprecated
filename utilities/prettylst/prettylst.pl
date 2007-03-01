@@ -583,6 +583,7 @@ my %tag_fix_value = (
     ISD20          => { YES => 1, NO => 1 },
     ISLICENCED     => { YES => 1, NO => 1 },
     ISOGL          => { YES => 1, NO => 1 },
+    ISMATURE       => { YES => 1, NO => 1 },
     MEMORIZE       => { YES => 1, NO => 1 },
     MULT           => { YES => 1, NO => 1 },
     MODS           => { YES => 1, NO => 1, REQUIRED => 1 },
@@ -1419,6 +1420,7 @@ my @PRE_Tags = (
     'PREREGION',
     '!PREREGION',
     'PRERULE',
+    '!PRERULE',
     'PRESA',
     '!PRESA',
     'PRESHIELDPROF',
@@ -2442,6 +2444,7 @@ my %master_order = (
         'ISD20',
         'ISLICENSED',
         'ISOGL',
+        'ISMATURE',
         'BIOSET',
         'HIDETYPE',
 
@@ -13467,6 +13470,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+[ 1671361 ] new PCC tag; ISMATURE:<YES/NO>
 
 [ 1671356 ] Missing valid tags for Companion support
 
