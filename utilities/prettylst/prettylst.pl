@@ -2876,6 +2876,7 @@ my %master_order = (
         'BONUS:SIZEMOD:*',
         'BONUS:SKILL:*',
         'BONUS:SKILLPOINTS:*',
+        'BONUS:MONSKILLPTS',
         'BONUS:SKILLPOOL:*',
         'BONUS:SKILLRANK:*',
         'BONUS:SLOTS:*',
@@ -3161,6 +3162,7 @@ my %token_BONUS_tag = map { $_ => 1 } (
     'ITEMCOST',
     'LANGUAGES',
     'MISC',
+    'MONSKILLPTS',
     'MOVE',
     'MOVEADD',
     'MOVEMULT',
@@ -3204,6 +3206,10 @@ my %token_QUALIFY_tag = map { $_ => 1 } (
     'SKILL',
     'TEMPLATE',
     'WEAPONPROF',
+);
+
+my %token_BONUS_MONSKILLPTS_types = map { $_ => 1 } (
+    'LOCKNUMBER',
 );
 
 # List of types that are valid in BONUS:SLOTS
