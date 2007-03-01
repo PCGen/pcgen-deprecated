@@ -301,7 +301,7 @@ public final class FilterFactory implements FilterConstants
 
 			for ( final PCClass pcClass : Globals.getClassList() )
 			{
-				if (pcClass.getVisibility().equals(Visibility.DEFAULT) && filter.accept(null, pcClass))
+				if (pcClass.getVisibility().equals(Visibility.YES) && filter.accept(null, pcClass))
 				{
 					raceFilters.add(FilterFactory.createFavoredClassFilter(pcClass.getKeyName()));
 				}

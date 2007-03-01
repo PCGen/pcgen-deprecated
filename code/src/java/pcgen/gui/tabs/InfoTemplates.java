@@ -1345,8 +1345,8 @@ public class InfoTemplates extends BaseCharacterInfoTab
 		 */
 		private boolean shouldDisplayThis(final PCTemplate template)
 		{
-			return ((template.getVisibility() == Visibility.DEFAULT || template
-				.getVisibility() == Visibility.DISPLAY_ONLY) && accept(getPc(),
+			return ((template.getVisibility() == Visibility.YES || template
+				.getVisibility() == Visibility.DISPLAY) && accept(getPc(),
 				template));
 		}
 

@@ -3,10 +3,11 @@ package pcgen.util.enumeration;
 public enum Visibility
 {
 
-	HIDDEN("No"), // Does not show up either in the GUI or on the output sheet
-	DEFAULT("Yes"), // Shows up both in the GUI and on the output sheet
-	OUTPUT_ONLY("Export"), // Shows up on the output sheet, but not in the GUI
-	DISPLAY_ONLY("Display"); //  Shows up in the GUI, but not on the output sheet
+	NO("No"), // Does not show up either in the GUI or on the output sheet
+	YES("Yes"), // Shows up both in the GUI and on the output sheet
+	EXPORT("Export"), // Shows up on the output sheet, but not in the GUI
+	DISPLAY("Display"), //  Shows up in the GUI, but not on the output sheet
+	QUALIFY("Qualify"); // Shows up in a Customizer only when qualified
 
 	private final String text;
 
@@ -36,18 +37,23 @@ public enum Visibility
 		}
 		if (view == View.HIDDEN)
 		{
-			if (this == Visibility.HIDDEN || this == Visibility.DISPLAY_ONLY)
+			if (this == Visibility.NO || this == Visibility.DISPLAY)
 			{
 				return true;
 			}
 		}
 		else
 		{
-			if (this == Visibility.DEFAULT || this == Visibility.OUTPUT_ONLY)
+			if (this == Visibility.YES || this == Visibility.EXPORT)
 			{
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public CharSequence getLSTFormat()
+	{
+		return toString().toUpperCase();
 	}
 }

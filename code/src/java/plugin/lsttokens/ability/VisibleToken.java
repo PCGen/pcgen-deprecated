@@ -40,7 +40,7 @@ public class VisibleToken implements AbilityLstToken
 				Logging.errorPrint(" using EXPORT");
 				Logging.errorPrint(" This will break after PCGen 5.12");
 			}
-			ability.setVisibility(Visibility.OUTPUT_ONLY);
+			ability.setVisibility(Visibility.EXPORT);
 		}
 		else if (visType.startsWith("NO"))
 		{
@@ -50,7 +50,7 @@ public class VisibleToken implements AbilityLstToken
 				Logging.errorPrint(" using NO");
 				Logging.errorPrint(" This will break after PCGen 5.12");
 			}
-			ability.setVisibility(Visibility.HIDDEN);
+			ability.setVisibility(Visibility.NO);
 		}
 		else if (visType.startsWith("DISPLAY"))
 		{
@@ -60,11 +60,11 @@ public class VisibleToken implements AbilityLstToken
 				Logging.errorPrint(" using DISPLAY");
 				Logging.errorPrint(" This will break after PCGen 5.12");
 			}
-			ability.setVisibility(Visibility.DISPLAY_ONLY);
+			ability.setVisibility(Visibility.DISPLAY);
 		}
 		else
 		{
-			ability.setVisibility(Visibility.DEFAULT);
+			ability.setVisibility(Visibility.YES);
 		}
 		return true;
 	}

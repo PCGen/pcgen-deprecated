@@ -343,7 +343,7 @@ public class SkillsPane extends javax.swing.JPanel
 
 		List<Skill> skillList =
 				pc.getSkillListInOutputOrder(pc
-					.getPartialSkillList(Visibility.OUTPUT_ONLY));
+					.getPartialSkillList(Visibility.EXPORT));
 
 		// Remove only the skill lines, not the header block. 
 		for(int i = 0; i < componentList.size(); i++) 

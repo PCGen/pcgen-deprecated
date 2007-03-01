@@ -90,7 +90,7 @@ public class SkillListChoiceManager extends AbstractComplexChoiceManager<String>
 
 		else // if it was LIST
 		{
-			for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+			for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 			{
 				final String rootName = skill.getRootName();
 				final int rootNameLength = rootName.length();
@@ -137,7 +137,7 @@ public class SkillListChoiceManager extends AbstractComplexChoiceManager<String>
 			Ability ability = (Ability) pobject;
 			if (rootArrayList.contains(item))
 			{
-				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 				{
 					if (skill.getRootName().equalsIgnoreCase(item))
 					{

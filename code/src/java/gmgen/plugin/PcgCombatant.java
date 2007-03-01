@@ -712,7 +712,7 @@ public class PcgCombatant extends Combatant
 			}
 
 			ArrayList<Skill> skillList = pc.getSkillListInOutputOrder(pc
-				.getPartialSkillList(Visibility.OUTPUT_ONLY));
+				.getPartialSkillList(Visibility.EXPORT));
 			boolean firstLine = true;
 
 			for ( Skill skill : skillList )

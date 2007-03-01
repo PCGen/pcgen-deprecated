@@ -161,7 +161,7 @@ public class NPCGenerator
 			// are 1/8 as likely to be selected.
 			for ( Skill skill : Globals.getSkillList() )
 			{
-				if ( skill.getVisibility() == Visibility.DEFAULT )
+				if ( skill.getVisibility() == Visibility.YES )
 				{
 					if (skill.isClassSkill(aClass, aPC))
 					{
@@ -333,7 +333,7 @@ public class NPCGenerator
 			{
 				int weight = 1;
 				Ability ability = (Ability)i.next();
-				if (!(ability.getVisibility() == Visibility.DEFAULT))
+				if (!(ability.getVisibility() == Visibility.YES))
 				{
 					continue;
 				}
@@ -602,7 +602,7 @@ public class NPCGenerator
 						{
 							break;
 						}
-						if (aClass.getVisibility().equals(Visibility.DEFAULT)
+						if (aClass.getVisibility().equals(Visibility.YES)
 							&& PrereqHandler.passesAll(aClass.getPreReqList(), aPC,
 							aClass) && aClass.isQualified(aPC))
 						{

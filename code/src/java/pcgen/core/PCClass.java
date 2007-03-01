@@ -3311,7 +3311,7 @@ public class PCClass extends PObject {
 			pccTxt.append("\tSTARTSKILLPTS:").append(skillPointFormula);
 		}
 
-		if (!getVisibility().equals(Visibility.DEFAULT)) {
+		if (!getVisibility().equals(Visibility.YES)) {
 			pccTxt.append("\tVISIBLE:" + getVisibility().toString());
 		}
 

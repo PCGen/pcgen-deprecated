@@ -136,7 +136,7 @@ public class VariableProcessorPC extends VariableProcessor
 
 		if (countVisible)
 		{
-			if ((feat.getVisibility() != Visibility.DISPLAY_ONLY) && (feat.getVisibility() != Visibility.HIDDEN))
+			if ((feat.getVisibility() != Visibility.DISPLAY) && (feat.getVisibility() != Visibility.NO))
 			{
 				if (onceOnly)
 				{
@@ -151,7 +151,7 @@ public class VariableProcessorPC extends VariableProcessor
 
 		if (countHidden)
 		{
-			if ((feat.getVisibility() == Visibility.DISPLAY_ONLY) || (feat.getVisibility() == Visibility.HIDDEN))
+			if ((feat.getVisibility() == Visibility.DISPLAY) || (feat.getVisibility() == Visibility.NO))
 			{
 				if (onceOnly)
 				{
@@ -1070,8 +1070,8 @@ public class VariableProcessorPC extends VariableProcessor
 			{
 				final Visibility vis = template.getVisibility();
 
-				if ((vis == Visibility.DEFAULT)
-				|| (vis == Visibility.OUTPUT_ONLY))
+				if ((vis == Visibility.YES)
+				|| (vis == Visibility.EXPORT))
 				{
 					++count;
 				}

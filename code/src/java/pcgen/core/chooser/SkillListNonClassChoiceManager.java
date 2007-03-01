@@ -85,7 +85,7 @@ public class SkillListNonClassChoiceManager extends SkillListChoiceManager {
 
 		else // if it was LIST
 		{
-			for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+			for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 			{
 				if ((skill.costForPCClassList(aPc.getClassList(), aPc) == Globals.getGameModeSkillCost_Class()) || skill.isExclusive())
 				{

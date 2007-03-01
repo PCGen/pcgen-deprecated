@@ -74,7 +74,7 @@ public class SkillsNamedChoiceManager extends AbstractComplexChoiceManager<Strin
 
 			if (token.startsWith("TYPE.") || token.startsWith("TYPE="))
 			{
-				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 				{
 					if (skill.isType(token.substring(5)))
 					{
@@ -85,7 +85,7 @@ public class SkillsNamedChoiceManager extends AbstractComplexChoiceManager<Strin
 
 			if ("ALL".equals(token))
 			{
-				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 				{
 					availableList.add(skill.getKeyName());
 				}
@@ -93,7 +93,7 @@ public class SkillsNamedChoiceManager extends AbstractComplexChoiceManager<Strin
 
 			if ("CLASS".equals(token))
 			{
-				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 				{
 					if (skill.costForPCClassList(aPc.getClassList(), aPc) == Globals.getGameModeSkillCost_Class())
 					{
@@ -104,7 +104,7 @@ public class SkillsNamedChoiceManager extends AbstractComplexChoiceManager<Strin
 
 			if ("CROSSCLASS".equals(token))
 			{
-				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 				{
 					if (skill.costForPCClassList(aPc.getClassList(), aPc) > Globals.getGameModeSkillCost_Class())
 					{
@@ -115,7 +115,7 @@ public class SkillsNamedChoiceManager extends AbstractComplexChoiceManager<Strin
 
 			if ("EXCLUSIVE".equals(token))
 			{
-				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 				{
 					if (skill.costForPCClassList(aPc.getClassList(), aPc) == Globals.getGameModeSkillCost_Exclusive())
 					{
@@ -126,7 +126,7 @@ public class SkillsNamedChoiceManager extends AbstractComplexChoiceManager<Strin
 
 			if ("NORANK".equals(token))
 			{
-				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+				for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 				{
 					final Skill pcSkill = aPc.getSkillKeyed(skill.getKeyName());
 
@@ -143,7 +143,7 @@ public class SkillsNamedChoiceManager extends AbstractComplexChoiceManager<Strin
 				token = token.substring(0, token.length() - 1);
 			}
 
-			for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+			for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 			{
 				if (skill.getKeyName().equals(token) || (startsWith && skill.getKeyName().startsWith(token)))
 				{

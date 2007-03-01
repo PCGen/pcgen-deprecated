@@ -21,19 +21,19 @@ public class VisibleToken implements SkillLstToken
 
 		if (visType.startsWith("YES") || visType.startsWith("ALWAYS"))
 		{
-			skill.setVisibility(Visibility.DEFAULT);
+			skill.setVisibility(Visibility.YES);
 		}
 		else if (visType.startsWith("GUI"))
 		{
-			skill.setVisibility(Visibility.DISPLAY_ONLY);
+			skill.setVisibility(Visibility.DISPLAY);
 		}
 		else if (visType.startsWith("EXPORT") || visType.startsWith("CSHEET"))
 		{
-			skill.setVisibility(Visibility.OUTPUT_ONLY);
+			skill.setVisibility(Visibility.EXPORT);
 		}
 		else
 		{
-			skill.setVisibility(Visibility.DEFAULT);
+			skill.setVisibility(Visibility.YES);
 			return false;
 		}
 

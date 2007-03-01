@@ -74,7 +74,7 @@ public class SkillsNamedToCCSkillChoiceManager extends SkillsNamedChoiceManager 
 		if (pobject != null && pobject instanceof Ability)
 		{
 			Ability anAbility = (Ability) pobject;
-			for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY_ONLY) )
+			for ( Skill skill : Globals.getPartialSkillList(Visibility.DISPLAY) )
 			{
 				if (skill.getRootName().equalsIgnoreCase(item))
 				{

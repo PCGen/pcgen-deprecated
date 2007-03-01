@@ -26,7 +26,7 @@ public class VisibleToken implements PCTemplateLstToken
 					+ "' is not valid, please use DISPLAY "
 					+ "(exact String, upper case)");
 			}
-			template.setVisibility(Visibility.DISPLAY_ONLY);
+			template.setVisibility(Visibility.DISPLAY);
 		}
 		else if (value.startsWith("EXPORT"))
 		{
@@ -36,7 +36,7 @@ public class VisibleToken implements PCTemplateLstToken
 					+ "' is not valid, please use EXPORT "
 					+ "(exact String, upper case)");
 			}
-			template.setVisibility(Visibility.OUTPUT_ONLY);
+			template.setVisibility(Visibility.EXPORT);
 		}
 		else if (value.startsWith("NO"))
 		{
@@ -46,7 +46,7 @@ public class VisibleToken implements PCTemplateLstToken
 					+ "' is not valid, please use NO "
 					+ "(exact String, upper case)");
 			}
-			template.setVisibility(Visibility.HIDDEN);
+			template.setVisibility(Visibility.NO);
 		}
 		else
 		{
@@ -56,7 +56,7 @@ public class VisibleToken implements PCTemplateLstToken
 					+ "' is not valid, please use ALWAYS "
 					+ "(exact String, upper case)");
 			}
-			template.setVisibility(Visibility.DEFAULT);
+			template.setVisibility(Visibility.YES);
 		}
 		return true;
 	}

@@ -263,16 +263,16 @@ public class AbilityToken extends Token
 					matchVisibilityDef = true;
 					break;
 				case ABILITY_HIDDEN:
-					if (aAbility.getVisibility() == Visibility.HIDDEN
-						|| aAbility.getVisibility() == Visibility.DISPLAY_ONLY)
+					if (aAbility.getVisibility() == Visibility.NO
+						|| aAbility.getVisibility() == Visibility.DISPLAY)
 					{
 						matchVisibilityDef = true;
 					}
 					break;
 				case ABILITY_VISIBLE: // Fall thru intentional
 				default:
-					if (aAbility.getVisibility() == Visibility.DEFAULT
-						|| aAbility.getVisibility() == Visibility.OUTPUT_ONLY)
+					if (aAbility.getVisibility() == Visibility.YES
+						|| aAbility.getVisibility() == Visibility.EXPORT)
 					{
 						matchVisibilityDef = true;
 					}

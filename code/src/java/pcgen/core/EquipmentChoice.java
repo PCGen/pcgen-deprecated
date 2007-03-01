@@ -366,7 +366,7 @@ final class EquipmentChoice
 					anAbility.isType(typeString)
 								  );
 
-			if ((anAbility.getVisibility() == Visibility.DEFAULT)
+			if ((anAbility.getVisibility() == Visibility.YES)
 					&& !this.getAvailableList().contains(anAbility.getKeyName()))
 			{
 				if (matchesType && (anAbility.getChoiceString().length() == 0))

@@ -350,7 +350,7 @@ class ClassDataHandler extends DefaultHandler
 							final List<Ability> subFeats = Globals.getAbilitiesByType(theCurrentCategory.getAbilityCategory(), key.substring(5));
 							for ( final Ability ability : subFeats )
 							{
-								if (ability.getVisibility() == Visibility.DEFAULT)
+								if (ability.getVisibility() == Visibility.YES)
 								{
 									if (weight > 0)
 									{
@@ -469,7 +469,7 @@ class ClassDataHandler extends DefaultHandler
 				final List<Skill> allSkills = Globals.getSkillList();
 				for ( final Skill skill : allSkills )
 				{
-					if (skill.getVisibility() == Visibility.DEFAULT)
+					if (skill.getVisibility() == Visibility.YES)
 					{
 						theCurrentData.addSkill(skill.getKeyName(), remainingWeight);
 					}
@@ -491,7 +491,7 @@ class ClassDataHandler extends DefaultHandler
 				for (Iterator<? extends Categorisable> i = Globals.getAbilityNameIterator(theCurrentCategory.getAbilityCategory()); i.hasNext(); )
 				{
 					final Ability ability = (Ability)i.next();
-					if ( ability.getVisibility() == Visibility.DEFAULT)
+					if ( ability.getVisibility() == Visibility.YES)
 					{
 						theCurrentData.addAbility(theCurrentCategory, ability, remainingWeight);
 					}

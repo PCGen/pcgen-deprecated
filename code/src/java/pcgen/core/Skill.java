@@ -459,16 +459,16 @@ public final class Skill extends PObject
 			}
 		}
 
-		if (getVisibility() != Visibility.DEFAULT)
+		if (getVisibility() != Visibility.YES)
 		{
 			txt.append("\tVISIBLE:");
 			switch (getVisibility())
 			{
-				case OUTPUT_ONLY:
+				case EXPORT:
 					txt.append("EXPORT");
 					break;
 
-				case DISPLAY_ONLY:
+				case DISPLAY:
 					txt.append("GUI");
 					break;
 

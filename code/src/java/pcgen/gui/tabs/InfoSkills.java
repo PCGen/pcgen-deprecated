@@ -3043,7 +3043,7 @@ public class InfoSkills extends FilterAdapterPanel implements CharacterInfoTab
 					else
 					{
 						if (available
-							&& (skill.getVisibility() == Visibility.OUTPUT_ONLY))
+							&& (skill.getVisibility() == Visibility.EXPORT))
 						{
 							continue;
 						}
@@ -3249,8 +3249,8 @@ public class InfoSkills extends FilterAdapterPanel implements CharacterInfoTab
 			{
 				skillList =
 						available ? Globals
-							.getPartialSkillList(Visibility.DISPLAY_ONLY) : pc
-							.getPartialSkillList(Visibility.DISPLAY_ONLY);
+							.getPartialSkillList(Visibility.DISPLAY) : pc
+							.getPartialSkillList(Visibility.DISPLAY);
 				listSize = skillList.size();
 
 				index = 0;

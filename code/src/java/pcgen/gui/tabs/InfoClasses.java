@@ -2103,7 +2103,7 @@ public final class InfoClasses extends FilterAdapterPanel implements
 			}
 
 			return (modelType == 1)
-				|| (aClass.getVisibility().equals(Visibility.DEFAULT) && accept(
+				|| (aClass.getVisibility().equals(Visibility.YES) && accept(
 					pc, aClass));
 		}
 

@@ -529,8 +529,8 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 	public boolean accept(@SuppressWarnings("unused")
 		final ViewMode aMode, final Ability anAbility)
 	{
-		if (!((anAbility.getVisibility() == Visibility.DEFAULT) || (anAbility
-			.getVisibility() == Visibility.DISPLAY_ONLY)))
+		if (!((anAbility.getVisibility() == Visibility.YES) || (anAbility
+			.getVisibility() == Visibility.DISPLAY)))
 		{
 			return false;
 		}

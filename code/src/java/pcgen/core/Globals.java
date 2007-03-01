@@ -1677,8 +1677,8 @@ public final class Globals
 		{
 			final Visibility skillVis = skill.getVisibility();
 
-			if (vis == Visibility.DEFAULT
-				|| skillVis == Visibility.DEFAULT
+			if (vis == Visibility.YES
+				|| skillVis == Visibility.YES
 				|| skillVis == vis)
 			{
 				aList.add(skill);

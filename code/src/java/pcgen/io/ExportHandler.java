@@ -1807,8 +1807,8 @@ public final class ExportHandler
 					}
 
 					final PCTemplate template = tList.get(index);
-					if (template.getVisibility() != Visibility.DEFAULT
-						&& template.getVisibility() != Visibility.OUTPUT_ONLY)
+					if (template.getVisibility() != Visibility.YES
+						&& template.getVisibility() != Visibility.EXPORT)
 					{
 						canWrite = false;
 					}

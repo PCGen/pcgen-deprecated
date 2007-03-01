@@ -415,7 +415,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			final Visibility skillVis = aSkill.getVisibility();
 
-			if ((vis == Visibility.DEFAULT) || (skillVis == Visibility.DEFAULT)
+			if ((vis == Visibility.YES) || (skillVis == Visibility.YES)
 				|| (skillVis == vis))
 			{
 				aList.add(aSkill);
@@ -3412,8 +3412,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		for (PCTemplate template : getTemplateList())
 		{
-			if ((template.getVisibility() == Visibility.DEFAULT)
-				|| (template.getVisibility() == Visibility.OUTPUT_ONLY))
+			if ((template.getVisibility() == Visibility.YES)
+				|| (template.getVisibility() == Visibility.EXPORT))
 			{
 				tl.add(template);
 			}
@@ -16792,8 +16792,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		for (Ability feat : aggregateFeatList())
 		{
-			if ((feat.getVisibility() == Visibility.DEFAULT)
-				|| (feat.getVisibility() == Visibility.OUTPUT_ONLY))
+			if ((feat.getVisibility() == Visibility.YES)
+				|| (feat.getVisibility() == Visibility.EXPORT))
 			{
 				tempFeatList.add(feat);
 			}
@@ -16813,8 +16813,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		final List<Ability> ret = new ArrayList<Ability>(abilities.size());
 		for (final Ability ability : abilities)
 		{
-			if (ability.getVisibility() == Visibility.DEFAULT
-				|| ability.getVisibility() == Visibility.OUTPUT_ONLY)
+			if (ability.getVisibility() == Visibility.YES
+				|| ability.getVisibility() == Visibility.EXPORT)
 			{
 				ret.add(ability);
 			}

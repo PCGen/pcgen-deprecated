@@ -689,17 +689,17 @@ public final class PCTemplate extends PObject implements HasCost
 
 		switch (getVisibility())
 		{
-			case DISPLAY_ONLY:
+			case DISPLAY:
 				txt.append("\tVISIBLE:DISPLAY");
 
 				break;
 
-			case OUTPUT_ONLY:
+			case EXPORT:
 				txt.append("\tVISIBLE:EXPORT");
 
 				break;
 
-			case HIDDEN:
+			case NO:
 				txt.append("\tVISIBLE:NO");
 
 				break;
@@ -883,8 +883,8 @@ public final class PCTemplate extends PObject implements HasCost
 	{
 		boolean result = false;
 
-		if ((getVisibility() == Visibility.DEFAULT)
-			|| (getVisibility() == Visibility.DISPLAY_ONLY))
+		if ((getVisibility() == Visibility.YES)
+			|| (getVisibility() == Visibility.DISPLAY))
 		{
 			result = removable;
 		}

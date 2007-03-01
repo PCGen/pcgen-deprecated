@@ -420,19 +420,19 @@ public final class Ability extends PObject implements HasCost, Categorisable
 
 		switch (getVisibility())
 		{
-			case HIDDEN:
+			case NO:
 				txt.append("EXPORT");
 				break;
 
-			case OUTPUT_ONLY:
+			case EXPORT:
 				txt.append("EXPORT");
 				break;
 
-			case DISPLAY_ONLY:
+			case DISPLAY:
 				txt.append("DISPLAY");
 				break;
 
-			case DEFAULT:
+			case YES:
 			default:
 				txt.append("YES");
 				break;

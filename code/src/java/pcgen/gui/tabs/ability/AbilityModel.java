@@ -128,8 +128,8 @@ public class AbilityModel extends AbstractTreeTableModel implements
 		// We will use the global lists for this
 		for (final Ability ability : Globals.getAbilityList(theCategory))
 		{
-			if (!((ability.getVisibility() == Visibility.DEFAULT) || (ability
-				.getVisibility() == Visibility.DISPLAY_ONLY)))
+			if (!((ability.getVisibility() == Visibility.YES) || (ability
+				.getVisibility() == Visibility.DISPLAY)))
 			{
 				continue;
 			}

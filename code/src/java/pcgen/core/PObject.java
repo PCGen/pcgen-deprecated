@@ -120,7 +120,7 @@ public class PObject extends PrereqObject implements Cloneable, Serializable, Co
 	protected String displayName = Constants.EMPTY_STRING;
 
 	/** Indicates if this object should be displayed to the user in the UI. */
-	protected Visibility visibility = Visibility.DEFAULT;
+	protected Visibility visibility = Visibility.YES;
 
 	/** Map of the bonuses for the object  */
 	private HashMap<String, String> bonusMap = null;
@@ -2970,8 +2970,8 @@ public class PObject extends PrereqObject implements Cloneable, Serializable, Co
 						{
 							switch (anAbility.getVisibility())
 							{
-								case HIDDEN:
-								case OUTPUT_ONLY:
+								case NO:
+								case EXPORT:
 									canProcess = true;
 									break;
 

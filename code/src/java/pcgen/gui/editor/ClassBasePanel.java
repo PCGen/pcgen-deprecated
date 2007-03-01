@@ -122,7 +122,7 @@ class ClassBasePanel extends BasePanel
 		obj.setHasSubClass(hasSubClass.getSelectedObjects() != null);
 		obj.setModToSkills(modToSkills.getSelectedObjects() != null);
 		obj.setMultiPreReqs(multiPreReq.getSelectedObjects() != null);
-		obj.setVisibility(chkVisible.getSelectedObjects() == null ? Visibility.HIDDEN : Visibility.DEFAULT);
+		obj.setVisibility(chkVisible.getSelectedObjects() == null ? Visibility.NO : Visibility.YES);
 
 		Object[] sel = getTypesSelectedList();
 		thisPObject.setTypeInfo(".CLEAR");
@@ -196,7 +196,7 @@ class ClassBasePanel extends BasePanel
 		hasSubClass.setSelected(obj.hasSubClass());
 		modToSkills.setSelected(obj.getModToSkills());
 		multiPreReq.setSelected(obj.multiPreReqs());
-		chkVisible.setSelected(obj.getVisibility().equals(Visibility.DEFAULT));
+		chkVisible.setSelected(obj.getVisibility().equals(Visibility.YES));
 	}
 
 	private static GridBagConstraints buildConstraints(GridBagConstraints gridBagConstraints, int gridx, int gridy,

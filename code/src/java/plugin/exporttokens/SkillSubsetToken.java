@@ -113,7 +113,7 @@ public class SkillSubsetToken extends SkillToken
 		List<Skill> skillSubset = new ArrayList<Skill>();
 		final List<Skill> skills =
 				pc.getSkillListInOutputOrder(pc
-					.getPartialSkillList(Visibility.OUTPUT_ONLY));
+					.getPartialSkillList(Visibility.EXPORT));
 
 		for (Skill bSkill : skills)
 		{

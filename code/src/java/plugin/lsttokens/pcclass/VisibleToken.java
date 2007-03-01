@@ -19,7 +19,7 @@ public class VisibleToken implements PCClassLstToken
 	{
 		if (!value.toUpperCase().startsWith("Y"))
 		{
-			pcclass.setVisibility(Visibility.HIDDEN);
+			pcclass.setVisibility(Visibility.NO);
 		} //Assume DEFAULT is the DEFAULT :)
 		return true;
 	}

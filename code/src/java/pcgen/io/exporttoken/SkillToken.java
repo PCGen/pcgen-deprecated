@@ -113,7 +113,7 @@ public class SkillToken extends Token
 			final int i = Integer.parseInt(details.skillId);
 			final List<Skill> pcSkills =
 					pc.getSkillListInOutputOrder(pc
-						.getPartialSkillList(Visibility.OUTPUT_ONLY));
+						.getPartialSkillList(Visibility.EXPORT));
 
 			if ((i >= (pcSkills.size() - 1)) && eh != null
 				&& eh.getExistsOnly())
