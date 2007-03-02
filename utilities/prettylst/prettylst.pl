@@ -487,7 +487,7 @@ if ($cl_options{output_error}) {
 }
 
 # List of default for values defined in system files
-my @valid_system_alignments     = qw( LG  LN  LE  NG  TN  NE  CG  CN  CE  NONE  Deity );
+my @valid_system_alignments     = qw( LG  LN  LE  NG  TN  NE  CG  CN  CE  NONE  DEITY );
 
 my @valid_system_check_names = qw( Fortitude Reflex Will );
 
@@ -13761,6 +13761,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+[ 1623708 ] Invalid value "DEITY" for tag "PREALIGN" - should be allowed
 
 [ 1374892 ] DEITY tag
 
