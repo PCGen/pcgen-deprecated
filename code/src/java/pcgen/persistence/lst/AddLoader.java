@@ -1,0 +1,76 @@
+/*
+ * AddLoader.java
+ * Copyright 2001 (C) Bryan McRoberts <merton_monk@yahoo.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * Created on February 22, 2002, 10:29 PM
+ *
+ * Current Ver: $Revision: 1600 $
+ * Last Editor: $Author: thpr $
+ * Last Edited: $Date: 2006-11-05 19:02:15 -0500 (Sun, 05 Nov 2006) $
+ *
+ */
+package pcgen.persistence.lst;
+
+import java.util.Map;
+
+import pcgen.base.util.Logging;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+
+public final class AddLoader
+{
+
+	private AddLoader()
+	{
+		super();
+	}
+
+	public static boolean parseLine(LoadContext context, CDOMObject obj,
+		String value) throws PersistenceLayerException
+	{
+		Map<String, LstToken> tokenMap =
+				TokenStore.inst().getTokenMap(AddLstToken.class);
+
+		int pipeLoc = value.indexOf(Constants.PIPE);
+		if (pipeLoc == -1)
+		{
+			Logging.errorPrint("ADD requires a SubToken");
+			return false;
+		}
+		String key = value.substring(0, pipeLoc);
+
+		AddLstToken token = (AddLstToken) tokenMap.get(key);
+
+		if (token != null)
+		{
+			LstUtils.deprecationCheck(token, obj, value);
+			if (!token.parse(context, obj, value.substring(pipeLoc + 1)))
+			{
+				Logging.errorPrint("Error parsing ADD in "
+					+ obj.getDisplayName() + ':' + value);
+			}
+		}
+		else
+		{
+			//FIXME Consume for now - too frequent!
+			//Logging.errorPrint("Illegal ADD info '" + value + "'");
+		}
+		return true;
+	}
+}
