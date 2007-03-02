@@ -159,4 +159,13 @@ public class TokenStore
 		}
 		return tokenMap;
 	}
+
+	public <T extends LstToken> T getToken(Class<T> name, String key) {
+		Map<String, LstToken> tokenMap = tokenTypeMap.get(name);
+		if (tokenMap == null)
+		{
+			return null;
+		}
+		return name.cast(tokenMap.get(key));
+	}
 }
