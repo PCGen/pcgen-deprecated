@@ -1,5 +1,6 @@
 /*
  * Formatcat.java
+ * Copyright 2006-2007 (C) Tom Parker <thpr@users.sourceforge.net>
  * Copyright 2006 (C) James Dempsey <jdempsey@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -23,14 +24,17 @@
  */
 package plugin.lsttokens.equipmentmodifier;
 
+import pcgen.cdom.enumeration.EqModFormatCat;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
 import pcgen.util.Logging;
 
 /**
- * Deals with FORMATCAT token, which indicates where the name of the 
- * equipment modifier should be added in the name of any equipment item
- * the eqmod is added to.   
+ * Deals with FORMATCAT token, which indicates where the name of the equipment
+ * modifier should be added in the name of any equipment item the eqmod is added
+ * to.
  */
 public class FormatcatToken implements EquipmentModifierLstToken
 {
@@ -45,7 +49,8 @@ public class FormatcatToken implements EquipmentModifierLstToken
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.EquipmentModifierLstToken#parse(pcgen.core.EquipmentModifier, java.lang.String)
+	 * @see pcgen.persistence.lst.EquipmentModifierLstToken#parse(pcgen.core.EquipmentModifier,
+	 *      java.lang.String)
 	 * @Override
 	 */
 	public boolean parse(EquipmentModifier mod, String value)
@@ -69,5 +74,32 @@ public class FormatcatToken implements EquipmentModifierLstToken
 			return false;
 		}
 		return true;
+	}
+
+	public boolean parse(LoadContext context, EquipmentModifier mod,
+		String value)
+	{
+		try
+		{
+			mod.put(ObjectKey.FORMAT, EqModFormatCat.valueOf(value));
+		}
+		catch (IllegalArgumentException iae)
+		{
+			Logging.errorPrint("Invalid Format provided in " + getTokenName()
+				+ ": " + value);
+			return false;
+		}
+		return true;
+	}
+
+	public String unparse(LoadContext context, EquipmentModifier mod)
+	{
+		EqModFormatCat fc = mod.get(ObjectKey.FORMAT);
+		if (fc == null)
+		{
+			return null;
+		}
+		return new StringBuilder().append(getTokenName()).append(':')
+			.append(fc).toString();
 	}
 }

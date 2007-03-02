@@ -26,13 +26,15 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.PCTemplate;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>PCTemplateLstToken</code>
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface PCTemplateLstToken extends LstToken
+public interface PCTemplateLstToken extends CDOMToken<PCTemplate>
 {
 	/**
 	 * Parses a Template object
@@ -40,5 +42,10 @@ public interface PCTemplateLstToken extends LstToken
 	 * @param value
 	 * @return true if parse OK
 	 */
-	public abstract boolean parse(PCTemplate template, String value);
+	public boolean parse(PCTemplate template, String value);
+
+	public boolean parse(LoadContext context, PCTemplate pct, String value)
+			throws PersistenceLayerException;
+	
+	public String unparse(LoadContext context, PCTemplate pct);
 }

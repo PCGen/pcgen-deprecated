@@ -26,13 +26,15 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.Domain;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>DomainLstToken</code>
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface DomainLstToken extends LstToken
+public interface DomainLstToken extends CDOMToken<Domain>
 {
 	/**
 	 * Parses a Domain object
@@ -40,5 +42,10 @@ public interface DomainLstToken extends LstToken
 	 * @param value
 	 * @return true if parse OK
 	 */
-	public abstract boolean parse(Domain domain, String value);
+	public boolean parse(Domain domain, String value);
+
+	public boolean parse(LoadContext context, Domain domain, String value)
+		throws PersistenceLayerException;
+
+	public String unparse(LoadContext context, Domain domain);
 }

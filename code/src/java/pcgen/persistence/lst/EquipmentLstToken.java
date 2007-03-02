@@ -26,13 +26,15 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.Equipment;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>EquipmentLstToken</code>
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface EquipmentLstToken extends LstToken
+public interface EquipmentLstToken extends CDOMToken<Equipment>
 {
 	/**
 	 * Parses an Equipment object
@@ -40,5 +42,10 @@ public interface EquipmentLstToken extends LstToken
 	 * @param value
 	 * @return true if parse OK
 	 */
-	public abstract boolean parse(Equipment eq, String value);
+	public boolean parse(Equipment eq, String value);
+
+	public boolean parse(LoadContext context, Equipment eq, String value)
+			throws PersistenceLayerException;
+
+	public String unparse(LoadContext context, Equipment eq);
 }

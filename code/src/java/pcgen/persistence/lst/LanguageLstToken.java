@@ -26,13 +26,15 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.Language;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>LanguageLstToken</code>
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface LanguageLstToken extends LstToken
+public interface LanguageLstToken extends CDOMToken<Language>
 {
 	/**
 	 * Parses an Language object
@@ -40,5 +42,10 @@ public interface LanguageLstToken extends LstToken
 	 * @param value
 	 * @return true if parse OK
 	 */
-	public abstract boolean parse(Language lang, String value);
+	public boolean parse(Language lang, String value);
+
+	public boolean parse(LoadContext context, Language lang, String value)
+		throws PersistenceLayerException;
+
+	public String unparse(LoadContext context, Language lang);
 }

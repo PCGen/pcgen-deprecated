@@ -26,13 +26,15 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.Skill;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>SkillLstToken</code>
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface SkillLstToken extends LstToken
+public interface SkillLstToken extends CDOMToken<Skill>
 {
 	/**
 	 * Parses an Skill object
@@ -40,5 +42,11 @@ public interface SkillLstToken extends LstToken
 	 * @param value
 	 * @return true if parse OK
 	 */
-	public abstract boolean parse(Skill skill, String value);
+	public boolean parse(Skill skill, String value);
+
+	public boolean parse(LoadContext context, Skill skill, String value)
+			throws PersistenceLayerException;
+	
+	public String unparse(LoadContext context, Skill skill);
+
 }

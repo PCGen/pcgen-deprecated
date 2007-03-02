@@ -1,5 +1,6 @@
 /*
  * NumPagesToken.java
+ * Copyright 2006-2007 (C) Tom Parker <thpr@users.sourceforge.net>
  * Copyright 2006 (C) James Dempsey <jdempsey@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -23,15 +24,15 @@
  */
 package plugin.lsttokens.equipment;
 
+import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.core.Equipment;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.util.Logging;
 
 /**
  * <code>NumPagesToken</code> deals with NUMPAGES token
- *
- * Last Editor: $Author$
- * Last Edited: $Date$
- *
+ * 
  * @author James Dempsey <jdempsey@users.sourceforge.net>
  * @version $Revision$
  */
@@ -47,7 +48,8 @@ public class NumPagesToken implements EquipmentLstToken
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.EquipmentLstToken#parse(pcgen.core.Equipment, java.lang.String)
+	 * @see pcgen.persistence.lst.EquipmentLstToken#parse(pcgen.core.Equipment,
+	 *      java.lang.String)
 	 */
 	public boolean parse(Equipment eq, String value)
 	{
@@ -61,4 +63,37 @@ public class NumPagesToken implements EquipmentLstToken
 			return false;
 		}
 	}
+
+	public boolean parse(LoadContext context, Equipment eq, String value)
+	{
+		try
+		{
+			eq.put(IntegerKey.NUM_PAGES, Integer.valueOf(value));
+			return true;
+		}
+		catch (NumberFormatException nfe)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " expected an integer.  Tag must be of the form: "
+				+ getTokenName() + ":<int>");
+			return false;
+		}
+	}
+
+	public String unparse(LoadContext context, Equipment eq)
+	{
+		Integer pages = eq.get(IntegerKey.NUM_PAGES);
+		if (pages == null)
+		{
+			return null;
+		}
+		if (pages.intValue() <= 0)
+		{
+			context.addWriteMessage(getTokenName() + " must be an integer > 0");
+			return null;
+		}
+		return new StringBuilder().append(getTokenName()).append(':').append(
+			pages).toString();
+	}
+
 }

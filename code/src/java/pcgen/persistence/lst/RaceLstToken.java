@@ -26,13 +26,15 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.Race;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>RaceLstToken</code>
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface RaceLstToken extends LstToken
+public interface RaceLstToken extends CDOMToken<Race>
 {
 	/**
 	 * Parses an Race object
@@ -40,5 +42,10 @@ public interface RaceLstToken extends LstToken
 	 * @param value
 	 * @return true if parse OK
 	 */
-	public abstract boolean parse(Race race, String value);
+	public boolean parse(Race race, String value);
+
+	public boolean parse(LoadContext context, Race race, String value)
+			throws PersistenceLayerException;
+
+	public String unparse(LoadContext context, Race race);
 }

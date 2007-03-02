@@ -1,5 +1,6 @@
 /*
  * PageUsageToken.java
+ * Copyright 2006-2007 (C) Tom Parker <thpr@users.sourceforge.net>
  * Copyright 2006 (C) James Dempsey <jdempsey@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -23,15 +24,16 @@
  */
 package plugin.lsttokens.equipment;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.core.Equipment;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
 
 /**
  * <code>PageUsageToken</code> deals with PAGEUSAGE token
- *
- * Last Editor: $Author$
- * Last Edited: $Date$
- *
+ * 
  * @author James Dempsey <jdempsey@users.sourceforge.net>
  * @version $Revision$
  */
@@ -47,11 +49,29 @@ public class PageUsageToken implements EquipmentLstToken
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.EquipmentLstToken#parse(pcgen.core.Equipment, java.lang.String)
+	 * @see pcgen.persistence.lst.EquipmentLstToken#parse(pcgen.core.Equipment,
+	 *      java.lang.String)
 	 */
 	public boolean parse(Equipment eq, String value)
 	{
 		eq.setPageUsage(value);
 		return true;
+	}
+
+	public boolean parse(LoadContext context, Equipment eq, String value)
+	{
+		eq.put(FormulaKey.PAGE_USAGE, FormulaFactory.getFormulaFor(value));
+		return true;
+	}
+
+	public String unparse(LoadContext context, Equipment eq)
+	{
+		Formula f = eq.get(FormulaKey.PAGE_USAGE);
+		if (f == null)
+		{
+			return null;
+		}
+		return new StringBuilder().append(getTokenName()).append(':').append(
+			f.toString()).toString();
 	}
 }
