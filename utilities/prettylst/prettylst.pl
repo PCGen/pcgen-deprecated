@@ -586,7 +586,7 @@ my %tag_fix_value = (
     KEYSTAT        => { map { $_ => 1 } @valid_system_stats },
     HASSUBCLASS    => { YES => 1, NO => 1 },
     ISD20          => { YES => 1, NO => 1 },
-    ISLICENCED     => { YES => 1, NO => 1 },
+    ISLICENSED     => { YES => 1, NO => 1 },
     ISOGL          => { YES => 1, NO => 1 },
     ISMATURE       => { YES => 1, NO => 1 },
     MEMORIZE       => { YES => 1, NO => 1 },
@@ -3579,7 +3579,7 @@ my %tagheader = (
         'BONUS:MISC'            => 'Misc bonus',
         'BONUS:MOVE'            => 'Move class',
         'BONUS:MOVEADD'         => 'Add to base move',
-        'BONUS:MOVEMULT'        => 'Multiply base more',
+        'BONUS:MOVEMULT'        => 'Multiply base move',
         'BONUS:POSTMOVEADD'     => 'Add to magical move',
         'BONUS:PCLEVEL'         => 'Caster level bonus',
         'BONUS:POSTRANGEADD'    => 'Bonus to Range',
@@ -10107,7 +10107,7 @@ sub validate_line {
 
         if ( $hasMULT && !$hasCHOOSE ) {
             ewarn(INFO,
-                  qq(The CHOOSE tag is mandantory when MULT:YES is present in ABILITY "$line_ref->{'000AbilitytName'}[0]"),
+                  qq(The CHOOSE tag is mandantory when MULT:YES is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                   $file_for_error,
                   $line_for_error
             );
@@ -10116,7 +10116,7 @@ sub validate_line {
 
             # The CHOOSE:SPELLLEVEL is exampted from this particular rule.
             ewarn(INFO,
-                  qq(The MULT:YES tag is mandantory when CHOOSE is present in ABILITY "$line_ref->{'000AbilitytName'}[0]"),
+                  qq(The MULT:YES tag is mandantory when CHOOSE is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                   $file_for_error,
                   $line_for_error
             );
