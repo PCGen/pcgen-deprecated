@@ -1798,6 +1798,7 @@ my %master_order = (
         'SPELLLIST',
         'TEMPLATE:.CLEAR',
         'TEMPLATE:*',
+        'DEITY',
         @PRE_Tags,
         'PRERACETYPE',
         '!PRERACETYPE',
@@ -3858,6 +3859,7 @@ my %tagheader = (
         'MONNONSKILLHD' => 'Extra Hit Die Skills Limit',
         'MULTIPREREQS'  => 'MULTIPREREQS',
         'SPECIALS'      => 'Class Special Ability',
+        'DEITY'         => 'Deities allowed',
     },
 
     'CLASS Level' => {
@@ -11863,7 +11865,8 @@ BEGIN {
                         }
 
                         # Is it a PRExxx tag?
-                        elsif (/^\!?PRE/) {
+                        elsif (/^\!?PRE/ 
+                            || /^DEITY/ ) {
                             $new_pre_line{$_} = delete $new_class_line{$_};
                         }
 
@@ -13758,6 +13761,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.37 -- NOT RELEASED YET
+
+[ 1374892 ] DEITY tag
 
 Ability file now supported, including LEVELABLITY in Kits.  No real checking yet.
 
