@@ -22,6 +22,8 @@ package pcgen.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.cdom.base.Category;
 import pcgen.core.chooser.ChooserUtilities;
 import pcgen.core.levelability.LevelAbility;
 import pcgen.core.prereq.PrereqHandler;
@@ -41,7 +43,7 @@ import pcgen.util.chooser.ChooserInterface;
  * @author   ???
  * @version  $Revision$
  */
-public final class Ability extends PObject implements HasCost, Categorisable
+public final class Ability extends PObject implements HasCost, Categorisable, CategorizedCDOMObject<Ability>
 {
 	/** An enum for the various types of ability options. */
 	public enum Nature {
@@ -944,4 +946,16 @@ public final class Ability extends PObject implements HasCost, Categorisable
 		StringBuffer buf = new StringBuffer();
 		return buf.toString();
 	}
+
+    private Category<Ability> cat;
+    
+    public void setCDOMCategory(Category<Ability> ac)
+    {
+    	cat = ac;
+    }
+    
+    public Category<Ability> getCDOMCategory()
+    {
+    	return cat;
+    }
 }

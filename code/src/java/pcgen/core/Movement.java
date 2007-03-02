@@ -518,4 +518,61 @@ public class Movement
 		}
 		return cm;
 	}
+
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof Movement))
+		{
+			return false;
+		}
+		Movement om = (Movement) o;
+		if (movements.length != om.movements.length)
+		{
+			return false;
+		}
+		if (moveRatesFlag != om.moveRatesFlag)
+		{
+			return false;
+		}
+		if (movement == null)
+		{
+			if (om.movement != null)
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if (!movement.equals(om.movement))
+			{
+				return false;
+			}
+		}
+		for (int i = 0; i < movements.length; i++)
+		{
+			if (!movementTypes[i].equals(om.movementTypes[i]))
+			{
+				return false;
+			}
+			if (!movements[i].equals(om.movements[i]))
+			{
+				return false;
+			}
+			if (!movementMult[i].equals(om.movementMult[i]))
+			{
+				return false;
+			}
+			if (!movementMultOp[i].equals(om.movementMultOp[i]))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public int hashCode()
+	{
+		return (moveRatesFlag + movements.length << 2)
+			^ (movement == null ? 0 : movement.hashCode());
+	}
 }

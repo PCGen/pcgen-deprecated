@@ -175,4 +175,18 @@ public final class SpecialAbility extends TextProperty
 
 		return aPC.getTotalLevels() >= anInt;
 	}
+
+	
+	/*
+	 * NOT consistent with COMPARE TO, but used for CDOM...
+	 */
+	public int hashCode() {
+		return saSource.hashCode() ^ super.hashCode();
+	}
+	
+	public boolean equals(Object o) {
+			return o instanceof SpecialAbility
+				&& saSource.equals(((SpecialAbility) o).saSource)
+				&& super.equals(o);
+	}
 }

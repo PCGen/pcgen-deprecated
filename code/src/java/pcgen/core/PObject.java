@@ -43,7 +43,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pcgen.base.util.DoubleKeyMap;
-import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.bonus.BonusUtilities;
@@ -81,7 +81,7 @@ import pcgen.util.enumeration.VisionType;
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  * @version $Revision$
  */
-public class PObject extends ConcretePrereqObject implements Cloneable, Serializable, Comparable<Object>,
+public class PObject extends CDOMObject implements Cloneable, Serializable, Comparable<Object>,
 	SourcedObject, KeyedListContainer, KeyedObject
 {
 	/** Standard serialVersionUID for Serializable objects */

@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.character.CharacterSpell;
@@ -6729,5 +6730,21 @@ public class PCClass extends PObject {
 //		theAutoAbilities.put(aCategory, aLevel, null);
 //	}
 	
+	Map<Integer, PCClassLevel> levelMap = new HashMap<Integer, PCClassLevel>();
+	
+	public PCClassLevel getClassLevel(int lvl) {
+		if (!levelMap.containsKey(lvl)) {
+			levelMap.put(lvl, new PCClassLevel(this, lvl));
+		}
+		return levelMap.get(lvl);
+	}
+	
+	public int getClassLevelCount() {
+		return levelMap.size();
+	}
+	
+	public Collection<PCClassLevel> getClassLevelCollection() {
+		return Collections.unmodifiableCollection(levelMap.values());
+	}
 	
 }

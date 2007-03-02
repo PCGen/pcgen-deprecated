@@ -22,6 +22,8 @@
  */
 package pcgen.core;
 
+import java.util.StringTokenizer;
+
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.util.enumeration.VisionType;
 
@@ -56,34 +58,53 @@ public class Vision extends ConcretePrereqObject implements Comparable<Vision> {
 		}
 	}
 
-	private String toString(int dist) {
-		String vision = visionType + " (" + dist + "')";
-		if(dist <= 0) {
-			vision = visionType.toString();
+	private String toString(int d) {
+		if (d <= 0) {
+			return visionType.toString();
+		} else {
+			return visionType + " (" + d + "')";
 		}
-		return vision;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Vision) {
-			Vision v = (Vision) obj;
-			return distance.equals(v.distance) && visionType.equals(v.visionType);
-		}
-		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return distance.hashCode() ^ visionType.hashCode();
+		return visionType.hashCode()
+				^ (distance == null ? 0 : distance.hashCode());
 	}
 
-	public String toString(PlayerCharacter aPC) {
-		return toString(aPC.getVariableValue(distance, "").intValue());
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Vision) {
+			Vision v2 = (Vision) o;
+			if (v2.visionType.equals(visionType)) {
+				return v2.distance == null && distance == null
+						|| distance != null && distance.equals(v2.distance);
+			}
+		}
+		return false;
 	}
 
 	public int compareTo(Vision v) {
-		//CONSIDER This is potentially a slow method, but definitely works - thpr 10/26/06
+		// CONSIDER This is potentially a slow method, but definitely works -
+		// thpr 10/26/06
 		return toString().compareTo(v.toString());
+	}
+
+	public static Vision getVision(String visionType) {
+		// expecting value in form of Darkvision (60')
+		StringTokenizer cTok = new StringTokenizer(visionType, "(')");
+		String aKey = cTok.nextToken().trim(); // e.g. Darkvision
+		String aVal = "0";
+		if (cTok.hasMoreTokens()) {
+			aVal = cTok.nextToken(); // e.g. 60
+		}
+		return new Vision(VisionType.getVisionType(aKey), aVal);
+	}
+
+	/*
+	 * REFACTOR NEED TO GET RID OF THIS - REFERENCES PlayerCharacter :(
+	 */
+	public String toString(PlayerCharacter aPC) {
+		return toString(aPC.getVariableValue(distance, "").intValue());
 	}
 }

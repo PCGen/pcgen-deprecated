@@ -49,6 +49,7 @@ import java.util.TreeSet;
 
 import javax.swing.JFrame;
 
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.character.CompanionMod;
 import pcgen.core.character.EquipSlot;
 import pcgen.core.spell.Spell;
@@ -3610,4 +3611,17 @@ public final class Globals
 		return raceMap.remove(aKey) != null;
 	}
 	
+
+	private static PCGenGraph masterGraph;
+	
+	public static void setMasterGraph(PCGenGraph master) {
+		masterGraph = master;
+	}
+	
+	/*
+	 * NOTE: this should ONLY ever be used for temporary items, it WILL go away soon
+	 */
+	public static PCGenGraph getMasterGraph() {
+		return masterGraph;
+	}
 }
