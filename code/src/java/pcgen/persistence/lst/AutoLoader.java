@@ -24,7 +24,9 @@ package pcgen.persistence.lst;
 
 import java.util.Map;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.util.Logging;
 
@@ -51,6 +53,29 @@ public final class AutoLoader
 		{
 			LstUtils.deprecationCheck(token, target, value);
 			if (!token.parse(target, value))
+			{
+				Logging.errorPrint("Error parsing AUTO: " + key + ":" + value);
+				return false;
+			}
+			return true;
+		}
+		else
+		{
+			Logging.errorPrint("Error parsing AUTO, invalid SubToken: " + key);
+			return false;
+		}
+	}
+
+	public static boolean parseLine(LoadContext context, CDOMObject obj,
+		String key, String value)
+	{
+		Map<String, LstToken> tokenMap =
+				TokenStore.inst().getTokenMap(AutoLstToken.class);
+		AutoLstToken token = (AutoLstToken) tokenMap.get(key);
+		if (token != null)
+		{
+			LstUtils.deprecationCheck(token, obj, value);
+			if (!token.parse(context, obj, value))
 			{
 				Logging.errorPrint("Error parsing AUTO: " + key + ":" + value);
 				return false;

@@ -29,6 +29,7 @@ import pcgen.core.Constants;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -49,23 +50,11 @@ public final class SkillLoader extends LstObjectFileLoader<Skill>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public Skill parseLine(Skill aSkill, String lstLine,
+	public void parseLine(Skill aSkill, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
-		Skill skill = aSkill;
-
-		if (skill == null)
-		{
-			skill = new Skill();
-			skill.setSourceCampaign(source.getCampaign());
-			skill.setSourceURI(source.getURI());
-		}
-
 		final StringTokenizer colToken =
-				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
-
-		// first column is the name; after that are LST tags
-		skill.setName(colToken.nextToken());
+			new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
 
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(SkillLstToken.class);
@@ -87,23 +76,23 @@ public final class SkillLoader extends LstObjectFileLoader<Skill>
 			if ("REQ".equals(colString))
 			{
 				Logging.errorPrint("You are using a deprecated tag "
-						+ "(REQ) in Skills " + skill.getDisplayName() + ':'
+						+ "(REQ) in Skills " + aSkill.getDisplayName() + ':'
 						+ source.getURI() + ':' + colString);
 				Logging.errorPrint("  Use USEUNTRAINED instead");
-				skill.setRequired(true);
+				aSkill.setRequired(true);
 			}
 			else if (token != null)
 			{
 				final String value = colString.substring(idxColon + 1).trim();
-				LstUtils.deprecationCheck(token, skill, value);
-				if (!token.parse(skill, value))
+				LstUtils.deprecationCheck(token, aSkill, value);
+				if (!token.parse(aSkill, value))
 				{
 					Logging.errorPrint("Error parsing skill "
-						+ skill.getDisplayName() + ':' + source.getURI() + ':'
+						+ aSkill.getDisplayName() + ':' + source.getURI() + ':'
 						+ colString + "\"");
 				}
 			}
-			else if (PObjectLoader.parseTag(skill, colString))
+			else if (PObjectLoader.parseTag(aSkill, colString))
 			{
 				continue;
 			}
@@ -114,8 +103,7 @@ public final class SkillLoader extends LstObjectFileLoader<Skill>
 			}
 		}
 
-		completeObject(source, skill);
-		return null;
+		completeObject(source, aSkill);
 	}
 
 	/**
@@ -144,5 +132,31 @@ public final class SkillLoader extends LstObjectFileLoader<Skill>
 	{
 		// TODO - Create Globals.addSkill(pObj);
 		Globals.getSkillList().add((Skill) pObj);
+	}
+
+	@Override
+	public void parseToken(LoadContext context, Skill skill, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+		SkillLstToken token = TokenStore.inst().getToken(SkillLstToken.class,
+				key);
+
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, skill, key, value)) {
+				Logging.errorPrint("Illegal skill Token '" + key + "' for "
+						+ skill.getDisplayName() + " in " + source.getURI()
+						+ " of " + source.getCampaign() + ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, skill, value);
+			if (!token.parse(context, skill, value)) {
+				Logging.errorPrint("Error parsing token " + key + " in skill "
+						+ skill.getDisplayName() + ':' + source.getURI() + ':'
+						+ value + "\"");
+			}
+		}
+	}
+	
+	@Override
+	public Class<Skill> getLoadClass() {
+		return Skill.class;
 	}
 }

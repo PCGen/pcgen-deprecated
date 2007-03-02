@@ -34,6 +34,7 @@ import pcgen.core.Globals;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.persistence.lst.prereq.PreParserFactory;
@@ -56,17 +57,9 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public Spell parseLine(Spell aSpell, String lstLine,
+	public void parseLine(Spell spell, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
-		Spell spell = aSpell;
-
-		if (spell == null)
-		{
-			spell = new Spell();
-		}
-
-		int i = 0;
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
 
@@ -88,25 +81,7 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 			}
 			SpellLstToken token = (SpellLstToken) tokenMap.get(key);
 
-			// The very first one is the Name
-			if (i == 0)
-			{
-				if ((!colString.equals(spell.getKeyName()))
-					&& (colString.indexOf(".MOD") < 0))
-				{
-					completeObject(source, spell);
-					spell = new Spell();
-					spell.setName(colString);
-					spell.setSourceCampaign(source.getCampaign());
-					spell.setSourceURI(source.getURI());
-				}
-
-				i++;
-
-				continue;
-			}
-
-			else if (token != null)
+			if (token != null)
 			{
 				final String value = colString.substring(idxColon + 1).trim();
 				LstUtils.deprecationCheck(token, spell, value);
@@ -129,7 +104,6 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 		}
 
 		completeObject(source, spell);
-		return null;
 	}
 
 	/**
@@ -312,5 +286,31 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 			}
 			spellList.add((Spell) pObj);
 		}
+	}
+
+	@Override
+	public void parseToken(LoadContext context, Spell spell, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+		SpellLstToken token = TokenStore.inst().getToken(SpellLstToken.class,
+				key);
+
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, spell, key, value)) {
+				Logging.errorPrint("Illegal spell Token '" + key + "' for "
+						+ spell.getDisplayName() + " in " + source.getURI()
+						+ " of " + source.getCampaign() + ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, spell, value);
+			if (!token.parse(context, spell, value)) {
+				Logging.errorPrint("Error parsing token " + key + " in spell "
+						+ spell.getDisplayName() + ':' + source.getURI() + ':'
+						+ value + "\"");
+			}
+		}
+	}
+
+	@Override
+	public Class<Spell> getLoadClass() {
+		return Spell.class;
 	}
 }

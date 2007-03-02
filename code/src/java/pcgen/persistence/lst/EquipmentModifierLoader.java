@@ -32,6 +32,7 @@ import pcgen.core.Constants;
 import pcgen.core.EquipmentList;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -61,20 +62,10 @@ public final class EquipmentModifierLoader extends
 	}
 
 	@Override
-	public EquipmentModifier parseLine(EquipmentModifier eqMod,
-			String inputLine, CampaignSourceEntry source)
-			throws PersistenceLayerException {
-		if (eqMod == null) {
-			eqMod = new EquipmentModifier();
-		}
-
+	public void parseLine(EquipmentModifier eqMod, String inputLine,
+			CampaignSourceEntry source) throws PersistenceLayerException {
 		final StringTokenizer colToken = new StringTokenizer(inputLine,
 				SystemLoader.TAB_DELIM);
-
-		String name = colToken.nextToken();
-		eqMod.setName(name.replace('|', ' '));
-		eqMod.setSourceCampaign(source.getCampaign());
-		eqMod.setSourceURI(source.getURI());
 
 		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
 				EquipmentModifierLstToken.class);
@@ -110,7 +101,6 @@ public final class EquipmentModifierLoader extends
 		}
 
 		completeObject(source, eqMod);
-		return null;
 	}
 
 	@Override
@@ -138,7 +128,10 @@ public final class EquipmentModifierLoader extends
 		}
 		String aLine;
 		EquipmentModifier anObj = new EquipmentModifier();
-		aLine = "Add Type\tKEY:ADDTYPE\tTYPE:ALL\tCOST:0\tNAMEOPT:NONAME\tSOURCELONG:PCGen Internal\tCHOOSE:COUNT=ALL|desired TYPE(s)|TYPE=EQTYPES";
+		anObj.setName("Add Type");
+		anObj.setSourceCampaign(source.getCampaign());
+		anObj.setSourceURI(source.getURI());
+		aLine = "KEY:ADDTYPE\tTYPE:ALL\tCOST:0\tNAMEOPT:NONAME\tSOURCELONG:PCGen Internal\tCHOOSE:COUNT=ALL|desired TYPE(s)|TYPE=EQTYPES";
 		parseLine(anObj, aLine, source);
 
 		//
@@ -146,13 +139,47 @@ public final class EquipmentModifierLoader extends
 		// equipment
 		//
 		anObj = new EquipmentModifier();
-		aLine = Constants.s_INTERNAL_EQMOD_WEAPON
-				+ "\tTYPE:Weapon\tVISIBLE:No\tCHOOSE:DUMMY\tNAMEOPT:NONAME";
+		anObj.setName(Constants.s_INTERNAL_EQMOD_WEAPON);
+		anObj.setSourceCampaign(source.getCampaign());
+		anObj.setSourceURI(source.getURI());
+		aLine = "TYPE:Weapon\tVISIBLE:No\tCHOOSE:DUMMY\tNAMEOPT:NONAME";
 		parseLine(anObj, aLine, source);
 
 		anObj = new EquipmentModifier();
-		aLine = Constants.s_INTERNAL_EQMOD_ARMOR
-				+ "\tTYPE:Armor\tVISIBLE:No\tCHOOSE:DUMMY\tNAMEOPT:NONAME";
+		anObj.setName(Constants.s_INTERNAL_EQMOD_ARMOR);
+		anObj.setSourceCampaign(source.getCampaign());
+		anObj.setSourceURI(source.getURI());
+		aLine = "TYPE:Armor\tVISIBLE:No\tCHOOSE:DUMMY\tNAMEOPT:NONAME";
 		parseLine(anObj, aLine, source);
+	}
+
+	@Override
+	public Class<EquipmentModifier> getLoadClass() {
+		return EquipmentModifier.class;
+	}
+
+	@Override
+	public void parseToken(LoadContext context, EquipmentModifier eqMod,
+			String key, String value, CampaignSourceEntry source)
+			throws PersistenceLayerException {
+		
+		EquipmentModifierLstToken token = TokenStore.inst().getToken(
+				EquipmentModifierLstToken.class, key);
+
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, eqMod, key, value)) {
+				Logging.errorPrint("Illegal EquipmentModifier Token '" + key
+						+ "' for " + eqMod.getDisplayName() + " in "
+						+ source.getURI() + " of " + source.getCampaign()
+						+ ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, eqMod, value);
+			if (!token.parse(context, eqMod, value)) {
+				Logging.errorPrint("Error parsing token " + key
+						+ " in EquipmentModifier " + eqMod.getDisplayName()
+						+ ':' + source.getURI() + ':' + value + "\"");
+			}
+		}
 	}
 }

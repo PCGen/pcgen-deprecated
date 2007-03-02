@@ -56,10 +56,10 @@ public class SkillmultToken implements RaceLstToken
 		try
 		{
 			Integer i = Integer.valueOf(value);
-			if (i.intValue() <= 0)
+			if (i.intValue() < 0)
 			{
 				Logging.errorPrint(getTokenName()
-					+ " must be a positive integer");
+					+ " must be an integer greater than or equal to 0");
 				return false;
 			}
 			race.put(IntegerKey.INITIAL_SKILL_MULT, i);
@@ -81,9 +81,9 @@ public class SkillmultToken implements RaceLstToken
 		{
 			return null;
 		}
-		if (sp.intValue() <= 0)
+		if (sp.intValue() < 0)
 		{
-			context.addWriteMessage(getTokenName() + " must be an integer > 0");
+			context.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
 		return new StringBuilder().append(getTokenName()).append(':')

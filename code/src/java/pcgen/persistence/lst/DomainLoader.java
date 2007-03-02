@@ -29,6 +29,7 @@ import pcgen.core.Constants;
 import pcgen.core.Domain;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -50,19 +51,11 @@ public class DomainLoader extends LstObjectFileLoader<Domain>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public Domain parseLine(Domain aDomain, String lstLine,
+	public void parseLine(Domain domain, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
-		Domain domain = aDomain;
-
-		if (domain == null)
-		{
-			domain = new Domain();
-		}
-
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
-		int col = 0;
 
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(DomainLstToken.class);
@@ -96,51 +89,14 @@ public class DomainLoader extends LstObjectFileLoader<Domain>
 			{
 				continue;
 			}
-			else if (col == 0)
-			{
-				if ((!colString.equals(domain.getKeyName()))
-					&& (colString.indexOf(".MOD") < 0))
-				{
-					completeObject(source, domain);
-					domain = new Domain();
-					domain.setName(colString);
-					domain.setSourceCampaign(source.getCampaign());
-					domain.setSourceURI(source.getURI());
-				}
-			}
-			else if (col == 1)
-			{
-				LstUtils
-					.deprecationWarning(
-						"Positional DESC",
-						"domain",
-						domain.getSourceURI(),
-						colString,
-						"A DESC tag has been used instead, please update your LST code. "
-							+ "This default functionality will be removed in versions after 5.12");
-				token = (DomainLstToken) tokenMap.get("DESC");
-				if (token != null)
-				{
-					LstUtils.deprecationCheck(token, domain, colString);
-					if (!token.parse(domain, colString))
-					{
-						Logging.errorPrint("Error parsing domain "
-							+ domain.getDisplayName() + ':' + source.getURI()
-							+ ':' + colString + "\"");
-					}
-				}
-			}
 			else
 			{
 				Logging.errorPrint("Illegal obj info '" + colString + "' in "
 					+ source.getURI());
 			}
-
-			++col;
 		}
 
 		completeObject(source, domain);
-		return null;
 	}
 
 	/**
@@ -168,5 +124,31 @@ public class DomainLoader extends LstObjectFileLoader<Domain>
 	protected void addGlobalObject(final PObject pObj)
 	{
 		Globals.addDomain((Domain) pObj);
+	}
+
+	@Override
+	public void parseToken(LoadContext context, Domain domain, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+		DomainLstToken token = TokenStore.inst().getToken(DomainLstToken.class,
+				key);
+
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, domain, key, value)) {
+				Logging.errorPrint("Illegal domain Token '" + key + "' for "
+						+ domain.getDisplayName() + " in " + source.getURI()
+						+ " of " + source.getCampaign() + ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, domain, value);
+			if (!token.parse(context, domain, value)) {
+				Logging.errorPrint("Error parsing token " + key + " in domain "
+						+ domain.getDisplayName() + ':' + source.getURI() + ':'
+						+ value + "\"");
+			}
+		}
+	}
+
+	@Override
+	public Class<Domain> getLoadClass() {
+		return Domain.class;
 	}
 }

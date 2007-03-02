@@ -32,6 +32,7 @@ import pcgen.core.Constants;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
 import pcgen.core.Race;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -53,26 +54,16 @@ public final class RaceLoader extends LstObjectFileLoader<Race>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public Race parseLine(Race aRace, String lstLine, CampaignSourceEntry source)
+	public void parseLine(Race race, String lstLine, CampaignSourceEntry source)
 		throws PersistenceLayerException
 	{
-		Race race = aRace;
-
-		if (race == null)
-		{
-			race = new Race();
-		}
 
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
-		int col = -1;
-
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(RaceLstToken.class);
 		while (colToken.hasMoreTokens())
 		{
-			++col;
-
 			final String colString = colToken.nextToken().trim();
 			final int idxColon = colString.indexOf(':');
 			String key = "";
@@ -86,19 +77,7 @@ public final class RaceLoader extends LstObjectFileLoader<Race>
 			}
 			RaceLstToken token = (RaceLstToken) tokenMap.get(key);
 
-			// presence of : in column 1 means no required fields (good!)
-			if ((col < 10) && (colString.indexOf(':') >= 0))
-			{
-				col = 10;
-			}
-
-			if (col == 0)
-			{
-				race.setName(colString);
-				race.setSourceCampaign(source.getCampaign());
-				race.setSourceURI(source.getURI());
-			}
-			else if (colString.startsWith("CHOOSE:LANGAUTO:"))
+			if (colString.startsWith("CHOOSE:LANGAUTO:"))
 			{
 				race.setChooseLanguageAutos(colString.substring(16));
 			}
@@ -136,7 +115,6 @@ public final class RaceLoader extends LstObjectFileLoader<Race>
 		}
 
 		completeObject(source, race);
-		return null;
 	}
 
 	/**
@@ -164,5 +142,41 @@ public final class RaceLoader extends LstObjectFileLoader<Race>
 	protected void addGlobalObject(final PObject pObj)
 	{
 		Globals.addRace((Race) pObj);
+	}
+
+
+	@Override
+	public void parseToken(LoadContext context, Race race, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+		RaceLstToken token = TokenStore.inst().getToken(RaceLstToken.class,
+				key);
+		
+		/*
+		 * WARNING Doesn't handle:
+		 * 
+			else if (colString.startsWith("CHOOSE:LANGAUTO:"))
+			{
+				race.setChooseLanguageAutos(colString.substring(16));
+			}
+		 */
+
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, race, key, value)) {
+				Logging.errorPrint("Illegal race Token '" + key + "' for "
+						+ race.getDisplayName() + " in " + source.getURI()
+						+ " of " + source.getCampaign() + ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, race, value);
+			if (!token.parse(context, race, value)) {
+				Logging.errorPrint("Error parsing token " + key + " in race "
+						+ race.getDisplayName() + ':' + source.getURI() + ':'
+						+ value + "\"");
+			}
+		}
+	}
+
+	@Override
+	public Class<Race> getLoadClass() {
+		return Race.class;
 	}
 }

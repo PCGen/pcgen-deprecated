@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pcgen.cdom.base.KeyedObject;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -294,7 +295,7 @@ public class AbilityCategory implements KeyedObject
 	// KeyedObject Support
 	// -------------------------------------------
 	/**
-	 * @see pcgen.core.KeyedObject#getDisplayName()
+	 * @see pcgen.cdom.base.KeyedObject#getDisplayName()
 	 */
 	public String getDisplayName()
 	{
@@ -302,7 +303,7 @@ public class AbilityCategory implements KeyedObject
 	}
 
 	/**
-	 * @see pcgen.core.KeyedObject#getKeyName()
+	 * @see pcgen.cdom.base.KeyedObject#getKeyName()
 	 */
 	public String getKeyName()
 	{
@@ -310,7 +311,7 @@ public class AbilityCategory implements KeyedObject
 	}
 
 	/**
-	 * @see pcgen.core.KeyedObject#setKeyName(java.lang.String)
+	 * @see pcgen.cdom.base.KeyedObject#setKeyName(java.lang.String)
 	 */
 	public void setKeyName(final String aKey)
 	{
@@ -318,7 +319,7 @@ public class AbilityCategory implements KeyedObject
 	}
 
 	/**
-	 * @see pcgen.core.KeyedObject#setName(java.lang.String)
+	 * @see pcgen.cdom.base.KeyedObject#setName(java.lang.String)
 	 */
 	public void setName(final String aName)
 	{

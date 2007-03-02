@@ -1,5 +1,6 @@
 /*
  * AbilityLst.java
+ * Copyright 2006-2007 (C) Tom Parker <thpr@users.sourceforge.net>
  * Copyright 2006 (C) Aaron Divinsky <boomer70@yahoo.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -22,10 +23,21 @@
  */
 package plugin.lsttokens;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.Logging;
+import pcgen.base.util.TripleKeyMapToList;
+import pcgen.cdom.base.CDOMCategorizedSingleRef;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.AbilityNature;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
 import pcgen.core.Constants;
@@ -34,8 +46,11 @@ import pcgen.core.PObject;
 import pcgen.core.QualifiedObject;
 import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.PropertyFactory;
 
@@ -44,10 +59,11 @@ import pcgen.util.PropertyFactory;
  * 
  * <p>
  * <b>Tag Name</b>: <code>ABILITY</code>:x|y|z|z<br />
- * <b>Variables Used (x)</b>: Ability Category (The Ability Category this ability will be added to).<br />
- * <b>Variables Used (y)</b>: Ability Nature (The nature of the added ability: 
+ * <b>Variables Used (x)</b>: Ability Category (The Ability Category this
+ * ability will be added to).<br />
+ * <b>Variables Used (y)</b>: Ability Nature (The nature of the added ability:
  * <tt>NORMAL</tt>, <tt>AUTOMATIC</tt>, or <tt>VIRTUAL</tt>)<br />
- * <b>Variables Used (z)</b>: Ability Key or TYPE(The Ability to add. Can have 
+ * <b>Variables Used (z)</b>: Ability Key or TYPE(The Ability to add. Can have
  * choices specified in &quot;()&quot;)<br />
  * <b>Prereqs Allowed</b>: Yes <br />
  * <p />
@@ -56,15 +72,16 @@ import pcgen.util.PropertyFactory;
  * <li>Adds an Ability to a character.</li>
  * <li>The Ability is added to the Ability Category specied and that category's
  * pool will be charged if the Nature is <tt>NORMAL</tt></li>
- * <li>This tag will <b>not</b> cause a chooser to appear so all required 
+ * <li>This tag will <b>not</b> cause a chooser to appear so all required
  * choices must be specified in the tag</li>
- * <li>Choices can be specified by including them in parenthesis after the 
+ * <li>Choices can be specified by including them in parenthesis after the
  * ability key name (whitespace is ignored).</li>
- * <li>A <tt>CATEGORY</tt> tag can be added to the ability key to specify that
- * the innate ability category specified be searched for a matching ability.</li>
+ * <li>A <tt>CATEGORY</tt> tag can be added to the ability key to specify
+ * that the innate ability category specified be searched for a matching
+ * ability.</li>
  * <li>If no <tt>CATEGORY</tt> is specified the standard list for the ability
  * category will be used to find a matching ability.</li>
- * <li>This tag is a replacement for the following tags: <tt>FEAT</tt>, 
+ * <li>This tag is a replacement for the following tags: <tt>FEAT</tt>,
  * <tt>VFEAT</tt>, and <tt>FEATAUTO</tt>.
  * </ul>
  * <b>Where it is used:</b><br />
@@ -82,13 +99,16 @@ import pcgen.util.PropertyFactory;
  * @author boomer70 <boomer70@yahoo.com>
  * 
  * @since 5.11.1
- *
+ * 
  */
-public class AbilityLst implements GlobalLstToken
+public class AbilityLst extends AbstractToken implements GlobalLstToken
 {
 
+	private static final Class<Ability> ABILITY_CLASS = Ability.class;
+
 	/**
-	 * @see pcgen.persistence.lst.GlobalLstToken#parse(pcgen.core.PObject, java.lang.String, int)
+	 * @see pcgen.persistence.lst.GlobalLstToken#parse(pcgen.core.PObject,
+	 *      java.lang.String, int)
 	 */
 	public boolean parse(PObject anObj, String aValue, int anInt)
 		throws PersistenceLayerException
@@ -100,9 +120,9 @@ public class AbilityLst implements GlobalLstToken
 				SettingsHandler.getGame().getAbilityCategory(cat);
 		if (category == null)
 		{
-			throw new PersistenceLayerException(PropertyFactory.getFormattedString(
-				"Errors.LstTokens.ValueNotFound", //$NON-NLS-1$
-				getClass().getName(), "Ability Category", cat));
+			throw new PersistenceLayerException(PropertyFactory
+				.getFormattedString("Errors.LstTokens.ValueNotFound", //$NON-NLS-1$
+					getClass().getName(), "Ability Category", cat));
 		}
 
 		if (tok.hasMoreTokens())
@@ -111,19 +131,17 @@ public class AbilityLst implements GlobalLstToken
 			final Ability.Nature nature = Ability.Nature.valueOf(natureKey);
 			if (nature == null)
 			{
-				throw new PersistenceLayerException(PropertyFactory.getFormattedString(
-					"Errors.LstTokens.ValueNotFound", //$NON-NLS-1$
-					getClass().getName(), "Ability Nature", cat));
+				throw new PersistenceLayerException(PropertyFactory
+					.getFormattedString("Errors.LstTokens.ValueNotFound", //$NON-NLS-1$
+						getClass().getName(), "Ability Nature", cat));
 			}
 
-			ArrayList<Prerequisite> preReqs =
-					new ArrayList<Prerequisite>();
+			ArrayList<Prerequisite> preReqs = new ArrayList<Prerequisite>();
 			if (anInt > -9)
 			{
 				try
 				{
-					PreParserFactory factory =
-							PreParserFactory.getInstance();
+					PreParserFactory factory = PreParserFactory.getInstance();
 					String preLevelString = "PRELEVEL:" + anInt; //$NON-NLS-1$
 					if (anObj instanceof PCClass)
 					{
@@ -157,8 +175,8 @@ public class AbilityLst implements GlobalLstToken
 			}
 			for (final String ability : abilityList)
 			{
-				anObj.addAbility(category, nature,
-					new QualifiedObject<String>(ability, preReqs));
+				anObj.addAbility(category, nature, new QualifiedObject<String>(
+					ability, preReqs));
 			}
 			return true;
 		}
@@ -171,9 +189,173 @@ public class AbilityLst implements GlobalLstToken
 	/**
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "ABILITY"; //$NON-NLS-1$
+	}
+
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	{
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
+		if (!tok.hasMoreTokens())
+		{
+			return false;
+		}
+
+		pcgen.cdom.enumeration.AbilityCategory abCat;
+		try
+		{
+			String cat = tok.nextToken();
+			abCat = pcgen.cdom.enumeration.AbilityCategory.valueOf(cat);
+		}
+		catch (IllegalArgumentException iae)
+		{
+			return false;
+		}
+
+		if (!tok.hasMoreTokens())
+		{
+			// TODO This is the second test of this - should just countTokens()?
+			// What is faster?
+			return false;
+		}
+
+		AbilityNature nature;
+		try
+		{
+			String natureKey = tok.nextToken();
+			nature = AbilityNature.valueOf(natureKey);
+		}
+		catch (IllegalArgumentException iae)
+		{
+			return false;
+		}
+
+		if (!tok.hasMoreTokens())
+		{
+			// TODO This is the second test of this - should just countTokens()?
+			// What is faster?
+			return false;
+		}
+
+		List<PCGraphGrantsEdge> edgeList = new ArrayList<PCGraphGrantsEdge>();
+
+		String token = tok.nextToken();
+		while (true)
+		{
+			CDOMCategorizedSingleRef<Ability> ability =
+					context.ref.getCDOMReference(ABILITY_CLASS,
+						abCat, token);
+			PCGraphGrantsEdge edge =
+					context.graph.linkObjectIntoGraph(getTokenName(), obj,
+						ability);
+			edge.setAssociation(AssociationKey.ABILITY_NATURE, nature);
+			edgeList.add(edge);
+
+			if (!tok.hasMoreTokens())
+			{
+				// No prereqs, so we're done
+				return true;
+			}
+			token = tok.nextToken();
+			if (token.startsWith("PRE") || token.startsWith("!PRE"))
+			{
+				break;
+			}
+		}
+
+		while (true)
+		{
+			Prerequisite prereq = getPrerequisite(token);
+			if (prereq == null)
+			{
+				Logging.errorPrint("   (Did you put abilities after the "
+					+ "PRExxx tags in ABILITY:?)");
+				return false;
+			}
+			for (PCGraphGrantsEdge edge : edgeList)
+			{
+				edge.addPrerequisite(prereq);
+			}
+			if (!tok.hasMoreTokens())
+			{
+				break;
+			}
+			token = tok.nextToken();
+		}
+
+		return true;
+	}
+
+	public String unparse(LoadContext context, CDOMObject obj)
+	{
+		Set<PCGraphEdge> edgeSet =
+				context.graph.getChildLinksFromToken(getTokenName(), obj,
+					ABILITY_CLASS);
+
+		if (edgeSet == null || edgeSet.isEmpty())
+		{
+			return null;
+		}
+		TripleKeyMapToList<AbilityNature, String, Set<Prerequisite>, Ability> m =
+				new TripleKeyMapToList<AbilityNature, String, Set<Prerequisite>, Ability>();
+		for (PCGraphEdge edge : edgeSet)
+		{
+			AbilityNature nature =
+					edge.getAssociation(AssociationKey.ABILITY_NATURE);
+			Ability ab = (Ability) edge.getSinkNodes().get(0);
+			m.addToListFor(nature, ab.getCategory(), new HashSet<Prerequisite>(
+				edge.getPrerequisiteList()), ab);
+		}
+
+		StringBuilder sb = new StringBuilder();
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		boolean needTab = false;
+		for (AbilityNature nature : m.getKeySet())
+		{
+			for (String category : m.getSecondaryKeySet(nature))
+			{
+				for (Set<Prerequisite> prereqs : m.getTertiaryKeySet(nature,
+					category))
+				{
+					if (needTab)
+					{
+						sb.append('\t');
+					}
+					needTab = true;
+					sb.append(getTokenName()).append(':');
+					sb.append(category).append(Constants.PIPE);
+					sb.append(nature);
+					for (Ability a : m.getListFor(nature, category, prereqs))
+					{
+						sb.append(Constants.PIPE).append(a.getKeyName());
+					}
+					if (prereqs != null && !prereqs.isEmpty())
+					{
+						for (Prerequisite p : prereqs)
+						{
+							StringWriter swriter = new StringWriter();
+							try
+							{
+								prereqWriter.write(swriter, p);
+							}
+							catch (PersistenceLayerException e)
+							{
+								context
+									.addWriteMessage("Error writing Prerequisite: "
+										+ e);
+								return null;
+							}
+							sb.append(Constants.PIPE)
+								.append(swriter.toString());
+						}
+					}
+				}
+			}
+		}
+		return sb.toString();
 	}
 
 }

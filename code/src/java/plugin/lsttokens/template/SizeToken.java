@@ -51,6 +51,10 @@ public class SizeToken implements PCTemplateLstToken
 	{
 		try
 		{
+			/*
+			 * FIXME This doesn't work, because SIZE can be a formula as well:
+			 * e.g. max(AnimalSize,var("RACESIZE"))
+			 */
 			Size size = Size.valueOf(value);
 			context.graph.linkObjectIntoGraph(getTokenName(), template, size);
 			return true;

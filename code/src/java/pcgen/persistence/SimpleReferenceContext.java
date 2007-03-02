@@ -26,6 +26,7 @@ import pcgen.base.util.DoubleKeyMapToInstanceList;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
 import pcgen.core.PObject;
@@ -113,6 +114,15 @@ public class SimpleReferenceContext
 		}
 		try
 		{
+			/*
+			 * BUG FIXME The problem is that Ability DOES end up here - there is
+			 * no way of knowing the category in advance... :P
+			 */
+			if (CategorizedCDOMObject.class.isAssignableFrom(c))
+			{
+				throw new IllegalArgumentException(c.getSimpleName() + " "
+					+ val);
+			}
 			T obj = c.newInstance();
 			obj.setName(val);
 			registerWithKey(c, obj, val);
@@ -140,7 +150,12 @@ public class SimpleReferenceContext
 				+ obj.getDisplayName() + " " + oldKey);
 		}
 		Class<T> cl = (Class<T>) obj.getClass();
-		if (active.get(cl, oldKey).equals(obj))
+		PObject act = active.get(cl, oldKey);
+		if (act == null)
+		{
+			throw new InternalError("Did not find " + obj + " under " + oldKey);
+		}
+		if (act.equals(obj))
 		{
 			List<PObject> list = duplicates.getListFor(cl, oldKey);
 			if (list == null)
@@ -182,18 +197,9 @@ public class SimpleReferenceContext
 		return active.containsKey(name, key);
 	}
 
-	public <T extends PObject> T cloneConstructedCDOMObject(Class<T> cl,
-		String origKey, String newKey)
+	public <T extends PObject> T cloneConstructedCDOMObject(Class<T> cl, T obj,
+		String newKey)
 	{
-		T obj = getConstructedCDOMObject(cl, origKey);
-		if (obj == null)
-		{
-			Logging.errorPrint(PropertyFactory.getFormattedString(
-				"Errors.LstFileLoader.CopyObjectNotFound", //$NON-NLS-1$
-				origKey));
-			return null;
-		}
-
 		try
 		{
 			T clone = cl.cast(obj.clone());
@@ -206,7 +212,7 @@ public class SimpleReferenceContext
 		{
 			Logging.errorPrint(PropertyFactory.getFormattedString(
 				"Errors.LstFileLoader.CopyNotSupported", //$NON-NLS-1$
-				obj.getClass().getName(), origKey, newKey));
+				obj.getClass().getName(), obj.getKeyName(), newKey));
 		}
 		return null;
 	}
@@ -241,6 +247,10 @@ public class SimpleReferenceContext
 			throw new IllegalArgumentException(val);
 		}
 		if (val.startsWith("TIMES="))
+		{
+			throw new IllegalArgumentException(val);
+		}
+		if (val.indexOf(".") != -1)
 		{
 			throw new IllegalArgumentException(val);
 		}
@@ -345,7 +355,8 @@ public class SimpleReferenceContext
 		{
 			for (String s : referenced.getSecondaryKeySet(cl))
 			{
-				if (!active.containsKey(cl, s))
+				if (!active.containsKey(cl, s)
+					&& !deferred.containsInList(cl, s))
 				{
 					Logging.errorPrint("Unconstructed Reference: "
 						+ cl.getSimpleName() + " " + s);

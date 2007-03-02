@@ -104,30 +104,46 @@ public class EqmodToken implements EquipmentLstToken
 			while (pipeTok.hasMoreTokens())
 			{
 				String assocTok = pipeTok.nextToken();
-				StringTokenizer bracketTok = new StringTokenizer(assocTok, "]");
-				while (bracketTok.hasMoreTokens())
+				if (assocTok.indexOf(']') == -1)
 				{
-					String assoc = bracketTok.nextToken();
-					if (assoc.length() == 0 && !bracketTok.hasMoreTokens())
-					{
-						// Last one should be empty
-						break;
-					}
-					int openBracketLoc = assoc.indexOf('[');
-					if (openBracketLoc == -1)
+					edge.setAssociation(AssociationKey.ONLY, assocTok);
+				}
+				else
+				{
+					if (!setAssoc(edge, assocTok))
 					{
 						return false;
 					}
-					if (openBracketLoc != assoc.lastIndexOf('['))
-					{
-						return false;
-					}
-					String assocKey = assoc.substring(0, openBracketLoc);
-					String assocVal = assoc.substring(openBracketLoc + 1);
-					edge.setAssociation(AssociationKey.getKeyFor(String.class,
-						assocKey), assocVal);
 				}
 			}
+		}
+		return true;
+	}
+
+	private boolean setAssoc(PCGraphGrantsEdge edge, String assocTok)
+	{
+		StringTokenizer bracketTok = new StringTokenizer(assocTok, "]");
+		while (bracketTok.hasMoreTokens())
+		{
+			String assoc = bracketTok.nextToken();
+			if (assoc.length() == 0 && !bracketTok.hasMoreTokens())
+			{
+				// Last one should be empty
+				break;
+			}
+			int openBracketLoc = assoc.indexOf('[');
+			if (openBracketLoc == -1)
+			{
+				return false;
+			}
+			if (openBracketLoc != assoc.lastIndexOf('['))
+			{
+				return false;
+			}
+			String assocKey = assoc.substring(0, openBracketLoc);
+			String assocVal = assoc.substring(openBracketLoc + 1);
+			edge.setAssociation(AssociationKey
+				.getKeyFor(String.class, assocKey), assocVal);
 		}
 		return true;
 	}

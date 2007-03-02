@@ -1,5 +1,6 @@
 /*
  * FollowersLst.java
+ * Copyright 2006-2007 (C) Tom Parker <thpr@users.sourceforge.net>
  * Copyright 2006 (C) Aaron Divinsky <boomer70@yahoo.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -22,9 +23,25 @@
  */
 package plugin.lsttokens;
 
+import pcgen.base.formula.Formula;
+import pcgen.base.util.Logging;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.Restriction;
+import pcgen.cdom.base.Slot;
+import pcgen.cdom.content.CompanionList;
+import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.restriction.CompoundRestriction;
+import pcgen.cdom.restriction.FollowerRestriction;
 import pcgen.core.PObject;
+import pcgen.core.character.Follower;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
+
+import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
@@ -98,5 +115,96 @@ public class FollowersLst implements GlobalLstToken
 
 		obj.setNumFollowers(followerType, followerNumber);
 		return true;
+	}
+
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
+		final String followerType = tok.nextToken();
+		if (!tok.hasMoreTokens())
+		{
+			Logging.errorPrint(getTokenName()
+				+ " must have at least two | delimited values");
+			return false;
+		}
+		String followerNumber = tok.nextToken();
+		Formula num = FormulaFactory.getFormulaFor(followerNumber);
+		Set<PCGraphEdge> linkSet =
+				context.graph.getChildLinks(obj, CompanionList.class);
+		boolean found = false;
+		CompoundRestriction<Follower> cr =
+				new CompoundRestriction<Follower>(Follower.class, 1);
+		for (PCGraphEdge edge : linkSet)
+		{
+			CompanionList cl = (CompanionList) edge.getNodeAt(1);
+			/*
+			 * CONSIDER Should this be case sensitive or not?
+			 */
+			if (cl.getFollowerType().equalsIgnoreCase(followerType))
+			{
+				cr.addRestriction(new FollowerRestriction(cl));
+				found = true;
+				//Can't break, there may be more than one
+			}
+		}
+		if (found)
+		{
+			Slot<Follower> slot =
+					context.graph.addSlotIntoGraph(getTokenName(), obj,
+						Follower.class, num);
+			slot.addSinkRestriction(cr);
+		}
+		else
+		{
+			Logging
+				.errorPrint("Unable to find COMPANIONLIST for Follower Type: "
+					+ followerType);
+		}
+		return found;
+	}
+
+	public String unparse(LoadContext context, CDOMObject obj)
+	{
+		Set<PCGraphEdge> edgeList =
+				context.graph.getChildLinksFromToken(getTokenName(), obj,
+					Slot.class);
+		if (edgeList.isEmpty())
+		{
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		boolean needsTab = false;
+		for (PCGraphEdge edge : edgeList)
+		{
+			if (needsTab)
+			{
+				sb.append('\t');
+			}
+			sb.append(getTokenName()).append(':');
+			Slot<Follower> s = (Slot<Follower>) edge.getSinkNodes().get(0);
+			sb.append(s.toLSTform()).append(Constants.PIPE);
+			List<Restriction<?>> resList = s.getSinkRestrictions();
+			for (Restriction<?> res : resList)
+			{
+				CompoundRestriction<Follower> cr =
+						(CompoundRestriction<Follower>) res;
+				/*
+				 * TODO FIXME need to process these...
+				 */
+			}
+			Set<PCGraphEdge> linkSet =
+					context.graph.getChildLinks(obj, CompanionList.class);
+			for (PCGraphEdge ce : linkSet)
+			{
+				CompanionList cl = (CompanionList) ce.getNodeAt(1);
+
+//				if (cl.getFollowerType().equalsIgnoreCase(followerType))
+//				{
+//				}
+			}
+		}
+		return sb.toString();
 	}
 }

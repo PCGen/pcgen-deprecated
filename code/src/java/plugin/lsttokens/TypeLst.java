@@ -1,15 +1,41 @@
 /*
- * Created on Sep 2, 2005
+ * Copyright 2006-2007 (C) Tom Parker <thpr@users.sourceforge.net>
+ * Copyright 2005-2006 (C) Devon Jones
  *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * Current Ver: $Revision$
+ * Last Editor: $Author$
+ * Last Edited: $Date$
  */
 package plugin.lsttokens;
 
+import java.util.List;
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class TypeLst implements GlobalLstToken
 {
@@ -23,5 +49,65 @@ public class TypeLst implements GlobalLstToken
 	{
 		obj.setTypeInfo(value);
 		return true;
+	}
+
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	{
+		StringTokenizer aTok = new StringTokenizer(value.trim(), Constants.DOT);
+
+		boolean removeType = false;
+		while (aTok.hasMoreTokens())
+		{
+			String aType = aTok.nextToken();
+
+			if (Constants.LST_ADD.equals(aType))
+			{
+				removeType = false;
+			}
+			else if (Constants.LST_REMOVE.equals(aType))
+			{
+				removeType = true;
+			}
+			else if (Constants.LST_CLEAR.equals(aType))
+			{
+				obj.removeListFor(ListKey.TYPE);
+			}
+			else
+			{
+				Type typeCon = Type.getConstant(aType);
+				if (removeType)
+				{
+					obj.removeFromListFor(ListKey.TYPE, typeCon);
+					removeType = false;
+				}
+				else if (!obj.containsInList(ListKey.TYPE, typeCon))
+				{
+					obj.addToListFor(ListKey.TYPE, typeCon);
+				}
+			}
+		}
+		return true;
+	}
+
+	public String unparse(LoadContext context, CDOMObject obj)
+	{
+		List<Type> typeList = obj.getListFor(ListKey.TYPE);
+		if (typeList == null || typeList.isEmpty())
+		{
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(getTokenName()).append(':');
+		boolean needDot = false;
+		for (Type type : typeList)
+		{
+			if (needDot)
+			{
+				sb.append(Constants.DOT);
+			}
+			sb.append(type);
+			needDot = true;
+		}
+		return sb.toString();
 	}
 }

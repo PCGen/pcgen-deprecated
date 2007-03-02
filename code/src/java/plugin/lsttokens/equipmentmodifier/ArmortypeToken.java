@@ -82,7 +82,8 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 		 * TODO This gets interesting to see how it should really be set - just
 		 * like CHANGEPROF (global token)
 		 */
-		return false;
+		//FIXME a hack for now
+		return true;
 		// mod.setArmorType(value);
 		// return true;
 	}

@@ -32,6 +32,7 @@ import java.util.Map;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
 import pcgen.core.utils.CoreUtility;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.utils.FeatParser;
@@ -173,6 +174,35 @@ public final class PObjectLoader
 			List<Ability> vFeatList =
 					FeatParser.parseVirtualFeatList(p.getTag());
 			p.getObject().addVirtualFeats(vFeatList);
+		}
+	}
+
+	public static boolean parseTag(LoadContext context, PObject wp, String key, String value) throws PersistenceLayerException {
+		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
+				GlobalLstToken.class);
+		LstToken token = tokenMap.get(key);
+		if (token != null) {
+			LstUtils.deprecationCheck(token, wp, value);
+			return ((GlobalLstToken) token).parse(context, wp, value);
+		} else {
+			if (key.startsWith("PRE") || key.startsWith("!PRE")) {
+				if (key.toUpperCase().equals("PRE:.CLEAR")) {
+					wp.clearPreReq();
+				} else {
+					value = CoreUtility.replaceAll(value, "<this>", wp
+							.getKeyName());
+					try {
+						PreParserFactory factory = PreParserFactory
+								.getInstance();
+						wp.addPreReq(factory.parse(key + ":" + value));
+					} catch (PersistenceLayerException ple) {
+						throw new PersistenceLayerException(
+								"Unable to parse a prerequisite: "
+										+ ple.getMessage());
+					}
+				}
+			}
+			return true;
 		}
 	}
 }

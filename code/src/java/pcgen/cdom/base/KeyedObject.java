@@ -1,4 +1,4 @@
-package pcgen.core;
+package pcgen.cdom.base;
 
 public interface KeyedObject
 {

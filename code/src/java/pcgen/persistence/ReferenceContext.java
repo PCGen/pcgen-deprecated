@@ -77,7 +77,14 @@ public class ReferenceContext
 
 	public <T extends PObject> T constructCDOMObject(Class<T> c, String val)
 	{
-		return simple.constructCDOMObject(c, val);
+		if (CategorizedCDOMObject.class.isAssignableFrom(c))
+		{
+			return (T) categorized.constructCDOMObject((Class) c, val);
+		}
+		else
+		{
+			return simple.constructCDOMObject(c, val);
+		}
 	}
 
 	public void constructIfNecessary(Class<WeaponProf> cl, String value)
@@ -98,19 +105,20 @@ public class ReferenceContext
 
 	public <T extends PObject> void reassociateReference(String value, T obj)
 	{
-		simple.reassociateReference(value, obj);
+		if (CategorizedCDOMObject.class.isAssignableFrom(obj.getClass()))
+		{
+			categorized.reassociateReference(value, (CategorizedCDOMObject) obj);
+		}
+		else
+		{
+			simple.reassociateReference(value, obj);
+		}
 	}
 
 	public <T extends PObject> T silentlyGetConstructedCDOMObject(Class<T> c,
 		String val)
 	{
 		return simple.silentlyGetConstructedCDOMObject(c, val);
-	}
-
-	public <T extends PObject & CategorizedCDOMObject<T>> T constructCDOMObject(
-		Class<T> c, Category<T> cat, String val)
-	{
-		return categorized.constructCDOMObject(c, cat, val);
 	}
 
 	public <T extends PObject & CategorizedCDOMObject<T>> CDOMCategorizedSingleRef<T> getCDOMReference(
@@ -131,4 +139,25 @@ public class ReferenceContext
 		return categorized.silentlyGetConstructedCDOMObject(c, cat, val);
 	}
 
+	public <T extends PObject & CategorizedCDOMObject<T>> void reassociateReference(
+		Category<T> cat, T obj)
+	{
+		categorized.reassociateReference(cat, obj);
+	}
+
+	public <T extends PObject> T cloneConstructedCDOMObject(Class<T> cl, T orig, String newKey)
+	{
+		if (CategorizedCDOMObject.class.isAssignableFrom(cl))
+		{
+			Class catCl = (Class) cl;
+			CategorizedCDOMObject cco = (CategorizedCDOMObject) orig;
+			return (T) categorized.cloneConstructedCDOMObject(catCl, cco, newKey);
+		}
+		else
+		{
+			return simple.cloneConstructedCDOMObject(cl, orig, newKey);
+		}
+	}
+	
+	
 }

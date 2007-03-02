@@ -29,6 +29,7 @@ import pcgen.core.Constants;
 import pcgen.core.Globals;
 import pcgen.core.Language;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -50,23 +51,15 @@ final class LanguageLoader extends LstObjectFileLoader<Language>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public Language parseLine(Language aLang, String lstLine,
+	public void parseLine(Language lang, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
-		Language lang = aLang;
-
-		if (lang == null)
-		{
-			lang = new Language();
-		}
-
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
 
-		int col = 0;
-
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(LanguageLstToken.class);
+		
 		while (colToken.hasMoreTokens())
 		{
 			final String colString = colToken.nextToken().trim();
@@ -82,13 +75,7 @@ final class LanguageLoader extends LstObjectFileLoader<Language>
 			}
 			LanguageLstToken token = (LanguageLstToken) tokenMap.get(key);
 
-			if (col == 0)
-			{
-				lang.setName(colString);
-				lang.setSourceCampaign(source.getCampaign());
-				lang.setSourceURI(source.getURI());
-			}
-			else if (token != null)
+			if (token != null)
 			{
 				final String value = colString.substring(idxColon + 1).trim();
 				LstUtils.deprecationCheck(token, lang, value);
@@ -108,12 +95,9 @@ final class LanguageLoader extends LstObjectFileLoader<Language>
 				Logging.errorPrint("Unknown tag '" + colString + "' in "
 					+ source.getURI());
 			}
-
-			++col;
 		}
 
 		completeObject(source, lang);
-		return null;
 	}
 
 	/**
@@ -142,5 +126,35 @@ final class LanguageLoader extends LstObjectFileLoader<Language>
 	{
 		// TODO - Create Globals.addLanguage( final Language aLang )
 		Globals.getLanguageList().add((Language) pObj);
+	}
+
+	@Override
+	public void parseToken(LoadContext context, Language lang, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+
+		LanguageLstToken token = TokenStore.inst().getToken(LanguageLstToken.class, key);
+
+		if (token == null)
+		{
+			if (!PObjectLoader.parseTag(context, lang, key, value))
+			{
+				Logging.errorPrint("Unknown tag '" + key + "' in "
+						+ source.getURI());
+			}
+		}
+		else
+		{
+			LstUtils.deprecationCheck(token, lang, value);
+			if (!token.parse(context, lang, value))
+			{
+				Logging.errorPrint("Error parsing language "
+					+ lang.getDisplayName() + ':' + source.getURI() + ':'
+					+ value + "\"");
+			}
+		}
+	}
+
+	@Override
+	public Class<Language> getLoadClass() {
+		return Language.class;
 	}
 }

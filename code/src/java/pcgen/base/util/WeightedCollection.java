@@ -1,7 +1,8 @@
 /*
- * WeightedCollection.java Copyright 2007 (c) Tom Parker <thpr@sourceforge.net>
- * Derived from WeightedList.java Copyright 2006 (C) Aaron Divinsky
- * <boomer70@yahoo.com>
+ * WeightedCollection.java
+ * Copyright 2007 (c) Tom Parker <thpr@sourceforge.net>
+ *  Derived from WeightedList.java
+ *  Copyright 2006 (C) Aaron Divinsky <boomer70@yahoo.com>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,8 +18,9 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Current Ver: $Revision: 1609 $ Last Editor: $Author: $ Last Edited: $Date:
- * 2006-11-10 00:41:21 -0500 (Fri, 10 Nov 2006) $
+ * Current Ver: $Revision: 1609 $
+ * Last Editor: $Author: $
+ * Last Edited: $Date: 2006-11-10 00:41:21 -0500 (Fri, 10 Nov 2006) $
  */
 package pcgen.base.util;
 

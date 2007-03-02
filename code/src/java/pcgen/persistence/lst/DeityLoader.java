@@ -29,6 +29,7 @@ import pcgen.core.Constants;
 import pcgen.core.Deity;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -53,19 +54,11 @@ public class DeityLoader extends LstObjectFileLoader<Deity>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public Deity parseLine(Deity aDeity, String lstLine,
+	public void parseLine(Deity deity, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
-		Deity deity = aDeity;
-
-		if (deity == null)
-		{
-			deity = new Deity();
-		}
-
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
-		boolean firstCol = true;
 
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(DeityLstToken.class);
@@ -98,20 +91,7 @@ public class DeityLoader extends LstObjectFileLoader<Deity>
 			{
 				continue;
 			}
-			else if (firstCol)
-			{
-				if ((!colString.equals(deity.getKeyName()))
-					&& (colString.indexOf(".MOD") < 0))
-				{
-					completeObject(source, deity);
-					deity = new Deity();
-					deity.setName(colString);
-					deity.setSourceCampaign(source.getCampaign());
-					deity.setSourceURI(source.getURI());
-				}
-				firstCol = false;
-			}
-			else
+			else 
 			{
 				Logging.errorPrint("Illegal deity info '" + colString
 					+ "' for " + deity.getDisplayName() + " in "
@@ -120,7 +100,6 @@ public class DeityLoader extends LstObjectFileLoader<Deity>
 		}
 
 		completeObject(source, deity);
-		return null;
 	}
 
 	/**
@@ -149,5 +128,32 @@ public class DeityLoader extends LstObjectFileLoader<Deity>
 	{
 		// TODO - Create Globals.addDeity( final Deity aDeity );
 		Globals.getDeityList().add((Deity) pObj);
+	}
+
+	@Override
+	public void parseToken(LoadContext context, Deity deity, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+
+		DeityLstToken token = TokenStore.inst().getToken(DeityLstToken.class,
+				key);
+
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, deity, key, value)) {
+				Logging.errorPrint("Illegal deity Token '" + key + "' for "
+						+ deity.getDisplayName() + " in " + source.getURI()
+						+ " of " + source.getCampaign() + ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, deity, value);
+			if (!token.parse(context, deity, value)) {
+				Logging.errorPrint("Error parsing token " + key + " in deity "
+						+ deity.getDisplayName() + ':' + source.getURI() + ':'
+						+ value + "\"");
+			}
+		}
+	}
+
+	@Override
+	public Class<Deity> getLoadClass() {
+		return Deity.class;
 	}
 }

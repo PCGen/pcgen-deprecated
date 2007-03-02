@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Deity;
@@ -16,6 +17,8 @@ import pcgen.core.Race;
 import pcgen.core.Skill;
 import pcgen.core.WeaponProf;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.util.Logging;
 import pcgen.util.StringPClassUtil;
@@ -83,5 +86,17 @@ public class QualifyToken implements GlobalLstToken
 		return Arrays.asList(Ability.class, Deity.class, Domain.class,
 				Equipment.class, PCClass.class, Race.class, Skill.class,
 				Spell.class, PCTemplate.class, WeaponProf.class);
+	}
+
+	public boolean parse(LoadContext context, CDOMObject obj, String value) throws PersistenceLayerException
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public String unparse(LoadContext context, CDOMObject obj)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

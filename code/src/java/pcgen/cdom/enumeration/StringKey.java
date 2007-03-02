@@ -38,6 +38,7 @@ public enum StringKey {
 	 BIRTHDAY ,
 	 BIRTHPLACE ,
 	 BOOK_TYPE ,
+	 CAN_BE_RESISTED,
 	 CATEGORY ,
 	 CATCH_PHRASE ,
 	 CHOICE_STRING ,

@@ -49,7 +49,7 @@ public class BonusToken implements EquipmentModifierLstToken
 		// FIXME Auto-generated method stub
 		// Blank because I think this token is useless - <this> only valid
 		// outside of eqmods...
-		return false;
+		return true;
 	}
 
 	public String unparse(LoadContext context, EquipmentModifier mod)

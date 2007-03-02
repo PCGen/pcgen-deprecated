@@ -23,6 +23,7 @@ import pcgen.core.Ability;
 public enum AbilityCategory implements Category<Ability> {
 
 	FEAT, 
+	Mutation,
 	Salient_Divine_Ability;
 
 	public static AbilityCategory getAblilityCategory(String s) {

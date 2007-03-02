@@ -24,6 +24,7 @@
  */
 package pcgen.persistence.lst;
 
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 
 import java.net.URI;
@@ -47,6 +48,9 @@ import java.util.StringTokenizer;
  */
 public abstract class LstLineFileLoader extends LstFileLoader
 {
+
+	private CampaignSourceEntry activeSource = null;
+
 	/** 
 	 * Stores what game mode the objects loaded by this loader should be 
 	 * associated with.
@@ -110,11 +114,16 @@ public abstract class LstLineFileLoader extends LstFileLoader
 	 * @throws PersistenceLayerException if there is a problem with the
 	 *         LST syntax
 	 */
-	public void loadLstFiles(List<CampaignSourceEntry> fileList) throws PersistenceLayerException
+	public void loadLstFiles(LoadContext context, List<CampaignSourceEntry> fileList) throws PersistenceLayerException
 	{
 		// Load the files themselves as thoroughly as possible
 		for (CampaignSourceEntry cse : fileList)
 		{
+			/*
+			 * CLEANUP A bit of strangeness, but we really want this in CompanionMod, et al.
+			 * - thpr 1/26/07
+			 */
+			activeSource  = cse;
 			loadLstFile(cse.getURI());
 		}
 	}
@@ -150,5 +159,9 @@ public abstract class LstLineFileLoader extends LstFileLoader
 	public void setGameMode(String gameMode)
 	{
 		this.gameMode = gameMode;
+	}
+
+	public CampaignSourceEntry getActiveSource() {
+		return activeSource;
 	}
 }

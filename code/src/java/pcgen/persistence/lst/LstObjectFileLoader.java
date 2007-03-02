@@ -1,5 +1,6 @@
 /*
  * LstLineFileLoader.java
+ * Copyright 2007 (C) Tom Parker <thpr@users.sourceforge.net>
  * Copyright 2003 (C) David Hibbs <sage_sam@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -35,7 +36,9 @@ import java.util.TreeSet;
 
 import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
@@ -94,7 +97,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	 * @param fileList containing the list of files to read
 	 * @throws PersistenceLayerException 
 	 */
-	public void loadLstFiles(List<CampaignSourceEntry> fileList) throws PersistenceLayerException
+	public void loadLstFiles(LoadContext context, List<CampaignSourceEntry> fileList) throws PersistenceLayerException
 	{
 		// Track which sources have been loaded already
 		TreeSet<URI> loadedFiles = new TreeSet<URI>();
@@ -112,17 +115,17 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 
 			if (!loadedFiles.contains(fileName))
 			{
-				loadLstFile(sourceEntry);
+				loadLstFile(context, sourceEntry);
 				loadedFiles.add(fileName);
 			}
 		}
 
 		// Next we perform copy operations
-		processCopies();
+		processCopies(context);
 
 		// Now handle .MOD items
 		sourceMap = null;
-		processMods();
+		processMods(context);
 
 		// Finally, forget the .FORGET items
 		processForgets();
@@ -146,9 +149,45 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	 *         LST line
 	 * @throws PersistenceLayerException if there is a problem with the LST syntax
 	 */
-	public abstract T parseLine(T target, String lstLine,
+	public abstract void parseLine(T target, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException;
 
+	public void parseLine(LoadContext context, T target, String lstLine,
+		CampaignSourceEntry source) throws PersistenceLayerException
+	{
+		final StringTokenizer colToken =
+				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
+		// Set Name
+		// TODO FIXME Assumes it's not a .MOD or something :/
+		target.setName(colToken.nextToken());
+
+		while (colToken.hasMoreTokens())
+		{
+			String colString = colToken.nextToken().trim();
+			int idxColon = colString.indexOf(':');
+			if (idxColon == -1)
+			{
+				Logging.errorPrint("Invalid Token - does not contain a colon: "
+					+ colString);
+				continue;
+			}
+			else if (idxColon == 0)
+			{
+				Logging.errorPrint("Invalid Token - starts with a colon: "
+					+ colString);
+				continue;
+			}
+			String key = colString.substring(0, idxColon);
+			String value =
+					(idxColon == colString.length() - 1) ? null : colString
+						.substring(idxColon + 1);
+			parseToken(context, target, key, value, source);
+		}
+	}
+	
+	public abstract void parseToken(LoadContext context, T target, String key,
+		String value, CampaignSourceEntry source) throws PersistenceLayerException;
+	
 	/**
 	 * This method is called by the loading framework to signify that the
 	 * loading of this object is complete and the object should be added to the
@@ -324,7 +363,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	 * @param sourceEntry CampaignSourceEntry containing the absolute file path
 	 * or the URL from which to read LST formatted data.
 	 */
-	protected void loadLstFile(CampaignSourceEntry sourceEntry)
+	protected void loadLstFile(LoadContext context, CampaignSourceEntry sourceEntry)
 	{
 		setChanged();
 		notifyObservers(sourceEntry.getURI());
@@ -348,8 +387,6 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		final String aString = dataBuffer.toString();
 		final StringTokenizer fileLines =
 				new StringTokenizer(aString, LINE_SEPARATOR);
-		T target = null;
-		ArrayList<ModEntry> classModLines = null;
 
 		int currentLineNumber = 0;
 		while (fileLines.hasMoreTokens())
@@ -371,24 +408,6 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 				firstToken = line.substring(0, sepLoc);
 			}
 
-			// Check for continuation of class mods
-			if (classModLines != null)
-			{
-				// TODO - Figure out why we need to check CLASS: in this file.
-				if (firstToken.startsWith("CLASS:")) //$NON-NLS-1$
-				{
-					modEntryList.add(classModLines);
-					classModLines = null;
-				}
-				else
-				{
-					// Add the line to the class mod and don't process it yet.
-					classModLines.add(new ModEntry(sourceEntry, line,
-						currentLineNumber, sourceMap));
-					continue;
-				}
-			}
-
 			// check for comments, copies, mods, and forgets
 			if (isComment(line))
 			{
@@ -406,22 +425,10 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 			}
 			else if (firstToken.indexOf(MOD_SUFFIX) > 0)
 			{
-				// TODO - Figure out why we need to check CLASS: in this file.
-				if (firstToken.startsWith("CLASS:")) //$NON-NLS-1$
-				{
-					// As CLASS:abc.MOD can be followed by level lines, we place the
-					// lines into a list for processing in a group afterwards
-					classModLines = new ArrayList<ModEntry>();
-					classModLines.add(new ModEntry(sourceEntry, line,
-						currentLineNumber, sourceMap));
-				}
-				else
-				{
-					List<ModEntry> modLines = new ArrayList<ModEntry>();
-					modLines.add(new ModEntry(sourceEntry, line,
-						currentLineNumber, sourceMap));
-					modEntryList.add(modLines);
-				}
+				List<ModEntry> modLines = new ArrayList<ModEntry>();
+				modLines.add(new ModEntry(sourceEntry, line,
+					currentLineNumber, sourceMap));
+				modEntryList.add(modLines);
 			}
 			else if (firstToken.indexOf(FORGET_SUFFIX) > 0)
 			{
@@ -431,10 +438,15 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 			{
 				try
 				{
-					target = parseLine(target, line, sourceEntry);
-					// TODO - This is kind of a hack but we need to make sure
-					// that classes get added.
-					completeObject(sourceEntry, target);
+					T obj = context.ref.constructCDOMObject(getLoadClass(), firstToken);
+					obj.setName(firstToken);
+					obj.setSourceCampaign(sourceEntry.getCampaign());
+					obj.setSourceURI(sourceEntry.getURI());
+					// first column is the name; after that are LST tags
+					String restOfLine = line.substring(sepLoc).trim();
+
+					parseLine(obj, restOfLine, sourceEntry);
+					parseLine(context, obj, line, sourceEntry);
 				}
 				catch (PersistenceLayerException ple)
 				{
@@ -456,11 +468,6 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 				}
 			}
 		}
-
-		if (classModLines != null)
-		{
-			modEntryList.add(classModLines);
-		}
 	}
 
 	/**
@@ -478,33 +485,24 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	 * @param copyName String name of the target object
 	 * @throws PersistenceLayerException 
 	 */
-	private void performCopy(CampaignSourceEntry source, String baseKey, String copyName)
+	private void performCopy(LoadContext context, CampaignSourceEntry source, String baseKey, String copyName)
 		throws PersistenceLayerException
 	{
 		T object = getObjectKeyed(baseKey);
 
-		try
-		{
-			if (object == null)
-			{
-				logError(PropertyFactory.getFormattedString(
-					"Errors.LstFileLoader.CopyObjectNotFound", //$NON-NLS-1$
-					baseKey));
-
-				return;
-			}
-
-			PObject clone = object.clone();
-			clone.setName(copyName);
-			clone.setKeyName(copyName);
-			completeObject(source, clone);
-		}
-		catch (CloneNotSupportedException e)
+		if (object == null)
 		{
 			logError(PropertyFactory.getFormattedString(
-				"Errors.LstFileLoader.CopyNotSupported", //$NON-NLS-1$
-				object.getClass().getName(), baseKey, copyName));
+				"Errors.LstFileLoader.CopyObjectNotFound", //$NON-NLS-1$
+				baseKey));
+
+			return;
 		}
+
+		Class<T> cl = (Class<T>) object.getClass();
+		PObject clone =
+				context.ref.cloneConstructedCDOMObject(cl, object, copyName);
+		completeObject(source, clone);
 	}
 
 	/**
@@ -514,13 +512,13 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	 * .COPY operation
 	 * @throws PersistenceLayerException 
 	 */
-	private void performCopy(ModEntry me) throws PersistenceLayerException
+	private void performCopy(LoadContext context, ModEntry me) throws PersistenceLayerException
 	{
 		String lstLine = me.getLstLine();
 		final int nameEnd = lstLine.indexOf(COPY_SUFFIX);
 		final String baseName = lstLine.substring(0, nameEnd);
 		final String copyName = lstLine.substring(nameEnd + 6);
-		performCopy(me.getSource(), baseName, copyName);
+		performCopy(context, me.getSource(), baseName, copyName);
 	}
 
 	/**
@@ -531,27 +529,19 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	 * PObject.setName()
 	 * @param entryList
 	 */
-	private void performMod(List<ModEntry> entryList)
+	private void performMod(LoadContext context, List<ModEntry> entryList)
 	{
 		ModEntry entry = entryList.get(0);
 		// get the name of the object to modify, trimming off the .MOD
 		int nameEnd = entry.getLstLine().indexOf(MOD_SUFFIX);
 		String key = entry.getLstLine().substring(0, nameEnd);
 
-		// remove the leading tag, if any (i.e. CLASS:Druid.MOD
-		int nameStart = key.indexOf(':');
-
-		if (nameStart > 0)
-		{
-			key = key.substring(nameStart + 1);
-		}
-
 		if (excludedObjects.contains(key))
 		{
 			return;
 		}
 		// get the actual object to modify
-		T object = getObjectKeyed(key);
+		T object = getCDOMObjectKeyed(context, key);
 
 		if (object == null)
 		{
@@ -575,7 +565,10 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 						hashCode = object.getSourceEntry().hashCode();
 					}
 
-					parseLine(object, element.getLstLine(), element.getSource());
+					String line = element.getLstLine();
+					int sepLoc = line.indexOf(FIELD_SEPARATOR);
+					String restOfLine = line.substring(sepLoc).trim();
+					parseLine(object, restOfLine, element.getSource());
 
 					if ((noSource && object.getSourceEntry() != null)
 						|| (!noSource && hashCode != object.getSourceEntry()
@@ -614,15 +607,20 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		}
 	}
 
+	protected T getCDOMObjectKeyed(LoadContext context, String key)
+	{
+		return context.ref.getConstructedCDOMObject(getLoadClass(), key);
+	}
+
 	/**
 	 * This method will process the lines containing a .COPY directive
 	 * @throws PersistenceLayerException 
 	 */
-	private void processCopies() throws PersistenceLayerException
+	private void processCopies(LoadContext context) throws PersistenceLayerException
 	{
 		for (ModEntry me : copyLineList)
 		{
-			performCopy(me);
+			performCopy(context, me);
 		}
 		copyLineList.clear();
 	}
@@ -657,11 +655,11 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	/**
 	 * This method will process the lines containing a .MOD directive
 	 */
-	private void processMods()
+	private void processMods(LoadContext context)
 	{
 		for (List<ModEntry> modEntry : modEntryList)
 		{
-			performMod(modEntry);
+			performMod(context, modEntry);
 		}
 		modEntryList.clear();
 	}
@@ -748,4 +746,6 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 			return lineNumber;
 		}
 	}
+
+	public abstract Class<T> getLoadClass();
 }

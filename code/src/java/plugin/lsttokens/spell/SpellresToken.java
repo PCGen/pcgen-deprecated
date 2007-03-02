@@ -21,7 +21,7 @@
  */
 package plugin.lsttokens.spell;
 
-import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SpellLstToken;
@@ -46,32 +46,18 @@ public class SpellresToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
-		if (value.equalsIgnoreCase("NO"))
-		{
-			spell.put(ObjectKey.CAN_BE_RESISTED, Boolean.FALSE);
-		}
-		else if (value.equalsIgnoreCase("YES"))
-		{
-			spell.put(ObjectKey.CAN_BE_RESISTED, Boolean.TRUE);
-		}
-		else
-		{
-			Logging.errorPrint("Did not understand " + getTokenName()
-				+ " value: " + value);
-			Logging.errorPrint("Must be YES or NO");
-			return false;
-		}
+		spell.put(StringKey.CAN_BE_RESISTED, value);
 		return true;
 	}
 
 	public String unparse(LoadContext context, Spell spell)
 	{
-		Boolean resistable = spell.get(ObjectKey.CAN_BE_RESISTED);
+		String resistable = spell.get(StringKey.CAN_BE_RESISTED);
 		if (resistable == null)
 		{
 			return null;
 		}
 		return new StringBuilder().append(getTokenName()).append(':').append(
-			resistable.booleanValue() ? "YES" : "NO").toString();
+			resistable).toString();
 	}
 }

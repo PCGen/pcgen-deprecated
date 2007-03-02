@@ -64,10 +64,10 @@ public class HandsToken implements WeaponProfLstToken
 					+ value);
 				return false;
 			}
-			if (hands <= 0)
+			if (hands < 0)
 			{
 				Logging.errorPrint(getTokenName() + " value: " + value
-					+ " must be greater than zero");
+					+ " must be greater than or equal to zero");
 				return false;
 			}
 		}

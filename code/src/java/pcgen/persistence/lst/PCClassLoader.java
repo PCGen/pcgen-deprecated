@@ -26,12 +26,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.SubClass;
 import pcgen.core.SubstitutionClass;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -41,7 +43,7 @@ import pcgen.util.Logging;
  * @author  David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class PCClassLoader extends LstObjectFileLoader<PCClass>
+public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 {
 	/** Creates a new instance of PCClassLoader */
 	public PCClassLoader()
@@ -49,6 +51,178 @@ public final class PCClassLoader extends LstObjectFileLoader<PCClass>
 		super();
 	}
 
+	@Override
+	public PCClass parseLine(LoadContext context, PCClass target,
+		String lstLine, CampaignSourceEntry source)
+		throws PersistenceLayerException
+	{
+		int tabLoc = lstLine.indexOf("\t");
+		String firstToken;
+		if (tabLoc == -1)
+		{
+			// Error??
+			firstToken = lstLine;
+		}
+		else
+		{
+			firstToken = lstLine.substring(0, tabLoc);
+		}
+		String restOfLine = lstLine.substring(tabLoc + 1);
+
+		if (target == null)
+		{
+			if (firstToken.startsWith("CLASS:"))
+			{
+				String className = firstToken.substring(6);
+				target =
+						context.ref.silentlyGetConstructedCDOMObject(
+							getLoadClass(), className);
+				if (target == null)
+				{
+					target =
+							context.ref.constructCDOMObject(getLoadClass(),
+								className);
+					// TODO FIXME Assumes it's not a .MOD or something :/
+					target.setName(className);
+					target.setSourceCampaign(source.getCampaign());
+					target.setSourceURI(source.getURI());
+				}
+			}
+			else
+			{
+				Logging.errorPrint("How did I see this line: " + lstLine);
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e)
+				{
+					// FIXME Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+		}
+		try
+		{
+			int lvl = Integer.parseInt(firstToken);
+			// TODO FIXME Should this really be through LoadContext??
+			PCClassLevel level = target.getClassLevel(lvl);
+			level.setName(target.getDisplayName() + "(" + lvl + ")");
+			PCClassLevelLoader.parseLine(context, level, lstLine, source);
+		}
+		catch (NumberFormatException nfe)
+		{
+			if (firstToken.startsWith("SUBCLASS:"))
+			{
+				if (lstLine.indexOf("\t") == -1)
+				{
+					Logging.errorPrint("Expected SUBCLASS to have "
+						+ "additional Tags in " + source.getURI()
+						+ " (e.g. COST is a required Tag in a SUBCLASS)");
+				}
+				String subClassKey = firstToken.substring(9);
+				// TODO FIXME Should this really be through LoadContext??
+				SubClass sc = target.getSubClassKeyed(subClassKey);
+				if (sc == null)
+				{
+					sc = new SubClass();
+					sc.setSourceCampaign(source.getCampaign());
+					sc.setSourceURI(source.getURI());
+					target.addSubClass(sc);
+				}
+				// FIXME
+				// SubClassLoader.parseLine(context, sc, restOfLine, source);
+			}
+			else if (firstToken.startsWith("SUBCLASSLEVEL:"))
+			{
+
+				// FIXME
+				// SubClassLoader.parseLine(context, sc, restOfLine, source);
+			}
+			else if (firstToken.startsWith("SUBSTITUTIONCLASS:"))
+			{
+				if (lstLine.indexOf("\t") == -1)
+				{
+					Logging.errorPrint("Expected SUBSTITUTIONCLASS to have "
+						+ "additional Tags in " + source.getURI()
+						+ " (otherwize SUBSTITUTIONCLASS has no value)");
+				}
+				String subClassKey = firstToken.substring(18);
+				// TODO FIXME Should this really be through LoadContext??
+				SubstitutionClass sc =
+						target.getSubstitutionClassKeyed(subClassKey);
+				if (sc == null)
+				{
+					sc = new SubstitutionClass();
+					sc.setSourceCampaign(source.getCampaign());
+					sc.setSourceURI(source.getURI());
+					target.addSubstitutionClass(sc);
+				}
+				// FIXME
+				// SubstitutionClassLoader.parseLine(context, sc, restOfLine,
+				// source);
+			}
+			else if (firstToken.startsWith("SUBSTITUTIONCLASSLEVEL:"))
+			{
+				// FIXME
+				// SubstitutionClassLoader.parseLine(context, sc, restOfLine,
+				// source);
+			}
+			else if (firstToken.startsWith("CLASS:"))
+			{
+				PCClass thisTarget =
+						context.ref.silentlyGetConstructedCDOMObject(
+							getLoadClass(), firstToken.substring(6));
+				if (thisTarget != target)
+				{
+					target =
+							context.ref.constructCDOMObject(getLoadClass(),
+								firstToken.substring(6));
+					// TODO FIXME Assumes it's not a .MOD or something :/
+					target.setName(firstToken.substring(6));
+					target.setSourceCampaign(source.getCampaign());
+					target.setSourceURI(source.getURI());
+				}
+				parseClassLine(context, target, restOfLine, source);
+			}
+			else
+			{
+				Logging.errorPrint("Not sure what to do with: " + lstLine);
+			}
+		}
+		return target;
+	}
+
+	private void parseClassLine(LoadContext context, PCClass target,
+		String lstLine, CampaignSourceEntry source)
+		throws PersistenceLayerException
+	{
+		StringTokenizer colToken = new StringTokenizer(lstLine, "\t");
+		while (colToken.hasMoreTokens())
+		{
+			String colString = colToken.nextToken().trim();
+			int idxColon = colString.indexOf(':');
+			if (idxColon == -1)
+			{
+				Logging.errorPrint("Invalid Token - does not contain a colon: "
+					+ colString);
+				return;
+			}
+			else if (idxColon == 0)
+			{
+				Logging.errorPrint("Invalid Token - starts with a colon: "
+					+ colString);
+				return;
+			}
+			String key = colString.substring(0, idxColon);
+			String value =
+					(idxColon == colString.length() - 1) ? null : colString
+						.substring(idxColon + 1);
+			parseToken(context, target, key, value, source);
+		}
+	}
+	
 	/**
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
@@ -255,21 +429,6 @@ public final class PCClassLoader extends LstObjectFileLoader<PCClass>
 			{
 				pcClass.setHasSubstitutionClass(true);
 			}
-			else if (colString.startsWith("MULTIPREREQS"))
-			{
-				//Deprecated in 5.11 Alpha cycle - thpr 12/7/06
-				Logging
-					.errorPrint("In: "
-						+ pcClass.getDisplayName()
-						+ ':'
-						+ source.getURI()
-						+ ':'
-						+ colString
-						+ ", The MULTIPREREQS tag has been deprecated.  "
-						+ "Use PREMULT with !PRECLASS:1,Any instead. "
-						+ "(e.g. PREMULT:1,[PRECLASS:1,Noble=1],[!PRECLASS:1,Any] )");
-				pcClass.setMultiPreReqs(true);
-			}
 			else if (colString.startsWith("REPEATLEVEL:"))
 			{
 				if (!bRepeating)
@@ -441,5 +600,43 @@ public final class PCClassLoader extends LstObjectFileLoader<PCClass>
 	{
 		// TODO - Create Globals.addClass( final PCClass aClass )
 		Globals.getClassList().add((PCClass) pObj);
+	}
+
+	public void parseToken(LoadContext context, PCClass pcclass, String key,
+		String value, CampaignSourceEntry source)
+		throws PersistenceLayerException
+	{
+		PCClassLstToken token =
+				TokenStore.inst().getToken(PCClassLstToken.class, key);
+
+		if (token == null)
+		{
+			if (!PObjectLoader.parseTag(context, pcclass, key, value))
+			{
+				Logging.errorPrint("Illegal pcclass Token '" + key + "' for "
+					+ pcclass.getDisplayName() + " in " + source.getURI()
+					+ " of " + source.getCampaign() + ".");
+			}
+		}
+		else
+		{
+			LstUtils.deprecationCheck(token, pcclass, value);
+			// FIXME TODO Commented out for to avoid attempt at duplicate
+			// AbilityInfo load
+			// if (!token.parse(pcclass, value, -9)) {
+			// Logging.errorPrint("Error parsing token " + key
+			// + " in pcclass " + pcclass.getDisplayName() + ':'
+			// + source.getFile() + ':' + value + "\"");
+			// }
+		}
+	}
+
+	/*
+	 * FIXME parseToken should only be used for PCClass - what about
+	 * PCClassLevel?
+	 */
+	public Class<PCClass> getLoadClass()
+	{
+		return PCClass.class;
 	}
 }

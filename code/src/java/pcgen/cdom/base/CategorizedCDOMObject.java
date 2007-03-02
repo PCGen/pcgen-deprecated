@@ -17,12 +17,18 @@
  */
 package pcgen.cdom.base;
 
+import pcgen.core.SourceEntry;
+
 public interface CategorizedCDOMObject<T extends CategorizedCDOMObject<T>>
-		extends PrereqObject
+		extends PrereqObject, KeyedObject
 {
 	public Category<T> getCDOMCategory();
 
 	public void setCDOMCategory(Category<T> cat);
 
 	// Tag for now - maybe a real class someday?
+	
+	//CONSIDER This is a hack in order to change CategorizedReferenceContext to make
+	// Sun's compiler happy
+	public SourceEntry getSourceEntry();
 }

@@ -29,10 +29,12 @@ package pcgen.persistence.lst;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -54,25 +56,13 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public Ability parseLine(Ability ability, String lstLine,
+	public void parseLine(Ability ability, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
 		Ability anAbility = ability;
 
-		if (anAbility == null)
-		{
-			anAbility = new Ability();
-		}
-		else if (anAbility.getCategory() == null
-			|| anAbility.getCategory().length() == 0)
-		{
-			// TODO - Make this into an Enum Categorisable.Category.NONE
-			anAbility.setCategory("BROKENABILTYNOCATEGORYSET");
-		}
-
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
-		int col = 0;
 
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(AbilityLstToken.class);
@@ -91,13 +81,7 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 				// TODO Handle Exception
 			}
 			AbilityLstToken token = (AbilityLstToken) tokenMap.get(key);
-			if (col == 0)
-			{
-				anAbility.setName(colString);
-				anAbility.setSourceCampaign(source.getCampaign());
-				anAbility.setSourceURI(source.getURI());
-			}
-			else if (token != null)
+			if (token != null)
 			{
 				final String value = colString.substring(idxColon + 1);
 				LstUtils.deprecationCheck(token, anAbility, value);
@@ -131,15 +115,12 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 				Logging.errorPrintLocalised("Errors.AbilityLoader.UnknownTag", //$NON-NLS-1$
 					colString, source.getURI());
 			}
-
-			++col;
 		}
 
 		//setChanged();
 		//notifyObservers(anAbility);
 
 		completeObject(source, anAbility);
-		return null;
 	}
 
 	/**
@@ -173,5 +154,39 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 	protected void addGlobalObject(final PObject pObj)
 	{
 		Globals.addAbility((Ability) pObj);
+	}
+
+	@Override
+	public void parseToken(LoadContext context, Ability ability, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+		AbilityLstToken token = TokenStore.inst().getToken(AbilityLstToken.class,
+				key);
+
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, ability, key, value)) {
+				Logging.errorPrint("Illegal ability Token '" + key + "' for "
+						+ ability.getDisplayName() + " in " + source.getURI()
+						+ " of " + source.getCampaign() + ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, ability, value);
+			if (!token.parse(context, ability, value)) {
+				Logging.errorPrint("Error parsing token " + key + " in ability "
+						+ ability.getDisplayName() + ':' + source.getURI() + ':'
+						+ value + "\"");
+			}
+		}
+	}
+
+	@Override
+	public Class<Ability> getLoadClass() {
+		return Ability.class;
+	}
+
+	@Override
+	protected Ability getCDOMObjectKeyed(LoadContext context, String key)
+	{
+		throw new IllegalArgumentException("Cannot determine Category");
+//		return context.ref.getConstructedCDOMObject(getLoadClass(),
+//			AbilityCategory.FEAT, key);
 	}
 }

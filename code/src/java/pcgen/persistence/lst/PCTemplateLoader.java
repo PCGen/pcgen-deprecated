@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import pcgen.core.Globals;
 import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -59,20 +60,11 @@ public final class PCTemplateLoader extends LstObjectFileLoader<PCTemplate> {
 	}
 
 	@Override
-	public PCTemplate parseLine(PCTemplate template, String inputLine,
+	public void parseLine(PCTemplate template, String inputLine,
 			CampaignSourceEntry source) throws PersistenceLayerException {
-		if (template == null) {
-			template = new PCTemplate();
-		}
-		
 		final StringTokenizer colToken = new StringTokenizer(inputLine,
 				SystemLoader.TAB_DELIM);
 		
-		String name = colToken.nextToken();
-		template.setName(name);
-		template.setSourceCampaign(source.getCampaign());
-		template.setSourceURI(source.getURI());
-
 		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
 				PCTemplateLstToken.class);
 		while (colToken.hasMoreTokens()) {
@@ -106,11 +98,36 @@ public final class PCTemplateLoader extends LstObjectFileLoader<PCTemplate> {
 		}
 		
 		completeObject(source, template);
-		return null;
 	}
 
 	@Override
 	protected void performForget(PCTemplate objToForget) {
 		Globals.getTemplateList().remove(objToForget);
+	}
+
+	@Override
+	public Class<PCTemplate> getLoadClass() {
+		return PCTemplate.class;
+	}
+
+	@Override
+	public void parseToken(LoadContext context, PCTemplate template, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+		PCTemplateLstToken token = TokenStore.inst().getToken(PCTemplateLstToken.class,
+				key);
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, template, key, value)) {
+				Logging.errorPrint("Illegal template Token '" + key + "' '"
+						+ value + "' for " + template.getDisplayName() + " in "
+						+ source.getURI() + " of " + source.getCampaign()
+						+ ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, template, value);
+			if (!token.parse(context, template, value)) {
+				Logging.errorPrint("Error parsing token " + key + " in template "
+						+ template.getDisplayName() + ':' + source.getURI() + ':'
+						+ value + "\"");
+			}
+		}
 	}
 }

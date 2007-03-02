@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 import pcgen.core.Equipment;
 import pcgen.core.EquipmentList;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -59,20 +60,11 @@ public final class EquipmentLoader extends LstObjectFileLoader<Equipment> {
 	}
 
 	@Override
-	public Equipment parseLine(Equipment equipment, String inputLine,
+	public void parseLine(Equipment equipment, String inputLine,
 			CampaignSourceEntry source) throws PersistenceLayerException {
-		if (equipment == null) {
-			equipment = new Equipment();
-		}
-		
 		final StringTokenizer colToken = new StringTokenizer(inputLine,
 				SystemLoader.TAB_DELIM);
 		
-		String name = colToken.nextToken();
-		equipment.setName(name);
-		equipment.setSourceCampaign(source.getCampaign());
-		equipment.setSourceURI(source.getURI());
-
 		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
 				EquipmentLstToken.class);
 		while (colToken.hasMoreTokens()) {
@@ -126,11 +118,36 @@ public final class EquipmentLoader extends LstObjectFileLoader<Equipment> {
 		}
 		
 		completeObject(source, equipment);
-		return null;
 	}
 
 	@Override
 	protected void performForget(Equipment objToForget) {
 		EquipmentList.remove(objToForget);
+	}
+
+	@Override
+	public Class<Equipment> getLoadClass() {
+		return Equipment.class;
+	}
+
+	@Override
+	public void parseToken(LoadContext context, Equipment equip, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
+		EquipmentLstToken token = TokenStore.inst().getToken(EquipmentLstToken.class,
+				key);
+		
+		if (token == null) {
+			if (!PObjectLoader.parseTag(context, equip, key, value)) {
+				Logging.errorPrint("Illegal equipment Token '" + key + "' for "
+						+ equip.getDisplayName() + " in " + source.getURI()
+						+ " of " + source.getCampaign() + ".");
+			}
+		} else {
+			LstUtils.deprecationCheck(token, equip, value);
+			if (!token.parse(context, equip, value)) {
+				Logging.errorPrint("Error parsing token " + key + " in equipment "
+						+ equip.getDisplayName() + ':' + source.getURI() + ':'
+						+ value + "\"");
+			}
+		}
 	}
 }

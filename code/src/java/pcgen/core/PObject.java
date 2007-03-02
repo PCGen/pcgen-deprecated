@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.KeyedObject;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.bonus.BonusUtilities;

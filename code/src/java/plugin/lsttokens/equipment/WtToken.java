@@ -28,6 +28,7 @@ import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Equipment;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.util.Logging;
 
 /**
  * Deals with WT token
@@ -68,6 +69,8 @@ public class WtToken implements EquipmentLstToken
 		}
 		catch (NumberFormatException nfe)
 		{
+			Logging.errorPrint("Expected a Double for " + getTokenName() + ": "
+				+ value);
 			return false;
 		}
 	}

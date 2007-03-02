@@ -24,6 +24,7 @@ import java.util.List;
 import pcgen.base.util.TripleKeyMap;
 import pcgen.base.util.TripleKeyMapToInstanceList;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
 import pcgen.core.Ability;
@@ -36,16 +37,16 @@ import pcgen.util.PropertyFactory;
 public class CategorizedReferenceContext
 {
 
-	private TripleKeyMapToInstanceList<Class, Category, String, PObject> duplicates =
-			new TripleKeyMapToInstanceList<Class, Category, String, PObject>();
+	private TripleKeyMapToInstanceList<Class, Category, String, CategorizedCDOMObject> duplicates =
+			new TripleKeyMapToInstanceList<Class, Category, String, CategorizedCDOMObject>();
 
-	private TripleKeyMap<Class, Category, String, PObject> active =
-			new TripleKeyMap<Class, Category, String, PObject>();
+	private TripleKeyMap<Class, Category, String, CategorizedCDOMObject> active =
+			new TripleKeyMap<Class, Category, String, CategorizedCDOMObject>();
 
 	private TripleKeyMap<Class, Category, String, CDOMCategorizedSingleRef> referenced =
 			new TripleKeyMap<Class, Category, String, CDOMCategorizedSingleRef>();
 
-	public <T extends PObject & CategorizedCDOMObject<T>> void registerWithKey(
+	public <T extends CategorizedCDOMObject<T>> void registerWithKey(
 		Class<T> cl, Category<T> cat, T obj, String key)
 	{
 		if (active.containsKey(cl, cat, key))
@@ -61,7 +62,7 @@ public class CategorizedReferenceContext
 	public <T extends PObject & CategorizedCDOMObject<T>> T silentlyGetConstructedCDOMObject(
 		Class<T> c, Category<T> cat, String val)
 	{
-		PObject po = active.get(c, cat, val);
+		CategorizedCDOMObject po = active.get(c, cat, val);
 		if (po != null)
 		{
 			if (duplicates.containsListFor(c, cat, val))
@@ -81,14 +82,14 @@ public class CategorizedReferenceContext
 		if (obj == null)
 		{
 			Logging.errorPrint("Someone expected " + c.getSimpleName() + " "
-				+ val + " to exist.");
+				+ cat + " " + val + " to exist.");
 			Thread.dumpStack();
 		}
 		return obj;
 	}
 
 	public <T extends PObject & CategorizedCDOMObject<T>> T constructCDOMObject(
-		Class<T> c, Category<T> cat, String val)
+		Class<T> c, String val)
 	{
 		if (val.equals(""))
 		{
@@ -96,9 +97,14 @@ public class CategorizedReferenceContext
 		}
 		try
 		{
+			if (!CategorizedCDOMObject.class.isAssignableFrom(c))
+			{
+				throw new IllegalArgumentException(c.getSimpleName() + " "
+					+ val);
+			}
 			T obj = c.newInstance();
 			obj.setName(val);
-			registerWithKey(c, cat, obj, val);
+			registerWithKey(c, obj.getCDOMCategory(), obj, val);
 			return obj;
 		}
 		catch (InstantiationException e)
@@ -114,7 +120,7 @@ public class CategorizedReferenceContext
 		throw new IllegalArgumentException(c + " " + val);
 	}
 
-	public <T extends PObject & CategorizedCDOMObject<T>> void reassociateReference(
+	public <T extends CategorizedCDOMObject<T>> void reassociateReference(
 		String value, T obj)
 	{
 		String oldKey = obj.getKeyName();
@@ -127,7 +133,7 @@ public class CategorizedReferenceContext
 		Category<T> cat = obj.getCDOMCategory();
 		if (active.get(cl, cat, oldKey).equals(obj))
 		{
-			List<PObject> list = duplicates.getListFor(cl, cat, oldKey);
+			List<CategorizedCDOMObject> list = duplicates.getListFor(cl, cat, oldKey);
 			if (list == null)
 			{
 				// No replacement
@@ -135,7 +141,7 @@ public class CategorizedReferenceContext
 			}
 			else
 			{
-				PObject newActive = duplicates.getItemFor(cl, cat, oldKey, 0);
+				CategorizedCDOMObject newActive = duplicates.getItemFor(cl, cat, oldKey, 0);
 				duplicates.removeFromListFor(cl, cat, oldKey, newActive);
 				active.put(cl, cat, oldKey, newActive);
 			}
@@ -146,6 +152,40 @@ public class CategorizedReferenceContext
 		}
 		obj.setKeyName(value);
 		registerWithKey(cl, cat, obj, value);
+	}
+
+	public <T extends PObject & CategorizedCDOMObject<T>> void reassociateReference(
+		Category<T> cat, T obj)
+	{
+		Category<T> oldCat = obj.getCDOMCategory();
+		if (oldCat == null && cat == null || oldCat != null && oldCat.equals(cat))
+		{
+			Logging.errorPrint("Worthless Category change encountered: "
+				+ obj.getDisplayName() + " " + oldCat);
+		}
+		Class<T> cl = (Class<T>) obj.getClass();
+		String key = obj.getKeyName();
+		if (active.get(cl, oldCat, key).equals(obj))
+		{
+			List<CategorizedCDOMObject> list = duplicates.getListFor(cl, oldCat, key);
+			if (list == null)
+			{
+				// No replacement
+				active.remove(cl, oldCat, key);
+			}
+			else
+			{
+				CategorizedCDOMObject newActive = duplicates.getItemFor(cl, oldCat, key, 0);
+				duplicates.removeFromListFor(cl, oldCat, key, newActive);
+				active.put(cl, oldCat, key, newActive);
+			}
+		}
+		else
+		{
+			duplicates.removeFromListFor(cl, oldCat, key, obj);
+		}
+		obj.setCDOMCategory(cat);
+		registerWithKey(cl, cat, obj, key);
 	}
 
 	public <T extends PObject & CategorizedCDOMObject<T>> void forgetCDOMObjectKeyed(
@@ -167,31 +207,23 @@ public class CategorizedReferenceContext
 		return active.containsKey(name, cat, key);
 	}
 
-	public <T extends PObject & CategorizedCDOMObject<T>> T cloneConstructedCDOMObject(
-		Class<T> cl, Category<T> cat, String origKey, String newKey)
+	public <T extends CategorizedCDOMObject<T>> T cloneConstructedCDOMObject(
+		Class<T> cl, T orig, String newKey)
 	{
-		T obj = getConstructedCDOMObject(cl, cat, origKey);
-		if (obj == null)
-		{
-			Logging.errorPrint(PropertyFactory.getFormattedString(
-				"Errors.LstFileLoader.CopyObjectNotFound", //$NON-NLS-1$
-				origKey));
-			return null;
-		}
-
 		try
 		{
-			T clone = cl.cast(obj.clone());
+			T clone = cl.cast(((CDOMObject) orig).clone());
 			clone.setName(newKey);
 			clone.setKeyName(newKey);
-			registerWithKey(cl, cat, clone, newKey);
+			clone.setCDOMCategory(orig.getCDOMCategory());
+			registerWithKey(cl, orig.getCDOMCategory(), clone, newKey);
 			return clone;
 		}
 		catch (CloneNotSupportedException e)
 		{
 			Logging.errorPrint(PropertyFactory.getFormattedString(
 				"Errors.LstFileLoader.CopyNotSupported", //$NON-NLS-1$
-				obj.getClass().getName(), origKey, newKey));
+				cl.getName(), orig.getKeyName(), newKey));
 		}
 		return null;
 	}
@@ -284,12 +316,12 @@ public class CategorizedReferenceContext
 				{
 					if (SettingsHandler.isAllowOverride())
 					{
-						List<PObject> list =
+						List<CategorizedCDOMObject> list =
 								duplicates.getListFor(key1, key2, second);
-						PObject good = active.get(key1, key2, second);
+						CategorizedCDOMObject good = active.get(key1, key2, second);
 						for (int i = 0; i < list.size(); i++)
 						{
-							PObject dupe = list.get(i);
+							CategorizedCDOMObject dupe = list.get(i);
 							// If the new object is more recent than the current
 							// one, use the new object
 							final Date origDate =
@@ -321,7 +353,7 @@ public class CategorizedReferenceContext
 					{
 						Logging.errorPrint("More than one "
 							+ key1.getSimpleName() + " with key/name " + second
-							+ " was built");
+							+ " and category " + key2 + " was built");
 						returnGood = false;
 					}
 				}

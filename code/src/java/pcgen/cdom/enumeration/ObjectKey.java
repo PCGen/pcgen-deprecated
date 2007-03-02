@@ -93,8 +93,6 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Boolean> READ_ONLY = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<Boolean> CAN_BE_RESISTED = new ObjectKey<Boolean>();
-
 	public static final ObjectKey<Boolean> COST_DOUBLE = new ObjectKey<Boolean>();
 
 	public static final ObjectKey<EqModFormatCat> FORMAT = new ObjectKey<EqModFormatCat>();

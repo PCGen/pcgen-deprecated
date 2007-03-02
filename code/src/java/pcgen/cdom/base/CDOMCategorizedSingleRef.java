@@ -17,6 +17,8 @@
  */
 package pcgen.cdom.base;
 
+import pcgen.core.SourceEntry;
+
 public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>
 		extends CDOMSingleRef<T> implements CategorizedCDOMObject<T>
 {
@@ -107,5 +109,30 @@ public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>
 				+ obj.getCDOMCategory() + " Reference to category " + category);
 		}
 		referencedObject = obj;
+	}
+
+	public SourceEntry getSourceEntry()
+	{
+		throw new UnsupportedOperationException("Don't do this");
+	}
+
+	public String getDisplayName()
+	{
+		throw new UnsupportedOperationException("Don't do this");
+	}
+
+	public String getKeyName()
+	{
+		throw new UnsupportedOperationException("Don't do this");
+	}
+
+	public void setKeyName(String aKey)
+	{
+		throw new UnsupportedOperationException("Don't do this");
+	}
+
+	public void setName(String aName)
+	{
+		throw new UnsupportedOperationException("Don't do this");
 	}
 }
