@@ -3,6 +3,7 @@
 # * Copyright
 
 # Copyright 2002 to 2006 by �ric Beaudoin <beaudoer@videotron.ca>.
+# Copyright 2006 to 2007 by Andrew McDougall <tir.gwaith@gmail.com>
 
 # All rights reserved.  You can redistribute and/or modify
 # this program under the same terms as Perl itself.
@@ -13212,7 +13213,7 @@ __END__
 
 prettylst.pl -- Reformat the PCGEN .lst files
 
-Version: 1.36
+Version: 1.37
 
 =head1 DESCRIPTION
 
@@ -13730,6 +13731,7 @@ key here: <L<http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D5D2>>
 =head1 COPYRIGHT
 
 Copyright 2002 to 2006 by E<Eacute>ric E<quot>Space MonkeyE<quot> Beaudoin -- <mailto:beaudoer@videotron.ca>
+Copyright 2006 to 2007 by Andrew E<quot>Tir GwaithE<quote> McDougall -- <mailto:tir.gwaith@gmail.com>
 
 All rights reserved.  You can redistribute and/or modify
 this program under the same terms as Perl itself.
@@ -13743,6 +13745,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =item * Add better examples
 
 =item * Add more cross-reference checks
+
+=item * Add more Ability object checks
 
 =back
 
@@ -13760,7 +13764,7 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
-=head2 v1.37 -- NOT RELEASED YET
+=head2 v1.37 -- -- 2007.03.01
 
 [ 1623708 ] Invalid value "DEITY" for tag "PREALIGN" - should be allowed
 
@@ -13788,7 +13792,7 @@ Ability file now supported, including LEVELABLITY in Kits.  No real checking yet
 
 [ 1661050 ] New PREAGESET tag
 
-=head2 v1.36 -- -- 2007.01.26
+=head2 v1.36 -- 2007.01.26
 
 [ 1637309 ] REACH, FACE & LEGS are now Template tags
 
