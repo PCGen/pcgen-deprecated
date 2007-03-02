@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 (C) Tom Parker <thpr@sourceforge.net>
+ * Copyright 2005 (C) Tom Parker <thpr@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,14 +23,15 @@
  */
 package pcgen.core;
 
+import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.util.Logging;
 
 import java.util.StringTokenizer;
 
 /**
- * @author Tom Parker <thpr@sourceforge.net>
+ * @author Tom Parker <thpr@users.sourceforge.net>
  */
-public class Movement
+public class Movement extends ConcretePrereqObject
 {
 
 	/**

@@ -26,9 +26,8 @@ package pcgen.core;
  *
  * @author Thomas Clegg <arknight@swbell.net>
  * @version $Revision$
- * DO NOT DELETE (waiting for use)
  */
-final class ArmorProf extends PObject implements Comparable<Object>
+public final class ArmorProf extends PObject implements Comparable<Object>
 {
 	ArmorProf(final String aString)
 	{
