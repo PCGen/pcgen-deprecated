@@ -220,6 +220,8 @@
 <string>DR</string>
 <string>DURATION</string>
 <string>DURATION</string>
+<string>EDITABLE</string>
+<string>EDITPOOL</string>
 <string>ELSE</string>
 <string>ENCUMBERANCE</string>
 <string>ENCUMBRANCE</string>
@@ -272,6 +274,7 @@
 <string>FORMATCAT</string>
 <string>Fortitude</string>
 <string>FORTITUDE</string>
+<string>FRACTIONALPOOL</string>
 <string>FREE</string>
 <string>FUMBLERANGE</string>
 <string>FUNDS</string>
@@ -447,9 +450,11 @@
 <string>PERSONALITYTRAIT2</string>
 <string>PHOBIAS</string>
 <string>PLAYERNAME</string>
+<string>PLURAL</string>
 <string>PLUS</string>
 <string>PLUSCOST</string>
 <string>POINTS</string>
+<string>POOL</string>
 <string>POOLPOINTS</string>
 <string>POPUPALERT</string>
 <string>PORTRAIT</string>
@@ -559,6 +564,7 @@
 <string>QUANTITY</string>
 <string>RACE</string>
 <string>RACENAME</string>
+<string>RACEREACH</string>
 <string>RACESUBTYPE</string>
 <string>RACETYPE</string>
 <string>RACIAL</string>
