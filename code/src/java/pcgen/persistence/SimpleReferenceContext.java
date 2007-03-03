@@ -250,10 +250,6 @@ public class SimpleReferenceContext
 		{
 			throw new IllegalArgumentException(val);
 		}
-		if (val.indexOf(".") != -1)
-		{
-			throw new IllegalArgumentException(val);
-		}
 		if (c.equals(PCClass.class))
 		{
 			if (val.startsWith("CLASS"))
