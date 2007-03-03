@@ -29,7 +29,6 @@ package pcgen.persistence.lst;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Globals;
@@ -160,7 +159,6 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 	public void parseToken(LoadContext context, Ability ability, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
 		AbilityLstToken token = TokenStore.inst().getToken(AbilityLstToken.class,
 				key);
-
 		if (token == null) {
 			if (!PObjectLoader.parseTag(context, ability, key, value)) {
 				Logging.errorPrint("Illegal ability Token '" + key + "' for "

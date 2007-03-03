@@ -45,21 +45,25 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
- * This class implements support for the FOLLOWERS LST token.<p />
+ * This class implements support for the FOLLOWERS LST token.
+ * <p />
  * <b>Tag Name</b>: <code>FOLLOWERS</code>:x|y<br />
- * <b>Variables Used (x)</b>: Text (The type of companion the limit will apply to).<br />
- * <b>Variables Used (y)</b>: Number, variable or formula (Number of this type of companion the master can have)
+ * <b>Variables Used (x)</b>: Text (The type of companion the limit will apply
+ * to).<br />
+ * <b>Variables Used (y)</b>: Number, variable or formula (Number of this type
+ * of companion the master can have)
  * <p />
  * <b>What it does:</b><br/>
  * <ul>
- * <li>Limits the number of the specified type of companion the master can have.</li>
- * <li>Optional, if this tag is not present no limits are placed on the number of 
- * companions the character can have.</li>
+ * <li>Limits the number of the specified type of companion the master can
+ * have.</li>
+ * <li>Optional, if this tag is not present no limits are placed on the number
+ * of companions the character can have.</li>
  * <li>If more than one tag is encountered the highest value is used.</li>
  * <li>The value can be adjusted with the <code>BONUS:FOLLOWERS</code> tag</li>
  * </ul>
  * <b>Where it is used:</b><br />
- * Global tag, would most often be used in class and feat (ability) files, 
+ * Global tag, would most often be used in class and feat (ability) files,
  * should also be enabled for templates and Domains.
  * <p />
  * <b>Examples:</b><br />
@@ -67,12 +71,12 @@ import java.util.StringTokenizer;
  * A character is allowed only 1 companion of type Familiar
  * 
  * @author divaa01
- *
+ * 
  */
 public class FollowersLst implements GlobalLstToken
 {
 	/**
-	 *
+	 * 
 	 * @return token name
 	 */
 	public String getTokenName()
@@ -81,10 +85,13 @@ public class FollowersLst implements GlobalLstToken
 	}
 
 	/**
-	 *
-	 * @param obj PObject
-	 * @param value String
-	 * @param anInt int
+	 * 
+	 * @param obj
+	 *            PObject
+	 * @param value
+	 *            String
+	 * @param anInt
+	 *            int
 	 * @return true if OK
 	 * @throws PersistenceLayerException
 	 */
@@ -131,6 +138,19 @@ public class FollowersLst implements GlobalLstToken
 		}
 		String followerNumber = tok.nextToken();
 		Formula num = FormulaFactory.getFormulaFor(followerNumber);
+		/*
+		 * BUG FIXME This is a problem, because it is possible that the 
+		 * CompanionList is NOT YET PRESENT in the Graph... :P
+		 * 
+		 * So I think I need to fetch a Reference, and then 
+		 * officially build the CompanionList through the Context
+		 * later on?  That seems like a PAIN...
+		 * 
+		 * Actually, even that doesn't work, because there could
+		 * be more than one... so a reference doesn't do any good
+		 * Therefore, this is a deferred search of a Graph?  I'm
+		 * not a huge fan of that either.
+		 */
 		Set<PCGraphEdge> linkSet =
 				context.graph.getChildLinks(obj, CompanionList.class);
 		boolean found = false;
@@ -146,7 +166,7 @@ public class FollowersLst implements GlobalLstToken
 			{
 				cr.addRestriction(new FollowerRestriction(cl));
 				found = true;
-				//Can't break, there may be more than one
+				// Can't break, there may be more than one
 			}
 		}
 		if (found)
@@ -200,9 +220,9 @@ public class FollowersLst implements GlobalLstToken
 			{
 				CompanionList cl = (CompanionList) ce.getNodeAt(1);
 
-//				if (cl.getFollowerType().equalsIgnoreCase(followerType))
-//				{
-//				}
+				// if (cl.getFollowerType().equalsIgnoreCase(followerType))
+				// {
+				// }
 			}
 		}
 		return sb.toString();

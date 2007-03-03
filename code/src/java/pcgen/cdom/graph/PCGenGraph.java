@@ -17,10 +17,9 @@
  */
 package pcgen.cdom.graph;
 
-import pcgen.base.graph.core.DirectionalListMapGraph;
+import pcgen.base.graph.core.DirectionalSetMapGraph;
 import pcgen.cdom.base.PrereqObject;
 
 public class PCGenGraph extends
-		DirectionalListMapGraph<PrereqObject, PCGraphEdge>
-{
+		DirectionalSetMapGraph<PrereqObject, PCGraphEdge> {
 }

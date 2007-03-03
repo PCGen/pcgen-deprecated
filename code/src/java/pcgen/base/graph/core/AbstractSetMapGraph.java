@@ -43,7 +43,7 @@ import java.util.Set;
  * The Map maintained by this class prevents an iteration over the entire List
  * of edges whenever getAdjacentEdgeList(GraphNode n) is called.
  * 
- * WARNING: This AbstractListMapGraph contains a CACHE which uses the Nodes as a
+ * WARNING: This AbstractSetMapGraph contains a CACHE which uses the Nodes as a
  * KEY. Due to the functioning of a Map (it uses the .hashCode() method), if a
  * Node is modified IN PLACE in the Graph (without being removed and readded),
  * it WILL cause the caching to FAIL, because the cache will have indexed the
@@ -65,28 +65,28 @@ import java.util.Set;
  * and clean up adjacent edges BEFORE removing any GraphNode if you wish for
  * those edges (in a modified form) to remain in the graph.
  */
-public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
+public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 		Graph<N, ET>
 {
 
 	/**
 	 * The List of nodes contained in this Graph.
 	 */
-	private final List<N> nodeList;
+	private final Map<N, N> nodeMap;
 
 	/**
 	 * The List of edges contained in this Graph. An edge must be connected to a
 	 * node which is already in the nodeList (this makes no statement about
 	 * whether this addition is done implicitly by addEdge [it is in
-	 * AbstractListMapGraph] or whether it is explicit).
+	 * AbstractSetMapGraph] or whether it is explicit).
 	 */
-	private final List<ET> edgeList;
+	private final Set<ET> edgeSet;
 
 	/**
 	 * A Map indicating which nodes are connected to which edges. This is
 	 * redundant information to what is actually contained in the edges
-	 * themselves, but is present in AbstractListMapGraph in order to speed
-	 * calls to getAdjacentEdges
+	 * themselves, but is present in AbstractSetMapGraph in order to speed calls
+	 * to getAdjacentEdges
 	 */
 	private final transient Map<N, Set<ET>> nodeEdgeMap;
 
@@ -97,13 +97,13 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	private final GraphChangeSupport<N, ET> gcs;
 
 	/**
-	 * Creates a new, empty AbstractListMapGraph
+	 * Creates a new, empty AbstractSetMapGraph
 	 */
-	public AbstractListMapGraph()
+	public AbstractSetMapGraph()
 	{
 		super();
-		edgeList = new ArrayList<ET>();
-		nodeList = new ArrayList<N>();
+		edgeSet = new HashSet<ET>();
+		nodeMap = new HashMap<N, N>();
 		gcs = new GraphChangeSupport<N, ET>(this);
 		nodeEdgeMap = new HashMap<N, Set<ET>>();
 	}
@@ -120,27 +120,13 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		{
 			return false;
 		}
-		// System.err.println("PRE:" + nodeList.contains(v) + " " +
-		// nodeEdgeMap.containsKey(v));
-		if (nodeEdgeMap.containsKey(v))
+		if (nodeMap.containsKey(v))
 		{
 			// Node already in this Graph
 			return false;
 		}
-		// System.err.println(nodeList.size());
-		nodeList.add(v);
-		// System.err.println(nodeList.size());
+		nodeMap.put(v, v);
 		nodeEdgeMap.put(v, new HashSet<ET>());
-		// System.err.println("POST:" + nodeList.contains(v) + " " +
-		// nodeEdgeMap.containsKey(v));
-		// System.err.println("DBG:" + nodeList.get(nodeList.size() -
-		// 1).equals(v));
-		// System.err.println(v.getClass());
-		// System.err.println(System.identityHashCode(nodeList.get(nodeList.size()
-		// - 1)));
-		// System.err.println(System.identityHashCode(v));
-		// System.err.println(nodeList.get(nodeList.size() - 1));
-		// System.err.println(v);
 		gcs.fireGraphNodeChangeEvent(v, NodeChangeEvent.NODE_ADDED);
 		return true;
 	}
@@ -151,21 +137,9 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		{
 			return null;
 		}
-		if (nodeEdgeMap.containsKey(v))
-		{
-			// Node already in this Graph
-			/*
-			 * TODO FIXME This is using a slow method (array search) when it
-			 * would be nice to be able to get the reference from the Map.
-			 * However, that would require the use of Jakarta Common Collections
-			 * and extending their HashMap in order to do that (because it's
-			 * normally impossible to get a Key back out of a Map without
-			 * iterating over the Entries :/)
-			 */
-			return nodeList.get(nodeList.indexOf(v));
-		}
-		// TODO FIXME Consider whether to return null or v... ?
-		return null;
+		// TODO FIXME Consider whether to return null or v... if not in the
+		// Graph?
+		return nodeMap.get(v);
 	}
 
 	/**
@@ -181,7 +155,8 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		{
 			return false;
 		}
-		if (edgeList.contains(e))
+		boolean added = edgeSet.add(e);
+		if (!added)
 		{
 			return false;
 		}
@@ -191,7 +166,6 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			addNode(node);
 			nodeEdgeMap.get(node).add(e);
 		}
-		edgeList.add(e);
 		gcs.fireGraphEdgeChangeEvent(e, EdgeChangeEvent.EDGE_ADDED);
 		return true;
 	}
@@ -214,51 +188,50 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 */
 	public boolean containsEdge(Edge<?> e)
 	{
-		return edgeList.contains(e);
+		return edgeSet.contains(e);
 	}
 
 	/**
 	 * Returns a List of Nodes in this Graph.
 	 * 
 	 * Ownership of the returned List is transferred to the calling Object. No
-	 * reference to the List Object is maintained by AbstractListMapGraph.
+	 * reference to the List Object is maintained by AbstractSetMapGraph.
 	 * 
 	 * However, the Nodes contained in the List are returned BY REFERENCE, and
 	 * modification of the returned Nodes will modify the nodes contained within
-	 * the AbstractListMapGraph.
+	 * the AbstractSetMapGraph.
 	 * 
 	 * *WARNING*: Modification of the Nodes in place may result in failure of
-	 * the AbstractListMapGraph to return appropriate values from various
-	 * methods of AbstractListMapGraph. If a Node is modified in place, the
-	 * modifications must not alter the hash code (as returned by the Node's
-	 * .hashCode() method) for AbstractListMapGraph to maintain proper
-	 * operation.
+	 * the AbstractSetMapGraph to return appropriate values from various methods
+	 * of AbstractSetMapGraph. If a Node is modified in place, the modifications
+	 * must not alter the hash code (as returned by the Node's .hashCode()
+	 * method) for AbstractSetMapGraph to maintain proper operation.
 	 * 
 	 * @see pcgen.base.graph.core.Graph#getNodeList()
 	 */
 	public List<N> getNodeList()
 	{
-		return new ArrayList<N>(nodeList);
+		return new ArrayList<N>(nodeMap.keySet());
 	}
 
 	/**
 	 * Returns a List of Edges in this Graph.
 	 * 
 	 * Ownership of the returned List is transferred to the calling Object. No
-	 * reference to the List Object is maintained by AbstractListMapGraph.
+	 * reference to the List Object is maintained by AbstractSetMapGraph.
 	 * However, the Edges contained in the List are returned BY REFERENCE, and
 	 * modification of the returned Edges will modify the Edges contained within
-	 * the AbstractListMapGraph.
+	 * the AbstractSetMapGraph.
 	 * 
 	 * @see pcgen.base.graph.core.Graph#getEdgeList()
 	 */
 	public List<ET> getEdgeList()
 	{
-		return new ArrayList<ET>(edgeList);
+		return new ArrayList<ET>(edgeSet);
 	}
 
 	/**
-	 * Removes the given Node from the AbstractListMapGraph. As a byproduct of
+	 * Removes the given Node from the AbstractSetMapGraph. As a byproduct of
 	 * this removal, all Edges connected to the Node will also be removed from
 	 * the Graph.
 	 * 
@@ -300,13 +273,13 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		 * must happen after removeEdge above, as removeEdge may trigger side
 		 * effects that will expect this Node to still be present in the Graph.
 		 */
-		nodeList.remove(gn);
+		nodeMap.remove(gn);
 		gcs.fireGraphNodeChangeEvent(gn, NodeChangeEvent.NODE_REMOVED);
 		return true;
 	}
 
 	/**
-	 * Removes the given Edge from the AbstractListMapGraph.
+	 * Removes the given Edge from the AbstractSetMapGraph.
 	 * 
 	 * @see pcgen.base.graph.core.Graph#removeEdge(java.lang.Object)
 	 */
@@ -316,25 +289,21 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		{
 			return false;
 		}
+		boolean removed = edgeSet.remove(ge);
+		if (!removed)
+		{
+			return false;
+		}
+		/*
+		 * Must be present in the Graph if we made it to this point
+		 */
 		List<N> graphNodes = ge.getAdjacentNodes();
 		for (N node : graphNodes)
 		{
-			Set<ET> set = nodeEdgeMap.get(node);
-			/*
-			 * null Protection required in case edge wasn't actually in the
-			 * graph
-			 */
-			if (set != null)
-			{
-				set.remove(ge);
-			}
+			nodeEdgeMap.get(node).remove(ge);
 		}
-		if (edgeList.remove(ge))
-		{
-			gcs.fireGraphEdgeChangeEvent(ge, EdgeChangeEvent.EDGE_REMOVED);
-			return true;
-		}
-		return false;
+		gcs.fireGraphEdgeChangeEvent(ge, EdgeChangeEvent.EDGE_REMOVED);
+		return true;
 	}
 
 	/**
@@ -342,10 +311,10 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * Node. Returns null if the given Node is not in the Graph.
 	 * 
 	 * Ownership of the returned Set is transferred to the calling Object. No
-	 * reference to the Set Object is maintained by AbstractListMapGraph.
+	 * reference to the Set Object is maintained by AbstractSetMapGraph.
 	 * However, the Edges contained in the Set are returned BY REFERENCE, and
 	 * modification of the returned Edges will modify the Edges contained within
-	 * the AbstractListMapGraph.
+	 * the AbstractSetMapGraph.
 	 * 
 	 * @see pcgen.base.graph.core.Graph#getAdjacentEdges(java.lang.Object)
 	 */
@@ -371,9 +340,9 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * Returns an array of the GraphChangeListeners to this Graph.
 	 * 
 	 * Ownership of the returned Array is transferred to the calling Object. No
-	 * reference to the Array is maintained by AbstractListMapGraph. However,
-	 * the GraphChangeListeners contained in the Array are (obviously!) returned
-	 * BY REFERENCE, and care should be taken with modifying those
+	 * reference to the Array is maintained by AbstractSetMapGraph. However, the
+	 * GraphChangeListeners contained in the Array are (obviously!) returned BY
+	 * REFERENCE, and care should be taken with modifying those
 	 * GraphChangeListeners.
 	 * 
 	 * @see pcgen.base.graph.core.Graph#getGraphChangeListeners()
@@ -413,7 +382,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		}
 		Graph<N, ET> otherGraph = (Graph<N, ET>) other;
 		List<N> otherNodeList = otherGraph.getNodeList();
-		int thisNodeSize = nodeList.size();
+		int thisNodeSize = nodeMap.size();
 		if (thisNodeSize != otherNodeList.size())
 		{
 			System.err.println("Not equal node count");
@@ -421,17 +390,17 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		}
 		// (potentially wasteful, but defensive copy)
 		otherNodeList = new ArrayList<N>(otherNodeList);
-		if (otherNodeList.retainAll(nodeList))
+		if (otherNodeList.retainAll(nodeMap.keySet()))
 		{
 			// Some nodes are not identical
 			System.err.println("Not equal node list");
-			System.err.println(nodeList);
+			System.err.println(nodeMap.keySet());
 			System.err.println(otherNodeList);
 			return false;
 		}
 		// Here, the node lists are identical...
 		List<ET> otherEdgeList = otherGraph.getEdgeList();
-		int thisEdgeSize = edgeList.size();
+		int thisEdgeSize = edgeSet.size();
 		if (thisEdgeSize != otherEdgeList.size())
 		{
 			System.err.println("Not equal edge count");
@@ -439,11 +408,11 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		}
 		// (potentially wasteful, but defensive copy)
 		otherEdgeList = new ArrayList<ET>(otherEdgeList);
-		if (otherEdgeList.retainAll(edgeList))
+		if (otherEdgeList.retainAll(edgeSet))
 		{
 			// Other Graph contains extra edges
 			System.err.println("not equal edge retain");
-			System.err.println(edgeList);
+			System.err.println(edgeSet);
 			System.err.println(otherEdgeList);
 			return false;
 		}
@@ -459,6 +428,6 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	public int hashCode()
 	{
 		// This is really simple, but it works... and prevents a deep hash
-		return nodeList.size() + edgeList.size() * 23;
+		return nodeMap.size() + edgeSet.size() * 23;
 	}
 }

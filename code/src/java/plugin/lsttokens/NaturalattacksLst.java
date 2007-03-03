@@ -313,6 +313,11 @@ public class NaturalattacksLst implements GlobalLstToken
 		if (links.size() > 1) {
 			// TODO Error
 		}
+		/*
+		 * FIXME This is an order of operations issue - what is the Natural Attack 
+		 * is struck before the Size is struck?? - That produces a bug, so this 
+		 * needs to be deferred resolution...
+		 */
 		SizeAdjustment size;
 		if (links.size() == 1) {
 			/*

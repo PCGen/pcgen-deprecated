@@ -43,18 +43,42 @@ public class VisibleToken implements PCTemplateLstToken
 	{
 		if (value.startsWith("DISPLAY"))
 		{
+			if (!value.equals("DISPLAY"))
+			{
+				Logging.errorPrint("In " + getTokenName() + " Use of '" + value
+					+ "' is not valid, please use DISPLAY "
+					+ "(exact String, upper case)");
+			}
 			template.setVisibility(Visibility.DISPLAY);
 		}
 		else if (value.startsWith("EXPORT"))
 		{
+			if (!value.equals("EXPORT"))
+			{
+				Logging.errorPrint("In " + getTokenName() + " Use of '" + value
+					+ "' is not valid, please use EXPORT "
+					+ "(exact String, upper case)");
+			}
 			template.setVisibility(Visibility.EXPORT);
 		}
 		else if (value.startsWith("NO"))
 		{
+			if (!value.equals("NO"))
+			{
+				Logging.errorPrint("In " + getTokenName() + " Use of '" + value
+					+ "' is not valid, please use NO "
+					+ "(exact String, upper case)");
+			}
 			template.setVisibility(Visibility.NO);
 		}
 		else
 		{
+			if (!value.equals("ALWAYS") && !value.equals("YES"))
+			{
+				Logging.errorPrint("In " + getTokenName() + " Use of '" + value
+					+ "' is not valid, please use YES or ALWAYS "
+					+ "(exact String, upper case)");
+			}
 			template.setVisibility(Visibility.YES);
 		}
 		return true;
