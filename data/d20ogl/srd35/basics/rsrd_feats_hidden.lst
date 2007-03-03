@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Feb 23 18:14:28 2007 -- reformated by prettylst.pl v1.36 (build 2045)
+# CVS $Revision$ $Author$ -- Fri Mar  2 05:43:01 2007 -- reformated by prettylst.pl v1.37 (build 2312)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 # Original Entry by: Tir Gwaith, DLM, GldDragon35
 
@@ -89,7 +89,7 @@ Rage		TYPE:Special.Extraordinary	VISIBLE:NO	SA:Rage (Ex) % times/day (% rounds)|
 
 ###Block: Barbarian abilities
 # Feat Name			Type				Visible	Special Ability			Define							Add to base move																		Modify VAR							Damage Reduction	Source Page
-Illiteracy			TYPE:Special		VISIBLE:NO	SA:Illiteracy																																										SOURCEPAGE:ClassesI.rtf
+Illiteracy			TYPE:Special		VISIBLE:NO	SA:Illiteracy			DEFINE:IlliteracyLVL|0																																				SOURCEPAGE:ClassesI.rtf
 Barbarian Fast Movement	TYPE:Extraordinary	VISIBLE:NO	SA:Fast Movement (Ex)										BONUS:MOVEADD|TYPE=Walk|10|PREVARLT:ENCUMBERANCE,2,var("COUNT[EQTYPE.ARMOR.EQUIPPED.IS.HEAVY]"),1|TYPE=FastMovement												SOURCEPAGE:ClassesI.rtf
 Barbarian DR		TYPE:Extraordinary	VISIBLE:NO	SA:Damage Reduction (Ex)	DEFINE:BarbarianDR|0	DEFINE:BarbarianDRLVL|0																					BONUS:VAR|BarbarianDR|(BarbarianDRLVL-4)/3	DR:BarbarianDR/-	SOURCEPAGE:ClassesI.rtf
 Indomitable Will		TYPE:Extraordinary	VISIBLE:NO	SA:Indomitable Will (Ex)																																								SOURCEPAGE:ClassesI.rtf
@@ -201,7 +201,7 @@ Ki Strike	TYPE:Special.Supernatural	VISIBLE:NO	SA:Ki Strike (Su) (Magic)|PREVARG
 Monk Ki Strike Advancement	TYPE:Internal	VISIBLE:NO	BONUS:VAR|KiStrikeMagic|1|PREVARGTEQ:KiStrikeLVL,4	BONUS:VAR|KiStrikeLawful|1|PREVARGTEQ:KiStrikeLVL,10	BONUS:VAR|KiStrikeAdaman|1|PREVARGTEQ:KiStrikeLVL,16	SOURCEPAGE:ClassesI.rtf
 
 ###Block: Paladin Abilities
-# Feat Name		Type				Visible	Special Ability						Define								Spells											Save checks bonus						Modify VAR							Source Page
+# Feat Name		Type				Visible	Special Ability						Define								Innate Spells										Save checks bonus						Modify VAR							Source Page
 Aura of Courage	TYPE:Extraordinary	VISIBLE:NO	SA:Aura of Courage (Su)																																										SOURCEPAGE:ClassesII.rtf
 Divine Health	TYPE:Supernatural		VISIBLE:NO	SA:Divine Health (Ex)																																										SOURCEPAGE:ClassesII.rtf
 Remove Disease	TYPE:SpellLike		VISIBLE:NO	SA:Remove Disease (Sp) %/week|RemoveDisease	DEFINE:RemoveDisease|0	DEFINE:RemoveDiseaseLVL|0																					BONUS:VAR|RemoveDisease|RemoveDiseaseLVL/3-1	SOURCEPAGE:ClassesII.rtf
@@ -230,9 +230,9 @@ Ranger Animal Companion	TYPE:Internal	VISIBLE:NO	DEFINE:RangerAnimalCompLVL|0	BO
 Trapfinding	TYPE:Special	VISIBLE:NO	SA:Trapfinding	SOURCEPAGE:p.ClassesII.rtf
 
 ###Block: Rogue Trackers
-# Feat Name				Visible	Virtual Feat			Modify VAR							Source Page
-Rogue Tracker - Sneak Attack	VISIBLE:NO	VFEAT:Sneak Attack		BONUS:VAR|SneakAttack|(var("CL=Rogue")+1)/2	SOURCEPAGE:ClassesII.rtf
-Rogue Tracker - Trap Sense	VISIBLE:NO	VFEAT:Trap Sense Ability	BONUS:VAR|TrapSense|var("CL=Rogue")/3		SOURCEPAGE:ClassesII.rtf
+# Feat Name			Visible	Define				Modify VAR							Source Page
+Rogue Sneak Attack	VISIBLE:NO	DEFINE:RogueSneakAttackLVL|0	BONUS:VAR|SneakAttack|(RogueSneakAttackLVL+1)/2	SOURCEPAGE:ClassesII.rtf
+Rogue Trap Sense		VISIBLE:NO	DEFINE:RogueTrapSenseLVL|0	BONUS:VAR|TrapSense|RogueTrapSenseLVL/3		SOURCEPAGE:ClassesII.rtf
 
 ###Block: Ranger Combat Styles
 # Feat Name					Type				Visible	Prohibited Feat				Var. Min. Value			Special Ability				Virtual Feat
@@ -328,12 +328,12 @@ Transmuter Learning Bonus	TYPE:Extraordinary	VISIBLE:NO	SA:+2 bonus to Spellcraf
 All Automatic Proficiencies		TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Gauntlet|Unarmed Strike|Spells(Ray)
 All Martial Weapon Proficiencies	TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|TYPE.Martial
 Bard Weapon Proficiencies		TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Longsword|Rapier|Sap|Sword (Short)|Shortbow|Shortbow|Whip
-Druid Weapon Proficiencies		TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Club|Dagger|Dart|Quarterstaff|Scimitar|Sickle|Shortspear|Sling|Halfspear|Spear
+Druid Weapon Proficiencies		TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Club|Dagger|Dart|Quarterstaff|Scimitar|Sickle|Shortspear|Sling|Spear
 Monk Weapon Proficiencies		TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Club|Crossbow (Light)|Crossbow (Heavy)|Dagger|Handaxe|Javelin|Kama|Nunchaku|Quarterstaff|Sai|Shuriken|Siangham|Sling|Unarmed Strike
 Rogue Weapon Proficiencies		TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Crossbow (Hand)|Rapier|Sap|Shortbow|Sword (Short)
 Wizard Weapon Proficiencies		TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Club|Dagger|Crossbow (Heavy)|Crossbow (Light)|Quarterstaff
 Assassin Weapon Proficiencies		TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|TYPE.Crossbow|TYPE.Dagger|Dart|Rapier|Sap|Shortbow|Sword (Short)
-Shadowdancer Weapon Proficiencies	TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Club|TYPE.Crossbow|TYPE.Dagger|Dart|Mace|Morningstar|Rapier|Sap|Shortbow|Sword (Short)
+Shadowdancer Weapon Proficiencies	TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Club|TYPE.Crossbow|TYPE.Dagger|Dart|Mace (Light)|Mace (Heavy)|Morningstar|Rapier|Sap|Shortbow|Sword (Short)
 
 ###Block: Automatic Creature Type Proficiencies
 # Feat Name					Type			Visible	Automaticaly Gained Weapon Prof.		Source Page
@@ -363,27 +363,27 @@ Undead Traits			TYPE:Special	VISIBLE:NO	SA:Undead Traits|!PRERULE:DISPLAYTYPETRA
 Vermin Traits			TYPE:Special	VISIBLE:NO	SA:Vermin Traits|!PRERULE:DISPLAYTYPETRAITS	SA:Vermin eat/sleep/breathe|PRERULE:DISPLAYTYPETRAITS	SA:Mindless - Immune to all mind-influencing effects (charms/ compulsions/ phantasms/ patterns/ and morale effects)|PRETEMPLATE:Mindless|PRERULE:DISPLAYTYPETRAITS																																																																																																																																																																				VISION:Darkvision (60')			SOURCEPAGE:TypesSubtypesAbilities.rtf
 
 ###Block: Special Abilities
-# Feat Name				Output Name							Type					Visible	Special Ability					Multiple?	Choose			Combat bonus									Weapon prof. bonus
+# Feat Name				Output Name							Type					Visible	Special Ability					Multiple?	Choose			Combat bonus									Weapon prof. bonus																		Source Page
 Oversized Weapon			OUTPUTNAME:Oversized Weapon (Ex)			TYPE:Special.Extraordinary	VISIBLE:NO	SA:Oversized Weapon (Ex)			MULT:YES	CHOOSE:WEAPONPROFS|LIST												BONUS:WEAPONPROF=%LIST|PCSIZE|1
-Powerful Build											TYPE:Special			VISIBLE:NO																									BONUS:WEAPONPROF=TYPE.Simple|PCSIZE|1	BONUS:WEAPONPROF=TYPE.Martial|PCSIZE|1	BONUS:WEAPONPROF=TYPE.Exotic|PCSIZE|1
+Powerful Build			OUTPUTNAME:Powerful Build (Ex)			TYPE:Special.Extraordinary	VISIBLE:NO																									BONUS:WEAPONPROF=TYPE.Simple|PCSIZE|1	BONUS:WEAPONPROF=TYPE.Martial|PCSIZE|1	BONUS:WEAPONPROF=TYPE.Exotic|PCSIZE|1	SOURCEPAGE:PsionicMonsters.rtf
 Superior Two-Weapon Fighting	OUTPUTNAME:Superior Two-Weapon Fighting (Ex)	TYPE:Special.Extraordinary	VISIBLE:NO	SA:Superior Two-Weapon Fighting (Ex)							BONUS:COMBAT|TOHIT-PRIMARY|6	BONUS:COMBAT|TOHIT-SECONDARY|10
 
 ###Block: Leadership feat support
-# Feat Name		Type			Visible	Multiple?	Choose												Modify VAR							Temporary effect description
-Leadership Score	TYPE:Special	VISIBLE:NO	MULT:YES	CHOOSE:NUMCHOICES=1|NUMBER|MIN=-10|MAX=10|TITLE=Leadership Score Adjustment	BONUS:VAR|LeadershipScore|%CHOICE|PREAPPLY:PC	TEMPDESC:Several factors can affect a character's Leadership score, causing it to vary from the base score. Add modifiers as needed.
+# Feat Name		Type				Visible	Multiple?	Choose												Modify VAR							Temporary effect description
+Leadership Score	TYPE:SPECIAL.Internal	VISIBLE:NO	MULT:YES	CHOOSE:NUMCHOICES=1|NUMBER|MIN=-10|MAX=10|TITLE=Leadership Score Adjustment	BONUS:VAR|LeadershipScore|%CHOICE|PREAPPLY:PC	TEMPDESC:Several factors can affect a character's Leadership score, causing it to vary from the base score. Add modifiers as needed.
 
 ###Block:Nightshade support
 # Feat Name		Output Name					Type					Visible	Special Ability			Save checks bonus										Combat bonus														Bonus to HP											Source Page				Temporary effect description
 Desecrating Aura	OUTPUTNAME:Desecrating Aura (Su)	TYPE:Special.Supernatural	VISIBLE:NO	SA:Desecrating Aura (Su)	BONUS:CHECKS|ALL|2|TYPE=Profane	BONUS:CHECKS|ALL|-2|PREAPPLY:PC	BONUS:COMBAT|TOHIT,DAMAGE.Melee|2|TYPE=Profane	BONUS:COMBAT|TOHIT,DAMAGE.Melee|-2|PREAPPLY:PC	BONUS:HP|CURRENTMAX|HD*2	BONUS:HP|CURRENTMAX|-(HD*2)|PREAPPLY:PC	SOURCEPAGE:MonstersM-N.rtf	TEMPDESC:Apply this penalty if the nightshade's desecrating aura ability is dispelled by a dispel evil spell or similar effect, or if it enters a consecrated or hallowed area.
 
 ###Block: Companion support
-# Feat Name		Type				Visible	Special Ability			Define				Source Page				COMPANIONLIST																																																																																																																																																																										FOLLOWERS
-Animal Companion	TYPE:Extraordinary	VISIBLE:NO	SA:Animal Companion (Ex)	DEFINE:CompLevel|0							COMPANIONLIST:Animal Companion|Badger,Camel,Dire Animal (Dire Rat),Dog,Dog (Riding),Eagle,Hawk,Horse (Light),Horse (Heavy),Owl,Pony,Snake (Viper/Small),Snake (Viper/Medium),Wolf	COMPANIONLIST:Animal Companion|Ape,Bear (Black),Bison,Boar,Cheetah,Dire Animal (Dire Badger),Dire Animal (Dire Bat),Dire Animal (Dire Weasel),Leopard,Lizard (Monitor),Snake (Constrictor),Snake (Viper/Large),Wolverine|FOLLOWERADJUSTMENT:-3	COMPANIONLIST:Animal Companion|Bear (Brown),Dire Animal (Dire Wolverine),Crocodile (Giant),Dinosaur (Deinonychus),Dire Animal (Dire Ape),Dire Animal (Dire Boar),Dire Animal (Dire Wolf),Lion,Rhinoceros,Snake (Viper/Huge),Tiger|FOLLOWERADJUSTMENT:-6	COMPANIONLIST:Animal Companion|Bear (Polar),Dire Animal (Dire Lion),Dinosaur (Megaraptor),Snake (Constrictor/Giant)|FOLLOWERADJUSTMENT:-9	COMPANIONLIST:Animal Companion|Dire Animal (Dire Bear),Elephant|FOLLOWERADJUSTMENT:-12	COMPANIONLIST:Animal Companion|Dire Animal (Dire Tiger),Dinosaur (Triceratops),Dinosaur (Tyrannosaurus)|FOLLOWERADJUSTMENT:-15	FOLLOWERS:Animal Companion|1
-Special Mount	TYPE:SpellLike		VISIBLE:NO	SA:Special Mount (Sp)		DEFINE:SMLevel|0			SOURCEPAGE:ClassesII.rtf	COMPANIONLIST:Special Mount|ANY																																																																																																																																																																							FOLLOWERS:Special Mount|1
-Summon Familiar	TYPE:Special		VISIBLE:NO	SA:Summon Familiar		DEFINE:FMLevel|0								COMPANIONLIST:Familiar|Bat,Cat,Hawk,Lizard,Owl,Rat,Raven,Snake (Viper/Tiny),Toad,Weasel																																																																																																																																																														FOLLOWERS:Familiar|1
-Fiendish Servant	TYPE:Special		VISIBLE:NO	SA:Fiendish Servant		DEFINE:FSLevel|0								COMPANIONLIST:Fiendish Servant|Bat,Cat,Dire Animal (Dire Rat),Horse (Heavy),Horse (Light),Horse (Warhorse Heavy),Horse (Warhorse Light),Pony,Raven,Toad																																																																																																																																																			FOLLOWERS:Fiendish Servant|1
-Undead Companion	TYPE:Special		VISIBLE:NO	SA:Undead Companion		DEFINE:UndeadCompanionLVL|0						COMPANIONLIST:Undead Companion|Skeleton (Human Warrior),Zombie (Human Commoner)																																																																																																																																																															FOLLOWERS:Undead Companion|1
-Summon Shadow	TYPE:Supernatural		VISIBLE:NO	SA:Summon Shadow (Su)		DEFINE:ShadowCompanion|0						COMPANIONLIST:Shadow Companion|Shadow																																																																																																																																																																						FOLLOWERS:Shadow Companion|1
+# Feat Name		Type				Visible	Special Ability			Define				Allow Follower			Allowed Companions																																																																																																																																																																									Source Page
+Animal Companion	TYPE:Extraordinary	VISIBLE:NO	SA:Animal Companion (Ex)	DEFINE:CompLevel|0		FOLLOWERS:Animal Companion|1	COMPANIONLIST:Animal Companion|Badger,Camel,Dire Animal (Dire Rat),Dog,Dog (Riding),Eagle,Hawk,Horse (Light),Horse (Heavy),Owl,Pony,Snake (Viper/Small),Snake (Viper/Medium),Wolf	COMPANIONLIST:Animal Companion|Ape,Bear (Black),Bison,Boar,Cheetah,Dire Animal (Dire Badger),Dire Animal (Dire Bat),Dire Animal (Dire Weasel),Leopard,Lizard (Monitor),Snake (Constrictor),Snake (Viper/Large),Wolverine|FOLLOWERADJUSTMENT:-3	COMPANIONLIST:Animal Companion|Bear (Brown),Dire Animal (Dire Wolverine),Crocodile (Giant),Dinosaur (Deinonychus),Dire Animal (Dire Ape),Dire Animal (Dire Boar),Dire Animal (Dire Wolf),Lion,Rhinoceros,Snake (Viper/Huge),Tiger|FOLLOWERADJUSTMENT:-6	COMPANIONLIST:Animal Companion|Bear (Polar),Dire Animal (Dire Lion),Dinosaur (Megaraptor),Snake (Constrictor/Giant)|FOLLOWERADJUSTMENT:-9	COMPANIONLIST:Animal Companion|Dire Animal (Dire Bear),Elephant|FOLLOWERADJUSTMENT:-12	COMPANIONLIST:Animal Companion|Dire Animal (Dire Tiger),Dinosaur (Triceratops),Dinosaur (Tyrannosaurus)|FOLLOWERADJUSTMENT:-15
+Special Mount	TYPE:SpellLike		VISIBLE:NO	SA:Special Mount (Sp)		DEFINE:SMLevel|0			FOLLOWERS:Special Mount|1	COMPANIONLIST:Special Mount|ANY																																																																																																																																																																							SOURCEPAGE:ClassesII.rtf
+Summon Familiar	TYPE:Special		VISIBLE:NO	SA:Summon Familiar		DEFINE:FMLevel|0			FOLLOWERS:Familiar|1		COMPANIONLIST:Familiar|Bat,Cat,Hawk,Lizard,Owl,Rat,Raven,Snake (Viper/Tiny),Toad,Weasel
+Fiendish Servant	TYPE:Special		VISIBLE:NO	SA:Fiendish Servant		DEFINE:FSLevel|0			FOLLOWERS:Fiendish Servant|1	COMPANIONLIST:Fiendish Servant|Bat,Cat,Dire Animal (Dire Rat),Horse (Heavy),Horse (Light),Horse (Warhorse Heavy),Horse (Warhorse Light),Pony,Raven,Toad
+Undead Companion	TYPE:Special		VISIBLE:NO	SA:Undead Companion		DEFINE:UndeadCompanionLVL|0	FOLLOWERS:Undead Companion|1	COMPANIONLIST:Undead Companion|Skeleton (Human Warrior),Zombie (Human Commoner)
+Summon Shadow	TYPE:Supernatural		VISIBLE:NO	SA:Summon Shadow (Su)		DEFINE:ShadowCompanion|0	FOLLOWERS:Shadow Companion|1	COMPANIONLIST:Shadow Companion|Shadow
 
 #
 #EOF
