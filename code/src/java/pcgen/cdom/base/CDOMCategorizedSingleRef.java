@@ -20,7 +20,7 @@ package pcgen.cdom.base;
 import pcgen.core.SourceEntry;
 
 public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>
-		extends CDOMSingleRef<T> implements CategorizedCDOMObject<T>
+		extends CDOMSingleRef<T> implements CategorizedCDOMReference<T>
 {
 
 	private T referencedObject = null;
