@@ -76,7 +76,7 @@ public class EquipToken implements AutoLstToken
 		// }
 		// prereq =
 		// value.substring(openBracketLoc + 1, value.length()
-		// - openBracketLoc - 2);
+		//  - 2);
 		// }
 		//
 		// StringTokenizer tok = new StringTokenizer(shieldProfs,

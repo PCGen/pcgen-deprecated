@@ -73,9 +73,7 @@ public class ArmorProfToken implements AutoLstToken
 				Logging.errorPrint("Unresolved Prerequisite in "
 					+ getTokenName() + " " + value + " in " + getTokenName());
 			}
-			prereq =
-					value.substring(openBracketLoc + 1, value.length()
-						- openBracketLoc - 2);
+			prereq = value.substring(openBracketLoc + 1, value.length() - 2);
 		}
 
 		StringTokenizer tok = new StringTokenizer(armorProfs, Constants.PIPE);
