@@ -146,6 +146,8 @@ public class PObjectTest extends AbstractCharacterTestCase
 			throw new UnreachableError(e);
 		}
 		Race reconstRace = new Race();
+		//Need to set the name, since that should not be passed to the parseLine method
+		reconstRace.setName("TestRace");
 		raceLoader.parseLine(reconstRace, racePCCText, source);
 		assertEquals(
 			"getPCCText should be the same after being encoded and reloaded",
