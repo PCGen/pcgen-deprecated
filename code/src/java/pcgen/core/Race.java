@@ -798,11 +798,6 @@ public final class Race extends PObject
 			txt.append("\tLEVELADJUSTMENT:").append(levelAdjustment);
 		}
 
-		if (!Constants.s_NONE.equals(displayName))
-		{
-			txt.append("\tRACENAME:").append(displayName);
-		}
-
 		if ((bonusSkillList != null) && (bonusSkillList.length() > 0))
 		{
 			txt.append("\tSKILL:").append(bonusSkillList);
