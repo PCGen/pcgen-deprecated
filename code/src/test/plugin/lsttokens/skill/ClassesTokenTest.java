@@ -28,6 +28,7 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	public static final void ltClassSetUp() throws PersistenceLayerException
 	{
 		TokenRegistration.register(new PreClassParser());
+		classSetUpFired = true;
 	}
 
 	@Override

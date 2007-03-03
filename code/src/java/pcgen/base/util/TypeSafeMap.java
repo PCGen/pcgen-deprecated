@@ -244,6 +244,10 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 			System.arraycopy(array, 0, newKeyArray, 0, array.length);
 			array = newKeyArray;
 		}
+		else if (!keyClass.isInstance(arg0))
+		{
+			throw new IllegalArgumentException(arg0 + " is not a " + keyClass);
+		}
 		Object returnValue = array[loc + 1];
 		array[loc] = arg0;
 		array[loc + 1] = arg1 == null ? nullValue : arg1;

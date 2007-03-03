@@ -27,6 +27,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public static final void ltClassSetUp() throws PersistenceLayerException
 	{
 		TokenRegistration.register(new PreHDParser());
+		classSetUpFired = true;
 	}
 
 	@Override

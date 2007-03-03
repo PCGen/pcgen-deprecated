@@ -300,7 +300,11 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 		List<N> graphNodes = ge.getAdjacentNodes();
 		for (N node : graphNodes)
 		{
-			nodeEdgeMap.get(node).remove(ge);
+			Set<ET> thing = nodeEdgeMap.get(node);
+			// Could be null due to side effects
+			if (thing != null) {
+				thing.remove(ge);
+			}
 		}
 		gcs.fireGraphEdgeChangeEvent(ge, EdgeChangeEvent.EDGE_REMOVED);
 		return true;
