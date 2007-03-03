@@ -68,11 +68,27 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 		return slotCount.toString();
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("Slot: ").append(slotCount.toString());
+		sb.append("objects of ").append(slotClass.getSimpleName());
+		if (hasSinkRestrictions())
+		{
+			sb.append(" [").append(getSinkRestrictions().toString())
+				.append(']');
+		}
+		return sb.toString();
+	}
+
+	@Override
 	public int hashCode()
 	{
 		return slotCount.hashCode() ^ slotClass.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if (o == this)

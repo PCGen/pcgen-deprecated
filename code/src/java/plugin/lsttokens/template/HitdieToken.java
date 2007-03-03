@@ -259,7 +259,7 @@ public class HitdieToken implements PCTemplateLstToken
 			 * common fashion between graphs... source object key and token
 			 * name? (not good because keys can be changed)... ???
 			 */
-			Aggregator ag = new Aggregator(this, getTokenName());
+			Aggregator ag = new Aggregator(template, getTokenName());
 			context.graph.linkAllowIntoGraph(getTokenName(), template, ag);
 			context.graph.linkActivationIntoGraph(getTokenName(), owner, ag);
 			context.graph.linkObjectIntoGraph(getTokenName(), ag, hdm);

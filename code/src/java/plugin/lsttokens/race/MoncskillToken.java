@@ -64,7 +64,7 @@ public class MoncskillToken implements RaceLstToken
 		 * TODO FIXME Need to check if another MONCSKILL aggregator already
 		 * exists... and add to it?
 		 */
-		Aggregator agg = new Aggregator(this, getTokenName());
+		Aggregator agg = new Aggregator(race, getTokenName());
 		/*
 		 * This is intentionally Holds, as the context for traversal must only
 		 * be the ref (linked by the Activation Edge). So we need an edge to the
