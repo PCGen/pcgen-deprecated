@@ -92,10 +92,10 @@ public class HandsToken implements WeaponProfLstToken
 		{
 			hands = "1IFLARGERTHANWEAPON";
 		}
-		else if (intValue <= 0)
+		else if (intValue < 0)
 		{
 			context.addWriteMessage(getTokenName()
-				+ " must be greater than zero or special value "
+				+ " must be greater than or equal to zero or special value "
 				+ Constants.HANDS_SIZEDEPENDENT + " for 1IFLARGERTHANWEAPON");
 			return null;
 		}
