@@ -4951,6 +4951,10 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 
 		return iBonus * iTimes;
 	}
+
+	public void clearAdds() {
+		levelAbilityList.clear();
+	}
 	
 //	public List<BonusObj> getActiveBonuses(final PlayerCharacter aPC, final String aBonusType, final String aBonusName)
 //	{

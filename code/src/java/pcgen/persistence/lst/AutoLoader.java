@@ -1,5 +1,5 @@
 /*
- * SubClassLoader.java
+ * AutoLoader.java
  * Copyright 2007 (C) Thomas Parker <thpr@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
  *
  * Created on February 17, 2007
  *
- * $Id: SubClassLoader.java 2077 2007-01-27 16:45:58Z thpr $
+ * $Id: AutoLoader.java 2077 2007-01-27 16:45:58Z thpr $
  */
 package pcgen.persistence.lst;
 

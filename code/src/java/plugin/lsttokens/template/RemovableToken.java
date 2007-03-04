@@ -44,7 +44,7 @@ public class RemovableToken implements PCTemplateLstToken
 		char firstChar = value.charAt(0);
 		if (firstChar == 'y' || firstChar == 'Y')
 		{
-			if (!value.equalsIgnoreCase("YES"))
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
 			{
 				Logging.errorPrint("You should use 'YES' or 'NO' as the "
 					+ getTokenName());
@@ -54,7 +54,8 @@ public class RemovableToken implements PCTemplateLstToken
 		}
 		else
 		{
-			if (value.equalsIgnoreCase("NO"))
+			if (firstChar != 'N' && firstChar != 'n'
+				&& !value.equalsIgnoreCase("NO"))
 			{
 				Logging.errorPrint("You should use 'YES' or 'NO' as the "
 					+ getTokenName());

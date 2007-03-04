@@ -30,6 +30,7 @@ import java.util.Map;
 import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
+import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 
@@ -68,9 +69,40 @@ public final class AddLoader
 		}
 		else
 		{
-			//FIXME Consume for now - too frequent!
-			//Logging.errorPrint("Illegal ADD info '" + value + "'");
+			// FIXME Consume for now - too frequent!
+			// Logging.errorPrint("Illegal ADD info '" + value + "'");
 		}
 		return true;
+	}
+
+	/**
+	 * This method is static so it can be used by the ADD Token.
+	 * 
+	 * @param target
+	 * @param lstLine
+	 * @param source
+	 * @throws PersistenceLayerException
+	 */
+	public static boolean parseLine(PObject target, String key, String value,
+		int level)
+	{
+		Map<String, LstToken> tokenMap =
+				TokenStore.inst().getTokenMap(AddLstToken.class);
+		AddLstToken token = (AddLstToken) tokenMap.get(key);
+		if (token != null)
+		{
+			LstUtils.deprecationCheck(token, target, value);
+			if (!token.parse(target, value, level))
+			{
+				Logging.errorPrint("Error parsing ADD: " + key + ":" + value);
+				return false;
+			}
+			return true;
+		}
+		else
+		{
+			Logging.errorPrint("Error parsing ADD, invalid SubToken: " + key);
+			return false;
+		}
 	}
 }
