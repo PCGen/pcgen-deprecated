@@ -15,64 +15,53 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.equipmentmodifier;
+package plugin.lsttokens.race;
 
-import org.junit.Test;
-
-import pcgen.cdom.enumeration.ListKey;
-import pcgen.cdom.enumeration.Type;
-import pcgen.core.EquipmentModifier;
+import pcgen.core.Race;
+import pcgen.core.Skill;
 import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTypeSafeListTestCase;
+import pcgen.persistence.lst.RaceLoader;
+import plugin.lsttokens.AbstractListTokenTestCase;
 
-public class ItypeTokenTest extends AbstractTypeSafeListTestCase<EquipmentModifier>
+public class MonCCSkillTokenTest extends AbstractListTokenTestCase<Race, Skill>
 {
-
-	static ItypeToken token = new ItypeToken();
-	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
+	static MonccskillToken token = new MonccskillToken();
+	static RaceLoader loader = new RaceLoader();
 
 	@Override
-	public Class<EquipmentModifier> getCDOMClass()
+	public Class<Race> getCDOMClass()
 	{
-		return EquipmentModifier.class;
+		return Race.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<EquipmentModifier> getLoader()
+	public LstObjectFileLoader<Race> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<EquipmentModifier> getToken()
+	public CDOMToken<Race> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Object getConstant(String string)
-	{
-		return Type.getConstant(string);
-	}
-
-	@Override
 	public char getJoinCharacter()
 	{
-		return '.';
+		return '|';
 	}
 
 	@Override
-	public ListKey<?> getListKey()
+	public Class<Skill> getTargetClass()
 	{
-		return ListKey.ITEM_TYPES;
+		return Skill.class;
 	}
 
-	@Test
-	public void dummyTest()
+	@Override
+	public boolean isTypeLegal()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		return true;
 	}
-
 }

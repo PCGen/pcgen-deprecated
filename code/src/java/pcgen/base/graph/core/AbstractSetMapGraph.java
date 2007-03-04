@@ -302,7 +302,8 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 		{
 			Set<ET> thing = nodeEdgeMap.get(node);
 			// Could be null due to side effects
-			if (thing != null) {
+			if (thing != null)
+			{
 				thing.remove(ge);
 			}
 		}
@@ -400,6 +401,20 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 			System.err.println("Not equal node list");
 			System.err.println(nodeMap.keySet());
 			System.err.println(otherNodeList);
+			ArrayList al = new ArrayList(nodeMap.keySet());
+			al.removeAll(otherNodeList);
+			for (Object o : al)
+			{
+				System.err.println("1- " + o.hashCode());
+			}
+			System.err.println("?!?");
+			ArrayList al2 = new ArrayList(otherGraph.getNodeList());
+			al2.removeAll(otherNodeList);
+			for (Object o : al2)
+			{
+				System.err.println("2- " + o.hashCode());
+			}
+			System.err.println(al.equals(al2));
 			return false;
 		}
 		// Here, the node lists are identical...

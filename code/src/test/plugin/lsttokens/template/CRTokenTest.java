@@ -19,18 +19,17 @@ package plugin.lsttokens.template;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.enumeration.Region;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
-import plugin.lsttokens.AbstractTypeSafeTokenTestCase;
+import plugin.lsttokens.AbstractTokenTestCase;
 
-public class RegionTokenTest extends AbstractTypeSafeTokenTestCase<PCTemplate>
+public class CRTokenTest extends AbstractTokenTestCase<PCTemplate>
 {
 
-	static RegionToken token = new RegionToken();
+	static CrToken token = new CrToken();
 	static PCTemplateLoader loader = new PCTemplateLoader();
 
 	@Override
@@ -51,21 +50,70 @@ public class RegionTokenTest extends AbstractTypeSafeTokenTestCase<PCTemplate>
 		return token;
 	}
 
-	@Override
-	public Object getConstant(String string)
+	@Test
+	public void testBadInputNegative() throws PersistenceLayerException
 	{
-		return Region.getConstant(string);
-	}
-
-	@Override
-	public ObjectKey<?> getObjectKey()
-	{
-		return ObjectKey.REGION;
+		try
+		{
+			boolean parse = getToken().parse(primaryContext, primaryProf, "-1");
+			assertFalse(parse);
+		}
+		catch (IllegalArgumentException e)
+		{
+			// OK
+		}
 	}
 
 	@Test
-	public void dummyTest()
+	public void testBadInputZero() throws PersistenceLayerException
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		try
+		{
+			boolean parse = getToken().parse(primaryContext, primaryProf, "0");
+			assertFalse(parse);
+		}
+		catch (IllegalArgumentException e)
+		{
+			// OK
+		}
 	}
+
+	@Test
+	public void testRoundRobinFraction() throws PersistenceLayerException
+	{
+		runRoundRobin("1/3");
+	}
+
+	@Test
+	public void testRoundRobinFractionFormula()
+		throws PersistenceLayerException
+	{
+		runRoundRobin("1/Formula");
+	}
+
+	@Test
+	public void testRoundRobinFractionFormulaNegative()
+		throws PersistenceLayerException
+	{
+		runRoundRobin("1/-Formula");
+	}
+
+	@Test
+	public void testRoundRobinFormula() throws PersistenceLayerException
+	{
+		runRoundRobin("Formula");
+	}
+
+	@Test
+	public void testRoundRobinFive() throws PersistenceLayerException
+	{
+		runRoundRobin("5");
+	}
+
+	// @Test
+	// public void testEmpty()
+	// {
+	// //Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+	// }
+
 }

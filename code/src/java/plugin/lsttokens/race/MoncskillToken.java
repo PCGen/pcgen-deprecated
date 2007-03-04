@@ -22,9 +22,12 @@
 package plugin.lsttokens.race;
 
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMGroupRef;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -60,10 +63,25 @@ public class MoncskillToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
-		/*
-		 * TODO FIXME Need to check if another MONCSKILL aggregator already
-		 * exists... and add to it?
-		 */
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
 		Aggregator agg = new Aggregator(race, getTokenName());
 		/*
 		 * This is intentionally Holds, as the context for traversal must only
@@ -102,21 +120,25 @@ public class MoncskillToken implements RaceLstToken
 					Logging.errorPrint("Internal Error: "
 						+ "Expected only one MONCSKILL structure in Graph");
 				}
-				PCGraphEdge edge = edgeList.iterator().next();
-				Aggregator a = (Aggregator) edge.getNodeAt(1);
+				/*
+				 * Note this can actually use agg and doesn't have to do a
+				 * search from the edge in edgeList, due to the .equals property
+				 * and how it will work in the Graph :) - Tom Parker Mar/1/07
+				 */
 				Set<PCGraphEdge> edgeToSkillList =
-						context.graph.getChildLinksFromToken(getTokenName(), a,
-							SKILL_CLASS);
+						context.graph.getChildLinksFromToken(getTokenName(),
+							agg, SKILL_CLASS);
 				for (PCGraphEdge se : edgeToSkillList)
 				{
 					if (se.getNodeAt(1).equals(skill))
 					{
+						context.graph.unlinkChildNode(getTokenName(), agg,
+							skill);
 						/*
-						 * TODO FIXME Unlink isn't enough here, since this Token
-						 * created the aggregator, it needs to delete it as
-						 * well...
+						 * TODO FIXME Unlink may not be enough here, since this
+						 * Token created the aggregator, it needs to delete it
+						 * as well if all the connections are destroyed...
 						 */
-						context.graph.unlinkChildNode(getTokenName(), race, a);
 						continue PIPEWHILE;
 					}
 				}
@@ -124,10 +146,12 @@ public class MoncskillToken implements RaceLstToken
 			else
 			{
 				/*
-				 * Note this HAS to be done one-by-one, because the
-				 * .clearChildNodeOfClass method above does NOT recognize the
-				 * C/CC Skill object and therefore doesn't know how to search
-				 * the sublists
+				 * Note this is done one-by-one, because .CLEAR. token type
+				 * needs to be able to perform the unlink. That could be
+				 * changed, but the increase in complexity isn't worth it.
+				 * (Changing it to a grouping object that didn't place links in
+				 * the graph would also make it harder to trace the source of
+				 * class skills, etc.)
 				 */
 				PrereqObject skill =
 						TokenUtilities.getObjectReference(context, SKILL_CLASS,
@@ -150,10 +174,15 @@ public class MoncskillToken implements RaceLstToken
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
 					Aggregator.class);
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
 		if (edgeList.size() != 1)
 		{
-			context
-				.addWriteMessage("Expected only one MONCSKILL structure in Graph");
+			context.addWriteMessage("Expected only one " + getTokenName()
+				+ " structure in Graph");
+			return null;
 		}
 		PCGraphEdge edge = edgeList.iterator().next();
 		StringBuilder sb = new StringBuilder();
@@ -162,7 +191,9 @@ public class MoncskillToken implements RaceLstToken
 				context.graph.getChildLinksFromToken(getTokenName(), a,
 					SKILL_CLASS);
 		sb.append(getTokenName()).append(':');
-		boolean needsPipe = false;
+		SortedSet<CDOMReference<Skill>> set =
+				new TreeSet<CDOMReference<Skill>>(
+					TokenUtilities.REFERENCE_SORTER);
 		for (PCGraphEdge se : edgeToSkillList)
 		{
 			if (!SkillCost.CLASS.equals(se
@@ -172,15 +203,16 @@ public class MoncskillToken implements RaceLstToken
 					+ getTokenName());
 				return null;
 			}
+			set.add((CDOMReference<Skill>) se.getNodeAt(1));
+		}
+		boolean needsPipe = false;
+		for (CDOMReference<Skill> ref : set)
+		{
 			if (needsPipe)
 			{
 				sb.append(Constants.PIPE);
 			}
-			/*
-			 * TODO FIXME This breaks for types... :(
-			 */
-			Skill sk = (Skill) se.getNodeAt(1);
-			sb.append(sk.getKeyName());
+			sb.append(ref.getLSTformat());
 			needsPipe = true;
 		}
 		return sb.toString();

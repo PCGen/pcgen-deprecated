@@ -1366,6 +1366,12 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 		return 1;
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return getKeyName().hashCode();
+	}
+	
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

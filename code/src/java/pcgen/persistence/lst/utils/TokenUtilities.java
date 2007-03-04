@@ -41,21 +41,10 @@ public final class TokenUtilities
 
 				public int compare(CDOMReference<?> arg0, CDOMReference<?> arg1)
 				{
-					if (arg0 instanceof CDOMSingleRef)
-					{
-						if (!(arg1 instanceof CDOMSingleRef))
-						{
-							return -1;
-						}
-						return arg0.getName().compareTo(arg1.getName());
-					}
-					if (arg1 instanceof CDOMSingleRef)
-					{
-						return 1;
-					}
-					return arg0.getName().compareTo(arg1.getName());
+					return compareRefs(arg0, arg1);
 				}
 			};
+
 	public static final Comparator<CategorizedCDOMReference<?>> CAT_REFERENCE_SORTER =
 			new Comparator<CategorizedCDOMReference<?>>()
 			{
@@ -167,4 +156,20 @@ public final class TokenUtilities
 		}
 	}
 
+	public static int compareRefs(CDOMReference<?> arg0, CDOMReference<?> arg1)
+	{
+		if (arg0 instanceof CDOMSingleRef)
+		{
+			if (!(arg1 instanceof CDOMSingleRef))
+			{
+				return -1;
+			}
+			return arg0.getName().compareTo(arg1.getName());
+		}
+		if (arg1 instanceof CDOMSingleRef)
+		{
+			return 1;
+		}
+		return arg0.getName().compareTo(arg1.getName());
+	}
 }

@@ -284,4 +284,44 @@ public class CDOMObject extends ConcretePrereqObject
 		this.put(StringKey.NAME, name);
 	}
 
+	public boolean isCDOMEqual(CDOMObject cdo)
+	{
+		if (cdo == this)
+		{
+			return true;
+		}
+		if (namePI != cdo.namePI || descPI != cdo.descPI)
+		{
+			return false;
+		}
+		/*
+		 * FIXME Test source here
+		 * 
+		 * private final SourceEntry source = new SourceEntry();
+		 */
+		if (!integerChar.equals(cdo.integerChar))
+		{
+			return false;
+		}
+		if (!stringChar.equals(cdo.stringChar))
+		{
+			return false;
+		}
+		if (!formulaChar.equals(cdo.formulaChar))
+		{
+			return false;
+		}
+		if (!objectChar.equals(cdo.objectChar))
+		{
+			return false;
+		}
+		/*
+		 * FIXME Test these items
+		 * 
+		 * private final ListKeyMapToList listChar = new ListKeyMapToList();
+		 * 
+		 * private final MapKeyMapToList mapChar = new MapKeyMapToList();
+		 */
+		return true;
+	}
 }

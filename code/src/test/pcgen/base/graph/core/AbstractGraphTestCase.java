@@ -55,6 +55,7 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		getStrategy().addGraphChangeListener(listener);
 		Integer node = new Integer(1);
 		Integer node2 = new Integer(2);
+		Integer node3 = new Integer(3);
 		assertFalse(getStrategy().containsNode(node));
 		assertFalse(getStrategy().containsNode(node2));
 		assertNull(listener.lastAddNode);
@@ -80,6 +81,11 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertFalse(getStrategy().containsNode(null));
 		assertEquals(2, getStrategy().getNodeList().size());
 		assertEquals(node2, listener.lastAddNode);
+		//
+		assertTrue(getStrategy().addNode(node3));
+		assertTrue(getStrategy().containsNode(node3));
+		assertEquals(3, getStrategy().getNodeList().size());
+		assertEquals(node3, listener.lastAddNode);
 	}
 
 	public void testAddEdge()
@@ -426,43 +432,60 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertFalse(testGraph.equals(node1));
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());
-		master.addNode(node1);
+		assertTrue(master.addNode(node1));
+		assertEquals(1, master.getNodeList().size());
 		assertFalse(testGraph.equals(master));
 		master.removeNode(node1);
 		assertTrue(master.getNodeList().isEmpty());
+		assertEquals(0, master.getNodeList().size());
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());
-		testGraph.addNode(node1);
+		assertTrue(testGraph.addNode(node1));
+		assertEquals(1, testGraph.getNodeList().size());
 		assertFalse(testGraph.equals(master));
-		master.addNode(node4);
+		assertTrue(master.addNode(node4));
+		assertEquals(1, master.getNodeList().size());
+		assertEquals(1, testGraph.getNodeList().size());
+		System.err.println("!");
 		assertFalse(testGraph.equals(master));
-		testGraph.addNode(node4);
+		assertTrue(testGraph.addNode(node4));
+		assertEquals(2, testGraph.getNodeList().size());
+		System.err.println("!!");
 		assertFalse(testGraph.equals(master));
-		master.addNode(node3);
+		assertTrue(master.addNode(node3));
+		assertEquals(2, master.getNodeList().size());
+		assertEquals(2, testGraph.getNodeList().size());
+		System.err.println("!!!");
 		assertFalse(testGraph.equals(master));
-		testGraph.addNode(node3);
+		assertTrue(testGraph.addNode(node3));
+		assertEquals(2, master.getNodeList().size());
+		assertEquals(3, testGraph.getNodeList().size());
+		System.err.println("!!!!");
 		assertFalse(testGraph.equals(master));
-		master.addNode(node1);
+		assertTrue(master.addNode(node1));
+		assertEquals(3, master.getNodeList().size());
+		assertEquals(3, testGraph.getNodeList().size());
+		System.err.println("!!!!!");
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());
-		master.addEdge(edge1);
+		assertTrue(master.addEdge(edge1));
 		assertFalse(testGraph.equals(master));
 		master.removeEdge(edge1);
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());
-		testGraph.addEdge(edge2);
+		assertTrue(testGraph.addEdge(edge2));
 		assertFalse(testGraph.equals(master));
-		master.addEdge(edge1);
+		assertTrue(master.addEdge(edge1));
 		assertFalse(testGraph.equals(master));
-		testGraph.addEdge(edge1);
+		assertTrue(testGraph.addEdge(edge1));
 		assertFalse(testGraph.equals(master));
-		master.addEdge(edge2);
+		assertTrue(master.addEdge(edge2));
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());
-		testGraph.addNode(node2);
+		assertTrue(testGraph.addNode(node2));
 		assertFalse(testGraph.equals(master));
 		//Yes, NEW, not valueOf
-		master.addNode(new Integer(2));
+		assertTrue(master.addNode(new Integer(2)));
 		//Test for .equals of the nodes
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());

@@ -30,9 +30,28 @@ public class ChallengeRating extends ConcretePrereqObject
 	{
 		super();
 		String crValue = string;
+		String testString;
 		if (crValue.startsWith("1/"))
 		{
-			crValue = "-" + crValue.substring(2);
+			testString = crValue.substring(2);
+			crValue = "-" + testString;
+		}
+		else
+		{
+			testString = crValue;
+		}
+		try
+		{
+			int i = Integer.parseInt(testString);
+			if (i <= 0)
+			{
+				throw new IllegalArgumentException(
+					"Challenge Rating cannot be negative");
+			}
+		}
+		catch (NumberFormatException e)
+		{
+			// OK, formulae are allowed
 		}
 		rating = FormulaFactory.getFormulaFor(crValue);
 	}

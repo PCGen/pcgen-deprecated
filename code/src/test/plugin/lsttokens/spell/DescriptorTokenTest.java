@@ -15,38 +15,38 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.equipmentmodifier;
+package plugin.lsttokens.spell;
 
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ListKey;
-import pcgen.cdom.enumeration.Type;
-import pcgen.core.EquipmentModifier;
+import pcgen.cdom.enumeration.SpellDescriptor;
+import pcgen.core.spell.Spell;
 import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.persistence.lst.SpellLoader;
 import plugin.lsttokens.AbstractTypeSafeListTestCase;
 
-public class ItypeTokenTest extends AbstractTypeSafeListTestCase<EquipmentModifier>
+public class DescriptorTokenTest extends AbstractTypeSafeListTestCase<Spell>
 {
 
-	static ItypeToken token = new ItypeToken();
-	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
+	static DescriptorToken token = new DescriptorToken();
+	static SpellLoader loader = new SpellLoader();
 
 	@Override
-	public Class<EquipmentModifier> getCDOMClass()
+	public Class<Spell> getCDOMClass()
 	{
-		return EquipmentModifier.class;
+		return Spell.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<EquipmentModifier> getLoader()
+	public LstObjectFileLoader<Spell> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<EquipmentModifier> getToken()
+	public CDOMToken<Spell> getToken()
 	{
 		return token;
 	}
@@ -54,25 +54,24 @@ public class ItypeTokenTest extends AbstractTypeSafeListTestCase<EquipmentModifi
 	@Override
 	public Object getConstant(String string)
 	{
-		return Type.getConstant(string);
+		return SpellDescriptor.getConstant(string);
 	}
 
 	@Override
 	public char getJoinCharacter()
 	{
-		return '.';
+		return '|';
 	}
 
 	@Override
 	public ListKey<?> getListKey()
 	{
-		return ListKey.ITEM_TYPES;
+		return ListKey.SPELL_DESCRIPTOR;
 	}
 
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
-
 }

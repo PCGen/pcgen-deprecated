@@ -22,7 +22,7 @@
 package plugin.lsttokens.spell;
 
 import java.util.StringTokenizer;
-import java.util.Map.Entry;
+import java.util.TreeSet;
 
 import pcgen.base.util.DefaultMap;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
@@ -32,6 +32,7 @@ import pcgen.core.PCClass;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -55,16 +56,47 @@ public class CostToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
-		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
-		if (!pipeTok.hasMoreTokens())
+		if (value.length() == 0)
 		{
 			Logging.errorPrint(getTokenName()
 				+ " requires the default value to exist");
 			return false;
 		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " requires default value; may not start with | : " + value);
+			return false;
+		}
+
+		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
 		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
 				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
 		String defaultCost = pipeTok.nextToken();
+
+		int startRest = value.indexOf(Constants.PIPE);
+		if (startRest != -1)
+		{
+			if (value.charAt(value.length() - 1) == '|')
+			{
+				Logging.errorPrint(getTokenName()
+					+ " arguments may not end with | : " + value);
+				return false;
+			}
+			if (value.charAt(startRest + 1) == '|')
+			{
+				Logging.errorPrint(getTokenName()
+					+ " arguments may not start with | : " + value);
+				return false;
+			}
+			if (value.indexOf("||") != -1)
+			{
+				Logging.errorPrint(getTokenName()
+					+ " arguments uses double separator || : " + value);
+				return false;
+			}
+		}
+
 		try
 		{
 			Integer i = Integer.valueOf(defaultCost);
@@ -114,7 +146,14 @@ public class CostToken implements SpellLstToken
 						+ "non-negative cost.");
 					return false;
 				}
-				dm.put(pcc, i);
+				if (dm.put(pcc, i) != null)
+				{
+					Logging
+						.errorPrint("Class " + classString
+							+ " was referenced multiple times in "
+							+ getTokenName());
+					return false;
+				}
 			}
 			catch (NumberFormatException nfe)
 			{
@@ -131,6 +170,10 @@ public class CostToken implements SpellLstToken
 	{
 		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
 				spell.get(ObjectKey.COMPONENT_COST);
+		if (dm == null)
+		{
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(getTokenName()).append(':');
 		Integer defaultValue = dm.getDefaultValue();
@@ -150,10 +193,14 @@ public class CostToken implements SpellLstToken
 			return null;
 		}
 		sb.append(defaultValue);
-		for (Entry<CDOMSimpleSingleRef<PCClass>, Integer> me : dm.entrySet())
+		TreeSet<CDOMSimpleSingleRef<PCClass>> set =
+				new TreeSet<CDOMSimpleSingleRef<PCClass>>(
+					TokenUtilities.REFERENCE_SORTER);
+		set.addAll(dm.keySet());
+		for (CDOMSimpleSingleRef<PCClass> key : set)
 		{
-			String className = me.getKey().getName();
-			Integer cost = me.getValue();
+			String className = key.getName();
+			Integer cost = dm.get(key);
 			if (cost.intValue() < 0)
 			{
 				context.addWriteMessage("Cost for PCClass " + className

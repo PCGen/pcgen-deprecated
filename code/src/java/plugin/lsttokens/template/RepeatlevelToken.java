@@ -21,9 +21,11 @@
  */
 package plugin.lsttokens.template;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -50,6 +52,38 @@ import pcgen.util.Logging;
 public class RepeatlevelToken extends AbstractToken implements
 		PCTemplateLstToken
 {
+
+	private static final Comparator<Aggregator> AGG_COMPARATOR =
+			new Comparator<Aggregator>()
+			{
+
+				public int compare(Aggregator arg0, Aggregator arg1)
+				{
+					int compSL =
+							arg0.get(IntegerKey.START_LEVEL).compareTo(
+								arg1.get(IntegerKey.START_LEVEL));
+					if (compSL != 0)
+					{
+						return compSL;
+					}
+					int compLI =
+							arg0.get(IntegerKey.LEVEL_INCREMENT).compareTo(
+								arg1.get(IntegerKey.LEVEL_INCREMENT));
+					if (compLI != 0)
+					{
+						return compLI;
+					}
+					int compC =
+							arg0.get(IntegerKey.CONSECUTIVE).compareTo(
+								arg1.get(IntegerKey.CONSECUTIVE));
+					if (compC != 0)
+					{
+						return compC;
+					}
+					return arg0.get(IntegerKey.MAX_LEVEL).compareTo(
+						arg1.get(IntegerKey.MAX_LEVEL));
+				}
+			};
 
 	@Override
 	public String getTokenName()
@@ -200,7 +234,7 @@ public class RepeatlevelToken extends AbstractToken implements
 			Logging.errorPrint("  Line was: " + value);
 			return false;
 		}
-		if (consecutive <= 0)
+		if (consecutive < 0)
 		{
 			Logging.errorPrint("Malformed " + getTokenName()
 				+ " Token (Consecutive String was <= 0): " + consecutive);
@@ -250,8 +284,41 @@ public class RepeatlevelToken extends AbstractToken implements
 			return false;
 		}
 
+		if (iLevel > maxLevel)
+		{
+			Logging.errorPrint("Malformed " + getTokenName()
+				+ " Token (Starting Level was > Maximum Level)");
+			Logging.errorPrint("  Line was: " + value);
+			return false;
+		}
+		if (iLevel + lvlIncrement > maxLevel)
+		{
+			Logging
+				.errorPrint("Malformed "
+					+ getTokenName()
+					+ " Token (Does not repeat, Staring Level + Increment > Maximum Level)");
+			Logging.errorPrint("  Line was: " + value);
+			return false;
+		}
+		if (consecutive != 0
+			&& ((maxLevel - iLevel) / lvlIncrement) < consecutive)
+		{
+			Logging.errorPrint("Malformed " + getTokenName()
+				+ " Token (Does not use Skip Interval value): " + consecutive);
+			Logging.errorPrint("  You should set the interval to zero");
+			Logging.errorPrint("  Line was: " + value);
+			return false;
+		}
+
 		String typeStr = value.substring(endLevel + 1, endAssignType);
 		String contentStr = value.substring(endAssignType + 1);
+		if (contentStr.length() == 0)
+		{
+			Logging.errorPrint("Malformed " + getTokenName()
+				+ " Token (No Content to SubToken)");
+			Logging.errorPrint("  Line was: " + value);
+			return false;
+		}
 		PrereqObject pro;
 		if ("DR".equals(typeStr))
 		{
@@ -314,15 +381,24 @@ public class RepeatlevelToken extends AbstractToken implements
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
 					Aggregator.class);
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
 		boolean needsTab = false;
+		TreeSet<Aggregator> aggSet = new TreeSet<Aggregator>(AGG_COMPARATOR);
 		for (PCGraphEdge edge : edgeList)
+		{
+			aggSet.add((Aggregator) edge.getSinkNodes().get(0));
+		}
+		for (Aggregator agg : aggSet)
 		{
 			if (needsTab)
 			{
 				sb.append('\t');
 			}
-			Aggregator agg = (Aggregator) edge.getSinkNodes().get(0);
+			sb.append(getTokenName()).append(':');
 			Integer consecutive = agg.get(IntegerKey.CONSECUTIVE);
 			Integer maxLevel = agg.get(IntegerKey.MAX_LEVEL);
 			Integer lvlIncrement = agg.get(IntegerKey.LEVEL_INCREMENT);
@@ -332,7 +408,13 @@ public class RepeatlevelToken extends AbstractToken implements
 			sb.append(maxLevel).append(Constants.COLON);
 			sb.append(iLevel).append(Constants.COLON);
 			Set<PCGraphEdge> subEdgeList =
-					context.graph.getChildLinksFromToken(getTokenName(), pct);
+					context.graph.getChildLinksFromToken(getTokenName(), agg);
+			if (subEdgeList == null || subEdgeList.isEmpty())
+			{
+				context.addWriteMessage("Aggregator for " + getTokenName()
+					+ " had no children");
+				return null;
+			}
 
 			boolean wroteContent = false;
 			for (PCGraphEdge subEdge : subEdgeList)
@@ -374,20 +456,20 @@ public class RepeatlevelToken extends AbstractToken implements
 				{
 					if (sink instanceof DamageReduction)
 					{
-						sb.append("DR").append(sink);
+						sb.append("DR:").append(sink);
 					}
 					else if (sink instanceof SpellResistance)
 					{
-						sb.append("SR").append(sink);
+						sb.append("SR:").append(sink);
 					}
 					else if (sink instanceof SpecialAbility)
 					{
-						sb.append("SA").append(
+						sb.append("SA:").append(
 							((SpecialAbility) sink).toLSTform());
 					}
 					else if (sink instanceof ChallengeRating)
 					{
-						sb.append("CR").append(
+						sb.append("CR:").append(
 							((ChallengeRating) sink).toLSTform());
 					}
 					else

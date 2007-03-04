@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2007 Tom Parker <thpr@users.sourceforge.net>
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ */
 package plugin.lsttokens;
 
 import java.util.List;
@@ -5,7 +22,6 @@ import java.util.List;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ListKey;
-import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
 import plugin.lsttokens.AbstractTokenTestCase;
@@ -102,25 +118,26 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 		assertTrue(coll.contains(getConstant("Rheinhessen")));
 	}
 
-	//FIXME Someday, when PCGen doesn't write out crappy stuff into custom items
-	//	@Test
-	//	public void testInvalidListEmpty() throws PersistenceLayerException
-	//	{
-	//		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
-	//		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-	//	}
+	// FIXME Someday, when PCGen doesn't write out crappy stuff into custom
+	// items
+	// @Test
+	// public void testInvalidListEmpty() throws PersistenceLayerException
+	// {
+	// primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
+	// assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+	// }
 
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
 	}
 
 	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP1" + getJoinCharacter()));
 	}
@@ -128,7 +145,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testInvalidListStart() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getJoinCharacter() + "TestWP1"));
 	}
@@ -136,8 +153,8 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testInvalidListDoubleJoin() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP2");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP2" + getJoinCharacter() + getJoinCharacter() + "TestWP1"));
 	}

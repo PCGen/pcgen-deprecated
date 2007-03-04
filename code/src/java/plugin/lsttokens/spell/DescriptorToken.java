@@ -32,6 +32,7 @@ import pcgen.core.Globals;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with DESCRIPTOR Token
@@ -59,6 +60,30 @@ public class DescriptorToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
 		StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
 
 		while (aTok.hasMoreTokens())

@@ -15,58 +15,63 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.equipmentmodifier;
+package plugin.lsttokens.race;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.ListKey;
-import pcgen.cdom.enumeration.Type;
-import pcgen.core.EquipmentModifier;
+import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.core.Race;
 import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTypeSafeListTestCase;
+import pcgen.persistence.lst.RaceLoader;
+import plugin.lsttokens.AbstractIntegerTokenTestCase;
 
-public class ItypeTokenTest extends AbstractTypeSafeListTestCase<EquipmentModifier>
+public class XtraSkillPointsPerLevelTokenTest extends AbstractIntegerTokenTestCase<Race>
 {
 
-	static ItypeToken token = new ItypeToken();
-	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
+	static XtraskillptsperlvlToken token = new XtraskillptsperlvlToken();
+	static RaceLoader loader = new RaceLoader();
 
 	@Override
-	public Class<EquipmentModifier> getCDOMClass()
+	public Class<Race> getCDOMClass()
 	{
-		return EquipmentModifier.class;
+		return Race.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<EquipmentModifier> getLoader()
+	public LstObjectFileLoader<Race> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<EquipmentModifier> getToken()
+	public CDOMToken<Race> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Object getConstant(String string)
+	public IntegerKey getIntegerKey()
 	{
-		return Type.getConstant(string);
+		return IntegerKey.SKILL_POINTS_PER_LEVEL;
 	}
 
 	@Override
-	public char getJoinCharacter()
+	public boolean isNegativeAllowed()
 	{
-		return '.';
+		return false;
 	}
 
 	@Override
-	public ListKey<?> getListKey()
+	public boolean isZeroAllowed()
 	{
-		return ListKey.ITEM_TYPES;
+		return false;
+	}
+
+	@Override
+	public boolean isPositiveAllowed()
+	{
+		return true;
 	}
 
 	@Test
@@ -74,5 +79,4 @@ public class ItypeTokenTest extends AbstractTypeSafeListTestCase<EquipmentModifi
 	{
 		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
-
 }

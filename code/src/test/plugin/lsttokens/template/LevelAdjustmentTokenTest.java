@@ -15,64 +15,44 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.equipmentmodifier;
+package plugin.lsttokens.template;
 
-import org.junit.Test;
-
-import pcgen.cdom.enumeration.ListKey;
-import pcgen.cdom.enumeration.Type;
-import pcgen.core.EquipmentModifier;
+import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTypeSafeListTestCase;
+import pcgen.persistence.lst.PCTemplateLoader;
+import plugin.lsttokens.AbstractFormulaTokenTestCase;
 
-public class ItypeTokenTest extends AbstractTypeSafeListTestCase<EquipmentModifier>
+
+public class LevelAdjustmentTokenTest extends AbstractFormulaTokenTestCase<PCTemplate>
 {
 
-	static ItypeToken token = new ItypeToken();
-	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
+	static LeveladjustmentToken token = new LeveladjustmentToken();
+	static PCTemplateLoader loader = new PCTemplateLoader();
 
 	@Override
-	public Class<EquipmentModifier> getCDOMClass()
+	public Class<PCTemplate> getCDOMClass()
 	{
-		return EquipmentModifier.class;
+		return PCTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<EquipmentModifier> getLoader()
+	public LstObjectFileLoader<PCTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<EquipmentModifier> getToken()
+	public CDOMToken<PCTemplate> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Object getConstant(String string)
+	public FormulaKey getFormulaKey()
 	{
-		return Type.getConstant(string);
-	}
-
-	@Override
-	public char getJoinCharacter()
-	{
-		return '.';
-	}
-
-	@Override
-	public ListKey<?> getListKey()
-	{
-		return ListKey.ITEM_TYPES;
-	}
-
-	@Test
-	public void dummyTest()
-	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		return FormulaKey.LEVEL_ADJUSTMENT;
 	}
 
 }
