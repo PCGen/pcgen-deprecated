@@ -298,6 +298,7 @@ Charisma
 CE
 CG
 Concentration
+Cone
 Consumable
 COPY
 Charm
@@ -455,6 +456,7 @@ Resizable
 Ring
 Robe
 RocketLauncher
+shaped burst
 Scroll
 Scrying
 SECONDARY
