@@ -30,10 +30,6 @@ package pcgen.core;
  */
 public final class ShieldProf extends PObject implements Comparable<Object>
 {
-	ShieldProf(final String aString)
-	{
-		setName(aString);
-	}
 
 	/**
 	 * Compares keyName only

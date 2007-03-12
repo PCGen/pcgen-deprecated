@@ -48,7 +48,13 @@ public class EdrToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(IntegerKey.EDR, Integer.valueOf(value));
+			Integer edr = Integer.valueOf(value);
+			if (edr.intValue() <= 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				return false;
+			}
+			eq.put(IntegerKey.EDR, edr);
 			return true;
 		}
 		catch (NumberFormatException nfe)

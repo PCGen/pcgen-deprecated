@@ -76,6 +76,10 @@ public class AddprofToken implements EquipmentModifierLstToken
 				+ " arguments uses double separator .. : " + value);
 			return false;
 		}
+		/*
+		 * FIXME TODO ACTUALLY, this is NOT arbitrary length - it is very
+		 * specifically Exotic.Heavy or Martial.Foo, etc. See Equipment.setBase
+		 */
 		StringTokenizer tok = new StringTokenizer(value, Constants.DOT);
 		while (tok.hasMoreTokens())
 		{

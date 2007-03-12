@@ -22,17 +22,15 @@
 package plugin.lsttokens.equipment;
 
 import java.io.StringWriter;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.content.SpecialProperty;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Equipment;
-import pcgen.core.SpecialProperty;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -55,20 +53,38 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 
 	public boolean parse(Equipment eq, String value)
 	{
-		eq.addSpecialProperty(SpecialProperty.createFromLst(value));
+		eq.addSpecialProperty(pcgen.core.SpecialProperty.createFromLst(value));
 		return true;
 	}
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-
 		if (value == null || value.length() == 0)
 		{
 			Logging.errorPrint(getTokenName() + ": line minimally requires "
 				+ getTokenName() + ":<text>");
 			return false;
 		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		String firstToken = tok.nextToken();
 
@@ -86,8 +102,11 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 			return false;
 		}
 
-		pcgen.cdom.content.SpecialProperty sa =
-				new pcgen.cdom.content.SpecialProperty(firstToken);
+		SpecialProperty sa = new SpecialProperty(firstToken);
+		/*
+		 * CONSIDER TODO This is another issue with this system - it is linked
+		 * in before it's determined if it's really valid... :(
+		 */
 		context.graph.linkObjectIntoGraph(getTokenName(), eq, sa);
 
 		if (!tok.hasMoreTokens())
@@ -100,6 +119,17 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 
 		while (true)
 		{
+			/*
+			 * FIXME This is the ONLY Token fixed so far for a leading pre:
+			 * Yarra Valley|PRELEVEL:4|Rheinhessen
+			 * 
+			 * This check needs to be universal in all the tokens that do this
+			 * trailing PRE check
+			 */
+			if (token.startsWith("PRE") || token.startsWith("!PRE"))
+			{
+				break;
+			}
 			if (Constants.LST_DOT_CLEAR.equals(token))
 			{
 				Logging.errorPrint(getTokenName()
@@ -115,10 +145,6 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 				return true;
 			}
 			token = tok.nextToken();
-			if (token.startsWith("PRE") || token.startsWith("!PRE"))
-			{
-				break;
-			}
 		}
 
 		while (true)
@@ -154,44 +180,24 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		HashMapToList<Set<Prerequisite>, pcgen.cdom.content.SpecialProperty> m =
-				new HashMapToList<Set<Prerequisite>, pcgen.cdom.content.SpecialProperty>();
-		for (PCGraphEdge edge : edges)
-		{
-			pcgen.cdom.content.SpecialProperty sp =
-					(pcgen.cdom.content.SpecialProperty) edge.getSinkNodes()
-						.get(0);
-			m.addToListFor(
-				new HashSet<Prerequisite>(edge.getPrerequisiteList()), sp);
-		}
-
 		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		boolean needSpacer = false;
-		for (Set<Prerequisite> prereqs : m.getKeySet())
+		for (PCGraphEdge edge : edges)
 		{
-			List<pcgen.cdom.content.SpecialProperty> props =
-					m.getListFor(prereqs);
+			SpecialProperty sp = (SpecialProperty) edge.getSinkNodes().get(0);
 			if (needSpacer)
 			{
 				sb.append('\t');
 			}
-			sb.append(getTokenName()).append(':');
-			boolean needBar = false;
-			for (pcgen.cdom.content.SpecialProperty sp : props)
+			needSpacer = true;
+			sb.append(getTokenName()).append(':').append(sp.getPropertyName());
+			int variableCount = sp.getVariableCount();
+			for (int i = 0; i < variableCount; i++)
 			{
-				if (needBar)
-				{
-					sb.append(Constants.PIPE);
-				}
-				sb.append(sp.getPropertyName());
-				int variableCount = sp.getVariableCount();
-				for (int i = 0; i < variableCount; i++)
-				{
-					sb.append(Constants.PIPE).append(sp.getVariable(i));
-				}
-
+				sb.append(Constants.PIPE).append(sp.getVariable(i));
 			}
+			List<Prerequisite> prereqs = sp.getPrerequisiteList();
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				for (Prerequisite p : prereqs)
@@ -210,7 +216,6 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 					sb.append(Constants.PIPE).append(swriter.toString());
 				}
 			}
-			needSpacer = true;
 		}
 		return sb.toString();
 	}

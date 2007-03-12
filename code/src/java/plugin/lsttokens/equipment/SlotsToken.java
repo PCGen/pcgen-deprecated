@@ -55,7 +55,13 @@ public class SlotsToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(IntegerKey.SLOTS, Integer.valueOf(value));
+			Integer slots = Integer.valueOf(value);
+			if (slots.intValue() <= 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				return false;
+			}
+			eq.put(IntegerKey.SLOTS, slots);
 			return true;
 		}
 		catch (NumberFormatException nfe)

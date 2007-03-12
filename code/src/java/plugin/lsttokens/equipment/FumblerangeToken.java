@@ -46,7 +46,7 @@ public class FumblerangeToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		if (value.length() != 0)
+		if (value.length() == 0)
 		{
 			return false;
 		}

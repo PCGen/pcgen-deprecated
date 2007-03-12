@@ -64,12 +64,11 @@ public class AutoLst implements GlobalLstToken
 			return false;
 		}
 		String subKey = value.substring(0, barLoc);
-		return AutoLoader.parseLine(context, obj, subKey, value.substring(barLoc + 1));
+		return AutoLoader.parseLine(context, (PObject) obj, subKey, value.substring(barLoc + 1));
 	}
 
 	public String unparse(LoadContext context, CDOMObject obj)
 	{
-		// FIXME Auto-generated method stub
-		return null;
+		return AutoLoader.unparse(context, obj);
 	}
 }

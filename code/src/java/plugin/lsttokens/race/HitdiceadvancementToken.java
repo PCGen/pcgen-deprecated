@@ -100,6 +100,11 @@ public class HitdiceadvancementToken extends AbstractToken implements
 		try
 		{
 			base = Integer.parseInt(commaTok.nextToken());
+			/*
+			 * BUG FIXME What is HitdiceadvancementToken is hit before SIZE??
+			 * 
+			 * Order of operations :(
+			 */
 			Set<PCGraphEdge> set =
 					context.graph.getChildLinksFromToken("SIZE", race,
 						SIZE_CLASS);

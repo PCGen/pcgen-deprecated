@@ -59,11 +59,22 @@ public class WtToken implements EquipmentLstToken
 		return true;
 	}
 
+	/*
+	 * Note that weight is kept separate for speed of processing character
+	 * weight... (will this actually work with containers like bags of holding?)
+	 */
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
 		try
 		{
-			Weight w = new Weight(Double.parseDouble(value));
+			double weight = Double.parseDouble(value);
+			if (weight < 0)
+			{
+				Logging.errorPrint(getTokenName()
+					+ " was expecting a decimal value >= 0 : " + value);
+				return false;
+			}
+			Weight w = new Weight(weight);
 			context.graph.linkObjectIntoGraph(getTokenName(), eq, w);
 			return true;
 		}

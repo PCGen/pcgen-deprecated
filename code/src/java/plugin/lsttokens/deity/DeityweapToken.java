@@ -31,6 +31,7 @@ import pcgen.core.Deity;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with DEITYWEAP Token
@@ -51,6 +52,30 @@ public class DeityweapToken implements DeityLstToken
 
 	public boolean parse(LoadContext context, Deity deity, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not be empty");
+			return false;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
@@ -64,7 +89,7 @@ public class DeityweapToken implements DeityLstToken
 	{
 		List<CDOMSimpleSingleRef<WeaponProf>> profs =
 				deity.getListFor(ListKey.DEITY_WEAPON);
-		if (profs.isEmpty())
+		if (profs == null || profs.isEmpty())
 		{
 			return null;
 		}
@@ -77,6 +102,7 @@ public class DeityweapToken implements DeityLstToken
 			{
 				sb.append(Constants.PIPE);
 			}
+			needPipe = true;
 			sb.append(wp.getLSTformat());
 		}
 		return sb.toString();

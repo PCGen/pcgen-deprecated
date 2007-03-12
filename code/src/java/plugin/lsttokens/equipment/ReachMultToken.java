@@ -55,7 +55,13 @@ public class ReachMultToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(IntegerKey.REACH_MULT, Integer.valueOf(value));
+			Integer reach = Integer.valueOf(value);
+			if (reach.intValue() <= 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				return false;
+			}
+			eq.put(IntegerKey.REACH_MULT, reach);
 			return true;
 		}
 		catch (NumberFormatException nfe)

@@ -49,9 +49,20 @@ public class NameoptToken implements EquipmentModifierLstToken
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
-		String optString = value;
-		if (optString.startsWith("TEXT="))
+		if (value.length() == 0)
 		{
+			Logging.errorPrint(getTokenName() + " cannot be empty");
+			return false;
+		}
+		String optString = value;
+		if (optString.startsWith("TEXT"))
+		{
+			if (optString.length() < 6 || optString.charAt(4) != '=')
+			{
+				Logging.errorPrint(getTokenName()
+					+ " has invalid TEXT argument: " + value);
+				return false;
+			}
 			optString = "TEXT";
 			mod.put(StringKey.NAME_TEXT, value.substring(5));
 		}
@@ -72,26 +83,46 @@ public class NameoptToken implements EquipmentModifierLstToken
 	{
 		EqModNameOpt opt = mod.get(ObjectKey.NAME_OPT);
 		String text = mod.get(StringKey.NAME_TEXT);
-		if (opt == null && text == null)
+		if (opt == null)
 		{
-			return null;
-		}
-		if (opt != null && text != null)
-		{
-			context.addWriteMessage("Cannot have both NAME_OPT and "
-				+ "NAME_TEXT in EquipmentModifier");
-			return null;
+			if (text == null)
+			{
+				return null;
+			}
+			else
+			{
+				context.addWriteMessage("Cannot have both NAME_TEXT without "
+					+ "NAME_OPT in EquipmentModifier");
+				return null;
+			}
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(getTokenName()).append(':');
-		if (text == null)
+		if (opt.equals(EqModNameOpt.TEXT))
 		{
-			assert opt != null;
-			sb.append(opt);
+			if (text == null)
+			{
+				context.addWriteMessage("Must have NAME_TEXT with "
+					+ "NAME_OPT TEXT in EquipmentModifier");
+				return null;
+			}
+			else
+			{
+				sb.append("TEXT=").append(text);
+			}
 		}
 		else
 		{
-			sb.append("TEXT=").append(text);
+			if (text == null)
+			{
+				sb.append(opt);
+			}
+			else
+			{
+				context.addWriteMessage("Cannot have NAME_TEXT without "
+					+ "NAME_OPT TEXT in EquipmentModifier");
+				return null;
+			}
 		}
 		return sb.toString();
 	}

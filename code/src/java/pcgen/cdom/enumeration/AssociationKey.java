@@ -113,6 +113,9 @@ public final class AssociationKey<T> {
 
 	@Override
 	public String toString() {
+		if (map == null) {
+			buildMap();
+		}
 		/*
 		 * CONSIDER Should this find a way to do a Two-Way Map or something to
 		 * that effect?

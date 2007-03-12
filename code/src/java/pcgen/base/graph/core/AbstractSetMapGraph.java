@@ -391,6 +391,8 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 		if (thisNodeSize != otherNodeList.size())
 		{
 			System.err.println("Not equal node count");
+			System.err.println(nodeMap.keySet());
+			System.err.println(otherNodeList);
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)

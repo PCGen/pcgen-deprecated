@@ -53,8 +53,13 @@ public class CritrangeToken implements EquipmentLstToken
 	{
 		try
 		{
-			getEquipmentHead(context, eq, 1).put(IntegerKey.CRIT_RANGE,
-				Integer.valueOf(value));
+			Integer cr = Integer.valueOf(value);
+			if (cr.intValue() <= 0)
+			{
+				Logging.errorPrint(getTokenName() + " cannot be <= 0");
+				return false;
+			}
+			getEquipmentHead(context, eq, 1).put(IntegerKey.CRIT_RANGE, cr);
 			return true;
 		}
 		catch (NumberFormatException nfe)

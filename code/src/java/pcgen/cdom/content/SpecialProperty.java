@@ -34,4 +34,25 @@ public class SpecialProperty extends TextProperty
 	{
 		return property;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return property.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == this)
+		{
+			return true;
+		}
+		if (!(o instanceof SpecialProperty))
+		{
+			return false;
+		}
+		SpecialProperty other = (SpecialProperty) o;
+		return property.equals(other.property) && super.matchesFormulaList(other);
+	}
 }

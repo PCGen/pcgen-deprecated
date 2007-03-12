@@ -68,7 +68,13 @@ public class NumPagesToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(IntegerKey.NUM_PAGES, Integer.valueOf(value));
+			Integer pages = Integer.valueOf(value);
+			if (pages.intValue() <= 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				return false;
+			}
+			eq.put(IntegerKey.NUM_PAGES, pages);
 			return true;
 		}
 		catch (NumberFormatException nfe)

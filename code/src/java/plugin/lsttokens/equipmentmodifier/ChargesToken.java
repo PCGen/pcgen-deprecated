@@ -26,6 +26,7 @@ import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.util.Logging;
 
 /**
  * Deals with CHARGES token
@@ -50,10 +51,17 @@ public class ChargesToken implements EquipmentModifierLstToken
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
+			Logging.errorPrint(getTokenName()
+				+ " has no | : must be of format <min charges>|<max charges>: "
+				+ value);
 			return false;
 		}
 		if (value.lastIndexOf(Constants.PIPE) != pipeLoc)
 		{
+			Logging
+				.errorPrint(getTokenName()
+					+ " has two | : must be of format <min charges>|<max charges>: "
+					+ value);
 			return false;
 		}
 		String minChargeString = value.substring(0, pipeLoc);
@@ -61,9 +69,17 @@ public class ChargesToken implements EquipmentModifierLstToken
 		try
 		{
 			minCharges = Integer.parseInt(minChargeString);
+			if (minCharges < 0)
+			{
+				Logging.errorPrint(getTokenName()
+					+ " min charges must be >= zero: " + value);
+				return false;
+			}
 		}
 		catch (NumberFormatException nfe)
 		{
+			Logging.errorPrint(getTokenName()
+				+ " min charges is not an integer: " + value);
 			return false;
 		}
 
@@ -72,14 +88,22 @@ public class ChargesToken implements EquipmentModifierLstToken
 		try
 		{
 			maxCharges = Integer.parseInt(maxChargeString);
+			/*
+			 * No need to test max for negative, since min was tested and there
+			 * is a later test for max >= min
+			 */
 		}
 		catch (NumberFormatException nfe)
 		{
+			Logging.errorPrint(getTokenName()
+				+ " max charges is not an integer: " + value);
 			return false;
 		}
 
 		if (minCharges > maxCharges)
 		{
+			Logging.errorPrint(getTokenName()
+				+ " max charges must be >= min charges: " + value);
 			return false;
 		}
 

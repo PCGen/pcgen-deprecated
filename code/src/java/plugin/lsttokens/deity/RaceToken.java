@@ -28,6 +28,7 @@ import pcgen.core.Deity;
 import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.util.Logging;
 
 import java.util.List;
 import java.util.StringTokenizer;
@@ -57,6 +58,30 @@ public class RaceToken implements DeityLstToken
 
 	public boolean parse(LoadContext context, Deity deity, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not be empty");
+			return false;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
@@ -69,7 +94,7 @@ public class RaceToken implements DeityLstToken
 	public String unparse(LoadContext context, Deity deity)
 	{
 		List<RacePantheon> pantheons = deity.getListFor(ListKey.RACE_PANTHEON);
-		if (pantheons.isEmpty())
+		if (pantheons == null || pantheons.isEmpty())
 		{
 			return null;
 		}
@@ -82,6 +107,7 @@ public class RaceToken implements DeityLstToken
 			{
 				sb.append(Constants.PIPE);
 			}
+			needPipe = true;
 			sb.append(rp);
 		}
 		return sb.toString();

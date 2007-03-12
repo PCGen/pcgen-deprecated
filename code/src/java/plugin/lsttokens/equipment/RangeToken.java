@@ -48,7 +48,13 @@ public class RangeToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(IntegerKey.RANGE, Integer.valueOf(value));
+			Integer range = Integer.valueOf(value);
+			if (range.intValue() < 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
+				return false;
+			}
+			eq.put(IntegerKey.RANGE, range);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -67,9 +73,10 @@ public class RangeToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		if (range.intValue() <= 0)
+		if (range.intValue() < 0)
 		{
-			context.addWriteMessage(getTokenName() + " must be an integer > 0");
+			context
+				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
 		return new StringBuilder().append(getTokenName()).append(':').append(

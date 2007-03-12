@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.auto;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AutoLstToken;
@@ -40,7 +39,7 @@ public class EquipToken implements AutoLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	public boolean parse(LoadContext context, PObject obj, String value)
 	{
 		/*
 		 * TODO FIXME For EQUIP:
@@ -148,5 +147,11 @@ public class EquipToken implements AutoLstToken
 		// }
 		//
 		// return true;
+	}
+
+	public String unparse(LoadContext context, PObject obj)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -30,6 +30,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.util.Logging;
 
 /**
  * Deals with REPLACES token
@@ -51,6 +52,30 @@ public class ReplacesToken implements EquipmentModifierLstToken
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " argument may not be empty : "
+				+ value);
+			return false;
+		}
+		if (value.charAt(0) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with , : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with , : " + value);
+			return false;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator ,, : " + value);
+			return false;
+		}
 		/*
 		 * FIXME Should this actually be a Factory of some sort, since it IS
 		 * mosifying a piece of equipment? - yes, these are REMOVERs :) - akin
@@ -71,7 +96,7 @@ public class ReplacesToken implements EquipmentModifierLstToken
 	{
 		List<CDOMSimpleSingleRef<EquipmentModifier>> keys =
 				mod.getListFor(ListKey.REPLACED_KEYS);
-		if (keys.isEmpty())
+		if (keys == null || keys.isEmpty())
 		{
 			return null;
 		}
@@ -84,6 +109,7 @@ public class ReplacesToken implements EquipmentModifierLstToken
 			{
 				sb.append(Constants.COMMA);
 			}
+			needComma = true;
 			sb.append(at.getLSTformat());
 		}
 		return sb.toString();

@@ -74,8 +74,13 @@ public class AltcritmultToken implements EquipmentLstToken
 			{
 				try
 				{
-					altHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(value
-						.substring(1)));
+					Integer cm = Integer.valueOf(value.substring(1));
+					if (cm.intValue() <= 0)
+					{
+						Logging.errorPrint(getTokenName() + " cannot be <= 0");
+						return false;
+					}
+					altHead.put(IntegerKey.CRIT_MULT, cm);
 					return true;
 				}
 				catch (NumberFormatException nfe)
@@ -88,7 +93,7 @@ public class AltcritmultToken implements EquipmentLstToken
 				altHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(-1));
 				return true;
 			}
-			return true;
+			return false;
 		}
 		catch (NumberFormatException nfe)
 		{

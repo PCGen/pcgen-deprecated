@@ -22,7 +22,9 @@
 package plugin.lsttokens.race;
 
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
@@ -32,6 +34,7 @@ import pcgen.core.PCClass;
 import pcgen.core.Race;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with MONSTERCLASS Token
@@ -70,10 +73,14 @@ public class MonsterclassToken implements RaceLstToken
 		int colonLoc = value.indexOf(Constants.COLON);
 		if (colonLoc == -1)
 		{
+			Logging.errorPrint(getTokenName() + " must have only a colon: "
+				+ value);
 			return false;
 		}
 		if (colonLoc != value.lastIndexOf(Constants.COLON))
 		{
+			Logging.errorPrint(getTokenName() + " must have only one colon: "
+				+ value);
 			return false;
 		}
 		String classString = value.substring(0, colonLoc);
@@ -84,9 +91,17 @@ public class MonsterclassToken implements RaceLstToken
 		{
 			String numLevels = value.substring(colonLoc + 1);
 			lvls = Integer.parseInt(numLevels);
+			if (lvls <= 0)
+			{
+				Logging.errorPrint("Number of levels in " + getTokenName()
+					+ " must be greater than zero: " + value);
+				return false;
+			}
 		}
 		catch (NumberFormatException nfe)
 		{
+			Logging.errorPrint("Number of levels in " + getTokenName()
+				+ " must be an integer greater than zero: " + value);
 			return false;
 		}
 		LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
@@ -99,16 +114,24 @@ public class MonsterclassToken implements RaceLstToken
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
 					LevelCommandFactory.class);
+		if (edges == null || edges.isEmpty())
+		{
+			return null;
+		}
+		SortedSet<LevelCommandFactory> set = new TreeSet<LevelCommandFactory>();
+		for (PCGraphEdge edge : edges)
+		{
+			set.add((LevelCommandFactory) edge.getSinkNodes().get(0));
+		}
 		StringBuilder sb = new StringBuilder();
 		boolean needsTab = false;
-		for (PCGraphEdge edge : edges)
+		for (LevelCommandFactory lcf : set)
 		{
 			if (needsTab)
 			{
 				sb.append('\t');
 			}
-			LevelCommandFactory lcf =
-					(LevelCommandFactory) edge.getSinkNodes().get(0);
+			sb.append(getTokenName()).append(':');
 			int lvls = lcf.getLevelCount();
 			if (lvls <= 0)
 			{
@@ -116,8 +139,7 @@ public class MonsterclassToken implements RaceLstToken
 					+ getTokenName() + " must be greater than zero");
 				return null;
 			}
-			sb.append(lcf.getPCClass().getKeyName()).append(Constants.COLON)
-				.append(lvls);
+			sb.append(lcf.getLSTformat()).append(Constants.COLON).append(lvls);
 			needsTab = true;
 		}
 		return sb.toString();

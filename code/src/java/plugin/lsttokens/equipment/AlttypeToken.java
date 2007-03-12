@@ -30,6 +30,7 @@ import pcgen.cdom.enumeration.Type;
 import pcgen.core.Equipment;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.util.Logging;
 
 /**
  * Deals with ALTTYPE token
@@ -50,6 +51,30 @@ public class AlttypeToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not be empty");
+			return false;
+		}
+		if (value.charAt(0) == '.')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with . : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '.')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with . : " + value);
+			return false;
+		}
+		if (value.indexOf("..") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator .. : " + value);
+			return false;
+		}
+
 		StringTokenizer aTok = new StringTokenizer(value.trim(), Constants.DOT);
 
 		boolean removeType = false;
@@ -89,6 +114,10 @@ public class AlttypeToken implements EquipmentLstToken
 	public String unparse(LoadContext context, Equipment eq)
 	{
 		List<Type> list = eq.getListFor(ListKey.ALT_TYPE);
+		if (list == null || list.isEmpty())
+		{
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(getTokenName()).append(':');
 		boolean needsDot = false;

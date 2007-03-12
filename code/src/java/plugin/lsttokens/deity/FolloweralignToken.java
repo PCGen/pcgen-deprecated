@@ -51,7 +51,31 @@ public class FolloweralignToken implements DeityLstToken
 
 	public boolean parse(LoadContext context, Deity deity, String value)
 	{
-		StringTokenizer commaTok = new StringTokenizer(Constants.COMMA);
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not be empty");
+			return false;
+		}
+		if (value.charAt(0) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with , : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with , : " + value);
+			return false;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator ,, : " + value);
+			return false;
+		}
+
+		StringTokenizer commaTok = new StringTokenizer(value, Constants.COMMA);
 		while (commaTok.hasMoreTokens())
 		{
 			try
@@ -72,7 +96,7 @@ public class FolloweralignToken implements DeityLstToken
 	public String unparse(LoadContext context, Deity deity)
 	{
 		List<AlignmentType> atypes = deity.getListFor(ListKey.FOLLOWER_ALIGN);
-		if (atypes.isEmpty())
+		if (atypes == null || atypes.isEmpty())
 		{
 			return null;
 		}
@@ -83,8 +107,9 @@ public class FolloweralignToken implements DeityLstToken
 		{
 			if (needPipe)
 			{
-				sb.append(Constants.PIPE);
+				sb.append(Constants.COMMA);
 			}
+			needPipe = true;
 			sb.append(at);
 		}
 		return sb.toString();

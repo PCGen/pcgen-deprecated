@@ -48,7 +48,13 @@ public class BaseqtyToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(IntegerKey.BASE_QUANTITY, Integer.valueOf(value));
+			Integer quan = Integer.valueOf(value);
+			if (quan.intValue() <= 0)
+			{
+				Logging.errorPrint(getTokenName() + " expected an integer > 0");
+				return false;
+			}
+			eq.put(IntegerKey.BASE_QUANTITY, quan);
 			return true;
 		}
 		catch (NumberFormatException nfe)

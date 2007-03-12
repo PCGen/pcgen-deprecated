@@ -208,7 +208,12 @@ public class GraphContext
 	public void unlinkChildNodesOfClass(String tokenName, CDOMObject obj,
 		Class<? extends PrereqObject> cl)
 	{
-		for (PCGraphEdge edge : graph.getOutwardEdgeList(obj))
+		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
+		if (outwardEdgeList == null)
+		{
+			return;
+		}
+		for (PCGraphEdge edge : outwardEdgeList)
 		{
 			if (edge.getSourceToken().equals(tokenName))
 			{

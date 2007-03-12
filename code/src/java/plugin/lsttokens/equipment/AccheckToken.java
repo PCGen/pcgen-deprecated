@@ -48,7 +48,13 @@ public class AccheckToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(IntegerKey.AC_CHECK, Integer.valueOf(value));
+			Integer valueOf = Integer.valueOf(value);
+			if (valueOf.intValue() <= 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				return false;
+			}
+			eq.put(IntegerKey.AC_CHECK, valueOf);
 			return true;
 		}
 		catch (NumberFormatException nfe)

@@ -74,8 +74,12 @@ public class CritmultToken implements EquipmentLstToken
 			{
 				try
 				{
-					primHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(value
-						.substring(1)));
+					Integer cm = Integer.valueOf(value.substring(1));
+					if (cm.intValue() <= 0) {
+						Logging.errorPrint(getTokenName() + " cannot be <= 0");
+						return false;
+					}
+					primHead.put(IntegerKey.CRIT_MULT, cm);
 					return true;
 				}
 				catch (NumberFormatException nfe)
@@ -88,7 +92,7 @@ public class CritmultToken implements EquipmentLstToken
 				primHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(-1));
 				return true;
 			}
-			return true;
+			return false;
 		}
 		catch (NumberFormatException nfe)
 		{

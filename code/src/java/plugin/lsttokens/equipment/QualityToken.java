@@ -76,7 +76,19 @@ public class QualityToken implements EquipmentLstToken
 			return false;
 		}
 		String key = value.substring(0, pipeLoc);
+		if (key.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " expecting non-empty type, "
+				+ "format is: QualityType|Quality value was: " + value);
+			return false;
+		}
 		String val = value.substring(pipeLoc + 1);
+		if (val.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " expecting non-empty value, "
+				+ "format is: QualityType|Quality value was: " + value);
+			return false;
+		}
 		/*
 		 * TODO CONSIDER Is this really to a LIST?? That's what is done in
 		 * CDOMObject, but I'm not sure that's necessary or desired in this

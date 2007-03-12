@@ -96,7 +96,7 @@ public class StartfeatsToken implements RaceLstToken
 		 * TODO Why was this PREMULT added in 5.11.? What situation would this
 		 * PREMULT fail in?
 		 */
-		// buf.append("PREMULT:1,[PREDEFAULTMONSTER:N],[PREHD:1]");
+		// buf.append("PREMULT:1,[PRELEVEL:1],[PREHD:1]");
 		for (int i = 0; i < featCount; i++)
 		{
 			/*

@@ -25,7 +25,6 @@
  */
 package pcgen.persistence.lst;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 
@@ -34,9 +33,9 @@ import pcgen.persistence.LoadContext;
  *
  * @author  Thomas Parker <thpr@users.sourceforge.net>
  */
-public interface AutoLstToken extends LstToken
+public interface AutoLstToken extends CDOMToken<PObject>
 {
 	public boolean parse(PObject target, String value);
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value);
+	public boolean parse(LoadContext context, PObject obj, String value);
 }

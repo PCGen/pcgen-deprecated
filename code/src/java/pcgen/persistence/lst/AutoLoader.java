@@ -34,11 +34,12 @@ public final class AutoLoader
 {
 	private AutoLoader()
 	{
-		//Utility Class, no construction needed
+		// Utility Class, no construction needed
 	}
 
 	/**
 	 * This method is static so it can be used by the AUTO Token.
+	 * 
 	 * @param target
 	 * @param lstLine
 	 * @param source
@@ -66,7 +67,7 @@ public final class AutoLoader
 		}
 	}
 
-	public static boolean parseLine(LoadContext context, CDOMObject obj,
+	public static boolean parseLine(LoadContext context, PObject obj,
 		String key, String value)
 	{
 		Map<String, LstToken> tokenMap =
@@ -77,7 +78,7 @@ public final class AutoLoader
 			LstUtils.deprecationCheck(token, obj, value);
 			if (!token.parse(context, obj, value))
 			{
-				Logging.errorPrint("Error parsing AUTO: " + key + ":" + value);
+				Logging.errorPrint("Error parsing AUTO:" + key + ":" + value);
 				return false;
 			}
 			return true;
@@ -87,5 +88,32 @@ public final class AutoLoader
 			Logging.errorPrint("Error parsing AUTO, invalid SubToken: " + key);
 			return false;
 		}
+	}
+
+	public static String unparse(LoadContext context, CDOMObject obj)
+	{
+		StringBuilder sb = new StringBuilder();
+		boolean needTab = false;
+		for (LstToken token : TokenStore.inst().getTokenMap(AutoLstToken.class)
+			.values())
+		{
+			String s = ((AutoLstToken) token).unparse(context, (PObject) obj);
+			if (s != null)
+			{
+				if (needTab)
+				{
+					sb.append('\t');
+				}
+				needTab = true;
+				/*
+				 * TODO FIXME This introduces a BUG, in that this assumes the s
+				 * is only one token, and there is no parent involved... therefore
+				 * the unparse methods in AUTO either need to return String[]
+				 * or something else needs to be done...
+				 */
+				sb.append("AUTO:").append(s);
+			}
+		}
+		return sb.length() == 0 ? null : sb.toString();
 	}
 }

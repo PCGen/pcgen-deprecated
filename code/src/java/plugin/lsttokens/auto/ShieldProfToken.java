@@ -21,12 +21,14 @@
  */
 package plugin.lsttokens.auto;
 
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
-import pcgen.cdom.base.CDOMGroupRef;
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.PObject;
 import pcgen.core.ShieldProf;
@@ -34,6 +36,7 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AutoLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 public class ShieldProfToken implements AutoLstToken
@@ -50,7 +53,7 @@ public class ShieldProfToken implements AutoLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	public boolean parse(LoadContext context, PObject obj, String value)
 	{
 		String shieldProfs;
 		String prereq = null; // Do not initialize, null is significant!
@@ -72,35 +75,31 @@ public class ShieldProfToken implements AutoLstToken
 			prereq = value.substring(openBracketLoc + 1, value.length() - 2);
 		}
 
+		if (shieldProfs.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (shieldProfs.charAt(shieldProfs.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (shieldProfs.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+		
 		StringTokenizer tok = new StringTokenizer(shieldProfs, Constants.PIPE);
 
 		while (tok.hasMoreTokens())
 		{
 			String aProf = tok.nextToken();
-			if (aProf.startsWith(Constants.LST_TYPE)
-				|| aProf.startsWith(Constants.LST_TYPE_OLD))
-			{
-				CDOMGroupRef<ShieldProf> ref =
-						context.ref.getCDOMTypeReference(ShieldProf.class,
-							aProf.substring(5).split("."));
-				PCGraphGrantsEdge edge =
-						context.graph.linkObjectIntoGraph(getTokenName(), obj,
-							ref);
-				if (prereq != null)
-				{
-					try
-					{
-						edge.addPreReq(PreParserFactory.getInstance().parse(
-							prereq));
-					}
-					catch (PersistenceLayerException e)
-					{
-						Logging.errorPrint("Error generating Prerequisite "
-							+ prereq + " in " + getTokenName());
-					}
-				}
-			}
-			else if ("%LIST".equals(value))
+			if ("%LIST".equals(value))
 			{
 				/*
 				 * FIXME Need to figure out how to handle this!!!
@@ -113,12 +112,13 @@ public class ShieldProfToken implements AutoLstToken
 			}
 			else
 			{
-				CDOMSimpleSingleRef<ShieldProf> ref =
-						context.ref.getCDOMReference(ShieldProf.class, aProf);
-				/*
-				 * FIXME There is source consolidation that can be done once
-				 * %LIST is figured out
-				 */
+				CDOMReference<ShieldProf> ref =
+						TokenUtilities.getObjectReference(context,
+							ShieldProf.class, aProf);
+				if (ref == null)
+				{
+					return false;
+				}
 				PCGraphGrantsEdge edge =
 						context.graph.linkObjectIntoGraph(getTokenName(), obj,
 							ref);
@@ -135,11 +135,40 @@ public class ShieldProfToken implements AutoLstToken
 							+ prereq + " in " + getTokenName());
 					}
 				}
-				// Individual prefs
 			}
 		}
 
 		return true;
 	}
 
+	public String unparse(LoadContext context, PObject obj)
+	{
+		Set<PCGraphEdge> edges =
+				context.graph.getChildLinksFromToken(getTokenName(), obj,
+					ShieldProf.class);
+		if (edges.isEmpty())
+		{
+			return null;
+		}
+		SortedSet<CDOMReference<ShieldProf>> set =
+				new TreeSet<CDOMReference<ShieldProf>>(
+					TokenUtilities.REFERENCE_SORTER);
+		boolean needComma = false;
+		for (PCGraphEdge edge : edges)
+		{
+			set.add((CDOMReference<ShieldProf>) edge.getSinkNodes().get(0));
+		}
+		StringBuilder sb =
+				new StringBuilder().append(getTokenName()).append('|');
+		for (CDOMReference<ShieldProf> ref : set)
+		{
+			if (needComma)
+			{
+				sb.append(Constants.PIPE);
+			}
+			needComma = true;
+			sb.append(ref.getLSTformat());
+		}
+		return sb.toString();
+	}
 }

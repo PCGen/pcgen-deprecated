@@ -21,9 +21,14 @@
  */
 package plugin.lsttokens.equipment;
 
+import java.util.Collection;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -34,6 +39,8 @@ import pcgen.core.Equipment;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.util.Logging;
 
 /**
  * Deals with EQMOD token
@@ -62,6 +69,29 @@ public class EqmodToken implements EquipmentLstToken
 	protected boolean parseEqMod(LoadContext context, EquipmentHead primHead,
 		String value)
 	{
+		if (Constants.LST_NONE.equals(value))
+		{
+			return true;
+		}
+		if (value.charAt(0) == '.')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with . : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '.')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with . : " + value);
+			return false;
+		}
+		if (value.indexOf("..") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator .. : " + value);
+			return false;
+		}
+
 		StringTokenizer dotTok = new StringTokenizer(value, Constants.DOT);
 
 		while (dotTok.hasMoreTokens())
@@ -70,7 +100,27 @@ public class EqmodToken implements EquipmentLstToken
 
 			if (aEqModName.equalsIgnoreCase(Constants.LST_NONE))
 			{
-				continue;
+				Logging.errorPrint("Embedded " + Constants.LST_NONE
+					+ " is prohibited in " + getTokenName());
+				return false;
+			}
+			if (aEqModName.charAt(0) == '|')
+			{
+				Logging.errorPrint(getTokenName()
+					+ " arguments may not start with | : " + value);
+				return false;
+			}
+			if (aEqModName.charAt(aEqModName.length() - 1) == '|')
+			{
+				Logging.errorPrint(getTokenName()
+					+ " arguments may not end with | : " + value);
+				return false;
+			}
+			if (aEqModName.indexOf("||") != -1)
+			{
+				Logging.errorPrint(getTokenName()
+					+ " arguments uses double separator || : " + value);
+				return false;
 			}
 			StringTokenizer pipeTok = new StringTokenizer(aEqModName, "|");
 
@@ -106,6 +156,10 @@ public class EqmodToken implements EquipmentLstToken
 				String assocTok = pipeTok.nextToken();
 				if (assocTok.indexOf(']') == -1)
 				{
+					/*
+					 * TODO Can this be done in some way to learn from the EqMod
+					 * what the association actually is??
+					 */
 					edge.setAssociation(AssociationKey.ONLY, assocTok);
 				}
 				else
@@ -122,15 +176,14 @@ public class EqmodToken implements EquipmentLstToken
 
 	private boolean setAssoc(PCGraphGrantsEdge edge, String assocTok)
 	{
+		if (assocTok.indexOf("[]") != -1)
+		{
+			return false;
+		}
 		StringTokenizer bracketTok = new StringTokenizer(assocTok, "]");
 		while (bracketTok.hasMoreTokens())
 		{
 			String assoc = bracketTok.nextToken();
-			if (assoc.length() == 0 && !bracketTok.hasMoreTokens())
-			{
-				// Last one should be empty
-				break;
-			}
 			int openBracketLoc = assoc.indexOf('[');
 			if (openBracketLoc == -1)
 			{
@@ -193,27 +246,74 @@ public class EqmodToken implements EquipmentLstToken
 		{
 			return null;
 		}
+		SortedMap<CDOMReference<EquipmentModifier>, PCGraphEdge> set =
+				new TreeMap<CDOMReference<EquipmentModifier>, PCGraphEdge>(
+					TokenUtilities.REFERENCE_SORTER);
 		StringBuilder sb = new StringBuilder();
+		sb.append(getTokenName()).append(':');
 		boolean needDot = false;
 		for (PCGraphEdge edge : edgeList)
 		{
-			EquipmentModifier eqMod =
-					(EquipmentModifier) edge.getSinkNodes().get(0);
+			CDOMReference<EquipmentModifier> eqMod =
+					(CDOMReference<EquipmentModifier>) edge.getSinkNodes().get(
+						0);
+			set.put(eqMod, edge);
+		}
+		for (Entry<CDOMReference<EquipmentModifier>, PCGraphEdge> me : set
+			.entrySet())
+		{
 			if (needDot)
 			{
 				sb.append('.');
 			}
-			sb.append(eqMod.getKeyName());
+			needDot = true;
+			sb.append(me.getKey().getLSTformat());
+			PCGraphEdge edge = me.getValue();
 			if (edge.hasAssociations())
 			{
+				/*
+				 * TODO FIXME These need to be sorted... :(
+				 */
 				sb.append(Constants.PIPE);
-				for (AssociationKey ak : edge.getAssociationKeys())
+				Collection<AssociationKey<?>> akColl =
+						edge.getAssociationKeys();
+				if (akColl.size() == 1)
 				{
-					String st = (String) edge.getAssociation(ak);
-					sb.append(ak).append('[').append(st).append(']');
+					AssociationKey ak = akColl.iterator().next();
+					if (AssociationKey.ONLY.equals(ak))
+					{
+						sb.append((String) edge.getAssociation(ak));
+					}
+					else
+					{
+						String st = (String) edge.getAssociation(ak);
+						sb.append(ak).append('[').append(st).append(']');
+					}
+				}
+				else
+				{
+					TreeMap<String, String> map = new TreeMap<String, String>();
+					for (AssociationKey ak : edge.getAssociationKeys())
+					{
+						if (AssociationKey.ONLY.equals(ak))
+						{
+							context.addWriteMessage("Edge Association ONLY is "
+								+ "not valid if more than one association "
+								+ "is required");
+							return null;
+						}
+						map
+							.put(ak.toString(), (String) edge
+								.getAssociation(ak));
+					}
+					for (Entry<String, String> ae : map.entrySet())
+					{
+						sb.append(ae.getKey()).append('[')
+							.append(ae.getValue()).append(']');
+					}
+
 				}
 			}
-			needDot = true;
 		}
 		return sb.toString();
 	}

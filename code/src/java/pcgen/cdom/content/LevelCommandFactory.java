@@ -20,8 +20,10 @@ package pcgen.cdom.content;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.core.PCClass;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
-public class LevelCommandFactory extends ConcretePrereqObject
+public class LevelCommandFactory extends ConcretePrereqObject implements
+		Comparable<LevelCommandFactory>
 {
 
 	private final CDOMSimpleSingleRef<PCClass> pcClass;
@@ -49,11 +51,13 @@ public class LevelCommandFactory extends ConcretePrereqObject
 		return pcClass.getLSTformat();
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return pcClass.hashCode() * 29 + levels;
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if (this == o)
@@ -66,6 +70,20 @@ public class LevelCommandFactory extends ConcretePrereqObject
 		}
 		LevelCommandFactory lcf = (LevelCommandFactory) o;
 		return levels == lcf.levels && pcClass.equals(lcf.pcClass);
+	}
+
+	public int compareTo(LevelCommandFactory arg0)
+	{
+		int i = TokenUtilities.REFERENCE_SORTER.compare(pcClass, arg0.pcClass);
+		if (i == 0)
+		{
+			if (levels == arg0.levels)
+			{
+				return 0;
+			}
+			return levels < arg0.levels ? -1 : 1;
+		}
+		return i;
 	}
 
 }

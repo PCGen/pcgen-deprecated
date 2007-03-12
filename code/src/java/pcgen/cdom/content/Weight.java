@@ -19,7 +19,7 @@ package pcgen.cdom.content;
 
 import pcgen.cdom.base.ConcretePrereqObject;
 
-public class Weight extends ConcretePrereqObject
+public class Weight extends ConcretePrereqObject implements Comparable<Weight>
 {
 
 	private double weight;
@@ -34,6 +34,25 @@ public class Weight extends ConcretePrereqObject
 		return weight;
 	}
 
-	// FIXME TODO Needs to be comparable...
+	public int compareTo(Weight arg0)
+	{
+		if (weight == arg0.weight)
+		{
+			return 0;
+		}
+		return weight < arg0.weight ? -1 : 1;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (int) weight;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return o instanceof Weight && ((Weight) o).weight == weight;
+	}
 
 }

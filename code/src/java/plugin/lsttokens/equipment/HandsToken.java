@@ -42,7 +42,13 @@ public class HandsToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.setHands(Integer.parseInt(value));
+			int i = Integer.parseInt(value);
+			if (i < 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
+				return false;
+			}
+			eq.setHands(i);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -55,7 +61,13 @@ public class HandsToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(IntegerKey.HANDS, Integer.valueOf(value));
+			Integer hands = Integer.valueOf(value);
+			if (hands.intValue() < 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				return false;
+			}
+			eq.put(IntegerKey.HANDS, hands);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -74,7 +86,7 @@ public class HandsToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		if (hands.intValue() <= 0)
+		if (hands.intValue() < 0)
 		{
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
