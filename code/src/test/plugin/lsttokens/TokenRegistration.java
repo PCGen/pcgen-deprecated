@@ -24,14 +24,15 @@ import java.util.Set;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.TokenStore;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriterFactory;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriterInterface;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.prereq.PrerequisiteParserInterface;
 
 public class TokenRegistration
 {
 
-	public static Set<String> ppiSet =
-			new HashSet<String>();
+	public static Set<String> ppiSet = new HashSet<String>();
 
 	public static void register(PrerequisiteParserInterface ppi)
 		throws PersistenceLayerException
@@ -53,6 +54,19 @@ public class TokenRegistration
 		{
 			TokenStore.inst().addToTokenMap(token);
 			tokenSet.add(token);
+		}
+	}
+
+	public static Set<String> pwSet = new HashSet<String>();
+
+	public static void register(PrerequisiteWriterInterface writer)
+		throws PersistenceLayerException
+	{
+		String s = writer.kindHandled();
+		if (!pwSet.contains(s))
+		{
+			PrerequisiteWriterFactory.register(writer);
+			pwSet.add(s);
 		}
 	}
 }
