@@ -60,15 +60,14 @@ public class MaxdexToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer maxDexBonus = eq.get(IntegerKey.MAX_DEX_BONUS);
 		if (maxDexBonus == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			maxDexBonus).toString();
+		return new String[]{maxDexBonus.toString()};
 	}
 
 }

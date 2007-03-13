@@ -52,14 +52,13 @@ public class CostToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		Formula f = mod.get(FormulaKey.COST);
 		if (f == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			f.toString()).toString();
+		return new String[]{f.toString()};
 	}
 }

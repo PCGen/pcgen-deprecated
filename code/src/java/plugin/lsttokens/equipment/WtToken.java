@@ -86,7 +86,7 @@ public class WtToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), eq,
@@ -103,7 +103,6 @@ public class WtToken implements EquipmentLstToken
 		}
 		PCGraphEdge edge = edgeList.iterator().next();
 		Weight w = (Weight) edge.getSinkNodes().get(0);
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			w.getWeight()).toString();
+		return new String[]{Double.toString(w.getWeight())};
 	}
 }

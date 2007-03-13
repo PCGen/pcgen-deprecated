@@ -246,8 +246,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 		while (true)
 		{
 			CDOMCategorizedSingleRef<Ability> ability =
-					context.ref.getCDOMReference(ABILITY_CLASS,
-						abCat, token);
+					context.ref.getCDOMReference(ABILITY_CLASS, abCat, token);
 			PCGraphGrantsEdge edge =
 					context.graph.linkObjectIntoGraph(getTokenName(), obj,
 						ability);
@@ -289,7 +288,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeSet =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -310,9 +309,8 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 				edge.getPrerequisiteList()), ab);
 		}
 
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		boolean needTab = false;
+		List<String> list = new ArrayList<String>();
 		for (AbilityNature nature : m.getKeySet())
 		{
 			for (String category : m.getSecondaryKeySet(nature))
@@ -320,12 +318,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 				for (Set<Prerequisite> prereqs : m.getTertiaryKeySet(nature,
 					category))
 				{
-					if (needTab)
-					{
-						sb.append('\t');
-					}
-					needTab = true;
-					sb.append(getTokenName()).append(':');
+					StringBuilder sb = new StringBuilder();
 					sb.append(category).append(Constants.PIPE);
 					sb.append(nature);
 					for (Ability a : m.getListFor(nature, category, prereqs))
@@ -352,10 +345,11 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 								.append(swriter.toString());
 						}
 					}
+					list.add(sb.toString());
 				}
 			}
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 
 }

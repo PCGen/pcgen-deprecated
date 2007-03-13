@@ -52,14 +52,13 @@ public class LeveladjustmentToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Formula f = race.get(FormulaKey.LEVEL_ADJUSTMENT);
 		if (f == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			f.toString()).toString();
+		return new String[]{f.toString()};
 	}
 }

@@ -74,17 +74,14 @@ public class SubraceToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		SubRace subRace = pct.get(ObjectKey.SUBRACE);
 		if (subRace == null)
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		sb.append(subRace);
-		return sb.toString();
+		return new String[]{subRace.toString()};
 	}
 
 }

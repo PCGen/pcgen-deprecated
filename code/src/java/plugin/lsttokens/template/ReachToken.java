@@ -73,7 +73,7 @@ public class ReachToken implements PCTemplateLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Integer reach = pct.get(IntegerKey.REACH);
 		if (reach == null)
@@ -86,7 +86,6 @@ public class ReachToken implements PCTemplateLstToken
 				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			reach).toString();
+		return new String[]{reach.toString()};
 	}
 }

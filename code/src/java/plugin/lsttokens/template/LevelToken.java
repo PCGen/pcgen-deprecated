@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -50,8 +51,8 @@ import pcgen.util.Logging;
 /**
  * Class deals with LEVEL Token
  * 
- * Last Editor: $Author$ Last Edited: $Date: 2007-01-03 02:53:55
- * -0500 (Wed, 03 Jan 2007) $
+ * Last Editor: $Author$ Last Edited: $Date: 2007-01-03 02:53:55 -0500
+ * (Wed, 03 Jan 2007) $
  * 
  * @version $Revision$
  */
@@ -210,7 +211,7 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), pct);
@@ -219,11 +220,10 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 			return null;
 		}
 
-		StringBuilder sb = new StringBuilder();
+		Set<String> set = new TreeSet<String>();
 
 		for (PCGraphEdge edge : edges)
 		{
-			sb.append(getTokenName()).append(':');
 			if (edge.getPrerequisiteCount() != 1)
 			{
 				context.addWriteMessage("Only one Prerequisiste allowed on "
@@ -244,6 +244,7 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 					+ getTokenName() + " derived edge");
 				return null;
 			}
+			StringBuilder sb = new StringBuilder();
 			sb.append(prereq.getOperand());
 			List<PrereqObject> sinkNodes = edge.getSinkNodes();
 			if (sinkNodes == null || sinkNodes.size() != 1)
@@ -276,7 +277,8 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 					+ getTokenName());
 				return null;
 			}
+			set.add(sb.toString());
 		}
-		return sb.toString();
+		return set.toArray(new String[set.size()]);
 	}
 }

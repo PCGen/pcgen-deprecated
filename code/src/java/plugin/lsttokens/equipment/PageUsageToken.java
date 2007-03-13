@@ -64,14 +64,13 @@ public class PageUsageToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Formula f = eq.get(FormulaKey.PAGE_USAGE);
 		if (f == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			f.toString()).toString();
+		return new String[]{f.toString()};
 	}
 }

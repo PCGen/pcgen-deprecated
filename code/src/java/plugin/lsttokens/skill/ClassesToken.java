@@ -139,7 +139,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		return edge;
 	}
 
-	public String unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, Skill skill)
 	{
 		Set<PCGraphEdge> classEdgeSet =
 				context.graph.getParentLinksFromToken(getTokenName(), skill,
@@ -148,8 +148,6 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
 		CDOMGroupRef<PCClass> allRef =
 				context.ref.getCDOMAllReference(PCClass.class);
 		SortedSet<CDOMReference<PCClass>> set =
@@ -222,6 +220,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 			}
 		}
 		boolean needBar = false;
+		StringBuilder sb = new StringBuilder();
 		for (CDOMReference<PCClass> ref : set)
 		{
 			if (needBar)
@@ -235,6 +234,6 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 			sb.append(ref.getLSTformat());
 			needBar = true;
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

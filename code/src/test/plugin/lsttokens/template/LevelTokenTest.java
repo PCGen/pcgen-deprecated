@@ -283,4 +283,10 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		runRoundRobin("4:CR:Formula");
 	}
 
+	@Test
+	public void testRoundRobinMultiple() throws PersistenceLayerException
+	{
+		runRoundRobin("3:SR:Formula", "4:CR:Formula");
+	}
+
 }

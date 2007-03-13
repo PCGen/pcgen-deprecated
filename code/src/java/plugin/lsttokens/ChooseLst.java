@@ -56,7 +56,7 @@ public class ChooseLst implements GlobalLstToken
 		return ChooseLoader.parseLine(context, obj, value);
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		// TODO Auto-generated method stub
 		return null;

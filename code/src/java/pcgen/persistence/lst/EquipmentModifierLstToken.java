@@ -47,5 +47,5 @@ public interface EquipmentModifierLstToken extends CDOMToken<EquipmentModifier>
 	public boolean parse(LoadContext context, EquipmentModifier mod, String value)
 			throws PersistenceLayerException;
 
-	public String unparse(LoadContext context, EquipmentModifier mod);
+	public String[] unparse(LoadContext context, EquipmentModifier mod);
 }

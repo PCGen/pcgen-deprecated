@@ -72,14 +72,13 @@ public class WieldToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		EqWield w = eq.get(ObjectKey.WEILD);
 		if (w == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(w)
-			.toString();
+		return new String[]{w.toString()};
 	}
 }

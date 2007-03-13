@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
@@ -92,7 +93,7 @@ public class ReplacesToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		List<CDOMSimpleSingleRef<EquipmentModifier>> keys =
 				mod.getListFor(ListKey.REPLACED_KEYS);
@@ -100,18 +101,7 @@ public class ReplacesToken implements EquipmentModifierLstToken
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		boolean needComma = false;
-		for (CDOMSimpleSingleRef<EquipmentModifier> at : keys)
-		{
-			if (needComma)
-			{
-				sb.append(Constants.COMMA);
-			}
-			needComma = true;
-			sb.append(at.getLSTformat());
-		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(keys,
+			Constants.COMMA)};
 	}
 }

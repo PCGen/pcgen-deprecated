@@ -49,14 +49,13 @@ public class TitleToken implements DeityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		String title = deity.get(StringKey.TITLE);
 		if (title == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			title).toString();
+		return new String[]{title};
 	}
 }

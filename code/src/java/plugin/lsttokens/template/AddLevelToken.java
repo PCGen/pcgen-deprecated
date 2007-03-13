@@ -103,7 +103,7 @@ public class AddLevelToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -117,7 +117,6 @@ public class AddLevelToken implements PCTemplateLstToken
 		for (PCGraphEdge edge : edges)
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.append(getTokenName()).append(':');
 			LevelCommandFactory lcf =
 					(LevelCommandFactory) edge.getSinkNodes().get(0);
 			int lvls = lcf.getLevelCount();
@@ -130,17 +129,6 @@ public class AddLevelToken implements PCTemplateLstToken
 			sb.append(lcf.getLSTformat()).append(Constants.PIPE).append(lvls);
 			set.add(sb.toString());
 		}
-		StringBuilder sb = new StringBuilder(set.size() * 40);
-		boolean needsTab = false;
-		for (String s : set)
-		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
-			needsTab = true;
-			sb.append(s);
-		}
-		return sb.toString();
+		return set.toArray(new String[set.size()]);
 	}
 }

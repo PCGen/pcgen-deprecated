@@ -22,6 +22,8 @@
  */
 package pcgen.persistence.lst;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import pcgen.cdom.base.CDOMObject;
@@ -55,7 +57,7 @@ public final class AutoLoader
 			LstUtils.deprecationCheck(token, target, value);
 			if (!token.parse(target, value))
 			{
-				Logging.errorPrint("Error parsing AUTO: " + key + ":" + value);
+				Logging.errorPrint("Error parsing AUTO: " + key + "|" + value);
 				return false;
 			}
 			return true;
@@ -78,7 +80,7 @@ public final class AutoLoader
 			LstUtils.deprecationCheck(token, obj, value);
 			if (!token.parse(context, obj, value))
 			{
-				Logging.errorPrint("Error parsing AUTO:" + key + ":" + value);
+				Logging.errorPrint("Error parsing AUTO:" + key + "|" + value);
 				return false;
 			}
 			return true;
@@ -90,30 +92,21 @@ public final class AutoLoader
 		}
 	}
 
-	public static String unparse(LoadContext context, CDOMObject obj)
+	public static String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		StringBuilder sb = new StringBuilder();
-		boolean needTab = false;
+		List<String> list = new ArrayList<String>();
 		for (LstToken token : TokenStore.inst().getTokenMap(AutoLstToken.class)
 			.values())
 		{
-			String s = ((AutoLstToken) token).unparse(context, (PObject) obj);
+			String[] s = ((AutoLstToken) token).unparse(context, (PObject) obj);
 			if (s != null)
 			{
-				if (needTab)
+				for (String aString : s)
 				{
-					sb.append('\t');
+					list.add(token.getTokenName() + "|" + aString);
 				}
-				needTab = true;
-				/*
-				 * TODO FIXME This introduces a BUG, in that this assumes the s
-				 * is only one token, and there is no parent involved... therefore
-				 * the unparse methods in AUTO either need to return String[]
-				 * or something else needs to be done...
-				 */
-				sb.append("AUTO:").append(s);
 			}
 		}
-		return sb.length() == 0 ? null : sb.toString();
+		return list.size() == 0 ? null : list.toArray(new String[list.size()]);
 	}
 }

@@ -24,6 +24,7 @@ package plugin.lsttokens.equipmentmodifier;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
@@ -85,25 +86,13 @@ public class ItypeToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		List<Type> keys = mod.getListFor(ListKey.ITEM_TYPES);
 		if (keys == null || keys.isEmpty())
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		boolean needPipe = false;
-		for (Type at : keys)
-		{
-			if (needPipe)
-			{
-				sb.append(Constants.DOT);
-			}
-			needPipe = true;
-			sb.append(at);
-		}
-		return sb.toString();
+		return new String[]{StringUtil.join(keys, Constants.DOT)};
 	}
 }

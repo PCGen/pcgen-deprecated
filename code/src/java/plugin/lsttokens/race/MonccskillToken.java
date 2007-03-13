@@ -35,6 +35,7 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.graph.PCGraphAllowsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.inst.Aggregator;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCClass;
 import pcgen.core.Race;
 import pcgen.core.Skill;
@@ -169,7 +170,7 @@ public class MonccskillToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
@@ -185,15 +186,12 @@ public class MonccskillToken implements RaceLstToken
 			return null;
 		}
 		PCGraphEdge edge = edgeList.iterator().next();
-		StringBuilder sb = new StringBuilder();
 		Aggregator a = (Aggregator) edge.getNodeAt(1);
 		Set<PCGraphEdge> edgeToSkillList =
 				context.graph.getChildLinksFromToken(getTokenName(), a,
 					SKILL_CLASS);
-		sb.append(getTokenName()).append(':');
-		SortedSet<CDOMReference<Skill>> set =
-				new TreeSet<CDOMReference<Skill>>(
-					TokenUtilities.REFERENCE_SORTER);
+		SortedSet<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 		for (PCGraphEdge se : edgeToSkillList)
 		{
 			if (!SkillCost.CROSS_CLASS.equals(se
@@ -206,16 +204,7 @@ public class MonccskillToken implements RaceLstToken
 			}
 			set.add((CDOMReference<Skill>) se.getNodeAt(1));
 		}
-		boolean needsPipe = false;
-		for (CDOMReference<Skill> ref : set)
-		{
-			if (needsPipe)
-			{
-				sb.append(Constants.PIPE);
-			}
-			sb.append(ref.getLSTformat());
-			needsPipe = true;
-		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.PIPE)};
 	}
 }

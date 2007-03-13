@@ -24,6 +24,7 @@ package plugin.lsttokens.equipment;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
@@ -111,25 +112,13 @@ public class AlttypeToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		List<Type> list = eq.getListFor(ListKey.ALT_TYPE);
 		if (list == null || list.isEmpty())
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
-		boolean needsDot = false;
-		for (Type t : list)
-		{
-			if (needsDot)
-			{
-				sb.append(Constants.DOT);
-			}
-			sb.append(t);
-			needsDot = true;
-		}
-		return sb.toString();
+		return new String[]{StringUtil.join(list, Constants.DOT)};
 	}
 }

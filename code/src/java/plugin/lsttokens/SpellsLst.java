@@ -216,9 +216,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 					// Error
 				}
 				token = tok.nextToken();
-				//				if (token.startsWith("TIMES=")) {
-				//					Logging.errorPrint("Technically, TIMES= must appear BEFORE CASTERLEVEL in SPELLS");
-				//				}
+				// if (token.startsWith("TIMES=")) {
+				// Logging.errorPrint("Technically, TIMES= must appear BEFORE
+				// CASTERLEVEL in SPELLS");
+				// }
 			}
 			else
 			{
@@ -226,8 +227,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			}
 		}
 
-		List<PCGraphGrantsEdge> edgeList =
-				new ArrayList<PCGraphGrantsEdge>();
+		List<PCGraphGrantsEdge> edgeList = new ArrayList<PCGraphGrantsEdge>();
 		while (true)
 		{
 			int commaLoc = token.indexOf(',');
@@ -286,7 +286,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeSet =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -320,20 +320,14 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				new Thingy(sp, dc));
 		}
 
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		boolean needTab = false;
+		List<String> list = new ArrayList<String>();
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			for (Map<AssociationKey<String>, String> am : m
 				.getSecondaryKeySet(prereqs))
 			{
-				if (needTab)
-				{
-					sb.append('\t');
-				}
-				needTab = true;
-				sb.append(getTokenName()).append(':');
+				StringBuilder sb = new StringBuilder();
 				sb.append(am.get(AssociationKey.SPELLBOOK));
 				String times = am.get(AssociationKey.TIMES_PER_DAY);
 				if (!"1".equals(times))
@@ -375,9 +369,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 						sb.append(Constants.PIPE).append(swriter.toString());
 					}
 				}
+				list.add(sb.toString());
 			}
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 
 	private static class Thingy

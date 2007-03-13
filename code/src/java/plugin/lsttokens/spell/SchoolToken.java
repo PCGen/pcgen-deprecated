@@ -94,14 +94,13 @@ public class SchoolToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		List<SpellSchool> schools = spell.getListFor(ListKey.SPELL_SCHOOL);
 		if (schools == null || schools.size() == 0)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			StringUtil.join(schools, Constants.PIPE)).toString();
+		return new String[]{StringUtil.join(schools, Constants.PIPE)};
 	}
 }

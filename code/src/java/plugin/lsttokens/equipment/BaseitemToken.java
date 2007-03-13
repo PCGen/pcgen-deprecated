@@ -52,14 +52,13 @@ public class BaseitemToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		CDOMSimpleSingleRef<Equipment> ref = eq.get(ObjectKey.BASE_ITEM);
 		if (ref == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			ref.getLSTformat()).toString();
+		return new String[]{ref.getLSTformat()};
 	}
 }

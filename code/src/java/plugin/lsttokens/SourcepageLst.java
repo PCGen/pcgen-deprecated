@@ -34,7 +34,7 @@ import pcgen.persistence.lst.SourceLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class SourcepageLst implements GlobalLstToken, SourceLstToken
 {
@@ -62,7 +62,7 @@ public class SourcepageLst implements GlobalLstToken, SourceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		SourceEntry sourceEntry = obj.getSourceEntry();
 		if (sourceEntry == null)
@@ -74,7 +74,6 @@ public class SourcepageLst implements GlobalLstToken, SourceLstToken
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			page).toString();
+		return new String[]{page};
 	}
 }

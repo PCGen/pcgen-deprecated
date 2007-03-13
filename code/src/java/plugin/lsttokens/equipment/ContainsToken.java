@@ -160,7 +160,7 @@ public class ContainsToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		List<Capacity> capacityList = eq.getListFor(ListKey.CAPACITY);
 		if (capacityList == null || capacityList.isEmpty())
@@ -168,7 +168,6 @@ public class ContainsToken implements EquipmentLstToken
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
 
 		Boolean b = eq.get(ObjectKey.CONTAINER_CONSTANT_WEIGHT);
 		if (b != null && b.booleanValue())
@@ -197,7 +196,7 @@ public class ContainsToken implements EquipmentLstToken
 				if ("Any".equals(c.getType()) && c.getCapacity() == -1)
 				{
 					// Special Case: Nothing additional
-					return sb.toString();
+					return new String[]{sb.toString()};
 				}
 			}
 		}
@@ -245,6 +244,6 @@ public class ContainsToken implements EquipmentLstToken
 			sb.append("Total").append(Constants.EQUALS).append(
 				total.getCapacity());
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

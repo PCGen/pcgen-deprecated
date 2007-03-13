@@ -25,6 +25,7 @@ package plugin.lsttokens;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
@@ -84,7 +85,7 @@ public class UdamLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		List<String> list = obj.getListFor(ListKey.UDAM);
 		if (list == null || list.isEmpty())
@@ -93,21 +94,9 @@ public class UdamLst implements GlobalLstToken
 		}
 		if (list.size() != 9)
 		{
-			//Error
+			// Error
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
-		boolean needComma = false;
-		for (String item : list)
-		{
-			if (needComma)
-			{
-				sb.append(Constants.COMMA);
-			}
-			sb.append(item);
-			needComma = true;
-		}
-		return sb.toString();
+		return new String[]{StringUtil.join(list, Constants.COMMA)};
 	}
 }

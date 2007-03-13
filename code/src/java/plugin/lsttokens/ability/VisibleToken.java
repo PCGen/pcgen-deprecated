@@ -121,7 +121,7 @@ public class VisibleToken implements AbilityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, Ability ability)
 	{
 		Visibility vis = ability.get(ObjectKey.VISIBILITY);
 		if (vis == null)
@@ -151,8 +151,7 @@ public class VisibleToken implements AbilityLstToken
 				+ " is not a valid Visibility for an Ability");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			visString).toString();
+		return new String[]{visString};
 	}
 
 }

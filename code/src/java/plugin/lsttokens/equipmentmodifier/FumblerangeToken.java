@@ -50,14 +50,13 @@ public class FumblerangeToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		String range = mod.get(StringKey.FUMBLE_RANGE);
 		if (range == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			range).toString();
+		return new String[]{range};
 	}
 }

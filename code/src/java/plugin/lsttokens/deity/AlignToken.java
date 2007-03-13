@@ -60,14 +60,13 @@ public class AlignToken implements DeityLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		AlignmentType at = deity.get(ObjectKey.ALIGNMENT);
 		if (at == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(at).toString();
+		return new String[]{at.toString()};
 	}
 }

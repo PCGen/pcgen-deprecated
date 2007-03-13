@@ -75,7 +75,7 @@ public class LangnumToken implements RaceLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Integer sp = race.get(IntegerKey.LANGNUM);
 		if (sp == null)
@@ -87,7 +87,6 @@ public class LangnumToken implements RaceLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(sp).toString();
+		return new String[]{sp.toString()};
 	}
 }

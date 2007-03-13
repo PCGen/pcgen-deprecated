@@ -25,6 +25,7 @@ package plugin.lsttokens;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ListKey;
@@ -89,25 +90,13 @@ public class TypeLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		List<Type> typeList = obj.getListFor(ListKey.TYPE);
 		if (typeList == null || typeList.isEmpty())
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
-		boolean needDot = false;
-		for (Type type : typeList)
-		{
-			if (needDot)
-			{
-				sb.append(Constants.DOT);
-			}
-			sb.append(type);
-			needDot = true;
-		}
-		return sb.toString();
+		return new String[]{StringUtil.join(typeList, Constants.DOT)};
 	}
 }

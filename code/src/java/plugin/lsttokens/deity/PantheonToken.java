@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.deity;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Pantheon;
@@ -91,25 +92,13 @@ public class PantheonToken implements DeityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		List<Pantheon> pantheons = deity.getListFor(ListKey.PANTHEON);
 		if (pantheons == null || pantheons.isEmpty())
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		boolean needPipe = false;
-		for (Pantheon rp : pantheons)
-		{
-			if (needPipe)
-			{
-				sb.append(Constants.PIPE);
-			}
-			needPipe = true;
-			sb.append(rp);
-		}
-		return sb.toString();
+		return new String[]{StringUtil.join(pantheons, Constants.PIPE)};
 	}
 }

@@ -67,14 +67,13 @@ public class CostToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		BigDecimal bd = eq.get(ObjectKey.COST);
 		if (bd == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(bd).toString();
+		return new String[]{bd.toString()};
 	}
 }

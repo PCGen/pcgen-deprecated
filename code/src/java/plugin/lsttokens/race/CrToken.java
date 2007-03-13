@@ -72,7 +72,7 @@ public class CrToken implements RaceLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Set<PCGraphEdge> links =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
@@ -89,7 +89,6 @@ public class CrToken implements RaceLstToken
 		}
 		ChallengeRating cr =
 				(ChallengeRating) links.iterator().next().getSinkNodes().get(0);
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			cr.toLSTform()).toString();
+		return new String[]{cr.toLSTform()};
 	}
 }

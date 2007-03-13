@@ -67,7 +67,7 @@ public class InitToken implements RaceLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Integer init = race.get(IntegerKey.INITIATIVE);
 		if (init == null)
@@ -80,7 +80,6 @@ public class InitToken implements RaceLstToken
 				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			init).toString();
+		return new String[]{init.toString()};
 	}
 }

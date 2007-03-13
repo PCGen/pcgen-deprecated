@@ -21,6 +21,8 @@
  */
 package plugin.lsttokens.race;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -109,7 +111,7 @@ public class MonsterclassToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
@@ -123,15 +125,9 @@ public class MonsterclassToken implements RaceLstToken
 		{
 			set.add((LevelCommandFactory) edge.getSinkNodes().get(0));
 		}
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
+		List<String> list = new ArrayList<String>(edges.size());
 		for (LevelCommandFactory lcf : set)
 		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
-			sb.append(getTokenName()).append(':');
 			int lvls = lcf.getLevelCount();
 			if (lvls <= 0)
 			{
@@ -139,9 +135,10 @@ public class MonsterclassToken implements RaceLstToken
 					+ getTokenName() + " must be greater than zero");
 				return null;
 			}
+			StringBuilder sb = new StringBuilder();
 			sb.append(lcf.getLSTformat()).append(Constants.COLON).append(lvls);
-			needsTab = true;
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

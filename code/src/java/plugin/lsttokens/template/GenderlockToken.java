@@ -62,14 +62,13 @@ public class GenderlockToken implements PCTemplateLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Gender g = pct.get(ObjectKey.GENDER_LOCK);
 		if (g == null)
 		{
 			return null;
 		}
-		return new StringBuffer().append(getTokenName()).append(':').append(g)
-			.toString();
+		return new String[]{g.toString()};
 	}
 }

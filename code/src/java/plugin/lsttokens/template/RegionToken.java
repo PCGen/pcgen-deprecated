@@ -74,17 +74,14 @@ public class RegionToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Region targetArea = pct.get(ObjectKey.REGION);
 		if (targetArea == null)
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		sb.append(targetArea);
-		return sb.toString();
+		return new String[]{targetArea.toString()};
 	}
 
 }

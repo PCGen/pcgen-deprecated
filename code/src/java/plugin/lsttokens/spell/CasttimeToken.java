@@ -61,14 +61,13 @@ public class CasttimeToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		String castingTime = spell.get(StringKey.CASTING_TIME);
 		if (castingTime == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			castingTime).toString();
+		return new String[]{castingTime};
 	}
 }

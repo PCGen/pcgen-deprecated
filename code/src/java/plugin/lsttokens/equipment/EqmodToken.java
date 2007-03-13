@@ -232,7 +232,7 @@ public class EqmodToken implements EquipmentLstToken
 		return null;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		EquipmentHead head = getEquipmentHeadReference(context, eq, 1);
 		if (head == null)
@@ -250,7 +250,6 @@ public class EqmodToken implements EquipmentLstToken
 				new TreeMap<CDOMReference<EquipmentModifier>, PCGraphEdge>(
 					TokenUtilities.REFERENCE_SORTER);
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
 		boolean needDot = false;
 		for (PCGraphEdge edge : edgeList)
 		{
@@ -315,6 +314,6 @@ public class EqmodToken implements EquipmentLstToken
 				}
 			}
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

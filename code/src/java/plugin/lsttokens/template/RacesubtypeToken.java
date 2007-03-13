@@ -101,7 +101,7 @@ public class RacesubtypeToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		List<RaceSubType> raceSubTypes = pct.getListFor(ListKey.RACESUBTYPE);
 		List<RaceSubType> removedTypes =
@@ -111,8 +111,7 @@ public class RacesubtypeToken implements PCTemplateLstToken
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
+		StringBuilder sb = new StringBuilder();
 		boolean needPipe = false;
 		if (raceSubTypes != null)
 		{
@@ -138,6 +137,6 @@ public class RacesubtypeToken implements PCTemplateLstToken
 				needPipe = true;
 			}
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

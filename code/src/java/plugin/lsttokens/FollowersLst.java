@@ -40,6 +40,7 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -139,17 +140,15 @@ public class FollowersLst implements GlobalLstToken
 		String followerNumber = tok.nextToken();
 		Formula num = FormulaFactory.getFormulaFor(followerNumber);
 		/*
-		 * BUG FIXME This is a problem, because it is possible that the 
+		 * BUG FIXME This is a problem, because it is possible that the
 		 * CompanionList is NOT YET PRESENT in the Graph... :P
 		 * 
-		 * So I think I need to fetch a Reference, and then 
-		 * officially build the CompanionList through the Context
-		 * later on?  That seems like a PAIN...
+		 * So I think I need to fetch a Reference, and then officially build the
+		 * CompanionList through the Context later on? That seems like a PAIN...
 		 * 
-		 * Actually, even that doesn't work, because there could
-		 * be more than one... so a reference doesn't do any good
-		 * Therefore, this is a deferred search of a Graph?  I'm
-		 * not a huge fan of that either.
+		 * Actually, even that doesn't work, because there could be more than
+		 * one... so a reference doesn't do any good Therefore, this is a
+		 * deferred search of a Graph? I'm not a huge fan of that either.
 		 */
 		Set<PCGraphEdge> linkSet =
 				context.graph.getChildLinks(obj, CompanionList.class);
@@ -185,7 +184,7 @@ public class FollowersLst implements GlobalLstToken
 		return found;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -194,15 +193,10 @@ public class FollowersLst implements GlobalLstToken
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
+		List<String> list = new ArrayList<String>(edgeList.size());
 		for (PCGraphEdge edge : edgeList)
 		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
-			sb.append(getTokenName()).append(':');
+			StringBuilder sb = new StringBuilder();
 			Slot<Follower> s = (Slot<Follower>) edge.getSinkNodes().get(0);
 			sb.append(s.toLSTform()).append(Constants.PIPE);
 			List<Restriction<?>> resList = s.getSinkRestrictions();
@@ -224,7 +218,8 @@ public class FollowersLst implements GlobalLstToken
 				// {
 				// }
 			}
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

@@ -233,7 +233,7 @@ public class AlteqmodToken implements EquipmentLstToken
 		return null;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		EquipmentHead head = getEquipmentHeadReference(context, eq, 2);
 		if (head == null)
@@ -251,7 +251,6 @@ public class AlteqmodToken implements EquipmentLstToken
 				new TreeMap<CDOMReference<EquipmentModifier>, PCGraphEdge>(
 					TokenUtilities.REFERENCE_SORTER);
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
 		boolean needDot = false;
 		for (PCGraphEdge edge : edgeList)
 		{
@@ -316,6 +315,6 @@ public class AlteqmodToken implements EquipmentLstToken
 				}
 			}
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

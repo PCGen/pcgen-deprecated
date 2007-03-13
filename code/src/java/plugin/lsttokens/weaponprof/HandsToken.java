@@ -75,7 +75,7 @@ public class HandsToken implements WeaponProfLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, WeaponProf prof)
+	public String[] unparse(LoadContext context, WeaponProf prof)
 	{
 		Integer i = prof.get(IntegerKey.HANDS);
 		/*
@@ -86,7 +86,7 @@ public class HandsToken implements WeaponProfLstToken
 		{
 			return null;
 		}
-		Object hands;
+		String hands;
 		int intValue = i.intValue();
 		if (intValue == Constants.HANDS_SIZEDEPENDENT)
 		{
@@ -101,9 +101,8 @@ public class HandsToken implements WeaponProfLstToken
 		}
 		else
 		{
-			hands = i;
+			hands = i.toString();
 		}
-		return new StringBuilder().append(getTokenName()).append(":").append(
-			hands).toString();
+		return new String[] { hands };
 	}
 }

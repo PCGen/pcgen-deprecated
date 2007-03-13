@@ -94,7 +94,7 @@ public class QualifyToken implements GlobalLstToken
 		return false;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		// TODO Auto-generated method stub
 		return null;

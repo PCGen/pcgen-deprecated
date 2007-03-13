@@ -143,7 +143,7 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -163,7 +163,6 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 		}
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(Constants.COLON);
 		boolean needPipe = true;
 		for (CDOMGroupRef<WeaponProf> result : m.getKeySet())
 		{
@@ -184,6 +183,6 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 			}
 			sb.append(Constants.EQUALS).append(result);
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

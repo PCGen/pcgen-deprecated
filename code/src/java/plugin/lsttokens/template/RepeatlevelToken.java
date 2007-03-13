@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.template;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -376,7 +377,7 @@ public class RepeatlevelToken extends AbstractToken implements
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -385,20 +386,15 @@ public class RepeatlevelToken extends AbstractToken implements
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
 		TreeSet<Aggregator> aggSet = new TreeSet<Aggregator>(AGG_COMPARATOR);
 		for (PCGraphEdge edge : edgeList)
 		{
 			aggSet.add((Aggregator) edge.getSinkNodes().get(0));
 		}
+		List<String> list = new ArrayList<String>(aggSet.size());
 		for (Aggregator agg : aggSet)
 		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
-			sb.append(getTokenName()).append(':');
+			StringBuilder sb = new StringBuilder();
 			Integer consecutive = agg.get(IntegerKey.CONSECUTIVE);
 			Integer maxLevel = agg.get(IntegerKey.MAX_LEVEL);
 			Integer lvlIncrement = agg.get(IntegerKey.LEVEL_INCREMENT);
@@ -482,8 +478,8 @@ public class RepeatlevelToken extends AbstractToken implements
 					wroteContent = true;
 				}
 			}
-			needsTab = true;
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

@@ -75,10 +75,9 @@ public class DescispiLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		boolean namePI = obj.isDescPI();
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			namePI ? "YES" : "NO").toString();
+		return new String[]{namePI ? "YES" : "NO"};
 	}
 }

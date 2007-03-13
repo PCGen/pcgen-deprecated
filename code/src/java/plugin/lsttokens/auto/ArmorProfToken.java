@@ -30,6 +30,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.ArmorProf;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
@@ -145,7 +146,7 @@ public class ArmorProfToken implements AutoLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, PObject obj)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -157,22 +158,11 @@ public class ArmorProfToken implements AutoLstToken
 		SortedSet<CDOMReference<ArmorProf>> set =
 				new TreeSet<CDOMReference<ArmorProf>>(
 					TokenUtilities.REFERENCE_SORTER);
-		boolean needComma = false;
 		for (PCGraphEdge edge : edges)
 		{
 			set.add((CDOMReference<ArmorProf>) edge.getSinkNodes().get(0));
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append('|');
-		for (CDOMReference<ArmorProf> ref : set)
-		{
-			if (needComma)
-			{
-				sb.append(Constants.PIPE);
-			}
-			needComma = true;
-			sb.append(ref.getLSTformat());
-		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.PIPE)};
 	}
 }

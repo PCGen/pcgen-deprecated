@@ -105,14 +105,13 @@ public class VariantsToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		List<String> variants = spell.getListFor(ListKey.VARIANTS);
 		if (variants == null || variants.size() == 0)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			StringUtil.join(variants, Constants.PIPE)).toString();
+		return new String[]{StringUtil.join(variants, Constants.PIPE)};
 	}
 }

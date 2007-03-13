@@ -79,7 +79,7 @@ public class LegsToken implements PCTemplateLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Integer legs = pct.get(IntegerKey.LEGS);
 		if (legs == null)
@@ -92,8 +92,7 @@ public class LegsToken implements PCTemplateLstToken
 				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			legs).toString();
+		return new String[]{legs.toString()};
 	}
 
 }

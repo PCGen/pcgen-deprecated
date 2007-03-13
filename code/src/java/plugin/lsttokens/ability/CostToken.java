@@ -51,14 +51,13 @@ public class CostToken implements AbilityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, Ability ability)
 	{
 		BigDecimal bd = ability.get(ObjectKey.COST);
 		if (bd == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(bd).toString();
+		return new String[]{bd.toString()};
 	}
 }

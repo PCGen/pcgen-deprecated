@@ -75,7 +75,8 @@ public class CritmultToken implements EquipmentLstToken
 				try
 				{
 					Integer cm = Integer.valueOf(value.substring(1));
-					if (cm.intValue() <= 0) {
+					if (cm.intValue() <= 0)
+					{
 						Logging.errorPrint(getTokenName() + " cannot be <= 0");
 						return false;
 					}
@@ -133,7 +134,7 @@ public class CritmultToken implements EquipmentLstToken
 		return null;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		EquipmentHead head = getEquipmentHeadReference(context, eq, 1);
 		if (head == null)
@@ -146,16 +147,15 @@ public class CritmultToken implements EquipmentLstToken
 			return null;
 		}
 		int multInt = mult.intValue();
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
+		String retString;
 		if (multInt == -1)
 		{
-			sb.append('-');
+			retString = "-";
 		}
 		else
 		{
-			sb.append('x').append(multInt);
+			retString = "x" + multInt;
 		}
-		return sb.toString();
+		return new String[]{retString};
 	}
 }

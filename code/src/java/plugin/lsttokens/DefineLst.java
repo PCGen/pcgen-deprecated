@@ -78,7 +78,7 @@ public class DefineLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		// TODO Auto-generated method stub
 		return null;

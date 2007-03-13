@@ -61,14 +61,13 @@ public class DurationToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		String duration = spell.get(StringKey.DURATION);
 		if (duration == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			duration).toString();
+		return new String[]{duration};
 	}
 }

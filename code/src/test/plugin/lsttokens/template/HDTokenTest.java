@@ -316,4 +316,10 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 		runRoundRobin("4+:CR:Formula");
 	}
 
+	@Test
+	public void testRoundRobinMultiple() throws PersistenceLayerException
+	{
+		runRoundRobin("4+:CR:Formula", "5+:SA:Special Ability, Man!");
+	}
+
 }

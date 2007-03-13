@@ -94,7 +94,7 @@ public class FavclassToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		// TODO Auto-generated method stub
 		return null;

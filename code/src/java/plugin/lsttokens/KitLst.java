@@ -22,6 +22,8 @@
  */
 package plugin.lsttokens;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -38,7 +40,7 @@ import pcgen.util.Logging;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class KitLst implements GlobalLstToken
 {
@@ -71,7 +73,9 @@ public class KitLst implements GlobalLstToken
 		try
 		{
 			int count = Integer.parseInt(tok.nextToken());
-			cl = new ChoiceSet<CDOMSimpleSingleRef<Kit>>(count, tok.countTokens());
+			cl =
+					new ChoiceSet<CDOMSimpleSingleRef<Kit>>(count, tok
+						.countTokens());
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -99,27 +103,29 @@ public class KitLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					ChoiceSet.class);
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
+		List<String> list = new ArrayList<String>(edgeList.size());
 		for (PCGraphEdge edge : edgeList)
 		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
+			StringBuilder sb = new StringBuilder();
 			ChoiceSet<CDOMSimpleSingleRef<Kit>> cl =
-					(ChoiceSet<CDOMSimpleSingleRef<Kit>>) edge.getSinkNodes().get(0);
+					(ChoiceSet<CDOMSimpleSingleRef<Kit>>) edge.getSinkNodes()
+						.get(0);
 			sb.append(cl.getCount());
 			for (CDOMSimpleSingleRef<Kit> ref : cl.getSet())
 			{
 				sb.append(Constants.PIPE).append(ref.getLSTformat());
 			}
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

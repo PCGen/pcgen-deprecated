@@ -61,14 +61,13 @@ public class TargetareaToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		String targetArea = spell.get(StringKey.TARGET_AREA);
 		if (targetArea == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			targetArea).toString();
+		return new String[]{targetArea};
 	}
 }

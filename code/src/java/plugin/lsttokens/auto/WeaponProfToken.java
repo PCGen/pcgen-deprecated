@@ -30,6 +30,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
@@ -141,7 +142,7 @@ public class WeaponProfToken implements AutoLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, PObject obj)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -153,23 +154,12 @@ public class WeaponProfToken implements AutoLstToken
 		SortedSet<CDOMReference<WeaponProf>> set =
 				new TreeSet<CDOMReference<WeaponProf>>(
 					TokenUtilities.REFERENCE_SORTER);
-		boolean needComma = false;
 		for (PCGraphEdge edge : edges)
 		{
 			set.add((CDOMReference<WeaponProf>) edge.getSinkNodes().get(0));
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append('|');
-		for (CDOMReference<WeaponProf> ref : set)
-		{
-			if (needComma)
-			{
-				sb.append(Constants.PIPE);
-			}
-			needComma = true;
-			sb.append(ref.getLSTformat());
-		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.PIPE)};
 	}
 
 }

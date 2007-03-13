@@ -24,6 +24,7 @@ package plugin.lsttokens.race;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.RaceSubType;
@@ -89,25 +90,13 @@ public class RacesubtypeToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		List<RaceSubType> raceSubTypes = race.getListFor(ListKey.RACESUBTYPE);
 		if (raceSubTypes == null || raceSubTypes.isEmpty())
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		boolean needPipe = false;
-		for (RaceSubType rst : raceSubTypes)
-		{
-			if (needPipe)
-			{
-				sb.append(Constants.PIPE);
-			}
-			sb.append(rst);
-			needPipe = true;
-		}
-		return sb.toString();
+		return new String[]{StringUtil.join(raceSubTypes, Constants.PIPE)};
 	}
 }

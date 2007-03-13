@@ -31,7 +31,7 @@ import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class UmultLst implements GlobalLstToken
 {
@@ -67,7 +67,7 @@ public class UmultLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Integer mult = obj.get(IntegerKey.UMULT);
 		if (mult == null)
@@ -79,7 +79,6 @@ public class UmultLst implements GlobalLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			mult).toString();
+		return new String[]{mult.toString()};
 	}
 }

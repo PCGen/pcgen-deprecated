@@ -69,7 +69,7 @@ public class AddspelllevelToken implements AbilityLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, Ability ability)
 	{
 		Integer lvl = ability.get(IntegerKey.ADD_SPELL_LEVEL);
 		if (lvl == null)
@@ -82,7 +82,6 @@ public class AddspelllevelToken implements AbilityLstToken
 				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			lvl).toString();
+		return new String[]{lvl.toString()};
 	}
 }

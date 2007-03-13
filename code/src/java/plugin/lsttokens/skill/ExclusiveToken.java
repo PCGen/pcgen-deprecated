@@ -89,14 +89,13 @@ public class ExclusiveToken implements SkillLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, Skill skill)
 	{
 		Boolean exclusive = skill.get(ObjectKey.EXCLUSIVE);
 		if (exclusive == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			exclusive.booleanValue() ? "YES" : "NO").toString();
+		return new String[]{exclusive.booleanValue() ? "YES" : "NO"};
 	}
 }

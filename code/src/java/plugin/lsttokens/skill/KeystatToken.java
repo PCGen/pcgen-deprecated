@@ -60,14 +60,13 @@ public class KeystatToken implements SkillLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, Skill skill)
 	{
 		PCStat pcs = skill.get(ObjectKey.KEY_STAT);
 		if (pcs == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			pcs.getKey()).toString();
+		return new String[]{pcs.getKey()};
 	}
 }

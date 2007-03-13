@@ -62,14 +62,13 @@ public class ProficiencyToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		CDOMSimpleSingleRef<WeaponProf> wp = eq.get(ObjectKey.WEAPON_PROF);
 		if (wp == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			wp.getLSTformat()).toString();
+		return new String[]{wp.getLSTformat()};
 	}
 }

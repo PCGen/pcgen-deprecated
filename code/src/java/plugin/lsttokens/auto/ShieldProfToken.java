@@ -30,6 +30,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.core.ShieldProf;
 import pcgen.persistence.LoadContext;
@@ -93,7 +94,7 @@ public class ShieldProfToken implements AutoLstToken
 				+ " arguments uses double separator || : " + value);
 			return false;
 		}
-		
+
 		StringTokenizer tok = new StringTokenizer(shieldProfs, Constants.PIPE);
 
 		while (tok.hasMoreTokens())
@@ -141,7 +142,7 @@ public class ShieldProfToken implements AutoLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, PObject obj)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -153,22 +154,11 @@ public class ShieldProfToken implements AutoLstToken
 		SortedSet<CDOMReference<ShieldProf>> set =
 				new TreeSet<CDOMReference<ShieldProf>>(
 					TokenUtilities.REFERENCE_SORTER);
-		boolean needComma = false;
 		for (PCGraphEdge edge : edges)
 		{
 			set.add((CDOMReference<ShieldProf>) edge.getSinkNodes().get(0));
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append('|');
-		for (CDOMReference<ShieldProf> ref : set)
-		{
-			if (needComma)
-			{
-				sb.append(Constants.PIPE);
-			}
-			needComma = true;
-			sb.append(ref.getLSTformat());
-		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.PIPE)};
 	}
 }

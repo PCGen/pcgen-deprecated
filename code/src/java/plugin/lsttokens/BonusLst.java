@@ -76,7 +76,7 @@ public class BonusLst implements GlobalLstToken
 		return ((PObject) obj).addBonusList(value);
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		// TODO Auto-generated method stub
 		return null;

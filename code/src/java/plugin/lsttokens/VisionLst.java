@@ -24,6 +24,7 @@ package plugin.lsttokens;
 
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
@@ -197,23 +198,21 @@ public class VisionLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					VISION_CLASS);
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
-		boolean needPipe = false;
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
+		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{
-			if (needPipe)
-			{
-				sb.append(Constants.PIPE);
-			}
 			Vision vis = (Vision) edge.getSinkNodes().get(0);
-			sb.append(vis.toString());
+			set.add(vis.toString());
 		}
-		return sb.toString();
+		return set.toArray(new String[set.size()]);
 	}
 }

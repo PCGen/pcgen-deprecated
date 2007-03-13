@@ -30,7 +30,7 @@ import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class KeyLst implements GlobalLstToken
 {
@@ -48,19 +48,19 @@ public class KeyLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		//THIS IS ORDER DEPENDENT, MUST BE DONE BEFORE resetting the key
+		// THIS IS ORDER DEPENDENT, MUST BE DONE BEFORE resetting the key
 		context.ref.reassociateReference(value, ((PObject) obj));
-		//Hacking for duplicate protection
+		// Hacking for duplicate protection
 		((PObject) obj).setKeyName(value);
 		/*
-		 * TODO This actually needs to be special - since the Key is the lookup method
-		 * FUTURE isn't this redundant with the set above?!
+		 * TODO This actually needs to be special - since the Key is the lookup
+		 * method FUTURE isn't this redundant with the set above?!
 		 */
 		obj.put(StringKey.KEY_NAME, value);
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		String key = obj.getKeyName();
 		String display = obj.getDisplayName();
@@ -68,7 +68,6 @@ public class KeyLst implements GlobalLstToken
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			key).toString();
+		return new String[]{key};
 	}
 }

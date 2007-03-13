@@ -23,6 +23,7 @@
 package plugin.lsttokens;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.FormulaFactory;
@@ -34,7 +35,7 @@ import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class SrLst implements GlobalLstToken
 {
@@ -77,23 +78,17 @@ public class SrLst implements GlobalLstToken
 		return new SpellResistance(FormulaFactory.getFormulaFor(value));
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					SpellResistance.class);
-		StringBuilder sb = new StringBuilder();
-		boolean needTab = false;
+		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{
 			SpellResistance sr = (SpellResistance) edge.getSinkNodes().get(0);
-			if (needTab)
-			{
-				sb.append('\t');
-			}
-			sb.append(getTokenName()).append(':').append(sr.toString());
-			needTab = true;
+			set.add(sr.toString());
 		}
-		return sb.toString();
+		return set.toArray(new String[set.size()]);
 	}
 }

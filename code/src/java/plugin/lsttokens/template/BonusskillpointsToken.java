@@ -94,7 +94,7 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -129,7 +129,6 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 				(LevelSkillPoints) links.iterator().next().getSinkNodes()
 					.get(0);
 		// CONSIDER Verify the rest of the structure??
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			lsp.getPoints()).toString();
+		return new String[]{Integer.toString(lsp.getPoints())};
 	}
 }

@@ -66,7 +66,7 @@ public class AccheckToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer check = eq.get(IntegerKey.AC_CHECK);
 		if (check == null)
@@ -78,8 +78,7 @@ public class AccheckToken implements EquipmentLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			check).toString();
+		return new String[]{check.toString()};
 	}
 
 }

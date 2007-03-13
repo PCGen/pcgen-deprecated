@@ -24,19 +24,24 @@ package plugin.lsttokens;
 
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.content.ChoiceSet;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class LangautoLst implements GlobalLstToken
 {
@@ -93,7 +98,7 @@ public class LangautoLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -102,21 +107,14 @@ public class LangautoLst implements GlobalLstToken
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		boolean needComma = false;
-		/*
-		 * BUG Doesn't handle references correctly :(
-		 */
+		Set<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 		for (PCGraphEdge edge : edges)
 		{
-			if (needComma)
-			{
-				sb.append(Constants.COMMA);
-			}
-			sb.append(((Language) edge.getSinkNodes().get(0)).getKeyName());
-			needComma = true;
+			set.addAll(((ChoiceSet<CDOMReference<?>>) edge.getSinkNodes()
+				.get(0)).getSet());
 		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.PIPE)};
 	}
 }

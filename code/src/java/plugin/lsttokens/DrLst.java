@@ -38,10 +38,11 @@ import pcgen.persistence.PersistenceLayerException;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 /**
  * @author djones4
- *
+ * 
  */
 
 public class DrLst extends AbstractToken implements GlobalLstToken
@@ -126,11 +127,11 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, "|");
-		//String drString = tok.nextToken();
+		// String drString = tok.nextToken();
 		DamageReduction dr;
 		try
 		{
-			//dr = DamageReduction.getDamageReduction(drString);
+			// dr = DamageReduction.getDamageReduction(drString);
 			String[] values = tok.nextToken().split("/");
 			if (values.length != 2)
 			{
@@ -162,22 +163,17 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					DamageReduction.class);
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
+		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
 			DamageReduction dr = (DamageReduction) edge.getSinkNodes().get(0);
-			sb.append("DR").append(dr);
+			set.add(dr.toString());
 		}
-		return sb.toString();
+		return set.toArray(new String[set.size()]);
 	}
 }

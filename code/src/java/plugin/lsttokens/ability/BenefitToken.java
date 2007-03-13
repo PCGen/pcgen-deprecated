@@ -49,14 +49,13 @@ public class BenefitToken implements AbilityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, Ability ability)
 	{
 		String benefit = ability.get(StringKey.BENEFIT);
 		if (benefit == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			benefit).toString();
+		return new String[]{benefit};
 	}
 }

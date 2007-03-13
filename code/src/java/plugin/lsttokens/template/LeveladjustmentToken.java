@@ -52,14 +52,13 @@ public class LeveladjustmentToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Formula f = pct.get(FormulaKey.LEVEL_ADJUSTMENT);
 		if (f == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			f.toString()).toString();
+		return new String[]{f.toString()};
 	}
 }

@@ -179,7 +179,7 @@ public class VisibleToken implements SkillLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, Skill skill)
 	{
 		Visibility vis = skill.get(ObjectKey.VISIBILITY);
 		if (vis == null)
@@ -194,7 +194,7 @@ public class VisibleToken implements SkillLstToken
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':').append(vis.getLSTFormat());
+		sb.append(vis.getLSTFormat());
 		Boolean readOnly = skill.get(ObjectKey.READ_ONLY);
 		if (readOnly != null)
 		{
@@ -206,7 +206,7 @@ public class VisibleToken implements SkillLstToken
 			}
 			sb.append('|').append("READONLY");
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 
 }

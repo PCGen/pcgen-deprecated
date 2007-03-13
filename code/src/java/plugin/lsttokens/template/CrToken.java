@@ -67,7 +67,7 @@ public class CrToken implements PCTemplateLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> links =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -84,7 +84,6 @@ public class CrToken implements PCTemplateLstToken
 		}
 		ChallengeRating cr =
 				(ChallengeRating) links.iterator().next().getSinkNodes().get(0);
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			cr.toLSTform()).toString();
+		return new String[]{cr.toLSTform()};
 	}
 }

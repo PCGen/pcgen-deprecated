@@ -82,14 +82,13 @@ public class ModsToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		EqModControl control = eq.get(ObjectKey.MOD_CONTROL);
 		if (control == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			control).toString();
+		return new String[]{control.toString()};
 	}
 }

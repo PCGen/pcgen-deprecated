@@ -47,5 +47,5 @@ public interface RaceLstToken extends CDOMToken<Race>
 	public boolean parse(LoadContext context, Race race, String value)
 			throws PersistenceLayerException;
 
-	public String unparse(LoadContext context, Race race);
+	public String[] unparse(LoadContext context, Race race);
 }

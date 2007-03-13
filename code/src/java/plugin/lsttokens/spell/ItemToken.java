@@ -81,7 +81,7 @@ public class ItemToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		List<Restriction<?>> resList = spell.getSourceRestrictions();
 		StringBuilder sb = new StringBuilder();
@@ -97,6 +97,6 @@ public class ItemToken implements SpellLstToken
 				}
 			}
 		}
-		return sb.length() == 0 ? null : sb.toString();
+		return sb.length() == 0 ? null : new String[]{sb.toString()};
 	}
 }

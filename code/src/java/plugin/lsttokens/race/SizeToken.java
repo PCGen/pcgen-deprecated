@@ -63,7 +63,7 @@ public class SizeToken implements RaceLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Set<PCGraphEdge> links =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
@@ -78,7 +78,6 @@ public class SizeToken implements RaceLstToken
 			return null;
 		}
 		Size s = (Size) links.iterator().next().getSinkNodes().get(0);
-		return new StringBuilder().append(getTokenName()).append(':').append(s)
-			.toString();
+		return new String[]{s.toString()};
 	}
 }

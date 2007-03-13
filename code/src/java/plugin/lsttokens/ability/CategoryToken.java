@@ -61,7 +61,7 @@ public class CategoryToken implements AbilityLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, Ability ability)
 	{
 		AbilityCategory ac = ability.get(ObjectKey.CATEGORY);
 		if (ac == null)
@@ -69,7 +69,6 @@ public class CategoryToken implements AbilityLstToken
 			context.addWriteMessage("Abilities must have an AbilityCategory");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(ac).toString();
+		return new String[]{ac.toString()};
 	}
 }

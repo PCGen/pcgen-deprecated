@@ -101,7 +101,7 @@ public class AltcritrangeToken implements EquipmentLstToken
 		return null;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		EquipmentHead head = getEquipmentHeadReference(context, eq, 2);
 		if (head == null)
@@ -113,7 +113,6 @@ public class AltcritrangeToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			mult).toString();
+		return new String[]{mult.toString()};
 	}
 }

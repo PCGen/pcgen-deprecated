@@ -73,7 +73,7 @@ public class NonppToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Integer nonpp = pct.get(IntegerKey.NONPP);
 		if (nonpp == null)
@@ -86,8 +86,7 @@ public class NonppToken implements PCTemplateLstToken
 				+ "less than or equal to zero: " + nonpp);
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			nonpp).toString();
+		return new String[]{nonpp.toString()};
 	}
 
 }

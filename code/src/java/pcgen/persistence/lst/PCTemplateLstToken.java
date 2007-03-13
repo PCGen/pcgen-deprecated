@@ -47,5 +47,5 @@ public interface PCTemplateLstToken extends CDOMToken<PCTemplate>
 	public boolean parse(LoadContext context, PCTemplate pct, String value)
 			throws PersistenceLayerException;
 	
-	public String unparse(LoadContext context, PCTemplate pct);
+	public String[] unparse(LoadContext context, PCTemplate pct);
 }

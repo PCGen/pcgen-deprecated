@@ -31,6 +31,7 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.content.ChoiceSet;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
@@ -159,7 +160,7 @@ public class TemplateToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> directEdges =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -167,74 +168,44 @@ public class TemplateToken implements PCTemplateLstToken
 		Set<PCGraphEdge> choiceEdges =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
 					ChoiceSet.class);
-		if (choiceEdges == null || choiceEdges.isEmpty())
+		SortedSet<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		int currentIndex = 0;
+		int choiceSize = choiceEdges == null ? 0 : choiceEdges.size();
+		int directSize =
+				directEdges == null ? 0 : directEdges.isEmpty() ? 0 : 1;
+		if ((directSize + choiceSize) == 0)
 		{
-			if (directEdges == null || directEdges.isEmpty())
+			// No templates
+			return null;
+		}
+		String[] array = new String[directSize + choiceSize];
+		if (directEdges != null && !directEdges.isEmpty())
+		{
+			for (PCGraphEdge edge : directEdges)
 			{
-				return null;
+				set.add((CDOMReference<?>) edge.getSinkNodes().get(0));
 			}
-			return unparseDirect(context, pct, directEdges).toString();
-		}
-		else if (directEdges == null || directEdges.isEmpty())
-		{
-			return unparseChoice(context, pct, choiceEdges).toString();
-		}
-		return unparseDirect(context, pct, directEdges).append('\t').append(
-			unparseChoice(context, pct, choiceEdges)).toString();
-	}
 
-	private StringBuilder unparseDirect(LoadContext context, PCTemplate pct,
-		Set<PCGraphEdge> directEdges)
-	{
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		SortedSet<CDOMReference<PCTemplate>> set =
-				new TreeSet<CDOMReference<PCTemplate>>(
-					TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge edge : directEdges)
-		{
-			set.add((CDOMReference<PCTemplate>) edge.getSinkNodes().get(0));
+			array[currentIndex++] =
+					ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 		}
-		boolean needPipe = false;
-		for (CDOMReference<PCTemplate> ref : set)
+		if (choiceEdges != null && !choiceEdges.isEmpty())
 		{
-			if (needPipe)
+			for (PCGraphEdge edge : choiceEdges)
 			{
-				sb.append(Constants.PIPE);
-			}
-			needPipe = true;
-			sb.append(ref.getLSTformat());
-		}
-		return sb;
-	}
+				ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
+						(ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>) edge
+							.getSinkNodes().get(0);
+				set.clear();
+				set.addAll(cl.getSet());
 
-	private StringBuilder unparseChoice(LoadContext context, PCTemplate pct,
-		Set<PCGraphEdge> directEdges)
-	{
-		StringBuilder sb = new StringBuilder();
-		for (PCGraphEdge edge : directEdges)
-		{
-			sb.append(getTokenName()).append(':').append(Constants.LST_CHOOSE);
-			ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
-					(ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>) edge
-						.getSinkNodes().get(0);
-			Set<CDOMSimpleSingleRef<PCTemplate>> items = cl.getSet();
-
-			SortedSet<CDOMReference<PCTemplate>> set =
-					new TreeSet<CDOMReference<PCTemplate>>(
-						TokenUtilities.REFERENCE_SORTER);
-			set.addAll(items);
-			boolean needPipe = false;
-			for (CDOMReference<PCTemplate> ref : set)
-			{
-				if (needPipe)
-				{
-					sb.append(Constants.PIPE);
-				}
-				needPipe = true;
-				sb.append(ref.getLSTformat());
+				array[currentIndex++] =
+						(Constants.LST_CHOOSE + ReferenceUtilities
+							.joinLstFormat(set, Constants.PIPE));
 			}
 		}
-		return sb;
+		return array;
 	}
+
 }

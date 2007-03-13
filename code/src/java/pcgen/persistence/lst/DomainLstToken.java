@@ -47,5 +47,5 @@ public interface DomainLstToken extends CDOMToken<Domain>
 	public boolean parse(LoadContext context, Domain domain, String value)
 		throws PersistenceLayerException;
 
-	public String unparse(LoadContext context, Domain domain);
+	public String[] unparse(LoadContext context, Domain domain);
 }

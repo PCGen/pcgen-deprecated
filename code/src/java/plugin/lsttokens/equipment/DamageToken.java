@@ -85,7 +85,7 @@ public class DamageToken implements EquipmentLstToken
 		return null;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		EquipmentHead head = getEquipmentHeadReference(context, eq, 1);
 		if (head == null)
@@ -97,7 +97,6 @@ public class DamageToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			damage).toString();
+		return new String[]{damage};
 	}
 }

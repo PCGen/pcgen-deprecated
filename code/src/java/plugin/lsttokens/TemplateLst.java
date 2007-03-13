@@ -24,18 +24,22 @@ package plugin.lsttokens;
 
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.ChoiceSet;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Campaign;
 import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -105,7 +109,8 @@ public class TemplateLst implements GlobalLstToken
 		StringTokenizer tok =
 				new StringTokenizer(value.substring(7), Constants.PIPE);
 		ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
-				new ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>(1, tok.countTokens());
+				new ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>(1, tok
+					.countTokens());
 		while (tok.hasMoreTokens())
 		{
 			cl.addChoice(context.ref.getCDOMReference(PCTEMPLATE_CLASS, tok
@@ -139,7 +144,7 @@ public class TemplateLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> choiceEdgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -147,14 +152,16 @@ public class TemplateLst implements GlobalLstToken
 		Set<PCGraphEdge> templateEdgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					PCTemplate.class);
-		if (choiceEdgeList.isEmpty() && templateEdgeList.isEmpty())
+		int arrayLength = choiceEdgeList.isEmpty() ? 0 : 1;
+		arrayLength += templateEdgeList.isEmpty() ? 0 : 1;
+		if (arrayLength == 0)
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
+		String[] array = new String[arrayLength];
+		int index = 0;
 		if (!choiceEdgeList.isEmpty())
 		{
-			sb.append(getTokenName()).append(':');
 			if (choiceEdgeList.size() > 1)
 			{
 				context.addWriteMessage("Not valid to have more than one "
@@ -164,36 +171,24 @@ public class TemplateLst implements GlobalLstToken
 			ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
 					(ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>) choiceEdgeList
 						.iterator().next().getSinkNodes().get(0);
-			boolean needsPipe = false;
-			for (CDOMSimpleSingleRef<PCTemplate> ref : cl.getSet())
-			{
-				if (needsPipe)
-				{
-					sb.append(Constants.PIPE);
-				}
-				needsPipe = true;
-				sb.append(ref.getLSTformat());
-			}
-			if (!templateEdgeList.isEmpty())
-			{
-				sb.append('\t');
-			}
+			array[index++] =
+					ReferenceUtilities.joinLstFormat(cl.getSet(),
+						Constants.PIPE);
 		}
 		if (!templateEdgeList.isEmpty())
 		{
-			sb.append(getTokenName()).append(':');
-			boolean needsPipe = false;
+			Set<CDOMReference<?>> set =
+					new TreeSet<CDOMReference<?>>(
+						TokenUtilities.REFERENCE_SORTER);
 			for (PCGraphEdge edge : templateEdgeList)
 			{
-				if (needsPipe)
-				{
-					sb.append(Constants.PIPE);
-				}
-				needsPipe = true;
-				PCTemplate pct = (PCTemplate) edge.getSinkNodes().get(0);
-				sb.append(pct.getKeyName());
+				CDOMReference<?> pct =
+						(CDOMReference<?>) edge.getSinkNodes().get(0);
+				set.add(pct);
 			}
+			array[index++] =
+					ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 		}
-		return sb.toString();
+		return array;
 	}
 }

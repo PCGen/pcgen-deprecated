@@ -50,14 +50,13 @@ public class RacetypeToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		RaceType raceType = race.get(ObjectKey.RACETYPE);
 		if (raceType == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			raceType).toString();
+		return new String[]{raceType.toString()};
 	}
 }

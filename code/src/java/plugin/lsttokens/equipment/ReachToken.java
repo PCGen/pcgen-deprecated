@@ -73,7 +73,7 @@ public class ReachToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer reach = eq.get(IntegerKey.REACH);
 		if (reach == null)
@@ -85,7 +85,6 @@ public class ReachToken implements EquipmentLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			reach).toString();
+		return new String[]{reach.toString()};
 	}
 }

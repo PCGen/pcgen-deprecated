@@ -30,7 +30,7 @@ import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class RegionLst implements GlobalLstToken
 {
@@ -59,15 +59,14 @@ public class RegionLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		String region = obj.get(StringKey.REGION);
 		if (region == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			region).toString();
+		return new String[]{region};
 	}
 
 }

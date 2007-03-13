@@ -75,7 +75,7 @@ public class VisibleToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		Visibility vis = mod.get(ObjectKey.VISIBILITY);
 		if (vis == null)
@@ -101,7 +101,6 @@ public class VisibleToken implements EquipmentModifierLstToken
 				+ " is not a valid Visibility for a Equipment Modifier");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			visString).toString();
+		return new String[]{visString};
 	}
 }

@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.equipment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -98,29 +99,23 @@ public class QualityToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Set<String> keys = eq.getKeySet(MapKey.QUALITY);
 		if (keys == null || keys.isEmpty())
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
+		List<String> retList = new ArrayList<String>();
 		for (String key : keys)
 		{
 			List<String> list = eq.getListFor(MapKey.QUALITY, key);
 			for (String value : list)
 			{
-				if (needsTab)
-				{
-					sb.append('\t');
-				}
-				sb.append(getTokenName()).append(':').append(key).append(
-					Constants.PIPE).append(value);
-				needsTab = true;
+				retList.add(new StringBuilder().append(key).append(
+					Constants.PIPE).append(value).toString());
 			}
 		}
-		return sb.toString();
+		return retList.toArray(new String[retList.size()]);
 	}
 }

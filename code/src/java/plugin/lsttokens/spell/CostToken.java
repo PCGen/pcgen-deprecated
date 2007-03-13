@@ -166,7 +166,7 @@ public class CostToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
 				spell.get(ObjectKey.COMPONENT_COST);
@@ -175,7 +175,6 @@ public class CostToken implements SpellLstToken
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
 		Integer defaultValue = dm.getDefaultValue();
 		if (defaultValue == null)
 		{
@@ -213,6 +212,6 @@ public class CostToken implements SpellLstToken
 			sb.append(Constants.PIPE);
 			sb.append(className).append(Constants.COMMA).append(cost);
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

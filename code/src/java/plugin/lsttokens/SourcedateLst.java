@@ -38,7 +38,7 @@ import pcgen.util.Logging;
 
 /**
  * @author zaister
- *
+ * 
  */
 public class SourcedateLst implements GlobalLstToken, SourceLstToken
 {
@@ -82,7 +82,7 @@ public class SourcedateLst implements GlobalLstToken, SourceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		SourceEntry sourceEntry = obj.getSourceEntry();
 		if (sourceEntry == null)
@@ -99,7 +99,6 @@ public class SourcedateLst implements GlobalLstToken, SourceLstToken
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			date).toString();
+		return new String[]{date.toString()};
 	}
 }

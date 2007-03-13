@@ -61,14 +61,13 @@ public class FumblerangeToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		String range = eq.get(StringKey.FUMBLE_RANGE);
 		if (range == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			range).toString();
+		return new String[]{range};
 	}
 }

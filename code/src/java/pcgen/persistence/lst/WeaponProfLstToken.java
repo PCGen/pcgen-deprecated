@@ -47,6 +47,6 @@ public interface WeaponProfLstToken extends CDOMToken<WeaponProf>
 	public boolean parse(LoadContext context, WeaponProf prof, String value)
 			throws PersistenceLayerException;
 	
-	public String unparse(LoadContext context, WeaponProf prof);
+	public String[] unparse(LoadContext context, WeaponProf prof);
 	
 }

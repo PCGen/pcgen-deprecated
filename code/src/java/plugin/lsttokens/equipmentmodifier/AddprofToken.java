@@ -24,6 +24,7 @@ package plugin.lsttokens.equipmentmodifier;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
@@ -99,25 +100,13 @@ public class AddprofToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		List<Type> profTypes = mod.getListFor(ListKey.PROFICIENCY_TYPES);
 		if (profTypes == null || profTypes.isEmpty())
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
-		boolean needDot = false;
-		for (Type type : profTypes)
-		{
-			if (needDot)
-			{
-				sb.append(Constants.DOT);
-			}
-			needDot = true;
-			sb.append(type);
-		}
-		return sb.toString();
+		return new String[]{StringUtil.join(profTypes, Constants.DOT)};
 	}
 }

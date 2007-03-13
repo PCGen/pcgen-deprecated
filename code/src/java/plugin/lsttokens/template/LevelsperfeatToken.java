@@ -85,7 +85,7 @@ public class LevelsperfeatToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Integer lpf = pct.get(IntegerKey.LEVELS_PER_FEAT);
 		if (lpf == null)
@@ -98,7 +98,6 @@ public class LevelsperfeatToken implements PCTemplateLstToken
 				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			lpf).toString();
+		return new String[]{lpf.toString()};
 	}
 }

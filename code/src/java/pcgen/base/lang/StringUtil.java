@@ -21,6 +21,7 @@ package pcgen.base.lang;
 
 import java.util.Collection;
 
+
 public final class StringUtil
 {
 

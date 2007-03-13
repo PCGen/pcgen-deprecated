@@ -66,7 +66,7 @@ public class RangeToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer range = eq.get(IntegerKey.RANGE);
 		if (range == null)
@@ -79,7 +79,6 @@ public class RangeToken implements EquipmentLstToken
 				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			range).toString();
+		return new String[]{range.toString()};
 	}
 }

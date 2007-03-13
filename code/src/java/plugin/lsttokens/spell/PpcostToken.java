@@ -74,7 +74,7 @@ public class PpcostToken implements SpellLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		Integer i = spell.get(IntegerKey.PP_COST);
 		if (i == null)
@@ -87,7 +87,6 @@ public class PpcostToken implements SpellLstToken
 				+ " requires a positive Integer");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(i)
-			.toString();
+		return new String[]{i.toString()};
 	}
 }

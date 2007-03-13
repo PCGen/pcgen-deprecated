@@ -95,7 +95,7 @@ public class XpcostToken implements SpellLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		Integer i = spell.get(IntegerKey.XP_COST);
 		if (i == null)
@@ -108,7 +108,6 @@ public class XpcostToken implements SpellLstToken
 				+ " requires a positive Integer");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(i)
-			.toString();
+		return new String[]{i.toString()};
 	}
 }

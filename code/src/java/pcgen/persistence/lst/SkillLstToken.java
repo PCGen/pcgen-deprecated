@@ -47,6 +47,6 @@ public interface SkillLstToken extends CDOMToken<Skill>
 	public boolean parse(LoadContext context, Skill skill, String value)
 			throws PersistenceLayerException;
 	
-	public String unparse(LoadContext context, Skill skill);
+	public String[] unparse(LoadContext context, Skill skill);
 
 }

@@ -112,7 +112,7 @@ public class ChargesToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		Integer max = mod.get(IntegerKey.MAX_CHARGES);
 		Integer min = mod.get(IntegerKey.MIN_CHARGES);
@@ -141,7 +141,6 @@ public class ChargesToken implements EquipmentModifierLstToken
 					+ "greater than MIN_CHARGES for " + getTokenName());
 			return null;
 		}
-		return new StringBuilder(getTokenName()).append(':').append(min)
-			.append(Constants.PIPE).append(max).toString();
+		return new String[]{min + Constants.PIPE + max};
 	}
 }

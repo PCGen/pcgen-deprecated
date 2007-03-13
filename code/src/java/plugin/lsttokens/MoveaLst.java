@@ -23,6 +23,7 @@
 package plugin.lsttokens;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGraphEdge;
@@ -33,7 +34,7 @@ import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class MoveaLst implements GlobalLstToken
 {
@@ -59,22 +60,17 @@ public class MoveaLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					Movement.class);
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
+		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
 			Movement m = (Movement) edge.getSinkNodes().get(0);
-			sb.append(m.toLSTString());
+			set.add(m.toLSTString());
 		}
-		return sb.toString();
+		return set.toArray(new String[set.size()]);
 	}
 }

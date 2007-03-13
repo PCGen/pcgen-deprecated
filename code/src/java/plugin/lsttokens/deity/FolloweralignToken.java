@@ -24,6 +24,7 @@ package plugin.lsttokens.deity;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AlignmentType;
 import pcgen.cdom.enumeration.ListKey;
@@ -93,25 +94,13 @@ public class FolloweralignToken implements DeityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		List<AlignmentType> atypes = deity.getListFor(ListKey.FOLLOWER_ALIGN);
 		if (atypes == null || atypes.isEmpty())
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		boolean needPipe = false;
-		for (AlignmentType at : atypes)
-		{
-			if (needPipe)
-			{
-				sb.append(Constants.COMMA);
-			}
-			needPipe = true;
-			sb.append(at);
-		}
-		return sb.toString();
+		return new String[]{StringUtil.join(atypes, Constants.COMMA)};
 	}
 }

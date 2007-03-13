@@ -15,16 +15,38 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package pcgen.persistence.lst;
+package pcgen.cdom.util;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
+import java.util.Collection;
 
-public interface CDOMToken<T extends CDOMObject> extends LstToken
+import pcgen.cdom.base.CDOMReference;
+
+public class ReferenceUtilities
 {
-	public boolean parse(LoadContext context, T obj, String value)
-		throws PersistenceLayerException;
 
-	public String[] unparse(LoadContext context, T obj);
+	public static <T extends CDOMReference<?>> String joinLstFormat(
+		Collection<T> set, String separator)
+	{
+		if (set == null)
+		{
+			return "";
+		}
+
+		final StringBuilder result = new StringBuilder(set.size() * 10);
+
+		boolean needjoin = false;
+
+		for (CDOMReference<?> obj : set)
+		{
+			if (needjoin)
+			{
+				result.append(separator);
+			}
+			needjoin = true;
+			result.append(obj.getLSTformat());
+		}
+
+		return result.toString();
+	}
+
 }

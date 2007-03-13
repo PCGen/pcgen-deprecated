@@ -49,14 +49,13 @@ public class StackToken implements AbilityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, Ability ability)
 	{
 		Boolean stacks = ability.get(ObjectKey.STACKS);
 		if (stacks == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			stacks.booleanValue() ? "YES" : "NO").toString();
+		return new String[]{stacks.booleanValue() ? "YES" : "NO"};
 	}
 }

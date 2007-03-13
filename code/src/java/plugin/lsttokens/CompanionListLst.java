@@ -304,7 +304,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -313,20 +313,14 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		boolean needTab = false;
+		List<String> list = new ArrayList<String>();
 		for (PCGraphEdge edge : edgeList)
 		{
 			List<Prerequisite> prereqs = edge.getPrerequisiteList();
 			CompanionList cl = (CompanionList) edge.getNodeAt(1);
 			int followerAdjustment = cl.getAdjustment();
-			if (needTab)
-			{
-				sb.append('\t');
-			}
-			needTab = true;
-			sb.append(getTokenName()).append(Constants.COLON);
+			StringBuilder sb = new StringBuilder();
 			sb.append(cl.getFollowerType());
 			for (CDOMReference<Race> race : cl.getCompanionSet())
 			{
@@ -356,7 +350,8 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 					sb.append(Constants.PIPE).append(swriter.toString());
 				}
 			}
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

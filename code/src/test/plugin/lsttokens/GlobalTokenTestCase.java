@@ -98,32 +98,25 @@ public abstract class GlobalTokenTestCase extends TestCase
 			assertTrue(getToken().parse(primaryContext, primaryProf, s));
 		}
 		// Get back the appropriate token:
-		String unparsed = getToken().unparse(primaryContext, primaryProf);
-		String expected;
-		if (str.length == 1)
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+
+		assertEquals(str.length, unparsed.length);
+
+		for (int i = 0; i < str.length; i++)
 		{
-			expected = getTokenName() + ":" + str[0];
+			assertEquals("Expected " + i + " item to be equal", str[i],
+				unparsed[i]);
 		}
-		else
-		{
-			StringBuilder sb = new StringBuilder();
-			boolean needTab = false;
-			for (String s : str)
-			{
-				if (needTab)
-				{
-					sb.append('\t');
-				}
-				needTab = true;
-				sb.append(getTokenName()).append(':').append(s);
-			}
-			expected = sb.toString();
-		}
-		assertEquals(expected, unparsed);
 
 		// Do round Robin
+		StringBuilder unparsedBuilt = new StringBuilder();
+		for (String s : unparsed)
+		{
+			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
+				s).append('\t');
+		}
 		getLoader().parseLine(secondaryContext, secondaryProf,
-			"TestObj\t" + unparsed, testCampaign);
+			"TestObj\t" + unparsedBuilt.toString(), testCampaign);
 
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
@@ -132,8 +125,15 @@ public abstract class GlobalTokenTestCase extends TestCase
 		assertEquals(primaryGraph, secondaryGraph);
 
 		// And that it comes back out the same again
-		assertEquals(unparsed, getToken().unparse(secondaryContext,
-			secondaryProf));
+		String[] sUnparsed =
+				getToken().unparse(secondaryContext, secondaryProf);
+		assertEquals(unparsed.length, sUnparsed.length);
+
+		for (int i = 0; i < unparsed.length; i++)
+		{
+			assertEquals("Expected " + i + " item to be equal", unparsed[i],
+				sUnparsed[i]);
+		}
 	}
 
 	protected String getTokenName()

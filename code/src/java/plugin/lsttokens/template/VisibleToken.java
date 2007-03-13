@@ -110,7 +110,7 @@ public class VisibleToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate template)
+	public String[] unparse(LoadContext context, PCTemplate template)
 	{
 		Visibility vis = template.get(ObjectKey.VISIBILITY);
 		if (vis == null)
@@ -140,7 +140,6 @@ public class VisibleToken implements PCTemplateLstToken
 				+ " is not a valid Visibility for a PCTemplate");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			visString).toString();
+		return new String[] { visString };
 	}
 }

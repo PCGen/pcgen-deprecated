@@ -33,5 +33,5 @@ public interface GlobalLstToken extends LstToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException;
 	
-	public String unparse(LoadContext context, CDOMObject obj);
+	public String[] unparse(LoadContext context, CDOMObject obj);
 }

@@ -86,7 +86,7 @@ public class NumPagesToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer pages = eq.get(IntegerKey.NUM_PAGES);
 		if (pages == null)
@@ -98,8 +98,7 @@ public class NumPagesToken implements EquipmentLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			pages).toString();
+		return new String[]{pages.toString()};
 	}
 
 }

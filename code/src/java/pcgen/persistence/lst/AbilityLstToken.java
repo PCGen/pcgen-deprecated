@@ -47,5 +47,5 @@ public interface AbilityLstToken extends CDOMToken<Ability>
 	public boolean parse(LoadContext context, Ability ability, String value)
 		throws PersistenceLayerException;
 
-	public String unparse(LoadContext context, Ability ability);
+	public String[] unparse(LoadContext context, Ability ability);
 }

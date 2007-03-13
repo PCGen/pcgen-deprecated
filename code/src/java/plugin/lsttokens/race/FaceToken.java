@@ -180,7 +180,7 @@ public class FaceToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		BigDecimal width = race.getFaceWidth();
 		BigDecimal height = race.getFaceHeight();
@@ -208,12 +208,12 @@ public class FaceToken implements RaceLstToken
 		}
 		StringBuilder sb = new StringBuilder();
 		BigDecimal w = BigDecimalHelper.trimBigDecimal(width);
-		sb.append(getTokenName()).append(':').append(w);
+		sb.append(w);
 		if (height.compareTo(BigDecimal.ZERO) != 0)
 		{
 			BigDecimal h = BigDecimalHelper.trimBigDecimal(height);
 			sb.append(',').append(h);
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

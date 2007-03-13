@@ -67,7 +67,7 @@ public class AutoLst implements GlobalLstToken
 		return AutoLoader.parseLine(context, (PObject) obj, subKey, value.substring(barLoc + 1));
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		return AutoLoader.unparse(context, obj);
 	}

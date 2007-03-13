@@ -92,7 +92,7 @@ public class SubschoolToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		List<SpellSubSchool> subschools =
 				spell.getListFor(ListKey.SPELL_SUBSCHOOL);
@@ -100,7 +100,6 @@ public class SubschoolToken implements SpellLstToken
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			StringUtil.join(subschools, Constants.PIPE)).toString();
+		return new String[]{StringUtil.join(subschools, Constants.PIPE)};
 	}
 }

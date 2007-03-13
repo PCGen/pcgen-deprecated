@@ -50,14 +50,13 @@ public class MultToken implements AbilityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, Ability ability)
 	{
 		Boolean mult = ability.get(ObjectKey.MULTIPLE_ALLOWED);
 		if (mult == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			mult.booleanValue() ? "YES" : "NO").toString();
+		return new String[]{mult.booleanValue() ? "YES" : "NO"};
 	}
 }

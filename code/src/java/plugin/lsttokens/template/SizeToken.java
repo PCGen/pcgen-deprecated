@@ -67,7 +67,7 @@ public class SizeToken implements PCTemplateLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> links =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -82,7 +82,6 @@ public class SizeToken implements PCTemplateLstToken
 			return null;
 		}
 		Size s = (Size) links.iterator().next().getSinkNodes().get(0);
-		return new StringBuilder().append(getTokenName()).append(':').append(s)
-			.toString();
+		return new String[]{s.toString()};
 	}
 }

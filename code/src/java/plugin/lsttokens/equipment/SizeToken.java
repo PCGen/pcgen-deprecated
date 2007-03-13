@@ -63,7 +63,7 @@ public class SizeToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Set<PCGraphEdge> links =
 				context.graph.getChildLinksFromToken(getTokenName(), eq,
@@ -78,7 +78,6 @@ public class SizeToken implements EquipmentLstToken
 			return null;
 		}
 		Size s = (Size) links.iterator().next().getSinkNodes().get(0);
-		return new StringBuilder().append(getTokenName()).append(':').append(s)
-			.toString();
+		return new String[]{s.toString()};
 	}
 }

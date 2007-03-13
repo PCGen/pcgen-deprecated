@@ -50,7 +50,7 @@ public class ModifyabilitychoiceToken implements AbilityLstToken
 		return false;
 	}
 
-	public String unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, Ability ability)
 	{
 		// FIXME Auto-generated method stub
 		return null;

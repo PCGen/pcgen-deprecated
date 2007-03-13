@@ -50,14 +50,13 @@ public class RacetypeToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		RaceType raceType = pct.get(ObjectKey.RACETYPE);
 		if (raceType == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			raceType).toString();
+		return new String[]{raceType.toString()};
 	}
 }

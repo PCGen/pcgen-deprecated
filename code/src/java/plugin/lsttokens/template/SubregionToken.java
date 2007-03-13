@@ -73,16 +73,13 @@ public class SubregionToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		SubRegion targetArea = pct.get(ObjectKey.SUBREGION);
 		if (targetArea == null)
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		sb.append(targetArea);
-		return sb.toString();
+		return new String[]{targetArea.toString()};
 	}
 }

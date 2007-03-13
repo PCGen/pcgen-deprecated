@@ -66,7 +66,7 @@ public class BaseqtyToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer quantity = eq.get(IntegerKey.BASE_QUANTITY);
 		if (quantity == null)
@@ -78,8 +78,7 @@ public class BaseqtyToken implements EquipmentLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			quantity).toString();
+		return new String[]{quantity.toString()};
 	}
 
 }

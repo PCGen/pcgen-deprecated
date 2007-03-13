@@ -71,19 +71,18 @@ public class ReachToken implements RaceLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
-		Integer sp = race.get(IntegerKey.REACH);
-		if (sp == null)
+		Integer reach = race.get(IntegerKey.REACH);
+		if (reach == null)
 		{
 			return null;
 		}
-		if (sp.intValue() < 0)
+		if (reach.intValue() < 0)
 		{
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(sp).toString();
+		return new String[]{reach.toString()};
 	}
 }

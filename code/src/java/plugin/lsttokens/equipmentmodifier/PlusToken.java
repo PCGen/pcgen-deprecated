@@ -68,7 +68,7 @@ public class PlusToken implements EquipmentModifierLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		Integer plus = mod.get(IntegerKey.PLUS);
 		if (plus == null)
@@ -81,7 +81,6 @@ public class PlusToken implements EquipmentModifierLstToken
 				+ " must be an integer not equal to 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			plus).toString();
+		return new String[]{plus.toString()};
 	}
 }

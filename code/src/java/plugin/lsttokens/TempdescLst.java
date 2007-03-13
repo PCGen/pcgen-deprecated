@@ -31,7 +31,7 @@ import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class TempdescLst implements GlobalLstToken
 {
@@ -53,14 +53,13 @@ public class TempdescLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		String descr = obj.get(StringKey.TEMP_DESCRIPTION);
 		if (descr == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			EntityEncoder.encode(descr)).toString();
+		return new String[]{EntityEncoder.encode(descr)};
 	}
 }

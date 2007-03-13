@@ -86,7 +86,7 @@ public class XtraskillptsperlvlToken implements RaceLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Integer sp = race.get(IntegerKey.SKILL_POINTS_PER_LEVEL);
 		if (sp == null)
@@ -98,7 +98,6 @@ public class XtraskillptsperlvlToken implements RaceLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(sp).toString();
+		return new String[]{sp.toString()};
 	}
 }

@@ -35,7 +35,7 @@ import pcgen.persistence.lst.SourceLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class SourceshortLst implements GlobalLstToken, SourceLstToken
 {
@@ -63,7 +63,7 @@ public class SourceshortLst implements GlobalLstToken, SourceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		SourceEntry sourceEntry = obj.getSourceEntry();
 		if (sourceEntry == null)
@@ -80,8 +80,7 @@ public class SourceshortLst implements GlobalLstToken, SourceLstToken
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			shortName).toString();
+		return new String[]{shortName};
 	}
 
 }

@@ -50,7 +50,7 @@ public class MfeatToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		// Well, so this is a hack too :)
 		return null;

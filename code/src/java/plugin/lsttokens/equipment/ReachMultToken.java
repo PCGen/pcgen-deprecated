@@ -73,7 +73,7 @@ public class ReachMultToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer mult = eq.get(IntegerKey.REACH_MULT);
 		if (mult == null)
@@ -85,8 +85,7 @@ public class ReachMultToken implements EquipmentLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			mult).toString();
+		return new String[]{mult.toString()};
 	}
 
 }

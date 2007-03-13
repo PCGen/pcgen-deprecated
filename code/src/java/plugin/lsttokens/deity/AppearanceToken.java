@@ -49,14 +49,13 @@ public class AppearanceToken implements DeityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		String appearance = deity.get(StringKey.APPEARANCE);
 		if (appearance == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			appearance).toString();
+		return new String[]{appearance};
 	}
 }

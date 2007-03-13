@@ -79,7 +79,7 @@ public class NameoptToken implements EquipmentModifierLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		EqModNameOpt opt = mod.get(ObjectKey.NAME_OPT);
 		String text = mod.get(StringKey.NAME_TEXT);
@@ -96,8 +96,7 @@ public class NameoptToken implements EquipmentModifierLstToken
 				return null;
 			}
 		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
+		String retString;
 		if (opt.equals(EqModNameOpt.TEXT))
 		{
 			if (text == null)
@@ -108,14 +107,14 @@ public class NameoptToken implements EquipmentModifierLstToken
 			}
 			else
 			{
-				sb.append("TEXT=").append(text);
+				retString = "TEXT=" + text;
 			}
 		}
 		else
 		{
 			if (text == null)
 			{
-				sb.append(opt);
+				retString = opt.toString();
 			}
 			else
 			{
@@ -124,6 +123,6 @@ public class NameoptToken implements EquipmentModifierLstToken
 				return null;
 			}
 		}
-		return sb.toString();
+		return new String[]{retString};
 	}
 }

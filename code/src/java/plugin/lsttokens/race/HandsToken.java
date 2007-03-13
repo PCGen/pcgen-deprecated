@@ -79,7 +79,7 @@ public class HandsToken implements RaceLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Integer hands = race.get(IntegerKey.HANDS);
 		if (hands == null)
@@ -92,7 +92,6 @@ public class HandsToken implements RaceLstToken
 				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			hands).toString();
+		return new String[]{hands.toString()};
 	}
 }

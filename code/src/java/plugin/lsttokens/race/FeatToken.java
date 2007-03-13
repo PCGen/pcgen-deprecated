@@ -153,7 +153,7 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
@@ -187,25 +187,21 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 				new HashSet<Prerequisite>(edge.getPrerequisiteList()), ab);
 		}
 
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		SortedSet<CategorizedCDOMReference<Ability>> set =
 				new TreeSet<CategorizedCDOMReference<Ability>>(
 					TokenUtilities.CAT_REFERENCE_SORTER);
 
-		boolean needSpacer = false;
+		List<String> list = new ArrayList<String>(m.size());
+
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			List<CategorizedCDOMReference<Ability>> abilities =
 					m.getListFor(prereqs);
-			if (needSpacer)
-			{
-				sb.append('\t');
-			}
-			sb.append(getTokenName()).append(':');
 			boolean needBar = false;
 			set.clear();
 			set.addAll(abilities);
+			StringBuilder sb = new StringBuilder();
 			for (CategorizedCDOMReference<Ability> ab : set)
 			{
 				if (needBar)
@@ -237,8 +233,8 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 					sb.append(Constants.PIPE).append(swriter.toString());
 				}
 			}
-			needSpacer = true;
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

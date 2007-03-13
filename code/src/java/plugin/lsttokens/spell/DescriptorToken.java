@@ -94,7 +94,7 @@ public class DescriptorToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		List<SpellDescriptor> descs =
 				spell.getListFor(ListKey.SPELL_DESCRIPTOR);
@@ -102,7 +102,6 @@ public class DescriptorToken implements SpellLstToken
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			StringUtil.join(descs, Constants.PIPE)).toString();
+		return new String[]{StringUtil.join(descs, Constants.PIPE)};
 	}
 }

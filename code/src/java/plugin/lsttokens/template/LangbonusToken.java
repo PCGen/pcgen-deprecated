@@ -29,6 +29,7 @@ import java.util.TreeSet;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
@@ -119,7 +120,7 @@ public class LangbonusToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -128,25 +129,13 @@ public class LangbonusToken implements PCTemplateLstToken
 		{
 			return null;
 		}
-		SortedSet<CDOMReference<Language>> set =
-				new TreeSet<CDOMReference<Language>>(
-					TokenUtilities.REFERENCE_SORTER);
-		boolean needComma = false;
+		SortedSet<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 		for (PCGraphEdge edge : edges)
 		{
 			set.add((CDOMReference<Language>) edge.getSinkNodes().get(0));
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		for (CDOMReference<Language> ref : set)
-		{
-			if (needComma)
-			{
-				sb.append(Constants.COMMA);
-			}
-			needComma = true;
-			sb.append(ref.getLSTformat());
-		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.COMMA)};
 	}
 }

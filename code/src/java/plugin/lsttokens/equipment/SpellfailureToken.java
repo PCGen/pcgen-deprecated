@@ -66,7 +66,7 @@ public class SpellfailureToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer sf = eq.get(IntegerKey.SPELL_FAILURE);
 		if (sf == null)
@@ -78,7 +78,6 @@ public class SpellfailureToken implements EquipmentLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(sf).toString();
+		return new String[]{sf.toString()};
 	}
 }

@@ -47,5 +47,5 @@ public interface DeityLstToken extends CDOMToken<Deity>
 	public boolean parse(LoadContext context, Deity deit, String value)
 		throws PersistenceLayerException;
 
-	public String unparse(LoadContext context, Deity deity);
+	public String[] unparse(LoadContext context, Deity deity);
 }

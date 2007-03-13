@@ -25,7 +25,6 @@ import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SpellLstToken;
-import pcgen.util.Logging;
 
 /**
  * Class deals with SPELLRES Token
@@ -50,14 +49,13 @@ public class SpellresToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		String resistable = spell.get(StringKey.CAN_BE_RESISTED);
 		if (resistable == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			resistable).toString();
+		return new String[]{resistable};
 	}
 }

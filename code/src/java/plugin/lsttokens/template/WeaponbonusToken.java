@@ -22,7 +22,6 @@
 package plugin.lsttokens.template;
 
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
@@ -31,6 +30,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.content.ChoiceSet;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCTemplate;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
@@ -109,7 +109,7 @@ public class WeaponbonusToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> choiceEdges =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -118,29 +118,18 @@ public class WeaponbonusToken implements PCTemplateLstToken
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		SortedSet<CDOMReference<WeaponProf>> set =
-				new TreeSet<CDOMReference<WeaponProf>>(
-					TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge edge : choiceEdges)
+		if (choiceEdges.size() > 1)
 		{
-			set.clear();
-			sb.append(getTokenName()).append(':');
-			ChoiceSet<CDOMReference<WeaponProf>> cl =
-					(ChoiceSet<CDOMReference<WeaponProf>>) edge.getSinkNodes()
-						.get(0);
-			set.addAll(cl.getSet());
-			boolean needBar = false;
-			for (CDOMReference<WeaponProf> ref : set)
-			{
-				if (needBar)
-				{
-					sb.append(Constants.PIPE);
-				}
-				needBar = true;
-				sb.append(ref.getLSTformat());
-			}
+			context.addWriteMessage(getTokenName()
+				+ " may only have one ChoiceSet linked in the Graph");
+			return null;
 		}
-		return sb.toString();
+		Set<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		PCGraphEdge edge = choiceEdges.iterator().next();
+		set.addAll(((ChoiceSet<CDOMReference<?>>) edge.getSinkNodes().get(0))
+			.getSet());
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.PIPE)};
 	}
 }

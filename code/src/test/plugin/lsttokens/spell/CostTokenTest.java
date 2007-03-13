@@ -189,8 +189,9 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
 		dm.setDefaultValue(Integer.valueOf(1));
 		primaryProf.put(ObjectKey.COMPONENT_COST, dm);
-		String unparsed = getToken().unparse(primaryContext, primaryProf);
-		assertEquals(getToken().getTokenName() + ':' + 1, unparsed);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+		assertEquals(1, unparsed.length);
+		assertEquals("1", unparsed[0]);
 	}
 
 	@Test
@@ -201,8 +202,9 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
 		dm.setDefaultValue(Integer.valueOf(0));
 		primaryProf.put(ObjectKey.COMPONENT_COST, dm);
-		String unparsed = getToken().unparse(primaryContext, primaryProf);
-		assertEquals(getToken().getTokenName() + ':' + 0, unparsed);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+		assertEquals(1, unparsed.length);
+		assertEquals("0", unparsed[0]);
 	}
 
 	@Test
@@ -213,7 +215,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
 		dm.setDefaultValue(Integer.valueOf(-2));
 		primaryProf.put(ObjectKey.COMPONENT_COST, dm);
-		String unparsed = getToken().unparse(primaryContext, primaryProf);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertNull(unparsed);
 		assertTrue(0 != primaryContext.getWriteMessageCount());
 	}

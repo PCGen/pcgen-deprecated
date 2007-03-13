@@ -270,7 +270,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
@@ -309,7 +309,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 				(AbstractHitDieModifier) aggEdges.iterator().next()
 					.getSinkNodes().get(0);
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':').append(hdm.getLSTform());
+		sb.append(hdm.getLSTform());
 
 		Set<PCGraphEdge> aggParents =
 				context.graph.getParentLinksFromToken(getTokenName(), ag,
@@ -339,6 +339,6 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 			sb.append(lstFormat);
 		}
 
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

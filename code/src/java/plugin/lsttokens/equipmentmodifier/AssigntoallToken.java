@@ -65,14 +65,13 @@ public class AssigntoallToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		Boolean stacks = mod.get(ObjectKey.ASSIGN_TO_ALL);
 		if (stacks == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			stacks.booleanValue() ? "YES" : "NO").toString();
+		return new String[]{stacks.booleanValue() ? "YES" : "NO"};
 	}
 }

@@ -73,7 +73,7 @@ public class SlotsToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer slots = eq.get(IntegerKey.SLOTS);
 		if (slots == null)
@@ -85,7 +85,6 @@ public class SlotsToken implements EquipmentLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			slots).toString();
+		return new String[]{slots.toString()};
 	}
 }

@@ -87,14 +87,13 @@ public class RemovableToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Boolean b = pct.get(ObjectKey.REMOVABLE);
 		if (b == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			b.booleanValue() ? "YES" : "NO").toString();
+		return new String[]{b.booleanValue() ? "YES" : "NO"};
 	}
 }

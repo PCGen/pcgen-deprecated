@@ -64,7 +64,7 @@ public class HitdiceToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		// Well, this is a hack too :)
 		return null;

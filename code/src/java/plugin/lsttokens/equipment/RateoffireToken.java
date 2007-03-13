@@ -49,14 +49,13 @@ public class RateoffireToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		String rof = eq.get(StringKey.RATE_OF_FIRE);
 		if (rof == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			rof).toString();
+		return new String[]{rof};
 	}
 }

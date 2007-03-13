@@ -66,7 +66,7 @@ public class EdrToken implements EquipmentLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Integer edr = eq.get(IntegerKey.EDR);
 		if (edr == null)
@@ -78,7 +78,6 @@ public class EdrToken implements EquipmentLstToken
 			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			edr).toString();
+		return new String[]{edr.toString()};
 	}
 }

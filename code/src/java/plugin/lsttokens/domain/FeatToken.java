@@ -153,7 +153,7 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Domain domain)
+	public String[] unparse(LoadContext context, Domain domain)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), domain,
@@ -187,22 +187,17 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 				new HashSet<Prerequisite>(edge.getPrerequisiteList()), ab);
 		}
 
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		SortedSet<CategorizedCDOMReference<Ability>> set =
 				new TreeSet<CategorizedCDOMReference<Ability>>(
 					TokenUtilities.CAT_REFERENCE_SORTER);
+		List<String> list = new ArrayList<String>(m.size());
 
-		boolean needSpacer = false;
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			List<CategorizedCDOMReference<Ability>> abilities =
 					m.getListFor(prereqs);
-			if (needSpacer)
-			{
-				sb.append('\t');
-			}
-			sb.append(getTokenName()).append(':');
+			StringBuilder sb = new StringBuilder();
 			boolean needBar = false;
 			set.clear();
 			set.addAll(abilities);
@@ -237,8 +232,8 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 					sb.append(Constants.PIPE).append(swriter.toString());
 				}
 			}
-			needSpacer = true;
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

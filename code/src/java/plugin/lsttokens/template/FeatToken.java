@@ -40,6 +40,7 @@ import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Ability;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
@@ -148,7 +149,7 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -182,38 +183,20 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 				new HashSet<Prerequisite>(edge.getPrerequisiteList()), ab);
 		}
 
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<CDOMReference<Ability>> set =
-				new TreeSet<CDOMReference<Ability>>(
-					TokenUtilities.REFERENCE_SORTER);
+		SortedSet<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 
-		boolean needSpacer = false;
+		String[] array = new String[m.size()];
+		int index = 0;
+
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			List<CDOMCategorizedSingleRef<Ability>> abilities =
 					m.getListFor(prereqs);
-			if (needSpacer)
-			{
-				sb.append('\t');
-			}
-			sb.append(getTokenName()).append(':');
-			boolean needBar = false;
 			set.clear();
 			set.addAll(abilities);
-			for (CDOMReference<Ability> ab : set)
-			{
-				if (needBar)
-				{
-					sb.append(Constants.PIPE);
-				}
-				needBar = true;
-				/*
-				 * FIXME This isn't entirely true, is it? I mean, how is the
-				 * category handled with CategorizedSingleRef?
-				 */
-				sb.append(ab.getLSTformat());
-			}
+			String ab = ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				for (Prerequisite p : prereqs)
@@ -229,11 +212,13 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 							+ e);
 						return null;
 					}
-					sb.append(Constants.PIPE).append(swriter.toString());
+					ab =
+							new StringBuilder(ab).append(Constants.PIPE)
+								.append(swriter.toString()).toString();
 				}
 			}
-			needSpacer = true;
+			array[index++] = ab;
 		}
-		return sb.toString();
+		return array;
 	}
 }

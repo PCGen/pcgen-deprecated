@@ -52,7 +52,7 @@ public class BonusToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		// FIXME Auto-generated method stub
 		return null;

@@ -61,14 +61,13 @@ public class RangeToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		String range = spell.get(StringKey.RANGE);
 		if (range == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			range).toString();
+		return new String[]{range};
 	}
 }

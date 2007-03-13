@@ -97,7 +97,7 @@ public class FavoredclassToken extends AbstractToken implements
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		// TODO Auto-generated method stub
 		return null;

@@ -22,6 +22,8 @@
  */
 package plugin.lsttokens;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -171,7 +173,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 		return desc;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -180,18 +182,11 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
+		List<String> list = new ArrayList<String>(edges.size());
 		for (PCGraphEdge edge : edges)
 		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
-			needsTab = true;
-			sb.append(getTokenName()).append(':');
-			sb.append(((Description) edge.getSinkNodes().get(0)).getPCCText());
+			list.add(((Description) edge.getSinkNodes().get(0)).getPCCText());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

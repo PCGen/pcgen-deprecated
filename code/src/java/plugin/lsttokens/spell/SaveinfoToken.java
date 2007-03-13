@@ -61,14 +61,13 @@ public class SaveinfoToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		String saveInfo = spell.get(StringKey.SAVE_INFO);
 		if (saveInfo == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			saveInfo).toString();
+		return new String[]{saveInfo};
 	}
 }

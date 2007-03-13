@@ -149,7 +149,7 @@ public class EquipToken implements AutoLstToken
 		// return true;
 	}
 
-	public String unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, PObject obj)
 	{
 		// TODO Auto-generated method stub
 		return null;

@@ -22,6 +22,7 @@
 package plugin.lsttokens.spell;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -228,7 +229,7 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		Set<PCGraphEdge> domainEdges =
 				context.graph.getParentLinksFromToken(getTokenName(), spell,
@@ -278,21 +279,15 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 			dkmtl.addToListFor(prereq, level,
 				(CDOMReference<Domain>) sourceNodes.get(0));
 		}
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		boolean needTab = false;
 		SortedSet<CDOMReference<Domain>> set =
 				new TreeSet<CDOMReference<Domain>>(
 					TokenUtilities.REFERENCE_SORTER);
 		SortedSet<Integer> levelSet = new TreeSet<Integer>();
+		List<String> list = new ArrayList<String>(dkmtl.firstKeyCount());
 		for (Prerequisite prereq : dkmtl.getKeySet())
 		{
-			if (needTab)
-			{
-				sb.append('\t');
-			}
-			needTab = true;
-			sb.append(getTokenName()).append(':');
+			StringBuilder sb = new StringBuilder();
 			boolean needPipe = false;
 			levelSet.clear();
 			levelSet.addAll(dkmtl.getSecondaryKeySet(prereq));
@@ -333,7 +328,8 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 				sb.append(swriter.toString());
 				sb.append(']');
 			}
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

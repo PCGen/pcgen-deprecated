@@ -492,7 +492,7 @@ public class NaturalattacksLst implements GlobalLstToken
 		return anEquip;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		// TODO Auto-generated method stub
 		return null;

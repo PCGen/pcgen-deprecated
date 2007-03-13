@@ -74,7 +74,7 @@ public class SkillmultToken implements RaceLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Integer sp = race.get(IntegerKey.INITIAL_SKILL_MULT);
 		if (sp == null)
@@ -83,10 +83,10 @@ public class SkillmultToken implements RaceLstToken
 		}
 		if (sp.intValue() < 0)
 		{
-			context.addWriteMessage(getTokenName() + " must be an integer >= 0");
+			context
+				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(sp).toString();
+		return new String[]{sp.toString()};
 	}
 }

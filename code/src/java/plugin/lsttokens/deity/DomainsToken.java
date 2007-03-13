@@ -29,6 +29,7 @@ import java.util.TreeSet;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
 import pcgen.core.utils.CoreUtility;
@@ -104,7 +105,7 @@ public class DomainsToken implements DeityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), deity,
@@ -121,18 +122,7 @@ public class DomainsToken implements DeityLstToken
 		{
 			set.add((CDOMReference<Domain>) edge.getNodeAt(1));
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		boolean needBar = false;
-		for (CDOMReference<Domain> domain : set)
-		{
-			if (needBar)
-			{
-				sb.append(Constants.COMMA);
-			}
-			needBar = true;
-			sb.append(domain.getLSTformat());
-		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.COMMA)};
 	}
 }

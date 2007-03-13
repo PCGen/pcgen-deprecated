@@ -92,14 +92,13 @@ public class FormatcatToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		EqModFormatCat fc = mod.get(ObjectKey.FORMAT);
 		if (fc == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':')
-			.append(fc).toString();
+		return new String[]{fc.toString()};
 	}
 }

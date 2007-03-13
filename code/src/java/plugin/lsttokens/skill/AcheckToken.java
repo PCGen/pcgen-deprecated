@@ -62,14 +62,13 @@ public class AcheckToken implements SkillLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, Skill skill)
 	{
 		SkillArmorCheck sac = skill.get(ObjectKey.ARMOR_CHECK);
 		if (sac == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			sac.toString()).toString();
+		return new String[]{sac.toString()};
 	}
 }

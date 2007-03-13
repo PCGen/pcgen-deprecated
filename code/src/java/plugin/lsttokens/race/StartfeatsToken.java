@@ -108,7 +108,7 @@ public class StartfeatsToken implements RaceLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, Race race)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
@@ -132,7 +132,6 @@ public class StartfeatsToken implements RaceLstToken
 				+ slot.getSlotClass().getSimpleName());
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			slot.toLSTform()).toString();
+		return new String[]{slot.toLSTform()};
 	}
 }

@@ -39,13 +39,14 @@ import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class SaLst extends AbstractToken implements GlobalLstToken
 {
@@ -65,13 +66,13 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 	/**
 	 * This method sets the special abilities granted by this [object]. For
 	 * efficiency, avoid calling this method except from I/O routines.
-	 *
+	 * 
 	 * @param obj
-	 *          the PObject that is to receive the new SpecialAbility
+	 *            the PObject that is to receive the new SpecialAbility
 	 * @param aString
-	 *          String of special abilities delimited by pipes
+	 *            String of special abilities delimited by pipes
 	 * @param level
-	 *          int level at which the ability is gained
+	 *            int level at which the ability is gained
 	 */
 	public static void parseSpecialAbility(PObject obj, String aString,
 		int level)
@@ -210,7 +211,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			else
 			{
 				saName.append(token);
-				//sa.addVariable(FormulaFactory.getFormulaFor(token));
+				// sa.addVariable(FormulaFactory.getFormulaFor(token));
 			}
 
 			if (!tok.hasMoreTokens())
@@ -225,7 +226,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			}
 			saName.append(Constants.PIPE);
 		}
-		//CONSIDER This is a HACK and not the long term strategy of SA:
+		// CONSIDER This is a HACK and not the long term strategy of SA:
 		sa.setName(saName.toString());
 
 		while (true)
@@ -238,10 +239,10 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 				return false;
 			}
 			/*
-			 * The following subkey is required in order to give context
-			 * to the variables as they are calculated (make the context
-			 * the current class, so that items like Class Level can be
-			 * correctly calculated).
+			 * The following subkey is required in order to give context to the
+			 * variables as they are calculated (make the context the current
+			 * class, so that items like Class Level can be correctly
+			 * calculated).
 			 */
 			if (obj instanceof PCClass && "var".equals(prereq.getKind()))
 			{
@@ -258,7 +259,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -268,16 +269,10 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			return null;
 		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		StringBuilder sb = new StringBuilder();
-		boolean needsTab = false;
+		List<String> list = new ArrayList<String>(edges.size());
 		for (PCGraphEdge edge : edges)
 		{
-			if (needsTab)
-			{
-				sb.append('\t');
-			}
-			needsTab = true;
-			sb.append(getTokenName()).append(':');
+			StringBuilder sb = new StringBuilder();
 			SpecialAbility ab = (SpecialAbility) edge.getSinkNodes().get(0);
 			sb.append(ab.getKeyName());
 			List<Prerequisite> prereqs = ab.getPrerequisiteList();
@@ -299,7 +294,8 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 					sb.append(Constants.PIPE).append(swriter.toString());
 				}
 			}
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

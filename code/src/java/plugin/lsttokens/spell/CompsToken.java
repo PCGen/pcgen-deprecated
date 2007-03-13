@@ -61,14 +61,13 @@ public class CompsToken implements SpellLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		String components = spell.get(StringKey.COMPONENTS);
 		if (components == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			components).toString();
+		return new String[]{components};
 	}
 }

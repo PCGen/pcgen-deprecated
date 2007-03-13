@@ -180,7 +180,7 @@ public class FaceToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		BigDecimal width = pct.getFaceWidth();
 		BigDecimal height = pct.getFaceHeight();
@@ -208,12 +208,12 @@ public class FaceToken implements PCTemplateLstToken
 		}
 		StringBuilder sb = new StringBuilder();
 		BigDecimal w = BigDecimalHelper.trimBigDecimal(width);
-		sb.append(getTokenName()).append(':').append(w);
+		sb.append(w);
 		if (height.compareTo(BigDecimal.ZERO) != 0)
 		{
 			BigDecimal h = BigDecimalHelper.trimBigDecimal(height);
 			sb.append(',').append(h);
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

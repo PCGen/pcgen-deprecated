@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
@@ -85,7 +86,7 @@ public class DeityweapToken implements DeityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		List<CDOMSimpleSingleRef<WeaponProf>> profs =
 				deity.getListFor(ListKey.DEITY_WEAPON);
@@ -93,18 +94,7 @@ public class DeityweapToken implements DeityLstToken
 		{
 			return null;
 		}
-		StringBuilder sb =
-				new StringBuilder().append(getTokenName()).append(':');
-		boolean needPipe = false;
-		for (CDOMSimpleSingleRef<WeaponProf> wp : profs)
-		{
-			if (needPipe)
-			{
-				sb.append(Constants.PIPE);
-			}
-			needPipe = true;
-			sb.append(wp.getLSTformat());
-		}
-		return sb.toString();
+		return new String[]{ReferenceUtilities.joinLstFormat(profs,
+			Constants.PIPE)};
 	}
 }

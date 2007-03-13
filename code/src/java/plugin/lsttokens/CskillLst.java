@@ -40,7 +40,7 @@ import pcgen.persistence.lst.utils.TokenUtilities;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class CskillLst implements GlobalLstToken
 {
@@ -108,13 +108,12 @@ public class CskillLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					SKILL_CLASS);
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append(':');
 		boolean needsPipe = false;
 		for (PCGraphEdge edge : edgeList)
 		{
@@ -136,6 +135,6 @@ public class CskillLst implements GlobalLstToken
 			sb.append(sk.getKeyName());
 			needsPipe = true;
 		}
-		return sb.toString();
+		return new String[]{sb.toString()};
 	}
 }

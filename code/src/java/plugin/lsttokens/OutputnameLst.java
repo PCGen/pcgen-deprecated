@@ -30,7 +30,7 @@ import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class OutputnameLst implements GlobalLstToken
 {
@@ -52,15 +52,14 @@ public class OutputnameLst implements GlobalLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		String oname = obj.get(StringKey.OUTPUT_NAME);
 		if (oname == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			oname).toString();
+		return new String[]{oname};
 	}
 
 }

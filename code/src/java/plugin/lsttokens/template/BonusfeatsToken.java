@@ -93,7 +93,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Set<PCGraphEdge> links =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
@@ -118,9 +118,6 @@ public class BonusfeatsToken implements PCTemplateLstToken
 				+ slot.getSlotClass().getSimpleName());
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			slot.toLSTform()).toString();
-		// return new StringBuilder().append(getTokenName()).append(':').append(
-		// slot.toLSTform()).toString();
+		return new String[]{slot.toLSTform()};
 	}
 }

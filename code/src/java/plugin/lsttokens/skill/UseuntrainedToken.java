@@ -49,7 +49,8 @@ public class UseuntrainedToken implements SkillLstToken
 			{
 				Logging.errorPrint("You should use 'YES' or 'NO' as the "
 					+ getTokenName());
-				Logging.errorPrint("Strange Abbreviations will fail after PCGen 5.12");
+				Logging
+					.errorPrint("Strange Abbreviations will fail after PCGen 5.12");
 			}
 			set = true;
 		}
@@ -60,7 +61,8 @@ public class UseuntrainedToken implements SkillLstToken
 			{
 				Logging.errorPrint("You should use 'YES' or 'NO' as the "
 					+ getTokenName());
-				Logging.errorPrint("Strange Abbreviations will fail after PCGen 5.12");
+				Logging
+					.errorPrint("Strange Abbreviations will fail after PCGen 5.12");
 			}
 			set = false;
 		}
@@ -89,14 +91,13 @@ public class UseuntrainedToken implements SkillLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, Skill skill)
 	{
 		Boolean useUntrained = skill.get(ObjectKey.USE_UNTRAINED);
 		if (useUntrained == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			useUntrained.booleanValue() ? "YES" : "NO").toString();
+		return new String[]{useUntrained.booleanValue() ? "YES" : "NO"};
 	}
 }

@@ -62,7 +62,7 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 
 	public void testInvalidInputs(Integer val) throws PersistenceLayerException
 	{
-		//Always ensure get is unchanged
+		// Always ensure get is unchanged
 		// since no invalid item should set or reset the value
 		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP"));
@@ -87,7 +87,7 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		//Require Integer greater than or equal to zero
+		// Require Integer greater than or equal to zero
 		if (!isNegativeAllowed())
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
@@ -132,10 +132,11 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
 		primaryProf.put(getIntegerKey(), 1);
-		String unparsed = getToken().unparse(primaryContext, primaryProf);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 		if (isPositiveAllowed())
 		{
-			assertEquals(getToken().getTokenName() + ':' + 1, unparsed);
+			assertEquals(1, unparsed.length);
+			assertEquals("1", unparsed[0]);
 		}
 		else
 		{
@@ -149,10 +150,11 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
 		primaryProf.put(getIntegerKey(), 0);
-		String unparsed = getToken().unparse(primaryContext, primaryProf);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 		if (isZeroAllowed())
 		{
-			assertEquals(getToken().getTokenName() + ':' + 0, unparsed);
+			assertEquals(1, unparsed.length);
+			assertEquals("0", unparsed[0]);
 		}
 		else
 		{
@@ -166,10 +168,11 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
 		primaryProf.put(getIntegerKey(), -2);
-		String unparsed = getToken().unparse(primaryContext, primaryProf);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 		if (isNegativeAllowed())
 		{
-			assertEquals(getToken().getTokenName() + ':' + -2, unparsed);
+			assertEquals(1, unparsed.length);
+			assertEquals("-2", unparsed[0]);
 		}
 		else
 		{

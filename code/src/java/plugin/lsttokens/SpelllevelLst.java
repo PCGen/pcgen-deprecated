@@ -349,7 +349,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		return edgeList;
 	}
 
-	public String unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
@@ -369,16 +369,11 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 					.getAssociation(AssociationKey.SPELL_LEVEL), sp);
 		}
 
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		boolean needSpacer = false;
+		List<String> list = new ArrayList<String>();
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			if (needSpacer)
-			{
-				sb.append('\t');
-			}
-			sb.append(getTokenName()).append(':');
+			StringBuilder sb = new StringBuilder();
 			boolean needPipe = false;
 			for (Integer level : m.getSecondaryKeySet(prereqs))
 			{
@@ -421,8 +416,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 					}
 				}
 			}
-			needSpacer = true;
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

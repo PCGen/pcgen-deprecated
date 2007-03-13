@@ -47,6 +47,6 @@ public interface SpellLstToken extends CDOMToken<Spell>
 	public boolean parse(LoadContext context, Spell spell, String value)
 			throws PersistenceLayerException;
 	
-	public String unparse(LoadContext context, Spell spell);
+	public String[] unparse(LoadContext context, Spell spell);
 }
 

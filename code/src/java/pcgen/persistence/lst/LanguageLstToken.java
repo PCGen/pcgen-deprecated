@@ -47,5 +47,5 @@ public interface LanguageLstToken extends CDOMToken<Language>
 	public boolean parse(LoadContext context, Language lang, String value)
 		throws PersistenceLayerException;
 
-	public String unparse(LoadContext context, Language lang);
+	public String[] unparse(LoadContext context, Language lang);
 }

@@ -61,14 +61,13 @@ public class WorshippersToken implements DeityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		String worshippers = deity.get(StringKey.WORSHIPPERS);
 		if (worshippers == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			worshippers).toString();
+		return new String[]{worshippers};
 	}
 }

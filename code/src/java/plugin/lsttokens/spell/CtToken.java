@@ -83,7 +83,7 @@ public class CtToken implements SpellLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, Spell spell)
 	{
 		Integer i = spell.get(IntegerKey.CASTING_THRESHOLD);
 		if (i == null)
@@ -96,7 +96,6 @@ public class CtToken implements SpellLstToken
 				+ " requires a positive Integer");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(i)
-			.toString();
+		return new String[]{i.toString()};
 	}
 }

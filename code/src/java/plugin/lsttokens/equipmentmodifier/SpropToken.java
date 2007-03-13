@@ -22,6 +22,7 @@
 package plugin.lsttokens.equipmentmodifier;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -173,7 +174,7 @@ public class SpropToken extends AbstractToken implements
 		return true;
 	}
 
-	public String unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), mod,
@@ -182,18 +183,13 @@ public class SpropToken extends AbstractToken implements
 		{
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		boolean needSpacer = false;
+		List<String> list = new ArrayList<String>();
 		for (PCGraphEdge edge : edges)
 		{
 			SpecialProperty sp = (SpecialProperty) edge.getSinkNodes().get(0);
-			if (needSpacer)
-			{
-				sb.append('\t');
-			}
-			needSpacer = true;
-			sb.append(getTokenName()).append(':').append(sp.getPropertyName());
+			StringBuilder sb = new StringBuilder();
+			sb.append(sp.getPropertyName());
 			int variableCount = sp.getVariableCount();
 			for (int i = 0; i < variableCount; i++)
 			{
@@ -218,7 +214,8 @@ public class SpropToken extends AbstractToken implements
 					sb.append(Constants.PIPE).append(swriter.toString());
 				}
 			}
+			list.add(sb.toString());
 		}
-		return sb.toString();
+		return list.toArray(new String[list.size()]);
 	}
 }

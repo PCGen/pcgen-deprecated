@@ -49,14 +49,13 @@ public class SymbolToken implements DeityLstToken
 		return true;
 	}
 
-	public String unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, Deity deity)
 	{
 		String holyItem = deity.get(StringKey.HOLY_ITEM);
 		if (holyItem == null)
 		{
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			holyItem).toString();
+		return new String[]{holyItem};
 	}
 }

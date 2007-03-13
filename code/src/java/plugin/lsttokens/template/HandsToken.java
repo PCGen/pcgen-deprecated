@@ -79,7 +79,7 @@ public class HandsToken implements PCTemplateLstToken
 		}
 	}
 
-	public String unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Integer hands = pct.get(IntegerKey.HANDS);
 		if (hands == null)
@@ -92,7 +92,6 @@ public class HandsToken implements PCTemplateLstToken
 				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
-		return new StringBuilder().append(getTokenName()).append(':').append(
-			hands).toString();
+		return new String[]{hands.toString()};
 	}
 }
