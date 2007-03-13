@@ -22,7 +22,7 @@ import pcgen.core.Equipment;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractStringTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractStringTokenTestCase;
 
 public class FumbleRangeTokenTest extends AbstractStringTokenTestCase<Equipment>
 {

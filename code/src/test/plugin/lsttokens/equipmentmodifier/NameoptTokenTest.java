@@ -24,7 +24,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
 public class NameoptTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 {

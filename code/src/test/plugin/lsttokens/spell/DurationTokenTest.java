@@ -24,7 +24,7 @@ import pcgen.core.spell.Spell;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.SpellLoader;
-import plugin.lsttokens.AbstractStringTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractStringTokenTestCase;
 
 public class DurationTokenTest extends AbstractStringTokenTestCase<Spell>
 {

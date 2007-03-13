@@ -22,7 +22,7 @@ import pcgen.core.WeaponProf;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractItemTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractItemTokenTestCase;
 
 public class ProficiencyTokenTest extends
 		AbstractItemTokenTestCase<Equipment, WeaponProf>

@@ -67,6 +67,6 @@ public class KeystatToken implements SkillLstToken
 		{
 			return null;
 		}
-		return new String[]{pcs.getKey()};
+		return new String[]{pcs.getKeyName()};
 	}
 }

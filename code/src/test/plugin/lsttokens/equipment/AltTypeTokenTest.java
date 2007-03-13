@@ -23,7 +23,7 @@ import pcgen.core.Equipment;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTypeSafeListTestCase;
+import plugin.lsttokens.testsupport.AbstractTypeSafeListTestCase;
 
 public class AltTypeTokenTest extends AbstractTypeSafeListTestCase<Equipment>
 {

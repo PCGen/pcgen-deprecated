@@ -23,8 +23,12 @@ package plugin.lsttokens.race;
 
 import java.util.Set;
 
+import pcgen.cdom.base.CDOMGroupRef;
+import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.Slot;
+import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
 import pcgen.core.Race;
 import pcgen.core.bonus.Bonus;
@@ -97,14 +101,17 @@ public class StartfeatsToken implements RaceLstToken
 		 * PREMULT fail in?
 		 */
 		// buf.append("PREMULT:1,[PRELEVEL:1],[PREHD:1]");
-		for (int i = 0; i < featCount; i++)
-		{
-			/*
-			 * TODO FIXME Does this slot need to have a CATEGORY associated with
-			 * it?
-			 */
-			context.graph.addSlotIntoGraph(getTokenName(), race, ABILITY_CLASS);
-		}
+		Slot<Ability> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), race,
+					ABILITY_CLASS, FormulaFactory.getFormulaFor(featCount));
+		CDOMGroupRef<Ability> ref =
+				context.ref.getCategorizedCDOMAllReference(ABILITY_CLASS,
+					AbilityCategory.FEAT);
+
+		slot.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS,
+			ref));
+		// FIXME Slot needs to know AbilityNature.???? ??
+
 		return true;
 	}
 

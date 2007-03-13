@@ -22,7 +22,7 @@ import pcgen.core.Deity;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.DeityLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractStringTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractStringTokenTestCase;
 
 public class WorshippersTokenTest extends AbstractStringTokenTestCase<Deity>
 {

@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens;
+package plugin.lsttokens.testsupport;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,20 +30,20 @@ import pcgen.core.Campaign;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.CampaignSourceEntry;
-import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.TokenStore;
 
-public abstract class GlobalTokenTestCase extends TestCase
+public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 {
 	protected PCGenGraph primaryGraph;
 	protected PCGenGraph secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
-	protected PObject primaryProf;
-	protected PObject secondaryProf;
+	protected T primaryProf;
+	protected T secondaryProf;
 
 	private static boolean classSetUpFired = false;
 	protected static CampaignSourceEntry testCampaign;
@@ -65,6 +65,7 @@ public abstract class GlobalTokenTestCase extends TestCase
 		{
 			classSetUp();
 		}
+		// Yea, this causes warnings...
 		TokenRegistration.register(getToken());
 		primaryGraph = new PCGenGraph();
 		secondaryGraph = new PCGenGraph();
@@ -78,7 +79,7 @@ public abstract class GlobalTokenTestCase extends TestCase
 					"TestObj");
 	}
 
-	public abstract <T extends PObject> Class<T> getCDOMClass();
+	public abstract Class<T> getCDOMClass();
 
 	public static void addToken(LstToken tok)
 	{
@@ -136,12 +137,8 @@ public abstract class GlobalTokenTestCase extends TestCase
 		}
 	}
 
-	protected String getTokenName()
-	{
-		return getToken().getTokenName();
-	}
+	public abstract LstObjectFileLoader<T> getLoader();
 
-	public abstract GlobalLstToken getToken();
+	public abstract CDOMToken<T> getToken();
 
-	public abstract <T extends PObject> LstObjectFileLoader<T> getLoader();
 }

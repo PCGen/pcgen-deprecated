@@ -25,7 +25,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.SpellLoader;
-import plugin.lsttokens.AbstractStringTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractStringTokenTestCase;
 
 public class SpellResTokenTest extends AbstractStringTokenTestCase<Spell>
 {

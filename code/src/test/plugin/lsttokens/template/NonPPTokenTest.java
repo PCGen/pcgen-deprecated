@@ -24,7 +24,7 @@ import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
-import plugin.lsttokens.AbstractIntegerTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractIntegerTokenTestCase;
 
 public class NonPPTokenTest extends AbstractIntegerTokenTestCase<PCTemplate>
 {

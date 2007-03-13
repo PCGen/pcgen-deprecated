@@ -22,7 +22,7 @@ import pcgen.core.Skill;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.RaceLoader;
-import plugin.lsttokens.AbstractListTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
 public class MonCSkillTokenTest extends AbstractListTokenTestCase<Race, Skill>
 {

@@ -15,14 +15,14 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens;
+package plugin.lsttokens.testsupport;
 
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
-import plugin.lsttokens.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
 public abstract class AbstractStringTokenTestCase<T extends PObject> extends
 		AbstractTokenTestCase<T>

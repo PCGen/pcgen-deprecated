@@ -24,7 +24,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTextPropertyTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTextPropertyTokenTestCase;
 
 public class SPropTokenTest extends
 		AbstractTextPropertyTokenTestCase<Equipment>

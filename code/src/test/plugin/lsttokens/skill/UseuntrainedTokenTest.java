@@ -25,7 +25,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.SkillLoader;
-import plugin.lsttokens.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
 public class UseuntrainedTokenTest extends AbstractTokenTestCase<Skill>
 {

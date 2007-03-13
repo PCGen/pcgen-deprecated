@@ -24,7 +24,7 @@ import pcgen.core.EquipmentModifier;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractStringTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractStringTokenTestCase;
 
 public class FumblerangeTokenTest extends
 		AbstractStringTokenTestCase<EquipmentModifier>

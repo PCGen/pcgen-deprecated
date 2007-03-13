@@ -22,7 +22,7 @@ import pcgen.core.Equipment;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractIntegerTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractIntegerTokenTestCase;
 
 public class ReachTokenTest extends AbstractIntegerTokenTestCase<Equipment>
 {

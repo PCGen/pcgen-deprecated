@@ -25,7 +25,7 @@ import pcgen.core.spell.Spell;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.SpellLoader;
-import plugin.lsttokens.AbstractTypeSafeListTestCase;
+import plugin.lsttokens.testsupport.AbstractTypeSafeListTestCase;
 
 public class DescriptorTokenTest extends AbstractTypeSafeListTestCase<Spell>
 {

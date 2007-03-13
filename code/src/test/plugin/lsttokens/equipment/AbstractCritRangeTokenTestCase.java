@@ -23,7 +23,7 @@ import pcgen.core.Equipment;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.EquipmentLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
 public abstract class AbstractCritRangeTokenTestCase extends
 		AbstractTokenTestCase<Equipment>

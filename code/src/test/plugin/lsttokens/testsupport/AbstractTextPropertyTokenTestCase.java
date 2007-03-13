@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens;
+package plugin.lsttokens.testsupport;
 
 import java.net.URISyntaxException;
 
@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
-import plugin.lsttokens.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.pretokens.parser.PreClassParser;
 import plugin.pretokens.parser.PreLevelParser;
 import plugin.pretokens.writer.PreClassWriter;

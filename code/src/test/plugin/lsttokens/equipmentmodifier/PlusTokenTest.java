@@ -24,7 +24,7 @@ import pcgen.core.EquipmentModifier;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractIntegerTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractIntegerTokenTestCase;
 
 public class PlusTokenTest extends AbstractIntegerTokenTestCase<EquipmentModifier>
 {

@@ -28,8 +28,8 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AutoLstToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import plugin.lsttokens.AutoLst;
-import plugin.lsttokens.GlobalTokenTestCase;
-import plugin.lsttokens.TokenRegistration;
+import plugin.lsttokens.testsupport.GlobalTokenTestCase;
+import plugin.lsttokens.testsupport.TokenRegistration;
 
 public abstract class AbstractProfTokenTestCase extends GlobalTokenTestCase
 {

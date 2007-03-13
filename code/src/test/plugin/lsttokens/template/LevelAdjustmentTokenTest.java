@@ -22,7 +22,7 @@ import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
-import plugin.lsttokens.AbstractFormulaTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractFormulaTokenTestCase;
 
 
 public class LevelAdjustmentTokenTest extends AbstractFormulaTokenTestCase<PCTemplate>

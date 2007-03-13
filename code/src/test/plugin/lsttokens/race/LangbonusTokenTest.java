@@ -24,7 +24,7 @@ import pcgen.core.Race;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.RaceLoader;
-import plugin.lsttokens.AbstractListTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
 public class LangbonusTokenTest extends AbstractListTokenTestCase<Race, Language>
 {

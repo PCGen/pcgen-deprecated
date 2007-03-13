@@ -24,7 +24,7 @@ import pcgen.core.Equipment;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractBigDecimalTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractBigDecimalTokenTestCase;
 
 public class CostTokenTest extends AbstractBigDecimalTokenTestCase<Equipment>
 {

@@ -65,6 +65,6 @@ public class StatToken implements SpellLstToken
 		{
 			return null;
 		}
-		return new String[]{pcs.getKey()};
+		return new String[]{pcs.getKeyName()};
 	}
 }

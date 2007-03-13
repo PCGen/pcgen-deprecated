@@ -25,7 +25,7 @@ import pcgen.core.Deity;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.DeityLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTypeSafeListTestCase;
+import plugin.lsttokens.testsupport.AbstractTypeSafeListTestCase;
 
 public class PantheonTokenTest extends AbstractTypeSafeListTestCase<Deity>
 {

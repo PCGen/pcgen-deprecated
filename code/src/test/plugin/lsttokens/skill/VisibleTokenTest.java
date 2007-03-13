@@ -26,7 +26,7 @@ import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.SkillLoader;
 import pcgen.util.enumeration.Visibility;
-import plugin.lsttokens.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
 public class VisibleTokenTest extends AbstractTokenTestCase<Skill>
 {

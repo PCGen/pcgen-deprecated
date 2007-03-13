@@ -26,7 +26,7 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.RaceLoader;
-import plugin.lsttokens.AbstractListTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
 public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 {

@@ -15,22 +15,20 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens;
-
-import java.math.BigDecimal;
+package plugin.lsttokens.testsupport;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
-import plugin.lsttokens.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public abstract class AbstractBigDecimalTokenTestCase<T extends PObject> extends
+public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 		AbstractTokenTestCase<T>
 {
 
-	public abstract ObjectKey<BigDecimal> getObjectKey();
+	public abstract IntegerKey getIntegerKey();
 
 	public abstract boolean isZeroAllowed();
 
@@ -47,62 +45,63 @@ public abstract class AbstractBigDecimalTokenTestCase<T extends PObject> extends
 	@Test
 	public void testInvalidInputSet() throws PersistenceLayerException
 	{
-		BigDecimal con;
+		Integer con;
 		if (isPositiveAllowed())
 		{
-			con = new BigDecimal(3);
+			con = Integer.valueOf(3);
 		}
 		else
 		{
-			con = new BigDecimal(-3);
+			con = Integer.valueOf(-3);
 		}
 		assertTrue(getToken()
 			.parse(primaryContext, primaryProf, con.toString()));
-		assertEquals(con, primaryProf.get(getObjectKey()));
+		assertEquals(con, primaryProf.get(getIntegerKey()));
 		testInvalidInputs(con);
 	}
 
-	public void testInvalidInputs(BigDecimal val)
-		throws PersistenceLayerException
+	public void testInvalidInputs(Integer val) throws PersistenceLayerException
 	{
-		//Always ensure get is unchanged
+		// Always ensure get is unchanged
 		// since no invalid item should set or reset the value
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TYPE=TestType"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TYPE.TestType"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "ALL"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "ANY"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "FIVE"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
+		assertFalse(getToken().parse(primaryContext, primaryProf, "4.5"));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1/2"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertEquals(val, primaryProf.get(getIntegerKey()));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
-		assertEquals(val, primaryProf.get(getObjectKey()));
-		//Require Integer greater than or equal to zero
+		assertEquals(val, primaryProf.get(getIntegerKey()));
+		// Require Integer greater than or equal to zero
 		if (!isNegativeAllowed())
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
-			assertEquals(val, primaryProf.get(getObjectKey()));
+			assertEquals(val, primaryProf.get(getIntegerKey()));
 		}
 		if (!isPositiveAllowed())
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf, "1"));
-			assertEquals(val, primaryProf.get(getObjectKey()));
+			assertEquals(val, primaryProf.get(getIntegerKey()));
 		}
 		if (!isZeroAllowed())
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
-			assertEquals(val, primaryProf.get(getObjectKey()));
+			assertEquals(val, primaryProf.get(getIntegerKey()));
 		}
 	}
 
@@ -111,22 +110,74 @@ public abstract class AbstractBigDecimalTokenTestCase<T extends PObject> extends
 	{
 		if (isPositiveAllowed())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, "4.5"));
-			assertEquals(new BigDecimal(4.5), primaryProf.get(getObjectKey()));
 			assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
-			assertEquals(new BigDecimal(5), primaryProf.get(getObjectKey()));
+			assertEquals(Integer.valueOf(5), primaryProf.get(getIntegerKey()));
 			assertTrue(getToken().parse(primaryContext, primaryProf, "1"));
-			assertEquals(new BigDecimal(1), primaryProf.get(getObjectKey()));
+			assertEquals(Integer.valueOf(1), primaryProf.get(getIntegerKey()));
 		}
 		if (isZeroAllowed())
 		{
 			assertTrue(getToken().parse(primaryContext, primaryProf, "0"));
-			assertEquals(new BigDecimal(0), primaryProf.get(getObjectKey()));
+			assertEquals(Integer.valueOf(0), primaryProf.get(getIntegerKey()));
 		}
 		if (isNegativeAllowed())
 		{
 			assertTrue(getToken().parse(primaryContext, primaryProf, "-2"));
-			assertEquals(new BigDecimal(-2), primaryProf.get(getObjectKey()));
+			assertEquals(Integer.valueOf(-2), primaryProf.get(getIntegerKey()));
+		}
+	}
+
+	@Test
+	public void testOutputOne() throws PersistenceLayerException
+	{
+		assertTrue(0 == primaryContext.getWriteMessageCount());
+		primaryProf.put(getIntegerKey(), 1);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+		if (isPositiveAllowed())
+		{
+			assertEquals(1, unparsed.length);
+			assertEquals("1", unparsed[0]);
+		}
+		else
+		{
+			assertNull(unparsed);
+			assertTrue(0 != primaryContext.getWriteMessageCount());
+		}
+	}
+
+	@Test
+	public void testOutputZero() throws PersistenceLayerException
+	{
+		assertTrue(0 == primaryContext.getWriteMessageCount());
+		primaryProf.put(getIntegerKey(), 0);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+		if (isZeroAllowed())
+		{
+			assertEquals(1, unparsed.length);
+			assertEquals("0", unparsed[0]);
+		}
+		else
+		{
+			assertNull(unparsed);
+			assertTrue(0 != primaryContext.getWriteMessageCount());
+		}
+	}
+
+	@Test
+	public void testOutputMinusTwo() throws PersistenceLayerException
+	{
+		assertTrue(0 == primaryContext.getWriteMessageCount());
+		primaryProf.put(getIntegerKey(), -2);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+		if (isNegativeAllowed())
+		{
+			assertEquals(1, unparsed.length);
+			assertEquals("-2", unparsed[0]);
+		}
+		else
+		{
+			assertNull(unparsed);
+			assertTrue(0 != primaryContext.getWriteMessageCount());
 		}
 	}
 
@@ -158,11 +209,11 @@ public abstract class AbstractBigDecimalTokenTestCase<T extends PObject> extends
 	}
 
 	@Test
-	public void testRoundRobinThreePointFive() throws PersistenceLayerException
+	public void testRoundRobinFive() throws PersistenceLayerException
 	{
 		if (isPositiveAllowed())
 		{
-			runRoundRobin("3.5");
+			runRoundRobin("5");
 		}
 	}
 }

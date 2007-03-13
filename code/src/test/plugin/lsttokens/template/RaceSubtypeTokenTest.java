@@ -28,7 +28,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
-import plugin.lsttokens.AbstractTypeSafeListTestCase;
+import plugin.lsttokens.testsupport.AbstractTypeSafeListTestCase;
 
 public class RaceSubtypeTokenTest extends AbstractTypeSafeListTestCase<PCTemplate>
 {

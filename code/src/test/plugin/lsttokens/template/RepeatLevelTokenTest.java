@@ -28,8 +28,8 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
-import plugin.lsttokens.AbstractTokenTestCase;
-import plugin.lsttokens.TokenRegistration;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreLevelParser;
 
 public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>

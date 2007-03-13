@@ -22,7 +22,7 @@ import pcgen.core.EquipmentModifier;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.AbstractTypeSafeListTestCase;
+import plugin.lsttokens.testsupport.AbstractTypeSafeListTestCase;
 
 public class ReplacesTokenTest extends
 		AbstractTypeSafeListTestCase<EquipmentModifier>
