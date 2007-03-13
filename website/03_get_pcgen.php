@@ -115,9 +115,9 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=129606" style="font-size: 80%;">[View Older Production Releases]</a>
         </p>
         
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5101_win_install.exe">Download PCGen 5.10.1 for Windows<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5101_mac_install.dmg">Download PCGen 5.10.1 for Mac<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5101_full.zip">Download PCGen 5.10.1 for Other Systems<small>&nbsp;</small></a></div><br/>
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5102_win_install.exe">Download PCGen 5.10.2 for Windows<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5102_mac_install.dmg">Download PCGen 5.10.2 for Mac<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5102_full.zip">Download PCGen 5.10.2 for Other Systems<small>&nbsp;</small></a></div><br/>
 
         <h2>Option 2. Download Alpha Releases<a class="" title="alpha" name="alpha"></a></h2>
         <p>These are development milestone releases designed to display the work in progress on PCGen
@@ -127,11 +127,6 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         and work focuses on fixing bugs and getting the program ready for a production release.<br /> -->
         <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=21689" style="font-size: 80%;">[View Older Alpha and Beta Releases]</a>
         </p>
-
-		<p><b>Note:</b>Due a bug in the SourceForge RSS feed, only very old downloads are being shown 
-		below (as at 2 Feb 07). In the meantime you can access the latest build directly at 
-		<a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=21689&release_id=482521" style="font-size: 80%;">[PCGen Unstable 5.11.7 Alpha]</a>
-		</p>
 <?php
 
 writePcgenFileItems("http://sourceforge.net/export/rss2_projfiles.php?group_id=25576&rss_limit=20", false, 5);
