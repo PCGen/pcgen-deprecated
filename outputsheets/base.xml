@@ -1378,17 +1378,17 @@
 	<misc>
 |%MISC.FUNDS|
 		<funds>
-			<fund>|MISC.FUNDS,</fund><fund>|</fund>
+			<fund>|MISC.FUNDS|</fund>
 		</funds>
 |%|
 |%MISC.COMPANIONS|
 		<companions>
-			<companion>|MISC.COMPANIONS,</companion><companion>|</companion>
+			<companion>|MISC.COMPANIONS|</companion>
 		</companions>
 |%|
 |%MISC.MAGIC|
 		<magics>
-			<magic>|MISC.MAGIC,</magic><magic>|</magic>
+			<magic>|MISC.MAGIC|</magic>
 		</magics>
 |%|
 	</misc>

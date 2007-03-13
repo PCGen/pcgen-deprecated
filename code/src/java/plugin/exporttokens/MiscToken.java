@@ -2,11 +2,12 @@ package plugin.exporttokens;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Arrays;
 
 import pcgen.core.PlayerCharacter;
 import pcgen.io.ExportHandler;
 import pcgen.io.exporttoken.Token;
+
 
 /**
  * @author karianna
@@ -32,47 +33,54 @@ public class MiscToken extends Token
 	public String getToken(String tokenSource, PlayerCharacter pc,
 		ExportHandler eh)
 	{
-		int i = -1;
+		String tokens[] = tokenSource.split(",", 2);
+		String tokenHead = tokens[0];
+		String sourceText = "\n";
 
-		if (tokenSource.substring(5).startsWith("FUNDS"))
+		if(tokens.length == 2)
 		{
-			i = 0;
-		}
-		else if (tokenSource.substring(5).startsWith("COMPANIONS"))
-		{
-			i = 1;
-		}
-		else if (tokenSource.substring(5).startsWith("MAGIC"))
-		{
-			i = 2;
+			sourceText = tokens[1];
 		}
 
-		// For tags like the following in FOR loops
-		// will add after the ',' at end of each line
-		// |MISC.MAGIC,</fo:block><fo:block font-size="7pt">|
-		final int k = tokenSource.lastIndexOf(',');
+		String headTokens[] = tokenHead.split("\\.");
+		String subToken = headTokens[1];
 
-		String sourceText;
-		if (k >= 0)
+		int index = -1;
+		if ("FUNDS".equals(subToken))
 		{
-			sourceText = tokenSource.substring(k + 1);
+			index = 0;
 		}
-		else
+		else if ("COMPANIONS".equals(subToken))
 		{
-			sourceText = "";
+			index = 1;
+		}
+		else if ("MAGIC".equals(subToken))
+		{
+			index = 2;
 		}
 
 		StringBuffer buf = new StringBuffer();
-		if (i >= 0)
+		if (-1 != index)
 		{
-			final List<String> stringList = getLineForMiscList(i, pc);
-
-			for (String str : stringList)
+			List<String> stringList = getLineForMiscList(index, pc);
+			if(3 == headTokens.length)
 			{
-				buf.append(str);
-				buf.append(sourceText);
+				buf.append(stringList.get(Integer.parseInt(headTokens[2])));
+			}
+			else
+			{
+				// This should be deprecated now
+				// For tags like the following in FOR loops
+				// will add after the ',' at end of each line
+				// |MISC.MAGIC,</fo:block><fo:block font-size="7pt">|
+				for (String str : stringList)
+				{
+					buf.append(str);
+					buf.append(sourceText);
+				}
 			}
 		}
+
 		return buf.toString();
 	}
 
@@ -84,16 +92,7 @@ public class MiscToken extends Token
 	 */
 	private List<String> getLineForMiscList(int index, PlayerCharacter aPC)
 	{
-		final List<String> aArrayList = new ArrayList<String>();
-		final StringTokenizer aTok =
-				new StringTokenizer(aPC.getMiscList().get(index), "\r\n", false);
-
-		while (aTok.hasMoreTokens())
-		{
-			aArrayList.add(aTok.nextToken());
-		}
-
-		return aArrayList;
+		return new ArrayList<String>(Arrays.asList(aPC.getMiscList().get(index).split("\r?\n")));
 	}
 
 }

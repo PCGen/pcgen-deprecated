@@ -2837,58 +2837,71 @@ public final class InfoGear extends FilterAdapterPanel implements
 		{
 			if (treeTable == availableTable)
 			{
-				GearPopupMenu.this.add(createBuyMenuItem("Buy  1", 1,
-					"shortcut EQUALS"));
+				GearPopupMenu.this.add(createBuyMenuItem(PropertyFactory.
+					getString("in_igBuy1"), 1, "shortcut EQUALS")); //$NON-NLS-1$
 
 				JMenu buyMenu =
-						Utility.createMenu("Buy # ...", (char) 0, "Buy # ...",
+						Utility.createMenu(PropertyFactory.getString("in_igBuyQuantity"), //$NON-NLS-1$ 
+								(char) 0, PropertyFactory.getString("in_igBuyQuantity"), //$NON-NLS-1$
 							null, true);
 
-				buyMenu.add(createBuyMenuItem("Buy  2", 2, null));
-				buyMenu.add(createBuyMenuItem("Buy  5", 5, null));
-				buyMenu.add(createBuyMenuItem("Buy 10", 10, null));
-				buyMenu.add(createBuyMenuItem("Buy 15", 15, null));
-				buyMenu.add(createBuyMenuItem("Buy 20", 20, null));
-				buyMenu.add(createBuyMenuItem("Buy 50", 50, null));
+				buyMenu.add(createBuyMenuItem(PropertyFactory.
+					getString("in_igBuy2"), 2, null));  //$NON-NLS-1$
+				buyMenu.add(createBuyMenuItem(PropertyFactory.
+					getString("in_igBuy5"), 5, null)); //$NON-NLS-1$
+				buyMenu.add(createBuyMenuItem(PropertyFactory.
+					getString("in_igBuy10"), 10, null)); //$NON-NLS-1$
+				buyMenu.add(createBuyMenuItem(PropertyFactory.
+					getString("in_igBuy15"), 15, null)); //$NON-NLS-1$
+				buyMenu.add(createBuyMenuItem(PropertyFactory.
+					getString("in_igBuy20"), 20, null)); //$NON-NLS-1$
+				buyMenu.add(createBuyMenuItem(PropertyFactory.
+					getString("in_igBuy50"), 50, null)); //$NON-NLS-1$
 				GearPopupMenu.this.add(buyMenu);
-				GearPopupMenu.this
-					.add(createBuyMenuItem("Buy  n", -1, "alt N"));
+				GearPopupMenu.this.add(createBuyMenuItem(PropertyFactory.
+					getString("in_igBuyN"), -1, "alt N")); //$NON-NLS-1$
 				this.addSeparator();
-				GearPopupMenu.this.add(createBuyRateMenuItem("Buy  1 at...", 1,
-					null));
+				GearPopupMenu.this.add(createBuyRateMenuItem(PropertyFactory.
+					getString("in_igBuy1At"), 1, null)); //$NON-NLS-1$
 
 				JMenu buyAtMenu =
-						Utility.createMenu("Buy # at ...", (char) 0,
-							"Buy # at ...", null, true);
-				buyAtMenu.add(createBuyRateMenuItem("Buy  2 at...", 2, null));
-				buyAtMenu.add(createBuyRateMenuItem("Buy  5 at...", 5, null));
-				buyAtMenu.add(createBuyRateMenuItem("Buy 10 at...", 10, null));
-				buyAtMenu.add(createBuyRateMenuItem("Buy 15 at...", 15, null));
-				buyAtMenu.add(createBuyRateMenuItem("Buy 20 at...", 20, null));
-				buyAtMenu.add(createBuyRateMenuItem("Buy 50 at...", 50, null));
+						Utility.createMenu(PropertyFactory.getString("in_igBuyQuantityAt"), //$NON-NLS-1$ 
+							(char) 0,PropertyFactory.getString("in_igBuyQuantityAt"), null, true); //$NON-NLS-1$
+				buyAtMenu.add(createBuyRateMenuItem(PropertyFactory
+					.getString("in_igBuy2At"), 2, null)); //$NON-NLS-1$
+				buyAtMenu.add(createBuyRateMenuItem(PropertyFactory
+						.getString("in_igBuy5At"), 5, null)); //$NON-NLS-1$
+				buyAtMenu.add(createBuyRateMenuItem(PropertyFactory
+						.getString("in_igBuy10At"), 10, null)); //$NON-NLS-1$
+				buyAtMenu.add(createBuyRateMenuItem(PropertyFactory
+						.getString("in_igBuy25At"), 15, null)); //$NON-NLS-1$
+				buyAtMenu.add(createBuyRateMenuItem(PropertyFactory
+						.getString("in_igBuy20At"), 20, null)); //$NON-NLS-1$
+				buyAtMenu.add(createBuyRateMenuItem(PropertyFactory
+						.getString("in_igBuy50At"), 50, null)); //$NON-NLS-1$
 				GearPopupMenu.this.add(buyAtMenu);
-				GearPopupMenu.this.add(createBuyRateMenuItem("Buy  n at...",
+				GearPopupMenu.this.add(createBuyRateMenuItem(PropertyFactory.getString("in_igBuyNAt"), //$NON-NLS-1$
 					-1, "alt N"));
 				this.addSeparator();
 
 				GearPopupMenu.this.add(Utility.createMenuItem(
-					"Create custom item", new ActionListener()
+					PropertyFactory.getString("in_igCreateCustomItemLabel"), new ActionListener()
 					{
 						public void actionPerformed(ActionEvent e)
 						{
 							customizeButtonClick();
 						}
 					}, "newCustomItem", (char) 0, "alt C",
-					"Create new customized item", null, true));
+					PropertyFactory.getString("in_igCreateCustomItemDesc"), null, true));
 				GearPopupMenu.this.add(Utility.createMenuItem(
-					"Delete custom item", new ActionListener()
+						PropertyFactory.getString("in_igDeleteCustomItemLabel"), new ActionListener()
 					{
 						public void actionPerformed(ActionEvent e)
 						{
 							deleteCustomButtonClick();
 						}
-					}, "deleteItem", (char) 0, "DELETE", "Delete custom item",
-					null, true));
+					}, "deleteItem", (char) 0, "DELETE", 
+					PropertyFactory.getString("in_igDeleteCustomItemDesc"), null, true));
 
 				/*                GearPopupMenu.this.add(CoreUtility.createMenuItem("Create custom item from scratch",
 				 new ActionListener()
@@ -2905,47 +2918,64 @@ public final class InfoGear extends FilterAdapterPanel implements
 			else
 			// selectedTable
 			{
-				GearPopupMenu.this.add(createRemoveMenuItem("Remove  1", 1,
-					"shortcut MINUS"));
+				GearPopupMenu.this.add(createRemoveMenuItem(PropertyFactory.
+					getString("in_igRemove1"), 1, "shortcut MINUS")); //$NON-NLS-1$
 
 				JMenu remMenu =
-						Utility.createMenu("Remove # ...", (char) 0,
-							"Remove # ...", null, true);
-				remMenu.add(createRemoveMenuItem("Remove  2", 2, null));
-				remMenu.add(createRemoveMenuItem("Remove  5", 5, null));
-				remMenu.add(createRemoveMenuItem("Remove 10", 10, null));
-				remMenu.add(createRemoveMenuItem("Remove 15", 15, null));
-				remMenu.add(createRemoveMenuItem("Remove 20", 20, null));
-				remMenu.add(createRemoveMenuItem("Remove 50", 50, null));
-				remMenu.add(createRemoveMenuItem("Remove  n", -1, null));
+						Utility.createMenu(PropertyFactory.getString("in_igRemoveQuantity"), (char) 0, //$NON-NLS-1$
+						PropertyFactory.getString("in_igRemoveQuantity"), null, true); //$NON-NLS-1$
+				remMenu.add(createRemoveMenuItem(PropertyFactory.
+						getString("in_igRemove2"), 2, null)); //$NON-NLS-1$
+				remMenu.add(createRemoveMenuItem(PropertyFactory.
+						getString("in_igRemove5"), 5, null)); //$NON-NLS-1$
+				remMenu.add(createRemoveMenuItem(PropertyFactory.
+						getString("in_igRemove10"), 10, null)); //$NON-NLS-1$
+				remMenu.add(createRemoveMenuItem(PropertyFactory.
+						getString("in_igRemove15"), 15, null)); //$NON-NLS-1$
+				remMenu.add(createRemoveMenuItem(PropertyFactory.
+						getString("in_igRemove20"), 20, null)); //$NON-NLS-1$
+				remMenu.add(createRemoveMenuItem(PropertyFactory.
+						getString("in_igRemove50"), 50, null)); //$NON-NLS-1$
+				remMenu.add(createRemoveMenuItem(PropertyFactory.
+						getString("in_igRemoveN"), -1, null)); //$NON-NLS-1$
 				GearPopupMenu.this.add(remMenu);
-				GearPopupMenu.this.add(createRemoveMenuItem("Remove All", -5,
-					null));
+				GearPopupMenu.this.add(createRemoveMenuItem(PropertyFactory.
+						getString("in_igRemoveAll"), -5, null)); //$NON-NLS-1$
 				this.addSeparator();
 
-				GearPopupMenu.this.add(createSellMenuItem("Sell  1", 1, null));
+				GearPopupMenu.this.add(createSellMenuItem(PropertyFactory.
+						getString("in_igSell1"), 1, null)); //$NON-NLS-1$
 
 				JMenu sellMenu =
-						Utility.createMenu("Sell # ...", (char) 0,
-							"Sell # ...", null, true);
-				sellMenu.add(createSellMenuItem("Sell  2", 2, null));
-				sellMenu.add(createSellMenuItem("Sell  5", 5, null));
-				sellMenu.add(createSellMenuItem("Sell 10", 10, null));
-				sellMenu.add(createSellMenuItem("Sell 15", 15, null));
-				sellMenu.add(createSellMenuItem("Sell 20", 20, null));
-				sellMenu.add(createSellMenuItem("Sell 50", 50, null));
-				sellMenu.add(createSellMenuItem("Sell  n", -1, null));
+						Utility.createMenu(PropertyFactory.
+							getString("in_igSellQuantity"), (char) 0, //$NON-NLS-1$
+							PropertyFactory.getString("in_igSellQuantity"), null, true); //$NON-NLS-1$
+				sellMenu.add(createSellMenuItem(PropertyFactory.
+						getString("in_igSell2"), 2, null)); //$NON-NLS-1$
+				sellMenu.add(createSellMenuItem(PropertyFactory.
+						getString("in_igSell5"), 5, null)); //$NON-NLS-1$
+				sellMenu.add(createSellMenuItem(PropertyFactory.
+						getString("in_igSell10"), 10, null)); //$NON-NLS-1$
+				sellMenu.add(createSellMenuItem(PropertyFactory.
+						getString("in_igSell15"), 15, null)); //$NON-NLS-1$
+				sellMenu.add(createSellMenuItem(PropertyFactory.
+						getString("in_igSell20"), 20, null)); //$NON-NLS-1$
+				sellMenu.add(createSellMenuItem(PropertyFactory.
+						getString("in_igSell50"), 50, null)); //$NON-NLS-1$
+				sellMenu.add(createSellMenuItem(PropertyFactory.
+						getString("in_igSellN"), -1, null)); //$NON-NLS-1$
 				GearPopupMenu.this.add(sellMenu);
 				GearPopupMenu.this
-					.add(createSellMenuItem("Sell  All", -5, null));
+					.add(createSellMenuItem(PropertyFactory.getString("in_igSellAll"), //$NON-NLS-1$ 
+						-5, null));
 				this.addSeparator();
 
-				GearPopupMenu.this.add(createSellRateMenuItem("Sell 1 at...",
-					1, null));
-				GearPopupMenu.this.add(createSellRateMenuItem("Sell n at...",
-					-1, null));
-				GearPopupMenu.this.add(createSellRateMenuItem("Sell All at...",
-					-5, null));
+				GearPopupMenu.this.add(createSellRateMenuItem(PropertyFactory.
+					getString("in_igSell1At"),	1, null)); //$NON-NLS-1$
+				GearPopupMenu.this.add(createSellRateMenuItem(PropertyFactory.
+					getString("in_igSellNAtt"), -1, null)); //$NON-NLS-1$
+				GearPopupMenu.this.add(createSellRateMenuItem(PropertyFactory.
+					getString("in_igSellAllAt"), -5, null)); //$NON-NLS-1$
 				this.addSeparator();
 
 				GearPopupMenu.this.add(Utility.createMenuItem(PropertyFactory.

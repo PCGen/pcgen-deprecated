@@ -276,7 +276,7 @@ public class CampaignSourceEntry
 				try {
 					// if it's a URL, then we are all done, just return a URI
 					URL url = new URL(basePath);
-					return new URI(url.getProtocol(), null, url.getPath(), null);
+					return new URI(url.getProtocol(), url.getHost(), url.getPath(), null);
 				} catch (URISyntaxException e) {
 					//Something broke, so wasn't a URL
 				} catch (MalformedURLException e) {
@@ -288,7 +288,8 @@ public class CampaignSourceEntry
 			// URLs always use forward slash; take off the file name
 			try {
 				return new URI(pccPath.getScheme(), null, (path.substring(0,
-						path.lastIndexOf('/') + 1) + basePath), null);
+					path.lastIndexOf('/') + 1) + basePath.replace('\\', '/')),
+					null);
 			} catch (URISyntaxException e) {
 				Logging.errorPrint("GPURI failed to convert "
 						+ path.substring(0, path.lastIndexOf('/') + 1)

@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Mar  2 01:40:17 2007 -- reformated by prettylst.pl v1.36 (build 2045)
+# CVS $Revision$ $Author$ -- Fri Mar  9 11:25:00 2007 -- reformated by prettylst.pl v1.37 (build 2312)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 # Original Entry by: dlm1065
 
@@ -21,12 +21,7 @@ CLASS:Barbarian	STARTSKILLPTS:4	CSKILL:Climb|TYPE.Craft|Handle Animal|Intimidate
 #	RageTimes		For if a class has it's own Rage / day progression.  This is a straight 'Rage / day' variable.
 #	RageDuration	For if a class has it's onw Rage duration. This is a straight 'Number of rounds' variable.
 ###Block: Rage variables
-1	BONUS:VAR|BarbRageTimesLVL|CL						DEFINE:BarbRageTimesLVL|0
-1	BONUS:VAR|BarbRagePowerLVL|CL						DEFINE:BarbRagePowerLVL|0
-1	BONUS:VAR|GreaterRage|1|PREVARGTEQ:BarbRagePowerLVL,11	DEFINE:GreaterRage|0
-1	BONUS:VAR|TirelessRage|1|PREVARGTEQ:BarbRagePowerLVL,17	DEFINE:TirelessRage|0
-1	BONUS:VAR|MightyRage|1|PREVARGTEQ:BarbRagePowerLVL,20		DEFINE:MightyRage|0
-1	BONUS:VAR|RageTimes|(BarbRageTimesLVL)/4+1			DEFINE:RageTimes|0		FEATAUTO:Rage
+1	BONUS:VAR|BarbRageTimesLVL,BarbRagePowerLVL|CL	FEATAUTO:Rage|Barbarian Rage
 ###Block: Illiteracy
 # (Copy this line and include the hidden feat for any other Illiterate class.)
 #	Currently, this does not take into account the removal using Skill points.
@@ -71,8 +66,8 @@ CLASS:Bard		SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|Bard|CL
 1	FEATAUTO:Armor Proficiency (Light)
 1	FEATAUTO:Shield Proficiency
 ###Block: Bardic abilities level definitions.
-1	BONUS:VAR|BardicKnowledgeLvl|CL	BONUS:VAR|BardicKnowledge|BardicKnowledgeLvl	FEATAUTO:Bardic Knowledge
-1	BONUS:VAR|BardicMusicLvl|CL	BONUS:VAR|BardicMusicTimes|CL					FEATAUTO:Bardic Music
+1	BONUS:VAR|BardicKnowledgeLvl|CL	BONUS:VAR|BardicKnowledge|BardicKnowledgeLvl			FEATAUTO:Bardic Knowledge
+1	BONUS:VAR|BardicMusicLvl|CL	BONUS:VAR|BardicMusicTimes|CL	BONUS:VAR|InspireDurationBase|5	FEATAUTO:Bardic Music
 ###Block: Bardic Music Abilities by level
 1	VFEAT:Bardic Countersong|Bardic Fascinate|Bardic Inspire Courage|PREVARGTEQ:BardicMusicLvl,1
 1	VFEAT:Bardic Inspire Competence|PREVARGTEQ:BardicMusicLvl,3
@@ -82,7 +77,7 @@ CLASS:Bard		SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|Bard|CL
 1	VFEAT:Bardic Inspire Heroics|PREVARGTEQ:BardicMusicLvl,15
 1	VFEAT:Bardic Mass Suggestion|PREVARGTEQ:BardicMusicLvl,18
 ###Block: Level progression
-1	CAST:2			KNOWN:4			SA:May wear light armor without incurring the normal arcane spell failure chance.
+1	CAST:2			KNOWN:4			FEATAUTO:Armored Casting (Bard)
 2	CAST:3,0			KNOWN:5,2
 3	CAST:3,1			KNOWN:6,3
 4	CAST:3,2,0			KNOWN:6,3,2
@@ -117,23 +112,20 @@ CLASS:Cleric	SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=0|LEVEL=1|LEVEL=2|
 #	both OS and data to include modifications for differences in Turning ability for Undead,
 #	Air, Fire, etc.
 ###Block: Turn Undead stuff
-1	BONUS:VAR|TurnTimesBase|3+CHA|TYPE=Base			DEFINE:AllowImprovedTurning|1	ADD:FEAT(TYPE=TurnUndead)	FEATAUTO:Basic Turning
-1	BONUS:VAR|TurnLevelBase|CL|TYPE=Level.REPLACE		DEFINE:AllowExtraTurning|1
-1	BONUS:VAR|TurnDamagePlusBase|CL|TYPE=Level.REPLACE
-1	BONUS:VAR|TurnCheckBase|CHA|TYPE=Base
+1	BONUS:VAR|TurnLevelBase,TurnDamagePlusBase|CL|TYPE=Level.REPLACE	ADD:FEAT(TYPE=TurnUndead)	FEATAUTO:Basic Turning|Cleric Turning
 ###Block: Spontaneous casting
-1	VFEAT:Spontaneous casting (Cure spells)|PREFEAT:1,Turn Undead
-1	VFEAT:Spontaneous casting (Inflict spells)|PREFEAT:1,Rebuke Undead
+1	VFEAT:Spontaneous casting - Cure spells|PREFEAT:1,Turn Undead
+1	VFEAT:Spontaneous casting - Inflict spells|PREFEAT:1,Rebuke Undead
 ###Block: Spell Alignment Restrictions
-1	PROHIBITSPELL:ALIGNMENT.Good|PREALIGN:LE,NE,CE	PROHIBITSPELL:ALIGNMENT.Good|PREDEITYALIGN:2,5,8
-1	PROHIBITSPELL:ALIGNMENT.Evil|PREALIGN:LG,NG,CG	PROHIBITSPELL:ALIGNMENT.Evil|PREDEITYALIGN:0,3,6
-1	PROHIBITSPELL:ALIGNMENT.Lawful|PREALIGN:CG,CN,CE	PROHIBITSPELL:ALIGNMENT.Lawful|PREDEITYALIGN:6,7,8
-1	PROHIBITSPELL:ALIGNMENT.Chaotic|PREALIGN:LG,LN,LE	PROHIBITSPELL:ALIGNMENT.Chaotic|PREDEITYALIGN:0,1,2
+1	PROHIBITSPELL:ALIGNMENT.Good|PREALIGN:LE,NE,CE	PROHIBITSPELL:ALIGNMENT.Good|PREDEITYALIGN:LE,NE,CE
+1	PROHIBITSPELL:ALIGNMENT.Evil|PREALIGN:LG,NG,CG	PROHIBITSPELL:ALIGNMENT.Evil|PREDEITYALIGN:LG,NG,CG
+1	PROHIBITSPELL:ALIGNMENT.Lawful|PREALIGN:CG,CN,CE	PROHIBITSPELL:ALIGNMENT.Lawful|PREDEITYALIGN:CG,CN,CE
+1	PROHIBITSPELL:ALIGNMENT.Chaotic|PREALIGN:LG,LN,LE	PROHIBITSPELL:ALIGNMENT.Chaotic|PREDEITYALIGN:LG,LN,LE
 ###Block: Aura strength
-1	BONUS:VAR|AlignmentAuraBase|CL	DEFINE:AlignmentAuraBase|0	VFEAT:Aura of Chaos|PREDEITYALIGN:6,7,8
-1												VFEAT:Aura of Evil|PREDEITYALIGN:2,5,8
-1												VFEAT:Aura of Good|PREDEITYALIGN:0,3,6
-1												VFEAT:Aura of Law|PREDEITYALIGN:0,1,2
+1	BONUS:VAR|AlignmentAuraBase|CL	DEFINE:AlignmentAuraBase|0	VFEAT:Aura of Chaos|PREDEITYALIGN:CG,CN,CE
+1												VFEAT:Aura of Evil|PREDEITYALIGN:LE,NE,CE
+1												VFEAT:Aura of Good|PREDEITYALIGN:LG,NG,CG
+1												VFEAT:Aura of Law|PREDEITYALIGN:LG,LN,LE
 ###Block: Righteous Might Workaround
 1	TEMPLATE:RighteousMightDR
 ###Block: Level progression
@@ -174,18 +166,14 @@ CLASS:Druid		SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=0|LEVEL=1|LEVEL=2|
 #
 # To add effective Druid levels to this ability use BONUS:VAR|DruidWildShape|CL
 #
-1	BONUS:VAR|DruidWildShape|CL																																																																									DEFINE:DruidWildShape|0	FEATAUTO:Wild Shape
-1	BONUS:VAR|WildShapeDuration|DruidWildShape
-1	BONUS:VAR|WildShapeElementalTimes|1|PREVARGTEQ:DruidWildShape,16	BONUS:VAR|WildShapeElementalTimes|1|PREVARGTEQ:DruidWildShape,18	BONUS:VAR|WildShapeElementalTimes|1|PREVARGTEQ:DruidWildShape,20
-1	BONUS:VAR|WildShapeTimes|1|PREVARGTEQ:DruidWildShape,5	BONUS:VAR|WildShapeTimes|1|PREVARGTEQ:DruidWildShape,6	BONUS:VAR|WildShapeTimes|1|PREVARGTEQ:DruidWildShape,7	BONUS:VAR|WildShapeTimes|1|PREVARGTEQ:DruidWildShape,10	BONUS:VAR|WildShapeTimes|1|PREVARGTEQ:DruidWildShape,14	BONUS:VAR|WildShapeTimes|1|PREVARGTEQ:DruidWildShape,18
-1	BONUS:VAR|WildShapeProgression|1|PREVARGTEQ:DruidWildShape,5	BONUS:VAR|WildShapeProgression|1|PREVARGTEQ:DruidWildShape,8	BONUS:VAR|WildShapeProgression|1|PREVARGTEQ:DruidWildShape,11	BONUS:VAR|WildShapeProgression|1|PREVARGTEQ:DruidWildShape,12	BONUS:VAR|WildShapeProgression|1|PREVARGTEQ:DruidWildShape,15	BONUS:VAR|WildShapeProgression|1|PREVARGTEQ:DruidWildShape,16	BONUS:VAR|WildShapeProgression|1|PREVARGTEQ:DruidWildShape,20
+1	BONUS:VAR|DruidWildShape|CL	FEATAUTO:Wild Shape|Druid Wild Shape|Druid Wild Shape Times|Druid Elemental Wild Shape Times|Druid Wild Shape Progression
 ###Block: Spell Alignment Restrictions
 1	PROHIBITSPELL:ALIGNMENT.Good|PREALIGN:LE,NE,CE	PROHIBITSPELL:ALIGNMENT.Good|PREDEITYALIGN:LE,NE,CE
 1	PROHIBITSPELL:ALIGNMENT.Evil|PREALIGN:LG,NG,CG	PROHIBITSPELL:ALIGNMENT.Evil|PREDEITYALIGN:LG,NG,CG
 1	PROHIBITSPELL:ALIGNMENT.Lawful|PREALIGN:CG,CN,CE	PROHIBITSPELL:ALIGNMENT.Lawful|PREDEITYALIGN:CG,CN,CE
 1	PROHIBITSPELL:ALIGNMENT.Chaotic|PREALIGN:LG,LN,LE	PROHIBITSPELL:ALIGNMENT.Chaotic|PREDEITYALIGN:LG,LN,LE
 ###Block: Normal Progression
-1	CAST:3,1				BONUS:VAR|WildEmpathy,CompLevel|CL					FEATAUTO:Nature Sense|Animal Companion|Wild Empathy|Spontaneous casting (Summon Nature's Ally)
+1	CAST:3,1				BONUS:VAR|WildEmpathy,CompLevel|CL					FEATAUTO:Nature Sense|Animal Companion|Wild Empathy|Spontaneous casting - Summon Nature's Ally
 2	CAST:4,2														FEATAUTO:Woodland Stride
 3	CAST:4,2,1														FEATAUTO:Trackless Step
 4	CAST:5,3,2														FEATAUTO:Resist Nature's Lure
@@ -342,14 +330,9 @@ CLASS:Ranger	SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=0|LEVEL=1|LEVEL=2|
 1	FEATAUTO:Armor Proficiency (Light)
 1	FEATAUTO:Shield Proficiency
 ###Block: Favored Enemy level stacking
-1	BONUS:VAR|RangerFavoredEnemyLVL|CL				DEFINE:RangerFavoredEnemyLVL|0	FEATAUTO:Basic Favored Enemy
-1	BONUS:VAR|FavoredEnemies|RangerFavoredEnemyLVL/5+1
-1	BONUS:VAR|FavoredEBonuses|RangerFavoredEnemyLVL/5
+1	BONUS:VAR|RangerFavoredEnemyLVL|CL	FEATAUTO:Basic Favored Enemy|Ranger Favored Enemy
 ###Block: Combat Trees
-1	BONUS:VAR|RangerCombatTreeLVL|CL						DEFINE:RangerCombatTreeLVL|0
-1	BONUS:VAR|RangerCombatTree|1|PREVARGTEQ:RangerCombatTreeLVL,2	DEFINE:RangerCombatTree|0
-1	BONUS:VAR|RangerCombatTree|1|PREVARGTEQ:RangerCombatTreeLVL,6
-1	BONUS:VAR|RangerCombatTree|1|PREVARGTEQ:RangerCombatTreeLVL,11
+1	BONUS:VAR|RangerCombatTreeLVL|CL	FEATAUTO:Ranger Combat Tree
 ###Block: Level progression
 1				BONUS:VAR|WildEmpathy|CL		ADD:FEAT(TYPE.FavoredEnemy)	ADD:FEAT(TYPE.FavoredEnemyBonus)	ADD:FEAT(TYPE.RangerCombatStyle)	FEATAUTO:Wild Empathy|Track
 2										ADD:FEAT(TYPE.FavoredEnemy)	ADD:FEAT(TYPE.FavoredEnemyBonus)	ADD:FEAT(TYPE.RangerCombatStyle)

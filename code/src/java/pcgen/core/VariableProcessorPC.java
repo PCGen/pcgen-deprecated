@@ -28,6 +28,7 @@ import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -1095,6 +1096,18 @@ public class VariableProcessorPC extends VariableProcessor
 		{
 			valString = Integer.toString(getPc().getVisionList().size());
 		}
+		else if ("COUNT[MISC.FUNDS]".equals(valString))
+		{
+			valString = Integer.toString(Arrays.asList(getPc().getMiscList().get(0).split("\r?\n")).size());
+		}
+		else if ("COUNT[MISC.COMPANIONS]".equals(valString))
+		{
+			valString = Integer.toString(Arrays.asList(getPc().getMiscList().get(1).split("\r?\n")).size());
+		}
+		else if ("COUNT[MISC.MAGIC]".equals(valString))
+		{
+			valString = Integer.toString(Arrays.asList(getPc().getMiscList().get(2).split("\r?\n")).size());
+		}
 		else if (valString.startsWith("COUNT[FOLLOWERTYPE.") && valString.endsWith("]"))
 		{
 			if (valString.indexOf(".") == valString.lastIndexOf("."))
@@ -1183,7 +1196,6 @@ public class VariableProcessorPC extends VariableProcessor
 		}
 		else if (valString.startsWith("EQTYPE"))
 		{
-			//valString = ExportHandler.returnReplacedTokenEq(this, valString);
 			final EqTypeToken token = new EqTypeToken();
 			valString = token.getToken(valString, getPc(), null);
 
