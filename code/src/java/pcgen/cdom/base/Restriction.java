@@ -24,4 +24,6 @@ public interface Restriction<T extends PrereqObject>
 
 	boolean qualifies(T o);
 
+	String toLSTform();
+
 }

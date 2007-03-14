@@ -98,4 +98,10 @@ public class CompoundRestriction<T extends PrereqObject> implements
 		return restrictedClass;
 	}
 
+	public String toLSTform()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

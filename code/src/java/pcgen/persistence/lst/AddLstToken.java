@@ -25,20 +25,14 @@
  */
 package pcgen.persistence.lst;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>AutoLstToken</code>
  * 
  * @author Thomas Parker <thpr@users.sourceforge.net>
  */
-public interface AddLstToken extends LstToken
+public interface AddLstToken extends CDOMToken<PObject>
 {
 	public boolean parse(PObject target, String value, int level);
-
-	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException;
 }

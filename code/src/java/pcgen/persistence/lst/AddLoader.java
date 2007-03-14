@@ -25,6 +25,8 @@
  */
 package pcgen.persistence.lst;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import pcgen.base.util.Logging;
@@ -42,7 +44,7 @@ public final class AddLoader
 		super();
 	}
 
-	public static boolean parseLine(LoadContext context, CDOMObject obj,
+	public static boolean parseLine(LoadContext context, PObject obj,
 		String value) throws PersistenceLayerException
 	{
 		Map<String, LstToken> tokenMap =
@@ -65,6 +67,7 @@ public final class AddLoader
 			{
 				Logging.errorPrint("Error parsing ADD in "
 					+ obj.getDisplayName() + ':' + value);
+				return false;
 			}
 		}
 		else
@@ -104,5 +107,23 @@ public final class AddLoader
 			Logging.errorPrint("Error parsing ADD, invalid SubToken: " + key);
 			return false;
 		}
+	}
+
+	public static String[] unparse(LoadContext context, CDOMObject obj)
+	{
+		List<String> list = new ArrayList<String>();
+		for (LstToken token : TokenStore.inst().getTokenMap(AddLstToken.class)
+			.values())
+		{
+			String[] s = ((AddLstToken) token).unparse(context, (PObject) obj);
+			if (s != null)
+			{
+				for (String aString : s)
+				{
+					list.add(token.getTokenName() + "|" + aString);
+				}
+			}
+		}
+		return list.size() == 0 ? null : list.toArray(new String[list.size()]);
 	}
 }

@@ -167,14 +167,11 @@ public class AddLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 			throws PersistenceLayerException {
-		//FIXME This is a hack
-		return true;
-		//return AddLoader.parseLine(context, obj, value);
+		return AddLoader.parseLine(context, (PObject) obj, value);
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return AddLoader.unparse(context, obj);
 	}
 }

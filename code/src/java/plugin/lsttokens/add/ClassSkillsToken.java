@@ -1,6 +1,5 @@
 package plugin.lsttokens.add;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
@@ -49,10 +48,16 @@ public class ClassSkillsToken implements AddLstToken
 		return "CLASSSKILLS";
 	}
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	public boolean parse(LoadContext context, PObject obj, String value)
 		throws PersistenceLayerException
 	{
 		// FIXME This is a hack
 		return true;
+	}
+
+	public String[] unparse(LoadContext context, PObject obj)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

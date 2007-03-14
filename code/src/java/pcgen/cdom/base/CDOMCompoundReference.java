@@ -19,6 +19,8 @@ package pcgen.cdom.base;
 
 import java.util.ArrayList;
 
+import pcgen.cdom.util.ReferenceUtilities;
+
 public class CDOMCompoundReference<T extends PrereqObject> extends
 		CDOMGroupRef<T>
 {
@@ -57,8 +59,7 @@ public class CDOMCompoundReference<T extends PrereqObject> extends
 	@Override
 	public String getLSTformat()
 	{
-		// FIXME Auto-generated method stub
-		return null;
+		return ReferenceUtilities.joinLstFormat(references, Constants.COMMA);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package plugin.lsttokens.add;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -20,10 +19,16 @@ public class SpellLevelToken implements AddLstToken
 		return "SPELLLEVEL";
 	}
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	public boolean parse(LoadContext context, PObject obj, String value)
 		throws PersistenceLayerException
 	{
 		// FIXME This is a hack
 		return true;
+	}
+
+	public String[] unparse(LoadContext context, PObject obj)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

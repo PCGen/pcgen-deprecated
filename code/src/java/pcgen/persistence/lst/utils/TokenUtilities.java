@@ -147,7 +147,32 @@ public final class TokenUtilities
 		else if (s.startsWith(Constants.LST_TYPE_OLD)
 			|| s.startsWith(Constants.LST_TYPE))
 		{
-			String[] types = s.substring(5).split("\\.");
+			String subStr = s.substring(5);
+			if (subStr.length() == 0)
+			{
+				Logging.errorPrint("Type may not be empty in: " + s);
+				return null;
+			}
+			if (subStr.charAt(0) == '.'
+				|| subStr.charAt(subStr.length() - 1) == '.')
+			{
+				Logging.errorPrint("Type may not start or end with . in: " + s);
+				return null;
+			}
+			String[] types = subStr.split("\\.");
+			for (String type : types)
+			{
+				/*
+				 * TODO May be faster to just look for .. in the input string -
+				 * make sure to do this in the uncategorized version too.
+				 */
+				if (type.length() == 0)
+				{
+					Logging
+						.errorPrint("Attempt to acquire empty Type in: " + s);
+					return null;
+				}
+			}
 			return context.ref.getCategorizedCDOMTypeReference(cl, cat, types);
 		}
 		else

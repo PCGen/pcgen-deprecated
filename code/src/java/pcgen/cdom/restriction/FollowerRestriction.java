@@ -52,4 +52,10 @@ public class FollowerRestriction implements Restriction<Follower>
 	{
 		return Follower.class;
 	}
+
+	public String toLSTform()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
