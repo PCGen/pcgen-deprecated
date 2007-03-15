@@ -32,7 +32,7 @@ $title = basename($_SERVER['PHP_SELF'], '.php');
 
 <div id="pagemenu">
     <ul>
-        <li><a href="http://www.legolas.org/pcgen/pytw/#Welcome">Project Wiki</a></li>
+        <li><a href="http://pcgen.wiki.sourceforge.net">Project Wiki</a></li>
         <li><a href="http://groups.yahoo.com/group/pcgen">Main Yahoo Group</a></li>
         <li><a href="https://sourceforge.net/project/project_donations.php?group_id=25576">Donate!</a></li>
         <li><a href="https://sourceforge.net/account/login.php">SF Login</a></li>

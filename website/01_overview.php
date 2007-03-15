@@ -9,7 +9,7 @@ require_once('include/header.php.inc');
         <h1>Major Links</h1>
         <ul>
 	        <li><a href="03_get_pcgen.php">Get PCGen</a> - Download PCGen </li>
-	        <li><a href="http://www.legolas.org/pcgen/pytw/#Welcome">Project Wiki</a> - This is the <b>main</b> source of project information</li>
+	        <li><a href="http://pcgen.wiki.sourceforge.net">Project Wiki</a> - This is the <b>good</b> source of project information</li>
 	        <li><a href="http://groups.yahoo.com/group/pcgen">Main User Community Group</a></li>
 	        <li><a href="https://sourceforge.net/project/project_donations.php?group_id=25576">Donate to PCGen!</a></li>
 	        <li><a href="https://sourceforge.net/projects/pcgen/">Sourceforge Project Page</a></li>
