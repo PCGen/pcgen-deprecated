@@ -1581,9 +1581,9 @@ my @QUALIFY_Tags = (
 my %master_order = (
     'ABILITY' => [
         '000AbilityName',
+        'KEY',
         'NAMEISPI',
         'OUTPUTNAME',
-        'KEY',
         'CATEGORY',
         'TYPE:.CLEAR',
         'TYPE',
@@ -2128,9 +2128,9 @@ my %master_order = (
 
     'EQUIPMENT' => [
         '000EquipmentName',
+        'KEY',
         'NAMEISPI',
         'OUTPUTNAME',
-        'KEY',
         'PROFICIENCY',
         'TYPE:.CLEAR',
         'TYPE:*',
@@ -2237,11 +2237,11 @@ my %master_order = (
 
     'EQUIPMOD' => [
         '000ModifierName',
+        'KEY',
         'NAMEISPI',
         'OUTPUTNAME',
         'FORMATCAT',
         'NAMEOPT',
-        'KEY',
         'TYPE',
         'PLUS',
         'COST',
