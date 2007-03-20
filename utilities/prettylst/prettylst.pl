@@ -27,7 +27,7 @@ my @SVN_array = split ' ', $SVN_id;
 my $SVN_build = $SVN_array[2];
 my $SVN_date = $SVN_array[3];
 $SVN_date =~ tr{-}{.};
-my $VERSION      = "1.37 (build $SVN_build)";
+my $VERSION      = "1.38 (build $SVN_build)";
 my $VERSION_DATE = $SVN_date;
 my ($SCRIPTNAME) = ( $PROGRAM_NAME =~ m{ ( [^/\\]* ) \z }xms );
 my $VERSION_LONG = "$SCRIPTNAME version: $VERSION -- $VERSION_DATE";
@@ -13213,7 +13213,7 @@ __END__
 
 prettylst.pl -- Reformat the PCGEN .lst files
 
-Version: 1.37
+Version: 1.38
 
 =head1 DESCRIPTION
 
@@ -13764,7 +13764,11 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
-=head2 v1.37 -- -- 2007.03.01
+=head2 v1.38 -- -- NOT YET RELEASED
+
+[ 1683839 ] Sort KEY tags next to names
+
+=head2 v1.37 -- 2007.03.01
 
 [ 1623708 ] Invalid value "DEITY" for tag "PREALIGN" - should be allowed
 
