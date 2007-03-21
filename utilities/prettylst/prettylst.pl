@@ -2623,6 +2623,7 @@ my %master_order = (
         'ISMATURE',
         'BIOSET',
         'HIDETYPE',
+        'COMPANIONLIST',        # [ 1672551 ] PCC tag COMPANIONLIST
 
         # These tags load files
         'ABILITY',
@@ -13915,6 +13916,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.38 -- -- NOT YET RELEASED
+
+[ 1672551 ] PCC tag COMPANIONLIST
 
 [ 1672547 ] Support for Substitution Classes
 
