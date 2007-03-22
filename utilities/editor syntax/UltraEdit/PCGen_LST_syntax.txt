@@ -635,7 +635,7 @@ Wilder
 Wizard
 /C7"placeholders"
 XfooX
-/L2"PCGen data file" File Extensions = PCC Line Comment = # String Chars = "
+/L2"PCGen campaign file" File Extensions = PCC Line Comment = # String Chars = "
 /Delimiters =	():[]={}<>;!|,./+-*
 /C1"Main Tags"
 BIOSET
