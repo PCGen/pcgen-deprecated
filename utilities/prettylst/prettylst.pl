@@ -10625,13 +10625,6 @@ BEGIN {
 #             delete $line_ref->{'CSKILL'};
 
 
-
-        # XXXX Tir is working here XXXX
-#RACE: TYPE to RACETYPE
-
-
-
-
         ##################################################################
         # [ 1444527 ] New SOURCE tag format
         #
