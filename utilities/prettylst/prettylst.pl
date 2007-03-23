@@ -188,6 +188,8 @@ my %conversion_enable = (
        'ALL:Find Willpower'                 => 1,               # Find the tags that use Willpower so that we can
                                                                 # plan the conversion to Will
 
+       'RACE:TYPE to RACETYPE'              => 0,               # [ 1353255 ] TYPE to RACETYPE conversion
+
        'ALL:CMP NatAttack fix'              => 0,               # Fix STR bonus for Natural Attacks in CMP files
        'ALL:CMP remove PREALIGN'            => 0,               # Remove the PREALIGN tag everywhere (to help my CMP friends)
 );
@@ -333,7 +335,10 @@ if ( $cl_options{nowarning} && $cl_options{warning_level} >= INFO ) {
 # Convertion options
 
 if ( $cl_options{convert} ) {
-    if ( $cl_options{convert} eq 'Willpower' ) {
+    if ( $cl_options{convert} eq 'RACETYPE' ) {
+        $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
+    }
+    elsif ( $cl_options{convert} eq 'Willpower' ) {
 #        $conversion_enable{'ALL:PRERACE needs a ,'} = 1;
         $conversion_enable{'ALL:Willpower to Will'} = 1;
     }
@@ -10585,6 +10590,47 @@ BEGIN {
                 }
          }
 
+        ##################################################################
+        # [ 1353255 ] TYPE to RACETYPE conversion
+        #
+        # Checking race files for TYPE and if no RACETYPE,
+        # convert TYPE to RACETYPE.
+        # if Race file has no TYPE or RACETYPE, report as 'Info'
+
+        # Do this check no matter what - valid any time
+        if ( $filetype eq "RACE"
+           && not ( exists $line_ref->{'RACETYPE'} )
+           && not ( exists $line_ref->{'TYPE'} )
+        ) { ewarn (WARNING,
+              qq{Race entry missing both TYPE and RACETYPE.},
+                  $file_for_error,
+                  $line_for_error
+                );
+        };
+
+        if (   $conversion_enable{'RACE:TYPE to RACETYPE'}
+           && $filetype eq "RACE"
+           && not (exists $line_ref->{'RACETYPE'})
+           && exists $line_ref->{'TYPE'}
+           ) { ewarn (WARNING,
+                  qq{Changing TYPE for RACETYPE in "$line_ref->{'TYPE'}[0]".},
+                  $file_for_error,
+                  $line_for_error
+               );
+             $line_ref->{'RACETYPE'} = [ "RACE" . $line_ref->{'TYPE'}[0] ];
+             delete $line_ref->{'TYPE'};
+        };
+
+#             $line_ref->{'MONCSKILL'} = [ "MON" . $line_ref->{'CSKILL'}[0] ];
+#             delete $line_ref->{'CSKILL'};
+
+
+
+        # XXXX Tir is working here XXXX
+#RACE: TYPE to RACETYPE
+
+
+
 
         ##################################################################
         # [ 1444527 ] New SOURCE tag format
@@ -13494,6 +13540,10 @@ Here are the list of the valid convertions so far:
 
 =over 12
 
+=item B<RACETYPE>
+
+Use to change the TYPE entry in race.lst to RACETYPE if no RACETYPE is present.
+
 =item B<pcgen5713>
 
 Use to apply the convertions that bring the .lst files from v5.7.4 of PCGEN
@@ -13916,6 +13966,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.38 -- -- NOT YET RELEASED
+
+[ 1353255 ] TYPE to RACETYPE conversion
 
 [ 1672551 ] PCC tag COMPANIONLIST
 
