@@ -1,4 +1,1799 @@
-/L1"PCGen data file" File Extensions = LST Line Comment = # String Chars = "
+/L1"C/C++" C_LANG Line Comment = // Block Comment On = /* Block Comment Off = */ Escape Char = \ String Chars = "' File Extensions = C CPP CC CXX H HPP AWK
+/Delimiters = ~!@%^&*()-+=|\/{}[]:;"'<> ,	.?
+/Function String = "%^([a-zA-Z_0-9^[^]*]+^)[ ^t]+([^p*&:, ^t^[^]a-zA-Z_0-9.!]++)[~;]"
+/Function String 1 = "%[a-zA-Z_0-9*]*::^([a-zA-Z_0-9^~]+^)[ ^t^p]++([^p*&:, ^t^[^]/*^-'=:&a-zA-Z_0-9./(!]++)[~;]"
+/Function String 2 = "%[a-zA-Z_0-9][a-zA-Z_0-9^[^]]+[ ^t*]+^([a-zA-Z_0-9]+^)[ ^t]++([^p*&:, ^t^[^]a-zA-Z_0-9./(!]++)[~;]"
+/Function String 3 = "%[a-zA-Z_0-9*&$^[^]*]+[ ^t]+[a-zA-Z_0-9*&$^[^]]+[ ^t*]+^([a-zA-Z_0-9]+^)[ ^t]++([^p*&:, ^t^[^]a-zA-Z_0-9./(!]++)[~;]"
+/Function String 4 = "%[a-z_0-9^[^]*]++ [a-z_0-9*^[^]]+[ ^t]++[a-z_0-9*^[^]]+[ ^t]++^([*a-z_0-9]+^)[ ^t]++([^p*&:, ^t^[^]a-z_0-9./(!]++)[~;]"
+/Function String 5 = "%^([a-zA-Z_0-9^[^]*]+^)[ ^t]++([^p*&:, ^t^[^]a-zA-Z_0-9./()!]++)[~;]"
+/Member String = "^([A-Za-z0-9_:.]+^)[ ^t^*&]+$S[ ^t^[^]A-Za-z0-9_]++[(-);,]"
+/Variable String = "%[ ^t]++^([!-ÿ~ ^t<>]+*[~a-z^p]^)$S[ ^t;,()^-]"
+/Indent Strings = "{" "if" "else" ":"
+/Unindent Strings = "}"
+/Open Brace Strings =  "{" "(" "["
+/Close Brace Strings = "}" ")" "]"
+/Open Fold Strings = "{"
+/Close Fold Strings = "}"
+/C1"Keywords" STYLE_KEYWORD
+#define #elif #else #endif #error #if #ifdef #ifndef #include #include_next #line #pragma #undef
+__asm __based __cdecl __declspec __except __far __fastcall __finally __fortran __huge __inline __int16
+__int32 __int64 __int8 __interrupt __leave __loadds __near __pascal __saveregs __segment __segname __self
+__stdcall __try __uuidof
+auto
+bool break
+case char const continue
+default defined do double
+else enum extern
+float for
+goto
+if int
+long
+register return
+short signed sizeof static struct switch
+typedef
+union unsigned
+void volatile
+while
+/C2"C++ Keywords" STYLE_KEYWORD
+__multiple_inheritance __single_inheritance __virtual_inheritance
+catch class const_cast
+delete dynamic_cast
+explicit export
+false friend
+inline
+mutable
+namespace new
+operator
+private protected public
+reinterpret_cast
+static_cast
+template this throw true try typeid typename
+using
+virtual
+wchar_t
+/C3"Microsoft C extensions" STYLE_EXTENSION
+dllexport dllimport
+naked
+thread
+uuid
+/C4"Operators" STYLE_OPERATOR
+!
+%
+&
+*
++
+-
+// /
+<
+=
+>
+^
+|
+~
+
+/L2"Visual Basic" VB_LANG Line Comment = ' File Extensions = BAS FRM CLS VB VBS VBA CTL
+/Function String = "%*^{Sub^}^{Function^}*("
+/Open Brace Strings =  "{" "(" "[" "<"
+/Close Brace Strings = "}" ")" "]" ">"
+/Indent Strings = "Then" "Select Case" "Do While" "Do Until" "Else" "Do" "<td>" "<tr>"
+/Unindent Strings = "End" "Next" "End If" "End Select" "Loop" "End Select" "Loop While" "Else" "</TD>" "</tr>"
+/Open Fold Strings = "If" "ElseIf" "Function" "Sub" "With" "Do" "For" "While" "Select Case" "Case Else" "Case" "Else"
+/Close Fold Strings = "ElseIf" "End If" "End Function" "End Sub" "End With" "Loop" "Next" "Wend" "End Select" "Case Else" "Case" "Else"
+/Ignore Fold Strings = "Exit Function" "Exit Sub" "Declare Function" 
+/C1"Functions" STYLE_FUNCTION
+Abs Array Asc AscB AscW Atn Avg
+CBool CByte CCur CDate CDbl CInt CLng CSng CStr CVDate CVErr CVar Cdec Choose Chr ChrB ChrW Command Cos
+Count CreateObject CurDir
+DDB Date DateAdd DateDiff DatePart DateSerial DateValue Day Dir DoEvents
+EOF Environ Error Exp
+FV FileAttr FileDateTime FileLen Fix Format FreeFile
+GetAllStrings GetAttr GetAutoServerSettings GetObject GetSetting
+Hex Hour
+IIf IMEStatus IPmt InStr Input InputB InputBox InstB Int IsArray IsDate IsEmpty IsError IsMissing IsNull
+IsNumeric IsObject
+LBound LCase LOF LTrim Left LeftB Len LenB LoadPicture Loc
+MIRR Max Mid MidB Min Minute Month MsgBox
+NPV NPer Now
+Oct
+PPmt PV Partition Pmt
+QBColor
+RGB RTrim Rate Right RightB Rnd
+SLN SYD Second Seek Sgn Shell Sin Space Spc Sqr StDev StDevP Str StrComp StrConv String Sum Switch
+Tab Tan Time TimeSerial TimeValue Timer Trim TypeName
+UBound UCase
+Val Var VarP VarType
+Weekday
+Year
+/C2"Methods" STYLE_METHOD
+Accept Activate Add AddCustom AddFile AddFromFile AddFromTemplate AddItem AddNew AddToAddInToolbar
+AddToolboxProgID Append AppendChunk Arrange Assert AsyncRead
+BatchUpdate BeginTrans Bind
+CanPropertyChange Cancel CancelAsyncRead CancelBatch CancelUpdate CaptureImage CellText CellValue Circle
+Clear ClearFields ClearSel ClearSelCols Clone Close Cls ColContaining ColumnSize CommitTrans
+CompactDatabase Compose Connect Copy CopyQueryDef CreateDatabase CreateDragImage CreateEmbed CreateField
+CreateGroup CreateIndex CreateLink CreatePreparedStatement CreatePropery CreateQuery CreateQueryDef
+CreateRelation CreateTableDef CreateUser CreateWorkspace Customize
+Delete DeleteColumnLabels DeleteColumns DeleteRowLabels DeleteRows DoVerb Drag Draw
+Edit EditCopy EditPaste EndDoc EnsureVisible EstablishConnection Execute ExtractIcon
+Fetch FetchVerbs Files FillCache Find FindFirst FindItem FindLast FindNext FindPrevious Forward
+GetBookmark GetChunk GetClipString GetData GetFirstVisible GetFormat GetHeader GetLineFromChar GetNumTicks
+GetRows GetSelectedPart GetText GetVisibleCount GoBack GoForward
+Hide HitTest HoldFields
+Idle InitializeLabels InsertColumnLabels InsertColumns InsertObjDlg InsertRowLabels InsertRows Item
+KillDoc
+Layout Line LinkExecute LinkPoke LinkRequest LinkSend Listen LoadFile LoadResData LoadResPicture
+LoadResString LogEvent
+MakeCompileFile MakeReplica MoreResults Move MoveData MoveFirst MoveLast MoveNext MovePrevious
+NavigateTo NewPage NewPassword NextRecordset
+OLEDrag OnAddinsUpdate OnConnection OnDisconnection OnStartupComplete Open OpenConnection OpenDatabase
+OpenQueryDef OpenRecordset OpenResultset OpenURL Overlay
+PSet PaintPicture PastSpecialDlg Paste PeekData Play Point PopulatePartial PopupMenu Print PrintForm
+PropertyChanged
+Quit
+Raise RandomDataFill RandomFillColumns RandomFillRows ReFill ReadFromFile ReadProperty Rebind Refresh
+RefreshLink RegisterDatabase Reload Remove RemoveAddInFromToolbar RemoveItem Render RepairDatabase Reply
+ReplyAll Requery ResetCustom ResetCustomLabel ResolveName RestoreToolbar Resync Rollback RollbackTrans
+RowBookmark RowContaining RowTop
+Save SaveAs SaveFile SaveToFile SaveToOle1File SaveToolbar Scale ScaleX ScaleY Scroll SelPrint Select
+SelectAll SelectPart Send SendData Set SetAutoServerSettings SetData SetFocus SetOption SetSize SetText
+SetViewport Show ShowColor ShowFont ShowHelp ShowOpen ShowPrinter ShowSave ShowWhatsThis SignOff SignOn
+Size Span SplitContaining StartLabelEdit StartLogging Stop Synchronize
+TextHeight TextWidth ToDefaults TwipsToChartPart TypeByChartType
+Update UpdateControls UpdateRecord UpdateRow Upto
+WhatsThisMode WriteProperty
+ZOrder
+rdoCreateEnvironment rdoRegisterDataSource
+/C3"Events" STYLE_EVENT
+AccessKeyPress AfterAddFile AfterChangeFileName AfterCloseFile AfterColEdit AfterColUpdate AfterDelete
+AfterInsert AfterLabelEdit AfterRemoveFile AfterUpdate AfterWriteFile AmbienChanged ApplyChanges Associate
+AsyncReadComplete AxisActivated AxisLabelActivated AxisLabelSelected AxisLabelUpdated AxisSelected
+AxisTitleActivated AxisTitleSelected AxisTitleUpdated AxisUpdated
+BeforeClick BeforeColEdit BeforeColUpdate BeforeConnect BeforeDelete BeforeInsert BeforeLabelEdit
+BeforeLoadFile BeforeUpdate ButtonClick ButtonCompleted ButtonGotFocus ButtonLostFocus
+Change ChartActivated ChartSelected ChartUpdated Click ColEdit ColResize Collapse ColumnClick Compare
+ConfigChageCancelled ConfigChanged ConnectionRequest
+DataArrival DataChanged DataUpdated DblClick Deactivate DevModeChange DeviceArrival DeviceOtherEvent
+DeviceQueryRemove DeviceQueryRemoveFailed DeviceRemoveComplete DeviceRemovePending Disconnect
+DisplayChanged Dissociate DoGetNewFileName Done DonePainting DownClick DragDrop DragOver DropDown
+EditProperty EnterCell EnterFocus Event ExitFocus Expand
+FootnoteActivated FootnoteSelected FootnoteUpdated
+GotFocus
+HeadClick
+InfoMessage IniProperties Initialize ItemActivated ItemAdded ItemCheck ItemClick ItemReloaded ItemRemoved
+ItemRenamed ItemSeletected
+KeyDown KeyPress KeyUp
+LeaveCell LegendActivated LegendSelected LegendUpdated LinkClose LinkError LinkNotify LinkOpen Load
+LostFocus
+MouseDown MouseMove MouseUp
+NodeClick
+OLECompleteDrag OLEDragDrop OLEDragOver OLEGiveFeedback OLESetData OLEStartDrag ObjectMove OnAddNew OnComm
+Paint PanelClick PanelDblClick PathChange PatternChange PlotActivated PlotSelected PlotUpdated
+PointActivated PointLabelActivated PointLabelSelected PointLabelUpdated PointSelected PointUpdated
+PowerQuerySuspend PowerResume PowerStatusChanged PowerSuspend
+QueryChangeConfig QueryComplete QueryCompleted QueryTimeout QueryUnload
+ReadProperties Reposition RequestChangeFileName RequestWriteFile Resize ResultsChanged RowColChange
+RowCurrencyChange RowResize RowStatusChanged
+SelChange SelectionChanged SendComplete SendProgress SeriesActivated SeriesSelected SeriesUpdated
+SettingChanged SplitChange StateChanged StatusUpdate SysColorsChanged
+Terminate TimeChanged TitleActivated TitleSelected
+UnboundAddData UnboundDeleteRow UnboundGetRelativeBookmark UnboundReadData UnboundWriteData Unload UpClick
+Updated
+Validate ValidationError
+WillAssociate WillChangeData WillDissociate WillExecute WillUpdateRows WithEvents WriteProperties
+/C4"Statements" STYLE_STATEMENT
+AppActivate
+Base Beep Boolean ByRef ByVal
+Call Case ChDir ChDrive Const
+Declare DefBool DefByte DefCur DefDate DefDbl DefDec DefInt DefLng DefObj DefSng DefStr DefVar Deftype
+DeleteSetting Dim Do Double
+Else ElseIf End Enum Erase Exit Explicit
+False FileCopy Finalize For ForEach Friend Function
+Get GoSub GoTo
+If Implements Imports Integer
+Kill
+LSet Let LineInput Lock
+Me MkDir MyBase MyBase.Finalize MyBase.New
+Name Namespace New Next Nothing
+On OnError Option Overrides
+Private Property Protected Public Put
+RSet RaiseEvent Randomize ReDim ReadOnly Rem Reset Resume Return RmDir
+SavePicture SaveSetting SendKeys SetAttr Static Structure Sub
+Then To True Type
+Unlock
+Wend While Width With Write
+/C5"Operators" STYLE_OPERATOR
+&
+*
++
+-
+.
+// /
+<
+=
+And AndAlso As
+Eqv
+Imp Is
+Like
+Mod
+Not
+Or OrElse
+Xor
+\
+^
+
+/L3"HTML" HTML_LANG Nocase Noquote Block Comment On = <!-- Block Comment Off = --> File Extensions = HTM HTML SHTML HTT HTA HTX CFM JSP PHP PHTML ASP
+/Delimiters = ~!@$%^&*()+=|\{}[]:;"'<> ,	.?
+/Function String = "<form*>"
+/Member String = "$S[ ^t]++=[ ^t&]++new[ ^t]+^([A-Za-z_]+[A-Za-z0-9_]++^)"
+/Variable String = "$S[ ^t]++=[ ^t&]++new[ ^t]+^([A-Za-z_]+[A-Za-z0-9_]++^)"
+/Indent Strings = "<"
+/Unindent Strings = "</"
+/Open Brace Strings =  "{" "(" "[" "<"
+/Close Brace Strings = "}" ")" "]" ">"
+/C1"Tags" STYLE_TAG
+<A </A> <ABBR> <ABBR </ABBR> <ABOVE> <ACRONYM> <ACRONYM </ACRONYM> <ADDRESS> <ADDRESS </ADDRESS>
+<APPLET </APPLET> <AREA </AREA <ARRAY>
+<B> <B </B> <BASE <BASEFONT <BDO> <BDO </BDO> <BGSOUND <BIG> <BIG </BIG> <BLINK> <BLINK </BLINK>
+<BLOCKQUOTE> <BLOCKQUOTE </BLOCKQUOTE> <BODY> <BODY </BODY> <BOX> <BR/> <BR> <BR <BUTTON> </BUTTON>
+<CAPTION> <CAPTION </CAPTION> <CENTER> <CENTER </CENTER> <CITE> <CITE </CITE> <CODE> <CODE </CODE>
+<COL> <COL <COLGROUP> <COLGROUP </COLGROUP> <COMMENT> </COMMENT>
+<DD> <DD </DD> <DEL> <DEL </DEL> <DFN> <DFN </DFN> <DIR> <DIR </DIR> <DIV> <DIV </DIV> <DL> <DL </DL>
+<DT> <DT </DT>
+<EM> <EM </EM> <EMBED
+<FIELDSET> <FIELDSET </FIELDSET> <FIG> <FONT </FONT> <FORM> <FORM </FORM> <FRAME <FRAMESET </FRAMESET>
+<H1> <H1 </H1> <H2> <H2 </H2> <H3> <H3 </H3> <H4> <H4 </H4> <H5> <H5 </H5> <H6> <H6 </H6> <HEAD> <HEAD
+</HEAD> <HR/> <HR> <HR <HTML> <HTML </HTML>
+<I> <I </I> <IFRAME> <IFRAME </IFRAME> <ILAYER> </ILAYER> <IMG <INPUT> <INPUT <INS> <INS </INS> <ISINDEX> <ISINDEX
+<KBD> <KBD </KBD>
+<LABEL> <LABEL </LABEL> <LAYER> <LAYER </LAYER> <LEGEND> <LEGEND </LEGEND> <LI> <LI </LI> <LINK <LISTING>
+</LISTING>
+<MAP </MAP> <MARQUEE </MARQUEE> <MENU> <MENU </MENU> <META <MULTICOL> </MULTICOL>
+<NEXTID <NOBR> </NOBR> <NOFRAMES> </NOFRAMES> <NOLAYER> </NOLAYER> <NOSCRIPT> </NOSCRIPT> <NOTE> </NOTE>
+<OBJECT> <OBJECT </OBJECT> <OL> <OL </OL> <OPTGROUP> <OPTGROUP </OPTGROUP> <OPTION> <OPTION </OPTION>
+<P> <P </P> <PARAM <PRE> <PRE </PRE>
+<Q> <Q </Q> <QUOTE>
+<RANGE> <ROOT>
+<S> <S </S> <SAMP> <SAMP </SAMP> <SCRIPT> <SCRIPT </SCRIPT> <SELECT> <SELECT </SELECT> <SMALL> <SMALL
+</SMALL> <SOUND <SPACER> <SPAN> <SPAN </SPAN> <SQRT> <STRIKE> <STRIKE </STRIKE> <STRONG> <STRONG </STRONG>
+<STYLE> <STYLE </STYLE> <SUB> <SUB </SUB> <SUP> <SUP </SUP>
+<TABLE> <TABLE </TABLE> <TBODY> <TBODY </TBODY> <TD> <TD </TD> <TEXT> <TEXTAREA> <TEXTAREA </TEXTAREA>
+<TFOOT> <TFOOT </TFOOT> <TH> <TH </TH> <THEAD> <THEAD </THEAD> <TITLE> </TITLE> <TR> <TR </TR> <TT>
+<TT </TT>
+<U> <U </U> <UL> <UL </UL>
+<VAR> <VAR </VAR>
+<WBR>
+<XMP> </XMP>
+// />
+>
+/C2"Attributes" STYLE_ATTRIBUTE
+ABBR= ACCEPT-CHARSET= ACCEPT= ACCESSKEY= ACTION= ALIGN= ALINK= ALT= ARCHIVE= AXIS=
+BACKGROUND= BEHAVIOR BEHAVIOR> BELOW BELOW> BGCOLOR= BORDER=
+CELLPADDING= CELLSPACING= CHAR= CHAROFF= CHARSET= CHECKED CHECKED> CITE= CLASS= CLASSID= CLEAR= CODE=
+CODEBASE= CODETYPE= COLOR= COLS= COLSPAN= COMPACT COMPACT> CONTENT= COORDS=
+DATA= DATETIME= DECLARE DECLARE> DEFER DEFER> DIR= DISABLED DISABLED>
+ENCTYPE=
+FACE= FOR= FRAME= FRAMEBORDER= FRAMESPACING=
+HEADERS= HEIGHT= HIDDEN= HREF= HREFLANG= HSPACE= HTTP-EQUIV=
+ID= ISMAP=
+LABEL= LANG= LANGUAGE= LINK= LONGDESC= LOOP=
+MAILTO= MARGINHEIGHT= MARGINWIDTH= MAXLENGTH= MEDIA= METHOD= MULTIPLE MULTIPLE>
+NAME= NOHREF NOHREF> NORESIZE NORESIZE> NOSHADE NOSHADE> NOWRAP NOWRAP>
+OBJECT= ONBLUR= ONCHANGE= ONCLICK= ONDBLCLICK= ONFOCUS= ONKEYDOWN= ONKEYPRESS= ONKEYUP= ONLOAD=
+ONMOUSEDOWN= ONMOUSEMOVE= ONMOUSEOUT= ONMOUSEOVER= ONMOUSEUP= ONRESET= ONSELECT= ONSUBMIT= ONUNLOAD=
+PROFILE= PROMPT=
+READONLY READONLY> REL= REV= ROWS= ROWSPAN= RULES=
+SCHEME= SCOPE= SCROLLING= SELECTED SELECTED> SHAPE= SIZE= SPAN= SRC= STANDBY= START= STYLE= SUMMARY=
+TABINDEX= TARGET= TEXT= TITLE= TOPMARGIN= TYPE=
+URL= USEMAP=
+VALIGN= VALUE= VALUETYPE= VERSION= VLINK= VSPACE=
+WIDTH=
+=
+/C3"Special Characters"
+&aacute &acirc &acute &aelig &agrave &alefsym &alpha &amp &and &ang &aring &asymp &atilde &auml
+&bdquo &beta &brvbar &bull
+&cap &ccedil &cedil &cent &chi &circ &clubs &cong &copy &crarr &cup &curren
+&dagger &darr &deg &delta &diams &divide
+&eacute &ecirc &egrave &empty &emsp &ensp &epsilon &equiv &eta &eth &euml &euro &exist
+&fnof &forall &frac12 &frac14 &frac34 &frasl
+&gamma &ge &gt
+&harr &hearts &hellip
+&iacute &icirc &iexcl &igrave &image &infin &int &iota &iquest &isin &iuml
+&kappa
+&lambda &lang &laquo &larr &lceil &ldquo &le &lfloor &lowast &loz &lrm &lsaquo &lsquo &lt
+&macr &mdash &micro &middot &minus &mu
+&nabla &nbsp &ndash &ne &ni &not &notin &nsub &ntilde &nu &oacute &ocirc
+&oelig &ograve &oline &omega &omicron &oplus &or &ordf &ordm &oslash &otilde &otimes &ouml
+&para &part &permil &perp &phi &pi &piv &plusmn &pound &prime &prod &prop &psi
+&quot
+&radic &rang &raquo &rarr &rceil &rdquo &real &reg &rfloor &rho &rlm &rsaquo &rsquo
+&sbquo &scaron &sdot &sect &shy &sigma &sigmaf &sim &spades &sub &sube &sum &sup &sup1 &sup2 &sup3 &supe &szlig
+&tau &there4 &theta &thetasym &thinsp &thorn &tilde &times &trade
+&uacute &uarr &ucirc &ugrave &uml &upsih &upsilon &uuml
+&weierp
+&xi
+&yacute &yen &yuml
+&zeta &zwj &zwnj
+;
+
+/L4"Java" JAVA_LANG Line Comment = // Block Comment On = /* Block Comment Off = */ Escape Char = \ File Extensions = JAV JAVA
+/Delimiters = ~!@%^&*()-+=|\/{}[]:;"'<> ,	.?
+/Function String = "%[ ^t]++[ps][a-z]+ [a-z0-9]+ ^(*(*)^)*{$"
+/Function String 1 = "%[ ^t]++[ps][a-z]+ [a-z0-9]+ ^(*(*)^)[ ^t]++$"
+/Member String = "^([A-Za-z0-9_:.]+^)[ ^t*&]+$S[ ^t]++[(=);,]"
+/Variable String = "^([A-Za-z0-9_:.]+^)[ ^t*&]+$S[ ^t]++[(=);,]"
+/Indent Strings = "{"
+/Unindent Strings = "}"
+/Open Brace Strings =  "{" "(" "[" "<"
+/Close Brace Strings = "}" ")" "]" ">"
+/Open Fold Strings = "{"
+/Close Fold Strings = "}"
+/C1"Keywords" STYLE_KEYWORD
+abstract
+boolean break byte
+case catch char class continue
+default do double
+else extends
+false final finally float for
+if implements import instanceof int interface
+length long
+native new null
+package private protected public
+return
+short static super switch synchronized
+this threadsafe throw throws transient true try
+void
+while
+/C2"Classes" STYLE_FUNCTION
+AWTError AWTEvent AWTEventMulticaster AWTException AbstractMethodError AccessException Acl AclEntry
+AclNotFoundException ActionEvent ActionListener Adjustable AdjustmentEvent AdjustmentListener Adler32
+AlreadyBoundException Applet AppletContext AppletStub AreaAveragingScaleFilter ArithmeticException Array
+ArrayIndexOutOfBoundsException ArrayStoreException AudioClip
+BeanDescriptor BeanInfo Beans BigDecimal BigInteger BindException BitSet Boolean BorderLayout
+BreakIterator BufferedInputStream BufferedOutputStream BufferedReader BufferedWriter Button ButtonPeer
+Byte ByteArrayInputStream ByteArrayOutputStream
+CRC32 Calendar CallableStatement Canvas CanvasPeer CardLayout Certificate CharArrayReader CharArrayWriter
+CharConversionException Character CharacterIterator Checkbox CheckboxGroup CheckboxMenuItem
+CheckboxMenuItemPeer CheckboxPeer CheckedInputStream CheckedOutputStream Checksum Choice ChoiceFormat
+ChoicePeer Class ClassCastException ClassCircularityError ClassFormatError ClassLoader
+ClassNotFoundException Clipboard ClipboardOwner CloneNotSupportedException Cloneable
+CollationElementIterator CollationKey Collator Color ColorModel Compiler Component ComponentAdapter
+ComponentEvent ComponentListener ComponentPeer ConnectException ConnectIOException Connection Constructor
+Container ContainerAdapter ContainerEvent ContainerListener ContainerPeer ContentHandler
+ContentHandlerFactory CropImageFilter Cursor Customizer
+DGC DSAKey DSAKeyPairGenerator DSAParams DSAPrivateKey DSAPublicKey DataFlavor DataFormatException
+DataInput DataInputStream DataOutput DataOutputStream DataTruncation DatabaseMetaData DatagramPacket
+DatagramSocket DatagramSocketImpl Date DateFormat DateFormatSymbols DecimalFormat DecimalFormatSymbols
+Deflater DeflaterOutputStream Dialog DialogPeer Dictionary DigestException DigestInputStream
+DigestOutputStream Dimension DirectColorModel Double Driver DriverManager DriverPropertyInfo
+EOFException EmptyStackException Enumeration Error Event EventListener EventObject EventQueue
+EventSetDescriptor Exception ExceptionInInitializerError ExportException
+FeatureDescriptor Field FieldPosition File FileDescriptor FileDialog FileDialogPeer FileInputStream
+FileNameMap FileNotFoundException FileOutputStream FileReader FileWriter FilenameFilter FilterInputStream
+FilterOutputStream FilterReader FilterWriter FilteredImageSource Float FlowLayout FocusAdapter FocusEvent
+FocusListener Font FontMetrics FontPeer Format Frame FramePeer
+GZIPInputStream GZIPOutputStream Graphics GregorianCalendar GridBagConstraints GridBagLayout GridLayout
+Group
+Hashtable HttpURLConnection
+IOException Identity IdentityScope IllegalAccessError IllegalAccessException IllegalArgumentException
+IllegalComponentStateException IllegalMonitorStateException IllegalStateException
+IllegalThreadStateException Image ImageConsumer ImageFilter ImageObserver ImageProducer
+IncompatibleClassChangeError IndexColorModel IndexOutOfBoundsException IndexedPropertyDescriptor
+InetAddress Inflater InflaterInputStream InputEvent InputStream InputStreamReader Insets
+InstantiationError InstantiationException Integer InternalError InterruptedException
+InterruptedIOException IntrospectionException Introspector InvalidClassException InvalidKeyException
+InvalidObjectException InvalidParameterException InvocationTargetException ItemEvent ItemListener
+ItemSelectable
+Key KeyAdapter KeyEvent KeyException KeyListener KeyManagementException KeyPair KeyPairGenerator
+Label LabelPeer LastOwnerException LayoutManager LayoutManager2 Lease LightweightPeer
+LineNumberInputStream LineNumberReader LinkageError List ListPeer ListResourceBundle LoaderHandler Locale
+LocateRegistry LogStream Long
+MalformedURLException MarshalException Math MediaTracker Member MemoryImageSource Menu MenuBar MenuBarPeer
+MenuComponent MenuComponentPeer MenuContainer MenuItem MenuItemPeer MenuPeer MenuShortcut MessageDigest
+MessageFormat Method MethodDescriptor MissingResourceException Modifier MouseAdapter MouseEvent
+MouseListener MouseMotionAdapter MouseMotionListener MulticastSocket
+Naming NegativeArraySizeException NoClassDefFoundError NoRouteToHostException NoSuchAlgorithmException
+NoSuchElementException NoSuchFieldError NoSuchFieldException NoSuchMethodError NoSuchMethodException
+NoSuchObjectException NoSuchProviderException NotActiveException NotBoundException NotOwnerException
+NotSerializableException NullPointerException Number NumberFormat NumberFormatException
+ObjID Object ObjectInput ObjectInputStream ObjectInputValidation ObjectOutput ObjectOutputStream
+ObjectStreamClass ObjectStreamException Observable Observer Operation OptionalDataException
+OutOfMemoryError OutputStream OutputStreamWriter Owner
+PaintEvent Panel PanelPeer ParameterDescriptor ParseException ParsePosition Permission PipedInputStream
+PipedOutputStream PipedReader PipedWriter PixelGrabber Point Polygon PopupMenu PopupMenuPeer
+PreparedStatement Principal PrintGraphics PrintJob PrintStream PrintWriter PrivateKey Process Properties
+PropertyChangeEvent PropertyChangeListener PropertyChangeSupport PropertyDescriptor PropertyEditor
+PropertyEditorManager PropertyEditorSupport PropertyResourceBundle PropertyVetoException ProtocolException
+Provider ProviderException PublicKey PushbackInputStream PushbackReader
+RGBImageFilter RMIClassLoader RMIFailureHandler RMISecurityException RMISecurityManager RMISocketFactory
+Random RandomAccessFile Reader Rectangle Registry RegistryHandler Remote RemoteCall RemoteException
+RemoteObject RemoteRef RemoteServer RemoteStub ReplicateScaleFilter ResourceBundle ResultSet
+ResultSetMetaData RuleBasedCollator Runnable Runtime RuntimeException
+SQLException SQLWarning ScrollPane ScrollPanePeer Scrollbar ScrollbarPeer SecureRandom Security
+SecurityException SecurityManager SequenceInputStream Serializable ServerCloneException ServerError
+ServerException ServerNotActiveException ServerRef ServerRuntimeException ServerSocket Shape Short
+Signature SignatureException Signer SimpleBeanInfo SimpleDateFormat SimpleTimeZone Skeleton
+SkeletonMismatchException SkeletonNotFoundException Socket SocketException SocketImpl SocketImplFactory
+SocketSecurityException Stack StackOverflowError Statement StreamCorruptedException StreamTokenizer String
+StringBuffer StringBufferInputStream StringCharacterIterator StringIndexOutOfBoundsException StringReader
+StringSelection StringTokenizer StringWriter StubNotFoundException SyncFailedException System SystemColor
+TextArea TextAreaPeer TextComponent TextComponentPeer TextEvent TextField TextFieldPeer TextListener
+Thread ThreadDeath ThreadGroup Throwable Time TimeZone Timestamp TooManyListenersException Toolkit
+Transferable Types
+UID URL URLConnection URLEncoder URLStreamHandler URLStreamHandlerFactory UTFDataFormatException
+UnexpectedException UnicastRemoteObject UnknownError UnknownHostException UnknownServiceException
+UnmarshalException Unreferenced UnsatisfiedLinkError UnsupportedEncodingException
+UnsupportedFlavorException
+VMID Vector VerifyError VetoableChangeListener VetoableChangeSupport VirtualMachineError Visibility Void
+Window WindowAdapter WindowEvent WindowListener WindowPeer WriteAbortedException Writer
+ZipEntry ZipException ZipFile ZipInputStream ZipOutputStream
+/C3"Operators" STYLE_OPERATOR
+!
+%
+&
+*
++
+-
+// /
+<
+=
+>
+^
+|
+~
+
+/L5"Perl" PERL_LANG Line Comment = # Line Comment Preceding Chars = [~[^]^^$/\(] Escape Char = \ File Extensions = CGI PL PM PLX
+/Delimiters = ~!@$%^&*()+=|\/{}[]:;"'<> 	,.?\`/
+/Function String   = "%[ ^t]++sub[ ^t]+^([a-zA-Z0-9_]+^)[#]"
+/Function String 1 = "%[ ^t]++sub[ ^t]+^([a-zA-Z0-9_]+^)[ ^t{^p]"
+/Function String 2 = "%[ ^t]++sub[ ^t]+^([a-zA-Z0-9_]+^)[ ^t]++(*)[ ^t{^p#]"
+/Function String 3 = "%[ ^t]++^([a-zA-Z0-9_]+^):[ ^t^p]"
+/Indent Strings = "{"
+/Unindent Strings = "}"
+/Open Brace Strings =  "{" "(" "["
+/Close Brace Strings = "}" ")" "]"
+/Open Fold Strings = "{"
+/Close Fold Strings = "}"
+/C1"Keywords" STYLE_KEYWORD
+-A -B -C -M -O -R -S -T -W -X -b -c -d -e -f -g -k -l -o -p -r -s -t -u -w -x -z
+continue
+do
+else elsif exit
+for foreach
+goto
+if
+last local
+my
+next no
+our
+package
+redo require return
+sub
+unless until use
+while
+/C2"Functions" STYLE_FUNCTION
+accept alarm atan2
+bind binmode bless
+caller chdir chmod chomp chop chown chr chroot close closedir connect cos crypt
+dbmclose dbmopen defined delete die dump
+each endgrent endhostent endnetent endprotoent endpwent endservent eof eval exec exists exp
+fcntl fileno flock fork format formline
+getc getgrent getgrgid getgrname gethostbyaddr gethostbyname gethostent getlogin getnetbyaddr getnetbyname
+getnetent getpeername getpgrp getppid getpriority getprotobyname getprotobynumber getprotoent getpwent
+getpwnam getpwuid getservbyname getservbyport getservent getsockname getsockopt glob gmtime grep
+hex
+index int ioctl
+join
+keys kill
+lc lcfirst length link listen localtime log lstat
+map mkdir msgctl msgget msgrcv msgsnd
+oct open opendir ord
+pack pipe pop pos print printf push
+quotemeta
+rand read readdir readline readlink recv ref rename reset reverse rewinddir rindex rmdir
+scalar seek seekdir select semctl semgett semop send setgrent sethostent setnetent setpgrp setpriority
+setprotoent setpwent setservent setsockopt shift shmctl shmget shmread shmwrite shutdown sin sleep socket
+socketpair sort splice split sprintf sqrt srand stat study substr symlink syscall sysopen sysread system
+syswrite
+tell telldir tie tied time times truncate
+uc ucfirst umask undef unlink unpack unshift utime
+values vec
+wait waitpid wantarray warn write
+/C3"Methods" STYLE_METHOD
+AUTOLOAD
+BEGIN
+CHECK CLEAR CLOSE CORE
+DELETE DESTROY
+END EXISTS EXTEND
+FETCH FETCHSIZE FIRSTKEY
+GETC
+INIT
+NEXTKEY
+POP PRINT PRINTF PUSH
+READ READLINE
+SHIFT SPLICE STORE STORESIZE SUPER
+TIEARRAY TIEHANDLE TIEHASH TIESCALAR
+UNIVERSAL UNSHIFT UNTIE
+WRITE
+__DATA__ __END__ __FILE__ __LINE__ __PACKAGE__
+attributes attrs autouse
+base blib bytes
+charnames constant
+diagnostics
+fields filetest
+integer
+less lib locale
+ops overload
+perllocal
+re
+sigtrap strict subs
+utf8
+vars
+warnings
+/C4"Operators" STYLE_OPERATOR
+!
+& &&
+*
++ ++
+- ->
+// /
+< <= <=>
+= => =~
+> >=
+^
+and
+eq
+ge gt
+le lt
+m
+ne not
+or
+q qq qw qx
+s
+tr
+x xor
+y
+| ||
+~
+
+/L6"XML" XML_LANG Noquote Block Comment On = <!-- Block Comment Off = --> File Extensions = XML XUL XSD XSL XSLT
+/Delimiters = ~@$%^&*()+=|\{};"'<> ,
+/Function String = "name=*">"
+/Open Brace Strings =  "{" "(" "[" "<"
+/Close Brace Strings = "}" ")" "]" ">"
+/C1"Elements" STYLE_ELEMENT
+** <
+<a </a> <abbr> <abbr </abbr> <above> <abstract> </abstract> <acronym> </acronym> <activity> </activity>
+<actor> <actor </actor> <add> <add </add> <addName </addName> <addSpan <addrLine> <address> <address
+</address> <addressList> </addressList> <admin </admin> <affiliation> </affiliation> <alt <altGrp
+</altGrp> <analytic> </analytic> <anchor <any> </any> <app> <app </app> <applet </applet> <apply <arc
+<area </area <arg <argument> </argument> <array> <att> <att </att> <attDef> <attDef </attDef> <attList>
+<attList </attList> <attName> </attName> <attlDecl> <attlDecl </attlDecl> <author> </author> <authority>
+</authority> <availability> <availability </availability>
+<b> <b </b> <back> <back </back> <base <baseWsd <basefont <bdo> </bdo> <bgsound <bibl> <bibl </bibl>
+<biblFull> </biblFull> <biblScope> <biblStruct> <biblStruct </biblStruct> <bicond> </bicond> <big> <big
+</big> <birth> <birth </birth> <birthDate> <birthPlace> <blink> <blink </blink> <bloc </bloc> <blockquote>
+<blockquote </blockquote> <body> <body </body> <box> </box> <br/> <br> <br <broadcast> </broadcast>
+<button> </button> <byline> </byline>
+<c> <c </c> <caesura> <calEvent> </calEvent> <camera> </camera> <caption> <caption </caption> <case>
+<castGroup> <castGroup </castGroup> <castItem> <castItem </castItem> <castList> </castList> <catDesc>
+</catDesc> <catRef <category </category> <cb> <cb <cell> <cell </cell> <center> <center </center>
+<certainty <cf> </cf> <change> <change </change> <channel </channel> <character> <character </character>
+<characters> </characters> <children/> <children> <children <cit> </cit> <cite> <cite </cite> <city>
+</city> <cl> <cl </cl> <class> <class </class> <classCode <classDecl> </classDecl> <classDoc> <classDoc
+</classDoc> <classes> <classes </classes> <closer> </closer> <code> <code </code> <codedCharSet>
+<codedCharSet <col> </col> <colgroup> </colgroup> <colloc> <colloc </colloc> <comment> </comment>
+<commentary </commentary> <cond> </cond> <constitution </constitution> <contents/> <corr> <corr
+</corr> <correction> </correction> <country> <country </country> <creation> </creation> <creationDate>
+</creationDate>
+<damage> <damage </damage> <dataDesc> </dataDesc> <dataType> <date> <date </date> <dateRange </dateRange>
+<dateStruct> <dateStruct </dateStruct> <dateline> </dateline> <day> <day </day> <dd> <dd </dd> <def>
+</def> <default> <define-macro </define-macro> <define-script> </define-script> <define-style <del>
+<del </del> <delSpan <derivation </derivation> <desc> <desc </desc> <descrip> <descrip </descrip> <dfn>
+<dfn </dfn> <dft> <dir> <dir </dir> <direction <display-group> <display-group </display-group> <distance>
+<distance </distance> <distinct </distinct> <distributor> </distributor> <div0> <div0 </div0> <div1>
+<div1 </div1> <div2> <div2 </div2> <div3> <div3 </div3> <div4> <div4 </div4> <div5> <div5 </div5> <div6>
+<div6 </div6> <div7> <div7 </div7> <div> <div </div> <divGen <dl> <dl </dl> <doc> </doc> <docAuthor>
+</docAuthor> <docDate> <docEdition> </docEdition> <docImprint> </docImprint> <docTitle> </docTitle>
+<domain </domain> <dt> <dt </dt>
+<eLeaf <eTree </eTree> <earliesttime <edition> <edition </edition> <editionStmt> </editionStmt> <editor>
+<editor </editor> <editorialDecl> <editorialDecl </editorialDecl> <education> </education> <eg> </eg>
+<egwd> </egwd> <elemDecl> <elemDecl </elemDecl> <em> <em </em> <embed <emph> <emph </emph> <encodingDesc>
+</encodingDesc> <ent </ent> <entDoc> <entDoc </entDoc> <entName> <entName </entName> <entitySet>
+<entitySet <entry> <entry </entry> <entryFree> </entryFree> <epigraph> <epigraph </epigraph> <epilogue>
+</epilogue> <equipment> </equipment> <equiv <etym> </etym> <eval> </eval> <event <exceptions> <exceptions
+</exceptions> <exemplum> <exemplum </exemplum> <expan </expan> <extFigure <extent> </extent>
+<external-graphic
+<f </f> <fAlt> <fAlt </fAlt> <fDecl> <fDecl </fDecl> <fDescr> </fDescr> <fLib </fLib> <factuality
+</factuality> <fieldset> </fieldset> <fig> <figDesc> </figDesc> <figure </figure> <fileDesc> </fileDesc>
+<files> <files </files> <firstLang> </firstLang> <font </font> <foreName> <foreName </foreName> <foreign>
+<foreign </foreign> <forest> <forest </forest> <forestGrp> </forestGrp> <form> <form </form> <formula>
+<formula </formula> <frame <frameset </frameset> <front> </front> <fs> <fs </fs> <fsConstraints>
+<fsConstraints </fsConstraints> <fsDecl </fsDecl> <fsDescr> <fsLib </fsLib> <fsdDecl <funder> </funder>
+<fvLib </fvLib> <fw </fw>
+<gap> <gap <gen> </gen> <genName> </genName> <geog> </geog> <geogName> <geogName </geogName> </gfn> <gi>
+<gi </gi> <gloss> <gloss </gloss> <gram </gram> <gramGrp> <gramGrp </gramGrp> <graph </graph> <group>
+</group>
+<h1> <h1 </h1> <h2> <h2 </h2> <h3> <h3 </h3> <h4> <h4 </h4> <h5> <h5 </h5> <h6> <h6 </h6> <h> </h> <hand>
+<hand <handList> </handList> <handShift> <handShift <head> <head </head> <headItem> <headItem </headItem>
+<headLabel> <headLabel </headLabel> <hi> <hi </hi> <hom> <hom </hom> <home> </home> <horizontal-rule/>
+<hour> <hour </hour> <hps </hps> <hr/> <hr> <hr <hsn> </hsn> <html> </html> <hwd> </hwd> <hyph> </hyph>
+<hyphenation </hyphenation>
+<i> <i </i> <iNode <id <idno> <idno </idno> <if> <iff> <iframe> </iframe> <ihs> </ihs> <ilayer> </ilayer>
+<img <imprimatur> <imprint> </imprint> <index <input> <input <ins> <interaction <interp <interpGrp>
+<interpGrp </interpGrp> <interpretation> <intervaltime <invoke </invoke> <isindex> <item> <item </item>
+<itype> <itype </itype>
+<join <joinGrp </joinGrp>
+<kbd> <kbd </kbd> <keywords> <keywords </keywords> <kinesic
+<l> <l </l> <label> <label </label> <lacunaEnd> <lacunaStart> <lang> </lang> <langKnown> </langKnown>
+<langUsage> </langUsage> <language> <language </language> <latesttime <layer> <lb> <lb <lbl> <lbl </lbl>
+<leaf <legend> </legend> <lem> <lem <lg1> <lg1 </lg1> <lg2> <lg2 </lg2> <lg3> <lg3 </lg3> <lg4> <lg4
+</lg4> <lg5> <lg5 </lg5> <lg> <lg </lg> <li> <li </li> <line-field </line-field> <line> <link> <link
+</link> <linkGrp </linkGrp> <list-item </list-item> <list> <list </list> <listBibl> </listBibl>
+<listing> </listing> <locale> <locator <log <logtarget </logtarget>
+<m> <m </m> <map </map> <marquee </marquee> <measure </measure> <meeting> </meeting> <mentioned>
+<mentioned </mentioned> <menu> <menu </menu> <metDecl> <metDecl </metDecl> <meta <milestone <minus>
+<minus <minute> <minute </minute> <monogr> </monogr> <month> <month </month> <mood> <move <msr <multicol>
+</multicol> <mylink </mylink>
+<name> <name </name> <nameLink> </nameLink> <nbr <nextid <nobr> </nobr> <node <noframes> </noframes>
+<nolayer> </nolayer> <none> <normalization> <normalization </normalization> <noscript> </noscript>
+<note> <note </note> <notesStmt> </notesStmt> <null> <num> <num </num> <number> </number>
+<oRef> <oRef <oVar> <oVar </oVar> <object> </object> <occasion> <occasion </occasion> <occupation>
+<occupation </occupation> <offset> </offset> <ofig> <ol> <ol </ol> <omit> <omit </omit> <opener> </opener>
+<optgroup> </optgroup> <option> <option </option> <org> </org> <orgDivn </orgDivn> <orgName </orgName>
+<orgTitle </orgTitle> <orgType </orgType> <orig> <orig </orig> <ornament </ornament> <orth> <orth </orth>
+<otherForm>
+<p> <p </p> <pReg> <pVar <page> <para <paragraph> <paragraph </paragraph> <param <parents> <part> <part
+</part> <particDesc> </particDesc> <particLinks> <particLinks </particLinks> <participant> <participant
+</participant> <participantGrp> <pause> <pb> <pb <per> <performance> </performance> <persName> <persName
+</persName> <person </person> <personGrp> </personGrp> <ph> </ph> <phr> <phr </phr> <place> </place>
+<placeName> <placeName </placeName> <plus> <plus <pos> </pos> <PostBox> </postBox> <postCode> </postCode>
+<pr> </pr> <pre> <pre </pre> <preparedness <principal> </principal> <profileDesc> </profileDesc>
+<projectDesc> </projectDesc> <prologue> </prologue> <pron> <pron </pron> <ptr <pubPlace> </pubPlace>
+<publicationStmt> </publicationStmt> <publisher> </publisher> <purgetime <purpose <purposes> </purposes>
+<q> <q </q> <quotation </quotation> <quote> </quote>
+<range> <rate <rdg> <rdg </rdg> <rdgGrp </rdgGrp> <re> <re </re> <recording </recording> <recordingStmt>
+</recordingStmt> <ref> <ref </ref> <refsDecl> <refsDecl </refsDecl> <reg> <reg </reg> <region> <region
+</region> <relPlace> </relPlace> <relation <relationship </relationship> <remarks> <rendition </rendition>
+<residence> </residence> <resp> </resp> <respStmt> </respStmt> <respons <restore </restore> <revisionDesc>
+</revisionDesc> <role> <role </role> <roleDesc> </roleDesc> <roleName> <roleName </roleName> <root/>
+<root> <root <row> <row </row> <rs> <rs </rs> <rule> <rule </rule>
+<s> <s </s> <salute> </salute> <samp> <samp </samp> <samplingDecl> </samplingDecl> <schedule </schedule>
+<script> <script </script> <scriptStmt </scriptStmt> <scroll </scroll> <second> <second </second> <seg1>
+<seg1 </seg1> <seg> <seg </seg> <segmentation> </segmentation> <select-elements> </select-elements>
+<select> <select </select> <sense> <sense </sense> <sequence> </sequence> <series> </series> <seriesStmt>
+</seriesStmt> <seriesTitle> </seriesTitle> <set> </set> <setting> <setting </setting> <settingDesc>
+</settingDesc> <settle> <settle </settle> <settlement </settlement> <shift> <shift <sic> <sic </sic>
+<signed> <signed </signed> <small> <small </small> <soCalled> <soCalled </soCalled> <socecStatus>
+<socecStatus <sound> <sound </sound> <sourceDesc> </sourceDesc> <sp> <sp </sp> <space <spacer> <span>
+<span </span> <spanGrp </spanGrp> <speaker> </speaker> <sponsor> </sponsor> <sqrt> <stage> <stage </stage>
+<state> <state </state> <stdVals> </stdVals> <step <str> <str </str> <street> </street> <stress> <strike>
+<strike </strike> <string> </string> <strong> <strong </strong> <style-rule> </style-rule> <style>
+<style </style> <sub> <sub </sub> <subc> </subc> <sup> <sup </sup> <superEntry> </superEntry> <supplied>
+<supplied </supplied> <surName> <surName </surName> <syll> </syll> <sym <symbol <table> <table </table>
+<tag> </tag> <tagDoc> </tagDoc> <tagUsage </tagUsage> <tagsDecl> </tagsDecl> <target-element/>
+<target-element </target-element> <taxonomy </taxonomy> <tbody> <tbody </tbody> <td> <td </td> <tech>
+<tech </tech> <tei.2> </tei.2> <teiCorpus.2> </teiCorpus.2> <teiFsd2> </teiFsd2> <teiHeader> <teiHeader
+</teiHeader> <term> <term </term> <termEntry> <termEntry </termEntry> <text> <text </text> <textClass>
+</textClass> <textDesc> <textDesc </textDesc> <textarea> <textarea </textarea> <tfoot> <tfoot </tfoot>
+<th> <th </th> <thead> <thead </thead> <then> <tig </tig> <time> <time </time> <timeLine> <timeLine
+</timeLine> <timeRange </timeRange> <timeStruct> <timeStruct </timeStruct> <title-style <title> <title
+</title> <titlePage> <titlePage </titlePage> <titlePart> <titlePart </titlePart> <titleStmt> <titleStmt
+</titleStmt> <tns </tns> <tr> <tr </tr> <trailer> </trailer> <trans> <trans </trans> <tree </tree>
+<triangle </triangle> <tsd> </tsd> <tt> <tt </tt>
+<u> <u </u> <ul> <ul </ul> <uncertain> <unclear> <unclear </unclear> <usg> <usg </usg>
+<vAlt> <vAlt </vAlt> <vDefault> </vDefault> <vRange> </vRange> <val> </val> <valDesc> </valDesc>
+<valList> <valList </valList> <valRange> </valRange> <var> <var </var> <variantEncoding>
+<variantEncoding </variantEncoding> <view> </view> <vocal <vol>
+<w> <w </w> <warning-para </warning-para> <wbr> <week> <week </week> <what> <when <who> </who> <wit>
+<witDetail </witDetail> <witEnd> <witList> </witList> <witStart> <witness </witness> <work> </work>
+<writing </writing> <writingSystemDeclaration> <writingSystemDeclaration </writingSystemDeclaration>
+<xml> </xml> <xmp> </xmp> <xptr <xr> <xr </xr> <xref <xsl> </xsl>
+<year> <year </year>
+// />
+>
+<
+<%
+%>
+?>
+<? <?xml
+]]>
+<![CDATA[
+/C2"Attributes" STYLE_ATTRIBUTE
+-
+24hour=
+=
+NSDef=
+SrcDef=
+TEI= TEIForm=
+abbr= absolute= action= active= adj= adjFrom= adjTo= afiicode= age= agent= align= alink= all= allusion=
+alt= am= ana= ancestor= anchored= arity= assertedValue= attribute= authority=
+background-color= background= baseForm= baseType= behavior below bgcolor= border=
+calendar= cap= cause= cellpadding= cellspacing= cert= certainty= character= chars= children= class=
+classid= clear= code= codebase= codedCharSet= color= cols= colspan= complete= composite= content-role=
+content= coords= copyOf= corr= corresp= crdate= creator=
+data= date= dateCreated= dateUpdated= day= decls= default= definition= degree= delim= depPtr= depend=
+desc= descendant= descriptive= dim= dir= direct= direction discrete= doc= doctype= domains= dt:type=
+dt:values= dur=
+ed= encoding= end-indent= end= enjamb= entity= entityLoc= entitySet= entityStd= eol= evaluate= event=
+exact= excl= exclude= expan= expand= extendTarg= extent=
+fVal= face= feats= feature= field-width= first-line-start-indent= first= follow= following=
+font-family-name= font-family= font-posture= font-size= font-style= font-weight= for= form= frameborder=
+framespacing= from= fsd= full= function=
+gi= given= gradual= group= grpPtr=
+h= hand= has-value= height= hidden= hour= href= hspace= http-equiv=
+id= ident= image= inDegree= included= index= ink= inline= inst= interval= ismap= iso639= iterated=
+key=
+label2= label= lang= language= left-margin= lemma= length= level1= level2= level3= level4= level= lexpunc=
+line-spacing= lines= link= loc= location= locus= loop=
+macro= mailto= margin-bottom= margin-left= margin-top= marginheight= marginwidth= marker= marks=
+maxOccurs= mergedin= met= method= minOccurs= mlang= mode= multiple mutExcl= mutual=
+n= name= names= new= next= nohref none= noresize norm= noshade notation=
+occurs= old= onblur onchange= onclick onfocus onload only= onmouseout onmouseover onsubmit= opt= ord=
+order= org= orig= origin= outDegree=
+padding= parent= part= passive= pattern= per= perf= place= pm= position= prefix= prev= previous= prompt=
+quadding=
+real= reason= refunit= reg= rel= rend= render= required= resp= result= rev= rhyme= right-margin= role=
+rows= rowspan=
+sameAs= sample= scheme= scope= scribe= script= scrolling= select= selected sex= shape= show= sic= sigil=
+since= size= social= some= sort= source= space-after= space-before= space= span= split= src= standalone=
+start start-indent= start= status= string= style= subtype= synch=
+targFunc= targOrder= targType= target= targetEnd= targets= terminal= text-align= text= theme= time=
+timezone= title= to= token= topmargin= trans= type=
+ucs-4= uniform= unit= url= usage= use=
+valign= value= valueTo= varSeq= version= vlink= vspace=
+weights= where= who= width= wit= wscale= wsd=
+xl-role= xl-title= xml:link= xmlns xmlns:cmi xmlns:dt
+zone=
+/C3"Commands" STYLE_COMMAND
+edit else enjamb
+for function
+global globincl
+if interpret
+return
+then
+var
+while
+/C4"MSXMS schema nodes"
+<AttributeType </AttributeType>
+<ElementType </ElementType>
+<Schema </Schema>
+/C5"MSXMS schema attributes"
+<attribute> <attribute </attribute>
+/C6"MSXMS schema element list"
+<element> <element </element> /element>
+
+/L7"C#" CSHARP_LANG Line Comment = // Block Comment On = /* Block Comment Off = */ Escape Char = \ String Chars = "' String Literal Prefix = @ File Extensions = CS
+/Delimiters = ~!%^&*()-+=|\/{}[]:;"'<> ,	.?
+/Function String = "%[a-zA-Z_]*)[~;]"
+/Member String = "^([A-Za-z0-9_:.]+^)[ ^t*&]+$S[ ^t]++[(=;]"
+/Variable String = "^([A-Za-z0-9_:.]+^)[ ^t*&]+$S[ ^t]++[(=;]"
+/Indent Strings = "{"
+/Unindent Strings = "}"
+/Open Brace Strings =  "{" "(" "["
+/Close Brace Strings = "}" ")" "]"
+/Open Fold Strings = "{" "#region"
+/Close Fold Strings = "}" "#endregion"
+/C1"Keywords" STYLE_KEYWORD
+abstract as auto
+base break
+case catch const continue
+default do
+else event explicit extern
+false finally fixed for foreach
+get goto
+if implicit in internal
+lock
+namespace null
+operator out override
+params private property protected public
+readonly ref return
+sealed set stackalloc static switch
+this throw true try
+unsafe using
+virtual void
+while
+/C2"C# Data Types" STYLE_KEYWORD
+bool byte
+char class
+decimal delegate double
+enum
+float
+int interface
+long
+object
+sbyte short string struct
+uint ulong ushort
+/C3"C# Preprocessor Directives" STYLE_EXTENSION
+#define #elif #else #endif #endregion #error #if #line #region #undef #warning
+/C4"Operators" STYLE_OPERATOR
+!
+%
+&
+*
++
+-
+// /
+:
+<
+=
+>
+?
+^
+checked
+is
+new
+sizeof
+typeof
+unchecked
+|
+
+/L8"PHP" PHP_LANG Nocase EnableMLS Line Comment = // Line Comment Alt = # Block Comment On = /* Block Comment Off = */ Escape Char = \ String Chars = "' File Extensions = INC PHP3 PHP4
+/Delimiters = ~!%^&*()-+=|\/{}[]:;"'` ,	.
+/Function String = "%[^t ]++function[^t ]+^([a-z0-9_&]+^)"
+/Function String 1 = "%[^t ]++function[^t ]+^([~{]+^)"
+/Indent Strings = "{"
+/Unindent Strings = "}"
+/Open Brace Strings =  "{" "(" "["
+/Close Brace Strings = "}" ")" "]"
+/Open Fold Strings = "{"
+/Close Fold Strings = "}"
+/C1"Control Structures" STYLE_KEYWORD
+;
+break
+case continue
+default do
+else elseif endfor endforeach endif endswitch endwhile
+for foreach function
+if include include_once
+require require_once return
+switch
+while
+{
+}
+/C2"Tags" STYLE_TAG
+<?
+<?PHP
+?>
+/C3"Variables" STYLE_VARIABLE
+** $ &
+/C4"Operators" STYLE_OPERATOR
+! !=
+%
+& &&
+* *=
++ ++ +=
+- -- -= ->
+. .=
+// / /=
+:
+< << <=
+= == =>
+> >>
+?
+@
+^
+AND
+OR
+XOR
+| ||
+~
+/C5"Built-in Functions" STYLE_FUNCTION
+abs acos addcslashes addslashes apache_lookup_uri apache_note array array_count_values array_flip
+array_keys array_merge array_pad array_pop array_push array_reverse array_shift array_slice array_splice
+array_unshift array_values array_walk arsort asin asort aspell_check aspell_check_raw aspell_new
+aspell_suggest aster_date atan atan2
+base64_decode base64_encode base_convert basename bcadd bccomp bcdiv bcmod bcmul bcpow bcscale bcsqrt
+bcsub bin2hex bindec
+ceil chdir checkdate checkdnsrr chgrp chmod chop chown chr chunk_split clearstatcache closedir closelog
+compact convert_cyr_string copy cos count count_chars cpdf_add_annotation cpdf_add_outline cpdf_arc
+cpdf_begin_text cpdf_circle cpdf_clip cpdf_close cpdf_closepath cpdf_closepath_fill_stroke
+cpdf_closepath_stroke cpdf_continue_text cpdf_curveto cpdf_end_text cpdf_fill cpdf_fill_stroke
+cpdf_finalize cpdf_finalize_page cpdf_global_set_document_limits cpdf_import_jpeg cpdf_lineto cpdf_moveto
+cpdf_open cpdf_output_buffer cpdf_page_init cpdf_place_inline_image cpdf_rect cpdf_restore cpdf_rlineto
+cpdf_rotate cpdf_save cpdf_save_to_file cpdf_scale cpdf_set_char_spacing cpdf_set_creator
+cpdf_set_current_page cpdf_set_font cpdf_set_horiz_scaling cpdf_set_keywords cpdf_set_leading
+cpdf_set_page_animation cpdf_set_subject cpdf_set_text_matrix cpdf_set_text_pos cpdf_set_text_rendering
+cpdf_set_text_rise cpdf_set_title cpdf_set_word_spacing cpdf_setdash cpdf_setflat cpdf_setgray
+cpdf_setgray_fill cpdf_setgray_stroke cpdf_setlinecap cpdf_setlinejoin cpdf_setlinewidth
+cpdf_setmiterlimit cpdf_setrgbcolor cpdf_setrgbcolor_fill cpdf_setrgbcolor_stroke cpdf_show cpdf_show_xy
+cpdf_stringwidth cpdf_stroke cpdf_text cpdf_translate crypt current
+date dba_close dba_delete dba_exists dba_fetch dba_firstkey dba_insert dba_nextkey dba_open dba_optimize
+dba_popen dba_replace dba_sync dbase_add_record dbase_close dbase_create dbase_delete_record
+dbase_get_record dbase_get_record_with_name dbase_numfields dbase_numrecords dbase_open dbase_pack
+dbase_replace_record dblist dbmclose dbmdelete dbmexists dbmfetch dbmfirstkey dbminsert dbmnextkey dbmopen
+dbmreplace debugger_off debugger_on decbin dechex decoct delete dir dirname diskfreespace dl doubleval
+each easter_days echo empty end ereg ereg_replace eregi eregi_replace error_log error_reporting
+escapeshellcmd exec exp explode extension_loaded extract
+fclose fdf_close fdf_create fdf_get_file fdf_get_status fdf_get_value fdf_next_field_name fdf_open
+fdf_save fdf_set_ap fdf_set_file fdf_set_status fdf_set_value feof fflush fgetc fgetcsv fgets fgetss file
+file_exists fileatime filectime filegroup fileinode filemtime fileowner fileperms filepro
+filepro_fieldcount filepro_fieldname filepro_fieldtype filepro_fieldwidth filepro_retrieve
+filepro_rowcount filesize filetype flock floor fopen fpassthru fputs fread frenchtojd fseek fsockopen
+ftell ftp_cdup ftp_chdir ftp_connect ftp_delete ftp_fget ftp_fput ftp_get ftp_login ftp_mdtm ftp_mkdir
+ftp_nlist ftp_pasv ftp_put ftp_pwd ftp_quit ftp_rawlist ftp_rename ftp_rmdir ftp_site ftp_size ftp_systype
+func_get_arg func_get_args func_num_args fwrite
+get_cfg_var get_current_user get_html_translation_table get_magic_quotes_gpc get_magic_quotes_runtime
+get_meta_tags getallheaders getdate getenv gethostbyaddr gethostbyname gethostbynamel getimagesize
+getlastmod getmxrr getmyinode getmypid getmyuid getprotobyname getprotobynumber getrandmax getrusage
+getservbyname getservbyport gettimeofday gettype gmdate gmmktime gmstrftime gregoriantojd gzclose gzeof
+gzfile gzgetc gzgets gzgetss gzopen gzpassthru gzputs gzread gzrewind gzseek gztell gzwrite
+header hexdec htmlentities htmlspecialchars
+ibase_bind ibase_close ibase_connect ibase_execute ibase_fetch_row ibase_free_query ibase_free_result
+ibase_num_fields ibase_pconnect ibase_prepare ibase_query ibase_timefmt ifx_affected_rows
+ifx_blobinfile_mode ifx_byteasvarchar ifx_close ifx_connect ifx_copy_blob ifx_create_blob ifx_create_char
+ifx_do ifx_error ifx_errormsg ifx_fetch_row ifx_fieldproperties ifx_fieldtypes ifx_free_blob ifx_free_char
+ifx_free_result ifx_free_slob ifx_get_blob ifx_get_char ifx_getsqlca ifx_htmltbl_result ifx_nullformat
+ifx_num_fields ifx_num_rows ifx_pconnect ifx_prepare ifx_query ifx_textasvarchar ifx_update_blob
+ifx_update_char ifxus_close_slob ifxus_create_slob ifxus_open_slob ifxus_read_slob ifxus_seek_slob
+ifxus_tell_slob ifxus_write_slob imagearc imagechar imagecharup imagecolorallocate imagecolorat
+imagecolorclosest imagecolorexact imagecolorresolve imagecolorset imagecolorsforindex imagecolorstotal
+imagecolortransparent imagecopyresized imagecreate imagecreatefromgif imagedashedline imagedestroy
+imagefill imagefilledpolygon imagefilledrectangle imagefilltoborder imagefontheight imagefontwidth
+imagegif imageinterlace imageline imageloadfont imagepolygon imagepsbbox imagepsencodefont imagepsfreefont
+imagepsloadfont imagepstext imagerectangle imagesetpixel imagestring imagestringup imagesx imagesy
+imagettfbbox imagettftext imap_8bit imap_alerts imap_append imap_base64 imap_binary imap_body imap_check
+imap_clearflag_full imap_close imap_createmailbox imap_delete imap_deletemailbox imap_errors imap_expunge
+imap_fetch_overview imap_fetchbody imap_fetchheader imap_fetchstructure imap_getmailboxes
+imap_getsubscribed imap_header imap_headers imap_last_error imap_listmailbox imap_listsubscribed imap_mail
+imap_mail_compose imap_mail_copy imap_mail_move imap_mailboxmsginfo imap_msgno imap_num_msg
+imap_num_recent imap_open imap_ping imap_qprint imap_renamemailbox imap_reopen imap_rfc822_parse_adrlist
+imap_rfc822_write_address imap_scanmailbox imap_search imap_setflag_full imap_sort imap_status
+imap_subscribe imap_uid imap_undelete imap_unsubscribe imap_utf7_decode imap_utf7_encode imap_utf8 implode
+in_array intval is_array is_dir is_double is_executable is_file is_float is_int is_integer is_link is_long
+is_object is_readable is_real is_string is_writeable isset
+jddayofweek jdmonthname jdtofrench jdtogregorian jdtojewish jdtojulian jewishtojd join juliantojd
+key krsort ksort
+ldap_add ldap_bind ldap_close ldap_connect ldap_count_entries ldap_delete ldap_dn2ufn ldap_err2str
+ldap_errno ldap_error ldap_explode_dn ldap_first_attribute ldap_first_entry ldap_free_result
+ldap_get_attributes ldap_get_dn ldap_get_entries ldap_get_values ldap_get_values_len ldap_list
+ldap_mod_add ldap_mod_del ldap_mod_replace ldap_modify ldap_next_attribute ldap_next_entry ldap_read
+ldap_search ldap_unbind link linkinfo list log log10 lstat ltrim
+mail max mcal_append_event mcal_close mcal_date_compare mcal_date_valid mcal_day_of_week mcal_day_of_year
+mcal_days_in_month mcal_delete_event mcal_event_init mcal_event_set_alarm mcal_event_set_category
+mcal_event_set_class mcal_event_set_description mcal_event_set_end mcal_event_set_recur_daily
+mcal_event_set_recur_monthly_mday mcal_event_set_recur_monthly_wday mcal_event_set_recur_none
+mcal_event_set_recur_weekly mcal_event_set_recur_yearly mcal_event_set_start mcal_event_set_title
+mcal_fetch_current_stream_event mcal_fetch_event mcal_is_leap_year mcal_list_alarms mcal_list_events
+mcal_next_recurrence mcal_open mcal_snooze mcal_store_event mcal_time_valid mcrypt_cbc mcrypt_cfb
+mcrypt_create_iv mcrypt_ecb mcrypt_get_block_size mcrypt_get_cipher_name mcrypt_get_key_size mcrypt_ofb
+md5 metaphone mhash mhash_count mhash_get_block_size mhash_get_hash_name microtime min mkdir mktime msql
+msql_affected_rows msql_close msql_connect msql_create_db msql_createdb msql_data_seek msql_dbname
+msql_drop_db msql_dropdb msql_error msql_fetch_array msql_fetch_field msql_fetch_object msql_fetch_row
+msql_field_seek msql_fieldflags msql_fieldlen msql_fieldname msql_fieldtable msql_fieldtype
+msql_free_result msql_list_dbs msql_list_fields msql_list_tables msql_listdbs msql_listfields
+msql_listtables msql_num_fields msql_num_rows msql_numfields msql_numrows msql_pconnect msql_query
+msql_regcase msql_result msql_select_db msql_selectdb msql_tablename mssql_close mssql_connect
+mssql_data_seek mssql_fetch_array mssql_fetch_field mssql_fetch_object mssql_fetch_row mssql_field_length
+mssql_field_name mssql_field_seek mssql_field_type mssql_free_result mssql_get_last_message
+mssql_min_error_severity mssql_min_message_severity mssql_num_fields mssql_num_rows mssql_pconnect
+mssql_query mssql_result mssql_select_db mt_getrandmax mt_rand mt_srand mysql_affected_rows
+mysql_change_user mysql_close mysql_connect mysql_create_db mysql_data_seek mysql_db_query mysql_drop_db
+mysql_errno mysql_error mysql_fetch_array mysql_fetch_field mysql_fetch_lengths mysql_fetch_object
+mysql_fetch_row mysql_field_flags mysql_field_len mysql_field_name mysql_field_seek mysql_field_table
+mysql_field_type mysql_free_result mysql_insert_id mysql_list_dbs mysql_list_fields mysql_list_tables
+mysql_num_fields mysql_num_rows mysql_pconnect mysql_query mysql_result mysql_select_db mysql_tablename
+next nl2br number_format
+ocibindbyname ocicolumnisnull ocicolumnname ocicolumnsize ocicolumntype ocicommit ocidefinebyname ocierror
+ociexecute ocifetch ocifetchinto ocifetchstatement ocifreecursor ocifreestatement ociinternaldebug
+ocilogoff ocilogon ocinewcursor ocinewdescriptor ocinlogon ocinumcols ociparse ociplogon ociresult
+ocirollback ocirowcount ociserverversion ocistatementtype octdec odbc_autocommit odbc_binmode odbc_close
+odbc_close_all odbc_commit odbc_connect odbc_cursor odbc_do odbc_exec odbc_execute odbc_fetch_into
+odbc_fetch_row odbc_field_len odbc_field_name odbc_field_type odbc_free_result odbc_longreadlen
+odbc_num_fields odbc_num_rows odbc_pconnect odbc_prepare odbc_result odbc_result_all odbc_rollback
+odbc_setoption opendir openlog ora_bind ora_close ora_columnname ora_columntype ora_commit ora_commitoff
+ora_commiton ora_error ora_errorcode ora_exec ora_fetch ora_getcolumn ora_logoff ora_logon ora_open
+ora_parse ora_rollback ord
+parse_str parse_url passthru pclose pdf_add_annotation pdf_add_outline pdf_arc pdf_begin_page pdf_circle
+pdf_clip pdf_close pdf_close_image pdf_closepath pdf_closepath_fill_stroke pdf_closepath_stroke
+pdf_continue_text pdf_curveto pdf_end_page pdf_endpath pdf_execute_image pdf_fill pdf_fill_stroke
+pdf_get_info pdf_lineto pdf_moveto pdf_open pdf_open_gif pdf_open_jpeg pdf_open_memory_image
+pdf_place_image pdf_put_image pdf_rect pdf_restore pdf_rotate pdf_save pdf_scale pdf_set_char_spacing
+pdf_set_duration pdf_set_font pdf_set_horiz_scaling pdf_set_info_author pdf_set_info_creator
+pdf_set_info_keywords pdf_set_info_subject pdf_set_info_title pdf_set_leading pdf_set_parameter
+pdf_set_text_matrix pdf_set_text_pos pdf_set_text_rendering pdf_set_text_rise pdf_set_transition
+pdf_set_word_spacing pdf_setdash pdf_setflat pdf_setgray pdf_setgray_fill pdf_setgray_stroke
+pdf_setlinecap pdf_setlinejoin pdf_setlinewidth pdf_setmiterlimit pdf_setrgbcolor pdf_setrgbcolor_fill
+pdf_setrgbcolor_stroke pdf_show pdf_show_boxed pdf_show_xy pdf_skew pdf_stringwidth pdf_stroke
+pdf_translate pfsockopen pg_close pg_cmdtuples pg_connect pg_dbname pg_errormessage pg_exec pg_fetch_array
+pg_fetch_object pg_fetch_row pg_fieldisnull pg_fieldname pg_fieldnum pg_fieldprtlen pg_fieldsize
+pg_fieldtype pg_freeresult pg_getlastoid pg_host pg_loclose pg_locreate pg_loopen pg_loreadpg_loreadall
+pg_lounlink pg_lowrite pg_numfields pg_numrows pg_options pg_pconnect pg_port pg_result pg_tty
+php_logo_guid phpinfo phpversion pi popen pos posix_ctermid posix_getcwd posix_getegid posix_geteuid
+posix_getgid posix_getgrgid posix_getgrnam posix_getgroups posix_getlogin posix_getpgid posix_getpgrp
+posix_getpid posix_getppid posix_getpwnam posix_getpwuid posix_getrlimit posix_getsid posix_getuid
+posix_isatty posix_kill posix_mkfifo posix_setgid posix_setpgid posix_setsid posix_setuid posix_times
+posix_ttyname posix_uname pow preg_grep preg_match preg_match_all preg_quote preg_replace preg_split prev
+print print_r printf putenv
+quoted_printable_decode quotemeta
+rand range rawurldecode rawurlencode readdir readfile readgzfile readlink recode_file recode_string rename
+reset rewind rewinddir rmdir round rsort
+sem_acquire sem_get sem_release session_decode session_destroy session_encode session_id
+session_is_registered session_module_name session_name session_register session_save_path session_start
+session_unregister set_file_buffer set_magic_quotes_runtime set_socket_blocking set_time_limit setcookie
+setlocale settype shm_attach shm_detach shm_get_var shm_put_var shm_remove shm_remove_var shuffle
+similar_text sin sizeof snmp_get_quick_print snmp_set_quick_print snmpget snmpset snmpwalk snmpwalkoid
+sort soundex split sprintf sql_regcase sqrt srand stat str_repeat str_replace strcasecmp strchr strcmp
+strcspn strftime strip_tags stripcslashes stripslashes stristr strlen strpos strrchr strrev strrpos strspn
+strstr strtok strtolower strtoupper strtr strval substr substr_replace sybase_affected_rows sybase_close
+sybase_connect sybase_data_seek sybase_fetch_array sybase_fetch_field sybase_fetch_object sybase_fetch_row
+sybase_field_seek sybase_free_result sybase_num_fields sybase_num_rows sybase_pconnect sybase_query
+sybase_result sybase_select_db symlink syslog system
+tan tempnam time touch trim
+uasort ucfirst ucwords uksort umask unlink unset urldecode urlencode usort utf8_decode utf8_encode
+var_dump virtual vm_addalias vm_adduser vm_delalias vm_deluser vm_passwd
+wddx_add_vars wddx_deserialize wddx_packet_end wddx_packet_start wddx_serialize_value wddx_serialize_vars
+xml_error_string xml_get_current_byte_index xml_get_current_column_number xml_get_current_line_number
+xml_get_error_code xml_parse xml_parser_create xml_parser_free xml_parser_get_option xml_parser_set_option
+xml_set_character_data_handler xml_set_default_handler xml_set_element_handler
+xml_set_external_entity_ref_handler xml_set_object xml_set_processing_instruction_handler
+xml_set_unparsed_entity_decl_handler
+yp_first yp_get_default_domain yp_master yp_match yp_next yp_order
+zend_logo_guid
+/C6"Built-in Constants" STYLE_EXTENSION
+__FILE__ __LINE__
+CL_EXPUNGE CP_MOVE CP_UID CRYPT_BLOWFISH CRYPT_EXT_DES CRYPT_MD5 CRYPT_STD_DES
+DOCUMENT_ROOT
+E_CORE_ERROR E_CORE_WARNING E_ERROR E_NOTICE E_PARSE E_WARNING
+FT_INTERNAL FT_PEEK FT_UID
+GATEWAY_INTERFACE
+HTTP_ACCEPT HTTP_ACCEPT_CHARSET HTTP_ACCEPT_LANGUAGE HTTP_CONNECTION HTTP_ENCODING HTTP_HOST HTTP_REFERER
+HTTP_USER_AGENT
+LATT_MARKED LATT_NOINFERIORS LATT_NOSELECT LATT_UNMARKED LC_ALL LC_COLLATE LC_CTYPE LC_MONETARY LC_NUMERIC
+LC_TIME
+MCAL_APRIL MCAL_AUGUST MCAL_DECEMBER MCAL_FEBRUARY MCAL_FRIDAY MCAL_JANUARY MCAL_JULY MCAL_MARCH
+MCAL_MAYMCAL_JUNE MCAL_MONDAY MCAL_NOVEMBER MCAL_OCTOBER MCAL_RECUR_DAILY MCAL_RECUR_MONTHLY_MDAY
+MCAL_RECUR_MONTHLY_WDAY MCAL_RECUR_NONE MCAL_RECUR_WEEKLY MCAL_RECUR_YEARLY MCAL_SATURDAY MCAL_SEPTEMBER
+MCAL_SUNDAY MCAL_THURSDAY MCAL_TUESDAY MCAL_WEDNESDAY MCRYPT_CRYPT MCRYPT_DES MCRYPT_DES_COMPAT
+MCRYPT_GOST MCRYPT_IDEA MCRYPT_RC2 MCRYPT_RC6 MCRYPT_SAFER128 MCRYPT_SAFER64 MCRYPT_TEAN MCRYPT_ThreeWAY
+MCRYPT_TripleDES MCRYPT_TWOFISH MCRYPT_TWOFISH128 MCRYPT_TWOFISH192 MHASH_CRC32 MHASH_CRC32B MHASH_GOST
+MHASH_HAVAL MHASH_MD5 MHASH_RIPEMD128 MHASH_RIPEMD160 MHASH_SHA1 MHASH_SNEFRU MHASH_TIGER
+OCI_ASSOC OCI_B_BLOB OCI_B_CFILE OCI_B_CLOB OCI_B_FILE OCI_B_ROWID OCI_COMMIT_ON_SUCCESS OCI_D_FILE
+OCI_D_LOB OCI_D_ROWID OCI_DEFAULT OCI_NUM OCI_RETURN_LOBS ODBC_BINMODE_CONVERT ODBC_BINMODE_PASSTHRU
+ODBC_BINMODE_RETURN OP_ANONYMOUS OP_HALFOPEN OP_READONLY
+PATH_TRANSLATED PCRE_ANCHORED PCRE_CASELESS PCRE_DOLLAR_ENDONLY PCRE_DOTALL PCRE_EXTENDED PCRE_EXTRA
+PCRE_MULTILINE PCRE_NOTBOL PCRE_NOTEOL PCRE_UNGREEDY PGSQL_ASSOC PGSQL_BOTH PGSQL_NUM PHP_OS PHP_VERSION
+PREG_PATTERN_ORDER PREG_SET_ORDER PREG_SPLIT_NO_EMPTY
+QUERY_STRING
+REMOTE_ADDR REMOTE_PORT REQUEST_METHOD REQUEST_URI RETURN_NULLS
+SCRIPT_FILENAME SCRIPT_NAME SERVER_ADMIN SERVER_NAME SERVER_PORT SERVER_PROTOCOL SERVER_SIGNATURE
+SERVER_SOFTWARE SQL_CUR_DEFAULT SQL_CUR_USE_DRIVER SQL_CUR_USE_IF_NEEDED SQL_CUR_USE_ODBC
+TRUE
+XML_ERROR_ASYNC_ENTITY XML_ERROR_ATTRIBUTE_EXTERNAL_ENTITY_REF XML_ERROR_BAD_CHAR_REF
+XML_ERROR_BINARY_ENTITY_REF XML_ERROR_DUPLICATE_ATTRIBUTE XML_ERROR_EXTERNAL_ENTITY_HANDLING
+XML_ERROR_INCORRECT_ENCODING XML_ERROR_INVALID_TOKEN XML_ERROR_JUNK_AFTER_DOC_ELEMENT
+XML_ERROR_MISPLACED_XML_PI XML_ERROR_NO_ELEMENTS XML_ERROR_NO_MEMORY XML_ERROR_NONE
+XML_ERROR_PARAM_ENTITY_REF XML_ERROR_PARTIAL_CHAR XML_ERROR_RECURSIVE_ENTITY_REF XML_ERROR_SYNTAX
+XML_ERROR_TAG_MISMATCH XML_ERROR_UNCLOSED_CDATA_SECTION XML_ERROR_UNCLOSED_TOKEN
+XML_ERROR_UNDEFINED_ENTITY XML_ERROR_UNKNOWN_ENCODING XML_OPTION_CASE_FOLDING XML_OPTION_TARGET_ENCODING
+/C7"Built-in Variables" STYLE_VARIABLE
+argc argv
+HTTP_COOKIE_VARS HTTP_GET_VARS HTTP_POST_VARS
+PHP_SELF
+/C8"Keywords" STYLE_KEYWORD
+$_COOKIE $_ENV $_FILES $_GET $_POST $_REQUEST $_SERVER $_SESSION $argc $argv $GLOBALS $HTTP_COOKIE_VARS
+$HTTP_ENV_VARS $HTTP_GET_VARS $HTTP_POST_FILES $HTTP_POST_VARS $HTTP_SERVER_VARS $HTTP_SESSION_VARS
+$PHP_SELF $this
+__autoload __call __clone __construct __destruct __get __set __sleep __wakeup
+abstract as
+catch cfunction class
+declare die
+enddeclare eval exit extends
+false final
+global
+implements interface
+namespace NULL
+old_function
+parent private protected public
+static stdClass
+throw true try
+var
+
+/L9"JavaScript" JSCRIPT_LANG Line Comment = // Block Comment On = /* Block Comment Off = */ Escape Char = \ String Chars = '" File Extensions = JS
+/Delimiters = ~!@%^&*()-+=|\/{}[]:;"'<> ,	.?
+/Function String = "%[ ^t]++[a-zA-Z_0-9][a-zA-Z_0-9^[^]]+[ ^t*]+^([a-zA-Z_0-9]+^)[ ^t]++([^p*&:, ^t^[^]a-zA-Z_0-9./(!]++)[~;]" 
+/Indent Strings = "{" "else"
+/Unindent Strings = "}"
+/Open Brace Strings =  "{" "(" "[" "<"
+/Close Brace Strings = "}" ")" "]" ">"
+/Open Fold Strings = "{"
+/Close Fold Strings = "}"
+/C1"Keywords" STYLE_KEYWORD
+abstract
+break byte
+case catch char class const continue
+default delete do double
+else extends
+false final finally float for function
+goto
+if implements import in instanceof int interface
+long
+native null
+package private protected public
+reset return
+short static super switch synchronized
+this throw transient true try
+var void
+while with
+/C2"Objects" STYLE_OPERATOR
+Anchor Applet Area Arguments Array
+Boolean Button
+Checkbox Collection Crypto
+Date Dictionary Document Drive Drives
+Element Enumerator Event
+File FileObject FileSystemObject FileUpload Folder Folders Form Frame Function
+Global
+HTMLElement Hidden History
+Image Infinity Input
+JSObject JavaArray JavaClass JavaObject JavaPackage
+Layer Link
+Math MimeType
+Navigator Number
+Object Option
+Packages Password Plugin PrivilegeManager
+Random RegExp
+Select String Submit
+Text Textarea
+URL UltraEdit
+VBArray
+WScript Window
+activeDocument
+screen
+/C3"Methods and Properties" STYLE_METHOD
+ActiveXObject
+E Echo
+FromPoint
+HandleEvent
+LN10 LN2 LOG10E LOG2E Links
+MAX_VALUE MIN_VALUE
+NEGATIVE_INFINITY NaN
+PI POSITIVE_INFINITY
+SQRT1_2 SQRT2
+TYPE
+UTC
+above abs acos action activeElement alert alinkColor all altKey anchor anchors appCodeName appName
+appVersion applets apply arguments arity asin assign atan atan2 atob availHeight availLeft availTop
+availWidth
+back background below bgColor big blink blur bold border borderWidths bottom btoa button
+call callee caller cancelBubble captureEvents ceil charAt charCodeAt charset checked children className
+classes clear clearInterval clearTimeout click clientInformation clientX clientY close closed colorDepth
+compile complete concat confirm constructir contains contextual cookie cos crypto ctrlKey current
+data defaultCharset defaultChecked defaultSelected defaultStatus defaultValue description
+disableExternalCapture disablePrivilege document domain
+element elements embeds enableExternalCapture enablePrivilege enabledPlugin encoding escape eval event
+exec exp expando
+fgColor fileName find fixed floor focus fontColor fontSize form forms forward frames fromCharCode
+fromElement
+get getAttribute getClass getDate getDay getFullYear getHours getMember getMilliseconds getMinutes
+getMonth getSeconds getSelection getSlot getTime getTimezoneOffset getUTCDate getUTCDay getUTCFullYear
+getUTCHours getUTCMilliseconds getUTCMinutes getUTCMonth getUTCSeconds getWindow getYear global go
+hash height hidden history home host hostName href hspace
+id ids ignoreCase images index indexOf inner innerHTML innerText innerWidth insertAdjacentHTML
+insertAdjacentText isFinite isNaN italics
+java javaEnabled join
+keyCode
+lang language lastIndex lastIndexOf lastMatch lastModified lastParen layerX layerY layers left leftContext
+length link linkColor load location locationBar log lowsrc
+margins match max menubar method mimeTypes min modifiers moveAbove moveBelow moveBy moveTo moveToAbsolute
+multiline
+name navigate navigator netscape next number
+offscreenBuffering offset offsetHeight offsetLeft offsetParent offsetTop offsetWidth offsetX offsetY
+onHelp onabort onblur onchange onclick ondblclick ondragdrop onerror onfocus onkeydown onkeypress onkeyup
+onload onmousedown onmousemove onmouseout onmouseover onmouseup onmove onreset onresize onsubmit onunload
+open opener options outerHTML outerHeight outerText outerWidth
+paddings pageX pageXOffset pageY pageYOffset parent parentElement parentLayer parentWindow parse
+parseFloat parseInt pathname personalbar pixelDepth platform plugins pop port pow preference previous
+print prompt protocol prototype push
+random readyState reason referrer refresh releaseEvents reload removeAttribute removeMember replace
+resizeBy resizeTo returnValue reverse right rightContext round
+screenX screenY scroll scrollBy scrollIntoView scrollTo scrollbars search select selected selectedIndex
+self setAttribute setDay setFullYear setHotkeys setHours setInterval setMember setMilliseconds setMinutes
+setMonth setResizable setSeconds setSlot setTime setTimeout setUTCDate setUTCFullYear setUTCHours
+setUTCMillseconds setUTCMinutes setUTCMonth setUTCSeconds setYear setZOptions shift shiftKey siblingAbove
+siblingBelow signText sin slice smallsort source sourceIndex splice split sqrt src srcElement srcFilter
+status statusbar stop strike style sub submit substr substring suffixes sun sup systemLanguage
+tagName tags taint taintEnabled tan target test text title toElement toGMTString toLocaleString
+toLowerCase toString toUTCString toUpperCase toolbar top type typeof
+unescape unshift untaint unwatch userAgent userLanguage
+value valueOf visibility vlinkColor vspace
+watch which width window write writeln
+x
+y
+zIndex
+/C4"Operators" STYLE_OPERATOR
+!
+$
+%
+&
+*
++
+-
+// /
+:
+<
+=
+>
+?
+[
+]
+^
+is
+new
+sizeof
+unchecked
+|
+~
+/C5"Separs" STYLE_OPERATOR
+(
+)
+,
+;
+{
+}
+/C6"UE/UES Script Commands" STYLE_FUNCTION
+ASCIIToUnicode
+ansiToOem
+clearClipboard closeFile columnCenterJustify columnCut columnDelete columnInsert columnInsertNum
+columnLeftJustify columnModeOff columnModeOn columnRightJustify copy copyAppend copyFilePath cut cutAppend
+deleteLine deleteText deleteToEndOfLine deleteToStartOfLine dosToMac dosToUnix dupeLine
+endSelect
+findReplace frInFiles fromEBCDIC
+getString getValue gotoBookmark gotoBookmarkSelect gotoLine gotoLineSelect gotoPage gotoPageSelect
+hexDelete hexInsert hexOff hexOn hideOrShowLines
+insertLine insertMode insertPageBreak invertCase isChar isCharGt isColNum isColNumGt isEof isExt
+isFTP isFound isHexModeOn isName isNotFound isSel
+key
+matchBrace
+newFile
+oemToAnsi overStrikeMode
+paste perlReOn previousBookmark previousBookmarkSelect
+returnToWrap runTool
+save saveAll saveAs selectAll selectClipboard selectLine selectToBottom selectToTop selectWord
+setActive sortAsc sortDes spacesToTabs spacesToTabsAll startSelect
+tabsToSpaces template timeDate toCaps toEBCDIC toLower toUpper toggleBookmark trimTrailingSpaces
+ueReOn unicodeToASCII unixMacToDos unixReOn
+wrapToReturn
+/C7"UE/UES Script Properties" STYLE_ELEMENT
+currentChar
+directoryStart
+filesToSearch
+logChanges
+matchCase matchWord
+preserveCase
+regExp replaceAll replaceInAllOpen
+searchAscii searchDown searchInFilesTypes searchSubs selectText selection
+unicodeSearch useOutputWindow
+
+/L10"VBScript ASP" Nocase ASP_LANG Line Comment = ' Line Comment Alt = REM Block Comment On = /* Block Comment Off = */ Block Comment On Alt = <!-- Block Comment Off Alt = --> String Chars = " File Extensions =
+/Delimiters = ~!@%^&*()_-+=|\{}[]:;"'<> ,	.?
+/Function String = "%[ ,^t]++^{Public^}^{Private^} ^(^{Function^}^{Sub^}*^)(*[)]++*"
+/Function String 1 = "%[ ,^t]++^(^{Function^}^{Sub^}*^)(*)"
+/Function String 2 = "%[ ,^t]++^{Public^}^{Private^} ^(Property ^{Let^}^{Get^}*^)(*)*"
+/Function String 3 = "%[ ,^t]++^(Property ^{Let^}^{Get^}*^)(*)*"
+/Function String 4 = "%[ ,^t]++^{Function^}^{Sub^} ^(*)"
+/Open Brace Strings =  "{" "(" "[" "<"
+/Close Brace Strings = "}" ")" "]" ">"
+/Indent Strings = "Then" "Select Case" "Do While" "Do Until" "Do" "Else" "ElseIf" "<td>" "<tr>"
+/Unindent Strings = "End If" "Loop" "End" "Next" "Loop While" "Else" "ElseIf" "</TD>" "</tr>"
+/Open Fold Strings = "If" "ElseIf" "Function" "Sub" "With" "Do" "For" "While" "Select Case" "Case Else" "Case" "Else"
+/Close Fold Strings = "ElseIf" "End If" "End Function" "End Sub" "End With" "Loop" "Next" "Wend" "End Select" "Case Else" "Case" "Else"
+/Ignore Fold Strings = "Exit Function" "Exit Sub" "Declare Function" 
+/C1"Tags" STYLE_TAG
+%>
+<%
+/C2"VBFunctions" STYLE_FUNCTION
+&
+Abs Array Asc AscB AscW Atn Avg
+CBool CByte CCur CDate CDbl Cdec Choose Chr ChrB ChrW CInt CLng Command Cos Count CreateObject CSng CStr
+CurDir CVar CVDate CVErr
+Date DateAdd DateDiff DatePart DateSerial DateValue Day DDB Dir DoEvents
+Environ EOF Error Exp
+FileAttr FileDateTime FileLen Fix Format FreeFile FV
+GetAllStrings GetAttr GetAutoServerSettings GetObject GetSetting
+Hex Hour
+IIf IMEStatus Input InputB InputBox InstB InStr Int IPmt IsArray IsDate IsEmpty IsError IsMissing IsNull
+IsNumeric IsObject
+LBound LCase Left LeftB Len LenB LoadPicture Loc LOF Log LTrim
+Max Mid MidB Min Minute MIRR Month MsgBox
+Now NPer NPV
+Oct
+Partition Pmt PPmt PV
+QBColor
+Rate RGB Right RightB Rnd RTrim
+Second Seek Sgn Shell Sin SLN Space Spc Sqr StDev StDevP Str StrComp StrConv String Sum Switch SYD
+Tab Tan Time Timer TimeSerial TimeValue Trim TypeName
+UBound UCase
+Val Var VarP VarType
+Weekday
+Year
+/C3"VBMethods" STYLE_METHOD
+Accept Activate Add AddCustom AddFile AddFromFile AddFromTemplate AddItem AddNew AddToAddInToolbar
+AddToolboxProgID Append AppendChunk Arrange Assert AsyncRead
+BatchUpdate BeginTrans Bind Buffer
+CacheControl Cancel CancelAsyncRead CancelBatch CancelUpdate CanPropertyChange CaptureImage CellText
+CellValue Charset Circle Clear ClearFields ClearSel ClearSelCols Clone Close Cls ColContaining ColumnSize
+CommitTrans CompactDatabase Compose Connect ContentType Copy CopyQueryDef CreateDatabase CreateDragImage
+CreateEmbed CreateField CreateGroup CreateIndex CreateLink CreatePreparedStatement CreatePropery
+CreateQuery CreateQueryDef CreateRelation CreateTableDef CreateUser CreateWorkspace Customize
+Delete DeleteColumnLabels DeleteColumns DeleteRowLabels DeleteRows DoVerb Drag Draw
+Edit EditCopy EditPaste EndDoc EnsureVisible EstablishConnection Execute Expires ExpiresAbsolute
+ExtractIcon
+Fetch FetchVerbs Files FillCache Find FindFirst FindItem FindLast FindNext FindPrevious Forward
+GetBookmark GetChunk GetClipString GetData GetFirstVisible GetFormat GetHeader GetLineFromChar GetNumTicks
+GetRows GetSelectedPart GetText GetVisibleCount GoBack GoForward
+Hide HitTest HoldFields HTMLEncode
+Idle InitializeLabels InsertColumnLabels InsertColumns InsertObjDlg InsertRowLabels InsertRows
+IsClientConnected Item
+KillDoc
+Layout Line LinkExecute LinkPoke LinkRequest LinkSend Listen LoadFile LoadResData LoadResPicture
+LoadResString LogEvent
+MakeCompileFile MakeReplica MapPath MoreResults Move MoveData MoveFirst MoveLast MoveNext MovePrevious
+NavigateTo NewPage NewPassword NextRecordset
+OLEDrag OnAddinsUpdate OnConnection OnDisconnection OnStartupComplete Open OpenConnection OpenDatabase
+OpenQueryDef OpenRecordset OpenResultset OpenURL Overlay
+PaintPicture Paste PastSpecialDlg PeekData Play Point PopulatePartial PopupMenu Print PrintForm
+PropertyChanged PSet
+Quit
+Raise RandomDataFill RandomFillColumns RandomFillRows rdoCreateEnvironment rdoRegisterDataSource
+ReadFromFile ReadProperty Rebind ReFill Refresh RefreshLink RegisterDatabase Reload Remove
+RemoveAddInFromToolbar RemoveItem Render RepairDatabase Reply ReplyAll Requery ResetCustom
+ResetCustomLabel ResolveName RestoreToolbar Resync Rollback RollbackTrans RowBookmark RowContaining RowTop
+Save SaveAs SaveFile SaveToFile SaveToolbar SaveToOle1File Scale ScaleX ScaleY ScriptTimeout Scroll Select
+SelectAll SelectPart SelPrint Send SendData SessionID Set SetAutoServerSettings SetData SetFocus SetOption
+SetSize SetText SetViewport Show ShowColor ShowFont ShowHelp ShowOpen ShowPrinter ShowSave ShowWhatsThis
+SignOff SignOn Size Span SplitContaining StartLabelEdit StartLogging Status Stop Synchronize
+TextHeight TextWidth Timeout ToDefaults TwipsToChartPart TypeByChartType
+Update UpdateControls UpdateRecord UpdateRow Upto URLEncode
+WhatsThisMode Write WriteProperty
+ZOrder
+/C4"VBEvents" STYLE_EVENT
+AccessKeyPress AddHeader AfterAddFile AfterChangeFileName AfterCloseFile AfterColEdit AfterColUpdate
+AfterDelete AfterInsert AfterLabelEdit AfterRemoveFile AfterUpdate AfterWriteFile AmbienChanged
+AppendToLog ApplyChanges Associate AsyncReadComplete AxisActivated AxisLabelActivated AxisLabelSelected
+AxisLabelUpdated AxisSelected AxisTitleActivated AxisTitleSelected AxisTitleUpdated AxisUpdated
+BeforeClick BeforeColEdit BeforeColUpdate BeforeConnect BeforeDelete BeforeInsert BeforeLabelEdit
+BeforeLoadFile BeforeUpdate BinaryWrite ButtonClick ButtonCompleted ButtonGotFocus ButtonLostFocus
+Change ChartActivated ChartSelected ChartUpdated Click ColEdit Collapse ColResize ColumnClick Compare
+ConfigChageCancelled ConfigChanged ConnectionRequest
+DataArrival DataChanged DataUpdated DblClick Deactivate DeviceArrival DeviceOtherEvent DeviceQueryRemove
+DeviceQueryRemoveFailed DeviceRemoveComplete DeviceRemovePending DevModeChange Disconnect DisplayChanged
+Dissociate DoGetNewFileName Done DonePainting DownClick DragDrop DragOver DropDown
+EditProperty EnterCell EnterFocus ExitFocus Expand
+Flush FootnoteActivated FootnoteSelected FootnoteUpdated
+GotFocus
+HeadClick
+InfoMessage IniProperties Initialize ItemActivated ItemAdded ItemCheck ItemClick ItemReloaded ItemRemoved
+ItemRenamed ItemSeletected
+KeyDown KeyPress KeyUp
+LeaveCell LegendActivated LegendSelected LegendUpdated LinkClose LinkError LinkNotify LinkOpen Load
+LostFocus
+MouseDown MouseMove MouseUp
+NodeClick
+ObjectMove OLECompleteDrag OLEDragDrop OLEDragOver OLEGiveFeedback OLESetData OLEStartDrag OnAddNew OnComm
+OnEnd OnStart
+Paint PanelClick PanelDblClick PathChange PatternChange PlotActivated PlotSelected PlotUpdated
+PointActivated PointLabelActivated PointLabelSelected PointLabelUpdated PointSelected PointUpdated
+PowerQuerySuspend PowerResume PowerStatusChanged PowerSuspend
+QueryChangeConfig QueryComplete QueryCompleted QueryTimeout QueryUnload
+ReadProperties Redirect Reposition RequestChangeFileName RequestWriteFile Resize ResultsChanged
+RowColChange RowCurrencyChange RowResize RowStatusChanged
+SelChange SelectionChanged SendComplete SendProgress SeriesActivated SeriesSelected SeriesUpdated
+SettingChanged SplitChange StateChanged StatusUpdate SysColorsChanged
+Terminate TimeChanged TitleActivated TitleSelected
+UnboundAddData UnboundDeleteRow UnboundGetRelativeBookmark UnboundReadData UnboundWriteData Unload UpClick
+Updated
+Validate ValidationError
+WillAssociate WillChangeData WillDissociate WillExecute WillUpdateRows WriteProperties
+/C5"VBStatements" STYLE_STATEMENT
+AppActivate
+Base Beep
+Call Case ChDir ChDrive Const
+DefBool DefByte DefCur DefDate DefDbl DefDec DefInt DefLng DefObj DefSng DefStr Deftype DefVar
+DeleteSetting Dim Do
+Else ElseIf End Enum Erase Event Exit Explicit
+FileCopy For ForEach Function
+Get GoSub GoTo
+If Implements
+Kill
+Let LineInput Lock LSet
+MkDir
+Name Next
+On OnError Option
+Private Property Public Put
+RaiseEvent Randomize ReDim Reset Resume Return RmDir RSet
+SavePicture SaveSetting SendKeys SetAttr Static Step Sub
+Then To Type
+Unlock
+Wend While Width With
+/C6"Objects"
+Application
+ClientCertificate Cookies
+Form
+ObjectContext
+QueryString
+Request Response
+Server ServerVariables Session
+/C7"Constants"
+CDROM
+False Fixed ForAppending ForReading ForWriting
+RAMDisk Remote Removable
+True
+Unknown
+vbArray vbBinaryCompare vbBlack vbBlue vbBoolean vbByte vbCr vbCrLf vbCurrency vbCyan vbDataObject vbDate
+vbDecimal vbDouble vbEmpty vbError vbFalse vbFirstFourDays vbFirstFullWeek vbFirstJan1 vbFormFeed vbFriday
+vbGeneralDate vbGreen vbInteger vbLf vbLong vbLongDate vbLongTime vbMagenta vbMonday vbNewLine vbNull
+vbNullChar vbNullString vbObject vbObjectError vbRed vbSaturday vbShortDate vbShortTime vbSingle vbString
+vbSunday vbTab vbTextCompare vbThursday vbTrue vbTuesday vbUseSystem vbUseSystemDayOfWeek vbVariant
+vbVerticalTab vbWednesday vbWhite vbYellow
+
+/L11"CSS" CSS_LANG Nocase Noquote Block Comment On = /* Block Comment Off = */ File Extensions = CSS
+/Delimiters = ,.:;	{ }
+/C1"HTML Tags"
+A ABOVE ACTIVE ADDRESS APPLET AREA ARRAY
+B BASE BASEFONT BGSOUND BIG BLOCKQUOTE BODY BR
+CAPTION CITE CODE
+DD DFN DIR DIV DL DT
+EM EMBED
+FIG FIRST-LETTER FIRST-LINE FORM FRAME FRAMESET
+H H1 H2 H3 H4 H5 H6 HEAD HR HTML
+I IMG INPUT ISINDEX
+KBD
+LI LINK
+MAP MARQUEE MENU META
+NEXTID NOBR NOFRAMES NOSCRIPT NOTE
+OL OPTION
+P PRE
+RANGE ROOT
+SAMP SCRIPT SELECT SOUND SPAN SQRT STRIKE STRONG STYLE SUP
+TABLE TD TEXT TEXTAREA TH TITLE TR TT
+U UL
+VAR VISITED
+WBR
+/C2"CSS Properties"
+background background-attachment background-color background-image background-position background-repeat
+border border-bottom border-bottom-color border-bottom-style border-bottom-width border-color border-left border-left-color border-left-style border-left-top border-left-width
+border-right border-right-color border-right-style border-right-width border-spacing border-style border-top border-top-color border-top-style border-top-width border-width
+clear color
+display
+float font font-family font-size font-style font-variant font-weight
+height
+letter-spacing line-height list-style list-style-image list-style-position list-style-type
+margin margin-bottom margin-left margin-right margin-top
+padding padding-bottom padding-left padding-right padding-top
+text-align text-decoration text-indent text-transform
+vertical-align
+white-space width word-spacing
+/C3"CSS Values"
+aqua auto
+baseline black blink block blue bold bolder both bottom
+capitalize center circle cursive
+dashed decimal disc dotted double
+fantasy fixed fuchsia
+gray green groove
+inline inset inside italic
+justify
+large larger left lighter lime line-through list-item lower-alpha lower-roman lowercase
+maroon medium middle monospace
+navy no-repeat none normal nowrap
+oblique olive outset outside overline
+purple
+red repeat repeat-x repeat-y rgb ridge right
+sans-serif scroll serif silver small small-caps smaller solid square sub super
+teal text-bottom text-top thick thin top transparent
+underline upper-alpha upper-roman uppercase url
+white
+x-large x-small xx-large xx-small
+yellow
+
+/L12"Ruby" Line Comment Num = 2#  Block Comment On = =begin Block Comment Off = =end String Chars='" Escape Char = \ File Extensions = rb rbw
+/Delimiters =  ~^[]{}()<>.,+ *|/'	"`
+/Function String = "%[ ^t]++^(module[ ^t]+[a-z0-9_.]+^)[ ^p^r^n]"
+/Function String 1 = "%[ ^t]++^(class[ ^t]+[a-z0-9_.]+^)[ ^p^r^n]"
+/Function String 2 = "%[ ^t]++^(def[ ^t]+[a-z0-9_.]+^)[ ^p^r^n(]"
+/Indent Strings = "do" "begin" "{" "|"
+/Unindent Strings = "}" "end"
+/C1"Ruby Keywords"
+#
+(
+)
+BEGIN
+END
+__FILE__ __LINE__
+alias and
+begin break
+case class
+def defined? do
+else elsif end ensure
+false for
+if in
+module
+next nil not
+or
+quit
+redo rescue retry return
+self super
+then true
+undef unless until
+when while
+yield
+{
+}
+/C2"Ruby Classes/Exceptions"
+ArgumentError Array
+Bignum Binding
+Class Complex ConditionVariable Continuation
+DelegateClass Dir
+EOFError English Errno::ENOENT Errno::EPERM Exception
+FalseClass Fatal File File::Stat Fixnum Float FloatDomainError
+GetoptLong
+Hash
+IO IOError IndexError Integer Interrupt
+LoadError LocalJumpError
+MatchData Method Module Mutex
+NameError NilClass NoMemoryError NotImplementedError Numeric
+Object
+Proc Pstore
+Range RangeError Regexp RegexpError RuntimeError
+ScriptError SecurityError SimpleDelegator Singleton StandardError String Struct Struct::Tms Symbol
+SyntaxError SystemCallError SystemExit SystemStackError
+Tempfile Thread ThreadGroup Time TrueClass TypeError
+WeakRef
+ZeroDivisionError
+`
+/C3"Ruby Libraries/Modules"
+BasicSocket Benchmark
+CGI CONFIG Comparable Config
+DATA Date
+Enumerable Errno
+FALSE FTP FileTest Find
+GC
+HTTP HTTPResponse
+IPSocket
+Kernel
+Marshal Math
+NET NIL Net::APOP Net::FTP Net::HTTP Net::HTTPResponse Net::POP Net::POPMail Net::SMTP Net::Telnet
+ObjectSpace Observable
+POP POPMail ParseDate Process
+SMTP SOCKSSocket STDERR STDIN STDOUT Session Socket Stat
+TCPServer TCPSocket TOPLEVEL_BINDING TRUE Telnet Tms
+UDPSocket UNIXServer UNIXSocket
+WIN32OLE WIN32OLE_EVENT Win32API
+mkmf
+win32api win32ole
+/C4"Ruby Constants/Strings"
+"
+AF_APPLETALK AF_AX25 AF_INET AF_INET6 AF_IPX AF_UNIX AF_UNSPEC AI_ALL AI_CANONNAME AI_MASK AI_NUMERICHOST
+AI_PASSIVE AI_V4MAPPED_CFG ARGF ARGV
+Complex::I
+Default
+E EAI_ADDRFAMILY EAI_AGAIN EAI_BADFLAGS EAI_BADHINTS EAI_FAIL EAI_FAMILY EAI_MAX EAI_MEMORY EAI_NODATA
+EAI_NONAME EAI_PROTOCOL EAI_SERVICE EAI_SOCKTYPE EAI_SYSTEM EXTENDED
+FTP_PORT
+IGNORECASE IP_ADD_MEMBERSHIP IP_DEFAULT_MULTICAST_LOOP IP_DEFAULT_MULTICAST_TTL IP_MAX_MEMBERSHIPS
+IP_MULTICAST_IF IP_MULTICAST_LOOP IP_MULTICAST_TTL
+LOOKUP_INET LOOKUP_INET6 LOOKUP_UNSPEC
+MSG_DONTROUTE MSG_OOB MSG_PEEK MULTILINE
+PF_APPLETALK PF_AX25 PF_INET PF_INET6 PF_IPX PF_UNIX PF_UNSPEC PI PLATFORM PRIO_PGRP PRIO_PROCESS
+PRIO_USER
+RUBY_PLATFORM RUBY_RELEASE_DATE RUBY_VERSION
+SOCK_DGRAM SOCK_PACKET SOCK_RAW SOCK_RDM SOCK_SEQPACKET SOCK_STREAM SOL_ATALK SOL_AX25 SOL_IP SOL_IPX
+SOL_SOCKET SOL_TCP SOL_UDP SOPRI_BACKGROUND SOPRI_INTERACTIVE SOPRI_NORMAL SO_BROADCAST SO_DEBUG
+SO_DONTROUTE SO_ERROR SO_KEEPALIVE SO_LINGER SO_NO_CHECK SO_OOBINLINE SO_PRIORITY SO_RCVBUF SO_REUSEADDR
+SO_SNDBUF SO_TYPE
+TCP_MAXSEG TCP_NODELAY
+WIN32OLE::VERSION WNOHANG WUNTRACED
+cstime cutime
+domain
+expires
+secure stime
+/C5"Ruby Methods"
+! !=
+% %= %Q %W %q %w
+& && &=
+* *=
++ += +@
+- -= -@
+.
+// / /=
+::
+< <=
+= == ===
+> >=
+@
+Comparisons
+[
+] ]=
+^ ^=
+__id__ __send__ _id2ref
+abort abort_on_exception abort_on_exception! abs abs2 add alias_method alive? ancestors append_features
+arg arity asctime assoc at at_exit atan2 atime attr attr_accessor attr_reader attr_writer autoload
+backtrace basename between? binding binmode blksize block_given? blockdev? blocks broadcast
+call callcc caller capitalize capitalize! casefold? catch ceil center chardev? chdir chmod chomp chomp!
+chop chop! chown chr chroot class_eval class_variables clear clone close close_read close_write closed?
+cmp coerce collect collect! compact compact! compare compile concat conjugate const_defined? const_get
+const_set constants copy cos count cp create_makefile critical critical= crypt ctime current
+day default default= define_finalizer delete delete! delete_at delete_if detect dev dir_config directory?
+dirname disable display divmod downcase downcase! downto dump dup
+each each_byte each_index each_key each_line each_object each_pair each_with_index egid egid= empty?
+enable england entries eof eof? eql? equal? error? error_message escape euid euid= eval exception
+exclude_end? exec executable? executable_real? exist2? exist? existw? exit exit! exp expand_path extend
+extend_object
+fail fcntl fetch file? fileno fill find find_all find_library finite? first flatten flatten! flock flush
+foreach fork format freeze frexp frozen? ftype
+garbage_collect get get_option getc getogrp getpriority gets getwd gid gid= glob global_variables gm gmt?
+gmtime gregorian gregorian_leap? grep grpowned? gsub gsub!
+has_key? has_value? hash have_func have_header have_library hex hour
+id id2name image include include? included_modules index indexes indices inherited initialize ino inspect
+install instance_eval instance_methods instance_of? instance_variables integer? intern ioctl is_a? isatty
+isdst italy iterator?
+jd join julian julian_leap?
+kcode key? keys kill kind_of?
+lambda last last_match ldexp leap? length lineno lineno= link list ljust load local local_variables
+localtime lock locked? log log10 loop lstat
+main makedirs makepath map map! match max mday member? members message method method_added method_defined?
+method_missing methods min mjd mkdir mktime mode module_eval module_function modulo mon month move mtime
+mv
+name nan? nesting new new1 new2 new3 newsg neww next! nil? nitems nlink nonzero? now ns?
+oct open ordering ordering= os? owned?
+p pack parsedate pass path pid pipe pipe? polar pop popen pos pos= ppid print printf priority priority=
+private private_class_method private_instance_methods private_methods proc protected
+protected_instance_methods protected_methods prune public public_class_method public_instance_methods
+public_methods push putc puts pwd
+quiet quiet= quiet? quote
+raise rand rassoc rdev read readable? readable_real? readchar readline readlines readlink real rehash
+reject reject! remainder remove_const remove_method rename reopen replace require respond_to? restore
+reverse reverse! reverse_each rewind rindex rjust rm_f rmdir round run
+safe_level safe_unlink scan sec seek select send set_backtrace set_options set_trace_func setgid? setpgid
+setpgrp setpriority setsid setuid? sg shift signal sin singleton_method_added singleton_methods size size?
+sleep slice slice! socket? sort sort! source split sprintf sqrt squeeze squeeze! srand start stat status
+step sticky? stop stop? store strftime strip strip! sub sub! succ succ! superclass swapcase swapcase!
+symlink symlink? sync sync= synchronize syscall syscopy sysread system syswrite
+taint tainted? tell terminate test throw timeout times to_a to_ary to_f to_i to_io to_proc to_r to_s
+to_str today tr tr! tr_s tr_s! trace_var trap truncate try_lock tty? tv_sec tv_usec type
+uid uid= umask undef_method ungetc uniq uniq! unlink unlock unpack unshift untaint untrace_var upcase
+upcase! update upto usec utc utc? utime
+value? values var
+wait wait2 waitpid waitpid2 wakeup wday weakref_alive? writable? writable_real? write
+yday year
+zero? zone
+| |=
+~
+/C6"Ruby Library Methods"
+Call
+a accept add_observer addr all
+base bind binmode= blockquote
+caption changed changed? checkbox checkbox_group cmd code connect const_load content_type cookies
+count_observers
+debug_mode debug_mode= delete_observer delete_observers dir do_not_reverse_lookup do_not_reverse_lookup=
+escapeElement escapeHTML
+file_field for_fd form
+getaddress getaddrinfo getbinaryfile gethostbyaddr gethostbyname gethostname getnameinfo getpeername
+getservbyname getsockname getsockopt gettextfile
+head header hidden html
+img img_button invoke
+lastresp listen local_path login lookup_order lookup_order= ls
+mails message_loop multipart_form
+notify_observers
+on_event original_filename out
+pair params parse passive passive= password_field peeraddr popup_menu port post pretty putbinaryfile
+puttextfile
+radio_button radio_groupready recv recvfrom reset resume resume= retrbinary retrlinew return_code
+rfc1123_date
+scrolling_list sendmail setsockopt shutdown socketpair storbinary storlines submit
+telnetmode telnetmode= text_field textarea top
+uidl unescape unescapeElement unescapeHTML
+waitfor welcome
+/C7"Variables"
+** &a &b &c &d &e &f &g &h &i &j &k &l &m &n &o &p &q &r &s &t &u &v &w &x &y &z
+** @a @b @c @d @e @f @g @h @i @j @k @l @m @n @o @p @q @r @s @t @u @v @w @x @y @z
+@@a @@b @@c @@d @@e @@f @@g @@h @@i @@j @@k @@l @@m @@n @@o @@p @@q @@r @@s @@t @@u @@v @@w @@x @@y @@z
+/C8"Constant/Global/Symbol"
+** $ : A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+
+/L13"MySQL 5.1" Nocase Line Comment = # Block Comment On = /* Block Comment Off = */ File Extensions = SQL
+/Delimiters = !&*()+=|/;"'<>:@      ,./
+/Function String = "%[ ^t]++create table[ ^t]+`++^([a-z_0-9]+^)`++"
+/Indent Strings = "BEGIN"
+/Unindent Strings = "END"
+/Open Brace Strings =  "{" "(" "["
+/Close Brace Strings = "}" ")" "]"
+/Open Fold Strings = "{"
+/Close Fold Strings = "}"
+/C1"Functions"
+abs acos adddate addtime aes_decrypt aes_encrypt against ascii asin atan atan2 avg
+begin benchmark bin bit_and bit_count bit_length bit_or bit_xor by
+case cast ceil ceiling char character_length charset char_length coercibility collation compress concat
+concat_ws connection_id conv convert convert_tz cos cot count crc32 curdate current_date current_time
+current_timestamp current_user curtime 
+database date datediff date_add date_format date_sub day dayname dayofmonth dayofweek dayofyear decode
+degrees des_decrypt des_encrypt 
+else elt encode end exp export_set extract extractvalue 
+field find_in_set floor format found_rows from_days from_unixtime 
+get_format get_lock group_concat
+hex hour
+inet_aton inet_ntoa insert instr is_free_lock is_used_lock 
+last_day last_insert_id lcase left length like load_file localtime localtimestamp locate log log10 log2
+lower lpad ltrim
+makedate maketime make_set master_pos_wait match max md5 microsecond mid min minute mod month monthname
+name_const not now 
+oct octet_length old_password ord order 
+password period_add period_diff pi position pow power 
+quarter quote
+radians rand regexp release_lock repeat replace reverse right rlike round row_count rpad rtrim 
+schema second sec_to_time session_user sha sha1 sign sin sleep soundex space sqrt std stddev stddev_pop
+stddev_samp strcmp str_to_date subdate substr substring substring_index subtime sum sysdate system_user 
+tan then time timediff timestamp timestampadd timestampdiff time_format time_to_sec to_days trim truncate
+ucase uncompress uncompressed_length unhex unix_timestamp upper user utc_date utc_time utc_timestamp
+uuid updatexml
+values variance var_pop var_samp version
+week weekday weekofyear when where
+year yearweek
+/C2"Reserved Words"
+bigint blob
+char
+datetime decimal double doubleprecision
+enum
+float float4 float8
+int int1 int2 int3 int4 int8 integer
+long longblob longtext
+mediumblob mediumint mediumtext middleint
+numeric
+real
+smallint
+text time timestamp tinyint tinytext tinyblob
+varbinary varchar varying
+/C3"Reserved Words"
+accessible add all alter analyze and as asc asensitive
+before between bigint both by
+call cascade change character check column condition constraint continue convert create cross current_date current_time
+current_timestamp current_user cursor 
+database databases day_hour day_microsecond day_minute day_second dec declare default delayed delete desc describe deterministic
+distinct distinctrow drop dual 
+each elseif enclosed escaped exists exit explain 
+false fetch for force foreign from fulltext function
+grant group 
+having high_priority hour_microsecond hour_minute hour_second 
+if ignore index infile inner inout insensitive insert interval into iterate 
+join 
+key keys kill
+leading leave left limit linear lines load localtime localtimestamp lock loop low_priority 
+match minute_microsecond minute_second modifies 
+natural no_write_to_binlog null
+on optimize option optionally order out outer outfile 
+precision primary procedure purge 
+range read reads read_only read_write real references release rename repeat replace require restrict return revoke right rlike 
+schema schemas second_microsecond select sensitive separator set show spatial specific sql sqlexception sqlstate sqlwarning sql_big_result
+sql_calc_found_rows sql_small_result ssl starting straight_join 
+table terminated to trailing trigger true 
+undo union unique unlock unsigned update usage use using utc_date utc_time utc_timestamp 
+values varcharacter 
+where while with write
+x509
+year_month
+zerofill
+/C4"Operators"
+!
+%
+&
+*
++
+-
+/
+:
+<
+=
+>
+and
+between binary
+collate
+div
+in is
+or
+when
+xor
+^
+|
+~
+/L14"PCGen data file" File Extensions = LST Line Comment = # String Chars = "
 /Delimiters =	():[]={}<>;!|,./+-*
 /C1"Main Tags"
 ABB
@@ -635,7 +2430,7 @@ Wilder
 Wizard
 /C7"placeholders"
 XfooX
-/L2"PCGen campaign file" File Extensions = PCC Line Comment = # String Chars = "
+/L15"PCGen campaign file" File Extensions = PCC Line Comment = # String Chars = "
 /Delimiters =	():[]={}<>;!|,./+-*
 /C1"Main Tags"
 BIOSET
