@@ -205,8 +205,6 @@ final class PreferencesDialog extends JDialog
 			PropertyFactory.getString("in_Prefs_location");
 	private static String in_lookAndFeel =
 			PropertyFactory.getString("in_Prefs_lookAndFeel");
-	private static String in_aaText =
-			PropertyFactory.getString("in_Prefs_aaText");
 	private static String in_levelUp =
 			PropertyFactory.getString("in_Prefs_levelUp");
 	private static String in_monsters =
@@ -266,6 +264,8 @@ final class PreferencesDialog extends JDialog
 			PropertyFactory.getString("in_Prefs_showImagePreview");
 	private static String in_showSkillModifierBreakdown =
 			PropertyFactory.getString("in_Prefs_showSkillModifierBreakdown");
+	private static String in_showSingleBoxPerBundle =
+		PropertyFactory.getString("in_Prefs_showSingleBoxPerBundle");
 	private static String in_sourceDisplay =
 			PropertyFactory.getString("in_Prefs_sourceDisplay");
 	private static String in_tabs = PropertyFactory.getString("in_Prefs_tabs");
@@ -429,6 +429,8 @@ final class PreferencesDialog extends JDialog
 			new JRadioButton(PropertyFactory.getString("in_Prefs_hpStandard"));
 	private JRadioButton hpUserRolled =
 			new JRadioButton(PropertyFactory.getString("in_Prefs_hpUserRolled"));
+	private JRadioButton hpAverageRoundedUp =
+			new JRadioButton(PropertyFactory.getString("in_Prefs_hpAverageRoundedUp"));
 
 	// Language
 	private JRadioButton langEng;
@@ -442,7 +444,6 @@ final class PreferencesDialog extends JDialog
 	private JRadioButton pcgenFilesDirRadio;
 	private JRadioButton selectFilesDirRadio;
 	private JRadioButton skinnedLookFeel = new JRadioButton();
-	private JCheckBox aaText = new JCheckBox();
 	private JRadioButton usersFilesDirRadio;
 	private JScrollPane settingsScroll;
 
@@ -473,7 +474,8 @@ final class PreferencesDialog extends JDialog
 	private JTextField invalidToHitText;
 	private JTextField invalidDmgText;
 	private JCheckBox alwaysOverwrite;
-
+	private JCheckBox showSingleBoxPerBundle;
+	
 	// Listeners
 	private PrefsButtonListener prefsButtonHandler = new PrefsButtonListener();
 	private PurchaseModeFrame pmsFrame = null;
@@ -668,6 +670,10 @@ final class PreferencesDialog extends JDialog
 		{
 			SettingsHandler.setHPRollMethod(Constants.HP_USERROLLED);
 		}
+		else if (hpAverageRoundedUp.isSelected())
+		{
+			SettingsHandler.setHPRollMethod(Constants.HP_AVERAGE_ROUNDED_UP);
+		}
 
 		SettingsHandler.setHPPct(hpPct.getValue());
 		SettingsHandler.setHPMaxAtFirstLevel(maxHpAtFirstLevel.isSelected());
@@ -834,11 +840,6 @@ final class PreferencesDialog extends JDialog
 			.getSelectedIndex());
 		SettingsHandler.setUseFeatBenefits(!featDescriptionShown.isSelected());
 		SettingsHandler.setShowSkillModifier(showSkillModifier.isSelected());
-
-		// Also give the UI a chance to update is we change the setting.
-		// UIFactory keeps track of the current setting for us.
-		SettingsHandler.setAaText(aaText.isSelected());
-		UIFactory.setAaText(aaText.isSelected());
 
 		// Look and Feel
 		int sourceIndex = 500; // XXX - magic number?
@@ -1025,6 +1026,13 @@ final class PreferencesDialog extends JDialog
 			SettingsHandler.setAlwaysOverwrite(alwaysOverwrite.isSelected());
 		}
 
+		if (SettingsHandler.getShowSingleBoxPerBundle()
+			|| showSingleBoxPerBundle.isSelected())
+		{
+			SettingsHandler.setShowSingleBoxPerBundle(showSingleBoxPerBundle
+				.isSelected());
+		}
+
 		// added 10 April 2000 by sage_sam
 		SettingsHandler.setSelectedCharacterHTMLOutputSheet(
 			outputSheetHTMLDefault.getText(), null);
@@ -1200,6 +1208,11 @@ final class PreferencesDialog extends JDialog
 
 				break;
 
+			case Constants.HP_AVERAGE_ROUNDED_UP:
+				hpAverageRoundedUp.setSelected(true);
+
+				break;
+
 			case Constants.HP_STANDARD:
 				//No break
 			default:
@@ -1349,8 +1362,6 @@ final class PreferencesDialog extends JDialog
 		waitCursor.setSelected(SettingsHandler.getUseWaitCursor());
 
 		// Look and feel
-		aaText.setSelected(SettingsHandler.isAaText());
-
 		int crossIndex = UIFactory.indexOfCrossPlatformLookAndFeel();
 
 		if (SettingsHandler.getLookAndFeel() < laf.length)
@@ -2024,6 +2035,11 @@ final class PreferencesDialog extends JDialog
 		Utility.buildConstraints(c, 2, iRow++, 1, 1, 0, 0);
 		gridbag.setConstraints(hpPct, c);
 		hitPointsPanel.add(hpPct);
+
+		Utility.buildConstraints(c, 1, iRow++, 2, 1, 0, 0);
+		gridbag.setConstraints(hpAverageRoundedUp, c);
+		hitPointsPanel.add(hpAverageRoundedUp);
+		exclusiveGroup.add(hpAverageRoundedUp);
 
 		Utility.buildConstraints(c, 0, iRow, 2, 1, 0, 0);
 		label =
@@ -2819,13 +2835,6 @@ final class PreferencesDialog extends JDialog
 		lafPanel.add(themepack);
 		themepack.addActionListener(prefsButtonHandler);
 
-		aaText.setText(in_aaText);
-		//		aaText.setSelected(SettingsHandler.isAaText());
-		Utility.setDescription(aaText, PropertyFactory
-			.getString("in_Prefs_aaTextTooltip"));
-		aaText.setMnemonic(PropertyFactory.getMnemonic("in_mn_Prefs_aaText"));
-		lafPanel.add(aaText);
-
 		Utility.buildConstraints(c, 0, 20, 5, 1, 1, 1);
 		c.fill = GridBagConstraints.BOTH;
 		label = new JLabel(" ");
@@ -3109,6 +3118,13 @@ final class PreferencesDialog extends JDialog
 					.getAlwaysOverwrite());
 		gridbag.setConstraints(alwaysOverwrite, c);
 		outputPanel.add(alwaysOverwrite);
+
+		Utility.buildConstraints(c, 0, 15, 3, 1, 0, 0);
+		showSingleBoxPerBundle =
+				new JCheckBox(in_showSingleBoxPerBundle, SettingsHandler
+					.getShowSingleBoxPerBundle());
+		gridbag.setConstraints(showSingleBoxPerBundle, c);
+		outputPanel.add(showSingleBoxPerBundle);
 
 		Utility.buildConstraints(c, 0, 20, 3, 1, 1, 1);
 		c.fill = GridBagConstraints.BOTH;

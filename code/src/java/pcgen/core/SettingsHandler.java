@@ -131,7 +131,6 @@ public final class SettingsHandler
 	private static boolean loadCampaignsAtStart = false;
 	private static boolean loadCampaignsWithPC = true;
 	private static int looknFeel = 1; // default to Java L&F
-	private static boolean aaText = true; // default to anti-aliased text
 	private static boolean expertGUI = false; // default to System L&F
 	private static boolean optionAllowedInSources = true;
 	private static final SortedProperties options = new SortedProperties();
@@ -225,6 +224,7 @@ public final class SettingsHandler
 	private static boolean showImagePreview = true;
 	private static boolean showTipOfTheDay = true;
 	private static boolean isGMGen = false;
+	private static boolean showSingleBoxPerBundle = false;
 
 	//
 	// Hide this tab from general consumption, until I get it working.
@@ -966,16 +966,6 @@ public final class SettingsHandler
 		return looknFeel;
 	}
 
-	public static boolean isAaText()
-	{
-		return aaText;
-	}
-
-	public static void setAaText(final boolean aBool)
-	{
-		aaText = aBool;
-	}
-
 	public static void setMaxPotionSpellLevel(final int anInt)
 	{
 		maxPotionSpellLevel = anInt;
@@ -1192,7 +1182,6 @@ public final class SettingsHandler
 		setLoadCampaignsAtStart(getPCGenOption("loadCampaignsAtStart", false)); //$NON-NLS-1$
 		setLoadCampaignsWithPC(getPCGenOption("loadCampaignsWithPC", true)); //$NON-NLS-1$
 		setLookAndFeel(getPCGenOption("looknFeel", 1)); //$NON-NLS-1$
-		setAaText(getPCGenOption("aaText", false)); //$NON-NLS-1$
 		setMaxPotionSpellLevel(getPCGenOption("maxPotionSpellLevel", 3)); //$NON-NLS-1$
 		setMaxWandSpellLevel(getPCGenOption("maxWandSpellLevel", 4)); //$NON-NLS-1$
 		setMetamagicAllowedInEqBuilder(getPCGenOption("allowMetamagicInCustomizer", false)); //$NON-NLS-1$
@@ -1244,6 +1233,7 @@ public final class SettingsHandler
 		setShowHPDialogAtLevelUp(getPCGenOption("showHPDialogAtLevelUp", true)); //$NON-NLS-1$
 		setShowMemoryArea(getPCGenOption("showMemoryArea", false)); //$NON-NLS-1$
 		setShowImagePreview(getPCGenOption("showImagePreview", true)); //$NON-NLS-1$
+		setShowSingleBoxPerBundle(getPCGenOption("showSingleBoxPerBundle", false)); //$NON-NLS-1$
 		setShowStatDialogAtLevelUp(getPCGenOption("showStatDialogAtLevelUp", true)); //$NON-NLS-1$
 		setShowTipOfTheDay(getPCGenOption("showTipOfTheDay", true)); //$NON-NLS-1$
 		setShowToolBar(getPCGenOption("showToolBar", true)); //$NON-NLS-1$
@@ -1552,7 +1542,6 @@ public final class SettingsHandler
 		setPCGenOption("loadMasterworkAndMagicFromLst", wantToLoadMasterworkAndMagic()); //$NON-NLS-1$
 		setPCGenOption("loadURLs", loadURLs); //$NON-NLS-1$
 		setPCGenOption("looknFeel", getLookAndFeel()); //$NON-NLS-1$
-		setPCGenOption("aaText", isAaText()); //$NON-NLS-1$
 		setPCGenOption("maxPotionSpellLevel", getMaxPotionSpellLevel()); //$NON-NLS-1$
 		setPCGenOption("maxWandSpellLevel", getMaxWandSpellLevel()); //$NON-NLS-1$
 		setPCGenOption("nameDisplayStyle", getNameDisplayStyle()); //$NON-NLS-1$
@@ -1581,6 +1570,7 @@ public final class SettingsHandler
 		setPCGenOption("showTipOfTheDay", getShowTipOfTheDay()); //$NON-NLS-1$
 		setPCGenOption("showToolBar", isShowToolBar()); //$NON-NLS-1$
 		setPCGenOption("showSkillModifier", getShowSkillModifier()); //$NON-NLS-1$
+		setPCGenOption("showSingleBoxPerBundle", getShowSingleBoxPerBundle()); //$NON-NLS-1$
 		setPCGenOption("showWarningAtFirstLevelUp", isShowWarningAtFirstLevelUp()); //$NON-NLS-1$
 		setPCGenOption("SkillsTab.availableListMode", getSkillsTab_AvailableListMode()); //$NON-NLS-1$
 		setPCGenOption("SkillsTab.selectedListMode", getSkillsTab_SelectedListMode()); //$NON-NLS-1$
@@ -3340,5 +3330,23 @@ public final class SettingsHandler
 	public static void setShowImagePreview(final boolean showImagePreview)
 	{
 		SettingsHandler.showImagePreview = showImagePreview;
+	}
+
+	/**
+	 * @return The showSingleBoxPerBundle value.
+	 */
+	public static boolean getShowSingleBoxPerBundle()
+	{
+		return showSingleBoxPerBundle;
+	}
+
+	/**
+	 * Set the showSingleBoxPerBundle value.
+	 * 
+	 * @param b The new showSingleBoxPerBundle value.
+	 */
+	public static void setShowSingleBoxPerBundle(boolean b)
+	{
+		showSingleBoxPerBundle = b;
 	}
 }

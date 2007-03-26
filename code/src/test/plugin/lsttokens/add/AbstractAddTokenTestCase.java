@@ -194,7 +194,7 @@ public abstract class AbstractAddTokenTestCase extends GlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1|"));
+			getSubTokenString() + "|TestWP1,"));
 	}
 
 	@Test
@@ -202,7 +202,7 @@ public abstract class AbstractAddTokenTestCase extends GlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "||TestWP1"));
+			getSubTokenString() + "|,TestWP1"));
 	}
 
 	@Test
@@ -227,7 +227,7 @@ public abstract class AbstractAddTokenTestCase extends GlobalTokenTestCase
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP2||TestWP1"));
+			getSubTokenString() + "|TestWP2,,TestWP1"));
 	}
 
 	@Test

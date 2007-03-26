@@ -22,7 +22,24 @@ $Date$
 <span class="header">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</span>
 <p>
 <b>|NAME|<br />
-|SIZELONG|-size |GENDER.LONG| |TEMPLATELIST| |RACE|<br />
+|GENDER.LONG| |RACE|; |SIZELONG|
+|IIF(RACETYPE:None)|
+|TEXT.TITLE.TYPE|
+|ELSE|
+|RACETYPE|
+|ENDIF|
+|IIF(VAR.IF(var("COUNT[RACESUBTYPES]")==0;1;0):1)|
+|ELSE|
+ (
+|FOR,%subtype,0,COUNT[RACESUBTYPES]-2,1,1|
+|RACESUBTYPE.%subtype|, 
+|ENDFOR|
+|FOR,%subtype,COUNT[RACESUBTYPES]-1,COUNT[RACESUBTYPES]-1,1,1|
+|RACESUBTYPE.%subtype|
+|ENDFOR|
+) 
+|ENDIF|
+<br />
 |CLASSLIST|</b></p>
 <table width="75%" border="0" cellspacing="0" cellpadding="0" summary="Character Info Table">
   <tr valign="top">
@@ -59,7 +76,7 @@ $Date$
   <tr valign="top">
     <td width="25%"><b>Attacks: </b></td>
     <td width="75%">
-|FOR,%weap,0,COUNT[EQTYPE.Weapon],1,0|
+|FOR,%weap,0,COUNT[EQTYPE.Weapon]-1,1,0|
 |WEAPON.%weap.NAME|
 |IIF(WEAPON.%weap.TOTALHIT:N/A)|
 (two handed) |WEAPON.%weap.THHIT|;
@@ -72,7 +89,7 @@ $Date$
   <tr valign="top">
     <td width="25%"><b>Damage: </b></td>
     <td width="75%">
-|FOR,%weap,0,COUNT[EQTYPE.Weapon],1,0|
+|FOR,%weap,0,COUNT[EQTYPE.Weapon]-1,1,0|
 |WEAPON.%weap.NAME|
 |IIF(WEAPON.%weap.TOTALHIT:N/A)|
 (two handed) |WEAPON.%weap.THDAMAGE|;
@@ -93,7 +110,18 @@ $Date$
   </tr>
   <tr valign="top">
     <td width="25%"><b>Special Qualities: </b></td>
-    <td width="75%">|SPECIALLIST| </td>
+    <td width="75%">
+|FOR,%DRtest,STRLEN[DR],STRLEN[DR],1,0|
+|IIF(%DRtest:0)|
+|ELSE|
+Damage Reduction |DR|, 
+|ENDIF|
+|ENDFOR|
+|IIF(SR:0)|
+|ELSE|
+Spell Resistance |SR|, 
+|ENDIF|
+ |SPECIALLIST| </td>
   </tr>
   <tr valign="top">
     <td width="25%"><b>Saves: </b></td>
@@ -119,7 +147,7 @@ $Date$
   </tr>
   <tr valign="top">
     <td width="25%"><b>Skills: </b></td>
-    <td width="75%">|FOR.0,COUNT[SKILLS]-1,100,\SKILL.%.NAME\ \SKILL.%.TOTAL\;       , , ,0| </td>
+    <td width="75%">|FOR.0,COUNT[SKILLS]-1,100,\SKILL.%.NAME\: \SKILL.%.TOTAL\;       , , ,0| </td>
   </tr>
   <tr valign="top">
     <td width="25%"><b>Feats: </b></td>
@@ -137,13 +165,58 @@ $Date$
 |%REGION|<p> Region: |REGION| </p>|%|
 <p><b>Possessions: </b>|FOR.0,COUNT[EQUIPMENT],100,\EQ.%.NAME\; , , ,0|
 </p>
+
 |%DOMAIN.1|
-Deity: |DEITY| <i>Domains</i>: |FOR.1,COUNT[DOMAINS]+1,1,\DOMAIN.%\(\DOMAIN.%.POWER\), ,NONE,2|
+<br><b>Deity:</b> |DEITY| <b>Domains:</b> |FOR.1,COUNT[DOMAINS]+1,1,\DOMAIN.%\ (\DOMAIN.%.POWER\), ,NONE,2|
 <br />
 |%|
-|%SPELLLISTCLASS.0|
-<i>Spells:</i><br />
-|%|
+
+<!-- Prepared Spells -->
+|FOR,%spellbook,2,COUNT[SPELLBOOKS]-1,1,0|
+|IIF(SPELLBOOK.%spellbook.NUMPAGES:0)|
+<b>|SPELLBOOKNAME.%spellbook|: </b>
+|FOR,%class,COUNT[SPELLRACE],COUNT[SPELLRACE]+COUNT[CLASSES]-2,1,1|
+|IIF(SPELLLISTMEMORIZE.%class:false)|
+|ELSE|
+|SPELLLISTCLASS.%class| (CL |SPELLLISTCLASS.%class.LEVEL|): 
+|FOR,%level,0,9,1,1|
+|FOR,%spelllevelcount,COUNT[SPELLSINBOOK.%class.%spellbook.%level],COUNT[SPELLSINBOOK.%class.%spellbook.%level],1,0|
+|IIF(%spelllevelcount:0)|
+<!-- no memorized spells for SPELLSINBOOK.%class %spellbook %level -->
+|ELSE|
+|MANUALWHITESPACE||%level||TEXT.NUMSUFFIX.%level||ENDMANUALWHITESPACE| -
+|FOR,%spell,0,COUNT[SPELLSINBOOK.%class.%spellbook.%level]-2,1,0|
+<i>|TEXT.LOWER.SPELLMEM.%class.%spellbook.%level.%spell.NAME|</i>
+|IIF(SPELLMEM.%class.%spellbook.%level.%spell.TIMES:1)|
+|ELSE|
+(|SPELLMEM.%class.%spellbook.%level.%spell.TIMES|)
+|ENDIF|
+|IIF(SPELLMEM.%class.%spellbook.%level.%spell.SAVEINFO:None)|
+|ELSE|
+(DC |SPELLMEM.%class.%spellbook.%level.%spell.DC|)
+|ENDIF|
+, 
+|ENDFOR|
+|FOR,%spell,COUNT[SPELLSINBOOK.%class.%spellbook.%level]-1,COUNT[SPELLSINBOOK.%class.%spellbook.%level]-1,1,0|
+|SPELLMEM.%class.%spellbook.%level.%spell.BONUSSPELL|<i>|TEXT.LOWER.SPELLMEM.%class.%spellbook.%level.%spell.NAME|</i>
+|IIF(SPELLMEM.%class.%spellbook.%level.%spell.TIMES:1)|
+|ELSE|
+(|SPELLMEM.%class.%spellbook.%level.%spell.TIMES|)
+|ENDIF|
+|IIF(SPELLMEM.%class.%spellbook.%level.%spell.SAVEINFO:None)|
+|ELSE|
+(DC |SPELLMEM.%class.%spellbook.%level.%spell.DC|)
+|ENDIF|
+|ENDFOR|
+|ENDIF|
+|ENDFOR|
+|ENDFOR|
+|ENDIF|
+|ENDFOR|
+|ELSE|
+|ENDIF|
+|ENDFOR|
+<!-- End Prepared Spells -->
 
 |%SPELLLISTBOOK.0.0.1|
 <b>Innate:</b>

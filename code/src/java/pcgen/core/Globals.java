@@ -2494,11 +2494,6 @@ public final class Globals
 	 */
 	public static Load loadTypeForLoadScore(int loadScoreValue, final Float weight, final PlayerCharacter aPC)
 	{
-		if (loadScoreValue < 0)
-		{
-			loadScoreValue = 0;
-		}
-
 		final double dbl = weight.doubleValue() / maxLoadForLoadScore(loadScoreValue, aPC).doubleValue();
 
 		if (SystemCollections.getLoadInfo().getLoadMultiplier("LIGHT") != null &&
@@ -2602,6 +2597,11 @@ public final class Globals
 
 			case Constants.HP_PERCENTAGE:
 				roll = min - 1 + (int) ((SettingsHandler.getHPPct() * (max - min + 1)) / 100.0);
+
+				break;
+
+			case Constants.HP_AVERAGE_ROUNDED_UP:
+				roll = (int)Math.ceil((min + max)/2.0);
 
 				break;
 

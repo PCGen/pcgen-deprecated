@@ -64,8 +64,7 @@ public class CompanionModLoader extends LstLineFileLoader {
 		final StringTokenizer colToken = new StringTokenizer(lstLine,
 				SystemLoader.TAB_DELIM);
 
-		String name = colToken.nextToken();
-		cmpMod.setName(name);
+		String name = null;
 		cmpMod.setSourceCampaign(getActiveSource().getCampaign());
 		cmpMod.setSourceURI(sourceURI);
 		
@@ -87,6 +86,12 @@ public class CompanionModLoader extends LstLineFileLoader {
 		while (colToken.hasMoreTokens()) {
 			String colString = colToken.nextToken().trim();
 
+			// Companion mods don't have a name, but instead start straight into the first token
+			if (name == null)
+			{
+				name = colString;
+				cmpMod.setName(name);
+			}
 			final int idxColon = colString.indexOf(':');
 			String key = "";
 			try {

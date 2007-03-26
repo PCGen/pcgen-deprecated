@@ -52,10 +52,8 @@ import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.HashMapToList;
-import pcgen.core.Ability.Nature;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
-// import pcgen.core.bonus.TypedBonus;
 import pcgen.core.character.CharacterSpell;
 import pcgen.core.character.CompanionMod;
 import pcgen.core.character.EquipSet;
@@ -262,11 +260,20 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	private boolean processLevelAbilities = true;
 
 	/**
-	 * Abilities stored as a double key map. The keys are the Category and type
-	 * (Normal, Virtual, or Automatic). The value is a list of abilities that
-	 * match the keys.
+	 * Aggregate abilities stored as a double key map. The keys are the Category 
+	 * and nature (Normal, Virtual, or Automatic). The value is a list of abilities
+	 * that match the keys. When populated the list will contain a copy of all 
+	 * abilities   the character possesses via any of its classes, feats, 
+	 * templates, equipoment etc.
 	 */
 	private DoubleKeyMap<AbilityCategory, Ability.Nature, List<Ability>> theAbilities = new DoubleKeyMap<AbilityCategory, Ability.Nature, List<Ability>>();
+
+	/**
+	 * List of all directly assigned normal nature abilities split by category. 
+	 * These are abilities that are added directly to the character rather than 
+	 * being added to a class, tempalte etc that the character possesses. 
+	 */
+	private Map<AbilityCategory, List<Ability>> realAbilities = new HashMap<AbilityCategory, List<Ability>>();
 
 	/**
 	 * This map stores any user bonuses (entered through the GUI) to the
@@ -1609,7 +1616,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		Logging.debugPrint("PCPOOL: " + pcpool); //$NON-NLS-1$
 		Logging.debugPrint("MPOOL:  " + mpool); //$NON-NLS-1$
 
-		double startAdjust = startLevel / rangeLevel;
+		double startAdjust = rangeLevel == 0 ? 0 : startLevel / rangeLevel;
 
 		pool += Math.floor((this.getTotalCharacterLevel() >= startLevel) ? 1.0d
 			+ pcpool - startAdjust + 0.0001 : pcpool + 0.0001);
@@ -2877,7 +2884,10 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			final Skill bSkill = i.next();
 
-			if (bSkill.getOutputIndex() == -1)
+			Visibility skVis = bSkill.getVisibility();
+			if (bSkill.getOutputIndex() == -1
+				|| skVis.equals(Visibility.NO)
+				|| skVis.equals(Visibility.DISPLAY))
 			{
 				i.remove();
 			}
@@ -14134,7 +14144,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 
 			// remove this object from the feats lists
-			for (Iterator<Ability> iterator = getRealFeatList().iterator(); iterator
+			for (Iterator<Ability> iterator = getRealAbilitiesList(AbilityCategory.FEAT).iterator(); iterator
 				.hasNext();)
 			{
 				final Ability feat = iterator.next();
@@ -14714,7 +14724,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		aClone.addArmorProfs(getArmorProfList());
 
-		for (final Ability a : this.getRealFeatList())
+		for (final Ability a : this.getRealAbilitiesList(AbilityCategory.FEAT))
 		{
 			aClone.addRealAbility(AbilityCategory.FEAT, (a.clone()));
 		}
@@ -15674,9 +15684,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	// Feat/Ability stuff
 	// --------------------------------------------------
 	// List of Feats
-	private final ArrayList<Ability> featList = new ArrayList<Ability>();
 	private List<Ability> stableAggregateFeatList = null;
-	private List<Ability> stableAutomaticFeatList = null;
 	private List<Ability> stableVirtualFeatList = null;
 
 	// Whether one can trust the most recently calculated aggregateFeatList
@@ -15699,14 +15707,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	private void setAggregateFeatsStable(final boolean stable)
 	{
-		aggregateFeatsStable = stable;
-		setVirtualFeatsStable(stable);
-		setAutomaticFeatsStable(stable);
-		if (!stable)
-		{
-			cachedWeaponProfs = null;
-		}
-		// setDirty(true);
+		setAggregateAbilitiesStable(AbilityCategory.FEAT, stable);
 	}
 
 	public void setAggregateAbilitiesStable(final AbilityCategory aCategory,
@@ -15718,8 +15719,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 		if (aCategory == AbilityCategory.FEAT)
 		{
-			setAggregateFeatsStable(stable);
-			return;
+			aggregateFeatsStable = stable;
+			setVirtualFeatsStable(stable);
+			setAutomaticFeatsStable(stable);
+			if (!stable)
+			{
+				cachedWeaponProfs = null;
+			}
 		}
 		if (aCategory == null)
 		{
@@ -15739,6 +15745,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			theAbilities.put(aCategory, Ability.Nature.AUTOMATIC, null);
 			// TODO - Deal with non-aggregate virtual abilities (i.e. from ADD:)
 			theAbilities.put(aCategory, Ability.Nature.VIRTUAL, null);
+			theAbilities.put(aCategory, Ability.Nature.NORMAL, null);
 		}
 	}
 
@@ -15750,8 +15757,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	private boolean isAggregateFeatsStable()
 	{
-		return (stableAutomaticFeatList != null) && virtualFeatsStable
-			&& aggregateFeatsStable;
+		return (theAbilities
+			.get(AbilityCategory.FEAT, Ability.Nature.AUTOMATIC) != null)
+			&& virtualFeatsStable && aggregateFeatsStable;
 	}
 
 	public boolean isAggregateAbilitiesStable(final AbilityCategory aCategory)
@@ -15772,10 +15780,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	private void setAutomaticFeatsStable(final boolean stable)
 	{
-		if (!stable)
-		{
-			stableAutomaticFeatList = null;
-		}
+		setAutomaticAbilitiesStable(AbilityCategory.FEAT, stable);
 	}
 
 	public void setAutomaticAbilitiesStable(final AbilityCategory aCategory,
@@ -15793,61 +15798,28 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			setAutomaticFeatsStable(stable);
 			return;
 		}
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			setAutomaticFeatsStable(stable);
-			return;
-		}
 		if (!stable)
 		{
 			theAbilities.put(aCategory, Ability.Nature.AUTOMATIC, null);
 		}
 	}
 
-	/**
-	 * Add a "real" (not virtual or auto) feat to the character
-	 * 
-	 * @param aFeat
-	 *            the Ability (of category FEAT) to add
-	 * 
-	 * @return true if added successfully
-	 */
-	private boolean addRealFeat(final Ability aFeat)
-	{
-		// return abilityStore.addCategorisable(aFeat)
-		return featList.add(aFeat);
-	}
-
 	public boolean addRealAbility(final AbilityCategory aCategory,
 		final Ability anAbility)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return addRealFeat(anAbility);
-		}
-
 		if (anAbility == null)
 		{
 			return false;
 		}
 		anAbility.setFeatType(Ability.Nature.NORMAL);
-		List<Ability> abilities = theAbilities.get(aCategory,
-			Ability.Nature.NORMAL);
+		List<Ability> abilities = realAbilities.get(aCategory);
 		if (abilities == null)
 		{
 			abilities = new ArrayList<Ability>();
-			theAbilities.put(aCategory, Ability.Nature.NORMAL, abilities);
+			realAbilities.put(aCategory, abilities);
 		}
 		abilities.add(anAbility);
 		return true;
-	}
-
-	/**
-	 * Remove all "real" (not auto or auto) feats from the character
-	 */
-	private void clearRealFeats()
-	{
-		featList.clear();
 	}
 
 	public void clearRealAbilities(final AbilityCategory aCategory)
@@ -15860,32 +15832,12 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 			return;
 		}
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			clearRealFeats();
-			return;
-		}
 
 		theAbilities.put(aCategory, Ability.Nature.NORMAL, null);
 	}
 
-	/**
-	 * Get number of "real" (not virtual or auto) feats the character has
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	private int getNumberOfRealFeats()
-	{
-		return featList.size();
-	}
-
 	public int getNumberOfRealAbilities(final AbilityCategory aCategory)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return getNumberOfRealFeats();
-		}
-
 		final List<Ability> abilities = theAbilities.get(aCategory,
 			Ability.Nature.NORMAL);
 		if (abilities == null)
@@ -15895,24 +15847,69 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return abilities.size();
 	}
 
-	private List<Ability> getRealFeatsList()
+	public HashMap<Ability.Nature, Set<Ability>> getAbilitiesSet()
 	{
-		return new ArrayList<Ability>(featList);
+
+		final Set<AbilityCategory> abCats = theAbilities.getKeySet();
+		
+		HashMap<Ability.Nature, Set<Ability>> st = new HashMap<Ability.Nature, Set<Ability>>();
+
+		st.put(Ability.Nature.AUTOMATIC, new HashSet<Ability>());
+		st.put(Ability.Nature.NORMAL, new HashSet<Ability>());
+		st.put(Ability.Nature.VIRTUAL, new HashSet<Ability>());
+		st.put(Ability.Nature.ANY, new HashSet<Ability>());
+
+		if (abCats == null)
+		{
+			return st;
+		}
+		
+		st.get(Ability.Nature.VIRTUAL).addAll(getVirtualFeatList());
+		st.get(Ability.Nature.AUTOMATIC).addAll(featAutoList());
+		st.get(Ability.Nature.NORMAL).addAll(getRealFeatList());
+
+		st.get(Ability.Nature.ANY).addAll(st.get(Ability.Nature.NORMAL));
+		st.get(Ability.Nature.ANY).addAll(st.get(Ability.Nature.AUTOMATIC));
+		st.get(Ability.Nature.ANY).addAll(st.get(Ability.Nature.VIRTUAL));
+
+		return st;
 	}
 
+	
 	public List<Ability> getRealAbilitiesList(final AbilityCategory aCategory)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return getRealFeatsList();
-		}
-
-		final List<Ability> abilities = theAbilities.get(aCategory,
+		List<Ability> abilities = theAbilities.get(aCategory,
 			Ability.Nature.NORMAL);
-		if (abilities == null)
+		if (abilities != null)
 		{
-			return Collections.emptyList();
+			return new ArrayList<Ability>(abilities);
 		}
+		// If the list is null it means it needs to be recalculated.
+
+		abilities = new ArrayList<Ability>();
+		if (realAbilities.get(aCategory) != null)
+		{
+			abilities.addAll(realAbilities.get(aCategory));
+		}
+		theAbilities.put(aCategory,	Ability.Nature.NORMAL, abilities);
+
+		// Scan other objects which might hold abilities
+		for (final PObject pobj : getPObjectList())
+		{
+			final List<String> abilityKeys = pobj.getAbilityKeys(this,
+				aCategory, Ability.Nature.NORMAL);
+			for (final String key : abilityKeys)
+			{
+				final Ability added = AbilityUtilities
+					.addCloneOfGlobalAbilityToListWithChoices(abilities,
+						aCategory, key);
+				if (added != null)
+				{
+					added.setFeatType(Ability.Nature.NORMAL);
+				}
+			}
+		}
+		
 		return new ArrayList<Ability>(abilities);
 	}
 
@@ -15924,22 +15921,17 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public List<Ability> getRealFeatList()
 	{
-		return featList;
+		return getRealAbilitiesList(AbilityCategory.FEAT);
 	}
 
+	/**
+	 * @deprecated Use getRealAbilitiesList instead.
+	 * @param aCategory
+	 * @return
+	 */
 	public List<Ability> getRealAbilityList(final AbilityCategory aCategory)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return getRealFeatList();
-		}
-		final List<Ability> ret = theAbilities.get(aCategory,
-			Ability.Nature.NORMAL);
-		if (ret == null)
-		{
-			return Collections.emptyList();
-		}
-		return ret;
+		return getRealAbilitiesList(aCategory);
 	}
 
 	/**
@@ -15954,19 +15946,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public Ability getRealFeatKeyed(final String featName)
 	{
-		return getFeatKeyed(featName, featList);
+		return getRealAbilityKeyed(AbilityCategory.FEAT, featName);
 	}
 
 	public Ability getRealAbilityKeyed(final AbilityCategory aCategory,
 		final String aKey)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return getRealFeatKeyed(aKey);
-		}
-
-		final List<Ability> abilities = theAbilities.get(aCategory,
-			Ability.Nature.NORMAL);
+		final List<Ability> abilities = getRealAbilitiesList(aCategory);
 
 		if (abilities != null)
 		{
@@ -15995,8 +15981,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public Ability getRealFeatNamed(final String featName)
 	{
-		return AbilityUtilities.getAbilityFromList(featList, "FEAT", featName,
-			Ability.Nature.ANY);
+		return AbilityUtilities.getAbilityFromList(realAbilities
+			.get(AbilityCategory.FEAT), "FEAT", featName, Ability.Nature.ANY);
 	}
 
 	/**
@@ -16009,9 +15995,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public boolean hasRealFeat(final Ability aFeat)
 	{
-		// return (abilityStore.getCategorisableNamed(aCategory, aFeat) !=
-		// null);
-		return featList.contains(aFeat);
+		return hasRealAbility(AbilityCategory.FEAT, aFeat);
 	}
 
 	/**
@@ -16027,11 +16011,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	public boolean hasRealAbility(final AbilityCategory aCategory,
 		final Ability anAbility)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return hasRealFeat(anAbility);
-		}
-
 		final List<Ability> abilities = theAbilities.get(aCategory,
 			Ability.Nature.NORMAL);
 		if (abilities == null)
@@ -16102,33 +16081,17 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			boolean hasIt = false;
 			for (final AbilityCategory cat : categories)
 			{
-				if (cat == AbilityCategory.FEAT)
+				switch (nature)
 				{
-					switch (nature)
-					{
-						case NORMAL:
-							hasIt = hasRealAbility(cat, anAbility);
-							break;
-						case AUTOMATIC:
-							hasIt = hasAutomaticAbility(cat, anAbility);
-							break;
-						case VIRTUAL:
-							hasIt = hasVirtualAbility(cat, anAbility);
-							break;
-					}
-				}
-				else
-				{
-					final List<Ability> abilities = theAbilities.get(cat,
-						nature);
-					if (abilities == null)
-					{
-						continue;
-					}
-					if (abilities.contains(anAbility))
-					{
-						hasIt = true;
-					}
+					case NORMAL:
+						hasIt = hasRealAbility(cat, anAbility);
+						break;
+					case AUTOMATIC:
+						hasIt = hasAutomaticAbility(cat, anAbility);
+						break;
+					case VIRTUAL:
+						hasIt = hasVirtualAbility(cat, anAbility);
+						break;
 				}
 				if (hasIt)
 				{
@@ -16150,7 +16113,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public boolean hasRealFeatNamed(final String featName)
 	{
-		return AbilityUtilities.getAbilityFromList(featList, "FEAT", featName,
+		final List<Ability> abilities = theAbilities.get(AbilityCategory.FEAT,
+			Ability.Nature.NORMAL);
+		if (abilities == null)
+		{
+			return false;
+		}
+		return AbilityUtilities.getAbilityFromList(abilities, "FEAT", featName,
 			Ability.Nature.ANY) != null;
 	}
 
@@ -16164,19 +16133,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public boolean removeRealFeat(final Ability aFeat)
 	{
-		return featList.remove(aFeat);
+		return removeRealAbility(AbilityCategory.FEAT, aFeat);
 	}
 
 	public boolean removeRealAbility(final AbilityCategory aCategory,
 		final Ability anAbility)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return removeRealFeat(anAbility);
-		}
-
-		final List<Ability> abilities = theAbilities.get(aCategory,
-			Ability.Nature.NORMAL);
+		final List<Ability> abilities = realAbilities.get(aCategory);
 		if (abilities == null)
 		{
 			return false;
@@ -16288,11 +16251,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public List<Ability> getSelectedAbilities(final AbilityCategory aCategory)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return getRealFeatList();
-		}
-		return getRealAbilityList(aCategory);
+		return getRealAbilitiesList(aCategory);
 	}
 
 	public double getFeats()
@@ -16376,7 +16335,12 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	{
 		double iCount = 0;
 
-		for (Ability aFeat : getRealFeatList())
+		List<Ability> abilities = realAbilities.get(AbilityCategory.FEAT);
+		if (abilities == null)
+		{
+			return 0;
+		}
+		for (Ability aFeat : abilities)
 		{
 			//
 			// Don't increment the count for
@@ -16523,17 +16487,12 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public Ability getFeatAutomaticKeyed(final String aFeatKey)
 	{
-		return AbilityUtilities.getAbilityFromList(featAutoList(), "FEAT",
-			aFeatKey, Ability.Nature.ANY);
+		return getAutomaticAbilityKeyed(AbilityCategory.FEAT, aFeatKey);
 	}
 
 	public Ability getAutomaticAbilityKeyed(final AbilityCategory aCategory,
 		final String anAbilityKey)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return getFeatAutomaticKeyed(anAbilityKey);
-		}
 		final List<Ability> abilities = getAutomaticAbilityList(aCategory);
 		for (final Ability ability : abilities)
 		{
@@ -16705,7 +16664,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 
 		final List<Ability> abilities = new ArrayList<Ability>(
-			getRealAbilityList(aCategory));
+			getRealAbilitiesList(aCategory));
 		abilities.addAll(getVirtualAbilityList(aCategory));
 		abilities.addAll(getAutomaticAbilityList(aCategory));
 
@@ -16717,7 +16676,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		List<Ability> aggregate = new ArrayList<Ability>();
 		final Map<String, Ability> aHashMap = new HashMap<String, Ability>();
 
-		for (Ability aFeat : getRealFeatList())
+		for (Ability aFeat : getRealAbilitiesList(AbilityCategory.FEAT))
 		{
 			if (aFeat != null)
 			{
@@ -16822,17 +16781,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return Collections.unmodifiableList(ret);
 	}
 
-	// boolean isAutomaticFeatsStable()
-	// {
-	// return automaticFeatsStable;
-	// }
-
 	boolean isAutomaticAbilitiesStable(final AbilityCategory aCategory)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return stableAutomaticFeatList != null;
-		}
 		return theAbilities.get(aCategory, Ability.Nature.AUTOMATIC) != null;
 	}
 
@@ -16866,6 +16816,18 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			final List<Ability> aList = pcClass.getVirtualFeatList(pcClass
 				.getLevel());
+			final List<String> abilityKeys = pcClass.getAbilityKeys(this,
+				AbilityCategory.FEAT, Ability.Nature.VIRTUAL);
+			for (final String key : abilityKeys)
+			{
+				final Ability added = AbilityUtilities
+					.addCloneOfGlobalAbilityToListWithChoices(aList,
+						AbilityCategory.FEAT, key);
+				if (added != null)
+				{
+					added.setFeatType(Ability.Nature.VIRTUAL);
+				}
+			}
 
 			for (Ability feat : aList)
 			{
@@ -16876,7 +16838,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 		}
 
-		for (Ability aFeat : getRealFeatList())
+		for (Ability aFeat : getRealAbilitiesList(AbilityCategory.FEAT))
 		{
 			final List<Ability> aList = aFeat.getVirtualFeatList();
 
@@ -16998,27 +16960,38 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			return getVirtualFeatList();
 		}
-		List<Ability> ret = theAbilities.get(aCategory, Ability.Nature.VIRTUAL);
-		if (ret == null)
+		List<Ability> abilities =
+				theAbilities.get(aCategory, Ability.Nature.VIRTUAL);
+		if (abilities == null)
 		{
-			ret = Collections.emptyList();
+			abilities = new ArrayList<Ability>();
+			theAbilities.put(aCategory, Ability.Nature.VIRTUAL, abilities);
+
+			for (final PObject pobj : getPObjectList())
+			{
+				final List<String> abilityKeys =
+						pobj.getAbilityKeys(this, aCategory,
+							Ability.Nature.VIRTUAL);
+				for (final String key : abilityKeys)
+				{
+					final Ability added =
+							AbilityUtilities
+								.addCloneOfGlobalAbilityToListWithChoices(
+									abilities, aCategory, key);
+					if (added != null)
+					{
+						added.setFeatType(Ability.Nature.VIRTUAL);
+					}
+				}
+			}
 		}
 
-		return Collections.unmodifiableList(ret);
+		return Collections.unmodifiableList(abilities);
 	}
 
 	public List<Ability> featAutoList()
 	{
-		if (stableAutomaticFeatList == null)
-		{
-			stableAutomaticFeatList = rebuildAutoFeatList();
-			setAutomaticFeatsStable(true);
-		}
-		if (stableAutomaticFeatList == null)
-		{
-			return Collections.emptyList();
-		}
-		return stableAutomaticFeatList;
+		return getAutomaticAbilityList(AbilityCategory.FEAT);
 	}
 
 	/**
@@ -17035,11 +17008,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public List<Ability> getAutomaticAbilityList(final AbilityCategory aCategory)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return featAutoList();
-		}
-
 		List<Ability> abilities = theAbilities.get(aCategory,
 			Ability.Nature.AUTOMATIC);
 		if (abilities == null)
@@ -17062,136 +17030,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 					}
 				}
 			}
-			//
-			// add racial feats
-			//
-			// if ((getRace() != null) &&
-			// !PlayerCharacterUtilities.canReassignRacialFeats())
-			// {
-			// final List<String> abilityKeys =
-			// getRace().getAutoAbilityList(aCategory);
-			// for ( final String key : abilityKeys )
-			// {
-			// final Ability added =
-			// AbilityUtilities.addCloneOfGlobalAbilityToListWithChoices(abilities,
-			// aCategory, key);
-			// added.setFeatType(Ability.Nature.AUTOMATIC);
-			// }
-			// }
-			//
-			// for (final PCClass aClass : getClassList())
-			// {
-			// final Collection<String> abilityKeys =
-			// aClass.getAutoAbilityList(aCategory);
-			// for ( String key : abilityKeys )
-			// {
-			// final int idx = key.indexOf('[');
-			//
-			// if (idx >= 0)
-			// {
-			// final StringTokenizer bTok = new
-			// StringTokenizer(key.substring(idx + 1), "[]");
-			// final List<Prerequisite> preReqList = new
-			// ArrayList<Prerequisite>();
-			//
-			// while (bTok.hasMoreTokens())
-			// {
-			// final String prereqString = bTok.nextToken();
-			// Logging.debugPrint("Why is the prerequisite '"+prereqString+
-			// "' parsed in PlayerCharacter.featAutoList() rather than the
-			// persistence layer");
-			// try {
-			// final PreParserFactory factory = PreParserFactory.getInstance();
-			// final Prerequisite prereq = factory.parse(prereqString);
-			// preReqList.add(prereq);
-			// }
-			// catch (PersistenceLayerException ple){
-			// Logging.errorPrint(ple.getMessage(), ple);
-			// }
-			// }
-			//
-			// key = key.substring(0, idx);
-			//
-			// if (preReqList.size() != 0)
-			// {
-			// if (! PrereqHandler.passesAll(preReqList, this, null ))
-			// {
-			// continue;
-			// }
-			// }
-			// }
-			//
-			// final Ability added =
-			// AbilityUtilities.addCloneOfGlobalAbilityToListWithChoices(abilities,
-			// aCategory, key);
-			// added.setFeatType(Ability.Nature.AUTOMATIC);
-			// }
-			// }
-			//
-			// if (!PlayerCharacterUtilities.canReassignTemplateFeats() &&
-			// !getTemplateList().isEmpty())
-			// {
-			// for (final PCTemplate template : getTemplateList())
-			// {
-			// final List<String> abilityKeys =
-			// template.getAutoAbilityKeys(aCategory, this, false);
-			//
-			// for ( final String key : abilityKeys )
-			// {
-			// // TODO - Not sure if we need to tokenize on comma
-			// final Ability added =
-			// AbilityUtilities.addCloneOfGlobalAbilityToListWithChoices(abilities,
-			// aCategory, key);
-			// added.setFeatType(Ability.Nature.AUTOMATIC);
-			// }
-			// }
-			// }
-			//
-			// for (final CharacterDomain aCD : getCharacterDomainList())
-			// {
-			// final Domain domain = aCD.getDomain();
-			//
-			// if (domain != null)
-			// {
-			// for (int e2 = 0; e2 < domain.getAssociatedCount(); ++e2)
-			// {
-			// final String aString = domain.getAssociated(e2);
-			//
-			// // TODO - This is not working
-			// if (aString.startsWith("ABILITY"))
-			// {
-			// final int idx = aString.indexOf('?');
-			//
-			// if (idx > -1)
-			// {
-			// final Ability added =
-			// AbilityUtilities.addCloneOfGlobalAbilityToListWithChoices(abilities,
-			// aCategory, aString.substring(idx + 1));
-			// added.setFeatType(Ability.Nature.AUTOMATIC);
-			// }
-			// else
-			// {
-			// Logging.errorPrint("no '?' in Domain assocatedList entry: " +
-			// aString);
-			// }
-			// }
-			// }
-			//
-			// // TODO - Need to change Domain to take AbilityCategories
-			// final Iterator<Categorisable> anIt =
-			// domain.getAbilityIterator(aCategory.getAbilityCategory());
-			//
-			// for (; anIt.hasNext();)
-			// {
-			// final Categorisable c = anIt.next();
-			// final Ability added =
-			// AbilityUtilities.addCloneOfGlobalAbilityToListWithChoices(abilities,
-			// aCategory, c.getKeyName());
-			// added.setFeatType(Ability.Nature.AUTOMATIC);
-			// }
-			// }
-			// }
 
+			if (aCategory == AbilityCategory.FEAT)
+			{
+				addNonAbilityAutoFeats(abilities);
+			}
 			cachedWeaponProfs = null;
 		}
 		return abilities;
@@ -17205,22 +17048,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 		return null;
 	}
-
-	void setStableAutomaticFeatList(final List<Ability> aFeatList)
-	{
-		stableAutomaticFeatList = aFeatList;
-		cachedWeaponProfs = null;
-		// setAutomaticFeatsStable( aFeatList != null );
-	}
-
-	// private List<Ability> getStableAutomaticFeatList()
-	// {
-	// if (isAutomaticFeatsStable())
-	// {
-	// return stableAutomaticFeatList;
-	// }
-	// return null;
-	// }
 
 	private void setStableVirtualFeatList(final List<Ability> aFeatList)
 	{
@@ -17241,10 +17068,14 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return null;
 	}
 
-	private List<Ability> rebuildAutoFeatList()
+	/**
+	 * Add any automatic feats not stored as abilities to the 
+	 * supplied list.
+	 * 
+	 * @param abilities The Ability list to be populated.
+	 */
+	private void addNonAbilityAutoFeats(List<Ability> abilities)
 	{
-		stableAutomaticFeatList = new ArrayList<Ability>();
-
 		//
 		// add racial feats
 		//
@@ -17258,7 +17089,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			{
 				Ability added = AbilityUtilities
 					.addCloneOfGlobalAbilityToListWithChoices(
-						stableAutomaticFeatList, Constants.FEAT_CATEGORY, aTok
+						abilities, Constants.FEAT_CATEGORY, aTok
 							.nextToken());
 				if (added != null)
 				{
@@ -17267,7 +17098,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 
 			addAutoProfsToList(getRace().getSafeListFor(
-				ListKey.SELECTED_WEAPON_PROF_BONUS), stableAutomaticFeatList);
+				ListKey.SELECTED_WEAPON_PROF_BONUS), abilities);
 
 		}
 
@@ -17325,7 +17156,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 				Ability added = AbilityUtilities
 					.addCloneOfGlobalAbilityToListWithChoices(
-						stableAutomaticFeatList, Constants.FEAT_CATEGORY,
+						abilities, Constants.FEAT_CATEGORY,
 						autoFeat);
 				if (added != null)
 				{
@@ -17334,7 +17165,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 			addAutoProfsToList(aClass
 				.getSafeListFor(ListKey.SELECTED_WEAPON_PROF_BONUS),
-				stableAutomaticFeatList);
+				abilities);
 		}
 
 		if (!PlayerCharacterUtilities.canReassignTemplateFeats()
@@ -17358,7 +17189,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 						{
 							Ability added = AbilityUtilities
 								.addCloneOfGlobalAbilityToListWithChoices(
-									stableAutomaticFeatList,
+									abilities,
 									Constants.FEAT_CATEGORY, aTok.nextToken());
 							if (added != null)
 							{
@@ -17369,15 +17200,12 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				}
 				addAutoProfsToList(aTemplate
 					.getSafeListFor(ListKey.SELECTED_WEAPON_PROF_BONUS),
-					stableAutomaticFeatList);
+					abilities);
 
 			}
 		}
 
-		/*
-		 * BUG I think -> if it's empty, we step through it?!? - thpr 11/3/06
-		 */
-		if (getCharacterDomainList().isEmpty())
+		if (!getCharacterDomainList().isEmpty())
 		{
 			for (final CharacterDomain aCD : getCharacterDomainList())
 			{
@@ -17397,7 +17225,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 							{
 								Ability added = AbilityUtilities
 									.addCloneOfGlobalAbilityToListWithChoices(
-										stableAutomaticFeatList,
+										abilities,
 										Constants.FEAT_CATEGORY, aString
 											.substring(idx + 1));
 								if (added != null)
@@ -17422,7 +17250,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 						final Ability abI = (Ability) anIt.next();
 						Ability added = AbilityUtilities
 							.addCloneOfGlobalAbilityToListWithChoices(
-								stableAutomaticFeatList,
+								abilities,
 								Constants.FEAT_CATEGORY, abI.getKeyName());
 						if (added != null)
 						{
@@ -17432,26 +17260,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 					addAutoProfsToList(aDomain
 						.getSafeListFor(ListKey.SELECTED_WEAPON_PROF_BONUS),
-						stableAutomaticFeatList);
+						abilities);
 
 				}
 			}
 		}
-		
-		// Grab any Abilities of category FEAT lurking in any PObjects
-		for (PObject pobj : getPObjectList())
-		{
-			for (String key : pobj.getAbilityKeys(this, AbilityCategory.FEAT, Nature.AUTOMATIC))
-			{
-				Logging.errorPrint("Got ability key " + key + " from " + pobj + ".");
-				Ability added =
-						AbilityUtilities
-							.addCloneOfGlobalAbilityToListWithChoices(
-								stableAutomaticFeatList,
-								Constants.FEAT_CATEGORY, key);
-			}
-		}
-		return stableAutomaticFeatList;
 	}
 
 	/**
