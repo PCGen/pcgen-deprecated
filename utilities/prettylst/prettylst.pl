@@ -1,4 +1,4 @@
-ï»¿#!/usr/bin/perl
+#!/usr/bin/perl
 
 # * Copyright
 
@@ -192,7 +192,8 @@ my %conversion_enable = (
 
        'ALL:CMP NatAttack fix'              => 0,               # Fix STR bonus for Natural Attacks in CMP files
        'ALL:CMP remove PREALIGN'            => 0,               # Remove the PREALIGN tag everywhere (to help my CMP friends)
-       'RACE:Fix PREDEFAULTMONSTER bonuses' => 1,               #[1514765] Conversion to remove old defaultmonster tags
+    'RACE:Fix PREDEFAULTMONSTER bonuses' => 0,               #[1514765] Conversion to remove old defaultmonster tags
+    'ALL:Fix Common Extended ASCII'         => 0, #[1324519 ] ASCII characters
 );
 
 
@@ -207,7 +208,7 @@ use constant INFO    => 6;      # Everything including deprecations message (def
 use constant NOTICE  => 5;      # No deprecations
 use constant WARNING => 4;      # PCGEN will prabably not work properly
 use constant ERROR   => 3;      # PCGEN will not work properly or the
-                                # script is foobar
+                               # script is foobar
 
 my %numeric_warning_level_for = (
     debug           => DEBUG,
@@ -339,13 +340,14 @@ if ( $cl_options{convert} ) {
     if ( $cl_options{convert} eq 'RACETYPE' ) {
         $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
     }
+elsif ( $cl_options{convert} eq 'Willpower' ) {
+    $conversion_enable{'ALL:Willpower to Will'} = 1;
+}
+elsif ( $cl_options{convert} eq 'ASCII' ) {
+    $conversion_enable{'ALL:Fix Common Extended ASCII'} =1; # [1324519 ] ASCII characters
+} 
 
-    if ( $cl_options{convert} eq 'Willpower' ) {
-#        $conversion_enable{'ALL:PRERACE needs a ,'} = 1;
-        $conversion_enable{'ALL:Willpower to Will'} = 1;
-    }
-    
-    if ( $cl_options{convert} eq 'pcgen5110' ) {
+if ( $cl_options{convert} eq 'pcgen5110' ) {
        $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;  #[1514765] Conversion to remove old defaultmonster tags
    }
     elsif ( $cl_options{convert} eq 'pcgen595' ) {
@@ -5232,12 +5234,37 @@ sub FILETYPE_parse {
     for my $line (@ {$lines_ref} ) {
         my $line_info;
         my $new_line = $line;    # We work on a copy
+	study $new_line;         # Make the substitution work.
 
         # Remove spaces at the end of the line
         $new_line =~ s/\s+$//;
 
         # Remove spaces at the begining of the line
         $new_line =~ s/^\s+//;
+
+	## Gawaine42
+	## [ 1324519 ] ASCII characters
+	## Start by replacing the smart quotes and other similar characters.
+	if ($conversion_enable{'ALL:Fix Common Extended ASCII'}) {
+	    $new_line =~ s/\x82/,/g;
+	    $new_line =~ s/\x84/,,/g;
+	    $new_line =~ s/\x85/.../g;
+	    $new_line =~ s/\x88/^/g;
+	    $new_line =~ s-\x89- °/°°-g;
+	    $new_line =~ s/\x8B/</g;
+	    $new_line =~ s/\x8C/Oe/g;
+	    $new_line =~ s/\x91/\'/g; 
+	    $new_line =~ s/\x92/\'/g;
+	    $new_line =~ s/\x93/\"/g;
+	    $new_line =~ s/\x94/\"/g;
+	    $new_line =~ s/\x95/*/g;
+	    $new_line =~ s/\x96/-/g;
+	    $new_line =~ s/\x97/-/g;
+	    $new_line =~ s-\x98-<sup>~</sup>-g;
+	    $new_line =~ s-\x99-<sup>TM</sup>-g;
+	    $new_line =~ s/\x9B/>/g;
+	    $new_line =~ s/\x9C/oe/g;
+	}
 
         # Skip comments and empty lines
         if ( length($new_line) == 0 || $new_line =~ /^\#/ ) {
@@ -14036,6 +14063,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
 
 [ 1514765 ] Conversion to remove old defaultmonster tags
+
+[ 1324519 ] ASCII characters    
 
 =head2 v1.37 -- -- 2007.03.01
 
