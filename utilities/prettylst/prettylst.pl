@@ -15,7 +15,7 @@
 
 # See perldoc prettylst.pl for more details
 
-use 5.008_001;                      # Perl 5.8.1 or better is now mendantory
+use 5.008_001;                      # Perl 5.8.1 or better is now mandantory
 use strict;
 use warnings;
 use Fatal qw( open close );         # Force some built-ins to die on error
@@ -192,6 +192,7 @@ my %conversion_enable = (
 
        'ALL:CMP NatAttack fix'              => 0,               # Fix STR bonus for Natural Attacks in CMP files
        'ALL:CMP remove PREALIGN'            => 0,               # Remove the PREALIGN tag everywhere (to help my CMP friends)
+       'RACE:Fix PREDEFAULTMONSTER bonuses' => 1,               #[1514765] Conversion to remove old defaultmonster tags
 );
 
 
@@ -338,10 +339,15 @@ if ( $cl_options{convert} ) {
     if ( $cl_options{convert} eq 'RACETYPE' ) {
         $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
     }
-    elsif ( $cl_options{convert} eq 'Willpower' ) {
+
+    if ( $cl_options{convert} eq 'Willpower' ) {
 #        $conversion_enable{'ALL:PRERACE needs a ,'} = 1;
         $conversion_enable{'ALL:Willpower to Will'} = 1;
     }
+    
+    if ( $cl_options{convert} eq 'pcgen5110' ) {
+       $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;  #[1514765] Conversion to remove old defaultmonster tags
+   }
     elsif ( $cl_options{convert} eq 'pcgen595' ) {
 #        $conversion_enable{'ALL:PRERACE needs a ,'} = 1;
     }
@@ -646,7 +652,7 @@ if ($cl_options{man}) {
             -output  => \*STDERR
         }
     );
-    exit;
+   exit;
 }
 
 #####################################
@@ -1562,7 +1568,7 @@ my @PRE_Tags = (
 # Hash used by validate_pre_tag to verify if a PRExxx tag exists
 my %PRE_Tags = (
     'PREAPPLY'          => 1,    # Only valid when embeded
-    'PREDEFAULTMONSTER' => 1,    # Only valid when embeded
+#    'PREDEFAULTMONSTER' => 1,    # Only valid when embeded
 );
 
 for my $pre_tag (@PRE_Tags) {
@@ -1640,7 +1646,7 @@ my %master_order = (
         'ADD:FAVOREDCLASS',
         'ADD:FEAT:*',
         'ADD:FORCEPOINT',
-        'ADD:Language',
+        'ADD:LANGUAGE',                   # Now uppercase
         'ADD:LIST',
         'ADD:SPECIAL',
         'ADD:SPELLCASTER',
@@ -1908,7 +1914,7 @@ my %master_order = (
         'ADD:CLASSSKILLS:*',
         'ADD:DOMAIN',
         'ADD:FEAT:*',
-        'ADD:Language:*',
+        'ADD:LANGUAGE:*',
         'ADD:LIST:*',
         'ADD:SPECIAL:*',
         'ADD:VFEAT',
@@ -1960,7 +1966,7 @@ my %master_order = (
         'AUTO:ARMORPROF',
         'SA:.CLEAR',
         'SA:*',
-        'ADD:Language',
+        'ADD:LANGUAGE',
         'DEFINE:*',
         'BONUS:ABILITYPOOL:*',
         'BONUS:CHECKS:*',
@@ -2379,7 +2385,7 @@ my %master_order = (
         'ADD:FAVOREDCLASS',
         'ADD:FEAT:*',
         'ADD:FORCEPOINT',
-        'ADD:Language',
+        'ADD:LANGUAGE',
         'ADD:LIST',
         'ADD:SPECIAL',
         'ADD:SPELLCASTER',
@@ -3023,7 +3029,7 @@ my %master_order = (
         'ADD:CLASSSKILLS:*',
         'ADD:DOMAIN',
         'ADD:FEAT:*',
-        'ADD:Language:*',
+        'ADD:LANGUAGE:*',
         'ADD:LIST:*',
         'ADD:SPECIAL:*',
         'ADD:WEAPONBONUS',
@@ -3222,7 +3228,7 @@ my %master_order = (
         'ADD:CLASSSKILLS',
         'ADD:EQUIP',
         'ADD:FEAT:*',
-        'ADD:Language',
+        'ADD:LANGUAGE',
         'ADD:VFEAT',
         'FAVOREDCLASS',
         'FEAT:*',
@@ -3465,7 +3471,7 @@ my %token_ADD_tag = map { $_ => 1 } (
     'ADD:FEAT',
     'ADD:FORCEPOINT',
     'ADD:INIT',
-    'ADD:Language',
+    'ADD:LANGUAGE',
     'ADD:LIST',
     'ADD:SPECIAL',
     'ADD:SPELLCASTER',
@@ -5050,7 +5056,7 @@ if ( $cl_options{xcheck} ) {
 #            }
             elsif ( $linetype =~ /,/ ) {
 
-                # Special case if there is a , (coma) in the
+                # Special case if there is a , (comma) in the
                 # entry.
                 # We must check multiple possible linetypes.
                 my $found = 0;
@@ -5082,7 +5088,6 @@ if ( $cl_options{xcheck} ) {
             }
             else {
                 unless ( exists $valid_entities{$linetype}{$entry} ) {
-
      # push @{$referer{$FileType}{$entry}}, [ $tags{$column}, $file_for_error, $line_for_error ]
                     for my $array ( @{ $referer{$linetype}{$entry} } ) {
                         push @{ $to_report{ $array->[1] } },
@@ -5098,17 +5103,19 @@ if ( $cl_options{xcheck} ) {
                    . "Cross-reference problems found\n"
                    . "----------------------------------------------------------------\n"
     );
-
+    
+    # This will add a message for every message in to_report - which should be every message
+    # that was added to to_report.
     for my $file ( sort keys %to_report ) {
         for my $line_ref ( sort { $a->[0] <=> $b->[0] } @{ $to_report{$file} } ) {
-            my $message = qq{No $line_ref->[1] entry for "$line_ref->[2]"};
-
-            # If it is an EQMOD Key missing, it is less severe
-            my $message_level = $line_ref->[1] eq 'EQUIPMOD Key' ? INFO : NOTICE;
-
-            ewarn( $message_level,  $message, $file, $line_ref->[0] );
-        }
+	    my $message = qq{No $line_ref->[1] entry for "$line_ref->[2]"};
+	    
+	    # If it is an EQMOD Key missing, it is less severe
+	    my $message_level = $line_ref->[1] eq 'EQUIPMOD Key' ? INFO : NOTICE;
+	    ewarn( $message_level,  $message, $file, $line_ref->[0] );
+	}
     }
+
 
     # Find the type entries that need to be reported
     %to_report = ();
@@ -5321,7 +5328,7 @@ sub FILETYPE_parse {
             #      $tokens[0] =~ s/\s+$//;
             #      $tokens[0] =~ s/^\s+//;
 
-            # We remove the inclosing quotes if any
+            # We remove the enclosing quotes if any
             ewarn( WARNING,
                 qq{Removing quotes around the '$tokens[0]' tag},
                 $file_for_error,
@@ -5389,8 +5396,7 @@ sub FILETYPE_parse {
                                     );
                                 }
                             }
-
-                            $valid_entities{$curent_linetype}{$entry}++;
+			    $valid_entities{$curent_linetype}{$entry}++;
 
                             # Check to see if the entry must be recorded for other
                             # entry types.
@@ -5438,6 +5444,9 @@ sub FILETYPE_parse {
         ############################################################
         ######################## Conversion ########################
         # We manipulate the tags for the line here
+	# This function call will parse individual lines, which will
+	# in turn parse the tags within the lines.
+  
         additionnal_line_parsing(\%line_tokens,
                                  $curent_linetype,
                                  $file_for_error,
@@ -6261,6 +6270,17 @@ sub parse_tag {
     # If there is a ! in front of a PRExxx tag, we remove it
     my $negate_pre = $tag =~ s/^!(pre)/$1/i ? 1 : 0;
 
+    # [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
+    # STARTPACK lines in Kit files weren't getting added to $valid_entities.
+    # If they aren't added to valid_entities, since the verify flag is set, 
+    # each Kit will
+    # cause a spurious error. I've added them to valid entities to prevent 
+    # that.
+    if ($tag eq 'STARTPACK') {
+	$valid_entities{'KIT STARTPACK'}{"KIT:$value"}++;
+	$valid_entities{'KIT STARTPACK'}{"$value"}++;
+    }
+
     # Special cases like ADD:... and BONUS:...
     if ( $tag eq 'ADD' ) {
         my ( $type, $addtag, $therest ) = parse_ADD_tag( $tag_text );
@@ -6640,6 +6660,13 @@ BEGIN {
 
     sub validate_tag {
         my ( $tag_name, $tag_value, $linetype, $file_for_error, $line_for_error ) = @_;
+	study $tag_value;
+
+	if ($tag_name eq 'STARTPACK') 
+	{	    
+	    $valid_entities{'KIT STARTPACK'}{"KIT:$tag_value"}++;
+	    $valid_entities{'KIT'}{"KIT:$tag_value"}++;
+	}
 
         # Deprecated tags
         if ( $tag_name eq 'HITDICESIZE' ) {
@@ -6828,7 +6855,7 @@ BEGIN {
             {
 
                 # BONUS:MOVEMULT|<list of move types>|<number to add or mult>
-                # <list of move types> is a coma separated list of a weird TYPE=<move>.
+                # <list of move types> is a comma separated list of a weird TYPE=<move>.
                 # The <move> are found in the MOVE tags.
                 # <number to add or mult> can be a formula
 
@@ -6871,7 +6898,7 @@ BEGIN {
             elsif ( $tag_name eq 'BONUS:SLOTS' ) {
 
                 # BONUS:SLOTS|<slot types>|<number of slots>
-                # <slot types> is a coma separated list.
+                # <slot types> is a comma separated list.
                 # The valid types are defined in %token_BONUS_SLOTS_types
                 # <number of slots> could be a formula.
 
@@ -7253,7 +7280,7 @@ BEGIN {
             }
             elsif ( $tag_name eq "IGNORES" || $tag_name eq "REPLACES" ) {
 
-                # Coma separated list of KEYs
+                # Comma separated list of KEYs
                 # To be processed later
                 push @xcheck_to_process,
                     [
@@ -7294,7 +7321,7 @@ BEGIN {
                     @feats = grep { $_ ne 'LIST' } embedded_coma_split($1);
 
                     #        # We put the , back in place
-                    #        s/&coma;/,/g for @feats;
+                    #        s/&comma;/,/g for @feats;
 
                     # Here we deal with the formula part
                     push @xcheck_to_process,
@@ -7403,13 +7430,13 @@ BEGIN {
                 grep { $_ ne 'ALL' } split ',', $tag_value
                 ];
         }
-        elsif ( $tag_name eq 'ADD:Language' ) {
+        elsif ( $tag_name eq 'ADD:LANGUAGE' ) {
 
             # Syntax: ADD:LANGUAGE(<coma separated list of languages)<number>
             if ( $tag_value =~ /\((.*)\)/ ) {
                 push @xcheck_to_process,
                     [
-                    'LANGUAGE', 'ADD:Language(@@)', $file_for_error, $line_for_error,
+                    'LANGUAGE', 'ADD:LANGUAGE(@@)', $file_for_error, $line_for_error,
                     split ',',  $1
                     ];
             }
@@ -9527,9 +9554,9 @@ BEGIN {
                 }
             }
             elsif ( my ($separator) = ( $formula =~ / \G ( [,] ) /xmsgc ) ) {
-                # It's a coma
+                # It's a comma
                 if ( $is_param == NO ) {
-                    # Coma are allowed only as parameter separator
+                    # Commas are allowed only as parameter separator
                     my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
                     ewarn ( NOTICE,
                         qq{Jep syntax error found near "$separator$bogus_text" in "$tag"},
@@ -9584,6 +9611,24 @@ BEGIN {
 
 sub additionnal_tag_parsing {
     my ( $tag_name, $tag_value, $linetype, $file_for_error, $line_for_error ) = @_;
+    
+    ##################################################################
+    # [ 1514765 ] Conversion to remove old defaultmonster tags
+    # Gawaine42 (Richard Bowers)
+    # Bonuses associated with a PREDEFAULTMONSTER:Y need to be removed
+    # Bonuses associated with a PREDEFAULTMONSTER:N are retained without
+    #       the PREDEFAULTMONSTER:N
+    if ( $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} 
+	 && $tag_name =~ /BONUS/ ) {	
+	if ($tag_value =~ /PREDEFAULTMONSTER:N/ ) {
+	    $_[1] =~ s/[|]PREDEFAULTMONSTER:N//;
+	    ewarn ( WARNING,
+		    qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
+		    $file_for_error,
+		    $line_for_error
+		    );	    
+	}
+    }
 
 
     ##################################################################
@@ -9713,7 +9758,7 @@ sub additionnal_tag_parsing {
                     $file_for_error,
                     $line_for_error
                 );
-            }
+           }
         }
         elsif (index( $tag_name, 'BONUS' ) == 0
             || $tag_name eq 'SA'
@@ -10209,10 +10254,10 @@ sub validate_line {
         # We get the line identifier.
         my $identifier = $line_ref->{ $master_order{$linetype}[0] }[0];
 
-        # We hunt for the bad coma.
+        # We hunt for the bad comma.
         if($identifier =~ /,/) {
             ewarn( NOTICE,
-                qq{"," (coma) should not be used in line identifier name: $identifier},
+                qq{"," (comma) should not be used in line identifier name: $identifier},
                 $file_for_error,
                 $line_for_error
             );
@@ -10273,7 +10318,7 @@ sub validate_line {
 
             # The CHOOSE:SPELLLEVEL is exampted from this particular rule.
             ewarn(INFO,
-                  qq(The MULT:YES tag is mandantory when CHOOSE is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
+                  qq(The MULT:YES tag is mandatory when CHOOSE is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                   $file_for_error,
                   $line_for_error
             );
@@ -10281,7 +10326,7 @@ sub validate_line {
 
         if ( $hasSTACK && !$hasMULT ) {
             ewarn(INFO,
-                  qq(The MULT:YES tag is mandantory when STACK:YES is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
+                  qq(The MULT:YES tag is mandatory when STACK:YES is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                   $file_for_error,
                   $line_for_error
             );
@@ -10350,7 +10395,7 @@ sub validate_line {
 
         if ( $hasMULT && !$hasCHOOSE ) {
             ewarn(INFO,
-                  qq(The CHOOSE tag is mandantory when MULT:YES is present in FEAT "$line_ref->{'000FeatName'}[0]"),
+                  qq(The CHOOSE tag is mandatory when MULT:YES is present in FEAT "$line_ref->{'000FeatName'}[0]"),
                   $file_for_error,
                   $line_for_error
             );
@@ -10359,7 +10404,7 @@ sub validate_line {
 
             # The CHOOSE:SPELLLEVEL is exampted from this particular rule.
             ewarn(INFO,
-                  qq(The MULT:YES tag is mandantory when CHOOSE is present in FEAT "$line_ref->{'000FeatName'}[0]"),
+                  qq(The MULT:YES tag is mandatory when CHOOSE is present in FEAT "$line_ref->{'000FeatName'}[0]"),
                   $file_for_error,
                   $line_for_error
             );
@@ -10367,7 +10412,7 @@ sub validate_line {
 
         if ( $hasSTACK && !$hasMULT ) {
             ewarn(INFO,
-                  qq(The MULT:YES tag is mandantory when STACK:YES is present in FEAT "$line_ref->{'000FeatName'}[0]"),
+                  qq(The MULT:YES tag is mandatory when STACK:YES is present in FEAT "$line_ref->{'000FeatName'}[0]"),
                   $file_for_error,
                   $line_for_error
             );
@@ -10508,6 +10553,34 @@ BEGIN {
         my ( $line_ref, $filetype, $file_for_error, $line_for_error, $line_info ) = @_;
 
     ##################################################################
+    # [ 1514765 ] Conversion to remove old defaultmonster tags
+    # Gawaine42 (Richard Bowers)
+    # Bonuses associated with a PREDEFAULTMONSTER:Y need to be removed
+    # This should remove the whole tag.
+    if ($conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} 
+	 	&& $filetype eq "RACE"
+	) {
+	for my $key ( keys %$line_ref ) {
+	    my $ary = $line_ref->{$key};
+	    my $iCount = 0; 
+	    foreach (@$ary) {
+		my $ttag = $$ary[$iCount];
+		if ($ttag =~ /PREDEFAULTMONSTER:Y/) {
+		    $$ary[$iCount] = "";
+		    ewarn (WARNING,
+			   qq{Removing "$ttag".},
+			   $file_for_error,
+			   $line_for_error
+			   );
+		}
+		$iCount++;
+	    }
+	}
+    }
+        		
+        		
+	
+    ##################################################################
     # [ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT'
     #
     # In EQUIPMENT files, take ALTCRITICAL and replace with ALTCRITMULT'
@@ -10566,7 +10639,7 @@ BEGIN {
                       $line_for_error
                     );
                 }
-         }
+     }
 
     # We remove HITDICE or warn of missing MONSTERCLASS tag.
     if (   $conversion_enable{'RACE:Remove MFEAT and HITDICE'}
@@ -12563,8 +12636,8 @@ sub report_tag_sort {
 # embedded_coma_split
 # -------------------
 #
-# split a list using the coma but part of the list may be
-# between brackets and the coma must be ignored there.
+# split a list using the comma but part of the list may be
+# between brackets and the comma must be ignored there.
 #
 # Parameter: $list        List that need to be splited
 #            $separator   optionnal expression used for the
@@ -12599,7 +12672,7 @@ sub embedded_coma_split {
         # The prefix is added to $newlist
         $newlist .= $result[2];
 
-        # We replace every , with &coma;
+        # We replace every , with &comma;
         $result[0] =~ s/,/&coma;/xmsg;
 
         # We add the bracket section
@@ -13958,7 +14031,20 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
+=head2 $version$ -- 2007.03.24
+ 
+[ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
+
+[ 1514765 ] Conversion to remove old defaultmonster tags
+
+=head2 v1.37 -- -- 2007.03.01
 =head2 v1.38 -- -- NOT YET RELEASED
+
+
+
+
+
+
 
 [ 1353255 ] TYPE to RACETYPE conversion
 
@@ -14419,7 +14505,7 @@ New validation for PRECLASS (make sure the number is there and the class exists)
 
 =head2 v1.27 -- 2003.04.03
 
-The B<-inputpath> option is now mandantory
+The B<-inputpath> option is now mandatory
 
 [ 686169 ] remove ATTACKS: tag
 
