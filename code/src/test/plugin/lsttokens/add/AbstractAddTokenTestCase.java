@@ -28,10 +28,10 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import plugin.lsttokens.AddLst;
-import plugin.lsttokens.testsupport.GlobalTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 
-public abstract class AbstractAddTokenTestCase extends GlobalTokenTestCase
+public abstract class AbstractAddTokenTestCase extends AbstractGlobalTokenTestCase
 {
 
 	static AddLst token = new AddLst();

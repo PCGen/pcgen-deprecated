@@ -31,10 +31,10 @@ import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.AddLst;
-import plugin.lsttokens.testsupport.GlobalTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 
-public class SpellLevelTokenTest extends GlobalTokenTestCase
+public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 {
 
 	@Override
