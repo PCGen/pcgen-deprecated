@@ -253,13 +253,7 @@ public class HitdieToken implements PCTemplateLstToken
 				hdm = new HitDieLock(new HitDie(i));
 			}
 
-			/*
-			 * BUG This is insufficient because Aggregator's .equals is very
-			 * simple... Need some method of uniquifying each Aggregator in a
-			 * common fashion between graphs... source object key and token
-			 * name? (not good because keys can be changed)... ???
-			 */
-			Aggregator ag = new Aggregator(template, getTokenName());
+			Aggregator ag = new Aggregator(template, owner, getTokenName());
 			context.graph.linkAllowIntoGraph(getTokenName(), template, ag);
 			context.graph.linkActivationIntoGraph(getTokenName(), owner, ag);
 			context.graph.linkObjectIntoGraph(getTokenName(), ag, hdm);

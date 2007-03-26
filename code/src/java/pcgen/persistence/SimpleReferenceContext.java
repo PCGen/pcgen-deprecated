@@ -363,7 +363,7 @@ public class SimpleReferenceContext
 		return returnGood;
 	}
 
-	public void constructIfNecessary(Class<WeaponProf> cl, String value)
+	public <T extends CDOMObject> void constructIfNecessary(Class<T> cl, String value)
 	{
 		/*
 		 * TODO FIXME Need to ensure that items that are built here are tagged

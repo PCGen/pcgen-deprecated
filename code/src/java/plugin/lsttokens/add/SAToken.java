@@ -1,7 +1,19 @@
 package plugin.lsttokens.add;
 
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
+
+import pcgen.cdom.base.CDOMCompoundReference;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.Restriction;
+import pcgen.cdom.base.Slot;
+import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.core.SpecialAbility;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AddLstToken;
@@ -9,6 +21,9 @@ import pcgen.util.Logging;
 
 public class SAToken implements AddLstToken
 {
+
+	private static final Class<SpecialAbility> SPECABILITY_CLASS =
+			SpecialAbility.class;
 
 	public boolean parse(PObject target, String value, int level)
 	{
@@ -46,13 +61,139 @@ public class SAToken implements AddLstToken
 	public boolean parse(LoadContext context, PObject obj, String value)
 		throws PersistenceLayerException
 	{
-		// FIXME This is a hack
+		int pipeLoc = value.indexOf(Constants.PIPE);
+		if (pipeLoc == -1)
+		{
+			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA "
+				+ "is prohibited.");
+			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
+			return false;
+		}
+		String name = value.substring(0, pipeLoc);
+		if (name.length() == 0)
+		{
+			Logging.errorPrint("Empty name for ADD:SA " + "is prohibited.");
+			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
+			return false;
+		}
+		String rest = value.substring(pipeLoc + 1);
+		int count;
+		String items;
+		pipeLoc = rest.indexOf(Constants.PIPE);
+		if (pipeLoc == -1)
+		{
+			count = 1;
+			items = rest;
+		}
+		else
+		{
+			String countString = rest.substring(0, pipeLoc);
+			try
+			{
+				count = Integer.parseInt(countString);
+				if (count < 1)
+				{
+					Logging.errorPrint("Count in ADD:" + getTokenName()
+						+ " must be > 0");
+					return false;
+				}
+			}
+			catch (NumberFormatException nfe)
+			{
+				Logging.errorPrint("Invalid Count in ADD:" + getTokenName()
+					+ ": " + countString);
+				return false;
+			}
+			items = rest.substring(pipeLoc + 1);
+		}
+
+		if (items.length() == 0)
+		{
+			Logging.errorPrint("Invalid: Empty SAs in ADD:" + getTokenName()
+				+ ": " + value);
+			return false;
+		}
+
+		if (items.charAt(0) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " SA List may not start with , : " + value);
+			return false;
+		}
+		if (items.charAt(items.length() - 1) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " SA List may not end with , : " + value);
+			return false;
+		}
+		if (items.indexOf(",,") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " SA List uses double separator ,, : " + value);
+			return false;
+		}
+
+		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
+
+		Slot<SpecialAbility> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), obj,
+					SPECABILITY_CLASS, FormulaFactory.getFormulaFor(count));
+		slot.setName(name);
+		CDOMCompoundReference<SpecialAbility> cr =
+				new CDOMCompoundReference<SpecialAbility>(SPECABILITY_CLASS,
+					getTokenName() + " items");
+		while (tok.hasMoreTokens())
+		{
+			String token = tok.nextToken();
+			context.ref.constructIfNecessary(SPECABILITY_CLASS, token);
+			cr.addReference(context.ref.getCDOMReference(SPECABILITY_CLASS,
+				token));
+		}
+
+		slot.addSinkRestriction(new GroupRestriction<SpecialAbility>(
+			SPECABILITY_CLASS, cr));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Set<PCGraphEdge> links =
+				context.graph.getChildLinksFromToken(getTokenName(), obj,
+					Slot.class);
+		if (links == null || links.isEmpty())
+		{
+			return null;
+		}
+		Set<String> set = new TreeSet<String>();
+		for (PCGraphEdge edge : links)
+		{
+			Slot<SpecialAbility> slot =
+					(Slot<SpecialAbility>) edge.getSinkNodes().get(0);
+			if (!slot.getSlotClass().equals(SpecialAbility.class))
+			{
+				context.addWriteMessage("Invalid Slot Type associated with "
+					+ getTokenName() + ": Type cannot be "
+					+ slot.getSlotClass().getSimpleName());
+				return null;
+			}
+			String slotCount = slot.toLSTform();
+			List<Restriction<?>> restr = slot.getSinkRestrictions();
+			if (restr.size() != 1)
+			{
+				context.addWriteMessage("Slot for " + getTokenName()
+					+ " must have only one restriction");
+				return null;
+			}
+			Restriction<?> res = restr.get(0);
+			StringBuilder sb = new StringBuilder();
+			sb.append(slot.getName()).append('|');
+			if (!"1".equals(slotCount))
+			{
+				sb.append(slotCount).append('|');
+			}
+			sb.append(res.toLSTform());
+			set.add(sb.toString());
+		}
+		return set.toArray(new String[set.size()]);
 	}
 }

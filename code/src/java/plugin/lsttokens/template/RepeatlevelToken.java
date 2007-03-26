@@ -369,7 +369,7 @@ public class RepeatlevelToken extends AbstractToken implements
 			return false;
 		}
 
-		Aggregator agg = new Aggregator(template, getTokenName());
+		Aggregator agg = new Aggregator(template, template, getTokenName());
 		agg.put(IntegerKey.CONSECUTIVE, Integer.valueOf(consecutive));
 		agg.put(IntegerKey.MAX_LEVEL, Integer.valueOf(maxLevel));
 		agg.put(IntegerKey.LEVEL_INCREMENT, Integer.valueOf(lvlIncrement));

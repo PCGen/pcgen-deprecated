@@ -22,11 +22,13 @@ import pcgen.cdom.base.CDOMObject;
 public final class Aggregator extends CDOMObject
 {
 
+	private final Object aggregatorOwner;
 	private final Object aggregatorSource;
 	private final String aggSourceToken;
 
-	public Aggregator(Object source, String sourceToken)
+	public Aggregator(Object owner, Object source, String sourceToken)
 	{
+		aggregatorOwner = owner;
 		aggregatorSource = source;
 		aggSourceToken = sourceToken;
 	}
@@ -36,7 +38,8 @@ public final class Aggregator extends CDOMObject
 	@Override
 	public int hashCode()
 	{
-		return aggregatorSource.hashCode() ^ aggSourceToken.hashCode();
+		return aggregatorOwner.hashCode() ^ aggregatorSource.hashCode()
+			^ aggSourceToken.hashCode();
 	}
 
 	@Override
@@ -52,6 +55,7 @@ public final class Aggregator extends CDOMObject
 		}
 		Aggregator other = (Aggregator) o;
 		return other.aggSourceToken.equals(aggSourceToken)
+			&& other.aggregatorOwner.equals(aggregatorOwner)
 			&& other.aggregatorSource.equals(aggregatorSource)
 			&& this.isCDOMEqual(other);
 	}

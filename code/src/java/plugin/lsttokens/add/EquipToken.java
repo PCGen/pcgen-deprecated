@@ -111,7 +111,6 @@ public class EquipToken implements AddLstToken
 
 		slot.addSinkRestriction(new GroupRestriction<Equipment>(
 			EQUIPMENT_CLASS, cr));
-		// FIXME Slot needs to know AbilityNature.NORMAL ??
 
 		return true;
 	}

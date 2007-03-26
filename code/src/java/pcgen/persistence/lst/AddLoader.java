@@ -57,6 +57,10 @@ public final class AddLoader
 			return false;
 		}
 		String key = value.substring(0, pipeLoc);
+		if (".CLEAR".equals(key))
+		{
+			//TODO Need to perform .CLEAR
+		}
 
 		AddLstToken token = (AddLstToken) tokenMap.get(key);
 
@@ -91,6 +95,27 @@ public final class AddLoader
 	{
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(AddLstToken.class);
+		if (".CLEAR".equals(key))
+		{
+			if (level > 0)
+			{
+				Logging
+					.errorPrint("Warning: You performed a Dangerous .CLEAR in a ADD: Token");
+				Logging
+					.errorPrint("  A non-level limited .CLEAR was used in a Class Level line");
+				Logging
+					.errorPrint("  Today, this performs a .CLEAR on the entire PCClass");
+				Logging
+					.errorPrint("  However, you are using undocumented behavior that is subject to change");
+				Logging.errorPrint("  Hint: It will change after PCGen 5.12");
+				Logging
+					.errorPrint("  Please level limit the .CLEAR (e.g. .CLEAR.LEVEL2)");
+				Logging
+					.errorPrint("  ... or put the ADD:.CLEAR on a non-level Class line");
+			}
+			target.clearAdds();
+			return true;
+		}
 		AddLstToken token = (AddLstToken) tokenMap.get(key);
 		if (token != null)
 		{

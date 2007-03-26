@@ -22,6 +22,8 @@ import pcgen.base.formula.Formula;
 public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 {
 
+	private String name;
+
 	private final Class<T> slotClass;
 
 	private final Formula slotCount;
@@ -36,6 +38,16 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 	{
 		slotClass = cl;
 		slotCount = count;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 
 	public boolean isValid(PrereqObject o)
@@ -100,6 +112,20 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 			return false;
 		}
 		Slot otherSlot = (Slot) o;
+		if (name == null)
+		{
+			if (otherSlot.name != null)
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if (!name.equals(otherSlot.name))
+			{
+				return false;
+			}
+		}
 		return slotClass.equals(otherSlot.slotClass)
 			&& slotCount.equals(otherSlot.slotCount);
 	}

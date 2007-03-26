@@ -255,7 +255,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 				hdm = new HitDieLock(new HitDie(i));
 			}
 
-			Aggregator ag = new Aggregator(race, getTokenName());
+			Aggregator ag = new Aggregator(race, owner, getTokenName());
 			context.graph.linkAllowIntoGraph(getTokenName(), race, ag);
 			context.graph.linkActivationIntoGraph(getTokenName(), owner, ag);
 			context.graph.linkObjectIntoGraph(getTokenName(), ag, hdm);

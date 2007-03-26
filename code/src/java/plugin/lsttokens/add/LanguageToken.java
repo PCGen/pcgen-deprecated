@@ -111,7 +111,6 @@ public class LanguageToken implements AddLstToken
 
 		slot.addSinkRestriction(new GroupRestriction<Language>(LANGUAGE_CLASS,
 			cr));
-		// FIXME Slot needs to know AbilityNature.NORMAL ??
 
 		return true;
 	}

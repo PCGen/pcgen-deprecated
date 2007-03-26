@@ -83,7 +83,9 @@ public class MoncskillToken implements RaceLstToken
 			return false;
 		}
 
-		Aggregator agg = new Aggregator(race, getTokenName());
+		CDOMGroupRef<PCClass> ref =
+				context.ref.getCDOMTypeReference(PCClass.class, "Monster");
+		Aggregator agg = new Aggregator(race, ref, getTokenName());
 		/*
 		 * This is intentionally Holds, as the context for traversal must only
 		 * be the ref (linked by the Activation Edge). So we need an edge to the
@@ -91,8 +93,6 @@ public class MoncskillToken implements RaceLstToken
 		 * Token, the Race should never grant anything hung off the aggregator.
 		 */
 		context.graph.linkHoldsIntoGraph(getTokenName(), race, agg);
-		CDOMGroupRef<PCClass> ref =
-				context.ref.getCDOMTypeReference(PCClass.class, "Monster");
 		context.graph.linkActivationIntoGraph(getTokenName(), ref, agg);
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);

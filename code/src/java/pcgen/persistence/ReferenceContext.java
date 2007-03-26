@@ -87,7 +87,7 @@ public class ReferenceContext
 		}
 	}
 
-	public void constructIfNecessary(Class<WeaponProf> cl, String value)
+	public <T extends CDOMObject> void constructIfNecessary(Class<T> cl, String value)
 	{
 		simple.constructIfNecessary(cl, value);
 	}

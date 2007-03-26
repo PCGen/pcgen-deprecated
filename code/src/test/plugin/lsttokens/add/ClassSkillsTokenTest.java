@@ -18,14 +18,15 @@
 package plugin.lsttokens.add;
 
 import pcgen.core.PCTemplate;
+import pcgen.core.Skill;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 
-public class TemplateTokenTest extends AbstractAddTokenTestCase
+public class ClassSkillsTokenTest extends AbstractAddTokenTestCase
 {
 
-	private AddLstToken aToken = new TemplateToken();
+	private AddLstToken aToken = new ClassSkillsToken();
 
 	@Override
 	protected AddLstToken getSubToken()
@@ -34,9 +35,9 @@ public class TemplateTokenTest extends AbstractAddTokenTestCase
 	}
 
 	@Override
-	protected Class<PCTemplate> getSubTokenType()
+	protected Class<Skill> getSubTokenType()
 	{
-		return PCTemplate.class;
+		return Skill.class;
 	}
 
 	@Override
@@ -56,6 +57,6 @@ public class TemplateTokenTest extends AbstractAddTokenTestCase
 	@Override
 	public boolean isTypeLegal()
 	{
-		return false;
+		return true;
 	}
 }

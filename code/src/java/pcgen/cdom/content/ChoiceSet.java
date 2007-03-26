@@ -74,11 +74,13 @@ public class ChoiceSet<T> extends ConcretePrereqObject
 		set.clear();
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return set.hashCode() ^ count;
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if (!(o instanceof ChoiceSet))

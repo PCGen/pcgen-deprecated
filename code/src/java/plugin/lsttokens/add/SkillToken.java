@@ -111,7 +111,6 @@ public class SkillToken implements AddLstToken
 		}
 
 		slot.addSinkRestriction(new GroupRestriction<Skill>(SKILL_CLASS, cr));
-		// FIXME Slot needs to know AbilityNature.NORMAL ??
 
 		return true;
 	}
