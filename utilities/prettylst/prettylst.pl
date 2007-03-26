@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
 # * Copyright
 
@@ -14031,20 +14031,13 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
-=head2 $version$ -- 2007.03.24
+=head2 v1.38 -- -- NOT YET RELEASED
  
 [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
 
 [ 1514765 ] Conversion to remove old defaultmonster tags
 
 =head2 v1.37 -- -- 2007.03.01
-=head2 v1.38 -- -- NOT YET RELEASED
-
-
-
-
-
-
 
 [ 1353255 ] TYPE to RACETYPE conversion
 
