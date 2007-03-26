@@ -17,6 +17,8 @@
  */
 package pcgen.cdom.modifier;
 
+import java.math.BigDecimal;
+
 import pcgen.base.formula.ReferenceFormula;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.content.SimpleMovement;
@@ -40,8 +42,8 @@ public class MovementFormulaMod extends ConcretePrereqObject implements
 	{
 		if (type.equals(move.getMovementType()))
 		{
-			Integer resolve = f.resolve(Double.valueOf(move.getMovement()));
-			return new SimpleMovement(type, resolve.intValue());
+			Integer resolve = f.resolve(move.getMovement());
+			return new SimpleMovement(type, new BigDecimal(resolve.intValue()));
 		}
 		return move;
 	}

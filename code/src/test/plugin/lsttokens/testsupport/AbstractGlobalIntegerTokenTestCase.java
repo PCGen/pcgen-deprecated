@@ -20,11 +20,10 @@ package plugin.lsttokens.testsupport;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.IntegerKey;
-import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
 
-public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
-		AbstractTokenTestCase<T>
+public abstract class AbstractGlobalIntegerTokenTestCase extends
+		AbstractGlobalTokenTestCase
 {
 
 	public abstract IntegerKey getIntegerKey();

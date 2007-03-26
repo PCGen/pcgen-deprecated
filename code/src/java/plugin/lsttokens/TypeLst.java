@@ -33,6 +33,7 @@ import pcgen.cdom.enumeration.Type;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -54,6 +55,29 @@ public class TypeLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not be empty");
+			return false;
+		}
+		if (value.charAt(0) == '.')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with . : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '.')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with . : " + value);
+			return false;
+		}
+		if (value.indexOf("..") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator .. : " + value);
+			return false;
+		}
 		StringTokenizer aTok = new StringTokenizer(value.trim(), Constants.DOT);
 
 		boolean removeType = false;

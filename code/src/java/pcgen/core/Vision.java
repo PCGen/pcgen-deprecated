@@ -22,89 +22,176 @@
  */
 package pcgen.core;
 
-import java.util.StringTokenizer;
-
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.util.enumeration.VisionType;
 
-public class Vision extends ConcretePrereqObject implements Comparable<Vision> {
+public class Vision extends ConcretePrereqObject implements Comparable<Vision>
+{
 
 	private final VisionType visionType;
 
 	private final String distance;
 
-	public Vision(VisionType type, String dist) {
-		if (type == null) {
+	public Vision(VisionType type, String dist)
+	{
+		if (type == null)
+		{
 			throw new IllegalArgumentException("Vision Type cannot be null");
 		}
 		visionType = type;
 		distance = dist;
 	}
 
-	public String getDistance() {
+	public String getDistance()
+	{
 		return distance;
 	}
 
-	public VisionType getType() {
+	public VisionType getType()
+	{
 		return visionType;
 	}
 
 	@Override
-	public String toString() {
-		try {
+	public String toString()
+	{
+		try
+		{
 			return toString(Integer.parseInt(distance));
-		} catch (NumberFormatException e) {
-			return visionType + " (" + distance + "')";
+		}
+		catch (NumberFormatException e)
+		{
+			return visionType + " (" + distance + ")";
 		}
 	}
 
-	private String toString(int d) {
-		if (d <= 0) {
+	private String toString(int d)
+	{
+		if (d <= 0)
+		{
 			return visionType.toString();
-		} else {
+		}
+		else
+		{
 			return visionType + " (" + d + "')";
 		}
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return visionType.hashCode()
-				^ (distance == null ? 0 : distance.hashCode());
+			^ (distance == null ? 0 : distance.hashCode());
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Vision) {
+	public boolean equals(Object o)
+	{
+		if (o instanceof Vision)
+		{
 			Vision v2 = (Vision) o;
-			if (v2.visionType.equals(visionType)) {
+			if (v2.visionType.equals(visionType))
+			{
 				return v2.distance == null && distance == null
-						|| distance != null && distance.equals(v2.distance);
+					|| distance != null && distance.equals(v2.distance);
 			}
 		}
 		return false;
 	}
 
-	public int compareTo(Vision v) {
+	public int compareTo(Vision v)
+	{
 		// CONSIDER This is potentially a slow method, but definitely works -
 		// thpr 10/26/06
 		return toString().compareTo(v.toString());
 	}
 
-	public static Vision getVision(String visionType) {
-		// expecting value in form of Darkvision (60')
-		StringTokenizer cTok = new StringTokenizer(visionType, "(')");
-		String aKey = cTok.nextToken().trim(); // e.g. Darkvision
-		String aVal = "0";
-		if (cTok.hasMoreTokens()) {
-			aVal = cTok.nextToken(); // e.g. 60
+	public static Vision getVision(String visionType)
+	{
+		// expecting value in form of Darkvision (60') or Darkvision
+		int commaLoc = visionType.indexOf(',');
+		if (commaLoc != -1)
+		{
+			throw new IllegalArgumentException("Invalid Vision: " + visionType
+				+ ". May not contain a comma");
 		}
-		return new Vision(VisionType.getVisionType(aKey), aVal);
+		int quoteLoc = visionType.indexOf('\'');
+		int openParenLoc = visionType.indexOf('(');
+		String distance;
+		String type;
+		if (openParenLoc == -1)
+		{
+			if (visionType.indexOf(')') != -1)
+			{
+				throw new IllegalArgumentException("Invalid Vision: "
+					+ visionType + ". Had close paren without open paren");
+			}
+			if (quoteLoc != -1)
+			{
+				throw new IllegalArgumentException("Invalid Vision: "
+					+ visionType + ". Had quote parens");
+			}
+			type = visionType;
+			distance = "0";
+		}
+		else
+		{
+			int length = visionType.length();
+			if (visionType.indexOf(')') != length - 1)
+			{
+				throw new IllegalArgumentException("Invalid Vision: "
+					+ visionType + ". Close paren not at end of string");
+			}
+			int endDistance = length - 1;
+			if (quoteLoc != -1)
+			{
+				if (quoteLoc == length - 2)
+				{
+					endDistance--;
+				}
+				else
+				{
+					throw new IllegalArgumentException(
+						"Invalid Vision: "
+							+ visionType
+							+ ". Foot character ' not immediately before close paren");
+				}
+			}
+			type = visionType.substring(0, openParenLoc).trim();
+			distance = visionType.substring(openParenLoc + 1, endDistance);
+			if (distance.length() == 0)
+			{
+				throw new IllegalArgumentException("Invalid Vision: "
+					+ visionType + ". No Distance provided");
+			}
+			if (quoteLoc != -1)
+			{
+				try
+				{
+					Integer.parseInt(distance);
+				}
+				catch (NumberFormatException nfe)
+				{
+					throw new IllegalArgumentException(
+						"Invalid Vision: "
+							+ visionType
+							+ ". Vision Distance with Foot character ' was not an integer");
+				}
+			}
+		}
+		if (type.length() == 0)
+		{
+			throw new IllegalArgumentException("Invalid Vision: " + visionType
+				+ ". No Vision Type provided");
+		}
+		return new Vision(VisionType.getVisionType(type), distance);
 	}
 
 	/*
 	 * REFACTOR NEED TO GET RID OF THIS - REFERENCES PlayerCharacter :(
 	 */
-	public String toString(PlayerCharacter aPC) {
+	public String toString(PlayerCharacter aPC)
+	{
 		return toString(aPC.getVariableValue(distance, "").intValue());
 	}
 }

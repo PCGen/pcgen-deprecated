@@ -146,8 +146,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		parseSpecialAbility(context, obj, value);
-		return true;
+		return parseSpecialAbility(context, obj, value);
 	}
 
 	/**
@@ -164,13 +163,32 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 	public boolean parseSpecialAbility(LoadContext context, CDOMObject obj,
 		String aString)
 	{
-		StringTokenizer tok = new StringTokenizer(aString, Constants.PIPE);
-
 		if (aString == null || aString.length() == 0)
 		{
 			Logging.errorPrint("SA: line minimally requires SA:<text>");
 			return false;
 		}
+
+		if (aString.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + aString);
+			return false;
+		}
+		if (aString.charAt(aString.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + aString);
+			return false;
+		}
+		if (aString.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + aString);
+			return false;
+		}
+
+		StringTokenizer tok = new StringTokenizer(aString, Constants.PIPE);
 
 		String firstToken = tok.nextToken();
 
@@ -189,10 +207,10 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 		}
 
 		SpecialAbility sa = new SpecialAbility(firstToken);
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, sa);
 
 		if (!tok.hasMoreTokens())
 		{
+			context.graph.linkObjectIntoGraph(getTokenName(), obj, sa);
 			return true;
 		}
 
@@ -208,23 +226,25 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 					+ "middle token: " + aString);
 				return false;
 			}
+			else if (token.startsWith("PRE") || token.startsWith("!PRE"))
+			{
+				break;
+			}
 			else
 			{
-				saName.append(token);
+				saName.append(Constants.PIPE).append(token);
 				// sa.addVariable(FormulaFactory.getFormulaFor(token));
 			}
 
 			if (!tok.hasMoreTokens())
 			{
 				// No prereqs, so we're done
+				// CONSIDER This is a HACK and not the long term strategy of SA:
+				sa.setName(saName.toString());
+				context.graph.linkObjectIntoGraph(getTokenName(), obj, sa);
 				return true;
 			}
 			token = tok.nextToken();
-			if (token.startsWith("PRE") || token.startsWith("!PRE"))
-			{
-				break;
-			}
-			saName.append(Constants.PIPE);
 		}
 		// CONSIDER This is a HACK and not the long term strategy of SA:
 		sa.setName(saName.toString());
@@ -255,8 +275,8 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			}
 			token = tok.nextToken();
 		}
+		context.graph.linkObjectIntoGraph(getTokenName(), obj, sa);
 		return true;
-
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
@@ -274,7 +294,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 		{
 			StringBuilder sb = new StringBuilder();
 			SpecialAbility ab = (SpecialAbility) edge.getSinkNodes().get(0);
-			sb.append(ab.getKeyName());
+			sb.append(ab.getDisplayName());
 			List<Prerequisite> prereqs = ab.getPrerequisiteList();
 			if (prereqs != null && !prereqs.isEmpty())
 			{

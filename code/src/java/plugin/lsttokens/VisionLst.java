@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGraphEdge;
@@ -156,43 +157,41 @@ public class VisionLst implements GlobalLstToken
 				continue;
 			}
 
-			if (visionString.indexOf(',') >= 0)
-			{
-				Logging.errorPrint("Use of comma in VISION Tag is deprecated."
-					+ "  Use .CLEAR.[Vision] instead.");
-				StringTokenizer visionTok =
-						new StringTokenizer(visionString, ",");
-				String numberTok = visionTok.nextToken();
-				if (numberTok == "2")
-				{
-					visionString = ".CLEAR." + visionTok.nextToken();
-				}
-				else if (numberTok == "0")
-				{
-					visionString = ".SET." + visionTok.nextToken();
-				}
-				else
-				{
-					visionString = visionTok.nextToken();
-				}
-			}
-
 			if (visionString.startsWith(".CLEAR."))
 			{
-				Vision vis = Vision.getVision(visionString.substring(7));
-				context.graph.unlinkChildNode(getTokenName(), obj, vis);
-			}
-			else if (visionString.startsWith(".SET."))
-			{
-				context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-					VISION_CLASS);
-				Vision vis = Vision.getVision(visionString.substring(5));
-				context.graph.linkObjectIntoGraph(getTokenName(), obj, vis);
+				try
+				{
+					Vision vis = Vision.getVision(visionString.substring(7));
+					context.graph.unlinkChildNode(getTokenName(), obj, vis);
+				}
+				catch (IllegalArgumentException e)
+				{
+					Logging.errorPrint("Bad Syntax for Cleared Vision in "
+						+ getTokenName());
+					Logging.errorPrint(e.getMessage());
+					return false;
+				}
 			}
 			else
 			{
-				Vision vis = Vision.getVision(visionString);
-				context.graph.linkObjectIntoGraph(getTokenName(), obj, vis);
+				if (visionString.startsWith(".SET."))
+				{
+					context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
+						VISION_CLASS);
+					visionString = visionString.substring(5);
+				}
+				try
+				{
+					Vision vis = Vision.getVision(visionString);
+					context.graph.linkObjectIntoGraph(getTokenName(), obj, vis);
+				}
+				catch (IllegalArgumentException e)
+				{
+					Logging.errorPrint("Bad Syntax for Vision in "
+						+ getTokenName());
+					Logging.errorPrint(e.getMessage());
+					return false;
+				}
 			}
 		}
 		return true;
@@ -213,6 +212,6 @@ public class VisionLst implements GlobalLstToken
 			Vision vis = (Vision) edge.getSinkNodes().get(0);
 			set.add(vis.toString());
 		}
-		return set.toArray(new String[set.size()]);
+		return new String[] { StringUtil.join(set, Constants.PIPE)};
 	}
 }

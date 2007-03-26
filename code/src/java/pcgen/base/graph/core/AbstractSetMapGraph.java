@@ -407,16 +407,21 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 			al.removeAll(otherNodeList);
 			for (Object o : al)
 			{
-				System.err.println("1- " + o.hashCode());
+				System.err.println("1- " + o.hashCode() + " " + o);
 			}
 			System.err.println("?!?");
 			ArrayList al2 = new ArrayList(otherGraph.getNodeList());
 			al2.removeAll(otherNodeList);
 			for (Object o : al2)
 			{
-				System.err.println("2- " + o.hashCode());
+				System.err.println("2- " + o.hashCode() + " " + o);
 			}
 			System.err.println(al.equals(al2));
+			System.err.println(al2.equals(al));
+			if (al.equals(al2) && al2.equals(al))
+			{
+				System.err.println("Hash code modified after object add to graph");
+			}
 			return false;
 		}
 		// Here, the node lists are identical...

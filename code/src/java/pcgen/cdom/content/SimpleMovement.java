@@ -22,7 +22,10 @@
  */
 package pcgen.cdom.content;
 
+import java.math.BigDecimal;
+
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.util.BigDecimalHelper;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
@@ -36,27 +39,27 @@ public class SimpleMovement extends ConcretePrereqObject
 	 * Contains the associated movement rate (in feet) for the movement type. A
 	 * movement rate must be greater than or equal to zero.
 	 */
-	private double movement;
+	private BigDecimal movement;
 
 	/**
 	 * Creates a Movement object
 	 */
-	public SimpleMovement(String moveType, int i)
+	public SimpleMovement(String moveType, BigDecimal d)
 	{
 		super();
-		if (i < 0)
+		if (d.compareTo(BigDecimal.ZERO) < 0)
 		{
 			throw new IllegalArgumentException(
 				"Movement rate cannot be negative");
 		}
 		type = moveType;
-		movement = i;
+		movement = BigDecimalHelper.trimBigDecimal(d);
 	}
 
 	/**
 	 * @return movement as a Double
 	 */
-	public double getMovement()
+	public BigDecimal getMovement()
 	{
 		return movement;
 	}
@@ -73,18 +76,34 @@ public class SimpleMovement extends ConcretePrereqObject
 
 	/**
 	 * Converts this Movement object into a format suitable for storage in an
-	 * LST or equivalent file. This method should be the complement of the
-	 * static getMovementFrom() method.
+	 * LST or equivalent file.
 	 * 
 	 * @return a String in LST/PCC file format, suitable for persistent storage
 	 */
 	public String toLSTString()
 	{
-		StringBuilder txt = new StringBuilder();
-		txt.append("\tMOVE:");
-		txt.append(type);
-		txt.append(',');
-		txt.append(movement);
-		return txt.toString();
+		return new StringBuilder().append(type).append(',').append(movement)
+			.toString();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return type.hashCode() ^ movement.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == this)
+		{
+			return true;
+		}
+		if (o instanceof SimpleMovement)
+		{
+			SimpleMovement sm = (SimpleMovement) o;
+			return type.equals(sm.type) && movement.equals(sm.movement);
+		}
+		return false;
 	}
 }

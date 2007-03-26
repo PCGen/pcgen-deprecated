@@ -22,16 +22,21 @@
  */
 package plugin.lsttokens;
 
+import java.math.BigDecimal;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.content.SimpleMovement;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Equipment;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -51,7 +56,7 @@ public class MoveLst implements GlobalLstToken
 		{
 			return false;
 		}
-		Movement cm = Movement.getMovementFrom(value);
+		Movement cm = Movement.getOldMovementFrom(value);
 		cm.setMoveRatesFlag(0);
 		obj.setMovement(cm);
 		return true;
@@ -59,9 +64,85 @@ public class MoveLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		Movement cm = Movement.getMovementFrom(value);
-		cm.setMoveRatesFlag(0);
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, cm);
+		if (value == null)
+		{
+			Logging.errorPrint("Error encountered while parsing "
+				+ getTokenName() + ": " + value);
+			Logging.errorPrint("  Null initialization String illegal");
+			return false;
+		}
+		if (value.length() == 0)
+		{
+			Logging.errorPrint("Error encountered while parsing "
+				+ getTokenName() + ": " + value);
+			Logging.errorPrint("  Empty initialization String illegal");
+			return false;
+		}
+		if (value.charAt(0) == ',')
+		{
+			Logging.errorPrint("Error encountered while parsing "
+				+ getTokenName() + ": " + value);
+			Logging.errorPrint("  Movement arguments may not start with ,| : "
+				+ value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging.errorPrint("Error encountered while parsing "
+				+ getTokenName() + ": " + value);
+			Logging.errorPrint("  Movement arguments may not end with , : "
+				+ value);
+			return false;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging.errorPrint("Error encountered while parsing "
+				+ getTokenName() + ": " + value);
+			Logging
+				.errorPrint("  Movement arguments uses double separator ,, : "
+					+ value);
+			return false;
+		}
+		final StringTokenizer moves = new StringTokenizer(value, ",");
+
+		int tokenCount = moves.countTokens();
+		if (tokenCount % 2 != 0)
+		{
+			Logging.errorPrint("Error encountered while parsing "
+				+ getTokenName() + ": " + value);
+			Logging
+				.errorPrint("  String must value count that is a multiple of 2: "
+					+ value);
+			return false;
+		}
+		while (moves.hasMoreTokens())
+		{
+			String moveType = moves.nextToken(); // e.g. "Walk"
+			String moveDistance = moves.nextToken();
+
+			try
+			{
+				BigDecimal distance = new BigDecimal(moveDistance);
+				if (distance.compareTo(BigDecimal.ZERO) < 0)
+				{
+					Logging.errorPrint("Error encountered while parsing "
+						+ getTokenName() + ": " + value);
+					Logging.errorPrint("  Distance: " + moveDistance
+						+ " was negative");
+					return false;
+				}
+				context.graph.linkObjectIntoGraph(getTokenName(), obj,
+					new SimpleMovement(moveType, distance));
+			}
+			catch (NumberFormatException e)
+			{
+				Logging.errorPrint("Error encountered while parsing "
+					+ getTokenName() + ": " + value);
+				Logging.errorPrint("  Badly formed MOVE token: " + moveDistance
+					+ " was not a double");
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -69,13 +150,17 @@ public class MoveLst implements GlobalLstToken
 	{
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					Movement.class);
+					SimpleMovement.class);
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
 		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{
-			Movement m = (Movement) edge.getSinkNodes().get(0);
+			SimpleMovement m = (SimpleMovement) edge.getSinkNodes().get(0);
 			set.add(m.toLSTString());
 		}
-		return set.toArray(new String[set.size()]);
+		return new String[]{StringUtil.join(set, ",")};
 	}
 }

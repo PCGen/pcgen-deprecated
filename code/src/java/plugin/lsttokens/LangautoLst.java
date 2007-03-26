@@ -29,8 +29,6 @@ import java.util.TreeSet;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.content.ChoiceSet;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Language;
@@ -38,6 +36,7 @@ import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -66,6 +65,25 @@ public class LangautoLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
+		if (value.charAt(0) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with , : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with , : " + value);
+			return false;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator ,, : " + value);
+			return false;
+		}
+
 		final StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
 
 		while (tok.hasMoreTokens())
@@ -76,23 +94,18 @@ public class LangautoLst implements GlobalLstToken
 				context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
 					LANGUAGE_CLASS);
 			}
-			else if (Constants.LST_ALL.equalsIgnoreCase(tokText))
-			{
-				context.graph.linkObjectIntoGraph(getTokenName(), obj,
-					context.ref.getCDOMAllReference(LANGUAGE_CLASS));
-			}
-			else if (tokText.startsWith(Constants.LST_TYPE)
-				|| tokText.startsWith(Constants.LST_TYPE_OLD))
-			{
-				String[] val = {tokText.substring(5)};
-				context.graph.linkObjectIntoGraph(getTokenName(), obj,
-					context.ref.getCDOMTypeReference(LANGUAGE_CLASS, val));
-			}
 			else
 			{
-				PrereqObject lang =
-						context.ref.getCDOMReference(LANGUAGE_CLASS, tokText);
-				context.graph.linkObjectIntoGraph(getTokenName(), obj, lang);
+				CDOMReference<Language> ref =
+						TokenUtilities.getObjectReference(context,
+							LANGUAGE_CLASS, tokText);
+				if (ref == null)
+				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
+					return false;
+				}
+				context.graph.linkObjectIntoGraph(getTokenName(), obj, ref);
 			}
 		}
 		return true;
@@ -111,10 +124,9 @@ public class LangautoLst implements GlobalLstToken
 				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 		for (PCGraphEdge edge : edges)
 		{
-			set.addAll(((ChoiceSet<CDOMReference<?>>) edge.getSinkNodes()
-				.get(0)).getSet());
+			set.add((CDOMReference<?>) edge.getSinkNodes().get(0));
 		}
 		return new String[]{ReferenceUtilities.joinLstFormat(set,
-			Constants.PIPE)};
+			Constants.COMMA)};
 	}
 }

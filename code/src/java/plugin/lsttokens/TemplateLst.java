@@ -70,11 +70,30 @@ public class TemplateLst implements GlobalLstToken
 	{
 		if (value.startsWith(Constants.LST_CHOOSE))
 		{
-			return parseChoose(context, obj, value);
+			return parseChoose(context, obj, value.substring(7));
 		}
 		else if (value.startsWith(Constants.LST_ADDCHOICE))
 		{
 			return parseAddChoice(context, obj, value);
+		}
+
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
 		}
 
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -106,8 +125,27 @@ public class TemplateLst implements GlobalLstToken
 	private boolean parseChoose(LoadContext context, CDOMObject obj,
 		String value)
 	{
-		StringTokenizer tok =
-				new StringTokenizer(value.substring(7), Constants.PIPE);
+
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
 				new ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>(1, tok
 					.countTokens());
@@ -128,6 +166,12 @@ public class TemplateLst implements GlobalLstToken
 					ChoiceSet.class);
 		if (edgeSet.size() != 1)
 		{
+			/*
+			 * BUG FIXME The problem here is that the CHOOSE isn't necessarily
+			 * on THIS object... apparently CHOOSE is global, which leads to all
+			 * kinds of conflict problems if a character can get more than one
+			 * somehow :(
+			 */
 			Logging.errorPrint(getTokenName()
 				+ ":ADDCHOICE cannot be performed because more than "
 				+ "one ChoiceList is attached to "
@@ -160,6 +204,8 @@ public class TemplateLst implements GlobalLstToken
 		}
 		String[] array = new String[arrayLength];
 		int index = 0;
+		Set<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 		if (!choiceEdgeList.isEmpty())
 		{
 			if (choiceEdgeList.size() > 1)
@@ -171,15 +217,14 @@ public class TemplateLst implements GlobalLstToken
 			ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
 					(ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>) choiceEdgeList
 						.iterator().next().getSinkNodes().get(0);
+			set.addAll(cl.getSet());
 			array[index++] =
-					ReferenceUtilities.joinLstFormat(cl.getSet(),
-						Constants.PIPE);
+					"CHOOSE:"
+						+ ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 		}
 		if (!templateEdgeList.isEmpty())
 		{
-			Set<CDOMReference<?>> set =
-					new TreeSet<CDOMReference<?>>(
-						TokenUtilities.REFERENCE_SORTER);
+			set.clear();
 			for (PCGraphEdge edge : templateEdgeList)
 			{
 				CDOMReference<?> pct =

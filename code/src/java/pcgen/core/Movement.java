@@ -42,7 +42,7 @@ public class Movement extends ConcretePrereqObject
 	/**
 	 * Contains the associated movement rate (in feet) for the movement type of
 	 * the same index. A movement rate must be greater than or equal to zero.
-	 *
+	 * 
 	 * REFACTOR This should be changed to double[] once PlayerCharacter can
 	 * handle it
 	 */
@@ -51,7 +51,7 @@ public class Movement extends ConcretePrereqObject
 	/**
 	 * The movement multiplier for the movement type of the same index. A
 	 * movement Multiplier be greater than zero.
-	 *
+	 * 
 	 * REFACTOR This should be changed to double[] once PlayerCharacter can
 	 * handle it
 	 */
@@ -65,10 +65,9 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * The Movement Rates flag indicating which type of Movement object this is
-	 * 0 indicates a basic assignment
-	 * 1 indicates the movement rates are added to the existing movement rate 
-	 * for the contained types
-	 * 2 indicates this clones one movement rate into another movement rate
+	 * 0 indicates a basic assignment 1 indicates the movement rates are added
+	 * to the existing movement rate for the contained types 2 indicates this
+	 * clones one movement rate into another movement rate
 	 */
 	private int moveRatesFlag;
 
@@ -102,7 +101,7 @@ public class Movement extends ConcretePrereqObject
 	 * Creates a Movement object with arrays of the given length. It is assumed
 	 * that the user of this constructor will initialize all of the arrays, as
 	 * this constructor does not perform initialization.
-	 *
+	 * 
 	 * @param i
 	 *            The length of the movement arrays to be assigned.
 	 */
@@ -111,8 +110,8 @@ public class Movement extends ConcretePrereqObject
 		if (i < 0)
 		{
 			throw new IllegalArgumentException(
-					"Argument of array length to ConcreteMovement"
-							+ "constructor cannot be negative");
+				"Argument of array length to ConcreteMovement"
+					+ "constructor cannot be negative");
 		}
 		movementTypes = new String[i];
 		movements = new Double[i];
@@ -122,7 +121,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Sets the Move Rates Flag on this Movement object.
-	 *
+	 * 
 	 * @param i
 	 *            The move rates flag.
 	 */
@@ -136,6 +135,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Gets the Movement Rates Flag for this Movement object.
+	 * 
 	 * @return move rates flag
 	 */
 	public int getMoveRatesFlag()
@@ -144,8 +144,10 @@ public class Movement extends ConcretePrereqObject
 	}
 
 	/**
-	 * TODO REFACTOR Some of these methods might need to be rebuilt - should this be
-	 * dependent upon an index, or keyed off of a String name of a movementType?
+	 * TODO REFACTOR Some of these methods might need to be rebuilt - should
+	 * this be dependent upon an index, or keyed off of a String name of a
+	 * movementType?
+	 * 
 	 * @return movement as a Double
 	 */
 	public Double getDoubleMovement()
@@ -155,6 +157,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get a movement multiplier
+	 * 
 	 * @param index
 	 * @return a movement multiplier
 	 */
@@ -165,6 +168,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * a movement multiplier operator
+	 * 
 	 * @param index
 	 * @return a movement multiplier operator
 	 */
@@ -175,6 +179,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get all of the movement multipliers
+	 * 
 	 * @return clone of the movement multipliers array
 	 */
 	public Double[] getMovementMult()
@@ -184,6 +189,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get all of the movement multiplier operators
+	 * 
 	 * @return clone of the movement multiplier operators array
 	 */
 	public String[] getMovementMultOp()
@@ -193,6 +199,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get the number of movement types
+	 * 
 	 * @return the number of movement types
 	 */
 	public int getNumberOfMovementTypes()
@@ -202,6 +209,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Set the movement types
+	 * 
 	 * @param arrayString
 	 */
 	public void setMovementTypes(String[] arrayString)
@@ -210,7 +218,8 @@ public class Movement extends ConcretePrereqObject
 	}
 
 	/**
-	 * Get the movement type from the array 
+	 * Get the movement type from the array
+	 * 
 	 * @param i
 	 * @return movement type
 	 */
@@ -226,6 +235,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get a movement type at a particular index
+	 * 
 	 * @param x
 	 * @return a movement type
 	 */
@@ -236,6 +246,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get the movement types
+	 * 
 	 * @return the movement types
 	 */
 	public String[] getMovementTypes()
@@ -245,6 +256,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get the movement at index x
+	 * 
 	 * @param x
 	 * @return the movement at index x
 	 */
@@ -255,6 +267,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get the movement at index i
+	 * 
 	 * @param i
 	 * @return the movement at index i or 0
 	 */
@@ -270,6 +283,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get the number of movements
+	 * 
 	 * @return number of movements
 	 */
 	public int getNumberOfMovements()
@@ -279,6 +293,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * True if movements is not null
+	 * 
 	 * @return True if movements is not null
 	 */
 	public boolean isInitialized()
@@ -288,6 +303,7 @@ public class Movement extends ConcretePrereqObject
 
 	/**
 	 * Get movements
+	 * 
 	 * @return movements
 	 */
 	public Double[] getMovements()
@@ -298,6 +314,7 @@ public class Movement extends ConcretePrereqObject
 	/**
 	 * Provides a String representation of this Movement object, suitable for
 	 * display to a user.
+	 * 
 	 * @return String
 	 */
 	public String toString()
@@ -305,13 +322,13 @@ public class Movement extends ConcretePrereqObject
 		final StringBuffer movelabel = new StringBuffer();
 		movelabel.append(movementTypes[0]);
 		movelabel.append(' ').append(
-				Globals.getGameModeUnitSet().convertDistanceToUnitSet(
-						movements[0].doubleValue()));
+			Globals.getGameModeUnitSet().convertDistanceToUnitSet(
+				movements[0].doubleValue()));
 		movelabel.append(Globals.getGameModeUnitSet().getDistanceUnit());
 		if (movementMult[0].doubleValue() != 0)
 		{
 			movelabel.append('(').append(movementMultOp[0]).append(
-					movementMult[0]).append(')');
+				movementMult[0]).append(')');
 		}
 
 		for (int i = 1; i < movementTypes.length; ++i)
@@ -319,13 +336,13 @@ public class Movement extends ConcretePrereqObject
 			movelabel.append(", ");
 			movelabel.append(movementTypes[i]);
 			movelabel.append(' ').append(
-					Globals.getGameModeUnitSet().convertDistanceToUnitSet(
-							movements[i].doubleValue()));
+				Globals.getGameModeUnitSet().convertDistanceToUnitSet(
+					movements[i].doubleValue()));
 			movelabel.append(Globals.getGameModeUnitSet().getDistanceUnit());
 			if (movementMult[i].doubleValue() != 0)
 			{
 				movelabel.append('(').append(movementMultOp[i]).append(
-						movementMult[i]).append(')');
+					movementMult[i]).append(')');
 			}
 		}
 		return movelabel.toString();
@@ -335,7 +352,7 @@ public class Movement extends ConcretePrereqObject
 	 * Converts this Movement object into a format suitable for storage in an
 	 * LST or equivalent file. This method should be the complement of the
 	 * static getMovementFrom() method.
-	 *
+	 * 
 	 * @return a String in LST/PCC file format, suitable for persistent storage
 	 */
 	public String toLSTString()
@@ -344,16 +361,16 @@ public class Movement extends ConcretePrereqObject
 		txt.append("\tMOVE");
 		switch (moveRatesFlag)
 		{
-		case 1: // MOVEA:
-			txt.append('A');
-			break;
+			case 1: // MOVEA:
+				txt.append('A');
+				break;
 
-		case 2: // MOVECLONE:
-			txt.append("CLONE");
-			break;
+			case 2: // MOVECLONE:
+				txt.append("CLONE");
+				break;
 
-		default: // MOVE:
-			break;
+			default: // MOVE:
+				break;
 		}
 		txt.append(':');
 		for (int index = 0; index < movementTypes.length; ++index)
@@ -364,7 +381,7 @@ public class Movement extends ConcretePrereqObject
 			}
 
 			if ((movementTypes[index] != null)
-					&& (movementTypes[index].length() > 0))
+				&& (movementTypes[index].length() > 0))
 			{
 				txt.append(movementTypes[index]).append(',');
 			}
@@ -388,18 +405,18 @@ public class Movement extends ConcretePrereqObject
 	 * rates flag of the returned ConcreteMovement in order for the
 	 * ConcreteMovement to function properly. (The default move rates flag is
 	 * zero, so assignment in that case is not necessary)
-	 *
+	 * 
 	 * @param moveparse
 	 *            The String from which a new ConcreteMovement should be
 	 *            initialized
 	 * @return A new ConcreteMovement initialized from the given String.
 	 */
-	public static Movement getMovementFrom(final String moveparse)
+	public static Movement getOldMovementFrom(final String moveparse)
 	{
 		if (moveparse == null)
 		{
 			throw new IllegalArgumentException(
-					"Null initialization String illegal");
+				"Null initialization String illegal");
 		}
 		final StringTokenizer moves = new StringTokenizer(moveparse, ",");
 		String tok;
@@ -411,7 +428,7 @@ public class Movement extends ConcretePrereqObject
 
 			cm = new Movement(1);
 			if ((tok.length() > 0)
-					&& ((tok.charAt(0) == '*') || (tok.charAt(0) == '/')))
+				&& ((tok.charAt(0) == '*') || (tok.charAt(0) == '/')))
 			{
 				cm.movements[0] = Double.valueOf(0.0);
 				cm.movement = Double.valueOf(0.0);
@@ -421,7 +438,7 @@ public class Movement extends ConcretePrereqObject
 					if (multValue <= 0)
 					{
 						Logging.errorPrint("Illegal movement multiplier: "
-								+ multValue + " in movement string " + tok);
+							+ multValue + " in movement string " + tok);
 					}
 					cm.movementMult[0] = Double.valueOf(multValue);
 					cm.movementMultOp[0] = tok.substring(0, 1);
@@ -467,7 +484,7 @@ public class Movement extends ConcretePrereqObject
 				tok = moves.nextToken();
 
 				if ((tok.length() > 0)
-						&& ((tok.charAt(0) == '*') || (tok.charAt(0) == '/')))
+					&& ((tok.charAt(0) == '*') || (tok.charAt(0) == '/')))
 				{
 					cm.movements[x] = Double.valueOf(0.0);
 					try
@@ -476,7 +493,7 @@ public class Movement extends ConcretePrereqObject
 						if (multValue <= 0)
 						{
 							Logging.errorPrint("Illegal movement multiplier: "
-									+ multValue + " in movement string " + tok);
+								+ multValue + " in movement string " + tok);
 						}
 						cm.movementMult[x] = Double.valueOf(multValue);
 						cm.movementMultOp[x] = tok.substring(0, 1);
@@ -514,8 +531,123 @@ public class Movement extends ConcretePrereqObject
 			if (moves.countTokens() != 0)
 			{
 				Logging.errorPrint("Badly formed MOVE token "
-						+ "(extra value at end of list): " + moveparse);
+					+ "(extra value at end of list): " + moveparse);
 			}
+		}
+		return cm;
+	}
+
+	/**
+	 * Returns a ConcreteMovement object initialized from the given string. This
+	 * string can be any legal string for the MOVE, MOVEA, or MOVECLONE tags.
+	 * The object which calls getMovementFrom MUST subsequently assign the move
+	 * rates flag of the returned ConcreteMovement in order for the
+	 * ConcreteMovement to function properly. (The default move rates flag is
+	 * zero, so assignment in that case is not necessary)
+	 * 
+	 * @param moveparse
+	 *            The String from which a new ConcreteMovement should be
+	 *            initialized
+	 * @return A new ConcreteMovement initialized from the given String.
+	 */
+	public static Movement getMovementFrom(final String moveparse)
+	{
+		if (moveparse == null)
+		{
+			throw new IllegalArgumentException(
+				"Null initialization String illegal");
+		}
+		if (moveparse.length() == 0)
+		{
+			throw new IllegalArgumentException(
+				"Empty initialization String illegal");
+		}
+		if (moveparse.charAt(0) == ',')
+		{
+			throw new IllegalArgumentException(
+				"Movement arguments may not start with ,| : " + moveparse);
+		}
+		if (moveparse.charAt(moveparse.length() - 1) == ',')
+		{
+			throw new IllegalArgumentException(
+				"Movement arguments may not end with , : " + moveparse);
+		}
+		if (moveparse.indexOf(",,") != -1)
+		{
+			throw new IllegalArgumentException(
+				"Movement arguments uses double separator ,, : " + moveparse);
+		}
+		final StringTokenizer moves = new StringTokenizer(moveparse, ",");
+		Movement cm;
+
+		int tokenCount = moves.countTokens();
+		if (tokenCount % 2 != 0)
+		{
+			throw new IllegalArgumentException(
+				"String must value count that is a multiple of 2: " + moveparse);
+		}
+		cm = new Movement(tokenCount / 2);
+
+		int x = 0;
+
+		while (moves.hasMoreTokens())
+		{
+			cm.movementTypes[x] = moves.nextToken(); // e.g. "Walk"
+			cm.movementMult[x] = Double.valueOf(0.0);
+			cm.movementMultOp[x] = "";
+
+			String tok = moves.nextToken();
+
+			if ((tok.length() > 0)
+				&& ((tok.charAt(0) == '*') || (tok.charAt(0) == '/')))
+			{
+				cm.movements[x] = Double.valueOf(0.0);
+				try
+				{
+					double multValue = Double.parseDouble(tok.substring(1));
+					if (multValue <= 0)
+					{
+						Logging.errorPrint("Illegal movement multiplier: "
+							+ multValue + " in movement string " + tok);
+						return null;
+					}
+					cm.movementMult[x] = Double.valueOf(multValue);
+					cm.movementMultOp[x] = tok.substring(0, 1);
+				}
+				catch (NumberFormatException e)
+				{
+					Logging.errorPrint("Badly formed MOVE token: " + tok);
+					return null;
+				}
+			}
+			else if (tok.length() > 0)
+			{
+				cm.movementMult[x] = Double.valueOf(0.0);
+				cm.movementMultOp[x] = "";
+
+				try
+				{
+					cm.movements[x] = new Double(tok);
+				}
+				catch (NumberFormatException e)
+				{
+					Logging.errorPrint("Badly formed MOVE token: " + tok);
+					return null;
+				}
+
+				if ("Walk".equals(cm.movementTypes[x]))
+				{
+					cm.movement = cm.movements[x];
+				}
+			}
+			else
+			{
+				Logging.errorPrint("Encounted Empty Movement Type in "
+					+ moveparse);
+				return null;
+			}
+
+			x++;
 		}
 		return cm;
 	}

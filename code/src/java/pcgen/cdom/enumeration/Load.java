@@ -75,6 +75,11 @@ public final class Load implements SequencedType, TypeSafeConstant
 		return FACTORY.getAllConstants();
 	}
 
+	public static void constructConstant(String string, int i)
+	{
+		FACTORY.constructConstant(string, i);
+	}
+
 	public static Load valueOf(String s)
 	{
 		return FACTORY.valueOf(s);

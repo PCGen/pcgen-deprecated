@@ -127,16 +127,28 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, "|");
-		// String drString = tok.nextToken();
 		DamageReduction dr;
 		try
 		{
-			// dr = DamageReduction.getDamageReduction(drString);
 			String[] values = tok.nextToken().split("/");
 			if (values.length != 2)
 			{
 				Logging.errorPrint(getTokenName()
 					+ " failed to build DamageReduction with value " + value);
+				Logging
+					.errorPrint("  ...expected a String with one / as a separator");
+				return false;
+			}
+			if (values[0].length() == 0)
+			{
+				Logging.errorPrint("Amount of Reduction in " + getTokenName()
+					+ " cannot be empty");
+				return false;
+			}
+			if (values[1].length() == 0)
+			{
+				Logging.errorPrint("Damage Type in " + getTokenName()
+					+ " cannot be empty");
 				return false;
 			}
 			dr = new DamageReduction(values[0], values[1]);
@@ -168,6 +180,10 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					DamageReduction.class);
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
 		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{

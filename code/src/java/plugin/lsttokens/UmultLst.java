@@ -28,6 +28,7 @@ import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -62,7 +63,24 @@ public class UmultLst implements GlobalLstToken
 		}
 		else
 		{
-			obj.put(IntegerKey.UMULT, Integer.valueOf(value));
+			try
+			{
+				Integer i = Integer.valueOf(value);
+				if (i.intValue() <= 0)
+				{
+					Logging.errorPrint("Invalid " + getTokenName() + ": "
+						+ value);
+					Logging.errorPrint("  Expecting a positive integer");
+					return false;
+				}
+				obj.put(IntegerKey.UMULT, i);
+			}
+			catch (NumberFormatException nfe)
+			{
+				Logging.errorPrint("Invalid " + getTokenName() + ": " + value);
+				Logging.errorPrint("  Expecting an integer");
+				return false;
+			}
 		}
 		return true;
 	}

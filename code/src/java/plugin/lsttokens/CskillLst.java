@@ -24,19 +24,23 @@ package plugin.lsttokens;
 
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.graph.PCGraphAllowsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -64,6 +68,24 @@ public class CskillLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
@@ -80,6 +102,8 @@ public class CskillLst implements GlobalLstToken
 							tokText.substring(7));
 				if (skill == null)
 				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
 					return false;
 				}
 				context.graph.unlinkChildNode(getTokenName(), obj, skill);
@@ -97,6 +121,8 @@ public class CskillLst implements GlobalLstToken
 							tokText);
 				if (skill == null)
 				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
 					return false;
 				}
 				PCGraphAllowsEdge edge =
@@ -113,8 +139,12 @@ public class CskillLst implements GlobalLstToken
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					SKILL_CLASS);
-		StringBuilder sb = new StringBuilder();
-		boolean needsPipe = false;
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
+		Set<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 		for (PCGraphEdge edge : edgeList)
 		{
 			if (!SkillCost.CLASS.equals(edge
@@ -124,17 +154,9 @@ public class CskillLst implements GlobalLstToken
 					+ getTokenName());
 				return null;
 			}
-			if (needsPipe)
-			{
-				sb.append(Constants.PIPE);
-			}
-			/*
-			 * TODO FIXME This breaks for types... :(
-			 */
-			Skill sk = (Skill) edge.getSinkNodes().get(0);
-			sb.append(sk.getKeyName());
-			needsPipe = true;
+			set.add((CDOMReference<?>) edge.getSinkNodes().get(0));
 		}
-		return new String[]{sb.toString()};
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.PIPE)};
 	}
 }

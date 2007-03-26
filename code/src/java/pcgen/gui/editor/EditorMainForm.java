@@ -744,7 +744,7 @@ public final class EditorMainForm extends JDialog
 				Race thisRace = (Race) thisPObject;
 
 				//thisRace.setMovements(pnlMovement.getMoveRates());
-				Movement cm = Movement.getMovementFrom(pnlMovement.getMoveValues());
+				Movement cm = Movement.getOldMovementFrom(pnlMovement.getMoveValues());
 				cm.setMovementTypes(pnlMovement.getMoveTypes());
 				thisRace.setMovement(cm);
 				
@@ -908,7 +908,7 @@ public final class EditorMainForm extends JDialog
 			case EditorConstants.EDIT_TEMPLATE:
 
 				PCTemplate thisPCTemplate = (PCTemplate) thisPObject;
-				Movement cmv = Movement.getMovementFrom(pnlMovement.getMoveValues());
+				Movement cmv = Movement.getOldMovementFrom(pnlMovement.getMoveValues());
 				cmv.setMoveRatesFlag(pnlMovement.getMoveRateType());
 				thisPCTemplate.setMovement(cmv);
 

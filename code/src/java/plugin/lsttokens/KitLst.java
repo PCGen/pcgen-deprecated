@@ -26,8 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.content.ChoiceSet;
@@ -36,6 +38,7 @@ import pcgen.core.Kit;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -67,12 +70,36 @@ public class KitLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		ChoiceSet<CDOMSimpleSingleRef<Kit>> cl;
 		try
 		{
 			int count = Integer.parseInt(tok.nextToken());
+			if (count <= 0)
+			{
+				Logging.errorPrint("Count in " + getTokenName()
+					+ " must be > 0");
+				return false;
+			}
 			cl =
 					new ChoiceSet<CDOMSimpleSingleRef<Kit>>(count, tok
 						.countTokens());
@@ -113,6 +140,8 @@ public class KitLst implements GlobalLstToken
 			return null;
 		}
 		List<String> list = new ArrayList<String>(edgeList.size());
+		Set<CDOMReference<?>> set =
+			new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 		for (PCGraphEdge edge : edgeList)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -120,7 +149,9 @@ public class KitLst implements GlobalLstToken
 					(ChoiceSet<CDOMSimpleSingleRef<Kit>>) edge.getSinkNodes()
 						.get(0);
 			sb.append(cl.getCount());
-			for (CDOMSimpleSingleRef<Kit> ref : cl.getSet())
+			set.clear();
+			set.addAll(cl.getSet());
+			for (CDOMReference<?> ref : set)
 			{
 				sb.append(Constants.PIPE).append(ref.getLSTformat());
 			}

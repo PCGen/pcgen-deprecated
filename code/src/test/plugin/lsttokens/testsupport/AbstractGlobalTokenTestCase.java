@@ -36,7 +36,7 @@ import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.TokenStore;
 
-public abstract class GlobalTokenTestCase extends TestCase
+public abstract class AbstractGlobalTokenTestCase extends TestCase
 {
 	protected PCGenGraph primaryGraph;
 	protected PCGenGraph secondaryGraph;

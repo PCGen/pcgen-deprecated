@@ -46,7 +46,7 @@ public class MovecloneLst implements GlobalLstToken
 
 	public boolean parse(PObject obj, String value, int anInt)
 	{
-		Movement cm = Movement.getMovementFrom(value);
+		Movement cm = Movement.getOldMovementFrom(value);
 		cm.setMoveRatesFlag(2);
 		obj.setMovement(cm);
 		return true;
@@ -65,6 +65,10 @@ public class MovecloneLst implements GlobalLstToken
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					Movement.class);
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
 		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{

@@ -51,13 +51,13 @@ public class UnencumberedmoveLst implements GlobalLstToken
 	{
 		obj.setEncumberedLoadMove(Load.LIGHT, anInt);
 		obj.setEncumberedArmorMove(Load.LIGHT, anInt);
-		
+
 		final StringTokenizer st = new StringTokenizer(value, "|");
-		
+
 		while (st.hasMoreTokens())
 		{
 			final String loadString = st.nextToken();
-		
+
 			if (loadString.equalsIgnoreCase("MediumLoad"))
 			{
 				obj.setEncumberedLoadMove(Load.MEDIUM, anInt);
@@ -78,14 +78,16 @@ public class UnencumberedmoveLst implements GlobalLstToken
 			{
 				obj.setEncumberedArmorMove(Load.OVERLOAD, anInt);
 			}
-			else if (loadString.equalsIgnoreCase("LightLoad") || loadString.equalsIgnoreCase("LightArmor"))
+			else if (loadString.equalsIgnoreCase("LightLoad")
+				|| loadString.equalsIgnoreCase("LightArmor"))
 			{
-				//do nothing, but accept values as valid
+				// do nothing, but accept values as valid
 			}
 			else
 			{
-				ShowMessageDelegate.showMessageDialog("Invalid value of \"" + loadString + "\" for UNENCUMBEREDMOVE in \"" + obj.getDisplayName() + "\".",
-					"PCGen", MessageType.ERROR);
+				ShowMessageDelegate.showMessageDialog("Invalid value of \""
+					+ loadString + "\" for UNENCUMBEREDMOVE in \""
+					+ obj.getDisplayName() + "\".", "PCGen", MessageType.ERROR);
 			}
 		}
 		return true;
@@ -93,15 +95,45 @@ public class UnencumberedmoveLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
+		boolean setLoad = false;
+		boolean setArmor = false;
 
 		while (tok.hasMoreTokens())
 		{
 			String tokString = tok.nextToken();
 			try
 			{
-				pcgen.cdom.enumeration.Load load = pcgen.cdom.enumeration.Load.valueOf(tokString);
+				pcgen.cdom.enumeration.Load load =
+						pcgen.cdom.enumeration.Load.valueOf(tokString);
+				if (setLoad)
+				{
+					Logging.errorPrint("Encountered Second Load value in "
+						+ getTokenName() + " this is not valid.");
+					return false;
+				}
 				obj.put(ObjectKey.UNENCUMBERED_LOAD, load);
+				setLoad = true;
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -109,7 +141,14 @@ public class UnencumberedmoveLst implements GlobalLstToken
 				try
 				{
 					ArmorType at = ArmorType.valueOf(tokString);
+					if (setArmor)
+					{
+						Logging.errorPrint("Encountered Second Armor Type in "
+							+ getTokenName() + " this is not valid.");
+						return false;
+					}
 					obj.put(ObjectKey.UNENCUMBERED_ARMOR, at);
+					setArmor = true;
 				}
 				catch (IllegalArgumentException e2)
 				{
@@ -125,7 +164,25 @@ public class UnencumberedmoveLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		pcgen.cdom.enumeration.Load load = obj.get(ObjectKey.UNENCUMBERED_LOAD);
+		ArmorType at = obj.get(ObjectKey.UNENCUMBERED_ARMOR);
+		if (load == null && at == null)
+		{
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		if (load != null)
+		{
+			sb.append(load);
+		}
+		if (at != null)
+		{
+			if (sb.length() != 0)
+			{
+				sb.append(Constants.PIPE);
+			}
+			sb.append(at);
+		}
+		return new String[]{sb.toString()};
 	}
 }
