@@ -154,7 +154,6 @@ public class AlteqmodToken implements EquipmentLstToken
 			while (pipeTok.hasMoreTokens())
 			{
 				String assocTok = pipeTok.nextToken();
-				StringTokenizer bracketTok = new StringTokenizer(assocTok, "]");
 				if (assocTok.indexOf(']') == -1)
 				{
 					/*
@@ -279,7 +278,7 @@ public class AlteqmodToken implements EquipmentLstToken
 						edge.getAssociationKeys();
 				if (akColl.size() == 1)
 				{
-					AssociationKey ak = akColl.iterator().next();
+					AssociationKey<?> ak = akColl.iterator().next();
 					if (AssociationKey.ONLY.equals(ak))
 					{
 						sb.append((String) edge.getAssociation(ak));
@@ -293,7 +292,7 @@ public class AlteqmodToken implements EquipmentLstToken
 				else
 				{
 					TreeMap<String, String> map = new TreeMap<String, String>();
-					for (AssociationKey ak : edge.getAssociationKeys())
+					for (AssociationKey<?> ak : edge.getAssociationKeys())
 					{
 						if (AssociationKey.ONLY.equals(ak))
 						{

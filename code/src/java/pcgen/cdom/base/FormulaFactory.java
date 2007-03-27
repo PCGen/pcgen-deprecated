@@ -22,6 +22,11 @@ import pcgen.base.formula.Formula;
 public final class FormulaFactory
 {
 
+	private FormulaFactory()
+	{
+		// Can't instantiate Utility Class
+	}
+
 	public static Formula getFormulaFor(String s)
 	{
 		return new JEPFormula(s);

@@ -21,7 +21,9 @@ public class AttackcycleToken implements PCClassLstToken
 	public boolean parse(PCClass pcclass, String value, int level)
 	{
 		if (value.indexOf('|') == -1)
+		{
 			return true;
+		}
 
 		final StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
 

@@ -71,11 +71,13 @@ public class ChallengeRating extends ConcretePrereqObject
 		return str;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return rating.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		return o instanceof ChallengeRating

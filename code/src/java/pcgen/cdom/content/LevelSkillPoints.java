@@ -39,11 +39,13 @@ public class LevelSkillPoints extends ConcretePrereqObject
 		return points;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return points;
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		return o instanceof LevelSkillPoints

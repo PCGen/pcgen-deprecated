@@ -65,15 +65,7 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 
 	public boolean parse(Spell spell, String value)
 	{
-		if (value.equals(".CLEAR"))
-		{
-			Logging.errorPrint(".CLEAR is deprecated in " + getTokenName()
-				+ " because it has side effects on CLASSES:");
-			Logging.errorPrint("  please use .CLEARALL to clear only DOMAINS");
-			spell.clearLevelInfo();
-			return true;
-		}
-		else if (value.equals(".CLEARALL"))
+		if (value.equals(".CLEARALL"))
 		{
 			spell.clearLevelInfo("DOMAIN");
 			return true;

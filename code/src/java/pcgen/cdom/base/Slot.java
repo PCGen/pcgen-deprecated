@@ -45,9 +45,9 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 		return name;
 	}
 
-	public void setName(String name)
+	public void setName(String slotName)
 	{
-		this.name = name;
+		name = slotName;
 	}
 
 	public boolean isValid(PrereqObject o)
@@ -111,7 +111,7 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 		{
 			return false;
 		}
-		Slot otherSlot = (Slot) o;
+		Slot<?> otherSlot = (Slot) o;
 		if (name == null)
 		{
 			if (otherSlot.name != null)

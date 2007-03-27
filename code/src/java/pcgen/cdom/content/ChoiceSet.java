@@ -91,7 +91,7 @@ public class ChoiceSet<T> extends ConcretePrereqObject
 		{
 			return true;
 		}
-		ChoiceSet cs = (ChoiceSet) o;
+		ChoiceSet<?> cs = (ChoiceSet) o;
 		return count == cs.count && set.equals(cs.set);
 	}
 }

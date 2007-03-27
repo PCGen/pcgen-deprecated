@@ -11,20 +11,28 @@ import pcgen.core.Equipment;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
+import pcgen.core.PObject;
 import pcgen.core.Race;
 import pcgen.core.Skill;
 import pcgen.core.WeaponProf;
 import pcgen.core.spell.Spell;
 
-public class StringPClassUtil {
+public final class StringPClassUtil
+{
 
-	private static Map<String, Class<?>> classMap;
-	private static Map<Class<?>, String> stringMap;
-	
-	static {
-		classMap = new HashMap<String, Class<?>>();
-		stringMap = new HashMap<Class<?>, String>();
-		
+	private StringPClassUtil()
+	{
+		// Can't instantiate Utility Class
+	}
+
+	private static Map<String, Class<? extends PObject>> classMap;
+	private static Map<Class<? extends PObject>, String> stringMap;
+
+	static
+	{
+		classMap = new HashMap<String, Class<? extends PObject>>();
+		stringMap = new HashMap<Class<? extends PObject>, String>();
+
 		classMap.put("DEITY", Deity.class);
 		classMap.put("DOMAIN", Domain.class);
 		classMap.put("EQUIPMENT", Equipment.class);
@@ -36,7 +44,7 @@ public class StringPClassUtil {
 		classMap.put("SKILL", Skill.class);
 		classMap.put("TEMPLATE", PCTemplate.class);
 		classMap.put("WEAPONPROF", WeaponProf.class);
-		
+
 		stringMap.put(Deity.class, "DEITY");
 		stringMap.put(Domain.class, "DOMAIN");
 		stringMap.put(Equipment.class, "EQUIPMENT");
@@ -49,16 +57,19 @@ public class StringPClassUtil {
 		stringMap.put(PCTemplate.class, "TEMPLATE");
 		stringMap.put(WeaponProf.class, "WEAPONPROF");
 	}
-	
-	public static Class getClassFor(String key) {
+
+	public static Class<? extends PObject> getClassFor(String key)
+	{
 		return classMap.get(key);
 	}
-	
-	public static Set<String> getValidStrings() {
+
+	public static Set<String> getValidStrings()
+	{
 		return classMap.keySet();
 	}
 
-	public static String getStringFor(Class cl) {
+	public static String getStringFor(Class<? extends PObject> cl)
+	{
 		return stringMap.get(cl);
 	}
 

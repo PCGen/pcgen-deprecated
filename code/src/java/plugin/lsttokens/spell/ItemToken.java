@@ -89,7 +89,7 @@ public class ItemToken implements SpellLstToken
 		{
 			if (r instanceof UnresolvedTypeRestriction)
 			{
-				UnresolvedTypeRestriction tr = (UnresolvedTypeRestriction) r;
+				UnresolvedTypeRestriction<?> tr = (UnresolvedTypeRestriction) r;
 				if (tr.getRestrictedType().equals(Equipment.class))
 				{
 					sb.append(getTokenName()).append(':')

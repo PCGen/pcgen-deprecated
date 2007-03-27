@@ -171,7 +171,7 @@ public final class TokenUtilities
 		return dr;
 	}
 
-	public static <T extends PObject & CategorizedCDOMObject> CDOMReference<T> getObjectReference(
+	public static <T extends PObject & CategorizedCDOMObject<T>> CDOMReference<T> getObjectReference(
 		LoadContext context, Class<T> cl, Category<T> cat, String s)
 	{
 		if (Constants.LST_ALL.equals(s))

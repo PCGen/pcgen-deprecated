@@ -21,8 +21,13 @@ import java.util.Collection;
 
 import pcgen.cdom.base.CDOMReference;
 
-public class ReferenceUtilities
+public final class ReferenceUtilities
 {
+	
+	private ReferenceUtilities()
+	{
+		//Cannot construct utility class
+	}
 
 	public static <T extends CDOMReference<?>> String joinLstFormat(
 		Collection<T> set, String separator)

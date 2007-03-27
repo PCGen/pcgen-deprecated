@@ -21,5 +21,7 @@ import pcgen.base.graph.core.DirectionalSetMapGraph;
 import pcgen.cdom.base.PrereqObject;
 
 public class PCGenGraph extends
-		DirectionalSetMapGraph<PrereqObject, PCGraphEdge> {
+		DirectionalSetMapGraph<PrereqObject, PCGraphEdge>
+{
+	//No additional items, for now
 }

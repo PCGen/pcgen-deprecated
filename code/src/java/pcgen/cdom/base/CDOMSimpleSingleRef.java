@@ -39,6 +39,7 @@ public class CDOMSimpleSingleRef<T extends PrereqObject> extends
 		return referencedObject.equals(obj);
 	}
 
+	@Override
 	public T resolvesTo()
 	{
 		if (referencedObject == null)
@@ -55,17 +56,19 @@ public class CDOMSimpleSingleRef<T extends PrereqObject> extends
 		return getName();
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if (o instanceof CDOMSimpleSingleRef)
 		{
-			CDOMSimpleSingleRef ref = (CDOMSimpleSingleRef) o;
+			CDOMSimpleSingleRef<?> ref = (CDOMSimpleSingleRef) o;
 			return getReferenceClass().equals(ref.getReferenceClass())
 				&& getName().equals(ref.getName());
 		}
 		return false;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return getReferenceClass().hashCode() ^ getName().hashCode();

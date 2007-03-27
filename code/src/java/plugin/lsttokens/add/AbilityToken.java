@@ -85,7 +85,7 @@ public class AbilityToken implements AddLstToken
 	 */
 	public boolean parse(PObject target, String value, int level)
 	{
-		String tokens[] = value.split("\\|");
+		String[] tokens = value.split("\\|");
 
 		String countString;
 		int index = 0;

@@ -17,7 +17,7 @@
  */
 package pcgen.cdom.base;
 
-public interface Category<T extends CategorizedCDOMObject>
+public interface Category<T extends CategorizedCDOMObject<T>>
 {
 
 }

@@ -42,7 +42,7 @@ public class QualifyToken implements GlobalLstToken
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
 		String key = st.hasMoreTokens() ? st.nextToken() : "";
-		Class c;
+		Class<? extends PObject> c;
 		String category = null;
 		int equalLoc = key.indexOf('=');
 		if (equalLoc == -1) {
@@ -62,11 +62,11 @@ public class QualifyToken implements GlobalLstToken
 			category = key.substring(equalLoc + 1);
 		}
 		if (c == null) {
-			c = Object.class;
 			Logging.errorPrint(getTokenName() + " expecting a POBJECT Type, found: " + key);
 			Logging.errorPrint("  5.12 Format is: QualifyType|Key[|Key] value was: " + value);
 			Logging.errorPrint("  Valid QualifyTypes are: " + StringPClassUtil.getValidStrings());
 			Logging.errorPrint("  QUALIFY without a Type will fail after PCGen 5.12");
+			return false;
 		} else {
 			key = st.nextToken();
 		}

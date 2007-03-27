@@ -89,7 +89,7 @@ public class GroupReferenceContext
 	private DoubleKeyMap<Class, Category, Map<String[], CDOMGroupRef>> categoryTypeRef =
 			new DoubleKeyMap<Class, Category, Map<String[], CDOMGroupRef>>();
 
-	public <T extends PObject & CategorizedCDOMObject> CDOMGroupRef<T> getCategorizedCDOMTypeReference(
+	public <T extends PObject & CategorizedCDOMObject<T>> CDOMGroupRef<T> getCategorizedCDOMTypeReference(
 		Class<T> c, Category<T> cat, String... val)
 	{
 		for (String s : val)
@@ -128,7 +128,7 @@ public class GroupReferenceContext
 	private DoubleKeyMap<Class, Category, CDOMGroupRef> categoryAllRef =
 			new DoubleKeyMap<Class, Category, CDOMGroupRef>();
 
-	public <T extends PObject & CategorizedCDOMObject> CDOMGroupRef<T> getCategorizedCDOMAllReference(
+	public <T extends PObject & CategorizedCDOMObject<T>> CDOMGroupRef<T> getCategorizedCDOMAllReference(
 		Class<T> c, Category<T> cat)
 	{
 		CDOMGroupRef obj = categoryAllRef.get(c, cat);

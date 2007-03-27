@@ -61,11 +61,12 @@ public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>
 		return referencedObject;
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if (o instanceof CDOMCategorizedSingleRef)
 		{
-			CDOMCategorizedSingleRef ref = (CDOMCategorizedSingleRef) o;
+			CDOMCategorizedSingleRef<?> ref = (CDOMCategorizedSingleRef) o;
 			return getReferenceClass().equals(ref.getReferenceClass())
 				&& getName().equals(ref.getName())
 				&& category.equals(ref.category);
@@ -73,6 +74,7 @@ public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>
 		return false;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return getReferenceClass().hashCode() ^ getName().hashCode();

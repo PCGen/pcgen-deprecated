@@ -30,8 +30,8 @@ public class KnownToken implements PCClassLstToken
 			{
 				String nextToken = st.nextToken();
 				if (nextToken.endsWith("+d")) {
-					Logging.errorPrint("+d use in KNOWN has been deprecated.  " +
-							"Use SPECIALTYKNOWN instead");
+					Logging.errorPrint("+d use in KNOWN has been deprecated.  "
+						+ "Use SPECIALTYKNOWN instead");
 				}
 				knownList.add(nextToken);
 			}

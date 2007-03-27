@@ -38,11 +38,13 @@ public class SpecialAbility extends TextProperty
 		return property;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return property.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if (o instanceof SpecialAbility)

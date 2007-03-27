@@ -17,7 +17,9 @@
  */
 package pcgen.base.util;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)

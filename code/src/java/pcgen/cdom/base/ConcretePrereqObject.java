@@ -324,7 +324,7 @@ public class ConcretePrereqObject implements PrereqObject, RestrictedObject,
 	}
 
 	/** TODO This is rather foobar'd */
-	final public boolean passesPreReqToGain(final Equipment p,
+	public final boolean passesPreReqToGain(final Equipment p,
 		final PlayerCharacter aPC)
 	{
 		if (!hasPreReqs())

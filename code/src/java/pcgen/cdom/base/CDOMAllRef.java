@@ -46,12 +46,14 @@ public final class CDOMAllRef<T extends PrereqObject> extends CDOMGroupRef<T>
 		return referencedList.contains(obj);
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		return o instanceof CDOMAllRef
 			&& getReferenceClass().equals(((CDOMAllRef) o).getReferenceClass());
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return getReferenceClass().hashCode();

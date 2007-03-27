@@ -157,7 +157,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 				{
 					Logging.errorPrint(getTokenName()
 						+ " was expecting a Positive "
-						+ "Integer for multiplying Lock, was : "
+						+ "Integer for adding Lock, was : "
 						+ lock.substring(2));
 					return false;
 				}
@@ -173,7 +173,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 				{
 					Logging.errorPrint(getTokenName()
 						+ " was expecting a Positive "
-						+ "Integer for multiplying Lock, was : "
+						+ "Integer for subtracting Lock, was : "
 						+ lock.substring(2));
 					return false;
 				}

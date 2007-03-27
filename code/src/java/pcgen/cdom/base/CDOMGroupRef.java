@@ -27,6 +27,7 @@ public abstract class CDOMGroupRef<T extends PrereqObject> extends
 		super(cl, nm);
 	}
 
+	@Override
 	public abstract boolean contains(T obj);
 
 }

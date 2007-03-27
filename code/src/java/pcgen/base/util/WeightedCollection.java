@@ -58,7 +58,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	/**
 	 * The actual list where the data is stored.
 	 */
-	protected List<WeightedItem<E>> theData;
+	private List<WeightedItem<E>> theData;
 
 	/**
 	 * Default constructor. Creates an empty collection.
@@ -537,7 +537,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	private class UnweightedIterator implements Iterator<E>
 	{
 		/** An iterator that iterates over the raw data elements. */
-		Iterator<WeightedItem<E>> realIterator = theData.iterator();
+		private Iterator<WeightedItem<E>> realIterator = theData.iterator();
 
 		/**
 		 * Checks if there are any more elements in the iteration.

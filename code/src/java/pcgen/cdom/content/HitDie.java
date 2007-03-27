@@ -48,11 +48,13 @@ public class HitDie extends ConcretePrereqObject
 
 	// FIXME TODO Needs to be comparable...
 
+	@Override
 	public int hashCode()
 	{
 		return die;
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		return o instanceof HitDie && ((HitDie) o).die == die;

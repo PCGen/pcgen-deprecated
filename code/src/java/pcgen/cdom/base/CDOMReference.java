@@ -45,6 +45,7 @@ public abstract class CDOMReference<T extends PrereqObject> extends
 
 	public abstract boolean contains(T obj);
 
+	@Override
 	public String toString()
 	{
 		return getClass().getSimpleName() + " " + clazz.getSimpleName() + " "

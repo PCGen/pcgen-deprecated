@@ -278,7 +278,7 @@ public class EqmodToken implements EquipmentLstToken
 						edge.getAssociationKeys();
 				if (akColl.size() == 1)
 				{
-					AssociationKey ak = akColl.iterator().next();
+					AssociationKey<?> ak = akColl.iterator().next();
 					if (AssociationKey.ONLY.equals(ak))
 					{
 						sb.append((String) edge.getAssociation(ak));
@@ -292,7 +292,7 @@ public class EqmodToken implements EquipmentLstToken
 				else
 				{
 					TreeMap<String, String> map = new TreeMap<String, String>();
-					for (AssociationKey ak : edge.getAssociationKeys())
+					for (AssociationKey<?> ak : edge.getAssociationKeys())
 					{
 						if (AssociationKey.ONLY.equals(ak))
 						{

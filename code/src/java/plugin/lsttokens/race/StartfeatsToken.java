@@ -131,7 +131,7 @@ public class StartfeatsToken implements RaceLstToken
 			return null;
 		}
 		PCGraphEdge edge = edgeList.iterator().next();
-		Slot slot = (Slot) edge.getSinkNodes().get(0);
+		Slot<?> slot = (Slot) edge.getSinkNodes().get(0);
 		if (!slot.getSlotClass().equals(ABILITY_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "

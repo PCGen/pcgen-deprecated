@@ -29,16 +29,19 @@ public class JEPFormula implements Formula
 		formula = s;
 	}
 
+	@Override
 	public String toString()
 	{
 		return formula;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return formula.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		return o instanceof JEPFormula
