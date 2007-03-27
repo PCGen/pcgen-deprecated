@@ -54,38 +54,6 @@ public class RepeatlevelToken extends AbstractToken implements
 		PCTemplateLstToken
 {
 
-	private static final Comparator<Aggregator> AGG_COMPARATOR =
-			new Comparator<Aggregator>()
-			{
-
-				public int compare(Aggregator arg0, Aggregator arg1)
-				{
-					int compSL =
-							arg0.get(IntegerKey.START_LEVEL).compareTo(
-								arg1.get(IntegerKey.START_LEVEL));
-					if (compSL != 0)
-					{
-						return compSL;
-					}
-					int compLI =
-							arg0.get(IntegerKey.LEVEL_INCREMENT).compareTo(
-								arg1.get(IntegerKey.LEVEL_INCREMENT));
-					if (compLI != 0)
-					{
-						return compLI;
-					}
-					int compC =
-							arg0.get(IntegerKey.CONSECUTIVE).compareTo(
-								arg1.get(IntegerKey.CONSECUTIVE));
-					if (compC != 0)
-					{
-						return compC;
-					}
-					return arg0.get(IntegerKey.MAX_LEVEL).compareTo(
-						arg1.get(IntegerKey.MAX_LEVEL));
-				}
-			};
-
 	@Override
 	public String getTokenName()
 	{
@@ -411,7 +379,8 @@ public class RepeatlevelToken extends AbstractToken implements
 		{
 			return null;
 		}
-		TreeSet<Aggregator> aggSet = new TreeSet<Aggregator>(AGG_COMPARATOR);
+		TreeSet<Aggregator> aggSet =
+				new TreeSet<Aggregator>(TokenUtilities.AGG_COMPARATOR);
 		for (PCGraphEdge edge : edgeList)
 		{
 			aggSet.add((Aggregator) edge.getSinkNodes().get(0));

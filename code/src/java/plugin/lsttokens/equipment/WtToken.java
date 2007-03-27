@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.equipment;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import pcgen.cdom.content.Weight;
@@ -67,8 +68,8 @@ public class WtToken implements EquipmentLstToken
 	{
 		try
 		{
-			double weight = Double.parseDouble(value);
-			if (weight < 0)
+			BigDecimal weight = new BigDecimal(value);
+			if (weight.compareTo(BigDecimal.ZERO) < 0)
 			{
 				Logging.errorPrint(getTokenName()
 					+ " was expecting a decimal value >= 0 : " + value);
@@ -103,6 +104,6 @@ public class WtToken implements EquipmentLstToken
 		}
 		PCGraphEdge edge = edgeList.iterator().next();
 		Weight w = (Weight) edge.getSinkNodes().get(0);
-		return new String[]{Double.toString(w.getWeight())};
+		return new String[]{w.getWeight().toString()};
 	}
 }

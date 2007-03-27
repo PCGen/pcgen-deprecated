@@ -53,18 +53,12 @@ public class SourceDateLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
-		runRoundRobin("Variable1");
+		runRoundRobin("10/5/06");
 	}
 
 	@Test
-	public void testRoundRobinNumber() throws PersistenceLayerException
+	public void testRoundRobinString() throws PersistenceLayerException
 	{
-		runRoundRobin("3");
-	}
-
-	@Test
-	public void testRoundRobinFormula() throws PersistenceLayerException
-	{
-		runRoundRobin("3+CL(\"Fighter\"");
+		runRoundRobin("Mar 28, 2007");
 	}
 }

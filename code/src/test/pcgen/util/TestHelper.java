@@ -118,7 +118,14 @@ public class TestHelper
 			{
 				throw new UnreachableError(e);
 			}
-			eqLoader.parseLine(eq, input, source);
+			int tabLoc = input.indexOf('\t');
+			if (tabLoc == -1)
+			{
+				eq.setName(input);
+			} else {
+				eq.setName(input.substring(0, tabLoc));
+				eqLoader.parseLine(eq, input.substring(tabLoc + 1), source);
+			}
 			EquipmentList.addEquipment(eq);
 			return true;
 		}
@@ -244,7 +251,15 @@ public class TestHelper
 				}
 			}
 
-			abLoader.parseLine(null, input, source);
+			Ability ab = new Ability();
+			int tabLoc = input.indexOf('\t');
+			if (tabLoc == -1)
+			{
+				ab.setName(input);
+			} else {
+				ab.setName(input.substring(0, tabLoc));
+				abLoader.parseLine(ab, input.substring(tabLoc + 1), source);
+			}
 			return true;
 		}
 		catch (Exception e)

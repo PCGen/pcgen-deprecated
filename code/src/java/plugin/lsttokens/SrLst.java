@@ -83,6 +83,10 @@ public class SrLst implements GlobalLstToken
 		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					SpellResistance.class);
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
 		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{

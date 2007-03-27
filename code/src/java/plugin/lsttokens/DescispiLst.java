@@ -71,7 +71,32 @@ public class DescispiLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		obj.setDescPI(value.charAt(0) != 'N');
+		boolean set;
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
+		{
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+					+ getTokenName() + ": " + value);
+				return false;
+			}
+			set = true;
+		}
+		else
+		{
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = false;
+		}
+		obj.setDescPI(set);
 		return true;
 	}
 

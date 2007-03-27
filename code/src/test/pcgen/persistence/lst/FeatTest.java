@@ -73,10 +73,11 @@ public class FeatTest extends TestCase
 		}
 
 		alertnessFeat = new Ability();
+		alertnessFeat.setName("Alertness");
 		featLoader
 			.parseLine(
 				alertnessFeat,
-				"Alertness	TYPE:General	DESC:+2 on Listen and Spot checks	BONUS:SKILL|Listen,Spot|2",
+				"TYPE:General	DESC:+2 on Listen and Spot checks	BONUS:SKILL|Listen,Spot|2",
 				source);
 		assertEquals("Alertness", alertnessFeat.getKeyName());
 	}
@@ -102,10 +103,11 @@ public class FeatTest extends TestCase
 		}
 
 		Ability ambidexterityFeat = new Ability();
+		ambidexterityFeat.setName("Ambidexterity");
 		featLoader
 			.parseLine(
 				ambidexterityFeat,
-				"Ambidexterity	PRESTAT:1,DEX=15	PREHANDSEQ:2	TYPE:General.Fighter	DESC:You ignore all penalties for using your off-hand	BONUS:COMBAT|TOHIT-SECONDARY|4",
+				"PRESTAT:1,DEX=15	PREHANDSEQ:2	TYPE:General.Fighter	DESC:You ignore all penalties for using your off-hand	BONUS:COMBAT|TOHIT-SECONDARY|4",
 				source);
 		assertEquals("Ambidexterity", ambidexterityFeat.getKeyName());
 	}
@@ -131,10 +133,11 @@ public class FeatTest extends TestCase
 		}
 
 		Ability simpleWeaponFeat = new Ability();
+		simpleWeaponFeat.setName("Simple Weapon Proficiency");
 		featLoader
 			.parseLine(
 				simpleWeaponFeat,
-				"Simple Weapon Proficiency	TYPE:General	DESC:You are proficient with all simple weapons. Non-proficiency suffers -4 to hit.	ADD:WEAPONPROFS|Simple",
+				"TYPE:General	DESC:You are proficient with all simple weapons. Non-proficiency suffers -4 to hit.	ADD:WEAPONPROFS|Simple",
 				source);
 		assertEquals("Simple Weapon Proficiency", simpleWeaponFeat.getKeyName());
 	}

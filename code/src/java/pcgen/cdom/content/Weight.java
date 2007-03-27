@@ -17,42 +17,41 @@
  */
 package pcgen.cdom.content;
 
+import java.math.BigDecimal;
+
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.util.BigDecimalHelper;
 
 public class Weight extends ConcretePrereqObject implements Comparable<Weight>
 {
 
-	private double weight;
+	private BigDecimal weight;
 
-	public Weight(double d)
+	public Weight(BigDecimal d)
 	{
-		weight = d;
+		weight = BigDecimalHelper.trimBigDecimal(d);
 	}
 
-	public double getWeight()
+	public BigDecimal getWeight()
 	{
 		return weight;
 	}
 
 	public int compareTo(Weight arg0)
 	{
-		if (weight == arg0.weight)
-		{
-			return 0;
-		}
-		return weight < arg0.weight ? -1 : 1;
+		return weight.compareTo(arg0.weight);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return (int) weight;
+		return weight.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		return o instanceof Weight && ((Weight) o).weight == weight;
+		return o instanceof Weight && ((Weight) o).weight.equals(weight);
 	}
 
 }

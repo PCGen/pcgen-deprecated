@@ -17,6 +17,7 @@
  */
 package plugin.lsttokens.equipment;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import org.junit.Test;
@@ -95,7 +96,7 @@ public class WtTokenTest extends AbstractTokenTestCase<Equipment>
 					.getTokenName(), primaryProf);
 		assertEquals(1, edges.size());
 		edge = edges.iterator().next();
-		assertEquals(new Weight(4.5), edge.getNodeAt(1));
+		assertEquals(new Weight(new BigDecimal(4.5)), edge.getNodeAt(1));
 	}
 
 	@Test
@@ -107,7 +108,7 @@ public class WtTokenTest extends AbstractTokenTestCase<Equipment>
 					.getTokenName(), primaryProf);
 		assertEquals(1, edges.size());
 		PCGraphEdge edge = edges.iterator().next();
-		assertEquals(new Weight(5), edge.getNodeAt(1));
+		assertEquals(new Weight(new BigDecimal(5)), edge.getNodeAt(1));
 	}
 
 	@Test
@@ -119,7 +120,7 @@ public class WtTokenTest extends AbstractTokenTestCase<Equipment>
 					.getTokenName(), primaryProf);
 		assertEquals(1, edges.size());
 		PCGraphEdge edge = edges.iterator().next();
-		assertEquals(new Weight(0), edge.getNodeAt(1));
+		assertEquals(new Weight(BigDecimal.ZERO), edge.getNodeAt(1));
 	}
 
 	@Test
