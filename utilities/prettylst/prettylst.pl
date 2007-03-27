@@ -5250,7 +5250,7 @@ sub FILETYPE_parse {
 	    $new_line =~ s/\x84/,,/g;
 	    $new_line =~ s/\x85/.../g;
 	    $new_line =~ s/\x88/^/g;
-	    $new_line =~ s-\x89- �/같-g;
+	    $new_line =~ s-\x89- 째/째째-g;
 	    $new_line =~ s/\x8B/</g;
 	    $new_line =~ s/\x8C/Oe/g;
 	    $new_line =~ s/\x91/\'/g; 
@@ -7345,7 +7345,8 @@ BEGIN {
                     # The ADD:FEAT list may contains list elements that
                     # have () and will need the special split.
                     # The LIST special feat name is valid in ADD:FEAT
-                    @feats = grep { $_ ne 'LIST' } embedded_coma_split($1);
+                    # So is ALL now.
+                    @feats = grep { $_ ne 'LIST' } grep { $_ ne 'ALL' } embedded_coma_split($1);
 
                     #        # We put the , back in place
                     #        s/&comma;/,/g for @feats;
@@ -14059,7 +14060,9 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.38 -- -- NOT YET RELEASED
- 
+
+[ 1678576 ] ADD:FEAT supports ALL
+
 [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
 
 [ 1514765 ] Conversion to remove old defaultmonster tags
