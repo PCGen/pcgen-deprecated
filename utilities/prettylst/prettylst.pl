@@ -193,6 +193,7 @@ my %conversion_enable =
      'RACE:Fix PREDEFAULTMONSTER bonuses' => 0,               #[1514765] Conversion to remove old defaultmonster tags
      'ALL:Fix Common Extended ASCII'      => 0, #[1324519 ] ASCII characters
      'ALL:Weaponauto simple conversion'   => 0, #[ 1223873 ] WEAPONAUTO is no longer valid
+     'DEITY:Followeralign conversion'     => 0, #[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
 );
 
 
@@ -339,6 +340,9 @@ if ( $cl_options{convert} ) {
     if ( $cl_options{convert} eq 'RACETYPE' ) {
         $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
     }
+elsif ( $cl_options{convert} eq 'Followeralign') {
+    $conversion_enable{'DEITY:Followeralign conversion'} = 1;
+}
 elsif ( $cl_options{convert} eq 'Willpower' ) {
     $conversion_enable{'ALL:Willpower to Will'} = 1;
 }
@@ -6709,7 +6713,7 @@ BEGIN {
                 $line_for_error
             );
         }
-	elsif ( $tag_name =~ /ADD/
+	elsif ( $tag_name =~ /^ADD/
 		&& $tag_value =~ /^WEAPONBONUS/ ) 
 	{
 	    ewarn( INFO,
@@ -6718,7 +6722,7 @@ BEGIN {
 		   $line_for_error
 		   );
 	}
-	elsif ( $tag_name =~ /ADD/
+	elsif ( $tag_name =~ /^ADD/
 		&& $tag_value =~ /^LIST/ ) {
 	    ewarn( INFO,
 		   qq{ADD:LIST is deprecated, use BONUS instead.},
@@ -6726,7 +6730,13 @@ BEGIN {
 		   $line_for_error
 		   );	    
 	}
-
+	elsif ( $tag_name =~ /^FOLLOWERALIGN/) {
+	    ewarn( INFO,
+		   qq{FOLLOWERALIGN is deprecated, use PREALIGN on Domain instead. Convert using Followeralign to fix this problem.},
+		   $file_for_error,
+		   $line_for_error
+		   );	    	    
+	}
         elsif ( $tag_name =~ /^!?PRE/ ) {
 
             # It's a PRExxx tag, we delegate
@@ -10606,6 +10616,8 @@ BEGIN {
     sub additionnal_line_parsing {
         my ( $line_ref, $filetype, $file_for_error, $line_for_error, $line_info ) = @_;
 
+	
+
     ##################################################################
     # [ 1514765 ] Conversion to remove old defaultmonster tags
     # Gawaine42 (Richard Bowers)
@@ -10716,7 +10728,63 @@ BEGIN {
                     );
                 }
          }
+	
+	#######################################################
+	## [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
+	## Gawaine42
+	## Note: Makes simplifying assumption that FOLLOWERALIGN
+	## will occur only once in a given line, although DOMAINS may 
+	## occur multiple times.
+	if (($conversion_enable{'DEITY:Followeralign conversion'})
+	    && $filetype eq "DEITY"
+	    && (exists $line_ref->{'FOLLOWERALIGN'}))
+	{
+	    my $followeralign = $line_ref->{'FOLLOWERALIGN'}[0];
+	    $followeralign =~ s/^FOLLOWERALIGN://;
+	    my $newprealign = "";
+	    my $aligncount = 0;
+	    
+	    for my $align (split //, $followeralign) {
+                # Is it a number?
+                my $number;
+                if ( (($number) = ($align =~ / \A (\d+) \z /xms))
+		     && $number >= 0
+		     && $number < scalar @valid_system_alignments)
+		{
+                    my $newalign = $valid_system_alignments[$number];
+		    if ($aligncount > 0) {
+			$newprealign .= ',';
+		    }
+		    $aligncount++;
+		    $newprealign .= "$newalign";
+                }
+		else {
+                    ewarn( NOTICE,
+			   qq{Invalid value "$align" for tag "$line_ref->{'FOLLOWERALIGN'}[0]"},
+			   $file_for_error,
+			   $line_for_error
+			   );
 
+		}
+            }
+	    my $dom_count=0;
+
+	    if (exists $line_ref->{'DOMAINS'}) {
+		for my $line ($line_ref->{'DOMAINS'}) 
+		{	
+		    $line_ref->{'DOMAINS'}[$dom_count] .= "|PREALIGN:$newprealign";
+		    $dom_count++;
+		}
+		ewarn( NOTICE,
+		       qq{Adding PREALIGN to domain information and removing "$line_ref->{'FOLLOWERALIGN'}[0]"},
+		       $file_for_error,
+		       $line_for_error
+		       );
+		
+		delete $line_ref->{'FOLLOWERALIGN'};
+	    }
+	}
+    
         ##################################################################
         # [ 1353255 ] TYPE to RACETYPE conversion
         #
@@ -14086,6 +14154,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.38 -- -- NOT YET RELEASED
+
+[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
 
 [ 1690990 ] Add APPEARANCE to Deities LST
 
