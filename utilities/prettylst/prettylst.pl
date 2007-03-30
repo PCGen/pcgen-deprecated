@@ -1650,7 +1650,6 @@ my %master_order = (
         'ADD:FEAT:*',
         'ADD:FORCEPOINT',
         'ADD:LANGUAGE',                   # Now uppercase
-        'ADD:LIST',
         'ADD:SPECIAL',
         'ADD:SPELLCASTER',
         'ADD:SKILL',
@@ -1918,10 +1917,8 @@ my %master_order = (
         'ADD:DOMAIN',
         'ADD:FEAT:*',
         'ADD:LANGUAGE:*',
-        'ADD:LIST:*',
         'ADD:SPECIAL:*',
         'ADD:VFEAT',
-        'ADD:WEAPONBONUS',
         'REMOVE',
         'LANGBONUS',
         'CHOOSE',
@@ -2389,7 +2386,6 @@ my %master_order = (
         'ADD:FEAT:*',
         'ADD:FORCEPOINT',
         'ADD:LANGUAGE',
-        'ADD:LIST',
         'ADD:SPECIAL',
         'ADD:SPELLCASTER',
         'ADD:SKILL',
@@ -3033,9 +3029,7 @@ my %master_order = (
         'ADD:DOMAIN',
         'ADD:FEAT:*',
         'ADD:LANGUAGE:*',
-        'ADD:LIST:*',
         'ADD:SPECIAL:*',
-        'ADD:WEAPONBONUS',
         'EXCHANGELEVEL',
         'SPECIALS',
         'SPELL',
@@ -3123,9 +3117,7 @@ my %master_order = (
         'ADD:DOMAIN',
         'ADD:FEAT:*',
         'ADD:Language:*',
-        'ADD:LIST:*',
         'ADD:SPECIAL:*',
-        'ADD:WEAPONBONUS',
         'EXCHANGELEVEL',
         'SPECIALS',
         'SPELL',
@@ -3475,12 +3467,10 @@ my %token_ADD_tag = map { $_ => 1 } (
     'ADD:FORCEPOINT',
     'ADD:INIT',
     'ADD:LANGUAGE',
-    'ADD:LIST',
     'ADD:SPECIAL',
     'ADD:SPELLCASTER',
     'ADD:SKILL',
     'ADD:TEMPLATE',
-    'ADD:WEAPONBONUS',
     'ADD:WEAPONPROFS',
     'ADD:VFEAT',
 );
@@ -6717,6 +6707,23 @@ BEGIN {
                 $line_for_error
             );
         }
+	elsif ( $tag_name =~ /ADD/
+		&& $tag_value =~ /^WEAPONBONUS/ ) 
+	{
+	    ewarn( INFO,
+		   qq{ADD:WEAPONBONUS is deprecated, use BONUS instead.},
+		   $file_for_error,
+		   $line_for_error
+		   );
+	}
+	elsif ( $tag_name =~ /ADD/
+		&& $tag_value =~ /^LIST/ ) {
+	    ewarn( INFO,
+		   qq{ADD:LIST is deprecated, use BONUS instead.},
+		   $file_for_error,
+		   $line_for_error
+		   );	    
+	}
 
         elsif ( $tag_name =~ /^!?PRE/ ) {
 
