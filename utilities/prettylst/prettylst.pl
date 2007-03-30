@@ -14086,7 +14086,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head2 v1.38 -- -- NOT YET RELEASED
 
 [ 1223873 ] WEAPONAUTO is no longer valid
- 
+
+[ 1678573 ] ADD: deprecation
 
 [ 1678576 ] ADD:FEAT supports ALL
 
