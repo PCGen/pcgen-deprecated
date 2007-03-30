@@ -30,6 +30,7 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
@@ -77,6 +78,11 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 
 	public boolean parseFeat(LoadContext context, CDOMObject obj, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint(getTokenName()
@@ -97,11 +103,6 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 		}
 
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-
-		if (!tok.hasMoreTokens())
-		{
-			return false;
-		}
 
 		List<PCGraphGrantsEdge> edgeList = new ArrayList<PCGraphGrantsEdge>();
 
@@ -135,7 +136,7 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 			Prerequisite prereq = getPrerequisite(token);
 			if (prereq == null)
 			{
-				Logging.errorPrint("   (Did you put spells after the "
+				Logging.errorPrint("   (Did you put feats after the "
 					+ "PRExxx tags in FEAT:?)");
 				return false;
 			}
@@ -217,6 +218,7 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 			}
 			if (prereqs != null && !prereqs.isEmpty())
 			{
+				TreeSet<String> prereqSet = new TreeSet<String>();
 				for (Prerequisite p : prereqs)
 				{
 					StringWriter swriter = new StringWriter();
@@ -230,8 +232,10 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 							+ e);
 						return null;
 					}
-					sb.append(Constants.PIPE).append(swriter.toString());
+					prereqSet.add(swriter.toString());
 				}
+				sb.append(Constants.PIPE).append(
+					StringUtil.join(prereqSet, Constants.PIPE));
 			}
 			list.add(sb.toString());
 		}

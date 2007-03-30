@@ -45,6 +45,11 @@ public class SpellCasterToken implements AddLstToken
 
 	public boolean parse(PObject target, String value, int level)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		String countString;
 		String items;

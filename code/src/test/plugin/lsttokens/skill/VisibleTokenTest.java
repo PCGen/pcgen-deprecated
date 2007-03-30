@@ -75,6 +75,14 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Skill>
 		internalTestInvalidInputString(Visibility.EXPORT);
 	}
 
+	@Test
+	public void testInvalidInputStringSetDisplay() throws PersistenceLayerException
+	{
+		assertTrue(token.parse(primaryContext, primaryProf, "DISPLAY"));
+		assertEquals(Visibility.DISPLAY, primaryProf.get(ObjectKey.VISIBILITY));
+		internalTestInvalidInputString(Visibility.DISPLAY);
+	}
+
 	public void internalTestInvalidInputString(Object val)
 		throws PersistenceLayerException
 	{
@@ -89,8 +97,18 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Skill>
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
 		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		//Note case sensitivity
+		// Must be EXPORT|READONLY
+		assertFalse(token.parse(primaryContext, primaryProf, "DISPLAY|"));
+		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
+		assertFalse(token.parse(primaryContext, primaryProf, "DISPLAY|FLUFF"));
+		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
+		// Note case sensitivity
 		assertFalse(token.parse(primaryContext, primaryProf, "Display"));
+		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
+		assertFalse(token.parse(primaryContext, primaryProf, "DISPLAY|ReadOnly"));
+		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
+		assertFalse(token.parse(primaryContext, primaryProf, "EXPORT|READONLY"));
+		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
 	}
 
 	@Test
@@ -120,5 +138,11 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Skill>
 	public void testRoundRobinExport() throws PersistenceLayerException
 	{
 		runRoundRobin("EXPORT");
+	}
+
+	@Test
+	public void testRoundRobinDisplayReadOnly() throws PersistenceLayerException
+	{
+		runRoundRobin("DISPLAY|READONLY");
 	}
 }

@@ -25,6 +25,7 @@ import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with SPELLRES Token
@@ -45,6 +46,11 @@ public class SpellresToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		spell.put(StringKey.CAN_BE_RESISTED, value);
 		return true;
 	}

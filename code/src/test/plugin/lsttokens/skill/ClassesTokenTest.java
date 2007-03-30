@@ -79,6 +79,12 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	}
 
 	@Test
+	public void testInvalidInputEmpty() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+	}
+
+	@Test
 	public void testInvalidInputLeadingBar() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|Wizard"));

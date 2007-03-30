@@ -44,6 +44,11 @@ public class SAToken implements AddLstToken
 
 	public boolean parse(PObject target, String value, int level)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{

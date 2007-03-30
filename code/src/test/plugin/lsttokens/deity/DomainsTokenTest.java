@@ -22,6 +22,7 @@ import org.junit.Test;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.DeityLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
@@ -75,9 +76,9 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	}
 
 	@Test
-	public void dummyTest()
+	public void testRoundRobinAll() throws PersistenceLayerException
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		this.runRoundRobin("ALL");
 	}
 
 }

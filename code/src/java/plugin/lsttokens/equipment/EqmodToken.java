@@ -69,6 +69,11 @@ public class EqmodToken implements EquipmentLstToken
 	protected boolean parseEqMod(LoadContext context, EquipmentHead primHead,
 		String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		if (Constants.LST_NONE.equals(value))
 		{
 			return true;

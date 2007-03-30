@@ -30,21 +30,36 @@ import pcgen.persistence.lst.GlobalLstToken;
 import plugin.lsttokens.AutoLst;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreClassParser;
+import plugin.pretokens.parser.PreRaceParser;
+import plugin.pretokens.writer.PreClassWriter;
+import plugin.pretokens.writer.PreRaceWriter;
 
-public abstract class AbstractProfTokenTestCase extends AbstractGlobalTokenTestCase
+public abstract class AbstractProfTokenTestCase extends
+		AbstractGlobalTokenTestCase
 {
 
 	static AutoLst token = new AutoLst();
+
+	PreClassParser preclass = new PreClassParser();
+	PreClassWriter preclasswriter = new PreClassWriter();
+	PreRaceParser prerace = new PreRaceParser();
+	PreRaceWriter preracewriter = new PreRaceWriter();
 
 	@Override
 	@Before
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
+		TokenRegistration.register(preclass);
+		TokenRegistration.register(preclasswriter);
+		TokenRegistration.register(prerace);
+		TokenRegistration.register(preracewriter);
 		TokenRegistration.register(getSubToken());
 	}
 
 	protected abstract AutoLstToken getSubToken();
+
 	protected abstract <T extends PObject> Class<T> getSubTokenType();
 
 	public String getSubTokenString()
@@ -148,6 +163,23 @@ public abstract class AbstractProfTokenTestCase extends AbstractGlobalTokenTestC
 	//
 
 	@Test
+	public void testInvalidEmptyPrereq() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|TestWP1[]"));
+	}
+
+	@Test
+	public void testInvalidUnterminatedPrereq()
+		throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|TestWP1[PRERACE:1,Human"));
+	}
+
+	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
@@ -245,6 +277,18 @@ public abstract class AbstractProfTokenTestCase extends AbstractGlobalTokenTestC
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin(getSubTokenString() + "|TestWP1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinOnePrereq() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin(getSubTokenString() + "|TestWP1[PRERACE:1,Human]");
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(secondaryContext.ref.validate());
 	}

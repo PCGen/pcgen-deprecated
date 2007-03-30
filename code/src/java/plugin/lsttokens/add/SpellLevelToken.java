@@ -56,7 +56,7 @@ public class SpellLevelToken implements AddLstToken
 		if (!value.startsWith("CLASS|SPELLCASTER."))
 		{
 			Logging.errorPrint(getTokenName()
-				+ " syntax starts with CLASS|SPELLCASTER.");
+				+ " syntax must start with CLASS|SPELLCASTER.");
 			return false;
 		}
 		String classSpell = value.substring(18);

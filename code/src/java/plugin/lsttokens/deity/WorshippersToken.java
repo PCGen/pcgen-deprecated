@@ -25,6 +25,7 @@ import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.Deity;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with WORSHIPPERS Token
@@ -57,6 +58,11 @@ public class WorshippersToken implements DeityLstToken
 
 	public boolean parse(LoadContext context, Deity deity, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not be empty");
+			return false;
+		}
 		deity.put(StringKey.WORSHIPPERS, value);
 		return true;
 	}

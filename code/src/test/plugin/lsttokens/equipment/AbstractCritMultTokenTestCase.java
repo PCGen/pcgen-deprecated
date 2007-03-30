@@ -100,6 +100,12 @@ public abstract class AbstractCritMultTokenTestCase extends
 	}
 
 	@Test
+	public void testInvalidTimesNaNInput() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "xY"));
+	}
+
+	@Test
 	public void testInvalidNoTimesInput() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3"));

@@ -55,16 +55,9 @@ public class CrToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		try
-		{
-			ChallengeRating cr = new ChallengeRating(value);
-			context.graph.linkObjectIntoGraph(getTokenName(), template, cr);
-			return true;
-		}
-		catch (NumberFormatException nfe)
-		{
-			return false;
-		}
+		ChallengeRating cr = new ChallengeRating(value);
+		context.graph.linkObjectIntoGraph(getTokenName(), template, cr);
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)

@@ -36,6 +36,7 @@ import pcgen.core.bonus.BonusObj;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
@@ -43,10 +44,11 @@ import pcgen.util.Logging;
 /**
  * Class deals with STARTFEATS Token
  */
-public class StartfeatsToken implements RaceLstToken
+public class StartfeatsToken extends AbstractToken implements RaceLstToken
 {
 	private static final Class<Ability> ABILITY_CLASS = Ability.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "STARTFEATS";
@@ -96,14 +98,19 @@ public class StartfeatsToken implements RaceLstToken
 			return false;
 		}
 
-		/*
-		 * TODO Why was this PREMULT added in 5.11.? What situation would this
-		 * PREMULT fail in?
-		 */
-		// buf.append("PREMULT:1,[PRELEVEL:1],[PREHD:1]");
 		Slot<Ability> slot =
 				context.graph.addSlotIntoGraph(getTokenName(), race,
 					ABILITY_CLASS, FormulaFactory.getFormulaFor(featCount));
+		/*
+		 * This prereq exists solely to prevent the ability to select Feats
+		 * before first level. It simply aligns this to the rules that provide
+		 * for the extra feats for a starting character (which is first level)
+		 * This was established through questioning of the more senior code
+		 * monkeys on one of the lists in early 2007 - Tom Parker Mar/28/2007
+		 */
+		Prerequisite prereq =
+				getPrerequisite("PREMULT:1,[PRELEVEL:1],[PREHD:1]");
+		slot.addPreReq(prereq);
 		CDOMGroupRef<Ability> ref =
 				context.ref.getCategorizedCDOMAllReference(ABILITY_CLASS,
 					AbilityCategory.FEAT);

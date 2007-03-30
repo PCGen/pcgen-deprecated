@@ -153,12 +153,12 @@ public class AbilityToken implements AddLstToken
 	public boolean parse(LoadContext context, PObject obj, String value)
 		throws PersistenceLayerException
 	{
-		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
-		if (!st.hasMoreTokens())
+		if (value.length() == 0)
 		{
-			Logging.errorPrint("Invalid " + getTokenName() + ": is Empty");
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
 
 		String nextToken = st.nextToken();
 		int count;

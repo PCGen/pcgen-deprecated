@@ -17,11 +17,15 @@
  */
 package plugin.lsttokens.auto;
 
+import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGraphEdge;
@@ -29,16 +33,19 @@ import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.core.ShieldProf;
+import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AutoLstToken;
-import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class ShieldProfToken implements AutoLstToken
+public class ShieldProfToken extends AbstractToken implements AutoLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "SHIELDPROF";
@@ -53,7 +60,7 @@ public class ShieldProfToken implements AutoLstToken
 	public boolean parse(LoadContext context, PObject obj, String value)
 	{
 		String shieldProfs;
-		String prereq = null; // Do not initialize, null is significant!
+		Prerequisite prereq = null; // Do not initialize, null is significant!
 
 		// Note: May contain PRExxx
 		if (value.indexOf("[") == -1)
@@ -68,8 +75,17 @@ public class ShieldProfToken implements AutoLstToken
 			{
 				Logging.errorPrint("Unresolved Prerequisite in "
 					+ getTokenName() + " " + value + " in " + getTokenName());
+				return false;
 			}
-			prereq = value.substring(openBracketLoc + 1, value.length() - 2);
+			prereq =
+					getPrerequisite(value.substring(openBracketLoc + 1, value
+						.length() - 1));
+			if (prereq == null)
+			{
+				Logging.errorPrint("Error generating Prerequisite " + prereq
+					+ " in " + getTokenName());
+				return false;
+			}
 		}
 
 		if (shieldProfs.charAt(0) == '|')
@@ -121,16 +137,7 @@ public class ShieldProfToken implements AutoLstToken
 							ref);
 				if (prereq != null)
 				{
-					try
-					{
-						edge.addPreReq(PreParserFactory.getInstance().parse(
-							prereq));
-					}
-					catch (PersistenceLayerException e)
-					{
-						Logging.errorPrint("Error generating Prerequisite "
-							+ prereq + " in " + getTokenName());
-					}
+					edge.addPreReq(prereq);
 				}
 			}
 		}
@@ -143,18 +150,55 @@ public class ShieldProfToken implements AutoLstToken
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
 					ShieldProf.class);
-		if (edges.isEmpty())
+		if (edges == null || edges.isEmpty())
 		{
 			return null;
 		}
-		SortedSet<CDOMReference<ShieldProf>> set =
-				new TreeSet<CDOMReference<ShieldProf>>(
-					TokenUtilities.REFERENCE_SORTER);
+		HashMapToList<Set<Prerequisite>, CDOMReference<ShieldProf>> m =
+				new HashMapToList<Set<Prerequisite>, CDOMReference<ShieldProf>>();
 		for (PCGraphEdge edge : edges)
 		{
-			set.add((CDOMReference<ShieldProf>) edge.getSinkNodes().get(0));
+			CDOMReference<ShieldProf> ab =
+					(CDOMReference<ShieldProf>) edge.getSinkNodes().get(0);
+			m.addToListFor(
+				new HashSet<Prerequisite>(edge.getPrerequisiteList()), ab);
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(set,
-			Constants.PIPE)};
+
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		SortedSet<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+
+		String[] array = new String[m.size()];
+		int index = 0;
+
+		for (Set<Prerequisite> prereqs : m.getKeySet())
+		{
+			List<CDOMReference<ShieldProf>> profs = m.getListFor(prereqs);
+			set.clear();
+			set.addAll(profs);
+			String ab = ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
+			if (prereqs != null && !prereqs.isEmpty())
+			{
+				if (prereqs.size() > 1)
+				{
+					// TODO Document Error
+					return null;
+				}
+				Prerequisite p = prereqs.iterator().next();
+				StringWriter swriter = new StringWriter();
+				try
+				{
+					prereqWriter.write(swriter, p);
+				}
+				catch (PersistenceLayerException e)
+				{
+					context.addWriteMessage("Error writing Prerequisite: " + e);
+					return null;
+				}
+				ab = ab + '[' + swriter.toString() + ']';
+			}
+			array[index++] = ab;
+		}
+		return array;
 	}
 }

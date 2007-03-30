@@ -29,6 +29,12 @@ public abstract class AbstractStringTokenTestCase<T extends PObject> extends
 {
 
 	@Test
+	public void testInvalidInputEmpty() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+	}
+
+	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
 		assertTrue(getToken().parse(primaryContext, primaryProf,

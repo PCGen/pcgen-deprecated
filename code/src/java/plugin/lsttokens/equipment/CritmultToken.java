@@ -68,39 +68,33 @@ public class CritmultToken implements EquipmentLstToken
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
 		EquipmentHead primHead = getEquipmentHead(context, eq, 1);
-		try
+		if ((value.length() > 0) && (value.charAt(0) == 'x'))
 		{
-			if ((value.length() > 0) && (value.charAt(0) == 'x'))
+			try
 			{
-				try
+				Integer cm = Integer.valueOf(value.substring(1));
+				if (cm.intValue() <= 0)
 				{
-					Integer cm = Integer.valueOf(value.substring(1));
-					if (cm.intValue() <= 0)
-					{
-						Logging.errorPrint(getTokenName() + " cannot be <= 0");
-						return false;
-					}
-					primHead.put(IntegerKey.CRIT_MULT, cm);
-					return true;
-				}
-				catch (NumberFormatException nfe)
-				{
+					Logging.errorPrint(getTokenName() + " cannot be <= 0");
 					return false;
 				}
-			}
-			else if ("-".equals(value))
-			{
-				primHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(-1));
+				primHead.put(IntegerKey.CRIT_MULT, cm);
 				return true;
 			}
-			return false;
+			catch (NumberFormatException nfe)
+			{
+				return false;
+			}
 		}
-		catch (NumberFormatException nfe)
+		else if ("-".equals(value))
 		{
-			Logging.errorPrint(getTokenName() + " expected an integer.  "
-				+ "Tag must be of the form: " + getTokenName() + ":<int>");
-			return false;
+			primHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(-1));
+			return true;
 		}
+		Logging.errorPrint(getTokenName()
+			+ " was expecting x followed by an integer "
+			+ "or the special value '-' (representing no value)");
+		return false;
 	}
 
 	protected EquipmentHead getEquipmentHead(LoadContext context, Equipment eq,

@@ -71,6 +71,11 @@ public class WeaponbonusToken implements PCTemplateLstToken
 	public boolean parseWeaponBonus(LoadContext context, CDOMObject obj,
 		String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint(getTokenName()

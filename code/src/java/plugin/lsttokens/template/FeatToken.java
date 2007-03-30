@@ -30,6 +30,7 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
@@ -78,6 +79,11 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 
 	public boolean parseFeat(LoadContext context, CDOMObject obj, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint(getTokenName()
@@ -199,6 +205,7 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 			String ab = ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
+				TreeSet<String> prereqSet = new TreeSet<String>();
 				for (Prerequisite p : prereqs)
 				{
 					StringWriter swriter = new StringWriter();
@@ -212,10 +219,11 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 							+ e);
 						return null;
 					}
-					ab =
-							new StringBuilder(ab).append(Constants.PIPE)
-								.append(swriter.toString()).toString();
+					prereqSet.add(swriter.toString());
 				}
+				ab =
+						ab + Constants.PIPE
+							+ StringUtil.join(prereqSet, Constants.PIPE);
 			}
 			array[index++] = ab;
 		}

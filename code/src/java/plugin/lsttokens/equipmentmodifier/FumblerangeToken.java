@@ -25,6 +25,7 @@ import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.util.Logging;
 
 /**
  * Deals with FUMBLERANGE token
@@ -46,6 +47,11 @@ public class FumblerangeToken implements EquipmentModifierLstToken
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		mod.put(StringKey.FUMBLE_RANGE, value);
 		return true;
 	}

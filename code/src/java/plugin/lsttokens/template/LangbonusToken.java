@@ -58,6 +58,11 @@ public class LangbonusToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		if (value.charAt(0) == ',')
 		{
 			Logging.errorPrint(getTokenName()

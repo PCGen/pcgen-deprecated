@@ -17,6 +17,9 @@
  */
 package plugin.lsttokens.spell;
 
+import java.net.URISyntaxException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.PCClass;
@@ -26,12 +29,27 @@ import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.SpellLoader;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreRaceParser;
+import plugin.pretokens.writer.PreRaceWriter;
 
 public class ClassesTokenTest extends AbstractTokenTestCase<Spell>
 {
 
 	static ClassesToken token = new ClassesToken();
 	static SpellLoader loader = new SpellLoader();
+
+	PreRaceParser prerace = new PreRaceParser();
+	PreRaceWriter preracewriter = new PreRaceWriter();
+
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		TokenRegistration.register(prerace);
+		TokenRegistration.register(preracewriter);
+	}
 
 	@Override
 	public Class<Spell> getCDOMClass()
@@ -49,6 +67,12 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Spell>
 	public CDOMToken<Spell> getToken()
 	{
 		return token;
+	}
+
+	@Test
+	public void testInvalidInputEmpty() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
 	}
 
 	@Test
@@ -157,6 +181,14 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Spell>
 	}
 
 	@Test
+	public void testInvalidInputOpenEndedPrerequisite()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"Wizard=4[PRERACE:1,Human"));
+	}
+
+	@Test
 	public void testInvalidInputNotClass() throws PersistenceLayerException
 	{
 		assertTrue(getToken().parse(primaryContext, primaryProf, "Wizard=4"));
@@ -179,6 +211,16 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Spell>
 		assertEquals(0, primaryContext.getWriteMessageCount());
 		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
 		runRoundRobin("Wizard=4");
+		assertTrue(primaryContext.ref.validate());
+		assertEquals(0, primaryContext.getWriteMessageCount());
+	}
+
+	@Test
+	public void testRoundRobinPrereq() throws PersistenceLayerException
+	{
+		assertEquals(0, primaryContext.getWriteMessageCount());
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		runRoundRobin("Wizard=4[PRERACE:1,Human]");
 		assertTrue(primaryContext.ref.validate());
 		assertEquals(0, primaryContext.getWriteMessageCount());
 	}

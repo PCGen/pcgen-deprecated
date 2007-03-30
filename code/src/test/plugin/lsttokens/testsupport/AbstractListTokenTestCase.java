@@ -38,11 +38,16 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 	public void testArchitecture()
 	{
 		/*
-		 * This case is not handled well by this generic tester, and 
-		 * thus should be prohibited in this level of automation...
-		 * - Tom Parker 2/24/2007
+		 * This case is not handled well by this generic tester, and thus should
+		 * be prohibited in this level of automation... - Tom Parker 2/24/2007
 		 */
 		assertFalse(isTypeLegal() && getJoinCharacter() == '.');
+	}
+
+	@Test
+	public void testInvalidInputEmptyString() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
 	}
 
 	@Test
@@ -140,29 +145,29 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		}
 	}
 
-	//FIXME These are invalid due to RC being overly protective at the moment
-	//	@Test
-	//	public void testInvalidInputAll()
-	//	{
-	//		assertTrue(getToken().parse(primaryContext, primaryProf, "ALL"));
-	//		assertFalse(primaryContext.ref.validate());
-	//	}
+	// FIXME These are invalid due to RC being overly protective at the moment
+	// @Test
+	// public void testInvalidInputAll()
+	// {
+	// assertTrue(getToken().parse(primaryContext, primaryProf, "ALL"));
+	// assertFalse(primaryContext.ref.validate());
+	// }
 	//
-	//	@Test
-	//	public void testInvalidInputAny()
-	//	{
-	//		assertTrue(getToken().parse(primaryContext, primaryProf, "ANY"));
-	//		assertFalse(primaryContext.ref.validate());
-	//	}
-	//	@Test
-	//	public void testInvalidInputCheckType()
-	//	{
-	//	if (!isTypeLegal())
-	//	{
-	//		assertTrue(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
-	//		assertFalse(primaryContext.ref.validate());
-	//	}
-	//  }
+	// @Test
+	// public void testInvalidInputAny()
+	// {
+	// assertTrue(getToken().parse(primaryContext, primaryProf, "ANY"));
+	// assertFalse(primaryContext.ref.validate());
+	// }
+	// @Test
+	// public void testInvalidInputCheckType()
+	// {
+	// if (!isTypeLegal())
+	// {
+	// assertTrue(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+	// assertFalse(primaryContext.ref.validate());
+	// }
+	// }
 	//
 
 	@Test
@@ -193,7 +198,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 	@Test
 	public void testInvalidInputCheckMult() throws PersistenceLayerException
 	{
-		//Explicitly do NOT build TestWP2
+		// Explicitly do NOT build TestWP2
 		construct(primaryContext, "TestWP1");
 		assertTrue(getToken().parse(primaryContext, primaryProf,
 			"TestWP1" + getJoinCharacter() + "TestWP2"));
@@ -204,7 +209,8 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 	public void testInvalidInputCheckTypeEqualLength()
 		throws PersistenceLayerException
 	{
-		//Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't consume the |
+		// Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't
+		// consume the |
 		if (isTypeLegal())
 		{
 			construct(primaryContext, "TestWP1");
@@ -221,7 +227,8 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 	public void testInvalidInputCheckTypeDotLength()
 		throws PersistenceLayerException
 	{
-		//Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't consume the |
+		// Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't
+		// consume the |
 		if (isTypeLegal())
 		{
 			construct(primaryContext, "TestWP1");

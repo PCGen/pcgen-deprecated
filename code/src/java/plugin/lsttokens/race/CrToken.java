@@ -60,16 +60,9 @@ public class CrToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
-		try
-		{
-			ChallengeRating cr = new ChallengeRating(value);
-			context.graph.linkObjectIntoGraph(getTokenName(), race, cr);
-			return true;
-		}
-		catch (NumberFormatException nfe)
-		{
-			return false;
-		}
+		ChallengeRating cr = new ChallengeRating(value);
+		context.graph.linkObjectIntoGraph(getTokenName(), race, cr);
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)

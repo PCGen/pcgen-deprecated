@@ -83,6 +83,11 @@ public class ClassSkillsToken implements AddLstToken
 	public boolean parse(LoadContext context, PObject obj, String value)
 		throws PersistenceLayerException
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		int count;
 		String items;
