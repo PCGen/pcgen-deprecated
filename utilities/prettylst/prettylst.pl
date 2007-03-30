@@ -2026,6 +2026,7 @@ my %master_order = (
         @SOURCE_Tags,
         @PRE_Tags,
         @QUALIFY_Tags,
+        'APPEARANCE',
         'BONUS:ABILITYPOOL:*',
         'BONUS:CHECKS:*',
         'BONUS:CASTERLEVEL:*',
@@ -4037,6 +4038,7 @@ my %tagheader = (
         'DEITYWEAP'     => 'Deity Weapon',
         'TITLE'         => 'Deity Title',
         'WORSHIPPERS'   => 'Usual Worshippers',
+        'APPEARANCE'    => 'Deity Appearance'
     },
 
     'EQUIPMENT' => {
@@ -14084,6 +14086,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.38 -- -- NOT YET RELEASED
+
+[ 1690990 ] Add APPEARANCE to Deities LST
 
 [ 1223873 ] WEAPONAUTO is no longer valid
 
