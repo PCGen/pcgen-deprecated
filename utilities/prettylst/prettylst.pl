@@ -2361,6 +2361,7 @@ my %master_order = (
         'TYPE:.CLEAR',
         'TYPE',
         'VISIBLE',
+        'CATEGORY',               # [ 1671410 ] xcheck CATEGORY:Feat in Feat object.
         @PRE_Tags,
         @QUALIFY_Tags,
         'SA:.CLEAR',
@@ -10447,6 +10448,22 @@ sub validate_line {
 
     elsif ( $linetype eq "FEAT" ) {
 
+	# [ 1671410 ] xcheck CATEGORY:Feat in Feat object.
+	my $hasCategory = 0;
+	$hasCategory = 1 if exists $line_ref->{'CATEGORY'};
+	if ($hasCategory) {
+	    if ($line_ref->{'CATEGORY'}[0] eq "CATEGORY:Feat") {
+		# Good
+	    }
+	    else {
+		ewarn(INFO,
+		      qq(The CATEGORY tag must have the value of Feat when present on a FEAT. Remove or replace "$line_ref->{'CATEGORY'}[0]"),
+		      $file_for_error,
+		      $line_for_error
+		      );		
+	    }
+	}
+
         # On a FEAT line type:
         # 1) if it has MULT:YES, it  _has_ to have CHOOSE
         # 2) if it has CHOOSE, it _has_ to have MULT:YES
@@ -14155,7 +14172,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.38 -- -- NOT YET RELEASED
 
+[ 1671410 ] xcheck CATEGORY:Feat in Feat object.
+
 [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
+Use "Followeralign" as the option to convert to invoke this.
 
 [ 1690990 ] Add APPEARANCE to Deities LST
 
