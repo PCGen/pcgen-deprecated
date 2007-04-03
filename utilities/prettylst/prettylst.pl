@@ -194,6 +194,9 @@ my %conversion_enable =
      'ALL:Fix Common Extended ASCII'      => 0, #[1324519 ] ASCII characters
      'ALL:Weaponauto simple conversion'   => 0, #[ 1223873 ] WEAPONAUTO is no longer valid
      'DEITY:Followeralign conversion'     => 0, #[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
+       'ALL:ADD Syntax Fix'                 => 0,               #[1678577 ] ADD: syntax no longer uses parens
+       'ALL:PRESPELLTYPE Syntax'            => 0,               #[1678570 ] Correct PRESPELLTYPE syntax
+
 );
 
 
@@ -353,8 +356,13 @@ elsif ( $cl_options{convert} eq 'Weaponauto' ) {
     $conversion_enable{'ALL:Weaponauto simple conversion'} = 1; # [ 1223873 ] WEAPONAUTO is no longer valid
 }
 elsif ( $cl_options{convert} eq 'pcgen5110' ) {
+    #[1678577 ] ADD: syntax no longer uses parens
+    #[1514765] Conversion to remove old defaultmonster tags
+    #[1678570 ] Correct PRESPELLTYPE syntax
+    $conversion_enable{'ALL:ADD Syntax Fix'} = 1;
+    $conversion_enable{'ALL:PRESPELLTYPE Syntax'} = 1;
     $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;  
-#[1514765] Conversion to remove old defaultmonster tags
+
 }
     elsif ( $cl_options{convert} eq 'pcgen595' ) {
 #        $conversion_enable{'ALL:PRERACE needs a ,'} = 1;
@@ -6197,42 +6205,61 @@ sub FILETYPE_parse {
 #
 # In short, it's a pain.
 #
+# The above describes the pre 5.12 syntax
+# For 5.12, the syntax has changed. 
+# It is now: 
+# ADD:subtoken[|number]|blah
+#
 # This function return a list of three elements.
 #   The first one is a return code
 #   The second one is the effective TAG if any
 #   The third one is anything found after the tag if any
+#   The fourth one is the count if one is detected
 #
 #   Return code 0 = no valid ADD tag found,
-#               1 = token ADD tag found,
-#               2 = adlib ADD tag found.
+#               1 = old format token ADD tag found,
+#               2 = old format adlib ADD tag found.
+#               3 = 5.12 format ADD tag, using known token.
+#               4 = 5.12 format ADD tag, not using token.
 
 sub parse_ADD_tag {
     my $tag = shift;
 
-    if ( $tag =~ /\s*ADD:([^\(|]+)(.*)/ ) {
-        my ( $token, $therest ) = ( $1, $2 );
+    my ($token, $therest, $num_count, $optionlist) = ("", "", 0, "");
 
-        # Is it a know token?
+    # Old Format
+    if ($tag =~ /\s*ADD:([^\(]+)\((.+)\)(\d*)/) {
+	($token, $therest, $num_count) = ($1, $2, $3);
+	if (!$num_count) { $num_count = 1; }
+        # Is it a known token?
         if ( exists $token_ADD_tag{"ADD:$token"} ) {
-            return ( 1, "ADD:$token", $therest );
+	    return ( 1, "ADD:$token", $therest, $num_count );
         }
-
         # Is it the right form? => ADD:any text(any text)
         # Note that no check is done to see if the () are balanced.
-        elsif ( $therest =~ /^\(.*\)$/ ) {
-            return ( 2, "ADD:$token", $therest );
-        }
-        else {
-
-            # Not a good ADD tag.
-            return ( 0, "ADD:$token", $therest );
+        # elsif ( $therest =~ /^\((.*)\)(\d*)\s*$/ ) {
+	else {
+            return ( 2, "ADD:$token", $therest, $num_count);
         }
     }
-    else {
 
-        # Not a good ADD tag.
-        return ( 0, "", undef );
+    # New format ADD tag. 
+#    if ($tag =~ /\s*ADD:([^\|]+)(\|[^\|]*)\|(.+)/) {
+    if ($tag =~ /\s*ADD:([^\|]+)(\|\d+)?\|(.+)/) {
+
+	($token, $num_count, $optionlist) = ($1, $2, $3);
+	if (!$num_count) { $num_count = 1; }
+
+	if ( exists $token_ADD_tag{"ADD:$token"}) {
+	    return ( 3, "ADD:$token", $optionlist, $num_count);
+	}
+	else {
+	    return ( 4, "ADD:$token", $optionlist, $num_count);
+	}
     }
+
+    # Not a good ADD tag.
+    return ( 0, "", undef, 0 );
 }
 
 ###############################################################
@@ -6307,15 +6334,28 @@ sub parse_tag {
 
     # Special cases like ADD:... and BONUS:...
     if ( $tag eq 'ADD' ) {
-        my ( $type, $addtag, $therest ) = parse_ADD_tag( $tag_text );
+        my ( $type, $addtag, $therest, $add_count ) 
+	    = parse_ADD_tag( $tag_text );
+            #   Return code 0 = no valid ADD tag found,
+            #               1 = old format token ADD tag found,
+            #               2 = old format adlib ADD tag found.
+            #               3 = 5.12 format ADD tag, using known token.
+            #               4 = 5.12 format ADD tag, not using token.
 
         if ($type) {
-
             # It's a ADD:token tag
-            if ( $type == 1 ) {
+            if ( $type == 1) {
                 $tag   = $addtag;
-                $value = $therest;
+                $value = "($therest)$add_count";
             }
+	    if ((($type == 1) || ($type == 2))
+		&& ($conversion_enable{'ALL:ADD Syntax Fix'}))  
+	    {
+		$tag = "ADD:";
+		$addtag =~ s/ADD://;
+		$value = 
+		    "$addtag|$add_count|$therest";
+	    }
         }
         else {
             unless ( index( $tag_text, '#' ) == 0 ) {
@@ -6500,13 +6540,22 @@ sub parse_tag {
     my $real_tag = ( $negate_pre ? "!" : "" ) . $tag;
 
     if ( !$no_more_error && !exists $valid_tags{$linetype}{$tag} && index( $tag_text, '#' ) != 0 ) {
-        ewarn( NOTICE,
-            qq{The tag "$tag" from "$tag_text" is not in the $linetype tag list\n},
-            $file_for_error,
-            $line_for_error
-        );
-        $count_tags{"Invalid"}{"Total"}{$real_tag}++;
-        $count_tags{"Invalid"}{$linetype}{$real_tag}++;
+	my $do_warn = 1;
+	if ($tag_text =~ /^ADD:([^\(\|]+)[\|\(]+/) {
+	    my $tag_text = ($1);
+	    if (exists $valid_tags{$linetype}{"ADD:$tag_text"}) {
+		$do_warn = 0;
+	    }
+	}
+	if ($do_warn) {
+	    ewarn( NOTICE,
+		   qq{The tag "$tag" from "$tag_text" is not in the $linetype tag list\n},
+		   $file_for_error,
+		   $line_for_error
+		   );
+	    $count_tags{"Invalid"}{"Total"}{$real_tag}++;
+	    $count_tags{"Invalid"}{$linetype}{$real_tag}++;
+	}
     }
     elsif ( exists $valid_tags{$linetype}{$tag} ) {
 
@@ -7388,7 +7437,7 @@ BEGIN {
                 }
                 else {
                     ewarn( NOTICE,
-                        qq{Invilid systax: "$tag_name$tag_value"},
+                        qq{Invalid systax: "$tag_name$tag_value"},
                         $file_for_error,
                         $line_for_error
                     ) if $tag_value;
@@ -14171,6 +14220,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.38 -- -- NOT YET RELEASED
+
+[1678577 ] ADD: syntax no longer uses parens
 
 [ 1671410 ] xcheck CATEGORY:Feat in Feat object.
 
