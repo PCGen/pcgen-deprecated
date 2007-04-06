@@ -19,7 +19,7 @@ public class ValidfordeityToken implements PCAlignmentLstToken
 	{
 		boolean set;
 		char firstChar = value.charAt(0);
-		if (firstChar == 'y' || firstChar =='Y')
+		if (firstChar == 'y' || firstChar == 'Y')
 		{
 			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
 			{

@@ -59,20 +59,20 @@ public class PreRaceParser extends AbstractPrerequisiteListParser implements
 		//
 		if (formula.indexOf('[') >= 0)
 		{
-			NegateRaceChoice(prereq);
+			negateRaceChoice(prereq);
 		}
 
 		return prereq;
 	}
 
-	private void NegateRaceChoice(Prerequisite prereq)
+	private void negateRaceChoice(Prerequisite prereq)
 	{
 		int modified = 0;
 		for (Prerequisite p : prereq.getPrerequisites())
 		{
 			if (p.getKind() == null) // PREMULT
 			{
-				NegateRaceChoice(p);
+				negateRaceChoice(p);
 			}
 			else
 			{

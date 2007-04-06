@@ -32,7 +32,7 @@ public class SubtractingFormula implements ReferenceFormula<Integer>
 	/**
 	 * The value to be subtracted from the input value
 	 */
-	private int sub;
+	private final int sub;
 
 	/**
 	 * Creates a new SubtractingFormula with the given int as the value to be

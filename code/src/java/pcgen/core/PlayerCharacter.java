@@ -14752,7 +14752,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		aClone.templateList.addAll(getTemplateList());
 		for (String s : this.variableList)
 		{
-			aClone.variableList.add(new String(s));
+			aClone.variableList.add(s);
 		}
 		aClone.gold = new BigDecimal(gold.toString());
 		// Points to a global deity object so it doesn't need to be cloned.
@@ -14785,7 +14785,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 		for (String book : spellBooks)
 		{
-			aClone.addSpellBook(new String(book));
+			aClone.addSpellBook(book);
 		}
 		aClone.tempBonusItemList.addAll(tempBonusItemList);
 		aClone.tempBonusList.addAll(tempBonusList);
@@ -14807,7 +14807,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		aClone.spellTracker = spellTracker;
 		aClone.templateAutoLanguages.addAll(templateAutoLanguages);
 		aClone.templateLanguages.addAll(templateLanguages);
-		aClone.setBio(new String(getBio()));
+		aClone.setBio(getBio());
 		aClone.setBirthday(new String(getBirthday()));
 		aClone.setBirthplace(new String(getBirthplace()));
 		aClone.setCatchPhrase(new String(getCatchPhrase()));
@@ -14837,9 +14837,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			aClone.setSubRegion(new String(getSubRegion()));
 		}
-		aClone.tabName = new String(tabName);
-		aClone.setTrait1(new String(getTrait1()));
-		aClone.setTrait2(new String(getTrait2()));
+		aClone.tabName = tabName;
+		aClone.setTrait1(getTrait1());
+		aClone.setTrait2(getTrait2());
 		aClone.languages.addAll(languages);
 		if (theWeaponProfs != null)
 		{
@@ -14849,8 +14849,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		aClone.autoKnownSpells = autoKnownSpells;
 		aClone.autoLoadCompanion = autoLoadCompanion;
 		aClone.autoSortGear = autoSortGear;
-		aClone.outputSheetHTML = new String(outputSheetHTML);
-		aClone.outputSheetPDF = new String(outputSheetPDF);
+		aClone.outputSheetHTML = outputSheetHTML;
+		aClone.outputSheetPDF = outputSheetPDF;
 		aClone.ageSetKitSelections = new boolean[10];
 
 		System.arraycopy(ageSetKitSelections, 0, aClone.ageSetKitSelections, 0, ageSetKitSelections.length);

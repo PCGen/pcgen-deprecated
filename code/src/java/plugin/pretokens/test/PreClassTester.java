@@ -64,7 +64,7 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 				runningTotal = preClass;
 			}
 		}
-		else if (aString.equals("ANY"))
+		else if ("ANY".equals(aString))
 		{
 			for (PCClass cl : character.getClassList())
 			{

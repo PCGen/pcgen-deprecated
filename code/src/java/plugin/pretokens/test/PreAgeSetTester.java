@@ -48,7 +48,7 @@ PrerequisiteTest
 	{
 		final int ageset = Globals.getBioSet().getPCAgeSet(character);
 
-		int runningTotal=-1;
+		int runningTotal = -1;
 		int anInt;
 
 		try
@@ -79,7 +79,7 @@ PrerequisiteTest
 	 */
 	public String kindHandled() 
 	{
-		return "AGESET";//$NON-NLS-1$
+		return "AGESET"; //$NON-NLS-1$
 	}
 
 }

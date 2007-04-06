@@ -75,7 +75,7 @@ public class PreferencesDialog extends javax.swing.JDialog
 	}
 
 	//GEN-LAST:event_bCancelActionPerformed
-	private void PrefsTreeActionPerformed()
+	private void prefsTreeActionPerformed()
 	{
 		// Add your handling code here:
 		Object obj = prefsTree.getLastSelectedPathComponent();
@@ -208,7 +208,7 @@ public class PreferencesDialog extends javax.swing.JDialog
 			{
 				public void valueChanged(javax.swing.event.TreeSelectionEvent evt)
 				{
-					PrefsTreeActionPerformed();
+					prefsTreeActionPerformed();
 				}
 			});
 

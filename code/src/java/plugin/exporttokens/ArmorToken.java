@@ -206,31 +206,31 @@ public class ArmorToken extends Token
 
 		if ("".equals(type))
 		{
-			return _replaceTokenArmor(index, property, equipped, merge, aPC);
+			return replaceTokenArmor(index, property, equipped, merge, aPC);
 		}
 		else if ("SUIT".equals(type))
 		{
-			return _replaceTokenArmorSuit(index, subtype, property, equipped,
+			return replaceTokenArmorSuit(index, subtype, property, equipped,
 				merge, aPC);
 		}
 		else if ("SHIRT".equals(type))
 		{
-			return _replaceTokenArmorShirt(index, subtype, property, equipped,
+			return replaceTokenArmorShirt(index, subtype, property, equipped,
 				merge, aPC);
 		}
 		else if ("SHIELD".equals(type))
 		{
-			return _replaceTokenArmorShield(index, subtype, property, equipped,
+			return replaceTokenArmorShield(index, subtype, property, equipped,
 				merge, aPC);
 		}
 		else if ("ITEM".equals(type) || "ACITEM".equals(type))
 		{
-			return _replaceTokenArmorItem(index, subtype, property, equipped,
+			return replaceTokenArmorItem(index, subtype, property, equipped,
 				merge, aPC);
 		}
 		else
 		{
-			return _replaceTokenArmorVarious(index, type, subtype, property,
+			return replaceTokenArmorVarious(index, type, subtype, property,
 				equipped, merge, aPC);
 		}
 	}
@@ -244,7 +244,7 @@ public class ArmorToken extends Token
 	 * @param aPC
 	 * @return int
 	 */
-	private static String _replaceTokenArmor(int armor, String property,
+	private static String replaceTokenArmor(int armor, String property,
 		int equipped, int merge, PlayerCharacter aPC)
 	{
 		final List<Equipment> aArrayList =
@@ -260,7 +260,7 @@ public class ArmorToken extends Token
 		if (armor < aArrayList.size())
 		{
 			final Equipment eq = aArrayList.get(armor);
-			return _writeArmorProperty(eq, property, aPC);
+			return writeArmorProperty(eq, property, aPC);
 		}
 
 		return "";
@@ -276,7 +276,7 @@ public class ArmorToken extends Token
 	 * @param aPC
 	 * @return int
 	 */
-	private static String _replaceTokenArmorItem(int item, String subtype,
+	private static String replaceTokenArmorItem(int item, String subtype,
 		String property, int equipped, int merge, PlayerCharacter aPC)
 	{
 		// select all pieces of equipment of status==equipped
@@ -300,7 +300,7 @@ public class ArmorToken extends Token
 		if (item < aArrayList.size())
 		{
 			final Equipment eq = aArrayList.get(item);
-			return _writeArmorProperty(eq, property, aPC);
+			return writeArmorProperty(eq, property, aPC);
 		}
 
 		return "";
@@ -316,7 +316,7 @@ public class ArmorToken extends Token
 	 * @param aPC
 	 * @return int
 	 */
-	private static String _replaceTokenArmorShield(int shield, String subtype,
+	private static String replaceTokenArmorShield(int shield, String subtype,
 		String property, int equipped, int merge, PlayerCharacter aPC)
 	{
 		final List<Equipment> aArrayList =
@@ -326,7 +326,7 @@ public class ArmorToken extends Token
 		if (shield < aArrayList.size())
 		{
 			final Equipment eq = aArrayList.get(shield);
-			return _writeArmorProperty(eq, property, aPC);
+			return writeArmorProperty(eq, property, aPC);
 		}
 
 		return "";
@@ -342,7 +342,7 @@ public class ArmorToken extends Token
 	 * @param aPC
 	 * @return int
 	 */
-	private static String _replaceTokenArmorShirt(int shirt, String subtype,
+	private static String replaceTokenArmorShirt(int shirt, String subtype,
 		String property, int equipped, int merge, PlayerCharacter aPC)
 	{
 		final List<Equipment> aArrayList =
@@ -352,7 +352,7 @@ public class ArmorToken extends Token
 		if (shirt < aArrayList.size())
 		{
 			final Equipment eq = aArrayList.get(shirt);
-			return _writeArmorProperty(eq, property, aPC);
+			return writeArmorProperty(eq, property, aPC);
 		}
 
 		return "";
@@ -368,7 +368,7 @@ public class ArmorToken extends Token
 	 * @param aPC
 	 * @return int
 	 */
-	private static String _replaceTokenArmorSuit(int suit, String subtype,
+	private static String replaceTokenArmorSuit(int suit, String subtype,
 		String property, int equipped, int merge, PlayerCharacter aPC)
 	{
 		final List<Equipment> aArrayList =
@@ -383,7 +383,7 @@ public class ArmorToken extends Token
 		if (suit < aArrayList.size())
 		{
 			final Equipment eq = aArrayList.get(suit);
-			return _writeArmorProperty(eq, property, aPC);
+			return writeArmorProperty(eq, property, aPC);
 		}
 
 		return "";
@@ -400,7 +400,7 @@ public class ArmorToken extends Token
 	 * @param aPC
 	 * @return int
 	 */
-	private static String _replaceTokenArmorVarious(int index, String type,
+	private static String replaceTokenArmorVarious(int index, String type,
 		String subtype, String property, int equipped, int merge,
 		PlayerCharacter aPC)
 	{
@@ -422,13 +422,13 @@ public class ArmorToken extends Token
 		if (index < aArrayList.size())
 		{
 			final Equipment eq = aArrayList.get(index);
-			return _writeArmorProperty(eq, property, aPC);
+			return writeArmorProperty(eq, property, aPC);
 		}
 
 		return "";
 	}
 
-	private static String _writeArmorProperty(Equipment eq, String property,
+	private static String writeArmorProperty(Equipment eq, String property,
 		PlayerCharacter aPC)
 	{
 		StringBuffer ret = new StringBuffer();

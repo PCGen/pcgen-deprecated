@@ -50,16 +50,16 @@ public class PreHasDeityTester extends AbstractPrerequisiteTest implements
 
 		final String ucOp = prereq.getKey().toUpperCase();
 		final boolean flag =
-				(ucOp.startsWith("Y") && charHasDeity)
-					|| (ucOp.startsWith("N") && !charHasDeity); //$NON-NLS-1$ //$NON-NLS-2$
+				(ucOp.charAt(0) == 'Y' && charHasDeity)
+					|| (ucOp.charAt(0) == 'N' && !charHasDeity);
 		if (prereq.getOperator().equals(PrerequisiteOperator.EQ)
 			|| prereq.getOperator().equals(PrerequisiteOperator.GTEQ))
 		{
-			runningTotal = flag == true ? 1 : 0;
+			runningTotal = flag ? 1 : 0;
 		}
 		else
 		{
-			runningTotal = flag == false ? 1 : 0;
+			runningTotal = flag ? 0 : 1;
 		}
 
 		return countedTotal(prereq, runningTotal);

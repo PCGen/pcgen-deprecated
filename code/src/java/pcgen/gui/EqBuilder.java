@@ -1191,7 +1191,7 @@ final class EqBuilder extends JPanel
 
 		if (selectedValue == null)
 		{
-			selectedValue = new String("");
+			selectedValue = "";
 		}
 
 		String aString = ((String) selectedValue).trim();

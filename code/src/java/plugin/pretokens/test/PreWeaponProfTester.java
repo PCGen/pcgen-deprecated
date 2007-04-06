@@ -26,7 +26,10 @@
  */
 package plugin.pretokens.test;
 
-import pcgen.core.*;
+import pcgen.core.Equipment;
+import pcgen.core.EquipmentList;
+import pcgen.core.PlayerCharacter;
+import pcgen.core.WeaponProf;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;

@@ -220,7 +220,7 @@ public class NameGenPanel extends JPanel
 		setPronounciationText(proBuffer.toString());
 	}
 
-	private void NameButtonActionPerformed(ActionEvent evt)
+	private void nameButtonActionPerformed(ActionEvent evt)
 	{
 		try
 		{
@@ -294,7 +294,7 @@ public class NameGenPanel extends JPanel
 					{
 						public void actionPerformed(ActionEvent evt)
 						{
-							NameButtonActionPerformed(evt);
+							nameButtonActionPerformed(evt);
 						}
 					});
 					buttonPanel.add(nb);

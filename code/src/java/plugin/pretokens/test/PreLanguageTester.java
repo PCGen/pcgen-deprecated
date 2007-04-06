@@ -67,7 +67,7 @@ public class PreLanguageTester extends AbstractPrerequisiteTest implements
 					runningTotal = 1;
 				}
 			}
-			else if (!requiredLang.equals("ANY")) //$NON-NLS-1$
+			else if (!"ANY".equals(requiredLang)) //$NON-NLS-1$
 			{
 				throw new PrerequisiteException(PropertyFactory
 					.getFormattedString(

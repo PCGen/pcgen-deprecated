@@ -32,7 +32,7 @@ public class MultiplyingFormula implements ReferenceFormula<Integer>
 	/**
 	 * The value to be multiplied with the value input into the resolve method
 	 */
-	private int mult;
+	private final int mult;
 
 	/**
 	 * Creates a new MultiplyingFormula with the given int as the value to be

@@ -35,12 +35,12 @@ package plugin.doomsdaybook.util;
  * @author Devon D Jones
  * @version $Revision$
  */
-public class variableException extends Exception
+public class VarException extends Exception
 {
 	/**
 	 * Creates a new instance of <code>variableException</code> without detail message.
 	 */
-	public variableException()
+	public VarException()
 	{
 		// Empty Constructor
 	}
@@ -49,7 +49,7 @@ public class variableException extends Exception
 	 * Constructs an instance of <code>variableException</code> with the specified detail message.
 	 * @param msg the detail message.
 	 */
-	public variableException(String msg)
+	public VarException(String msg)
 	{
 		super(msg);
 	}

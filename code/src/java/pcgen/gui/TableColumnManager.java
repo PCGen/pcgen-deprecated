@@ -56,7 +56,7 @@ public class TableColumnManager implements MouseListener {
 			checkBoxList.add(popupCb);
 		}
 		tableButton.addMouseListener(this);
-		TablePopupActionPerformed();
+		tablePopupActionPerformed();
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class TableColumnManager implements MouseListener {
 		tablePopup.show(evt.getComponent(), evt.getX(), evt.getY());
 	}
 	
-	private void TablePopupActionPerformed() {
+	private void tablePopupActionPerformed() {
 		TableColumnModel colModel = table.getColumnModel();
 		// Remove all other columns than the name column (column 0 in the model)
 		int nameColIndex = table.convertColumnIndexToView(0);
@@ -121,7 +121,7 @@ public class TableColumnManager implements MouseListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			TablePopupActionPerformed();
+			tablePopupActionPerformed();
 		}
 
 	}

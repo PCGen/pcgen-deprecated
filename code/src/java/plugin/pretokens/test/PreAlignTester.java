@@ -26,7 +26,11 @@
  */
 package plugin.pretokens.test;
 
-import pcgen.core.*;
+import pcgen.core.Equipment;
+import pcgen.core.GameMode;
+import pcgen.core.Globals;
+import pcgen.core.PlayerCharacter;
+import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteTest;

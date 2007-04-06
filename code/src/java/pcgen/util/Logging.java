@@ -229,21 +229,4 @@ public class Logging
 		sb.append("Kb max.");
 		return sb.toString();
 	}
-
-	/**
-	 * Intentionally cause a NullPointerException and then print the stack trace.
-	 * Occasionally useful for debugging
-	 */
-	public static void PrintStackTrace()
-	{
-		String dummy = null;
-		try
-		{
-			dummy.length();
-		}
-		catch (NullPointerException npe)
-		{
-			npe.printStackTrace();
-		}
-	}
 }

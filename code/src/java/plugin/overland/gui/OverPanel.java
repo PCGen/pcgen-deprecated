@@ -98,7 +98,7 @@ public class OverPanel extends javax.swing.JPanel
 	 private VariableHashMap allVars = new VariableHashMap();
 	 */
 	private PairList<TravelMethod> tms; //holds the travel methods list
-	private boolean StupidKludge = true; /* This is a stupid kludge!
+	private boolean disableUIupdate = true; /* This is a stupid kludge!
 	 * the room & board combo boxes fire events when changed,
 	 * and these events trigger updateTopUI
 	 * Unfortunately, when I first populate the
@@ -909,7 +909,7 @@ public class OverPanel extends javax.swing.JPanel
 
 	private void initData()
 	{
-		StupidKludge = false; //prevent updating of ui for now
+		disableUIupdate = false; //prevent updating of ui for now
 
 		nf.setMaximumFractionDigits(2); //This will display other numbers
 		gp.setMaximumFractionDigits(2); //This will correctly display currency
@@ -938,7 +938,7 @@ public class OverPanel extends javax.swing.JPanel
 		}
 
 		//End costs setup
-		StupidKludge = true; //reenable updating
+		disableUIupdate = true; //reenable updating
 		updateTopUI(); //force an update.
 	}
 
@@ -1154,7 +1154,7 @@ public class OverPanel extends javax.swing.JPanel
 		 i=evt.getID();
 		 j=15;
 		 */
-		if (StupidKludge)
+		if (disableUIupdate)
 		{
 			updateTopUI();
 		}

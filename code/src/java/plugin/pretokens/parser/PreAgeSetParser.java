@@ -24,7 +24,6 @@
  */
 package plugin.pretokens.parser;
 
-import pcgen.core.Globals;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.AbstractPrerequisiteListParser;
@@ -56,11 +55,13 @@ implements PrerequisiteParserInterface
 			super.parse(kind, formula, invertResult, overrideQualify);
 
 		//Operand should be either an integer or a recognizable String
-		try{
+		try
+		{
 			Integer.parseInt(formula);
 		}
-		catch (NumberFormatException exc){
-			prereq.setOperand(formula); //assume recognizable String for now
+		catch (NumberFormatException exc)
+		{
+			prereq.setOperand(formula); // assume recognizable String for now
 		}
 
 		return prereq;

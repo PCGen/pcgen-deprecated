@@ -32,7 +32,7 @@ public class DividingFormula implements ReferenceFormula<Integer>
 	/**
 	 * The value the input into the resolve method will be divided by
 	 */
-	private int denom;
+	private final int denom;
 
 	/**
 	 * Creates a new DividingFormula with the given int as the value to divide

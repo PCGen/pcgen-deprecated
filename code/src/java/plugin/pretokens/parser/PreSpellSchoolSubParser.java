@@ -43,7 +43,7 @@ import java.util.StringTokenizer;
 public class PreSpellSchoolSubParser extends AbstractPrerequisiteParser
 		implements PrerequisiteParserInterface
 {
-	private final static String prereqKind = "spell.subschool";
+	private static final String PREREQ_KIND = "spell.subschool";
 
 	public String[] kindsHandled()
 	{
@@ -57,7 +57,7 @@ public class PreSpellSchoolSubParser extends AbstractPrerequisiteParser
 	{
 		Prerequisite prereq =
 				super.parse(kind, formula, invertResult, overrideQualify);
-		prereq.setKind(prereqKind);
+		prereq.setKind(PREREQ_KIND);
 
 		// old-style: PRESPELLSCHOOLSUB:<name of spell subschool>,<number of spells required>,<minimum spell level>
 		// new-style: PRESPELLSCHOOLSUB:<number of spells required>,<name of spell subschool>=<minimum spell level>[,<name of spell subschool>=<minimum spell level>,...]
@@ -96,7 +96,7 @@ public class PreSpellSchoolSubParser extends AbstractPrerequisiteParser
 					{
 						subreq = new Prerequisite();
 						prereq.addPrerequisite(subreq);
-						subreq.setKind(prereqKind);
+						subreq.setKind(PREREQ_KIND);
 						subreq.setOperand("1");
 						subreq.setCountMultiples(true);
 					}

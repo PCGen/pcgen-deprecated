@@ -398,7 +398,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 */
 	static class WeightedItem<T>
 	{
-		private T theElement;
+		private final T theElement;
 
 		private int theWeight;
 
@@ -474,10 +474,10 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 			}
 			else if (o instanceof WeightedItem)
 			{
-				WeightedItem wi = (WeightedItem) o;
+				WeightedItem<?> wi = (WeightedItem) o;
 				return theWeight == wi.theWeight
-					&& (theElement == null && wi.theElement == null || 
-						theElement != null && theElement.equals(wi.theElement));
+					&& (theElement == null && wi.theElement == null 
+						|| theElement != null && theElement.equals(wi.theElement));
 			}
 			return false;
 		}
@@ -492,7 +492,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	class WeightedIterator implements Iterator<E>
 	{
 
-		private Iterator<WeightedItem<E>> iter = theData.iterator();
+		private final Iterator<WeightedItem<E>> iter = theData.iterator();
 
 		private WeightedItem<E> currentEntry;
 
@@ -537,7 +537,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	private class UnweightedIterator implements Iterator<E>
 	{
 		/** An iterator that iterates over the raw data elements. */
-		private Iterator<WeightedItem<E>> realIterator = theData.iterator();
+		private final Iterator<WeightedItem<E>> realIterator = theData.iterator();
 
 		/**
 		 * Checks if there are any more elements in the iteration.

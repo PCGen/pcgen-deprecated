@@ -78,13 +78,13 @@ public class PreSpecialAbilityTester extends AbstractPrerequisiteTest implements
 		//
 		for (PCTemplate aTempl : character.getTemplateList())
 		{
-			final List<SpecialAbility> SAs =
+			final List<SpecialAbility> saList =
 					aTempl.getSpecialAbilityList(character.getTotalLevels(),
 						character.totalHitDice());
 
-			if (SAs != null)
+			if (saList != null)
 			{
-				for (SpecialAbility sa : SAs)
+				for (SpecialAbility sa : saList)
 				{
 					if (sa.getKeyName().toUpperCase().startsWith(aString))
 					{

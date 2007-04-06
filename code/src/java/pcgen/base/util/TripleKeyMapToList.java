@@ -57,7 +57,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	 * modifying the maps. All modifications should be done through direct calls
 	 * to the methods of TripleKeyMapToList.
 	 */
-	private DoubleKeyMap<K1, K2, HashMapToList<K3, V>> map =
+	private final DoubleKeyMap<K1, K2, HashMapToList<K3, V>> map =
 			new DoubleKeyMap<K1, K2, HashMapToList<K3, V>>();
 
 	/**

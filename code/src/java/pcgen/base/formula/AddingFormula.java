@@ -31,7 +31,7 @@ public class AddingFormula implements ReferenceFormula<Integer>
 	/**
 	 * The value to be added to the value input into the resolve method
 	 */
-	private int add;
+	private final int add;
 
 	/**
 	 * Creates a new AddingFormula with the given int as the value to be added

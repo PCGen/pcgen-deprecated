@@ -57,7 +57,7 @@ public class TripleKeyMapToInstanceList<K1, K2, K3, V> // implements Cloneable
 	 * object capable of modifying the maps. All modifications should be done
 	 * through direct calls to the methods of TripleKeyMapToInstanceList.
 	 */
-	private DoubleKeyMap<K1, K2, HashMapToInstanceList<K3, V>> dkmtl =
+	private final DoubleKeyMap<K1, K2, HashMapToInstanceList<K3, V>> dkmtl =
 			new DoubleKeyMap<K1, K2, HashMapToInstanceList<K3, V>>();
 
 	/**
