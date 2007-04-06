@@ -127,7 +127,7 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Boolean> EXCLUSIVE = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<Double> CONTAINER_WEIGHT_CAPACITY = new ObjectKey<Double>();
+	public static final ObjectKey<BigDecimal> CONTAINER_WEIGHT_CAPACITY = new ObjectKey<BigDecimal>();
 
 	public static final ObjectKey<Boolean> CONTAINER_CONSTANT_WEIGHT = new ObjectKey<Boolean>();
 

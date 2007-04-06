@@ -21,9 +21,11 @@
  */
 package plugin.lsttokens.equipment;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.Logging;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
@@ -33,6 +35,7 @@ import pcgen.cdom.helper.Capacity;
 import pcgen.core.Equipment;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.util.BigDecimalHelper;
 
 /**
  * Deals with CONTAINS token
@@ -53,6 +56,24 @@ public class ContainsToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | , see: " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | , see: " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
 
 		if (!pipeTok.hasMoreTokens())
@@ -63,8 +84,10 @@ public class ContainsToken implements EquipmentLstToken
 
 		String weightCapacity = pipeTok.nextToken();
 
+		boolean hadAsterisk = false;
 		if (weightCapacity.charAt(0) == Constants.CHAR_ASTERISK)
 		{
+			hadAsterisk = true;
 			eq.put(ObjectKey.CONTAINER_CONSTANT_WEIGHT, Boolean.TRUE);
 			weightCapacity = weightCapacity.substring(1);
 		}
@@ -72,10 +95,19 @@ public class ContainsToken implements EquipmentLstToken
 		int percentLoc = weightCapacity.indexOf(Constants.PERCENT);
 		if (percentLoc != weightCapacity.lastIndexOf(Constants.PERCENT))
 		{
+			Logging.errorPrint("Cannot have two weight reduction "
+				+ "characters (indicated by %): " + value);
 			return false;
 		}
 		if (percentLoc != -1)
 		{
+			if (hadAsterisk)
+			{
+				Logging
+					.errorPrint("Cannot have Constant Weight (indicated by *) "
+						+ "and weight reduction (indicated by %): " + value);
+				return false;
+			}
 			String redString = weightCapacity.substring(0, percentLoc);
 			weightCapacity = weightCapacity.substring(percentLoc + 1);
 
@@ -92,8 +124,8 @@ public class ContainsToken implements EquipmentLstToken
 
 		try
 		{
-			eq.put(ObjectKey.CONTAINER_WEIGHT_CAPACITY, Double
-				.valueOf(weightCapacity));
+			eq.put(ObjectKey.CONTAINER_WEIGHT_CAPACITY, new BigDecimal(
+				weightCapacity));
 		}
 		catch (NumberFormatException ex)
 		{
@@ -107,7 +139,7 @@ public class ContainsToken implements EquipmentLstToken
 			eq.addToListFor(ListKey.CAPACITY, Capacity.ANY);
 		}
 
-		double limitedCapacity = 0;
+		BigDecimal limitedCapacity = BigDecimal.ZERO;
 
 		while (pipeTok.hasMoreTokens())
 		{
@@ -121,19 +153,35 @@ public class ContainsToken implements EquipmentLstToken
 			{
 				limited = false;
 				Type t = Type.getConstant(typeString);
-				eq.addToListFor(ListKey.CAPACITY, new Capacity(t, -1));
+				eq.addToListFor(ListKey.CAPACITY, new Capacity(t,
+					Capacity.UNLIMITED));
 			}
 			else
 			{
 				String itemType = typeString.substring(0, equalLoc);
-				double itemNumber =
-						Double.parseDouble(typeString.substring(equalLoc + 1));
-				if (limited)
+				try
 				{
-					limitedCapacity += itemNumber;
+					BigDecimal itemNumber =
+							BigDecimalHelper.trimBigDecimal(new BigDecimal(
+								typeString.substring(equalLoc + 1)));
+					if (BigDecimal.ZERO.compareTo(itemNumber) >= 0)
+					{
+						Logging.errorPrint("Cannot have negative quantity of "
+							+ itemType + ": " + value);
+						return false;
+					}
+					if (limited)
+					{
+						limitedCapacity = limitedCapacity.add(itemNumber);
+					}
+					Type t = Type.getConstant(itemType);
+					eq.addToListFor(ListKey.CAPACITY, new Capacity(t,
+						itemNumber));
 				}
-				Type t = Type.getConstant(itemType);
-				eq.addToListFor(ListKey.CAPACITY, new Capacity(t, itemNumber));
+				catch (NumberFormatException nfe)
+				{
+					return false;
+				}
 			}
 		}
 
@@ -147,13 +195,14 @@ public class ContainsToken implements EquipmentLstToken
 		List<Capacity> list = eq.getListFor(ListKey.CAPACITY);
 		for (Capacity cap : list)
 		{
-			if ("Total".equals(cap.getType()))
+			if (cap.getType() == null)
 			{
 				return true;
 			}
 		}
 
-		double totalCapacity = limited ? limitedCapacity : -1;
+		BigDecimal totalCapacity =
+				limited ? limitedCapacity : Capacity.UNLIMITED;
 		eq.addToListFor(ListKey.CAPACITY, Capacity
 			.getTotalCapacity(totalCapacity));
 
@@ -181,7 +230,7 @@ public class ContainsToken implements EquipmentLstToken
 			sb.append(reducePercent).append(Constants.PERCENT);
 		}
 
-		Double cap = eq.get(ObjectKey.CONTAINER_WEIGHT_CAPACITY);
+		BigDecimal cap = eq.get(ObjectKey.CONTAINER_WEIGHT_CAPACITY);
 		if (cap == null)
 		{
 			// CONSIDER ERROR??
@@ -189,37 +238,34 @@ public class ContainsToken implements EquipmentLstToken
 		}
 		sb.append(cap);
 
-		if (capacityList.size() == 2)
+		if (capacityList.size() == 1)
 		{
 			for (Capacity c : capacityList)
 			{
-				if ("Any".equals(c.getType()) && c.getCapacity() == -1)
+				if (c.getType() == null
+					&& Capacity.UNLIMITED.equals(c.getCapacity()))
 				{
 					// Special Case: Nothing additional
 					return new String[]{sb.toString()};
 				}
 			}
 		}
-		double limitedCapacity = 0;
+		BigDecimal limitedCapacity = BigDecimal.ZERO;
 		boolean limited = true;
-		boolean needsPipe = false;
 		Capacity total = null;
 		for (Capacity c : capacityList)
 		{
 			Type capType = c.getType();
-			if ("Total".equals(capType))
+			if (capType == null)
 			{
 				total = c;
 			}
 			else
 			{
-				if (needsPipe)
-				{
-					sb.append(Constants.PIPE);
-				}
-				double thisCap = c.getCapacity();
+				sb.append(Constants.PIPE);
+				BigDecimal thisCap = c.getCapacity();
 				sb.append(capType);
-				if (thisCap == -1)
+				if (Capacity.UNLIMITED.equals(thisCap))
 				{
 					limited = false;
 				}
@@ -227,7 +273,7 @@ public class ContainsToken implements EquipmentLstToken
 				{
 					if (limited)
 					{
-						limitedCapacity += thisCap;
+						limitedCapacity = limitedCapacity.add(thisCap);
 					}
 					sb.append(Constants.EQUALS).append(thisCap);
 				}
@@ -238,7 +284,8 @@ public class ContainsToken implements EquipmentLstToken
 			// Error
 			return null;
 		}
-		if (limitedCapacity != total.getCapacity())
+		if (!limitedCapacity.equals(total.getCapacity())
+			&& !Capacity.UNLIMITED.equals(total.getCapacity()))
 		{
 			// Need to write out total
 			sb.append("Total").append(Constants.EQUALS).append(

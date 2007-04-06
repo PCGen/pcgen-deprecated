@@ -181,7 +181,10 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 			{
 				if (prereqs.size() > 1)
 				{
-					// TODO Document Error
+					context.addWriteMessage("Error: "
+						+ obj.getClass().getSimpleName()
+						+ " had more than one Prerequisite for "
+						+ getTokenName());
 					return null;
 				}
 				Prerequisite p = prereqs.iterator().next();

@@ -17,28 +17,31 @@
  */
 package pcgen.cdom.helper;
 
+import java.math.BigDecimal;
+
 import pcgen.cdom.enumeration.Type;
 
 public class Capacity
 {
 
+	public static BigDecimal UNLIMITED = new BigDecimal(-1);
 	/*
 	 * CONSIDER Need to flesh out how this works; depends on how Capacity
 	 * interacts with the core... - Tom Parker 3/1/07
 	 */
-	public static final Capacity ANY = new Capacity(null, -1);
+	public static final Capacity ANY = new Capacity(null, UNLIMITED);
 
 	private final Type type;
 
-	private final double limit;
+	private final BigDecimal limit;
 
-	public Capacity(Type typ, double cap)
+	public Capacity(Type typ, BigDecimal cap)
 	{
 		type = typ;
 		limit = cap;
 	}
 
-	public double getCapacity()
+	public BigDecimal getCapacity()
 	{
 		return limit;
 	}
@@ -48,9 +51,19 @@ public class Capacity
 		return type;
 	}
 
-	public static Capacity getTotalCapacity(double d)
+	public static Capacity getTotalCapacity(BigDecimal d)
 	{
 		return new Capacity(null, d);
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("Capacity: ");
+		sb.append(type == null ? "Total" : type);
+		sb.append('=');
+		sb.append(UNLIMITED.equals(limit) ? "UNLIMITED" : limit);
+		return sb.toString();
+	}
 }
