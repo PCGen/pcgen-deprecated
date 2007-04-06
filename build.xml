@@ -60,6 +60,7 @@ These files can be renamed and used for releases.
 	<property name="etc.dir" value="${basedir}/code/etc" />
 	<property name="src.java.dir" value="${basedir}/code/src/java" />
 	<property name="src.test.java.dir" value="${basedir}/code/src/test" />
+	<property name="src.utest.java.dir" value="${basedir}/code/src/utest" />
 	<property name="lib.dir" value="lib" />
 	<property name="lib.ncss" value="${basedir}/lib/javancss" />
 	<property name="src.data.dir" value="${basedir}/data" />
@@ -126,6 +127,8 @@ These files can be renamed and used for releases.
 	<property name="test.jar.file" value="pcgen-tests.jar" />
 	<property name="test.manifest.file" value="code/manifest-tests" />
 	<property name="test.framework.class" value="AllJUnitTests" />
+	<property name="base.utest.class" value="pcgen.base.AllBaseUnitTests" />
+	<property name="token.utest.class" value="plugin.lsttokens.AllTokenUnitTests" />
 	<property name="test.manifest.extra.jars" value="${manifest.extra.jars} ${s}/test/junit.jar ${lib.dir}/test/xmlunit1.0.jar" />
 	<property name="test.all-output.file" value="TEST-test.AllJUnitTests.txt" />
 
@@ -756,6 +759,19 @@ pcgen.filepaths=user
 				<path refid="test.project.classpath" />
 				<path refid="emma.lib" />
 			</classpath>
+			<test name="${base.utest.class}" todir="${build.dir}/test-results/xml" />
+			<test name="${token.utest.class}" todir="${build.dir}/test-results/xml" />
+		</junit>
+		<junit fork="yes" printsummary="on" failureproperty="junitfailure" dir="${basedir}">
+			<jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
+			<jvmarg value="-Demma.coverage.out.merge=true" />
+			<jvmarg value="-Xmx192M" />
+			<formatter type="plain" />
+			<formatter type="xml" />
+			<classpath>
+				<path refid="test.project.classpath" />
+				<path refid="emma.lib" />
+			</classpath>
 			<batchtest todir="${build.dir}/test-results/xml">
 				<fileset dir="${src.test.java.dir}">
 					<include name="**/*Test.java" />
@@ -807,6 +823,9 @@ pcgen.filepaths=user
 
 	<target name="test.compile" depends="jar, jar-all-plugins">
 		<mkdir dir="${build.testclasses.dir}" />
+		<javac srcdir="${src.utest.java.dir}" destdir="${build.testclasses.dir}" deprecation="true" includes="**/*.java" memoryInitialSize="128m" memoryMaximumSize="512m" fork="true">
+			<classpath refid="test.project.classpath" />
+		</javac>
 		<javac srcdir="${src.test.java.dir}" destdir="${build.testclasses.dir}" deprecation="true" includes="**/*.java" memoryInitialSize="128m" memoryMaximumSize="512m" fork="true">
 			<classpath refid="test.project.classpath" />
 		</javac>
