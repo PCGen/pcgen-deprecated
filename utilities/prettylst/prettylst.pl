@@ -4051,7 +4051,7 @@ my %tagheader = (
         'DEITYWEAP'     => 'Deity Weapon',
         'TITLE'         => 'Deity Title',
         'WORSHIPPERS'   => 'Usual Worshippers',
-        'APPEARANCE'    => 'Deity Appearance'
+        'APPEARANCE'    => 'Deity Appearance',
     },
 
     'EQUIPMENT' => {
@@ -6268,7 +6268,7 @@ sub parse_ADD_tag {
 #
 # This function
 #
-# Most commun use is for addition, convertion or removal of tags.
+# Most commun use is for addition, conversion or removal of tags.
 #
 # Paramter: $tag_text         Text to parse
 #           $linetype         Type for the courent line
@@ -6282,7 +6282,7 @@ sub parse_tag {
     my ( $tag_text, $linetype, $file_for_error, $line_for_error ) = @_;
     my $no_more_error = 0;    # Set to 1 if no more error must be displayed.
 
-    # We remove the inclosing quotes if any
+    # We remove the enclosing quotes if any
     ewarn( WARNING, qq{Removing quotes around the '$tag_text' tag}, $file_for_error, $line_for_error)
         if $tag_text =~ s/^"(.*)"$/$1/;
 
@@ -6331,6 +6331,44 @@ sub parse_tag {
 	$valid_entities{'KIT STARTPACK'}{"KIT:$value"}++;
 	$valid_entities{'KIT STARTPACK'}{"$value"}++;
     }
+
+    # [ 1678570 ] Correct PRESPELLTYPE syntax
+    # PRESPELLTYPE conversion
+    if ($conversion_enable{'ALL:PRESPELLTYPE Syntax'} &&
+	$tag eq 'PRESPELLTYPE' &&
+	$tag_text =~ /^PRESPELLTYPE:([^\d]+),(\d+),(\d+)/)
+    {
+	my ($spelltype, $num_spells, $num_levels) = ($1, $2, $3);
+	#$tag_text =~ /^PRESPELLTYPE:([^,\d]+),(\d+),(\d+)/;
+	$value = "$num_spells,";
+	# Common homebrew mistake is to include Arcade|Divine, since the
+	# 5.8 documentation had an example that showed this. Might
+	# as well handle it while I'm here.
+	my @spelltypes = split(/\|/,$spelltype);
+	foreach my $st (@spelltypes) {
+	    $value .= "$st=$num_levels";
+	}
+	ewarn( NOTICE,
+	       qq{Invalid standalone PRESPELLTYPE tag "$tag_text" found and converted in $linetype.},
+	       $file_for_error,
+	       $line_for_error
+	       );
+    }
+    # Continuing the fix - fix it anywhere. This is meant to address PRE tags
+    # that are on the end of other tags or in PREMULTS. 
+    # I'll leave out the pipe-delimited error here, since it's more likely 
+    # to end up with confusion when the tag isn't standalone.
+    elsif ($conversion_enable{'ALL:PRESPELLTYPE Syntax'}
+	&& $tag_text =~ /PRESPELLTYPE:([^\d]+),(\d+),(\d+)/)
+    {
+	$value =~ s/PRESPELLTYPE:([^\d,]+),(\d+),(\d+)/PRESPELLTYPE:$2,$1=$3/g;
+                ewarn( NOTICE,
+                    qq{Invalid embedded PRESPELLTYPE tag "$tag_text" found and converted $linetype.},
+                    $file_for_error,
+                    $line_for_error
+                );
+    }
+
 
     # Special cases like ADD:... and BONUS:...
     if ( $tag eq 'ADD' ) {
@@ -14220,6 +14258,9 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.38 -- -- NOT YET RELEASED
+
+[ 1678570 ] Correct PRESPELLTYPE syntax
+
 
 [1678577 ] ADD: syntax no longer uses parens
 
