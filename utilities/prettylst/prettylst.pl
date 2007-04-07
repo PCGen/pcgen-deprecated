@@ -3626,6 +3626,9 @@ my %missing_headers;    # Will hold the tags that do not have defined headers
 ################################################################################
 # Global variables used by the validation code
 
+my %race_partial_match; # Will hold the portions of a race that have been matched with wildcards.
+                        # For example, if Elf% has been matched (given no default Elf races).
+
 my %valid_entities;     # Will hold the entries that may be refered
                         # by other tags
                         # Format $valid_entities{$entitytype}{$entityname}
@@ -8769,13 +8772,38 @@ sub validate_pre_tag {
                            $line_for_error
                     );
                 }
-
-                # For now, we warn and do nothing else.
-                ewarn( INFO,
-                       qq{Not able to validate "$race" in "PRERACE:$tag_value"},
-                       $file_for_error,
-                       $line_for_error
-                );
+		else {
+		    # Don't bother warning if it matches everything.
+		    # For now, we warn and do nothing else.
+		    if ($race_wild eq '') {
+			## Matches everything, no reason to warn.
+		    }
+		    elsif ($valid_entities{'RACE'}{$race_wild}) {
+			## Matches an existing race, no reason to warn.
+		    }
+		    elsif ($race_partial_match{$race_wild}) {
+			## Partial match already confirmed, no need to confirm.
+		    }
+		    else {
+			my $found = 0;
+			
+			while (($found == 0) 
+			       && ((my $check_race,my $val) = each(%{$valid_entities{'RACE'}})))
+			{
+			    if ($check_race =~ m/^$race_wild/) {
+				$found=1;
+				$race_partial_match{$race_wild} = 1;
+			    }
+			}
+			if ($found == 0) {
+			    ewarn( INFO,
+				   qq{Not able to validate "$race" in "PRERACE:$tag_value." This warning is order dependent. If the race is defined in a later file, this warning may not be accurate.},
+				   $file_for_error,
+				   $line_for_error
+				   );
+			}
+		    }
+		}
             }
             else {
                 push @races, $race;
@@ -10657,11 +10685,17 @@ sub validate_line {
             }
         }
         else {
-            ewarn(INFO,
-                  qq(No KEY tag found for "$line_ref->{$column_with_no_tag{'EQUIPMOD'}[0]}[0]"),
-                  $file_for_error,
-                  $line_for_error
-            );
+	    # [ 1368562 ] .FORGET / .MOD don\'t need KEY entries
+	    my $report_tag = $line_ref->{$column_with_no_tag{'EQUIPMOD'}[0]}[0];
+	    if ($report_tag =~ /.FORGET$|.MOD$/) {
+	    }
+	    else {
+		ewarn(INFO,
+		      qq(No KEY tag found for "$report_tag"),
+		      $file_for_error,
+		      $line_for_error
+		      );
+	    }
         }
     }
     elsif ( $linetype eq "CLASS" ) {
@@ -14258,6 +14292,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.38 -- -- NOT YET RELEASED
+
+[ 1368562 ] .FORGET / .MOD don\'t need KEY entries
 
 [ 1678570 ] Correct PRESPELLTYPE syntax
 
