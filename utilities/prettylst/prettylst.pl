@@ -1625,7 +1625,7 @@ my @QUALIFY_Tags = (
 my %master_order = (
     'ABILITY' => [
         '000AbilityName',
-        'KEY',
+        'KEY',      
         'NAMEISPI',
         'OUTPUTNAME',
         'CATEGORY',
@@ -1753,6 +1753,7 @@ my %master_order = (
 
     'CLASS' => [
         '000ClassName',
+        'KEY',                   # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'HD',
@@ -1962,6 +1963,7 @@ my %master_order = (
 
     'COMPANIONMOD' => [
         '000Follower',
+        'KEY',               # [ 1695877 ] KEY tag is global
         'FOLLOWER',
         'TYPE',
         'HD',
@@ -2023,6 +2025,7 @@ my %master_order = (
 
     'DEITY' => [
         '000DeityName',
+        'KEY',                 # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'DOMAINS',
@@ -2094,6 +2097,7 @@ my %master_order = (
 
     'DOMAIN' => [
         '000DomainName',
+        'KEY',                 # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         @PRE_Tags,
@@ -2364,6 +2368,7 @@ my %master_order = (
 
     'FEAT' => [
         '000FeatName',
+        'KEY',                    # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'TYPE:.CLEAR',
@@ -2595,6 +2600,7 @@ my %master_order = (
 
     'LANGUAGE' => [
         '000LanguageName',
+        'KEY',                  # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'TYPE',
         'SOURCEPAGE',
@@ -2677,6 +2683,7 @@ my %master_order = (
 
     'RACE' => [
         '000RaceName',
+        'KEY',               # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'FAVCLASS',
@@ -2789,6 +2796,7 @@ my %master_order = (
 
     'SKILL' => [
         '000SkillName',
+        'KEY',                    # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'KEYSTAT',
@@ -2862,6 +2870,7 @@ my %master_order = (
 
     'SPELL' => [
         '000SpellName',
+        'KEY',                       # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'CLASSES',
@@ -2916,6 +2925,7 @@ my %master_order = (
 
     'SUBCLASS' => [
         '000SubClassName',
+        'KEY',                        # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'HD',
@@ -2949,6 +2959,7 @@ my %master_order = (
 
     'SUBSTITUTIONCLASS' => [
         '000SubstitutionClassName',
+        'KEY',                       # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'ABB',
@@ -3159,6 +3170,7 @@ my %master_order = (
 
     'TEMPLATE' => [
         '000TemplateName',
+        'KEY',                    # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'HITDIE',
@@ -3282,6 +3294,7 @@ my %master_order = (
 
     'WEAPONPROF' => [
         '000WeaponName',
+        'KEY',                       # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
         'TYPE',
@@ -6372,6 +6385,18 @@ sub parse_tag {
                 );
     }
 
+    ########################################################################
+    # [ 1683231 ] CHOOSE:SCHOOLS does not have arguments
+    # Warn if there are arguments passed to CHOOSE:SCHOOLS
+
+    if ($tag_text =~ '^CHOOSE:SCHOOLS\|') {
+        ewarn(WARNING,
+	       qq{Invalid format in "$tag_text", CHOOSE:SCHOOLS does not support any additional arguments or the pipe separator.},
+	       $file_for_error,
+	       $line_for_error
+	       );
+    }
+
 
     # Special cases like ADD:... and BONUS:...
     if ( $tag eq 'ADD' ) {
@@ -6420,27 +6445,27 @@ sub parse_tag {
        }
        elsif ($qualify_type) {
        	# No valid Qualify type found
-       $count_tags{"Invalid"}{"Total"}{"$tag:$qualify_type"}++;
-       	$count_tags{"Invalid"}{$linetype}{"$tag:$qualify_type"}++;
-       	ewarn( NOTICE,
-       		qq{Invalid QUALIFY:$qualify_type tag "$tag_text" found in $linetype.},
-       		$file_for_error,
-       		$line_for_error
-       	);
-       	$no_more_error = 1;
+	   $count_tags{"Invalid"}{"Total"}{"$tag:$qualify_type"}++;
+	   $count_tags{"Invalid"}{$linetype}{"$tag:$qualify_type"}++;
+	   ewarn( NOTICE,
+		  qq{Invalid QUALIFY:$qualify_type tag "$tag_text" found in $linetype.},
+		  $file_for_error,
+		  $line_for_error
+		  );
+	   $no_more_error = 1;
        }
        else {
-       	$count_tags{"Invalid"}{"Total"}{"QUALIFY"}++;
-       	$count_tags{"Invalid"}{$linetype}{"QUALIFY"}++;
-       	ewarn( NOTICE,
-       		qq{Invalid QUALIFY tag "$tag_text" found in $linetype},
-       		$file_for_error,
-       		$line_for_error
-       	);
-       	$no_more_error = 1;
+	   $count_tags{"Invalid"}{"Total"}{"QUALIFY"}++;
+	   $count_tags{"Invalid"}{$linetype}{"QUALIFY"}++;
+	   ewarn( NOTICE,
+		  qq{Invalid QUALIFY tag "$tag_text" found in $linetype},
+		  $file_for_error,
+		  $line_for_error
+		  );
+	   $no_more_error = 1;
        }
-    }
-
+   }
+    
     if ( $tag eq 'BONUS' ) {
         my ($bonus_type) = ( $value =~ /^([^=:|]+)/ );
 
@@ -10754,7 +10779,50 @@ BEGIN {
     sub additionnal_line_parsing {
         my ( $line_ref, $filetype, $file_for_error, $line_for_error, $line_info ) = @_;
 
-	
+    ##################################################################
+    # [ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE
+    # Gawaine42 (Richard)
+    # Check to see if the TYPE contains Spellbook, if so, warn if 
+    # NUMUSES or PAGEUSAGE aren't there. 
+    # Then check to see if NUMPAGES or PAGEUSAGE are there, and if they
+    # are there, but the TYPE doesn't contain Spellbook, warn.
+
+    if ($filetype eq 'EQUIPMENT') {
+       if (exists $line_ref->{'TYPE'}	
+           && $line_ref->{'TYPE'}[0] =~ /Spellbook/) 
+       {
+	   if (exists $line_ref->{'NUMPAGES'}
+	       && exists $line_ref->{'PAGEUSAGE'}) {
+	       #Nothing to see here, move along.
+	   }
+	   else {
+	       ewarn (WARNING,
+		      qq{You have a Spellbook defined without providing NUMPAGES or PAGEUSAGE. If you want a spellbook of finite capacity, consider adding these tags.},
+		      $file_for_error,
+		      $line_for_error
+		      );
+	   }
+       }
+       else {
+
+	   if (exists $line_ref->{'NUMPAGES'} )
+	   {
+	       ewarn (WARNING,
+		      qq{Invalid use of NUMPAGES tag in a non-spellbook. Remove this tag, or correct the TYPE.},
+		      $file_for_error,
+		      $line_for_error
+		      );
+	   }
+	   if  (exists $line_ref->{'PAGEUSAGE'}) 
+	   {
+	       ewarn (WARNING,
+		      qq{Invalid use of PAGEUSAGE tag in a non-spellbook. Remove this tag, or correct the TYPE.},
+		      $file_for_error,
+		      $line_for_error
+		      );
+	   }
+       }
+   }
 
     ##################################################################
     # [ 1514765 ] Conversion to remove old defaultmonster tags
@@ -14293,17 +14361,24 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.38 -- -- NOT YET RELEASED
 
-[ 1368562 ] .FORGET / .MOD don\'t need KEY entries
-
+Additional Conversions:
 [ 1678570 ] Correct PRESPELLTYPE syntax
-
-
 [1678577 ] ADD: syntax no longer uses parens
-
-[ 1671410 ] xcheck CATEGORY:Feat in Feat object.
-
 [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
 Use "Followeralign" as the option to convert to invoke this.
+[ 1514765 ] Conversion to remove old defaultmonster tags
+[ 1324519 ] ASCII characters    
+
+Additional Warnings and notices:
+[ 1683231 ] CHOOSE:SCHOOLS does not have arguments
+
+[ 1695877 ] KEY tag is global
+
+[ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE
+
+[ 1368562 ] .FORGET / .MOD don\'t need KEY entries
+
+[ 1671410 ] xcheck CATEGORY:Feat in Feat object.
 
 [ 1690990 ] Add APPEARANCE to Deities LST
 
@@ -14315,9 +14390,6 @@ Use "Followeralign" as the option to convert to invoke this.
 
 [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
 
-[ 1514765 ] Conversion to remove old defaultmonster tags
-
-[ 1324519 ] ASCII characters    
 
 =head2 v1.37 -- -- 2007.03.01
 
