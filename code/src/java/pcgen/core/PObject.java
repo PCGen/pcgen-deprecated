@@ -677,9 +677,13 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 	 * Get the movement for this object
 	 * @return the movement for this object
 	 */
-	public final Movement getMovement()
+	public List<Movement> getMovements()
 	{
-		return movement;
+		if (movement == null)
+		{
+			return Collections.emptyList();
+		}
+		return Collections.singletonList(movement);
 	}
 
 	/**
@@ -1427,22 +1431,6 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 	{
 		final List availableList = new ArrayList();
 		final List selectedList  = new ArrayList();
-		ChooserUtilities.getChoices(this, aChoice, availableList, selectedList, aPC);
-	}
-
-	/**
-	 * Get the choices for this PC
-	 * @param aChoice
-	 * @param availableList
-	 * @param selectedList
-	 * @param aPC
-	 */
-	final void getChoices(
-			final String          aChoice,
-			final List            availableList,
-			final List            selectedList,
-			final PlayerCharacter aPC)
-	{
 		ChooserUtilities.getChoices(this, aChoice, availableList, selectedList, aPC);
 	}
 
@@ -3778,7 +3766,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 	 * Set the movement
 	 * @param cm
 	 */
-	public void setMovement(Movement cm)
+	public void setMovement(Movement cm, int level)
 	{
 		movement = cm;
 	}

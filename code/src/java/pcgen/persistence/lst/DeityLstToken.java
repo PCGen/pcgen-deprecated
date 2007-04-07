@@ -41,8 +41,9 @@ public interface DeityLstToken extends CDOMToken<Deity>
 	 * @param deity
 	 * @param value
 	 * @return true if parse OK
+	 * @throws PersistenceLayerException 
 	 */
-	public boolean parse(Deity deity, String value);
+	public boolean parse(Deity deity, String value) throws PersistenceLayerException;
 
 	public boolean parse(LoadContext context, Deity deit, String value)
 		throws PersistenceLayerException;

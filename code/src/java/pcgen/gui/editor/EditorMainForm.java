@@ -635,9 +635,14 @@ public final class EditorMainForm extends JDialog
 				else
 				{
 					sel = pnlDomains.getSelectedList();
-					Domain[] domains = new Domain[sel.length];
-					System.arraycopy(sel, 0, domains, 0, sel.length);
-					deity.setDomainList( CoreUtility.arrayToList(domains) );
+					List<QualifiedObject<Domain>> qualDomains =
+						new ArrayList<QualifiedObject<Domain>>();
+					for (Object object : sel)
+					{
+						qualDomains.add(new QualifiedObject<Domain>(
+							(Domain) object));
+					}
+					deity.setDomainList(qualDomains);
 				}
 
 				//
@@ -746,7 +751,7 @@ public final class EditorMainForm extends JDialog
 				//thisRace.setMovements(pnlMovement.getMoveRates());
 				Movement cm = Movement.getOldMovementFrom(pnlMovement.getMoveValues());
 				cm.setMovementTypes(pnlMovement.getMoveTypes());
-				thisRace.setMovement(cm);
+				thisRace.setMovement(cm, -9);
 				
 				thisRace.clearVisionList();
 				List<Vision> visionList = pnlVision.getVision();
@@ -910,7 +915,7 @@ public final class EditorMainForm extends JDialog
 				PCTemplate thisPCTemplate = (PCTemplate) thisPObject;
 				Movement cmv = Movement.getOldMovementFrom(pnlMovement.getMoveValues());
 				cmv.setMoveRatesFlag(pnlMovement.getMoveRateType());
-				thisPCTemplate.setMovement(cmv);
+				thisPCTemplate.setMovement(cmv, -9);
 
 				thisPCTemplate.clearVisionList();
 				List<Vision> tplVisionList = pnlVision.getVision();
@@ -1536,15 +1541,18 @@ public final class EditorMainForm extends JDialog
 				//
 				movementValues = new ArrayList<String>();
 
-				Movement cm = thisPObject.getMovement();
-
-				if (cm != null && cm.getNumberOfMovementTypes() > 0)
+				List<Movement> mms = thisPObject.getMovements();
+				if (mms != null && !mms.isEmpty())
 				{
-					for (int index = 0; index < cm.getNumberOfMovementTypes(); index++)
+					Movement cm = mms.get(0);
+					if (cm != null && cm.getNumberOfMovementTypes() > 0)
 					{
-						final String aMove = MovementPanel.makeMoveString(cm.getMovementType(index),
-								cm.getMovement(index), null, null);
-						movementValues.add(aMove);
+						for (int index = 0; index < cm.getNumberOfMovementTypes(); index++)
+						{
+							final String aMove = MovementPanel.makeMoveString(cm.getMovementType(index),
+									cm.getMovement(index), null, null);
+							movementValues.add(aMove);
+						}
 					}
 				}
 
@@ -1894,25 +1902,26 @@ public final class EditorMainForm extends JDialog
 				//
 				movementValues = new ArrayList<String>();
 
-				Movement cmv = thisPObject.getMovement();
-
-				if (cmv != null)
+				List<Movement> mmsl = thisPObject.getMovements();
+				if (mmsl != null && !mmsl.isEmpty())
 				{
-					if (cmv.getNumberOfMovementTypes() > 0)
+					Movement cmv = mmsl.get(0);
+					if (cmv != null && cmv.getNumberOfMovementTypes() > 0)
 					{
-						for (int index = 0; index < cmv.getNumberOfMovementTypes(); index++)
+						for (int index = 0; index < cmv
+							.getNumberOfMovementTypes(); index++)
 						{
-							final String aMove = MovementPanel.makeMoveString(
-								cmv.getMovementType(index),
-								cmv.getMovement(index),
-								cmv.getMovementMult(index),
-								cmv.getMovementMultOp(index));
+							final String aMove =
+									MovementPanel.makeMoveString(cmv
+										.getMovementType(index), cmv
+										.getMovement(index), cmv
+										.getMovementMult(index), cmv
+										.getMovementMultOp(index));
 							movementValues.add(aMove);
 						}
+						pnlMovement.setMoveRateType(cmv.getMoveRatesFlag());
 					}
-					pnlMovement.setMoveRateType(cmv.getMoveRatesFlag());
 				}
-
 				pnlMovement.setSelectedList(movementValues);
 
 				//

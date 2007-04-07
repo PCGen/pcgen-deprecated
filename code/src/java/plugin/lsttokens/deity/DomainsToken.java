@@ -21,22 +21,27 @@
  */
 package plugin.lsttokens.deity;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.Logging;
+import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
+import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.utils.TokenUtilities;
-import pcgen.util.Logging;
 
 /**
  * Class deals with DOMAINS Token
@@ -45,20 +50,52 @@ public class DomainsToken implements DeityLstToken
 {
 	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
 
+	/* (non-Javadoc)
+	 * @see pcgen.persistence.lst.LstToken#getTokenName()
+	 */
 	public String getTokenName()
 	{
 		return "DOMAINS";
 	}
 
-	public boolean parse(Deity deity, String value)
+	/* (non-Javadoc)
+	 * @see pcgen.persistence.lst.DeityLstToken#parse(pcgen.core.Deity, java.lang.String)
+	 */
+	public boolean parse(Deity deity, String value) throws PersistenceLayerException
 	{
-		if (value.length() > 0)
+		if (value.length() == 0)
 		{
-			String[] domains = value.split(",");
-			deity.setDomainNameList(CoreUtility.arrayToList(domains));
-			return true;
+			return false;
 		}
-		return false;
+		
+		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		String[] domains = tok.nextToken().split(",");
+
+		ArrayList<Prerequisite> preReqs =
+			new ArrayList<Prerequisite>();
+		if (tok.hasMoreTokens())
+		{
+			while (tok.hasMoreTokens())
+			{
+				final String key = tok.nextToken();
+				if (PreParserFactory.isPreReqString(key))
+				{
+					final PreParserFactory factory =
+							PreParserFactory.getInstance();
+					final Prerequisite r = factory.parse(key);
+					preReqs.add(r);
+				}
+				else
+				{
+					throw new PersistenceLayerException(PropertyFactory.getFormattedString(
+						"Errors.LstTokens.InvalidTokenFormat", //$NON-NLS-1$
+						getClass().getName(), value));
+				}
+			}
+		}
+
+		deity.setDomainNameList(CoreUtility.arrayToList(domains), preReqs);
+		return true;
 	}
 
 	public boolean parse(LoadContext context, Deity deity, String value)

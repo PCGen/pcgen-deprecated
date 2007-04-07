@@ -41,6 +41,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
+
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -52,7 +53,7 @@ import pcgen.util.Logging;
  * <code>AbilityToken</code> parses ADD:ABILITY entries.
  * 
  * <p>
- * <b>Tag Name</b>: <code>ADD:ABILITY</code>|w|x|y|z|z<br />
+ * <b>Tag Name</b>: <code>ADD:ABILITY</code>|w|x|y|z,z<br />
  * <b>Variables Used (w)</b>: Count (Optional Number, Variable or Formula -
  * Number of choices granted).<br />
  * <b>Variables Used (x)</b>: Ability Category (The Ability Category this

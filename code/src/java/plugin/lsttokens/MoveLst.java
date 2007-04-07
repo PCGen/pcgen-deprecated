@@ -58,7 +58,7 @@ public class MoveLst implements GlobalLstToken
 		}
 		Movement cm = Movement.getOldMovementFrom(value);
 		cm.setMoveRatesFlag(0);
-		obj.setMovement(cm);
+		obj.setMovement(cm, anInt);
 		return true;
 	}
 

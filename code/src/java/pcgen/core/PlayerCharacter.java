@@ -8239,12 +8239,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			return;
 		}
 
-		Movement movement = getRace().getMovement();
-		if (movement == null || (!movement.isInitialized()))
+		List<Movement> mms = getRace().getMovements();
+		if (mms == null || mms.isEmpty() || (!mms.get(0).isInitialized()))
 		{
 			return;
 		}
 
+		Movement movement = mms.get(0);
 		movements = movement.getMovements();
 		movementTypes = movement.getMovementTypes();
 		movementMult = movement.getMovementMult();
@@ -10913,7 +10914,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 
 		// Will take destination class over maximum?
-		if ((toClass.getLevel() + iCount) > toClass.getMaxLevel())
+		if (toClass.hasMaxLevel()
+			&& (toClass.getLevel() + iCount) > toClass.getMaxLevel())
 		{
 			iCount = toClass.getMaxLevel() - toClass.getLevel();
 		}
@@ -11549,18 +11551,25 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	{
 		for (PObject pObj : aList)
 		{
-			final Movement movement = pObj.getMovement();
-
-			if (movement == null || movement.getNumberOfMovements() < 1)
+			List<Movement> ml = pObj.getMovements();
+			if (ml == null || ml.isEmpty())
 			{
 				continue;
 			}
-
-			for (int i = 0; i < movement.getNumberOfMovements(); i++)
+			
+			for (Movement movement : ml)
 			{
-				setMyMoveRates(movement.getMovementType(i), movement
-					.getMovement(i).doubleValue(), movement.getMovementMult(i),
-					movement.getMovementMultOp(i), movement.getMoveRatesFlag());
+				if (movement == null || movement.getNumberOfMovements() < 1)
+				{
+					continue;
+				}
+
+				for (int i = 0; i < movement.getNumberOfMovements(); i++)
+				{
+					setMyMoveRates(movement.getMovementType(i), movement
+						.getMovement(i).doubleValue(), movement.getMovementMult(i),
+						movement.getMovementMultOp(i), movement.getMoveRatesFlag());
+				}
 			}
 		}
 		// setDirty(true);
@@ -14019,7 +14028,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				continue;
 			}
 
-			if (aBonus.getDependsOn(newBonus.getBonusInfo()))
+			if (aBonus.getDependsOn(newBonus.getUnparsedBonusInfoList()))
 			{
 				aList.add(newBonus);
 			}
@@ -15734,7 +15743,15 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				// Clear all the categories
 				for (final AbilityCategory cat : theAbilities.getKeySet())
 				{
-					setAggregateAbilitiesStable(cat, stable);
+					// Avoid an infinite loop if there is a faulty entry in the key set
+					if (cat == null)
+					{
+						Logging.errorPrint("Null category entry in character's abilities key set " + String.valueOf(theAbilities.getKeySet()));
+					}
+					else
+					{
+						setAggregateAbilitiesStable(cat, stable);
+					}
 				}
 			}
 			setAggregateFeatsStable(stable);
@@ -15864,9 +15881,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			return st;
 		}
 		
-		st.get(Ability.Nature.VIRTUAL).addAll(getVirtualFeatList());
-		st.get(Ability.Nature.AUTOMATIC).addAll(featAutoList());
-		st.get(Ability.Nature.NORMAL).addAll(getRealFeatList());
+		st.get(Ability.Nature.VIRTUAL)  .addAll(getAbilitySetByNature(Ability.Nature.VIRTUAL));
+		st.get(Ability.Nature.AUTOMATIC).addAll(getAbilitySetByNature(Ability.Nature.AUTOMATIC));
+		st.get(Ability.Nature.NORMAL)   .addAll(getAbilitySetByNature(Ability.Nature.NORMAL));
 
 		st.get(Ability.Nature.ANY).addAll(st.get(Ability.Nature.NORMAL));
 		st.get(Ability.Nature.ANY).addAll(st.get(Ability.Nature.AUTOMATIC));
@@ -16952,6 +16969,45 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		setStableVirtualFeatList(vFeatList);
 
 		return vFeatList;
+	}
+
+	public Set<Ability> getAbilitySetByNature(Ability.Nature n)
+	{
+		GameMode gm = SettingsHandler.getGame();
+
+		Set<AbilityCategory> Sc = new HashSet<AbilityCategory>();
+		Sc.addAll(gm.getAllAbilityCategories());
+
+		Set<Ability> Sa = new HashSet<Ability>();
+		
+		switch (n)
+		{
+			case AUTOMATIC :
+				for (AbilityCategory Ac: Sc)
+				{
+					Sa.addAll(this.getAutomaticAbilityList(Ac));
+				}
+				break;
+
+			case NORMAL :
+				for (AbilityCategory Ac: Sc)
+				{
+					Sa.addAll(this.getRealAbilitiesList(Ac));
+				}
+				break;
+
+			case VIRTUAL :
+				for (AbilityCategory Ac: Sc)
+				{
+					Sa.addAll(this.getVirtualAbilityList(Ac));
+				}
+				break;
+
+			default:
+				Logging.errorPrint("Attempt to get abilities of Nature: " + n);
+		}
+		
+		return Sa;
 	}
 
 	public List<Ability> getVirtualAbilityList(final AbilityCategory aCategory)

@@ -68,11 +68,18 @@ import pcgen.util.enumeration.VisionType;
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  */
 public class PCClass extends PObject {
+	public static final int NO_LEVEL_LIMIT = -1;
+
 	/*
 	 * FINALALLCLASSLEVELS Since this applies to a ClassLevel line
 	 */
 	private List<LevelProperty<Domain>> domainList = null;
 
+	/*
+	 * FINALALLCLASSLEVELS Since this applies to a ClassLevel line
+	 */
+	private List<LevelProperty<Movement>> movementList = null;
+	
 	/*
 	 * FUTURETYPESAFETY This is throwing around Feat names as Strings. :(
 	 * 
@@ -641,7 +648,7 @@ public class PCClass extends PObject {
 	 * Note: It is possibly useful to have a boolean isMaxLevel() available in a
 	 * PCClassLevel, but that is TBD
 	 */
-	private int maxLevel = 20;
+	private int maxLevel = NO_LEVEL_LIMIT;
 
 	/*
 	 * FORMULAREFACTOR This is currently processed elsewhere - should be
@@ -1546,6 +1553,16 @@ public class PCClass extends PObject {
 	 */
 	public final int getMaxLevel() {
 		return maxLevel;
+	}
+
+	/**
+	 * Identify if this class has a cap on the number of levels it is 
+	 * possible to take.
+	 * @return true if a cap on levels exists, false otherwise.
+	 */
+	public final boolean hasMaxLevel()
+	{
+		return maxLevel != NO_LEVEL_LIMIT;
 	}
 
 	/*
@@ -3324,7 +3341,7 @@ public class PCClass extends PObject {
 			pccTxt.append("\tLEVELSPERFEAT:").append(levelsPerFeat.intValue());
 		}
 
-		if (maxLevel != 20) {
+		if (maxLevel != 0) {
 			pccTxt.append("\tMAXLEVEL:").append(maxLevel);
 		}
 
@@ -3415,7 +3432,12 @@ public class PCClass extends PObject {
 		}
 
 		// Output the list of spells associated with the class.
-		for (int i = 0; i <= maxLevel; i++) {
+		int cap = getSpellSupport().getMaxSpellListLevel();
+		if (hasMaxLevel() && cap > maxLevel)
+		{
+			cap = maxLevel;
+		}
+		for (int i = 0; i <= cap; i++) {
 			final List<PCSpell> spellList = getSpellSupport()
 					.getSpellListForLevel(i);
 
@@ -4906,7 +4928,7 @@ public class PCClass extends PObject {
 			levelMax = false;
 		}
 
-		if ((newLevel > maxLevel) && levelMax) {
+		if (hasMaxLevel() && (newLevel > maxLevel) && levelMax) {
 			if (!bSilent) {
 				ShowMessageDelegate.showMessageDialog(
 						"This class cannot be raised above level "
@@ -5153,8 +5175,12 @@ public class PCClass extends PObject {
 					final int iLevel = aClass.getLevel();
 
 					if (iLevel >= iMinLevel) {
-						iMaxDonation = Math.min(Math.min(iMaxDonation, iLevel
-								- iLowest), getMaxLevel() - 1);
+						iMaxDonation = Math.min(iMaxDonation, iLevel - iLowest);
+						if (hasMaxLevel())
+						{
+							iMaxDonation =
+									Math.min(iMaxDonation, getMaxLevel() - 1);
+						}
 
 						if (iMaxDonation > 0) {
 							//
@@ -6303,7 +6329,7 @@ public class PCClass extends PObject {
 	 */
 	private void chooseClassSpellList() {
 		// if no entry or no choices, just return
-		if (classSpellChoices == null) {
+		if (classSpellChoices == null || (level < 1)) {
 			return;
 		}
 		
@@ -6713,6 +6739,33 @@ public class PCClass extends PObject {
 			encumberedLoadMove = new ArrayList<LevelProperty<Load>>();
 		}
 		encumberedLoadMove.add(LevelProperty.getLevelProperty(lvl, load));
+	}
+
+	@Override
+	public void setMovement(Movement m, int level)
+	{
+		if (movementList == null) {
+			movementList = new ArrayList<LevelProperty<Movement>>();
+		}
+		movementList.add(LevelProperty.getLevelProperty(level, m));
+		
+	}
+	
+	@Override
+	public List<Movement> getMovements()
+	{
+		if (movementList == null) {
+			return Collections.emptyList();
+		}
+		List<Movement> returnList = new ArrayList<Movement>();
+		for (LevelProperty<Movement> prop : movementList)
+		{
+			if (prop.getLevel() <= level)
+			{
+				returnList.add(prop.getObject());
+			}
+		}
+		return returnList;
 	}
 	
 //	public void removeAutoAbilities(final AbilityCategory aCategory, final int aLevel)

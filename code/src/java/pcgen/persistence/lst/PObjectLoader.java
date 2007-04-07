@@ -175,6 +175,7 @@ public final class PObjectLoader
 					FeatParser.parseVirtualFeatList(p.getTag());
 			p.getObject().addVirtualFeats(vFeatList);
 		}
+		featList.clear();
 	}
 
 	public static boolean parseTag(LoadContext context, PObject wp, String key, String value) throws PersistenceLayerException {

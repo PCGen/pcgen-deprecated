@@ -48,7 +48,7 @@ public class MovecloneLst implements GlobalLstToken
 	{
 		Movement cm = Movement.getOldMovementFrom(value);
 		cm.setMoveRatesFlag(2);
-		obj.setMovement(cm);
+		obj.setMovement(cm, anInt);
 		return true;
 	}
 
