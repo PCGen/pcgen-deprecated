@@ -3652,6 +3652,10 @@ my %valid_types;        # Will hold the valid types for the TYPE. or TYPE=
                         # found in different tags.
                         # Format valid_types{$entitytype}{$typename}
 
+my %valid_categories;   # Will hold the valid categories for CATEGORY=
+                        # found in abilities.
+                        # [ 1671407 ] xcheck PREABILITY tag
+
 my %referer;            # Will hold the tags the refer to other entries
                         # Format: push @{$referer{$EntityType}{$entryname}},
                         #         [ $tags{$column}, $file_for_error, $line_for_error ]
@@ -3660,6 +3664,10 @@ my %referer_types;      # Will hold the type used by some of the tags
                         # to allow validation.
                         # Format: push @{$referer_types{$EntityType}{$typename}},
                         #         [ $tags{$column}, $file_for_error, $line_for_error ]
+
+my %referer_categories; # Will hold the categories used by abilities
+                        # to allow validation;
+                        # [ 1671407 ] xcheck PREABILITY tag
 
 my %valid_sub_entities; # Will hold the entities that are allowed to include
                         # a sub-entity between () in their name.
@@ -5140,7 +5148,8 @@ if ( $cl_options{xcheck} ) {
 	}
     }
 
-
+    ###############################################
+    # Type report
     # Find the type entries that need to be reported
     %to_report = ();
     for my $linetype ( sort %referer_types ) {
@@ -5169,6 +5178,39 @@ if ( $cl_options{xcheck} ) {
         }
     }
 
+    ###############################################
+    # Category report
+    # Needed for full support for [ 1671407 ] xcheck PREABILITY tag
+    # Find the category entries that need to be reported
+    %to_report = ();
+    for my $linetype ( sort %referer_categories ) {
+        for my $entry ( sort keys %{ $referer_categories{$linetype} } ) {
+            unless ( exists $valid_categories{$linetype}{$entry} ) {
+                for my $array ( @{ $referer_categories{$linetype}{$entry} } ) {
+                    push @{ $to_report{ $array->[1] } }, [ $array->[2], $linetype, $array->[0] ];
+                }
+            }
+        }
+    }
+
+    # Print the category report sorted by file name and line number.
+    set_ewarn_header("================================================================\n"
+                   . "Category cross-reference problems found\n"
+                   . "----------------------------------------------------------------\n"
+    );
+
+    for my $file ( sort keys %to_report ) {
+        for my $line_ref ( sort { $a->[0] <=> $b->[0] } @{ $to_report{$file} } ) {
+            ewarn( NOTICE,
+                qq{No $line_ref->[1] category found for "$line_ref->[2]"},
+                $file,
+                $line_ref->[0]
+            );
+        }
+    }
+
+
+    #################################
     # Print the tag that do not have defined headers if requested
     if ( $cl_options{missing_header} ) {
         my $firsttime = 1;
@@ -8184,9 +8226,12 @@ BEGIN {
             }
         }
         elsif ( $tag_name eq 'TYPE' ) {
-
             # The types go into valid_types
             $valid_types{$linetype}{$_}++ for ( split '\.', $tag_value );
+        }
+        elsif ( $tag_name eq 'CATEGORY' ) {
+            # The types go into valid_types
+            $valid_categories{$linetype}{$_}++ for ( split '\.', $tag_value );
         }
         ######################################################################
         # Tag with numerical values
@@ -8618,6 +8663,30 @@ sub validate_pre_tag {
         }
 
         push @xcheck_to_process, [ 'FEAT', $tag_name, $file_for_error, $line_for_error, @feats ];
+    }
+    elsif ( $pretag eq 'PREABILITY' ) {
+	
+	# [ 1671407 ] xcheck PREABILITY tag
+	# Shamelessly copied from the above FEAT code.
+        # PREABILITY:number,feat,feat,TYPE=type,CATEGORY=category
+
+        # We get the list of abilities and ability types
+        my @abilities = embedded_coma_split($tag_value);
+
+        if ( $abilities[0] =~ / \A \d+ \z /xms ) {
+            shift @abilities;    # We drop the number at the beginning
+        }
+        else {
+
+            # The PREtag doesn't begin by a number
+            warn_deprecate( "$tag_name:$tag_value",
+                $file_for_error,
+                $line_for_error,
+                $enclosing_tag
+            );
+        }
+
+        push @xcheck_to_process, [ 'ABILITY', $tag_name, $file_for_error, $line_for_error, @abilities ];
     }
     elsif ( $pretag eq 'PREITEM' ) {
 
@@ -9095,6 +9164,9 @@ BEGIN {
             }
         }
         elsif ( $entry_type eq 'FEAT' ) {
+	    # Note - ABILITY code is below. If you need to make changes here
+	    # to the FEAT code, please also review the ABILITY code to ensure
+	    # that your changes aren't needed there.
             FEAT:
             for my $feat (@list) {
 
@@ -9150,6 +9222,73 @@ BEGIN {
                 }
                 else {
                     push @{ $referer{'FEAT'}{$feat} },
+                        [ $message_name, $file_for_error, $line_for_error ];
+                }
+            }
+        }
+        elsif ( $entry_type eq 'ABILITY' ) {
+	    #[ 1671407 ] xcheck PREABILITY tag
+	    # Note - shamelessly cut/pasting from the FEAT code, as it's 
+	    # fairly similar.
+            ABILITY:
+            for my $feat (@list) {
+
+                # We ignore CHECKMULT if used within a PREFEAT tag
+                next ABILITY if $feat eq 'CHECKMULT' && $tag_name =~ /PREABILITY/;
+
+                # We ignore LIST if used within an ADD:FEAT tag
+                next ABILITY if $feat eq 'LIST' && $tag_name eq 'ADD:ABILITY';
+
+                # We stript the () if any
+                if ( $feat =~ /(.*?[^ ]) ?\((.*)\)/ ) {
+
+                    # We check to see if the FEAT is a compond tag
+                    if ( $valid_sub_entities{'ABILITY'}{$1} ) {
+                        my $original_feat = $feat;
+                        my $feat_to_check = $feat = $1;
+                        my $entity        = $2;
+                        my $sub_tag_name  = $tag_name;
+                        $sub_tag_name =~ s/@@/$feat (@@)/;
+
+                        # Find the real entity type in case of FEAT=
+                        ABILITY_ENTITY:
+                        while ( $valid_sub_entities{'ABILITY'}{$feat_to_check} =~ /^ABILITY=(.*)/ ) {
+                            $feat_to_check = $1;
+                            if ( !exists $valid_sub_entities{'ABILITY'}{$feat_to_check} ) {
+                                ewarn( NOTICE,
+                                    qq{Cannot find the sub-entity for "$original_feat"},
+                                    $file_for_error,
+                                    $line_for_error
+                                );
+                                $feat_to_check = "";
+                                last ABILITY_ENTITY;
+                            }
+                        }
+
+                        add_to_xcheck_tables(
+                            $valid_sub_entities{'ABILITY'}{$feat_to_check},
+                            $sub_tag_name,
+                            $file_for_error,
+                            $line_for_error,
+                            $entity
+                        ) if $feat_to_check && $entity ne 'Ad-Lib';
+                    }
+                }
+
+                # Put the entry name in place
+                my $message_name = $tag_name;
+                $message_name =~ s/@@/$feat/;
+
+                if ( $feat =~ /^TYPE[=.](.*)/ ) {
+                    push @{ $referer_types{'ABILITY'}{$1} },
+                        [ $message_name, $file_for_error, $line_for_error ];
+                }
+		elsif ( $feat =~ /^CATEGORY[=.](.*)/ ) {
+		    push @{ $referer_categories{'ABILITY'}{$1} },
+		       [ $message_name, $file_for_error, $line_for_error ];
+		}
+                else {
+                    push @{ $referer{'ABILITY'}{$feat} },
                         [ $message_name, $file_for_error, $line_for_error ];
                 }
             }
@@ -9270,7 +9409,7 @@ BEGIN {
                 # a compond skill
                 if ( $skill =~ /(.*?[^ ]) ?\((.*)\)/ ) {
 
-                    # We check to see if the FEAT is a compond tag
+                    # We check to see if the SKILL is a compond tag
                     if ( $valid_sub_entities{'SKILL'}{$1} ) {
                         $skill = $1;
                         my $entity = $2;
@@ -14370,6 +14509,8 @@ Use "Followeralign" as the option to convert to invoke this.
 [ 1324519 ] ASCII characters    
 
 Additional Warnings and notices:
+[ 1671407 ] xcheck PREABILITY tag
+
 [ 1683231 ] CHOOSE:SCHOOLS does not have arguments
 
 [ 1695877 ] KEY tag is global
