@@ -21,14 +21,15 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.Set;
-
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.base.formula.Resolver;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.formula.FixedSizeResolver;
+import pcgen.cdom.formula.FormulaSizeResolver;
 import pcgen.cdom.mode.Size;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.util.Logging;
 
 /**
  * Class deals with SIZE Token
@@ -49,39 +50,26 @@ public class SizeToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
+		Resolver<Size> res;
 		try
 		{
-			/*
-			 * FIXME This doesn't work, because SIZE can be a formula as well:
-			 * e.g. max(AnimalSize,var("RACESIZE"))
-			 */
-			Size size = Size.valueOf(value);
-			context.graph.linkObjectIntoGraph(getTokenName(), template, size);
-			return true;
+			res = new FixedSizeResolver(Size.valueOf(value));
 		}
 		catch (IllegalArgumentException e)
 		{
-			Logging.errorPrint("Invalid Size in " + getTokenName() + ": "
-				+ value);
-			return false;
+			res = new FormulaSizeResolver(FormulaFactory.getFormulaFor(value));
 		}
+		template.put(ObjectKey.SIZE, res);
+		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate template)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), pct,
-					Size.class);
-		if (links == null || links.isEmpty())
+		Resolver<Size> res = template.get(ObjectKey.SIZE);
+		if (res == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
-		{
-			context.addWriteMessage("Only 1 Size is allowed per Template");
-			return null;
-		}
-		Size s = (Size) links.iterator().next().getSinkNodes().get(0);
-		return new String[]{s.toString()};
+		return new String[]{res.toLSTFormat()};
 	}
 }

@@ -71,7 +71,7 @@ public class NameispiLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		boolean set;
+		Boolean set;
 		char firstChar = value.charAt(0);
 		if (firstChar == 'y' || firstChar == 'Y')
 		{
@@ -81,7 +81,7 @@ public class NameispiLst implements GlobalLstToken
 					+ getTokenName() + ": " + value);
 				return false;
 			}
-			set = true;
+			set = Boolean.TRUE;
 		}
 		else
 		{
@@ -94,7 +94,7 @@ public class NameispiLst implements GlobalLstToken
 					return false;
 				}
 			}
-			set = false;
+			set = Boolean.FALSE;
 		}
 		obj.setNamePI(set);
 		return true;
@@ -102,6 +102,11 @@ public class NameispiLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		return new String[]{obj.isNamePI() ? "YES" : "NO"};
+		Boolean namePI = obj.getNamePIObject();
+		if (namePI == null)
+		{
+			return null;
+		}
+		return new String[]{namePI.booleanValue() ? "YES" : "NO"};
 	}
 }

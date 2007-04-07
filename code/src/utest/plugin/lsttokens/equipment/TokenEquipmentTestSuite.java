@@ -16,8 +16,8 @@ import junit.framework.TestSuite;
 	NumPagesTokenTest.class, PageUsageTokenTest.class,
 	ProficiencyTokenTest.class, QualityTokenTest.class, RangeTokenTest.class,
 	RateOfFireTokenTest.class, ReachMultTokenTest.class, ReachTokenTest.class,
-	SlotsTokenTest.class, SpellfailureTokenTest.class, SPropTokenTest.class,
-	WeildTokenTest.class, WtTokenTest.class})
+	SizeTokenTest.class, SlotsTokenTest.class, SpellfailureTokenTest.class,
+	SPropTokenTest.class, WeildTokenTest.class, WtTokenTest.class})
 public class TokenEquipmentTestSuite extends TestSuite
 {
 	// No contents, see annotations

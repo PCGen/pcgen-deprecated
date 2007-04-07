@@ -30,10 +30,12 @@ import java.util.HashSet;
 import java.util.Map;
 
 import pcgen.base.util.CaseInsensitiveMap;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.helper.Capacity;
 import pcgen.core.Description;
 import pcgen.core.EquipmentModifier;
+import pcgen.core.PCClass;
 import pcgen.core.WeaponProf;
 
 /**
@@ -78,6 +80,11 @@ public final class ListKey<T> {
 	public static final ListKey<Description> DESC = new ListKey<Description>();
 
 	public static final ListKey<RaceSubType> REMOVED_RACESUBTYPE = new ListKey<RaceSubType>();
+
+	public static final ListKey<Integer> HITDICE_ADVANCEMENT =
+			new ListKey<Integer>();
+
+	public static final ListKey<CDOMReference<PCClass>> FAVORED_CLASS = new ListKey<CDOMReference<PCClass>>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey() {

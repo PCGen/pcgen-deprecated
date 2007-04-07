@@ -31,7 +31,8 @@ import plugin.lsttokens.AddLst;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 
-public abstract class AbstractAddTokenTestCase extends AbstractGlobalTokenTestCase
+public abstract class AbstractAddTokenTestCase extends
+		AbstractGlobalTokenTestCase
 {
 
 	static AddLst token = new AddLst();
@@ -93,17 +94,28 @@ public abstract class AbstractAddTokenTestCase extends AbstractGlobalTokenTestCa
 	@Test
 	public void testInvalidInputTypeEmpty() throws PersistenceLayerException
 	{
-		boolean result =
-				getToken().parse(primaryContext, primaryProf,
-					getSubTokenString() + "|TYPE=");
-		if (isTypeLegal())
+		try
 		{
-			assertFalse(result);
+			boolean result =
+					getToken().parse(primaryContext, primaryProf,
+						getSubTokenString() + "|TYPE=");
+			if (isTypeLegal())
+			{
+				assertFalse(result);
+			}
+			else
+			{
+				assertTrue(result);
+				assertFalse(primaryContext.ref.validate());
+			}
 		}
-		else
+		catch (IllegalArgumentException e)
 		{
-			assertTrue(result);
-			assertFalse(primaryContext.ref.validate());
+			if (isTypeLegal())
+			{
+				// Should have returned false;
+				throw e;
+			}
 		}
 	}
 
@@ -111,17 +123,28 @@ public abstract class AbstractAddTokenTestCase extends AbstractGlobalTokenTestCa
 	public void testInvalidInputTypeUnterminated()
 		throws PersistenceLayerException
 	{
-		boolean result =
-				getToken().parse(primaryContext, primaryProf,
-					getSubTokenString() + "|TYPE=One.");
-		if (isTypeLegal())
+		try
 		{
-			assertFalse(result);
+			boolean result =
+					getToken().parse(primaryContext, primaryProf,
+						getSubTokenString() + "|TYPE=One.");
+			if (isTypeLegal())
+			{
+				assertFalse(result);
+			}
+			else
+			{
+				assertTrue(result);
+				assertFalse(primaryContext.ref.validate());
+			}
 		}
-		else
+		catch (IllegalArgumentException e)
 		{
-			assertTrue(result);
-			assertFalse(primaryContext.ref.validate());
+			if (isTypeLegal())
+			{
+				// Should have returned false;
+				throw e;
+			}
 		}
 	}
 
@@ -129,17 +152,28 @@ public abstract class AbstractAddTokenTestCase extends AbstractGlobalTokenTestCa
 	public void testInvalidInputTypeDoubleSeparator()
 		throws PersistenceLayerException
 	{
-		boolean result =
-				getToken().parse(primaryContext, primaryProf,
-					getSubTokenString() + "|TYPE=One..Two");
-		if (isTypeLegal())
+		try
 		{
-			assertFalse(result);
+			boolean result =
+					getToken().parse(primaryContext, primaryProf,
+						getSubTokenString() + "|TYPE=One..Two");
+			if (isTypeLegal())
+			{
+				assertFalse(result);
+			}
+			else
+			{
+				assertTrue(result);
+				assertFalse(primaryContext.ref.validate());
+			}
 		}
-		else
+		catch (IllegalArgumentException e)
 		{
-			assertTrue(result);
-			assertFalse(primaryContext.ref.validate());
+			if (isTypeLegal())
+			{
+				// Should have returned false;
+				throw e;
+			}
 		}
 	}
 
@@ -147,17 +181,28 @@ public abstract class AbstractAddTokenTestCase extends AbstractGlobalTokenTestCa
 	public void testInvalidInputTypeFalseStart()
 		throws PersistenceLayerException
 	{
-		boolean result =
-				getToken().parse(primaryContext, primaryProf,
-					getSubTokenString() + "|TYPE=.One");
-		if (isTypeLegal())
+		try
 		{
-			assertFalse(result);
+			boolean result =
+					getToken().parse(primaryContext, primaryProf,
+						getSubTokenString() + "|TYPE=.One");
+			if (isTypeLegal())
+			{
+				assertFalse(result);
+			}
+			else
+			{
+				assertTrue(result);
+				assertFalse(primaryContext.ref.validate());
+			}
 		}
-		else
+		catch (IllegalArgumentException e)
 		{
-			assertTrue(result);
-			assertFalse(primaryContext.ref.validate());
+			if (isTypeLegal())
+			{
+				// Should have returned false;
+				throw e;
+			}
 		}
 	}
 
@@ -244,27 +289,49 @@ public abstract class AbstractAddTokenTestCase extends AbstractGlobalTokenTestCa
 	public void testInvalidInputCheckTypeEqualLength()
 		throws PersistenceLayerException
 	{
-		// Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't
-		// consume the ,
-		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1,TYPE=TestType,TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		try
+		{
+			// Explicitly do NOT build TestWP2 (this checks that the TYPE=
+			// doesn't
+			// consume the ,
+			construct(primaryContext, "TestWP1");
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TestWP1,TYPE=TestType,TestWP2"));
+			assertFalse(primaryContext.ref.validate());
+		}
+		catch (IllegalArgumentException e)
+		{
+			if (isTypeLegal())
+			{
+				throw e;
+			}
+		}
 	}
 
 	@Test
 	public void testInvalidInputCheckTypeDotLength()
 		throws PersistenceLayerException
 	{
-		// Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't
-		// consume the ,
-		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(
-			primaryContext,
-			primaryProf,
-			getSubTokenString()
-				+ "|TestWP1,TYPE.TestType.OtherTestType,TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		try
+		{
+			// Explicitly do NOT build TestWP2 (this checks that the TYPE=
+			// doesn't
+			// consume the ,
+			construct(primaryContext, "TestWP1");
+			assertTrue(getToken().parse(
+				primaryContext,
+				primaryProf,
+				getSubTokenString()
+					+ "|TestWP1,TYPE.TestType.OtherTestType,TestWP2"));
+			assertFalse(primaryContext.ref.validate());
+		}
+		catch (IllegalArgumentException e)
+		{
+			if (isTypeLegal())
+			{
+				throw e;
+			}
+		}
 	}
 
 	@Test

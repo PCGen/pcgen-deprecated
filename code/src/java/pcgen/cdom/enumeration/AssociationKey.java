@@ -58,6 +58,8 @@ public final class AssociationKey<T> {
 
 	public static final AssociationKey<String> ONLY = new AssociationKey<String>();
 
+	public static final AssociationKey<AbilityCategory> ABILITY_CATEGORY = new AssociationKey<AbilityCategory>();
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey() {

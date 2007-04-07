@@ -196,7 +196,8 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 		SortedSet<CategorizedCDOMReference<Ability>> set =
 				new TreeSet<CategorizedCDOMReference<Ability>>(
 					TokenUtilities.CAT_REFERENCE_SORTER);
-		List<String> list = new ArrayList<String>(m.size());
+
+		Set<String> list = new TreeSet<String>();
 
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{

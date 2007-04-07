@@ -33,6 +33,7 @@ import pcgen.cdom.graph.PCGraphAllowsEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphHoldsEdge;
+import pcgen.cdom.inst.Aggregator;
 
 public class GraphContext
 {
@@ -316,6 +317,13 @@ public class GraphContext
 			}
 		}
 		return set;
+	}
+
+	public void deleteAggregator(String tokenName, Aggregator agg)
+	{
+		unlinkChildNodes(tokenName, agg);
+		unlinkParentNodes(tokenName, agg);
+		graph.removeNode(agg);
 	}
 
 }

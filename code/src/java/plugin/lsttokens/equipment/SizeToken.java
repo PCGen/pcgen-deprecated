@@ -21,9 +21,9 @@
  */
 package plugin.lsttokens.equipment;
 
-import java.util.Set;
-
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.base.formula.Resolver;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.formula.FixedSizeResolver;
 import pcgen.cdom.mode.Size;
 import pcgen.core.Equipment;
 import pcgen.persistence.LoadContext;
@@ -51,8 +51,7 @@ public class SizeToken implements EquipmentLstToken
 	{
 		try
 		{
-			Size size = Size.valueOf(value);
-			context.graph.linkObjectIntoGraph(getTokenName(), eq, size);
+			eq.put(ObjectKey.SIZE, new FixedSizeResolver(Size.valueOf(value)));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -65,19 +64,11 @@ public class SizeToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), eq,
-					Size.class);
-		if (links == null || links.isEmpty())
+		Resolver<Size> res = eq.get(ObjectKey.SIZE);
+		if (res == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
-		{
-			context.addWriteMessage("Only 1 Size is allowed per Equipment");
-			return null;
-		}
-		Size s = (Size) links.iterator().next().getSinkNodes().get(0);
-		return new String[]{s.toString()};
+		return new String[]{res.toLSTFormat()};
 	}
 }

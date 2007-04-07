@@ -27,6 +27,8 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.AbilityNature;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
@@ -90,6 +92,12 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		try
 		{
 			featCount = Integer.parseInt(value);
+			if (featCount <= 0)
+			{
+				Logging.errorPrint("Number in " + getTokenName()
+					+ " must be greater than zero: " + value);
+				return false;
+			}
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -117,8 +125,10 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 
 		slot.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS,
 			ref));
-		// FIXME Slot needs to know AbilityNature.???? ??
-
+		slot.setAssociation(AssociationKey.ABILITY_CATEGORY,
+			AbilityCategory.FEAT);
+		slot
+			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
 		return true;
 	}
 
@@ -144,6 +154,22 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 			context.addWriteMessage("Invalid Slot Type associated with "
 				+ getTokenName() + ": Type cannot be "
 				+ slot.getSlotClass().getSimpleName());
+			return null;
+		}
+		if (!AbilityCategory.FEAT.equals(slot
+			.getAssociation(AssociationKey.ABILITY_CATEGORY)))
+		{
+			context.addWriteMessage("Invalid Ability Category associated with "
+				+ getTokenName() + ": Category cannot be "
+				+ slot.getAssociation(AssociationKey.ABILITY_CATEGORY));
+			return null;
+		}
+		if (!AbilityNature.NORMAL.equals(slot
+			.getAssociation(AssociationKey.ABILITY_NATURE)))
+		{
+			context.addWriteMessage("Invalid Ability Nature associated with "
+				+ getTokenName() + ": Category cannot be "
+				+ slot.getAssociation(AssociationKey.ABILITY_NATURE));
 			return null;
 		}
 		return new String[]{slot.toLSTform()};

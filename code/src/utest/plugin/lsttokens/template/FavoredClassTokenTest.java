@@ -15,27 +15,23 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens;
+package plugin.lsttokens.template;
 
 import org.junit.Test;
 
+import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
-import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
-public class KeyLstTest extends AbstractGlobalTokenTestCase
+public class FavoredClassTokenTest extends
+		AbstractListTokenTestCase<PCTemplate, PCClass>
 {
-	static GlobalLstToken token = new KeyLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
 
-	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
-	{
-		return loader;
-	}
+	static FavoredclassToken token = new FavoredclassToken();
+	static PCTemplateLoader loader = new PCTemplateLoader();
 
 	@Override
 	public Class<PCTemplate> getCDOMClass()
@@ -44,38 +40,38 @@ public class KeyLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public LstObjectFileLoader<PCTemplate> getLoader()
+	{
+		return loader;
+	}
+
+	@Override
+	public CDOMToken<PCTemplate> getToken()
 	{
 		return token;
 	}
 
-	@Test
-	public void testRoundRobinBase() throws PersistenceLayerException
+	@Override
+	public Class<PCClass> getTargetClass()
 	{
-		runRoundRobin("Rheinhessen");
+		return PCClass.class;
+	}
+
+	@Override
+	public boolean isTypeLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public char getJoinCharacter()
+	{
+		return ',';
 	}
 
 	@Test
-	public void testRoundRobinWithSpace() throws PersistenceLayerException
+	public void dummyTest()
 	{
-		runRoundRobin("Finger Lakes");
-	}
-
-	@Test
-	public void testRoundRobinNonEnglishAndN() throws PersistenceLayerException
-	{
-		runRoundRobin("Niederösterreich");
-	}
-
-	@Test
-	public void testRoundRobinHyphen() throws PersistenceLayerException
-	{
-		runRoundRobin("Languedoc-Roussillon");
-	}
-
-	@Test
-	public void testRoundRobinY() throws PersistenceLayerException
-	{
-		runRoundRobin("Yarra Valley");
+		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

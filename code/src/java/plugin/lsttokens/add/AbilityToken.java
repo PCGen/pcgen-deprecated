@@ -36,6 +36,8 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.AbilityNature;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
@@ -67,8 +69,8 @@ import pcgen.util.Logging;
  * <li>Choices can be specified by including them in parenthesis after the
  * ability key name (whitespace is ignored).</li>
  * 
- * Last Editor: $Author$ Last Edited: $Date: 2007-03-25 08:09:48
- * -0400 (Sun, 25 Mar 2007) $
+ * Last Editor: $Author$ Last Edited: $Date: 2007-03-25 08:09:48 -0400
+ * (Sun, 25 Mar 2007) $
  * 
  * @author James Dempsey <jdempsey@users.sourceforge.net>
  * @version $Revision$
@@ -182,7 +184,7 @@ public class AbilityToken implements AddLstToken
 		catch (NumberFormatException e)
 		{
 			count = 1;
-			//This is OK, count is optional
+			// This is OK, count is optional
 		}
 		// 2 left, because the first was already fetched
 		if (st.countTokens() != 2)
@@ -204,10 +206,10 @@ public class AbilityToken implements AddLstToken
 			return false;
 		}
 
-		Ability.Nature nat;
+		AbilityNature nat;
 		try
 		{
-			nat = Ability.Nature.valueOf(st.nextToken());
+			nat = AbilityNature.valueOf(st.nextToken());
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -235,8 +237,7 @@ public class AbilityToken implements AddLstToken
 				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
-		StringTokenizer tok =
-				new StringTokenizer(items, Constants.COMMA);
+		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
 		Slot<Ability> slot =
 				context.graph.addSlotIntoGraph(getTokenName(), obj,
@@ -259,8 +260,8 @@ public class AbilityToken implements AddLstToken
 
 		slot
 			.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS, cr));
-		// FIXME Slot needs to know AbilityNature ??
-
+		slot.setAssociation(AssociationKey.ABILITY_CATEGORY, ac);
+		slot.setAssociation(AssociationKey.ABILITY_NATURE, nat);
 		return true;
 	}
 
@@ -290,7 +291,7 @@ public class AbilityToken implements AddLstToken
 			return null;
 		}
 		String slotCount = slot.toLSTform();
-		String result;
+		StringBuilder result = new StringBuilder();
 		List<Restriction<?>> restr = slot.getSinkRestrictions();
 		if (restr.size() != 1)
 		{
@@ -302,14 +303,15 @@ public class AbilityToken implements AddLstToken
 		/*
 		 * TODO FIXME These need to account for CATEGORY and NATURE
 		 */
-		if ("1".equals(slotCount))
+		if (!"1".equals(slotCount))
 		{
-			result = res.toLSTform();
+			result.append(slotCount).append(Constants.PIPE);
 		}
-		else
-		{
-			result = slotCount + "|" + res.toLSTform();
-		}
-		return new String[]{result};
+		result.append(slot.getAssociation(AssociationKey.ABILITY_CATEGORY))
+			.append(Constants.PIPE);
+		result.append(slot.getAssociation(AssociationKey.ABILITY_NATURE))
+			.append(Constants.PIPE);
+		result.append(res.toLSTform());
+		return new String[]{result.toString()};
 	}
 }

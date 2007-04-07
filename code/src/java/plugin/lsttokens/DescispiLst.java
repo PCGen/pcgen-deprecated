@@ -71,7 +71,7 @@ public class DescispiLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		boolean set;
+		Boolean set;
 		char firstChar = value.charAt(0);
 		if (firstChar == 'y' || firstChar == 'Y')
 		{
@@ -81,7 +81,7 @@ public class DescispiLst implements GlobalLstToken
 					+ getTokenName() + ": " + value);
 				return false;
 			}
-			set = true;
+			set = Boolean.TRUE;
 		}
 		else
 		{
@@ -94,7 +94,7 @@ public class DescispiLst implements GlobalLstToken
 					return false;
 				}
 			}
-			set = false;
+			set = Boolean.FALSE;
 		}
 		obj.setDescPI(set);
 		return true;
@@ -102,7 +102,11 @@ public class DescispiLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		boolean namePI = obj.isDescPI();
-		return new String[]{namePI ? "YES" : "NO"};
+		Boolean descPI = obj.getDescPIObject();
+		if (descPI == null)
+		{
+			return null;
+		}
+		return new String[]{descPI.booleanValue() ? "YES" : "NO"};
 	}
 }

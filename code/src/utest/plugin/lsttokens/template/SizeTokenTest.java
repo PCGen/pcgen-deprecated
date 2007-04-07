@@ -15,27 +15,27 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens;
+package plugin.lsttokens.template;
 
+import java.net.URISyntaxException;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import pcgen.cdom.mode.Size;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
-import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class KeyLstTest extends AbstractGlobalTokenTestCase
+public class SizeTokenTest extends AbstractTokenTestCase<PCTemplate>
 {
-	static GlobalLstToken token = new KeyLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
 
-	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
-	{
-		return loader;
-	}
+	static SizeToken token = new SizeToken();
+	static PCTemplateLoader loader = new PCTemplateLoader();
 
 	@Override
 	public Class<PCTemplate> getCDOMClass()
@@ -44,38 +44,50 @@ public class KeyLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public LstObjectFileLoader<PCTemplate> getLoader()
+	{
+		return loader;
+	}
+
+	@Override
+	public CDOMToken<PCTemplate> getToken()
 	{
 		return token;
 	}
 
-	@Test
-	public void testRoundRobinBase() throws PersistenceLayerException
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
-		runRoundRobin("Rheinhessen");
+		super.setUp();
+		Size.constructConstant("S", 0);
+		Size.constructConstant("M", 1);
+	}
+
+	@Override
+	@After
+	public void tearDown() throws Exception
+	{
+		super.tearDown();
+		Size.clearConstants();
 	}
 
 	@Test
-	public void testRoundRobinWithSpace() throws PersistenceLayerException
+	public void testRoundRobinS() throws PersistenceLayerException
 	{
-		runRoundRobin("Finger Lakes");
+		runRoundRobin("S");
 	}
 
 	@Test
-	public void testRoundRobinNonEnglishAndN() throws PersistenceLayerException
+	public void testRoundRobinM() throws PersistenceLayerException
 	{
-		runRoundRobin("Niederösterreich");
+		runRoundRobin("M");
 	}
 
 	@Test
-	public void testRoundRobinHyphen() throws PersistenceLayerException
+	public void testRoundRobinFormula() throws PersistenceLayerException
 	{
-		runRoundRobin("Languedoc-Roussillon");
+		runRoundRobin("max(4,String)");
 	}
 
-	@Test
-	public void testRoundRobinY() throws PersistenceLayerException
-	{
-		runRoundRobin("Yarra Valley");
-	}
 }

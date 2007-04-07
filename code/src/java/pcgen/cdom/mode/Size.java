@@ -18,17 +18,12 @@
 package pcgen.cdom.mode;
 
 import java.util.Collection;
-import java.util.List;
 
 import pcgen.base.enumeration.AbstractSequencedConstantFactory;
 import pcgen.base.enumeration.SequencedType;
 import pcgen.base.enumeration.TypeSafeConstant;
-import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.cdom.base.PrereqObject;
-import pcgen.core.prereq.Prerequisite;
 
-public final class Size implements SequencedType, TypeSafeConstant,
-		PrereqObject
+public final class Size implements SequencedType, TypeSafeConstant
 {
 
 	/**
@@ -115,46 +110,8 @@ public final class Size implements SequencedType, TypeSafeConstant,
 
 	}
 
-	private PrereqObject pro = new ConcretePrereqObject();
-
-	public void addAllPrerequisites(Prerequisite... prereqs)
+	public String toLSTFormat()
 	{
-		pro.addAllPrerequisites(prereqs);
+		return toString();
 	}
-
-	public void addPrerequisite(Prerequisite preReq)
-	{
-		pro.addPrerequisite(preReq);
-	}
-
-	public void clearPrerequisiteList()
-	{
-		pro.clearPrerequisiteList();
-	}
-
-	public int getPrerequisiteCount()
-	{
-		return pro.getPrerequisiteCount();
-	}
-
-	public List<Prerequisite> getPrerequisiteList()
-	{
-		return pro.getPrerequisiteList();
-	}
-
-	public boolean hasPrerequisiteOfType(String matchType)
-	{
-		return pro.hasPrerequisiteOfType(matchType);
-	}
-
-	public boolean hasPrerequisites()
-	{
-		return pro.hasPrerequisites();
-	}
-
-	public void setPrerequisiteListFrom(PrereqObject prereqObject)
-	{
-		pro.setPrerequisiteListFrom(prereqObject);
-	}
-
 }

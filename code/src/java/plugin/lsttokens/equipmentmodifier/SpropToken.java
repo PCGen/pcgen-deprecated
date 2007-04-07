@@ -62,29 +62,41 @@ public class SpropToken extends AbstractToken implements
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
+		SpecialProperty sa = subParse(context, mod, value);
+		if (sa == null)
+		{
+			return false;
+		}
+		context.graph.linkObjectIntoGraph(getTokenName(), mod, sa);
+		return true;
+	}
+	
+	public SpecialProperty subParse(LoadContext context, EquipmentModifier mod,
+		String value)
+	{
 		if (value == null || value.length() == 0)
 		{
 			Logging.errorPrint(getTokenName() + ": line minimally requires "
 				+ getTokenName() + ":<text>");
-			return false;
+			return null;
 		}
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint(getTokenName()
 				+ " arguments may not start with | : " + value);
-			return false;
+			return null;
 		}
 		if (value.charAt(value.length() - 1) == '|')
 		{
 			Logging.errorPrint(getTokenName()
 				+ " arguments may not end with | : " + value);
-			return false;
+			return null;
 		}
 		if (value.indexOf("||") != -1)
 		{
 			Logging.errorPrint(getTokenName()
 				+ " arguments uses double separator || : " + value);
-			return false;
+			return null;
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -102,20 +114,15 @@ public class SpropToken extends AbstractToken implements
 		{
 			Logging.errorPrint(getTokenName()
 				+ " tag confused by redundant '.CLEAR'" + value);
-			return false;
+			return null;
 		}
 
 		SpecialProperty sa = new SpecialProperty(firstToken);
-		/*
-		 * CONSIDER TODO This is another issue with this system - it is linked
-		 * in before it's determined if it's really valid... :(
-		 */
-		context.graph.linkObjectIntoGraph(getTokenName(), mod, sa);
 
 		if (!tok.hasMoreTokens())
 		{
 			// No variables, we're done!
-			return true;
+			return sa;
 		}
 
 		String token = tok.nextToken();
@@ -138,14 +145,14 @@ public class SpropToken extends AbstractToken implements
 				Logging.errorPrint(getTokenName()
 					+ " tag confused by '.CLEAR' as a " + "middle token: "
 					+ value);
-				return false;
+				return null;
 			}
 			sa.addVariable(FormulaFactory.getFormulaFor(token));
 
 			if (!tok.hasMoreTokens())
 			{
 				// No prereqs, so we're done
-				return true;
+				return sa;
 			}
 			token = tok.nextToken();
 		}
@@ -157,7 +164,7 @@ public class SpropToken extends AbstractToken implements
 			{
 				Logging.errorPrint("   (Did you put items after the "
 					+ "PRExxx tags in " + getTokenName() + ":?)");
-				return false;
+				return null;
 			}
 			sa.addPrerequisite(prereq);
 			if (!tok.hasMoreTokens())
@@ -171,7 +178,7 @@ public class SpropToken extends AbstractToken implements
 		// sa.setSASource("PCCLASS=" + obj.getKeyName() + "|" + level);
 		// }
 
-		return true;
+		return sa;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)

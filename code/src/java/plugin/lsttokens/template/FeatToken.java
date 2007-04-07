@@ -193,8 +193,7 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 		SortedSet<CDOMReference<?>> set =
 				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
 
-		String[] array = new String[m.size()];
-		int index = 0;
+		Set<String> list = new TreeSet<String>();
 
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
@@ -225,8 +224,8 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 						ab + Constants.PIPE
 							+ StringUtil.join(prereqSet, Constants.PIPE);
 			}
-			array[index++] = ab;
+			list.add(ab);
 		}
-		return array;
+		return list.toArray(new String[list.size()]);
 	}
 }

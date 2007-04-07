@@ -140,11 +140,13 @@ public class MoncskillToken implements RaceLstToken
 					{
 						context.graph.unlinkChildNode(getTokenName(), agg,
 							skill);
-						/*
-						 * TODO FIXME Unlink may not be enough here, since this
-						 * Token created the aggregator, it needs to delete it
-						 * as well if all the connections are destroyed...
-						 */
+						Set<PCGraphEdge> links =
+								context.graph.getChildLinksFromToken(
+									getTokenName(), agg);
+						if (links == null || links.isEmpty())
+						{
+							context.graph.deleteAggregator(getTokenName(), agg);
+						}
 						continue PIPEWHILE;
 					}
 				}

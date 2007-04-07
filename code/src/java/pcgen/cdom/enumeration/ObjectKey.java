@@ -30,13 +30,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import pcgen.base.formula.Resolver;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.base.util.DefaultMap;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.mode.Size;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
-import pcgen.core.SizeAdjustment;
 import pcgen.core.WeaponProf;
 import pcgen.util.enumeration.Visibility;
 
@@ -53,6 +54,9 @@ public final class ObjectKey<T> {
 	 * 
 	 * have a .cast(Object o) method on ObjectKey???
 	 */
+	public static final ObjectKey<Resolver<Size>> SIZE =
+			new ObjectKey<Resolver<Size>>();
+	
 	public static final ObjectKey<Region> REGION = new ObjectKey<Region>();
 
 	public static final ObjectKey<SubRegion> SUBREGION = new ObjectKey<SubRegion>();
@@ -130,8 +134,6 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<BigDecimal> CONTAINER_WEIGHT_CAPACITY = new ObjectKey<BigDecimal>();
 
 	public static final ObjectKey<Boolean> CONTAINER_CONSTANT_WEIGHT = new ObjectKey<Boolean>();
-
-	public static final ObjectKey<SizeAdjustment> SIZE = new ObjectKey<SizeAdjustment>();
 
 	public static final ObjectKey<AbilityCategory> CATEGORY = new ObjectKey<AbilityCategory>();
 

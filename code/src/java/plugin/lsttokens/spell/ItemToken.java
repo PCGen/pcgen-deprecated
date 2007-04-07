@@ -72,10 +72,10 @@ public class ItemToken implements SpellLstToken
 				new UnresolvedTypeRestriction<Equipment>(Equipment.class, t,
 					negate);
 		/*
-		 * CONSIDER Need to think about how this should work... this is really
-		 * an ANCESTOR restriction here, since it is based off of the parent
-		 * item (e.g. if it was [Weapon], and this was attached to an EqMod???
-		 * What happens?)
+		 * CONSIDER FIXME Need to think about how this should work... this is
+		 * really an ANCESTOR restriction here, since it is based off of the
+		 * parent item (e.g. if it was [Weapon], and this was attached to an
+		 * EqMod??? What happens?)
 		 */
 		spell.addSourceRestriction(tr);
 		return true;

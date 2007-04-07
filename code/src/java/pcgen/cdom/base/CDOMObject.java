@@ -64,9 +64,9 @@ public class CDOMObject extends ConcretePrereqObject
 
 	private final MapKeyMapToList mapChar = new MapKeyMapToList();
 
-	private boolean namePI = false;
+	private Boolean namePI = null;
 
-	private boolean descPI = false;
+	private Boolean descPI = null;
 
 	public SourceEntry getSourceEntry()
 	{
@@ -239,22 +239,32 @@ public class CDOMObject extends ConcretePrereqObject
 		return mapChar.getKeySet(key1);
 	}
 
-	public final boolean isDescPI()
+	public final Boolean getDescPIObject()
 	{
 		return descPI;
 	}
 
-	public final void setDescPI(boolean descIsPI)
+	public final boolean isDescPI()
+	{
+		return descPI == null ? false : descPI.booleanValue();
+	}
+
+	public final void setDescPI(Boolean descIsPI)
 	{
 		this.descPI = descIsPI;
 	}
 
-	public final boolean isNamePI()
+	public final Boolean getNamePIObject()
 	{
 		return namePI;
 	}
 
-	public final void setNamePI(boolean nameIsPI)
+	public final boolean isNamePI()
+	{
+		return namePI == null ? false : namePI.booleanValue();
+	}
+
+	public final void setNamePI(Boolean nameIsPI)
 	{
 		this.namePI = nameIsPI;
 	}

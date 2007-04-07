@@ -21,17 +21,22 @@
  */
 package plugin.lsttokens.template;
 
+import java.util.List;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
-import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -62,44 +67,61 @@ public class FavoredclassToken extends AbstractToken implements
 	public boolean parseFavoredClass(LoadContext context, CDOMObject cdo,
 		String value)
 	{
-		Prerequisite prereq =
-				getPrerequisite("!PRETEMPLATE:" + cdo.getKeyName());
-		if (prereq == null)
+		if (value.length() == 0)
 		{
-			Logging.errorPrint(" result of improper internal build in "
-				+ getTokenName() + ": " + value);
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
-		/*
-		 * CONSIDER IS this sufficient for the PRE?
-		 * 
-		 * Or is this a PREMULT - what exactly are the rules?!? :)
-		 */
+		if (value.charAt(0) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with , : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with , : " + value);
+			return false;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator ,, : " + value);
+			return false;
+		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
 
 		while (tok.hasMoreTokens())
 		{
-			CDOMReference<PCClass> fc;
 			String tokString = tok.nextToken();
-			if (Constants.LST_ANY.equalsIgnoreCase(tokString))
+			CDOMReference<PCClass> cl =
+					TokenUtilities.getObjectReference(context, PCCLASS_CLASS,
+						tokString);
+			if (cl == null)
 			{
-				// TODO Warn on lower case??
-				fc = context.ref.getCDOMAllReference(PCCLASS_CLASS);
+				Logging.errorPrint("  ...error encountered in "
+					+ getTokenName());
+				return false;
 			}
-			else
-			{
-				fc = context.ref.getCDOMReference(PCCLASS_CLASS, tokString);
-			}
-			// TODO FIXME need to uncomment this...
-			// context.addPrerequisiteToContent(prereq, fc, XPPenalty.class);
+			cdo.addToListFor(ListKey.FAVORED_CLASS, cl);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<CDOMReference<PCClass>> list =
+				pct.getListFor(ListKey.FAVORED_CLASS);
+		if (list == null || list.isEmpty())
+		{
+			return null;
+		}
+		SortedSet<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		set.addAll(list);
+		return new String[]{ReferenceUtilities.joinLstFormat(set,
+			Constants.COMMA)};
 	}
 }

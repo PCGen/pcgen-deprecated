@@ -17,7 +17,13 @@
  */
 package pcgen.cdom.base;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 import pcgen.base.formula.Formula;
+import pcgen.cdom.enumeration.AssociationKey;
 
 public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 {
@@ -129,4 +135,34 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 		return slotClass.equals(otherSlot.slotClass)
 			&& slotCount.equals(otherSlot.slotCount);
 	}
+
+	/*
+	 * CONSIDER Use AssociationSupport? - Tom Parker Apr 7 07
+	 */
+	private Map<AssociationKey<?>, Object> associationMap;
+	
+	public <AKT> void setAssociation(AssociationKey<AKT> key, AKT value)
+	{
+		if (associationMap == null)
+		{
+			associationMap = new HashMap<AssociationKey<?>, Object>();
+		}
+		associationMap.put(key, value);
+	}
+
+	public <AKT> AKT getAssociation(AssociationKey<AKT> key)
+	{
+		return (AKT) (associationMap == null ? null : associationMap.get(key));
+	}
+
+	public Collection<AssociationKey<?>> getAssociationKeys()
+	{
+		return new HashSet<AssociationKey<?>>(associationMap.keySet());
+	}
+
+	public boolean hasAssociations()
+	{
+		return associationMap != null && !associationMap.isEmpty();
+	}
+
 }

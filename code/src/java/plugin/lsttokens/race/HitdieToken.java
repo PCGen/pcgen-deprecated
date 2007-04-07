@@ -155,10 +155,11 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 				int add = Integer.parseInt(lock.substring(2));
 				if (add <= 0)
 				{
-					Logging.errorPrint(getTokenName()
-						+ " was expecting a Positive "
-						+ "Integer for adding Lock, was : "
-						+ lock.substring(2));
+					Logging
+						.errorPrint(getTokenName()
+							+ " was expecting a Positive "
+							+ "Integer for adding Lock, was : "
+							+ lock.substring(2));
 					return false;
 				}
 				hdm = new HitDieFormula(new AddingFormula(add));
@@ -188,13 +189,17 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 				if (steps <= 0)
 				{
 					Logging.errorPrint("Invalid Step Count: " + steps + " in "
-						+ getTokenName());
+						+ getTokenName() + " up (must be positive)");
 					return false;
 				}
-				// TODO Check steps??
+				if (steps >= 5)
+				{
+					Logging.errorPrint("Invalid Step Count: " + steps + " in "
+						+ getTokenName() + " up (too large)");
+					return false;
+				}
 
-				// FIXME This is passing null, but really needs to be limited!!!
-				hdm = new HitDieStep(steps, null);
+				hdm = new HitDieStep(steps, new HitDie(12));
 			}
 			else if (lock.startsWith("%Hup"))
 			{
@@ -220,13 +225,17 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 				if (steps <= 0)
 				{
 					Logging.errorPrint("Invalid Step Count: " + steps + " in "
-						+ getTokenName());
+						+ getTokenName() + " down (must be positive)");
 					return false;
 				}
-				// TODO Check steps??
+				if (steps >= 5)
+				{
+					Logging.errorPrint("Invalid Step Count: " + steps + " in "
+						+ getTokenName() + " down (too large)");
+					return false;
+				}
 
-				// FIXME This is passing null, but really needs to be limited!!!
-				hdm = new HitDieStep(-steps, null);
+				hdm = new HitDieStep(-steps, new HitDie(4));
 			}
 			else if (lock.startsWith("%Hdown"))
 			{

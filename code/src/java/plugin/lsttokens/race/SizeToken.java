@@ -21,9 +21,9 @@
  */
 package plugin.lsttokens.race;
 
-import java.util.Set;
-
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.base.formula.Resolver;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.formula.FixedSizeResolver;
 import pcgen.cdom.mode.Size;
 import pcgen.core.Race;
 import pcgen.persistence.LoadContext;
@@ -51,8 +51,8 @@ public class SizeToken implements RaceLstToken
 	{
 		try
 		{
-			Size size = Size.valueOf(value);
-			context.graph.linkObjectIntoGraph(getTokenName(), race, size);
+			race
+				.put(ObjectKey.SIZE, new FixedSizeResolver(Size.valueOf(value)));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -65,19 +65,11 @@ public class SizeToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), race,
-					Size.class);
-		if (links == null || links.isEmpty())
+		Resolver<Size> res = race.get(ObjectKey.SIZE);
+		if (res == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
-		{
-			context.addWriteMessage("Only 1 Size is allowed per Race");
-			return null;
-		}
-		Size s = (Size) links.iterator().next().getSinkNodes().get(0);
-		return new String[]{s.toString()};
+		return new String[]{res.toLSTFormat()};
 	}
 }

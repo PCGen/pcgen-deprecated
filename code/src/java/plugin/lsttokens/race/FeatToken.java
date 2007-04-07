@@ -193,7 +193,7 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 				new TreeSet<CategorizedCDOMReference<Ability>>(
 					TokenUtilities.CAT_REFERENCE_SORTER);
 
-		List<String> list = new ArrayList<String>(m.size());
+		Set<String> list = new TreeSet<String>();
 
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
@@ -210,10 +210,6 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 					sb.append(Constants.PIPE);
 				}
 				needBar = true;
-				/*
-				 * FIXME This isn't entirely true, is it? I mean, how is the
-				 * category handled with CategorizedSingleRef?
-				 */
 				sb.append(ab.getLSTformat());
 			}
 			if (prereqs != null && !prereqs.isEmpty())

@@ -21,15 +21,13 @@
  */
 package plugin.lsttokens.race;
 
-import java.util.Set;
+import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.mode.Size;
+import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.Race;
-import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
@@ -41,8 +39,6 @@ import pcgen.util.Logging;
 public class HitdiceadvancementToken extends AbstractToken implements
 		RaceLstToken
 {
-	private static final Class<Size> SIZE_CLASS = Size.class;
-
 	@Override
 	public String getTokenName()
 	{
@@ -87,94 +83,126 @@ public class HitdiceadvancementToken extends AbstractToken implements
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
+		if (value.indexOf(',') == -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " must have more than one comma delimited argument");
+			return false;
+		}
+		if (value.charAt(0) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with , : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with , : " + value);
+			return false;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator ,, : " + value);
+			return false;
+		}
+
 		final StringTokenizer commaTok =
 				new StringTokenizer(value, Constants.COMMA);
 
-		if (!commaTok.hasMoreTokens())
+		if (race.containsListFor(ListKey.HITDICE_ADVANCEMENT))
 		{
-			Logging.errorPrint(getTokenName() + " requires Tokens");
-			return false;
+			Logging.errorPrint("Encountered second " + getTokenName()
+				+ ": overwriting: "
+				+ race.getListFor(ListKey.HITDICE_ADVANCEMENT));
+			race.removeListFor(ListKey.HITDICE_ADVANCEMENT);
 		}
-		int base;
-		Size size;
-		try
-		{
-			base = Integer.parseInt(commaTok.nextToken());
-			/*
-			 * BUG FIXME What is HitdiceadvancementToken is hit before SIZE??
-			 * 
-			 * Order of operations :(
-			 */
-			Set<PCGraphEdge> set =
-					context.graph.getChildLinksFromToken("SIZE", race,
-						SIZE_CLASS);
-			if (set.size() > 1)
-			{
-				return false;
-			}
-			PCGraphEdge edge = set.iterator().next();
-			size = (Size) edge.getSinkNodes().get(0);
-		}
-		catch (NumberFormatException nfe)
-		{
-			return false;
-		}
+		int last = 0;
 		while (commaTok.hasMoreTokens())
 		{
 			String tok = commaTok.nextToken();
-			Prerequisite p;
+			int hd;
 			if ("*".equals(tok))
 			{
-				// TODO Do I need this?!?
-				// race.setAdvancementUnlimited(true);
-				p = getPrerequisite("PREHD:" + base);
+				if (commaTok.hasMoreTokens())
+				{
+					Logging.errorPrint("Found * in " + getTokenName()
+						+ " but was not at end of list");
+					return false;
+				}
+				hd = Integer.MAX_VALUE;
 			}
 			else
 			{
-				int end;
 				try
 				{
-					end = Integer.parseInt(tok);
+					hd = Integer.parseInt(tok);
+					if (hd <= last)
+					{
+						Logging.errorPrint("Found " + hd + " in "
+							+ getTokenName() + " but was <= zero "
+							+ "or the previous value in the list: " + value);
+						return false;
+					}
+					last = hd;
 				}
 				catch (NumberFormatException nfe)
 				{
 					return false;
 				}
-				p = getPrerequisite("PREHD:" + base + "-" + end);
-				base = end;
 			}
-			size = size.getNextSize();
-			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), race,
-						size);
-			edge.addPrerequisite(p);
+			race.addToListFor(ListKey.HITDICE_ADVANCEMENT, Integer.valueOf(hd));
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), race,
-					Size.class);
-		if (edges == null || edges.isEmpty())
+		List<Integer> list = race.getListFor(ListKey.HITDICE_ADVANCEMENT);
+		if (list == null || list.isEmpty())
 		{
 			return null;
 		}
-		// FIXME Actually, I need to sort the sizes by their order,
-		// and then extract data from the prereqs...
-		for (PCGraphEdge edge : edges)
+		StringBuilder sb = new StringBuilder();
+		boolean needsComma = false;
+		int last = 0;
+		for (Iterator<Integer> it = list.iterator(); it.hasNext();)
 		{
-			if (edge.getPrerequisiteCount() != 1)
+			if (needsComma)
 			{
-				context.addWriteMessage("Size attached by " + getTokenName()
-					+ " requires a Prerequisiste");
+				sb.append(',');
 			}
-			Prerequisite prereq = edge.getPrerequisiteList().get(0);
-			Size size = (Size) edge.getSinkNodes().get(0);
-
+			needsComma = true;
+			Integer hd = it.next();
+			if (hd.intValue() == Integer.MAX_VALUE)
+			{
+				if (it.hasNext())
+				{
+					context.addWriteMessage("Integer MAX_VALUE found in "
+						+ getTokenName() + " was not at the end of the array.");
+					return null;
+				}
+				sb.append('*');
+			}
+			else
+			{
+				if (hd.intValue() <= last)
+				{
+					Logging.errorPrint("Found " + hd + " in " + getTokenName()
+						+ " but was <= zero "
+						+ "or the previous value in the list: " + list);
+					return null;
+				}
+				last = hd.intValue();
+				sb.append(hd);
+			}
 		}
-		// FIXME Auto-generated method stub
-		return null;
+		return new String[]{sb.toString()};
 	}
 }

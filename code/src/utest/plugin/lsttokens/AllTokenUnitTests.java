@@ -19,12 +19,13 @@ import plugin.lsttokens.template.TokenTemplateTestSuite;
 import plugin.lsttokens.weaponprof.TokenWeaponProfTestSuite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TokenAbilityTestSuite.class, TokenAddTestSuite.class,
-	TokenAutoTestSuite.class, TokenDeityTestSuite.class,
-	TokenDomainTestSuite.class, TokenEquipmentTestSuite.class,
-	TokenEqModTestSuite.class, TokenRaceTestSuite.class,
-	TokenSkillTestSuite.class, TokenSpellTestSuite.class,
-	TokenTemplateTestSuite.class, TokenWeaponProfTestSuite.class})
+@Suite.SuiteClasses({TokenGlobalTestSuite.class, TokenAbilityTestSuite.class,
+	TokenAddTestSuite.class, TokenAutoTestSuite.class,
+	TokenDeityTestSuite.class, TokenDomainTestSuite.class,
+	TokenEquipmentTestSuite.class, TokenEqModTestSuite.class,
+	TokenRaceTestSuite.class, TokenSkillTestSuite.class,
+	TokenSpellTestSuite.class, TokenTemplateTestSuite.class,
+	TokenWeaponProfTestSuite.class})
 public class AllTokenUnitTests extends TestSuite
 {
 	// No contents, see annotations
