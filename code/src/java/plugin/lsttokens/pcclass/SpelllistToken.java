@@ -2,17 +2,33 @@ package plugin.lsttokens.pcclass;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMCompoundReference;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.Restriction;
+import pcgen.cdom.base.Slot;
+import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.restriction.GroupRestriction;
+import pcgen.core.Constants;
 import pcgen.core.PCClass;
+import pcgen.core.SpellList;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SPELLLIST Token
  */
-public class SpelllistToken implements PCClassLstToken
+public class SpelllistToken implements PCClassLstToken, PCClassClassLstToken
 {
+
+	private static Class<SpellList> SPELLLIST_CLASS = SpellList.class;
 
 	public String getTokenName()
 	{
@@ -45,11 +61,126 @@ public class SpelllistToken implements PCClassLstToken
 			spellChoices.add(aTok.nextToken());
 		}
 
-		//Protection against a "" value parameter
+		// Protection against a "" value parameter
 		if (spellChoices.size() > 0)
 		{
 			pcclass.setClassSpellChoices(spellCount, spellChoices);
 		}
 		return true;
+	}
+
+	public boolean parse(LoadContext context, PCClass pcc, String value)
+		throws PersistenceLayerException
+	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
+		if (value.indexOf('|') == -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " may not have only one argument");
+			return false;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
+		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		int count;
+		try
+		{
+			count = Integer.parseInt(tok.nextToken());
+			if (count <= 0)
+			{
+				Logging.errorPrint("Number in " + getTokenName()
+					+ " must be greater than zero: " + value);
+				return false;
+			}
+		}
+		catch (NumberFormatException nfe)
+		{
+			Logging.errorPrint("Invalid Number in " + getTokenName() + ": "
+				+ value);
+			return false;
+		}
+
+		Slot<SpellList> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), pcc,
+					SPELLLIST_CLASS, FormulaFactory.getFormulaFor(count));
+
+		CDOMCompoundReference<SpellList> cr =
+				new CDOMCompoundReference<SpellList>(SPELLLIST_CLASS,
+					getTokenName() + " items");
+		while (tok.hasMoreTokens())
+		{
+			String token = tok.nextToken();
+			CDOMReference<SpellList> ref =
+					TokenUtilities.getObjectReference(context, SPELLLIST_CLASS,
+						token);
+			if (ref == null)
+			{
+				return false;
+			}
+			cr.addReference(ref);
+		}
+
+		slot.addSinkRestriction(new GroupRestriction<SpellList>(
+			SPELLLIST_CLASS, cr));
+
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, PCClass pcc)
+	{
+		Set<PCGraphEdge> links =
+				context.graph.getChildLinksFromToken(getTokenName(), pcc,
+					Slot.class);
+		if (links == null || links.isEmpty())
+		{
+			return null;
+		}
+		if (links.size() > 1)
+		{
+			context.addWriteMessage("Invalid Slot Count " + links.size()
+				+ " associated with " + getTokenName()
+				+ ": Only one Slot allowed.");
+			return null;
+		}
+		PCGraphEdge edge = links.iterator().next();
+		Slot<SpellList> slot = (Slot<SpellList>) edge.getSinkNodes().get(0);
+		if (!slot.getSlotClass().equals(SPELLLIST_CLASS))
+		{
+			context.addWriteMessage("Invalid Slot Type associated with "
+				+ getTokenName() + ": Type cannot be "
+				+ slot.getSlotClass().getSimpleName());
+			return null;
+		}
+		String slotCount = slot.toLSTform();
+		List<Restriction<?>> restr = slot.getSinkRestrictions();
+		if (restr.size() != 1)
+		{
+			context.addWriteMessage("Slot for " + getTokenName()
+				+ " must have only one restriction");
+			return null;
+		}
+		Restriction<?> res = restr.get(0);
+		return new String[]{(slotCount + "|" + res.toLSTform())};
 	}
 }

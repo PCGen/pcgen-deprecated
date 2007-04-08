@@ -35,8 +35,8 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.graph.PCGraphAllowsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.core.PCClass;
 import pcgen.core.Skill;
+import pcgen.core.SkillList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -74,7 +74,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		if (Constants.LST_ALL.equals(value))
 		{
 			addSkillAllowed(context, skill, context.ref
-				.getCDOMAllReference(PCClass.class));
+				.getCDOMAllReference(SkillList.class));
 			return true;
 		}
 		if (value.charAt(0) == '|')
@@ -106,16 +106,20 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 				if (allEdge == null)
 				{
 					PrereqObject ref =
-							context.ref.getCDOMAllReference(PCClass.class);
+							context.ref.getCDOMAllReference(SkillList.class);
 					allEdge = addSkillAllowed(context, skill, ref);
 				}
+				/*
+				 * TODO There is an All/Any mismatch here... (CLASSES uses ALL,
+				 * PRECLASS uses ANY)
+				 */
 				allEdge.addPreReq(getPrerequisite("!PRECLASS:1,"
 					+ className.substring(1)));
 			}
 			else
 			{
 				PrereqObject ref =
-						context.ref.getCDOMReference(PCClass.class, className);
+						context.ref.getCDOMReference(SkillList.class, className);
 				addSkillAllowed(context, skill, ref);
 				nonNegated = true;
 			}
@@ -143,15 +147,15 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 	{
 		Set<PCGraphEdge> classEdgeSet =
 				context.graph.getParentLinksFromToken(getTokenName(), skill,
-					PCClass.class);
+					SkillList.class);
 		if (classEdgeSet.size() == 0)
 		{
 			return null;
 		}
-		CDOMGroupRef<PCClass> allRef =
-				context.ref.getCDOMAllReference(PCClass.class);
-		SortedSet<CDOMReference<PCClass>> set =
-				new TreeSet<CDOMReference<PCClass>>(
+		CDOMGroupRef<SkillList> allRef =
+				context.ref.getCDOMAllReference(SkillList.class);
+		SortedSet<CDOMReference<SkillList>> set =
+				new TreeSet<CDOMReference<SkillList>>(
 					TokenUtilities.REFERENCE_SORTER);
 		boolean negated = false;
 		for (PCGraphEdge edge : classEdgeSet)
@@ -178,9 +182,9 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 					+ " had more than one source: " + sourceNodes);
 				return null;
 			}
-			CDOMReference<PCClass> ref =
-					(CDOMReference<PCClass>) sourceNodes.get(0);
-			if (!ref.getReferenceClass().equals(PCClass.class))
+			CDOMReference<SkillList> ref =
+					(CDOMReference<SkillList>) sourceNodes.get(0);
+			if (!ref.getReferenceClass().equals(SkillList.class))
 			{
 				context.addWriteMessage("Incoming Edge to " + skill.getKey()
 					+ " was built by " + getTokenName() + " but the source "
@@ -205,7 +209,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 					for (Prerequisite p : prereqs)
 					{
 						// Mimic getting a Reference back from the Prereq
-						set.add(context.ref.getCDOMReference(PCClass.class, p
+						set.add(context.ref.getCDOMReference(SkillList.class, p
 							.getKey()));
 					}
 				}
@@ -221,7 +225,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		}
 		boolean needBar = false;
 		StringBuilder sb = new StringBuilder();
-		for (CDOMReference<PCClass> ref : set)
+		for (CDOMReference<SkillList> ref : set)
 		{
 			if (needBar)
 			{

@@ -119,6 +119,9 @@ public class LangbonusToken implements RaceLstToken
 				{
 					return false;
 				}
+				/*
+				 * BUG FIXME This is NOT A GRANT - it is a ChoiceList like WeaponBonus
+				 */
 				context.graph.linkObjectIntoGraph(getTokenName(), race, lang);
 			}
 		}

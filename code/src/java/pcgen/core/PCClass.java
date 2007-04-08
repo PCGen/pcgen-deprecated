@@ -68,7 +68,7 @@ import pcgen.util.enumeration.VisionType;
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  */
 public class PCClass extends PObject {
-	public static final int NO_LEVEL_LIMIT = -1;
+	public static final Integer NO_LEVEL_LIMIT = Integer.valueOf(-1);
 
 	/*
 	 * FINALALLCLASSLEVELS Since this applies to a ClassLevel line
@@ -6798,6 +6798,22 @@ public class PCClass extends PObject {
 	
 	public Collection<PCClassLevel> getClassLevelCollection() {
 		return Collections.unmodifiableCollection(levelMap.values());
+	}
+
+	private SpellProgressionInfo spi = null;
+	
+	public SpellProgressionInfo getCDOMSpellProgression()
+	{
+		if (spi == null)
+		{
+			spi = new SpellProgressionInfo();
+		}
+		return spi;
+	}
+
+	public boolean hasCDOMSpellProgression()
+	{
+		return spi != null;
 	}
 	
 }

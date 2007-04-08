@@ -1,6 +1,5 @@
 /*
- * PCClassLstToken
- * Copyright 2005 (C) Devon Jones <soulcatcher@evilsoft.org>
+ * Copyright (c) 2007 Tom Parker <thpr@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,12 +15,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * Created on September 2, 2002, 8:16 AM
- *
- * Current Ver: $Revision: 197 $
- * Last Editor: $Author: nuance $
- * Last Edited: $Date: 2006-03-14 17:59:43 -0500 (Tue, 14 Mar 2006) $
- *
  */
 package pcgen.persistence.lst;
 
@@ -29,13 +22,10 @@ import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 
-/**
- * <code>PCClassLstToken</code>
- *
- * @author  Devon Jones <soulcatcher@evilsoft.org>
- */
-public interface PCClassClassLstToken extends LstToken
+public interface PCClassClassLstToken extends CDOMToken<PCClass>
 {
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-			throws PersistenceLayerException;
+		throws PersistenceLayerException;
+
+	public String[] unparse(LoadContext context, PCClass pcc);
 }

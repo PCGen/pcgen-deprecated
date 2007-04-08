@@ -68,6 +68,10 @@ public class CskillLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
+		/*
+		 * TODO Question is whether the use of this in a PCClass should really
+		 * alter the SkillList attached to the PCClass...
+		 */
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint(getTokenName()

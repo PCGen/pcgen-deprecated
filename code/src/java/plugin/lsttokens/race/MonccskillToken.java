@@ -36,9 +36,9 @@ import pcgen.cdom.graph.PCGraphAllowsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
-import pcgen.core.PCClass;
 import pcgen.core.Race;
 import pcgen.core.Skill;
+import pcgen.core.SkillList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -87,8 +87,9 @@ public class MonccskillToken implements RaceLstToken
 				+ " arguments uses double separator || : " + value);
 			return false;
 		}
-		CDOMGroupRef<PCClass> ref =
-				context.ref.getCDOMTypeReference(PCClass.class, "Monster");
+
+		CDOMGroupRef<SkillList> ref =
+			context.ref.getCDOMTypeReference(SkillList.class, "Monster");
 		Aggregator agg = new Aggregator(race, ref, getTokenName());
 		/*
 		 * This is intentionally Holds, as the context for traversal must only

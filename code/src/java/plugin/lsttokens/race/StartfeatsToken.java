@@ -144,7 +144,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		if (edgeList.size() != 1)
 		{
 			context.addWriteMessage("Error in " + race.getKeyName()
-				+ ": Only one STARTFEATS Slot is allowed per Race");
+				+ ": Only one " + getTokenName() + " Slot is allowed per Race");
 			return null;
 		}
 		PCGraphEdge edge = edgeList.iterator().next();

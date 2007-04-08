@@ -118,6 +118,9 @@ public class LangbonusToken implements PCTemplateLstToken
 				{
 					return false;
 				}
+				/*
+				 * BUG FIXME This is NOT A GRANT - it is a ChoiceList like WeaponBonus
+				 */
 				context.graph.linkObjectIntoGraph(getTokenName(), template,
 					lang);
 			}

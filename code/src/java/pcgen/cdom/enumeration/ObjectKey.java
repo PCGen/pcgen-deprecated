@@ -33,12 +33,14 @@ import java.util.Map;
 import pcgen.base.formula.Resolver;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.base.util.DefaultMap;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.mode.Size;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
 import pcgen.core.WeaponProf;
+import pcgen.util.enumeration.DefaultTriState;
 import pcgen.util.enumeration.Visibility;
 
 /**
@@ -83,7 +85,7 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Boolean> HAS_SPELL_FORMULA = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<PCClass> EX_CLASS = new ObjectKey<PCClass>();
+	public static final ObjectKey<CDOMReference<PCClass>> EX_CLASS = new ObjectKey<CDOMReference<PCClass>>();
 
 	public static final ObjectKey<Gender> GENDER_LOCK = new ObjectKey<Gender>();
 
@@ -138,6 +140,10 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<AbilityCategory> CATEGORY = new ObjectKey<AbilityCategory>();
 
 	public static final ObjectKey<Boolean> ATTACKS_PROGRESS = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<DefaultTriState> XP_PENALTY = new ObjectKey<DefaultTriState>();
+
+	public static final ObjectKey<Type> SPELL_TYPE = new ObjectKey<Type>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 

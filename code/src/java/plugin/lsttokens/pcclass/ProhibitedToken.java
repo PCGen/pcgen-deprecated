@@ -4,12 +4,15 @@ import java.util.StringTokenizer;
 
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 
 /**
  * Class deals with PROHIBITED Token
  */
-public class ProhibitedToken implements PCClassLstToken
+public class ProhibitedToken implements PCClassLstToken, PCClassClassLstToken
 {
 
 	public String getTokenName()
@@ -29,5 +32,17 @@ public class ProhibitedToken implements PCClassLstToken
 			}
 		}
 		return true;
+	}
+
+	public boolean parse(LoadContext context, PCClass pcc, String value) throws PersistenceLayerException
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public String[] unparse(LoadContext context, PCClass pcc)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

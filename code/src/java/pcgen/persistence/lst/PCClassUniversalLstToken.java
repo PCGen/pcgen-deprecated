@@ -18,13 +18,15 @@
  */
 package pcgen.persistence.lst;
 
-import pcgen.core.PCClass;
+import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
-public interface PCClassLevelLstToken extends LstToken
+public interface PCClassUniversalLstToken extends CDOMToken<PObject>
 {
-	public boolean parse(LoadContext context, PCClass pcc, String value,
-		int level);
+	public boolean parse(LoadContext context, PObject po, String value)
+			throws PersistenceLayerException;
+	
+	public String[] unparse(LoadContext context, PObject po);
 
-	public String[] unparse(LoadContext context, PCClass pcc, int level);
 }

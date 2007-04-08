@@ -239,7 +239,7 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		Set<PCGraphEdge> domainEdges =
 				context.graph.getParentLinksFromToken(getTokenName(), spell,
 					PCCLASS_CLASS);
-		if (domainEdges.size() == 0)
+		if (domainEdges.isEmpty())
 		{
 			return null;
 		}

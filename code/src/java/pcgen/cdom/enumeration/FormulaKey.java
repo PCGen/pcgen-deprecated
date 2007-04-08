@@ -60,6 +60,11 @@ public final class FormulaKey implements TypeSafeConstant
 	public static final FormulaKey COMPANION_CHECK =
 			getConstant("COMPANION_CHECK");
 
+	public static final FormulaKey ITEM_CREATION_MULTIPLIER =
+			getConstant("ITEM_CREATION_MULTIPLIER");
+
+	public static final FormulaKey CR = getConstant("CR");
+
 	/**
 	 * The name of this Constant
 	 */

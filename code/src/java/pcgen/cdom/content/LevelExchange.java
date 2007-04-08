@@ -17,13 +17,14 @@
  */
 package pcgen.cdom.content;
 
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.core.PCClass;
 
 public class LevelExchange extends ConcretePrereqObject
 {
 
-	private final PCClass exchangeClass;
+	private final CDOMSingleRef<PCClass> exchangeClass;
 
 	private final int minDonatingLevel;
 
@@ -31,7 +32,7 @@ public class LevelExchange extends ConcretePrereqObject
 
 	private final int donatingLowerLevelBound;
 
-	public LevelExchange(PCClass pcc, int minDonatingLvl, int maxDonated,
+	public LevelExchange(CDOMSingleRef<PCClass> pcc, int minDonatingLvl, int maxDonated,
 		int donatingLowerBound)
 	{
 		exchangeClass = pcc;
