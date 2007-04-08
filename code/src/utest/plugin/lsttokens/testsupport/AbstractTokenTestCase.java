@@ -32,7 +32,7 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.CampaignSourceEntry;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.persistence.lst.LstLoader;
 import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.TokenStore;
 
@@ -44,6 +44,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 	protected LoadContext secondaryContext;
 	protected T primaryProf;
 	protected T secondaryProf;
+	protected String prefix = "";
 
 	private static boolean classSetUpFired = false;
 	protected static CampaignSourceEntry testCampaign;
@@ -79,7 +80,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 					"TestObj");
 	}
 
-	public abstract Class<T> getCDOMClass();
+	public abstract Class<? extends T> getCDOMClass();
 
 	public static void addToken(LstToken tok)
 	{
@@ -117,7 +118,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 				s).append('\t');
 		}
 		getLoader().parseLine(secondaryContext, secondaryProf,
-			"TestObj\t" + unparsedBuilt.toString(), testCampaign);
+			prefix + "TestObj\t" + unparsedBuilt.toString(), testCampaign);
 
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
@@ -137,7 +138,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		}
 	}
 
-	public abstract LstObjectFileLoader<T> getLoader();
+	public abstract LstLoader<T> getLoader();
 
 	public abstract CDOMToken<T> getToken();
 

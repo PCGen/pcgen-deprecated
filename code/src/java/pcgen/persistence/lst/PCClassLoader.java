@@ -610,28 +610,44 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		String value, CampaignSourceEntry source)
 		throws PersistenceLayerException
 	{
-		PCClassLstToken token =
-				TokenStore.inst().getToken(PCClassLstToken.class, key);
+		PCClassUniversalLstToken univtoken =
+				TokenStore.inst().getToken(PCClassUniversalLstToken.class, key);
+		PCClassClassLstToken classtoken =
+				TokenStore.inst().getToken(PCClassClassLstToken.class, key);
 
-		if (token == null)
+		if (classtoken == null)
 		{
-			if (!PObjectLoader.parseTag(context, pcclass, key, value))
+			if (univtoken == null)
 			{
-				Logging.errorPrint("Illegal pcclass Token '" + key + "' for "
-					+ pcclass.getDisplayName() + " in " + source.getURI()
-					+ " of " + source.getCampaign() + ".");
+				if (!PObjectLoader.parseTag(context, pcclass, key, value))
+				{
+					Logging
+						.errorPrint("Illegal pcclass Token '" + key + "' for "
+							+ pcclass.getDisplayName() + " in "
+							+ source.getURI() + " of " + source.getCampaign()
+							+ ".");
+				}
+			}
+			else
+			{
+				LstUtils.deprecationCheck(univtoken, pcclass, value);
+				if (!univtoken.parse(context, pcclass, value))
+				{
+					Logging.errorPrint("Error parsing token " + key
+						+ " in pcclass " + pcclass.getDisplayName() + ':'
+						+ source.getURI() + ':' + value + "\"");
+				}
 			}
 		}
 		else
 		{
-			LstUtils.deprecationCheck(token, pcclass, value);
-			// FIXME TODO Commented out for to avoid attempt at duplicate
-			// AbilityInfo load
-			// if (!token.parse(pcclass, value, -9)) {
-			// Logging.errorPrint("Error parsing token " + key
-			// + " in pcclass " + pcclass.getDisplayName() + ':'
-			// + source.getFile() + ':' + value + "\"");
-			// }
+			LstUtils.deprecationCheck(classtoken, pcclass, value);
+			if (!classtoken.parse(context, pcclass, value))
+			{
+				Logging.errorPrint("Error parsing token " + key
+					+ " in pcclass " + pcclass.getDisplayName() + ':'
+					+ source.getURI() + ':' + value + "\"");
+			}
 		}
 	}
 

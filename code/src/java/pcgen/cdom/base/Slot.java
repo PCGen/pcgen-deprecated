@@ -91,7 +91,7 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("Slot: ").append(slotCount.toString());
-		sb.append("objects of ").append(slotClass.getSimpleName());
+		sb.append(" objects of ").append(slotClass.getSimpleName());
 		if (hasSinkRestrictions())
 		{
 			sb.append(" [").append(getSinkRestrictions().toString())

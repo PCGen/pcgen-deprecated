@@ -57,7 +57,7 @@ import pcgen.util.PropertyFactory;
  * @author AD9C15
  */
 public abstract class LstObjectFileLoader<T extends PObject> extends
-		LstFileLoader
+		LstFileLoader implements LstLoader<T>
 {
 	/** The String that separates fields in the file. */
 	public static final String FIELD_SEPARATOR = "\t"; //$NON-NLS-1$
