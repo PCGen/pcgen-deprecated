@@ -23,7 +23,14 @@ import org.junit.runners.Suite;
 import junit.framework.TestSuite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SkillListTokenTest.class, SpellBookTokenTest.class,
+@Suite.SuiteClasses({AbbTokenTest.class, AddDomainsTokenTest.class,
+	BonusSpellStatTokenTest.class, CRFormulaTokenTest.class,
+	DeityTokenTest.class, FeatAutoTokenTest.class, IsMonsterTokenTest.class,
+	ItemCreateTokenTest.class, LangbonusTokenTest.class,
+	LevelsPerFeatTokenTest.class, MaxLevelTokenTest.class,
+	MemorizeTokenTest.class, ModToSkillsTokenTest.class,
+	MonNonSkillTHDTokenTest.class, MonSkillTokenTest.class,
+	SkillListTokenTest.class, SpellBookTokenTest.class,
 	SpellListTokenTest.class, SpellStatTokenTest.class,
 	SpellTypeTokenTest.class, StartSkillPtsTokenTest.class,
 	TemplateTokenTest.class, VFeatTokenTest.class, VisibleTokenTest.class,
