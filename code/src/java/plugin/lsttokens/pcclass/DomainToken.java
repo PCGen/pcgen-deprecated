@@ -163,26 +163,27 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 
 		while (pipeTok.hasMoreTokens())
 		{
+			String tok = pipeTok.nextToken();
 			// Note: May contain PRExxx
 			String domainKey;
 			Prerequisite prereq = null;
 
-			int openBracketLoc = value.indexOf('[');
+			int openBracketLoc = tok.indexOf('[');
 			if (openBracketLoc == -1)
 			{
-				domainKey = value;
+				domainKey = tok;
 			}
 			else
 			{
-				if (value.indexOf(']') != value.length() - 1)
+				if (tok.indexOf(']') != tok.length() - 1)
 				{
 					Logging.errorPrint("Invalid " + getTokenName()
 						+ " must end with ']' if it contains a PREREQ tag");
 					return false;
 				}
-				domainKey = value.substring(0, openBracketLoc);
+				domainKey = tok.substring(0, openBracketLoc);
 				String prereqString =
-						value.substring(openBracketLoc + 1, value.length() - 1);
+						tok.substring(openBracketLoc + 1, tok.length() - 1);
 				if (prereqString.length() == 0)
 				{
 					Logging.errorPrint(getTokenName()
@@ -208,9 +209,9 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 	public String[] unparse(LoadContext context, PObject po)
 	{
 		Set<PCGraphEdge> domainEdges =
-				context.graph.getParentLinksFromToken(getTokenName(), po,
+				context.graph.getChildLinksFromToken(getTokenName(), po,
 					Domain.class);
-		if (domainEdges.isEmpty())
+		if (domainEdges == null || domainEdges.isEmpty())
 		{
 			return null;
 		}
@@ -253,6 +254,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 				sb.append(swriter.toString());
 				sb.append(']');
 			}
+			set.add(sb.toString());
 		}
 		return new String[]{StringUtil.join(set, Constants.PIPE)};
 	}

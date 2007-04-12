@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
@@ -106,10 +105,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		try
 		{
 			int lvl = Integer.parseInt(firstToken);
-			// TODO FIXME Should this really be through LoadContext??
-			PCClassLevel level = target.getClassLevel(lvl);
-			level.setName(target.getDisplayName() + "(" + lvl + ")");
-			PCClassLevelLoader.parseLine(context, level, lstLine, source);
+			PCClassLevelLoader.parseLine(context, target, restOfLine, source, lvl);
 		}
 		catch (NumberFormatException nfe)
 		{

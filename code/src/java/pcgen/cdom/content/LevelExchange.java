@@ -32,12 +32,85 @@ public class LevelExchange extends ConcretePrereqObject
 
 	private final int donatingLowerLevelBound;
 
-	public LevelExchange(CDOMSingleRef<PCClass> pcc, int minDonatingLvl, int maxDonated,
-		int donatingLowerBound)
+	public LevelExchange(CDOMSingleRef<PCClass> pcc, int minDonatingLvl,
+		int maxDonated, int donatingLowerBound)
 	{
+		if (minDonatingLvl <= 0)
+		{
+			throw new IllegalArgumentException(
+				"Error: Min Donatign Level <= 0: "
+					+ "Cannot Allow Donations to produce negative levels");
+		}
+		if (maxDonated <= 0)
+		{
+			throw new IllegalArgumentException(
+				"Error: Max Donated Levels <= 0: "
+					+ "Cannot Allow Donations to produce negative levels");
+		}
+		if (donatingLowerBound < 0)
+		{
+			throw new IllegalArgumentException(
+				"Error: Max Remaining Levels < 0: "
+					+ "Cannot Allow Donations to produce negative levels");
+		}
+		if (donatingLowerBound < 0)
+		{
+			throw new IllegalArgumentException(
+				"Error: Min Remaining Levels < 0: "
+					+ "Cannot Allow Donations to produce negative levels");
+		}
+		if (minDonatingLvl - maxDonated > donatingLowerBound)
+		{
+			throw new IllegalArgumentException(
+				"Error: Donating Lower Bound cannot be reached");
+		}
 		exchangeClass = pcc;
 		minDonatingLevel = minDonatingLvl;
 		maxDonatedLevels = maxDonated;
 		donatingLowerLevelBound = donatingLowerBound;
+	}
+
+	public int getDonatingLowerLevelBound()
+	{
+		return donatingLowerLevelBound;
+	}
+
+	public CDOMSingleRef<PCClass> getExchangeClass()
+	{
+		return exchangeClass;
+	}
+
+	public int getMaxDonatedLevels()
+	{
+		return maxDonatedLevels;
+	}
+
+	public int getMinDonatingLevel()
+	{
+		return minDonatingLevel;
+	}
+
+	public int hashCode()
+	{
+		return minDonatingLevel * 23 + maxDonatedLevels * 31
+			+ donatingLowerLevelBound;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == this)
+		{
+			return true;
+		}
+		if (!(o instanceof LevelExchange))
+		{
+			return false;
+		}
+		LevelExchange other = (LevelExchange) o;
+		return minDonatingLevel == other.minDonatingLevel
+			&& maxDonatedLevels == other.maxDonatedLevels
+			&& donatingLowerLevelBound == other.donatingLowerLevelBound
+			&& exchangeClass.equals(other.exchangeClass);
 	}
 }

@@ -60,6 +60,12 @@ public class AttackcycleToken implements PCClassLstToken, PCClassClassLstToken
 		while (aTok.hasMoreTokens())
 		{
 			AttackType at = AttackType.getInstance(aTok.nextToken());
+			if (AttackType.GRAPPLE.equals(at))
+			{
+				Logging.errorPrint("Error: Cannot Set Attack Cycle "
+					+ "for GRAPPLE Attack Type");
+				return false;
+			}
 			String cycle = aTok.nextToken();
 			pcclass.setAttackCycle(at, cycle);
 			/*
@@ -85,10 +91,27 @@ public class AttackcycleToken implements PCClassLstToken, PCClassClassLstToken
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
-		if (value.indexOf('|') == -1)
+		if (value.length() == 0)
 		{
-			Logging.errorPrint("Invalid " + getTokenName()
-				+ " encountered.  Requires a | : " + value);
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -103,6 +126,12 @@ public class AttackcycleToken implements PCClassLstToken, PCClassClassLstToken
 		while (aTok.hasMoreTokens())
 		{
 			AttackType at = AttackType.getInstance(aTok.nextToken());
+			if (AttackType.GRAPPLE.equals(at))
+			{
+				Logging.errorPrint("Error: Cannot Set Attack Cycle "
+					+ "for GRAPPLE Attack Type");
+				return false;
+			}
 			String cycle = aTok.nextToken();
 			pcc.setAttackCycle(at, cycle);
 			/*
@@ -128,6 +157,10 @@ public class AttackcycleToken implements PCClassLstToken, PCClassClassLstToken
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		Map<AttackType, String> map = pcc.getAttackCycle();
+		if (map == null || map.isEmpty())
+		{
+			return null;
+		}
 		Set<String> set = new TreeSet<String>();
 		for (Entry<AttackType, String> me : map.entrySet())
 		{

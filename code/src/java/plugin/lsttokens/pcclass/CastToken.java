@@ -67,12 +67,49 @@ public class CastToken implements PCClassLstToken, PCClassLevelLstToken
 	public boolean parse(LoadContext context, PCClass pcc, String value,
 		int level)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
+		if (value.charAt(0) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with , : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with , : " + value);
+			return false;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator ,, : " + value);
+			return false;
+		}
 		StringTokenizer st = new StringTokenizer(value, Constants.COMMA);
 
 		List<String> castList = new ArrayList<String>(st.countTokens());
 		while (st.hasMoreTokens())
 		{
-			castList.add(st.nextToken());
+			String tok = st.nextToken();
+			try
+			{
+				if (Integer.parseInt(tok) < 0)
+				{
+					Logging.errorPrint("Invalid Spell Count: " + tok
+						+ " is less than zero");
+					return false;
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				// OK, it must be a formula...
+			}
+			castList.add(tok);
 		}
 
 		SpellProgressionInfo sp = pcc.getCDOMSpellProgression();

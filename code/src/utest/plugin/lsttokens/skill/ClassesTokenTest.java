@@ -23,8 +23,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pcgen.core.PCClass;
 import pcgen.core.Skill;
+import pcgen.core.SkillList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
@@ -135,7 +135,7 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	public void testInvalidInputNotClassCompound()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Wizard");
 		assertTrue(getToken().parse(primaryContext, primaryProf,
 			"Wizard|Sorcerer"));
 		assertFalse(primaryContext.ref.validate());
@@ -144,7 +144,7 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	// @Test(expected = IllegalArgumentException.class)
 	public void testInvalidInputAllPlus() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Wizard");
 		try
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
@@ -161,7 +161,7 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	public void testInvalidInputNegativeAllPlus()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Wizard");
 		try
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
@@ -194,7 +194,7 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
 		assertEquals(0, primaryContext.getWriteMessageCount());
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Wizard");
 		runRoundRobin("Wizard");
 		assertTrue(primaryContext.ref.validate());
 		assertEquals(0, primaryContext.getWriteMessageCount());
@@ -204,7 +204,7 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	public void testRoundRobinNegated() throws PersistenceLayerException
 	{
 		assertEquals(0, primaryContext.getWriteMessageCount());
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Wizard");
 		runRoundRobin("!Wizard");
 		assertTrue(primaryContext.ref.validate());
 		assertEquals(0, primaryContext.getWriteMessageCount());
@@ -214,8 +214,8 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	public void testRoundRobinPipe() throws PersistenceLayerException
 	{
 		assertEquals(0, primaryContext.getWriteMessageCount());
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Wizard");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Sorcerer");
 		runRoundRobin("Sorcerer|Wizard");
 		assertTrue(primaryContext.ref.validate());
 		assertEquals(0, primaryContext.getWriteMessageCount());
@@ -225,10 +225,15 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	public void testRoundRobinNegatedPipe() throws PersistenceLayerException
 	{
 		assertEquals(0, primaryContext.getWriteMessageCount());
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Wizard");
+		primaryContext.ref.constructCDOMObject(getTargetClass(), "Sorcerer");
 		runRoundRobin("!Sorcerer|!Wizard");
 		assertTrue(primaryContext.ref.validate());
 		assertEquals(0, primaryContext.getWriteMessageCount());
+	}
+
+	private Class<SkillList> getTargetClass()
+	{
+		return SkillList.class;
 	}
 }

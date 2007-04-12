@@ -21,10 +21,12 @@
  */
 package plugin.lsttokens.pcclass;
 
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.content.LevelExchange;
+import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
@@ -93,11 +95,6 @@ public class ExchangelevelToken implements PCClassLstToken,
 		try
 		{
 			mindl = Integer.parseInt(mindlString);
-			if (mindl <= 0)
-			{
-				Logging.errorPrint(getTokenName() + " must be an integer > 0");
-				return false;
-			}
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -110,11 +107,6 @@ public class ExchangelevelToken implements PCClassLstToken,
 		try
 		{
 			maxdl = Integer.parseInt(maxdlString);
-			if (maxdl <= 0)
-			{
-				Logging.errorPrint(getTokenName() + " must be an integer > 0");
-				return false;
-			}
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -127,11 +119,6 @@ public class ExchangelevelToken implements PCClassLstToken,
 		try
 		{
 			minrem = Integer.parseInt(minremString);
-			if (minrem <= 0)
-			{
-				Logging.errorPrint(getTokenName() + " must be an integer > 0");
-				return false;
-			}
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -139,14 +126,43 @@ public class ExchangelevelToken implements PCClassLstToken,
 				+ minremString);
 			return false;
 		}
-		LevelExchange le = new LevelExchange(cl, mindl, maxdl, minrem);
-		context.graph.linkObjectIntoGraph(getTokenName(), pcc, le);
-		return true;
+		try
+		{
+			LevelExchange le = new LevelExchange(cl, mindl, maxdl, minrem);
+			context.graph.linkObjectIntoGraph(getTokenName(), pcc, le);
+			return true;
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logging.errorPrint("Error in " + getTokenName() + " "
+				+ e.getMessage());
+			Logging.errorPrint("  Token contents: " + value);
+			return false;
+		}
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Set<PCGraphEdge> edges =
+				context.graph.getChildLinksFromToken(getTokenName(), pcc,
+					LevelExchange.class);
+		if (edges.isEmpty())
+		{
+			return null;
+		}
+		if (edges.size() > 1)
+		{
+			context.addWriteMessage("Invalid " + getTokenName()
+				+ ": only one link is allowed");
+			return null;
+		}
+		PCGraphEdge edge = edges.iterator().next();
+		LevelExchange le = (LevelExchange) edge.getNodeAt(1);
+		StringBuilder sb = new StringBuilder();
+		sb.append(le.getExchangeClass().getLSTformat()).append(Constants.PIPE);
+		sb.append(le.getMinDonatingLevel()).append(Constants.PIPE);
+		sb.append(le.getMaxDonatedLevels()).append(Constants.PIPE);
+		sb.append(le.getDonatingLowerLevelBound());
+		return new String[]{sb.toString()};
 	}
 }

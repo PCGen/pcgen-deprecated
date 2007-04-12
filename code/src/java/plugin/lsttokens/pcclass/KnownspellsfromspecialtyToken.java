@@ -87,7 +87,7 @@ public class KnownspellsfromspecialtyToken implements PCClassLstToken,
 		if (ksfs.intValue() <= 0)
 		{
 			context
-				.addWriteMessage(getTokenName() + " must be an integer >= 0");
+				.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
 		return new String[]{ksfs.toString()};
