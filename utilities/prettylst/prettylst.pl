@@ -355,10 +355,11 @@ elsif ( $cl_options{convert} eq 'ASCII' ) {
 elsif ( $cl_options{convert} eq 'Weaponauto' ) {
     $conversion_enable{'ALL:Weaponauto simple conversion'} = 1; # [ 1223873 ] WEAPONAUTO is no longer valid
 }
-elsif ( $cl_options{convert} eq 'pcgen5110' ) {
+elsif ( $cl_options{convert} eq 'pcgen5120' ) {
     #[1678577 ] ADD: syntax no longer uses parens
     #[1514765] Conversion to remove old defaultmonster tags
     #[1678570 ] Correct PRESPELLTYPE syntax
+    $conversion_enable{'DEITY:Followeralign conversion'} =1;
     $conversion_enable{'ALL:ADD Syntax Fix'} = 1;
     $conversion_enable{'ALL:PRESPELLTYPE Syntax'} = 1;
     $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;  
