@@ -362,7 +362,8 @@ elsif ( $cl_options{convert} eq 'pcgen5120' ) {
     $conversion_enable{'DEITY:Followeralign conversion'} =1;
     $conversion_enable{'ALL:ADD Syntax Fix'} = 1;
     $conversion_enable{'ALL:PRESPELLTYPE Syntax'} = 1;
-    $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;  
+   # Commenting out for use in possible KIT conversion of old Default monster data.
+#    $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;  
 
 }
     elsif ( $cl_options{convert} eq 'pcgen595' ) {
