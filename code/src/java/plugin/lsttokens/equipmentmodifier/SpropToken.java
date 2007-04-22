@@ -117,6 +117,13 @@ public class SpropToken extends AbstractToken implements
 			return null;
 		}
 
+		if (firstToken.startsWith("PRE") || firstToken.startsWith("!PRE"))
+		{
+			Logging.errorPrint("Cannot have only PRExxx subtoken in "
+				+ getTokenName());
+			return null;
+		}
+
 		SpecialProperty sa = new SpecialProperty(firstToken);
 
 		if (!tok.hasMoreTokens())

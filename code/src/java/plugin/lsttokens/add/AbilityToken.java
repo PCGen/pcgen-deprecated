@@ -198,7 +198,7 @@ public class AbilityToken implements AddLstToken
 		AbilityCategory ac;
 		try
 		{
-			ac = AbilityCategory.getAblilityCategory(nextToken);
+			ac = AbilityCategory.valueOf(nextToken);
 		}
 		catch (IllegalArgumentException iae)
 		{

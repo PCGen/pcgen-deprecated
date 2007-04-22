@@ -63,6 +63,12 @@ public class RaceTypeTokenTest extends AbstractTypeSafeTokenTestCase<Race>
 		return ObjectKey.RACETYPE;
 	}
 
+	@Override
+	protected boolean requiresPreconstruction()
+	{
+		return false;
+	}
+
 	@Test
 	public void dummyTest()
 	{

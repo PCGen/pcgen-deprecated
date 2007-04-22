@@ -63,6 +63,12 @@ public class SubraceTokenTest extends AbstractTypeSafeTokenTestCase<PCTemplate>
 		return ObjectKey.SUBRACE;
 	}
 
+	@Override
+	protected boolean requiresPreconstruction()
+	{
+		return false;
+	}
+
 	@Test
 	public void dummyTest()
 	{

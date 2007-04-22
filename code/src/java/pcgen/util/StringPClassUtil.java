@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.core.Ability;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
@@ -16,6 +17,8 @@ import pcgen.core.Race;
 import pcgen.core.Skill;
 import pcgen.core.WeaponProf;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.ReferenceManufacturer;
 
 public final class StringPClassUtil
 {
@@ -37,6 +40,7 @@ public final class StringPClassUtil
 		classMap.put("DOMAIN", Domain.class);
 		classMap.put("EQUIPMENT", Equipment.class);
 		classMap.put("EQMOD", EquipmentModifier.class);
+		classMap.put("ABILITY", Ability.class);
 		classMap.put("FEAT", Ability.class);
 		classMap.put("CLASS", PCClass.class);
 		classMap.put("RACE", Race.class);
@@ -49,7 +53,7 @@ public final class StringPClassUtil
 		stringMap.put(Domain.class, "DOMAIN");
 		stringMap.put(Equipment.class, "EQUIPMENT");
 		stringMap.put(EquipmentModifier.class, "EQMOD");
-		stringMap.put(Ability.class, "FEAT");
+		stringMap.put(Ability.class, "ABILITY");
 		stringMap.put(PCClass.class, "CLASS");
 		stringMap.put(Race.class, "RACE");
 		stringMap.put(Spell.class, "SPELL");
@@ -71,6 +75,43 @@ public final class StringPClassUtil
 	public static String getStringFor(Class<? extends PObject> cl)
 	{
 		return stringMap.get(cl);
+	}
+
+	public static ReferenceManufacturer<? extends PObject> getReferenceManufacturer(
+		LoadContext context, String type)
+	{
+		ReferenceManufacturer<? extends PObject> rm;
+		int equalLoc = type.indexOf('=');
+		if (equalLoc == -1)
+		{
+			if ("ABILITY".equals(type))
+			{
+				Logging.errorPrint("Invalid use of ABILITY in QUALIFY "
+					+ "(requires ABILITY=<category>): " + type);
+				return null;
+			}
+			Class<? extends PObject> cl;
+			cl = StringPClassUtil.getClassFor(type);
+			if (cl == null)
+			{
+				Logging.errorPrint(" Expecting a POBJECT Type, found: " + type);
+				return null;
+			}
+			rm = context.ref.getReferenceManufacturer(cl);
+		}
+		else
+		{
+			if (!"ABILITY".equals(type.substring(0, equalLoc)))
+			{
+				Logging.errorPrint("Invalid use of = in QUALIFY "
+					+ "(only valid for ABILITY): " + type);
+				return null;
+			}
+			AbilityCategory cat =
+					AbilityCategory.valueOf(type.substring(equalLoc + 1));
+			rm = context.ref.getReferenceManufacturer(Ability.class, cat);
+		}
+		return rm;
 	}
 
 }

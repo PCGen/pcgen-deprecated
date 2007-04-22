@@ -100,7 +100,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		String firstToken = tok.nextToken();
-
+		
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
 			context.graph.unlinkChildNodesOfClass(getTokenName(), eq,
@@ -112,6 +112,13 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		{
 			Logging.errorPrint(getTokenName()
 				+ " tag confused by redundant '.CLEAR'" + value);
+			return null;
+		}
+
+		if (firstToken.startsWith("PRE") || firstToken.startsWith("!PRE"))
+		{
+			Logging.errorPrint("Cannot have only PRExxx subtoken in "
+				+ getTokenName());
 			return null;
 		}
 

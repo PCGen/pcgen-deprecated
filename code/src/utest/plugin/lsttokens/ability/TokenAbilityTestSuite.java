@@ -23,8 +23,10 @@ import org.junit.runners.Suite;
 import junit.framework.TestSuite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({})
+@Suite.SuiteClasses({AddspelllevelTokenTest.class, BenefitTokenTest.class,
+	CategoryTokenTest.class, CostTokenTest.class, MultTokenTest.class,
+	StackTokenTest.class, VisibleTokenTest.class})
 public class TokenAbilityTestSuite extends TestSuite
 {
-	//No contents, see annotations
+	// No contents, see annotations
 }

@@ -94,6 +94,13 @@ public final class Type implements TypeSafeConstant
 		Type o = typeMap.get(s);
 		if (o == null)
 		{
+			/*
+			 * TODO FIXME Should .,| or other stuff be banned here? (probably)
+			 */
+			if (s.length() == 0)
+			{
+				throw new IllegalArgumentException("Type Name cannot be zero length");
+			}
 			o = new Type(s);
 			typeMap.put(s, o);
 		}

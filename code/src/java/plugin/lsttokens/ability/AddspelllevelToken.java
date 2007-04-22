@@ -57,7 +57,13 @@ public class AddspelllevelToken implements AbilityLstToken
 	{
 		try
 		{
-			ability.put(IntegerKey.ADD_SPELL_LEVEL, Integer.valueOf(value));
+			Integer i = Integer.valueOf(value);
+			if (i.intValue() < 0)
+			{
+				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
+				return false;
+			}
+			ability.put(IntegerKey.ADD_SPELL_LEVEL, i);
 			return true;
 		}
 		catch (NumberFormatException nfe)

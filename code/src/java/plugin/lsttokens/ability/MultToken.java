@@ -25,6 +25,7 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Ability;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.util.Logging;
 
 /**
  * Deals with the MULT token
@@ -45,8 +46,32 @@ public class MultToken implements AbilityLstToken
 
 	public boolean parse(LoadContext context, Ability ability, String value)
 	{
-		ability.put(ObjectKey.MULTIPLE_ALLOWED, Boolean
-			.valueOf(value.charAt(0) != 'N'));
+		Boolean set;
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
+		{
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+					+ getTokenName() + ": " + value);
+				return false;
+			}
+			set = Boolean.TRUE;
+		}
+		else
+		{
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = Boolean.FALSE;
+		}
+		ability.put(ObjectKey.MULTIPLE_ALLOWED, set);
 		return true;
 	}
 

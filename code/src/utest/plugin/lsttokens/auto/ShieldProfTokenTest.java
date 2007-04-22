@@ -24,7 +24,7 @@ import pcgen.core.ShieldProf;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 
-public class ShieldProfTokenTest extends AbstractProfTokenTestCase
+public class ShieldProfTokenTest extends AbstractAutoTokenTestCase
 {
 
 	@Override

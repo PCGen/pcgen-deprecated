@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Map;
 
 import pcgen.base.util.CaseInsensitiveMap;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.core.PObject;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
@@ -41,8 +43,8 @@ public final class MapKey<K, V>
 	public static final MapKey<String, String> QUALITY =
 			new MapKey<String, String>();
 
-	public static final MapKey<Class, Object> QUALIFY =
-			new MapKey<Class, Object>();
+	public static final MapKey<Class<? extends PObject>, CDOMReference<?>> QUALIFY =
+			new MapKey<Class<? extends PObject>, CDOMReference<?>>();
 
 	public static final MapKey<AttackType, Integer> ATTACK_CYCLE =
 			new MapKey<AttackType, Integer>();

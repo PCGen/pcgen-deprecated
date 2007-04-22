@@ -22,16 +22,15 @@ import java.net.URISyntaxException;
 import org.junit.Test;
 
 import pcgen.core.PCClass;
-import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class ExClassTokenTest extends AbstractTokenTestCase<PObject>
+public class ExClassTokenTest extends AbstractTokenTestCase<PCClass>
 {
 
-	static DomainToken token = new DomainToken();
+	static ExclassToken token = new ExclassToken();
 	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
 
 	@Override
@@ -54,7 +53,7 @@ public class ExClassTokenTest extends AbstractTokenTestCase<PObject>
 	}
 
 	@Override
-	public CDOMToken<PObject> getToken()
+	public CDOMToken<PCClass> getToken()
 	{
 		return token;
 	}

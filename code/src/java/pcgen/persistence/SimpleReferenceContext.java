@@ -25,13 +25,14 @@ import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToInstanceList;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.core.Ability;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
 import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
-import pcgen.core.WeaponProf;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
@@ -363,7 +364,8 @@ public class SimpleReferenceContext
 		return returnGood;
 	}
 
-	public <T extends CDOMObject> void constructIfNecessary(Class<T> cl, String value)
+	public <T extends CDOMObject> void constructIfNecessary(Class<T> cl,
+		String value)
 	{
 		/*
 		 * TODO FIXME Need to ensure that items that are built here are tagged
@@ -378,5 +380,27 @@ public class SimpleReferenceContext
 		active.clear();
 		deferred.clear();
 		referenced.clear();
+	}
+
+	public <T extends PObject> ReferenceManufacturer<T> getReferenceManufacturer(
+		final Class<T> c)
+	{
+		if (Ability.class.equals(c))
+		{
+			throw new IllegalArgumentException(c.getSimpleName()
+				+ " is a Categorized Class");
+		}
+		return new ReferenceManufacturer<T>()
+		{
+			public CDOMReference<T> getReference(String key)
+			{
+				return getCDOMReference(c, key);
+			}
+
+			public Class<T> getCDOMClass()
+			{
+				return c;
+			}
+		};
 	}
 }

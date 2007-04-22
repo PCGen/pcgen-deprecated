@@ -28,18 +28,19 @@ import junit.framework.TestSuite;
 	CastTokenTest.class, CRFormulaTokenTest.class, DeityTokenTest.class,
 	DomainTokenTest.class, ExchangeLevelTokenTest.class,
 	ExClassTokenTest.class, FeatAutoTokenTest.class, HDTokenTest.class,
-	IsMonsterTokenTest.class, ItemCreateTokenTest.class,
-	KnownSpellsFromSpecialtyTokenTest.class, KnownTokenTest.class,
-	LangbonusTokenTest.class, LevelsPerFeatTokenTest.class,
-	MaxLevelTokenTest.class, MemorizeTokenTest.class,
-	ModToSkillsTokenTest.class, MonNonSkillTHDTokenTest.class,
-	MonSkillTokenTest.class, SkillListTokenTest.class,
-	SpecialtyKnownTokenTest.class, SpellBookTokenTest.class,
-	SpellListTokenTest.class, SpellStatTokenTest.class,
-	SpellTypeTokenTest.class, StartSkillPtsTokenTest.class,
-	TemplateTokenTest.class, VFeatTokenTest.class, VisibleTokenTest.class,
-	WeaponbonusTokenTest.class, XppenaltyTokenTest.class,
-	XtraFeatsTokenTest.class})
+	HitDieTokenTest.class, IsMonsterTokenTest.class, ItemCreateTokenTest.class,
+	KnownSpellsFromSpecialtyTokenTest.class, KnownspellsTokenTest.class,
+	KnownTokenTest.class, LangbonusTokenTest.class,
+	LevelsPerFeatTokenTest.class, MaxLevelTokenTest.class,
+	MemorizeTokenTest.class, ModToSkillsTokenTest.class,
+	MonNonSkillTHDTokenTest.class, MonSkillTokenTest.class,
+	ProhibitedTokenTest.class, ProhibitspellTokenTest.class,
+	SkillListTokenTest.class, SpecialtyKnownTokenTest.class,
+	SpellBookTokenTest.class, SpellListTokenTest.class,
+	SpellStatTokenTest.class, SpellTypeTokenTest.class,
+	StartSkillPtsTokenTest.class, TemplateTokenTest.class,
+	VFeatTokenTest.class, VisibleTokenTest.class, WeaponbonusTokenTest.class,
+	XppenaltyTokenTest.class, XtraFeatsTokenTest.class})
 public class TokenPCClassTestSuite extends TestSuite
 {
 	// No contents, see annotations

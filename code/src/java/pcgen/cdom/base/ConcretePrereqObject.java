@@ -514,4 +514,30 @@ public class ConcretePrereqObject implements PrereqObject, RestrictedObject,
 		return sourceRes == null ? null : Collections
 			.unmodifiableList(sourceRes);
 	}
+	
+
+	public boolean equalsPrereqObject(PrereqObject other)
+	{
+		if (this == other)
+		{
+			return true;
+		}
+		boolean otherHas = other.hasPrerequisites();
+		if (!hasPrerequisites())
+		{
+			return !otherHas;
+		}
+		if (!otherHas)
+		{
+			return false;
+		}
+		List<Prerequisite> otherPRL = other.getPrerequisiteList();
+		if (otherPRL.size() != thePrereqs.size())
+		{
+			return false;
+		}
+		ArrayList<Prerequisite> removed = new ArrayList<Prerequisite>(thePrereqs);
+		removed.removeAll(otherPRL);
+		return removed.isEmpty();
+	}
 }

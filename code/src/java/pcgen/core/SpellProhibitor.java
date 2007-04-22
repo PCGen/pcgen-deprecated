@@ -29,23 +29,24 @@ import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.core.spell.Spell;
 import pcgen.util.enumeration.ProhibitedSpellType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author stefan
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * 
+ * TODO To change the template for this generated type comment go to Window -
+ * Preferences - Java - Code Style - Code Templates
  */
-public class SpellProhibitor extends ConcretePrereqObject {
+public class SpellProhibitor extends ConcretePrereqObject
+{
 
 	private ProhibitedSpellType type = null;
-	private List<String> valueList = null;
+	private Set<String> valueSet = null;
 
 	public SpellProhibitor()
 	{
-		//Empty Construtor
+		// Empty Construtor
 	}
 
 	public ProhibitedSpellType getType()
@@ -53,25 +54,25 @@ public class SpellProhibitor extends ConcretePrereqObject {
 		return type;
 	}
 
-	public List<String> getValueList()
+	public Set<String> getValueSet()
 	{
-		return valueList;
+		return valueSet;
 	}
 
-	public void setType(ProhibitedSpellType prohibitedType) 
+	public void setType(ProhibitedSpellType prohibitedType)
 	{
 		type = prohibitedType;
 	}
 
 	public void addValue(String value)
 	{
-		if (valueList == null)
+		if (valueSet == null)
 		{
-			valueList = new ArrayList<String>();
+			valueSet = new TreeSet<String>();
 		}
-		valueList.add(value);
+		valueSet.add(value);
 	}
-	
+
 	public boolean isProhibited(Spell s, PlayerCharacter aPC)
 	{
 		/*
@@ -80,21 +81,21 @@ public class SpellProhibitor extends ConcretePrereqObject {
 		 * Alignment type
 		 */
 		if (type.equals(ProhibitedSpellType.ALIGNMENT)
-				&& !Globals.checkRule(RuleConstants.PROHIBITSPELLS))
+			&& !Globals.checkRule(RuleConstants.PROHIBITSPELLS))
 		{
 			return false;
 		}
-		
+
 		if (!qualifies(aPC))
 		{
 			return false;
 		}
-		
+
 		int hits = 0;
-		
+
 		for (String typeDesc : type.getCheckList(s))
 		{
-			for (String prohib : valueList)
+			for (String prohib : valueSet)
 			{
 				if (prohib.equalsIgnoreCase(typeDesc))
 				{
@@ -102,7 +103,34 @@ public class SpellProhibitor extends ConcretePrereqObject {
 				}
 			}
 		}
-		
-		return hits == type.getRequiredCount(valueList);
+
+		return hits == type.getRequiredCount(valueSet);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return type.hashCode() ^ valueSet.size();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o)
+		{
+			return true;
+		}
+		if (!(o instanceof SpellProhibitor))
+		{
+			return false;
+		}
+		SpellProhibitor other = (SpellProhibitor) o;
+		if ((type == null && other.type == null)
+			|| (type != null && type.equals(other.type)))
+		{
+			return (other.valueSet == null && valueSet == null)
+				|| valueSet != null && valueSet.equals(other.valueSet);
+		}
+		return false;
 	}
 }

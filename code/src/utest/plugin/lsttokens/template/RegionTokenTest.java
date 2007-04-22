@@ -63,9 +63,15 @@ public class RegionTokenTest extends AbstractTypeSafeTokenTestCase<PCTemplate>
 		return ObjectKey.REGION;
 	}
 
+	@Override
+	protected boolean requiresPreconstruction()
+	{
+		return false;
+	}
+
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

@@ -35,7 +35,8 @@ import plugin.pretokens.parser.PreRaceParser;
 import plugin.pretokens.writer.PreClassWriter;
 import plugin.pretokens.writer.PreRaceWriter;
 
-public abstract class AbstractProfTokenTestCase extends AbstractGlobalTokenTestCase
+public abstract class AbstractAutoTokenTestCase extends
+		AbstractGlobalTokenTestCase
 {
 
 	static AutoLst token = new AutoLst();
@@ -58,6 +59,7 @@ public abstract class AbstractProfTokenTestCase extends AbstractGlobalTokenTestC
 	}
 
 	protected abstract AutoLstToken getSubToken();
+
 	protected abstract <T extends PObject> Class<T> getSubTokenType();
 
 	public String getSubTokenString()
@@ -237,6 +239,17 @@ public abstract class AbstractProfTokenTestCase extends AbstractGlobalTokenTestC
 			getSubTokenString()
 				+ "|TestWP1|TYPE.TestType.OtherTestType|TestWP2"));
 		assertFalse(primaryContext.ref.validate());
+	}
+
+	@Test
+	public void testInvalidEmbeddedPrereq() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|TestWP1[PRERACE:1,Human]|TestWP2"));
 	}
 
 	@Test

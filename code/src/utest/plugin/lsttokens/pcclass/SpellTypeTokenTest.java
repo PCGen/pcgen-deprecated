@@ -72,6 +72,12 @@ public class SpellTypeTokenTest extends AbstractTypeSafeTokenTestCase<PCClass>
 		return ObjectKey.SPELL_TYPE;
 	}
 
+	@Override
+	protected boolean requiresPreconstruction()
+	{
+		return false;
+	}
+
 	@Test
 	public void dummyTest()
 	{

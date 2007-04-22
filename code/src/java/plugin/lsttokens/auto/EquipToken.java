@@ -17,13 +17,38 @@
  */
 package plugin.lsttokens.auto;
 
-import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AutoLstToken;
+import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
 
-public class EquipToken implements AutoLstToken
+import pcgen.base.util.DoubleKeyMap;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.EquipmentNature;
+import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.core.Equipment;
+import pcgen.core.PObject;
+import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.AutoLstToken;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
+import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.util.Logging;
+
+public class EquipToken extends AbstractToken implements AutoLstToken
 {
 
+	private static final Integer INTEGER_ONE = Integer.valueOf(1);
+
+	@Override
 	public String getTokenName()
 	{
 		return "EQUIP";
@@ -37,117 +62,211 @@ public class EquipToken implements AutoLstToken
 
 	public boolean parse(LoadContext context, PObject obj, String value)
 	{
-		/*
-		 * TODO FIXME For EQUIP:
-		 */
-		// final Equipment aEq = EquipmentList.getEquipmentFromName(
-		// tokText, aPC);
-		//
-		// if (aEq != null) {
-		// final Equipment newEq = (Equipment) aEq.clone();
-		// newEq.setQty(1);
-		// newEq.setAutomatic(true);
-		// newEq.setOutputIndex(aList.size());
-		// aList.add(newEq);
-		// }
-		return true;
+		String armorProfs;
+		Prerequisite prereq = null; // Do not initialize, null is significant!
 
-		// String shieldProfs;
-		// String prereq = null; // Do not initialize, null is significant!
-		//
-		// // Note: May contain PRExxx
-		// if (value.indexOf("[") == -1)
-		// {
-		// shieldProfs = value;
-		// }
-		// else
-		// {
-		// int openBracketLoc = value.indexOf("[");
-		// shieldProfs = value.substring(0, openBracketLoc);
-		// if (!value.endsWith("]"))
-		// {
-		// Logging.errorPrint("Unresolved Prerequisite in "
-		// + getTokenName() + " " + value + " in " + getTokenName());
-		// }
-		// prereq =
-		// value.substring(openBracketLoc + 1, value.length()
-		//  - 2);
-		// }
-		//
-		// StringTokenizer tok = new StringTokenizer(shieldProfs,
-		// Constants.PIPE);
-		//
-		// while (tok.hasMoreTokens())
-		// {
-		// String aProf = tok.nextToken();
-		// if (aProf.startsWith(Constants.LST_TYPE)
-		// || aProf.startsWith(Constants.LST_TYPE_OLD))
-		// {
-		// CDOMGroupRef<Equipment> ref =
-		// context.ref.getCDOMTypeReference(Equipment.class, aProf
-		// .substring(5).split("."));
-		// PCGraphGrantsEdge edge =
-		// context.graph.linkObjectIntoGraph(getTokenName(), obj,
-		// ref);
-		// if (prereq != null)
-		// {
-		// try
-		// {
-		// edge.addPreReq(PreParserFactory.getInstance().parse(
-		// prereq));
-		// }
-		// catch (PersistenceLayerException e)
-		// {
-		// Logging.errorPrint("Error generating Prerequisite "
-		// + prereq + " in " + getTokenName());
-		// }
-		// }
-		// }
-		// else if ("%LIST".equals(value))
-		// {
-		// /*
-		// * FIXME Need to figure out how to handle this!!!
-		// */
-		// // for (Iterator<AssociatedChoice<String>> e =
-		// // getAssociatedList()
-		// // .iterator(); e.hasNext();) {
-		// // aList.add(e.next().getDefaultChoice());
-		// // }
-		// }
-		// else
-		// {
-		// CDOMSimpleSingleRef<Equipment> ref =
-		// context.ref.getCDOMReference(Equipment.class, aProf);
-		// /*
-		// * FIXME There is source consolidation that can be done once
-		// * %LIST is figured out
-		// */
-		// PCGraphGrantsEdge edge =
-		// context.graph.linkObjectIntoGraph(getTokenName(), obj,
-		// ref);
-		// if (prereq != null)
-		// {
-		// try
-		// {
-		// edge.addPreReq(PreParserFactory.getInstance().parse(
-		// prereq));
-		// }
-		// catch (PersistenceLayerException e)
-		// {
-		// Logging.errorPrint("Error generating Prerequisite "
-		// + prereq + " in " + getTokenName());
-		// }
-		// }
-		// // Individual prefs
-		// }
-		// }
-		//
-		// return true;
+		/*
+		 * CONSIDER There is the ability to consolidate this PREREQ processing
+		 * into AutoLst.java (since it's the same across AUTO SubTokens)
+		 */
+		// Note: May contain PRExxx
+		if (value.indexOf("[") == -1)
+		{
+			armorProfs = value;
+		}
+		else
+		{
+			int openBracketLoc = value.indexOf("[");
+			armorProfs = value.substring(0, openBracketLoc);
+			if (!value.endsWith("]"))
+			{
+				Logging.errorPrint("Unresolved Prerequisite in "
+					+ getTokenName() + " " + value + " in " + getTokenName());
+				return false;
+			}
+			prereq =
+					getPrerequisite(value.substring(openBracketLoc + 1, value
+						.length() - 1));
+			if (prereq == null)
+			{
+				Logging.errorPrint("Error generating Prerequisite " + prereq
+					+ " in " + getTokenName());
+				return false;
+			}
+		}
+
+		if (armorProfs.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (armorProfs.charAt(armorProfs.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (armorProfs.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+
+		StringTokenizer tok = new StringTokenizer(armorProfs, Constants.PIPE);
+		TOKENS: while (tok.hasMoreTokens())
+		{
+			String aProf = tok.nextToken();
+			if ("%LIST".equals(value))
+			{
+				/*
+				 * FIXME Need to figure out how to handle this!!!
+				 */
+				// for (Iterator<AssociatedChoice<String>> e =
+				// getAssociatedList()
+				// .iterator(); e.hasNext();) {
+				// aList.add(e.next().getDefaultChoice());
+				// }
+			}
+			else
+			{
+				CDOMReference<Equipment> ref =
+						TokenUtilities.getObjectReference(context,
+							Equipment.class, aProf);
+				if (ref == null)
+				{
+					return false;
+				}
+
+				Set<PCGraphEdge> edges =
+						context.graph.getChildLinksFromToken(getTokenName(),
+							obj, Equipment.class);
+				for (PCGraphEdge edge : edges)
+				{
+					CDOMReference<Equipment> ab =
+							(CDOMReference<Equipment>) edge.getSinkNodes().get(
+								0);
+					if (ab.equals(ref))
+					{
+						List<Prerequisite> prl = edge.getPrerequisiteList();
+						if (prereq == null && (prl == null || prl.isEmpty()))
+						{
+							Integer q =
+									edge
+										.getAssociation(AssociationKey.QUANTITY);
+							edge.setAssociation(AssociationKey.QUANTITY,
+								Integer.valueOf(q.intValue() + 1));
+							continue TOKENS;
+						}
+						if (prereq != null)
+						{
+							if (prl == null || prl.isEmpty())
+							{
+								// Can't use
+							}
+							else if (prl.get(0).equals(prereq))
+							{
+								Integer q =
+										edge
+											.getAssociation(AssociationKey.QUANTITY);
+								edge.setAssociation(AssociationKey.QUANTITY,
+									Integer.valueOf(q.intValue() + 1));
+								continue TOKENS;
+							}
+							else
+							{
+								// Can't use
+							}
+						}
+					}
+				}
+				PCGraphGrantsEdge edge =
+						context.graph.linkObjectIntoGraph(getTokenName(), obj,
+							ref);
+				if (prereq != null)
+				{
+					edge.addPreReq(prereq);
+				}
+				edge.setAssociation(AssociationKey.EQUIPMENT_NATURE,
+					EquipmentNature.AUTOMATIC);
+				edge.setAssociation(AssociationKey.QUANTITY, INTEGER_ONE);
+				// TODO Need to account for these
+				// newEq.setOutputIndex(aList.size());
+			}
+		}
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Set<PCGraphEdge> edges =
+				context.graph.getChildLinksFromToken(getTokenName(), obj,
+					Equipment.class);
+		if (edges == null || edges.isEmpty())
+		{
+			return null;
+		}
+		DoubleKeyMap<Set<Prerequisite>, CDOMReference<Equipment>, Integer> m =
+				new DoubleKeyMap<Set<Prerequisite>, CDOMReference<Equipment>, Integer>();
+		for (PCGraphEdge edge : edges)
+		{
+			CDOMReference<Equipment> ab =
+					(CDOMReference<Equipment>) edge.getSinkNodes().get(0);
+			m.put(new HashSet<Prerequisite>(edge.getPrerequisiteList()), ab,
+				edge.getAssociation(AssociationKey.QUANTITY));
+		}
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		SortedSet<CDOMReference<Equipment>> set =
+				new TreeSet<CDOMReference<Equipment>>(
+					TokenUtilities.REFERENCE_SORTER);
+
+		String[] array = new String[m.firstKeyCount()];
+		int index = 0;
+		for (Set<Prerequisite> prereqs : m.getKeySet())
+		{
+			set.clear();
+			set.addAll(m.getSecondaryKeySet(prereqs));
+			StringBuilder sb = new StringBuilder();
+			boolean needPipe = false;
+			for (CDOMReference<Equipment> ref : set)
+			{
+				String lstFormat = ref.getLSTformat();
+				for (int i = 0; i < m.get(prereqs, ref).intValue(); i++)
+				{
+					if (needPipe)
+					{
+						sb.append(Constants.PIPE);
+					}
+					needPipe = true;
+					sb.append(lstFormat);
+				}
+			}
+			if (prereqs != null && !prereqs.isEmpty())
+			{
+				if (prereqs.size() > 1)
+				{
+					context.addWriteMessage("Error: "
+						+ obj.getClass().getSimpleName()
+						+ " had more than one Prerequisite for "
+						+ getTokenName());
+					return null;
+				}
+				Prerequisite p = prereqs.iterator().next();
+				StringWriter swriter = new StringWriter();
+				try
+				{
+					prereqWriter.write(swriter, p);
+				}
+				catch (PersistenceLayerException e)
+				{
+					context.addWriteMessage("Error writing Prerequisite: " + e);
+					return null;
+				}
+				sb.append('[').append(swriter.toString()).append(']');
+			}
+			array[index++] = sb.toString();
+		}
+		return array;
 	}
 }

@@ -63,6 +63,12 @@ public class SubregionTokenTest extends AbstractTypeSafeTokenTestCase<PCTemplate
 		return ObjectKey.SUBREGION;
 	}
 
+	@Override
+	protected boolean requiresPreconstruction()
+	{
+		return false;
+	}
+
 	@Test
 	public void dummyTest()
 	{

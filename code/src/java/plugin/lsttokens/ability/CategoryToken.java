@@ -49,7 +49,7 @@ public class CategoryToken implements AbilityLstToken
 	{
 		try
 		{
-			AbilityCategory ac = AbilityCategory.getAblilityCategory(value);
+			AbilityCategory ac = AbilityCategory.valueOf(value);
 			ability.put(ObjectKey.CATEGORY, ac);
 			return true;
 		}

@@ -2,7 +2,6 @@ package pcgen.util.enumeration;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import pcgen.core.spell.Spell;
 
@@ -16,7 +15,7 @@ public enum ProhibitedSpellType
 			return s.getDescriptorList();
 		}
 		@Override
-		public int getRequiredCount(List<String> l)
+		public int getRequiredCount(Collection<String> l)
 		{
 			return l.size();
 		}
@@ -29,7 +28,7 @@ public enum ProhibitedSpellType
 			return s.getDescriptorList();
 		}
 		@Override
-		public int getRequiredCount(List<String> l)
+		public int getRequiredCount(Collection<String> l)
 		{
 			return l.size();
 		}
@@ -42,7 +41,7 @@ public enum ProhibitedSpellType
 			return s.getSchools();
 		}
 		@Override
-		public int getRequiredCount(List<String> l)
+		public int getRequiredCount(Collection<String> l)
 		{
 			return l.size();
 		}
@@ -55,7 +54,7 @@ public enum ProhibitedSpellType
 			return s.getSubschools();
 		}
 		@Override
-		public int getRequiredCount(List<String> l)
+		public int getRequiredCount(Collection<String> l)
 		{
 			return l.size();
 		}
@@ -68,7 +67,7 @@ public enum ProhibitedSpellType
 			return Collections.singletonList(s.getKeyName());
 		}
 		@Override
-		public int getRequiredCount(List<String> l)
+		public int getRequiredCount(Collection<String> l)
 		{
 			return 1;
 		}
@@ -83,7 +82,7 @@ public enum ProhibitedSpellType
 
 	public abstract Collection<String> getCheckList(Spell s);
 
-	public abstract int getRequiredCount(List<String> l);
+	public abstract int getRequiredCount(Collection<String> l);
 
 	@Override
 	public String toString()

@@ -94,4 +94,92 @@ public class FeatAutoTokenTest extends
 		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
 	}
 
+	@Test
+	public void testInvalidInputEmpty() throws PersistenceLayerException
+	{
+		assertFalse(token.parse(primaryContext, primaryProf, ""));
+	}
+
+	@Test
+	public void testInvalidInputOnlyPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		try
+		{
+			assertFalse(token.parse(primaryContext, primaryProf,
+				"PRECLASS:1,Fighter=1"));
+		}
+		catch (IllegalArgumentException e)
+		{
+			// This is okay too :)
+		}
+	}
+
+	@Test
+	public void testInvalidInputEmbeddedPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(token.parse(primaryContext, primaryProf,
+			"TestWP1|PRECLASS:1,Fighter=1|TestWP2"));
+	}
+
+	@Test
+	public void testInvalidInputDoublePipePre()
+		throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(token.parse(primaryContext, primaryProf,
+			"TestWP1||PRECLASS:1,Fighter=1"));
+	}
+
+	@Test
+	public void testInvalidInputPostPrePipe() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(token.parse(primaryContext, primaryProf,
+			"TestWP1|PRECLASS:1,Fighter=1|"));
+	}
+
+	@Test
+	public void testRoundRobinPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinTwoPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|!PRERACE:1,Human|PRECLASS:1,Fighter=1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinNotPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|!PRECLASS:1,Fighter=1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinWWoPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1", "TestWP2");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
 }

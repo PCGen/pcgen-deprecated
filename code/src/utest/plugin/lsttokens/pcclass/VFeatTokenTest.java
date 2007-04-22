@@ -109,6 +109,21 @@ public class VFeatTokenTest extends AbstractListTokenTestCase<PObject, Ability>
 	}
 
 	@Test
+	public void testInvalidInputOnlyPre()
+	{
+		construct(primaryContext, "TestWP1");
+		try
+		{
+			assertFalse(token.parse(primaryContext, primaryProf,
+				"PRECLASS:1,Fighter=1"));
+		}
+		catch (IllegalArgumentException e)
+		{
+			// this is okay too :)
+		}
+	}
+
+	@Test
 	public void testInvalidInputEmbeddedPre()
 	{
 		construct(primaryContext, "TestWP1");

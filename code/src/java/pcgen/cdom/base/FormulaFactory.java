@@ -29,6 +29,10 @@ public final class FormulaFactory
 
 	public static Formula getFormulaFor(String s)
 	{
+		if (s.length() == 0)
+		{
+			throw new IllegalArgumentException("Formula cannot be empty");
+		}
 		return new JEPFormula(s);
 	}
 

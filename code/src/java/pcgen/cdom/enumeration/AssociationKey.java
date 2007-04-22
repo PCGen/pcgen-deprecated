@@ -60,6 +60,12 @@ public final class AssociationKey<T> {
 
 	public static final AssociationKey<AbilityCategory> ABILITY_CATEGORY = new AssociationKey<AbilityCategory>();
 
+	public static final AssociationKey<EquipmentNature> EQUIPMENT_NATURE = new AssociationKey<EquipmentNature>();
+
+	public static final AssociationKey<Integer> QUANTITY = new AssociationKey<Integer>();
+
+	public static final AssociationKey<String> TYPE = new AssociationKey<String>();
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey() {

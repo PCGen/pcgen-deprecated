@@ -206,7 +206,15 @@ public class AbstractPCGraphEdge extends ConcretePrereqObject
 		return this == other
 			|| firstNode.equals(other.firstNode)
 			&& secondNode.equals(other.secondNode)
+			&& equalsPrereqObject(other)
 			&& ((associationMap == null && other.associationMap == null) || (associationMap != null && associationMap
 				.equals(other.associationMap)));
+	}
+	
+	@Override
+	public String toString()
+	{
+		return firstNode.toString() + "->" + secondNode.toString() + " "
+			+ associationMap + " " + getPreReqList();
 	}
 }

@@ -31,6 +31,14 @@ public abstract class AbstractTypeSafeTokenTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
+		if (requiresPreconstruction())
+		{
+			getConstant("Niederösterreich");
+			getConstant("Finger Lakes");
+			getConstant("Rheinhessen");
+			getConstant("Languedoc-Roussillon");
+			getConstant("Yarra Valley");
+		}
 		assertTrue(getToken().parse(primaryContext, primaryProf,
 			"Niederösterreich"));
 		assertEquals(getConstant("Niederösterreich"), primaryProf
@@ -52,6 +60,8 @@ public abstract class AbstractTypeSafeTokenTestCase<T extends PObject> extends
 			.get(getObjectKey()));
 	}
 
+	protected abstract boolean requiresPreconstruction();
+
 	public abstract Object getConstant(String string);
 
 	public abstract ObjectKey<?> getObjectKey();
@@ -59,30 +69,50 @@ public abstract class AbstractTypeSafeTokenTestCase<T extends PObject> extends
 	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
+		if (requiresPreconstruction())
+		{
+			getConstant("Rheinhessen");
+		}
 		runRoundRobin("Rheinhessen");
 	}
 
 	@Test
 	public void testRoundRobinWithSpace() throws PersistenceLayerException
 	{
+		if (requiresPreconstruction())
+		{
+			getConstant("Finger Lakes");
+		}
 		runRoundRobin("Finger Lakes");
 	}
 
 	@Test
 	public void testRoundRobinNonEnglishAndN() throws PersistenceLayerException
 	{
+		if (requiresPreconstruction())
+		{
+			getConstant("Niederösterreich");
+		}
 		runRoundRobin("Niederösterreich");
 	}
 
 	@Test
 	public void testRoundRobinHyphen() throws PersistenceLayerException
 	{
+		if (requiresPreconstruction())
+		{
+			getConstant("Languedoc-Roussillon");
+		}
 		runRoundRobin("Languedoc-Roussillon");
 	}
 
 	@Test
 	public void testRoundRobinY() throws PersistenceLayerException
 	{
+		if (requiresPreconstruction())
+		{
+			getConstant("Yarra Valley");
+		}
 		runRoundRobin("Yarra Valley");
 	}
 }

@@ -68,4 +68,10 @@ public class RaceTypeTokenTest extends AbstractTypeSafeTokenTestCase<PCTemplate>
 	{
 		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
+
+	@Override
+	protected boolean requiresPreconstruction()
+	{
+		return false;
+	}
 }

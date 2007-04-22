@@ -27,6 +27,7 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Ability;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.util.Logging;
 
 /**
  * Deal with COST Token
@@ -47,8 +48,23 @@ public class CostToken implements AbilityLstToken
 
 	public boolean parse(LoadContext context, Ability ability, String value)
 	{
-		ability.put(ObjectKey.COST, new BigDecimal(value));
-		return true;
+		try
+		{
+			BigDecimal cost = new BigDecimal(value);
+			if (cost.compareTo(BigDecimal.ZERO) < 0)
+			{
+				Logging.errorPrint(getTokenName()
+					+ " must be a positive number: " + value);
+				return false;
+			}
+			ability.put(ObjectKey.COST, cost);
+			return true;
+		}
+		catch (NumberFormatException e)
+		{
+			Logging.errorPrint(getTokenName() + " expected a number: " + value);
+			return false;
+		}
 	}
 
 	public String[] unparse(LoadContext context, Ability ability)

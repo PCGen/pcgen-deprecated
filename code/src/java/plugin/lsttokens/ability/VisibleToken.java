@@ -95,20 +95,19 @@ public class VisibleToken implements AbilityLstToken
 
 	public boolean parse(LoadContext context, Ability ability, String value)
 	{
-		String visType = value.toUpperCase();
-		if (visType.startsWith("YES"))
+		if (value.equals("YES"))
 		{
 			ability.put(ObjectKey.VISIBILITY, Visibility.YES);
 		}
-		else if (visType.startsWith("DISPLAY"))
+		else if (value.equals("DISPLAY"))
 		{
 			ability.put(ObjectKey.VISIBILITY, Visibility.DISPLAY);
 		}
-		else if (visType.startsWith("EXPORT"))
+		else if (value.equals("EXPORT"))
 		{
 			ability.put(ObjectKey.VISIBILITY, Visibility.EXPORT);
 		}
-		else if (visType.startsWith("NO"))
+		else if (value.equals("NO"))
 		{
 			ability.put(ObjectKey.VISIBILITY, Visibility.NO);
 		}

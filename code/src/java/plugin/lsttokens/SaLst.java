@@ -165,7 +165,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 	{
 		if (aString == null || aString.length() == 0)
 		{
-			Logging.errorPrint("SA: line minimally requires SA:<text>");
+			Logging.errorPrint(getTokenName() + ": line minimally requires "+getTokenName()+":<text>");
 			return false;
 		}
 
@@ -191,6 +191,12 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 		StringTokenizer tok = new StringTokenizer(aString, Constants.PIPE);
 
 		String firstToken = tok.nextToken();
+		if (firstToken.startsWith("PRE") || firstToken.startsWith("!PRE"))
+		{
+			Logging.errorPrint("Cannot have only PRExxx subtoken in "
+				+ getTokenName());
+			return false;
+		}
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{

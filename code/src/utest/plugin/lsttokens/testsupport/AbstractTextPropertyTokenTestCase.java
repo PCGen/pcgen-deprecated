@@ -93,6 +93,13 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	}
 
 	@Test
+	public void testInvalidOnlyPre() throws PersistenceLayerException
+	{
+		assertFalse(getToken()
+			.parse(primaryContext, primaryProf, "!PRELEVEL:3"));
+	}
+
+	@Test
 	public void testInvalidEmbeddedNotPre() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,

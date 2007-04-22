@@ -25,6 +25,7 @@ import pcgen.base.util.TripleKeyMap;
 import pcgen.base.util.TripleKeyMapToInstanceList;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
 import pcgen.core.Ability;
@@ -133,7 +134,8 @@ public class CategorizedReferenceContext
 		Category<T> cat = obj.getCDOMCategory();
 		if (active.get(cl, cat, oldKey).equals(obj))
 		{
-			List<CategorizedCDOMObject> list = duplicates.getListFor(cl, cat, oldKey);
+			List<CategorizedCDOMObject> list =
+					duplicates.getListFor(cl, cat, oldKey);
 			if (list == null)
 			{
 				// No replacement
@@ -141,7 +143,8 @@ public class CategorizedReferenceContext
 			}
 			else
 			{
-				CategorizedCDOMObject newActive = duplicates.getItemFor(cl, cat, oldKey, 0);
+				CategorizedCDOMObject newActive =
+						duplicates.getItemFor(cl, cat, oldKey, 0);
 				duplicates.removeFromListFor(cl, cat, oldKey, newActive);
 				active.put(cl, cat, oldKey, newActive);
 			}
@@ -158,7 +161,8 @@ public class CategorizedReferenceContext
 		Category<T> cat, T obj)
 	{
 		Category<T> oldCat = obj.getCDOMCategory();
-		if (oldCat == null && cat == null || oldCat != null && oldCat.equals(cat))
+		if (oldCat == null && cat == null || oldCat != null
+			&& oldCat.equals(cat))
 		{
 			Logging.errorPrint("Worthless Category change encountered: "
 				+ obj.getDisplayName() + " " + oldCat);
@@ -167,7 +171,8 @@ public class CategorizedReferenceContext
 		String key = obj.getKeyName();
 		if (active.get(cl, oldCat, key).equals(obj))
 		{
-			List<CategorizedCDOMObject> list = duplicates.getListFor(cl, oldCat, key);
+			List<CategorizedCDOMObject> list =
+					duplicates.getListFor(cl, oldCat, key);
 			if (list == null)
 			{
 				// No replacement
@@ -175,7 +180,8 @@ public class CategorizedReferenceContext
 			}
 			else
 			{
-				CategorizedCDOMObject newActive = duplicates.getItemFor(cl, oldCat, key, 0);
+				CategorizedCDOMObject newActive =
+						duplicates.getItemFor(cl, oldCat, key, 0);
 				duplicates.removeFromListFor(cl, oldCat, key, newActive);
 				active.put(cl, oldCat, key, newActive);
 			}
@@ -318,7 +324,8 @@ public class CategorizedReferenceContext
 					{
 						List<CategorizedCDOMObject> list =
 								duplicates.getListFor(key1, key2, second);
-						CategorizedCDOMObject good = active.get(key1, key2, second);
+						CategorizedCDOMObject good =
+								active.get(key1, key2, second);
 						for (int i = 0; i < list.size(); i++)
 						{
 							CategorizedCDOMObject dupe = list.get(i);
@@ -407,5 +414,27 @@ public class CategorizedReferenceContext
 		duplicates.clear();
 		active.clear();
 		referenced.clear();
+	}
+
+	public <T extends PObject & CategorizedCDOMObject<T>> ReferenceManufacturer<T> getReferenceManufacturer(
+		final Class<T> c, final Category<T> cat)
+	{
+		if (!Ability.class.equals(c))
+		{
+			throw new IllegalArgumentException(c.getSimpleName()
+				+ " is not a Categorized Class");
+		}
+		return new ReferenceManufacturer<T>()
+		{
+			public CDOMReference<T> getReference(String key)
+			{
+				return getCDOMReference(c, cat, key);
+			}
+
+			public Class<T> getCDOMClass()
+			{
+				return c;
+			}
+		};
 	}
 }

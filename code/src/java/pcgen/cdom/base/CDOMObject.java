@@ -19,6 +19,7 @@ package pcgen.cdom.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,6 +31,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.MapKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.enumeration.VariableKey;
 import pcgen.cdom.util.ListKeyMapToList;
 import pcgen.cdom.util.MapKeyMapToList;
 import pcgen.core.SourceEntry;
@@ -54,6 +56,10 @@ public class CDOMObject extends ConcretePrereqObject
 	/** A map to hold items keyed by Strings for the object */
 	private final Map<FormulaKey, Formula> formulaChar =
 			new HashMap<FormulaKey, Formula>();
+
+	/** A map to hold items keyed by Strings for the object */
+	private final Map<VariableKey, Formula> variableChar =
+			new HashMap<VariableKey, Formula>();
 
 	/** A map to hold items keyed by Strings for the object */
 	private final Map<ObjectKey<?>, Object> objectChar =
@@ -135,6 +141,31 @@ public class CDOMObject extends ConcretePrereqObject
 	public final Formula remove(FormulaKey arg0)
 	{
 		return formulaChar.remove(arg0);
+	}
+
+	public final boolean containsKey(VariableKey arg0)
+	{
+		return variableChar.containsKey(arg0);
+	}
+
+	public final Formula get(VariableKey arg0)
+	{
+		return variableChar.get(arg0);
+	}
+
+	public final Set<VariableKey> getVariableKeys()
+	{
+		return new HashSet<VariableKey>(variableChar.keySet());
+	}
+
+	public final Formula put(VariableKey arg0, Formula arg1)
+	{
+		return variableChar.put(arg0, arg1);
+	}
+
+	public final Formula remove(VariableKey arg0)
+	{
+		return variableChar.remove(arg0);
 	}
 
 	public final boolean containsKey(ObjectKey<?> arg0)
@@ -318,6 +349,10 @@ public class CDOMObject extends ConcretePrereqObject
 			return false;
 		}
 		if (!formulaChar.equals(cdo.formulaChar))
+		{
+			return false;
+		}
+		if (!variableChar.equals(cdo.variableChar))
 		{
 			return false;
 		}

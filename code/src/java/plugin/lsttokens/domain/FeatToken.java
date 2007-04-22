@@ -30,6 +30,7 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
@@ -111,6 +112,14 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 		List<PCGraphGrantsEdge> edgeList = new ArrayList<PCGraphGrantsEdge>();
 
 		String token = tok.nextToken();
+		
+		if (token.startsWith("PRE") || token.startsWith("!PRE"))
+		{
+			Logging.errorPrint("Cannot have only PRExxx subtoken in "
+				+ getTokenName());
+			return false;
+		}
+		
 		while (true)
 		{
 			CDOMCategorizedSingleRef<Ability> ability =
@@ -222,6 +231,7 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 			}
 			if (prereqs != null && !prereqs.isEmpty())
 			{
+				TreeSet<String> prereqSet = new TreeSet<String>();
 				for (Prerequisite p : prereqs)
 				{
 					StringWriter swriter = new StringWriter();
@@ -235,8 +245,10 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 							+ e);
 						return null;
 					}
-					sb.append(Constants.PIPE).append(swriter.toString());
+					prereqSet.add(swriter.toString());
 				}
+				sb.append(Constants.PIPE).append(
+					StringUtil.join(prereqSet, Constants.PIPE));
 			}
 			list.add(sb.toString());
 		}

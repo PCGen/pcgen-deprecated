@@ -24,7 +24,6 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
 import pcgen.core.PObject;
-import pcgen.core.WeaponProf;
 import pcgen.util.StringPClassUtil;
 
 public class ReferenceContext
@@ -87,7 +86,8 @@ public class ReferenceContext
 		}
 	}
 
-	public <T extends CDOMObject> void constructIfNecessary(Class<T> cl, String value)
+	public <T extends CDOMObject> void constructIfNecessary(Class<T> cl,
+		String value)
 	{
 		simple.constructIfNecessary(cl, value);
 	}
@@ -107,7 +107,8 @@ public class ReferenceContext
 	{
 		if (CategorizedCDOMObject.class.isAssignableFrom(obj.getClass()))
 		{
-			categorized.reassociateReference(value, (CategorizedCDOMObject) obj);
+			categorized
+				.reassociateReference(value, (CategorizedCDOMObject) obj);
 		}
 		else
 		{
@@ -145,19 +146,32 @@ public class ReferenceContext
 		categorized.reassociateReference(cat, obj);
 	}
 
-	public <T extends PObject> T cloneConstructedCDOMObject(Class<T> cl, T orig, String newKey)
+	public <T extends PObject> T cloneConstructedCDOMObject(Class<T> cl,
+		T orig, String newKey)
 	{
 		if (CategorizedCDOMObject.class.isAssignableFrom(cl))
 		{
 			Class catCl = (Class) cl;
 			CategorizedCDOMObject cco = (CategorizedCDOMObject) orig;
-			return (T) categorized.cloneConstructedCDOMObject(catCl, cco, newKey);
+			return (T) categorized.cloneConstructedCDOMObject(catCl, cco,
+				newKey);
 		}
 		else
 		{
 			return simple.cloneConstructedCDOMObject(cl, orig, newKey);
 		}
 	}
-	
-	
+
+	public <T extends PObject> ReferenceManufacturer<T> getReferenceManufacturer(
+		Class<T> c)
+	{
+		return simple.getReferenceManufacturer(c);
+	}
+
+	public <T extends PObject & CategorizedCDOMObject<T>> ReferenceManufacturer<T> getReferenceManufacturer(
+		Class<T> c, Category<T> cat)
+	{
+		return categorized.getReferenceManufacturer(c, cat);
+	}
+
 }

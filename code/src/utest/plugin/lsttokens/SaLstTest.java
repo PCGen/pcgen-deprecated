@@ -100,6 +100,13 @@ public class SaLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidOnlyPre() throws PersistenceLayerException
+	{
+		assertFalse(token.parse(primaryContext, primaryProf,
+			"PRECLASS:1,Fighter"));
+	}
+
+	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
 		runRoundRobin("SA Number One");

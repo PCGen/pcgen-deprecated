@@ -17,86 +17,22 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import junit.framework.TestCase;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pcgen.cdom.graph.PCGenGraph;
-import pcgen.core.Campaign;
-import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CampaignSourceEntry;
-import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.PCClassLevelLoader;
-import pcgen.persistence.lst.PCClassLevelLstToken;
-import pcgen.persistence.lst.TokenStore;
-import plugin.lsttokens.testsupport.TokenRegistration;
 
-public abstract class AbstractSpellCastingTokenTestCase extends TestCase
+public abstract class AbstractSpellCastingTokenTestCase extends
+		AbstractPCClassLevelTokenTestCase
 {
-	protected PCGenGraph primaryGraph;
-	protected PCGenGraph secondaryGraph;
-	protected LoadContext primaryContext;
-	protected LoadContext secondaryContext;
-	protected PCClass primaryProf;
-	protected PCClass secondaryProf;
-
-	private static boolean classSetUpFired = false;
-	protected static CampaignSourceEntry testCampaign;
-
-	@BeforeClass
-	public static final void classSetUp() throws URISyntaxException
-	{
-		testCampaign =
-				new CampaignSourceEntry(new Campaign(), new URI(
-					"file:/Test%20Case"));
-		classSetUpFired = true;
-	}
 
 	@Override
-	@Before
-	public void setUp() throws PersistenceLayerException, URISyntaxException
-	{
-		if (!classSetUpFired)
-		{
-			classSetUp();
-		}
-		// Yea, this causes warnings...
-		TokenRegistration.register(getToken());
-		primaryGraph = new PCGenGraph();
-		secondaryGraph = new PCGenGraph();
-		primaryContext = new LoadContext(primaryGraph);
-		secondaryContext = new LoadContext(secondaryGraph);
-		primaryProf =
-				primaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
-		secondaryProf =
-				secondaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
-	}
-
-	public Class<? extends PCClass> getCDOMClass()
-	{
-		return PCClass.class;
-	}
-
-	public static void addToken(LstToken tok)
-	{
-		TokenStore.inst().addToTokenMap(tok);
-	}
-
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
 		// Default is not to write out anything
 		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
 		assertNull(getToken().unparse(primaryContext, primaryProf, 2));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 2));
+		assertNull(getToken().unparse(primaryContext, primaryProf, 3));
 		// Ensure the graphs are the same at the start
 		assertEquals(primaryGraph, secondaryGraph);
 
@@ -158,8 +94,6 @@ public abstract class AbstractSpellCastingTokenTestCase extends TestCase
 				sUnparsed[i]);
 		}
 	}
-
-	public abstract PCClassLevelLstToken getToken();
 
 	@Test
 	public void testInvalidListEmpty() throws PersistenceLayerException

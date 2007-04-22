@@ -29,7 +29,7 @@ import pcgen.util.PropertyFactory;
 
 /**
  * @author frugal@purplewombat.co.uk
- *
+ * 
  */
 public class Prerequisite implements Cloneable
 {
@@ -43,17 +43,21 @@ public class Prerequisite implements Cloneable
 	private List<Prerequisite> prerequisites = new ArrayList<Prerequisite>();
 	private PrerequisiteOperator operator = PrerequisiteOperator.GTEQ;
 	private String operand = "1"; //$NON-NLS-1$
-	/** Indicates that the total of skill ranks, class levels etc should be
-	 * added together when checking for a value.
+	/**
+	 * Indicates that the total of skill ranks, class levels etc should be added
+	 * together when checking for a value.
 	 */
 	private boolean totalValues;
-	/** Indicates that the number of qualifying objects should be tallied
-	 * when checking for a value.
+	/**
+	 * Indicates that the number of qualifying objects should be tallied when
+	 * checking for a value.
 	 */
 	private boolean countMultiples;
 	private boolean overrideQualify = false;
-	private int levelQualifier = -1; // used for classes only - classlevel at which this prereq is checked
-	private String categoryName; // used for abilities only - category to restrict matches to.
+	private int levelQualifier = -1; // used for classes only - classlevel at
+										// which this prereq is checked
+	private String categoryName; // used for abilities only - category to
+									// restrict matches to.
 
 	public Prerequisite()
 	{
@@ -71,7 +75,7 @@ public class Prerequisite implements Cloneable
 		this.levelQualifier = that.levelQualifier;
 		if (that.prerequisites != null)
 		{
-			for ( Prerequisite otherReq : that.prerequisites )
+			for (Prerequisite otherReq : that.prerequisites)
 			{
 				this.addPrerequisite(new Prerequisite(otherReq));
 			}
@@ -85,13 +89,16 @@ public class Prerequisite implements Cloneable
 	{
 		return totalValues;
 	}
+
 	/**
-	 * @param totalValues The totalValues to set.
+	 * @param totalValues
+	 *            The totalValues to set.
 	 */
 	public final void setTotalValues(final boolean totalValues)
 	{
 		this.totalValues = totalValues;
 	}
+
 	/**
 	 * @param countMultiples
 	 *            The countMultiples to set.
@@ -164,7 +171,8 @@ public class Prerequisite implements Cloneable
 	}
 
 	/**
-	 * @param operator The operator to set.
+	 * @param operator
+	 *            The operator to set.
 	 */
 	public void setOperator(final PrerequisiteOperator operator)
 	{
@@ -213,7 +221,7 @@ public class Prerequisite implements Cloneable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -235,9 +243,10 @@ public class Prerequisite implements Cloneable
 
 		if (countMultiples)
 		{
-			buf.append(PropertyFactory.getString("Prerequisite.count-multiples")); //$NON-NLS-1$
+			buf.append(PropertyFactory
+				.getString("Prerequisite.count-multiples")); //$NON-NLS-1$
 		}
-		
+
 		if (totalValues)
 		{
 			buf.append(PropertyFactory.getString("Prerequisite.total-values")); //$NON-NLS-1$
@@ -282,14 +291,15 @@ public class Prerequisite implements Cloneable
 
 		if (isOverrideQualify())
 		{
-			buf.append(PropertyFactory.getString("Prerequisite.override-qualify")); //$NON-NLS-1$
+			buf.append(PropertyFactory
+				.getString("Prerequisite.override-qualify")); //$NON-NLS-1$
 		}
 
 		buf.append(">\n"); //$NON-NLS-1$
 
 		if (prerequisites.size() > 0)
 		{
-			for ( Prerequisite prereq : prerequisites )
+			for (Prerequisite prereq : prerequisites)
 			{
 				buf.append(prereq.toString());
 			}
@@ -321,7 +331,7 @@ public class Prerequisite implements Cloneable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
@@ -332,30 +342,33 @@ public class Prerequisite implements Cloneable
 		if (prerequisites != null)
 		{
 			copy.prerequisites = new ArrayList<Prerequisite>();
-			for ( Prerequisite subreq : prerequisites )
+			for (Prerequisite subreq : prerequisites)
 			{
 				copy.prerequisites.add(subreq.clone());
 			}
 		}
 
-		// All of these aer either immutable, or primitive, neither of which need cloning
-		//		private String kind;
-		//		private String key=null;
-		//		private String subKey=null;
-		//		private PrerequisiteOperator operator= new PrerequisiteOperator(PrerequisiteOperator.GTEQ);
-		//		private String operand="1"; //$NON-NLS-1$
-		//		private boolean countMultiples;
-		//		private boolean overrideQualify=false;
+		// All of these aer either immutable, or primitive, neither of which
+		// need cloning
+		// private String kind;
+		// private String key=null;
+		// private String subKey=null;
+		// private PrerequisiteOperator operator= new
+		// PrerequisiteOperator(PrerequisiteOperator.GTEQ);
+		// private String operand="1"; //$NON-NLS-1$
+		// private boolean countMultiples;
+		// private boolean overrideQualify=false;
 
 		return copy;
 	}
 
 	/**
-	 * This method will expand the given token in the "value" of this Prerequisite, it will also expand the token in
-	 * any sub Prerequisites
-	 *
+	 * This method will expand the given token in the "value" of this
+	 * Prerequisite, it will also expand the token in any sub Prerequisites
+	 * 
 	 * @param token
-	 *            The string representing the token to be replaces (i.e. "%CHOICE")
+	 *            The string representing the token to be replaces (i.e.
+	 *            "%CHOICE")
 	 * @param tokenValue
 	 *            The String representing the new value to be used (i.e. "+2")
 	 */
@@ -366,7 +379,7 @@ public class Prerequisite implements Cloneable
 
 		if (prerequisites != null)
 		{
-			for ( Prerequisite subreq : prerequisites )
+			for (Prerequisite subreq : prerequisites)
 			{
 				subreq.expandToken(token, tokenValue);
 			}
@@ -374,10 +387,11 @@ public class Prerequisite implements Cloneable
 	}
 
 	/**
-	 * Retrieve the description of the prerequisite. This can either be
-	 * in long form 'skill TUMBLE gteq 5' or in short form 'TUMBLE'.
-	 *
-	 * @param shortForm True if the abbreviated form should be used.
+	 * Retrieve the description of the prerequisite. This can either be in long
+	 * form 'skill TUMBLE gteq 5' or in short form 'TUMBLE'.
+	 * 
+	 * @param shortForm
+	 *            True if the abbreviated form should be used.
 	 * @return The description of the prerequisite
 	 */
 	public String getDescription(final boolean shortForm)
@@ -387,7 +401,7 @@ public class Prerequisite implements Cloneable
 		if (levelQualifier > 0 && !shortForm)
 		{
 			buf.append("at level ");
-			buf.append(levelQualifier+":");
+			buf.append(levelQualifier + ":");
 			buf.append(' '); //$NON-NLS-1$
 
 		}
@@ -395,7 +409,7 @@ public class Prerequisite implements Cloneable
 		if (categoryName != null && !shortForm)
 		{
 			buf.append("of category ");
-			buf.append(categoryName+":");
+			buf.append(categoryName + ":");
 			buf.append(' '); //$NON-NLS-1$
 
 		}
@@ -440,7 +454,7 @@ public class Prerequisite implements Cloneable
 		if (prerequisites.size() > 0 && !shortForm)
 		{
 			buf.append(" ("); //$NON-NLS-1$
-			for ( Prerequisite subreq : prerequisites )
+			for (Prerequisite subreq : prerequisites)
 			{
 				buf.append(subreq.getDescription(shortForm));
 			}
@@ -469,11 +483,95 @@ public class Prerequisite implements Cloneable
 	}
 
 	/**
-	 * @param categoryName the categoryName to set
+	 * @param categoryName
+	 *            the categoryName to set
 	 */
 	public void setCategoryName(String categoryName)
 	{
 		this.categoryName = categoryName;
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return kind.hashCode() ^ key.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == this)
+		{
+			return true;
+		}
+		if (!(o instanceof Prerequisite))
+		{
+			return false;
+		}
+		Prerequisite other = (Prerequisite) o;
+		if (kind == null)
+		{
+			if (other.kind != null)
+			{
+				return false;
+			}
+		}
+		if (key == null)
+		{
+			if (other.key != null)
+			{
+				return false;
+			}
+		}
+		if (subKey == null)
+		{
+			if (other.subKey != null)
+			{
+				return false;
+			}
+		}
+		if (categoryName == null)
+		{
+			if (other.categoryName != null)
+			{
+				return false;
+			}
+		}
+		boolean iHave = prerequisites != null && !prerequisites.isEmpty();
+		boolean otherHas =
+				other.prerequisites != null && !other.prerequisites.isEmpty();
+		if (iHave)
+		{
+			if (!otherHas)
+			{
+				return false;
+			}
+			List<Prerequisite> otherPRL = other.prerequisites;
+			if (otherPRL.size() != prerequisites.size())
+			{
+				return false;
+			}
+			ArrayList<Prerequisite> removed =
+					new ArrayList<Prerequisite>(prerequisites);
+			removed.removeAll(otherPRL);
+			if (!removed.isEmpty())
+			{
+				return false;
+			}
+		}
+		else if (otherHas)
+		{
+			return false;
+		}
+		return totalValues == other.totalValues
+			&& countMultiples == other.countMultiples
+			&& overrideQualify == other.overrideQualify
+			&& levelQualifier == other.levelQualifier
+			&& operator == other.operator
+			&& (kind == null || kind.equals(other.kind))
+			&& (key == null || key.equals(other.key))
+			&& (subKey == null || subKey.equals(other.subKey))
+			&& operand.equals(other.operand)
+			&& (categoryName == null || categoryName.equals(other.categoryName));
+	}
 }

@@ -57,6 +57,6 @@ public final class Aggregator extends CDOMObject
 		return other.aggSourceToken.equals(aggSourceToken)
 			&& other.aggregatorOwner.equals(aggregatorOwner)
 			&& other.aggregatorSource.equals(aggregatorSource)
-			&& this.isCDOMEqual(other);
+			&& isCDOMEqual(other) && equalsPrereqObject(other);
 	}
 }

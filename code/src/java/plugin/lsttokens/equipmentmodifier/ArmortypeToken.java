@@ -21,8 +21,16 @@
  */
 package plugin.lsttokens.equipmentmodifier;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import pcgen.base.util.TypeSafeMap;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.enumeration.ArmorType;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.modifier.ChangeArmorType;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
@@ -67,30 +75,49 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 		 */
 		try
 		{
-			ArmorType oldType = ArmorType.valueOf(value.substring(0, pipeLoc));
-			ArmorType newType = ArmorType.valueOf(value.substring(pipeLoc + 1));
+			Type oldType = Type.getConstant(value.substring(0, pipeLoc));
+			Type newType = Type.getConstant(value.substring(pipeLoc + 1));
+			/*
+			 * TODO Need some check if the Armor Types in value are not valid...
+			 * does the above throw exceptions, etc.
+			 */
+			ChangeArmorType cat = new ChangeArmorType(oldType, newType);
+			context.graph.linkObjectIntoGraph(getTokenName(), mod, cat);
 		}
 		catch (IllegalArgumentException e)
 		{
 			return false;
 		}
-		/*
-		 * TODO Need some check if the Armor Types in value are not valid...
-		 * does the above throw exceptions, etc.
-		 */
-		/*
-		 * TODO This gets interesting to see how it should really be set - just
-		 * like CHANGEPROF (global token)
-		 */
-		//FIXME a hack for now
 		return true;
-		// mod.setArmorType(value);
-		// return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		// FIXME Auto-generated method stub
-		return null;
+		Set<PCGraphEdge> edgeList =
+				context.graph.getChildLinksFromToken(getTokenName(), mod,
+					ChangeArmorType.class);
+		if (edgeList == null || edgeList.isEmpty())
+		{
+			return null;
+		}
+		TypeSafeMap<Type, Type> m = new TypeSafeMap<Type, Type>(Type.class);
+		for (PCGraphEdge edge : edgeList)
+		{
+			ChangeArmorType cat = (ChangeArmorType) edge.getNodeAt(1);
+			Type source = cat.getSourceType();
+			Type result = cat.getResultType();
+			m.put(source, result);
+		}
+
+		List<String> list = new ArrayList<String>();
+		for (Entry<Type, Type> me : m.entrySet())
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append(me.getKey());
+			sb.append(Constants.PIPE);
+			sb.append(me.getValue());
+			list.add(sb.toString());
+		}
+		return list.toArray(new String[list.size()]);
 	}
 }

@@ -24,7 +24,7 @@ import pcgen.core.WeaponProf;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 
-public class WeaponProfTokenTest extends AbstractProfTokenTestCase
+public class WeaponProfTokenTest extends AbstractAutoTokenTestCase
 {
 
 	@Override

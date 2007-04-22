@@ -22,20 +22,23 @@
  */
 package plugin.lsttokens;
 
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.cdom.enumeration.VariableKey;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class DefineLst implements GlobalLstToken
 {
@@ -70,17 +73,40 @@ public class DefineLst implements GlobalLstToken
 				+ " must be of Format: varName|varFormula");
 			return false;
 		}
-		Formula f = FormulaFactory.getFormulaFor(value.substring(barLoc + 1));
-		/*
-		 * FIXME Looks like variables need special treatment, so they can be unparsed
-		 */
-		obj.put(FormulaKey.getConstant(value.substring(0, barLoc)), f);
-		return true;
+		String var = value.substring(0, barLoc);
+		if (var.length() == 0)
+		{
+			Logging.errorPrint("Empty Variable Name found in " + getTokenName()
+				+ ": " + value);
+			return false;
+		}
+		try
+		{
+			Formula f =
+					FormulaFactory.getFormulaFor(value.substring(barLoc + 1));
+			obj.put(VariableKey.getConstant(var), f);
+			return true;
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logging.errorPrint("Illegal Formula found in " + getTokenName()
+				+ ": " + value);
+			return false;
+		}
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Set<VariableKey> keys = obj.getVariableKeys();
+		if (keys == null || keys.isEmpty())
+		{
+			return null;
+		}
+		TreeSet<String> set = new TreeSet<String>();
+		for (VariableKey key : keys)
+		{
+			set.add(key.toString() + Constants.PIPE + obj.get(key));
+		}
+		return set.toArray(new String[set.size()]);
 	}
 }

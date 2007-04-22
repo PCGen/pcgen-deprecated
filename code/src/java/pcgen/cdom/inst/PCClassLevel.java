@@ -17,9 +17,9 @@
  */
 package pcgen.cdom.inst;
 
-import pcgen.core.PCClass;
+import pcgen.core.PObject;
 
-public final class PCClassLevel extends PCClass
+public final class PCClassLevel extends PObject
 {
 
 	private final Object classSource;

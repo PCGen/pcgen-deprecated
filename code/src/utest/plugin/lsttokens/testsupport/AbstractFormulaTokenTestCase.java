@@ -44,6 +44,19 @@ public abstract class AbstractFormulaTokenTestCase<T extends PObject> extends
 	public abstract FormulaKey getFormulaKey();
 
 	@Test
+	public void testInvalidInputEmpty() throws PersistenceLayerException
+	{
+		try
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		}
+		catch (IllegalArgumentException e)
+		{
+			// This is Okay too :)
+		}
+	}
+
+	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
 		runRoundRobin("Variable1");

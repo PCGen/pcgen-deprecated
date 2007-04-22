@@ -71,4 +71,10 @@ public class PCGraphGrantsEdge extends AbstractPCGraphEdge implements
 		return source.equals(other.source)
 			&& super.equalsAbstractPCGraphEdge(other);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": " + super.toString();
+	}
 }

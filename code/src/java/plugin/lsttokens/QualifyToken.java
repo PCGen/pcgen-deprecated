@@ -23,9 +23,17 @@ package plugin.lsttokens;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CategorizedCDOMReference;
+import pcgen.cdom.base.Category;
+import pcgen.cdom.enumeration.MapKey;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Deity;
@@ -40,7 +48,9 @@ import pcgen.core.WeaponProf;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.ReferenceManufacturer;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 import pcgen.util.StringPClassUtil;
 
@@ -57,7 +67,8 @@ public class QualifyToken implements GlobalLstToken
 
 	public boolean parse(PObject obj, String value, int anInt)
 	{
-		if (!getLegalTypes().contains(obj.getClass())) {
+		if (!getLegalTypes().contains(obj.getClass()))
+		{
 			Logging.errorPrint("Cannot use QUALIFY on a " + obj.getClass());
 			return false;
 		}
@@ -66,58 +77,169 @@ public class QualifyToken implements GlobalLstToken
 		Class<? extends PObject> c;
 		String category = null;
 		int equalLoc = key.indexOf('=');
-		if (equalLoc == -1) {
-			if ("ABILITY".equals(key)) {
+		if (equalLoc == -1)
+		{
+			if ("ABILITY".equals(key))
+			{
 				Logging.errorPrint("Invalid use of ABILITY in QUALIFY "
-						+ "(requires ABILITY=<category>): " + key);
+					+ "(requires ABILITY=<category>): " + key);
 				return false;
 			}
 			c = StringPClassUtil.getClassFor(key);
-		} else {
-			if (!"ABILITY".equals(key.substring(0, equalLoc))) {
+		}
+		else
+		{
+			if (!"ABILITY".equals(key.substring(0, equalLoc)))
+			{
 				Logging.errorPrint("Invalid use of = in QUALIFY "
-						+ "(only valid for ABILITY): " + key);
+					+ "(only valid for ABILITY): " + key);
 				return false;
 			}
 			c = Ability.class;
 			category = key.substring(equalLoc + 1);
 		}
-		if (c == null) {
-			Logging.errorPrint(getTokenName() + " expecting a POBJECT Type, found: " + key);
-			Logging.errorPrint("  5.12 Format is: QualifyType|Key[|Key] value was: " + value);
-			Logging.errorPrint("  Valid QualifyTypes are: " + StringPClassUtil.getValidStrings());
-			Logging.errorPrint("  QUALIFY without a Type will fail after PCGen 5.12");
+		if (c == null)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " expecting a POBJECT Type, found: " + key);
+			Logging
+				.errorPrint("  5.12 Format is: QualifyType|Key[|Key] value was: "
+					+ value);
+			Logging.errorPrint("  Valid QualifyTypes are: "
+				+ StringPClassUtil.getValidStrings());
+			Logging
+				.errorPrint("  QUALIFY without a Type will fail after PCGen 5.12");
 			return false;
-		} else {
+		}
+		else
+		{
 			key = st.nextToken();
 		}
-		
-		while (true) {
+
+		while (true)
+		{
 			obj.putQualifyString(c, category, key);
-			if (!st.hasMoreTokens()) {
+			if (!st.hasMoreTokens())
+			{
 				break;
 			}
 			key = st.nextToken();
 		}
-		
+
 		return true;
 	}
-	
-	public List<Class<? extends PObject>> getLegalTypes() {
+
+	public List<Class<? extends PObject>> getLegalTypes()
+	{
 		return Arrays.asList(Ability.class, Deity.class, Domain.class,
-				Equipment.class, PCClass.class, Race.class, Skill.class,
-				Spell.class, PCTemplate.class, WeaponProf.class);
+			Equipment.class, PCClass.class, Race.class, Skill.class,
+			Spell.class, PCTemplate.class, WeaponProf.class);
 	}
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value) throws PersistenceLayerException
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
 	{
-		// TODO Auto-generated method stub
-		return false;
+		if (!getLegalTypes().contains(obj.getClass()))
+		{
+			Logging.errorPrint("Cannot use QUALIFY on a " + obj.getClass());
+			return false;
+		}
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not be empty");
+			return false;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
+		if (value.indexOf("|") == -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " requires at least two arguments, QualifyType and Key: "
+				+ value);
+			return false;
+		}
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		ReferenceManufacturer<? extends PObject> rm =
+				StringPClassUtil.getReferenceManufacturer(context, st
+					.nextToken());
+		if (rm == null)
+		{
+			Logging.errorPrint("  Error encountered parsing " + getTokenName());
+			Logging.errorPrint("  Format is: QualifyType|Key[|Key] value was: "
+				+ value);
+			Logging.errorPrint("  Valid QualifyTypes are: "
+				+ StringPClassUtil.getValidStrings());
+			return false;
+		}
+
+		while (st.hasMoreTokens())
+		{
+			obj.addToListFor(MapKey.QUALIFY, rm.getCDOMClass(), rm
+				.getReference(st.nextToken()));
+		}
+
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Set<Class<? extends PObject>> keys = obj.getKeySet(MapKey.QUALIFY);
+		if (keys == null || keys.isEmpty())
+		{
+			return null;
+		}
+		HashMapToList<String, CDOMReference<?>> map =
+				new HashMapToList<String, CDOMReference<?>>();
+		for (Class<? extends PObject> cl : keys)
+		{
+			List<CDOMReference<?>> values = obj.getListFor(MapKey.QUALIFY, cl);
+			if (values == null || values.isEmpty())
+			{
+				context.addWriteMessage("Invalid Empty List in "
+					+ getTokenName() + " for " + cl.getSimpleName());
+				return null;
+			}
+			String s = StringPClassUtil.getStringFor(cl);
+			for (CDOMReference<?> ref : values)
+			{
+				String key = s;
+				if (ref instanceof CategorizedCDOMReference)
+				{
+					Category<?> cat =
+							((CategorizedCDOMReference) ref).getCDOMCategory();
+					key += '=' + cat.toString();
+				}
+				map.addToListFor(key, ref);
+			}
+		}
+		Set<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		Set<String> returnSet = new TreeSet<String>();
+		for (String key : map.getKeySet())
+		{
+			set.clear();
+			set.addAll(map.getListFor(key));
+			StringBuilder sb = new StringBuilder();
+			sb.append(key).append(Constants.PIPE).append(
+				ReferenceUtilities.joinLstFormat(set, Constants.PIPE));
+			returnSet.add(sb.toString());
+		}
+		return returnSet.toArray(new String[returnSet.size()]);
 	}
 }

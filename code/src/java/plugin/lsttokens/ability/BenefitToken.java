@@ -25,6 +25,7 @@ import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.Ability;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.util.Logging;
 
 /**
  * This class deals with the BENEFIT Token
@@ -45,6 +46,11 @@ public class BenefitToken implements AbilityLstToken
 
 	public boolean parse(LoadContext context, Ability ability, String value)
 	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not be empty");
+			return false;
+		}
 		ability.put(StringKey.BENEFIT, value);
 		return true;
 	}
