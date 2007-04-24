@@ -66,6 +66,8 @@ public final class AssociationKey<T> {
 
 	public static final AssociationKey<String> TYPE = new AssociationKey<String>();
 
+	public static final AssociationKey<Integer> FOLLOWER_ADJUSTMENT = new AssociationKey<Integer>();
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey() {

@@ -17,18 +17,19 @@
  */
 package pcgen.cdom.restriction;
 
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Restriction;
-import pcgen.cdom.content.CompanionList;
+import pcgen.core.CompanionList;
 import pcgen.core.character.Follower;
 
 public class FollowerRestriction implements Restriction<Follower>
 {
 
-	private final CompanionList compList;
+	private final CDOMSingleRef<CompanionList> compList;
 
 	private final Class<Follower> targetClass = Follower.class;
 
-	public FollowerRestriction(CompanionList cl)
+	public FollowerRestriction(CDOMSingleRef<CompanionList> cl)
 	{
 		compList = cl;
 	}
@@ -40,7 +41,13 @@ public class FollowerRestriction implements Restriction<Follower>
 			// CONSIDER This is an Error, or is false sufficient?
 			return false;
 		}
-		return compList.containsRace(pro.getRaceObject());
+		CompanionList cl = compList.resolvesTo();
+		/*
+		 * TODO FIXME This probably needs to receive a reference to the active PC?
+		 * That is actually rather ugly, but since CompanionList is now a "list" 
+		 * in the Graph, that is probably what needs to happen...
+		 */
+		return false; //compList.containsRace(pro.getRaceObject());
 	}
 
 	public Class<Follower> getRestrictedClass()

@@ -26,14 +26,14 @@ package plugin.lsttokens;
 import pcgen.base.formula.Formula;
 import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
-import pcgen.cdom.content.CompanionList;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.restriction.CompoundRestriction;
-import pcgen.cdom.restriction.FollowerRestriction;
+import pcgen.core.CompanionList;
 import pcgen.core.PObject;
 import pcgen.core.character.Follower;
 import pcgen.persistence.LoadContext;
@@ -139,49 +139,15 @@ public class FollowersLst implements GlobalLstToken
 		}
 		String followerNumber = tok.nextToken();
 		Formula num = FormulaFactory.getFormulaFor(followerNumber);
-		/*
-		 * BUG FIXME This is a problem, because it is possible that the
-		 * CompanionList is NOT YET PRESENT in the Graph... :P
-		 * 
-		 * So I think I need to fetch a Reference, and then officially build the
-		 * CompanionList through the Context later on? That seems like a PAIN...
-		 * 
-		 * Actually, even that doesn't work, because there could be more than
-		 * one... so a reference doesn't do any good Therefore, this is a
-		 * deferred search of a Graph? I'm not a huge fan of that either.
-		 */
-		Set<PCGraphEdge> linkSet =
-				context.graph.getChildLinks(obj, CompanionList.class);
-		boolean found = false;
-		CompoundRestriction<Follower> cr =
-				new CompoundRestriction<Follower>(Follower.class, 1);
-		for (PCGraphEdge edge : linkSet)
-		{
-			CompanionList cl = (CompanionList) edge.getNodeAt(1);
-			/*
-			 * CONSIDER Should this be case sensitive or not?
-			 */
-			if (cl.getFollowerType().equalsIgnoreCase(followerType))
-			{
-				cr.addRestriction(new FollowerRestriction(cl));
-				found = true;
-				// Can't break, there may be more than one
-			}
-		}
-		if (found)
-		{
-			Slot<Follower> slot =
-					context.graph.addSlotIntoGraph(getTokenName(), obj,
-						Follower.class, num);
-			slot.addSinkRestriction(cr);
-		}
-		else
-		{
-			Logging
-				.errorPrint("Unable to find COMPANIONLIST for Follower Type: "
-					+ followerType);
-		}
-		return found;
+		CDOMReference<CompanionList> ref =
+				context.ref.getCDOMReference(CompanionList.class, followerType);
+
+		Slot<Follower> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), obj,
+					Follower.class, num);
+		slot.addSinkRestriction(cr);
+
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
