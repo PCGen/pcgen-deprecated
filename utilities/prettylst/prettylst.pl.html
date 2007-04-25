@@ -2,8 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>D:\pcgen_trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</title>
-<link rel="stylesheet" href="D:/pcgen_trunk/utilities/prettylst/prettylst.pl.css" type="text/css" />
+<title>C:\svn\pcgen_trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</title>
+<link rel="stylesheet" href="C:/svn/pcgen_trunk/utilities/prettylst/prettylst.pl.css" type="text/css" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rev="made" href="mailto:" />
 </head>
@@ -11,7 +11,7 @@
 <body>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
-<big><strong><span class="block">&nbsp;D:\pcgen_trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</span></strong></big>
+<big><strong><span class="block">&nbsp;C:\svn\pcgen_trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</span></strong></big>
 </td></tr>
 </table>
 
@@ -38,7 +38,9 @@
 	<li><a href="#version_history">VERSION HISTORY</a></li>
 	<ul>
 
+		<li><a href="#v1_38___not_yet_released">v1.38 - - NOT YET RELEASED</a></li>
 		<li><a href="#v1_37___2007_03_01">v1.37 - - 2007.03.01</a></li>
+		<li><a href="#v1_37__2007_03_01">v1.37 - 2007.03.01</a></li>
 		<li><a href="#v1_36__2007_01_26">v1.36 - 2007.01.26</a></li>
 		<li><a href="#v1_35">v1.35</a></li>
 		<li><a href="#v1_34__2005_01_19">v1.34 - 2005.01.19</a></li>
@@ -86,7 +88,7 @@
 </p>
 <h1><a name="name">NAME</a></h1>
 <p>prettylst.pl -- Reformat the PCGEN .lst files</p>
-<p>Version: 1.37</p>
+<p>Version: 1.38</p>
 <p>
 </p>
 <hr />
@@ -236,6 +238,12 @@ no actual convertions are done.</p>
 <p>Here are the list of the valid convertions so far:</p>
 </dd>
 <dl>
+<dt><strong><a name="item_racetype"><strong>RACETYPE</strong></a></strong>
+
+<dd>
+<p>Use to change the TYPE entry in race.lst to RACETYPE if no RACETYPE is present.</p>
+</dd>
+</li>
 <dt><strong><a name="item_pcgen5713"><strong>pcgen5713</strong></a></strong>
 
 <dd>
@@ -624,7 +632,8 @@ key here: &lt;<a href="http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D
 <hr />
 <h1><a name="copyright">COPYRIGHT</a></h1>
 <p>Copyright 2002 to 2006 by &Eacute;ric &quot;Space Monkey&quot; Beaudoin -- &lt;<a href="mailto:mailto:beaudoer@videotron.ca">mailto:beaudoer@videotron.ca</a>&gt;
-Copyright 2006 to 2007 by Andrew &quot;Tir Gwaith&quote; McDougall -- &lt;<a href="mailto:mailto:tir.gwaith@gmail.com">mailto:tir.gwaith@gmail.com</a>&gt;</p>
+Copyright 2006 to 2007 by Andrew &quot;Tir Gwaith&quote; McDougall -- &lt;<a href="mailto:mailto:tir.gwaith@gmail.com">mailto:tir.gwaith@gmail.com</a>&gt;
+Copyright 2007 by Richard Bowers</p>
 <p>All rights reserved.  You can redistribute and/or modify
 this program under the same terms as Perl itself.</p>
 <p>See <a href="http://www.perl.com/perl/misc/Artistic.html">http://www.perl.com/perl/misc/Artistic.html</a>.</p>
@@ -645,10 +654,6 @@ this program under the same terms as Perl itself.</p>
 <hr />
 <h1><a name="known_bugs">KNOWN BUGS</a></h1>
 <ul>
-<li><strong><a name="item_kit_object_references_not_found_durring_cross_2dre">KIT object references not found durring cross-reference checks.</a></strong>
-
-<li><strong><a name="item__2eforget_and__2emod_erroneously_reporting_missing">.FORGET and .MOD erroneously reporting missing KEY.</a></strong>
-
 <li><strong><a name="item_the_script_is_still_unwilling_to_do_the_coffee_2e_">The script is still unwilling to do the coffee...</a></strong>
 
 </ul>
@@ -658,7 +663,36 @@ this program under the same terms as Perl itself.</p>
 <h1><a name="version_history">VERSION HISTORY</a></h1>
 <p>
 </p>
+<h2><a name="v1_38___not_yet_released">v1.38 -- -- NOT YET RELEASED</a></h2>
+<p>Additional Conversions:
+[ 1678570 ] Correct PRESPELLTYPE syntax
+[1678577 ] ADD: syntax no longer uses parens
+[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
+- Use &quot;Followeralign&quot; as the option to convert to invoke this.
+[ 1514765 ] Conversion to remove old defaultmonster tags
+[ 1324519 ] ASCII characters</p>
+<p>Additional Warnings and notices:
+[ 1671407 ] xcheck PREABILITY tag
+[ 1683231 ] CHOOSE:SCHOOLS does not have arguments
+[ 1695877 ] KEY tag is global
+[ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE
+[ 1368562 ] .FORGET / .MOD don\'t need KEY entries
+[ 1671410 ] xcheck CATEGORY:Feat in Feat object.
+[ 1690990 ] Add APPEARANCE to Deities LST
+[ 1223873 ] WEAPONAUTO is no longer valid
+[ 1678573 ] ADD: deprecation
+[ 1678576 ] ADD:FEAT supports ALL
+[ 1387361 ] No KIT STARTPACK entry for \&quot;KIT:xxx\&quot;</p>
+<p>
+</p>
 <h2><a name="v1_37___2007_03_01">v1.37 -- -- 2007.03.01</a></h2>
+<p>[ 1353255 ] TYPE to RACETYPE conversion</p>
+<p>[ 1672551 ] PCC tag COMPANIONLIST</p>
+<p>[ 1672547 ] Support for Substitution Classes</p>
+<p>[ 1683839 ] Sort KEY tags next to names</p>
+<p>
+</p>
+<h2><a name="v1_37__2007_03_01">v1.37 -- 2007.03.01</a></h2>
 <p>[ 1623708 ] Invalid value &quot;DEITY&quot; for tag &quot;PREALIGN&quot; - should be allowed</p>
 <p>[ 1374892 ] DEITY tag</p>
 <p>Ability file now supported, including LEVELABLITY in Kits.  No real checking yet.</p>
@@ -906,7 +940,7 @@ tags follow the skill tags.</p>
 <p>
 </p>
 <h2><a name="v1_27__2003_04_03">v1.27 -- 2003.04.03</a></h2>
-<p>The <strong>-inputpath</strong> option is now mandantory</p>
+<p>The <strong>-inputpath</strong> option is now mandatory</p>
 <p>[ 686169 ] remove ATTACKS: tag</p>
 <p>[ 695677 ] EQUIPMENT: SLOTS for gloves, bracers and boots</p>
 <p>[ 707325 ] PCC: GAME is now GAMEMODE</p>
@@ -1165,7 +1199,7 @@ a particular filetype</p>
 <p>First working version. Only the EQUIPMENT file are supported.</p>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
 <tr><td class="block" valign="middle">
-<big><strong><span class="block">&nbsp;D:\pcgen_trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</span></strong></big>
+<big><strong><span class="block">&nbsp;C:\svn\pcgen_trunk\utilities\prettylst\prettylst.pl -- Reformat the PCGEN .lst files</span></strong></big>
 </td></tr>
 </table>
 

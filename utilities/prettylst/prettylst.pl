@@ -14468,6 +14468,7 @@ key here: <L<http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D5D2>>
 
 Copyright 2002 to 2006 by E<Eacute>ric E<quot>Space MonkeyE<quot> Beaudoin -- <mailto:beaudoer@videotron.ca>
 Copyright 2006 to 2007 by Andrew E<quot>Tir GwaithE<quote> McDougall -- <mailto:tir.gwaith@gmail.com>
+Copyright 2007 by Richard Bowers
 
 All rights reserved.  You can redistribute and/or modify
 this program under the same terms as Perl itself.
@@ -14490,10 +14491,6 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =over 8
 
-=item * KIT object references not found durring cross-reference checks.
-
-=item * .FORGET and .MOD erroneously reporting missing KEY.
-
 =item * The script is still unwilling to do the coffee...
 
 =back
@@ -14506,31 +14503,21 @@ Additional Conversions:
 [ 1678570 ] Correct PRESPELLTYPE syntax
 [1678577 ] ADD: syntax no longer uses parens
 [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
-Use "Followeralign" as the option to convert to invoke this.
+- Use "Followeralign" as the option to convert to invoke this.
 [ 1514765 ] Conversion to remove old defaultmonster tags
-[ 1324519 ] ASCII characters    
+[ 1324519 ] ASCII characters
 
 Additional Warnings and notices:
 [ 1671407 ] xcheck PREABILITY tag
-
 [ 1683231 ] CHOOSE:SCHOOLS does not have arguments
-
 [ 1695877 ] KEY tag is global
-
 [ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE
-
 [ 1368562 ] .FORGET / .MOD don\'t need KEY entries
-
 [ 1671410 ] xcheck CATEGORY:Feat in Feat object.
-
 [ 1690990 ] Add APPEARANCE to Deities LST
-
 [ 1223873 ] WEAPONAUTO is no longer valid
-
 [ 1678573 ] ADD: deprecation
-
 [ 1678576 ] ADD:FEAT supports ALL
-
 [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
 
 
