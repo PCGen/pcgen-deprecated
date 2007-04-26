@@ -14019,9 +14019,7 @@ work.
 
 =head1 PARAMETERS
 
-=over 8
-
-=item B<-inputpath> or B<-o>
+=head2 B<-inputpath> or B<-o>
 
 Path to an input directory that will be scanned for .pcc files. A list of
 files to parse will be built from the .pcc files found. Only the known filetypes will
@@ -14030,12 +14028,12 @@ be parsed.
 If B<-inputpath> is given without any B<-outputpath>, the script parse the files, produce the
 warning messages but doesn't write any new files.
 
-=item B<-basepath> or B<-b>
+=head2 B<-basepath> or B<-b>
 
 Path to the base directory use to replace the @ character in the .PCC files. If no B<-basepath> option is given,
 the value of B<-inputpath> is used to replace the @ character.
 
-=item B<-systempath> or B<-s>
+=head2 B<-systempath> or B<-s>
 
 Path to the B<pcgen/system> used for the .lst files in B<-inputpath>. This directory should contain the
 game mode files. These files will be parse to get a list of valid alignment abbreviations, valid statistic
@@ -14044,26 +14042,26 @@ abbriviations, valid game modes and globaly defined variables.
 If the B<-gamemode> parameter is used, only the system files found in the proper game mode directory will
 be parsed.
 
-=item B<-outputpath> or B<-o>
+=head2 B<-outputpath> or B<-o>
 
 Only used when B<-inputpath> is defined. B<-outputpath> define where the new files will
 be writen. The directory tree from the B<-inputpath> will be reproduce as well.
 
 Note: the output directory must be created before calling the script.
 
-=item B<-outputerror> or B<-e>
+=head2 B<-outputerror> or B<-e>
 
 Redirect STDERR to a file. All the warning and errors found by this script are printed
 to STDERR.
 
-=item B<-gamemode> or B<-gm>
+=head2 B<-gamemode> or B<-gm>
 
 Apply a filter on the GAMEMODE values and only read and/or reformat the files that
 meet the filter.
 
 e.g. -gamemode=35e
 
-=item B<-convert> or B<-c>
+=head2 B<-convert> or B<-c>
 
 Activate some convertions on the files. The converted files are written in the directory specified
 by B<-outputpath>. If no B<-outputpath> is provided, the convertions messages are displayed but
@@ -14075,9 +14073,49 @@ Here are the list of the valid convertions so far:
 
 =over 12
 
-=item B<RACETYPE>
+=item B<pcgen5120>
+
+=over 16
+
+Use to change a number of conversions for stable 5.12.0
+
+=item * [ 1678570 ] Correct PRESPELLTYPE syntax
+
+- changes PRESPELLTYPE format from PRESPELLTYPE:<A>,<x>,<y> to standard PRExxx:<x>,<A>=<y>
+
+<L<http://sourceforge.net/tracker/index.php?func=detail&aid=1678570&group_id=25576&atid=750093>>
+
+=item * [ 1678577 ] ADD: syntax no longer uses parens
+
+- Converts ADD:xxx(choice)y to ADD:xxx|y|choice. 
+
+<L<http://sourceforge.net/tracker/index.php?func=detail&aid=1678577&group_id=25576&atid=750093>>
+
+=item * [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
+
+- Changes the FOLLOWERALIGN tag to new DOMAINS tag imbedded PREALIGN tags.  
+This can also be done on its own with conversion 'followeralign'.
+
+=item * [ 1324519 ] ASCII characters
+
+- Converts a few known upper level characters to ASCII standard output 
+characters to prevent crashes and bad output when exporting from PCGen.
+
+<L<http://sourceforge.net/tracker/index.php?func=detail&aid=1324519&group_id=25576&atid=750093>>
+
+=back
+
+=item B<followeralign>
+
+Use to change the FOLLOWERALIGN tag to new DOMAINS tag imbedded PREALIGN tags.  This is included in conversion 5120
+
+<L<http://sourceforge.net/tracker/index.php?func=detail&aid=1689538&group_id=25576&atid=750093>>
+
+=item B<racetype>
 
 Use to change the TYPE entry in race.lst to RACETYPE if no RACETYPE is present.
+
+<L<http://sourceforge.net/tracker/index.php?func=detail&aid=1353255&group_id=25576&atid=750093>>
 
 =item B<pcgen5713>
 
@@ -14315,36 +14353,34 @@ PCGEN. This only change the path values in the .PCC, the files stay in the direc
 
 =back
 
-=item B<-old_source_tag>
+=head2 B<-old_source_tag>
 
 From PCGen version 5.9.6, there is a new format for the SOURCExxx tag that use the tab instead of the |. prettylst.pl
 automaticaly convert the SOURCExxx tags to the new format. The B<-old_source_tag> option must be used if
 you want to keep the old format in place.
 
-=back
-
-=item B<-report> or B<-r>
+=head2 B<-report> or B<-r>
 
 Produce a report of the valid tags found in all the .lst and .pcc files. The report for
 the invalid tags is always printed.
 
-=item B<-xcheck> or B<-x>
+=head2 B<-xcheck> or B<-x>
 
 B<This option is now on by default>
 
 Verify the existance of values refered by other tags and produce a report of the
 missing/inconsistant values.
 
-=item B<-nojep>
+=head2 B<-nojep>
 
 Disable the new parse_jep function for the formula. This makes the script use the
 old style formula parser.
 
-=item B<-noxcheck> or B<-nx>
+=head2 B<-noxcheck> or B<-nx>
 
 Disable the cross-check validations.
 
-=item B<-warninglevel> or B<-wl>
+=head2 B<-warninglevel> or B<-wl>
 
 Select the level of warning that should be displayed. The more critical levels include
 the less critical ones. ex. B<-wl=informational> will output messages of level
@@ -14376,9 +14412,8 @@ Can be very noisy. Include messages that warn about style, best practice and dep
 
 Messages used by the programmer to debug the script.
 
-=back
 
-=item B<-exportlist>
+=head2 B<-exportlist>
 
 Generate files which list objects with a reference on the file and line where they are located.
 This is very useful when correcting the problems found by the -x options.
@@ -14411,28 +14446,27 @@ Z<>
 
 =back
 
-=item B<-missingheader> or B<-mh>
+=head2 B<-missingheader> or B<-mh>
 
 List all the requested headers (with the get_header function) that are not
 defined in the %tagheader hash. When a header is not defined, the tag name
 is used as is in the generated header lines.
 
-=item B<-help>, B<-h> or B<-?>
+=head2 B<-help>, B<-h> or B<-?>
 
 Print a brief help message and exits.
 
-=item B<-man>
+=head2 B<-man>
 
 Prints the manual page and exits. You might want to pipe the output to your favorite pager
 (e.g. more).
 
-=item B<-htmlhelp>
+=head2 B<-htmlhelp>
 
 Generate a .html file with the complete documentation (as it is)
 for the script and tries to display it in a browser. The display portion only
 works on the Windows platform.
 
-=back
 
 =head1 MANIFEST
 
@@ -14467,7 +14501,9 @@ key here: <L<http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D5D2>>
 =head1 COPYRIGHT
 
 Copyright 2002 to 2006 by E<Eacute>ric E<quot>Space MonkeyE<quot> Beaudoin -- <mailto:beaudoer@videotron.ca>
+
 Copyright 2006 to 2007 by Andrew E<quot>Tir GwaithE<quote> McDougall -- <mailto:tir.gwaith@gmail.com>
+
 Copyright 2007 by Richard Bowers
 
 All rights reserved.  You can redistribute and/or modify
@@ -14499,27 +14535,42 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.38 -- -- NOT YET RELEASED
 
-Additional Conversions:
+=item Additional Conversions:
+
 [ 1678570 ] Correct PRESPELLTYPE syntax
-[1678577 ] ADD: syntax no longer uses parens
+
+[ 1678577 ] ADD: syntax no longer uses parens
+
 [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
 - Use "Followeralign" as the option to convert to invoke this.
+
 [ 1514765 ] Conversion to remove old defaultmonster tags
+
 [ 1324519 ] ASCII characters
 
-Additional Warnings and notices:
-[ 1671407 ] xcheck PREABILITY tag
-[ 1683231 ] CHOOSE:SCHOOLS does not have arguments
-[ 1695877 ] KEY tag is global
-[ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE
-[ 1368562 ] .FORGET / .MOD don\'t need KEY entries
-[ 1671410 ] xcheck CATEGORY:Feat in Feat object.
-[ 1690990 ] Add APPEARANCE to Deities LST
-[ 1223873 ] WEAPONAUTO is no longer valid
-[ 1678573 ] ADD: deprecation
-[ 1678576 ] ADD:FEAT supports ALL
-[ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
+=item Additional Warnings and notices:
 
+[ 1671407 ] xcheck PREABILITY tag
+
+[ 1683231 ] CHOOSE:SCHOOLS does not have arguments
+
+[ 1695877 ] KEY tag is global
+
+[ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE
+
+[ 1368562 ] .FORGET / .MOD don\'t need KEY entries
+
+[ 1671410 ] xcheck CATEGORY:Feat in Feat object.
+
+[ 1690990 ] Add APPEARANCE to Deities LST
+
+[ 1223873 ] WEAPONAUTO is no longer valid
+
+[ 1678573 ] ADD: deprecation
+
+[ 1678576 ] ADD:FEAT supports ALL
+
+[ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
 
 =head2 v1.37 -- -- 2007.03.01
 

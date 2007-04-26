@@ -31,6 +31,28 @@
 
 	<li><a href="#synopsis">SYNOPSIS</a></li>
 	<li><a href="#parameters">PARAMETERS</a></li>
+	<ul>
+
+		<li><a href="#inputpath_or_o"><strong>-inputpath</strong> or <strong>-o</strong></a></li>
+		<li><a href="#basepath_or_b"><strong>-basepath</strong> or <strong>-b</strong></a></li>
+		<li><a href="#systempath_or_s"><strong>-systempath</strong> or <strong>-s</strong></a></li>
+		<li><a href="#outputpath_or_o"><strong>-outputpath</strong> or <strong>-o</strong></a></li>
+		<li><a href="#outputerror_or_e"><strong>-outputerror</strong> or <strong>-e</strong></a></li>
+		<li><a href="#gamemode_or_gm"><strong>-gamemode</strong> or <strong>-gm</strong></a></li>
+		<li><a href="#convert_or_c"><strong>-convert</strong> or <strong>-c</strong></a></li>
+		<li><a href="#old_source_tag"><strong>-old_source_tag</strong></a></li>
+		<li><a href="#report_or_r"><strong>-report</strong> or <strong>-r</strong></a></li>
+		<li><a href="#xcheck_or_x"><strong>-xcheck</strong> or <strong>-x</strong></a></li>
+		<li><a href="#nojep"><strong>-nojep</strong></a></li>
+		<li><a href="#noxcheck_or_nx"><strong>-noxcheck</strong> or <strong>-nx</strong></a></li>
+		<li><a href="#warninglevel_or_wl"><strong>-warninglevel</strong> or <strong>-wl</strong></a></li>
+		<li><a href="#exportlist"><strong>-exportlist</strong></a></li>
+		<li><a href="#missingheader_or_mh"><strong>-missingheader</strong> or <strong>-mh</strong></a></li>
+		<li><a href="#help__h_or_"><strong>-help</strong>, <strong>-h</strong> or <strong>-?</strong></a></li>
+		<li><a href="#man"><strong>-man</strong></a></li>
+		<li><a href="#htmlhelp"><strong>-htmlhelp</strong></a></li>
+	</ul>
+
 	<li><a href="#manifest">MANIFEST</a></li>
 	<li><a href="#copyright">COPYRIGHT</a></li>
 	<li><a href="#to_do">TO DO</a></li>
@@ -165,83 +187,95 @@ work.</p>
 </p>
 <hr />
 <h1><a name="parameters">PARAMETERS</a></h1>
-<dl>
-<dt><strong><a name="item__2dinputpath_or__2do"><strong>-inputpath</strong> or <strong>-o</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="inputpath_or_o"><strong>-inputpath</strong> or <strong>-o</strong></a></h2>
 <p>Path to an input directory that will be scanned for .pcc files. A list of
 files to parse will be built from the .pcc files found. Only the known filetypes will
 be parsed.</p>
-</dd>
-<dd>
 <p>If <strong>-inputpath</strong> is given without any <strong>-outputpath</strong>, the script parse the files, produce the
 warning messages but doesn't write any new files.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dbasepath_or__2db"><strong>-basepath</strong> or <strong>-b</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="basepath_or_b"><strong>-basepath</strong> or <strong>-b</strong></a></h2>
 <p>Path to the base directory use to replace the @ character in the .PCC files. If no <strong>-basepath</strong> option is given,
 the value of <strong>-inputpath</strong> is used to replace the @ character.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dsystempath_or__2ds"><strong>-systempath</strong> or <strong>-s</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="systempath_or_s"><strong>-systempath</strong> or <strong>-s</strong></a></h2>
 <p>Path to the <strong>pcgen/system</strong> used for the .lst files in <strong>-inputpath</strong>. This directory should contain the
 game mode files. These files will be parse to get a list of valid alignment abbreviations, valid statistic
 abbriviations, valid game modes and globaly defined variables.</p>
-</dd>
-<dd>
 <p>If the <strong>-gamemode</strong> parameter is used, only the system files found in the proper game mode directory will
 be parsed.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2doutputpath_or__2do"><strong>-outputpath</strong> or <strong>-o</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="outputpath_or_o"><strong>-outputpath</strong> or <strong>-o</strong></a></h2>
 <p>Only used when <strong>-inputpath</strong> is defined. <strong>-outputpath</strong> define where the new files will
 be writen. The directory tree from the <strong>-inputpath</strong> will be reproduce as well.</p>
-</dd>
-<dd>
 <p>Note: the output directory must be created before calling the script.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2doutputerror_or__2de"><strong>-outputerror</strong> or <strong>-e</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="outputerror_or_e"><strong>-outputerror</strong> or <strong>-e</strong></a></h2>
 <p>Redirect STDERR to a file. All the warning and errors found by this script are printed
 to STDERR.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dgamemode_or__2dgm"><strong>-gamemode</strong> or <strong>-gm</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="gamemode_or_gm"><strong>-gamemode</strong> or <strong>-gm</strong></a></h2>
 <p>Apply a filter on the GAMEMODE values and only read and/or reformat the files that
 meet the filter.</p>
-</dd>
-<dd>
 <p>e.g. -gamemode=35e</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dconvert_or__2dc"><strong>-convert</strong> or <strong>-c</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="convert_or_c"><strong>-convert</strong> or <strong>-c</strong></a></h2>
 <p>Activate some convertions on the files. The converted files are written in the directory specified
 by <strong>-outputpath</strong>. If no <strong>-outputpath</strong> is provided, the convertions messages are displayed but
 no actual convertions are done.</p>
-</dd>
-<dd>
 <p>Only one convertion may be activate at a time.</p>
+<p>Here are the list of the valid convertions so far:</p>
+<dl>
+<dt><strong><a name="item_pcgen5120"><strong>pcgen5120</strong></a></strong>
+
+<p>Use to change a number of conversions for stable 5.12.0</p>
+<ul>
+<li><strong><a name="item__5b_1678570__5d_correct_prespelltype_syntax">[ 1678570 ] Correct PRESPELLTYPE syntax</a></strong>
+
+<p>- changes PRESPELLTYPE format from PRESPELLTYPE:&lt;A&gt;,&lt;x&gt;,&lt;y&gt; to standard PRExxx:&lt;x&gt;,&lt;A&gt;=&lt;y&gt;</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1678570&group_id=25576&atid=750093">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+<li><strong><a name="item__5b_1678577__5d_add_3a_syntax_no_longer_uses_paren">[ 1678577 ] ADD: syntax no longer uses parens</a></strong>
+
+<p>- Converts ADD:xxx(choice)y to ADD:xxx|y|choice.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1678577&group_id=25576&atid=750093">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+<li><strong><a name="item__5b_1689538__5d_conversion_3a_deprecation_of_follo">[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN</a></strong>
+
+<p>- Changes the FOLLOWERALIGN tag to new DOMAINS tag imbedded PREALIGN tags.  
+This can also be done on its own with conversion 'followeralign'.</p>
+</li>
+<li><strong><a name="item__5b_1324519__5d_ascii_characters">[ 1324519 ] ASCII characters</a></strong>
+
+<p>- Converts a few known upper level characters to ASCII standard output 
+characters to prevent crashes and bad output when exporting from PCGen.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1324519&group_id=25576&atid=750093">http://sourceforge.net/tracker/index.php</a>&gt;</p>
+</li>
+</ul>
+<dt><strong><a name="item_followeralign"><strong>followeralign</strong></a></strong>
+
+<dd>
+<p>Use to change the FOLLOWERALIGN tag to new DOMAINS tag imbedded PREALIGN tags.  This is included in conversion 5120</p>
 </dd>
 <dd>
-<p>Here are the list of the valid convertions so far:</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1689538&group_id=25576&atid=750093">http://sourceforge.net/tracker/index.php</a>&gt;</p>
 </dd>
-<dl>
-<dt><strong><a name="item_racetype"><strong>RACETYPE</strong></a></strong>
+</li>
+<dt><strong><a name="item_racetype"><strong>racetype</strong></a></strong>
 
 <dd>
 <p>Use to change the TYPE entry in race.lst to RACETYPE if no RACETYPE is present.</p>
+</dd>
+<dd>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1353255&group_id=25576&atid=750093">http://sourceforge.net/tracker/index.php</a>&gt;</p>
 </dd>
 </li>
 <dt><strong><a name="item_pcgen5713"><strong>pcgen5713</strong></a></strong>
@@ -451,56 +485,39 @@ PCGEN. This only change the path values in the .PCC, the files stay in the direc
 </dd>
 </li>
 </dl>
-<dt><strong><a name="item__2dold_source_tag"><strong>-old_source_tag</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="old_source_tag"><strong>-old_source_tag</strong></a></h2>
 <p>From PCGen version 5.9.6, there is a new format for the SOURCExxx tag that use the tab instead of the |. prettylst.pl
 automaticaly convert the SOURCExxx tags to the new format. The <strong>-old_source_tag</strong> option must be used if
 you want to keep the old format in place.</p>
-</dd>
-</li>
-</dl>
-<dl>
-<dt><strong><a name="item__2dreport_or__2dr"><strong>-report</strong> or <strong>-r</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="report_or_r"><strong>-report</strong> or <strong>-r</strong></a></h2>
 <p>Produce a report of the valid tags found in all the .lst and .pcc files. The report for
 the invalid tags is always printed.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dxcheck_or__2dx"><strong>-xcheck</strong> or <strong>-x</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="xcheck_or_x"><strong>-xcheck</strong> or <strong>-x</strong></a></h2>
 <p><strong>This option is now on by default</strong></p>
-</dd>
-<dd>
 <p>Verify the existance of values refered by other tags and produce a report of the
 missing/inconsistant values.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dnojep"><strong>-nojep</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="nojep"><strong>-nojep</strong></a></h2>
 <p>Disable the new parse_jep function for the formula. This makes the script use the
 old style formula parser.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dnoxcheck_or__2dnx"><strong>-noxcheck</strong> or <strong>-nx</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="noxcheck_or_nx"><strong>-noxcheck</strong> or <strong>-nx</strong></a></h2>
 <p>Disable the cross-check validations.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dwarninglevel_or__2dwl"><strong>-warninglevel</strong> or <strong>-wl</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="warninglevel_or_wl"><strong>-warninglevel</strong> or <strong>-wl</strong></a></h2>
 <p>Select the level of warning that should be displayed. The more critical levels include
 the less critical ones. ex. <strong>-wl=informational</strong> will output messages of level
 informational, notice, warning and error but will not output the debug level messages.</p>
-</dd>
-<dd>
 <p>The possible levels are:</p>
-</dd>
 <dl>
 <dt><strong><a name="item_error_2c_err_or_3"><strong>error</strong>, <strong>err</strong> or <strong>3</strong></a></strong>
 
@@ -535,15 +552,12 @@ at this level.</p>
 </dd>
 </li>
 </dl>
-<dt><strong><a name="item__2dexportlist"><strong>-exportlist</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="exportlist"><strong>-exportlist</strong></a></h2>
 <p>Generate files which list objects with a reference on the file and line where they are located.
 This is very useful when correcting the problems found by the -x options.</p>
-</dd>
-<dd>
 <p>The files generated are:</p>
-</dd>
 <ul>
 <li><strong><a name="item_class_2ecsv">class.csv</a></strong>
 
@@ -568,36 +582,27 @@ This is very useful when correcting the problems found by the -x options.</p>
 <p></p>
 </li>
 </ul>
-<dt><strong><a name="item__2dmissingheader_or__2dmh"><strong>-missingheader</strong> or <strong>-mh</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="missingheader_or_mh"><strong>-missingheader</strong> or <strong>-mh</strong></a></h2>
 <p>List all the requested headers (with the get_header function) that are not
 defined in the %tagheader hash. When a header is not defined, the tag name
 is used as is in the generated header lines.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dhelp_2c__2dh_or__2d_3f"><strong>-help</strong>, <strong>-h</strong> or <strong>-?</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="help__h_or_"><strong>-help</strong>, <strong>-h</strong> or <strong>-?</strong></a></h2>
 <p>Print a brief help message and exits.</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dman"><strong>-man</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="man"><strong>-man</strong></a></h2>
 <p>Prints the manual page and exits. You might want to pipe the output to your favorite pager
 (e.g. more).</p>
-</dd>
-</li>
-<dt><strong><a name="item__2dhtmlhelp"><strong>-htmlhelp</strong></a></strong>
-
-<dd>
+<p>
+</p>
+<h2><a name="htmlhelp"><strong>-htmlhelp</strong></a></h2>
 <p>Generate a .html file with the complete documentation (as it is)
 for the script and tries to display it in a browser. The display portion only
 works on the Windows platform.</p>
-</dd>
-</li>
-</dl>
 <p>
 </p>
 <hr />
@@ -631,9 +636,9 @@ key here: &lt;<a href="http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D
 </p>
 <hr />
 <h1><a name="copyright">COPYRIGHT</a></h1>
-<p>Copyright 2002 to 2006 by &Eacute;ric &quot;Space Monkey&quot; Beaudoin -- &lt;<a href="mailto:mailto:beaudoer@videotron.ca">mailto:beaudoer@videotron.ca</a>&gt;
-Copyright 2006 to 2007 by Andrew &quot;Tir Gwaith&quote; McDougall -- &lt;<a href="mailto:mailto:tir.gwaith@gmail.com">mailto:tir.gwaith@gmail.com</a>&gt;
-Copyright 2007 by Richard Bowers</p>
+<p>Copyright 2002 to 2006 by &Eacute;ric &quot;Space Monkey&quot; Beaudoin -- &lt;<a href="mailto:mailto:beaudoer@videotron.ca">mailto:beaudoer@videotron.ca</a>&gt;</p>
+<p>Copyright 2006 to 2007 by Andrew &quot;Tir Gwaith&quote; McDougall -- &lt;<a href="mailto:mailto:tir.gwaith@gmail.com">mailto:tir.gwaith@gmail.com</a>&gt;</p>
+<p>Copyright 2007 by Richard Bowers</p>
 <p>All rights reserved.  You can redistribute and/or modify
 this program under the same terms as Perl itself.</p>
 <p>See <a href="http://www.perl.com/perl/misc/Artistic.html">http://www.perl.com/perl/misc/Artistic.html</a>.</p>
@@ -664,25 +669,63 @@ this program under the same terms as Perl itself.</p>
 <p>
 </p>
 <h2><a name="v1_38___not_yet_released">v1.38 -- -- NOT YET RELEASED</a></h2>
-<p>Additional Conversions:
-[ 1678570 ] Correct PRESPELLTYPE syntax
-[1678577 ] ADD: syntax no longer uses parens
-[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
-- Use &quot;Followeralign&quot; as the option to convert to invoke this.
-[ 1514765 ] Conversion to remove old defaultmonster tags
-[ 1324519 ] ASCII characters</p>
-<p>Additional Warnings and notices:
-[ 1671407 ] xcheck PREABILITY tag
-[ 1683231 ] CHOOSE:SCHOOLS does not have arguments
-[ 1695877 ] KEY tag is global
-[ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE
-[ 1368562 ] .FORGET / .MOD don\'t need KEY entries
-[ 1671410 ] xcheck CATEGORY:Feat in Feat object.
-[ 1690990 ] Add APPEARANCE to Deities LST
-[ 1223873 ] WEAPONAUTO is no longer valid
-[ 1678573 ] ADD: deprecation
-[ 1678576 ] ADD:FEAT supports ALL
-[ 1387361 ] No KIT STARTPACK entry for \&quot;KIT:xxx\&quot;</p>
+<dl>
+<dt><strong><a name="item_additional_conversions_3a">Additional Conversions:</a></strong>
+
+<dd>
+<p>[ 1678570 ] Correct PRESPELLTYPE syntax</p>
+</dd>
+<dd>
+<p>[ 1678577 ] ADD: syntax no longer uses parens</p>
+</dd>
+<dd>
+<p>[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
+- Use &quot;Followeralign&quot; as the option to convert to invoke this.</p>
+</dd>
+<dd>
+<p>[ 1514765 ] Conversion to remove old defaultmonster tags</p>
+</dd>
+<dd>
+<p>[ 1324519 ] ASCII characters</p>
+</dd>
+</li>
+<dt><strong><a name="item_additional_warnings_and_notices_3a">Additional Warnings and notices:</a></strong>
+
+<dd>
+<p>[ 1671407 ] xcheck PREABILITY tag</p>
+</dd>
+<dd>
+<p>[ 1683231 ] CHOOSE:SCHOOLS does not have arguments</p>
+</dd>
+<dd>
+<p>[ 1695877 ] KEY tag is global</p>
+</dd>
+<dd>
+<p>[ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE</p>
+</dd>
+<dd>
+<p>[ 1368562 ] .FORGET / .MOD don\'t need KEY entries</p>
+</dd>
+<dd>
+<p>[ 1671410 ] xcheck CATEGORY:Feat in Feat object.</p>
+</dd>
+<dd>
+<p>[ 1690990 ] Add APPEARANCE to Deities LST</p>
+</dd>
+<dd>
+<p>[ 1223873 ] WEAPONAUTO is no longer valid</p>
+</dd>
+<dd>
+<p>[ 1678573 ] ADD: deprecation</p>
+</dd>
+<dd>
+<p>[ 1678576 ] ADD:FEAT supports ALL</p>
+</dd>
+<dd>
+<p>[ 1387361 ] No KIT STARTPACK entry for \&quot;KIT:xxx\&quot;</p>
+</dd>
+</li>
+</dl>
 <p>
 </p>
 <h2><a name="v1_37___2007_03_01">v1.37 -- -- 2007.03.01</a></h2>
