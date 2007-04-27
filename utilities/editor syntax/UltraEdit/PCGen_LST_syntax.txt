@@ -451,8 +451,8 @@ ZipEntry ZipException ZipFile ZipInputStream ZipOutputStream
 /Unindent Strings = "}"
 /Open Brace Strings =  "{" "(" "["
 /Close Brace Strings = "}" ")" "]"
-/Open Fold Strings = "{"
-/Close Fold Strings = "}"
+/Open Fold Strings = "{" "=over"
+/Close Fold Strings = "}" "=back"
 /C1"Keywords" STYLE_KEYWORD
 -A -B -C -M -O -R -S -T -W -X -b -c -d -e -f -g -k -l -o -p -r -s -t -u -w -x -z
 continue
