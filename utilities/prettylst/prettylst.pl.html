@@ -665,7 +665,7 @@ this program under the same terms as Perl itself.</p>
 <hr />
 <h1><a name="known_bugs">KNOWN BUGS</a></h1>
 <ul>
-<li><strong><a name="item_method">Lots of 'Unknown PRExxx tag &quot;PREDEFAULTMONSTER&quot;' reports, since converting the PREDEFAULTMONSTER tags has been postponed a bit while we figure out a better conversion method (other than just removing).</a></strong>
+<li><strong><a name="item_contain">When running conversions pcgen5120 on a file with ADD:xxx|, and the sub-elements contain ( ), prettylst will run the conversion script on that tag again, resulting in too many | in the tag, and no loading in pcgen.  Please be careful and make backups before running the script conversion (as usual)</a></strong>
 
 <li><strong><a name="item_when_running_coversions_pcgen5120_2c_lots_of_dupli">When running coversions pcgen5120, lots of duplicate item warnings when replacing the ADD:xxx syntax.  running the script after that will show better accuracy, but remove the replacement statements in the report.</a></strong>
 

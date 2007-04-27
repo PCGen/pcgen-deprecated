@@ -14539,7 +14539,7 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =over 8
 
-=item * Lots of 'Unknown PRExxx tag "PREDEFAULTMONSTER"' reports, since converting the PREDEFAULTMONSTER tags has been postponed a bit while we figure out a better conversion method (other than just removing).
+=item * When running conversions pcgen5120 on a file with ADD:xxx|, and the sub-elements contain ( ), prettylst will run the conversion script on that tag again, resulting in too many | in the tag, and no loading in pcgen.  Please be careful and make backups before running the script conversion (as usual)
 
 =item * When running coversions pcgen5120, lots of duplicate item warnings when replacing the ADD:xxx syntax.  running the script after that will show better accuracy, but remove the replacement statements in the report.
 
