@@ -1586,7 +1586,8 @@ my @PRE_Tags = (
 # Hash used by validate_pre_tag to verify if a PRExxx tag exists
 my %PRE_Tags = (
     'PREAPPLY'          => 1,    # Only valid when embeded
-#    'PREDEFAULTMONSTER' => 1,    # Only valid when embeded
+# Uncommenting until conversion for monster kits is done to prevent error messages.
+    'PREDEFAULTMONSTER' => 1,    # Only valid when embeded
 );
 
 for my $pre_tag (@PRE_Tags) {
@@ -8887,7 +8888,7 @@ sub validate_pre_tag {
 			while (($found == 0) 
 			       && ((my $check_race,my $val) = each(%{$valid_entities{'RACE'}})))
 			{
-			    if ($check_race =~ m/^$race_wild/) {
+			    if ( $check_race =~ m/^$race_wild/) {
 				$found=1;
 				$race_partial_match{$race_wild} = 1;
 			    }
