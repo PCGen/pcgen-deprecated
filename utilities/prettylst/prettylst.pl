@@ -362,6 +362,7 @@ elsif ( $cl_options{convert} eq 'pcgen5120' ) {
     $conversion_enable{'DEITY:Followeralign conversion'} =1;
     $conversion_enable{'ALL:ADD Syntax Fix'} = 1;
     $conversion_enable{'ALL:PRESPELLTYPE Syntax'} = 1;
+    $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
    # Commenting out for use in possible KIT conversion of old Default monster data.
 #    $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;  
 
@@ -14096,6 +14097,13 @@ Use to change a number of conversions for stable 5.12.0
 - Changes the FOLLOWERALIGN tag to new DOMAINS tag imbedded PREALIGN tags.  
 This can also be done on its own with conversion 'followeralign'.
 
+=item * [ 1353255 ] TYPE to RACETYPE conversion
+
+Use to change the TYPE entry in race.lst to RACETYPE if no RACETYPE is present.
+
+<L<http://sourceforge.net/tracker/index.php?func=detail&aid=1353255&group_id=25576&atid=750093>>
+
+
 =item * [ 1324519 ] ASCII characters
 
 - Converts a few known upper level characters to ASCII standard output 
@@ -14412,6 +14420,7 @@ Can be very noisy. Include messages that warn about style, best practice and dep
 
 Messages used by the programmer to debug the script.
 
+=back
 
 =head2 B<-exportlist>
 
@@ -14441,8 +14450,6 @@ The files generated are:
 =item * spell.csv
 
 =item * variable.csv
-
-Z<>
 
 =back
 
@@ -14515,6 +14522,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =over 8
 
+=item * Default monster race conversion to KITs
+
 =item * Add better examples
 
 =item * Add more cross-reference checks
@@ -14527,13 +14536,19 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =over 8
 
+=item * Lots of 'Unknown PRExxx tag "PREDEFAULTMONSTER"' reports, since converting the PREDEFAULTMONSTER tags has been postponed a bit while we figure out a better conversion method (other than just removing).
+
+=item * When running coversions pcgen5120, lots of duplicate item warnings when replacing the ADD:xxx syntax.  running the script after that will show better accuracy, but remove the replacement statements in the report.
+
 =item * The script is still unwilling to do the coffee...
 
 =back
 
 =head1 VERSION HISTORY
 
-=head2 v1.38 -- -- NOT YET RELEASED
+=head2 v1.38 -- -- 2007.04.26
+
+=over 3
 
 =item Additional Conversions:
 
@@ -14547,6 +14562,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 [ 1514765 ] Conversion to remove old defaultmonster tags
 
 [ 1324519 ] ASCII characters
+
+=back
+
+=over 3
 
 =item Additional Warnings and notices:
 
@@ -14572,9 +14591,12 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
 
-=head2 v1.37 -- -- 2007.03.01
+=back
+
+=head2 v1.37 -- 2007.03.01
 
 [ 1353255 ] TYPE to RACETYPE conversion
+- Use convert 'racetype' to invoke this.
 
 [ 1672551 ] PCC tag COMPANIONLIST
 

@@ -60,8 +60,8 @@
 	<li><a href="#version_history">VERSION HISTORY</a></li>
 	<ul>
 
-		<li><a href="#v1_38___not_yet_released">v1.38 - - NOT YET RELEASED</a></li>
-		<li><a href="#v1_37___2007_03_01">v1.37 - - 2007.03.01</a></li>
+		<li><a href="#v1_38___2007_04_26">v1.38 - - 2007.04.26</a></li>
+		<li><a href="#v1_37__2007_03_01">v1.37 - 2007.03.01</a></li>
 		<li><a href="#v1_37__2007_03_01">v1.37 - 2007.03.01</a></li>
 		<li><a href="#v1_36__2007_01_26">v1.36 - 2007.01.26</a></li>
 		<li><a href="#v1_35">v1.35</a></li>
@@ -252,6 +252,11 @@ no actual convertions are done.</p>
 
 <p>- Changes the FOLLOWERALIGN tag to new DOMAINS tag imbedded PREALIGN tags.  
 This can also be done on its own with conversion 'followeralign'.</p>
+</li>
+<li><strong><a name="item__5b_1353255__5d_type_to_racetype_conversion">[ 1353255 ] TYPE to RACETYPE conversion</a></strong>
+
+<p>Use to change the TYPE entry in race.lst to RACETYPE if no RACETYPE is present.</p>
+<p>&lt;<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1353255&group_id=25576&atid=750093">http://sourceforge.net/tracker/index.php</a>&gt;</p>
 </li>
 <li><strong><a name="item__5b_1324519__5d_ascii_characters">[ 1324519 ] ASCII characters</a></strong>
 
@@ -579,8 +584,6 @@ This is very useful when correcting the problems found by the -x options.</p>
 
 <li><strong><a name="item_variable_2ecsv">variable.csv</a></strong>
 
-<p></p>
-</li>
 </ul>
 <p>
 </p>
@@ -647,6 +650,8 @@ this program under the same terms as Perl itself.</p>
 <hr />
 <h1><a name="to_do">TO DO</a></h1>
 <ul>
+<li><strong><a name="item_default_monster_race_conversion_to_kits">Default monster race conversion to KITs</a></strong>
+
 <li><strong><a name="item_add_better_examples">Add better examples</a></strong>
 
 <li><strong><a name="item_add_more_cross_2dreference_checks">Add more cross-reference checks</a></strong>
@@ -659,6 +664,10 @@ this program under the same terms as Perl itself.</p>
 <hr />
 <h1><a name="known_bugs">KNOWN BUGS</a></h1>
 <ul>
+<li><strong><a name="item_method">Lots of 'Unknown PRExxx tag &quot;PREDEFAULTMONSTER&quot;' reports, since converting the PREDEFAULTMONSTER tags has been postponed a bit while we figure out a better conversion method (other than just removing).</a></strong>
+
+<li><strong><a name="item_when_running_coversions_pcgen5120_2c_lots_of_dupli">When running coversions pcgen5120, lots of duplicate item warnings when replacing the ADD:xxx syntax.  running the script after that will show better accuracy, but remove the replacement statements in the report.</a></strong>
+
 <li><strong><a name="item_the_script_is_still_unwilling_to_do_the_coffee_2e_">The script is still unwilling to do the coffee...</a></strong>
 
 </ul>
@@ -668,7 +677,7 @@ this program under the same terms as Perl itself.</p>
 <h1><a name="version_history">VERSION HISTORY</a></h1>
 <p>
 </p>
-<h2><a name="v1_38___not_yet_released">v1.38 -- -- NOT YET RELEASED</a></h2>
+<h2><a name="v1_38___2007_04_26">v1.38 -- -- 2007.04.26</a></h2>
 <dl>
 <dt><strong><a name="item_additional_conversions_3a">Additional Conversions:</a></strong>
 
@@ -689,6 +698,8 @@ this program under the same terms as Perl itself.</p>
 <p>[ 1324519 ] ASCII characters</p>
 </dd>
 </li>
+</dl>
+<dl>
 <dt><strong><a name="item_additional_warnings_and_notices_3a">Additional Warnings and notices:</a></strong>
 
 <dd>
@@ -728,8 +739,9 @@ this program under the same terms as Perl itself.</p>
 </dl>
 <p>
 </p>
-<h2><a name="v1_37___2007_03_01">v1.37 -- -- 2007.03.01</a></h2>
-<p>[ 1353255 ] TYPE to RACETYPE conversion</p>
+<h2><a name="v1_37__2007_03_01">v1.37 -- 2007.03.01</a></h2>
+<p>[ 1353255 ] TYPE to RACETYPE conversion
+- Use convert 'racetype' to invoke this.</p>
 <p>[ 1672551 ] PCC tag COMPANIONLIST</p>
 <p>[ 1672547 ] Support for Substitution Classes</p>
 <p>[ 1683839 ] Sort KEY tags next to names</p>
