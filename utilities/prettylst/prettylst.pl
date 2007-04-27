@@ -14079,7 +14079,9 @@ Here are the list of the valid convertions so far:
 
 =over 16
 
-Use to change a number of conversions for stable 5.12.0
+Use to change a number of conversions for stable 5.12.0.  
+
+B<This has a small issue:> if ADD:blah| syntax items that contain ( ) in the elements, it will attempt to convert again.  This has only caused a few problems in the srds, but it is something to be aware of on homebrews.
 
 =item * [ 1678570 ] Correct PRESPELLTYPE syntax
 
@@ -14591,6 +14593,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 [ 1678576 ] ADD:FEAT supports ALL
 
 [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
+
+Race entry references with % now produce _much_ fewer errors lines.
 
 =back
 

@@ -236,7 +236,8 @@ no actual convertions are done.</p>
 <dl>
 <dt><strong><a name="item_pcgen5120"><strong>pcgen5120</strong></a></strong>
 
-<p>Use to change a number of conversions for stable 5.12.0</p>
+<p>Use to change a number of conversions for stable 5.12.0.</p>
+<p><strong>This has a small issue:</strong> if ADD:blah| syntax items that contain ( ) in the elements, it will attempt to convert again.  This has only caused a few problems in the srds, but it is something to be aware of on homebrews.</p>
 <ul>
 <li><strong><a name="item__5b_1678570__5d_correct_prespelltype_syntax">[ 1678570 ] Correct PRESPELLTYPE syntax</a></strong>
 
@@ -734,6 +735,9 @@ this program under the same terms as Perl itself.</p>
 </dd>
 <dd>
 <p>[ 1387361 ] No KIT STARTPACK entry for \&quot;KIT:xxx\&quot;</p>
+</dd>
+<dd>
+<p>Race entry references with % now produce _much_ fewer errors lines.</p>
 </dd>
 </li>
 </dl>
