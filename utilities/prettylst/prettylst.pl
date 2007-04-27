@@ -8888,7 +8888,7 @@ sub validate_pre_tag {
 			while (($found == 0) 
 			       && ((my $check_race,my $val) = each(%{$valid_entities{'RACE'}})))
 			{
-			    if ( $check_race =~ m/^$race_wild/) {
+			    if ( $check_race =~ m/^\Q$race_wild/) {
 				$found=1;
 				$race_partial_match{$race_wild} = 1;
 			    }
