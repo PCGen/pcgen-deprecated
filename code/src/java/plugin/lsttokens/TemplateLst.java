@@ -22,7 +22,10 @@
  */
 package plugin.lsttokens;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
@@ -30,12 +33,12 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.content.ChoiceSet;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Campaign;
 import pcgen.core.PCTemplate;
+import pcgen.core.PCTemplateList;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -66,66 +69,81 @@ public class TemplateLst implements GlobalLstToken
 		return false;
 	}
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	public boolean parse(LoadContext context, CDOMObject cdo, String value)
 	{
 		if (value.startsWith(Constants.LST_CHOOSE))
 		{
-			return parseChoose(context, obj, value.substring(7));
+			// TODO TCT is not enough to keep this unique across different
+			// Templates
+			CDOMReference<PCTemplateList> ref =
+					context.ref.getCDOMReference(PCTemplateList.class, "*TCT");
+			boolean returnval =
+					parseChoose(context, cdo, ref, value
+						.substring(Constants.LST_CHOOSE.length()));
+			if (returnval)
+			{
+				context.graph.addSlotIntoGraph(getTokenName(), cdo,
+					PCTEMPLATE_CLASS);
+				// TODO Need to get the restriction attached to this slot...
+			}
+			return returnval;
 		}
 		else if (value.startsWith(Constants.LST_ADDCHOICE))
 		{
-			return parseAddChoice(context, obj, value);
+			CDOMReference<PCTemplateList> ref =
+					context.ref.getCDOMAllReference(PCTemplateList.class);
+			return parseChoose(context, cdo, ref, value
+				.substring(Constants.LST_ADDCHOICE.length()));
 		}
-
-		if (value.charAt(0) == '|')
+		else
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
-
-		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-
-		while (tok.hasMoreTokens())
-		{
-			String tokText = tok.nextToken();
-			if (Constants.LST_DOT_CLEAR.equals(tokText))
+			if (value.length() == 0)
 			{
-				context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-					PCTEMPLATE_CLASS);
+				Logging.errorPrint(getTokenName()
+					+ " may not have empty argument");
+				return false;
 			}
-			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
+			if (value.charAt(0) == '|')
 			{
-				PrereqObject pct =
-						context.ref.getCDOMReference(PCTEMPLATE_CLASS, tokText
-							.substring(7));
-				context.graph.unlinkChildNode(getTokenName(), obj, pct);
+				Logging.errorPrint(getTokenName()
+					+ " arguments may not start with | , see: " + value);
+				return false;
 			}
-			else
+			if (value.charAt(value.length() - 1) == '|')
 			{
-				context.graph.linkObjectIntoGraph(getTokenName(), obj,
-					context.ref.getCDOMReference(PCTEMPLATE_CLASS, tokText));
+				Logging.errorPrint(getTokenName()
+					+ " arguments may not end with | , see: " + value);
+				return false;
+			}
+			if (value.indexOf("||") != -1)
+			{
+				Logging.errorPrint(getTokenName()
+					+ " arguments uses double separator || : " + value);
+				return false;
+			}
+
+			StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
+			while (tok.hasMoreTokens())
+			{
+				String tokText = tok.nextToken();
+				CDOMSimpleSingleRef<PCTemplate> ref =
+						context.ref.getCDOMReference(PCTEMPLATE_CLASS, tokText);
+				context.graph.linkObjectIntoGraph(getTokenName(), cdo, ref);
 			}
 		}
+
 		return true;
 	}
 
-	private boolean parseChoose(LoadContext context, CDOMObject obj,
-		String value)
+	public boolean parseChoose(LoadContext context, CDOMObject obj,
+		CDOMReference<PCTemplateList> swl, String value)
 	{
-
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint(getTokenName()
@@ -146,93 +164,87 @@ public class TemplateLst implements GlobalLstToken
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-		ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
-				new ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>(1, tok
-					.countTokens());
+		List<CDOMReference<PCTemplate>> list =
+				new ArrayList<CDOMReference<PCTemplate>>();
+
 		while (tok.hasMoreTokens())
 		{
-			cl.addChoice(context.ref.getCDOMReference(PCTEMPLATE_CLASS, tok
+			list.add(context.ref.getCDOMReference(PCTEMPLATE_CLASS, tok
 				.nextToken()));
 		}
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, cl);
-		return true;
-	}
+		Aggregator agg = new Aggregator(obj, swl, getTokenName());
+		/*
+		 * This is intentionally Holds, as the context for traversal must only
+		 * be the ref (linked by the Activation Edge). So we need an edge to the
+		 * Activator to get it copied into the PC, but since this is a 3rd party
+		 * Token, the Race should never grant anything hung off the aggregator.
+		 */
+		context.graph.linkHoldsIntoGraph(getTokenName(), obj, agg);
+		context.graph.linkActivationIntoGraph(getTokenName(), swl, agg);
 
-	private boolean parseAddChoice(LoadContext context, CDOMObject obj,
-		String value)
-	{
-		Set<PCGraphEdge> edgeSet =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					ChoiceSet.class);
-		if (edgeSet.size() != 1)
+		for (CDOMReference<PCTemplate> prof : list)
 		{
-			/*
-			 * BUG FIXME The problem here is that the CHOOSE isn't necessarily
-			 * on THIS object... apparently CHOOSE is global, which leads to all
-			 * kinds of conflict problems if a character can get more than one
-			 * somehow :(
-			 */
-			Logging.errorPrint(getTokenName()
-				+ ":ADDCHOICE cannot be performed because more than "
-				+ "one ChoiceList is attached to "
-				+ obj.getClass().getSimpleName() + " " + obj.getKeyName());
-			return false;
+			context.graph.linkAllowIntoGraph(getTokenName(), agg, prof);
 		}
-		PCGraphEdge edge = edgeSet.iterator().next();
-		StringTokenizer tok =
-				new StringTokenizer(value.substring(7), Constants.PIPE);
-		ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
-				(ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>) edge.getNodeAt(1);
-		cl.addChoice(context.ref.getCDOMReference(PCTEMPLATE_CLASS, tok
-			.nextToken()));
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, CDOMObject obj)
+	public String[] unparse(LoadContext context, CDOMObject cdo)
 	{
-		Set<PCGraphEdge> choiceEdgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					ChoiceSet.class);
-		Set<PCGraphEdge> templateEdgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					PCTemplate.class);
-		int arrayLength = choiceEdgeList.isEmpty() ? 0 : 1;
-		arrayLength += templateEdgeList.isEmpty() ? 0 : 1;
-		if (arrayLength == 0)
+		Set<PCGraphEdge> directEdges =
+				context.graph.getChildLinksFromToken(getTokenName(), cdo,
+					PCTEMPLATE_CLASS);
+		Set<PCGraphEdge> choiceEdges =
+				context.graph.getChildLinksFromToken(getTokenName(), cdo,
+					Aggregator.class);
+		SortedSet<CDOMReference<?>> set =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		int currentIndex = 0;
+		int choiceSize = choiceEdges == null ? 0 : choiceEdges.size();
+		int directSize =
+				directEdges == null ? 0 : directEdges.isEmpty() ? 0 : 1;
+		if ((directSize + choiceSize) == 0)
 		{
+			// No templates
 			return null;
 		}
-		String[] array = new String[arrayLength];
-		int index = 0;
-		Set<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		if (!choiceEdgeList.isEmpty())
+		String[] array = new String[directSize + choiceSize];
+		if (directEdges != null && !directEdges.isEmpty())
 		{
-			if (choiceEdgeList.size() > 1)
+			for (PCGraphEdge edge : directEdges)
 			{
-				context.addWriteMessage("Not valid to have more than one "
-					+ "ChoiceList created by " + getTokenName());
-				return null;
+				set.add((CDOMReference<?>) edge.getSinkNodes().get(0));
 			}
-			ChoiceSet<CDOMSimpleSingleRef<PCTemplate>> cl =
-					(ChoiceSet<CDOMSimpleSingleRef<PCTemplate>>) choiceEdgeList
-						.iterator().next().getSinkNodes().get(0);
-			set.addAll(cl.getSet());
-			array[index++] =
-					"CHOOSE:"
-						+ ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
-		}
-		if (!templateEdgeList.isEmpty())
-		{
-			set.clear();
-			for (PCGraphEdge edge : templateEdgeList)
-			{
-				CDOMReference<?> pct =
-						(CDOMReference<?>) edge.getSinkNodes().get(0);
-				set.add(pct);
-			}
-			array[index++] =
+
+			array[currentIndex++] =
 					ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
+		}
+		if (choiceEdges != null && !choiceEdges.isEmpty())
+		{
+			for (PCGraphEdge edge : choiceEdges)
+			{
+				Aggregator a = (Aggregator) edge.getNodeAt(1);
+				Set<PCGraphEdge> edgeToTemplateList =
+						context.graph.getParentLinksFromToken(getTokenName(),
+							a, PCTemplateList.class);
+				Set<PCGraphEdge> edgeToChildList =
+						context.graph.getChildLinksFromToken(getTokenName(), a,
+							PCTEMPLATE_CLASS);
+				CDOMReference<PCTemplateList> parent =
+						(CDOMReference<PCTemplateList>) edgeToTemplateList
+							.iterator().next().getNodeAt(0);
+				set.clear();
+				for (PCGraphEdge se : edgeToChildList)
+				{
+					set.add((CDOMReference<PCTemplate>) se.getNodeAt(1));
+				}
+				String prefix =
+						parent.getLSTformat().equals("ALL")
+							? Constants.LST_ADDCHOICE : Constants.LST_CHOOSE;
+				array[currentIndex++] =
+						(prefix + ReferenceUtilities.joinLstFormat(set,
+							Constants.PIPE));
+			}
 		}
 		return array;
 	}

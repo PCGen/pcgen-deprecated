@@ -77,6 +77,24 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Domain, Ability>
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public Class<Domain> getCDOMClass()
 	{
 		return Domain.class;
@@ -105,6 +123,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Domain, Ability>
 	public void testInvalidInputEmpty()
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -113,6 +132,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Domain, Ability>
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"PRECLASS:1,Fighter=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -121,6 +141,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Domain, Ability>
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -129,6 +150,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Domain, Ability>
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1||PRECLASS:1,Fighter=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -137,6 +159,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Domain, Ability>
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -180,6 +203,5 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Domain, Ability>
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(secondaryContext.ref.validate());
 	}
-
 
 }

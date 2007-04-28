@@ -130,18 +130,28 @@ public class LanguageToken implements AddLstToken
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		Slot<Language> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
-					LANGUAGE_CLASS, FormulaFactory.getFormulaFor(count));
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		CDOMCompoundReference<Language> cr =
 				new CDOMCompoundReference<Language>(LANGUAGE_CLASS,
 					getTokenName() + " items");
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<Language> ref =
-					TokenUtilities.getObjectReference(context, LANGUAGE_CLASS,
-						token);
+			CDOMReference<Language> ref;
+			if (Constants.LST_ANY.equalsIgnoreCase(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							LANGUAGE_CLASS, token);
+			}
 			if (ref == null)
 			{
 				return false;
@@ -149,6 +159,16 @@ public class LanguageToken implements AddLstToken
 			cr.addReference(ref);
 		}
 
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+
+		Slot<Language> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), obj,
+					LANGUAGE_CLASS, FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Language>(LANGUAGE_CLASS,
 			cr));
 

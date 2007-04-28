@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.PCTemplate;
+import pcgen.core.Race;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
@@ -78,42 +79,49 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidListNameOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Familiar"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidListNameBarOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Familiar|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptyListName() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "|Lion"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidTypeRaceBarOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Familiar|Lion|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidRaceCommaStarting() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Familiar|,Lion"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidRaceCommaEnding() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Familiar|Lion,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -121,6 +129,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Lion,,Tiger"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -128,6 +137,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Lion|Tiger"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -135,6 +145,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Lion|PRERACE:1,Human|Tiger"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -143,6 +154,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Tiger,Any"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -151,6 +163,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Any,Lion"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -158,6 +171,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|FOLLOWERADJUSTMENT:-4|Lion"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -171,6 +185,10 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 		{
 			assertFalse(primaryContext.ref.validate());
 		}
+		else
+		{
+			assertTrue(primaryGraph.isEmpty());
+		}
 	}
 
 	@Test
@@ -179,6 +197,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Lion|FOLLOWERADJUSTMENT:-2|FOLLOWERADJUSTMENT:-3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -187,12 +206,14 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|FOLLOWERADJUSTMENT:-3|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptyTimes() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Familiar||Lion"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -200,6 +221,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Lion|FOLLOWERADJUSTMENT:"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -207,6 +229,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Lion|FOLLOWERADJUSTMENT:-T"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -214,6 +237,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Familiar|Lion|FOLLOWERADJUSTMENT:-4.5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -228,9 +252,14 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 			{
 				assertFalse(primaryContext.ref.validate());
 			}
+			else
+			{
+				assertTrue(primaryGraph.isEmpty());
+			}
 		}
 		catch (IllegalArgumentException iae)
 		{
+			assertTrue(primaryGraph.isEmpty());
 			// This is ok too
 		}
 	}
@@ -238,24 +267,36 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinJustRace() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
 		runRoundRobin("Familiar|Lion");
 	}
 
 	@Test
 	public void testRoundRobinTwoRace() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion,Tiger");
 	}
 
 	@Test
 	public void testRoundRobinFA() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
 		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-4");
 	}
 
 	@Test
 	public void testRoundRobinTwoFA() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-4",
 			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
 	}
@@ -263,6 +304,10 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoType() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
 		runRoundRobin("Companion|Lion|FOLLOWERADJUSTMENT:-5",
 			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
 	}
@@ -270,12 +315,20 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinComplex() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion,Tiger|FOLLOWERADJUSTMENT:-3|!PRECLASS:1,Cleric=1|PRERACE:1,Human");
 	}
 
 	@Test
 	public void testRoundRobinTwoPRE() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-5",
 			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
 	}

@@ -62,6 +62,7 @@ public class CRTokenTest extends AbstractTokenTestCase<PCTemplate>
 		{
 			// OK
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -76,6 +77,7 @@ public class CRTokenTest extends AbstractTokenTestCase<PCTemplate>
 		{
 			// OK
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

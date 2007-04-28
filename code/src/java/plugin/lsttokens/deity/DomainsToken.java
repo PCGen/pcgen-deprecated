@@ -22,6 +22,7 @@
 package plugin.lsttokens.deity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -50,7 +51,9 @@ public class DomainsToken implements DeityLstToken
 {
 	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
 	 */
 	public String getTokenName()
@@ -58,21 +61,24 @@ public class DomainsToken implements DeityLstToken
 		return "DOMAINS";
 	}
 
-	/* (non-Javadoc)
-	 * @see pcgen.persistence.lst.DeityLstToken#parse(pcgen.core.Deity, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see pcgen.persistence.lst.DeityLstToken#parse(pcgen.core.Deity,
+	 *      java.lang.String)
 	 */
-	public boolean parse(Deity deity, String value) throws PersistenceLayerException
+	public boolean parse(Deity deity, String value)
+		throws PersistenceLayerException
 	{
 		if (value.length() == 0)
 		{
 			return false;
 		}
-		
+
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		String[] domains = tok.nextToken().split(",");
 
-		ArrayList<Prerequisite> preReqs =
-			new ArrayList<Prerequisite>();
+		ArrayList<Prerequisite> preReqs = new ArrayList<Prerequisite>();
 		if (tok.hasMoreTokens())
 		{
 			while (tok.hasMoreTokens())
@@ -87,9 +93,10 @@ public class DomainsToken implements DeityLstToken
 				}
 				else
 				{
-					throw new PersistenceLayerException(PropertyFactory.getFormattedString(
-						"Errors.LstTokens.InvalidTokenFormat", //$NON-NLS-1$
-						getClass().getName(), value));
+					throw new PersistenceLayerException(PropertyFactory
+						.getFormattedString(
+							"Errors.LstTokens.InvalidTokenFormat", //$NON-NLS-1$
+							getClass().getName(), value));
 				}
 			}
 		}
@@ -124,20 +131,35 @@ public class DomainsToken implements DeityLstToken
 			return false;
 		}
 
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
+		List<CDOMReference<Domain>> list =
+				new ArrayList<CDOMReference<Domain>>();
 		while (tok.hasMoreTokens())
 		{
-			CDOMReference<Domain> cdo;
 			String tokString = tok.nextToken();
 			if (Constants.LST_ALL.equals(tokString))
 			{
-				cdo = context.ref.getCDOMAllReference(DOMAIN_CLASS);
+				foundAny = true;
+				list.add(context.ref.getCDOMAllReference(DOMAIN_CLASS));
 			}
 			else
 			{
-				cdo = context.ref.getCDOMReference(DOMAIN_CLASS, tokString);
+				foundOther = true;
+				list.add(context.ref.getCDOMReference(DOMAIN_CLASS, tokString));
 			}
-			context.graph.linkObjectIntoGraph(getTokenName(), deity, cdo);
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+		for (CDOMReference<Domain> ref : list)
+		{
+			context.graph.linkObjectIntoGraph(getTokenName(), deity, ref);
 		}
 		return true;
 	}

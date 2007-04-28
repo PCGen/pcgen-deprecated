@@ -80,18 +80,21 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidNoSubcommand() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1|2|20:5:"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidNumberOnly() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1|2|20"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidOneColon() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1|2|20:5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -99,6 +102,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|20::SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -106,6 +110,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|20:StartLevel:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -113,6 +118,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"IncrLevel|2|20:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -120,6 +126,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|SkipLevel|20:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -127,6 +134,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|MaxLevel:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -135,6 +143,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|20:-4:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -143,6 +152,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"-1|2|20:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -150,6 +160,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|-2|20:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -157,6 +168,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -164,6 +176,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|30:5::Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -171,6 +184,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|-5:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -178,6 +192,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|20:4:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -185,6 +200,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|20|40:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -192,6 +208,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -199,6 +216,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, ":5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -206,6 +224,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1||20:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -213,6 +232,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"|3|20:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -220,6 +240,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|20:5:SA:"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -228,6 +249,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|2|20:50:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -235,6 +257,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"10|2|20:15:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -242,6 +265,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"5|4|20:5:SA:Stuff"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

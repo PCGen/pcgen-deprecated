@@ -363,4 +363,15 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 		// This is really simple, but it works... and prevents a deep hash
 		return nodeList.size() + edgeList.size() * 23;
 	}
+	
+	/**
+	 * Returns true if this Graph is empty (has no Nodes and no Edges); false
+	 * otherwise.
+	 * 
+	 * @return true if this Graph is empty; false otherwise
+	 */
+	public boolean isEmpty()
+	{
+		return nodeList.isEmpty() && edgeList.isEmpty();
+	}
 }

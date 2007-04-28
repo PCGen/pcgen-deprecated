@@ -21,15 +21,17 @@
  */
 package plugin.lsttokens.equipment;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import pcgen.base.util.DoubleKeyMap;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
@@ -63,12 +65,6 @@ public class AlteqmodToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		return parseEqMod(context, getEquipmentHead(context, eq, 2), value);
-	}
-
-	protected boolean parseEqMod(LoadContext context, EquipmentHead primHead,
-		String value)
-	{
 		if (value.length() == 0)
 		{
 			Logging.errorPrint(getTokenName() + " may not have empty argument");
@@ -98,6 +94,10 @@ public class AlteqmodToken implements EquipmentLstToken
 		}
 
 		StringTokenizer dotTok = new StringTokenizer(value, Constants.DOT);
+		DoubleKeyMap<CDOMReference<EquipmentModifier>, AssociationKey<String>, String> dkm =
+				new DoubleKeyMap<CDOMReference<EquipmentModifier>, AssociationKey<String>, String>();
+		List<CDOMReference<EquipmentModifier>> mods =
+				new ArrayList<CDOMReference<EquipmentModifier>>();
 
 		while (dotTok.hasMoreTokens())
 		{
@@ -148,13 +148,10 @@ public class AlteqmodToken implements EquipmentLstToken
 			// }
 			// return;
 			// }
-			CDOMSimpleSingleRef<EquipmentModifier> eqMod =
+			CDOMReference<EquipmentModifier> eqMod =
 					context.ref.getCDOMReference(EQUIPMENT_MODIFIER_CLASS,
 						eqModKey);
-
-			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), primHead,
-						eqMod);
+			mods.add(eqMod);
 
 			while (pipeTok.hasMoreTokens())
 			{
@@ -165,44 +162,56 @@ public class AlteqmodToken implements EquipmentLstToken
 					 * TODO Can this be done in some way to learn from the EqMod
 					 * what the association actually is??
 					 */
-					edge.setAssociation(AssociationKey.ONLY, assocTok);
+					dkm.put(eqMod, AssociationKey.ONLY, assocTok);
 				}
 				else
 				{
-					if (!setAssoc(edge, assocTok))
+					if (assocTok.indexOf("[]") != -1)
 					{
+						Logging.errorPrint("Found empty assocation in "
+							+ getTokenName() + ": " + value);
 						return false;
+					}
+					StringTokenizer bracketTok =
+							new StringTokenizer(assocTok, "]");
+					while (bracketTok.hasMoreTokens())
+					{
+						String assoc = bracketTok.nextToken();
+						int openBracketLoc = assoc.indexOf('[');
+						if (openBracketLoc == -1)
+						{
+							Logging
+								.errorPrint("Found close bracket without open bracket in assocation in "
+									+ getTokenName() + ": " + value);
+							return false;
+						}
+						if (openBracketLoc != assoc.lastIndexOf('['))
+						{
+							Logging
+								.errorPrint("Found open bracket without close bracket in assocation in "
+									+ getTokenName() + ": " + value);
+							return false;
+						}
+						String assocKey = assoc.substring(0, openBracketLoc);
+						String assocVal = assoc.substring(openBracketLoc + 1);
+						dkm.put(eqMod, AssociationKey.getKeyFor(String.class,
+							assocKey), assocVal);
 					}
 				}
 			}
 		}
-		return true;
-	}
+		EquipmentHead altHead = getEquipmentHead(context, eq, 2);
+		for (CDOMReference<EquipmentModifier> eqMod : mods)
+		{
+			PCGraphGrantsEdge edge =
+					context.graph.linkObjectIntoGraph(getTokenName(), altHead,
+						eqMod);
+			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(eqMod))
+			{
+				edge.setAssociation(ak, dkm.get(eqMod, ak));
+			}
+		}
 
-	private boolean setAssoc(PCGraphGrantsEdge edge, String assocTok)
-	{
-		if (assocTok.indexOf("[]") != -1)
-		{
-			return false;
-		}
-		StringTokenizer bracketTok = new StringTokenizer(assocTok, "]");
-		while (bracketTok.hasMoreTokens())
-		{
-			String assoc = bracketTok.nextToken();
-			int openBracketLoc = assoc.indexOf('[');
-			if (openBracketLoc == -1)
-			{
-				return false;
-			}
-			if (openBracketLoc != assoc.lastIndexOf('['))
-			{
-				return false;
-			}
-			String assocKey = assoc.substring(0, openBracketLoc);
-			String assocVal = assoc.substring(openBracketLoc + 1);
-			edge.setAssociation(AssociationKey
-				.getKeyFor(String.class, assocKey), assocVal);
-		}
 		return true;
 	}
 

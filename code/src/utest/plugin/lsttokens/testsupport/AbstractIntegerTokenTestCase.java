@@ -39,6 +39,7 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 	public void testInvalidInputUnset() throws PersistenceLayerException
 	{
 		testInvalidInputs(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -57,6 +58,7 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 			.parse(primaryContext, primaryProf, con.toString()));
 		assertEquals(con, primaryProf.get(getIntegerKey()));
 		testInvalidInputs(con);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void testInvalidInputs(Integer val) throws PersistenceLayerException

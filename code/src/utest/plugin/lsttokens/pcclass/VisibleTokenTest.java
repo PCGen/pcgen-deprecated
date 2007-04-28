@@ -73,6 +73,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -81,6 +82,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<PCClass>
 		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
 		assertEquals(Visibility.NO, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.NO);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

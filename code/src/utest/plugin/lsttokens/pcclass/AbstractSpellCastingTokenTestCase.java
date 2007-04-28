@@ -93,30 +93,38 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 			assertEquals("Expected " + i + " item to be equal", unparsed[i],
 				sUnparsed[i]);
 		}
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+		assertEquals(0, primaryContext.getWriteMessageCount());
+		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 
 	@Test
 	public void testInvalidListEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "", 2));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1,", 2));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidListStart() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ",1", 2));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidListDoubleJoin() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1,,2", 2));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -124,6 +132,7 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1,-2", 2));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

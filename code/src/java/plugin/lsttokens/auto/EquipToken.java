@@ -18,6 +18,7 @@
 package plugin.lsttokens.auto;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -114,8 +115,14 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			return false;
 		}
 
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		StringTokenizer tok = new StringTokenizer(armorProfs, Constants.PIPE);
-		TOKENS: while (tok.hasMoreTokens())
+		List<CDOMReference<Equipment>> refs =
+				new ArrayList<CDOMReference<Equipment>>();
+
+		while (tok.hasMoreTokens())
 		{
 			String aProf = tok.nextToken();
 			if ("%LIST".equals(value))
@@ -131,26 +138,61 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			}
 			else
 			{
-				CDOMReference<Equipment> ref =
-						TokenUtilities.getObjectReference(context,
-							Equipment.class, aProf);
+				CDOMReference<Equipment> ref;
+				if (Constants.LST_ANY.equalsIgnoreCase(aProf))
+				{
+					foundAny = true;
+					ref = context.ref.getCDOMAllReference(Equipment.class);
+				}
+				else
+				{
+					foundOther = true;
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								Equipment.class, aProf);
+				}
 				if (ref == null)
 				{
 					return false;
 				}
+				refs.add(ref);
+			}
+		}
 
-				Set<PCGraphEdge> edges =
-						context.graph.getChildLinksFromToken(getTokenName(),
-							obj, Equipment.class);
-				for (PCGraphEdge edge : edges)
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+
+		TOKENS: for (CDOMReference<Equipment> ref : refs)
+		{
+			Set<PCGraphEdge> edges =
+					context.graph.getChildLinksFromToken(getTokenName(), obj,
+						Equipment.class);
+			for (PCGraphEdge edge : edges)
+			{
+				CDOMReference<Equipment> ab =
+						(CDOMReference<Equipment>) edge.getSinkNodes().get(0);
+				if (ab.equals(ref))
 				{
-					CDOMReference<Equipment> ab =
-							(CDOMReference<Equipment>) edge.getSinkNodes().get(
-								0);
-					if (ab.equals(ref))
+					List<Prerequisite> prl = edge.getPrerequisiteList();
+					if (prereq == null && (prl == null || prl.isEmpty()))
 					{
-						List<Prerequisite> prl = edge.getPrerequisiteList();
-						if (prereq == null && (prl == null || prl.isEmpty()))
+						Integer q =
+								edge.getAssociation(AssociationKey.QUANTITY);
+						edge.setAssociation(AssociationKey.QUANTITY, Integer
+							.valueOf(q.intValue() + 1));
+						continue TOKENS;
+					}
+					if (prereq != null)
+					{
+						if (prl == null || prl.isEmpty())
+						{
+							// Can't use
+						}
+						else if (prl.get(0).equals(prereq))
 						{
 							Integer q =
 									edge
@@ -159,42 +201,26 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 								Integer.valueOf(q.intValue() + 1));
 							continue TOKENS;
 						}
-						if (prereq != null)
+						else
 						{
-							if (prl == null || prl.isEmpty())
-							{
-								// Can't use
-							}
-							else if (prl.get(0).equals(prereq))
-							{
-								Integer q =
-										edge
-											.getAssociation(AssociationKey.QUANTITY);
-								edge.setAssociation(AssociationKey.QUANTITY,
-									Integer.valueOf(q.intValue() + 1));
-								continue TOKENS;
-							}
-							else
-							{
-								// Can't use
-							}
+							// Can't use
 						}
 					}
 				}
-				PCGraphGrantsEdge edge =
-						context.graph.linkObjectIntoGraph(getTokenName(), obj,
-							ref);
-				if (prereq != null)
-				{
-					edge.addPreReq(prereq);
-				}
-				edge.setAssociation(AssociationKey.EQUIPMENT_NATURE,
-					EquipmentNature.AUTOMATIC);
-				edge.setAssociation(AssociationKey.QUANTITY, INTEGER_ONE);
-				// TODO Need to account for these
-				// newEq.setOutputIndex(aList.size());
 			}
+			PCGraphGrantsEdge edge =
+					context.graph.linkObjectIntoGraph(getTokenName(), obj, ref);
+			if (prereq != null)
+			{
+				edge.addPreReq(prereq);
+			}
+			edge.setAssociation(AssociationKey.EQUIPMENT_NATURE,
+				EquipmentNature.AUTOMATIC);
+			edge.setAssociation(AssociationKey.QUANTITY, INTEGER_ONE);
+			// TODO Need to account for these
+			// newEq.setOutputIndex(aList.size());
 		}
+
 		return true;
 	}
 

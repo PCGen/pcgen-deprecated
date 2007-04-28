@@ -42,6 +42,7 @@ public abstract class AbstractBigDecimalTokenTestCase<T extends PObject> extends
 	public void testInvalidInputUnset() throws PersistenceLayerException
 	{
 		testInvalidInputs(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -60,6 +61,7 @@ public abstract class AbstractBigDecimalTokenTestCase<T extends PObject> extends
 			.parse(primaryContext, primaryProf, con.toString()));
 		assertEquals(con, primaryProf.get(getObjectKey()));
 		testInvalidInputs(con);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void testInvalidInputs(BigDecimal val)

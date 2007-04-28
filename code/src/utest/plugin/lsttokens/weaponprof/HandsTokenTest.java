@@ -75,6 +75,8 @@ public class HandsTokenTest extends AbstractIntegerTokenTestCase<WeaponProf>
 		assertTrue(token.parse(primaryContext, primaryProf,
 			"1IFLARGERTHANWEAPON"));
 		assertEquals(Integer.valueOf(-1), primaryProf.get(IntegerKey.HANDS));
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test

@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.Domain;
+import pcgen.core.SpellList;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
@@ -73,18 +73,21 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputClassOnly() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputLevelOnly() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -93,18 +96,21 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "Fire=3|Good"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputDoubleEquals() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire==4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputBadLevel() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=Good"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -112,18 +118,21 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=-4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputLeadingBar() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|Fire=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputTrailingBar() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=4|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -131,6 +140,7 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Fire=3||Good=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -138,12 +148,14 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Fire,,Good=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputLeadingComma() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ",Fire=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -151,12 +163,14 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=4="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputDoubleSet() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=4=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -164,12 +178,14 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire,=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyType() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "TYPE.=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -177,6 +193,7 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=4[]"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -185,6 +202,7 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Fire=4[PRERACE:1,Human"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -198,7 +216,9 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testInvalidInputNotClassCompound()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Domain.class, "Fire");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		//Intentionally do NOT build Good
 		assertTrue(getToken().parse(primaryContext, primaryProf, "Fire,Good=4"));
 		assertFalse(primaryContext.ref.validate());
 	}
@@ -207,53 +227,52 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryContext.ref.constructCDOMObject(Domain.class, "Fire");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
 		runRoundRobin("Fire=4");
-		assertTrue(primaryContext.ref.validate());
-		assertEquals(0, primaryContext.getWriteMessageCount());
 	}
 
 	@Test
 	public void testRoundRobinPrereq() throws PersistenceLayerException
 	{
 		assertEquals(0, primaryContext.getWriteMessageCount());
-		primaryContext.ref.constructCDOMObject(Domain.class, "Fire");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
 		runRoundRobin("Fire=4[PRERACE:1,Human]");
-		assertTrue(primaryContext.ref.validate());
-		assertEquals(0, primaryContext.getWriteMessageCount());
 	}
 
 	@Test
 	public void testRoundRobinComma() throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryContext.ref.constructCDOMObject(Domain.class, "Fire");
-		primaryContext.ref.constructCDOMObject(Domain.class, "Good");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Good");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Good");
 		runRoundRobin("Fire,Good=4");
-		assertTrue(primaryContext.ref.validate());
-		assertEquals(0, primaryContext.getWriteMessageCount());
 	}
 
 	@Test
 	public void testRoundRobinPipe() throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryContext.ref.constructCDOMObject(Domain.class, "Fire");
-		primaryContext.ref.constructCDOMObject(Domain.class, "Good");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Good");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Good");
 		runRoundRobin("Fire=3|Good=4");
-		assertTrue(primaryContext.ref.validate());
-		assertEquals(0, primaryContext.getWriteMessageCount());
 	}
 
 	@Test
 	public void testRoundRobinCommaPipe() throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryContext.ref.constructCDOMObject(Domain.class, "Fire");
-		primaryContext.ref.constructCDOMObject(Domain.class, "Good");
-		primaryContext.ref.constructCDOMObject(Domain.class, "Sun");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Good");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Good");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Sun");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Sun");
 		runRoundRobin("Fire,Good=3|Sun=4");
-		assertTrue(primaryContext.ref.validate());
-		assertEquals(0, primaryContext.getWriteMessageCount());
 	}
 }

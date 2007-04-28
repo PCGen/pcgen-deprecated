@@ -113,8 +113,6 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	protected void construct(LoadContext loadContext, String one)

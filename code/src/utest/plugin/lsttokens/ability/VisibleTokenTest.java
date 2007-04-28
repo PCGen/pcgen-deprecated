@@ -65,6 +65,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Ability>
 	public void testInvalidInputString()
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -73,6 +74,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Ability>
 		assertTrue(token.parse(primaryContext, primaryProf, "EXPORT"));
 		assertEquals(Visibility.EXPORT, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.EXPORT);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

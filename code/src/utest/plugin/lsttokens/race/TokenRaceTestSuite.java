@@ -27,11 +27,10 @@ import junit.framework.TestSuite;
 	FavoredClassTokenTest.class, FeatTokenTest.class, HandsTokenTest.class,
 	HitDiceAdvancementTokenTest.class, HitDieTokenTest.class,
 	LangbonusTokenTest.class, LangNumTokenTest.class, LegsTokenTest.class,
-	LevelAdjustmentTokenTest.class, MFeatTokenTest.class,
-	MonCCSkillTokenTest.class, MonCSkillTokenTest.class,
-	MonsterClassTokenTest.class, RaceSubtypeTokenTest.class,
-	RaceTypeTokenTest.class, ReachTokenTest.class, SizeTokenTest.class,
-	SkillMultTokenTest.class, StartFeatsTokenTest.class,
+	LevelAdjustmentTokenTest.class, MonCCSkillTokenTest.class,
+	MonCSkillTokenTest.class, MonsterClassTokenTest.class,
+	RaceSubtypeTokenTest.class, RaceTypeTokenTest.class, ReachTokenTest.class,
+	SizeTokenTest.class, SkillMultTokenTest.class, StartFeatsTokenTest.class,
 	WeaponbonusTokenTest.class, XtraSkillPointsPerLevelTokenTest.class})
 public class TokenRaceTestSuite extends TestSuite
 {

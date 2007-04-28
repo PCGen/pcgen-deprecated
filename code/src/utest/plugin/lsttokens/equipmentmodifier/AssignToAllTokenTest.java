@@ -56,6 +56,7 @@ public class AssignToAllTokenTest extends
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -64,6 +65,7 @@ public class AssignToAllTokenTest extends
 		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.ASSIGN_TO_ALL));
 		internalTestInvalidInputString(Boolean.TRUE);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

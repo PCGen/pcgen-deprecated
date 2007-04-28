@@ -93,7 +93,7 @@ public class TypeLst implements GlobalLstToken
 			{
 				removeType = true;
 			}
-			else if (Constants.LST_CLEAR.equals(aType))
+			else if (Constants.LST_DOT_CLEAR.equals(aType))
 			{
 				obj.removeListFor(ListKey.TYPE);
 			}

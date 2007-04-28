@@ -91,7 +91,7 @@ public class AlttypeToken implements EquipmentLstToken
 			{
 				removeType = true;
 			}
-			else if (Constants.LST_CLEAR.equals(aType))
+			else if (Constants.LST_DOT_CLEAR.equals(aType))
 			{
 				eq.removeListFor(ListKey.ALT_TYPE);
 			}

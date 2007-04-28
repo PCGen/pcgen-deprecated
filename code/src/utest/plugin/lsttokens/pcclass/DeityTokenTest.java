@@ -72,6 +72,24 @@ public class DeityTokenTest extends AbstractListTokenTestCase<PCClass, Deity>
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public char getJoinCharacter()
 	{
 		return '|';

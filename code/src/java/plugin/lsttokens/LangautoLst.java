@@ -84,6 +84,9 @@ public class LangautoLst implements GlobalLstToken
 			return false;
 		}
 
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		final StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
 
 		while (tok.hasMoreTokens())
@@ -96,9 +99,19 @@ public class LangautoLst implements GlobalLstToken
 			}
 			else
 			{
-				CDOMReference<Language> ref =
-						TokenUtilities.getObjectReference(context,
-							LANGUAGE_CLASS, tokText);
+				CDOMReference<Language> ref;
+				if (Constants.LST_ALL.equals(tokText))
+				{
+					foundAny = true;
+					ref = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
+				}
+				else
+				{
+					foundOther = true;
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								LANGUAGE_CLASS, tokText);
+				}
 				if (ref == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
@@ -107,6 +120,12 @@ public class LangautoLst implements GlobalLstToken
 				}
 				context.graph.linkObjectIntoGraph(getTokenName(), obj, ref);
 			}
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
 		}
 		return true;
 	}

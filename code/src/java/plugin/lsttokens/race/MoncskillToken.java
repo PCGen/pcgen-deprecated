@@ -21,15 +21,15 @@
  */
 package plugin.lsttokens.race;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.graph.PCGraphAllowsEdge;
@@ -88,34 +88,42 @@ public class MoncskillToken implements RaceLstToken
 			return false;
 		}
 
-		CDOMGroupRef<SkillList> ref =
-				context.ref.getCDOMTypeReference(SkillList.class, "Monster");
+		CDOMReference<SkillList> ref =
+				context.ref.getCDOMReference(SkillList.class, "*Monster");
 		Aggregator agg = new Aggregator(race, ref, getTokenName());
-		/*
-		 * This is intentionally Holds, as the context for traversal must only
-		 * be the ref (linked by the Activation Edge). So we need an edge to the
-		 * Activator to get it copied into the PC, but since this is a 3rd party
-		 * Token, the Race should never grant anything hung off the aggregator.
-		 */
-		context.graph.linkHoldsIntoGraph(getTokenName(), race, agg);
-		context.graph.linkActivationIntoGraph(getTokenName(), ref, agg);
+
+		boolean foundAny = false;
+		boolean foundOther = false;
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		List<CDOMReference<Skill>> list = new ArrayList<CDOMReference<Skill>>();
+
 		PIPEWHILE: while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
-			if (Constants.LST_CLEAR.equals(tokText))
+			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
 				context.graph.unlinkChildNodesOfClass(getTokenName(), race,
 					Aggregator.class);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				PrereqObject skill =
-						TokenUtilities.getObjectReference(context, SKILL_CLASS,
-							tokText.substring(7));
+				CDOMReference<Skill> skill;
+				String clearText = tokText.substring(7);
+				if (Constants.LST_ALL.equals(clearText))
+				{
+					skill = context.ref.getCDOMAllReference(SKILL_CLASS);
+				}
+				else
+				{
+					skill =
+							TokenUtilities.getTypeOrPrimitive(context,
+								SKILL_CLASS, clearText);
+				}
 				if (skill == null)
 				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
 					return false;
 				}
 				Set<PCGraphEdge> edgeList =
@@ -162,18 +170,49 @@ public class MoncskillToken implements RaceLstToken
 				 * the graph would also make it harder to trace the source of
 				 * class skills, etc.)
 				 */
-				PrereqObject skill =
-						TokenUtilities.getObjectReference(context, SKILL_CLASS,
-							tokText);
+				CDOMReference<Skill> skill;
+				if (Constants.LST_ALL.equals(tokText))
+				{
+					foundAny = true;
+					skill = context.ref.getCDOMAllReference(SKILL_CLASS);
+				}
+				else
+				{
+					foundOther = true;
+					skill =
+							TokenUtilities.getTypeOrPrimitive(context,
+								SKILL_CLASS, tokText);
+				}
 				if (skill == null)
 				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
 					return false;
 				}
-				PCGraphAllowsEdge edge =
-						context.graph.linkAllowIntoGraph(getTokenName(), agg,
-							skill);
-				edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
+				list.add(skill);
 			}
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+		/*
+		 * This is intentionally Holds, as the context for traversal must only
+		 * be the ref (linked by the Activation Edge). So we need an edge to the
+		 * Activator to get it copied into the PC, but since this is a 3rd party
+		 * Token, the Race should never grant anything hung off the aggregator.
+		 */
+		context.graph.linkHoldsIntoGraph(getTokenName(), race, agg);
+		context.graph.linkActivationIntoGraph(getTokenName(), ref, agg);
+
+		for (CDOMReference<Skill> skill : list)
+		{
+			PCGraphAllowsEdge edge =
+					context.graph
+						.linkAllowIntoGraph(getTokenName(), agg, skill);
+			edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		}
 		return true;
 	}

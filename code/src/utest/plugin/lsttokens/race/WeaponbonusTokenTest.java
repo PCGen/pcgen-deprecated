@@ -64,6 +64,24 @@ public class WeaponbonusTokenTest extends
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public char getJoinCharacter()
 	{
 		return '|';
@@ -72,7 +90,7 @@ public class WeaponbonusTokenTest extends
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 
 }

@@ -130,18 +130,28 @@ public class EquipToken implements AddLstToken
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		Slot<Equipment> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
-					EQUIPMENT_CLASS, FormulaFactory.getFormulaFor(count));
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		CDOMCompoundReference<Equipment> cr =
 				new CDOMCompoundReference<Equipment>(EQUIPMENT_CLASS,
 					getTokenName() + " items");
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<Equipment> ref =
-					TokenUtilities.getObjectReference(context, EQUIPMENT_CLASS,
-						token);
+			CDOMReference<Equipment> ref;
+			if (Constants.LST_ANY.equalsIgnoreCase(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(EQUIPMENT_CLASS);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							EQUIPMENT_CLASS, token);
+			}
 			if (ref == null)
 			{
 				return false;
@@ -149,6 +159,16 @@ public class EquipToken implements AddLstToken
 			cr.addReference(ref);
 		}
 
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+
+		Slot<Equipment> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), obj,
+					EQUIPMENT_CLASS, FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Equipment>(
 			EQUIPMENT_CLASS, cr));
 

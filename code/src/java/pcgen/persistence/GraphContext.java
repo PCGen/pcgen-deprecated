@@ -210,21 +210,20 @@ public class GraphContext
 		Class<? extends PrereqObject> cl)
 	{
 		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
-		if (outwardEdgeList == null)
+		if (outwardEdgeList != null)
 		{
-			return;
-		}
-		for (PCGraphEdge edge : outwardEdgeList)
-		{
-			if (edge.getSourceToken().equals(tokenName))
+			for (PCGraphEdge edge : outwardEdgeList)
 			{
-				for (PrereqObject node : edge.getAdjacentNodes())
+				if (edge.getSourceToken().equals(tokenName))
 				{
-					if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK
-						&& node.getClass().equals(cl))
+					for (PrereqObject node : edge.getAdjacentNodes())
 					{
-						graph.removeEdge(edge);
-						break;
+						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK
+							&& node.getClass().equals(cl))
+						{
+							graph.removeEdge(edge);
+							break;
+						}
 					}
 				}
 			}
@@ -234,17 +233,21 @@ public class GraphContext
 	public void unlinkChildNode(String tokenName, CDOMObject obj,
 		PrereqObject child)
 	{
-		for (PCGraphEdge edge : graph.getOutwardEdgeList(obj))
+		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
+		if (outwardEdgeList != null)
 		{
-			if (edge.getSourceToken().equals(tokenName))
+			for (PCGraphEdge edge : outwardEdgeList)
 			{
-				for (PrereqObject node : edge.getAdjacentNodes())
+				if (edge.getSourceToken().equals(tokenName))
 				{
-					if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK
-						&& node.equals(child))
+					for (PrereqObject node : edge.getAdjacentNodes())
 					{
-						graph.removeEdge(edge);
-						break;
+						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK
+							&& node.equals(child))
+						{
+							graph.removeEdge(edge);
+							break;
+						}
 					}
 				}
 			}
@@ -253,16 +256,20 @@ public class GraphContext
 
 	public void unlinkChildNodes(String tokenName, PrereqObject obj)
 	{
-		for (PCGraphEdge edge : graph.getOutwardEdgeList(obj))
+		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
+		if (outwardEdgeList != null)
 		{
-			if (edge.getSourceToken().equals(tokenName))
+			for (PCGraphEdge edge : outwardEdgeList)
 			{
-				for (PrereqObject node : edge.getAdjacentNodes())
+				if (edge.getSourceToken().equals(tokenName))
 				{
-					if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK)
+					for (PrereqObject node : edge.getAdjacentNodes())
 					{
-						graph.removeEdge(edge);
-						break;
+						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK)
+						{
+							graph.removeEdge(edge);
+							break;
+						}
 					}
 				}
 			}
@@ -271,16 +278,20 @@ public class GraphContext
 
 	public void unlinkParentNodes(String tokenName, PrereqObject pro)
 	{
-		for (PCGraphEdge edge : graph.getInwardEdgeList(pro))
+		List<PCGraphEdge> inwardEdgeList = graph.getInwardEdgeList(pro);
+		if (inwardEdgeList != null)
 		{
-			if (edge.getSourceToken().equals(tokenName))
+			for (PCGraphEdge edge : inwardEdgeList)
 			{
-				for (PrereqObject node : edge.getAdjacentNodes())
+				if (edge.getSourceToken().equals(tokenName))
 				{
-					if (edge.getNodeInterfaceType(node) == DirectionalEdge.SOURCE)
+					for (PrereqObject node : edge.getAdjacentNodes())
 					{
-						graph.removeEdge(edge);
-						break;
+						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SOURCE)
+						{
+							graph.removeEdge(edge);
+							break;
+						}
 					}
 				}
 			}

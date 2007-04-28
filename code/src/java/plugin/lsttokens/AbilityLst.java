@@ -23,23 +23,25 @@
  */
 package plugin.lsttokens;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.Logging;
-import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CategorizedCDOMReference;
+import pcgen.cdom.base.Category;
+import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Ability;
-import pcgen.core.AbilityCategory;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
@@ -50,8 +52,8 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -116,7 +118,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 		final StringTokenizer tok = new StringTokenizer(aValue, Constants.PIPE);
 
 		final String cat = tok.nextToken();
-		final AbilityCategory category =
+		final pcgen.core.AbilityCategory category =
 				SettingsHandler.getGame().getAbilityCategory(cat);
 		if (category == null)
 		{
@@ -197,94 +199,86 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-
-		if (!tok.hasMoreTokens())
+		if (value.length() == 0)
 		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return false;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
-		pcgen.cdom.enumeration.AbilityCategory abCat;
+		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
+		AbilityCategory ac;
+		String cat = tok.nextToken();
 		try
 		{
-			String cat = tok.nextToken();
-			abCat = pcgen.cdom.enumeration.AbilityCategory.valueOf(cat);
+			ac = AbilityCategory.valueOf(cat);
 		}
-		catch (IllegalArgumentException iae)
+		catch (IllegalArgumentException e)
 		{
+			Logging.errorPrint(getTokenName()
+				+ " refers to invalid Ability Category: " + cat);
 			return false;
 		}
 
 		if (!tok.hasMoreTokens())
 		{
-			// TODO This is the second test of this - should just countTokens()?
-			// What is faster?
+			Logging
+				.errorPrint(getTokenName()
+					+ " must have a Nature, Format is: CATEGORY|NATURE|AbilityName: "
+					+ value);
 			return false;
 		}
 
-		AbilityNature nature;
+		String natureKey = tok.nextToken();
+		AbilityNature an;
 		try
 		{
-			String natureKey = tok.nextToken();
-			nature = AbilityNature.valueOf(natureKey);
+			an = AbilityNature.valueOf(natureKey);
 		}
-		catch (IllegalArgumentException iae)
+		catch (IllegalArgumentException e)
 		{
+			Logging.errorPrint(getTokenName()
+				+ " refers to invalid Ability Category: " + natureKey);
 			return false;
 		}
 
 		if (!tok.hasMoreTokens())
 		{
-			// TODO This is the second test of this - should just countTokens()?
-			// What is faster?
+			Logging
+				.errorPrint(getTokenName()
+					+ " must have abilities, Format is: CATEGORY|NATURE|AbilityName: "
+					+ value);
 			return false;
 		}
 
-		List<PCGraphGrantsEdge> edgeList = new ArrayList<PCGraphGrantsEdge>();
-
-		String token = tok.nextToken();
-		while (true)
+		while (tok.hasMoreTokens())
 		{
 			CDOMCategorizedSingleRef<Ability> ability =
-					context.ref.getCDOMReference(ABILITY_CLASS, abCat, token);
+					context.ref.getCDOMReference(ABILITY_CLASS, ac, tok
+						.nextToken());
 			PCGraphGrantsEdge edge =
 					context.graph.linkObjectIntoGraph(getTokenName(), obj,
 						ability);
-			edge.setAssociation(AssociationKey.ABILITY_NATURE, nature);
-			edgeList.add(edge);
-
-			if (!tok.hasMoreTokens())
-			{
-				// No prereqs, so we're done
-				return true;
-			}
-			token = tok.nextToken();
-			if (token.startsWith("PRE") || token.startsWith("!PRE"))
-			{
-				break;
-			}
+			edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
 		}
-
-		while (true)
-		{
-			Prerequisite prereq = getPrerequisite(token);
-			if (prereq == null)
-			{
-				Logging.errorPrint("   (Did you put abilities after the "
-					+ "PRExxx tags in ABILITY:?)");
-				return false;
-			}
-			for (PCGraphGrantsEdge edge : edgeList)
-			{
-				edge.addPrerequisite(prereq);
-			}
-			if (!tok.hasMoreTokens())
-			{
-				break;
-			}
-			token = tok.nextToken();
-		}
-
 		return true;
 	}
 
@@ -298,58 +292,39 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 		{
 			return null;
 		}
-		TripleKeyMapToList<AbilityNature, String, Set<Prerequisite>, Ability> m =
-				new TripleKeyMapToList<AbilityNature, String, Set<Prerequisite>, Ability>();
+		DoubleKeyMapToList<AbilityNature, Category<Ability>, CDOMCategorizedSingleRef<Ability>> m =
+				new DoubleKeyMapToList<AbilityNature, Category<Ability>, CDOMCategorizedSingleRef<Ability>>();
 		for (PCGraphEdge edge : edgeSet)
 		{
 			AbilityNature nature =
 					edge.getAssociation(AssociationKey.ABILITY_NATURE);
-			Ability ab = (Ability) edge.getSinkNodes().get(0);
-			m.addToListFor(nature, ab.getCategory(), new HashSet<Prerequisite>(
-				edge.getPrerequisiteList()), ab);
+			CDOMCategorizedSingleRef<Ability> ab =
+					(CDOMCategorizedSingleRef<Ability>) edge.getSinkNodes()
+						.get(0);
+			m.addToListFor(nature, ab.getCDOMCategory(), ab);
 		}
 
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		List<String> list = new ArrayList<String>();
+		SortedSet<CategorizedCDOMReference<Ability>> set =
+				new TreeSet<CategorizedCDOMReference<Ability>>(
+					TokenUtilities.CAT_REFERENCE_SORTER);
+		Set<String> returnSet = new TreeSet<String>();
 		for (AbilityNature nature : m.getKeySet())
 		{
-			for (String category : m.getSecondaryKeySet(nature))
+			for (Category<Ability> category : m.getSecondaryKeySet(nature))
 			{
-				for (Set<Prerequisite> prereqs : m.getTertiaryKeySet(nature,
-					category))
+				StringBuilder sb = new StringBuilder();
+				sb.append(category).append(Constants.PIPE);
+				sb.append(nature);
+				set.clear();
+				set.addAll(m.getListFor(nature, category));
+				for (CategorizedCDOMReference<Ability> a : set)
 				{
-					StringBuilder sb = new StringBuilder();
-					sb.append(category).append(Constants.PIPE);
-					sb.append(nature);
-					for (Ability a : m.getListFor(nature, category, prereqs))
-					{
-						sb.append(Constants.PIPE).append(a.getKeyName());
-					}
-					if (prereqs != null && !prereqs.isEmpty())
-					{
-						for (Prerequisite p : prereqs)
-						{
-							StringWriter swriter = new StringWriter();
-							try
-							{
-								prereqWriter.write(swriter, p);
-							}
-							catch (PersistenceLayerException e)
-							{
-								context
-									.addWriteMessage("Error writing Prerequisite: "
-										+ e);
-								return null;
-							}
-							sb.append(Constants.PIPE)
-								.append(swriter.toString());
-						}
-					}
-					list.add(sb.toString());
+					sb.append(Constants.PIPE).append(a.getLSTformat());
 				}
+				returnSet.add(sb.toString());
 			}
 		}
-		return list.toArray(new String[list.size()]);
+		return returnSet.toArray(new String[returnSet.size()]);
 	}
 
 }

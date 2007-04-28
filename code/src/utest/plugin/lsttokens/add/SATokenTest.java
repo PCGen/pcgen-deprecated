@@ -77,6 +77,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|Slot Name"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -84,6 +85,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|Slot Name|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -92,6 +94,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|Slot Name|,Item"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -99,6 +102,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "||Item"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -106,6 +110,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|Slot Name|Item,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -114,6 +119,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|Slot Name|Item,,Item2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -121,6 +127,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|Slot Name|Item|Item2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

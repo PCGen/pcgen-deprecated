@@ -81,10 +81,17 @@ public class KnownspellsTokenTest extends
 		return true;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Override
@@ -98,6 +105,7 @@ public class KnownspellsTokenTest extends
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"TestWP1,TestWP2"));
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -105,6 +113,7 @@ public class KnownspellsTokenTest extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TYPE=TestWP1,TYPE=TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -113,12 +122,14 @@ public class KnownspellsTokenTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP1,TYPE=TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputLevelEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "LEVEL="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -128,6 +139,7 @@ public class KnownspellsTokenTest extends
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"LEVEL=One"));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -138,6 +150,7 @@ public class KnownspellsTokenTest extends
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"LEVEL=1.0"));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -148,6 +161,7 @@ public class KnownspellsTokenTest extends
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"LEVEL=1,LEVEL=2"));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -157,8 +171,6 @@ public class KnownspellsTokenTest extends
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1" + getJoinCharacter() + "LEVEL=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -171,8 +183,6 @@ public class KnownspellsTokenTest extends
 		construct(secondaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("TestWP1" + getJoinCharacter() + "TYPE=SpellType,LEVEL=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -182,9 +192,19 @@ public class KnownspellsTokenTest extends
 		if (isTypeLegal())
 		{
 			runRoundRobin("LEVEL=2|TYPE=TestAltType.TestThirdType.TestType,LEVEL=3");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
 		}
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
 	}
 
 }

@@ -64,6 +64,7 @@ public class ProhibitedTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -72,12 +73,14 @@ public class ProhibitedTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Lawful,,Good"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputLeadingComma() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ",Chaos"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -85,6 +88,7 @@ public class ProhibitedTokenTest extends AbstractTokenTestCase<PCClass>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Evocation,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -97,7 +101,5 @@ public class ProhibitedTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testRoundRobinSchoolMultiple() throws PersistenceLayerException
 	{
 		runRoundRobin("Divination,Evocation");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 }

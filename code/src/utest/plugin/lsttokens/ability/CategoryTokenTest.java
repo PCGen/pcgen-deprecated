@@ -20,6 +20,7 @@ package plugin.lsttokens.ability;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Ability;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbilityLoader;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
@@ -65,6 +66,41 @@ public class CategoryTokenTest extends AbstractTypeSafeTokenTestCase<Ability>
 	protected boolean requiresPreconstruction()
 	{
 		return true;
+	}
+
+	@Override
+	public void testRoundRobinBase() throws PersistenceLayerException
+	{
+		expectedPrimaryMessageCount = 1;
+		super.testRoundRobinBase();
+	}
+
+	@Override
+	public void testRoundRobinHyphen() throws PersistenceLayerException
+	{
+		expectedPrimaryMessageCount = 1;
+		super.testRoundRobinHyphen();
+	}
+
+	@Override
+	public void testRoundRobinNonEnglishAndN() throws PersistenceLayerException
+	{
+		expectedPrimaryMessageCount = 1;
+		super.testRoundRobinNonEnglishAndN();
+	}
+
+	@Override
+	public void testRoundRobinWithSpace() throws PersistenceLayerException
+	{
+		expectedPrimaryMessageCount = 1;
+		super.testRoundRobinWithSpace();
+	}
+
+	@Override
+	public void testRoundRobinY() throws PersistenceLayerException
+	{
+		expectedPrimaryMessageCount = 1;
+		super.testRoundRobinY();
 	}
 
 }

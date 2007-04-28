@@ -134,6 +134,10 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 			assertEquals("Expected " + i + " item to be equal", unparsed[i],
 				sUnparsed[i]);
 		}
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+		assertEquals(0, primaryContext.getWriteMessageCount());
+		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 
 	protected String getTokenName()

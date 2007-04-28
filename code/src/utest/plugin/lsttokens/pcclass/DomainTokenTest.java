@@ -73,6 +73,24 @@ public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
+
+	@Override
 	public char getJoinCharacter()
 	{
 		return '|';

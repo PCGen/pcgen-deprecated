@@ -83,6 +83,7 @@ public class BonusFeatsTokenTest extends AbstractTokenTestCase<PCTemplate>
 		assertEquals(primaryGraph, secondaryGraph);
 		assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
 		assertEquals(primaryGraph, secondaryGraph);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

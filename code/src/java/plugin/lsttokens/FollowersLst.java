@@ -26,11 +26,8 @@ package plugin.lsttokens;
 import pcgen.base.formula.Formula;
 import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.CompanionList;
@@ -40,10 +37,9 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 /**
  * This class implements support for the FOLLOWERS LST token.
@@ -128,25 +124,47 @@ public class FollowersLst implements GlobalLstToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException
 	{
-		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-
-		final String followerType = tok.nextToken();
-		if (!tok.hasMoreTokens())
+		int pipeLoc = value.indexOf(Constants.PIPE);
+		if (pipeLoc == -1)
 		{
-			Logging.errorPrint(getTokenName()
-				+ " must have at least two | delimited values");
+			Logging
+				.errorPrint(getTokenName()
+					+ " has no PIPE character: Must be of the form <follower type>|<formula>");
 			return false;
 		}
-		String followerNumber = tok.nextToken();
+		if (pipeLoc != value.lastIndexOf(Constants.PIPE))
+		{
+			Logging.errorPrint(getTokenName()
+				+ " has too many PIPE characters: "
+				+ "Must be of the form <follower type>|<formula");
+			return false;
+		}
+
+		String followerType = value.substring(0, pipeLoc);
+		if (followerType.length() == 0)
+		{
+			Logging.errorPrint("Follower Type in " + getTokenName()
+				+ " cannot be empty");
+			return false;
+		}
+		String followerNumber = value.substring(pipeLoc + 1);
+		if (followerNumber.length() == 0)
+		{
+			Logging.errorPrint("Follower Count in " + getTokenName()
+				+ " cannot be empty");
+			return false;
+		}
 		Formula num = FormulaFactory.getFormulaFor(followerNumber);
-		CDOMReference<CompanionList> ref =
-				context.ref.getCDOMReference(CompanionList.class, followerType);
 
-		Slot<Follower> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
-					Follower.class, num);
-		slot.addSinkRestriction(cr);
+		context.ref.getCDOMReference(CompanionList.class, followerType);
 
+		// Slot<Follower> slot =
+		context.graph
+			.addSlotIntoGraph(getTokenName(), obj, Follower.class, num);
+
+		// TODO I need to add a Restriction that is GRAPH AWARE, since
+		// a graph traversal will need to take place...
+		// slot.addSinkRestriction(cr);
 		return true;
 	}
 
@@ -159,33 +177,17 @@ public class FollowersLst implements GlobalLstToken
 		{
 			return null;
 		}
-		List<String> list = new ArrayList<String>(edgeList.size());
+		Set<String> set = new TreeSet<String>();
 		for (PCGraphEdge edge : edgeList)
 		{
 			StringBuilder sb = new StringBuilder();
 			Slot<Follower> s = (Slot<Follower>) edge.getSinkNodes().get(0);
-			sb.append(s.toLSTform()).append(Constants.PIPE);
-			List<Restriction<?>> resList = s.getSinkRestrictions();
-			for (Restriction<?> res : resList)
-			{
-				CompoundRestriction<Follower> cr =
-						(CompoundRestriction<Follower>) res;
-				/*
-				 * TODO FIXME need to process these...
-				 */
-			}
-			Set<PCGraphEdge> linkSet =
-					context.graph.getChildLinks(obj, CompanionList.class);
-			for (PCGraphEdge ce : linkSet)
-			{
-				CompanionList cl = (CompanionList) ce.getNodeAt(1);
-
-				// if (cl.getFollowerType().equalsIgnoreCase(followerType))
-				// {
-				// }
-			}
-			list.add(sb.toString());
+			// TODO Process the CompanionList Type?
+			// sb.append();
+			sb.append(Constants.PIPE);
+			sb.append(s.toLSTform());
+			set.add(sb.toString());
 		}
-		return list.toArray(new String[list.size()]);
+		return set.toArray(new String[set.size()]);
 	}
 }

@@ -62,36 +62,42 @@ public class AttackCycleTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNoCycle() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "BAB"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyCycle() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "BAB|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyType() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputOpenStart() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|BAB|3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputOpenEnd() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "BAB|4|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -99,6 +105,7 @@ public class AttackCycleTokenTest extends AbstractTokenTestCase<PCClass>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "BAB||5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -107,6 +114,7 @@ public class AttackCycleTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"BAB|5||UAB|5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -115,12 +123,14 @@ public class AttackCycleTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"BAB|5|UAB||4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputGAB() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "GAB|5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -128,6 +138,7 @@ public class AttackCycleTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "BAB|4|GAB|5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

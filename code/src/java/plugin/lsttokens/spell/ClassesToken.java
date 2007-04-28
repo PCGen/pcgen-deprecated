@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
@@ -37,7 +38,7 @@ import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphAllowsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.core.PCClass;
+import pcgen.core.SpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
@@ -55,7 +56,7 @@ import pcgen.util.Logging;
 public class ClassesToken extends AbstractToken implements SpellLstToken
 {
 
-	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
+	private static final Class<SpellList> SPELLLIST_CLASS = SpellList.class;
 
 	@Override
 	public String getTokenName()
@@ -150,7 +151,12 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 			prereq = getPrerequisite(prereqString);
 		}
 
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		StringTokenizer pipeTok = new StringTokenizer(classKey, Constants.PIPE);
+		HashMapToList<Integer, CDOMReference<SpellList>> map =
+				new HashMapToList<Integer, CDOMReference<SpellList>>();
 
 		while (pipeTok.hasMoreTokens())
 		{
@@ -212,23 +218,47 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 
 			while (commaTok.hasMoreTokens())
 			{
-				CDOMReference<PCClass> pcc =
-						TokenUtilities.getObjectReference(context,
-							PCCLASS_CLASS, commaTok.nextToken());
-				if (pcc == null)
+				CDOMReference<SpellList> ref;
+				String token = commaTok.nextToken();
+				if (Constants.LST_ALL.equals(token))
 				{
-					Logging.errorPrint("  error was in " + getTokenName());
-					return false;
+					foundAny = true;
+					ref = context.ref.getCDOMAllReference(SPELLLIST_CLASS);
 				}
+				else
+				{
+					foundOther = true;
+					//FIXME I think this really should be a SpellList, not the SpellList itself?
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								SPELLLIST_CLASS, token);
+					if (ref == null)
+					{
+						Logging.errorPrint("  error was in " + getTokenName());
+						return false;
+					}
+				}
+				map.addToListFor(level, ref);
+			}
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+		for (Integer level : map.getKeySet())
+		{
+			for (CDOMReference<SpellList> ref : map.getListFor(level))
+			{
 				PCGraphAllowsEdge edge =
-						context.graph.linkAllowIntoGraph(getTokenName(), pcc,
+						context.graph.linkAllowIntoGraph(getTokenName(), ref,
 							spell);
 				edge.setAssociation(AssociationKey.SPELL_LEVEL, level);
 				if (prereq != null)
 				{
 					edge.addPrerequisite(prereq);
 				}
-
 			}
 		}
 		return true;
@@ -238,13 +268,13 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 	{
 		Set<PCGraphEdge> domainEdges =
 				context.graph.getParentLinksFromToken(getTokenName(), spell,
-					PCCLASS_CLASS);
+					SPELLLIST_CLASS);
 		if (domainEdges.isEmpty())
 		{
 			return null;
 		}
-		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<PCClass>> dkmtl =
-				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<PCClass>>();
+		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<SpellList>> dkmtl =
+				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<SpellList>>();
 		for (PCGraphEdge edge : domainEdges)
 		{
 			Integer level = edge.getAssociation(AssociationKey.SPELL_LEVEL);
@@ -282,11 +312,11 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 				prereq = list.get(0);
 			}
 			dkmtl.addToListFor(prereq, level,
-				(CDOMReference<PCClass>) sourceNodes.get(0));
+				(CDOMReference<SpellList>) sourceNodes.get(0));
 		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<CDOMReference<PCClass>> set =
-				new TreeSet<CDOMReference<PCClass>>(
+		SortedSet<CDOMReference<SpellList>> set =
+				new TreeSet<CDOMReference<SpellList>>(
 					TokenUtilities.REFERENCE_SORTER);
 		SortedSet<Integer> levelSet = new TreeSet<Integer>();
 		List<String> list = new ArrayList<String>(dkmtl.firstKeyCount());

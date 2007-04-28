@@ -51,13 +51,13 @@ public class ReferenceContext
 		return simple.validate() && categorized.validate();
 	}
 
-	public <T extends PObject & CategorizedCDOMObject<T>> CDOMGroupRef<T> getCategorizedCDOMAllReference(
+	public <T extends PObject & CategorizedCDOMObject<T>> CDOMGroupRef<T> getCDOMAllReference(
 		Class<T> c, Category<T> cat)
 	{
 		return group.getCategorizedCDOMAllReference(c, cat);
 	}
 
-	public <T extends PObject & CategorizedCDOMObject<T>> CDOMGroupRef<T> getCategorizedCDOMTypeReference(
+	public <T extends PObject & CategorizedCDOMObject<T>> CDOMGroupRef<T> getCDOMTypeReference(
 		Class<T> c, Category<T> cat, String... val)
 	{
 		return group.getCategorizedCDOMTypeReference(c, cat, val);
@@ -173,5 +173,4 @@ public class ReferenceContext
 	{
 		return categorized.getReferenceManufacturer(c, cat);
 	}
-
 }

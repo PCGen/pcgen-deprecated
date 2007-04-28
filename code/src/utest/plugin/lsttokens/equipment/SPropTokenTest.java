@@ -55,6 +55,7 @@ public class SPropTokenTest extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			".CLEAR|.CLEAR|Second"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -62,5 +63,6 @@ public class SPropTokenTest extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Second|.CLEAR"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 }

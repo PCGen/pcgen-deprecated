@@ -72,4 +72,25 @@ public class ChangeProf extends ConcretePrereqObject implements
 	{
 		return result;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return 31 * source.hashCode() + result.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == this)
+		{
+			return true;
+		}
+		if (!(o instanceof ChangeProf))
+		{
+			return false;
+		}
+		ChangeProf other = (ChangeProf) o;
+		return source.equals(other.source) && result.equals(other.result);
+	}
 }

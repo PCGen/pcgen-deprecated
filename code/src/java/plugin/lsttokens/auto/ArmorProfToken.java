@@ -18,6 +18,7 @@
 package plugin.lsttokens.auto;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -111,7 +112,12 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			return false;
 		}
 
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		StringTokenizer tok = new StringTokenizer(armorProfs, Constants.PIPE);
+		List<CDOMReference<ArmorProf>> refs =
+				new ArrayList<CDOMReference<ArmorProf>>();
 
 		while (tok.hasMoreTokens())
 		{
@@ -129,20 +135,41 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			}
 			else
 			{
-				CDOMReference<ArmorProf> ref =
-						TokenUtilities.getObjectReference(context,
-							ArmorProf.class, aProf);
+				CDOMReference<ArmorProf> ref;
+				if (Constants.LST_ANY.equalsIgnoreCase(aProf))
+				{
+					foundAny = true;
+					ref = context.ref.getCDOMAllReference(ArmorProf.class);
+				}
+				else
+				{
+					foundOther = true;
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								ArmorProf.class, aProf);
+				}
 				if (ref == null)
 				{
 					return false;
 				}
-				PCGraphGrantsEdge edge =
-						context.graph.linkObjectIntoGraph(getTokenName(), obj,
-							ref);
-				if (prereq != null)
-				{
-					edge.addPreReq(prereq);
-				}
+				refs.add(ref);
+			}
+		}
+
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+
+		for (CDOMReference<ArmorProf> ref : refs)
+		{
+			PCGraphGrantsEdge edge =
+					context.graph.linkObjectIntoGraph(getTokenName(), obj, ref);
+			if (prereq != null)
+			{
+				edge.addPreReq(prereq);
 			}
 		}
 

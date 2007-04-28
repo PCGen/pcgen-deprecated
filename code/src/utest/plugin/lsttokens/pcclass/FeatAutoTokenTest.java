@@ -76,6 +76,24 @@ public class FeatAutoTokenTest extends
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
+
+	@Override
 	public char getJoinCharacter()
 	{
 		return '|';
@@ -98,6 +116,7 @@ public class FeatAutoTokenTest extends
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -113,6 +132,7 @@ public class FeatAutoTokenTest extends
 		{
 			// This is okay too :)
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -121,6 +141,7 @@ public class FeatAutoTokenTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -130,6 +151,7 @@ public class FeatAutoTokenTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1||PRECLASS:1,Fighter=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -138,6 +160,7 @@ public class FeatAutoTokenTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -146,8 +169,6 @@ public class FeatAutoTokenTest extends
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -156,8 +177,6 @@ public class FeatAutoTokenTest extends
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|!PRERACE:1,Human|PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -166,8 +185,6 @@ public class FeatAutoTokenTest extends
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|!PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -178,8 +195,6 @@ public class FeatAutoTokenTest extends
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1", "TestWP2");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 }

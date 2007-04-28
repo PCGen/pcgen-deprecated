@@ -55,6 +55,7 @@ public class CostdoubleTokenTest extends AbstractTokenTestCase<EquipmentModifier
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -63,6 +64,7 @@ public class CostdoubleTokenTest extends AbstractTokenTestCase<EquipmentModifier
 		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
 		internalTestInvalidInputString(Boolean.TRUE);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

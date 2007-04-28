@@ -76,8 +76,8 @@ public final class AddLoader
 		}
 		else
 		{
-			// FIXME Consume for now - too frequent!
-			// Logging.errorPrint("Illegal ADD info '" + value + "'");
+			Logging.errorPrint("Illegal ADD info '" + value + "'");
+			return false;
 		}
 		return true;
 	}

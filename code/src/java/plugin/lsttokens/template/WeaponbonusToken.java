@@ -21,18 +21,22 @@
  */
 package plugin.lsttokens.template;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.content.ChoiceSet;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCTemplate;
 import pcgen.core.WeaponProf;
+import pcgen.core.WeaponProfList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -96,44 +100,93 @@ public class WeaponbonusToken implements PCTemplateLstToken
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		boolean foundAny = false;
+		boolean foundOther = false;
+		List<CDOMReference<WeaponProf>> list =
+				new ArrayList<CDOMReference<WeaponProf>>();
 
-		ChoiceSet<CDOMReference<WeaponProf>> cl =
-				new ChoiceSet<CDOMReference<WeaponProf>>(1, tok.countTokens());
 		while (tok.hasMoreTokens())
 		{
-			CDOMReference<WeaponProf> ref =
-					TokenUtilities.getTypeOrPrimitive(context,
-						WEAPONPROF_CLASS, tok.nextToken());
-			if (ref == null)
+			/*
+			 * Note this HAS to be done one-by-one, because the
+			 * .clearChildNodeOfClass method above does NOT recognize the C/CC
+			 * Skill object and therefore doesn't know how to search the
+			 * sublists
+			 */
+			String tokText = tok.nextToken();
+			if (Constants.LST_ALL.equals(tokText))
 			{
-				return false;
+				foundAny = true;
+				CDOMReference<WeaponProf> ref =
+						context.ref.getCDOMAllReference(WEAPONPROF_CLASS);
+				list.add(ref);
 			}
-			cl.addChoice(ref);
+			else
+			{
+				foundOther = true;
+				CDOMReference<WeaponProf> ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							WEAPONPROF_CLASS, tokText);
+				if (ref == null)
+				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
+					return false;
+				}
+				list.add(ref);
+			}
 		}
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, cl);
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+		CDOMReference<WeaponProfList> swl =
+				context.ref.getCDOMReference(WeaponProfList.class, "*Starting");
+		Aggregator agg = new Aggregator(obj, swl, getTokenName());
+		/*
+		 * This is intentionally Holds, as the context for traversal must only
+		 * be the ref (linked by the Activation Edge). So we need an edge to the
+		 * Activator to get it copied into the PC, but since this is a 3rd party
+		 * Token, the Race should never grant anything hung off the aggregator.
+		 */
+		context.graph.linkHoldsIntoGraph(getTokenName(), obj, agg);
+		context.graph.linkActivationIntoGraph(getTokenName(), swl, agg);
+
+		for (CDOMReference<WeaponProf> prof : list)
+		{
+			context.graph.linkAllowIntoGraph(getTokenName(), agg, prof);
+		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Set<PCGraphEdge> choiceEdges =
+		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), pct,
-					ChoiceSet.class);
-		if (choiceEdges == null || choiceEdges.isEmpty())
+					Aggregator.class);
+		if (edgeList == null || edgeList.isEmpty())
 		{
 			return null;
 		}
-		if (choiceEdges.size() > 1)
+		if (edgeList.size() != 1)
 		{
-			context.addWriteMessage(getTokenName()
-				+ " may only have one ChoiceSet linked in the Graph");
+			context.addWriteMessage("Expected only one " + getTokenName()
+				+ " structure in Graph");
 			return null;
 		}
-		Set<CDOMReference<?>> set =
+		PCGraphEdge edge = edgeList.iterator().next();
+		Aggregator a = (Aggregator) edge.getNodeAt(1);
+		Set<PCGraphEdge> edgeToSkillList =
+				context.graph.getChildLinksFromToken(getTokenName(), a,
+					WEAPONPROF_CLASS);
+		SortedSet<CDOMReference<?>> set =
 				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		PCGraphEdge edge = choiceEdges.iterator().next();
-		set.addAll(((ChoiceSet<CDOMReference<?>>) edge.getSinkNodes().get(0))
-			.getSet());
+		for (PCGraphEdge se : edgeToSkillList)
+		{
+			set.add((CDOMReference<WeaponProf>) se.getNodeAt(1));
+		}
 		return new String[]{ReferenceUtilities.joinLstFormat(set,
 			Constants.PIPE)};
 	}

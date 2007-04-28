@@ -55,6 +55,7 @@ public class MonsterClassTokenTest extends AbstractTokenTestCase<Race>
 	public void testInvalidNoColon() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -62,18 +63,21 @@ public class MonsterClassTokenTest extends AbstractTokenTestCase<Race>
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "Fighter:4:1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidLevelNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter:-4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidLevelZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter:0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -81,6 +85,7 @@ public class MonsterClassTokenTest extends AbstractTokenTestCase<Race>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Fighter:Level"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -94,16 +99,17 @@ public class MonsterClassTokenTest extends AbstractTokenTestCase<Race>
 	public void testSimple() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("Fighter:4");
-		assertTrue(primaryContext.ref.validate());
 	}
 
 	@Test
 	public void testMultiple() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
 		runRoundRobin("Fighter:4", "Wizard:5");
-		assertTrue(primaryContext.ref.validate());
 	}
 }

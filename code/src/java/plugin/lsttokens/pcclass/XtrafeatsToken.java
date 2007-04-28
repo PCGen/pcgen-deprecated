@@ -108,7 +108,7 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 		 * Parker Apr 7, 2007
 		 */
 		CDOMGroupRef<Ability> ref =
-				context.ref.getCategorizedCDOMAllReference(ABILITY_CLASS,
+				context.ref.getCDOMAllReference(ABILITY_CLASS,
 					AbilityCategory.FEAT);
 
 		slot.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS,

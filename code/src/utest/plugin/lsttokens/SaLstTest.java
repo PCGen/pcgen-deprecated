@@ -78,18 +78,21 @@ public class SaLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SA Number %||VarF"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEndingPipe() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "SA Number|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidStartingPipe() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "|Var"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -97,6 +100,7 @@ public class SaLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SA % plus %|Var|PRECLASS:1,Fighter|Var2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -104,6 +108,7 @@ public class SaLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"PRECLASS:1,Fighter"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

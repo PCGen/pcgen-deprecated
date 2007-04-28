@@ -56,6 +56,7 @@ public class FormatcatTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -64,6 +65,7 @@ public class FormatcatTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 		assertTrue(token.parse(primaryContext, primaryProf, "FRONT"));
 		assertEquals(EqModFormatCat.FRONT, primaryProf.get(ObjectKey.FORMAT));
 		internalTestInvalidInputString(EqModFormatCat.FRONT);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

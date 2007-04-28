@@ -22,6 +22,8 @@
  */
 package plugin.lsttokens;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -146,6 +148,7 @@ public class VisionLst implements GlobalLstToken
 	{
 		StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
 
+		List<Vision> list = new ArrayList<Vision>();
 		while (aTok.hasMoreTokens())
 		{
 			String visionString = aTok.nextToken();
@@ -161,6 +164,7 @@ public class VisionLst implements GlobalLstToken
 			{
 				try
 				{
+					//TODO Need to defer unlink until prove that there are no errors
 					Vision vis = Vision.getVision(visionString.substring(7));
 					context.graph.unlinkChildNode(getTokenName(), obj, vis);
 				}
@@ -182,8 +186,7 @@ public class VisionLst implements GlobalLstToken
 				}
 				try
 				{
-					Vision vis = Vision.getVision(visionString);
-					context.graph.linkObjectIntoGraph(getTokenName(), obj, vis);
+					list.add(Vision.getVision(visionString));
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -193,6 +196,10 @@ public class VisionLst implements GlobalLstToken
 					return false;
 				}
 			}
+		}
+		for (Vision vis : list)
+		{
+			context.graph.linkObjectIntoGraph(getTokenName(), obj, vis);
 		}
 		return true;
 	}

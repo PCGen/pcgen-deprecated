@@ -52,5 +52,7 @@ public abstract class CDOMReference<T extends PrereqObject> extends
 			+ name;
 	}
 
+	public abstract String getPrimitiveFormat();
+
 	public abstract String getLSTformat();
 }

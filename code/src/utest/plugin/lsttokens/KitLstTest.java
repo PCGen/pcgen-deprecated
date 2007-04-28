@@ -56,6 +56,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidInputNoNumber() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "TestType"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -63,12 +64,14 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|TestType"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputMissingItem() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "2|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -78,6 +81,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"2||TestWP1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -105,6 +109,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1|TestWP1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -112,6 +117,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1||TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -119,6 +125,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, "0|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -126,6 +133,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, "-4|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -135,6 +143,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|TestWP2||TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

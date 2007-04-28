@@ -32,6 +32,8 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 
 	public abstract boolean isTypeLegal();
 
+	public abstract boolean isAllLegal();
+
 	public abstract char getJoinCharacter();
 
 	@Test
@@ -48,6 +50,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 	public void testInvalidInputEmptyString() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -109,6 +112,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		if (isTypeLegal())
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf, "TYPE="));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -120,6 +124,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"TYPE=One."));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -131,6 +136,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"TYPE=One..Two"));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -142,17 +148,34 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"TYPE=.One"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputAll() throws PersistenceLayerException
+	{
+		if (!isAllLegal())
+		{
+			try
+			{
+				boolean parse =
+						getToken().parse(primaryContext, primaryProf, "ALL");
+				if (parse)
+				{
+					// Only need to check if parsed as true
+					assertFalse(primaryContext.ref.validate());
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+				// This is okay too
+			}
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
 	// FIXME These are invalid due to RC being overly protective at the moment
-	// @Test
-	// public void testInvalidInputAll()
-	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf, "ALL"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	//
 	// @Test
 	// public void testInvalidInputAny()
 	// {
@@ -176,6 +199,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP1" + getJoinCharacter()));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -184,6 +208,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -193,6 +218,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP2" + getJoinCharacter() + getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -340,8 +366,84 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		}
 	}
 
+	@Test
+	public void testInvalidInputAnyItem() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"ALL" + getJoinCharacter() + "TestWP1"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputItemAny() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + "ALL"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputAnyType() throws PersistenceLayerException
+	{
+		if (isTypeLegal() && isAllLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"ALL" + getJoinCharacter() + "TYPE=TestType"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputTypeAny() throws PersistenceLayerException
+	{
+		if (isTypeLegal() && isAllLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TYPE=TestType" + getJoinCharacter() + "ALL"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
 	protected void construct(LoadContext loadContext, String one)
 	{
 		loadContext.ref.constructCDOMObject(getTargetClass(), one);
 	}
+
+	public abstract boolean isClearLegal();
+
+	public abstract boolean isClearDotLegal();
+
+	@Test
+	public void testInputInvalidClear() throws PersistenceLayerException
+	{
+		if (isClearLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + ".CLEAR"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInputInvalidClearDot() throws PersistenceLayerException
+	{
+		if (isClearDotLegal())
+		{
+			// DoNotConstruct TestWP1
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				".CLEAR.TestWP1"));
+			assertFalse(primaryContext.ref.validate());
+		}
+	}
+
 }

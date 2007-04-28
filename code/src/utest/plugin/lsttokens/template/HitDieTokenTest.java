@@ -19,6 +19,7 @@ package plugin.lsttokens.template;
 
 import org.junit.Test;
 
+import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
@@ -56,6 +57,7 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"15|CLASS=Fighter|CLASS.TYPE=Base"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -63,12 +65,14 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"15|PRECLASS:1,Fighter"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyLimit() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "15|CLASS="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -77,18 +81,21 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"15|CLASS.TYPE="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testValidInputDivideNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%/-2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testValidInputDivideZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%/0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -101,12 +108,14 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputAddNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%+-3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputAddZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%+0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -120,12 +129,14 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%*-3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputMultiplyZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%*0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -139,12 +150,14 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%--3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputSubtractZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%-0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -157,12 +170,14 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputUpNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%up-3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputUpZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%up0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -175,12 +190,14 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputHUpNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hup-3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputHUpZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hup0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -193,12 +210,14 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputDownNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%down-3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputDownZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%down0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -212,12 +231,14 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hdown-3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputHdownZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hdown0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -230,24 +251,28 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "-3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputZero() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputDecimal() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3.5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputMisspell() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%upn5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -259,6 +284,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinIntegerClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("2|CLASS=Fighter");
 	}
 
@@ -277,6 +304,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinAddClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("%+2|CLASS=Fighter");
 	}
 
@@ -295,6 +324,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinSubtractClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("%-2|CLASS=Fighter");
 	}
 
@@ -313,6 +344,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinMultiplyClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("%*2|CLASS=Fighter");
 	}
 
@@ -331,6 +364,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinDivideClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("%/2|CLASS=Fighter");
 	}
 
@@ -349,6 +384,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinUpClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("%up2|CLASS=Fighter");
 	}
 
@@ -367,6 +404,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinHupClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("%Hup2|CLASS=Fighter");
 	}
 
@@ -385,6 +424,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinDownClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("%down2|CLASS=Fighter");
 	}
 
@@ -403,6 +444,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinHdownClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("%Hdown2|CLASS=Fighter");
 	}
 

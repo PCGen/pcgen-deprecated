@@ -67,6 +67,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -74,6 +75,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Paladin"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -82,6 +84,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin||5|3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -90,6 +93,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|5||3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -98,6 +102,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|6|5|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -107,6 +112,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "Paladin|6|5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -115,12 +121,14 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|6|5|4|3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyClass() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|4|3|2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -129,6 +137,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"|Paladin|6|5|4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -137,6 +146,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|6|5|4|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -146,6 +156,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin||6|5|4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -155,6 +166,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|6||5|4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -163,6 +175,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|6|5||4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -170,6 +183,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|5|2|1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -177,6 +191,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|-5|2|1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -184,6 +199,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|0|2|1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -192,6 +208,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|5|-2|1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -199,6 +216,7 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|5|0|1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -207,23 +225,30 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Paladin|4|5|-1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
 		runRoundRobin("Paladin|11|10|1");
 	}
 
 	@Test
 	public void testRoundRobinZeroRem() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
 		runRoundRobin("Paladin|10|10|0");
 	}
 
 	@Test
 	public void testRoundRobinHighMax() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
 		runRoundRobin("Paladin|5|10|1");
 	}
 }

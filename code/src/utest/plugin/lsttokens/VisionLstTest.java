@@ -54,18 +54,21 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidNoOpenParen() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Darkvision 25')"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidNoCloseParen() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Darkvision (25'"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidNoParen() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Darkvision 25'"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -73,6 +76,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Darkvision (25')Normal"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -81,6 +85,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Darkvision (25'm)"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -88,6 +93,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Darkvision (25.5')"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -95,6 +101,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Darkvision (zzzb32')"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -102,6 +109,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal|Darkvision 25')"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -109,6 +117,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal|Darkvision (25'"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -116,6 +125,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal|Darkvision 25'"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -123,6 +133,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal|Darkvision (25')Normal"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -131,6 +142,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal|Darkvision (25'm)"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -138,6 +150,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal|Darkvision (25.5')"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -145,6 +158,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal|Darkvision (zzzb32')"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -152,6 +166,7 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal,Darkvision"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

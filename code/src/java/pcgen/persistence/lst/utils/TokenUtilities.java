@@ -107,19 +107,6 @@ public final class TokenUtilities
 		// Can't instantiate utility classes
 	}
 
-	public static <T extends PObject> CDOMReference<T> getObjectReference(
-		LoadContext context, Class<T> cl, String s)
-	{
-		if (Constants.LST_ALL.equals(s))
-		{
-			return context.ref.getCDOMAllReference(cl);
-		}
-		else
-		{
-			return getTypeOrPrimitive(context, cl, s);
-		}
-	}
-
 	public static <T extends PObject> CDOMReference<T> getTypeOrPrimitive(
 		LoadContext context, Class<T> cl, String s)
 	{
@@ -171,14 +158,10 @@ public final class TokenUtilities
 		return dr;
 	}
 
-	public static <T extends PObject & CategorizedCDOMObject<T>> CDOMReference<T> getObjectReference(
+	public static <T extends PObject & CategorizedCDOMObject<T>> CDOMReference<T> getTypeOrPrimitive(
 		LoadContext context, Class<T> cl, Category<T> cat, String s)
 	{
-		if (Constants.LST_ALL.equals(s))
-		{
-			return context.ref.getCategorizedCDOMAllReference(cl, cat);
-		}
-		else if (s.startsWith(Constants.LST_TYPE_OLD)
+		if (s.startsWith(Constants.LST_TYPE_OLD)
 			|| s.startsWith(Constants.LST_TYPE))
 		{
 			String subStr = s.substring(5);
@@ -207,7 +190,7 @@ public final class TokenUtilities
 					return null;
 				}
 			}
-			return context.ref.getCategorizedCDOMTypeReference(cl, cat, types);
+			return context.ref.getCDOMTypeReference(cl, cat, types);
 		}
 		else
 		{

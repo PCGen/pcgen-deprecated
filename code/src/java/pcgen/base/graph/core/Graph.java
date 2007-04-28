@@ -207,4 +207,12 @@ public interface Graph<N, ET extends Edge<N>>
 	 *         Edges to this Graph; false otherwise
 	 */
 	public boolean equals(Object o);
+	
+	/**
+	 * Returns true if this Graph is empty (has no Nodes and no Edges); false
+	 * otherwise.
+	 * 
+	 * @return true if this Graph is empty; false otherwise
+	 */
+	public boolean isEmpty();
 }

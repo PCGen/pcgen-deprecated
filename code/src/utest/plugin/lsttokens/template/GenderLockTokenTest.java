@@ -56,6 +56,7 @@ public class GenderLockTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputString()
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -64,6 +65,7 @@ public class GenderLockTokenTest extends AbstractTokenTestCase<PCTemplate>
 		assertTrue(token.parse(primaryContext, primaryProf, "Male"));
 		assertEquals(Gender.Male, primaryProf.get(ObjectKey.GENDER_LOCK));
 		internalTestInvalidInputString(Gender.Male);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

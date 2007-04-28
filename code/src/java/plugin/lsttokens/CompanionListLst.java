@@ -351,6 +351,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			}
 		}
 
+		context.ref.constructIfNecessary(CompanionList.class, companionType);
 		CDOMReference<CompanionList> ref =
 				context.ref
 					.getCDOMReference(CompanionList.class, companionType);

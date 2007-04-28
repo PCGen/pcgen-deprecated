@@ -64,6 +64,24 @@ public class LangbonusTokenTest extends
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
+
+	@Override
 	public char getJoinCharacter()
 	{
 		return ',';
@@ -72,6 +90,6 @@ public class LangbonusTokenTest extends
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

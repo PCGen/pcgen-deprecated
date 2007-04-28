@@ -28,12 +28,12 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMCompoundReference;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
-import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.core.SkillList;
 import pcgen.persistence.LoadContext;
@@ -48,8 +48,6 @@ import pcgen.util.Logging;
  */
 public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 {
-
-	private static Class<SkillList> SKILLLIST_CLASS = SkillList.class;
 
 	public String getTokenName()
 	{
@@ -144,17 +142,31 @@ public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 
 		Slot<SkillList> slot =
 				context.graph.addSlotIntoGraph(getTokenName(), pcc,
-					SKILLLIST_CLASS, FormulaFactory.getFormulaFor(count));
+					SkillList.class, FormulaFactory.getFormulaFor(count));
 
 		CDOMCompoundReference<SkillList> cr =
-				new CDOMCompoundReference<SkillList>(SKILLLIST_CLASS,
+				new CDOMCompoundReference<SkillList>(SkillList.class,
 					getTokenName() + " items");
+
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<SkillList> ref =
-					TokenUtilities.getObjectReference(context, SKILLLIST_CLASS,
-						token);
+			CDOMReference<SkillList> ref;
+			if (Constants.LST_ALL.equals(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(SkillList.class);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							SkillList.class, token);
+			}
 			if (ref == null)
 			{
 				return false;
@@ -162,8 +174,15 @@ public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 			cr.addReference(ref);
 		}
 
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+
 		slot.addSinkRestriction(new GroupRestriction<SkillList>(
-			SKILLLIST_CLASS, cr));
+			SkillList.class, cr));
 
 		return true;
 	}
@@ -186,13 +205,14 @@ public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 		}
 		PCGraphEdge edge = links.iterator().next();
 		Slot<SkillList> slot = (Slot<SkillList>) edge.getSinkNodes().get(0);
-		if (!slot.getSlotClass().equals(SKILLLIST_CLASS))
+		if (!slot.getSlotClass().equals(SkillList.class))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "
 				+ getTokenName() + ": Type cannot be "
 				+ slot.getSlotClass().getSimpleName());
 			return null;
 		}
+		// TODO Need to validate Skill, not just CDOMListRef
 		String slotCount = slot.toLSTform();
 		List<Restriction<?>> restr = slot.getSinkRestrictions();
 		if (restr.size() != 1)

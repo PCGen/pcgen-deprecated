@@ -64,4 +64,23 @@ public class MonCSkillTokenTest extends AbstractListTokenTestCase<Race, Skill>
 	{
 		return true;
 	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
+
 }

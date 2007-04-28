@@ -54,6 +54,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	public void testInvalidInputNaN() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "X4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -61,6 +62,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "X4%60"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -68,6 +70,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "50%X4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -75,12 +78,14 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*50%40"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputTwoPercent() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "50%40%30"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -88,6 +93,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "4*"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -95,12 +101,14 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5*4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNaNTyped() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "X4|Any=25"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -108,6 +116,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "X4%60|Any=25"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -115,6 +124,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "50%X4|Any=25"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -122,6 +132,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*50%40|Any=25"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -129,6 +140,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "50%40%30|Any=25"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -136,6 +148,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "4*|Any=25"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -143,11 +156,13 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5*4|Any=25"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void testInvalidNoCapacity() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "|Cookies"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -155,6 +170,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5|Any="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -162,6 +178,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5|Cookies=0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -169,6 +186,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5|Cookies=-10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -176,12 +194,14 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5|Any=4X"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void testInvalidCapacityUselessPipe()
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -189,6 +209,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5||Any=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -196,6 +217,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5|Any=4|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -203,6 +225,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5|Any=4=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -211,6 +234,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"5|Cookies=4||Crackers=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -218,6 +242,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*5|Any="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -225,6 +250,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*5|Cookies=0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -232,6 +258,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*5|Cookies=-10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -239,12 +266,14 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*5|Any=4X"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void testInvalidWeightlessUselessPipe()
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*5|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -252,6 +281,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*5||Any=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -259,6 +289,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*5|Any=4|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -266,6 +297,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "*5|Any=4=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -274,6 +306,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"*5|Cookies=4||Crackers=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -281,6 +314,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "40%30|Any="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -288,12 +322,14 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "40%30|Any=4X"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void testInvalidReducedUselessPipe()
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "40%30|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -301,6 +337,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "40%30||Any=4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -308,6 +345,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "40%30|Any=4|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -315,6 +353,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "40%30|Cookies=0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -323,6 +362,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"40%30|Cookies=-10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -330,6 +370,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "40%30|Any=4=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -338,6 +379,7 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"40%30|Cookies=4||Crackers=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

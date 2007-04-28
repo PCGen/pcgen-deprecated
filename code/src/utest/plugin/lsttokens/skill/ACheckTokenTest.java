@@ -56,6 +56,7 @@ public class ACheckTokenTest extends AbstractTokenTestCase<Skill>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -65,6 +66,7 @@ public class ACheckTokenTest extends AbstractTokenTestCase<Skill>
 		assertEquals(SkillArmorCheck.YES, primaryProf
 			.get(ObjectKey.ARMOR_CHECK));
 		internalTestInvalidInputString(SkillArmorCheck.YES);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

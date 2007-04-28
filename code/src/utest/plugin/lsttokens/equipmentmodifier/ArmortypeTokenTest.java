@@ -55,24 +55,28 @@ public class ArmortypeTokenTest extends
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNoResult() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Medium"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyResult() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Medium|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptySource() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|Medium"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -80,6 +84,7 @@ public class ArmortypeTokenTest extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Light||Medium"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -87,6 +92,7 @@ public class ArmortypeTokenTest extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Light|Medium|Heavy"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

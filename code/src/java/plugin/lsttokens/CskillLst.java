@@ -29,7 +29,6 @@ import java.util.TreeSet;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.graph.PCGraphAllowsEdge;
@@ -90,27 +89,39 @@ public class CskillLst implements GlobalLstToken
 				+ " arguments uses double separator || : " + value);
 			return false;
 		}
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
-			if (Constants.LST_CLEAR.equals(tokText))
+			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
 				context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
 					SKILL_CLASS);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				PrereqObject skill =
-						TokenUtilities.getObjectReference(context, SKILL_CLASS,
-							tokText.substring(7));
-				if (skill == null)
+				CDOMReference<Skill> ref;
+				String clearText = tokText.substring(7);
+				if (Constants.LST_ALL.equals(clearText))
+				{
+					ref = context.ref.getCDOMAllReference(SKILL_CLASS);
+				}
+				else
+				{
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								SKILL_CLASS, clearText);
+				}
+				if (ref == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
 						+ getTokenName());
 					return false;
 				}
-				context.graph.unlinkChildNode(getTokenName(), obj, skill);
+				context.graph.unlinkChildNode(getTokenName(), obj, ref);
 			}
 			else
 			{
@@ -120,10 +131,20 @@ public class CskillLst implements GlobalLstToken
 				 * C/CC Skill object and therefore doesn't know how to search
 				 * the sublists
 				 */
-				PrereqObject skill =
-						TokenUtilities.getObjectReference(context, SKILL_CLASS,
-							tokText);
-				if (skill == null)
+				CDOMReference<Skill> ref;
+				if (Constants.LST_ALL.equals(tokText))
+				{
+					foundAny = true;
+					ref = context.ref.getCDOMAllReference(SKILL_CLASS);
+				}
+				else
+				{
+					foundOther = true;
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								SKILL_CLASS, tokText);
+				}
+				if (ref == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
 						+ getTokenName());
@@ -131,9 +152,15 @@ public class CskillLst implements GlobalLstToken
 				}
 				PCGraphAllowsEdge edge =
 						context.graph.linkAllowIntoGraph(getTokenName(), obj,
-							skill);
+							ref);
 				edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 			}
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
 		}
 		return true;
 	}

@@ -59,12 +59,14 @@ public class VisibleTokenTest extends AbstractTokenTestCase<PCTemplate>
 		primaryProf.put(ObjectKey.VISIBILITY, Visibility.QUALIFY);
 		assertNull(token.unparse(primaryContext, primaryProf));
 		assertFalse(primaryContext.getWriteMessageCount() == 0);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputString()
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -73,6 +75,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<PCTemplate>
 		assertTrue(token.parse(primaryContext, primaryProf, "EXPORT"));
 		assertEquals(Visibility.EXPORT, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.EXPORT);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

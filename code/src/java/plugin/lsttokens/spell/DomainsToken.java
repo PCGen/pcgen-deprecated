@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
@@ -38,6 +39,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphAllowsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Domain;
+import pcgen.core.SpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
@@ -55,7 +57,7 @@ import pcgen.util.Logging;
 public class DomainsToken extends AbstractToken implements SpellLstToken
 {
 
-	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
+	private static final Class<SpellList> SPELLLIST_CLASS = SpellList.class;
 
 	@Override
 	public String getTokenName()
@@ -150,8 +152,13 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 			prereq = getPrerequisite(prereqString);
 		}
 
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		StringTokenizer pipeTok =
 				new StringTokenizer(domainKey, Constants.PIPE);
+		HashMapToList<Integer, CDOMReference<SpellList>> map =
+				new HashMapToList<Integer, CDOMReference<SpellList>>();
 
 		while (pipeTok.hasMoreTokens())
 		{
@@ -213,16 +220,42 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 
 			while (commaTok.hasMoreTokens())
 			{
-				CDOMReference<Domain> d =
-						TokenUtilities.getObjectReference(context,
-							DOMAIN_CLASS, commaTok.nextToken());
-				if (d == null)
+				CDOMReference<SpellList> ref;
+				String token = commaTok.nextToken();
+				if (Constants.LST_ALL.equals(token))
+				{
+					foundAny = true;
+					ref = context.ref.getCDOMAllReference(SPELLLIST_CLASS);
+				}
+				else
+				{
+					foundOther = true;
+					// FIXME I think this really should be a SpellList, not the
+					// Domain itself?
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								SPELLLIST_CLASS, token);
+				}
+				if (ref == null)
 				{
 					Logging.errorPrint("  error was in " + getTokenName());
 					return false;
 				}
+				map.addToListFor(level, ref);
+			}
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+		for (Integer level : map.getKeySet())
+		{
+			for (CDOMReference<SpellList> ref : map.getListFor(level))
+			{
 				PCGraphAllowsEdge edge =
-						context.graph.linkAllowIntoGraph(getTokenName(), d,
+						context.graph.linkAllowIntoGraph(getTokenName(), ref,
 							spell);
 				edge.setAssociation(AssociationKey.SPELL_LEVEL, level);
 				if (prereq != null)
@@ -238,7 +271,7 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 	{
 		Set<PCGraphEdge> domainEdges =
 				context.graph.getParentLinksFromToken(getTokenName(), spell,
-					DOMAIN_CLASS);
+					SPELLLIST_CLASS);
 		if (domainEdges.isEmpty())
 		{
 			return null;

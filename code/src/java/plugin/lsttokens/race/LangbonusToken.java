@@ -21,6 +21,8 @@
  */
 package plugin.lsttokens.race;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -28,10 +30,11 @@ import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Language;
+import pcgen.core.LanguageList;
 import pcgen.core.Race;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
@@ -72,7 +75,7 @@ public class LangbonusToken implements RaceLstToken
 		if (value.charAt(value.length() - 1) == ',')
 		{
 			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
+				+ " arguments may not end with ,| : " + value);
 			return false;
 		}
 		if (value.indexOf(",,") != -1)
@@ -82,66 +85,155 @@ public class LangbonusToken implements RaceLstToken
 			return false;
 		}
 
-		final StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
+		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
+		boolean foundAny = false;
+		boolean foundOther = false;
+		List<CDOMReference<Language>> list =
+				new ArrayList<CDOMReference<Language>>();
+		CDOMReference<LanguageList> swl =
+				context.ref.getCDOMReference(LanguageList.class, "*Starting");
+		Aggregator agg = new Aggregator(race, swl, getTokenName());
 
-		while (tok.hasMoreTokens())
+		PIPEWHILE: while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
-
-			if (Constants.LST_CLEAR.equals(tokText))
+			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
-				context.graph.unlinkChildNodesOfClass(getTokenName(), race,
-					LANGUAGE_CLASS);
+				context.graph.deleteAggregator(getTokenName(), agg);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				PrereqObject lang =
-						TokenUtilities.getObjectReference(context,
-							LANGUAGE_CLASS, tokText.substring(7));
-				if (lang == null)
+				CDOMReference<Language> skill;
+				String clearText = tokText.substring(7);
+				if (Constants.LST_ALL.equals(clearText))
 				{
+					skill = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
+				}
+				else
+				{
+					skill =
+							TokenUtilities.getTypeOrPrimitive(context,
+								LANGUAGE_CLASS, clearText);
+				}
+				if (skill == null)
+				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
 					return false;
 				}
-				context.graph.unlinkChildNode(getTokenName(), race, lang);
+				Set<PCGraphEdge> edgeList =
+						context.graph.getChildLinksFromToken(getTokenName(),
+							agg, Aggregator.class);
+				if (edgeList.size() != 1)
+				{
+					Logging.errorPrint("Internal Error: "
+						+ "Expected only one " + getTokenName()
+						+ " structure in Graph");
+				}
+				/*
+				 * Note this can actually use agg and doesn't have to do a
+				 * search from the edge in edgeList, due to the .equals property
+				 * and how it will work in the Graph :) - Tom Parker Mar/1/07
+				 */
+				Set<PCGraphEdge> edgeToLanguageList =
+						context.graph.getChildLinksFromToken(getTokenName(),
+							agg, LANGUAGE_CLASS);
+				for (PCGraphEdge se : edgeToLanguageList)
+				{
+					if (se.getNodeAt(1).equals(skill))
+					{
+						context.graph.unlinkChildNode(getTokenName(), agg,
+							skill);
+						Set<PCGraphEdge> links =
+								context.graph.getChildLinksFromToken(
+									getTokenName(), agg);
+						if (links == null || links.isEmpty())
+						{
+							context.graph.deleteAggregator(getTokenName(), agg);
+						}
+						continue PIPEWHILE;
+					}
+				}
 			}
 			else
 			{
 				/*
-				 * Note this HAS to be done one-by-one, because the
-				 * .clearChildNodeOfClass method above does NOT recognize the
-				 * C/CC Skill object and therefore doesn't know how to search
-				 * the sublists
+				 * Note this is done one-by-one, because .CLEAR. token type
+				 * needs to be able to perform the unlink. That could be
+				 * changed, but the increase in complexity isn't worth it.
+				 * (Changing it to a grouping object that didn't place links in
+				 * the graph would also make it harder to trace the source of
+				 * class skills, etc.)
 				 */
-				PrereqObject lang =
-						TokenUtilities.getObjectReference(context,
-							LANGUAGE_CLASS, tokText);
-				if (lang == null)
+				CDOMReference<Language> skill;
+				if (Constants.LST_ALL.equals(tokText))
 				{
+					foundAny = true;
+					skill = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
+				}
+				else
+				{
+					foundOther = true;
+					skill =
+							TokenUtilities.getTypeOrPrimitive(context,
+								LANGUAGE_CLASS, tokText);
+				}
+				if (skill == null)
+				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
 					return false;
 				}
-				/*
-				 * BUG FIXME This is NOT A GRANT - it is a ChoiceList like WeaponBonus
-				 */
-				context.graph.linkObjectIntoGraph(getTokenName(), race, lang);
+				list.add(skill);
 			}
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+		/*
+		 * This is intentionally Holds, as the context for traversal must only
+		 * be the ref (linked by the Activation Edge). So we need an edge to the
+		 * Activator to get it copied into the PC, but since this is a 3rd party
+		 * Token, the Race should never grant anything hung off the aggregator.
+		 */
+		context.graph.linkHoldsIntoGraph(getTokenName(), race, agg);
+		context.graph.linkActivationIntoGraph(getTokenName(), swl, agg);
+
+		for (CDOMReference<Language> prof : list)
+		{
+			context.graph.linkAllowIntoGraph(getTokenName(), agg, prof);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Set<PCGraphEdge> edges =
+		Set<PCGraphEdge> edgeList =
 				context.graph.getChildLinksFromToken(getTokenName(), race,
-					LANGUAGE_CLASS);
-		if (edges.isEmpty())
+					Aggregator.class);
+		if (edgeList == null || edgeList.isEmpty())
 		{
 			return null;
 		}
+		if (edgeList.size() != 1)
+		{
+			context.addWriteMessage("Expected only one " + getTokenName()
+				+ " structure in Graph");
+			return null;
+		}
+		PCGraphEdge edge = edgeList.iterator().next();
+		Aggregator a = (Aggregator) edge.getNodeAt(1);
+		Set<PCGraphEdge> edgeToLanguageList =
+				context.graph.getChildLinksFromToken(getTokenName(), a,
+					LANGUAGE_CLASS);
 		SortedSet<CDOMReference<?>> set =
 				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge edge : edges)
+		for (PCGraphEdge se : edgeToLanguageList)
 		{
-			set.add((CDOMReference<Language>) edge.getSinkNodes().get(0));
+			set.add((CDOMReference<Language>) se.getNodeAt(1));
 		}
 		return new String[]{ReferenceUtilities.joinLstFormat(set,
 			Constants.COMMA)};

@@ -73,6 +73,7 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -80,6 +81,7 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -87,6 +89,7 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "HeavyLoad|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -94,6 +97,7 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|HeavyLoad"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -102,6 +106,7 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"HeavyLoad||HeavyArmor"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -110,6 +115,7 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"HeavyLoad|MediumLoad"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -118,6 +124,7 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"MediumArmor|HeavyArmor"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

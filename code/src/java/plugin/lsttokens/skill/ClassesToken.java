@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.skill;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -96,41 +97,60 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 			return false;
 		}
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
-		PCGraphAllowsEdge allEdge = null;
-		boolean nonNegated = false;
+		List<CDOMReference<SkillList>> allowed =
+				new ArrayList<CDOMReference<SkillList>>();
+		List<Prerequisite> prevented = new ArrayList<Prerequisite>();
+
 		while (pipeTok.hasMoreTokens())
 		{
 			String className = pipeTok.nextToken();
 			if (className.startsWith("!"))
 			{
-				if (allEdge == null)
+				String clString = className.substring(1);
+				if (Constants.LST_ALL.equals(clString)
+					|| Constants.LST_ANY.equals(clString))
 				{
-					PrereqObject ref =
-							context.ref.getCDOMAllReference(SkillList.class);
-					allEdge = addSkillAllowed(context, skill, ref);
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ " cannot use !ALL");
+					return false;
 				}
-				/*
-				 * TODO There is an All/Any mismatch here... (CLASSES uses ALL,
-				 * PRECLASS uses ANY)
-				 */
-				allEdge.addPreReq(getPrerequisite("!PRECLASS:1,"
-					+ className.substring(1)));
+				prevented.add(getPrerequisite("!PRECLASS:1," + clString));
 			}
 			else
 			{
-				PrereqObject ref =
-						context.ref.getCDOMReference(SkillList.class, className);
-				addSkillAllowed(context, skill, ref);
-				nonNegated = true;
+				allowed.add(context.ref.getCDOMReference(SkillList.class,
+					className));
 			}
 		}
-		if (nonNegated && allEdge != null)
+		if (!prevented.isEmpty() && !allowed.isEmpty())
 		{
 			Logging.errorPrint("Non-sensical " + getTokenName() + ": " + value);
 			Logging.errorPrint("  Token contains both negated "
 				+ "and non-negated class references");
 			return false;
 		}
+
+		if (!allowed.isEmpty())
+		{
+			for (CDOMReference<SkillList> ref : allowed)
+			{
+				addSkillAllowed(context, skill, ref);
+			}
+		}
+		if (!prevented.isEmpty())
+		{
+			CDOMReference<SkillList> ref =
+					context.ref.getCDOMAllReference(SkillList.class);
+			PCGraphAllowsEdge allEdge = addSkillAllowed(context, skill, ref);
+			for (Prerequisite prereq : prevented)
+			{
+				allEdge.addPrerequisite(prereq);
+			}
+		}
+		/*
+		 * TODO There is an All/Any mismatch here... (CLASSES uses ALL, PRECLASS
+		 * uses ANY)
+		 */
 		return true;
 	}
 

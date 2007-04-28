@@ -130,6 +130,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	{
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -138,6 +139,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP1" + getJoinCharacter()));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -146,6 +148,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -155,6 +158,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP2" + getJoinCharacter() + getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

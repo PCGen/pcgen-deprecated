@@ -132,9 +132,8 @@ public class SpellCasterToken implements AddLstToken
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		Slot<SpellProgressionInfo> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
-					SPELL_PROG_CLASS, FormulaFactory.getFormulaFor(count));
+		boolean foundAny = false;
+		boolean foundOther = false;
 
 		CDOMCompoundReference<SpellProgressionInfo> cr =
 				new CDOMCompoundReference<SpellProgressionInfo>(
@@ -142,9 +141,19 @@ public class SpellCasterToken implements AddLstToken
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<SpellProgressionInfo> ref =
-					TokenUtilities.getObjectReference(context,
-						SPELL_PROG_CLASS, token);
+			CDOMReference<SpellProgressionInfo> ref;
+			if (Constants.LST_ANY.equalsIgnoreCase(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(SPELL_PROG_CLASS);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							SPELL_PROG_CLASS, token);
+			}
 			if (ref == null)
 			{
 				return false;
@@ -152,8 +161,18 @@ public class SpellCasterToken implements AddLstToken
 			cr.addReference(ref);
 		}
 
+		Slot<SpellProgressionInfo> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), obj,
+					SPELL_PROG_CLASS, FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<SpellProgressionInfo>(
 			SPELL_PROG_CLASS, cr));
+
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
 
 		return true;
 	}

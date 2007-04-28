@@ -53,30 +53,35 @@ public class MoveLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputOneItem() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Normal"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNoValue() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Normal,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputOnlyValue() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ",30"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputTwoComma() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Normal,,30"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -84,6 +89,7 @@ public class MoveLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"Normal,30,Darkvision"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -91,6 +97,7 @@ public class MoveLstTest extends AbstractGlobalTokenTestCase
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "Normal,-30"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

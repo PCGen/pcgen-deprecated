@@ -45,6 +45,7 @@ public abstract class AbstractGlobalFormulaTokenTestCase extends
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

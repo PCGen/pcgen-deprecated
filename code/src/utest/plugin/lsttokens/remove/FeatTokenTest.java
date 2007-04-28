@@ -15,71 +15,64 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.race;
-
-import org.junit.Test;
+package plugin.lsttokens.remove;
 
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.core.Ability;
-import pcgen.core.Race;
+import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.RaceLoader;
-import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
+import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.persistence.lst.RemoveLstToken;
 
-public class MFeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
+public class FeatTokenTest extends AbstractRemoveTokenTestCase
 {
-	static FeatToken token = new FeatToken();
-	static RaceLoader loader = new RaceLoader();
+
+	private RemoveLstToken aToken = new FeatToken();
 
 	@Override
-	public char getJoinCharacter()
+	protected RemoveLstToken getSubToken()
 	{
-		return '|';
+		return aToken;
 	}
 
 	@Override
-	public Class<Ability> getTargetClass()
+	protected Class<Ability> getSubTokenType()
 	{
 		return Ability.class;
 	}
 
 	@Override
-	public boolean isTypeLegal()
+	public Class<PCTemplate> getCDOMClass()
 	{
-		return false;
+		return PCTemplate.class;
 	}
 
-	@Override
-	public Class<Race> getCDOMClass()
-	{
-		return Race.class;
-	}
+	static PCTemplateLoader loader = new PCTemplateLoader();
 
 	@Override
-	public LstObjectFileLoader<Race> getLoader()
+	public LstObjectFileLoader<PCTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Race> getToken()
+	protected void construct(LoadContext loadContext, String one)
 	{
-		return token;
+		Ability ab =
+				loadContext.ref.constructCDOMObject(getSubTokenType(), one);
+		loadContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
 	}
 
 	@Override
-	protected void construct(LoadContext loadContext, String one)
+	public boolean isTypeLegal()
 	{
-		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
-		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
+		return true;
 	}
 
-	@Test
-	public void dummyTest()
+	@Override
+	public boolean isAllLegal()
 	{
-		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		return true;
 	}
-
 }

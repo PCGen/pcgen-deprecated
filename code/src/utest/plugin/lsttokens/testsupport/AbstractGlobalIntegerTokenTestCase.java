@@ -38,6 +38,7 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 	public void testInvalidInputUnset() throws PersistenceLayerException
 	{
 		testInvalidInputs(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -56,6 +57,7 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 			.parse(primaryContext, primaryProf, con.toString()));
 		assertEquals(con, primaryProf.get(getIntegerKey()));
 		testInvalidInputs(con);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void testInvalidInputs(Integer val) throws PersistenceLayerException

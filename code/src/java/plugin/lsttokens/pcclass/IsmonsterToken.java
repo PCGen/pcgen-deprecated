@@ -21,7 +21,7 @@
  */
 package plugin.lsttokens.pcclass;
 
-import pcgen.cdom.base.CDOMGroupRef;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PCClass;
 import pcgen.core.SkillList;
@@ -75,9 +75,8 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 				return false;
 			}
 			set = Boolean.TRUE;
-			CDOMGroupRef<SkillList> msl =
-					context.ref
-						.getCDOMTypeReference(SkillList.class, "Monster");
+			CDOMReference<SkillList> msl =
+					context.ref.getCDOMReference(SkillList.class, "*Monster");
 			context.graph.linkObjectIntoGraph(getTokenName(), pcc, msl);
 		}
 		else

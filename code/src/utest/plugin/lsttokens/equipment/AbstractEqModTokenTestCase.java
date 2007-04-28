@@ -57,6 +57,24 @@ public abstract class AbstractEqModTokenTestCase extends
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public char getJoinCharacter()
 	{
 		return '.';
@@ -73,6 +91,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"EQMOD1.NONE.EQMOD2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -80,6 +99,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "NONE.EQMOD2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -87,12 +107,14 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "EQMOD2.NONE"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptyAssociation() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "EQMOD2|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -101,6 +123,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"EQMOD2|Assoc|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -109,6 +132,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"|Assoc|Assoc2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -117,6 +141,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"MOD1.|Assoc|Assoc2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -125,6 +150,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"MOD1|ModAssoc.|Assoc|Assoc2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -133,6 +159,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"MOD1|ModAssoc[]"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -141,6 +168,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"MOD1|ModAssoc Assoc]"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -149,6 +177,7 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"MOD1|ModAssoc[[Assoc]"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -157,17 +186,26 @@ public abstract class AbstractEqModTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"EQMOD2|Assoc||Assoc2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void testRoundRobinOnlyAssociation()
 		throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+			"EQMOD2");
+		secondaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+			"EQMOD2");
 		runRoundRobin("EQMOD2|9500");
 	}
 
 	public void testRoundRobinComplexAssociation()
 		throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+			"EQMOD2");
+		secondaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+			"EQMOD2");
 		runRoundRobin("EQMOD2|COST[9500]");
 	}
 
@@ -180,6 +218,10 @@ public abstract class AbstractEqModTokenTestCase extends
 	public void testRoundRobinComplexMultipleAssociation()
 		throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+			"EQMOD2");
+		secondaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+			"EQMOD2");
 		runRoundRobin("EQMOD2|COST[9500]PLUS[+1]");
 	}
 

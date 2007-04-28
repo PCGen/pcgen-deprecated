@@ -78,6 +78,24 @@ public class FeatTokenTest extends
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public Class<PCTemplate> getCDOMClass()
 	{
 		return PCTemplate.class;
@@ -106,6 +124,7 @@ public class FeatTokenTest extends
 	public void testInvalidInputEmpty()
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -121,6 +140,7 @@ public class FeatTokenTest extends
 		{
 			// this is okay too :)
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -129,6 +149,7 @@ public class FeatTokenTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -137,6 +158,7 @@ public class FeatTokenTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1||PRECLASS:1,Fighter=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -145,6 +167,7 @@ public class FeatTokenTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -153,8 +176,6 @@ public class FeatTokenTest extends
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -163,8 +184,6 @@ public class FeatTokenTest extends
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|!PRERACE:1,Human|PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -173,8 +192,6 @@ public class FeatTokenTest extends
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|!PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -185,8 +202,5 @@ public class FeatTokenTest extends
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1", "TestWP2");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
-
 }

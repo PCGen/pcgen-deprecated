@@ -69,24 +69,28 @@ public class KeystatTokenTest extends AbstractTokenTestCase<Skill>
 	public void testInvalidNotAStat() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "NAN"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidMultipleStatComma() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "STR,INT"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidMultipleStatBar() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "STR|INT"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidMultipleStatDot() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "STR.INT"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

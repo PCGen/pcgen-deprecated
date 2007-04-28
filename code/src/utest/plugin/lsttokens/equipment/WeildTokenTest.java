@@ -68,6 +68,7 @@ public class WeildTokenTest extends AbstractTokenTestCase<Equipment>
 	public void testBadInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

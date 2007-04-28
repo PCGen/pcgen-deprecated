@@ -19,6 +19,7 @@ package plugin.lsttokens;
 
 import pcgen.core.Language;
 import pcgen.core.PCTemplate;
+import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
@@ -41,6 +42,24 @@ public class LangAutoLstTest extends AbstractGlobalListTokenTestCase<Language>
 
 	@Override
 	public boolean isTypeLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
 	{
 		return true;
 	}

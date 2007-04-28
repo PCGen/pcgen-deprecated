@@ -48,6 +48,24 @@ public class TemplateLstTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
 	static GlobalLstToken token = new TemplateLst();
 	static PCTemplateLoader loader = new PCTemplateLoader();
 
@@ -113,6 +131,7 @@ public class TemplateLstTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"CHOOSE:TestWP1" + getJoinCharacter()));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -121,6 +140,7 @@ public class TemplateLstTest extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"CHOOSE:" + getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -134,6 +154,7 @@ public class TemplateLstTest extends
 			primaryProf,
 			"CHOOSE:TestWP2" + getJoinCharacter() + getJoinCharacter()
 				+ "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

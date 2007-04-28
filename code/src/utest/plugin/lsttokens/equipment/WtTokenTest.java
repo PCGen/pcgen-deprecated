@@ -58,6 +58,7 @@ public class WtTokenTest extends AbstractTokenTestCase<Equipment>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -65,24 +66,28 @@ public class WtTokenTest extends AbstractTokenTestCase<Equipment>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TYPE=TestType"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputFormula() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputFraction() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1/2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

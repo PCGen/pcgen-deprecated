@@ -88,21 +88,40 @@ public class FavclassToken implements RaceLstToken
 			return false;
 		}
 
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
 
 		while (tok.hasMoreTokens())
 		{
-			String tokString = tok.nextToken();
-			CDOMReference<PCClass> cl =
-					TokenUtilities.getObjectReference(context, PCCLASS_CLASS,
-						tokString);
-			if (cl == null)
+			CDOMReference<PCClass> ref;
+			String token = tok.nextToken();
+			if (Constants.LST_ALL.equals(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(PCCLASS_CLASS);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							PCCLASS_CLASS, token);
+			}
+			if (ref == null)
 			{
 				Logging.errorPrint("  ...error encountered in "
 					+ getTokenName());
 				return false;
 			}
-			cdo.addToListFor(ListKey.FAVORED_CLASS, cl);
+			cdo.addToListFor(ListKey.FAVORED_CLASS, ref);
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
 		}
 		return true;
 	}

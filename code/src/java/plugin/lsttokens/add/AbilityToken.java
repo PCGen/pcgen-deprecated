@@ -240,18 +240,28 @@ public class AbilityToken implements AddLstToken
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		Slot<Ability> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
-					ABILITY_CLASS, FormulaFactory.getFormulaFor(count));
 		CDOMCompoundReference<Ability> cr =
 				new CDOMCompoundReference<Ability>(ABILITY_CLASS,
 					getTokenName() + " items");
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<Ability> ref =
-					TokenUtilities.getObjectReference(context, Ability.class,
-						ac, token);
+			CDOMReference<Ability> ref;
+			if (Constants.LST_ANY.equalsIgnoreCase(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(ABILITY_CLASS, ac);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							ABILITY_CLASS, ac, token);
+			}
 			if (ref == null)
 			{
 				return false;
@@ -259,6 +269,15 @@ public class AbilityToken implements AddLstToken
 			cr.addReference(ref);
 		}
 
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+		Slot<Ability> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), obj,
+					ABILITY_CLASS, FormulaFactory.getFormulaFor(count));
 		slot
 			.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS, cr));
 		slot.setAssociation(AssociationKey.ABILITY_CATEGORY, ac);

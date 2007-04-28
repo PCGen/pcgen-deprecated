@@ -78,24 +78,28 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputOnlyType() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "ALIGNMENT"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNoValue() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "ALIGNMENT."));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNoType() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ".Good"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -103,6 +107,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"|ALIGNMENT.Good"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -110,6 +115,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"ALIGNMENT.Good|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -117,6 +123,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"ALIGNMENT..Good"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -124,6 +131,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"ALIGNMENT.Lawful."));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -132,6 +140,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"ALIGNMENT.Lawful.|PRECLASS:1,Fighter"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -140,6 +149,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"ALIGNMENT.Lawful..Good"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -147,6 +157,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"SPELL.,Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -155,6 +166,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"SPELL.Fireball,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -163,6 +175,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"SPELL.Fireball,|PRECLASS:1,Fighter"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -171,6 +184,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"SPELL.Fireball,,Lightning Bolt"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -178,6 +192,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"ALIGNMENT.Good||PRECLASS:1,Fighte"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -185,6 +200,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"ALIGNMENT.Neutral"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -192,6 +208,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"NOTATYPE.Good"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -199,6 +216,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"DESCRIPTOR.Fear|DESCRIPTOR.Fire"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -206,6 +224,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"PRECLASS:1,Fighter=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -257,6 +276,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SPELL.Fireball,Lightning Bolt|PRECLASS:1,Fighter=1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -265,6 +285,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SPELL.Fireball||PRECLASS:1,Fighter=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -272,30 +293,25 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testRoundRobinPre() throws PersistenceLayerException
 	{
 		runRoundRobin("SUBSCHOOL.Subsch|PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
 	public void testRoundRobinTwoPre() throws PersistenceLayerException
 	{
 		runRoundRobin("DESCRIPTOR.Fear.Fire|!PRERACE:1,Human|PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
 	public void testRoundRobinNotPre() throws PersistenceLayerException
 	{
 		runRoundRobin("DESCRIPTOR.Fear.Fire|!PRECLASS:1,Fighter=1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -303,8 +319,6 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		runRoundRobin("SPELL.Fireball,Lightning Bolt|PRECLASS:1,Fighter=1",
 			"SUBSCHOOL.Subsch");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 }

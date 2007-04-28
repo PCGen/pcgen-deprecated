@@ -64,6 +64,24 @@ public class FavoredClassTokenTest extends
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public char getJoinCharacter()
 	{
 		return ',';

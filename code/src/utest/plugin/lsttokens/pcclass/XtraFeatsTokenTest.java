@@ -91,6 +91,7 @@ public class XtraFeatsTokenTest extends AbstractTokenTestCase<PCClass>
 		assertEquals(primaryGraph, secondaryGraph);
 		assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
 		assertEquals(primaryGraph, secondaryGraph);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

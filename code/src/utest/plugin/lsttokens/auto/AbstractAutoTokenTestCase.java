@@ -108,6 +108,7 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TYPE="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -116,6 +117,7 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TYPE=One."));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -124,6 +126,7 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TYPE=One..Two"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -132,35 +135,51 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TYPE=.One"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
-	// FIXME These are invalid due to RC being overly protective at the moment
+	@Test
+	public void testInvalidInputAnyItem() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|ANY|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputItemAny() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|TestWP1|ANY"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputAnyType() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|ANY|TYPE=TestType"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputTypeAny() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|TYPE=TestType|ANY"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	// FIXME Need to implement!
 	// @Test
-	// public void testInvalidInputAll()
+	// public void testInvalidInputCheckType() throws PersistenceLayerException
 	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf,
-	// getSubTokenString() + "|ALL"));
+	// assertTrue(token.parse(primaryContext, primaryProf, getSubTokenString()
+	// + "|TYPE=TestType"));
 	// assertFalse(primaryContext.ref.validate());
 	// }
-	//
-	// @Test
-	// public void testInvalidInputAny()
-	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf,
-	// getSubTokenString() + "|ANY"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	// @Test
-	// public void testInvalidInputCheckType()
-	// {
-	// if (!isTypeLegal())
-	// {
-	// assertTrue(token.parse(primaryContext, primaryProf,
-	// getSubTokenString() + "|TYPE=TestType"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	// }
-	//
 
 	@Test
 	public void testInvalidEmptyPrereq() throws PersistenceLayerException
@@ -168,6 +187,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1[]"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -177,6 +197,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1[PRERACE:1,Human"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -185,6 +206,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -193,6 +215,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "||TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -202,6 +225,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP2||TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -250,6 +274,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		construct(secondaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1[PRERACE:1,Human]|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

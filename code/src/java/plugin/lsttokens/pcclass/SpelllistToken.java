@@ -28,12 +28,12 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMCompoundReference;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
-import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.core.SpellList;
 import pcgen.persistence.LoadContext;
@@ -142,25 +142,45 @@ public class SpelllistToken implements PCClassLstToken, PCClassClassLstToken
 			return false;
 		}
 
-		Slot<SpellList> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), pcc,
-					SPELLLIST_CLASS, FormulaFactory.getFormulaFor(count));
-
 		CDOMCompoundReference<SpellList> cr =
 				new CDOMCompoundReference<SpellList>(SPELLLIST_CLASS,
 					getTokenName() + " items");
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<SpellList> ref =
-					TokenUtilities.getObjectReference(context, SPELLLIST_CLASS,
-						token);
+			CDOMReference<SpellList> ref;
+			if (Constants.LST_ALL.equals(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(SPELLLIST_CLASS);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							SPELLLIST_CLASS, token);
+			}
 			if (ref == null)
 			{
 				return false;
 			}
 			cr.addReference(ref);
 		}
+
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+
+		Slot<SpellList> slot =
+			context.graph.addSlotIntoGraph(getTokenName(), pcc,
+				SPELLLIST_CLASS, FormulaFactory.getFormulaFor(count));
 
 		slot.addSinkRestriction(new GroupRestriction<SpellList>(
 			SPELLLIST_CLASS, cr));

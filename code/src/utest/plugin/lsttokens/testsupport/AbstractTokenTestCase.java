@@ -45,6 +45,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 	protected T primaryProf;
 	protected T secondaryProf;
 	protected String prefix = "";
+	protected int expectedPrimaryMessageCount = 0;
 
 	private static boolean classSetUpFired = false;
 	protected static CampaignSourceEntry testCampaign;
@@ -78,6 +79,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		secondaryProf =
 				secondaryContext.ref.constructCDOMObject(getCDOMClass(),
 					"TestObj");
+		expectedPrimaryMessageCount = 0;
 	}
 
 	public abstract Class<? extends T> getCDOMClass();
@@ -136,6 +138,10 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 			assertEquals("Expected " + i + " item to be equal", unparsed[i],
 				sUnparsed[i]);
 		}
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+		assertEquals(expectedPrimaryMessageCount, primaryContext.getWriteMessageCount());
+		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 
 	public abstract LstLoader<T> getLoader();

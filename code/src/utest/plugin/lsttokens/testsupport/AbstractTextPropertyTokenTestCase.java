@@ -63,12 +63,14 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidPipeOnly() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -76,6 +78,7 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Yarra Valley|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -83,6 +86,7 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"|Yarra Valley"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -90,6 +94,7 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Yarra Valley||Rheinhessen"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -97,6 +102,7 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "!PRELEVEL:3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -104,6 +110,7 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Yarra Valley|!PRELEVEL:3|Rheinhessen"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -111,6 +118,7 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Yarra Valley|Rheinhessen|PREFOO:3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -118,6 +126,7 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Yarra Valley|Rheinhessen|!PREFOO:3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -125,6 +134,7 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"Yarra Valley|PRELEVEL:4|Rheinhessen"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

@@ -52,6 +52,24 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	}
 
 	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public Class<Deity> getCDOMClass()
 	{
 		return Deity.class;

@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMCompoundReference;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
@@ -30,7 +31,6 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
-import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
@@ -140,22 +140,29 @@ public class ClassSkillsToken implements AddLstToken
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		/*
-		 * BUG FIXME This slot actually belongs to the Class' SkillList not
-		 * to the Class itself...
-		 */
-		Slot<Skill> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
-					SKILL_CLASS, FormulaFactory.getFormulaFor(count));
 		CDOMCompoundReference<Skill> cr =
 				new CDOMCompoundReference<Skill>(SKILL_CLASS, getTokenName()
 					+ " items");
+
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<Skill> ref =
-					TokenUtilities.getObjectReference(context, SKILL_CLASS,
-						token);
+			CDOMReference<Skill> ref;
+			if (Constants.LST_ALL.equals(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(SKILL_CLASS);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context, SKILL_CLASS,
+							token);
+			}
 			if (ref == null)
 			{
 				return false;
@@ -163,10 +170,24 @@ public class ClassSkillsToken implements AddLstToken
 			cr.addReference(ref);
 		}
 
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+
 		/*
-		 * BUG FIXME How do I get the slink out of this Slot to be allows and not
-		 * grants?
+		 * BUG FIXME How do I get the slink out of this Slot to be allows and
+		 * not grants?
 		 */
+		/*
+		 * BUG FIXME This slot actually belongs to the Class' SkillList not to
+		 * the Class itself...
+		 */
+		Slot<Skill> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), obj,
+					SKILL_CLASS, FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Skill>(SKILL_CLASS, cr));
 		slot.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 

@@ -105,24 +105,29 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
-		List<PCGraphGrantsEdge> edgeList = new ArrayList<PCGraphGrantsEdge>();
-
 		String token = tok.nextToken();
+
+		if (token.startsWith("PRE") || token.startsWith("!PRE"))
+		{
+			Logging.errorPrint("Cannot have only PRExxx subtoken in "
+				+ getTokenName());
+			return false;
+		}
+
+		List<CDOMReference<Ability>> abilityList =
+				new ArrayList<CDOMReference<Ability>>();
+
 		while (true)
 		{
 			CDOMCategorizedSingleRef<Ability> ability =
 					context.ref.getCDOMReference(ABILITY_CLASS,
 						AbilityCategory.FEAT, token);
-			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), obj,
-						ability);
-			edge.setAssociation(AssociationKey.ABILITY_NATURE,
-				AbilityNature.NORMAL);
-			edgeList.add(edge);
+			abilityList.add(ability);
 
 			if (!tok.hasMoreTokens())
 			{
 				// No prereqs, so we're done
+				finish(context, obj, abilityList, null);
 				return true;
 			}
 			token = tok.nextToken();
@@ -132,19 +137,17 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 			}
 		}
 
+		List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
 		while (true)
 		{
 			Prerequisite prereq = getPrerequisite(token);
 			if (prereq == null)
 			{
 				Logging.errorPrint("   (Did you put feats after the "
-					+ "PRExxx tags in FEAT:?)");
+					+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
-			for (PCGraphGrantsEdge edge : edgeList)
-			{
-				edge.addPrerequisite(prereq);
-			}
+			prereqs.add(prereq);
 			if (!tok.hasMoreTokens())
 			{
 				break;
@@ -152,7 +155,29 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 			token = tok.nextToken();
 		}
 
+		finish(context, obj, abilityList, prereqs);
+
 		return true;
+	}
+
+	private void finish(LoadContext context, CDOMObject obj,
+		List<CDOMReference<Ability>> abilityList, List<Prerequisite> prereqs)
+	{
+		for (CDOMReference<Ability> ability : abilityList)
+		{
+			PCGraphGrantsEdge edge =
+					context.graph.linkObjectIntoGraph(getTokenName(), obj,
+						ability);
+			edge.setAssociation(AssociationKey.ABILITY_NATURE,
+				AbilityNature.NORMAL);
+			if (prereqs != null)
+			{
+				for (Prerequisite prereq : prereqs)
+				{
+					edge.addPrerequisite(prereq);
+				}
+			}
+		}
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)

@@ -54,18 +54,21 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputNoPipe() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter:3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNoClass() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNoLevelCount() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -73,6 +76,7 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter| "));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -80,6 +84,7 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "Fighter|3|3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -88,6 +93,7 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, "Fighter|3.5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -95,6 +101,7 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter|-5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -102,6 +109,7 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter|0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -115,8 +123,8 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		runRoundRobin("Fighter|3");
-		assertTrue(primaryContext.ref.validate());
 	}
 
 	@Test
@@ -124,8 +132,9 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
 		primaryContext.ref.constructCDOMObject(PCClass.class, "Thief");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Thief");
 		runRoundRobin("Fighter|3", "Thief|4");
-		assertTrue(primaryContext.ref.validate());
 	}
 
 }

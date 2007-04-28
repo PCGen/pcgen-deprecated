@@ -31,6 +31,8 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 
 	public abstract boolean isTypeLegal();
 
+	public abstract boolean isAllLegal();
+
 	public abstract char getJoinCharacter();
 
 	@Test
@@ -102,6 +104,7 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		if (isTypeLegal())
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf, "TYPE="));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -113,6 +116,7 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"TYPE=One."));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -124,6 +128,7 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"TYPE=One..Two"));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -135,6 +140,7 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				"TYPE=.One"));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
@@ -169,6 +175,7 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP1" + getJoinCharacter()));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -177,6 +184,7 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -186,6 +194,7 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP2" + getJoinCharacter() + getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -275,8 +284,6 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -290,8 +297,6 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("TestWP1" + getJoinCharacter() + "TestWP2"
 			+ getJoinCharacter() + "TestWP3");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -306,8 +311,6 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 			runRoundRobin("TestWP1" + getJoinCharacter() + "TestWP2"
 				+ getJoinCharacter() + "TYPE=OtherTestType"
 				+ getJoinCharacter() + "TYPE=TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
 		}
 	}
 
@@ -317,8 +320,6 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		if (isTypeLegal())
 		{
 			runRoundRobin("TYPE=TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
 		}
 	}
 
@@ -328,13 +329,86 @@ public abstract class AbstractGlobalListTokenTestCase<TC extends PObject>
 		if (isTypeLegal())
 		{
 			runRoundRobin("TYPE=TestAltType.TestThirdType.TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
+		}
+	}
+
+	@Test
+	public void testInvalidInputAnyItem() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"ALL" + getJoinCharacter() + "TestWP1"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputItemAny() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + "ALL"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputAnyType() throws PersistenceLayerException
+	{
+		if (isTypeLegal() && isAllLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"ALL" + getJoinCharacter() + "TYPE=TestType"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputTypeAny() throws PersistenceLayerException
+	{
+		if (isTypeLegal() && isAllLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TYPE=TestType" + getJoinCharacter() + "ALL"));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 
 	protected void construct(LoadContext loadContext, String one)
 	{
 		loadContext.ref.constructCDOMObject(getTargetClass(), one);
+	}
+
+	public abstract boolean isClearLegal();
+
+	public abstract boolean isClearDotLegal();
+
+	@Test
+	public void testInputInvalidClear() throws PersistenceLayerException
+	{
+		if (isClearLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + ".CLEAR"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInputInvalidClearDot() throws PersistenceLayerException
+	{
+		if (isClearDotLegal())
+		{
+			// DoNotConstruct TestWP1
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				".CLEAR.TestWP1"));
+			assertFalse(primaryContext.ref.validate());
+		}
 	}
 }

@@ -78,30 +78,35 @@ public class StartFeatsTokenTest extends AbstractTokenTestCase<Race>
 	public void testInvalidZero()
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidNegative()
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "-5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEquation()
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "1+2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidString()
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidDecimal()
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "4.0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

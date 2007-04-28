@@ -77,6 +77,7 @@ public abstract class AbstractAddTokenTestCase extends
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -102,6 +103,7 @@ public abstract class AbstractAddTokenTestCase extends
 			if (isTypeLegal())
 			{
 				assertFalse(result);
+				assertTrue(primaryGraph.isEmpty());
 			}
 			else
 			{
@@ -131,6 +133,7 @@ public abstract class AbstractAddTokenTestCase extends
 			if (isTypeLegal())
 			{
 				assertFalse(result);
+				assertTrue(primaryGraph.isEmpty());
 			}
 			else
 			{
@@ -160,6 +163,7 @@ public abstract class AbstractAddTokenTestCase extends
 			if (isTypeLegal())
 			{
 				assertFalse(result);
+				assertTrue(primaryGraph.isEmpty());
 			}
 			else
 			{
@@ -189,6 +193,7 @@ public abstract class AbstractAddTokenTestCase extends
 			if (isTypeLegal())
 			{
 				assertFalse(result);
+				assertTrue(primaryGraph.isEmpty());
 			}
 			else
 			{
@@ -206,6 +211,19 @@ public abstract class AbstractAddTokenTestCase extends
 		}
 	}
 
+	/*
+	 * FIXME Actually need to test invalid items (can't do ANY _and_ other
+	 * items, not sensible):
+	 * 
+	 * getSubTokenString() + |ANY|Item1
+	 * 
+	 * getSubTokenString() + |Item1|ANY
+	 * 
+	 * getSubTokenString() + |ANY|TYPE=ThisType
+	 * 
+	 * getSubTokenString() + |TYPE=ThisType|ANY
+	 * 
+	 */
 	// FIXME These are invalid due to RC being overly protective at the moment
 	// @Test
 	// public void testInvalidInputAll()
@@ -233,13 +251,13 @@ public abstract class AbstractAddTokenTestCase extends
 	// }
 	// }
 	//
-
 	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -248,6 +266,7 @@ public abstract class AbstractAddTokenTestCase extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|,TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -256,6 +275,7 @@ public abstract class AbstractAddTokenTestCase extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|0|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -264,6 +284,7 @@ public abstract class AbstractAddTokenTestCase extends
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|-4|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -273,6 +294,7 @@ public abstract class AbstractAddTokenTestCase extends
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP2,,TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -504,6 +526,46 @@ public abstract class AbstractAddTokenTestCase extends
 				+ "|4|TYPE=TestAltType.TestThirdType.TestType");
 			assertTrue(primaryContext.ref.validate());
 			assertTrue(secondaryContext.ref.validate());
+		}
+	}
+
+	@Test
+	public void testInvalidInputAnyItem() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|ALL|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputItemAny() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|TestWP1|ALL"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputAnyType() throws PersistenceLayerException
+	{
+		if (isTypeLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|ALL|TYPE=TestType"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputTypeAny() throws PersistenceLayerException
+	{
+		if (isTypeLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TYPE=TestType|ALL"));
+			assertTrue(primaryGraph.isEmpty());
 		}
 	}
 

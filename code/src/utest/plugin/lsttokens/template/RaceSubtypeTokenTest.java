@@ -159,6 +159,7 @@ public class RaceSubtypeTokenTest extends AbstractTypeSafeListTestCase<PCTemplat
 	{
 		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, ".REMOVE."));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -167,6 +168,7 @@ public class RaceSubtypeTokenTest extends AbstractTypeSafeListTestCase<PCTemplat
 		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP1" + getJoinCharacter() + ".REMOVE."));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -175,6 +177,7 @@ public class RaceSubtypeTokenTest extends AbstractTypeSafeListTestCase<PCTemplat
 		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			".REMOVE." + getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -188,6 +191,7 @@ public class RaceSubtypeTokenTest extends AbstractTypeSafeListTestCase<PCTemplat
 			primaryProf,
 			".REMOVE.TestWP2" + getJoinCharacter() + getJoinCharacter()
 				+ ".REMOVE.TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

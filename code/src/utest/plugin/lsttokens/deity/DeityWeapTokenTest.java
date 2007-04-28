@@ -27,7 +27,8 @@ import pcgen.persistence.lst.DeityLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
-public class DeityWeapTokenTest extends AbstractListTokenTestCase<Deity, WeaponProf>
+public class DeityWeapTokenTest extends
+		AbstractListTokenTestCase<Deity, WeaponProf>
 {
 	static DeityweapToken token = new DeityweapToken();
 	static DeityLoader loader = new DeityLoader();
@@ -46,6 +47,24 @@ public class DeityWeapTokenTest extends AbstractListTokenTestCase<Deity, WeaponP
 
 	@Override
 	public boolean isTypeLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
 	{
 		return false;
 	}
@@ -77,7 +96,7 @@ public class DeityWeapTokenTest extends AbstractListTokenTestCase<Deity, WeaponP
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 
 }

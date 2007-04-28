@@ -64,6 +64,7 @@ public class XppenaltyTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -73,6 +74,7 @@ public class XppenaltyTokenTest extends AbstractTokenTestCase<PCClass>
 		assertEquals(DefaultTriState.DEFAULT, primaryProf
 			.get(ObjectKey.XP_PENALTY));
 		internalTestInvalidInputString(DefaultTriState.DEFAULT);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

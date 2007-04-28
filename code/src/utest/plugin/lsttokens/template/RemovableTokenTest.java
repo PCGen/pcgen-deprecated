@@ -55,6 +55,7 @@ public class RemovableTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputString()
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -63,6 +64,7 @@ public class RemovableTokenTest extends AbstractTokenTestCase<PCTemplate>
 		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.REMOVABLE));
 		internalTestInvalidInputString(Boolean.TRUE);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

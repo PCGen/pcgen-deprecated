@@ -68,18 +68,21 @@ public class NameoptTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	public void testBadInputEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testBadInputPlainText() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "TEXT"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testBadInputEmptyText() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "TEXT="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.PCTemplate;
+import pcgen.core.SpellList;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -83,30 +84,35 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidClassOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "CLASS"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidClassBarOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "CLASS|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptyClass() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "|Cleric=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptySpell() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "CLASS|Cleric=1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -115,6 +121,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=1|,Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -122,6 +129,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=1|Fireball,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -129,12 +137,14 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=1|Fireball,,Lightning Bolt"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidSpellDoublePipe1() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "CLASS||Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -142,6 +152,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -149,6 +160,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=CL|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -156,6 +168,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=4.5|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -164,6 +177,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric 4|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -172,6 +186,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "CLASS|4|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -179,6 +194,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=4|PRERACE:1,Human"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -187,6 +203,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric==5|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -194,6 +211,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=1||Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -201,6 +219,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=1|Fireball||Druid=2|Lightning Bolt"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -208,6 +227,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|SPELLCASTER.=1|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -215,6 +235,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS|Cleric=1|Fireball|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -222,35 +243,68 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"CLASS||Cleric=1|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testRoundRobinJustSpell() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("CLASS|Cleric=1|Fireball");
 	}
 
 	@Test
 	public void testRoundRobinTwoSpell() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("CLASS|Cleric=1|Fireball,Lightning Bolt");
 	}
 
 	@Test
 	public void testRoundRobinTwoLevel() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("CLASS|Cleric=1|Fireball|Cleric=2|Lightning Bolt");
 	}
 
 	@Test
 	public void testRoundRobinTwoClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
 		runRoundRobin("CLASS|Cleric,Druid=1|Fireball,Lightning Bolt");
 	}
 
 	@Test
 	public void testRoundRobinTwoDiffClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
 		runRoundRobin("CLASS|Cleric=1|Fireball|Druid=2|Lightning Bolt");
 	}
 
@@ -258,18 +312,21 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidDomainOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "CLASS"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidDomainBarOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "DOMAIN|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptyDomain() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "|Cleric=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -277,6 +334,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "DOMAIN|Cleric=1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -285,6 +343,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=1|,Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -293,6 +352,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=1|Fireball,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -301,6 +361,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=1|Fireball,,Lightning Bolt"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -309,6 +370,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "DOMAIN||Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -317,6 +379,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -325,6 +388,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=CL|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -333,6 +397,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=4.5|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -341,6 +406,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric==5|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -349,6 +415,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=1||Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -357,6 +424,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=1|Fireball||Druid=2|Lightning Bolt"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -365,6 +433,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|SPELLCASTER.=1|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -373,6 +442,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=1|Fireball|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -380,6 +450,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN||Cleric=1|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -388,6 +459,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric,=1|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -396,6 +468,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|,Cleric=1|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -404,6 +477,7 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric,,Druid=1|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -412,24 +486,41 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"DOMAIN|Cleric=4,Druid=1|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testDomainRoundRobinJustSpell()
 		throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball");
 	}
 
 	@Test
 	public void testDomainRoundRobinTwoSpell() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball,Lightning Bolt");
 	}
 
 	@Test
 	public void testDomainRoundRobinTwoLevel() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball|Cleric=2|Lightning Bolt");
 	}
 
@@ -437,24 +528,48 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	public void testDomainRoundRobinTwoDomain()
 		throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball|Druid=2|Lightning Bolt");
 	}
 
 	@Test
 	public void testDomainRoundRobinPre() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball|PRERACE:1,Human");
 	}
 
 	@Test
 	public void testDomainRoundRobinTwoPre() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball,Lightning Bolt|!PRECLASS:1,Cleric=1|PRERACE:1,Human");
 	}
 
 	@Test
 	public void testDomainRoundRobinSplitPre() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball",
 			"DOMAIN|Cleric=1|Lightning Bolt|PRERACE:1,Human");
 	}
@@ -462,6 +577,14 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testMixedRoundRobinTwoDomain() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
 		runRoundRobin("CLASS|Cleric=1|Lightning Bolt", "DOMAIN|Fire=1|Fireball");
 	}
 

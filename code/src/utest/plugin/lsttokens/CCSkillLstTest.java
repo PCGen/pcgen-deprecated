@@ -45,6 +45,24 @@ public class CCSkillLstTest extends AbstractGlobalListTokenTestCase<Skill>
 		return true;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
+
 	static GlobalLstToken token = new CcskillLst();
 	static PCTemplateLoader loader = new PCTemplateLoader();
 

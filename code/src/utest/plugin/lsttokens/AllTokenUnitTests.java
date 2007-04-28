@@ -31,6 +31,7 @@ import plugin.lsttokens.equipment.TokenEquipmentTestSuite;
 import plugin.lsttokens.equipmentmodifier.TokenEqModTestSuite;
 import plugin.lsttokens.pcclass.TokenPCClassTestSuite;
 import plugin.lsttokens.race.TokenRaceTestSuite;
+import plugin.lsttokens.remove.TokenRemoveTestSuite;
 import plugin.lsttokens.skill.TokenSkillTestSuite;
 import plugin.lsttokens.spell.TokenSpellTestSuite;
 import plugin.lsttokens.template.TokenTemplateTestSuite;
@@ -42,8 +43,9 @@ import plugin.lsttokens.weaponprof.TokenWeaponProfTestSuite;
 	TokenDeityTestSuite.class, TokenDomainTestSuite.class,
 	TokenEquipmentTestSuite.class, TokenEqModTestSuite.class,
 	TokenPCClassTestSuite.class, TokenRaceTestSuite.class,
-	TokenSkillTestSuite.class, TokenSpellTestSuite.class,
-	TokenTemplateTestSuite.class, TokenWeaponProfTestSuite.class})
+	TokenRemoveTestSuite.class, TokenSkillTestSuite.class,
+	TokenSpellTestSuite.class, TokenTemplateTestSuite.class,
+	TokenWeaponProfTestSuite.class})
 public class AllTokenUnitTests extends TestSuite
 {
 	// No contents, see annotations

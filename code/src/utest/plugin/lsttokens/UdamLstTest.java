@@ -53,6 +53,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidNotEnoughValues() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "1,2,3,4,5,6,7,8"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -60,6 +61,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"1,2,3,4,5,6,7,8,9,0"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -67,6 +69,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, ",2,3,4,5,6,7,8,9"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -74,6 +77,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "1,,3,4,5,6,7,8,9"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -81,6 +85,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "1,2,,4,5,6,7,8,9"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -88,6 +93,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "1,2,3,,5,6,7,8,9"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -95,6 +101,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "1,2,3,4,,6,7,8,9"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -102,6 +109,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "1,2,3,4,5,,7,8,9"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -109,6 +117,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "1,2,3,4,5,6,,8,9"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -116,6 +125,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "1,2,3,4,5,6,7,,9"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -123,6 +133,7 @@ public class UdamLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token
 			.parse(primaryContext, primaryProf, "1,2,3,4,5,6,7,8,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

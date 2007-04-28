@@ -32,8 +32,8 @@ import junit.framework.TestSuite;
 	LevelTokenTest.class, NonPPTokenTest.class, RaceSubtypeTokenTest.class,
 	RaceTypeTokenTest.class, ReachTokenTest.class, RegionTokenTest.class,
 	RemovableTokenTest.class, RepeatLevelTokenTest.class, SizeTokenTest.class,
-	SubraceTokenTest.class, SubregionTokenTest.class, TemplateTokenTest.class,
-	VisibleTokenTest.class, WeaponbonusTokenTest.class})
+	SubraceTokenTest.class, SubregionTokenTest.class, VisibleTokenTest.class,
+	WeaponbonusTokenTest.class})
 public class TokenTemplateTestSuite extends TestSuite
 {
 	// No content, see annotations

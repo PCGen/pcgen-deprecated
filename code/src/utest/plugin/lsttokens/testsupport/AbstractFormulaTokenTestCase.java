@@ -54,6 +54,7 @@ public abstract class AbstractFormulaTokenTestCase<T extends PObject> extends
 		{
 			// This is Okay too :)
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

@@ -63,6 +63,7 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -79,6 +80,7 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"|TestWP1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -124,6 +126,7 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1|TestWP1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -131,6 +134,7 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1||TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -138,6 +142,7 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, "0|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -147,6 +152,7 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"-1|TestWP1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -156,6 +162,7 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1|TestWP2||TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -192,8 +199,6 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("1|TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -206,8 +211,6 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(secondaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("2|TestWP1|TestWP2|TestWP3");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	protected void construct(LoadContext loadContext, String one)

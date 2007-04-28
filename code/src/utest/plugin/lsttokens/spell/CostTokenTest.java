@@ -57,18 +57,21 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	public void testBadDefaultNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "-5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testBadDefaultNaN() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "YES"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testBadDefaultTailingPipe() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "5|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -76,24 +79,28 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"5|Wizard,10|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testBadNoDefault() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Wizard,10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testBadEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testBadLeadingPipe() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|5"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -101,6 +108,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"5||Sorcerer,50|Wizard,10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -108,6 +116,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"5|Sorcerer,50||Wizard,10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -115,6 +124,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"5|Sorcerer,50|Wizard,,10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -122,6 +132,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"5|Wizard,50|Wizard,10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -129,6 +140,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"5|Wizard,-10"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -136,6 +148,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"5|Sorcerer,50|Wizard,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -155,12 +168,14 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 		{
 			// OK
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testBadTwoDefaults() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "5|50"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -241,6 +256,8 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	@Test
 	public void testRoundRobinOneClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
 		runRoundRobin("5|Wizard,10");
 	}
 
@@ -248,12 +265,20 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	public void testRoundRobinTwoClassSortTest()
 		throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
 		runRoundRobin("5|Sorcerer,50|Wizard,35");
 	}
 
 	@Test
 	public void testRoundRobinTwoClass() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
+		secondaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
 		runRoundRobin("5|Sorcerer,25|Wizard,25");
 	}
 }

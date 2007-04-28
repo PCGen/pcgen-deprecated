@@ -55,6 +55,7 @@ public class MultTokenTest extends AbstractTokenTestCase<Ability>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -63,6 +64,7 @@ public class MultTokenTest extends AbstractTokenTestCase<Ability>
 		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
 		assertTrue(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
 		internalTestInvalidInputString(Boolean.TRUE);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Boolean val)

@@ -81,6 +81,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|String"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -88,6 +89,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -95,6 +97,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -102,6 +105,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS|SPELLCASTER.Arcane=1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -109,6 +113,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS|SPELLCASTER."));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -116,6 +121,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS|SPELLCASTER.Arcane=1|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -123,6 +129,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS|SPELLCASTER.Arcane|Change Self"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -140,6 +147,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 		primaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "||SPELLCASTER.Arcane=1|Change Self"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -149,6 +157,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 		primaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS|Arcane=1|Change Self"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -158,6 +167,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 		primaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS|SPELLCASTER.Arcane=1=2|Change Self"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -169,6 +179,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 				primaryProf,
 				getSubTokenString()
 					+ "|CLASS|SPELLCASTER.Arcane=Three|Change Self"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -177,6 +188,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS|SPELLCASTER.Arcane=-2|Change Self"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -187,6 +199,7 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 			primaryProf,
 			getSubTokenString()
 				+ "|CLASS|SPELLCASTER.Arcane=3|Change Self|Alarm"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -203,6 +216,8 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 	{
 		primaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
 		primaryContext.ref.constructCDOMObject(SpellList.class, "Arcane");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Arcane");
 		this.runRoundRobin(getSubTokenString()
 			+ "|CLASS|SPELLCASTER.Arcane=1|Change Self");
 	}
@@ -213,6 +228,9 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 		primaryContext.ref.constructCDOMObject(Spell.class, "Alarm");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
 		primaryContext.ref.constructCDOMObject(SpellList.class, "Arcane");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Alarm");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Arcane");
 		this.runRoundRobin(getSubTokenString()
 			+ "|CLASS|SPELLCASTER.Arcane=1|Alarm", getSubTokenString()
 			+ "|CLASS|SPELLCASTER.Arcane=4|Change Self");
@@ -225,6 +243,10 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 		primaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
 		primaryContext.ref.constructCDOMObject(SpellList.class, "Arcane");
 		primaryContext.ref.constructCDOMObject(SpellList.class, "Divine");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Alarm");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Arcane");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Divine");
 		this.runRoundRobin(getSubTokenString()
 			+ "|CLASS|SPELLCASTER.Arcane=2|Change Self", getSubTokenString()
 			+ "|CLASS|SPELLCASTER.Divine=3|Alarm");
@@ -239,6 +261,12 @@ public class SpellLevelTokenTest extends AbstractGlobalTokenTestCase
 		primaryContext.ref.constructCDOMObject(Spell.class, "Sleep");
 		primaryContext.ref.constructCDOMObject(SpellList.class, "Arcane");
 		primaryContext.ref.constructCDOMObject(SpellList.class, "Divine");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Alarm");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Change Self");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Sleep");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Arcane");
+		secondaryContext.ref.constructCDOMObject(SpellList.class, "Divine");
 		this.runRoundRobin(getSubTokenString()
 			+ "|CLASS|SPELLCASTER.Arcane=1|Alarm", getSubTokenString()
 			+ "|CLASS|SPELLCASTER.Arcane=2|Fireball", getSubTokenString()

@@ -56,6 +56,7 @@ public class FaceTokenTest extends AbstractTokenTestCase<Race>
 	public void testInvalidInputUnset() throws PersistenceLayerException
 	{
 		internalTestInvalidInputs(null, null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -67,6 +68,7 @@ public class FaceTokenTest extends AbstractTokenTestCase<Race>
 		BigDecimal h = new BigDecimal(20);
 		assertEquals(h, primaryProf.getFaceHeight());
 		internalTestInvalidInputs(w, h);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputs(BigDecimal w, BigDecimal h)

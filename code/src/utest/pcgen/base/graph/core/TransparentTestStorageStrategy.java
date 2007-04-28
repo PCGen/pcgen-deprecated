@@ -132,4 +132,9 @@ public class TransparentTestStorageStrategy<N, ET extends Edge<N>>
 		gcs.removeGraphChangeListener(arg0);
 	}
 
+	public boolean isEmpty()
+	{
+		throw new UnsupportedOperationException();
+	}
+
 }

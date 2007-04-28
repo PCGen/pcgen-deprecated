@@ -22,7 +22,10 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
+import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.core.Ability;
 import pcgen.core.PCTemplate;
+import pcgen.core.spell.Spell;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
@@ -64,30 +67,35 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidTypeOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "SPELL"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidTypeBarOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "SPELL|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptyType() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidCatTypeNoEqual() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "ABILITY|Abil"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -95,6 +103,7 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SPELL=Arcane|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -102,23 +111,31 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 		throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "SPELL|Fireball|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidSpellBarStarting() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "SPELL||Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testRoundRobinJustSpell() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		runRoundRobin("SPELL|Fireball");
 	}
 
 	@Test
 	public void testRoundRobinTwoSpell() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		runRoundRobin("SPELL|Fireball|Lightning Bolt");
 	}
 
@@ -126,6 +143,13 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	public void testRoundRobinTwoBooksJustSpell()
 		throws PersistenceLayerException
 	{
+		Ability a = primaryContext.ref.constructCDOMObject(Ability.class, "My Feat");
+		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, a);
+		a = secondaryContext.ref.constructCDOMObject(Ability.class, "My Feat");
+		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, a);
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		runRoundRobin("ABILITY=FEAT|My Feat", "SPELL|Lightning Bolt");
 	}
 }

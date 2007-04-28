@@ -132,6 +132,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	{
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -140,6 +141,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP1" + getJoinCharacter()));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -148,6 +150,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -157,41 +160,67 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TestWP2" + getJoinCharacter() + getJoinCharacter() + "TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");
+		secondaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");
 		runRoundRobin("Rheinhessen");
 	}
 
 	@Test
 	public void testRoundRobinWithSpace() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Finger Lakes");
+		secondaryContext.ref
+			.constructCDOMObject(getCDOMClass(), "Finger Lakes");
 		runRoundRobin("Finger Lakes");
 	}
 
 	@Test
 	public void testRoundRobinNonEnglishAndN() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Niederösterreich");
+		secondaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Niederösterreich");
 		runRoundRobin("Niederösterreich");
 	}
 
 	@Test
 	public void testRoundRobinHyphen() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Languedoc-Roussillon");
+		secondaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Languedoc-Roussillon");
 		runRoundRobin("Languedoc-Roussillon");
 	}
 
 	@Test
 	public void testRoundRobinY() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Yarra Valley");
+		secondaryContext.ref
+			.constructCDOMObject(getCDOMClass(), "Yarra Valley");
 		runRoundRobin("Yarra Valley");
 	}
 
 	@Test
 	public void testRoundRobinThree() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");
+		secondaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Yarra Valley");
+		secondaryContext.ref
+			.constructCDOMObject(getCDOMClass(), "Yarra Valley");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Languedoc-Roussillon");
+		secondaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Languedoc-Roussillon");
 		runRoundRobin("Rheinhessen" + getJoinCharacter() + "Yarra Valley"
 			+ getJoinCharacter() + "Languedoc-Roussillon");
 	}

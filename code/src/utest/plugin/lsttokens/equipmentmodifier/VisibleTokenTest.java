@@ -65,6 +65,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -73,6 +74,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 		assertTrue(token.parse(primaryContext, primaryProf, "QUALIFY"));
 		assertEquals(Visibility.QUALIFY, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.QUALIFY);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

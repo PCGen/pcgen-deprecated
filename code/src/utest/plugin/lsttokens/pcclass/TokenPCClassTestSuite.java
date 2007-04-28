@@ -38,9 +38,9 @@ import junit.framework.TestSuite;
 	SkillListTokenTest.class, SpecialtyKnownTokenTest.class,
 	SpellBookTokenTest.class, SpellListTokenTest.class,
 	SpellStatTokenTest.class, SpellTypeTokenTest.class,
-	StartSkillPtsTokenTest.class, TemplateTokenTest.class,
-	VFeatTokenTest.class, VisibleTokenTest.class, WeaponbonusTokenTest.class,
-	XppenaltyTokenTest.class, XtraFeatsTokenTest.class})
+	StartSkillPtsTokenTest.class, VFeatTokenTest.class, VisibleTokenTest.class,
+	WeaponbonusTokenTest.class, XppenaltyTokenTest.class,
+	XtraFeatsTokenTest.class})
 public class TokenPCClassTestSuite extends TestSuite
 {
 	// No contents, see annotations

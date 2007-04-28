@@ -23,11 +23,11 @@
 package plugin.lsttokens;
 
 import pcgen.base.lang.StringUtil;
+import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
@@ -278,31 +278,26 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			return false;
 		}
 
-		List<PCGraphGrantsEdge> edgeList = new ArrayList<PCGraphGrantsEdge>();
+		DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String> dkm =
+				new DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String>();
 		while (true)
 		{
 			int commaLoc = token.indexOf(',');
 			String name = commaLoc == -1 ? token : token.substring(0, commaLoc);
-			PrereqObject spell =
+			CDOMReference<Spell> spell =
 					context.ref.getCDOMReference(Spell.class, name);
-			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), obj,
-						spell);
-
-			edge.setAssociation(AssociationKey.CASTER_LEVEL, casterLevel);
-			edge.setAssociation(AssociationKey.TIMES_PER_DAY, times);
-			edge.setAssociation(AssociationKey.SPELLBOOK, spellBook);
+			dkm.put(spell, AssociationKey.CASTER_LEVEL, casterLevel);
+			dkm.put(spell, AssociationKey.TIMES_PER_DAY, times);
+			dkm.put(spell, AssociationKey.SPELLBOOK, spellBook);
 			if (commaLoc != -1)
 			{
-				edge.setAssociation(AssociationKey.DC_FORMULA, token
+				dkm.put(spell, AssociationKey.DC_FORMULA, token
 					.substring(commaLoc + 1));
 			}
-
-			edgeList.add(edge);
-
 			if (!tok.hasMoreTokens())
 			{
 				// No prereqs, so we're done
+				finish(context, obj, dkm, null);
 				return true;
 			}
 			token = tok.nextToken();
@@ -311,6 +306,8 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				break;
 			}
 		}
+
+		List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
 
 		while (true)
 		{
@@ -321,10 +318,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 					+ "PRExxx tags in SPELLS:?)");
 				return false;
 			}
-			for (PCGraphGrantsEdge edge : edgeList)
-			{
-				edge.addPrerequisite(prereq);
-			}
+			prereqs.add(prereq);
 			if (!tok.hasMoreTokens())
 			{
 				break;
@@ -332,7 +326,31 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			token = tok.nextToken();
 		}
 
+		finish(context, obj, dkm, prereqs);
 		return true;
+	}
+
+	public void finish(LoadContext context, CDOMObject obj,
+		DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String> dkm,
+		List<Prerequisite> prereqs)
+	{
+		for (CDOMReference<Spell> spell : dkm.getKeySet())
+		{
+			PCGraphGrantsEdge edge =
+					context.graph.linkObjectIntoGraph(getTokenName(), obj,
+						spell);
+			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(spell))
+			{
+				edge.setAssociation(ak, dkm.get(spell, ak));
+			}
+			if (prereqs != null)
+			{
+				for (Prerequisite prereq : prereqs)
+				{
+					edge.addPrerequisite(prereq);
+				}
+			}
+		}
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)

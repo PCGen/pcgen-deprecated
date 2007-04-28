@@ -83,24 +83,28 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidSpellbookOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "SpellBook"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidSpellbookBarOnly() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "SpellBook|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptySpellbook() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -109,6 +113,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|Fireball|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -117,6 +122,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|,Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -124,6 +130,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|Fireball,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -131,6 +138,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|Fireball,,DCFormula"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -138,6 +146,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|Fireball||Lightning Bolt"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -145,6 +154,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|Fireball|PRERACE:1,Human|Lightning Bolt"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -152,6 +162,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|TIMES=|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -159,6 +170,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|TIMES=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -166,6 +178,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|TIMES=3|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -173,6 +186,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|CASTERLEVEL=3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -180,6 +194,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|CASTERLEVEL=3|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -187,6 +202,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook||Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -194,6 +210,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SpellBook|CASTERLEVEL=|Fireball"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -208,6 +225,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 		{
 			// This is ok too
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -222,6 +240,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 		{
 			// This is ok too
 		}
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

@@ -63,6 +63,7 @@ public class ModToSkillsTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -71,6 +72,7 @@ public class ModToSkillsTokenTest extends AbstractTokenTestCase<PCClass>
 		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.MOD_TO_SKILLS));
 		internalTestInvalidInputString(Boolean.TRUE);
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)

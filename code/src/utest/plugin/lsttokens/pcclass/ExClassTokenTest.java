@@ -61,30 +61,46 @@ public class ExClassTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");
+		secondaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");
 		runRoundRobin("Rheinhessen");
 	}
 
 	@Test
 	public void testRoundRobinWithSpace() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Finger Lakes");
+		secondaryContext.ref
+			.constructCDOMObject(getCDOMClass(), "Finger Lakes");
 		runRoundRobin("Finger Lakes");
 	}
 
 	@Test
 	public void testRoundRobinNonEnglishAndN() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Niederösterreich");
+		secondaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Niederösterreich");
 		runRoundRobin("Niederösterreich");
 	}
 
 	@Test
 	public void testRoundRobinHyphen() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Languedoc-Roussillon");
+		secondaryContext.ref.constructCDOMObject(getCDOMClass(),
+			"Languedoc-Roussillon");
 		runRoundRobin("Languedoc-Roussillon");
 	}
 
 	@Test
 	public void testRoundRobinY() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Yarra Valley");
+		secondaryContext.ref
+			.constructCDOMObject(getCDOMClass(), "Yarra Valley");
 		runRoundRobin("Yarra Valley");
 	}
 

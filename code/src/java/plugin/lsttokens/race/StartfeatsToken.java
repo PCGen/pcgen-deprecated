@@ -120,7 +120,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 				getPrerequisite("PREMULT:1,[PRELEVEL:1],[PREHD:1]");
 		slot.addPreReq(prereq);
 		CDOMGroupRef<Ability> ref =
-				context.ref.getCategorizedCDOMAllReference(ABILITY_CLASS,
+				context.ref.getCDOMAllReference(ABILITY_CLASS,
 					AbilityCategory.FEAT);
 
 		slot.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS,

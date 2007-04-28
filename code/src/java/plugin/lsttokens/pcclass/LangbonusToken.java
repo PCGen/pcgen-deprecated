@@ -21,6 +21,8 @@
  */
 package plugin.lsttokens.pcclass;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -84,27 +86,41 @@ public class LangbonusToken implements PCClassLstToken, PCClassClassLstToken
 				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
+
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		final StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
+		List<CDOMReference<Language>> list =
+				new ArrayList<CDOMReference<Language>>();
 
 		while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
 
-			if (Constants.LST_CLEAR.equals(tokText))
+			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
 				context.graph.unlinkChildNodesOfClass(getTokenName(), pcc,
 					LANGUAGE_CLASS);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				CDOMReference<Language> lang =
-						TokenUtilities.getObjectReference(context,
-							LANGUAGE_CLASS, tokText.substring(7));
-				if (lang == null)
+				CDOMReference<Language> ref;
+				if (Constants.LST_ALL.equals(tokText))
+				{
+					ref = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
+				}
+				else
+				{
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								LANGUAGE_CLASS, tokText.substring(7));
+				}
+				if (ref == null)
 				{
 					return false;
 				}
-				context.graph.unlinkChildNode(getTokenName(), pcc, lang);
+				context.graph.unlinkChildNode(getTokenName(), pcc, ref);
 			}
 			else
 			{
@@ -114,18 +130,38 @@ public class LangbonusToken implements PCClassLstToken, PCClassClassLstToken
 				 * Language object and therefore doesn't know how to search the
 				 * sublists
 				 */
-				CDOMReference<Language> lang =
-						TokenUtilities.getObjectReference(context,
-							LANGUAGE_CLASS, tokText);
-				if (lang == null)
+				if (Constants.LST_ALL.equals(tokText))
 				{
-					return false;
+					foundAny = true;
+					list.add(context.ref.getCDOMAllReference(LANGUAGE_CLASS));
 				}
-				/*
-				 * BUG FIXME This is NOT A GRANT - it is a ChoiceList like WeaponBonus
-				 */
-				context.graph.linkObjectIntoGraph(getTokenName(), pcc, lang);
+				else
+				{
+					foundOther = true;
+					CDOMReference<Language> ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								LANGUAGE_CLASS, tokText);
+					if (ref == null)
+					{
+						return false;
+					}
+					list.add(ref);
+				}
 			}
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+		for (CDOMReference<Language> ref : list)
+		{
+			/*
+			 * BUG FIXME This is NOT A GRANT - it is a ChoiceList like
+			 * WeaponBonus
+			 */
+			context.graph.linkObjectIntoGraph(getTokenName(), pcc, ref);
 		}
 		return true;
 	}

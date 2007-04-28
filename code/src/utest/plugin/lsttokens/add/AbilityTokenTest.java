@@ -81,6 +81,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|FEAT"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -88,6 +89,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|FEAT|NORMAL"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -95,6 +97,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|2|FEAT|NORMAL"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -112,6 +115,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|1|FEAT|NORMAL|TestWP1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -129,6 +133,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|1|FEAT|NORMAL|TYPE="));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -137,6 +142,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|1|FEAT|NORMAL|TYPE=One."));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -145,6 +151,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|1|FEAT|NORMAL|TYPE=One..Two"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -153,6 +160,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|1|FEAT|NORMAL|TYPE=.One"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	// FIXME These are invalid due to RC being overly protective at the moment
@@ -189,6 +197,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|1|FEAT|NORMAL|TestWP1,"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -197,6 +206,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|1|FEAT|NORMAL|,TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -205,6 +215,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|0|FEAT|NORMAL|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -213,6 +224,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|-4|FEAT|NORMAL|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -222,6 +234,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|1|FEAT|NORMAL|TestWP2,,TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -434,6 +447,40 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 			assertTrue(primaryContext.ref.validate());
 			assertTrue(secondaryContext.ref.validate());
 		}
+	}
+
+	@Test
+	public void testInvalidInputAnyItem() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|ALL|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputItemAny() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|TestWP1|ALL"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputAnyType() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|ALL|TYPE=TestType"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputTypeAny() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|TYPE=TestType|ALL"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	static AddLst token = new AddLst();

@@ -81,36 +81,42 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputHDonly() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputPipe() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3|SR|3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputOneColon() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SR|2"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyHD() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ":DR:3/+1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptySubtype() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "4::3/+1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyDR() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:DR:"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -118,12 +124,14 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:DR"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputNoSlashDR() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:DR:1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -131,24 +139,28 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"3+:DR:1/3/+4"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptySR() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SR:"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptySA() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SA:"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidInputEmptyCR() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:CR:"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -156,6 +168,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SR"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -163,6 +176,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SA"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -170,6 +184,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:CR"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -182,6 +197,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"3:SAA:Special"));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SRA:1"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -189,6 +205,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken()
 			.parse(primaryContext, primaryProf, ".CLEARSTUFF"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -197,6 +214,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			".CLEAR.3:CR:3"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -205,6 +223,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"+3:SA:Special Abil"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -213,6 +232,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"*3:SA:Special Abil"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -221,6 +241,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"1-3:SA:Special Abil"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -229,6 +250,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"4-:SA:Special Abil"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -237,6 +259,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"4+:SA:Special Abil"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -245,6 +268,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"-4:SA:Special Abil"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

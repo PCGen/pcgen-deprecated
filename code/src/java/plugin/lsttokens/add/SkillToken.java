@@ -131,18 +131,28 @@ public class SkillToken implements AddLstToken
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		Slot<Skill> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
-					SKILL_CLASS, FormulaFactory.getFormulaFor(count));
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		CDOMCompoundReference<Skill> cr =
 				new CDOMCompoundReference<Skill>(SKILL_CLASS, getTokenName()
 					+ " items");
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<Skill> ref =
-					TokenUtilities.getObjectReference(context, SKILL_CLASS,
-						token);
+			CDOMReference<Skill> ref;
+			if (Constants.LST_ANY.equalsIgnoreCase(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(SKILL_CLASS);
+			}
+			else
+			{
+				foundOther = true;
+				ref =
+						TokenUtilities.getTypeOrPrimitive(context, SKILL_CLASS,
+							token);
+			}
 			if (ref == null)
 			{
 				return false;
@@ -150,6 +160,16 @@ public class SkillToken implements AddLstToken
 			cr.addReference(ref);
 		}
 
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
+		}
+
+		Slot<Skill> slot =
+				context.graph.addSlotIntoGraph(getTokenName(), obj,
+					SKILL_CLASS, FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Skill>(SKILL_CLASS, cr));
 
 		return true;

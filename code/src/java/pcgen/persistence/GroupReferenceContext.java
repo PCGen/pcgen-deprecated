@@ -38,7 +38,7 @@ public class GroupReferenceContext
 
 	public <T extends PObject> CDOMGroupRef<T> getCDOMAllReference(Class<T> c)
 	{
-		CDOMGroupRef obj = allReferences.get(c);
+		CDOMGroupRef<T> obj = allReferences.get(c);
 		if (obj == null)
 		{
 			obj = new CDOMAllRef<T>(c);
@@ -53,12 +53,26 @@ public class GroupReferenceContext
 	public <T extends PObject> CDOMGroupRef<T> getCDOMTypeReference(Class<T> c,
 		String... val)
 	{
+		if (val.length == 0)
+		{
+			throw new IllegalArgumentException();
+		}
 		for (String s : val)
 		{
 			if (s.length() == 0)
 			{
 				throw new IllegalArgumentException(
 					"Cannot build Reference with empty type");
+			}
+			else if (s.indexOf('.') != -1)
+			{
+				throw new IllegalArgumentException(
+					"Cannot build Reference with type conaining a period");
+			}
+			else if (s.indexOf('=') != -1)
+			{
+				throw new IllegalArgumentException(
+					"Cannot build Reference with type conaining an equals");
 			}
 		}
 		Arrays.sort(val);
@@ -81,7 +95,7 @@ public class GroupReferenceContext
 			}
 		}
 		// Didn't find the appropriate key, create new
-		CDOMGroupRef cgr = new CDOMTypeRef(c, val);
+		CDOMGroupRef<T> cgr = new CDOMTypeRef<T>(c, val);
 		trm.put(val, cgr);
 		return cgr;
 	}
@@ -98,6 +112,16 @@ public class GroupReferenceContext
 			{
 				throw new IllegalArgumentException(
 					"Cannot build Reference with empty type");
+			}
+			else if (s.indexOf('.') != -1)
+			{
+				throw new IllegalArgumentException(
+					"Cannot build Reference with type conaining a period");
+			}
+			else if (s.indexOf('=') != -1)
+			{
+				throw new IllegalArgumentException(
+					"Cannot build Reference with type conaining an equals");
 			}
 		}
 		Arrays.sort(val);
@@ -147,5 +171,4 @@ public class GroupReferenceContext
 		allReferences.clear();
 		typeReferences.clear();
 	}
-
 }

@@ -53,6 +53,7 @@ public class QualityTokenTest extends AbstractTokenTestCase<Equipment>
 	public void testInvalidNoPipe() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "NoPipe"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -60,36 +61,42 @@ public class QualityTokenTest extends AbstractTokenTestCase<Equipment>
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"One|Two|Three"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidDoublePipe() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Two||Pipe"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidOnlyPipe() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptyKey() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "|Value"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
 	public void testInvalidEmptyValue() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "Key|"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
