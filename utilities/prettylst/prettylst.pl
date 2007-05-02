@@ -11153,7 +11153,8 @@ BEGIN {
         };
 
         if (   $conversion_enable{'RACE:TYPE to RACETYPE'}
-           && $filetype eq "RACE"
+           && ( $filetype eq "RACE"
+              || $filetype eq "TEMPLATE" )
            && not (exists $line_ref->{'RACETYPE'})
            && exists $line_ref->{'TYPE'}
            ) { ewarn (WARNING,
