@@ -629,7 +629,7 @@ my %tag_fix_value = (
     REMOVABLE      => { YES => 1, NO => 1 },
     PREALIGN       => { map { $_ => 1 } @valid_system_alignments },
     PRESPELLBOOK   => { YES => 1, NO => 1 },
-    SHOWNINMENU    => { true => 1, false => 1 },     # [ 1718370 ] SHOWINMENU tag missing for PCC files
+    SHOWNINMENU    => { YES => 1, NO => 1 },     # [ 1718370 ] SHOWINMENU tag missing for PCC files
     STACK          => { YES => 1, NO => 1 },
     SPELLBOOK      => { YES => 1, NO => 1 },
     SPELLSTAT      => { map { $_ => 1 } ( @valid_system_stats, 'SPELL' ) },
@@ -646,6 +646,8 @@ my %tag_proper_value_for = (
     'Q'    =>   'QUALIFY',
     'P'    =>   'PROFICIENT',
     'R'    =>   'REQUIRED',
+    'true' =>   'YES',
+    'false' =>  'NO',
 );
 
 #####################################
