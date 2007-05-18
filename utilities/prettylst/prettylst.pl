@@ -629,7 +629,7 @@ my %tag_fix_value = (
     REMOVABLE      => { YES => 1, NO => 1 },
     PREALIGN       => { map { $_ => 1 } @valid_system_alignments },
     PRESPELLBOOK   => { YES => 1, NO => 1 },
-    SHOWNINMENU    => { YES => 1, NO => 1 },     # [ 1718370 ] SHOWINMENU tag missing for PCC files
+    SHOWINMENU     => { YES => 1, NO => 1 },     # [ 1718370 ] SHOWINMENU tag missing for PCC files
     STACK          => { YES => 1, NO => 1 },
     SPELLBOOK      => { YES => 1, NO => 1 },
     SPELLSTAT      => { map { $_ => 1 } ( @valid_system_stats, 'SPELL' ) },
@@ -2645,7 +2645,7 @@ my %master_order = (
         'PUBNAMEWEB',
         'SETTING',
         'TYPE',
-        'SHOWNINMENU',           # [ 1718370 ] SHOWINMENU tag missing for PCC files
+        'SHOWINMENU',            # [ 1718370 ] SHOWINMENU tag missing for PCC files
         'SOURCELONG',
         'SOURCESHORT',
         'SOURCEWEB',
