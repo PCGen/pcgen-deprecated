@@ -2102,10 +2102,11 @@ Cone
 Consumable
 COPY
 Charm
+ClassAbility
 Climb
-CN
 Close
 Clothing
+CN
 Cold
 Competence
 Compulsion
@@ -2183,6 +2184,7 @@ INT
 Incorporeal
 Instantaneous
 Intelligence
+Internal
 ItemCreation
 Knowledge
 Lawful
