@@ -629,6 +629,7 @@ my %tag_fix_value = (
     REMOVABLE      => { YES => 1, NO => 1 },
     PREALIGN       => { map { $_ => 1 } @valid_system_alignments },
     PRESPELLBOOK   => { YES => 1, NO => 1 },
+    SHOWNINMENU    => { true => 1, false => 1 },     # [ 1718370 ] SHOWINMENU tag missing for PCC files
     STACK          => { YES => 1, NO => 1 },
     SPELLBOOK      => { YES => 1, NO => 1 },
     SPELLSTAT      => { map { $_ => 1 } ( @valid_system_stats, 'SPELL' ) },
@@ -2642,6 +2643,7 @@ my %master_order = (
         'PUBNAMEWEB',
         'SETTING',
         'TYPE',
+        'SHOWNINMENU',           # [ 1718370 ] SHOWINMENU tag missing for PCC files
         'SOURCELONG',
         'SOURCESHORT',
         'SOURCEWEB',
@@ -14550,7 +14552,11 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
-=head2 v1.38 -- -- 2007.04.26
+=head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1718370 ] SHOWINMENU tag missing for PCC files
+
+=head2 v1.38 -- 2007.04.26
 
 =over 3
 
