@@ -22,7 +22,10 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import pcgen.base.formula.AddingFormula;
 import pcgen.base.formula.DividingFormula;
@@ -30,15 +33,16 @@ import pcgen.base.formula.MultiplyingFormula;
 import pcgen.base.formula.SubtractingFormula;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.HitDie;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.Aggregator;
+import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.inst.PCClassLevel;
 import pcgen.cdom.modifier.AbstractHitDieModifier;
 import pcgen.cdom.modifier.HitDieFormula;
 import pcgen.cdom.modifier.HitDieLock;
 import pcgen.cdom.modifier.HitDieStep;
 import pcgen.core.PCClass;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCClassLevelLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
@@ -50,6 +54,8 @@ import pcgen.util.Logging;
  */
 public class HitdieLst implements PCClassLstToken, PCClassLevelLstToken
 {
+
+	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
 	public String getTokenName()
 	{
@@ -91,7 +97,7 @@ public class HitdieLst implements PCClassLstToken, PCClassLevelLstToken
 						return false;
 					}
 					owner =
-							context.ref.getCDOMTypeReference(PCClass.class,
+							context.ref.getCDOMTypeReference(PCCLASS_CLASS,
 								substring.split("\\."));
 				}
 				else if (lockPre.startsWith("CLASS="))
@@ -105,7 +111,7 @@ public class HitdieLst implements PCClassLstToken, PCClassLevelLstToken
 						return false;
 					}
 					owner =
-							context.ref.getCDOMReference(PCClass.class,
+							context.ref.getCDOMReference(PCCLASS_CLASS,
 								substring);
 				}
 				else
@@ -119,7 +125,7 @@ public class HitdieLst implements PCClassLstToken, PCClassLevelLstToken
 			else
 			{
 				// Unlimited
-				owner = context.ref.getCDOMAllReference(PCClass.class);
+				owner = context.ref.getCDOMAllReference(PCCLASS_CLASS);
 			}
 
 			AbstractHitDieModifier hdm;
@@ -267,10 +273,10 @@ public class HitdieLst implements PCClassLstToken, PCClassLevelLstToken
 			}
 
 			PCClassLevel pcl = cl.getClassLevel(level);
-			Aggregator ag = new Aggregator(pcl, owner, getTokenName());
-			context.graph.linkAllowIntoGraph(getTokenName(), pcl, ag);
-			context.graph.linkActivationIntoGraph(getTokenName(), owner, ag);
-			context.graph.linkObjectIntoGraph(getTokenName(), ag, hdm);
+			// BUG TODO FIXME This doesn't do what is intended, not limited to
+			// the level
+			HitDieCommandFactory cf = new HitDieCommandFactory(owner, hdm);
+			context.graph.grant(getTokenName(), pcl, cf);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -285,73 +291,35 @@ public class HitdieLst implements PCClassLstToken, PCClassLevelLstToken
 	public String[] unparse(LoadContext context, PCClass pcc, int level)
 	{
 		PCClassLevel pcl = pcc.getClassLevel(level);
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), pcl,
-					Aggregator.class);
-		if (edges == null || edges.isEmpty())
+		GraphChanges<HitDieCommandFactory> changes =
+				context.graph.getChangesFromToken(getTokenName(), pcl,
+					HitDieCommandFactory.class);
+		if (changes == null)
 		{
 			return null;
 		}
-		if (edges.size() != 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context
-				.addWriteMessage("Only 1 Hit Die Lock is allowed per Template");
 			return null;
 		}
-		// CONSIDER Verify this is an allow edge?
-		Aggregator ag =
-				(Aggregator) edges.iterator().next().getSinkNodes().get(0);
-		Set<PCGraphEdge> aggEdges =
-				context.graph.getChildLinksFromToken(getTokenName(), ag,
-					AbstractHitDieModifier.class);
-		if (aggEdges == null || aggEdges.isEmpty())
+		List<String> list = new ArrayList<String>();
+		for (Iterator<LSTWriteable> it = added.iterator(); it.hasNext();)
 		{
-			context
-				.addWriteMessage("Found Aggregator, but no children for token "
-					+ getTokenName() + ".  Error in Graph Structure.");
-			return null;
-		}
-		if (aggEdges.size() != 1)
-		{
-			context
-				.addWriteMessage("Only 1 Hit Die Lock is allowed per Aggregator");
-			return null;
-		}
-		// CONSIDER Verify this is a grant edge?
-		AbstractHitDieModifier hdm =
-				(AbstractHitDieModifier) aggEdges.iterator().next()
-					.getSinkNodes().get(0);
-		StringBuilder sb = new StringBuilder();
-		sb.append(hdm.getLSTform());
-
-		Set<PCGraphEdge> aggParents =
-				context.graph.getParentLinksFromToken(getTokenName(), ag,
-					PCClass.class);
-		if (aggParents == null || aggParents.isEmpty())
-		{
-			context
-				.addWriteMessage("Found Aggregator, but no activating parent for token "
-					+ getTokenName() + ".  Error in Graph Structure.");
-			return null;
-		}
-		if (aggParents.size() != 1)
-		{
-			context
-				.addWriteMessage("Only 1 Activation source is allowed per Aggregator");
-			return null;
-		}
-		// CONSIDER Verify this is an activation edge?
-		CDOMReference<PCClass> ref =
-				(CDOMReference<PCClass>) aggParents.iterator().next()
-					.getNodeAt(0);
-		if (!ref.equals(context.ref.getCDOMAllReference(PCClass.class)))
-		{
-			String lstFormat = ref.getLSTformat();
-			sb.append("|CLASS");
-			sb.append(lstFormat.indexOf('=') == -1 ? '=' : '.');
-			sb.append(lstFormat);
+			StringBuilder sb = new StringBuilder();
+			HitDieCommandFactory lcf = (HitDieCommandFactory) it.next();
+			AbstractHitDieModifier mod = lcf.getModifier();
+			sb.append(mod.getLSTform());
+			String lcfString = lcf.getLSTformat();
+			if (!lcfString.equals(Constants.LST_ALL))
+			{
+				sb.append("|CLASS");
+				sb.append(lcfString.indexOf('=') == -1 ? '=' : '.');
+				sb.append(lcfString);
+			}
+			list.add(sb.toString());
 		}
 
-		return new String[]{sb.toString()};
+		return list.toArray(new String[list.size()]);
 	}
 }

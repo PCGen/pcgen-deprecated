@@ -51,14 +51,14 @@ public class StartskillptsToken implements PCClassLstToken,
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
-		pcc.put(FormulaKey.START_SKILL_POINTS, FormulaFactory
+		context.obj.put(pcc, FormulaKey.START_SKILL_POINTS, FormulaFactory
 			.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Formula f = pcc.get(FormulaKey.START_SKILL_POINTS);
+		Formula f = context.obj.getFormula(pcc, FormulaKey.START_SKILL_POINTS);
 		if (f == null)
 		{
 			return null;

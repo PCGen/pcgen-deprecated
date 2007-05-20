@@ -34,17 +34,19 @@ import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.util.Logging;
 import pcgen.util.enumeration.ProhibitedSpellType;
 
 /**
  * Class deals with PROHIBITED Token
  */
-public class ProhibitedToken implements PCClassLstToken, PCClassClassLstToken
+public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
+		PCClassClassLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "PROHIBITED";
@@ -73,10 +75,10 @@ public class ProhibitedToken implements PCClassLstToken, PCClassClassLstToken
 			return false;
 		}
 		Aggregator agg = new Aggregator(pcc, pcc, getTokenName());
-		context.graph.linkObjectIntoGraph(getTokenName(), pcc, agg);
+		context.graph.grant(getTokenName(), pcc, agg);
 		for (SpellProhibitor sp : spList)
 		{
-			context.graph.linkObjectIntoGraph(getTokenName(), agg, sp);
+			context.graph.grant(getTokenName(), agg, sp);
 		}
 		return true;
 	}
@@ -84,27 +86,8 @@ public class ProhibitedToken implements PCClassLstToken, PCClassClassLstToken
 	public List<SpellProhibitor> subParse(LoadContext context, PCClass pcc,
 		String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return null;
-		}
-		if (value.charAt(0) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return null;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
-			return null;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
 			return null;
 		}
 
@@ -118,7 +101,7 @@ public class ProhibitedToken implements PCClassLstToken, PCClassClassLstToken
 		while (tok.hasMoreTokens())
 		{
 			String aValue = tok.nextToken();
-			//TODO This is a String, should it be typesafe?
+			// TODO This is a String, should it be typesafe?
 			spSchool.addValue(aValue);
 			spSubSchool.addValue(aValue);
 		}

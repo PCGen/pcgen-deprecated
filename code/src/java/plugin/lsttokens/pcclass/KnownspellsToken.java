@@ -22,9 +22,9 @@
 package plugin.lsttokens.pcclass;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Map.Entry;
@@ -32,14 +32,16 @@ import java.util.Map.Entry;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.KnownSpellIdentifier;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.SpellFilter;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.PCClassUniversalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -48,10 +50,13 @@ import pcgen.util.Logging;
 /**
  * Class deals with KNOWNSPELLS Token
  */
-public class KnownspellsToken implements PCClassLstToken,
+public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		PCClassUniversalLstToken
 {
+	
+	private static final Class<Spell> SPELL_CLASS = Spell.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "KNOWNSPELLS";
@@ -140,8 +145,7 @@ public class KnownspellsToken implements PCClassLstToken,
 		String known;
 		if (value.startsWith(".CLEAR"))
 		{
-			context.graph.unlinkChildNodesOfClass(getTokenName(), po,
-				SpellFilter.class);
+			context.graph.removeAll(getTokenName(), po, SpellFilter.class);
 
 			if (".CLEAR".equals(value))
 			{
@@ -155,27 +159,8 @@ public class KnownspellsToken implements PCClassLstToken,
 			known = value;
 		}
 
-		if (known.length() == 0)
+		if (isEmpty(known) || hasIllegalSeparator('|', known))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (known.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (known.charAt(known.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (known.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -258,7 +243,7 @@ public class KnownspellsToken implements PCClassLstToken,
 					}
 					sp =
 							TokenUtilities.getTypeOrPrimitive(context,
-								Spell.class, filterString);
+								SPELL_CLASS, filterString);
 					if (sp == null)
 					{
 						Logging.errorPrint("  encountered Invalid limit in "
@@ -274,31 +259,37 @@ public class KnownspellsToken implements PCClassLstToken,
 				 * (meaning levelLim is null as well) as that was implicitly
 				 * checked by ensuring || did not occur.
 				 */
-				sp = context.ref.getCDOMAllReference(Spell.class);
+				sp = context.ref.getCDOMAllReference(SPELL_CLASS);
 			}
 			KnownSpellIdentifier ksi = new KnownSpellIdentifier(sp, levelLim);
-			context.graph.linkObjectIntoGraph(getTokenName(), po, ksi);
+			context.graph.grant(getTokenName(), po, ksi);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject po)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), po,
+		GraphChanges<KnownSpellIdentifier> changes =
+				context.graph.getChangesFromToken(getTokenName(), po,
 					KnownSpellIdentifier.class);
-		if (edges == null || edges.isEmpty())
+		if (changes == null)
 		{
+			return null;
+		}
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token present
 			return null;
 		}
 		Map<CDOMReference<?>, Integer> map =
 				new TreeMap<CDOMReference<?>, Integer>(
 					TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge edge : edges)
+		for (LSTWriteable lstw : added)
 		{
-			KnownSpellIdentifier kst = (KnownSpellIdentifier) edge.getNodeAt(1);
-			CDOMReference<Spell> ref = kst.getLimit();
-			Integer i = kst.getSpellLevel();
+			KnownSpellIdentifier ksi = (KnownSpellIdentifier) lstw;
+			CDOMReference<Spell> ref = ksi.getLimit();
+			Integer i = ksi.getSpellLevel();
 			map.put(ref, i);
 		}
 		List<String> list = new ArrayList<String>();

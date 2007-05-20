@@ -21,16 +21,18 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.util.Set;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelExchange;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.util.Logging;
@@ -38,10 +40,11 @@ import pcgen.util.Logging;
 /**
  * Class deals with EXCHANGELEVEL Token
  */
-public class ExchangelevelToken implements PCClassLstToken,
-		PCClassClassLstToken
+public class ExchangelevelToken extends AbstractToken implements
+		PCClassLstToken, PCClassClassLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "EXCHANGELEVEL";
@@ -56,29 +59,11 @@ public class ExchangelevelToken implements PCClassLstToken,
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		if (tok.countTokens() != 4)
 		{
@@ -129,7 +114,7 @@ public class ExchangelevelToken implements PCClassLstToken,
 		try
 		{
 			LevelExchange le = new LevelExchange(cl, mindl, maxdl, minrem);
-			context.graph.linkObjectIntoGraph(getTokenName(), pcc, le);
+			context.graph.grant(getTokenName(), pcc, le);
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -143,23 +128,28 @@ public class ExchangelevelToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), pcc,
+		GraphChanges<LevelExchange> changes =
+				context.graph.getChangesFromToken(getTokenName(), pcc,
 					LevelExchange.class);
-		if (edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (edges.size() > 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context.addWriteMessage("Invalid " + getTokenName()
-				+ ": only one link is allowed");
+			// Zero indicates no Token present
 			return null;
 		}
-		PCGraphEdge edge = edges.iterator().next();
-		LevelExchange le = (LevelExchange) edge.getNodeAt(1);
+		if (added.size() > 1)
+		{
+			context
+				.addWriteMessage("Only 1 LevelExchange is allowed per Class");
+			return null;
+		}
+		LevelExchange le = (LevelExchange) added.iterator().next();
 		StringBuilder sb = new StringBuilder();
-		sb.append(le.getExchangeClass().getLSTformat()).append(Constants.PIPE);
+		sb.append(le.getLSTformat()).append(Constants.PIPE);
 		sb.append(le.getMinDonatingLevel()).append(Constants.PIPE);
 		sb.append(le.getMaxDonatedLevels()).append(Constants.PIPE);
 		sb.append(le.getDonatingLowerLevelBound());

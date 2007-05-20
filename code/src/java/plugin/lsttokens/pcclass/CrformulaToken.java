@@ -50,13 +50,14 @@ public class CrformulaToken implements PCClassLstToken, PCClassClassLstToken
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
-		pcc.put(FormulaKey.CR, FormulaFactory.getFormulaFor(value));
+		context.obj
+			.put(pcc, FormulaKey.CR, FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Formula f = pcc.get(FormulaKey.CR);
+		Formula f = context.obj.getFormula(pcc, FormulaKey.CR);
 		if (f == null)
 		{
 			return null;

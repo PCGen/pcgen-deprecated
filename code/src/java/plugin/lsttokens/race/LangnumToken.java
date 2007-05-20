@@ -62,7 +62,7 @@ public class LangnumToken implements RaceLstToken
 					+ " expected a positive integer.  Was: " + value);
 				return false;
 			}
-			race.put(IntegerKey.LANGNUM, count);
+			context.obj.put(race, IntegerKey.LANGNUM, count);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -77,7 +77,7 @@ public class LangnumToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Integer sp = race.get(IntegerKey.LANGNUM);
+		Integer sp = context.obj.getInteger(race, IntegerKey.LANGNUM);
 		if (sp == null)
 		{
 			return null;

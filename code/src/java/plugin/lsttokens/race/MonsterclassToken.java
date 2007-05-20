@@ -22,18 +22,18 @@
 package plugin.lsttokens.race;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelCommandFactory;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.PCClass;
 import pcgen.core.Race;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.util.Logging;
@@ -43,6 +43,8 @@ import pcgen.util.Logging;
  */
 public class MonsterclassToken implements RaceLstToken
 {
+
+	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
 	public String getTokenName()
 	{
@@ -87,7 +89,7 @@ public class MonsterclassToken implements RaceLstToken
 		}
 		String classString = value.substring(0, colonLoc);
 		CDOMSimpleSingleRef<PCClass> cl =
-				context.ref.getCDOMReference(PCClass.class, classString);
+				context.ref.getCDOMReference(PCCLASS_CLASS, classString);
 		int lvls;
 		try
 		{
@@ -107,27 +109,29 @@ public class MonsterclassToken implements RaceLstToken
 			return false;
 		}
 		LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
-		context.graph.linkObjectIntoGraph(getTokenName(), race, cf);
+		context.graph.grant(getTokenName(), race, cf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), race,
+		GraphChanges<LevelCommandFactory> changes =
+				context.graph.getChangesFromToken(getTokenName(), race,
 					LevelCommandFactory.class);
-		if (edges == null || edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		SortedSet<LevelCommandFactory> set = new TreeSet<LevelCommandFactory>();
-		for (PCGraphEdge edge : edges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			set.add((LevelCommandFactory) edge.getSinkNodes().get(0));
+			return null;
 		}
-		List<String> list = new ArrayList<String>(edges.size());
-		for (LevelCommandFactory lcf : set)
+		List<String> list = new ArrayList<String>();
+		for (Iterator<LSTWriteable> it = added.iterator(); it.hasNext();)
 		{
+			StringBuilder sb = new StringBuilder();
+			LevelCommandFactory lcf = (LevelCommandFactory) it.next();
 			int lvls = lcf.getLevelCount();
 			if (lvls <= 0)
 			{
@@ -135,7 +139,6 @@ public class MonsterclassToken implements RaceLstToken
 					+ getTokenName() + " must be greater than zero");
 				return null;
 			}
-			StringBuilder sb = new StringBuilder();
 			sb.append(lcf.getLSTformat()).append(Constants.COLON).append(lvls);
 			list.add(sb.toString());
 		}

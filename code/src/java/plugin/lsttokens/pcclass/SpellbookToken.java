@@ -74,13 +74,13 @@ public class SpellbookToken implements PCClassLstToken, PCClassClassLstToken
 			}
 			set = Boolean.FALSE;
 		}
-		pcc.put(ObjectKey.SPELLBOOK, set);
+		context.obj.put(pcc, ObjectKey.SPELLBOOK, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Boolean sb = pcc.get(ObjectKey.SPELLBOOK);
+		Boolean sb = context.obj.getObject(pcc, ObjectKey.SPELLBOOK);
 		if (sb == null)
 		{
 			return null;

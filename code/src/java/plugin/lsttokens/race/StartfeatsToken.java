@@ -21,21 +21,22 @@
  */
 package plugin.lsttokens.race;
 
-import java.util.Set;
+import java.util.Collection;
 
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
 import pcgen.core.Race;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -107,8 +108,8 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		}
 
 		Slot<Ability> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), race,
-					ABILITY_CLASS, FormulaFactory.getFormulaFor(featCount));
+				context.graph.addSlot(getTokenName(), race, ABILITY_CLASS,
+					FormulaFactory.getFormulaFor(featCount));
 		/*
 		 * This prereq exists solely to prevent the ability to select Feats
 		 * before first level. It simply aligns this to the rules that provide
@@ -134,21 +135,27 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), race,
+		GraphChanges<Slot> changes =
+				context.graph.getChangesFromToken(getTokenName(), race,
 					Slot.class);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (edgeList.size() != 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context.addWriteMessage("Error in " + race.getKeyName()
-				+ ": Only one " + getTokenName() + " Slot is allowed per Race");
+			// Zero indicates no Token present
 			return null;
 		}
-		PCGraphEdge edge = edgeList.iterator().next();
-		Slot<?> slot = (Slot) edge.getSinkNodes().get(0);
+		if (added.size() > 1)
+		{
+			context.addWriteMessage("Invalid Slot Count " + added.size()
+				+ " associated with " + getTokenName()
+				+ ": Only one Slot allowed.");
+			return null;
+		}
+		Slot<Ability> slot = (Slot<Ability>) added.iterator().next();
 		if (!slot.getSlotClass().equals(ABILITY_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "
@@ -172,6 +179,6 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 				+ slot.getAssociation(AssociationKey.ABILITY_NATURE));
 			return null;
 		}
-		return new String[]{slot.toLSTform()};
+		return new String[]{slot.getSlotCount()};
 	}
 }

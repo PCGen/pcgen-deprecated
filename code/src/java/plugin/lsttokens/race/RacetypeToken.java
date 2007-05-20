@@ -46,13 +46,13 @@ public class RacetypeToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
-		race.put(ObjectKey.RACETYPE, RaceType.getConstant(value));
+		context.obj.put(race, ObjectKey.RACETYPE, RaceType.getConstant(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		RaceType raceType = race.get(ObjectKey.RACETYPE);
+		RaceType raceType = context.obj.getObject(race, ObjectKey.RACETYPE);
 		if (raceType == null)
 		{
 			return null;

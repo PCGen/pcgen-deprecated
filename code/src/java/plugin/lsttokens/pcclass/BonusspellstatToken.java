@@ -36,6 +36,7 @@ import pcgen.util.Logging;
 public class BonusspellstatToken implements PCClassLstToken,
 		PCClassClassLstToken
 {
+	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
 
 	public String getTokenName()
 	{
@@ -51,20 +52,20 @@ public class BonusspellstatToken implements PCClassLstToken,
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
-		PCStat pcs = context.ref.getConstructedCDOMObject(PCStat.class, value);
+		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
 			Logging.errorPrint("Invalid Stat Abbreviation in Token + "
 				+ getTokenName() + ": " + value);
 			return false;
 		}
-		pcc.put(ObjectKey.BONUS_SPELL_STAT, pcs);
+		context.obj.put(pcc, ObjectKey.BONUS_SPELL_STAT, pcs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		PCStat pcs = pcc.get(ObjectKey.BONUS_SPELL_STAT);
+		PCStat pcs = context.obj.getObject(pcc, ObjectKey.BONUS_SPELL_STAT);
 		if (pcs == null)
 		{
 			return null;

@@ -50,14 +50,16 @@ public class ItemcreateToken implements PCClassLstToken, PCClassClassLstToken
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
-		pcc.put(FormulaKey.ITEM_CREATION_MULTIPLIER, FormulaFactory
-			.getFormulaFor(value));
+		context.obj.put(pcc, FormulaKey.ITEM_CREATION_MULTIPLIER,
+			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Formula f = pcc.get(FormulaKey.ITEM_CREATION_MULTIPLIER);
+		Formula f =
+				context.obj
+					.getFormula(pcc, FormulaKey.ITEM_CREATION_MULTIPLIER);
 		if (f == null)
 		{
 			return null;

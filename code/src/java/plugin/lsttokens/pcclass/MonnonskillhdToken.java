@@ -58,7 +58,7 @@ public class MonnonskillhdToken implements PCClassLstToken,
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			pcc.put(IntegerKey.MONSTER_NON_SKILL_HD, in);
+			context.obj.put(pcc, IntegerKey.MONSTER_NON_SKILL_HD, in);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -72,7 +72,7 @@ public class MonnonskillhdToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Integer msp = pcc.get(IntegerKey.MONSTER_NON_SKILL_HD);
+		Integer msp = context.obj.getInteger(pcc, IntegerKey.MONSTER_NON_SKILL_HD);
 		if (msp == null)
 		{
 			return null;

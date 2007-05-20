@@ -22,24 +22,23 @@
 package plugin.lsttokens.race;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
-import pcgen.cdom.graph.PCGraphAllowsEdge;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Race;
 import pcgen.core.Skill;
 import pcgen.core.SkillList;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
@@ -47,10 +46,13 @@ import pcgen.util.Logging;
 /**
  * Class deals with MONCSKILL Token
  */
-public class MoncskillToken implements RaceLstToken
+public class MoncskillToken extends AbstractToken implements RaceLstToken
 {
 	private static final Class<Skill> SKILL_CLASS = Skill.class;
 
+	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+
+	@Override
 	public String getTokenName()
 	{
 		return "MONCSKILL";
@@ -64,47 +66,35 @@ public class MoncskillToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
 		CDOMReference<SkillList> ref =
-				context.ref.getCDOMReference(SkillList.class, "*Monster");
-		Aggregator agg = new Aggregator(race, ref, getTokenName());
+				context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
 
+		boolean firstToken = true;
 		boolean foundAny = false;
 		boolean foundOther = false;
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		List<CDOMReference<Skill>> list = new ArrayList<CDOMReference<Skill>>();
 
-		PIPEWHILE: while (tok.hasMoreTokens())
+		while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
 			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
-				context.graph.unlinkChildNodesOfClass(getTokenName(), race,
-					Aggregator.class);
+				if (!firstToken)
+				{
+					Logging.errorPrint("Non-sensical situation was "
+						+ "encountered while parsing " + getTokenName()
+						+ ": When used, .CLEAR must be the first argument");
+					return false;
+				}
+				context.list.removeFromList(getTokenName(), race, ref,
+					SKILL_CLASS);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -126,39 +116,7 @@ public class MoncskillToken implements RaceLstToken
 						+ getTokenName());
 					return false;
 				}
-				Set<PCGraphEdge> edgeList =
-						context.graph.getChildLinksFromToken(getTokenName(),
-							race, Aggregator.class);
-				if (edgeList.size() != 1)
-				{
-					Logging.errorPrint("Internal Error: "
-						+ "Expected only one " + getTokenName()
-						+ " structure in Graph");
-				}
-				/*
-				 * Note this can actually use agg and doesn't have to do a
-				 * search from the edge in edgeList, due to the .equals property
-				 * and how it will work in the Graph :) - Tom Parker Mar/1/07
-				 */
-				Set<PCGraphEdge> edgeToSkillList =
-						context.graph.getChildLinksFromToken(getTokenName(),
-							agg, SKILL_CLASS);
-				for (PCGraphEdge se : edgeToSkillList)
-				{
-					if (se.getNodeAt(1).equals(skill))
-					{
-						context.graph.unlinkChildNode(getTokenName(), agg,
-							skill);
-						Set<PCGraphEdge> links =
-								context.graph.getChildLinksFromToken(
-									getTokenName(), agg);
-						if (links == null || links.isEmpty())
-						{
-							context.graph.deleteAggregator(getTokenName(), agg);
-						}
-						continue PIPEWHILE;
-					}
-				}
+				context.list.removeFromList(getTokenName(), race, ref, skill);
 			}
 			else
 			{
@@ -191,6 +149,7 @@ public class MoncskillToken implements RaceLstToken
 				}
 				list.add(skill);
 			}
+			firstToken = false;
 		}
 		if (foundAny && foundOther)
 		{
@@ -198,59 +157,62 @@ public class MoncskillToken implements RaceLstToken
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
-		/*
-		 * This is intentionally Holds, as the context for traversal must only
-		 * be the ref (linked by the Activation Edge). So we need an edge to the
-		 * Activator to get it copied into the PC, but since this is a 3rd party
-		 * Token, the Race should never grant anything hung off the aggregator.
-		 */
-		context.graph.linkHoldsIntoGraph(getTokenName(), race, agg);
-		context.graph.linkActivationIntoGraph(getTokenName(), ref, agg);
-
 		for (CDOMReference<Skill> skill : list)
 		{
-			PCGraphAllowsEdge edge =
-					context.graph
-						.linkAllowIntoGraph(getTokenName(), agg, skill);
-			edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
+			AssociatedPrereqObject tpr =
+					context.list.addToList(getTokenName(), race, ref, skill);
+			tpr.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), race,
-					Aggregator.class);
-		if (edgeList == null || edgeList.isEmpty())
+		CDOMReference<SkillList> swl =
+				context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
+		GraphChanges<Skill> changes =
+				context.list.getChangesInList(getTokenName(), race, swl);
+		if (changes == null)
 		{
+			// Legal if no MONCSKILL was present in the race
 			return null;
 		}
-		if (edgeList.size() != 1)
+		List<String> list = new ArrayList<String>();
+		if (changes.hasRemovedItems())
 		{
-			context.addWriteMessage("Expected only one " + getTokenName()
-				+ " structure in Graph");
-			return null;
-		}
-		PCGraphEdge edge = edgeList.iterator().next();
-		Aggregator a = (Aggregator) edge.getNodeAt(1);
-		Set<PCGraphEdge> edgeToSkillList =
-				context.graph.getChildLinksFromToken(getTokenName(), a,
-					SKILL_CLASS);
-		SortedSet<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge se : edgeToSkillList)
-		{
-			if (!SkillCost.CLASS.equals(se
-				.getAssociation(AssociationKey.SKILL_COST)))
+			if (changes.includesGlobalClear())
 			{
-				context.addWriteMessage("Skill Cost must be CLASS for Token "
-					+ getTokenName());
+				context.addWriteMessage("Non-sensical relationship in "
+					+ getTokenName()
+					+ ": global .CLEAR and local .CLEAR. performed");
 				return null;
 			}
-			set.add((CDOMReference<Skill>) se.getNodeAt(1));
+			list.add(Constants.LST_DOT_CLEAR_DOT
+				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+					"|.CLEAR."));
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(set,
-			Constants.PIPE)};
+		if (changes.includesGlobalClear())
+		{
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		if (changes.hasAddedItems())
+		{
+			Collection<LSTWriteable> addedCollection = changes.getAdded();
+			for (LSTWriteable added : addedCollection)
+			{
+				AssociatedPrereqObject se = changes.getAddedAssociation(added);
+				if (!SkillCost.CLASS.equals(se
+					.getAssociation(AssociationKey.SKILL_COST)))
+				{
+					context
+						.addWriteMessage("Skill Cost must be CLASS for Token "
+							+ getTokenName());
+					return null;
+				}
+			}
+			list.add(ReferenceUtilities.joinLstFormat(addedCollection,
+				Constants.PIPE));
+		}
+		return list.toArray(new String[list.size()]);
 	}
 }

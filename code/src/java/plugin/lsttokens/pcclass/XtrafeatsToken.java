@@ -21,18 +21,19 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.util.Set;
+import java.util.Collection;
 
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
 import pcgen.core.PCClass;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassClassLstToken;
@@ -100,7 +101,7 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 		}
 
 		Slot<Ability> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), pcc,
+				context.graph.addSlot(getTokenName(), pcc,
 					ABILITY_CLASS, FormulaFactory.getFormulaFor(featCount));
 		/*
 		 * Unlike Race's STARTFEATS, no prereq is required here since this in a
@@ -122,22 +123,27 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), pcc,
+		GraphChanges<Slot> changes =
+				context.graph.getChangesFromToken(getTokenName(), pcc,
 					Slot.class);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (edgeList.size() != 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token present
+			return null;
+		}
+		if (added.size() > 1)
 		{
 			context.addWriteMessage("Error in " + pcc.getKeyName()
 				+ ": Only one " + getTokenName()
 				+ " Slot is allowed per PCClass");
 			return null;
 		}
-		PCGraphEdge edge = edgeList.iterator().next();
-		Slot<?> slot = (Slot) edge.getSinkNodes().get(0);
+		Slot<Ability> slot = (Slot<Ability>) added.iterator().next();
 		if (!slot.getSlotClass().equals(ABILITY_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "
@@ -161,6 +167,6 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 				+ slot.getAssociation(AssociationKey.ABILITY_NATURE));
 			return null;
 		}
-		return new String[]{slot.toLSTform()};
+		return new String[]{slot.getSlotCount()};
 	}
 }

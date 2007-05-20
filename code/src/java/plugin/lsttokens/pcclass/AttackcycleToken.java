@@ -33,6 +33,7 @@ import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.util.enumeration.AttackType;
@@ -40,9 +41,11 @@ import pcgen.util.enumeration.AttackType;
 /**
  * Class deals with ATTACKCYCLE Token
  */
-public class AttackcycleToken implements PCClassLstToken, PCClassClassLstToken
+public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
+		PCClassClassLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "ATTACKCYCLE";
@@ -91,27 +94,8 @@ public class AttackcycleToken implements PCClassLstToken, PCClassClassLstToken
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 

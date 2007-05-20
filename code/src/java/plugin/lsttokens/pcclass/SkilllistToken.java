@@ -22,22 +22,24 @@
 package plugin.lsttokens.pcclass;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMCompoundReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.PCClass;
 import pcgen.core.SkillList;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -46,9 +48,13 @@ import pcgen.util.Logging;
 /**
  * Class deals with SKILLLIST Token
  */
-public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
+public class SkilllistToken extends AbstractToken implements PCClassLstToken,
+		PCClassClassLstToken
 {
 
+	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+
+	@Override
 	public String getTokenName()
 	{
 		return "SKILLLIST";
@@ -91,33 +97,14 @@ public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
 		if (value.indexOf('|') == -1)
 		{
 			Logging.errorPrint(getTokenName()
 				+ " may not have only one argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -141,11 +128,11 @@ public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 		}
 
 		Slot<SkillList> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), pcc,
-					SkillList.class, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), pcc, SKILLLIST_CLASS,
+					FormulaFactory.getFormulaFor(count));
 
 		CDOMCompoundReference<SkillList> cr =
-				new CDOMCompoundReference<SkillList>(SkillList.class,
+				new CDOMCompoundReference<SkillList>(SKILLLIST_CLASS,
 					getTokenName() + " items");
 
 		boolean foundAny = false;
@@ -158,14 +145,14 @@ public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
-				ref = context.ref.getCDOMAllReference(SkillList.class);
+				ref = context.ref.getCDOMAllReference(SKILLLIST_CLASS);
 			}
 			else
 			{
 				foundOther = true;
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
-							SkillList.class, token);
+							SKILLLIST_CLASS, token);
 			}
 			if (ref == null)
 			{
@@ -182,30 +169,35 @@ public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 		}
 
 		slot.addSinkRestriction(new GroupRestriction<SkillList>(
-			SkillList.class, cr));
+			SKILLLIST_CLASS, cr));
 
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), pcc,
+		GraphChanges<Slot> changes =
+				context.graph.getChangesFromToken(getTokenName(), pcc,
 					Slot.class);
-		if (links == null || links.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context.addWriteMessage("Invalid Slot Count " + links.size()
-				+ " associated with " + getTokenName()
-				+ ": Only one Slot allowed.");
+			// Zero indicates no Token present
 			return null;
 		}
-		PCGraphEdge edge = links.iterator().next();
-		Slot<SkillList> slot = (Slot<SkillList>) edge.getSinkNodes().get(0);
-		if (!slot.getSlotClass().equals(SkillList.class))
+		if (added.size() > 1)
+		{
+			context.addWriteMessage("Error in " + pcc.getKeyName()
+				+ ": Only one " + getTokenName()
+				+ " Slot is allowed per PCClass");
+			return null;
+		}
+		Slot<SkillList> slot = (Slot<SkillList>) added.iterator().next();
+		if (!slot.getSlotClass().equals(SKILLLIST_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "
 				+ getTokenName() + ": Type cannot be "
@@ -213,7 +205,7 @@ public class SkilllistToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		// TODO Need to validate Skill, not just CDOMListRef
-		String slotCount = slot.toLSTform();
+		String slotCount = slot.getSlotCount();
 		List<Restriction<?>> restr = slot.getSinkRestrictions();
 		if (restr.size() != 1)
 		{

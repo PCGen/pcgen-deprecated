@@ -74,7 +74,7 @@ public class XtraskillptsperlvlToken implements RaceLstToken
 				return false;
 			}
 
-			race.put(IntegerKey.SKILL_POINTS_PER_LEVEL, sp);
+			context.obj.put(race, IntegerKey.SKILL_POINTS_PER_LEVEL, sp);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -88,7 +88,7 @@ public class XtraskillptsperlvlToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Integer sp = race.get(IntegerKey.SKILL_POINTS_PER_LEVEL);
+		Integer sp = context.obj.getInteger(race, IntegerKey.SKILL_POINTS_PER_LEVEL);
 		if (sp == null)
 		{
 			return null;

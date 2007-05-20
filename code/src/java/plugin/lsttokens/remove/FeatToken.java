@@ -17,21 +17,22 @@
  */
 package plugin.lsttokens.remove;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMCompoundReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.content.Remover;
 import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
 import pcgen.core.PObject;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.RemoveLstToken;
@@ -183,7 +184,7 @@ public class FeatToken implements RemoveLstToken
 		}
 		rem
 			.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS, cr));
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, rem);
+		context.graph.grant(getTokenName(), obj, rem);
 		// FIXME Slot needs to know AbilityNature.NORMAL ??
 
 		return true;
@@ -191,22 +192,27 @@ public class FeatToken implements RemoveLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Remover> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					Remover.class);
-		if (links == null || links.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context.addWriteMessage("Invalid Slot Count " + links.size()
+			// Zero indicates no Token present
+			return null;
+		}
+		if (added.size() > 1)
+		{
+			context.addWriteMessage("Invalid Count " + added.size()
 				+ " associated with " + getTokenName()
-				+ ": Only one Slot allowed.");
+				+ ": Only one Remove allowed.");
 			return null;
 		}
-		PCGraphEdge edge = links.iterator().next();
-		Remover<Ability> rem = (Remover<Ability>) edge.getSinkNodes().get(0);
+		Remover<Ability> rem = (Remover<Ability>) added.iterator().next();
 		if (!rem.getRemovedClass().equals(ABILITY_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "
@@ -214,7 +220,7 @@ public class FeatToken implements RemoveLstToken
 				+ rem.getRemovedClass().getSimpleName());
 			return null;
 		}
-		String slotCount = rem.toLSTform();
+		String slotCount = rem.getLSTformat();
 		String result;
 		List<Restriction<?>> restr = rem.getSinkRestrictions();
 		if (restr.size() != 1)

@@ -51,8 +51,8 @@ public class SizeToken implements RaceLstToken
 	{
 		try
 		{
-			race
-				.put(ObjectKey.SIZE, new FixedSizeResolver(Size.valueOf(value)));
+			context.obj.put(race, ObjectKey.SIZE, new FixedSizeResolver(Size
+				.valueOf(value)));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -65,7 +65,7 @@ public class SizeToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Resolver<Size> res = race.get(ObjectKey.SIZE);
+		Resolver<Size> res = context.obj.getObject(race, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

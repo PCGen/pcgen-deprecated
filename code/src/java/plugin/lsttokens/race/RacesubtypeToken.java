@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.race;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
@@ -29,16 +28,18 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.RaceSubType;
 import pcgen.core.Race;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
-import pcgen.util.Logging;
 
 /**
  * Class deals with RACESUBTYPE Token
  */
-public class RacesubtypeToken implements RaceLstToken
+public class RacesubtypeToken extends AbstractToken implements RaceLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "RACESUBTYPE";
@@ -57,46 +58,28 @@ public class RacesubtypeToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("Invalid " + getTokenName());
-			Logging.errorPrint("  Requires at least one argument");
 			return false;
 		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
-			race.addToListFor(ListKey.RACESUBTYPE, RaceSubType.getConstant(tok
-				.nextToken()));
+			context.obj.addToList(race, ListKey.RACESUBTYPE, RaceSubType
+				.getConstant(tok.nextToken()));
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		List<RaceSubType> raceSubTypes = race.getListFor(ListKey.RACESUBTYPE);
-		if (raceSubTypes == null || raceSubTypes.isEmpty())
+		Changes<RaceSubType> changes =
+				context.obj.getListChanges(race, ListKey.RACESUBTYPE);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(raceSubTypes, Constants.PIPE)};
+		return new String[]{StringUtil.join(changes.getAdded(), Constants.PIPE)};
 	}
 }

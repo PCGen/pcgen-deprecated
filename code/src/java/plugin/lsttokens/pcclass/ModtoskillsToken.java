@@ -74,13 +74,13 @@ public class ModtoskillsToken implements PCClassLstToken, PCClassClassLstToken
 			}
 			set = Boolean.FALSE;
 		}
-		pcc.put(ObjectKey.MOD_TO_SKILLS, set);
+		context.obj.put(pcc, ObjectKey.MOD_TO_SKILLS, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Boolean mts = pcc.get(ObjectKey.MOD_TO_SKILLS);
+		Boolean mts = context.obj.getObject(pcc, ObjectKey.MOD_TO_SKILLS);
 		if (mts == null)
 		{
 			return null;

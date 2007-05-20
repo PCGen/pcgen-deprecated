@@ -21,13 +21,14 @@
  */
 package plugin.lsttokens.race;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.Race;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
@@ -83,9 +84,8 @@ public class HitdiceadvancementToken extends AbstractToken implements
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
 		if (value.indexOf(',') == -1)
@@ -94,34 +94,19 @@ public class HitdiceadvancementToken extends AbstractToken implements
 				+ " must have more than one comma delimited argument");
 			return false;
 		}
-		if (value.charAt(0) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return false;
-		}
 
 		final StringTokenizer commaTok =
 				new StringTokenizer(value, Constants.COMMA);
 
-		if (race.containsListFor(ListKey.HITDICE_ADVANCEMENT))
+		if (context.obj.containsListFor(race, ListKey.HITDICE_ADVANCEMENT))
 		{
+			/*
+			 * FIXME This is a problem for the editor, that parse is doing a
+			 * global GET?
+			 */
 			Logging.errorPrint("Encountered second " + getTokenName()
-				+ ": overwriting: "
-				+ race.getListFor(ListKey.HITDICE_ADVANCEMENT));
-			race.removeListFor(ListKey.HITDICE_ADVANCEMENT);
+				+ ": overwriting previous advancement list");
+			context.obj.removeList(race, ListKey.HITDICE_ADVANCEMENT);
 		}
 		int last = 0;
 		while (commaTok.hasMoreTokens())
@@ -157,21 +142,24 @@ public class HitdiceadvancementToken extends AbstractToken implements
 					return false;
 				}
 			}
-			race.addToListFor(ListKey.HITDICE_ADVANCEMENT, Integer.valueOf(hd));
+			context.obj.addToList(race, ListKey.HITDICE_ADVANCEMENT, Integer
+				.valueOf(hd));
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		List<Integer> list = race.getListFor(ListKey.HITDICE_ADVANCEMENT);
-		if (list == null || list.isEmpty())
+		Changes<Integer> changes =
+				context.obj.getListChanges(race, ListKey.HITDICE_ADVANCEMENT);
+		if (changes == null)
 		{
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
 		boolean needsComma = false;
 		int last = 0;
+		Collection<Integer> list = changes.getAdded();
 		for (Iterator<Integer> it = list.iterator(); it.hasNext();)
 		{
 			if (needsComma)

@@ -30,6 +30,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProgressionInfo;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLevelLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.util.Logging;
@@ -37,9 +38,11 @@ import pcgen.util.Logging;
 /**
  * Class deals with CAST Token
  */
-public class CastToken implements PCClassLstToken, PCClassLevelLstToken
+public class CastToken extends AbstractToken implements PCClassLstToken,
+		PCClassLevelLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "CAST";
@@ -67,29 +70,11 @@ public class CastToken implements PCClassLstToken, PCClassLevelLstToken
 	public boolean parse(LoadContext context, PCClass pcc, String value,
 		int level)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
-		if (value.charAt(0) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return false;
-		}
+
 		StringTokenizer st = new StringTokenizer(value, Constants.COMMA);
 
 		List<String> castList = new ArrayList<String>(st.countTokens());

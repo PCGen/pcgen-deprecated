@@ -85,13 +85,13 @@ public class MaxlevelToken implements PCClassLstToken, PCClassClassLstToken
 				return false;
 			}
 		}
-		pcc.put(IntegerKey.LEVEL_LIMIT, lim);
+		context.obj.put(pcc, IntegerKey.LEVEL_LIMIT, lim);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Integer lim = pcc.get(IntegerKey.LEVEL_LIMIT);
+		Integer lim = context.obj.getInteger(pcc, IntegerKey.LEVEL_LIMIT);
 		if (lim == null)
 		{
 			return null;

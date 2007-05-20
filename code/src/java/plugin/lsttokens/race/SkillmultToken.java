@@ -62,7 +62,7 @@ public class SkillmultToken implements RaceLstToken
 					+ " must be an integer greater than or equal to 0");
 				return false;
 			}
-			race.put(IntegerKey.INITIAL_SKILL_MULT, i);
+			context.obj.put(race, IntegerKey.INITIAL_SKILL_MULT, i);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -76,7 +76,7 @@ public class SkillmultToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Integer sp = race.get(IntegerKey.INITIAL_SKILL_MULT);
+		Integer sp = context.obj.getInteger(race, IntegerKey.INITIAL_SKILL_MULT);
 		if (sp == null)
 		{
 			return null;

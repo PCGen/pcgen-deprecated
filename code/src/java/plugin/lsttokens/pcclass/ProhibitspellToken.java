@@ -22,20 +22,21 @@
 package plugin.lsttokens.pcclass;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -142,34 +143,15 @@ public class ProhibitspellToken extends AbstractToken implements
 		{
 			return false;
 		}
-		context.graph.linkObjectIntoGraph(getTokenName(), pcc, sp);
+		context.graph.grant(getTokenName(), pcc, sp);
 		return true;
 	}
 
 	public SpellProhibitor subParse(LoadContext context, PCClass pcc,
 		String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return null;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return null;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return null;
 		}
 
@@ -247,7 +229,7 @@ public class ProhibitspellToken extends AbstractToken implements
 			}
 			else
 			{
-				//TODO This is a String, should it be typesafe?
+				// TODO This is a String, should it be typesafe?
 				spellProb.addValue(aValue);
 			}
 		}
@@ -281,17 +263,23 @@ public class ProhibitspellToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), pcc,
+		GraphChanges<SpellProhibitor> changes =
+				context.graph.getChangesFromToken(getTokenName(), pcc,
 					SpellProhibitor.class);
-		if (edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (PCGraphEdge edge : edges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added.isEmpty())
 		{
-			SpellProhibitor sp = (SpellProhibitor) edge.getNodeAt(1);
+			// Zero indicates no Token present
+			return null;
+		}
+		List<String> list = new ArrayList<String>();
+		for (LSTWriteable lstw : added)
+		{
+			SpellProhibitor sp = (SpellProhibitor) lstw;
 			StringBuilder sb = new StringBuilder();
 			ProhibitedSpellType pst = sp.getType();
 			sb.append(pst.toString().toUpperCase());
@@ -320,9 +308,9 @@ public class ProhibitspellToken extends AbstractToken implements
 					sb.append(Constants.PIPE).append(swriter.toString());
 				}
 			}
-			set.add(sb.toString());
+			list.add(sb.toString());
 		}
-		return set.toArray(new String[set.size()]);
+		return list.toArray(new String[list.size()]);
 	}
 
 	private String getJoinChar(ProhibitedSpellType pst,

@@ -65,7 +65,7 @@ public class KnownspellsfromspecialtyToken implements PCClassLstToken,
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			pcc.put(IntegerKey.KNOWN_SPELLS_FROM_SPECIALTY, in);
+			context.obj.put(pcc, IntegerKey.KNOWN_SPELLS_FROM_SPECIALTY, in);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -79,7 +79,9 @@ public class KnownspellsfromspecialtyToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Integer ksfs = pcc.get(IntegerKey.KNOWN_SPELLS_FROM_SPECIALTY);
+		Integer ksfs =
+				context.obj.getInteger(pcc,
+					IntegerKey.KNOWN_SPELLS_FROM_SPECIALTY);
 		if (ksfs == null)
 		{
 			return null;

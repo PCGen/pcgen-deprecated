@@ -22,23 +22,23 @@
 package plugin.lsttokens.pcclass;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Domain;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -54,6 +54,8 @@ import pcgen.util.Logging;
 public class DomainToken extends AbstractToken implements PCClassLstToken,
 		PCClassUniversalLstToken
 {
+
+	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
 
 	@Override
 	public String getTokenName()
@@ -123,33 +125,13 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 	public boolean parse(LoadContext context, PObject po, String value)
 		throws PersistenceLayerException
 	{
-		if (value.length() == 0)
-		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.graph.unlinkParentNodes(getTokenName(), po);
+			context.graph.removeAll(getTokenName(), po);
 			return true;
 		}
-
-		if (value.charAt(0) == '|')
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		if (value.indexOf(",,") != -1)
@@ -193,11 +175,10 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 				prereq = getPrerequisite(prereqString);
 			}
 			CDOMSimpleSingleRef<Domain> domain =
-					context.ref.getCDOMReference(Domain.class, domainKey);
+					context.ref.getCDOMReference(DOMAIN_CLASS, domainKey);
 
 			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), po,
-						domain);
+					context.graph.grant(getTokenName(), po, domain);
 			if (prereq != null)
 			{
 				edge.addPrerequisite(prereq);
@@ -208,43 +189,41 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PObject po)
 	{
-		Set<PCGraphEdge> domainEdges =
-				context.graph.getChildLinksFromToken(getTokenName(), po,
-					Domain.class);
-		if (domainEdges == null || domainEdges.isEmpty())
+		GraphChanges<Domain> changes =
+				context.graph.getChangesFromToken(getTokenName(), po,
+					DOMAIN_CLASS);
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		for (PCGraphEdge edge : domainEdges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			List<PrereqObject> sourceNodes = edge.getSinkNodes();
-			if (sourceNodes.size() != 1)
-			{
-				context.addWriteMessage("Outgoing Edge from " + po.getKey()
-					+ " had more than one sink: " + sourceNodes);
-				return null;
-			}
+			// Zero indicates no Token
+			return null;
+		}
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		List<String> list = new ArrayList<String>();
+		for (LSTWriteable ab : added)
+		{
+			AssociatedPrereqObject assoc = changes.getAddedAssociation(ab);
 			StringBuilder sb = new StringBuilder();
-			sb.append(((CDOMReference<Domain>) sourceNodes.get(0))
-				.getLSTformat());
-
-			if (edge.hasPrerequisites())
+			sb.append(ab.getLSTformat());
+			if (assoc.hasPrerequisites())
 			{
-				List<Prerequisite> list = edge.getPrerequisiteList();
-				if (list.size() > 1)
+				List<Prerequisite> prereqs = assoc.getPrerequisiteList();
+				if (prereqs.size() > 1)
 				{
 					context.addWriteMessage("Incoming Edge to " + po.getKey()
 						+ " had more than one " + "Prerequisite: "
-						+ list.size());
+						+ prereqs.size());
 					return null;
 				}
 				sb.append('[');
 				StringWriter swriter = new StringWriter();
 				try
 				{
-					prereqWriter.write(swriter, list.get(0));
+					prereqWriter.write(swriter, prereqs.get(0));
 				}
 				catch (PersistenceLayerException e)
 				{
@@ -254,8 +233,8 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 				sb.append(swriter.toString());
 				sb.append(']');
 			}
-			set.add(sb.toString());
+			list.add(sb.toString());
 		}
-		return new String[]{StringUtil.join(set, Constants.PIPE)};
+		return new String[]{StringUtil.join(list, Constants.PIPE)};
 	}
 }

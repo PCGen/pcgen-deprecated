@@ -37,6 +37,8 @@ import pcgen.util.Logging;
 public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 {
 
+	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+
 	public String getTokenName()
 	{
 		return "ISMONSTER";
@@ -75,9 +77,11 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 				return false;
 			}
 			set = Boolean.TRUE;
+			// TODO This isn't technically correct - should really add to the
+			// class list?
 			CDOMReference<SkillList> msl =
-					context.ref.getCDOMReference(SkillList.class, "*Monster");
-			context.graph.linkObjectIntoGraph(getTokenName(), pcc, msl);
+					context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
+			context.graph.grant(getTokenName(), pcc, msl);
 		}
 		else
 		{
@@ -92,13 +96,13 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 			}
 			set = Boolean.FALSE;
 		}
-		pcc.put(ObjectKey.IS_MONSTER, set);
+		context.obj.put(pcc, ObjectKey.IS_MONSTER, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Boolean isM = pcc.get(ObjectKey.IS_MONSTER);
+		Boolean isM = context.obj.getObject(pcc, ObjectKey.IS_MONSTER);
 		if (isM == null)
 		{
 			return null;

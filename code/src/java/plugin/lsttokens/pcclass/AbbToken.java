@@ -67,13 +67,13 @@ public class AbbToken implements PCClassLstToken, PCClassClassLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		pcc.put(StringKey.ABB, value);
+		context.obj.put(pcc, StringKey.ABB, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		String abb = pcc.get(StringKey.ABB);
+		String abb = context.obj.getString(pcc, StringKey.ABB);
 		if (abb == null)
 		{
 			return null;

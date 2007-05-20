@@ -53,25 +53,27 @@ public class VisibleToken implements PCClassLstToken, PCClassClassLstToken
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 		throws PersistenceLayerException
 	{
+		Visibility vis;
 		if (value.equals("NO"))
 		{
-			pcc.put(ObjectKey.VISIBILITY, Visibility.NO);
+			vis = Visibility.NO;
 		}
 		else if (value.equals("YES"))
 		{
-			pcc.put(ObjectKey.VISIBILITY, Visibility.YES);
+			vis = Visibility.YES;
 		}
 		else
 		{
 			Logging.errorPrint("Can't understand Visibility: " + value);
 			return false;
 		}
+		context.obj.put(pcc, ObjectKey.VISIBILITY, vis);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Visibility vis = pcc.get(ObjectKey.VISIBILITY);
+		Visibility vis = context.obj.getObject(pcc, ObjectKey.VISIBILITY);
 		if (vis == null)
 		{
 			return null;

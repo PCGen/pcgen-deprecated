@@ -65,7 +65,8 @@ public class XppenaltyToken implements PCClassLstToken, PCClassClassLstToken
 	{
 		try
 		{
-			pcc.put(ObjectKey.XP_PENALTY, DefaultTriState.valueOf(value));
+			context.obj.put(pcc, ObjectKey.XP_PENALTY, DefaultTriState
+				.valueOf(value));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -78,7 +79,7 @@ public class XppenaltyToken implements PCClassLstToken, PCClassClassLstToken
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		DefaultTriState xpp = pcc.get(ObjectKey.XP_PENALTY);
+		DefaultTriState xpp = context.obj.getObject(pcc, ObjectKey.XP_PENALTY);
 		if (xpp == null)
 		{
 			return null;

@@ -24,6 +24,7 @@ package plugin.lsttokens.race;
 import java.math.BigDecimal;
 
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Race;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
@@ -89,10 +90,10 @@ public class FaceToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race template, String value)
 	{
-		return parseFace(template, value);
+		return parseFace(context, template, value);
 	}
 
-	protected boolean parseFace(Race fObj, String value)
+	protected boolean parseFace(LoadContext context, Race fObj, String value)
 	{
 		int commaLoc = value.indexOf(Constants.COMMA);
 		if (commaLoc != value.lastIndexOf(Constants.COMMA))
@@ -154,7 +155,8 @@ public class FaceToken implements RaceLstToken
 					+ value);
 				return false;
 			}
-			fObj.setFace(width, height);
+			context.obj.put(fObj, ObjectKey.FACE_WIDTH, width);
+			context.obj.put(fObj, ObjectKey.FACE_HEIGHT, height);
 		}
 		else
 		{
@@ -175,15 +177,16 @@ public class FaceToken implements RaceLstToken
 				Logging.errorPrint("Misunderstood Double in Tag: " + value);
 				return false;
 			}
-			fObj.setFace(width, BigDecimal.ZERO);
+			context.obj.put(fObj, ObjectKey.FACE_WIDTH, width);
+			context.obj.put(fObj, ObjectKey.FACE_HEIGHT, BigDecimal.ZERO);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		BigDecimal width = race.getFaceWidth();
-		BigDecimal height = race.getFaceHeight();
+		BigDecimal width = context.obj.getObject(race, ObjectKey.FACE_WIDTH);
+		BigDecimal height = context.obj.getObject(race, ObjectKey.FACE_HEIGHT);
 		if (width == null && height == null)
 		{
 			return null;
