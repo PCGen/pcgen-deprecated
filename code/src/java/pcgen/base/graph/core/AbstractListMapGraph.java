@@ -472,4 +472,16 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	{
 		return nodeList.isEmpty() && edgeList.isEmpty();
 	}
+	
+	public int getNodeCount()
+	{
+		return nodeList.size();
+	}
+	
+	public void clear()
+	{
+		nodeEdgeMap.clear();
+		nodeList.clear();
+		edgeList.clear();
+	}
 }

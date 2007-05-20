@@ -81,7 +81,7 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 * Creates a new BreadthFirstTraverseAlgorithm to traverse the given Graph.
 	 * 
 	 * @param g
-	 *            The Graph this DepthFirstTraverseAlgorithm will traverse.
+	 *            The Graph this BreadthFirstTraverseAlgorithm will traverse.
 	 */
 	public BreadthFirstTraverseAlgorithm(Graph<N, ET> g)
 	{
@@ -124,8 +124,11 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 			throw new IllegalArgumentException(
 				"Node to traverse from cannot be null");
 		}
-		unvisitedNodes.add(gn);
-		runVisiting();
+		if (graph.containsNode(gn))
+		{
+			unvisitedNodes.add(gn);
+			runVisiting();
+		}
 	}
 
 	/**
@@ -151,8 +154,11 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 			throw new IllegalArgumentException(
 				"Edge to traverse from cannot be null");
 		}
-		unvisitedEdges.add(he);
-		runVisiting();
+		if (graph.containsEdge(he))
+		{
+			unvisitedEdges.add(he);
+			runVisiting();
+		}
 	}
 
 	private void runVisiting()

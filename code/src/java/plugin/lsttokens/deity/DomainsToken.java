@@ -140,6 +140,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		}
 		for (CDOMReference<Domain> ref : list)
 		{
+			//FIXME This really isn't a grant, but the DOMAINS possessed by the DEITY... :/
 			context.graph.grant(getTokenName(), deity, ref);
 		}
 		return true;

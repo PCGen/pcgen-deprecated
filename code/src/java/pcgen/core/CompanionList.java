@@ -1,8 +1,6 @@
 package pcgen.core;
 
-import pcgen.cdom.base.CDOMList;
-
-public class CompanionList extends PObject implements CDOMList<Race>
+public class CompanionList extends CDOMListObject<Race>
 {
 
 	// No additional Functionality :)

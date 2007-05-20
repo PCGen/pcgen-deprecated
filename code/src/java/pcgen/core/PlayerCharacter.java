@@ -50,8 +50,16 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import pcgen.base.graph.visitor.DirectedNodeWeightCalculation;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.CDOMList;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.helper.EquipmentSet;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.character.CharacterSpell;
@@ -324,6 +332,20 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		populateSkills(SettingsHandler.getSkillsTab_IncludeSkills());
 		spellTracker = new PCSpellTracker(this);
 		setStringFor(StringKey.HANDED, PropertyFactory.getString("in_right")); //$NON-NLS-1$
+	}
+
+	PCGenGraph activeGraph;
+	
+	public PlayerCharacter(boolean b)
+	{
+		variableProcessor = new VariableProcessorPC(this);
+		setName(Constants.EMPTY_STRING);
+		setFeats(0);
+		miscList.add(Constants.EMPTY_STRING);
+		miscList.add(Constants.EMPTY_STRING);
+		miscList.add(Constants.EMPTY_STRING);
+		setStringFor(StringKey.HANDED, PropertyFactory.getString("in_right")); //$NON-NLS-1$
+		activeGraph = new PCGenGraph();
 	}
 
 	/**
@@ -17571,6 +17593,46 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 		reach += (int) getTotalBonusTo("COMBAT", "REACH");
 		return reach;
+	}
+
+	public PCGenGraph getActiveGraph()
+	{
+		return activeGraph;
+	}
+
+	public <LT extends CDOMObject, T extends CDOMList<LT>> List<T> getCDOMLists(
+		Class<T> name)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public EquipmentSet getEquipped()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getTotalWeight(PrereqObject pro)
+	{
+		if (pro == null)
+		{
+			return -1;
+		}
+		PCGenGraph graph = getActiveGraph();
+		DirectedNodeWeightCalculation<PrereqObject, PCGraphEdge> calc =
+				new DirectedNodeWeightCalculation<PrereqObject, PCGraphEdge>(
+					graph)
+				{
+					@Override
+					protected int getEdgeWeight(int weight, PCGraphEdge edge)
+					{
+						Integer i = edge.getAssociation(AssociationKey.WEIGHT);
+						return weight * (i == null ? 1 : i.intValue());
+					}
+
+				};
+		return calc.calculateNodeWeight(pro);
 	}
 
 	// public double getBonusValue(final String aBonusType, final String

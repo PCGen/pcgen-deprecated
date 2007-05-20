@@ -1,8 +1,6 @@
 package pcgen.core;
 
-import pcgen.cdom.base.CDOMList;
-
-public class LanguageList extends PObject implements CDOMList<Language>
+public class LanguageList extends CDOMListObject<Language>
 {
 
 	// No additional Functionality :)

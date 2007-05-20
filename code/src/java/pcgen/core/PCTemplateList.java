@@ -1,8 +1,6 @@
 package pcgen.core;
 
-import pcgen.cdom.base.CDOMList;
-
-public class PCTemplateList extends PObject implements CDOMList<PCTemplate>
+public class PCTemplateList extends CDOMListObject<PCTemplate>
 {
 
 	// No additional Functionality :)

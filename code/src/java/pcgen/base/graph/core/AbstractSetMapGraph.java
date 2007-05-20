@@ -469,4 +469,16 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 	{
 		return nodeMap.isEmpty() && edgeSet.isEmpty();
 	}
+	
+	public int getNodeCount()
+	{
+		return nodeMap.size();
+	}
+	
+	public void clear()
+	{
+		nodeEdgeMap.clear();
+		nodeMap.clear();
+		edgeSet.clear();
+	}
 }

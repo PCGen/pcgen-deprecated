@@ -105,6 +105,13 @@ public interface Graph<N, ET extends Edge<N>>
 	public boolean containsEdge(Edge<?> e);
 
 	/**
+	 * Returns a Count of the Nodes in this Graph.
+	 * 
+	 * @return A Count of the Nodes in this Graph
+	 */
+	public int getNodeCount();
+
+	/**
 	 * Returns a List of the Nodes in this Graph. Will return an Empty List (not
 	 * null) if there are no Nodes in the Graph.
 	 * 
@@ -215,4 +222,6 @@ public interface Graph<N, ET extends Edge<N>>
 	 * @return true if this Graph is empty; false otherwise
 	 */
 	public boolean isEmpty();
+	
+	public void clear();
 }

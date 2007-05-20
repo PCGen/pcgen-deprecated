@@ -374,4 +374,15 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 	{
 		return nodeList.isEmpty() && edgeList.isEmpty();
 	}
+	
+	public int getNodeCount()
+	{
+		return nodeList.size();
+	}
+	
+	public void clear()
+	{
+		nodeList.clear();
+		edgeList.clear();
+	}
 }

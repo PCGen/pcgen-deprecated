@@ -86,6 +86,9 @@ public class GraphContext
 		return slot;
 	}
 
+	/*
+	 * TODO This is basically only used in NaturalAttacks - probably remove??
+	 */
 	public Set<PCGraphEdge> getChildLinks(CDOMObject obj,
 		Class<? extends PrereqObject> cl)
 	{
@@ -125,6 +128,10 @@ public class GraphContext
 		return set;
 	}
 
+	/*
+	 * TODO This is basically only used for Aggregator cleanup - change Agg
+	 * cleanup method?
+	 */
 	public Set<PCGraphEdge> getChildLinksFromToken(String tokenName,
 		CDOMObject obj)
 	{

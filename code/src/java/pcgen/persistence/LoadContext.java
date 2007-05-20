@@ -30,7 +30,7 @@ public class LoadContext
 	public final ListContext list;
 
 	public final ReferenceContext ref;
-
+	
 	public final ObjectContext obj;
 
 	public final GameMode gameMode;

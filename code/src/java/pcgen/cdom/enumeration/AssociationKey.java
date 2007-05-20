@@ -81,9 +81,6 @@ public final class AssociationKey<T>
 	public static final AssociationKey<String> TYPE =
 			new AssociationKey<String>();
 
-	public static final AssociationKey<RetirementMethod> RETIRED_METHOD =
-			new AssociationKey<RetirementMethod>();
-
 	public static final AssociationKey<URI> RETIRED_BY =
 			new AssociationKey<URI>();
 
@@ -101,6 +98,9 @@ public final class AssociationKey<T>
 
 	public static final AssociationKey<String> TOKEN =
 			new AssociationKey<String>();
+
+	public static final AssociationKey<Integer> WEIGHT =
+			new AssociationKey<Integer>();
 
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 

@@ -17,11 +17,83 @@
  */
 package pcgen.cdom.graph;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pcgen.base.graph.core.DirectionalSetMapGraph;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.helper.CharacterDescription;
+import pcgen.core.PObject;
 
 public class PCGenGraph extends
 		DirectionalSetMapGraph<PrereqObject, PCGraphEdge>
 {
-	//No additional items, for now
+
+	private final PCGraphRoot root = new PCGraphRoot();
+
+	public PrereqObject getRoot()
+	{
+		return root;
+	}
+
+	public <T extends PrereqObject> List<T> getGrantedNodeList(Class<T> name)
+	{
+		// Long/Slow implementation...
+		List<T> list = new ArrayList<T>();
+		for (PrereqObject pro : getNodeList())
+		{
+			if (name.isInstance(pro))
+			{
+				list.add(name.cast(pro));
+			}
+		}
+		return list;
+	}
+
+	public <T extends PObject> T getGrantedNode(Class<T> name, String s)
+	{
+		// Long/Slow implementation...
+		for (PrereqObject pro : getNodeList())
+		{
+		if (name.isInstance(pro))
+			{
+				T po = name.cast(pro);
+				if (s.equals(po.getKeyName()))
+				{
+					return po;
+				}
+			}
+		}
+		return null;
+	}
+
+	public <T extends PrereqObject> int getGrantedNodeCount(Class<T> name)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public CharacterDescription getDescription()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T extends CDOMObject> boolean containsGranted(Class<T> name,
+		String templateKey)
+	{
+		for (PrereqObject pro : getNodeList())
+		{
+			if (name.isInstance(pro))
+			{
+				if (((CDOMObject) pro).getKeyName().equalsIgnoreCase(
+					templateKey))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
