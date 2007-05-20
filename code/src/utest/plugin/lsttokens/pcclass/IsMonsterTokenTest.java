@@ -19,10 +19,12 @@ package plugin.lsttokens.pcclass;
 
 import java.net.URISyntaxException;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PCClass;
+import pcgen.core.SkillList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
@@ -34,10 +36,16 @@ public class IsMonsterTokenTest extends AbstractTokenTestCase<PCClass>
 	static IsmonsterToken token = new IsmonsterToken();
 	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
 
+	@Before
 	@Override
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
+		/*
+		 * FIXME This construction of *Starting should be unnecessary
+		 */
+		primaryContext.ref.constructCDOMObject(SkillList.class, "*Monster");
+		secondaryContext.ref.constructCDOMObject(SkillList.class, "*Monster");
 		prefix = "CLASS:";
 	}
 

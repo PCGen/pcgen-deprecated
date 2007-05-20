@@ -74,4 +74,16 @@ public class RaceTokenTest extends AbstractTypeSafeListTestCase<Deity>
 		return ListKey.RACE_PANTHEON;
 	}
 
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
 }

@@ -57,9 +57,15 @@ public class FumblerangeTokenTest extends
 		return StringKey.FUMBLE_RANGE;
 	}
 
+	@Override
+	protected boolean isClearLegal()
+	{
+		return false;
+	}
+
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

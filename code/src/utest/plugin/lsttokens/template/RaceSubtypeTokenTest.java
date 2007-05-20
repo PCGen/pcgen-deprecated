@@ -30,7 +30,8 @@ import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.testsupport.AbstractTypeSafeListTestCase;
 
-public class RaceSubtypeTokenTest extends AbstractTypeSafeListTestCase<PCTemplate>
+public class RaceSubtypeTokenTest extends
+		AbstractTypeSafeListTestCase<PCTemplate>
 {
 
 	static RacesubtypeToken token = new RacesubtypeToken();
@@ -241,4 +242,15 @@ public class RaceSubtypeTokenTest extends AbstractTypeSafeListTestCase<PCTemplat
 			+ ".REMOVE.Finger Lakes");
 	}
 
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
 }

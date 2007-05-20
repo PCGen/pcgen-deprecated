@@ -49,6 +49,12 @@ public class RateOfFireTokenTest extends AbstractStringTokenTestCase<Equipment>
 	}
 
 	@Override
+	protected boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public StringKey getStringKey()
 	{
 		return StringKey.RATE_OF_FIRE;

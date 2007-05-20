@@ -53,4 +53,10 @@ public class ProficiencyTokenTest extends
 	{
 		return WeaponProf.class;
 	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
 }

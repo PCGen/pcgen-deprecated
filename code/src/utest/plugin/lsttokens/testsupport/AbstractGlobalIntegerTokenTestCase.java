@@ -182,6 +182,25 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 	}
 
 	@Test
+	public void testReplacementInputs() throws PersistenceLayerException
+	{
+		if (isPositiveAllowed())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
+			assertTrue(getToken().parse(primaryContext, primaryProf, "1"));
+			String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertEquals("Expected item to be equal", "1", unparsed[0]);
+		}
+		else
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, "-2"));
+			assertTrue(getToken().parse(primaryContext, primaryProf, "-4"));
+			String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertEquals("Expected item to be equal", "-4", unparsed[0]);
+		}
+	}
+
+	@Test
 	public void testRoundRobinOne() throws PersistenceLayerException
 	{
 		if (isPositiveAllowed())

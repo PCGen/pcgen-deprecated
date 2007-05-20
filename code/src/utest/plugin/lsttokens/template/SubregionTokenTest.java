@@ -27,7 +27,8 @@ import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.testsupport.AbstractTypeSafeTokenTestCase;
 
-public class SubregionTokenTest extends AbstractTypeSafeTokenTestCase<PCTemplate>
+public class SubregionTokenTest extends
+		AbstractTypeSafeTokenTestCase<PCTemplate>
 {
 
 	static SubregionToken token = new SubregionToken();
@@ -72,7 +73,12 @@ public class SubregionTokenTest extends AbstractTypeSafeTokenTestCase<PCTemplate
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
 }

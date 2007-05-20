@@ -75,7 +75,7 @@ public class WeaponbonusTokenTest extends
 	@Override
 	public boolean isAllLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

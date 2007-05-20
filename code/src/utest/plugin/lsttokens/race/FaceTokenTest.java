@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Race;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
@@ -64,9 +65,9 @@ public class FaceTokenTest extends AbstractTokenTestCase<Race>
 	{
 		assertTrue(getToken().parse(primaryContext, primaryProf, "15,20"));
 		BigDecimal w = new BigDecimal(15);
-		assertEquals(w, primaryProf.getFaceWidth());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
 		BigDecimal h = new BigDecimal(20);
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		internalTestInvalidInputs(w, h);
 		assertTrue(primaryGraph.isEmpty());
 	}
@@ -76,102 +77,102 @@ public class FaceTokenTest extends AbstractTokenTestCase<Race>
 	{
 		//Always ensure get is unchanged
 		// since no invalid item should set or reset the value
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TYPE=TestType"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			"TYPE.TestType"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "ALL"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "ANY"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "FIVE"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1/2"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "-2, 4"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "6, -3"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "x, 4"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "6, y"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "+, 4"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "6, +"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, " , 4"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "6,  "));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1,"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, ",1"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1,2,3"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, "1,2,"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertFalse(getToken().parse(primaryContext, primaryProf, ",2,3"));
-		assertEquals(w, primaryProf.getFaceWidth());
-		assertEquals(h, primaryProf.getFaceHeight());
+		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
 		assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
-		assertEquals(new BigDecimal(5), primaryProf.getFaceWidth());
-		assertEquals(BigDecimal.ZERO, primaryProf.getFaceHeight());
+		assertEquals(new BigDecimal(5), primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(BigDecimal.ZERO, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertTrue(getToken().parse(primaryContext, primaryProf, "1"));
-		assertEquals(new BigDecimal(1), primaryProf.getFaceWidth());
-		assertEquals(BigDecimal.ZERO, primaryProf.getFaceHeight());
+		assertEquals(new BigDecimal(1), primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(BigDecimal.ZERO, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertTrue(getToken().parse(primaryContext, primaryProf, "0"));
-		assertEquals(BigDecimal.ZERO, primaryProf.getFaceWidth());
-		assertEquals(BigDecimal.ZERO, primaryProf.getFaceHeight());
+		assertEquals(BigDecimal.ZERO, primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(BigDecimal.ZERO, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertTrue(getToken().parse(primaryContext, primaryProf, "5,10"));
-		assertEquals(new BigDecimal(5), primaryProf.getFaceWidth());
-		assertEquals(new BigDecimal(10), primaryProf.getFaceHeight());
+		assertEquals(new BigDecimal(5), primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(new BigDecimal(10), primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertTrue(getToken().parse(primaryContext, primaryProf, "10,7"));
-		assertEquals(new BigDecimal(10), primaryProf.getFaceWidth());
-		assertEquals(new BigDecimal(7), primaryProf.getFaceHeight());
+		assertEquals(new BigDecimal(10), primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(new BigDecimal(7), primaryProf.get(ObjectKey.FACE_HEIGHT));
 		assertTrue(getToken().parse(primaryContext, primaryProf, "18.1,45.2"));
-		assertEquals(new BigDecimal("18.1"), primaryProf.getFaceWidth());
-		assertEquals(new BigDecimal("45.2"), primaryProf.getFaceHeight());
+		assertEquals(new BigDecimal("18.1"), primaryProf.get(ObjectKey.FACE_WIDTH));
+		assertEquals(new BigDecimal("45.2"), primaryProf.get(ObjectKey.FACE_HEIGHT));
 	}
 
 	@Test
@@ -179,7 +180,8 @@ public class FaceTokenTest extends AbstractTokenTestCase<Race>
 		throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryProf.setFace(new BigDecimal(-5), new BigDecimal(5));
+		primaryProf.put(ObjectKey.FACE_WIDTH, new BigDecimal(-5));
+		primaryProf.put(ObjectKey.FACE_HEIGHT, new BigDecimal(5));
 		assertNull(token.unparse(primaryContext, primaryProf));
 		assertFalse(primaryContext.getWriteMessageCount() == 0);
 	}
@@ -189,7 +191,8 @@ public class FaceTokenTest extends AbstractTokenTestCase<Race>
 		throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryProf.setFace(new BigDecimal(5), new BigDecimal(-4));
+		primaryProf.put(ObjectKey.FACE_WIDTH, new BigDecimal(5));
+		primaryProf.put(ObjectKey.FACE_HEIGHT, new BigDecimal(-4));
 		assertNull(token.unparse(primaryContext, primaryProf));
 		assertFalse(primaryContext.getWriteMessageCount() == 0);
 	}

@@ -66,4 +66,16 @@ public class AltTypeTokenTest extends AbstractTypeSafeListTestCase<Equipment>
 	{
 		return ListKey.ALT_TYPE;
 	}
+
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
 }

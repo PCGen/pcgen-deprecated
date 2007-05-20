@@ -56,9 +56,15 @@ public class CastTimeTokenTest extends AbstractStringTokenTestCase<Spell>
 		return StringKey.CASTING_TIME;
 	}
 
+	@Override
+	protected boolean isClearLegal()
+	{
+		return true;
+	}
+
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

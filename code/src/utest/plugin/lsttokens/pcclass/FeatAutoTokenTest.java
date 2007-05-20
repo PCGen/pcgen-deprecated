@@ -30,6 +30,11 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreClassParser;
+import plugin.pretokens.parser.PreRaceParser;
+import plugin.pretokens.writer.PreClassWriter;
+import plugin.pretokens.writer.PreRaceWriter;
 
 public class FeatAutoTokenTest extends
 		AbstractListTokenTestCase<PObject, Ability>
@@ -38,10 +43,19 @@ public class FeatAutoTokenTest extends
 	static FeatautoToken token = new FeatautoToken();
 	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
 
+	PreClassParser preclass = new PreClassParser();
+	PreClassWriter preclasswriter = new PreClassWriter();
+	PreRaceParser prerace = new PreRaceParser();
+	PreRaceWriter preracewriter = new PreRaceWriter();
+
 	@Override
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
+		TokenRegistration.register(preclass);
+		TokenRegistration.register(preclasswriter);
+		TokenRegistration.register(prerace);
+		TokenRegistration.register(preracewriter);
 		prefix = "CLASS:";
 	}
 

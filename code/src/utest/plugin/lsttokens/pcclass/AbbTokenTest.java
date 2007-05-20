@@ -58,6 +58,12 @@ public class AbbTokenTest extends AbstractStringTokenTestCase<PCClass>
 	}
 
 	@Override
+	protected boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public StringKey getStringKey()
 	{
 		return StringKey.ABB;

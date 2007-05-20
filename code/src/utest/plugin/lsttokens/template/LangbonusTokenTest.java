@@ -17,10 +17,15 @@
  */
 package plugin.lsttokens.template;
 
+import java.net.URISyntaxException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.Language;
+import pcgen.core.LanguageList;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
@@ -91,5 +96,18 @@ public class LangbonusTokenTest extends
 	public void dummyTest()
 	{
 		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+	}
+
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		/*
+		 * FIXME This construction of *Starting should be unnecessary
+		 */
+		primaryContext.ref.constructCDOMObject(LanguageList.class, "*Starting");
+		secondaryContext.ref.constructCDOMObject(LanguageList.class,
+			"*Starting");
 	}
 }

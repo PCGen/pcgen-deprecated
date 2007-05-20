@@ -49,6 +49,12 @@ public class SymbolTokenTest extends AbstractStringTokenTestCase<Deity>
 	}
 
 	@Override
+	protected boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public StringKey getStringKey()
 	{
 		return StringKey.HOLY_ITEM;

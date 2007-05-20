@@ -48,6 +48,13 @@ public class FumbleRangeTokenTest extends AbstractStringTokenTestCase<Equipment>
 		return token;
 	}
 
+
+	@Override
+	protected boolean isClearLegal()
+	{
+		return true;
+	}
+
 	@Override
 	public StringKey getStringKey()
 	{

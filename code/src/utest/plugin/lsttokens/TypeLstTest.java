@@ -67,4 +67,15 @@ public class TypeLstTest extends AbstractGlobalTypeSafeListTestCase
 		return token;
 	}
 
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
 }

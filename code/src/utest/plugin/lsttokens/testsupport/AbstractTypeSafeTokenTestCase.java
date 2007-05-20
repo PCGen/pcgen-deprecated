@@ -28,6 +28,8 @@ public abstract class AbstractTypeSafeTokenTestCase<T extends PObject> extends
 		AbstractTokenTestCase<T>
 {
 
+	public abstract boolean isClearLegal();
+
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
@@ -65,6 +67,33 @@ public abstract class AbstractTypeSafeTokenTestCase<T extends PObject> extends
 	public abstract Object getConstant(String string);
 
 	public abstract ObjectKey<?> getObjectKey();
+
+	@Test
+	public void testReplacementInputs() throws PersistenceLayerException
+	{
+		String[] unparsed;
+		if (requiresPreconstruction())
+		{
+			getConstant("TestWP1");
+			getConstant("TestWP2");
+		}
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be equal", unparsed);
+		}
+		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
+		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		unparsed = getToken().unparse(primaryContext, primaryProf);
+		assertEquals("Expected item to be equal", "TestWP2", unparsed[0]);
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be equal", unparsed);
+		}
+	}
 
 	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException

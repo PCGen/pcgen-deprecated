@@ -30,6 +30,8 @@ import plugin.lsttokens.testsupport.AbstractStringTokenTestCase;
 public class SpellResTokenTest extends AbstractStringTokenTestCase<Spell>
 {
 
+	// FIXME Is this really AbstractString? Seems AbstractBoolean??
+
 	static SpellresToken token = new SpellresToken();
 	static SpellLoader loader = new SpellLoader();
 
@@ -61,6 +63,12 @@ public class SpellResTokenTest extends AbstractStringTokenTestCase<Spell>
 	public void testRoundRobinExport() throws PersistenceLayerException
 	{
 		runRoundRobin("NO");
+	}
+
+	@Override
+	protected boolean isClearLegal()
+	{
+		return true;
 	}
 
 	@Override

@@ -49,6 +49,12 @@ public class BenefitTokenTest extends AbstractStringTokenTestCase<Ability>
 	}
 
 	@Override
+	protected boolean isClearLegal()
+	{
+		return false;
+	}
+
+	@Override
 	public StringKey getStringKey()
 	{
 		return StringKey.BENEFIT;

@@ -30,6 +30,8 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 
 	public abstract Class<TC> getTargetClass();
 
+	public abstract boolean isClearLegal();
+
 	@Test
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
@@ -98,6 +100,30 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	// }
 	// }
 	//
+
+	@Test
+	public void testReplacementInputs() throws PersistenceLayerException
+	{
+		String[] unparsed;
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be equal", unparsed);
+		}
+		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
+		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		unparsed = getToken().unparse(primaryContext, primaryProf);
+		assertEquals("Expected item to be equal", "TestWP2", unparsed[0]);
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be equal", unparsed);
+		}
+	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException

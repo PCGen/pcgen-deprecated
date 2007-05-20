@@ -204,4 +204,134 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 			"Languedoc-Roussillon", "Rheinhessen", "Yarra Valley"};
 	}
 
+	public abstract boolean isClearLegal();
+
+	public abstract boolean isClearDotLegal();
+
+	@Test
+	public void testReplacementInputs() throws PersistenceLayerException
+	{
+		String[] unparsed;
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be null", unparsed);
+		}
+		if (isClearDotLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				".CLEAR.TestWP1"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be equal", unparsed);
+		}
+		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
+		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		unparsed = getToken().unparse(primaryContext, primaryProf);
+		assertEquals("Expected item to be equal", "TestWP1"
+			+ getJoinCharacter() + "TestWP2", unparsed[0]);
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be null", unparsed);
+		}
+	}
+
+	@Test
+	public void testReplacementInputsTwo() throws PersistenceLayerException
+	{
+		String[] unparsed;
+		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
+		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		unparsed = getToken().unparse(primaryContext, primaryProf);
+		assertEquals("Expected item to be equal", "TestWP1"
+			+ getJoinCharacter() + "TestWP2", unparsed[0]);
+		if (isClearDotLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				".CLEAR.TestWP1"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertEquals("Expected item to be equal", "TestWP2", unparsed[0]);
+		}
+	}
+
+	@Test
+	public void testInputInvalidClear() throws PersistenceLayerException
+	{
+		if (isClearLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + ".CLEAR"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInputInvalidClearDot() throws PersistenceLayerException
+	{
+		if (isClearDotLegal())
+		{
+			// DoNotConstruct TestWP1
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				".CLEAR.TestWP1"));
+			assertFalse(primaryContext.ref.validate());
+		}
+	}
+
+	@Test
+	public void testInputInvalidAddsAfterClearDotNoSideEffect()
+		throws PersistenceLayerException
+	{
+		if (isClearDotLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(getToken().parse(secondaryContext, secondaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+			assertFalse(getToken().parse(
+				primaryContext,
+				primaryProf,
+				"TestWP3" + getJoinCharacter() + ".CLEAR.TestWP2"
+					+ getJoinCharacter() + "ALL"));
+			assertEquals("Bad Clear had Side Effects", primaryGraph,
+				secondaryGraph);
+		}
+	}
+
+	@Test
+	public void testInputInvalidAddsBasicNoSideEffect()
+		throws PersistenceLayerException
+	{
+		assertTrue(getToken().parse(primaryContext, primaryProf,
+			"TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertTrue(getToken().parse(secondaryContext, secondaryProf,
+			"TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"TestWP3" + getJoinCharacter() + getJoinCharacter() + "TestWP4"));
+		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+	}
+
+	@Test
+	public void testInputInvalidAddsAfterClearNoSideEffect()
+		throws PersistenceLayerException
+	{
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(getToken().parse(secondaryContext, secondaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+			assertFalse(getToken().parse(
+				primaryContext,
+				primaryProf,
+				".CLEAR" + getJoinCharacter() + "TestWP3" + getJoinCharacter()
+					+ "ALL"));
+			assertEquals("Bad Clear had Side Effects", primaryGraph,
+				secondaryGraph);
+		}
+	}
 }

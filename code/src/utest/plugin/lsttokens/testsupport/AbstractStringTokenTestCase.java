@@ -34,6 +34,25 @@ public abstract class AbstractStringTokenTestCase<T extends PObject> extends
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
 	}
 
+	protected abstract boolean isClearLegal();
+
+	@Test
+	public void testInputClear() throws PersistenceLayerException
+	{
+		try
+		{
+			assertEquals(isClearLegal(), getToken().parse(primaryContext,
+				primaryProf, ".CLEAR"));
+		}
+		catch (IllegalArgumentException e)
+		{
+			if (isClearLegal())
+			{
+				throw e;
+			}
+		}
+	}
+
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
@@ -54,6 +73,28 @@ public abstract class AbstractStringTokenTestCase<T extends PObject> extends
 	}
 
 	public abstract StringKey getStringKey();
+
+	@Test
+	public void testReplacementInputs() throws PersistenceLayerException
+	{
+		String[] unparsed;
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be equal", unparsed);
+		}
+		assertTrue(getToken().parse(primaryContext, primaryProf, "Start"));
+		assertTrue(getToken().parse(primaryContext, primaryProf, "Mod"));
+		unparsed = getToken().unparse(primaryContext, primaryProf);
+		assertEquals("Expected item to be equal", "Mod", unparsed[0]);
+		if (isClearLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertNull("Expected item to be equal", unparsed);
+		}
+	}
 
 	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException

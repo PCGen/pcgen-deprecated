@@ -103,4 +103,10 @@ public class CategoryTokenTest extends AbstractTypeSafeTokenTestCase<Ability>
 		super.testRoundRobinY();
 	}
 
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
 }

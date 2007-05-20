@@ -157,10 +157,19 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testRoundRobinCountTwoAddsSameCount()
+		throws PersistenceLayerException
+	{
+		this.runRoundRobin(getSubTokenString()
+			+ "|Slot Name|2|Item,Item Also,Item Last", getSubTokenString()
+			+ "|Slot Too|2|Item,Item Also,Item Mid,Item X-Ray");
+	}
+
+	@Test
 	public void testRoundRobinCountTwoAdds() throws PersistenceLayerException
 	{
 		this.runRoundRobin(getSubTokenString()
 			+ "|Slot Name|2|Item,Item Also,Item Last", getSubTokenString()
-			+ "|Slot Name|3|Item,Item Also,Item Mid,Item X-Ray");
+			+ "|Slot Too|3|Item,Item Also,Item Mid,Item X-Ray");
 	}
 }

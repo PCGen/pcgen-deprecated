@@ -67,4 +67,16 @@ public class ReplacesTokenTest extends
 		return ListKey.REPLACED_KEYS;
 	}
 
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
+
 }

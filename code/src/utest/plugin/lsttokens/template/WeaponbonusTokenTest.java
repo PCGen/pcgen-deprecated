@@ -17,10 +17,15 @@
  */
 package plugin.lsttokens.template;
 
+import java.net.URISyntaxException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.PCTemplate;
 import pcgen.core.WeaponProf;
+import pcgen.core.WeaponProfList;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
@@ -66,7 +71,7 @@ public class WeaponbonusTokenTest extends
 	@Override
 	public boolean isAllLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -93,4 +98,16 @@ public class WeaponbonusTokenTest extends
 		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		/*
+		 * FIXME This construction of *Starting should be unnecessary
+		 */
+		primaryContext.ref.constructCDOMObject(WeaponProfList.class, "*Starting");
+		secondaryContext.ref.constructCDOMObject(WeaponProfList.class,
+			"*Starting");
+	}
 }

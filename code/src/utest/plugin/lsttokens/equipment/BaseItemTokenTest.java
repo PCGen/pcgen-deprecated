@@ -54,4 +54,9 @@ public class BaseItemTokenTest extends
 		return Equipment.class;
 	}
 
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
 }

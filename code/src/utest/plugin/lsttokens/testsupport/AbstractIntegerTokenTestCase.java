@@ -132,7 +132,7 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 	public void testOutputOne() throws PersistenceLayerException
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
-		primaryProf.put(getIntegerKey(), 1);
+		primaryContext.obj.put(primaryProf, getIntegerKey(), 1);
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 		if (isPositiveAllowed())
 		{
@@ -150,7 +150,7 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 	public void testOutputZero() throws PersistenceLayerException
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
-		primaryProf.put(getIntegerKey(), 0);
+		primaryContext.obj.put(primaryProf, getIntegerKey(), 0);
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 		if (isZeroAllowed())
 		{
@@ -179,6 +179,25 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 		{
 			assertNull(unparsed);
 			assertTrue(0 != primaryContext.getWriteMessageCount());
+		}
+	}
+
+	@Test
+	public void testReplacementInputs() throws PersistenceLayerException
+	{
+		if (isPositiveAllowed())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
+			assertTrue(getToken().parse(primaryContext, primaryProf, "1"));
+			String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertEquals("Expected item to be equal", "1", unparsed[0]);
+		}
+		else
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf, "-2"));
+			assertTrue(getToken().parse(primaryContext, primaryProf, "-4"));
+			String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+			assertEquals("Expected item to be equal", "-4", unparsed[0]);
 		}
 	}
 

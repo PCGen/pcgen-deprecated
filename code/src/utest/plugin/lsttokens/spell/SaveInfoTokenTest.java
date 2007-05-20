@@ -56,9 +56,15 @@ public class SaveInfoTokenTest extends AbstractStringTokenTestCase<Spell>
 		return StringKey.SAVE_INFO;
 	}
 
+	@Override
+	protected boolean isClearLegal()
+	{
+		return true;
+	}
+
 	@Test
 	public void dummyTest()
 	{
-		//Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

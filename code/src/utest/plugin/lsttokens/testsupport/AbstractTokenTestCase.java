@@ -73,6 +73,11 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		secondaryGraph = new PCGenGraph();
 		primaryContext = new LoadContext(primaryGraph);
 		secondaryContext = new LoadContext(secondaryGraph);
+		URI testURI = testCampaign.getURI();
+		primaryContext.obj.setSourceURI(testURI);
+		primaryContext.obj.setExtractURI(testURI);
+		secondaryContext.obj.setSourceURI(testURI);
+		secondaryContext.obj.setExtractURI(testURI);
 		primaryProf =
 				primaryContext.ref.constructCDOMObject(getCDOMClass(),
 					"TestObj");
@@ -101,7 +106,6 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		{
 			assertTrue(getToken().parse(primaryContext, primaryProf, s));
 		}
-		// Get back the appropriate token:
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 
 		assertEquals(str.length, unparsed.length);
@@ -140,7 +144,8 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		}
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(secondaryContext.ref.validate());
-		assertEquals(expectedPrimaryMessageCount, primaryContext.getWriteMessageCount());
+		assertEquals(expectedPrimaryMessageCount, primaryContext
+			.getWriteMessageCount());
 		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 

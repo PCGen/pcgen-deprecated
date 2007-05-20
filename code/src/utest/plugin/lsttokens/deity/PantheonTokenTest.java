@@ -74,4 +74,15 @@ public class PantheonTokenTest extends AbstractTypeSafeListTestCase<Deity>
 		return ListKey.PANTHEON;
 	}
 
+	@Override
+	public boolean isClearDotLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
 }
