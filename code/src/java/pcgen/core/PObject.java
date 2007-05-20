@@ -4386,7 +4386,8 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 			final BonusObj aBonus = ab.next();
 			aBonus.setApplied(false);
 
-			if ( aBonus.qualifies(aPC) )
+			if (aBonus.qualifies(aPC)
+				&& aBonus.getPCLevel() <= aPC.getTotalLevels())
 			{
 				aBonus.setApplied(true);
 			}

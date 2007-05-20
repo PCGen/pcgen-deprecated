@@ -2113,6 +2113,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 		}
 
+		List<CompanionMod> oldCompanionMods = new ArrayList<CompanionMod>(companionModList);
+		List<CompanionMod> newCompanionMods = new ArrayList<CompanionMod>();
+		
 		// Clear the companionModList so we can add everything to it
 		clearCompanionMods();
 
@@ -2135,8 +2138,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				{
 					if (PrereqHandler.passesAll(cMod.getPreReqList(), this,
 						cMod))
-					// if (!companionModList.contains(aComp))
 					{
+						if (!oldCompanionMods.contains(cMod))
+						{
+							newCompanionMods.add(cMod);
+						}
 						addCompanionMod(cMod);
 						addHD += cMod.getHitDie();
 					}
@@ -2152,8 +2158,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				{
 					if (PrereqHandler.passesAll(cMod.getPreReqList(), this,
 						cMod))
-					// if (!companionModList.contains(aComp))
 					{
+						if (!oldCompanionMods.contains(cMod))
+						{
+							newCompanionMods.add(cMod);
+						}
 						addCompanionMod(cMod);
 						addHD += cMod.getHitDie();
 					}
@@ -2242,7 +2251,14 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				getSkillList().add(newSkill);
 			}
 		}
-		for (CompanionMod cMod : companionModList)
+		
+		oldCompanionMods.removeAll(companionModList);
+		for (CompanionMod cMod : oldCompanionMods)
+		{
+			cMod.subAddsForLevel(-9, this);
+		}
+		
+		for (CompanionMod cMod : newCompanionMods)
 		{
 			cMod.addAddsForLevel(-9, this, null);
 
@@ -2873,8 +2889,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				}
 				else
 				{
-					return skill1.getDisplayName().compareToIgnoreCase(
-						skill2.getDisplayName());
+					return skill1.getOutputName().compareToIgnoreCase(
+						skill2.getOutputName());
 				}
 			}
 		});
@@ -2996,6 +3012,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				continue;
 			}
 
+			List<SpecialAbility> al = new ArrayList<SpecialAbility>();
 			if (aPObj instanceof PCTemplate)
 			{
 				final PCTemplate bTemplate = Globals.getTemplateKeyed(aPObj
@@ -3006,12 +3023,45 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 					continue;
 				}
 
-				aList = bTemplate.addSpecialAbilitiesToList(aList, atl, thd);
+				al = bTemplate.addSpecialAbilitiesToList(al, atl, thd);
 			}
 			else
 			{
-				aList = aPObj.addSpecialAbilitiesToList(aList, this);
+				al = aPObj.addSpecialAbilitiesToList(al, this);
 			}
+			ArrayList<SpecialAbility> masterList = new ArrayList<SpecialAbility>(al);
+			for (SpecialAbility sa : masterList)
+			{
+				if (sa.getKeyName().startsWith(".CLEAR.") && sa.qualifies(this))
+				{
+					al.remove(sa);
+					String key = sa.getKeyName().substring(7);
+					for (Iterator<SpecialAbility> it = al.iterator() ; it.hasNext();)
+					{
+						String saKey = it.next().getKeyName();
+						if (saKey.startsWith(key))
+						{
+							int baseLength = key.length();
+							int thisLength = saKey.length();
+							if (thisLength == baseLength)
+							{
+								it.remove();
+							}
+							else if (thisLength > baseLength)
+							{
+								if (saKey.charAt(baseLength + 1) == '('
+									|| thisLength + 1 > baseLength
+									&& saKey.charAt(baseLength + 1) == ' '
+									&& saKey.charAt(baseLength + 2) == '(')
+								{
+									it.remove();
+								}
+							}
+						}
+					}
+				}
+			}
+			aList.addAll(al);
 		}
 
 		Collections.sort(aList);
@@ -4144,20 +4194,16 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public boolean hasWeaponProfKeyed(final String aKey)
 	{
-		// for ( WeaponProf wp : getWeaponProfList() )
-		// {
-		// if (aKey.equalsIgnoreCase(wp.getKeyName()))
-		// {
-		// return true;
-		// }
-		// }
-		//
-		// return false;
 		if (cachedWeaponProfs == null)
 		{
 			cachedWeaponProfs = buildWeaponProfCache();
 		}
-		return cachedWeaponProfs.get(aKey) != null;
+		for (WeaponProf wp : cachedWeaponProfs.values() ) {
+			if (wp != null && wp.getKeyName().equalsIgnoreCase(aKey) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean hasWeaponProf(final WeaponProf wp)
@@ -6553,9 +6599,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			addSpells(pcClass);
 		}
 
-		for (Ability feat : aggregateFeatList())
+		for (Ability ability : getFullAbilitySet())
 		{
-			addSpells(feat);
+			addSpells(ability);
 		}
 
 		for (Skill skill : getSkillList())
@@ -7118,7 +7164,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			tStr = "SCHOOL." + school;
 			// bonuses.addAll( getBonusesTo("CASTERLEVEL", tStr) );
 			tBonus = (int) getTotalBonusTo("CASTERLEVEL", tStr);
-			if (tBonus > 0)
+			if (tBonus != 0) // Allow negative bonus to casterlevel
 			{
 				tType = getSpellBonusType("CASTERLEVEL", tStr);
 				bonuses.add(new CasterLevelSpellBonus(tBonus, tType));
@@ -7327,9 +7373,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			result += resultBonus.getBonus();
 		}
 
-		if (result == 0)
+		if (result <= 0) 
 		{
-			result = 1;
+			result = 1; // Casterlevel must be at least 1
 		}
 
 		return (result);
@@ -8552,12 +8598,15 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			// the equipment they belong to.
 			if (pobj != null && !(pobj instanceof EquipmentModifier))
 			{
-				pobj.activateBonuses(this);
-
-				// TODO - Class bonuses only get added if level is greater than
-				// zero. Is this check required? Should it be part of
-				// getPObjectList()?
-				ret.addAll(pobj.getActiveBonuses(this));
+				// Class bonuses are only included if the level is greater than 0
+				// This is because 0 levels of a class can be added to access spell casting etc
+				if (!(pobj instanceof PCClass)
+					|| ((PCClass) pobj).getLevel() > 0)
+				{
+					pobj.activateBonuses(this);
+	
+					ret.addAll(pobj.getActiveBonuses(this));
+				}
 			}
 		}
 
@@ -8571,12 +8620,25 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return ret;
 	}
 
+	/*
+	 * These are designed to catch a re-entrant bonus loop, which can occur
+	 * when a BONUS contains a level limited item in a Formula, such as BAB
+	 */
+	private int cablInt = 1;
+	private int lastCablInt = 0;
+	
 	private void calcActiveBonusLoop()
 	{
+		if (cablInt == lastCablInt)
+		{
+			return;
+		}
+		lastCablInt = cablInt;
 		final List<BonusObj> bonuses = getAllActiveBonuses();
 		activeBonusList = bonuses;
 		// buildBonusMap(bonuses);
 		buildActiveBonusMap();
+		cablInt++;
 	}
 
 	/**
@@ -10229,6 +10291,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				found = true;
 				replacement = fVal.intValue() + "";
 			}
+			else if (inCalc.toUpperCase().indexOf("MIN(") >= 0
+				|| inCalc.toUpperCase().indexOf("MAX(") >= 0)
+			{
+				found = true;
+				replacement = fVal.intValue() + "";
+			}
+
 			if (found)
 			{
 				aString = aString.substring(0, start) + replacement
@@ -10997,6 +11066,30 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			if (d.getKeyName().equalsIgnoreCase(aDomainKey))
 			{
 				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if this PlayerCharacter contains a Domain with a key that
+	 * matches the given Domain
+	 * 
+	 * @param aClassKey The key of the class granting the domain.
+	 * @param aDomainKey The key of the domain.
+	 * @return true if the doain is present. 
+	 */
+	public boolean containsCharacterDomain(String aClassKey, String aDomainKey)
+	{
+		for (CharacterDomain cd : characterDomainList)
+		{
+			if (cd.isFromPCClass(aClassKey))
+			{
+				Domain d = cd.getDomain();
+				if (d.getKeyName().equalsIgnoreCase(aDomainKey))
+				{
+					return true;
+				}
 			}
 		}
 		return false;
@@ -12629,8 +12722,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 		}
 
-		// Feat (virtual feats, auto feats)
-		results.addAll(aggregateFeatList());
+		// Feats and abilities (virtual feats, auto feats)
+		Set<Ability> abilities = getFullAbilitySet();
+		results.addAll(abilities);
 
 		// Race
 		if (getRace() != null)
@@ -15930,6 +16024,30 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return new ArrayList<Ability>(abilities);
 	}
 
+	
+	/**
+	 * Get a list of real abiltiies of a particualr AbilityCategory
+	 * no matter which AbilityCategory list they reside in.
+	 * 
+	 * @param aCategory The AbilityCategory of the desired abilities.
+	 * @return List of abilities
+	 */
+	public List<Ability> getRealAbilitiesListAnyCat(final AbilityCategory aCategory)
+	{
+		List<Ability> abilities = new ArrayList<Ability>();
+		for (AbilityCategory cat : SettingsHandler.getGame().getAllAbilityCategories())
+		{
+			for (Ability ability : getRealAbilitiesList(cat))
+			{
+				if (aCategory.getKeyName().equals(ability.getCategory()))
+				{
+					abilities.add(ability);
+				}
+			}
+		}
+		return abilities;
+	}
+
 	/**
 	 * Get an iterator over all the feats "Real" feats For Example, not virtual
 	 * or auto
@@ -16764,28 +16882,16 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public List<Ability> aggregateVisibleFeatList()
 	{
-		final List<Ability> tempFeatList = new ArrayList<Ability>();
-
-		for (Ability feat : aggregateFeatList())
-		{
-			if ((feat.getVisibility() == Visibility.YES)
-				|| (feat.getVisibility() == Visibility.EXPORT))
-			{
-				tempFeatList.add(feat);
-			}
-		}
-
-		return tempFeatList;
+		return getAggregateVisibleAbilityList(AbilityCategory.FEAT);
 	}
 
 	public List<Ability> getAggregateVisibleAbilityList(
 		final AbilityCategory aCategory)
 	{
-		if (aCategory == AbilityCategory.FEAT)
-		{
-			return aggregateVisibleFeatList();
-		}
-		final List<Ability> abilities = getAggregateAbilityList(aCategory);
+		final List<Ability> abilities = new ArrayList<Ability>();
+		abilities.addAll(getRealAbilitiesListAnyCat(AbilityCategory.FEAT));
+		abilities.addAll(getAutomaticAbilityList(AbilityCategory.FEAT));
+		abilities.addAll(getVirtualAbilityList(AbilityCategory.FEAT));
 		final List<Ability> ret = new ArrayList<Ability>(abilities.size());
 		for (final Ability ability : abilities)
 		{
@@ -16795,7 +16901,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				ret.add(ability);
 			}
 		}
-		return Collections.unmodifiableList(ret);
+		return ret;
 	}
 
 	boolean isAutomaticAbilitiesStable(final AbilityCategory aCategory)
@@ -17010,6 +17116,26 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return Sa;
 	}
 
+	/**
+	 * Return a set of all abilities no matter what category or 
+	 * nature that the PC has. 
+	 * @return Set of all abilities.
+	 */
+	private Set<Ability> getFullAbilitySet()
+	{
+		GameMode gm = SettingsHandler.getGame();
+		Set<AbilityCategory> catSet = new HashSet<AbilityCategory>();
+		catSet.addAll(gm.getAllAbilityCategories());
+		Set<Ability> abilitySet = new HashSet<Ability>();
+
+		for (AbilityCategory cat: catSet)
+		{
+			abilitySet.addAll(this.getAggregateAbilityList(cat));
+		}
+
+		return abilitySet;
+	}
+	
 	public List<Ability> getVirtualAbilityList(final AbilityCategory aCategory)
 	{
 		if (aCategory == AbilityCategory.FEAT)

@@ -178,6 +178,7 @@ public final class SettingsHandler
 	private static boolean showStatDialogAtLevelUp = true;
 	private static boolean showToolBar = true;
 	private static boolean showSkillModifier = false;
+	private static boolean showSkillRanks = false;
 	private static boolean showWarningAtFirstLevelUp = true;
 	private static String skinLFThemePack = null;
 	private static boolean summaryTabShown = false;
@@ -695,10 +696,11 @@ public final class SettingsHandler
 		{
 			game = newMode;
 		}
+		String key = g;
 		// new key for game mode specific options are pcgen.options.gameMode.X.optionName
 		// but offer downward compatible support to read in old version for unitSet from 5.8.0
-		String unitSetName = getOptions().getProperty("pcgen.options.gameMode." + g + ".unitSetName",
-				getOptions().getProperty("pcgen.options.unitSetName." + g, game.getDefaultUnitSet()));
+		String unitSetName = getOptions().getProperty("pcgen.options.gameMode." + key + ".unitSetName",
+				getOptions().getProperty("pcgen.options.unitSetName." + key, game.getDefaultUnitSet()));
 		if  (!game.selectUnitSet(unitSetName))
 		{
 			if  (!game.selectDefaultUnitSet())
@@ -706,10 +708,10 @@ public final class SettingsHandler
 				game.selectUnitSet(Constants.s_STANDARD_UNITSET_NAME);
 			}
 		}
-		game.setRollMethodExpressionByName(getPCGenOption("gameMode." + g + ".rollMethodExpression", ""));
-		game.setPurchaseMethodName(getPCGenOption("gameMode." + g + ".purchaseMethodName", "")); //$NON-NLS-1$ //$NON-NLS-2$
-		game.setAllStatsValue(getPCGenOption("gameMode." + g + ".allStatsValue", 10));
-		game.setRollMethod(getPCGenOption("gameMode." + g + ".rollMethod", 0)); //$NON-NLS-1$
+		game.setRollMethodExpressionByName(getPCGenOption("gameMode." + key + ".rollMethodExpression", ""));
+		game.setPurchaseMethodName(getPCGenOption("gameMode." + key + ".purchaseMethodName", "")); //$NON-NLS-1$ //$NON-NLS-2$
+		game.setAllStatsValue(getPCGenOption("gameMode." + key + ".allStatsValue", 10));
+		game.setRollMethod(getPCGenOption("gameMode." + key + ".rollMethod", 0)); //$NON-NLS-1$
 	}
 
 	public static GameMode getGame()
@@ -1238,6 +1240,7 @@ public final class SettingsHandler
 		setShowTipOfTheDay(getPCGenOption("showTipOfTheDay", true)); //$NON-NLS-1$
 		setShowToolBar(getPCGenOption("showToolBar", true)); //$NON-NLS-1$
 		setShowSkillModifier(getPCGenOption("showSkillModifier", true)); //$NON-NLS-1$
+		setShowSkillRanks(getPCGenOption("showSkillRanks", true)); //$NON-NLS-1$
 		setShowWarningAtFirstLevelUp(getPCGenOption("showWarningAtFirstLevelUp", true)); //$NON-NLS-1$
 		setSingleChoicePreference(getPCGenOption("ChooserSingleChoiceMethod", Constants.CHOOSER_SINGLECHOICEMETHOD_NONE)); //$NON-NLS-1$
 		setSkillsTab_AvailableListMode(getPCGenOption("SkillsTab.availableListMode", //$NON-NLS-1$
@@ -1473,14 +1476,15 @@ public final class SettingsHandler
 		for (int idx = 0; idx < SystemCollections.getUnmodifiableGameModeList().size(); idx++)
 		{
 			final GameMode gameMode = SystemCollections.getUnmodifiableGameModeList().get(idx);
+			String gameModeKey = gameMode.getName();
 			if (gameMode.getUnitSet() != null && gameMode.getUnitSet().getName() != null)
 			{
-				setPCGenOption("gameMode." + gameMode.getName() + ".unitSetName", gameMode.getUnitSet().getName());
+				setPCGenOption("gameMode." + gameModeKey + ".unitSetName", gameMode.getUnitSet().getName());
 			}
-			setPCGenOption("gameMode." + gameMode.getName() + ".purchaseMethodName", gameMode.getPurchaseModeMethodName()); //$NON-NLS-1$
-			setPCGenOption("gameMode." + gameMode.getName() + ".rollMethod", gameMode.getRollMethod()); //$NON-NLS-1$
-			setPCGenOption("gameMode." + gameMode.getName() + ".rollMethodExpression", gameMode.getRollMethodExpressionName()); //$NON-NLS-1$
-			setPCGenOption("gameMode." + gameMode.getName() + ".allStatsValue", gameMode.getAllStatsValue());
+			setPCGenOption("gameMode." + gameModeKey + ".purchaseMethodName", gameMode.getPurchaseModeMethodName()); //$NON-NLS-1$
+			setPCGenOption("gameMode." + gameModeKey + ".rollMethod", gameMode.getRollMethod()); //$NON-NLS-1$
+			setPCGenOption("gameMode." + gameModeKey + ".rollMethodExpression", gameMode.getRollMethodExpressionName()); //$NON-NLS-1$
+			setPCGenOption("gameMode." + gameModeKey + ".allStatsValue", gameMode.getAllStatsValue());
 		}
 
 		setRuleChecksInOptions("ruleChecks"); //$NON-NLS-1$
@@ -1570,6 +1574,7 @@ public final class SettingsHandler
 		setPCGenOption("showTipOfTheDay", getShowTipOfTheDay()); //$NON-NLS-1$
 		setPCGenOption("showToolBar", isShowToolBar()); //$NON-NLS-1$
 		setPCGenOption("showSkillModifier", getShowSkillModifier()); //$NON-NLS-1$
+		setPCGenOption("showSkillRanks", getShowSkillRanks()); //$NON-NLS-1$
 		setPCGenOption("showSingleBoxPerBundle", getShowSingleBoxPerBundle()); //$NON-NLS-1$
 		setPCGenOption("showWarningAtFirstLevelUp", isShowWarningAtFirstLevelUp()); //$NON-NLS-1$
 		setPCGenOption("SkillsTab.availableListMode", getSkillsTab_AvailableListMode()); //$NON-NLS-1$
@@ -3013,6 +3018,16 @@ public final class SettingsHandler
 	public static boolean getShowSkillModifier()
 	{
 		return showSkillModifier;
+	}
+
+	public static void setShowSkillRanks(final boolean argShowSkillRanks)
+	{
+		showSkillRanks = argShowSkillRanks;
+	}
+
+	public static boolean getShowSkillRanks()
+	{
+		return showSkillRanks;
 	}
 
 	private static void setSpellMarketPriceAdjusted(final boolean aBool)

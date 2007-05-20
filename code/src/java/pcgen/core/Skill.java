@@ -1277,11 +1277,11 @@ public final class Skill extends PObject
 	{
 		if (getAssociatedCount() == 0)
 		{
-			return displayName;
+			return this.getOutputName();
 		}
 
 		final StringBuffer buffer = new StringBuffer(getAssociatedCount() * 20);
-		buffer.append(displayName).append("(");
+		buffer.append(this.getOutputName()).append("(");
 
 		for (int i = 0; i < getAssociatedCount(); i++)
 		{
@@ -1693,6 +1693,22 @@ public final class Skill extends PObject
 		}
 
 		return bonusDetails.toString();
+	}
+
+	public String getRanksExplanation()
+	{
+		final StringBuffer ranksDetails = new StringBuffer();
+
+		for ( int i = 0; i < getRankList().size(); i++ )
+		{
+			ranksDetails.append(getRankList().get(i));
+			if (i + 1 < getRankList().size())
+			{
+				ranksDetails.append(", ");
+			}
+		}
+	
+		return ranksDetails.toString();
 	}
 
 	/**

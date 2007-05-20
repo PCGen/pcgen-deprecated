@@ -394,7 +394,16 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 
 		StringTokenizer aTok = new StringTokenizer(aChoice, "|");
 
-		if (aChoice.startsWith("NUMBER") && (aTok.countTokens() >= 3)) //$NON-NLS-1$
+		String testNumber = aChoice;
+		if (aChoice.startsWith("NUMCHOICES="))
+		{
+			testNumber = aChoice.substring(0, aChoice.indexOf('|'));
+			aTok.nextToken(); // throw away "NUMCHOICES"
+			Logging
+				.errorPrint("NUMCHOICES is not implemented for CHOOSE in Temporary Mods");
+			Logging.errorPrint("  CHOOSE was: " + aChoice);
+		}
+		if (testNumber.startsWith("NUMBER") && (aTok.countTokens() >= 3)) //$NON-NLS-1$
 		{
 			int min;
 			int max;
@@ -532,7 +541,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 
 			if (bString.length() > 0)
 			{
-				b.appendLineBreak().appendElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
+				b.appendLineBreak().appendI18nElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
 			}
 
 			infoLabel.setText(b.toString());
@@ -554,7 +563,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 
 			if (bString.length() > 0)
 			{
-				b.appendLineBreak().appendElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
+				b.appendLineBreak().appendI18nElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
 			}
 
 			infoLabel.setText(b.toString());
@@ -583,7 +592,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 
 			if (bString.length() > 0)
 			{
-				b.appendElement("in_itmInfoLabelTextWT" , bString); //$NON-NLS-1$
+				b.appendI18nElement("in_itmInfoLabelTextWT" , bString); //$NON-NLS-1$
 			}
 
 			Integer a = eqI.getACBonus(pc);
@@ -672,7 +681,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 
 			if (bString.length() > 0)
 			{
-				b.appendLineBreak().appendElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
+				b.appendLineBreak().appendI18nElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
 			}
 
 			infoLabel.setText(b.toString());
@@ -681,10 +690,10 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 		{
 			InfoLabelTextBuilder b = new InfoLabelTextBuilder(aSpell.piSubString());
 			
-			b.appendElement("in_itmInfoLabelTextDuration", aSpell.getDuration()); //$NON-NLS-1$
-			b.appendElement("in_itmInfoLabelTextRange",aSpell.getRange()); //$NON-NLS-1$
-			b.appendElement("in_itmInfoLabelTextTarget",aSpell.getTarget()); //$NON-NLS-1$
-			b.appendElement("in_itmInfoLabelTextSpellDescription",aSpell.piDescSubString(pc)); //$NON-NLS-1$
+			b.appendI18nElement("in_itmInfoLabelTextDuration", aSpell.getDuration()); //$NON-NLS-1
+			b.appendI18nElement("in_itmInfoLabelTextRange",aSpell.getRange()); //$NON-NLS-1$
+			b.appendI18nElement("in_itmInfoLabelTextTarget",aSpell.getTarget()); //$NON-NLS-1$
+			b.appendI18nElement("in_itmInfoLabelTextSpellDescription",aSpell.piDescSubString(pc)); //$NON-NLS-1$
 
 			String spellSource = aSpell.getDefaultSourceString();
 
@@ -697,7 +706,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 
 			if (bString.length() > 0)
 			{
-				b.appendLineBreak().appendElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
+				b.appendLineBreak().appendI18nElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
 			}
 
 			infoLabel.setText(b.toString());
@@ -717,7 +726,7 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 
 			if (bString.length() > 0)
 			{
-				b.appendLineBreak().appendElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
+				b.appendLineBreak().appendI18nElement("in_itmInfoLabelTextDesc", bString); //$NON-NLS-1$
 			}
 
 			infoLabel.setText(b.toString());
@@ -1040,7 +1049,6 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 			if (aBonus.isTempBonus())
 			{
 				BonusObj newB = null;
-
 				if (aMod instanceof PCClass)
 				{
 					if (aBonus.getPCLevel() == bonusLevel)
@@ -1053,7 +1061,6 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 				{
 					newB = Bonus.newBonus(aString);
 				}
-
 				if (newB != null)
 				{
 					// We clear the prereqs and add the non-PREAPPLY prereqs from the old bonus
@@ -1099,7 +1106,8 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 						// dirty when the other case doesn't?
 						pc.setDirty(true);
 					}
-
+System.err.println(aMod.getKeyName());
+System.err.println(aMod.getChoiceString());
 					if (aMod.getChoiceString().length() > 0)
 					{
 						repeatValue =

@@ -2196,12 +2196,17 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 
 			final String abilityKey = EntityEncoder.decode(element.getText());
 			ability = Globals.getAbilityKeyed(abilityCat, abilityKey);
-			if (ability != null)
+			if (ability == null)
+			{
+				warnings.add("Unable to Find Ability: " + abilityKey);
+				return;
+			}
+			else
 			{
 				ability = ability.clone();
 			}
 		}
-
+		
 		while (it.hasNext())
 		{
 			final PCGElement element = it.next();
@@ -4240,7 +4245,6 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 	{
 		//		thePC.setAutomaticFeatsStable(false);
 		thePC.setAutomaticAbilitiesStable(null, false);
-		thePC.featAutoList(); // populate profs array with automatic profs
 
 		for (final Iterator<String> it = weaponprofs.iterator(); it.hasNext();)
 		{
