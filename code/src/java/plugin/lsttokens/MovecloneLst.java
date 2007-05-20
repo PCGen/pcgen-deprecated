@@ -22,13 +22,13 @@
  */
 package plugin.lsttokens;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Collection;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 
@@ -56,25 +56,25 @@ public class MovecloneLst implements GlobalLstToken
 	{
 		Movement cm = Movement.getMovementFrom(value);
 		cm.setMoveRatesFlag(2);
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, cm);
+		context.graph.grant(getTokenName(), obj, cm);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Movement> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					Movement.class);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (PCGraphEdge edge : edgeList)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			Movement m = (Movement) edge.getSinkNodes().get(0);
-			set.add(m.toLSTString());
+			// Zero indicates no Token
+			return null;
 		}
-		return set.toArray(new String[set.size()]);
+		return added.toArray(new String[added.size()]);
 	}
 }

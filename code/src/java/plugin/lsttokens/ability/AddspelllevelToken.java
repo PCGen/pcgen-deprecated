@@ -63,7 +63,7 @@ public class AddspelllevelToken implements AbilityLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
-			ability.put(IntegerKey.ADD_SPELL_LEVEL, i);
+			context.obj.put(ability, IntegerKey.ADD_SPELL_LEVEL, i);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -77,7 +77,7 @@ public class AddspelllevelToken implements AbilityLstToken
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
-		Integer lvl = ability.get(IntegerKey.ADD_SPELL_LEVEL);
+		Integer lvl = context.obj.getInteger(ability, IntegerKey.ADD_SPELL_LEVEL);
 		if (lvl == null)
 		{
 			return null;

@@ -49,7 +49,8 @@ public class AlignToken implements DeityLstToken
 	{
 		try
 		{
-			deity.put(ObjectKey.ALIGNMENT, AlignmentType.valueOf(value));
+			context.obj.put(deity, ObjectKey.ALIGNMENT, AlignmentType
+				.valueOf(value));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -62,7 +63,7 @@ public class AlignToken implements DeityLstToken
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		AlignmentType at = deity.get(ObjectKey.ALIGNMENT);
+		AlignmentType at = context.obj.getObject(deity, ObjectKey.ALIGNMENT);
 		if (at == null)
 		{
 			return null;

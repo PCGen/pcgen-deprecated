@@ -20,10 +20,10 @@ package plugin.lsttokens.add;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphAllowsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.inst.Aggregator;
 import pcgen.core.PObject;
@@ -118,21 +118,9 @@ public class SpellLevelToken implements AddLstToken
 		}
 		CDOMReference<Spell> sp =
 				context.ref.getCDOMReference(SPELL_CLASS, spell);
-
-		Aggregator agg = new Aggregator(obj, spelllist, getTokenName());
-		/*
-		 * This is intentionally Holds, as the context for traversal must only
-		 * be the ref (linked by the Activation Edge). So we need an edge to the
-		 * Activator to get it copied into the PC, but since this is a 3rd party
-		 * Token, the granting object should never grant anything hung off the
-		 * aggregator.
-		 */
-		context.graph.linkHoldsIntoGraph(getTokenName(), obj, agg);
-		context.graph.linkActivationIntoGraph(getTokenName(), spelllist, agg);
-
-		PCGraphAllowsEdge edge =
-				context.graph.linkAllowIntoGraph(getTokenName(), agg, sp);
-		edge.setAssociation(AssociationKey.SPELL_LEVEL, level);
+		AssociatedPrereqObject tpr =
+				context.list.addToList(getTokenName(), obj, spelllist, sp);
+		tpr.setAssociation(AssociationKey.SPELL_LEVEL, level);
 		return true;
 	}
 

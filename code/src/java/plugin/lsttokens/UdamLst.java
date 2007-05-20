@@ -22,7 +22,7 @@
  */
 package plugin.lsttokens;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
@@ -31,6 +31,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.PObject;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 
@@ -56,7 +57,7 @@ public class UdamLst implements GlobalLstToken
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			obj.removeListFor(ListKey.UDAM);
+			context.obj.removeList(obj, ListKey.UDAM);
 		}
 		else
 		{
@@ -68,18 +69,18 @@ public class UdamLst implements GlobalLstToken
 					+ " requires 9 comma separated values");
 				return false;
 			}
-			if (obj.containsListFor(ListKey.UDAM))
+			if (context.obj.containsListFor(obj, ListKey.UDAM))
 			{
 				Logging.errorPrint(obj.getDisplayName() + " already has "
 					+ getTokenName() + " set.");
 				Logging.errorPrint("  It will be redefined, "
 					+ "but you should be using " + getTokenName() + ":.CLEAR");
-				obj.removeListFor(ListKey.UDAM);
+				context.obj.removeList(obj, ListKey.UDAM);
 			}
 
 			while (tok.hasMoreTokens())
 			{
-				obj.addToListFor(ListKey.UDAM, tok.nextToken());
+				context.obj.addToList(obj, ListKey.UDAM, tok.nextToken());
 			}
 		}
 		return true;
@@ -87,11 +88,12 @@ public class UdamLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		List<String> list = obj.getListFor(ListKey.UDAM);
-		if (list == null || list.isEmpty())
+		Changes<String> changes = context.obj.getListChanges(obj, ListKey.UDAM);
+		if (changes == null)
 		{
 			return null;
 		}
+		Collection<String> list = changes.getAdded();
 		if (list.size() != 9)
 		{
 			// Error

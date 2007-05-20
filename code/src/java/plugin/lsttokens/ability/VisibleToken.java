@@ -95,21 +95,22 @@ public class VisibleToken implements AbilityLstToken
 
 	public boolean parse(LoadContext context, Ability ability, String value)
 	{
+		Visibility vis;
 		if (value.equals("YES"))
 		{
-			ability.put(ObjectKey.VISIBILITY, Visibility.YES);
+			vis = Visibility.YES;
 		}
 		else if (value.equals("DISPLAY"))
 		{
-			ability.put(ObjectKey.VISIBILITY, Visibility.DISPLAY);
+			vis = Visibility.DISPLAY;
 		}
 		else if (value.equals("EXPORT"))
 		{
-			ability.put(ObjectKey.VISIBILITY, Visibility.EXPORT);
+			vis = Visibility.EXPORT;
 		}
 		else if (value.equals("NO"))
 		{
-			ability.put(ObjectKey.VISIBILITY, Visibility.NO);
+			vis = Visibility.NO;
 		}
 		else
 		{
@@ -117,12 +118,13 @@ public class VisibleToken implements AbilityLstToken
 				+ " tag: " + value);
 			return false;
 		}
+		context.obj.put(ability, ObjectKey.VISIBILITY, vis);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
-		Visibility vis = ability.get(ObjectKey.VISIBILITY);
+		Visibility vis = context.obj.getObject(ability, ObjectKey.VISIBILITY);
 		if (vis == null)
 		{
 			return null;

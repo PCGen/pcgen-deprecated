@@ -22,15 +22,15 @@
  */
 package plugin.lsttokens;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.core.PObject;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.util.Logging;
@@ -59,6 +59,11 @@ public class TypeLst implements GlobalLstToken
 		{
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
+		}
+		if (Constants.LST_DOT_CLEAR.equals(value))
+		{
+			context.obj.removeList(obj, ListKey.TYPE);
+			return true;
 		}
 		if (value.charAt(0) == '.')
 		{
@@ -93,21 +98,20 @@ public class TypeLst implements GlobalLstToken
 			{
 				removeType = true;
 			}
-			else if (Constants.LST_DOT_CLEAR.equals(aType))
-			{
-				obj.removeListFor(ListKey.TYPE);
-			}
 			else
 			{
 				Type typeCon = Type.getConstant(aType);
 				if (removeType)
 				{
-					obj.removeFromListFor(ListKey.TYPE, typeCon);
+					context.obj.removeFromList(obj, ListKey.TYPE, typeCon);
 					removeType = false;
 				}
+				/*
+				 * BUG FIXME TODO Not sure how to handle this - it's a SET!
+				 */
 				else if (!obj.containsInList(ListKey.TYPE, typeCon))
 				{
-					obj.addToListFor(ListKey.TYPE, typeCon);
+					context.obj.addToList(obj, ListKey.TYPE, typeCon);
 				}
 			}
 		}
@@ -116,11 +120,11 @@ public class TypeLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		List<Type> typeList = obj.getListFor(ListKey.TYPE);
-		if (typeList == null || typeList.isEmpty())
+		Changes<Type> changes = context.obj.getListChanges(obj, ListKey.TYPE);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(typeList, Constants.DOT)};
+		return new String[]{StringUtil.join(changes.getAdded(), Constants.DOT)};
 	}
 }

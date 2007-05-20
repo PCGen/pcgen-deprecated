@@ -48,13 +48,13 @@ public class OutputnameLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		obj.put(StringKey.OUTPUT_NAME, value);
+		context.obj.put(obj, StringKey.OUTPUT_NAME, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		String oname = obj.get(StringKey.OUTPUT_NAME);
+		String oname = context.obj.getString(obj, StringKey.OUTPUT_NAME);
 		if (oname == null)
 		{
 			return null;

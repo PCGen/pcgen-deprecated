@@ -22,14 +22,16 @@
  */
 package plugin.lsttokens;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SpellResistance;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.PObject;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 
@@ -62,13 +64,11 @@ public class SrLst implements GlobalLstToken
 	{
 		if (".CLEAR".equals(value))
 		{
-			context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-				SpellResistance.class);
+			context.graph.removeAll(getTokenName(), obj, SpellResistance.class);
 		}
 		else
 		{
-			context.graph.linkObjectIntoGraph(getTokenName(), obj,
-				getSpellResistance(value));
+			context.graph.grant(getTokenName(), obj, getSpellResistance(value));
 		}
 		return true;
 	}
@@ -80,18 +80,23 @@ public class SrLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<SpellResistance> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					SpellResistance.class);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (PCGraphEdge edge : edgeList)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			SpellResistance sr = (SpellResistance) edge.getSinkNodes().get(0);
-			set.add(sr.toString());
+			// Zero indicates no Token
+			return null;
+		}
+		Set<String> set = new TreeSet<String>();
+		for (LSTWriteable lw : added)
+		{
+			set.add(lw.getLSTformat());
 		}
 		return set.toArray(new String[set.size()]);
 	}

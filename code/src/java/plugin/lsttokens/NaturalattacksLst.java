@@ -286,7 +286,7 @@ public class NaturalattacksLst implements GlobalLstToken
 			return false;
 		}
 		for (Equipment weapon : naturalWeapons) {
-			context.graph.linkObjectIntoGraph(getTokenName(), obj, weapon);
+			context.graph.grant(getTokenName(), obj, weapon);
 		}
 		return true;
 	}
@@ -467,7 +467,7 @@ public class NaturalattacksLst implements GlobalLstToken
 		context.ref.constructIfNecessary(WEAPONPROF_CLASS, attackName);
 		CDOMSimpleSingleRef<WeaponProf> wp = context.ref.getCDOMReference(WEAPONPROF_CLASS, attackName);
 		anEquip.put(ObjectKey.WEAPON_PROF, wp);
-		context.graph.linkObjectIntoGraph(getTokenName(), anEquip, wp);
+		context.graph.grant(getTokenName(), anEquip, wp);
 
 		anEquip.put(IntegerKey.SLOTS, Integer.valueOf(handsRequired));
 
@@ -487,8 +487,8 @@ public class NaturalattacksLst implements GlobalLstToken
 		 * link* or allow*, as the general relationships are contains and
 		 * equips?
 		 */
-		context.graph.linkObjectIntoGraph(getTokenName(), anEquip, size);
-		context.graph.linkObjectIntoGraph(Constants.VT_EQ_HEAD, anEquip, equipHead);
+		context.graph.grant(getTokenName(), anEquip, size);
+		context.graph.grant(Constants.VT_EQ_HEAD, anEquip, equipHead);
 		return anEquip;
 	}
 

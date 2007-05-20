@@ -50,7 +50,7 @@ public class CategoryToken implements AbilityLstToken
 		try
 		{
 			AbilityCategory ac = AbilityCategory.valueOf(value);
-			ability.put(ObjectKey.CATEGORY, ac);
+			context.obj.put(ability, ObjectKey.CATEGORY, ac);
 			return true;
 		}
 		catch (IllegalArgumentException iae)
@@ -63,7 +63,7 @@ public class CategoryToken implements AbilityLstToken
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
-		AbilityCategory ac = ability.get(ObjectKey.CATEGORY);
+		AbilityCategory ac = context.obj.getObject(ability, ObjectKey.CATEGORY);
 		if (ac == null)
 		{
 			context.addWriteMessage("Abilities must have an AbilityCategory");

@@ -57,7 +57,7 @@ public class CostToken implements AbilityLstToken
 					+ " must be a positive number: " + value);
 				return false;
 			}
-			ability.put(ObjectKey.COST, cost);
+			context.obj.put(ability, ObjectKey.COST, cost);
 			return true;
 		}
 		catch (NumberFormatException e)
@@ -69,7 +69,7 @@ public class CostToken implements AbilityLstToken
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
-		BigDecimal bd = ability.get(ObjectKey.COST);
+		BigDecimal bd = context.obj.getObject(ability, ObjectKey.COST);
 		if (bd == null)
 		{
 			return null;

@@ -24,6 +24,7 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -32,14 +33,15 @@ import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.Logging;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
@@ -48,6 +50,7 @@ import pcgen.core.PObject;
 import pcgen.core.QualifiedObject;
 import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -199,27 +202,8 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -275,8 +259,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 					context.ref.getCDOMReference(ABILITY_CLASS, ac, tok
 						.nextToken());
 			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), obj,
-						ability);
+					context.graph.grant(getTokenName(), obj, ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
 		}
 		return true;
@@ -284,29 +267,32 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeSet =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Ability> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					ABILITY_CLASS);
-
-		if (edgeSet == null || edgeSet.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		DoubleKeyMapToList<AbilityNature, Category<Ability>, CDOMCategorizedSingleRef<Ability>> m =
-				new DoubleKeyMapToList<AbilityNature, Category<Ability>, CDOMCategorizedSingleRef<Ability>>();
-		for (PCGraphEdge edge : edgeSet)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
+			// Zero indicates no Token
+			return null;
+		}
+		DoubleKeyMapToList<AbilityNature, Category<Ability>, LSTWriteable> m =
+				new DoubleKeyMapToList<AbilityNature, Category<Ability>, LSTWriteable>();
+		for (LSTWriteable ab : added)
+		{
+			AssociatedPrereqObject assoc = changes.getAddedAssociation(ab);
 			AbilityNature nature =
-					edge.getAssociation(AssociationKey.ABILITY_NATURE);
-			CDOMCategorizedSingleRef<Ability> ab =
-					(CDOMCategorizedSingleRef<Ability>) edge.getSinkNodes()
-						.get(0);
-			m.addToListFor(nature, ab.getCDOMCategory(), ab);
+					assoc.getAssociation(AssociationKey.ABILITY_NATURE);
+			m.addToListFor(nature, ((CategorizedCDOMReference<Ability>) ab)
+				.getCDOMCategory(), ab);
 		}
 
-		SortedSet<CategorizedCDOMReference<Ability>> set =
-				new TreeSet<CategorizedCDOMReference<Ability>>(
-					TokenUtilities.CAT_REFERENCE_SORTER);
+		SortedSet<LSTWriteable> set =
+				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 		Set<String> returnSet = new TreeSet<String>();
 		for (AbilityNature nature : m.getKeySet())
 		{
@@ -317,7 +303,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 				sb.append(nature);
 				set.clear();
 				set.addAll(m.getListFor(nature, category));
-				for (CategorizedCDOMReference<Ability> a : set)
+				for (LSTWriteable a : set)
 				{
 					sb.append(Constants.PIPE).append(a.getLSTformat());
 				}

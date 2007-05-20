@@ -22,14 +22,21 @@
  */
 package plugin.lsttokens;
 
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.SpecialAbility;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -38,18 +45,14 @@ import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 /**
  * @author djones4
  * 
  */
 public class SaLst extends AbstractToken implements GlobalLstToken
 {
+
+	private static final Class<SpecialAbility> SA_CLASS = SpecialAbility.class;
 
 	@Override
 	public String getTokenName()
@@ -163,28 +166,8 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 	public boolean parseSpecialAbility(LoadContext context, CDOMObject obj,
 		String aString)
 	{
-		if (aString == null || aString.length() == 0)
+		if (isEmpty(aString) || hasIllegalSeparator('|', aString))
 		{
-			Logging.errorPrint(getTokenName() + ": line minimally requires "+getTokenName()+":<text>");
-			return false;
-		}
-
-		if (aString.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + aString);
-			return false;
-		}
-		if (aString.charAt(aString.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + aString);
-			return false;
-		}
-		if (aString.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + aString);
 			return false;
 		}
 
@@ -200,8 +183,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-				SpecialAbility.class);
+			context.graph.removeAll(getTokenName(), obj, SA_CLASS);
 			firstToken = tok.nextToken();
 		}
 
@@ -216,7 +198,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 		if (!tok.hasMoreTokens())
 		{
-			context.graph.linkObjectIntoGraph(getTokenName(), obj, sa);
+			context.graph.grant(getTokenName(), obj, sa);
 			return true;
 		}
 
@@ -247,7 +229,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 				// No prereqs, so we're done
 				// CONSIDER This is a HACK and not the long term strategy of SA:
 				sa.setName(saName.toString());
-				context.graph.linkObjectIntoGraph(getTokenName(), obj, sa);
+				context.graph.grant(getTokenName(), obj, sa);
 				return true;
 			}
 			token = tok.nextToken();
@@ -281,25 +263,31 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			}
 			token = tok.nextToken();
 		}
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, sa);
+		context.graph.grant(getTokenName(), obj, sa);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					SpecialAbility.class);
-		if (edges == null || edges.isEmpty())
+		GraphChanges<SpecialAbility> changes =
+				context.graph
+					.getChangesFromToken(getTokenName(), obj, SA_CLASS);
+		if (changes == null)
 		{
 			return null;
 		}
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token
+			return null;
+		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		List<String> list = new ArrayList<String>(edges.size());
-		for (PCGraphEdge edge : edges)
+		List<String> list = new ArrayList<String>(added.size());
+		for (LSTWriteable lw : added)
 		{
 			StringBuilder sb = new StringBuilder();
-			SpecialAbility ab = (SpecialAbility) edge.getSinkNodes().get(0);
+			SpecialAbility ab = (SpecialAbility) lw;
 			sb.append(ab.getDisplayName());
 			List<Prerequisite> prereqs = ab.getPrerequisiteList();
 			if (prereqs != null && !prereqs.isEmpty())

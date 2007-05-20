@@ -23,23 +23,25 @@
  */
 package plugin.lsttokens;
 
+import java.util.Collection;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
+
 import pcgen.base.formula.Formula;
 import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Slot;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.CompanionList;
 import pcgen.core.PObject;
 import pcgen.core.character.Follower;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
-
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 /**
  * This class implements support for the FOLLOWERS LST token.
@@ -160,7 +162,7 @@ public class FollowersLst implements GlobalLstToken
 
 		// Slot<Follower> slot =
 		context.graph
-			.addSlotIntoGraph(getTokenName(), obj, Follower.class, num);
+			.addSlot(getTokenName(), obj, Follower.class, num);
 
 		// TODO I need to add a Restriction that is GRAPH AWARE, since
 		// a graph traversal will need to take place...
@@ -170,22 +172,28 @@ public class FollowersLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Slot> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					Slot.class);
-		if (edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token
+			return null;
+		}
 		Set<String> set = new TreeSet<String>();
-		for (PCGraphEdge edge : edgeList)
+		for (LSTWriteable lw : added)
 		{
 			StringBuilder sb = new StringBuilder();
-			Slot<Follower> s = (Slot<Follower>) edge.getSinkNodes().get(0);
+			Slot<Follower> s = (Slot<Follower>) lw;
 			// TODO Process the CompanionList Type?
 			// sb.append();
 			sb.append(Constants.PIPE);
-			sb.append(s.toLSTform());
+			sb.append(s.getSlotCount());
 			set.add(sb.toString());
 		}
 		return set.toArray(new String[set.size()]);

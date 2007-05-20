@@ -22,18 +22,19 @@
  */
 package plugin.lsttokens;
 
-import java.util.Set;
+import java.util.Collection;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.PObject;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
@@ -42,11 +43,12 @@ import pcgen.util.Logging;
  * @author djones4
  * 
  */
-public class LangautoLst implements GlobalLstToken
+public class LangautoLst extends AbstractToken implements GlobalLstToken
 {
 
 	private static final Class<Language> LANGUAGE_CLASS = Language.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "LANGAUTO";
@@ -65,25 +67,12 @@ public class LangautoLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value.charAt(0) == ',')
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
 
+		boolean firstToken = true;
 		boolean foundAny = false;
 		boolean foundOther = false;
 
@@ -94,8 +83,11 @@ public class LangautoLst implements GlobalLstToken
 			String tokText = tok.nextToken();
 			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
-				context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-					LANGUAGE_CLASS);
+				if (!firstToken)
+				{
+					return false;
+				}
+				context.graph.removeAll(getTokenName(), obj, LANGUAGE_CLASS);
 			}
 			else
 			{
@@ -118,8 +110,9 @@ public class LangautoLst implements GlobalLstToken
 						+ getTokenName());
 					return false;
 				}
-				context.graph.linkObjectIntoGraph(getTokenName(), obj, ref);
+				context.graph.grant(getTokenName(), obj, ref);
 			}
+			firstToken = true;
 		}
 		if (foundAny && foundOther)
 		{
@@ -132,20 +125,20 @@ public class LangautoLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Language> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					LANGUAGE_CLASS);
-		if (edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge edge : edges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			set.add((CDOMReference<?>) edge.getSinkNodes().get(0));
+			// Zero indicates no Token
+			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(set,
+		return new String[]{ReferenceUtilities.joinLstFormat(added,
 			Constants.COMMA)};
 	}
 }

@@ -24,6 +24,7 @@ package plugin.lsttokens;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -35,28 +36,33 @@ import java.util.TreeSet;
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphAllowsEdge;
+import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.graph.PCGraphHoldsEdge;
 import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
 import pcgen.core.SpellList;
-import pcgen.util.Logging;
+import pcgen.core.WeaponProf;
+import pcgen.core.WeaponProfList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.GraphChanges;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.utils.TokenUtilities;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -197,27 +203,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 	{
 		// SPELLLEVEL:CLASS|Name1,Name2=Level1|Spell1,Spell2,Spell3|Name3=Level2|Spell4,Spell5|PRExxx|PRExxx
 
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not be empty");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -260,10 +247,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 			String tokString = tok.nextToken();
 			String spellString = tok.nextToken();
 
-			Aggregator agg =
-					subParse(context, obj, tagType, tokString, spellString,
-						prereqs);
-			if (agg == null)
+			if (!subParse(context, obj, tagType, tokString, spellString,
+				prereqs))
 			{
 				Logging.errorPrint("  " + getTokenName()
 					+ " error - entire token was " + value);
@@ -274,7 +259,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	private Aggregator subParse(LoadContext context, CDOMObject obj,
+	private boolean subParse(LoadContext context, CDOMObject obj,
 		String tagType, String tokString, String spellString,
 		List<Prerequisite> prereqs)
 	{
@@ -283,7 +268,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		{
 			Logging.errorPrint("Expected an = in SPELLLEVEL " + "definition: "
 				+ tokString);
-			return null;
+			return false;
 		}
 
 		String casterString = tokString.substring(0, equalLoc);
@@ -297,28 +282,14 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		{
 			Logging.errorPrint("Expected a number for SPELLLEVEL, found: "
 				+ spellLevel);
-			return null;
+			return false;
 		}
 
-		if (casterString.charAt(0) == ',')
+		if (hasIllegalSeparator(',', casterString))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " Caster arguments may not start with , : " + casterString);
-			return null;
+			return false;
 		}
-		if (casterString.charAt(casterString.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " Caster arguments may not end with , : " + casterString);
-			return null;
-		}
-		if (casterString.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " Caster arguments uses double separator ,, : "
-				+ casterString);
-			return null;
-		}
+
 		StringTokenizer clTok =
 				new StringTokenizer(casterString, Constants.COMMA);
 		List<CDOMReference<SpellList>> slList =
@@ -341,169 +312,132 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 				Logging
 					.errorPrint("Cannot resolve empty SpellList reference in "
 						+ getTokenName());
-				return null;
+				return false;
 			}
 			slList.add(context.ref.getCDOMReference(SpellList.class,
 				classString));
 		}
 
-		if (spellString.charAt(0) == ',')
+		if (hasIllegalSeparator(',', spellString))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " Spell arguments may not start with , : " + spellString);
-			return null;
+			return false;
 		}
-		if (spellString.charAt(spellString.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " Spell arguments may not end with , : " + spellString);
-			return null;
-		}
-		if (spellString.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " Spell arguments uses double separator ,, : " + spellString);
-			return null;
-		}
+
 		StringTokenizer spTok = new StringTokenizer(spellString, ",");
 
-		// TODO This can be "fooled" if Class/Domain/SpellCaster type overlap
-		Aggregator agg = new Aggregator(obj, slList, getTokenName());
-		agg.addPrerequisites(prereqs);
-		/*
-		 * This is intentionally Holds, as the context for traversal must only
-		 * be the ref (linked by the Activation Edge). So we need an edge to the
-		 * Activator to get it copied into the PC, but since this is a 3rd party
-		 * Token, the Race should never grant anything hung off the aggregator.
-		 */
-		PCGraphHoldsEdge aggEdge =
-				context.graph.linkHoldsIntoGraph(getTokenName(), obj, agg);
-		aggEdge.setAssociation(AssociationKey.TYPE, tagType);
-		for (CDOMReference<SpellList> sl : slList)
-		{
-			context.graph.linkActivationIntoGraph(getTokenName(), sl, agg);
-		}
 		while (spTok.hasMoreTokens())
 		{
 			String spellName = spTok.nextToken();
-			CDOMReference<Spell> spell =
+			CDOMReference<Spell> sp =
 					context.ref.getCDOMReference(Spell.class, spellName);
-			PCGraphAllowsEdge edge =
-					context.graph
-						.linkAllowIntoGraph(getTokenName(), agg, spell);
-			edge.setAssociation(AssociationKey.SPELL_LEVEL, splLevel);
+			for (CDOMReference<SpellList> sl : slList)
+			{
+				AssociatedPrereqObject tpr =
+						context.list.addToList(getTokenName(), obj, sl, sp);
+				tpr.setAssociation(AssociationKey.SPELL_LEVEL, splLevel);
+				tpr.setAssociation(AssociationKey.TYPE, tagType);
+				tpr.addAllPrerequisites(prereqs);
+			}
 		}
-		return agg;
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					Aggregator.class);
-		if (edgeList == null || edgeList.isEmpty())
-		{
-			return null;
-		}
+		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists =
+				context.list.getChangedLists(obj, SpellList.class);
 
 		DoubleKeyMapToList<String, Set<Prerequisite>, String> m =
 				new DoubleKeyMapToList<String, Set<Prerequisite>, String>();
-		for (PCGraphEdge edge : edgeList)
+		for (CDOMReference listRef : changedLists)
 		{
-			String type = edge.getAssociation(AssociationKey.TYPE);
-			if (type == null)
+			GraphChanges<WeaponProf> changes =
+					context.list.getChangesInList(getTokenName(), obj, listRef);
+			if (changes == null)
 			{
-				context.addWriteMessage("Invalid Aggregator link: has no TYPE");
+				// Legal if no SPELLLEVEL was present
+				continue;
+			}
+			if (changes.hasRemovedItems() || changes.includesGlobalClear())
+			{
+				context.addWriteMessage(getTokenName()
+					+ " does not support .CLEAR");
 				return null;
 			}
-			Aggregator agg = (Aggregator) edge.getSinkNodes().get(0);
-			Set<PCGraphEdge> parents =
-					context.graph.getParentLinksFromToken(getTokenName(), agg,
-						SpellList.class);
-			if (parents == null || parents.isEmpty())
+			if (changes.hasAddedItems())
 			{
-				context.addWriteMessage("Cannot have empty grant target in "
-					+ getTokenName());
-				return null;
-			}
-			Set<PCGraphEdge> children =
-					context.graph.getChildLinksFromToken(getTokenName(), agg,
-						Spell.class);
-			if (children == null || children.isEmpty())
-			{
-				context.addWriteMessage("Cannot have empty granted Spells in "
-					+ getTokenName());
-				return null;
-			}
-
-			SortedSet<CDOMReference<?>> slSet =
-					new TreeSet<CDOMReference<?>>(
-						TokenUtilities.REFERENCE_SORTER);
-			for (PCGraphEdge parentEdge : parents)
-			{
-				slSet.add((CDOMReference<SpellList>) parentEdge.getNodeAt(0));
-			}
-			HashMapToList<Integer, CDOMReference<Spell>> hml =
-					new HashMapToList<Integer, CDOMReference<Spell>>();
-			for (PCGraphEdge childEdge : children)
-			{
-				Integer lvl =
-						childEdge.getAssociation(AssociationKey.SPELL_LEVEL);
-				CDOMReference<Spell> sp =
-						(CDOMReference<Spell>) childEdge.getNodeAt(1);
-				hml.addToListFor(lvl, sp);
-			}
-			StringBuilder sb = new StringBuilder();
-			SortedSet<CDOMReference<?>> spSet =
-					new TreeSet<CDOMReference<?>>(
-						TokenUtilities.REFERENCE_SORTER);
-			for (Integer lvl : new TreeSet<Integer>(hml.getKeySet()))
-			{
-				sb.setLength(0);
-				spSet.clear();
-				spSet.addAll(hml.getListFor(lvl));
-				sb.append(ReferenceUtilities.joinLstFormat(slSet,
-					Constants.COMMA));
-				sb.append('=').append(lvl).append(Constants.PIPE);
-				sb.append(ReferenceUtilities.joinLstFormat(spSet,
-					Constants.COMMA));
-				m.addToListFor(type, new HashSet<Prerequisite>(agg
-					.getPrerequisiteList()), sb.toString());
-			}
-		}
-
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		Set<String> list = new TreeSet<String>();
-		for (String type : m.getKeySet())
-		{
-			for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
-			{
-				StringBuilder sb = new StringBuilder();
-				Set<String> set =
-						new TreeSet<String>(m.getListFor(type, prereqs));
-				sb.append(StringUtil.join(set, Constants.PIPE));
-				if (prereqs != null && !prereqs.isEmpty())
+				Collection<LSTWriteable> addedCollection = changes.getAdded();
+				HashMapToList<Integer, LSTWriteable> hml =
+						new HashMapToList<Integer, LSTWriteable>();
+				for (LSTWriteable added : addedCollection)
 				{
-					for (Prerequisite p : prereqs)
+					AssociatedPrereqObject se =
+							changes.getAddedAssociation(added);
+					String type = se.getAssociation(AssociationKey.TYPE);
+					if (type == null)
 					{
-						StringWriter swriter = new StringWriter();
-						try
-						{
-							prereqWriter.write(swriter, p);
-						}
-						catch (PersistenceLayerException e)
-						{
-							context
-								.addWriteMessage("Error writing Prerequisite: "
-									+ e);
-							return null;
-						}
-						sb.append(Constants.PIPE).append(swriter.toString());
+						context.addWriteMessage("Invalid " + getTokenName()
+							+ " link: has no TYPE");
+						return null;
 					}
+					Integer lvl = se.getAssociation(AssociationKey.SPELL_LEVEL);
+					hml.addToListFor(lvl, added);
+					StringBuilder sb = new StringBuilder();
 				}
-				list.add(type + "|" + sb.toString());
+				SortedSet<LSTWriteable> spSet =
+						new TreeSet<LSTWriteable>(
+							TokenUtilities.WRITEABLE_SORTER);
+				StringBuilder sb = new StringBuilder();
+				for (Integer lvl : new TreeSet<Integer>(hml.getKeySet()))
+				{
+					sb.setLength(0);
+					spSet.clear();
+					spSet.addAll(hml.getListFor(lvl));
+					sb.append(ReferenceUtilities.joinLstFormat(slSet,
+						Constants.COMMA));
+					sb.append('=').append(lvl).append(Constants.PIPE);
+					sb.append(ReferenceUtilities.joinLstFormat(spSet,
+						Constants.COMMA));
+					m.addToListFor(type, new HashSet<Prerequisite>(agg
+						.getPrerequisiteList()), sb.toString());
+				}
 			}
+			return list.toArray(new String[list.size()]);
+
+			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+			Set<String> list = new TreeSet<String>();
+			for (String type : m.getKeySet())
+			{
+				for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
+				{
+					StringBuilder sb = new StringBuilder();
+					Set<String> set =
+							new TreeSet<String>(m.getListFor(type, prereqs));
+					sb.append(StringUtil.join(set, Constants.PIPE));
+					if (prereqs != null && !prereqs.isEmpty())
+					{
+						for (Prerequisite p : prereqs)
+						{
+							StringWriter swriter = new StringWriter();
+							try
+							{
+								prereqWriter.write(swriter, p);
+							}
+							catch (PersistenceLayerException e)
+							{
+								context
+									.addWriteMessage("Error writing Prerequisite: "
+										+ e);
+								return null;
+							}
+							sb.append(Constants.PIPE)
+								.append(swriter.toString());
+						}
+					}
+					list.add(type + "|" + sb.toString());
+				}
+			}
+			return list.toArray(new String[list.size()]);
 		}
-		return list.toArray(new String[list.size()]);
 	}
 }

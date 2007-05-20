@@ -23,18 +23,20 @@
 package plugin.lsttokens;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.Collection;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
-import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SimpleMovement;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Equipment;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.util.Logging;
 
@@ -42,9 +44,10 @@ import pcgen.util.Logging;
  * @author djones4
  * 
  */
-public class MoveLst implements GlobalLstToken
+public class MoveLst extends AbstractToken implements GlobalLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "MOVE";
@@ -64,45 +67,11 @@ public class MoveLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value == null)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint("Error encountered while parsing "
-				+ getTokenName() + ": " + value);
-			Logging.errorPrint("  Null initialization String illegal");
 			return false;
 		}
-		if (value.length() == 0)
-		{
-			Logging.errorPrint("Error encountered while parsing "
-				+ getTokenName() + ": " + value);
-			Logging.errorPrint("  Empty initialization String illegal");
-			return false;
-		}
-		if (value.charAt(0) == ',')
-		{
-			Logging.errorPrint("Error encountered while parsing "
-				+ getTokenName() + ": " + value);
-			Logging.errorPrint("  Movement arguments may not start with ,| : "
-				+ value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint("Error encountered while parsing "
-				+ getTokenName() + ": " + value);
-			Logging.errorPrint("  Movement arguments may not end with , : "
-				+ value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint("Error encountered while parsing "
-				+ getTokenName() + ": " + value);
-			Logging
-				.errorPrint("  Movement arguments uses double separator ,, : "
-					+ value);
-			return false;
-		}
+
 		final StringTokenizer moves = new StringTokenizer(value, ",");
 
 		int tokenCount = moves.countTokens();
@@ -131,8 +100,8 @@ public class MoveLst implements GlobalLstToken
 						+ " was negative");
 					return false;
 				}
-				context.graph.linkObjectIntoGraph(getTokenName(), obj,
-					new SimpleMovement(moveType, distance));
+				context.graph.grant(getTokenName(), obj, new SimpleMovement(
+					moveType, distance));
 			}
 			catch (NumberFormatException e)
 			{
@@ -148,19 +117,20 @@ public class MoveLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<SimpleMovement> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					SimpleMovement.class);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (PCGraphEdge edge : edgeList)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			SimpleMovement m = (SimpleMovement) edge.getSinkNodes().get(0);
-			set.add(m.toLSTString());
+			// Zero indicates no Token
+			return null;
 		}
-		return new String[]{StringUtil.join(set, ",")};
+		return new String[]{ReferenceUtilities.joinLstFormat(added,
+			Constants.COMMA)};
 	}
 }

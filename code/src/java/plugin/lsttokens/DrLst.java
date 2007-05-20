@@ -22,23 +22,25 @@
  */
 package plugin.lsttokens;
 
-import pcgen.base.util.Logging;
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
-import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.core.DamageReduction;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+
+import pcgen.base.util.Logging;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.core.DamageReduction;
+import pcgen.core.PCClass;
+import pcgen.core.PObject;
+import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.prereq.PreParserFactory;
 
 /**
  * @author djones4
@@ -121,8 +123,7 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 	{
 		if (".CLEAR".equals(value))
 		{
-			context.graph
-				.unlinkChildNodesOfClass(getTokenName(), obj, DR_CLASS);
+			context.graph.removeAll(getTokenName(), obj, DR_CLASS);
 			return true;
 		}
 
@@ -171,24 +172,29 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 			}
 			dr.addPrerequisite(prereq);
 		}
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, dr);
+		context.graph.grant(getTokenName(), obj, dr);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					DamageReduction.class);
-		if (edgeList == null || edgeList.isEmpty())
+		GraphChanges<DamageReduction> changes =
+				context.graph
+					.getChangesFromToken(getTokenName(), obj, DR_CLASS);
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (PCGraphEdge edge : edgeList)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			DamageReduction dr = (DamageReduction) edge.getSinkNodes().get(0);
-			set.add(dr.toString());
+			// Zero indicates no Token
+			return null;
+		}
+		Set<String> set = new TreeSet<String>();
+		for (LSTWriteable lw : added)
+		{
+			set.add(lw.getLSTformat());
 		}
 		return set.toArray(new String[set.size()]);
 	}

@@ -22,18 +22,20 @@
  */
 package plugin.lsttokens;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.ListKey;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Description;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.io.EntityEncoder;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -111,33 +113,14 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value == null || value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + ": line minimally requires "
-				+ getTokenName() + ":<text>");
 			return false;
 		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			obj.removeListFor(ListKey.DESC);
+			context.obj.removeList(obj, ListKey.DESC);
 			return true;
 		}
 		if (value.startsWith(Constants.LST_DOT_CLEAR_DOT))
@@ -147,7 +130,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 			 * is that this equality check would then test for Prerequisites, et
 			 * al.
 			 */
-			obj.removeFromListFor(ListKey.DESC, new Description(value
+			context.obj.removeFromList(obj, ListKey.DESC, new Description(value
 				.substring(7)));
 			return true;
 		}
@@ -157,7 +140,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 		{
 			return false;
 		}
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, d);
+		context.graph.grant(getTokenName(), obj, d);
 		return true;
 	}
 
@@ -235,17 +218,23 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Description> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					Description.class);
-		if (edges == null || edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> list = new TreeSet<String>();
-		for (PCGraphEdge edge : edges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			list.add(((Description) edge.getSinkNodes().get(0)).getPCCText());
+			// Zero indicates no Token
+			return null;
+		}
+		Set<String> list = new TreeSet<String>();
+		for (LSTWriteable lw : added)
+		{
+			list.add(lw.getLSTformat());
 		}
 		return list.toArray(new String[list.size()]);
 	}

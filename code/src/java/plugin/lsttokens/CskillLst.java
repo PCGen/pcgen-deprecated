@@ -22,21 +22,26 @@
  */
 package plugin.lsttokens;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
-import pcgen.cdom.graph.PCGraphAllowsEdge;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
+import pcgen.core.SkillList;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
@@ -45,11 +50,14 @@ import pcgen.util.Logging;
  * @author djones4
  * 
  */
-public class CskillLst implements GlobalLstToken
+public class CskillLst extends AbstractToken implements GlobalLstToken
 {
 
 	private static final Class<Skill> SKILL_CLASS = Skill.class;
 
+	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+
+	@Override
 	public String getTokenName()
 	{
 		return "CSKILL";
@@ -71,24 +79,11 @@ public class CskillLst implements GlobalLstToken
 		 * TODO Question is whether the use of this in a PCClass should really
 		 * alter the SkillList attached to the PCClass...
 		 */
-		if (value.charAt(0) == '|')
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+		boolean first = true;
 		boolean foundAny = false;
 		boolean foundOther = false;
 
@@ -98,8 +93,13 @@ public class CskillLst implements GlobalLstToken
 			String tokText = tok.nextToken();
 			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
-				context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-					SKILL_CLASS);
+				if (!first)
+				{
+					Logging.errorPrint("  Non-sensical " + getTokenName()
+						+ ": .CLEAR was not the first list item");
+					return false;
+				}
+				context.graph.removeAll(getTokenName(), obj, SKILL_CLASS);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -121,7 +121,7 @@ public class CskillLst implements GlobalLstToken
 						+ getTokenName());
 					return false;
 				}
-				context.graph.unlinkChildNode(getTokenName(), obj, ref);
+				context.graph.remove(getTokenName(), obj, ref);
 			}
 			else
 			{
@@ -150,11 +150,13 @@ public class CskillLst implements GlobalLstToken
 						+ getTokenName());
 					return false;
 				}
-				PCGraphAllowsEdge edge =
-						context.graph.linkAllowIntoGraph(getTokenName(), obj,
+				AssociatedPrereqObject edge =
+						context.list.addToMasterList(getTokenName(), obj,
+							context.ref.getCDOMAllReference(SKILLLIST_CLASS),
 							ref);
 				edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 			}
+			first = false;
 		}
 		if (foundAny && foundOther)
 		{
@@ -167,27 +169,53 @@ public class CskillLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					SKILL_CLASS);
-		if (edgeList == null || edgeList.isEmpty())
+		CDOMGroupRef<SkillList> listRef =
+				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
+		GraphChanges<Skill> changes =
+				context.list.getChangesInMasterList(getTokenName(), obj,
+					listRef);
+		if (changes == null)
 		{
+			// Legal if no CSKILL was present
 			return null;
 		}
-		Set<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge edge : edgeList)
+		List<String> list = new ArrayList<String>();
+		if (changes.hasRemovedItems())
 		{
-			if (!SkillCost.CLASS.equals(edge
-				.getAssociation(AssociationKey.SKILL_COST)))
+			if (changes.includesGlobalClear())
 			{
-				context.addWriteMessage("Skill Cost must be CLASS for Token "
-					+ getTokenName());
+				context.addWriteMessage("Non-sensical relationship in "
+					+ getTokenName()
+					+ ": global .CLEAR and local .CLEAR. performed");
 				return null;
 			}
-			set.add((CDOMReference<?>) edge.getSinkNodes().get(0));
+			list.add(Constants.LST_DOT_CLEAR_DOT
+				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+					",|.CLEAR."));
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(set,
-			Constants.PIPE)};
+		if (changes.includesGlobalClear())
+		{
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		if (changes.hasAddedItems())
+		{
+			Collection<LSTWriteable> addedList = changes.getAdded();
+			for (LSTWriteable added : addedList)
+			{
+				AssociatedPrereqObject assoc =
+						changes.getAddedAssociation(added);
+				if (!SkillCost.CLASS.equals(assoc
+					.getAssociation(AssociationKey.SKILL_COST)))
+				{
+					context
+						.addWriteMessage("Skill Cost must be CLASS for Token "
+							+ getTokenName());
+					return null;
+				}
+			}
+			list.add(ReferenceUtilities
+				.joinLstFormat(addedList, Constants.PIPE));
+		}
+		return list.toArray(new String[list.size()]);
 	}
 }

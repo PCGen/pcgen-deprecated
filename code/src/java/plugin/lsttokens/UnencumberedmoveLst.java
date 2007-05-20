@@ -32,6 +32,7 @@ import pcgen.core.PObject;
 import pcgen.core.utils.MessageType;
 import pcgen.core.utils.ShowMessageDelegate;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.Load;
@@ -39,9 +40,11 @@ import pcgen.util.enumeration.Load;
 /**
  * @author djones4
  */
-public class UnencumberedmoveLst implements GlobalLstToken
+public class UnencumberedmoveLst extends AbstractToken implements
+		GlobalLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "UNENCUMBEREDMOVE";
@@ -95,22 +98,8 @@ public class UnencumberedmoveLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value.charAt(0) == '|')
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -132,7 +121,7 @@ public class UnencumberedmoveLst implements GlobalLstToken
 						+ getTokenName() + " this is not valid.");
 					return false;
 				}
-				obj.put(ObjectKey.UNENCUMBERED_LOAD, load);
+				context.obj.put(obj, ObjectKey.UNENCUMBERED_LOAD, load);
 				setLoad = true;
 			}
 			catch (IllegalArgumentException e)
@@ -147,7 +136,7 @@ public class UnencumberedmoveLst implements GlobalLstToken
 							+ getTokenName() + " this is not valid.");
 						return false;
 					}
-					obj.put(ObjectKey.UNENCUMBERED_ARMOR, at);
+					context.obj.put(obj, ObjectKey.UNENCUMBERED_ARMOR, at);
 					setArmor = true;
 				}
 				catch (IllegalArgumentException e2)
@@ -164,8 +153,9 @@ public class UnencumberedmoveLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		pcgen.cdom.enumeration.Load load = obj.get(ObjectKey.UNENCUMBERED_LOAD);
-		ArmorType at = obj.get(ObjectKey.UNENCUMBERED_ARMOR);
+		pcgen.cdom.enumeration.Load load =
+				context.obj.getObject(obj, ObjectKey.UNENCUMBERED_LOAD);
+		ArmorType at = context.obj.getObject(obj, ObjectKey.UNENCUMBERED_ARMOR);
 		if (load == null && at == null)
 		{
 			return null;

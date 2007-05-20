@@ -23,6 +23,7 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -32,11 +33,13 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChoiceSet;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Kit;
 import pcgen.core.PObject;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
@@ -45,11 +48,12 @@ import pcgen.util.Logging;
  * @author djones4
  * 
  */
-public class KitLst implements GlobalLstToken
+public class KitLst extends AbstractToken implements GlobalLstToken
 {
 
 	private static final Class<Kit> KIT_CLASS = Kit.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "KIT";
@@ -70,24 +74,11 @@ public class KitLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value.charAt(0) == '|')
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		ChoiceSet<CDOMSimpleSingleRef<Kit>> cl;
@@ -116,8 +107,7 @@ public class KitLst implements GlobalLstToken
 			String tokText = tok.nextToken();
 			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
-				context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-					ChoiceSet.class);
+				context.graph.removeAll(getTokenName(), obj, ChoiceSet.class);
 				cl.clear();
 			}
 			else
@@ -125,29 +115,34 @@ public class KitLst implements GlobalLstToken
 				cl.addChoice(context.ref.getCDOMReference(KIT_CLASS, tokText));
 			}
 		}
-		context.graph.linkObjectIntoGraph(getTokenName(), obj, cl);
+		context.graph.grant(getTokenName(), obj, cl);
 
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<ChoiceSet> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					ChoiceSet.class);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		List<String> list = new ArrayList<String>(edgeList.size());
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token
+			return null;
+		}
+		List<String> list = new ArrayList<String>(added.size());
 		Set<CDOMReference<?>> set =
-			new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge edge : edgeList)
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		for (LSTWriteable lw : added)
 		{
 			StringBuilder sb = new StringBuilder();
 			ChoiceSet<CDOMSimpleSingleRef<Kit>> cl =
-					(ChoiceSet<CDOMSimpleSingleRef<Kit>>) edge.getSinkNodes()
-						.get(0);
+					(ChoiceSet<CDOMSimpleSingleRef<Kit>>) lw;
 			sb.append(cl.getCount());
 			set.clear();
 			set.addAll(cl.getSet());

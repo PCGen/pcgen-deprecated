@@ -25,26 +25,29 @@ package plugin.lsttokens;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.HashSet;
 import java.util.TreeSet;
 
 import pcgen.base.util.TripleKeyMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphAllowsEdge;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.CompanionList;
 import pcgen.core.FollowerOption;
 import pcgen.core.PObject;
 import pcgen.core.Race;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -193,7 +196,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 					option.setType(companionType);
 					if (prereqs.size() > 0)
 					{
-						option.addPrerequisites(prereqs);
+						option.addAllPrerequisites(prereqs);
 					}
 					if (followerAdjustment != 0)
 					{
@@ -225,29 +228,11 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		StringTokenizer tok = new StringTokenizer(value, LstUtils.PIPE);
 
 		String companionType = tok.nextToken();
@@ -261,22 +246,8 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 
 		String list = tok.nextToken();
 
-		if (list.charAt(0) == ',')
+		if (hasIllegalSeparator(',', list))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return false;
-		}
-		if (list.charAt(list.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (list.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
 
@@ -356,94 +327,69 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 				context.ref
 					.getCDOMReference(CompanionList.class, companionType);
 
-		Aggregator agg = new Aggregator(obj, ref, getTokenName());
-		agg.addPrerequisites(prereqs);
-		/*
-		 * This is intentionally Holds, as the context for traversal must only
-		 * be the ref (linked by the Activation Edge). So we need an edge to the
-		 * Activator to get it copied into the PC, but since this is a 3rd party
-		 * Token, the Race should never grant anything hung off the aggregator.
-		 */
-		context.graph.linkHoldsIntoGraph(getTokenName(), obj, agg);
-		context.graph.linkActivationIntoGraph(getTokenName(), ref, agg);
 		for (CDOMReference<Race> race : races)
 		{
-			PCGraphAllowsEdge edge =
-					context.graph.linkAllowIntoGraph(getTokenName(), agg, race);
+			AssociatedPrereqObject edge =
+					context.list.addToList(getTokenName(), obj, ref, race);
 			if (followerAdjustment != null)
 			{
 				edge.setAssociation(AssociationKey.FOLLOWER_ADJUSTMENT,
 					followerAdjustment);
 			}
+			edge.addAllPrerequisites(prereqs);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeSet =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					Aggregator.class);
-		if (edgeSet == null || edgeSet.isEmpty())
+		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists =
+				context.list.getChangedLists(obj, CompanionList.class);
+		TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CompanionList>, Integer, LSTWriteable> m =
+				new TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CompanionList>, Integer, LSTWriteable>();
+
+		for (CDOMReference ref : changedLists)
 		{
-			return null;
+			GraphChanges<Race> changes =
+					context.list.getChangesInList(getTokenName(), obj, ref);
+			if (changes == null)
+			{
+				// Legal if no COMPANIONLIST was present
+				continue;
+			}
+			if (changes.hasRemovedItems() || changes.includesGlobalClear())
+			{
+				context.addWriteMessage(getTokenName()
+					+ " does not support .CLEAR");
+				return null;
+			}
+			if (changes.hasAddedItems())
+			{
+				Collection<LSTWriteable> addedCollection = changes.getAdded();
+				for (LSTWriteable added : addedCollection)
+				{
+					AssociatedPrereqObject se =
+							changes.getAddedAssociation(added);
+					Set<Prerequisite> prereqs =
+							new HashSet<Prerequisite>(se.getPrerequisiteList());
+					Integer fa =
+							se
+								.getAssociation(AssociationKey.FOLLOWER_ADJUSTMENT);
+					m.addToListFor(prereqs, ref, fa, added);
+
+				}
+			}
 		}
-
-		TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CompanionList>, Integer, CDOMReference<Race>> m =
-				new TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CompanionList>, Integer, CDOMReference<Race>>();
-		for (PCGraphEdge edge : edgeSet)
+		if (m.isEmpty())
 		{
-			Aggregator agg = (Aggregator) edge.getNodeAt(1);
-			Set<PCGraphEdge> childSet =
-					context.graph.getChildLinksFromToken(getTokenName(), agg,
-						Race.class);
-			if (childSet == null || childSet.isEmpty())
-			{
-				context
-					.addWriteMessage("Empty Child Set not valid for Aggregator in "
-						+ getTokenName());
-				return null;
-			}
-
-			Set<PCGraphEdge> parentSet =
-					context.graph.getParentLinksFromToken(getTokenName(), agg,
-						CompanionList.class);
-			if (parentSet == null || parentSet.isEmpty())
-			{
-				context
-					.addWriteMessage("Empty Parent Set not valid for Aggregator in "
-						+ getTokenName());
-				return null;
-			}
-			if (parentSet.size() != 1)
-			{
-				context
-					.addWriteMessage("Parent Set with more than one entry not valid for Aggregator in "
-						+ getTokenName());
-				return null;
-			}
-			CDOMReference<CompanionList> parent =
-					(CDOMReference<CompanionList>) parentSet.iterator().next()
-						.getNodeAt(0);
-
-			Set<Prerequisite> prereqs =
-					new HashSet<Prerequisite>(agg.getPreReqList());
-
-			for (PCGraphEdge child : childSet)
-			{
-				Integer fa =
-						child
-							.getAssociation(AssociationKey.FOLLOWER_ADJUSTMENT);
-				CDOMReference<Race> race =
-						(CDOMReference<Race>) child.getNodeAt(1);
-				m.addToListFor(prereqs, parent, fa, race);
-			}
+			// Legal if no COMPANIONMOD Tokens
+			return null;
 		}
 
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		Set<String> set = new TreeSet<String>();
-		Set<CDOMReference<?>> refSet =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		SortedSet<LSTWriteable> refSet =
+				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 		StringBuilder sb = new StringBuilder();
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{

@@ -22,32 +22,31 @@
 package plugin.lsttokens.deity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.base.util.Logging;
 import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.persistence.lst.utils.TokenUtilities;
 
 /**
  * Class deals with DOMAINS Token
  */
-public class DomainsToken implements DeityLstToken
+public class DomainsToken extends AbstractToken implements DeityLstToken
 {
 	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
 
@@ -56,6 +55,7 @@ public class DomainsToken implements DeityLstToken
 	 * 
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "DOMAINS";
@@ -107,27 +107,8 @@ public class DomainsToken implements DeityLstToken
 
 	public boolean parse(LoadContext context, Deity deity, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not be empty");
-			return false;
-		}
-		if (value.charAt(0) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
 
@@ -159,29 +140,27 @@ public class DomainsToken implements DeityLstToken
 		}
 		for (CDOMReference<Domain> ref : list)
 		{
-			context.graph.linkObjectIntoGraph(getTokenName(), deity, ref);
+			context.graph.grant(getTokenName(), deity, ref);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), deity,
+		GraphChanges<Domain> changes =
+				context.graph.getChangesFromToken(getTokenName(), deity,
 					DOMAIN_CLASS);
-		if (edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		SortedSet<CDOMReference<Domain>> set =
-				new TreeSet<CDOMReference<Domain>>(
-					TokenUtilities.REFERENCE_SORTER);
-
-		for (PCGraphEdge edge : edges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			set.add((CDOMReference<Domain>) edge.getNodeAt(1));
+			// Zero indicates no Token
+			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(set,
+		return new String[]{ReferenceUtilities.joinLstFormat(added,
 			Constants.COMMA)};
 	}
 }

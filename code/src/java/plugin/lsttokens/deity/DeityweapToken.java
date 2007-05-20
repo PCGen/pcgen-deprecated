@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.deity;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
@@ -30,16 +29,20 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.WeaponProf;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
-import pcgen.util.Logging;
 
 /**
  * Class deals with DEITYWEAP Token
  */
-public class DeityweapToken implements DeityLstToken
+public class DeityweapToken extends AbstractToken implements DeityLstToken
 {
 
+	private static final Class<WeaponProf> WEAPONPROF_CLASS = WeaponProf.class;
+
+	@Override
 	public String getTokenName()
 	{
 		return "DEITYWEAP";
@@ -53,48 +56,29 @@ public class DeityweapToken implements DeityLstToken
 
 	public boolean parse(LoadContext context, Deity deity, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not be empty");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
-			deity.addToListFor(ListKey.DEITY_WEAPON, context.ref
-				.getCDOMReference(WeaponProf.class, tok.nextToken()));
+			context.obj.addToList(deity, ListKey.DEITY_WEAPON, context.ref
+				.getCDOMReference(WEAPONPROF_CLASS, tok.nextToken()));
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		List<CDOMSimpleSingleRef<WeaponProf>> profs =
-				deity.getListFor(ListKey.DEITY_WEAPON);
-		if (profs == null || profs.isEmpty())
+		Changes<CDOMSimpleSingleRef<WeaponProf>> changes =
+				context.obj.getListChanges(deity, ListKey.DEITY_WEAPON);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(profs,
-			Constants.PIPE)};
+		return new String[]{ReferenceUtilities.joinLstFormat(
+			changes.getAdded(), Constants.PIPE)};
 	}
 }

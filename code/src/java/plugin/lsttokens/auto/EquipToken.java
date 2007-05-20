@@ -47,6 +47,8 @@ import pcgen.util.Logging;
 public class EquipToken extends AbstractToken implements AutoLstToken
 {
 
+	private static final Class<Equipment> EQUIPMENT_CLASS = Equipment.class;
+
 	private static final Integer INTEGER_ONE = Integer.valueOf(1);
 
 	@Override
@@ -96,22 +98,8 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			}
 		}
 
-		if (armorProfs.charAt(0) == '|')
+		if (hasIllegalSeparator('|', armorProfs))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (armorProfs.charAt(armorProfs.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (armorProfs.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -142,14 +130,14 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 				if (Constants.LST_ANY.equalsIgnoreCase(aProf))
 				{
 					foundAny = true;
-					ref = context.ref.getCDOMAllReference(Equipment.class);
+					ref = context.ref.getCDOMAllReference(EQUIPMENT_CLASS);
 				}
 				else
 				{
 					foundOther = true;
 					ref =
 							TokenUtilities.getTypeOrPrimitive(context,
-								Equipment.class, aProf);
+								EQUIPMENT_CLASS, aProf);
 				}
 				if (ref == null)
 				{
@@ -170,7 +158,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		{
 			Set<PCGraphEdge> edges =
 					context.graph.getChildLinksFromToken(getTokenName(), obj,
-						Equipment.class);
+						EQUIPMENT_CLASS);
 			for (PCGraphEdge edge : edges)
 			{
 				CDOMReference<Equipment> ab =
@@ -209,7 +197,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 				}
 			}
 			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), obj, ref);
+					context.graph.grant(getTokenName(), obj, ref);
 			if (prereq != null)
 			{
 				edge.addPreReq(prereq);
@@ -228,7 +216,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 	{
 		Set<PCGraphEdge> edges =
 				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					Equipment.class);
+					EQUIPMENT_CLASS);
 		if (edges == null || edges.isEmpty())
 		{
 			return null;

@@ -56,7 +56,7 @@ public class KeyLst implements GlobalLstToken
 		 * TODO This actually needs to be special - since the Key is the lookup
 		 * method FUTURE isn't this redundant with the set above?!
 		 */
-		obj.put(StringKey.KEY_NAME, value);
+		context.obj.put(obj, StringKey.KEY_NAME, value);
 		return true;
 	}
 

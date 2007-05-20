@@ -17,6 +17,7 @@
  */
 package plugin.lsttokens.add;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -24,13 +25,14 @@ import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMCompoundReference;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
 import pcgen.core.SpecialAbility;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AddLstToken;
@@ -138,14 +140,14 @@ public class SAToken implements AddLstToken
 
 		if (items.charAt(0) == ',')
 		{
-			Logging.errorPrint(getTokenName()
-				+ " SA List may not start with , : " + value);
+			Logging.errorPrint(getTokenName() + " List may not start with , : "
+				+ value);
 			return false;
 		}
 		if (items.charAt(items.length() - 1) == ',')
 		{
-			Logging.errorPrint(getTokenName()
-				+ " SA List may not end with , : " + value);
+			Logging.errorPrint(getTokenName() + " List may not end with , : "
+				+ value);
 			return false;
 		}
 		if (items.indexOf(",,") != -1)
@@ -156,10 +158,9 @@ public class SAToken implements AddLstToken
 		}
 
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
-
 		Slot<SpecialAbility> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
-					SPECABILITY_CLASS, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), obj, SPECABILITY_CLASS,
+					FormulaFactory.getFormulaFor(count));
 		slot.setName(name);
 		CDOMCompoundReference<SpecialAbility> cr =
 				new CDOMCompoundReference<SpecialAbility>(SPECABILITY_CLASS,
@@ -179,26 +180,31 @@ public class SAToken implements AddLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Slot> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					Slot.class);
-		if (links == null || links.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (PCGraphEdge edge : links)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			Slot<SpecialAbility> slot =
-					(Slot<SpecialAbility>) edge.getSinkNodes().get(0);
-			if (!slot.getSlotClass().equals(SpecialAbility.class))
+			// Zero indicates no Token present
+			return null;
+		}
+		Set<String> set = new TreeSet<String>();
+		for (LSTWriteable lw : added)
+		{
+			Slot<SpecialAbility> slot = (Slot<SpecialAbility>) lw;
+			if (!slot.getSlotClass().equals(SPECABILITY_CLASS))
 			{
 				context.addWriteMessage("Invalid Slot Type associated with "
 					+ getTokenName() + ": Type cannot be "
 					+ slot.getSlotClass().getSimpleName());
 				return null;
 			}
-			String slotCount = slot.toLSTform();
+			String slotCount = slot.getSlotCount();
 			List<Restriction<?>> restr = slot.getSinkRestrictions();
 			if (restr.size() != 1)
 			{

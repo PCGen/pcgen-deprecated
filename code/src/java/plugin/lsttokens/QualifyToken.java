@@ -49,6 +49,7 @@ import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.ReferenceManufacturer;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
@@ -57,9 +58,10 @@ import pcgen.util.StringPClassUtil;
 /**
  * Deals with the QUALIFY token for Abilities
  */
-public class QualifyToken implements GlobalLstToken
+public class QualifyToken extends AbstractToken implements GlobalLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "QUALIFY";
@@ -144,29 +146,11 @@ public class QualifyToken implements GlobalLstToken
 			Logging.errorPrint("Cannot use QUALIFY on a " + obj.getClass());
 			return false;
 		}
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		if (value.indexOf("|") == -1)
 		{
 			Logging.errorPrint(getTokenName()
@@ -190,8 +174,12 @@ public class QualifyToken implements GlobalLstToken
 
 		while (st.hasMoreTokens())
 		{
-			obj.addToListFor(MapKey.QUALIFY, rm.getCDOMClass(), rm
-				.getReference(st.nextToken()));
+			CDOMReference<? extends PObject> ref =
+					rm.getReference(st.nextToken());
+			/*
+			 * TODO Direct object call :( and the only use of MapKey :(
+			 */
+			obj.addToListFor(MapKey.QUALIFY, rm.getCDOMClass(), ref);
 		}
 
 		return true;

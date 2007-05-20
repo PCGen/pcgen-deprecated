@@ -23,6 +23,7 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -36,10 +37,11 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.modifier.ChangeProf;
 import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -96,29 +98,11 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		// value should be of the format:
 		// Name1,TYPE.type1,Name3=Prof1|Name4,Name5=Prof2
 		//
@@ -187,25 +171,31 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 		}
 		for (ChangeProf cp : list)
 		{
-			context.graph.linkObjectIntoGraph(getTokenName(), obj, cp);
+			context.graph.grant(getTokenName(), obj, cp);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<ChangeProf> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					ChangeProf.class);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
+			return null;
+		}
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token
 			return null;
 		}
 		HashMapToList<CDOMGroupRef<WeaponProf>, CDOMReference<WeaponProf>> m =
 				new HashMapToList<CDOMGroupRef<WeaponProf>, CDOMReference<WeaponProf>>();
-		for (PCGraphEdge edge : edgeList)
+		for (LSTWriteable lw : added)
 		{
-			ChangeProf cp = (ChangeProf) edge.getNodeAt(1);
+			ChangeProf cp = (ChangeProf) lw;
 			CDOMReference<WeaponProf> source = cp.getSource();
 			CDOMGroupRef<WeaponProf> result = cp.getResult();
 			m.addToListFor(result, source);

@@ -21,25 +21,27 @@
  */
 package plugin.lsttokens.deity;
 
+import java.util.List;
+import java.util.StringTokenizer;
+
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Pantheon;
 import pcgen.core.Deity;
 import pcgen.core.utils.CoreUtility;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
-import pcgen.util.Logging;
-
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Class deals with PANTHEON Token
  */
-public class PantheonToken implements DeityLstToken
+public class PantheonToken extends AbstractToken implements DeityLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "PANTHEON";
@@ -59,46 +61,28 @@ public class PantheonToken implements DeityLstToken
 
 	public boolean parse(LoadContext context, Deity deity, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not be empty");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
-			deity.addToListFor(ListKey.PANTHEON, Pantheon.getConstant(tok
-				.nextToken()));
+			context.obj.addToList(deity, ListKey.PANTHEON, Pantheon
+				.getConstant(tok.nextToken()));
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		List<Pantheon> pantheons = deity.getListFor(ListKey.PANTHEON);
-		if (pantheons == null || pantheons.isEmpty())
+		Changes<Pantheon> changes =
+				context.obj.getListChanges(deity, ListKey.PANTHEON);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(pantheons, Constants.PIPE)};
+		return new String[]{StringUtil.join(changes.getAdded(), Constants.PIPE)};
 	}
 }

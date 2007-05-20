@@ -17,23 +17,24 @@
  */
 package plugin.lsttokens.add;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMCompoundReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AddLstToken;
@@ -186,7 +187,7 @@ public class ClassSkillsToken implements AddLstToken
 		 * the Class itself...
 		 */
 		Slot<Skill> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
+				context.graph.addSlot(getTokenName(), obj,
 					SKILL_CLASS, FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Skill>(SKILL_CLASS, cr));
 		slot.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
@@ -196,22 +197,27 @@ public class ClassSkillsToken implements AddLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Slot> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					Slot.class);
-		if (links == null || links.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context.addWriteMessage("Invalid Slot Count " + links.size()
-				+ " associated with " + getTokenName()
-				+ ": Only one Slot allowed.");
+			// Zero indicates no Token present
 			return null;
 		}
-		PCGraphEdge edge = links.iterator().next();
-		Slot<Skill> slot = (Slot<Skill>) edge.getSinkNodes().get(0);
+		if (added.size() > 1)
+		{
+			context.addWriteMessage("Error in " + obj.getKeyName()
+				+ ": Only one " + getTokenName()
+				+ " Slot is allowed per Object");
+			return null;
+		}
+		Slot<Skill> slot = (Slot<Skill>) added.iterator().next();
 		if (!slot.getSlotClass().equals(SKILL_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "
@@ -219,7 +225,7 @@ public class ClassSkillsToken implements AddLstToken
 				+ slot.getSlotClass().getSimpleName());
 			return null;
 		}
-		String slotCount = slot.toLSTform();
+		String slotCount = slot.getSlotCount();
 		String result;
 		List<Restriction<?>> restr = slot.getSinkRestrictions();
 		if (restr.size() != 1)

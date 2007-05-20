@@ -22,29 +22,9 @@
  */
 package plugin.lsttokens;
 
-import pcgen.base.lang.StringUtil;
-import pcgen.base.util.DoubleKeyMap;
-import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.Constants;
-import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.core.Campaign;
-import pcgen.core.PObject;
-import pcgen.core.prereq.Prerequisite;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
-import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.util.Logging;
-
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,7 +33,29 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
+import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.core.Campaign;
 import pcgen.core.PCSpell;
+import pcgen.core.PObject;
+import pcgen.core.prereq.Prerequisite;
+import pcgen.core.spell.Spell;
+import pcgen.persistence.GraphChanges;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
+import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -184,29 +186,11 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 	private boolean createSpellsList(LoadContext context, CDOMObject obj,
 		String sourceLine)
 	{
-		if (sourceLine.length() == 0)
+		if (isEmpty(sourceLine) || hasIllegalSeparator('|', sourceLine))
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		if (sourceLine.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + sourceLine);
-			return false;
-		}
-		if (sourceLine.charAt(sourceLine.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + sourceLine);
-			return false;
-		}
-		if (sourceLine.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + sourceLine);
-			return false;
-		}
+
 		StringTokenizer tok = new StringTokenizer(sourceLine, Constants.PIPE);
 		String spellBook = tok.nextToken();
 		// Formula casterLevel = null;
@@ -337,8 +321,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 		for (CDOMReference<Spell> spell : dkm.getKeySet())
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), obj,
-						spell);
+					context.graph.grant(getTokenName(), obj, spell);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(spell))
 			{
 				edge.setAssociation(ak, dkm.get(spell, ak));
@@ -355,37 +338,40 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeSet =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Spell> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					Spell.class);
-
-		if (edgeSet == null || edgeSet.isEmpty())
+		if (changes == null)
 		{
+			return null;
+		}
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token
 			return null;
 		}
 		DoubleKeyMapToList<Set<Prerequisite>, Map<AssociationKey<String>, String>, Thingy> m =
 				new DoubleKeyMapToList<Set<Prerequisite>, Map<AssociationKey<String>, String>, Thingy>();
-		for (PCGraphEdge edge : edgeSet)
+		for (LSTWriteable lw : added)
 		{
-			CDOMReference<Spell> sp =
-					(CDOMReference<Spell>) edge.getSinkNodes().get(0);
+			AssociatedPrereqObject assoc = changes.getAddedAssociation(lw);
 			Map<AssociationKey<String>, String> am =
 					new HashMap<AssociationKey<String>, String>();
 			String dc = null;
-			for (AssociationKey ak : edge.getAssociationKeys())
+			for (AssociationKey ak : assoc.getAssociationKeys())
 			{
 				if (AssociationKey.DC_FORMULA.equals(ak))
 				{
-					dc = edge.getAssociation(AssociationKey.DC_FORMULA);
+					dc = assoc.getAssociation(AssociationKey.DC_FORMULA);
 				}
 				else
 				{
-					am.put(ak, (String) edge.getAssociation(ak));
+					am.put(ak, (String) assoc.getAssociation(ak));
 				}
 			}
-			m.addToListFor(
-				new HashSet<Prerequisite>(edge.getPrerequisiteList()), am,
-				new Thingy(sp, dc));
+			m.addToListFor(new HashSet<Prerequisite>(assoc
+				.getPrerequisiteList()), am, new Thingy(lw, dc));
 		}
 
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
@@ -448,10 +434,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 
 	private static class Thingy
 	{
-		public final CDOMReference<Spell> spell;
+		public final LSTWriteable spell;
 		public final String dc;
 
-		public Thingy(CDOMReference<Spell> sp, String d)
+		public Thingy(LSTWriteable sp, String d)
 		{
 			spell = sp;
 			dc = d;

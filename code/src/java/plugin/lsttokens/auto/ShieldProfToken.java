@@ -19,6 +19,7 @@ package plugin.lsttokens.auto;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,14 +28,16 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.core.ShieldProf;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -45,6 +48,8 @@ import pcgen.util.Logging;
 
 public class ShieldProfToken extends AbstractToken implements AutoLstToken
 {
+
+	private static final Class<ShieldProf> SHIELDPROF_CLASS = ShieldProf.class;
 
 	@Override
 	public String getTokenName()
@@ -89,22 +94,8 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 			}
 		}
 
-		if (shieldProfs.charAt(0) == '|')
+		if (hasIllegalSeparator('|', shieldProfs))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (shieldProfs.charAt(shieldProfs.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (shieldProfs.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -135,14 +126,14 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 				if (Constants.LST_ANY.equalsIgnoreCase(aProf))
 				{
 					foundAny = true;
-					ref = context.ref.getCDOMAllReference(ShieldProf.class);
+					ref = context.ref.getCDOMAllReference(SHIELDPROF_CLASS);
 				}
 				else
 				{
 					foundOther = true;
 					ref =
 							TokenUtilities.getTypeOrPrimitive(context,
-								ShieldProf.class, aProf);
+								SHIELDPROF_CLASS, aProf);
 				}
 				if (ref == null)
 				{
@@ -162,7 +153,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 		for (CDOMReference<ShieldProf> ref : refs)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), obj, ref);
+					context.graph.grant(getTokenName(), obj, ref);
 			if (prereq != null)
 			{
 				edge.addPreReq(prereq);
@@ -174,33 +165,38 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
-					ShieldProf.class);
-		if (edges == null || edges.isEmpty())
+		GraphChanges<ShieldProf> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
+					SHIELDPROF_CLASS);
+		if (changes == null)
 		{
 			return null;
 		}
-		HashMapToList<Set<Prerequisite>, CDOMReference<ShieldProf>> m =
-				new HashMapToList<Set<Prerequisite>, CDOMReference<ShieldProf>>();
-		for (PCGraphEdge edge : edges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			CDOMReference<ShieldProf> ab =
-					(CDOMReference<ShieldProf>) edge.getSinkNodes().get(0);
-			m.addToListFor(
-				new HashSet<Prerequisite>(edge.getPrerequisiteList()), ab);
+			// Zero indicates no Token
+			return null;
+		}
+		HashMapToList<Set<Prerequisite>, LSTWriteable> m =
+				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+		for (LSTWriteable ab : added)
+		{
+			AssociatedPrereqObject assoc = changes.getAddedAssociation(ab);
+			m.addToListFor(new HashSet<Prerequisite>(assoc
+				.getPrerequisiteList()), ab);
 		}
 
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		SortedSet<LSTWriteable> set =
+				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 
 		String[] array = new String[m.size()];
 		int index = 0;
 
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			List<CDOMReference<ShieldProf>> profs = m.getListFor(prereqs);
+			List<LSTWriteable> profs = m.getListFor(prereqs);
 			set.clear();
 			set.addAll(profs);
 			String ab = ReferenceUtilities.joinLstFormat(set, Constants.PIPE);

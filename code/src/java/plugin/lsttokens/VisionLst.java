@@ -23,18 +23,18 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
-import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.Vision;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.util.Logging;
@@ -155,8 +155,7 @@ public class VisionLst implements GlobalLstToken
 
 			if (".CLEAR".equals(visionString))
 			{
-				context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-					VISION_CLASS);
+				context.graph.removeAll(getTokenName(), obj, VISION_CLASS);
 				continue;
 			}
 
@@ -164,9 +163,10 @@ public class VisionLst implements GlobalLstToken
 			{
 				try
 				{
-					//TODO Need to defer unlink until prove that there are no errors
+					// TODO Need to defer unlink until prove that there are no
+					// errors
 					Vision vis = Vision.getVision(visionString.substring(7));
-					context.graph.unlinkChildNode(getTokenName(), obj, vis);
+					context.graph.remove(getTokenName(), obj, vis);
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -180,8 +180,7 @@ public class VisionLst implements GlobalLstToken
 			{
 				if (visionString.startsWith(".SET."))
 				{
-					context.graph.unlinkChildNodesOfClass(getTokenName(), obj,
-						VISION_CLASS);
+					context.graph.removeAll(getTokenName(), obj, VISION_CLASS);
 					visionString = visionString.substring(5);
 				}
 				try
@@ -199,26 +198,27 @@ public class VisionLst implements GlobalLstToken
 		}
 		for (Vision vis : list)
 		{
-			context.graph.linkObjectIntoGraph(getTokenName(), obj, vis);
+			context.graph.grant(getTokenName(), obj, vis);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Vision> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					VISION_CLASS);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (PCGraphEdge edge : edgeList)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			Vision vis = (Vision) edge.getSinkNodes().get(0);
-			set.add(vis.toString());
+			// Zero indicates no Token
+			return null;
 		}
-		return new String[] { StringUtil.join(set, Constants.PIPE)};
+		return new String[]{ReferenceUtilities.joinLstFormat(added,
+			Constants.PIPE)};
 	}
 }

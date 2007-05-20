@@ -51,13 +51,13 @@ public class BenefitToken implements AbilityLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		ability.put(StringKey.BENEFIT, value);
+		context.obj.put(ability, StringKey.BENEFIT, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
-		String benefit = ability.get(StringKey.BENEFIT);
+		String benefit = context.obj.getString(ability, StringKey.BENEFIT);
 		if (benefit == null)
 		{
 			return null;

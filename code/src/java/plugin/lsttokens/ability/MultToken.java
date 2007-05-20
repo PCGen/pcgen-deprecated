@@ -71,13 +71,14 @@ public class MultToken implements AbilityLstToken
 			}
 			set = Boolean.FALSE;
 		}
-		ability.put(ObjectKey.MULTIPLE_ALLOWED, set);
+		context.obj.put(ability, ObjectKey.MULTIPLE_ALLOWED, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
-		Boolean mult = ability.get(ObjectKey.MULTIPLE_ALLOWED);
+		Boolean mult =
+				context.obj.getObject(ability, ObjectKey.MULTIPLE_ALLOWED);
 		if (mult == null)
 		{
 			return null;

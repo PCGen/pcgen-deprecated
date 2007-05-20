@@ -63,13 +63,13 @@ public class WorshippersToken implements DeityLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		deity.put(StringKey.WORSHIPPERS, value);
+		context.obj.put(deity, StringKey.WORSHIPPERS, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		String worshippers = deity.get(StringKey.WORSHIPPERS);
+		String worshippers = context.obj.getString(deity, StringKey.WORSHIPPERS);
 		if (worshippers == null)
 		{
 			return null;

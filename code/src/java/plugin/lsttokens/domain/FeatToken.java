@@ -23,6 +23,7 @@ package plugin.lsttokens.domain;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,19 +33,22 @@ import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Ability;
 import pcgen.core.Domain;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -79,27 +83,8 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 
 	public boolean parseFeat(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -171,8 +156,7 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 		for (CDOMReference<Ability> ability : abilityList)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), obj,
-						ability);
+					context.graph.grant(getTokenName(), obj, ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
 				AbilityNature.NORMAL);
 			if (prereqs != null)
@@ -187,66 +171,56 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 
 	public String[] unparse(LoadContext context, Domain domain)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), domain,
+		GraphChanges<Ability> changes =
+				context.graph.getChangesFromToken(getTokenName(), domain,
 					ABILITY_CLASS);
-		if (edges == null || edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		HashMapToList<Set<Prerequisite>, CategorizedCDOMReference<Ability>> m =
-				new HashMapToList<Set<Prerequisite>, CategorizedCDOMReference<Ability>>();
-		for (PCGraphEdge edge : edges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
+			// Zero indicates no Token
+			return null;
+		}
+		HashMapToList<Set<Prerequisite>, LSTWriteable> m =
+				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+		for (LSTWriteable ab : added)
+		{
+			AssociatedPrereqObject assoc = changes.getAddedAssociation(ab);
 			AbilityNature an =
-					edge.getAssociation(AssociationKey.ABILITY_NATURE);
+					assoc.getAssociation(AssociationKey.ABILITY_NATURE);
 			if (!AbilityNature.NORMAL.equals(an))
 			{
 				context.addWriteMessage("Abilities awarded by "
 					+ getTokenName() + " must be of NORMAL AbilityNature");
 				return null;
 			}
-			CategorizedCDOMReference<Ability> ab =
-					(CategorizedCDOMReference<Ability>) edge.getSinkNodes()
-						.get(0);
-			if (!AbilityCategory.FEAT.equals(ab.getCDOMCategory()))
+			if (!AbilityCategory.FEAT
+				.equals(((CategorizedCDOMReference<Ability>) ab)
+					.getCDOMCategory()))
 			{
 				context.addWriteMessage("Abilities awarded by "
 					+ getTokenName() + " must be of CATEGORY FEAT");
 				return null;
 			}
-			m.addToListFor(
-				new HashSet<Prerequisite>(edge.getPrerequisiteList()), ab);
+			m.addToListFor(new HashSet<Prerequisite>(assoc
+				.getPrerequisiteList()), ab);
 		}
 
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<CategorizedCDOMReference<Ability>> set =
-				new TreeSet<CategorizedCDOMReference<Ability>>(
-					TokenUtilities.CAT_REFERENCE_SORTER);
+		SortedSet<LSTWriteable> set =
+				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 
 		Set<String> list = new TreeSet<String>();
 
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			List<CategorizedCDOMReference<Ability>> abilities =
-					m.getListFor(prereqs);
-			StringBuilder sb = new StringBuilder();
-			boolean needBar = false;
+			List<LSTWriteable> abilities = m.getListFor(prereqs);
 			set.clear();
 			set.addAll(abilities);
-			for (CategorizedCDOMReference<Ability> ab : set)
-			{
-				if (needBar)
-				{
-					sb.append(Constants.PIPE);
-				}
-				needBar = true;
-				/*
-				 * FIXME This isn't entirely true, is it? I mean, how is the
-				 * category handled with CategorizedSingleRef?
-				 */
-				sb.append(ab.getLSTformat());
-			}
+			String ab = ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				TreeSet<String> prereqSet = new TreeSet<String>();
@@ -265,10 +239,11 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 					}
 					prereqSet.add(swriter.toString());
 				}
-				sb.append(Constants.PIPE).append(
-					StringUtil.join(prereqSet, Constants.PIPE));
+				ab =
+						ab + Constants.PIPE
+							+ StringUtil.join(prereqSet, Constants.PIPE);
 			}
-			list.add(sb.toString());
+			list.add(ab);
 		}
 		return list.toArray(new String[list.size()]);
 	}

@@ -17,19 +17,20 @@
  */
 package plugin.lsttokens.add;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMCompoundReference;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Constants;
 import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AddLstToken;
@@ -130,7 +131,7 @@ public class TemplateToken implements AddLstToken
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
 		Slot<PCTemplate> slot =
-				context.graph.addSlotIntoGraph(getTokenName(), obj,
+				context.graph.addSlot(getTokenName(), obj,
 					PCTEMPLATE_CLASS, FormulaFactory.getFormulaFor(count));
 		CDOMCompoundReference<PCTemplate> cr =
 				new CDOMCompoundReference<PCTemplate>(PCTEMPLATE_CLASS,
@@ -148,22 +149,27 @@ public class TemplateToken implements AddLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Slot> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					Slot.class);
-		if (links == null || links.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context.addWriteMessage("Invalid Slot Count " + links.size()
-				+ " associated with " + getTokenName()
-				+ ": Only one Slot allowed.");
+			// Zero indicates no Token present
 			return null;
 		}
-		PCGraphEdge edge = links.iterator().next();
-		Slot<PCTemplate> slot = (Slot<PCTemplate>) edge.getSinkNodes().get(0);
+		if (added.size() > 1)
+		{
+			context.addWriteMessage("Error in " + obj.getKeyName()
+				+ ": Only one " + getTokenName()
+				+ " Slot is allowed per Object");
+			return null;
+		}
+		Slot<PCTemplate> slot = (Slot<PCTemplate>) added.iterator().next();
 		if (!slot.getSlotClass().equals(PCTEMPLATE_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "
@@ -171,7 +177,7 @@ public class TemplateToken implements AddLstToken
 				+ slot.getSlotClass().getSimpleName());
 			return null;
 		}
-		String slotCount = slot.toLSTform();
+		String slotCount = slot.getSlotCount();
 		String result;
 		List<Restriction<?>> restr = slot.getSinkRestrictions();
 		if (restr.size() != 1)
