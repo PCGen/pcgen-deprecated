@@ -61,6 +61,7 @@ These files can be renamed and used for releases.
 	<property name="src.java.dir" value="${basedir}/code/src/java" />
 	<property name="src.test.java.dir" value="${basedir}/code/src/test" />
 	<property name="src.utest.java.dir" value="${basedir}/code/src/utest" />
+	<property name="src.itest.java.dir" value="${basedir}/code/src/itest" />
 	<property name="lib.dir" value="lib" />
 	<property name="lib.ncss" value="${basedir}/lib/javancss" />
 	<property name="src.data.dir" value="${basedir}/data" />
@@ -129,6 +130,7 @@ These files can be renamed and used for releases.
 	<property name="test.framework.class" value="AllJUnitTests" />
 	<property name="base.utest.class" value="pcgen.base.AllBaseUnitTests" />
 	<property name="token.utest.class" value="plugin.lsttokens.AllTokenUnitTests" />
+	<property name="token.itest.class" value="plugin.lsttokens.AllTokenIntegrationTests" />
 	<property name="test.manifest.extra.jars" value="${manifest.extra.jars} ${s}/test/junit.jar ${lib.dir}/test/xmlunit1.0.jar" />
 	<property name="test.all-output.file" value="TEST-test.AllJUnitTests.txt" />
 
@@ -761,6 +763,7 @@ pcgen.filepaths=user
 			</classpath>
 			<test name="${base.utest.class}" todir="${build.dir}/test-results/xml" />
 			<test name="${token.utest.class}" todir="${build.dir}/test-results/xml" />
+			<test name="${token.itest.class}" todir="${build.dir}/test-results/xml" />
 		</junit>
 		<junit fork="yes" printsummary="on" failureproperty="junitfailure" dir="${basedir}">
 			<jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
@@ -824,6 +827,9 @@ pcgen.filepaths=user
 	<target name="test.compile" depends="jar, jar-all-plugins">
 		<mkdir dir="${build.testclasses.dir}" />
 		<javac srcdir="${src.utest.java.dir}" destdir="${build.testclasses.dir}" deprecation="true" includes="**/*.java" memoryInitialSize="128m" memoryMaximumSize="512m" fork="true">
+			<classpath refid="test.project.classpath" />
+		</javac>
+		<javac srcdir="${src.itest.java.dir}" destdir="${build.testclasses.dir}" deprecation="true" includes="**/*.java" memoryInitialSize="128m" memoryMaximumSize="512m" fork="true">
 			<classpath refid="test.project.classpath" />
 		</javac>
 		<javac srcdir="${src.test.java.dir}" destdir="${build.testclasses.dir}" deprecation="true" includes="**/*.java" memoryInitialSize="128m" memoryMaximumSize="512m" fork="true">

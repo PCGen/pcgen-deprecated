@@ -3564,13 +3564,6 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-		<jar jarfile="${lstplugins.dir}/RaceLstToken-LANGNUM.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/race/LangnumToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
 		<jar jarfile="${lstplugins.dir}/RaceLstToken-LEGS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4019,13 +4012,6 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/template/LeveladjustmentToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/TemplateLstToken-LEVELSPERFEAT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/template/LevelsperfeatToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -5836,6 +5822,20 @@ jar-all-plugins - Generate the plugin jar files
 	</target>
 
 	<target name="jar-deprecated-plugin" depends="manifest" description="Build (Link) plugin jar files">
+		<jar jarfile="${lstplugins.dir}/RaceLstToken-DEPRECATED-LANGNUM.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lsttokens/deprecated/LangnumToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/TemplateLstToken-DEPRECATED-LEVELSPERFEAT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lsttokens/deprecated/LevelsperfeatToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
 	</target>
 
 	<target name="manifest" description="Write the Java manifest">

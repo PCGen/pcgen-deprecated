@@ -26,7 +26,7 @@ import junit.framework.TestSuite;
 @Suite.SuiteClasses({CRTokenTest.class, FaceTokenTest.class,
 	FavoredClassTokenTest.class, FeatTokenTest.class, HandsTokenTest.class,
 	HitDiceAdvancementTokenTest.class, HitDieTokenTest.class,
-	LangbonusTokenTest.class, LangNumTokenTest.class, LegsTokenTest.class,
+	LangbonusTokenTest.class, LegsTokenTest.class,
 	LevelAdjustmentTokenTest.class, MonCCSkillTokenTest.class,
 	MonCSkillTokenTest.class, MonsterClassTokenTest.class,
 	RaceSubtypeTokenTest.class, RaceTypeTokenTest.class, ReachTokenTest.class,
