@@ -22,7 +22,7 @@ COPYRIGHT:PCGen dataset conversion for Sovereign Stone Core Rules Copyright 2003
 #EXTRAFILE:OGL.txt
 
 BIOSET:sovereignbiosettings.lst
-CLASS:sovereignclasses.lst
+CLASS:sovereign_classes.lst
 CLASS:sovereignphbclasses.lst
 CLASS:sovereignmageclasses.lst
 EQUIPMENT:sovereignequiparmorshields.lst
@@ -33,7 +33,7 @@ EQUIPMENT:sovereignequipweapammo.lst
 EQUIPMENT:sovereignequipweapmelee.lst
 EQUIPMENT:sovereignequipweapranged.lst
 FEAT:sovereignfeats.lst
-FEAT:sovereignfeatshidden.lst
+FEAT:sovereign_feats_hidden.lst
 RACE:sovereignraces.lst
 SKILL:sovereignskills.lst
 SPELL:sovereignspells.lst
@@ -53,5 +53,5 @@ EQUIPMENT:sovereignarmormasterwork.lst
 FEAT:sovereignmagicfeats.lst
 EQUIPMENT:sovereignweapmasterwork.lst
 #EQUIPMOD:sovereignequipmods.lst
-EQUIPMOD:@/d20ogl/srd/basics/srd_eqmods_mundane|(EXCLUDE:Armor Spikes|Shield Spikes)
-EQUIPMOD:@/d20ogl/srd/basics/srd_eqmods_enhancing|(INCLUDE:+1 (Enhancement to Weapon or Ammunition)|+1 (Enhancement to Armor)|+1 (Enhancement to Shield)|+2 (Enhancement to Weapon or Ammunition)|+2 (Enhancement to Armor)|+2 (Enhancement to Shield)|+3 (Enhancement to Weapon or Ammunition)|+3 (Enhancement to Armor)|+3 (Enhancement to Shield)|+4 (Enhancement to Weapon or Ammunition)|+4 (Enhancement to Armor)|+4 (Enhancement to Shield)|+5 (Enhancement to Weapon or Ammunition)|+5 (Enhancement to Armor)|+5 (Enhancement to Shield)|Adamantine|Throwing)
+EQUIPMOD:@/d20ogl/srd/basics/srd_equipmods_mundane.lst|(EXCLUDE:Armor Spikes|Shield Spikes)
+EQUIPMOD:@/d20ogl/srd/basics/srd_equipmods_magic.lst|(INCLUDE:+1 (Enhancement to Weapon or Ammunition)|+1 (Enhancement to Armor)|+1 (Enhancement to Shield)|+2 (Enhancement to Weapon or Ammunition)|+2 (Enhancement to Armor)|+2 (Enhancement to Shield)|+3 (Enhancement to Weapon or Ammunition)|+3 (Enhancement to Armor)|+3 (Enhancement to Shield)|+4 (Enhancement to Weapon or Ammunition)|+4 (Enhancement to Armor)|+4 (Enhancement to Shield)|+5 (Enhancement to Weapon or Ammunition)|+5 (Enhancement to Armor)|+5 (Enhancement to Shield)|Adamantine|Throwing)
