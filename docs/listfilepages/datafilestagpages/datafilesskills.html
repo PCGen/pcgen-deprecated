@@ -90,9 +90,11 @@
 		<p class="indent3">The listed skill is class skill for &quot;Cleric&quot; or &quot;Paladin&quot; characters.</p>
 		<p class="indent2"><code>CLASSES:ALL</code></p>
 		<p class="indent3">The listed skill is class skill for all classes.</p>
+		<p class="indent2"><code>CLASSES:ALL|!Wizard</code></p>
+		<p class="indent3">The listed skill is a class skill for all classes except for &quot;Wizard&quot; characters.</p>
 
 		<p></p><a name="COST"></a><hr>
-		<p class="new">*** Updated 5.11.4</p>
+		<p class="new">*** Deprecated 5.11.11 - Remove 6.0</p>
 		<p class="indent0"><strong>Tag Name:</strong> COST:x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Number (skill point cost)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
@@ -191,20 +193,29 @@
 		<p></p><a name="VISIBLE"></a><hr>
 		<p class="new">*** New 5.7.7</p>
 		<p class="indent0"><strong>Tag Name:</strong> VISIBLE:x|y</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Property (YES, ALWAYS, GUI, EXPORT, CSHEET)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> YES</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> ALWAYS</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> DISPLAY</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> GUI</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> EXPORT</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> CSHEET</p>
 		<p class="indent1"><strong>Variables Used (y):</strong> Optional Property (READONLY)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
 		<ul class="indent2">
 			<li>YES, ALWAYS - Shows the skill name in PCGen and on export to a character sheet.
 				(This is the default setting).</li>
-			<li>GUI - Displays the skill name in PCGen but not on the character sheet.</li>
+			<li>DISPLAY, GUI - Displays the skill name in PCGen but not on the character sheet.</li>
 			<li>EXPORT, CSHEET - Hides the skill name from PCGen but displays it on the character sheet.</li>
 			<li>READONLY - Optional. This will block the user from adding Ranks to the skill in the Skill Tab.
 				READONLY is not valid when VISIBLE is set to EXPORT or CSHEET.</li>
 		</ul>
 		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>VISIBLE:YES</code></p>
+		<p class="indent3">Shows the skill name in PCGen and on the Output sheet.</p>
 		<p class="indent2"><code>VISIBLE:ALWAYS</code></p>
 		<p class="indent3">Shows the skill name in PCGen and on the Output sheet.</p>
+		<p class="indent2"><code>VISIBLE:DISPLAY</code></p>
+		<p class="indent3">Shows the skill name in PCGen but not on the Output sheet.</p>
 		<p class="indent2"><code>VISIBLE:GUI</code></p>
 		<p class="indent3">Shows the skill name in PCGen but not on the Output sheet.</p>
 		<p class="indent2"><code>VISIBLE:CSHEET</code></p>

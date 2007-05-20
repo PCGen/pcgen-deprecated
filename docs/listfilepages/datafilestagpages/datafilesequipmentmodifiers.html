@@ -38,8 +38,8 @@
 
 		<p></p><a name="ARMORTYPE"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> ARMORTYPE:x|y</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Text (what the armor proficiency currently is)</p>
-		<p class="indent1"><strong>Variables Used (y):</strong> Text (type is what it will become)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text (Current armor TYPE)</p>
+		<p class="indent1"><strong>Variables Used (y):</strong> Text (New armor TYPE)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
 		<p class="indent2">This will change the armor type and is | (pipe) delimited.</p>
 		<p class="indent1"><strong>Example:</strong></p>
@@ -66,20 +66,55 @@
 		<p class="indent2"><code>CHARGES:1|50</code></p>
 		<p class="indent3">Sets the charges for a magic item at a minimum of 1 and maximum of 50.</p>
 
+		<p></p><a name="EQBUILDER"></a><hr>
+		<p class="new">*** New</p>
+		<p class="indent0"><strong>Tag Name:</strong> CHOOSE:EQBUILDER.SPELL|w|x|y|z</p>
+		<p class="indent1"><strong>Variables Used (w):</strong> :Text (Spell Type, i.e. Arcane, Divine, Psionic, ANY)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> :SCHOOL.Text (School Name, optional)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> :SUBSCHOOL.Text (Sub-School Name, optional)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> :DESCRIPTOR.Text (Descriptor Text, optional)</p>
+		<p class="indent1"><strong>Variables Used (y):</strong> :Number (Minimum Level, optional, default 0)</p>
+		<p class="indent1"><strong>Variables Used (z):</strong> :Number (Maximum Level, optional, default MAX_LEVEL)</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<ul class="indent2">
+			<li>Allows the selection of magic/psionic spells/powers by specific type, school, sub-school, descriptor, and level, and then adds the spell/power to the item being modified.</li>
+			<li>Filtering by multiple types may be done joining several types using a comma (,), logocal AND function, or a pipe (|), logical OR function.</li>
+			<li>Multiple schools, sub-schools, and descriptors may be logically joined by a comma (,), logocal AND function, or a pipe (|), logical OR function.</li>
+			<li>Minimum and maximum level of spell may be set by using y and z.</li>
+		</ul>
+  		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|SCHOOL.Enchantment;SUBSCHOOL.Compulsion</code></p>
+		<p class="indent3">Show all spells that are Evocation AND Compulsion.</p>
+		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|SCHOOL.Enchantment|SCHOOL.Abjuration</code></p>
+		<p class="indent3">Show all spells that are Evocation OR Abjuration.</p>
+		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|Arcane,Divine|0|3</code></p>
+		<p class="indent3">Allows the user to quickly generate a minor scroll</p>
+		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|Arcane|SCHOOL.Evocation|0|3</code></p>
+		<p class="indent3">Allows the user to quickly generate a minor wand with only evocation spells</p>
+		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|Psionics|0|3</code></p>
+		<p class="indent3">Allows a minor powerstone</p>
+		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|Arcane|SCHOOL.Illusion,DESCRIPTOR.Fear|SCHOOL.Abjuration</code></p>
+		<p class="indent3">indicates Spells which are:  (School Illusion AND Descriptor Fear) OR School Abjuration</p>
+
 		<p></p><a name="CHOOSEEQUIPMENT"></a><hr>
 		<p class="new">*** New 5.10.1 RC3</p>
-		<p class="indent0"><strong>Tag Name:</strong> CHOOSE:EQUIPMENT|TYPE=x|TYPE=y</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> TYPE=Name</p>
-		<p class="indent1"><strong>Variables Used (y):</strong> TYPE=Name</p>
+		<p class="indent0"><strong>Tag Name:</strong> CHOOSE:EQUIPMENT|x|x</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> TYPE=Text (Type Name)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">Give you a list of all equipement of types x and y.</p>
+		<ul class="indent2">
+			<li>Will present a list of equipement of types x with each type being given separately.</li>
+			<li>At least one (1) equipment type must be designated for this tag to function properly.</li>
+			<li>There is no specific weapon chooser.</li>
+		</ul>
 		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>CHOOSE:EQUIPMENT|TYPE=Goods</code></p>
+		<p class="indent3">A list of all equipement of type 'Goods'.</p>
 		<p class="indent2"><code>CHOOSE:EQUIPMENT|TYPE=Martial|TYPE=Finesseable</code></p>
-		<p class="indent3">A list of all equipement of types Martial and Finesseable.</p>
+		<p class="indent3">A list of all equipement of types 'Martial' and 'Finesseable'.</p>
 		<p class="indent2"><code>CHOOSE:EQUIPMENT|TYPE=Natural|TYPE=Bludgeoning</code></p>
-		<p class="indent3">A list of all equipement of types Natural and Bludgeoning.</p>
+		<p class="indent3">A list of all equipement of types 'Natural' and 'Bludgeoning'.</p>
 		<p class="indent2"><code>CHOOSE:EQUIPMENT|TYPE=Alchemical|TYPE=Consumable</code></p>
-		<p class="indent3">A list of all equipement of types Alchemical and Consumable.</p>
+		<p class="indent3">A list of all equipement of types 'Alchemical' and 'Consumable'.</p>
 
 		<p></p><a name="COST"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> COST:x</p>
@@ -118,6 +153,18 @@
 		<p class="indent3">This is the cost formula from a scroll EQMOD.</p>
 
 
+		<p></p><a name="COSTDOUBLE"></a><hr>
+		<p class="indent0"><strong>Tag Name:</strong> COSTDOUBLE:x</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Boolian ('YES' or 'NO')</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<ul class="indent2">
+			<li>This will double the BASECOST of an item being modified as long as it's TYPE is not 'MANTLE', 'POTION', 'SCROLL', 'STAFF', or 'WAND'.</li>
+			<li>Abbreviations for 'YES' and 'NO' are not allowed.</li>
+		</ul>
+		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>COSTDOUBLE:YES</code></p>
+		<p class="indent3">Cost of item is doubled.</p>
+
 		<p></p><a name="COSTPRE"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> COSTPRE:x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Number (Cost before resizing)</p>
@@ -126,33 +173,6 @@
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>COSTPRE:100</code></p>
 		<p class="indent3">Item cost is 100 gold before resizing.</p>
-
-		<p></p><a name="EQBUILDER"></a><hr>
-		<p class="new">*** New</p>
-		<p class="indent0"><strong>Tag Name:</strong> EQBUILDER.SPELL|u|v|w|x|y|z</p>
-		<p class="indent1"><strong>Variables Used (u):</strong> :Text (spell type: Arcane, Divine, Psionic, ANY)</p>
-		<p class="indent1"><strong>Variables Used (v):</strong> :Text (SCHOOL)</p>
-		<p class="indent1"><strong>Variables Used (w):</strong> :Text (SUBSCHOOL)</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> :Text (DESCRIPTOR)</p>
-		<p class="indent1"><strong>Variables Used (y):</strong> :Number (Minimum Level)</p>
-		<p class="indent1"><strong>Variables Used (z):</strong> :Number (Maximum Level)</p>
-		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">Used in conjunction with CHOOSE: it allows magic/psionic items with a specific
-				TYPE/SCHOOL/SUBSCHOOL/DESCRIPTOR filtering. Minimum and maximum level of spell may be
-				set by using the y|z options, but are optional. If there is no numbers then y = 0 and z = MAX_LEVEL.
-				If there is one number present, y = number and z = MAX_LEVEL. if there are two numbers, y = number1 and z = number2.</p>
-  		<p class="indent1"><strong>Example:</strong></p>
-		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|SCHOOL.Enchantment;SUBSCHOOL.Compulsion</code></p>
-		<p class="indent3">Show all spells that are Evocation AND Compulsion.</p>
-		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|SCHOOL.Enchantment|SCHOOL.Abjuration</code></p>
-		<p class="indent3">Show all spells that are Evocation OR Abjuration.</p>
-		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|Arcane,Divine|0|3</code></p>
-		<p class="indent3">Allows the user to quickly generate a minor scroll</p>
-		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|Arcane|SCHOOL.Evocation|0|3</code></p>
-		<p class="indent3">Allows the user to quickly generate a minor wand with only evocation spells</p>
-		<p class="indent2"><code>CHOOSE:EQBUILDER.SPELL|Psionics|0|3</code></p>
-		<p class="indent3">Allows a minor powerstone</p>
-
 
 		<p></p><a name="EQUIPCHANGE"></a><hr>
 		<p class="new">*** New 5.11.4</p>
@@ -213,7 +233,7 @@
 		<p class="indent0"><strong>Tag Name:</strong> IGNORES:x,x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Text (List of Keys)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">This is a , (comma) delimited list of Keys that the modifier will
+		<p class="indent2">This is a comma (,) delimited list of Keys that the modifier will
 			ignore when making custom items.</p>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>IGNORES:ARMRMW,WEAPWM</code></p>
@@ -221,9 +241,9 @@
 
 		<p></p><a name="ITYPE"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> ITYPE:x.x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Text (Type Name)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text (Type name)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">This is a . (period) delimited list of types that will be granted,
+		<p class="indent2">This is a period (.) delimited list of types that will be granted,
 			in addition to any existing types, to the item being created.</p>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>ITYPE:Magic.Ranged.Thrown</code></p>
@@ -267,7 +287,7 @@
 
 		<p></p><a name="PLUS"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> PLUS:x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Number (Key Name)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Number</p>
 		<p class="indent1"><strong>What it does:</strong></p>
 		<p class="indent2">The numeric value supplied is the plus of the item.</p>
 		<p class="indent1"><strong>Example:</strong></p>
@@ -320,8 +340,8 @@
 		<p class="indent0"><strong>Tag Name:</strong> REPLACES:x,x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Number (Key Name)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">This is the list of keys that are replaced in the existing item by
-			the specified keys in this tag.</p>
+		<p class="indent2">This is the list of eqmod keys that are replaced in the existing item by
+			the specified eqmod keys in this tag.</p>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>REPLACES:WEAP+1,WEAP+2,WEAP+3,WEAP+4,WEAP+5</code></p>
 		<p class="indent3">Replaces keys &quot;WEAP+1&quot;, &quot;WEAP+2&quot;,
@@ -367,7 +387,7 @@
 		<p></p><a name="TYPE"></a><hr>
 		<p class="new">*** Updated 4.3.8</p>
 		<p class="indent0"><strong>Tag Name:</strong> TYPE:x.x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Number (Type Name)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text (Type name)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
 		<ul class="indent2">
 		  <li>This is a list of the TYPE's of items that the modifiers can be applied to.</li>
@@ -392,6 +412,7 @@
 			<li>No - This will never show the modifier in the customizer window.</li>
 			<li>Qualify - This will always show the modifier in the customizer window
 			if the item meets the requirements to obtain this modifier.</li>
+			<li>The default for this tag is 'YES'.</li>
 		</ul>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>VISIBLE:Yes</code></p>

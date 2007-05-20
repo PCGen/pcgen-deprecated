@@ -12,6 +12,7 @@
 		Contributors:
 		Shane Molnar - shaneATcliftonmotelDOTcomDOTau
 		Eddy Anthony - eddybaATmindspringDOTcom
+		Terry FitzSimons - fitzsimonsATmintelDOTnet
 
 		Description:
 		Provides information on the content of PCGen Race Files.
@@ -27,8 +28,12 @@
 		<p>The &quot;Name&quot; of the race must be the first field on each line,
 			the remaining tags may be of any order.</p>
 
+		<p>If you want to get rid of racex in your campaign, better put racex.<a href="../globalfilestagpages/globalfilesother.html#FORGET">FORGET</a> in one of your RACE files.
+		That will remove racex from your campaign, in fact you won't even be able to use the name racex for a
+		new race in your campaign, if you should want to do so later use the <a href="../globalfilestagpages/globalfilesother.html#MOD">.MOD</a> tag.</p>
+
 		<p></p><a name="AGE"></a><hr>
-		<p class="new">*** Deprecated - Now done in <a href="../systemfilestagpages/systemfilesbiosettingslist.html">Biosettings.lst</a></p>
+		<p class="new">*** Deprecated 5.x.x - Remove 6.0 - Now done in <a href="../systemfilestagpages/systemfilesbiosettingslist.html">Biosettings.lst</a></p>
 		<p class="indent0"><strong>Tag Name:</strong> AGE:min:dice:sides:dice:sides:dice:sides</p>
 
 		<p></p><a name="LANGAUTO"></a><hr>
@@ -67,13 +72,14 @@
 
 		<p></p><a name="FAVCLASS"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> FAVCLASS:x|x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Text (Class name or
-		  &quot;Any&quot;)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text (Class Name)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text ('Any')</p>
 		<p class="indent1"><strong>What it does:</strong></p>
 		<ul class="indent2">
 			<li>Determines the Race's favored class. 2 or more classes separated by | (pipe)
 			will grant all of the classes as Favored.</li>
 			<li>Special type 'Any' will grant the character's highest level class as Favored.</li>
+			<li>When 'Any' is used no other class is required.</li>
 		</ul>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>FAVCLASS:Wizard</code></p>
@@ -103,12 +109,12 @@
 		<p class="indent3">Race has four hands.</p>
 
 		<p></p><a name="HEIGHT"></a><hr>
-		<p class="new">*** Deprecated - Now done in <a href="../systemfilestagpages/systemfilesbiosettingslist.html">Biosettings.lst</a></p>
+		<p class="new">*** Deprecated 5.x.x - Remove 6.0 - Now done in <a href="../systemfilestagpages/systemfilesbiosettingslist.html">Biosettings.lst</a></p>
 		<p class="indent0"><strong>Tag Name:</strong> HEIGHT:M:min:dice:sides:bonus:F:min:dice:sides:bonus</p>
 
 
 		<p></p><a name="HITDICE"></a><hr>
-		<p class="new">deprecated . . 5.11.4, use <a href="#HITDIE">HITDIE</a></p>
+		<p class="new">*** Deprecated 5.11.4 - Remove 6.0 - use <a href="#HITDIE">HITDIE</a></p>
 		<p class="indent0"><strong>Tag Name:</strong> HITDICE:x,y</p>
 
 		<p></p><a name="HITDICEADVANCEMENT"></a><hr>
@@ -117,7 +123,7 @@
 		<p class="indent1"><strong>What it does:</strong></p>
 		<ul class="indent2">
 			<li>The last number in the comma delimited list is the highest
-				HD the creature can advance to, through HD advancement.</li>
+				HD the creature can advance to, through HD advancement.  Unlimited HD advancement is indicated by using an asterisk (*) in place of the final number.</li>
 			<li>All the numbers preceding the last number each indicate the highest number of HD the creature
 				can have before before its size increases by one category.</li>
 		</ul>
@@ -129,9 +135,12 @@
 		<p class="indent3">Assassin Vine: starts out as Large, with 4 HD. 5-16 it is Huge,
 			17-32 it is Gargantuan, 33+ it is Colossal. 99 HD is the maximum
 			it can ever raise to.</p>
+		<p class="indent2"><code>HITDICEADVANCEMENT:4,6,*</code></p>
+		<p class="indent3">Race starts out as Tiny, with 4 Hit Dice. 5-6 it is Small, 7+ 
+			it is Medium. There is no limit to the creature's hit dice.</p>
 
 		<p></p><a name="HITDIE"></a><hr>
-		<p class="new">*** New 5.7.8 *** Updated 5.9.4 *** Updated 5.11.4</p>
+		<p class="new">*** New 5.7.8 *** Updated 5.9.4 *** Updated 5.11.4*** Updated 5.11.13</p>
 		<p class="indent0"><strong>Tag Name:</strong> HITDIE:x.y</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Number (Hit Dice size)</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> %+Number (Amount added to Hit Dice)</p>
@@ -140,8 +149,8 @@
 		<p class="indent1"><strong>Variables Used (x):</strong> %/Number (Amount Hit Dice is divided by)</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> %upNumber (Amount Hit Dice size is stepped up by)</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> %downNumber (Amount Hit Dice size is stepped down by)</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> %Hup (Amount Hit Dice size is stepped up by)</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> %Hdown (Amount Hit Dice size is stepped down by)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> %HupNumber (Amount Hit Dice size is stepped up by)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> %HdownNumber (Amount Hit Dice size is stepped down by)</p>
 		<p class="indent1"><strong>Variables Used (y):</strong> CLASS=&lt;class name&gt; (Optional, Specific class the HITDIE will be applied to)</p>
 		<p class="indent1"><strong>Variables Used (y):</strong> CLASS.TYPE=&lt;class type name&gt; (Optional, Specific class type the HITDIE will be applied to)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
@@ -180,13 +189,15 @@
 
 		<p></p><a name="LANGBONUS"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> LANGBONUS:x,x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Text (Language Name
-		  or &quot;ALL&quot;)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text (Language Name)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> TYPE=Text (Language Type)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text ('ALL')</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> .CLEAR</p>
 		<p class="indent1"><strong>What it does:</strong></p>
 		<p class="indent2">This is a comma delimited list that allows choice of the listed
 			languages that the character's gains as bonus languages (determined by the appropriate
 			stat, usually Intelligence). This does not effect languages granted from skills.</p>
-		<p class="indent2">TYPE.xxx for reference, TYPE=xxx for assignment.</p>
+		<p class="indent2">When using 'ALL', no other language designation is necessary.</p>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2">LANGBONUS:Dwarven,Elven,Gnome,Goblin,Orc</p>
 		<p class="indent3">Race can choose starting languages from &quot;Dwarven&quot;, &quot;Elven&quot;,
@@ -213,9 +224,9 @@
 		<p class="indent3">Slime and ooze creatures/characters would have no legs!</p>
 
 		<p></p><a name="LEVELADJUSTMENT"></a><hr>
-		<p class="new">*** Updated 5.4</p>
+		<p class="new">*** Updated 5.4*** Updated 5.11.13</p>
 		<p class="indent0"><strong>Tag Name:</strong> LEVELADJUSTMENT:x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Number (Level Adjustment)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Number or Formula (Level Adjustment)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
 		<p class="indent2">Raises the Effective Character Level (ECL) of the creature by the number supplied.</p>
 		<p class="indent2">This is factored in when determining how much experience is needed to raise a characters level.
@@ -231,15 +242,9 @@
 
 
 		<p></p><a name="MFEAT"></a><hr>
-		<p class="new">deprecated . . 5.11.4</p>
+		<p class="new">*** Deprecated 5.11.4 - Remove 6.0 -</p>
 		<p class="indent0"><strong>Tag Name:</strong> MFEAT:x|x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Text (Feat Name)</p>
-		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">This is a | (pipe) delimited list of feats granted to a
-		  race only if the setting	&quot;Default Monsters&quot; is &quot;ON&quot;.</p>
-		<p class="indent1"><strong>Example:</strong></p>
-		<p class="indent2"><code>MFEAT:Improved Initiative</code></p>
-		<p class="indent3">The monster has &quot;Improved Initiative&quot; as a feat.</p>
+
 
 		<p></p><a name="MONCCSKILL"></a><hr>
 		<p class="new">*** New 5.4</p>
@@ -388,9 +393,10 @@
 		<p class="indent0"><strong>Tag Name:</strong> SIZE:x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Text (F,D,T,S,M,L,H,G,C)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">Determines the size of the Race. (F=Fine, D=Diminutive, T=Tiny,
-			S=Small, M=Medium, L=Large, H=Huge, G=Gargantuan, C=Colossal). Size is used in
-			determining to-hit, AC, and affects some skills).</p>
+		<ul class="indent2">
+			<li>Determines the size of the Race. (F=Fine, D=Diminutive, T=Tiny, S=Small, M=Medium, L=Large, H=Huge, G=Gargantuan, C=Colossal). Size is used in determining to-hit, AC, and affects some skills.</li>
+			<li>The size designations, including abbreviations, are dependant upon the gamemode used and may be redefined in the sizeadjustments.lst file.</li>
+		</ul>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>SIZE:M</code></p>
 		<p class="indent3">The race is of Medium size.</p>
@@ -412,7 +418,7 @@
 		<p></p><a name="STARTFEATS"></a><hr>
 		<p class="new">*** Updated</p>
 		<p class="indent0"><strong>Tag Name:</strong> STARTFEATS:x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Number (Source Page Number)</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Number (Number of Starting Feats)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
 		<p class="indent2">Grants a number of free feats to the race at first level. These are
 		unrestricted feats. To restrict choice (such as &quot;only Fighter feats&quot;) use
@@ -488,7 +494,7 @@
 		<p class="indent3">The race receives bonus proficiency in any one Simple weapon.</p>
 
 		<p></p><a name="WEIGHT"></a><hr>
-		<p class="new">*** Deprecated - Now done in <a href="../systemfilestagpages/systemfilesbiosettingslist.html">Biosettings.lst</a></p>
+		<p class="new">*** Deprecated 5.x.x - Remove 6.0 - Now done in <a href="../systemfilestagpages/systemfilesbiosettingslist.html">Biosettings.lst</a></p>
 		<p class="indent0"><strong>Tag Name:</strong> WEIGHT:M:min:dice:sides:F:min:dice:sides</p>
 
 		<p></p><a name="XTRASKILLPTSPERLVL"></a><hr>

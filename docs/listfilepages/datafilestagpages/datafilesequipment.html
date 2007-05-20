@@ -41,7 +41,7 @@
 		<p class="indent2"><code>Davril's Longsword<br />
 			BONUS:COMBAT|DAMAGE,TOHIT|2<br />
 			BASEITEM:Longsword<br />
-			EQMOD:Bane.Holy.Keen</code></p>
+			EQMOD:BANE_M.HOLY_M.KEEN</code></p>
 		<p class="indent3">Creates a piece of equipment called &quot;Davril's Longsword&quot;
 		   that is a +2 weapon. The SPROPS and effects from the equipment modifiers
 		  	&quot;Bane&quot;, &quot;Holy&quot; and &quot;Keen&quot; (as seen in the item
@@ -57,15 +57,6 @@
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>BASEQTY:20</code></p>
 		<p class="indent3">20 items in a bundle (e.g. Arrows).</p>
-
-		<p></p><a name="COST"></a><hr>
-		<p class="indent0"><strong>Tag Name:</strong> COST:x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Number (gold coin cost)</p>
-		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">The cost of the item.</p>
-		<p class="indent1"><strong>Example:</strong></p>
-		<p class="indent2"><code>COST:5</code></p>
-		<p class="indent3">Item costs 5 gold pieces.</p>
 
 		<p></p><a name="CONTAINS"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> CONTAINS:x|y</p>
@@ -108,6 +99,15 @@
 		<p class="indent3">Holds 100 things, no matter what the weight.</p>
 		<p class="indent2"><code>CONTAINS:-1|Total=10|Paper=10|Scroll=10</code></p>
 		<p class="indent3">Holds 10 papers or 10 scrolls, or any combination of these up to 10, no matter what the weight.</p>
+
+		<p></p><a name="COST"></a><hr>
+		<p class="indent0"><strong>Tag Name:</strong> COST:x</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Number (gold coin cost)</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<p class="indent2">The cost of the item.</p>
+		<p class="indent1"><strong>Example:</strong></p>
+		<p class="indent2"><code>COST:5</code></p>
+		<p class="indent3">Item costs 5 gold pieces.</p>
 
 		<p></p><a name="DESC"></a><hr>
 		<p class="new">*** New 5.7.15</p>
@@ -260,15 +260,12 @@
 		<p class="indent0"><strong>Tag Name:</strong> SIZE:x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Text (F,D,T,S,M,L,H,G,C)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">Determines the size of the Item.
-			F=Fine, D=Diminutive, T=Tiny, S=Small, M=Medium, L=Large, H=Huge,
-			G=Gargantuan, C=Colossal.</p>
-		<p class="indent2">In third edition rules size of weapons is used in determining
-			Proficiency qualifications and wielding abilities for weapons.</p>
-		<p class="indent2">In 3.5 edition rules weapon size no longer determines the actual
-  			size of the weapon but instead determines the size of the creature the weapon
-  			was made for. <a href="#WIELD">WIELD</a> tag is used in determining Proficiency
-  			qualifications and wielding abilities for weapons.</p>
+		<ul class="indent2">
+			<li>Determines the size of the Item. (F=Fine, D=Diminutive, T=Tiny, S=Small, M=Medium, L=Large, H=Huge, G=Gargantuan, C=Colossal.</li>
+			<li>The size designations, including abbreviations, are dependant upon the gamemode used and may be redefined in the sizeadjustments.lst file.</li>
+			<li>In third edition rules size of weapons is used in determining Proficiency qualifications and wielding abilities for weapons.</li>
+			<li>In 3.5 edition rules weapon size no longer determines the actual size of the weapon but instead determines the size of the creature the weapon was made for. <a href="#WIELD">WIELD</a> tag is used in determining Proficiency qualifications and wielding abilities for weapons.
+  		</ul>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>SIZE:M</code></p>
 		<p class="indent3">Item is medium size.</p>
@@ -389,10 +386,13 @@
 		<ul class="indent2">
 			<li>The secondary attack's critical multiplier as outputted to the character sheet.</li>
 			<li>This is used for double weapons only.</li>
+			<li>The special character (-) is used to indicate no critical multiplier for the secondary attack.</li>
 		</ul>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>ALTCRITMULT:x3</code></p>
 		<p class="indent3">2nd head has a critical modifier of x3.</p>
+		<p class="indent2"><code>ALTCRITMULT:-</code></p>
+		<p class="indent3">2nd head has no critical modifier.</p>
 
 
 		<p></p><a name="ALTCRITRANGE"></a><hr>
@@ -461,10 +461,15 @@
 		<p class="indent0"><strong>Tag Name:</strong> CRITMULT:x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Text (Critical Modifier)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">This is the weapons critical multiplier as outputted to the character sheet.</p>
+		<ul class="indent2">
+			<li>This is the weapons critical multiplier as outputted to the character sheet.</li>
+			<li>The special character (-) is used to indicate no critical multiplier for the equipment.</li>
+		</ul>
 		<p class="indent1"><strong>Example:</strong></p>
 		<p class="indent2"><code>CRITMULT:x2</code></p>
 		<p class="indent3">Item has a critical modifier of x2.</p>
+		<p class="indent2"><code>CRITMULT:-</code></p>
+		<p class="indent3">Item has no critical modifier.</p>
 
 		<p></p><a name="CRITRANGE"></a><hr>
 		<p class="indent0"><strong>Tag Name:</strong> CRITRANGE:x</p>
