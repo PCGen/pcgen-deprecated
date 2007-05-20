@@ -26,7 +26,9 @@ import junit.framework.TestSuite;
 @Suite.SuiteClasses({NodeDistanceCalculationTest.class,
 	GraphHeapComponentTest.class, DijkstraNodeAlgorithmTest.class,
 	DijkstraEdgeAlgorithmTest.class, DepthFirstTraverseAlgorithmTest.class,
-	BreadthFirstTraverseAlgorithmTest.class})
+	BreadthFirstTraverseAlgorithmTest.class,
+	DirectedNodeWeightCalculationTest.class,
+	ReverseBreadthFirstTraverseAlgorithmTest.class})
 public class BaseGraphVisitorTestSuite extends TestSuite
 {
 	// No contents, see annotations

@@ -137,4 +137,13 @@ public class TransparentTestStorageStrategy<N, ET extends Edge<N>>
 		throw new UnsupportedOperationException();
 	}
 
+	public void clear()
+	{
+	}
+
+	public int getNodeCount()
+	{
+		return 0;
+	}
+
 }
