@@ -34,6 +34,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
+import pcgen.core.Skill;
 import pcgen.core.SpecialAbility;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.GraphChanges;
@@ -62,6 +63,11 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 	public boolean parse(PObject obj, String value, int anInt)
 	{
+		if (obj instanceof Skill)
+		{
+			Logging.errorPrint("SA not supported in Skills");
+			return false;
+		}
 		parseSpecialAbility(obj, value, anInt);
 		return true;
 	}
@@ -135,6 +141,17 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 		sa.setName(saName.toString());
 
+		if (level >= 0)
+		{
+			try
+			{
+				sa.addPreReq(PreParserFactory.createLevelPrereq(obj, level));
+			}
+			catch (PersistenceLayerException notUsed)
+			{
+				Logging.errorPrint("Failed to assign level prerequisite.", notUsed);
+			}
+		}
 		if (obj instanceof PCClass)
 		{
 			sa.setSASource("PCCLASS=" + obj.getKeyName() + "|" + level);

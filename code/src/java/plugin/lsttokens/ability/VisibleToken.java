@@ -29,9 +29,18 @@ import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
 /**
+<<<<<<< .working
  * <code>VisibleToken</code> handles the processing of the VISIBLE tag in the
  * definition of an Ability.
  * 
+=======
+ * <code>VisibleToken</code> handles the processing of the VISIBLE tag in the
+ * definition of an Ability.
+ * 
+ * Last Editor: $Author$ Last Edited: $Date: 2007-02-10 11:55:15 -0500
+ * (Sat, 10 Feb 2007) $
+ * 
+>>>>>>> .merge-right.r2960
  * @author Devon Jones
  * @version $Revision$
  */
@@ -57,9 +66,12 @@ public class VisibleToken implements AbilityLstToken
 		{
 			if (!"EXPORT".equalsIgnoreCase(visType))
 			{
-				Logging.errorPrint(visType + " is not a valid value for "
+				Logging.errorPrint("Abbreviation used in " + getTokenName()
+					+ " in Ability");
+				Logging.errorPrint(" " + visType + " is not a valid value for "
 					+ getTokenName());
-				Logging.errorPrint(" using EXPORT");
+				Logging
+					.errorPrint(" assuming you meant EXPORT, please use EXPORT (exact String, upper case) in the LST file");
 				Logging.errorPrint(" This will break after PCGen 5.12");
 			}
 			ability.setVisibility(Visibility.EXPORT);
@@ -68,9 +80,12 @@ public class VisibleToken implements AbilityLstToken
 		{
 			if (!"NO".equalsIgnoreCase(visType))
 			{
-				Logging.errorPrint(visType + " is not a valid value for "
+				Logging.errorPrint("Abbreviation used in " + getTokenName()
+					+ " in Ability");
+				Logging.errorPrint(" " + visType + " is not a valid value for "
 					+ getTokenName());
-				Logging.errorPrint(" using NO");
+				Logging
+					.errorPrint(" assuming you meant NO, please use NO (exact String, upper case) in the LST file");
 				Logging.errorPrint(" This will break after PCGen 5.12");
 			}
 			ability.setVisibility(Visibility.NO);
@@ -79,15 +94,29 @@ public class VisibleToken implements AbilityLstToken
 		{
 			if (!"DISPLAY".equalsIgnoreCase(visType))
 			{
-				Logging.errorPrint(visType + " is not a valid value for "
+				Logging.errorPrint("Abbreviation used in " + getTokenName()
+					+ " in Ability");
+				Logging.errorPrint(" " + visType + " is not a valid value for "
 					+ getTokenName());
-				Logging.errorPrint(" using DISPLAY");
+				Logging
+					.errorPrint(" assuming you meant DISPLAY, please use DISPLAY (exact String, upper case) in the LST file");
 				Logging.errorPrint(" This will break after PCGen 5.12");
 			}
 			ability.setVisibility(Visibility.DISPLAY);
 		}
 		else
 		{
+			if (!"YES".equalsIgnoreCase(visType))
+			{
+				Logging.errorPrint("Unexpected value used in " + getTokenName()
+					+ " in Ability");
+				Logging.errorPrint(" " + visType + " is not a valid value for "
+					+ getTokenName());
+				Logging
+					.errorPrint(" Valid values in Ability are EXPORT, NO, DISPLAY, and YES");
+				Logging
+					.errorPrint(" assuming you meant YES, please use YES (exact String, upper case) in the LST file");
+			}
 			ability.setVisibility(Visibility.YES);
 		}
 		return true;

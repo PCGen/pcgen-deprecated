@@ -154,7 +154,7 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken
 				}
 				AssociatedPrereqObject edge =
 						context.list.addToMasterList(getTokenName(), obj,
-							context.ref.getCDOMAllReference(SKILLLIST_CLASSs),
+							context.ref.getCDOMAllReference(SKILLLIST_CLASS),
 							ref);
 				edge.setAssociation(AssociationKey.SKILL_COST,
 					SkillCost.CROSS_CLASS);
