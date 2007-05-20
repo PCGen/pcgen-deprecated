@@ -22,6 +22,7 @@
 package plugin.lsttokens.equipment;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -33,16 +34,19 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.helper.Capacity;
 import pcgen.core.Equipment;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
 import pcgen.util.BigDecimalHelper;
 
 /**
  * Deals with CONTAINS token
  */
-public class ContainsToken implements EquipmentLstToken
+public class ContainsToken extends AbstractToken implements EquipmentLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "CONTAINS";
@@ -56,24 +60,11 @@ public class ContainsToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		if (value.charAt(0) == '|')
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | , see: " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | , see: " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
 
 		if (!pipeTok.hasMoreTokens())
@@ -88,7 +79,8 @@ public class ContainsToken implements EquipmentLstToken
 		if (weightCapacity.charAt(0) == Constants.CHAR_ASTERISK)
 		{
 			hadAsterisk = true;
-			eq.put(ObjectKey.CONTAINER_CONSTANT_WEIGHT, Boolean.TRUE);
+			context.obj.put(eq, ObjectKey.CONTAINER_CONSTANT_WEIGHT,
+				Boolean.TRUE);
 			weightCapacity = weightCapacity.substring(1);
 		}
 
@@ -113,7 +105,7 @@ public class ContainsToken implements EquipmentLstToken
 
 			try
 			{
-				eq.put(IntegerKey.CONTAINER_REDUCE_WEIGHT, Integer
+				context.obj.put(eq, IntegerKey.CONTAINER_REDUCE_WEIGHT, Integer
 					.valueOf(redString));
 			}
 			catch (NumberFormatException ex)
@@ -124,8 +116,8 @@ public class ContainsToken implements EquipmentLstToken
 
 		try
 		{
-			eq.put(ObjectKey.CONTAINER_WEIGHT_CAPACITY, new BigDecimal(
-				weightCapacity));
+			context.obj.put(eq, ObjectKey.CONTAINER_WEIGHT_CAPACITY,
+				new BigDecimal(weightCapacity));
 		}
 		catch (NumberFormatException ex)
 		{
@@ -136,7 +128,7 @@ public class ContainsToken implements EquipmentLstToken
 		if (!pipeTok.hasMoreTokens())
 		{
 			limited = false;
-			eq.addToListFor(ListKey.CAPACITY, Capacity.ANY);
+			context.obj.addToList(eq, ListKey.CAPACITY, Capacity.ANY);
 		}
 
 		BigDecimal limitedCapacity = BigDecimal.ZERO;
@@ -153,7 +145,7 @@ public class ContainsToken implements EquipmentLstToken
 			{
 				limited = false;
 				Type t = Type.getConstant(typeString);
-				eq.addToListFor(ListKey.CAPACITY, new Capacity(t,
+				context.obj.addToList(eq, ListKey.CAPACITY, new Capacity(t,
 					Capacity.UNLIMITED));
 			}
 			else
@@ -175,7 +167,7 @@ public class ContainsToken implements EquipmentLstToken
 						limitedCapacity = limitedCapacity.add(itemNumber);
 					}
 					Type t = Type.getConstant(itemType);
-					eq.addToListFor(ListKey.CAPACITY, new Capacity(t,
+					context.obj.addToList(eq, ListKey.CAPACITY, new Capacity(t,
 						itemNumber));
 				}
 				catch (NumberFormatException nfe)
@@ -192,6 +184,10 @@ public class ContainsToken implements EquipmentLstToken
 		 * I think it CAN'T because then the limitedCapacity could be messed up
 		 * anyway... :/
 		 */
+		/*
+		 * FIXME This is a problem for the editor, that parse is doing a global
+		 * GET?
+		 */
 		List<Capacity> list = eq.getListFor(ListKey.CAPACITY);
 		for (Capacity cap : list)
 		{
@@ -203,7 +199,7 @@ public class ContainsToken implements EquipmentLstToken
 
 		BigDecimal totalCapacity =
 				limited ? limitedCapacity : Capacity.UNLIMITED;
-		eq.addToListFor(ListKey.CAPACITY, Capacity
+		context.obj.addToList(eq, ListKey.CAPACITY, Capacity
 			.getTotalCapacity(totalCapacity));
 
 		return true;
@@ -211,26 +207,30 @@ public class ContainsToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		List<Capacity> capacityList = eq.getListFor(ListKey.CAPACITY);
-		if (capacityList == null || capacityList.isEmpty())
+		Changes<Capacity> changes =
+				context.obj.getListChanges(eq, ListKey.CAPACITY);
+		if (changes == null)
 		{
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
 
-		Boolean b = eq.get(ObjectKey.CONTAINER_CONSTANT_WEIGHT);
+		Boolean b =
+				context.obj.getObject(eq, ObjectKey.CONTAINER_CONSTANT_WEIGHT);
 		if (b != null && b.booleanValue())
 		{
 			sb.append(Constants.CHAR_ASTERISK);
 		}
 
-		Integer reducePercent = eq.get(IntegerKey.CONTAINER_REDUCE_WEIGHT);
+		Integer reducePercent =
+				context.obj.getInteger(eq, IntegerKey.CONTAINER_REDUCE_WEIGHT);
 		if (reducePercent != null)
 		{
 			sb.append(reducePercent).append(Constants.PERCENT);
 		}
 
-		BigDecimal cap = eq.get(ObjectKey.CONTAINER_WEIGHT_CAPACITY);
+		BigDecimal cap =
+				context.obj.getObject(eq, ObjectKey.CONTAINER_WEIGHT_CAPACITY);
 		if (cap == null)
 		{
 			// CONSIDER ERROR??
@@ -238,6 +238,7 @@ public class ContainsToken implements EquipmentLstToken
 		}
 		sb.append(cap);
 
+		Collection<Capacity> capacityList = changes.getAdded();
 		if (capacityList.size() == 1)
 		{
 			for (Capacity c : capacityList)

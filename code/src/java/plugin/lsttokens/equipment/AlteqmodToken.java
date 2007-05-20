@@ -25,33 +25,36 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
  * Deals with ALTEQMOD token
  */
-public class AlteqmodToken implements EquipmentLstToken
+public class AlteqmodToken extends AbstractToken implements EquipmentLstToken
 {
 	private static final Class<EquipmentModifier> EQUIPMENT_MODIFIER_CLASS =
 			EquipmentModifier.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "ALTEQMOD";
@@ -74,22 +77,8 @@ public class AlteqmodToken implements EquipmentLstToken
 		{
 			return true;
 		}
-		if (value.charAt(0) == '.')
+		if (hasIllegalSeparator('.', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with . : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '.')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with . : " + value);
-			return false;
-		}
-		if (value.indexOf("..") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator .. : " + value);
 			return false;
 		}
 
@@ -204,8 +193,7 @@ public class AlteqmodToken implements EquipmentLstToken
 		for (CDOMReference<EquipmentModifier> eqMod : mods)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.linkObjectIntoGraph(getTokenName(), altHead,
-						eqMod);
+					context.graph.grant(getTokenName(), altHead, eqMod);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(eqMod))
 			{
 				edge.setAssociation(ak, dkm.get(eqMod, ak));
@@ -223,7 +211,7 @@ public class AlteqmodToken implements EquipmentLstToken
 		{
 			// Isn't there already, so create new
 			head = new EquipmentHead(this, index);
-			context.graph.linkObjectIntoGraph(Constants.VT_EQ_HEAD, eq, head);
+			context.graph.grant(Constants.VT_EQ_HEAD, eq, head);
 		}
 		return head;
 	}
@@ -253,60 +241,59 @@ public class AlteqmodToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), head,
-					EquipmentModifier.class);
-		if (edgeList == null || edgeList.isEmpty())
+		GraphChanges<EquipmentModifier> changes =
+				context.graph.getChangesFromToken(getTokenName(), head,
+					EQUIPMENT_MODIFIER_CLASS);
+		if (changes == null)
 		{
 			return null;
 		}
-		SortedMap<CDOMReference<EquipmentModifier>, PCGraphEdge> set =
-				new TreeMap<CDOMReference<EquipmentModifier>, PCGraphEdge>(
-					TokenUtilities.REFERENCE_SORTER);
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
 		boolean needDot = false;
-		for (PCGraphEdge edge : edgeList)
+		for (LSTWriteable mod : added)
 		{
-			CDOMReference<EquipmentModifier> eqMod =
-					(CDOMReference<EquipmentModifier>) edge.getSinkNodes().get(
-						0);
-			set.put(eqMod, edge);
-		}
-		for (Entry<CDOMReference<EquipmentModifier>, PCGraphEdge> me : set
-			.entrySet())
-		{
+			AssociatedPrereqObject assoc = changes.getAddedAssociation(mod);
 			if (needDot)
 			{
 				sb.append('.');
 			}
 			needDot = true;
-			sb.append(me.getKey().getLSTformat());
-			PCGraphEdge edge = me.getValue();
-			if (edge.hasAssociations())
+			sb.append(mod.getLSTformat());
+			if (assoc.hasAssociations())
 			{
 				/*
 				 * TODO FIXME These need to be sorted... :(
 				 */
-				sb.append(Constants.PIPE);
 				Collection<AssociationKey<?>> akColl =
-						edge.getAssociationKeys();
+						assoc.getAssociationKeys();
+				akColl.remove(AssociationKey.SOURCE_URI);
+				if (!akColl.isEmpty())
+				{
+					sb.append(Constants.PIPE);
+				}
 				if (akColl.size() == 1)
 				{
 					AssociationKey<?> ak = akColl.iterator().next();
 					if (AssociationKey.ONLY.equals(ak))
 					{
-						sb.append((String) edge.getAssociation(ak));
+						sb.append((String) assoc.getAssociation(ak));
 					}
 					else
 					{
-						String st = (String) edge.getAssociation(ak);
+						String st = (String) assoc.getAssociation(ak);
 						sb.append(ak).append('[').append(st).append(']');
 					}
 				}
-				else
+				else if (akColl.size() != 0)
 				{
 					TreeMap<String, String> map = new TreeMap<String, String>();
-					for (AssociationKey<?> ak : edge.getAssociationKeys())
+					for (AssociationKey<?> ak : akColl)
 					{
 						if (AssociationKey.ONLY.equals(ak))
 						{
@@ -315,16 +302,14 @@ public class AlteqmodToken implements EquipmentLstToken
 								+ "is required");
 							return null;
 						}
-						map
-							.put(ak.toString(), (String) edge
-								.getAssociation(ak));
+						map.put(ak.toString(), (String) assoc
+							.getAssociation(ak));
 					}
 					for (Entry<String, String> ae : map.entrySet())
 					{
 						sb.append(ae.getKey()).append('[')
 							.append(ae.getValue()).append(']');
 					}
-
 				}
 			}
 		}

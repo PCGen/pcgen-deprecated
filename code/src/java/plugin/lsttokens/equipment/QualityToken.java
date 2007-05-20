@@ -21,14 +21,15 @@
  */
 package plugin.lsttokens.equipment;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.enumeration.MapKey;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.helper.Quality;
 import pcgen.core.Equipment;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
 import pcgen.util.Logging;
@@ -95,27 +96,24 @@ public class QualityToken implements EquipmentLstToken
 		 * CDOMObject, but I'm not sure that's necessary or desired in this
 		 * case?
 		 */
-		eq.addToListFor(MapKey.QUALITY, key, val);
+		context.obj.addToList(eq, ListKey.QUALITY, new Quality(key, val));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Set<String> keys = eq.getKeySet(MapKey.QUALITY);
-		if (keys == null || keys.isEmpty())
+		Changes<Quality> changes =
+				context.obj.getListChanges(eq, ListKey.QUALITY);
+		if (changes == null)
 		{
 			return null;
 		}
-		List<String> retList = new ArrayList<String>();
-		for (String key : keys)
+		Set<String> set = new TreeSet<String>();
+		for (Quality q : changes.getAdded())
 		{
-			List<String> list = eq.getListFor(MapKey.QUALITY, key);
-			for (String value : list)
-			{
-				retList.add(new StringBuilder().append(key).append(
-					Constants.PIPE).append(value).toString());
-			}
+			set.add(new StringBuilder().append(q.getQuality()).append(
+				Constants.PIPE).append(q.getValue()).toString());
 		}
-		return retList.toArray(new String[retList.size()]);
+		return set.toArray(new String[set.size()]);
 	}
 }

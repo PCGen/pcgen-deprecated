@@ -22,16 +22,17 @@
 package plugin.lsttokens.equipmentmodifier;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import pcgen.base.util.TypeSafeMap;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.Type;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.modifier.ChangeArmorType;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
 import pcgen.util.Logging;
@@ -82,7 +83,7 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 			 * does the above throw exceptions, etc.
 			 */
 			ChangeArmorType cat = new ChangeArmorType(oldType, newType);
-			context.graph.linkObjectIntoGraph(getTokenName(), mod, cat);
+			context.graph.grant(getTokenName(), mod, cat);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -93,22 +94,27 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), mod,
+		GraphChanges<ChangeArmorType> changes =
+				context.graph.getChangesFromToken(getTokenName(), mod,
 					ChangeArmorType.class);
-		if (edgeList == null || edgeList.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		TypeSafeMap<Type, Type> m = new TypeSafeMap<Type, Type>(Type.class);
-		for (PCGraphEdge edge : edgeList)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			ChangeArmorType cat = (ChangeArmorType) edge.getNodeAt(1);
+			// Zero indicates no Token
+			return null;
+		}
+		TypeSafeMap<Type, Type> m = new TypeSafeMap<Type, Type>(Type.class);
+		for (LSTWriteable ab : added)
+		{
+			ChangeArmorType cat = (ChangeArmorType) ab;
 			Type source = cat.getSourceType();
 			Type result = cat.getResultType();
 			m.put(source, result);
 		}
-
 		List<String> list = new ArrayList<String>();
 		for (Entry<Type, Type> me : m.entrySet())
 		{

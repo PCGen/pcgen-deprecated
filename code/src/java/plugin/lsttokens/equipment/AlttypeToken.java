@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.equipment;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
@@ -29,6 +28,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.core.Equipment;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
 import pcgen.util.Logging;
@@ -59,6 +59,11 @@ public class AlttypeToken implements EquipmentLstToken
 		}
 		if (value.charAt(0) == '.')
 		{
+			if (Constants.LST_DOT_CLEAR.equals(value))
+			{
+				context.obj.removeList(eq, ListKey.ALT_TYPE);
+				return true;
+			}
 			Logging.errorPrint(getTokenName()
 				+ " arguments may not start with . : " + value);
 			return false;
@@ -91,21 +96,20 @@ public class AlttypeToken implements EquipmentLstToken
 			{
 				removeType = true;
 			}
-			else if (Constants.LST_DOT_CLEAR.equals(aType))
-			{
-				eq.removeListFor(ListKey.ALT_TYPE);
-			}
 			else
 			{
 				Type typeCon = Type.getConstant(aType);
 				if (removeType)
 				{
-					eq.removeFromListFor(ListKey.ALT_TYPE, typeCon);
+					context.obj.removeFromList(eq, ListKey.ALT_TYPE, typeCon);
 					removeType = false;
 				}
+				/*
+				 * BUG FIXME TODO Not sure how to handle this - it's a SET!
+				 */
 				else if (!eq.containsInList(ListKey.ALT_TYPE, typeCon))
 				{
-					eq.addToListFor(ListKey.ALT_TYPE, typeCon);
+					context.obj.addToList(eq, ListKey.ALT_TYPE, typeCon);
 				}
 			}
 		}
@@ -114,11 +118,12 @@ public class AlttypeToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		List<Type> list = eq.getListFor(ListKey.ALT_TYPE);
-		if (list == null || list.isEmpty())
+		Changes<Type> changes =
+				context.obj.getListChanges(eq, ListKey.ALT_TYPE);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(list, Constants.DOT)};
+		return new String[]{StringUtil.join(changes.getAdded(), Constants.DOT)};
 	}
 }

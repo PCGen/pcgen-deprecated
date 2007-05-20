@@ -23,16 +23,17 @@ package plugin.lsttokens.equipment;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SpecialProperty;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Equipment;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -65,46 +66,25 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		{
 			return false;
 		}
-		context.graph.linkObjectIntoGraph(getTokenName(), eq, sa);
+		context.graph.grant(getTokenName(), eq, sa);
 		return true;
 	}
 
 	public SpecialProperty subParse(LoadContext context, Equipment eq,
 		String value)
 	{
-		if (value == null || value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + ": line minimally requires "
-				+ getTokenName() + ":<text>");
-			return null;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return null;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return null;
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		String firstToken = tok.nextToken();
-		
+
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.graph.unlinkChildNodesOfClass(getTokenName(), eq,
-				SpecialProperty.class);
+			context.graph.removeAll(getTokenName(), eq, SpecialProperty.class);
 			firstToken = tok.nextToken();
 		}
 
@@ -188,18 +168,24 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), eq,
+		GraphChanges<SpecialProperty> changes =
+				context.graph.getChangesFromToken(getTokenName(), eq,
 					SpecialProperty.class);
-		if (edges == null || edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		List<String> list = new ArrayList<String>(edges.size());
-		for (PCGraphEdge edge : edges)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			SpecialProperty sp = (SpecialProperty) edge.getSinkNodes().get(0);
+			// Zero indicates no Token
+			return null;
+		}
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		List<String> list = new ArrayList<String>();
+		for (LSTWriteable ab : added)
+		{
+			SpecialProperty sp = (SpecialProperty) ab;
 			StringBuilder sb = new StringBuilder();
 			sb.append(sp.getPropertyName());
 			int variableCount = sp.getVariableCount();
@@ -207,10 +193,9 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 			{
 				sb.append(Constants.PIPE).append(sp.getVariable(i));
 			}
-			List<Prerequisite> prereqs = sp.getPrerequisiteList();
-			if (prereqs != null && !prereqs.isEmpty())
+			if (sp.hasPrerequisites())
 			{
-				for (Prerequisite p : prereqs)
+				for (Prerequisite p : sp.getPrerequisiteList())
 				{
 					StringWriter swriter = new StringWriter();
 					try

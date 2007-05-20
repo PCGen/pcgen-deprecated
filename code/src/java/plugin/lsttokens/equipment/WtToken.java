@@ -76,7 +76,7 @@ public class WtToken implements EquipmentLstToken
 				return false;
 			}
 			Weight w = new Weight(weight);
-			context.graph.linkObjectIntoGraph(getTokenName(), eq, w);
+			context.graph.grant(getTokenName(), eq, w);
 			return true;
 		}
 		catch (NumberFormatException nfe)

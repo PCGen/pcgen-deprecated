@@ -70,13 +70,14 @@ public class CostdoubleToken implements EquipmentModifierLstToken
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
+		Boolean set;
 		if (value.equalsIgnoreCase("NO"))
 		{
-			mod.put(ObjectKey.COST_DOUBLE, Boolean.FALSE);
+			set = Boolean.FALSE;
 		}
 		else if (value.equalsIgnoreCase("YES"))
 		{
-			mod.put(ObjectKey.COST_DOUBLE, Boolean.TRUE);
+			set = Boolean.TRUE;
 		}
 		else
 		{
@@ -85,12 +86,13 @@ public class CostdoubleToken implements EquipmentModifierLstToken
 			Logging.errorPrint("Must be YES or NO");
 			return false;
 		}
+		context.obj.put(mod, ObjectKey.COST_DOUBLE, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Boolean stacks = mod.get(ObjectKey.COST_DOUBLE);
+		Boolean stacks = context.obj.getObject(mod, ObjectKey.COST_DOUBLE);
 		if (stacks == null)
 		{
 			return null;

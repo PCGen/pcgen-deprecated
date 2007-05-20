@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.equipmentmodifier;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
@@ -29,16 +28,19 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
-import pcgen.util.Logging;
 
 /**
  * Deals with ITYPE token
  */
-public class ItypeToken implements EquipmentModifierLstToken
+public class ItypeToken extends AbstractToken implements
+		EquipmentModifierLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "ITYPE";
@@ -53,46 +55,28 @@ public class ItypeToken implements EquipmentModifierLstToken
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('.', value))
 		{
-			Logging.errorPrint("Invalid " + getTokenName());
-			Logging.errorPrint("  Requires at least one argument");
 			return false;
 		}
-		if (value.charAt(0) == '.')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with . : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '.')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with . : " + value);
-			return false;
-		}
-		if (value.indexOf("..") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator .. : " + value);
-			return false;
-		}
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.DOT);
 		while (tok.hasMoreTokens())
 		{
 			Type t = Type.getConstant(tok.nextToken());
-			mod.addToListFor(ListKey.ITEM_TYPES, t);
+			context.obj.addToList(mod, ListKey.ITEM_TYPES, t);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		List<Type> keys = mod.getListFor(ListKey.ITEM_TYPES);
-		if (keys == null || keys.isEmpty())
+		Changes<Type> changes =
+				context.obj.getListChanges(mod, ListKey.ITEM_TYPES);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(keys, Constants.DOT)};
+		return new String[]{StringUtil.join(changes.getAdded(), Constants.DOT)};
 	}
 }

@@ -81,7 +81,8 @@ public class FormatcatToken implements EquipmentModifierLstToken
 	{
 		try
 		{
-			mod.put(ObjectKey.FORMAT, EqModFormatCat.valueOf(value));
+			context.obj.put(mod, ObjectKey.FORMAT, EqModFormatCat
+				.valueOf(value));
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -94,7 +95,7 @@ public class FormatcatToken implements EquipmentModifierLstToken
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		EqModFormatCat fc = mod.get(ObjectKey.FORMAT);
+		EqModFormatCat fc = context.obj.getObject(mod, ObjectKey.FORMAT);
 		if (fc == null)
 		{
 			return null;

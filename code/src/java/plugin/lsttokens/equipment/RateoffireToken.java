@@ -51,13 +51,13 @@ public class RateoffireToken implements EquipmentLstToken
 			Logging.errorPrint(getTokenName() + " argument may not be empty");
 			return false;
 		}
-		eq.put(StringKey.RATE_OF_FIRE, value);
+		context.obj.put(eq, StringKey.RATE_OF_FIRE, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		String rof = eq.get(StringKey.RATE_OF_FIRE);
+		String rof = context.obj.getString(eq, StringKey.RATE_OF_FIRE);
 		if (rof == null)
 		{
 			return null;

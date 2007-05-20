@@ -50,7 +50,8 @@ public class AltdamageToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		getEquipmentHead(context, eq, 2).put(StringKey.DAMAGE, value);
+		context.obj.put(getEquipmentHead(context, eq, 2), StringKey.DAMAGE,
+			value);
 		return true;
 	}
 
@@ -62,7 +63,7 @@ public class AltdamageToken implements EquipmentLstToken
 		{
 			// Isn't there already, so create new
 			head = new EquipmentHead(this, index);
-			context.graph.linkObjectIntoGraph(Constants.VT_EQ_HEAD, eq, head);
+			context.graph.grant(Constants.VT_EQ_HEAD, eq, head);
 		}
 		return head;
 	}
@@ -92,7 +93,7 @@ public class AltdamageToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		String damage = head.get(StringKey.DAMAGE);
+		String damage = context.obj.getString(head, StringKey.DAMAGE);
 		if (damage == null)
 		{
 			return null;

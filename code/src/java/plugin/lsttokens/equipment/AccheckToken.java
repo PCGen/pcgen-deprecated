@@ -48,13 +48,13 @@ public class AccheckToken implements EquipmentLstToken
 	{
 		try
 		{
-			Integer valueOf = Integer.valueOf(value);
-			if (valueOf.intValue() <= 0)
+			Integer acc = Integer.valueOf(value);
+			if (acc.intValue() <= 0)
 			{
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			eq.put(IntegerKey.AC_CHECK, valueOf);
+			context.obj.put(eq, IntegerKey.AC_CHECK, acc);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -68,7 +68,7 @@ public class AccheckToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer check = eq.get(IntegerKey.AC_CHECK);
+		Integer check = context.obj.getInteger(eq, IntegerKey.AC_CHECK);
 		if (check == null)
 		{
 			return null;

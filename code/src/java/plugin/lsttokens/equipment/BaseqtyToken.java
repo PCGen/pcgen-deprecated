@@ -54,7 +54,7 @@ public class BaseqtyToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " expected an integer > 0");
 				return false;
 			}
-			eq.put(IntegerKey.BASE_QUANTITY, quan);
+			context.obj.put(eq, IntegerKey.BASE_QUANTITY, quan);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -68,7 +68,7 @@ public class BaseqtyToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer quantity = eq.get(IntegerKey.BASE_QUANTITY);
+		Integer quantity = context.obj.getInteger(eq, IntegerKey.BASE_QUANTITY);
 		if (quantity == null)
 		{
 			return null;

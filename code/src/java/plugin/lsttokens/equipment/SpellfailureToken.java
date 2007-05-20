@@ -48,13 +48,13 @@ public class SpellfailureToken implements EquipmentLstToken
 	{
 		try
 		{
-			Integer valueOf = Integer.valueOf(value);
-			if (valueOf.intValue() <= 0)
+			Integer sf = Integer.valueOf(value);
+			if (sf.intValue() <= 0)
 			{
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			eq.put(IntegerKey.SPELL_FAILURE, valueOf);
+			context.obj.put(eq, IntegerKey.SPELL_FAILURE, sf);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -68,7 +68,7 @@ public class SpellfailureToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer sf = eq.get(IntegerKey.SPELL_FAILURE);
+		Integer sf = context.obj.getInteger(eq, IntegerKey.SPELL_FAILURE);
 		if (sf == null)
 		{
 			return null;

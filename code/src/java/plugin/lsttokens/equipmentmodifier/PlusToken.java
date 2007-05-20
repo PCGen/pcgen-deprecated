@@ -49,14 +49,14 @@ public class PlusToken implements EquipmentModifierLstToken
 	{
 		try
 		{
-			Integer valueOf = Integer.valueOf(value);
-			if (valueOf.intValue() == 0)
+			Integer plus = Integer.valueOf(value);
+			if (plus.intValue() == 0)
 			{
 				Logging.errorPrint(getTokenName()
 					+ " must be an integer not equal to 0");
 				return false;
 			}
-			mod.put(IntegerKey.PLUS, valueOf);
+			context.obj.put(mod, IntegerKey.PLUS, plus);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -70,7 +70,7 @@ public class PlusToken implements EquipmentModifierLstToken
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Integer plus = mod.get(IntegerKey.PLUS);
+		Integer plus = context.obj.getInteger(mod, IntegerKey.PLUS);
 		if (plus == null)
 		{
 			return null;

@@ -47,14 +47,15 @@ public class BaseitemToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		eq.put(ObjectKey.BASE_ITEM, context.ref.getCDOMReference(
+		context.obj.put(eq, ObjectKey.BASE_ITEM, context.ref.getCDOMReference(
 			EQUIPMENT_CLASS, value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		CDOMSimpleSingleRef<Equipment> ref = eq.get(ObjectKey.BASE_ITEM);
+		CDOMSimpleSingleRef<Equipment> ref =
+				context.obj.getObject(eq, ObjectKey.BASE_ITEM);
 		if (ref == null)
 		{
 			return null;

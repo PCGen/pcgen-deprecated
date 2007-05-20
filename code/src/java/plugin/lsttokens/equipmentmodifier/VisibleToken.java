@@ -64,7 +64,7 @@ public class VisibleToken implements EquipmentModifierLstToken
 	{
 		try
 		{
-			mod.put(ObjectKey.VISIBILITY, Visibility.valueOf(value));
+			context.obj.put(mod, ObjectKey.VISIBILITY, Visibility.valueOf(value));
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -77,7 +77,7 @@ public class VisibleToken implements EquipmentModifierLstToken
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Visibility vis = mod.get(ObjectKey.VISIBILITY);
+		Visibility vis = context.obj.getObject(mod, ObjectKey.VISIBILITY);
 		if (vis == null)
 		{
 			return null;

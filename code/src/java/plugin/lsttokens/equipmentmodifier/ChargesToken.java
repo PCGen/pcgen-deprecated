@@ -107,15 +107,15 @@ public class ChargesToken implements EquipmentModifierLstToken
 			return false;
 		}
 
-		mod.put(IntegerKey.MIN_CHARGES, Integer.valueOf(minCharges));
-		mod.put(IntegerKey.MAX_CHARGES, Integer.valueOf(maxCharges));
+		context.obj.put(mod, IntegerKey.MIN_CHARGES, Integer.valueOf(minCharges));
+		context.obj.put(mod, IntegerKey.MAX_CHARGES, Integer.valueOf(maxCharges));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Integer max = mod.get(IntegerKey.MAX_CHARGES);
-		Integer min = mod.get(IntegerKey.MIN_CHARGES);
+		Integer max = context.obj.getInteger(mod, IntegerKey.MAX_CHARGES);
+		Integer min = context.obj.getInteger(mod, IntegerKey.MIN_CHARGES);
 		if (max == null && min == null)
 		{
 			return null;

@@ -47,13 +47,14 @@ public class AssigntoallToken implements EquipmentModifierLstToken
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
+		Boolean set;
 		if (value.equalsIgnoreCase("NO"))
 		{
-			mod.put(ObjectKey.ASSIGN_TO_ALL, Boolean.FALSE);
+			set = Boolean.FALSE;
 		}
 		else if (value.equalsIgnoreCase("YES"))
 		{
-			mod.put(ObjectKey.ASSIGN_TO_ALL, Boolean.TRUE);
+			set = Boolean.TRUE;
 		}
 		else
 		{
@@ -62,12 +63,13 @@ public class AssigntoallToken implements EquipmentModifierLstToken
 			Logging.errorPrint("Must be YES or NO");
 			return false;
 		}
+		context.obj.put(mod, ObjectKey.ASSIGN_TO_ALL, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Boolean stacks = mod.get(ObjectKey.ASSIGN_TO_ALL);
+		Boolean stacks = context.obj.getObject(mod, ObjectKey.ASSIGN_TO_ALL);
 		if (stacks == null)
 		{
 			return null;

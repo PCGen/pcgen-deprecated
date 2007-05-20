@@ -67,7 +67,7 @@ public class HandsToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			eq.put(IntegerKey.HANDS, hands);
+			context.obj.put(eq, IntegerKey.HANDS, hands);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -81,7 +81,7 @@ public class HandsToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer hands = eq.get(IntegerKey.HANDS);
+		Integer hands = context.obj.getInteger(eq, IntegerKey.HANDS);
 		if (hands == null)
 		{
 			return null;

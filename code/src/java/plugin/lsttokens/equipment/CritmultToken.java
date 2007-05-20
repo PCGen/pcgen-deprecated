@@ -98,7 +98,7 @@ public class CritmultToken implements EquipmentLstToken
 			return false;
 		}
 		EquipmentHead primHead = getEquipmentHead(context, eq, 1);
-		primHead.put(IntegerKey.CRIT_MULT, cm);
+		context.obj.put(primHead, IntegerKey.CRIT_MULT, cm);
 		return true;
 	}
 
@@ -110,7 +110,7 @@ public class CritmultToken implements EquipmentLstToken
 		{
 			// Isn't there already, so create new
 			head = new EquipmentHead(this, index);
-			context.graph.linkObjectIntoGraph(Constants.VT_EQ_HEAD, eq, head);
+			context.graph.grant(Constants.VT_EQ_HEAD, eq, head);
 		}
 		return head;
 	}
@@ -140,7 +140,7 @@ public class CritmultToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		Integer mult = head.get(IntegerKey.CRIT_MULT);
+		Integer mult = context.obj.getInteger(head, IntegerKey.CRIT_MULT);
 		if (mult == null)
 		{
 			return null;

@@ -51,7 +51,8 @@ public class SizeToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(ObjectKey.SIZE, new FixedSizeResolver(Size.valueOf(value)));
+			context.obj.put(eq, ObjectKey.SIZE, new FixedSizeResolver(Size
+				.valueOf(value)));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -64,7 +65,7 @@ public class SizeToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Resolver<Size> res = eq.get(ObjectKey.SIZE);
+		Resolver<Size> res = context.obj.getObject(eq, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

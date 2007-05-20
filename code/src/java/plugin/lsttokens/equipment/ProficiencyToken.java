@@ -58,13 +58,14 @@ public class ProficiencyToken implements EquipmentLstToken
 		 * **WARNING** Any changes here need to be chained into NATURALATTACKS
 		 * as well
 		 */
-		eq.put(ObjectKey.WEAPON_PROF, wp);
+		context.obj.put(eq, ObjectKey.WEAPON_PROF, wp);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		CDOMSimpleSingleRef<WeaponProf> wp = eq.get(ObjectKey.WEAPON_PROF);
+		CDOMSimpleSingleRef<WeaponProf> wp =
+				context.obj.getObject(eq, ObjectKey.WEAPON_PROF);
 		if (wp == null)
 		{
 			return null;

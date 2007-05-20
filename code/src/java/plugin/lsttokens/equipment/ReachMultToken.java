@@ -61,7 +61,7 @@ public class ReachMultToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			eq.put(IntegerKey.REACH_MULT, reach);
+			context.obj.put(eq, IntegerKey.REACH_MULT, reach);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -75,7 +75,7 @@ public class ReachMultToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer mult = eq.get(IntegerKey.REACH_MULT);
+		Integer mult = context.obj.getInteger(eq, IntegerKey.REACH_MULT);
 		if (mult == null)
 		{
 			return null;

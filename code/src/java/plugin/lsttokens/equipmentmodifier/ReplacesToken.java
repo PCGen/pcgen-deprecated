@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.equipmentmodifier;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
@@ -29,16 +28,19 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
-import pcgen.util.Logging;
 
 /**
  * Deals with REPLACES token
  */
-public class ReplacesToken implements EquipmentModifierLstToken
+public class ReplacesToken extends AbstractToken implements
+		EquipmentModifierLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "REPLACES";
@@ -53,30 +55,11 @@ public class ReplacesToken implements EquipmentModifierLstToken
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint(getTokenName() + " argument may not be empty : "
-				+ value);
 			return false;
 		}
-		if (value.charAt(0) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return false;
-		}
+
 		/*
 		 * FIXME Should this actually be a Factory of some sort, since it IS
 		 * mosifying a piece of equipment? - yes, these are REMOVERs :) - akin
@@ -88,20 +71,20 @@ public class ReplacesToken implements EquipmentModifierLstToken
 			CDOMSimpleSingleRef<EquipmentModifier> ref =
 					context.ref.getCDOMReference(EquipmentModifier.class, tok
 						.nextToken());
-			mod.addToListFor(ListKey.REPLACED_KEYS, ref);
+			context.obj.addToList(mod, ListKey.REPLACED_KEYS, ref);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		List<CDOMSimpleSingleRef<EquipmentModifier>> keys =
-				mod.getListFor(ListKey.REPLACED_KEYS);
-		if (keys == null || keys.isEmpty())
+		Changes<CDOMSimpleSingleRef<EquipmentModifier>> changes =
+				context.obj.getListChanges(mod, ListKey.REPLACED_KEYS);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(keys,
-			Constants.COMMA)};
+		return new String[]{ReferenceUtilities.joinLstFormat(
+			changes.getAdded(), Constants.COMMA)};
 	}
 }

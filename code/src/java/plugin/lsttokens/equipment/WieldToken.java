@@ -61,7 +61,7 @@ public class WieldToken implements EquipmentLstToken
 	{
 		try
 		{
-			eq.put(ObjectKey.WEILD, EqWield.valueOf(value));
+			context.obj.put(eq, ObjectKey.WEILD, EqWield.valueOf(value));
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -74,7 +74,7 @@ public class WieldToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EqWield w = eq.get(ObjectKey.WEILD);
+		EqWield w = context.obj.getObject(eq, ObjectKey.WEILD);
 		if (w == null)
 		{
 			return null;
