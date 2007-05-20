@@ -27,8 +27,22 @@ import pcgen.cdom.enumeration.MapKey;
 public class MapKeyMapToList
 {
 
-	private final DoubleKeyMap<MapKey<?, ?>, Object, List<Object>> dkm =
-			new DoubleKeyMap<MapKey<?, ?>, Object, List<Object>>();
+	private final DoubleKeyMap<MapKey<?, ?>, Object, List<Object>> dkm;
+
+	public MapKeyMapToList()
+	{
+		dkm = new DoubleKeyMap<MapKey<?, ?>, Object, List<Object>>();
+	}
+
+	public MapKeyMapToList(MapKeyMapToList other)
+	{
+		dkm = new DoubleKeyMap<MapKey<?, ?>, Object, List<Object>>(other.dkm);
+	}
+
+	public void addAll(MapKeyMapToList other)
+	{
+		dkm.putAll(other.dkm);
+	}
 
 	public <SK> boolean containsKey(MapKey<SK, ?> key1, SK key2)
 	{

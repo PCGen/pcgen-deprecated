@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.util.Logging;
 
 /**
@@ -47,7 +48,7 @@ import pcgen.util.Logging;
  * 
  * @since 5.11.1
  */
-public class Description extends ConcretePrereqObject
+public class Description extends ConcretePrereqObject implements LSTWriteable
 {
 	private List<String> theComponents = new ArrayList<String>();
 	private List<String> theVariables = null;
@@ -320,5 +321,10 @@ public class Description extends ConcretePrereqObject
 		return theComponents.equals(other.theComponents)
 			&& (theVariables == null || theVariables.equals(other.theVariables))
 			&& equalsPrereqObject(other);
+	}
+
+	public String getLSTformat()
+	{
+		return getPCCText();
 	}
 }

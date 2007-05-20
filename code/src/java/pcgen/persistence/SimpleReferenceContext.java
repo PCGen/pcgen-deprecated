@@ -353,7 +353,7 @@ public class SimpleReferenceContext
 			for (String s : referenced.getSecondaryKeySet(cl))
 			{
 				if (!active.containsKey(cl, s)
-					&& !deferred.containsInList(cl, s))
+					&& !deferred.containsInList(cl, s) && !s.startsWith("*"))
 				{
 					Logging.errorPrint("Unconstructed Reference: "
 						+ cl.getSimpleName() + " " + s);

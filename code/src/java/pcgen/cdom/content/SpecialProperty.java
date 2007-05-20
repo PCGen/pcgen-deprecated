@@ -17,9 +17,10 @@
  */
 package pcgen.cdom.content;
 
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.TextProperty;
 
-public class SpecialProperty extends TextProperty
+public class SpecialProperty extends TextProperty implements LSTWriteable
 {
 
 	private final String property;
@@ -53,6 +54,12 @@ public class SpecialProperty extends TextProperty
 			return false;
 		}
 		SpecialProperty other = (SpecialProperty) o;
-		return property.equals(other.property) && super.matchesFormulaList(other);
+		return property.equals(other.property)
+			&& super.matchesFormulaList(other);
+	}
+
+	public String getLSTformat()
+	{
+		return property;
 	}
 }

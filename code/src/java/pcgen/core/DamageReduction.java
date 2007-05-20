@@ -26,6 +26,7 @@ package pcgen.core;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,11 +35,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
-
-import java.util.Collection;
 
 /**
  * Encapsulates a single DR entity.
@@ -50,7 +50,8 @@ import java.util.Collection;
  * @author boomer70
  *
  */
-public class DamageReduction extends ConcretePrereqObject implements Comparable<DamageReduction>, Cloneable
+public class DamageReduction extends ConcretePrereqObject implements
+		Comparable<DamageReduction>, Cloneable, LSTWriteable
 {
 	private String theReduction = "0";
 	private String theBypass = "-";
@@ -764,5 +765,14 @@ public class DamageReduction extends ConcretePrereqObject implements Comparable<
 			return true;
 		}
 		return false;
+	}
+
+	public String getLSTformat()
+	{
+		StringBuffer result = new StringBuffer();
+		result.append(theReduction);
+		result.append("/");
+		result.append(theBypass);
+		return result.toString();
 	}
 }

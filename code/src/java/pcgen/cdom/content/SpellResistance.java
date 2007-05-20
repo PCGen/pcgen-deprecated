@@ -19,8 +19,10 @@ package pcgen.cdom.content;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 
-public class SpellResistance extends ConcretePrereqObject
+public class SpellResistance extends ConcretePrereqObject implements
+		LSTWriteable
 {
 
 	private final Formula reduction;
@@ -57,5 +59,10 @@ public class SpellResistance extends ConcretePrereqObject
 	public int hashCode()
 	{
 		return reduction.hashCode();
+	}
+
+	public String getLSTformat()
+	{
+		return reduction.toString();
 	}
 }

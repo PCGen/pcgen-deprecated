@@ -21,6 +21,7 @@
  */
 package pcgen.cdom.base;
 
+import java.util.Collection;
 import java.util.List;
 
 import pcgen.core.prereq.Prerequisite;
@@ -38,6 +39,8 @@ public interface PrereqObject
 
 	public void addAllPrerequisites(Prerequisite... prereqs);
 
+	public void addAllPrerequisites(Collection<Prerequisite> prereqs);
+	
 	public List<Prerequisite> getPrerequisiteList();
 
 	public void clearPrerequisiteList();
@@ -49,4 +52,7 @@ public interface PrereqObject
 	public void setPrerequisiteListFrom(PrereqObject prereqObject);
 
 	public boolean hasPrerequisiteOfType(String matchType);
+	
+	public Class<? extends PrereqObject> getReferenceClass();
+	
 }

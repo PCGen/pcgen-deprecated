@@ -167,7 +167,8 @@ public final class RaceLoader extends LstObjectFileLoader<Race>
 			}
 		} else {
 			LstUtils.deprecationCheck(token, race, value);
-			if (!token.parse(context, race, value)) {
+			if (!token.parse(context, race, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in race "
 						+ race.getDisplayName() + ':' + source.getURI() + ':'
 						+ value + "\"");

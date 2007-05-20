@@ -123,7 +123,8 @@ public final class PCTemplateLoader extends LstObjectFileLoader<PCTemplate> {
 			}
 		} else {
 			LstUtils.deprecationCheck(token, template, value);
-			if (!token.parse(context, template, value)) {
+			if (!token.parse(context, template, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in template "
 						+ template.getDisplayName() + ':' + source.getURI() + ':'
 						+ value + "\"");

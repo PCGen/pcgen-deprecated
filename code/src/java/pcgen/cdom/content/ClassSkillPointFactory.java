@@ -18,37 +18,57 @@
 package pcgen.cdom.content;
 
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 
-public class LevelSkillPoints extends ConcretePrereqObject
+public class ClassSkillPointFactory extends ConcretePrereqObject implements
+		Comparable<ClassSkillPointFactory>, LSTWriteable
 {
 
-	/*
-	 * CONSIDER Should this be generic and allow N slots per level of anything,
-	 * or are skills so unique that they deserve their own object?
-	 */
-	private final int points;
+	private final int skillPoints;
 
-	public LevelSkillPoints(int i)
+	public ClassSkillPointFactory(int lvls)
 	{
-		super();
-		points = i;
+		skillPoints = lvls;
 	}
 
-	public int getPoints()
+	public int getSkillPointCount()
 	{
-		return points;
+		return skillPoints;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return points;
+		return skillPoints;
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		return o instanceof LevelSkillPoints
-			&& ((LevelSkillPoints) o).points == points;
+		if (this == o)
+		{
+			return true;
+		}
+		if (!(o instanceof ClassSkillPointFactory))
+		{
+			return false;
+		}
+		ClassSkillPointFactory lcf = (ClassSkillPointFactory) o;
+		return skillPoints == lcf.skillPoints;
 	}
+
+	public int compareTo(ClassSkillPointFactory arg0)
+	{
+		if (skillPoints == arg0.skillPoints)
+		{
+			return 0;
+		}
+		return skillPoints < arg0.skillPoints ? -1 : 1;
+	}
+
+	public String getLSTformat()
+	{
+		return Integer.toString(skillPoints);
+	}
+
 }

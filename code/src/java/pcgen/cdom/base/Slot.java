@@ -25,7 +25,7 @@ import java.util.Map;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.enumeration.AssociationKey;
 
-public class Slot<T extends PrereqObject> extends ConcretePrereqObject
+public class Slot<T extends PrereqObject> extends ConcretePrereqObject implements LSTWriteable
 {
 
 	private String name;
@@ -81,7 +81,7 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 		return slotClass;
 	}
 
-	public String toLSTform()
+	public String getSlotCount()
 	{
 		return slotCount.toString();
 	}
@@ -163,6 +163,11 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 	public boolean hasAssociations()
 	{
 		return associationMap != null && !associationMap.isEmpty();
+	}
+
+	public String getLSTformat()
+	{
+		return name;
 	}
 
 }

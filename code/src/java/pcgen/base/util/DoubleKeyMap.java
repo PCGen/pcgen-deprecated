@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -88,7 +89,7 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	 */
 	public DoubleKeyMap(final DoubleKeyMap<K1, K2, V> otherMap)
 	{
-		map.putAll(otherMap.map);
+		putAll(otherMap);
 	}
 
 	/**
@@ -114,6 +115,20 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 			map.put(key1, localMap);
 		}
 		return localMap.put(key2, value);
+	}
+
+	public void putAll(DoubleKeyMap<K1, K2, V> dkm)
+	{
+		for (Entry<K1, Map<K2, V>> me : dkm.map.entrySet())
+		{
+			Map<K2, V> localMap = map.get(me.getKey());
+			if (localMap == null)
+			{
+				localMap = new HashMap<K2, V>();
+				map.put(me.getKey(), localMap);
+			}
+			localMap.putAll(me.getValue());
+		}
 	}
 
 	/**

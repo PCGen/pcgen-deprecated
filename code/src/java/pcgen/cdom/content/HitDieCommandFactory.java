@@ -17,34 +17,31 @@
  */
 package pcgen.cdom.content;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.modifier.AbstractHitDieModifier;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
-public class LevelCommandFactory extends ConcretePrereqObject implements
-		Comparable<LevelCommandFactory>, LSTWriteable
+public class HitDieCommandFactory extends ConcretePrereqObject implements
+		Comparable<HitDieCommandFactory>, LSTWriteable
 {
 
-	private final CDOMSimpleSingleRef<PCClass> pcClass;
+	private final CDOMReference<PCClass> pcClass;
 
-	private final int levels;
+	private final AbstractHitDieModifier modifier;
 
-	public LevelCommandFactory(CDOMSimpleSingleRef<PCClass> cl, int lvls)
+	public HitDieCommandFactory(CDOMReference<PCClass> cl,
+		AbstractHitDieModifier mod)
 	{
 		pcClass = cl;
-		levels = lvls;
+		modifier = mod;
 	}
 
-	public int getLevelCount()
+	public AbstractHitDieModifier getModifier()
 	{
-		return levels;
-	}
-
-	public PCClass getPCClass()
-	{
-		return pcClass.resolvesTo();
+		return modifier;
 	}
 
 	public String getLSTformat()
@@ -55,7 +52,7 @@ public class LevelCommandFactory extends ConcretePrereqObject implements
 	@Override
 	public int hashCode()
 	{
-		return pcClass.hashCode() * 29 + levels;
+		return pcClass.hashCode() * 29 + modifier.hashCode();
 	}
 
 	@Override
@@ -65,24 +62,22 @@ public class LevelCommandFactory extends ConcretePrereqObject implements
 		{
 			return true;
 		}
-		if (!(o instanceof LevelCommandFactory))
+		if (!(o instanceof HitDieCommandFactory))
 		{
 			return false;
 		}
-		LevelCommandFactory lcf = (LevelCommandFactory) o;
-		return levels == lcf.levels && pcClass.equals(lcf.pcClass);
+		HitDieCommandFactory lcf = (HitDieCommandFactory) o;
+		return modifier.equals(lcf.modifier) && pcClass.equals(lcf.pcClass);
 	}
 
-	public int compareTo(LevelCommandFactory arg0)
+	public int compareTo(HitDieCommandFactory arg0)
 	{
 		int i = TokenUtilities.REFERENCE_SORTER.compare(pcClass, arg0.pcClass);
 		if (i == 0)
 		{
-			if (levels == arg0.levels)
-			{
-				return 0;
-			}
-			return levels < arg0.levels ? -1 : 1;
+			// TODO Need to fix this - AbstractHitDieModifier should be
+			// comparable?
+			throw new UnsupportedOperationException();
 		}
 		return i;
 	}

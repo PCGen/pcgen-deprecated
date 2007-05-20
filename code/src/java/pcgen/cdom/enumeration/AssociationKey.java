@@ -25,16 +25,19 @@ package pcgen.cdom.enumeration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URI;
 import java.util.Map;
 
 import pcgen.base.util.CaseInsensitiveMap;
+import pcgen.cdom.base.CDOMObject;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
  * 
  * This is a Typesafe enumeration of legal String Characteristics of an object.
  */
-public final class AssociationKey<T> {
+public final class AssociationKey<T>
+{
 
 	/*
 	 * TODO Should ObjectKey take in the Class in order to be able to cast to
@@ -42,44 +45,79 @@ public final class AssociationKey<T> {
 	 * 
 	 * have a .cast(Object o) method on ObjectKey???
 	 */
-	public static final AssociationKey<Integer> SPELL_LEVEL = new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> SPELL_LEVEL =
+			new AssociationKey<Integer>();
 
-	public static final AssociationKey<SkillCost> SKILL_COST = new AssociationKey<SkillCost>();
+	public static final AssociationKey<SkillCost> SKILL_COST =
+			new AssociationKey<SkillCost>();
 
-	public static final AssociationKey<AbilityNature> ABILITY_NATURE = new AssociationKey<AbilityNature>();
+	public static final AssociationKey<AbilityNature> ABILITY_NATURE =
+			new AssociationKey<AbilityNature>();
 
-	public static final AssociationKey<String> CASTER_LEVEL = new AssociationKey<String>();
+	public static final AssociationKey<String> CASTER_LEVEL =
+			new AssociationKey<String>();
 
-	public static final AssociationKey<String> TIMES_PER_DAY = new AssociationKey<String>();
+	public static final AssociationKey<String> TIMES_PER_DAY =
+			new AssociationKey<String>();
 
-	public static final AssociationKey<String> SPELLBOOK = new AssociationKey<String>();
+	public static final AssociationKey<String> SPELLBOOK =
+			new AssociationKey<String>();
 
-	public static final AssociationKey<String> DC_FORMULA = new AssociationKey<String>();
+	public static final AssociationKey<String> DC_FORMULA =
+			new AssociationKey<String>();
 
-	public static final AssociationKey<String> ONLY = new AssociationKey<String>();
+	public static final AssociationKey<String> ONLY =
+			new AssociationKey<String>();
 
-	public static final AssociationKey<AbilityCategory> ABILITY_CATEGORY = new AssociationKey<AbilityCategory>();
+	public static final AssociationKey<AbilityCategory> ABILITY_CATEGORY =
+			new AssociationKey<AbilityCategory>();
 
-	public static final AssociationKey<EquipmentNature> EQUIPMENT_NATURE = new AssociationKey<EquipmentNature>();
+	public static final AssociationKey<EquipmentNature> EQUIPMENT_NATURE =
+			new AssociationKey<EquipmentNature>();
 
-	public static final AssociationKey<Integer> QUANTITY = new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> QUANTITY =
+			new AssociationKey<Integer>();
 
-	public static final AssociationKey<String> TYPE = new AssociationKey<String>();
+	public static final AssociationKey<String> TYPE =
+			new AssociationKey<String>();
 
-	public static final AssociationKey<Integer> FOLLOWER_ADJUSTMENT = new AssociationKey<Integer>();
+	public static final AssociationKey<RetirementMethod> RETIRED_METHOD =
+			new AssociationKey<RetirementMethod>();
+
+	public static final AssociationKey<URI> RETIRED_BY =
+			new AssociationKey<URI>();
+
+	public static final AssociationKey<Integer> SEQUENCE_NUMBER =
+			new AssociationKey<Integer>();
+
+	public static final AssociationKey<URI> SOURCE_URI =
+			new AssociationKey<URI>();
+
+	public static final AssociationKey<Integer> FOLLOWER_ADJUSTMENT =
+			new AssociationKey<Integer>();
+
+	public static final AssociationKey<CDOMObject> OWNER =
+			new AssociationKey<CDOMObject>();
+
+	public static final AssociationKey<String> TOKEN =
+			new AssociationKey<String>();
 
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
-	private AssociationKey() {
+	private AssociationKey()
+	{
 		// Only allow instantation here
 	}
 
-	public T cast(Object o) {
+	public T cast(Object o)
+	{
 		return (T) o;
 	}
 
-	public static <OT> AssociationKey<OT> getKeyFor(Class<OT> c, String s) {
-		if (map == null) {
+	public static <OT> AssociationKey<OT> getKeyFor(Class<OT> c, String s)
+	{
+		if (map == null)
+		{
 			buildMap();
 		}
 		/*
@@ -92,29 +130,39 @@ public final class AssociationKey<T> {
 		 * is requested.
 		 */
 		AssociationKey<OT> o = (AssociationKey<OT>) map.get(s);
-		if (o == null) {
+		if (o == null)
+		{
 			o = new AssociationKey<OT>();
 			map.put(s, o);
 		}
 		return o;
 	}
 
-	private static void buildMap() {
+	private static void buildMap()
+	{
 		map = new CaseInsensitiveMap<AssociationKey<?>>();
 		Field[] fields = AssociationKey.class.getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
+		for (int i = 0; i < fields.length; i++)
+		{
 			int mod = fields[i].getModifiers();
 
 			if (Modifier.isStatic(mod) && Modifier.isFinal(mod)
-					&& Modifier.isPublic(mod)) {
-				try {
+				&& Modifier.isPublic(mod))
+			{
+				try
+				{
 					Object o = fields[i].get(null);
-					if (o instanceof AssociationKey) {
+					if (o instanceof AssociationKey)
+					{
 						map.put(fields[i].getName(), (AssociationKey) o);
 					}
-				} catch (IllegalArgumentException e) {
+				}
+				catch (IllegalArgumentException e)
+				{
 					throw new InternalError();
-				} catch (IllegalAccessException e) {
+				}
+				catch (IllegalAccessException e)
+				{
 					throw new InternalError();
 				}
 			}
@@ -122,17 +170,20 @@ public final class AssociationKey<T> {
 	}
 
 	@Override
-	public String toString() {
-		if (map == null) {
+	public String toString()
+	{
+		if (map == null)
+		{
 			buildMap();
 		}
 		/*
 		 * CONSIDER Should this find a way to do a Two-Way Map or something to
 		 * that effect?
 		 */
-		for (Map.Entry<?, AssociationKey<?>> me : map
-				.entrySet()) {
-			if (me.getValue() == this) {
+		for (Map.Entry<?, AssociationKey<?>> me : map.entrySet())
+		{
+			if (me.getValue() == this)
+			{
 				return me.getKey().toString();
 			}
 		}

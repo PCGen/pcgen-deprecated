@@ -19,9 +19,11 @@ package pcgen.cdom.content;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.spell.Spell;
 
-public class KnownSpellIdentifier extends ConcretePrereqObject
+public class KnownSpellIdentifier extends ConcretePrereqObject implements
+		LSTWriteable
 {
 
 	private final CDOMReference<Spell> ref;
@@ -80,5 +82,10 @@ public class KnownSpellIdentifier extends ConcretePrereqObject
 		return ((spellLevel == null && other.spellLevel == null) || spellLevel
 			.equals(other.spellLevel))
 			&& ref.equals(other.ref);
+	}
+
+	public String getLSTformat()
+	{
+		return ref.getLSTformat();
 	}
 }

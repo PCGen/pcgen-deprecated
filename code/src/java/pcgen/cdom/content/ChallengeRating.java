@@ -20,8 +20,10 @@ package pcgen.cdom.content;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 
-public class ChallengeRating extends ConcretePrereqObject
+public class ChallengeRating extends ConcretePrereqObject implements
+		LSTWriteable
 {
 
 	private final Formula rating;
@@ -61,7 +63,7 @@ public class ChallengeRating extends ConcretePrereqObject
 		return rating;
 	}
 
-	public String toLSTform()
+	public String getLSTformat()
 	{
 		String str = rating.toString();
 		if (str.startsWith("-"))

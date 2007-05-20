@@ -143,7 +143,8 @@ public final class EquipmentLoader extends LstObjectFileLoader<Equipment> {
 			}
 		} else {
 			LstUtils.deprecationCheck(token, equip, value);
-			if (!token.parse(context, equip, value)) {
+			if (!token.parse(context, equip, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in equipment "
 						+ equip.getDisplayName() + ':' + source.getURI() + ':'
 						+ value + "\"");

@@ -175,7 +175,8 @@ public final class EquipmentModifierLoader extends
 			}
 		} else {
 			LstUtils.deprecationCheck(token, eqMod, value);
-			if (!token.parse(context, eqMod, value)) {
+			if (!token.parse(context, eqMod, value))
+			{
 				Logging.errorPrint("Error parsing token " + key
 						+ " in EquipmentModifier " + eqMod.getDisplayName()
 						+ ':' + source.getURI() + ':' + value + "\"");

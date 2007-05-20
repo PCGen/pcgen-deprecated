@@ -186,7 +186,8 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 			}
 		} else {
 			LstUtils.deprecationCheck(token, ability, value);
-			if (!token.parse(context, ability, value)) {
+			if (!token.parse(context, ability, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in ability "
 						+ ability.getDisplayName() + ':' + source.getURI() + ':'
 						+ value + "\"");

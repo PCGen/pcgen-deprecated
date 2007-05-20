@@ -19,17 +19,17 @@ package pcgen.cdom.util;
 
 import java.util.Collection;
 
-import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.LSTWriteable;
 
 public final class ReferenceUtilities
 {
-	
+
 	private ReferenceUtilities()
 	{
-		//Cannot construct utility class
+		// Cannot construct utility class
 	}
 
-	public static <T extends CDOMReference<?>> String joinLstFormat(
+	public static <T extends LSTWriteable> String joinLstFormat(
 		Collection<T> set, String separator)
 	{
 		if (set == null)
@@ -41,7 +41,7 @@ public final class ReferenceUtilities
 
 		boolean needjoin = false;
 
-		for (CDOMReference<?> obj : set)
+		for (LSTWriteable obj : set)
 		{
 			if (needjoin)
 			{

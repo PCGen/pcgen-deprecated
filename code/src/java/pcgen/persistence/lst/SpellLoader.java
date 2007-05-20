@@ -294,10 +294,11 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 			}
 		} else {
 			LstUtils.deprecationCheck(token, spell, value);
-			if (!token.parse(context, spell, value)) {
+			if (!token.parse(context, spell, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in spell "
-						+ spell.getDisplayName() + ':' + source.getURI() + ':'
-						+ value + "\"");
+					+ spell.getDisplayName() + ':' + source.getURI() + ':'
+					+ value + "\"");
 			}
 		}
 	}

@@ -8,11 +8,13 @@ import java.util.Map;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.enumeration.AssociationKey;
 
 public class Remover<T extends PrereqObject> extends ConcretePrereqObject
+		implements LSTWriteable
 {
 	private final Class<T> cl;
 	private final Formula removeCount;
@@ -62,7 +64,7 @@ public class Remover<T extends PrereqObject> extends ConcretePrereqObject
 		return true;
 	}
 
-	public String toLSTform()
+	public String getLSTformat()
 	{
 		return removeCount.toString();
 	}

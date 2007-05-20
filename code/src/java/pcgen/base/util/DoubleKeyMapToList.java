@@ -131,6 +131,24 @@ public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 
 	/**
 	 * Returns true if this DoubleKeyMapToList contains a List for the given
+	 * primary key (and any secondary key). This method returns false if the
+	 * given keys is not in this DoubleKeyMapToList.
+	 * 
+	 * This method is value-semantic in that no changes are made to the objects
+	 * passed into the method.
+	 * 
+	 * @param key1
+	 *            The primary key for testing presence of a List
+	 * @return true if this DoubleKeyMapToList contains a List for the given
+	 *         primary key; false otherwise.
+	 */
+	public boolean containsListFor(K1 key1)
+	{
+		return mtmtl.containsKey(key1);
+	}
+
+	/**
+	 * Returns true if this DoubleKeyMapToList contains a List for the given
 	 * keys. This method returns false if the given keys are not in this
 	 * DoubleKeyMapToList.
 	 * 

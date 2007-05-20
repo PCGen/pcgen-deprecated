@@ -22,9 +22,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import pcgen.cdom.base.AssociatedObject;
 import pcgen.cdom.enumeration.AssociationKey;
 
-public class AssociationSupport
+public class AssociationSupport implements AssociatedObject
 {
 	private Map<AssociationKey<?>, Object> associationMap;
 

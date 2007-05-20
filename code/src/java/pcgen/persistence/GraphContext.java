@@ -17,6 +17,7 @@
  */
 package pcgen.persistence;
 
+import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,32 +28,38 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.Slot;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGenGraph;
-import pcgen.cdom.graph.PCGraphActivationEdge;
-import pcgen.cdom.graph.PCGraphAllowsEdge;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.graph.PCGraphHoldsEdge;
-import pcgen.cdom.inst.Aggregator;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.util.Logging;
 
 public class GraphContext
 {
 
 	private final PCGenGraph graph;
 
+	private URI sourceURI;
+
+	private URI extractURI;
+
 	public GraphContext(PCGenGraph pgg)
 	{
 		graph = pgg;
 	}
 
-	public PCGraphGrantsEdge linkObjectIntoGraph(String sourceToken,
-		CDOMObject obj, PrereqObject pro)
+	public URI setSourceURI(URI source)
 	{
-		PrereqObject node = getInternalizedNode(pro);
-		graph.addNode(node);
-		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(obj, node, sourceToken);
-		graph.addEdge(edge);
-		return edge;
+		URI oldURI = sourceURI;
+		sourceURI = source;
+		return oldURI;
+	}
+
+	public URI setExtractURI(URI uri)
+	{
+		URI oldURI = extractURI;
+		extractURI = uri;
+		return oldURI;
 	}
 
 	private PrereqObject getInternalizedNode(PrereqObject pro)
@@ -65,55 +72,17 @@ public class GraphContext
 		return node;
 	}
 
-	/*
-	 * FIXME Currently this allows PrereqObject as the 2nd arg - should be
-	 * CDOMObject or CDOMReference - can this be restricted?
-	 */
-	public PCGraphAllowsEdge linkAllowIntoGraph(String sourceToken,
-		PrereqObject obj, PrereqObject pro)
-	{
-		PrereqObject node = getInternalizedNode(pro);
-		graph.addNode(node);
-		PCGraphAllowsEdge edge = new PCGraphAllowsEdge(obj, node, sourceToken);
-		graph.addEdge(edge);
-		return edge;
-	}
-
-	public PCGraphHoldsEdge linkHoldsIntoGraph(String sourceToken,
-		PrereqObject obj, PrereqObject pro)
-	{
-		PrereqObject node = getInternalizedNode(pro);
-		graph.addNode(node);
-		PCGraphHoldsEdge edge = new PCGraphHoldsEdge(obj, node, sourceToken);
-		graph.addEdge(edge);
-		return edge;
-	}
-
-	public PCGraphActivationEdge linkActivationIntoGraph(String sourceToken,
-		PrereqObject obj, PrereqObject pro)
-	{
-		PrereqObject node = getInternalizedNode(pro);
-		graph.addNode(node);
-		PCGraphActivationEdge edge =
-				new PCGraphActivationEdge(obj, node, sourceToken);
-		graph.addEdge(edge);
-		return edge;
-	}
-
-	public <S extends PrereqObject> void addSlotIntoGraph(String tokenName,
-		CDOMObject pro, Class<S> slotClass)
-	{
-		PCGraphGrantsEdge edge =
-				new PCGraphGrantsEdge(pro, new Slot<S>(slotClass), tokenName);
-		graph.addEdge(edge);
-	}
-
-	public <S extends PrereqObject> Slot<S> addSlotIntoGraph(String tokenName,
+	public <S extends PrereqObject> Slot<S> addSlot(String tokenName,
 		CDOMObject pro, Class<S> slotClass, Formula count)
 	{
 		Slot<S> slot = new Slot<S>(slotClass, count);
 		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(pro, slot, tokenName);
-		graph.addEdge(edge);
+		edge.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
+		if (!graph.addEdge(edge))
+		{
+			Logging.errorPrint("Failed Add for Slot " + tokenName + " " + pro
+				+ " " + slotClass + " " + count);
+		}
 		return slot;
 	}
 
@@ -131,6 +100,14 @@ public class GraphContext
 		{
 			for (PCGraphEdge edge : outwardEdgeList)
 			{
+				if (extractURI != null)
+				{
+					if (!extractURI.equals(edge
+						.getAssociation(AssociationKey.SOURCE_URI)))
+					{
+						continue;
+					}
+				}
 				for (PrereqObject node : edge.getAdjacentNodes())
 				{
 					if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK
@@ -157,6 +134,14 @@ public class GraphContext
 		{
 			for (PCGraphEdge edge : outwardEdgeList)
 			{
+				if (extractURI != null)
+				{
+					if (!extractURI.equals(edge
+						.getAssociation(AssociationKey.SOURCE_URI)))
+					{
+						continue;
+					}
+				}
 				if (edge.getSourceToken().equals(tokenName))
 				{
 					for (PrereqObject node : edge.getAdjacentNodes())
@@ -184,6 +169,14 @@ public class GraphContext
 		}
 		for (PCGraphEdge edge : outwardEdgeList)
 		{
+			if (extractURI != null)
+			{
+				if (!extractURI.equals(edge
+					.getAssociation(AssociationKey.SOURCE_URI)))
+				{
+					continue;
+				}
+			}
 			if (!edge.getSourceToken().equals(tokenName))
 			{
 				continue;
@@ -206,7 +199,43 @@ public class GraphContext
 		return set;
 	}
 
-	public void unlinkChildNodesOfClass(String tokenName, CDOMObject obj,
+	public PCGraphGrantsEdge grant(String sourceToken, PrereqObject obj,
+		PrereqObject pro)
+	{
+		PrereqObject node = getInternalizedNode(pro);
+		graph.addNode(node);
+		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(obj, node, sourceToken);
+		edge.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
+		graph.addEdge(edge);
+		return edge;
+	}
+
+	public void remove(String tokenName, CDOMObject obj, PrereqObject child)
+	{
+		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
+		if (outwardEdgeList != null)
+		{
+			for (PCGraphEdge edge : outwardEdgeList)
+			{
+				if (edge.getSourceToken().equals(tokenName))
+				{
+					for (PrereqObject node : edge.getAdjacentNodes())
+					{
+						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK
+							&& node.equals(child))
+						{
+							// CONSIDER Clean up parent/child if no remaining
+							// links?
+							graph.removeEdge(edge);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void removeAll(String tokenName, CDOMObject obj,
 		Class<? extends PrereqObject> cl)
 	{
 		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
@@ -222,6 +251,8 @@ public class GraphContext
 							&& node.getClass().equals(cl))
 						{
 							graph.removeEdge(edge);
+							// CONSIDER Clean up parent/child if no remaining
+							// links?
 							break;
 						}
 					}
@@ -230,8 +261,7 @@ public class GraphContext
 		}
 	}
 
-	public void unlinkChildNode(String tokenName, CDOMObject obj,
-		PrereqObject child)
+	public void removeAll(String tokenName, PrereqObject obj)
 	{
 		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
 		if (outwardEdgeList != null)
@@ -240,101 +270,15 @@ public class GraphContext
 			{
 				if (edge.getSourceToken().equals(tokenName))
 				{
-					for (PrereqObject node : edge.getAdjacentNodes())
-					{
-						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK
-							&& node.equals(child))
-						{
-							graph.removeEdge(edge);
-							break;
-						}
-					}
+					graph.removeEdge(edge);
 				}
 			}
 		}
 	}
 
-	public void unlinkChildNodes(String tokenName, PrereqObject obj)
+	public <T extends PrereqObject> GraphChanges<T> getChangesFromToken(
+		String tokenName, CDOMObject pct, Class<T> name)
 	{
-		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
-		if (outwardEdgeList != null)
-		{
-			for (PCGraphEdge edge : outwardEdgeList)
-			{
-				if (edge.getSourceToken().equals(tokenName))
-				{
-					for (PrereqObject node : edge.getAdjacentNodes())
-					{
-						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK)
-						{
-							graph.removeEdge(edge);
-							break;
-						}
-					}
-				}
-			}
-		}
+		return new GraphChangesFacade<T>(graph, tokenName, pct, name);
 	}
-
-	public void unlinkParentNodes(String tokenName, PrereqObject pro)
-	{
-		List<PCGraphEdge> inwardEdgeList = graph.getInwardEdgeList(pro);
-		if (inwardEdgeList != null)
-		{
-			for (PCGraphEdge edge : inwardEdgeList)
-			{
-				if (edge.getSourceToken().equals(tokenName))
-				{
-					for (PrereqObject node : edge.getAdjacentNodes())
-					{
-						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SOURCE)
-						{
-							graph.removeEdge(edge);
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public Set<PCGraphEdge> getParentLinksFromToken(String tokenName,
-		CDOMObject obj, Class<? extends PrereqObject> cl)
-	{
-		Set<PCGraphEdge> set = new HashSet<PCGraphEdge>();
-		List<PCGraphEdge> inwardEdgeList = graph.getInwardEdgeList(obj);
-		if (inwardEdgeList == null)
-		{
-			return set;
-		}
-		for (PCGraphEdge edge : inwardEdgeList)
-		{
-			if (!edge.getSourceToken().equals(tokenName))
-			{
-				continue;
-			}
-			for (PrereqObject node : edge.getAdjacentNodes())
-			{
-				if (edge.getNodeInterfaceType(node) == DirectionalEdge.SOURCE)
-				{
-					if (cl.isAssignableFrom(node.getClass())
-						|| (node instanceof CDOMReference && ((CDOMReference) node)
-							.getReferenceClass().equals(cl)))
-					{
-						set.add(edge);
-						break;
-					}
-				}
-			}
-		}
-		return set;
-	}
-
-	public void deleteAggregator(String tokenName, Aggregator agg)
-	{
-		unlinkChildNodes(tokenName, agg);
-		unlinkParentNodes(tokenName, agg);
-		graph.removeNode(agg);
-	}
-
 }

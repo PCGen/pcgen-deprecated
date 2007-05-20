@@ -148,7 +148,8 @@ public final class WeaponProfLoader extends LstObjectFileLoader<WeaponProf>
 			}
 		} else {
 			LstUtils.deprecationCheck(token, wp, value);
-			if (!token.parse(context, wp, value)) {
+			if (!token.parse(context, wp, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in WeaponProf "
 						+ wp.getDisplayName() + ':' + source.getURI() + ':'
 						+ value + "\"");

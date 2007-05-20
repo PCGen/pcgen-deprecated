@@ -33,6 +33,7 @@ import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.helper.Capacity;
+import pcgen.cdom.helper.Quality;
 import pcgen.core.Description;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PCClass;
@@ -43,29 +44,37 @@ import pcgen.core.WeaponProf;
  * 
  * This is a Typesafe enumeration of legal List Characteristics of an object.
  */
-public final class ListKey<T> {
+public final class ListKey<T>
+{
 
 	public static final ListKey<String> UDAM = new ListKey<String>();
 
 	public static final ListKey<Type> TYPE = new ListKey<Type>();
 
-	public static final ListKey<RaceSubType> RACESUBTYPE = new ListKey<RaceSubType>();
+	public static final ListKey<RaceSubType> RACESUBTYPE =
+			new ListKey<RaceSubType>();
 
 	public static final ListKey<Pantheon> PANTHEON = new ListKey<Pantheon>();
 
-	public static final ListKey<CDOMSimpleSingleRef<WeaponProf>> DEITY_WEAPON = new ListKey<CDOMSimpleSingleRef<WeaponProf>>();
+	public static final ListKey<CDOMSimpleSingleRef<WeaponProf>> DEITY_WEAPON =
+			new ListKey<CDOMSimpleSingleRef<WeaponProf>>();
 
-	public static final ListKey<RacePantheon> RACE_PANTHEON = new ListKey<RacePantheon>();
+	public static final ListKey<RacePantheon> RACE_PANTHEON =
+			new ListKey<RacePantheon>();
 
-	public static final ListKey<SpellSubSchool> SPELL_SUBSCHOOL = new ListKey<SpellSubSchool>();
+	public static final ListKey<SpellSubSchool> SPELL_SUBSCHOOL =
+			new ListKey<SpellSubSchool>();
 
-	public static final ListKey<SpellSchool> SPELL_SCHOOL = new ListKey<SpellSchool>();
+	public static final ListKey<SpellSchool> SPELL_SCHOOL =
+			new ListKey<SpellSchool>();
 
-	public static final ListKey<SpellDescriptor> SPELL_DESCRIPTOR = new ListKey<SpellDescriptor>();
+	public static final ListKey<SpellDescriptor> SPELL_DESCRIPTOR =
+			new ListKey<SpellDescriptor>();
 
 	public static final ListKey<String> VARIANTS = new ListKey<String>();
 
-	public static final ListKey<CDOMSimpleSingleRef<EquipmentModifier>> REPLACED_KEYS = new ListKey<CDOMSimpleSingleRef<EquipmentModifier>>();
+	public static final ListKey<CDOMSimpleSingleRef<EquipmentModifier>> REPLACED_KEYS =
+			new ListKey<CDOMSimpleSingleRef<EquipmentModifier>>();
 
 	public static final ListKey<Type> ITEM_TYPES = new ListKey<Type>();
 
@@ -73,42 +82,57 @@ public final class ListKey<T> {
 
 	public static final ListKey<Type> PROFICIENCY_TYPES = new ListKey<Type>();
 
-	public static final ListKey<AlignmentType> FOLLOWER_ALIGN = new ListKey<AlignmentType>();
+	public static final ListKey<AlignmentType> FOLLOWER_ALIGN =
+			new ListKey<AlignmentType>();
 
 	public static final ListKey<Capacity> CAPACITY = new ListKey<Capacity>();
 
 	public static final ListKey<Description> DESC = new ListKey<Description>();
 
-	public static final ListKey<RaceSubType> REMOVED_RACESUBTYPE = new ListKey<RaceSubType>();
+	public static final ListKey<RaceSubType> REMOVED_RACESUBTYPE =
+			new ListKey<RaceSubType>();
 
 	public static final ListKey<Integer> HITDICE_ADVANCEMENT =
 			new ListKey<Integer>();
 
-	public static final ListKey<CDOMReference<PCClass>> FAVORED_CLASS = new ListKey<CDOMReference<PCClass>>();
+	public static final ListKey<CDOMReference<PCClass>> FAVORED_CLASS =
+			new ListKey<CDOMReference<PCClass>>();
+
+	public static final ListKey<Quality> QUALITY = new ListKey<Quality>();
 
 	/** Private constructor to prevent instantiation of this class */
-	private ListKey() {
+	private ListKey()
+	{
 		// Only allow instantation here
 	}
 
 	private static CaseInsensitiveMap<ListKey<?>> map = null;
 
-	private static void buildMap() {
+	private static void buildMap()
+	{
 		map = new CaseInsensitiveMap<ListKey<?>>();
 		Field[] fields = ListKey.class.getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
+		for (int i = 0; i < fields.length; i++)
+		{
 			int mod = fields[i].getModifiers();
 
 			if (Modifier.isStatic(mod) && Modifier.isFinal(mod)
-					&& Modifier.isPublic(mod)) {
-				try {
+				&& Modifier.isPublic(mod))
+			{
+				try
+				{
 					Object o = fields[i].get(null);
-					if (o instanceof ListKey) {
+					if (o instanceof ListKey)
+					{
 						map.put(fields[i].getName(), (ListKey) o);
 					}
-				} catch (IllegalArgumentException e) {
+				}
+				catch (IllegalArgumentException e)
+				{
 					throw new InternalError();
-				} catch (IllegalAccessException e) {
+				}
+				catch (IllegalAccessException e)
+				{
 					throw new InternalError();
 				}
 			}
@@ -116,13 +140,20 @@ public final class ListKey<T> {
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		/*
 		 * CONSIDER Should this find a way to do a Two-Way Map or something to
 		 * that effect?
 		 */
-		for (Map.Entry<?, ListKey<?>> me : map.entrySet()) {
-			if (me.getValue() == this) {
+		if (map == null)
+		{
+			buildMap();
+		}
+		for (Map.Entry<?, ListKey<?>> me : map.entrySet())
+		{
+			if (me.getValue() == this)
+			{
 				return me.getKey().toString();
 			}
 		}
@@ -130,8 +161,10 @@ public final class ListKey<T> {
 		return "";
 	}
 
-	public static <OT> ListKey<OT> getKeyFor(Class<OT> c, String s) {
-		if (map == null) {
+	public static <OT> ListKey<OT> getKeyFor(Class<OT> c, String s)
+	{
+		if (map == null)
+		{
 			buildMap();
 		}
 		/*
@@ -144,15 +177,18 @@ public final class ListKey<T> {
 		 * is requested.
 		 */
 		ListKey<OT> o = (ListKey<OT>) map.get(s);
-		if (o == null) {
+		if (o == null)
+		{
 			o = new ListKey<OT>();
 			map.put(s, o);
 		}
 		return o;
 	}
 
-	public static Collection<ListKey<?>> getAllConstants() {
-		if (map == null) {
+	public static Collection<ListKey<?>> getAllConstants()
+	{
+		if (map == null)
+		{
 			buildMap();
 		}
 		return new HashSet<ListKey<?>>(map.values());

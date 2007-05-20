@@ -147,7 +147,8 @@ public final class SkillLoader extends LstObjectFileLoader<Skill>
 			}
 		} else {
 			LstUtils.deprecationCheck(token, skill, value);
-			if (!token.parse(context, skill, value)) {
+			if (!token.parse(context, skill, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in skill "
 						+ skill.getDisplayName() + ':' + source.getURI() + ':'
 						+ value + "\"");

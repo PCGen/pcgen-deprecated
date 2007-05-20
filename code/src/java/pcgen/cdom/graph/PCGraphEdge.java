@@ -20,11 +20,12 @@ package pcgen.cdom.graph;
 import java.util.Collection;
 
 import pcgen.base.graph.core.DirectionalEdge;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 
-public interface PCGraphEdge extends PrereqObject,
-		DirectionalEdge<PrereqObject>
+public interface PCGraphEdge extends DirectionalEdge<PrereqObject>,
+		AssociatedPrereqObject
 {
 
 	String getSourceToken();
@@ -37,4 +38,5 @@ public interface PCGraphEdge extends PrereqObject,
 
 	public boolean hasAssociations();
 
+	public PCGraphEdge createReplacementEdge(PrereqObject gn1, PrereqObject gn2);
 }

@@ -30,7 +30,7 @@ import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 
-public class AbstractPCGraphEdge extends ConcretePrereqObject
+public abstract class AbstractPCGraphEdge extends ConcretePrereqObject
 {
 
 	/**
@@ -177,6 +177,18 @@ public class AbstractPCGraphEdge extends ConcretePrereqObject
 	 */
 	private Map<AssociationKey<?>, Object> associationMap;
 
+	protected void copyAssociationMapTo(AbstractPCGraphEdge other)
+	{
+		if (associationMap != null)
+		{
+			if (other.associationMap == null)
+			{
+				other.associationMap = new HashMap<AssociationKey<?>, Object>();
+			}
+			other.associationMap.putAll(associationMap);
+		}
+	}
+
 	public <T> void setAssociation(AssociationKey<T> name, T value)
 	{
 		if (associationMap == null)
@@ -210,7 +222,7 @@ public class AbstractPCGraphEdge extends ConcretePrereqObject
 			&& ((associationMap == null && other.associationMap == null) || (associationMap != null && associationMap
 				.equals(other.associationMap)));
 	}
-	
+
 	@Override
 	public String toString()
 	{

@@ -1,6 +1,9 @@
 package pcgen.core;
 
-public class WeaponProfList extends PObject {
+import pcgen.cdom.base.CDOMList;
+
+public class WeaponProfList extends PObject implements CDOMList<WeaponProf>
+{
 
 	// No additional Functionality :)
 

@@ -26,10 +26,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 
-public class ChoiceSet<T> extends ConcretePrereqObject
+public class ChoiceSet<T> extends ConcretePrereqObject implements LSTWriteable
 {
 
 	private final Set<T> set;
@@ -93,5 +94,12 @@ public class ChoiceSet<T> extends ConcretePrereqObject
 		}
 		ChoiceSet<?> cs = (ChoiceSet) o;
 		return count == cs.count && set.equals(cs.set);
+	}
+
+	public String getLSTformat()
+	{
+		// TODO Don't like this, but required for unparse clarity (need to clean
+		// up generics/GraphChanges)
+		return Integer.toString(count);
 	}
 }

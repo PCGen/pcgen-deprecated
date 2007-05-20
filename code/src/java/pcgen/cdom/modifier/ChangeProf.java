@@ -20,10 +20,11 @@ package pcgen.cdom.modifier;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.WeaponProf;
 
 public class ChangeProf extends ConcretePrereqObject implements
-		Modifier<WeaponProf>
+		Modifier<WeaponProf>, LSTWriteable
 {
 
 	private final CDOMReference<WeaponProf> source;
@@ -92,5 +93,11 @@ public class ChangeProf extends ConcretePrereqObject implements
 		}
 		ChangeProf other = (ChangeProf) o;
 		return source.equals(other.source) && result.equals(other.result);
+	}
+
+	public String getLSTformat()
+	{
+		// FIXME Hack for back Generics in GraphChangs
+		return source.getLSTformat() + " " + result.getLSTformat();
 	}
 }

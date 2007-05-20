@@ -144,7 +144,8 @@ public class DeityLoader extends LstObjectFileLoader<Deity>
 			}
 		} else {
 			LstUtils.deprecationCheck(token, deity, value);
-			if (!token.parse(context, deity, value)) {
+			if (!token.parse(context, deity, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in deity "
 						+ deity.getDisplayName() + ':' + source.getURI() + ':'
 						+ value + "\"");

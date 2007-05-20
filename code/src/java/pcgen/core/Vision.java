@@ -23,9 +23,11 @@
 package pcgen.core;
 
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.util.enumeration.VisionType;
 
-public class Vision extends ConcretePrereqObject implements Comparable<Vision>
+public class Vision extends ConcretePrereqObject implements Comparable<Vision>,
+		LSTWriteable
 {
 
 	private final VisionType visionType;
@@ -193,5 +195,10 @@ public class Vision extends ConcretePrereqObject implements Comparable<Vision>
 	public String toString(PlayerCharacter aPC)
 	{
 		return toString(aPC.getVariableValue(distance, "").intValue());
+	}
+
+	public String getLSTformat()
+	{
+		return toString();
 	}
 }

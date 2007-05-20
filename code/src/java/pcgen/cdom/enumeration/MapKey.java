@@ -40,14 +40,8 @@ import pcgen.core.PObject;
 public final class MapKey<K, V>
 {
 
-	public static final MapKey<String, String> QUALITY =
-			new MapKey<String, String>();
-
 	public static final MapKey<Class<? extends PObject>, CDOMReference<?>> QUALIFY =
 			new MapKey<Class<? extends PObject>, CDOMReference<?>>();
-
-	public static final MapKey<AttackType, Integer> ATTACK_CYCLE =
-			new MapKey<AttackType, Integer>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private MapKey()

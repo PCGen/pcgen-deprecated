@@ -20,6 +20,7 @@ package pcgen.persistence.lst.utils;
 import java.util.Comparator;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
@@ -27,6 +28,7 @@ import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.DamageReduction;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.inst.Aggregator;
@@ -36,6 +38,16 @@ import pcgen.util.Logging;
 
 public final class TokenUtilities
 {
+
+	public static final Comparator<LSTWriteable> WRITEABLE_SORTER =
+			new Comparator<LSTWriteable>()
+			{
+
+				public int compare(LSTWriteable arg0, LSTWriteable arg1)
+				{
+					return compareWriteable(arg0, arg1);
+				}
+			};
 
 	public static final Comparator<CDOMReference<?>> REFERENCE_SORTER =
 			new Comparator<CDOMReference<?>>()
@@ -213,5 +225,52 @@ public final class TokenUtilities
 			return 1;
 		}
 		return arg0.getName().compareTo(arg1.getName());
+	}
+
+	public static int compareWriteable(LSTWriteable arg0, LSTWriteable arg1)
+	{
+		if (arg0 instanceof CDOMSingleRef || arg0 instanceof CDOMObject)
+		{
+			if (!(arg1 instanceof CDOMSingleRef || arg1 instanceof CDOMObject))
+			{
+				return -1;
+			}
+			return compareLSTformats(arg0, arg1);
+		}
+		if (arg1 instanceof CDOMSingleRef)
+		{
+			return 1;
+		}
+		/*
+		 * BUG TODO This is NOT Consistent with equals :(
+		 */
+		return compareLSTformats(arg0, arg1);
+	}
+
+	private static int compareLSTformats(LSTWriteable arg0, LSTWriteable arg1)
+	{
+		String base = arg0.getLSTformat();
+		if (base == null)
+		{
+			if (arg1.getLSTformat() == null)
+			{
+				return 0;
+			}
+			else
+			{
+				return -1;
+			}
+		}
+		else
+		{
+			if (arg1.getLSTformat() == null)
+			{
+				return 1;
+			}
+			else
+			{
+				return base.compareTo(arg1.getLSTformat());
+			}
+		}
 	}
 }

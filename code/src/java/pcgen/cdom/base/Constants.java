@@ -34,6 +34,8 @@ public class Constants
 
 	public static final String LST_DOT_CLEAR = ".CLEAR";
 
+	public static final String LST_DOT_CLEARALL = ".CLEARALL";
+
 	public static final String LST_DOT_CLEAR_DOT = ".CLEAR.";
 
 	public static final String LST_ALL = "ALL";

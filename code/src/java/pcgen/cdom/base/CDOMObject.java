@@ -18,6 +18,7 @@
 package pcgen.cdom.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
+import pcgen.base.util.DoubleKeyMap;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
@@ -36,7 +38,7 @@ import pcgen.cdom.util.ListKeyMapToList;
 import pcgen.cdom.util.MapKeyMapToList;
 import pcgen.core.SourceEntry;
 
-public class CDOMObject extends ConcretePrereqObject
+public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 {
 
 	private final SourceEntry source = new SourceEntry();
@@ -69,6 +71,9 @@ public class CDOMObject extends ConcretePrereqObject
 	private final ListKeyMapToList listChar = new ListKeyMapToList();
 
 	private final MapKeyMapToList mapChar = new MapKeyMapToList();
+
+	private final DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable, AssociatedPrereqObject> cdomListMods =
+			new DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable, AssociatedPrereqObject>();
 
 	private Boolean namePI = null;
 
@@ -239,6 +244,9 @@ public class CDOMObject extends ConcretePrereqObject
 		return listChar.removeFromListFor(key, obj);
 	}
 
+	/*
+	 * TODO would be REALLY nice to remove these MapKey items as unnecessary
+	 */
 	public final <SK, SV> boolean addToListFor(MapKey<SK, SV> key1, SK key2,
 		SV value)
 	{
@@ -333,6 +341,7 @@ public class CDOMObject extends ConcretePrereqObject
 		}
 		if (namePI != cdo.namePI || descPI != cdo.descPI)
 		{
+			System.err.println("CDOM Inequality PI");
 			return false;
 		}
 		/*
@@ -342,22 +351,32 @@ public class CDOMObject extends ConcretePrereqObject
 		 */
 		if (!integerChar.equals(cdo.integerChar))
 		{
+			System.err.println("CDOM Inequality Integer");
+			System.err.println(integerChar + " " + cdo.integerChar);
 			return false;
 		}
 		if (!stringChar.equals(cdo.stringChar))
 		{
+			System.err.println("CDOM Inequality String");
+			System.err.println(stringChar + " " + cdo.stringChar);
 			return false;
 		}
 		if (!formulaChar.equals(cdo.formulaChar))
 		{
+			System.err.println("CDOM Inequality Formula");
+			System.err.println(formulaChar + " " + cdo.formulaChar);
 			return false;
 		}
 		if (!variableChar.equals(cdo.variableChar))
 		{
+			System.err.println("CDOM Inequality Variable");
+			System.err.println(variableChar + " " + cdo.variableChar);
 			return false;
 		}
 		if (!objectChar.equals(cdo.objectChar))
 		{
+			System.err.println("CDOM Inequality Object");
+			System.err.println(objectChar + " " + cdo.objectChar);
 			return false;
 		}
 		/*
@@ -368,5 +387,91 @@ public class CDOMObject extends ConcretePrereqObject
 		 * private final MapKeyMapToList mapChar = new MapKeyMapToList();
 		 */
 		return true;
+	}
+
+	public CDOMObject getRetiredReference()
+	{
+		Boolean retired = get(ObjectKey.RETIRED);
+		if (retired != null && retired.booleanValue() == true)
+		{
+			throw new IllegalStateException(
+				"Cannot get retired reference for an object that is already retired");
+		}
+		CDOMObject obj = getRawReplacement();
+		obj.integerChar.putAll(integerChar);
+		obj.stringChar.putAll(stringChar);
+		obj.formulaChar.putAll(formulaChar);
+		obj.variableChar.putAll(variableChar);
+		obj.objectChar.putAll(objectChar);
+		obj.listChar.addAllLists(listChar);
+		obj.mapChar.addAll(mapChar);
+		obj.addAllPrerequisites(getPrerequisiteList());
+		obj.objectChar.put(ObjectKey.RETIRED, Boolean.TRUE);
+		Integer seq = integerChar.get(IntegerKey.SEQUENCE_NUMBER);
+		if (seq == null)
+		{
+			seq = Integer.valueOf(1);
+			obj.integerChar.put(IntegerKey.SEQUENCE_NUMBER, seq);
+		}
+		seq = Integer.valueOf(seq.intValue() + 1);
+		integerChar.put(IntegerKey.SEQUENCE_NUMBER, seq);
+		return obj;
+	}
+
+	protected CDOMObject getRawReplacement()
+	{
+		CDOMObject obj;
+		try
+		{
+			obj = this.getClass().newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new InternalError(e.getMessage());
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new InternalError(e.getMessage());
+		}
+		return obj;
+	}
+
+	// TODO Generic Type Safety rather than CDOMObject
+	public <T extends CDOMObject> AssociatedPrereqObject putToList(
+		CDOMReference list, CDOMReference<T> granted,
+		AssociatedPrereqObject associations)
+	{
+		return cdomListMods.put(list, granted, associations);
+	}
+
+	public boolean hasListMods(CDOMReference list)
+	{
+		return cdomListMods.containsKey(list);
+	}
+
+	public Collection<LSTWriteable> getListMods(CDOMReference list)
+	{
+		Set<LSTWriteable> set = cdomListMods.getSecondaryKeySet(list);
+		if (set == null || set.isEmpty())
+		{
+			return null;
+		}
+		return set;
+	}
+
+	public AssociatedPrereqObject getListAssociation(CDOMReference list,
+		LSTWriteable key)
+	{
+		return cdomListMods.get(list, key);
+	}
+
+	public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getModifiedLists()
+	{
+		return cdomListMods.getKeySet();
+	}
+
+	public String getLSTformat()
+	{
+		return getKeyName();
 	}
 }

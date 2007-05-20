@@ -27,14 +27,19 @@ public class LoadContext
 {
 
 	public final GraphContext graph;
+	public final ListContext list;
 
 	public final ReferenceContext ref;
+
+	public final ObjectContext obj;
 
 	public final GameMode gameMode;
 
 	public LoadContext(PCGenGraph pgg)
 	{
 		graph = new GraphContext(pgg);
+		obj = new ObjectContext();
+		list = new ListContext();
 		ref = new ReferenceContext();
 		// TODO FIXME This is a hack
 		gameMode = SettingsHandler.getGame();
@@ -70,4 +75,10 @@ public class LoadContext
 	{
 		return writeMessageCount;
 	}
+
+	public ContextQueue getContextQueue()
+	{
+		return new ContextQueue(graph);
+	}
+
 }

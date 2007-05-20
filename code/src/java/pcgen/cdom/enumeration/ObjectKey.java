@@ -26,6 +26,7 @@ package pcgen.cdom.enumeration;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -145,6 +146,14 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Type> SPELL_TYPE = new ObjectKey<Type>();
 
+	public static final ObjectKey<Boolean> RETIRED = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<URI> SOURCE_URI = new ObjectKey<URI>();
+
+	public static final ObjectKey<BigDecimal> FACE_WIDTH = new ObjectKey<BigDecimal>();
+
+	public static final ObjectKey<BigDecimal> FACE_HEIGHT = new ObjectKey<BigDecimal>();
+
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 
 	private ObjectKey() {
@@ -204,6 +213,10 @@ public final class ObjectKey<T> {
 		 * CONSIDER Should this find a way to do a Two-Way Map or something to
 		 * that effect?
 		 */
+		if (map == null)
+		{
+			buildMap();
+		}
 		for (Map.Entry<?, ObjectKey<?>> me : map.entrySet()) {
 			if (me.getValue() == this) {
 				return me.getKey().toString();

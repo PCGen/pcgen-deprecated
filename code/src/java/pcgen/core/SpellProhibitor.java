@@ -25,12 +25,13 @@
  */
 package pcgen.core;
 
-import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.core.spell.Spell;
-import pcgen.util.enumeration.ProhibitedSpellType;
-
 import java.util.Set;
 import java.util.TreeSet;
+
+import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.core.spell.Spell;
+import pcgen.util.enumeration.ProhibitedSpellType;
 
 /**
  * @author stefan
@@ -38,7 +39,8 @@ import java.util.TreeSet;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public class SpellProhibitor extends ConcretePrereqObject
+public class SpellProhibitor extends ConcretePrereqObject implements
+		LSTWriteable
 {
 
 	private ProhibitedSpellType type = null;
@@ -132,5 +134,10 @@ public class SpellProhibitor extends ConcretePrereqObject
 				|| valueSet != null && valueSet.equals(other.valueSet);
 		}
 		return false;
+	}
+
+	public String getLSTformat()
+	{
+		return type.toString();
 	}
 }

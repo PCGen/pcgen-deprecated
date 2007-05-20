@@ -19,9 +19,10 @@ package pcgen.cdom.content;
 
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.PCClass;
 
-public class LevelExchange extends ConcretePrereqObject
+public class LevelExchange extends ConcretePrereqObject implements LSTWriteable
 {
 
 	private final CDOMSingleRef<PCClass> exchangeClass;
@@ -112,5 +113,10 @@ public class LevelExchange extends ConcretePrereqObject
 			&& maxDonatedLevels == other.maxDonatedLevels
 			&& donatingLowerLevelBound == other.donatingLowerLevelBound
 			&& exchangeClass.equals(other.exchangeClass);
+	}
+
+	public String getLSTformat()
+	{
+		return getExchangeClass().getLSTformat();
 	}
 }

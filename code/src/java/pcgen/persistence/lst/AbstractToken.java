@@ -23,34 +23,82 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 
-public abstract class AbstractToken {
+public abstract class AbstractToken
+{
 	private final PreParserFactory PRE_PARSER;
 
-	protected AbstractToken() {
-		try {
+	protected AbstractToken()
+	{
+		try
+		{
 			PRE_PARSER = PreParserFactory.getInstance();
-		} catch (PersistenceLayerException ple) {
+		}
+		catch (PersistenceLayerException ple)
+		{
 			Logging.errorPrint("Error Initializing PreParserFactory");
 			Logging.errorPrint("  " + ple.getMessage(), ple);
 			throw new UnreachableError();
 		}
 	}
 
-	protected Prerequisite getPrerequisite(String token) {
+	protected Prerequisite getPrerequisite(String token)
+	{
 		/*
 		 * CONSIDER Need to add a Key, Value method to getPrerequisite and to
 		 * .parse in the PRE_PARSER
 		 */
-		try {
+		try
+		{
 			return PRE_PARSER.parse(token);
-		} catch (PersistenceLayerException ple) {
+		}
+		catch (PersistenceLayerException ple)
+		{
 			Logging.errorPrint("Error parsing Prerequisite in "
-					+ getTokenName() + ": " + token);
+				+ getTokenName() + ": " + token);
 			Logging.errorPrint("  " + ple.getMessage(), ple);
 		}
 		return null;
 	}
-	
+
+	protected boolean hasIllegalSeparator(char separator, String value)
+	{
+		if (value.charAt(0) == separator)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with " + separator + " : " + value);
+			return true;
+		}
+		if (value.charAt(value.length() - 1) == separator)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not end with "
+				+ separator + " : " + value);
+			return true;
+		}
+		if (value.indexOf(String.valueOf(new char[]{separator, separator})) != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator " + separator + separator
+				+ " : " + value);
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean isEmpty(String value)
+	{
+		if (value == null)
+		{
+			Logging.errorPrint(getTokenName() + " may not have null argument");
+			return true;
+		}
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			return true;
+		}
+		return false;
+	}
+
 	protected abstract String getTokenName();
 
 }

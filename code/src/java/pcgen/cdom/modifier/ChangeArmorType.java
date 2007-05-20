@@ -18,10 +18,11 @@
 package pcgen.cdom.modifier;
 
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.Type;
 
 public class ChangeArmorType extends ConcretePrereqObject implements
-		Modifier<Type>
+		Modifier<Type>, LSTWriteable
 {
 
 	private final Type source;
@@ -82,5 +83,11 @@ public class ChangeArmorType extends ConcretePrereqObject implements
 		}
 		ChangeArmorType other = (ChangeArmorType) o;
 		return source.equals(other.source) && result.equals(other.result);
+	}
+
+	public String getLSTformat()
+	{
+		//TODO Don't like this = fix Generics in GraphChanges
+		return "";
 	}
 }

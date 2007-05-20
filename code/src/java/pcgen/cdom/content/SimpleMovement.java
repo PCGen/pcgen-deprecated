@@ -25,12 +25,14 @@ package pcgen.cdom.content;
 import java.math.BigDecimal;
 
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.util.BigDecimalHelper;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
  */
-public class SimpleMovement extends ConcretePrereqObject
+public class SimpleMovement extends ConcretePrereqObject implements
+		LSTWriteable
 {
 
 	private final String type;
@@ -80,7 +82,7 @@ public class SimpleMovement extends ConcretePrereqObject
 	 * 
 	 * @return a String in LST/PCC file format, suitable for persistent storage
 	 */
-	public String toLSTString()
+	public String getLSTformat()
 	{
 		return new StringBuilder().append(type).append(',').append(movement)
 			.toString();

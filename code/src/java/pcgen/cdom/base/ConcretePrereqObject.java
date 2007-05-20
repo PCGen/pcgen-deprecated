@@ -90,7 +90,7 @@ public class ConcretePrereqObject implements PrereqObject, RestrictedObject,
 	 * @param prereqs
 	 *            A <tt>Collection</tt> of <tt>Prerequisite</tt> objects.
 	 */
-	public void addPrerequisites(final Collection<Prerequisite> prereqs)
+	public void addAllPrerequisites(final Collection<Prerequisite> prereqs)
 	{
 		if (prereqs == null)
 		{
@@ -539,5 +539,10 @@ public class ConcretePrereqObject implements PrereqObject, RestrictedObject,
 		ArrayList<Prerequisite> removed = new ArrayList<Prerequisite>(thePrereqs);
 		removed.removeAll(otherPRL);
 		return removed.isEmpty();
+	}
+
+	public Class<? extends PrereqObject> getReferenceClass()
+	{
+		return getClass();
 	}
 }

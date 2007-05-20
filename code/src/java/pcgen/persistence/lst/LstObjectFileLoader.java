@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
 import pcgen.persistence.LoadContext;
@@ -111,15 +112,18 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 			}
 
 			// Check if the file has already been loaded before loading it
-			URI fileName = sourceEntry.getURI();
+			URI sourceURI = sourceEntry.getURI();
 
-			if (!loadedFiles.contains(fileName))
+			if (!loadedFiles.contains(sourceURI))
 			{
+				context.graph.setSourceURI(sourceURI);
 				loadLstFile(context, sourceEntry);
-				loadedFiles.add(fileName);
+				loadedFiles.add(sourceURI);
 			}
 		}
 
+		//FIXME Need to ensure proper setSourceURI in the copy/mod/forget methods
+		
 		// Next we perform copy operations
 		processCopies(context);
 
@@ -158,8 +162,22 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
 		// Set Name
-		// TODO FIXME Assumes it's not a .MOD or something :/
-		target.setName(colToken.nextToken());
+		String firstToken = colToken.nextToken();
+		URI oldSource = target.get(ObjectKey.SOURCE_URI);
+		if (oldSource == null)
+		{
+			target.setName(firstToken);
+			target.put(ObjectKey.SOURCE_URI, source.getURI());
+		}
+		else
+		{
+			// TODO Assumes it's a .MOD or something :/ - check this??
+			if (!source.getURI().equals(oldSource))
+			{
+				//TODO This should be a Supplemental URI list??
+				target.put(ObjectKey.SOURCE_URI, source.getURI());
+			}
+		}
 
 		while (colToken.hasMoreTokens())
 		{
@@ -397,77 +415,87 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 			{
 				continue;
 			}
-			int sepLoc = line.indexOf(FIELD_SEPARATOR);
-			String firstToken;
-			if (sepLoc == -1)
-			{
-				firstToken = line;
-			}
-			else
-			{
-				firstToken = line.substring(0, sepLoc);
-			}
+			parseFullLine(context, currentLineNumber, line, sourceEntry);
+		}
+	}
 
-			// check for comments, copies, mods, and forgets
-			if (isComment(line))
-			{
-				continue;
-			}
-			// TODO - Figure out why we need to check SOURCE in this file
-			else if (line.startsWith("SOURCE")) //$NON-NLS-1$
-			{
-				sourceMap = SourceLoader.parseLine(line, sourceEntry.getURI());
-			}
-			else if (firstToken.indexOf(COPY_SUFFIX) > 0)
-			{
-				copyLineList.add(new ModEntry(sourceEntry, line,
-						currentLineNumber, sourceMap));
-			}
-			else if (firstToken.indexOf(MOD_SUFFIX) > 0)
-			{
-				List<ModEntry> modLines = new ArrayList<ModEntry>();
-				modLines.add(new ModEntry(sourceEntry, line,
-					currentLineNumber, sourceMap));
-				modEntryList.add(modLines);
-			}
-			else if (firstToken.indexOf(FORGET_SUFFIX) > 0)
-			{
-				forgetLineList.add(line);
-			}
-			else
-			{
-				try
-				{
-					T obj = context.ref.constructCDOMObject(getLoadClass(), firstToken);
-					obj.setName(firstToken);
-					obj.setSourceCampaign(sourceEntry.getCampaign());
-					obj.setSourceURI(sourceEntry.getURI());
-					// first column is the name; after that are LST tags
-					String restOfLine = line.substring(sepLoc).trim();
+	public T parseFullLine(LoadContext context, int currentLineNumber,
+		String line, CampaignSourceEntry sourceEntry)
+	{
+		int sepLoc = line.indexOf(FIELD_SEPARATOR);
+		String firstToken;
+		if (sepLoc == -1)
+		{
+			firstToken = line;
+		}
+		else
+		{
+			firstToken = line.substring(0, sepLoc);
+		}
 
-					parseLine(obj, restOfLine, sourceEntry);
-					parseLine(context, obj, line, sourceEntry);
-				}
-				catch (PersistenceLayerException ple)
-				{
-					logError(PropertyFactory.getFormattedString(
-						"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
-						sourceEntry.getURI(), currentLineNumber, ple
-							.getMessage()));
-					Logging.debugPrint("Parse error:", ple); //$NON-NLS-1$
-				}
-				catch (Throwable t)
-				{
-					logError(PropertyFactory.getFormattedString(
-						"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
-						sourceEntry.getURI(), currentLineNumber, t
-							.getMessage()));
-					Logging.errorPrint(PropertyFactory
-						.getString("Errors.LstFileLoader.Ignoring"), //$NON-NLS-1$
-						t);
-				}
+		// check for comments, copies, mods, and forgets
+		if (isComment(line))
+		{
+			return null;
+		}
+		// TODO - Figure out why we need to check SOURCE in this file
+		else if (line.startsWith("SOURCE")) //$NON-NLS-1$
+		{
+			sourceMap = SourceLoader.parseLine(line, sourceEntry.getURI());
+		}
+		else if (firstToken.indexOf(COPY_SUFFIX) > 0)
+		{
+			copyLineList.add(new ModEntry(sourceEntry, line, currentLineNumber,
+				sourceMap));
+		}
+		else if (firstToken.indexOf(MOD_SUFFIX) > 0)
+		{
+			List<ModEntry> modLines = new ArrayList<ModEntry>();
+			modLines.add(new ModEntry(sourceEntry, line, currentLineNumber,
+				sourceMap));
+			modEntryList.add(modLines);
+		}
+		else if (firstToken.indexOf(FORGET_SUFFIX) > 0)
+		{
+			forgetLineList.add(line);
+		}
+		else
+		{
+			try
+			{
+				T obj =
+						context.ref.constructCDOMObject(getLoadClass(),
+							firstToken);
+				obj.setName(firstToken);
+				obj.setSourceCampaign(sourceEntry.getCampaign());
+				obj.setSourceURI(sourceEntry.getURI());
+				// first column is the name; after that are LST tags
+				String restOfLine = line.substring(sepLoc).trim();
+
+				parseLine(obj, restOfLine, sourceEntry);
+				parseLine(context, obj, line, sourceEntry);
+				return obj;
+			}
+			catch (PersistenceLayerException ple)
+			{
+				logError(PropertyFactory.getFormattedString(
+					"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
+					sourceEntry.getURI(), currentLineNumber, ple.getMessage()));
+				Logging.debugPrint("Parse error:", ple); //$NON-NLS-1$
+				return null;
+			}
+			catch (Throwable t)
+			{
+				logError(PropertyFactory.getFormattedString(
+					"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
+					sourceEntry.getURI(), currentLineNumber, t.getMessage()));
+				Logging.errorPrint(PropertyFactory
+					.getString("Errors.LstFileLoader.Ignoring"), //$NON-NLS-1$
+					t);
+				return null;
 			}
 		}
+		return null;
 	}
 
 	/**

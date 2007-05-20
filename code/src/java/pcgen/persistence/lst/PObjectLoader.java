@@ -202,8 +202,9 @@ public final class PObjectLoader
 										+ ple.getMessage());
 					}
 				}
+				return true;
 			}
-			return true;
+			return false;
 		}
 	}
 }

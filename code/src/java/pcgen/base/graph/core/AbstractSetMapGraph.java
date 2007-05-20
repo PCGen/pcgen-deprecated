@@ -430,6 +430,8 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 		if (thisEdgeSize != otherEdgeList.size())
 		{
 			System.err.println("Not equal edge count");
+			System.err.println(edgeSet);
+			System.err.println(otherEdgeList);
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)

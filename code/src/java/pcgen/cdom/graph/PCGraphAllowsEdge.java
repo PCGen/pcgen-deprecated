@@ -42,7 +42,10 @@ public class PCGraphAllowsEdge extends AbstractPCGraphEdge implements
 	public PCGraphAllowsEdge createReplacementEdge(PrereqObject gn1,
 		PrereqObject gn2)
 	{
-		return new PCGraphAllowsEdge(gn1, gn2, source);
+		PCGraphAllowsEdge edge = new PCGraphAllowsEdge(gn1, gn2, source);
+		copyAssociationMapTo(edge);
+		edge.addAllPrerequisites(getPrerequisiteList());
+		return edge;
 	}
 
 	public String getSourceToken()

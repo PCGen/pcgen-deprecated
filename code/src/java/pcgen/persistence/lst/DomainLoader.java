@@ -139,7 +139,8 @@ public class DomainLoader extends LstObjectFileLoader<Domain>
 			}
 		} else {
 			LstUtils.deprecationCheck(token, domain, value);
-			if (!token.parse(context, domain, value)) {
+			if (!token.parse(context, domain, value))
+			{
 				Logging.errorPrint("Error parsing token " + key + " in domain "
 						+ domain.getDisplayName() + ':' + source.getURI() + ':'
 						+ value + "\"");
