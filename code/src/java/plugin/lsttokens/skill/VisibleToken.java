@@ -173,15 +173,15 @@ public class VisibleToken implements SkillLstToken
 					+ getTokenName() + " EXPORT or CSHEET");
 				return false;
 			}
-			skill.put(ObjectKey.READ_ONLY, Boolean.TRUE);
+			context.obj.put(skill, ObjectKey.READ_ONLY, Boolean.TRUE);
 		}
-		skill.put(ObjectKey.VISIBILITY, vis);
+		context.obj.put(skill, ObjectKey.VISIBILITY, vis);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Skill skill)
 	{
-		Visibility vis = skill.get(ObjectKey.VISIBILITY);
+		Visibility vis = context.obj.getObject(skill, ObjectKey.VISIBILITY);
 		if (vis == null)
 		{
 			return null;
@@ -195,7 +195,7 @@ public class VisibleToken implements SkillLstToken
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(vis.getLSTFormat());
-		Boolean readOnly = skill.get(ObjectKey.READ_ONLY);
+		Boolean readOnly = context.obj.getObject(skill, ObjectKey.READ_ONLY);
 		if (readOnly != null)
 		{
 			if (vis.equals(Visibility.EXPORT))

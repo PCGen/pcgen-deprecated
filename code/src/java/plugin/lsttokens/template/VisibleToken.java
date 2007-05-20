@@ -86,33 +86,35 @@ public class VisibleToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
+		Visibility vis;
 		if (value.equals("DISPLAY"))
 		{
-			template.put(ObjectKey.VISIBILITY, Visibility.DISPLAY);
+			vis = Visibility.DISPLAY;
 		}
 		else if (value.equals("EXPORT"))
 		{
-			template.put(ObjectKey.VISIBILITY, Visibility.EXPORT);
+			vis = Visibility.EXPORT;
 		}
 		else if (value.equals("NO"))
 		{
-			template.put(ObjectKey.VISIBILITY, Visibility.NO);
+			vis = Visibility.NO;
 		}
 		else if (value.equals("YES"))
 		{
-			template.put(ObjectKey.VISIBILITY, Visibility.YES);
+			vis = Visibility.YES;
 		}
 		else
 		{
 			Logging.errorPrint("Can't understand Visibility: " + value);
 			return false;
 		}
+		context.obj.put(template, ObjectKey.VISIBILITY, vis);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate template)
 	{
-		Visibility vis = template.get(ObjectKey.VISIBILITY);
+		Visibility vis = context.obj.getObject(template, ObjectKey.VISIBILITY);
 		if (vis == null)
 		{
 			return null;
@@ -140,6 +142,6 @@ public class VisibleToken implements PCTemplateLstToken
 				+ " is not a valid Visibility for a PCTemplate");
 			return null;
 		}
-		return new String[] { visString };
+		return new String[]{visString};
 	}
 }

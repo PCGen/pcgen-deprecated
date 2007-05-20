@@ -21,23 +21,26 @@
  */
 package plugin.lsttokens.spell;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLstToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with VARIANTS Token
  */
-public class VariantsToken implements SpellLstToken
+public class VariantsToken extends AbstractToken implements SpellLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "VARIANTS";
@@ -65,53 +68,55 @@ public class VariantsToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
 		StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
 
+		boolean first = true;
 		while (aTok.hasMoreTokens())
 		{
-			if (Constants.LST_DOT_CLEAR.equals(value))
+			String tok = aTok.nextToken();
+			if (Constants.LST_DOT_CLEAR.equals(tok))
 			{
-				spell.removeListFor(ListKey.VARIANTS);
+				if (!first)
+				{
+					Logging.errorPrint("Non-sensical use of .CLEAR in "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
+				context.obj.removeList(spell, ListKey.VARIANTS);
 			}
 			else
 			{
-				spell.addToListFor(ListKey.VARIANTS, aTok.nextToken());
+				context.obj.addToList(spell, ListKey.VARIANTS, tok);
 			}
+			first = false;
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		List<String> variants = spell.getListFor(ListKey.VARIANTS);
-		if (variants == null || variants.size() == 0)
+		Changes<String> changes =
+				context.obj.getListChanges(spell, ListKey.VARIANTS);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(variants, Constants.PIPE)};
+		StringBuilder sb = new StringBuilder();
+		Collection<?> added = changes.getAdded();
+		if (changes.includesGlobalClear())
+		{
+			sb.append(Constants.LST_DOT_CLEAR);
+			if (!added.isEmpty())
+			{
+				sb.append(Constants.PIPE);
+			}
+		}
+		sb.append(StringUtil.join(changes.getAdded(), Constants.PIPE));
+		return new String[]{sb.toString()};
 	}
 }

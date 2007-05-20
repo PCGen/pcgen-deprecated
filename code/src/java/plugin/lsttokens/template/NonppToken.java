@@ -55,14 +55,14 @@ public class NonppToken implements PCTemplateLstToken
 	{
 		try
 		{
-			int nonpp = Integer.parseInt(value);
-			if (nonpp > 0)
+			Integer nonpp = Integer.valueOf(value);
+			if (nonpp.intValue() > 0)
 			{
 				Logging.errorPrint("Non-Proficiency Penalty must be "
 					+ "less than or equal to zero: " + value);
 				return false;
 			}
-			template.put(IntegerKey.NONPP, Integer.valueOf(nonpp));
+			context.obj.put(template, IntegerKey.NONPP, nonpp);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -75,7 +75,7 @@ public class NonppToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Integer nonpp = pct.get(IntegerKey.NONPP);
+		Integer nonpp = context.obj.getInteger(pct, IntegerKey.NONPP);
 		if (nonpp == null)
 		{
 			return null;

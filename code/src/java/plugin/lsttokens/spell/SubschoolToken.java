@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.spell;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
@@ -29,16 +28,18 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SpellSubSchool;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLstToken;
-import pcgen.util.Logging;
 
 /**
  * Class deals with SUBSCHOOL Token
  */
-public class SubschoolToken implements SpellLstToken
+public class SubschoolToken extends AbstractToken implements SpellLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "SUBSCHOOL";
@@ -58,27 +59,8 @@ public class SubschoolToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -86,20 +68,20 @@ public class SubschoolToken implements SpellLstToken
 
 		while (aTok.hasMoreTokens())
 		{
-			spell.addToListFor(ListKey.SPELL_SUBSCHOOL, SpellSubSchool
-				.getConstant(aTok.nextToken()));
+			context.obj.addToList(spell, ListKey.SPELL_SUBSCHOOL,
+				SpellSubSchool.getConstant(aTok.nextToken()));
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		List<SpellSubSchool> subschools =
-				spell.getListFor(ListKey.SPELL_SUBSCHOOL);
-		if (subschools == null || subschools.size() == 0)
+		Changes<SpellSubSchool> changes =
+				context.obj.getListChanges(spell, ListKey.SPELL_SUBSCHOOL);
+		if (changes == null)
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(subschools, Constants.PIPE)};
+		return new String[]{StringUtil.join(changes.getAdded(), Constants.PIPE)};
 	}
 }

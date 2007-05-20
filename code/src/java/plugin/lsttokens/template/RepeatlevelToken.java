@@ -342,7 +342,7 @@ public class RepeatlevelToken extends AbstractToken implements
 		agg.put(IntegerKey.LEVEL_INCREMENT, Integer.valueOf(lvlIncrement));
 		agg.put(IntegerKey.START_LEVEL, Integer.valueOf(iLevel));
 
-		context.graph.linkObjectIntoGraph(getTokenName(), template, agg);
+		context.graph.grant(getTokenName(), template, agg);
 
 		for (int count = consecutive; iLevel <= maxLevel; iLevel +=
 				lvlIncrement)
@@ -350,8 +350,7 @@ public class RepeatlevelToken extends AbstractToken implements
 			if ((consecutive == 0) || (count != 0))
 			{
 				PCGraphEdge edge =
-						context.graph.linkObjectIntoGraph(getTokenName(), agg,
-							pro);
+						context.graph.grant(getTokenName(), agg, pro);
 				edge.addAllPrerequisites(getPrerequisite("PRELEVEL:" + iLevel));
 			}
 			if (consecutive != 0)
@@ -459,7 +458,7 @@ public class RepeatlevelToken extends AbstractToken implements
 					else if (sink instanceof ChallengeRating)
 					{
 						sb.append("CR:").append(
-							((ChallengeRating) sink).toLSTform());
+							((ChallengeRating) sink).getLSTformat());
 					}
 					else
 					{

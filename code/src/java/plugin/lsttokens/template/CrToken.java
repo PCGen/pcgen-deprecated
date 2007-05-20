@@ -21,11 +21,12 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.Set;
+import java.util.Collection;
 
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChallengeRating;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
 
@@ -56,27 +57,32 @@ public class CrToken implements PCTemplateLstToken
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
 		ChallengeRating cr = new ChallengeRating(value);
-		context.graph.linkObjectIntoGraph(getTokenName(), template, cr);
+		context.graph.grant(getTokenName(), template, cr);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), pct,
+		GraphChanges<ChallengeRating> changes =
+				context.graph.getChangesFromToken(getTokenName(), pct,
 					ChallengeRating.class);
-		if (links == null || links.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			// Zero indicates no Token present
+			return null;
+		}
+		if (added.size() > 1)
 		{
 			context
 				.addWriteMessage("Only 1 ChallengeRating is allowed per Template");
 			return null;
 		}
-		ChallengeRating cr =
-				(ChallengeRating) links.iterator().next().getSinkNodes().get(0);
-		return new String[]{cr.toLSTform()};
+		ChallengeRating cr = (ChallengeRating) added.iterator().next();
+		return new String[]{cr.getLSTformat()};
 	}
 }

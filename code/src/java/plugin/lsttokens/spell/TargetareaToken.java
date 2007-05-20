@@ -50,20 +50,14 @@ public class TargetareaToken implements SpellLstToken
 		{
 			return false;
 		}
-		if (Constants.LST_DOT_CLEAR.equals(value))
-		{
-			spell.remove(StringKey.TARGET_AREA);
-		}
-		else
-		{
-			spell.put(StringKey.TARGET_AREA, value);
-		}
+		context.obj.put(spell, StringKey.TARGET_AREA, Constants.LST_DOT_CLEAR
+			.equals(value) ? null : value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		String targetArea = spell.get(StringKey.TARGET_AREA);
+		String targetArea = context.obj.getString(spell, StringKey.TARGET_AREA);
 		if (targetArea == null)
 		{
 			return null;

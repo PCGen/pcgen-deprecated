@@ -71,13 +71,14 @@ public class ExclusiveToken implements SkillLstToken
 	public boolean parse(LoadContext context, Skill skill, String value)
 		throws PersistenceLayerException
 	{
+		Boolean exclusive;
 		if (value.equalsIgnoreCase("NO"))
 		{
-			skill.put(ObjectKey.EXCLUSIVE, Boolean.FALSE);
+			exclusive = Boolean.FALSE;
 		}
 		else if (value.equalsIgnoreCase("YES"))
 		{
-			skill.put(ObjectKey.EXCLUSIVE, Boolean.TRUE);
+			exclusive = Boolean.TRUE;
 		}
 		else
 		{
@@ -86,12 +87,13 @@ public class ExclusiveToken implements SkillLstToken
 			Logging.errorPrint("Must be YES or NO");
 			return false;
 		}
+		context.obj.put(skill, ObjectKey.EXCLUSIVE, exclusive);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Skill skill)
 	{
-		Boolean exclusive = skill.get(ObjectKey.EXCLUSIVE);
+		Boolean exclusive = context.obj.getObject(skill, ObjectKey.EXCLUSIVE);
 		if (exclusive == null)
 		{
 			return null;

@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.spell;
 
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
@@ -51,13 +52,15 @@ public class SpellresToken implements SpellLstToken
 			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
-		spell.put(StringKey.CAN_BE_RESISTED, value);
+		context.obj.put(spell, StringKey.CAN_BE_RESISTED,
+			Constants.LST_DOT_CLEAR.equals(value) ? null : value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		String resistable = spell.get(StringKey.CAN_BE_RESISTED);
+		String resistable =
+				context.obj.getString(spell, StringKey.CAN_BE_RESISTED);
 		if (resistable == null)
 		{
 			return null;

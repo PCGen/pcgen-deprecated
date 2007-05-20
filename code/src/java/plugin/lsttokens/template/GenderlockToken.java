@@ -51,7 +51,8 @@ public class GenderlockToken implements PCTemplateLstToken
 	{
 		try
 		{
-			template.put(ObjectKey.GENDER_LOCK, Gender.valueOf(value));
+			context.obj.put(template, ObjectKey.GENDER_LOCK, Gender
+				.valueOf(value));
 			return true;
 		}
 		catch (IllegalArgumentException iae)
@@ -64,7 +65,7 @@ public class GenderlockToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Gender g = pct.get(ObjectKey.GENDER_LOCK);
+		Gender g = context.obj.getObject(pct, ObjectKey.GENDER_LOCK);
 		if (g == null)
 		{
 			return null;

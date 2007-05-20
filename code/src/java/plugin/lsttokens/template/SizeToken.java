@@ -59,13 +59,13 @@ public class SizeToken implements PCTemplateLstToken
 		{
 			res = new FormulaSizeResolver(FormulaFactory.getFormulaFor(value));
 		}
-		template.put(ObjectKey.SIZE, res);
+		context.obj.put(template, ObjectKey.SIZE, res);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate template)
 	{
-		Resolver<Size> res = template.get(ObjectKey.SIZE);
+		Resolver<Size> res = context.obj.getObject(template, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

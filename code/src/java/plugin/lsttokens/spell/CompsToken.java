@@ -50,20 +50,14 @@ public class CompsToken implements SpellLstToken
 		{
 			return false;
 		}
-		if (Constants.LST_DOT_CLEAR.equals(value))
-		{
-			spell.remove(StringKey.COMPONENTS);
-		}
-		else
-		{
-			spell.put(StringKey.COMPONENTS, value);
-		}
+		context.obj.put(spell, StringKey.COMPONENTS, Constants.LST_DOT_CLEAR
+			.equals(value) ? null : value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		String components = spell.get(StringKey.COMPONENTS);
+		String components = context.obj.getString(spell, StringKey.COMPONENTS);
 		if (components == null)
 		{
 			return null;

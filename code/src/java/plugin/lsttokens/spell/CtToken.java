@@ -71,7 +71,7 @@ public class CtToken implements SpellLstToken
 					+ " requires a positive Integer");
 				return false;
 			}
-			spell.put(IntegerKey.CASTING_THRESHOLD, ct);
+			context.obj.put(spell, IntegerKey.CASTING_THRESHOLD, ct);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -85,7 +85,7 @@ public class CtToken implements SpellLstToken
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		Integer i = spell.get(IntegerKey.CASTING_THRESHOLD);
+		Integer i = context.obj.getInteger(spell, IntegerKey.CASTING_THRESHOLD);
 		if (i == null)
 		{
 			return null;

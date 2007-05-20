@@ -21,23 +21,26 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.RaceSubType;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with RACESUBTYPE Token
  */
-public class RacesubtypeToken implements PCTemplateLstToken
+public class RacesubtypeToken extends AbstractToken implements
+		PCTemplateLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "RACESUBTYPE";
@@ -51,30 +54,11 @@ public class RacesubtypeToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("Invalid " + getTokenName());
-			Logging.errorPrint("  Requires at least one argument");
 			return false;
 		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+		
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
@@ -89,13 +73,13 @@ public class RacesubtypeToken implements PCTemplateLstToken
 					Logging.errorPrint("  Requires an argument");
 					return false;
 				}
-				template.addToListFor(ListKey.REMOVED_RACESUBTYPE, RaceSubType
-					.getConstant(substring));
+				context.obj.addToList(template, ListKey.REMOVED_RACESUBTYPE,
+					RaceSubType.getConstant(substring));
 			}
 			else
 			{
-				template.addToListFor(ListKey.RACESUBTYPE, RaceSubType
-					.getConstant(aType));
+				context.obj.addToList(template, ListKey.RACESUBTYPE,
+					RaceSubType.getConstant(aType));
 			}
 		}
 		return true;
@@ -103,19 +87,19 @@ public class RacesubtypeToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		List<RaceSubType> raceSubTypes = pct.getListFor(ListKey.RACESUBTYPE);
-		List<RaceSubType> removedTypes =
-				pct.getListFor(ListKey.REMOVED_RACESUBTYPE);
-		if ((raceSubTypes == null || raceSubTypes.isEmpty())
-			&& (removedTypes == null || removedTypes.isEmpty()))
+		Changes<RaceSubType> addedChanges =
+				context.obj.getListChanges(pct, ListKey.RACESUBTYPE);
+		Changes<RaceSubType> removedChanges =
+				context.obj.getListChanges(pct, ListKey.REMOVED_RACESUBTYPE);
+		if (addedChanges == null && removedChanges == null)
 		{
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
 		boolean needPipe = false;
-		if (raceSubTypes != null)
+		if (addedChanges != null)
 		{
-			for (RaceSubType rst : raceSubTypes)
+			for (RaceSubType rst : addedChanges.getAdded())
 			{
 				if (needPipe)
 				{
@@ -125,9 +109,9 @@ public class RacesubtypeToken implements PCTemplateLstToken
 				needPipe = true;
 			}
 		}
-		if (removedTypes != null)
+		if (removedChanges != null)
 		{
-			for (RaceSubType rst : removedTypes)
+			for (RaceSubType rst : removedChanges.getAdded())
 			{
 				if (needPipe)
 				{

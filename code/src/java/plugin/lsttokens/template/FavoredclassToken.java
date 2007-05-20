@@ -21,10 +21,8 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.List;
-import java.util.SortedSet;
+import java.util.Collection;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -33,6 +31,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
@@ -67,27 +66,8 @@ public class FavoredclassToken extends AbstractToken implements
 	public boolean parseFavoredClass(LoadContext context, CDOMObject cdo,
 		String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
 
@@ -118,7 +98,7 @@ public class FavoredclassToken extends AbstractToken implements
 					+ getTokenName());
 				return false;
 			}
-			cdo.addToListFor(ListKey.FAVORED_CLASS, ref);
+			context.obj.addToList(cdo, ListKey.FAVORED_CLASS, ref);
 		}
 		if (foundAny && foundOther)
 		{
@@ -131,16 +111,18 @@ public class FavoredclassToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		List<CDOMReference<PCClass>> list =
-				pct.getListFor(ListKey.FAVORED_CLASS);
-		if (list == null || list.isEmpty())
+		Changes<CDOMReference<PCClass>> changes =
+				context.obj.getListChanges(pct, ListKey.FAVORED_CLASS);
+		if (changes == null)
 		{
 			return null;
 		}
-		SortedSet<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		set.addAll(list);
-		return new String[]{ReferenceUtilities.joinLstFormat(set,
+		Collection<CDOMReference<PCClass>> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			return null;
+		}
+		return new String[]{ReferenceUtilities.joinLstFormat(added,
 			Constants.COMMA)};
 	}
 }

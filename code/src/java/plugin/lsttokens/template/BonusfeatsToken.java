@@ -21,13 +21,14 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.Set;
+import java.util.Collection;
 
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Slot;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.Ability;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
@@ -87,7 +88,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			return false;
 		}
 
-		context.graph.addSlotIntoGraph(getTokenName(), template, ABILITY_CLASS,
+		context.graph.addSlot(getTokenName(), template, ABILITY_CLASS,
 			FormulaFactory.getFormulaFor(featCount));
 
 		return true;
@@ -95,22 +96,27 @@ public class BonusfeatsToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), pct,
+		GraphChanges<Slot> changes =
+				context.graph.getChangesFromToken(getTokenName(), pct,
 					Slot.class);
-		if (links == null || links.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (links.size() > 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context.addWriteMessage("Invalid Slot Count " + links.size()
+			// Zero indicates no Token present
+			return null;
+		}
+		if (added.size() > 1)
+		{
+			context.addWriteMessage("Invalid Slot Count " + added.size()
 				+ " associated with " + getTokenName()
 				+ ": Only one Slot allowed.");
 			return null;
 		}
-		PCGraphEdge edge = links.iterator().next();
-		Slot<Ability> slot = (Slot<Ability>) edge.getSinkNodes().get(0);
+		Slot<Ability> slot = (Slot<Ability>) added.iterator().next();
 		if (!slot.getSlotClass().equals(ABILITY_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "
@@ -118,6 +124,6 @@ public class BonusfeatsToken implements PCTemplateLstToken
 				+ slot.getSlotClass().getSimpleName());
 			return null;
 		}
-		return new String[]{slot.toLSTform()};
+		return new String[]{slot.getSlotCount()};
 	}
 }

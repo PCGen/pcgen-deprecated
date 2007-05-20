@@ -23,21 +23,18 @@ package plugin.lsttokens.template;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCTemplate;
 import pcgen.core.WeaponProf;
 import pcgen.core.WeaponProfList;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
@@ -45,11 +42,16 @@ import pcgen.util.Logging;
 /**
  * Class deals with WEAPONBONUS Token
  */
-public class WeaponbonusToken implements PCTemplateLstToken
+public class WeaponbonusToken extends AbstractToken implements
+		PCTemplateLstToken
 {
 
 	private static final Class<WeaponProf> WEAPONPROF_CLASS = WeaponProf.class;
 
+	private static final Class<WeaponProfList> WEAPONPROFLIST_CLASS =
+			WeaponProfList.class;
+
+	@Override
 	public String getTokenName()
 	{
 		return "WEAPONBONUS";
@@ -75,51 +77,26 @@ public class WeaponbonusToken implements PCTemplateLstToken
 	public boolean parseWeaponBonus(LoadContext context, CDOMObject obj,
 		String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		boolean foundAny = false;
 		boolean foundOther = false;
-		List<CDOMReference<WeaponProf>> list =
-				new ArrayList<CDOMReference<WeaponProf>>();
+		CDOMReference<WeaponProfList> swl =
+				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
 
 		while (tok.hasMoreTokens())
 		{
-			/*
-			 * Note this HAS to be done one-by-one, because the
-			 * .clearChildNodeOfClass method above does NOT recognize the C/CC
-			 * Skill object and therefore doesn't know how to search the
-			 * sublists
-			 */
 			String tokText = tok.nextToken();
 			if (Constants.LST_ALL.equals(tokText))
 			{
 				foundAny = true;
 				CDOMReference<WeaponProf> ref =
 						context.ref.getCDOMAllReference(WEAPONPROF_CLASS);
-				list.add(ref);
+				context.list.addToList(getTokenName(), obj, swl, ref);
 			}
 			else
 			{
@@ -133,7 +110,7 @@ public class WeaponbonusToken implements PCTemplateLstToken
 						+ getTokenName());
 					return false;
 				}
-				list.add(ref);
+				context.list.addToList(getTokenName(), obj, swl, ref);
 			}
 		}
 		if (foundAny && foundOther)
@@ -142,52 +119,43 @@ public class WeaponbonusToken implements PCTemplateLstToken
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
-		CDOMReference<WeaponProfList> swl =
-				context.ref.getCDOMReference(WeaponProfList.class, "*Starting");
-		Aggregator agg = new Aggregator(obj, swl, getTokenName());
-		/*
-		 * This is intentionally Holds, as the context for traversal must only
-		 * be the ref (linked by the Activation Edge). So we need an edge to the
-		 * Activator to get it copied into the PC, but since this is a 3rd party
-		 * Token, the Race should never grant anything hung off the aggregator.
-		 */
-		context.graph.linkHoldsIntoGraph(getTokenName(), obj, agg);
-		context.graph.linkActivationIntoGraph(getTokenName(), swl, agg);
-
-		for (CDOMReference<WeaponProf> prof : list)
-		{
-			context.graph.linkAllowIntoGraph(getTokenName(), agg, prof);
-		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), pct,
-					Aggregator.class);
-		if (edgeList == null || edgeList.isEmpty())
+		CDOMReference<WeaponProfList> swl =
+				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
+		GraphChanges<WeaponProf> changes =
+				context.list.getChangesInList(getTokenName(), pct, swl);
+		if (changes == null)
 		{
+			// Legal if no WEAPONBONUS was present in the race
 			return null;
 		}
-		if (edgeList.size() != 1)
+		List<String> list = new ArrayList<String>();
+		if (changes.hasRemovedItems())
 		{
-			context.addWriteMessage("Expected only one " + getTokenName()
-				+ " structure in Graph");
-			return null;
+			if (changes.includesGlobalClear())
+			{
+				context.addWriteMessage("Non-sensical relationship in "
+					+ getTokenName()
+					+ ": global .CLEAR and local .CLEAR. performed");
+				return null;
+			}
+			list.add(Constants.LST_DOT_CLEAR_DOT
+				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+					"|.CLEAR."));
 		}
-		PCGraphEdge edge = edgeList.iterator().next();
-		Aggregator a = (Aggregator) edge.getNodeAt(1);
-		Set<PCGraphEdge> edgeToSkillList =
-				context.graph.getChildLinksFromToken(getTokenName(), a,
-					WEAPONPROF_CLASS);
-		SortedSet<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge se : edgeToSkillList)
+		if (changes.includesGlobalClear())
 		{
-			set.add((CDOMReference<WeaponProf>) se.getNodeAt(1));
+			list.add(Constants.LST_DOT_CLEAR);
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(set,
-			Constants.PIPE)};
+		if (changes.hasAddedItems())
+		{
+			list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
+				Constants.PIPE));
+		}
+		return list.toArray(new String[list.size()]);
 	}
 }

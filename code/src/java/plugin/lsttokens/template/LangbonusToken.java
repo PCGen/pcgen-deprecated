@@ -23,20 +23,17 @@ package plugin.lsttokens.template;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.LanguageList;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
@@ -44,11 +41,14 @@ import pcgen.util.Logging;
 /**
  * Class deals with LANGBONUS Token
  */
-public class LangbonusToken implements PCTemplateLstToken
+public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 {
-
 	private static final Class<Language> LANGUAGE_CLASS = Language.class;
 
+	private static final Class<LanguageList> LANGUAGELIST_CLASS =
+			LanguageList.class;
+
+	@Override
 	public String getTokenName()
 	{
 		return "LANGBONUS";
@@ -62,99 +62,63 @@ public class LangbonusToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with ,| : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
+		boolean removeAll = false;
 		boolean foundAny = false;
 		boolean foundOther = false;
-		List<CDOMReference<Language>> list =
+		boolean firstToken = true;
+		List<CDOMReference<Language>> addList =
+				new ArrayList<CDOMReference<Language>>();
+		List<CDOMReference<Language>> removeList =
 				new ArrayList<CDOMReference<Language>>();
 		CDOMReference<LanguageList> swl =
-				context.ref.getCDOMReference(LanguageList.class, "*Starting");
-		Aggregator agg = new Aggregator(template, swl, getTokenName());
+				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
 
-		PIPEWHILE: while (tok.hasMoreTokens())
+		while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
 			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
-				context.graph.deleteAggregator(getTokenName(), agg);
+				if (!firstToken)
+				{
+					Logging.errorPrint("Non-sensical situation was "
+						+ "encountered while parsing " + getTokenName()
+						+ ": When used, .CLEAR must be the first argument");
+					return false;
+				}
+				removeAll = true;
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				CDOMReference<Language> skill;
+				CDOMReference<Language> lang;
 				String clearText = tokText.substring(7);
 				if (Constants.LST_ALL.equals(clearText))
 				{
-					skill = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
+					lang = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
 				}
 				else
 				{
-					skill =
+					lang =
 							TokenUtilities.getTypeOrPrimitive(context,
 								LANGUAGE_CLASS, clearText);
 				}
-				if (skill == null)
+				if (lang == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
-						+ getTokenName());
+						+ getTokenName() + ": " + value
+						+ " had an invalid .CLEAR. reference: " + clearText);
 					return false;
 				}
-				Set<PCGraphEdge> edgeList =
-						context.graph.getChildLinksFromToken(getTokenName(),
-							agg, Aggregator.class);
-				if (edgeList.size() != 1)
-				{
-					Logging.errorPrint("Internal Error: "
-						+ "Expected only one " + getTokenName()
-						+ " structure in Graph");
-				}
 				/*
-				 * Note this can actually use agg and doesn't have to do a
-				 * search from the edge in edgeList, due to the .equals property
-				 * and how it will work in the Graph :) - Tom Parker Mar/1/07
+				 * TODO These clears commit changes when it is possible to later
+				 * return false :(
 				 */
-				Set<PCGraphEdge> edgeToLanguageList =
-						context.graph.getChildLinksFromToken(getTokenName(),
-							agg, LANGUAGE_CLASS);
-				for (PCGraphEdge se : edgeToLanguageList)
-				{
-					if (se.getNodeAt(1).equals(skill))
-					{
-						context.graph.unlinkChildNode(getTokenName(), agg,
-							skill);
-						Set<PCGraphEdge> links =
-								context.graph.getChildLinksFromToken(
-									getTokenName(), agg);
-						if (links == null || links.isEmpty())
-						{
-							context.graph.deleteAggregator(getTokenName(), agg);
-						}
-						continue PIPEWHILE;
-					}
-				}
+				removeList.add(lang);
 			}
 			else
 			{
@@ -182,11 +146,13 @@ public class LangbonusToken implements PCTemplateLstToken
 				if (skill == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
-						+ getTokenName());
+						+ getTokenName() + ": " + value
+						+ " had an invalid reference: " + tokText);
 					return false;
 				}
-				list.add(skill);
+				addList.add(skill);
 			}
+			firstToken = false;
 		}
 		if (foundAny && foundOther)
 		{
@@ -194,49 +160,63 @@ public class LangbonusToken implements PCTemplateLstToken
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
-		/*
-		 * This is intentionally Holds, as the context for traversal must only
-		 * be the ref (linked by the Activation Edge). So we need an edge to the
-		 * Activator to get it copied into the PC, but since this is a 3rd party
-		 * Token, the Race should never grant anything hung off the aggregator.
-		 */
-		context.graph.linkHoldsIntoGraph(getTokenName(), template, agg);
-		context.graph.linkActivationIntoGraph(getTokenName(), swl, agg);
-
-		for (CDOMReference<Language> prof : list)
+		if (removeAll)
 		{
-			context.graph.linkAllowIntoGraph(getTokenName(), agg, prof);
+			context.list.removeFromList(getTokenName(), template, swl,
+				LANGUAGE_CLASS);
+		}
+		if (!removeList.isEmpty())
+		{
+			for (CDOMReference<Language> lang : removeList)
+			{
+				context.list
+					.removeFromList(getTokenName(), template, swl, lang);
+			}
+		}
+		if (!addList.isEmpty())
+		{
+			for (CDOMReference<Language> lang : addList)
+			{
+				context.list.addToList(getTokenName(), template, swl, lang);
+			}
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), pct,
-					Aggregator.class);
-		if (edgeList == null || edgeList.isEmpty())
+		CDOMReference<LanguageList> swl =
+				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
+		GraphChanges<Language> changes =
+				context.list.getChangesInList(getTokenName(), pct, swl);
+		if (changes == null)
 		{
+			// Legal if no Language was present in the race
 			return null;
 		}
-		if (edgeList.size() != 1)
+		List<String> list = new ArrayList<String>();
+		if (changes.hasRemovedItems())
 		{
-			context.addWriteMessage("Expected only one " + getTokenName()
-				+ " structure in Graph");
-			return null;
+			if (changes.includesGlobalClear())
+			{
+				context.addWriteMessage("Non-sensical relationship in "
+					+ getTokenName()
+					+ ": global .CLEAR and local .CLEAR. performed");
+				return null;
+			}
+			list.add(Constants.LST_DOT_CLEAR_DOT
+				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+					",|.CLEAR."));
 		}
-		PCGraphEdge edge = edgeList.iterator().next();
-		Aggregator a = (Aggregator) edge.getNodeAt(1);
-		Set<PCGraphEdge> edgeToLanguageList =
-				context.graph.getChildLinksFromToken(getTokenName(), a,
-					LANGUAGE_CLASS);
-		SortedSet<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		for (PCGraphEdge se : edgeToLanguageList)
+		if (changes.includesGlobalClear())
 		{
-			set.add((CDOMReference<Language>) se.getNodeAt(1));
+			list.add(Constants.LST_DOT_CLEAR);
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(set,
-			Constants.COMMA)};
+		if (changes.hasAddedItems())
+		{
+			list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
+				Constants.COMMA));
+		}
+		return list.toArray(new String[list.size()]);
 	}
 }

@@ -110,7 +110,7 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.graph.unlinkChildNodes(getTokenName(), template);
+			context.graph.removeAll(getTokenName(), template);
 			return true;
 		}
 
@@ -177,8 +177,7 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 		}
 
 		PCGraphEdge edge =
-				context.graph
-					.linkObjectIntoGraph(getTokenName(), template, pro);
+				context.graph.grant(getTokenName(), template, pro);
 		edge.addPrerequisite(prereq);
 		return true;
 	}
@@ -311,7 +310,7 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 			}
 			else if (sink instanceof ChallengeRating)
 			{
-				sb.append(":CR:").append(((ChallengeRating) sink).toLSTform());
+				sb.append(":CR:").append(((ChallengeRating) sink).getLSTformat());
 			}
 			else
 			{

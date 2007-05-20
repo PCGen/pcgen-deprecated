@@ -47,14 +47,14 @@ public class LeveladjustmentToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		template.put(FormulaKey.LEVEL_ADJUSTMENT, FormulaFactory
+		context.obj.put(template, FormulaKey.LEVEL_ADJUSTMENT, FormulaFactory
 			.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Formula f = pct.get(FormulaKey.LEVEL_ADJUSTMENT);
+		Formula f = context.obj.getFormula(pct, FormulaKey.LEVEL_ADJUSTMENT);
 		if (f == null)
 		{
 			return null;

@@ -50,20 +50,14 @@ public class CasttimeToken implements SpellLstToken
 		{
 			return false;
 		}
-		if (Constants.LST_DOT_CLEAR.equals(value))
-		{
-			spell.remove(StringKey.CASTING_TIME);
-		}
-		else
-		{
-			spell.put(StringKey.CASTING_TIME, value);
-		}
+		context.obj.put(spell, StringKey.CASTING_TIME, Constants.LST_DOT_CLEAR
+			.equals(value) ? null : value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		String castingTime = spell.get(StringKey.CASTING_TIME);
+		String castingTime = context.obj.getString(spell, StringKey.CASTING_TIME);
 		if (castingTime == null)
 		{
 			return null;

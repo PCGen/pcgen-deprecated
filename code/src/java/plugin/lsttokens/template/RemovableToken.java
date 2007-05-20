@@ -69,13 +69,14 @@ public class RemovableToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
+		Boolean remove;
 		if (value.equalsIgnoreCase("NO"))
 		{
-			template.put(ObjectKey.REMOVABLE, Boolean.FALSE);
+			remove = Boolean.FALSE;
 		}
 		else if (value.equalsIgnoreCase("YES"))
 		{
-			template.put(ObjectKey.REMOVABLE, Boolean.TRUE);
+			remove = Boolean.TRUE;
 		}
 		else
 		{
@@ -84,12 +85,13 @@ public class RemovableToken implements PCTemplateLstToken
 			Logging.errorPrint("Must be YES or NO");
 			return false;
 		}
+		context.obj.put(template, ObjectKey.REMOVABLE, remove);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Boolean b = pct.get(ObjectKey.REMOVABLE);
+		Boolean b = context.obj.getObject(pct, ObjectKey.REMOVABLE);
 		if (b == null)
 		{
 			return null;

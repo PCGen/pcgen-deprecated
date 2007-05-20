@@ -23,25 +23,24 @@ package plugin.lsttokens.spell;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphAllowsEdge;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.core.Domain;
 import pcgen.core.SpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -87,34 +86,22 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
-		if (value.length() == 0)
+		if (Constants.LST_DOT_CLEARALL.equals(value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-
-		if (Constants.LST_DOT_CLEAR.equals(value))
-		{
-			context.graph.unlinkParentNodes(getTokenName(), spell);
+			Collection<CDOMReference> masterLists =
+					context.list.getMasterLists(SPELLLIST_CLASS);
+			if (masterLists != null)
+			{
+				for (CDOMReference list : masterLists)
+				{
+					context.list.clearMasterList(getTokenName(), spell, list);
+				}
+			}
 			return true;
 		}
 
-		if (value.charAt(0) == '|')
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		if (value.indexOf(",,") != -1)
@@ -252,11 +239,12 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 		}
 		for (Integer level : map.getKeySet())
 		{
-			for (CDOMReference<SpellList> ref : map.getListFor(level))
+			for (CDOMReference<? extends CDOMList<Spell>> ref : map
+				.getListFor(level))
 			{
-				PCGraphAllowsEdge edge =
-						context.graph.linkAllowIntoGraph(getTokenName(), ref,
-							spell);
+				AssociatedPrereqObject edge =
+						context.list.addToMasterList(getTokenName(), spell,
+							ref, spell);
 				edge.setAssociation(AssociationKey.SPELL_LEVEL, level);
 				if (prereq != null)
 				{
@@ -269,57 +257,81 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		Set<PCGraphEdge> domainEdges =
-				context.graph.getParentLinksFromToken(getTokenName(), spell,
-					SPELLLIST_CLASS);
-		if (domainEdges.isEmpty())
+		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<SpellList>> dkmtl =
+				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<SpellList>>();
+		for (CDOMReference<SpellList> swl : context.list
+			.getMasterLists(SPELLLIST_CLASS))
 		{
+			GraphChanges<Spell> changes =
+					context.list.getChangesInMasterList(getTokenName(), spell,
+						swl);
+			if (changes == null)
+			{
+				// Legal if no DOMAINS was present in the Spell
+				continue;
+			}
+			// List<String> list = new ArrayList<String>();
+			if (changes.hasRemovedItems())
+			{
+				context.addWriteMessage(getTokenName()
+					+ " does not support .CLEAR.");
+				return null;
+			}
+			if (changes.includesGlobalClear())
+			{
+				// list.add(Constants.LST_DOT_CLEARALL);
+			}
+			if (changes.hasAddedItems())
+			{
+				for (LSTWriteable added : changes.getAdded())
+				{
+					AssociatedPrereqObject assoc =
+							changes.getAddedAssociation(added);
+					// TODO Check it's actually THIS spell...
+					List<Prerequisite> prereqs = assoc.getPrerequisiteList();
+					Prerequisite prereq;
+					if (prereqs == null || prereqs.size() == 0)
+					{
+						prereq = null;
+					}
+					else if (prereqs.size() == 1)
+					{
+						prereq = prereqs.get(0);
+					}
+					else
+					{
+						context.addWriteMessage("Incoming Edge to "
+							+ spell.getKey() + " had more than one "
+							+ "Prerequisite: " + prereqs.size());
+						return null;
+					}
+					Integer level =
+							assoc.getAssociation(AssociationKey.SPELL_LEVEL);
+					if (level == null)
+					{
+						context.addWriteMessage("Incoming Allows Edge to "
+							+ spell.getKey() + " had no Spell Level defined");
+						return null;
+					}
+					if (level.intValue() < 0)
+					{
+						context.addWriteMessage("Incoming Allows Edge to "
+							+ spell.getKey() + " had invalid Level: " + level
+							+ ". Must be >= 0.");
+						return null;
+					}
+					dkmtl.addToListFor(prereq, level, swl);
+				}
+			}
+		}
+		if (dkmtl.isEmpty())
+		{
+			// Legal if no DOMAINS was present in the Spell
 			return null;
 		}
-		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<Domain>> dkmtl =
-				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<Domain>>();
-		for (PCGraphEdge edge : domainEdges)
-		{
-			Integer level = edge.getAssociation(AssociationKey.SPELL_LEVEL);
-			if (level == null)
-			{
-				context.addWriteMessage("Incoming Allows Edge to "
-					+ spell.getKey() + " had no Spell Level defined");
-				return null;
-			}
-			if (level.intValue() < 0)
-			{
-				context.addWriteMessage("Incoming Allows Edge to "
-					+ spell.getKey() + " had invalid Level: " + level
-					+ ". Must be >= 0.");
-				return null;
-			}
-			List<PrereqObject> sourceNodes = edge.getSourceNodes();
-			if (sourceNodes.size() != 1)
-			{
-				context.addWriteMessage("Incoming Edge to " + spell.getKey()
-					+ " had more than one source: " + sourceNodes);
-				return null;
-			}
-			Prerequisite prereq = null;
-			if (edge.hasPrerequisites())
-			{
-				List<Prerequisite> list = edge.getPrerequisiteList();
-				if (list.size() > 1)
-				{
-					context.addWriteMessage("Incoming Edge to "
-						+ spell.getKey() + " had more than one "
-						+ "Prerequisite: " + list.size());
-					return null;
-				}
-				prereq = list.get(0);
-			}
-			dkmtl.addToListFor(prereq, level,
-				(CDOMReference<Domain>) sourceNodes.get(0));
-		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<CDOMReference<Domain>> set =
-				new TreeSet<CDOMReference<Domain>>(
+		SortedSet<CDOMReference<SpellList>> set =
+				new TreeSet<CDOMReference<SpellList>>(
 					TokenUtilities.REFERENCE_SORTER);
 		SortedSet<Integer> levelSet = new TreeSet<Integer>();
 		List<String> list = new ArrayList<String>(dkmtl.firstKeyCount());

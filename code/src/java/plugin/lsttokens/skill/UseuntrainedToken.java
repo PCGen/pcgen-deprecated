@@ -73,13 +73,14 @@ public class UseuntrainedToken implements SkillLstToken
 	public boolean parse(LoadContext context, Skill skill, String value)
 		throws PersistenceLayerException
 	{
+		Boolean untrained;
 		if (value.equalsIgnoreCase("NO"))
 		{
-			skill.put(ObjectKey.USE_UNTRAINED, Boolean.FALSE);
+			untrained = Boolean.FALSE;
 		}
 		else if (value.equalsIgnoreCase("YES"))
 		{
-			skill.put(ObjectKey.USE_UNTRAINED, Boolean.TRUE);
+			untrained = Boolean.TRUE;
 		}
 		else
 		{
@@ -88,12 +89,14 @@ public class UseuntrainedToken implements SkillLstToken
 			Logging.errorPrint("Must be YES or NO");
 			return false;
 		}
+		context.obj.put(skill, ObjectKey.USE_UNTRAINED, untrained);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Skill skill)
 	{
-		Boolean useUntrained = skill.get(ObjectKey.USE_UNTRAINED);
+		Boolean useUntrained =
+				context.obj.getObject(skill, ObjectKey.USE_UNTRAINED);
 		if (useUntrained == null)
 		{
 			return null;

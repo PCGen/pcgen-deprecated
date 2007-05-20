@@ -21,14 +21,12 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.Set;
+import java.util.Collection;
 
-import pcgen.cdom.base.CDOMGroupRef;
-import pcgen.cdom.content.LevelSkillPoints;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.Aggregator;
-import pcgen.core.PCClass;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.ClassSkillPointFactory;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
@@ -78,51 +76,40 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 			return false;
 		}
 
-		CDOMGroupRef<PCClass> owner =
-				context.ref.getCDOMAllReference(PCClass.class);
-		Aggregator ag = new Aggregator(template, owner, getTokenName());
-		LevelSkillPoints lsp = new LevelSkillPoints(skillCount);
-		context.graph.linkAllowIntoGraph(getTokenName(), template, ag);
-		context.graph.linkActivationIntoGraph(getTokenName(), owner, ag);
-		context.graph.linkObjectIntoGraph(getTokenName(), ag, lsp);
+		ClassSkillPointFactory cf = new ClassSkillPointFactory(skillCount);
+		context.graph.grant(getTokenName(), template, cf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), pct,
-					Aggregator.class);
-		if (edges == null || edges.isEmpty())
+		GraphChanges<ClassSkillPointFactory> changes =
+				context.graph.getChangesFromToken(getTokenName(), pct,
+					ClassSkillPointFactory.class);
+		if (changes == null)
 		{
 			return null;
 		}
-		if (edges.size() != 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			context.addWriteMessage("Only 1 " + getTokenName()
-				+ " is allowed per Template");
+			// Zero indicates no BONUSSKILLPOINTS
 			return null;
 		}
-		// CONSIDER Verify this is an allow edge?
-		Aggregator ag =
-				(Aggregator) edges.iterator().next().getSinkNodes().get(0);
-		Set<PCGraphEdge> links =
-				context.graph.getChildLinksFromToken(getTokenName(), ag,
-					LevelSkillPoints.class);
-		if (links == null || links.isEmpty())
+		if (added.size() > 1)
 		{
+			// TODO Error message
 			return null;
 		}
-		if (links.size() > 1)
+		ClassSkillPointFactory lcf =
+				(ClassSkillPointFactory) added.iterator().next();
+		int skillPoints = lcf.getSkillPointCount();
+		if (skillPoints <= 0)
 		{
-			context.addWriteMessage("Only  1 " + getTokenName()
-				+ " is allowed per Aggregator");
+			context.addWriteMessage("Number of skill points granted in "
+				+ getTokenName() + " must be greater than zero");
 			return null;
 		}
-		LevelSkillPoints lsp =
-				(LevelSkillPoints) links.iterator().next().getSinkNodes()
-					.get(0);
-		// CONSIDER Verify the rest of the structure??
-		return new String[]{Integer.toString(lsp.getPoints())};
+		return new String[]{Integer.toString(skillPoints)};
 	}
 }

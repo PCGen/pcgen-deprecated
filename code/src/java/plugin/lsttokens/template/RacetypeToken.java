@@ -46,13 +46,14 @@ public class RacetypeToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		template.put(ObjectKey.RACETYPE, RaceType.getConstant(value));
+		context.obj.put(template, ObjectKey.RACETYPE, RaceType
+			.getConstant(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		RaceType raceType = pct.get(ObjectKey.RACETYPE);
+		RaceType raceType = context.obj.getObject(pct, ObjectKey.RACETYPE);
 		if (raceType == null)
 		{
 			return null;

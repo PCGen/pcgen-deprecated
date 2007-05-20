@@ -67,14 +67,14 @@ public class LevelsperfeatToken implements PCTemplateLstToken
 	{
 		try
 		{
-			int lpf = Integer.parseInt(value);
-			if (lpf < 0)
+			Integer lpf = Integer.valueOf(value);
+			if (lpf.intValue() < 0)
 			{
 				Logging.errorPrint("Levels Per Feat must be "
 					+ "greater than or equal to zero: " + value);
 				return false;
 			}
-			template.put(IntegerKey.LEVELS_PER_FEAT, Integer.valueOf(lpf));
+			context.obj.put(template, IntegerKey.LEVELS_PER_FEAT, lpf);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -87,7 +87,7 @@ public class LevelsperfeatToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Integer lpf = pct.get(IntegerKey.LEVELS_PER_FEAT);
+		Integer lpf = context.obj.getInteger(pct, IntegerKey.LEVELS_PER_FEAT);
 		if (lpf == null)
 		{
 			return null;

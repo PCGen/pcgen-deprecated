@@ -51,7 +51,8 @@ public class AcheckToken implements SkillLstToken
 	{
 		try
 		{
-			skill.put(ObjectKey.ARMOR_CHECK, SkillArmorCheck.valueOf(value));
+			context.obj.put(skill, ObjectKey.ARMOR_CHECK, SkillArmorCheck
+				.valueOf(value));
 			return true;
 		}
 		catch (IllegalArgumentException iae)
@@ -64,7 +65,8 @@ public class AcheckToken implements SkillLstToken
 
 	public String[] unparse(LoadContext context, Skill skill)
 	{
-		SkillArmorCheck sac = skill.get(ObjectKey.ARMOR_CHECK);
+		SkillArmorCheck sac =
+				context.obj.getObject(skill, ObjectKey.ARMOR_CHECK);
 		if (sac == null)
 		{
 			return null;

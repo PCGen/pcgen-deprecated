@@ -34,6 +34,8 @@ import pcgen.util.Logging;
 public class StatToken implements SpellLstToken
 {
 
+	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
+
 	public String getTokenName()
 	{
 		return "STAT";
@@ -47,20 +49,20 @@ public class StatToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
-		PCStat pcs = context.ref.getConstructedCDOMObject(PCStat.class, value);
+		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
 			Logging.errorPrint("Invalid Stat Abbreviation in Token + "
 				+ getTokenName() + ": " + value);
 			return false;
 		}
-		spell.put(ObjectKey.SPELL_STAT, pcs);
+		context.obj.put(spell, ObjectKey.SPELL_STAT, pcs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		PCStat pcs = spell.get(ObjectKey.SPELL_STAT);
+		PCStat pcs = context.obj.getObject(spell, ObjectKey.SPELL_STAT);
 		if (pcs == null)
 		{
 			return null;

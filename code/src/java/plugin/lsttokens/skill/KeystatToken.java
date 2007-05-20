@@ -35,6 +35,8 @@ import pcgen.persistence.lst.SkillLstToken;
 public class KeystatToken implements SkillLstToken
 {
 
+	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
+
 	public String getTokenName()
 	{
 		return "KEYSTAT";
@@ -49,20 +51,20 @@ public class KeystatToken implements SkillLstToken
 	public boolean parse(LoadContext context, Skill skill, String value)
 		throws PersistenceLayerException
 	{
-		PCStat pcs = context.ref.getConstructedCDOMObject(PCStat.class, value);
+		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
 			Logging.errorPrint("Invalid Stat Abbreviation in Token + "
 				+ getTokenName() + ": " + value);
 			return false;
 		}
-		skill.put(ObjectKey.KEY_STAT, pcs);
+		context.obj.put(skill, ObjectKey.KEY_STAT, pcs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Skill skill)
 	{
-		PCStat pcs = skill.get(ObjectKey.KEY_STAT);
+		PCStat pcs = context.obj.getObject(skill, ObjectKey.KEY_STAT);
 		if (pcs == null)
 		{
 			return null;
