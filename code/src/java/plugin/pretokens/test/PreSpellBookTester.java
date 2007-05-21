@@ -26,10 +26,15 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
 /**
@@ -70,6 +75,28 @@ public class PreSpellBookTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "SPELLBOOK"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		boolean prereqUsesBook = prereq.getKey().toUpperCase().startsWith("Y"); //$NON-NLS-1$
+		int runningTotal = 0;
+		int requiredNumber = Integer.parseInt(prereq.getOperand());
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<PCClass> list = activeGraph.getGrantedNodeList(PCClass.class);
+		for (PCClass spellClass : list)
+		{
+			Boolean sb = spellClass.get(ObjectKey.SPELLBOOK);
+			if (sb != null && sb.booleanValue() == prereqUsesBook)
+			{
+				runningTotal++;
+			}
+		}
+
+		runningTotal =
+				prereq.getOperator().compare(runningTotal, requiredNumber);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

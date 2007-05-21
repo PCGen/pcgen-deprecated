@@ -26,6 +26,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PCTemplate;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.SpecialAbility;
@@ -104,6 +105,40 @@ public class PreSpecialAbilityTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "SA"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal = 0;
+
+		final int number;
+		try
+		{
+			number = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException exceptn)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreTemplate.error", prereq.toString())); //$NON-NLS-1$
+		}
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<SpecialAbility> list =
+				activeGraph.getGrantedNodeList(SpecialAbility.class);
+		
+		if (!list.isEmpty())
+		{
+			String saKey = prereq.getKey().toUpperCase();
+			for (SpecialAbility sa : list)
+			{
+				if (sa.getKeyName().toUpperCase().startsWith(saKey))
+				{
+					runningTotal++;
+				}
+			}
+		}
+		runningTotal = prereq.getOperator().compare(runningTotal, number);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

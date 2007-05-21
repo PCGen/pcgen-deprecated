@@ -17,20 +17,22 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Language;
+import pcgen.core.PCClass;
 import pcgen.core.PObject;
-import pcgen.core.SubClass;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
+public class PreSpellCastMemorizeTesterTest extends
+		AbstractCDOMBooleanTestCase<PCClass>
 {
 
-	PreSubClassTester tester = new PreSubClassTester();
+	PreSpellCastMemorizeTester tester = new PreSpellCastMemorizeTester();
 
 	@Override
-	public Class<SubClass> getCDOMClass()
+	public Class<PCClass> getCDOMClass()
 	{
-		return SubClass.class;
+		return PCClass.class;
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
 	@Override
 	public String getKind()
 	{
-		return "SUBCLASS";
+		return "spellcast.memoriz";
 	}
 
 	@Override
@@ -52,27 +54,9 @@ public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
 	}
 
 	@Override
-	public boolean isWildcardLegal()
+	public ObjectKey<Boolean> getObjectKey()
 	{
-		return false;
-	}
-
-	@Override
-	public boolean isTypeLegal()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isAnyLegal()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isTestStarting()
-	{
-		return false;
+		return ObjectKey.MEMORIZE_SPELLS;
 	}
 
 }

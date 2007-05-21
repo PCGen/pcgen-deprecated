@@ -70,6 +70,12 @@ public class PreWeaponProfTesterTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isTestStarting()
+	{
+		return false;
+	}
+
 	// TODO need to test with Equipment having the type, not WeaponProf having
 	// the type :(
 

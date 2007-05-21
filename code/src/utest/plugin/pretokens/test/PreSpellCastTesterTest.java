@@ -17,20 +17,23 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.Type;
 import pcgen.core.Language;
+import pcgen.core.PCClass;
 import pcgen.core.PObject;
-import pcgen.core.SubClass;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
+public class PreSpellCastTesterTest extends
+		AbstractCDOMObjectKeyTestCase<PCClass, Type>
 {
 
-	PreSubClassTester tester = new PreSubClassTester();
+	PreSpellCastTester tester = new PreSpellCastTester();
 
 	@Override
-	public Class<SubClass> getCDOMClass()
+	public Class<PCClass> getCDOMClass()
 	{
-		return SubClass.class;
+		return PCClass.class;
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
 	@Override
 	public String getKind()
 	{
-		return "SUBCLASS";
+		return "spellcast.type";
 	}
 
 	@Override
@@ -52,27 +55,20 @@ public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
 	}
 
 	@Override
-	public boolean isWildcardLegal()
+	public Type getFailObject()
 	{
-		return false;
+		return Type.getConstant("Arcane");
 	}
 
 	@Override
-	public boolean isTypeLegal()
+	public ObjectKey<Type> getObjectKey()
 	{
-		return false;
+		return ObjectKey.SPELL_TYPE;
 	}
 
 	@Override
-	public boolean isAnyLegal()
+	public Type getPassObject()
 	{
-		return false;
+		return Type.getConstant("Divine");
 	}
-
-	@Override
-	public boolean isTestStarting()
-	{
-		return false;
-	}
-
 }

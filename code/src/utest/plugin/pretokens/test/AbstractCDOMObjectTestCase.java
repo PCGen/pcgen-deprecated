@@ -125,6 +125,8 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 
 	public abstract boolean isWildcardLegal();
 
+	public abstract boolean isTestStarting();
+
 	public abstract boolean isTypeLegal();
 
 	public abstract boolean isAnyLegal();
@@ -213,8 +215,9 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		// But not Katana
 		assertEquals(0, getTest().passesCDOM(getSimplePrereq(), pc));
-		// And not Generic Crossbow
-		assertEquals(0, getTest().passesCDOM(getGenericPrereq(), pc));
+		// And maybe Generic Crossbow
+		assertEquals(isTestStarting() ? 1 : 0, getTest().passesCDOM(
+			getGenericPrereq(), pc));
 	}
 
 	@Test

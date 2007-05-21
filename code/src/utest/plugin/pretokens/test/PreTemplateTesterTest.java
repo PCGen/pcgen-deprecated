@@ -70,4 +70,10 @@ public class PreTemplateTesterTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isTestStarting()
+	{
+		return false;
+	}
+
 }

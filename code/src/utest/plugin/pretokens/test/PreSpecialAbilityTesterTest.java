@@ -19,18 +19,19 @@ package plugin.pretokens.test;
 
 import pcgen.core.Language;
 import pcgen.core.PObject;
-import pcgen.core.SubClass;
+import pcgen.core.SpecialAbility;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
+public class PreSpecialAbilityTesterTest extends
+		AbstractCDOMObjectTestCase<SpecialAbility>
 {
 
-	PreSubClassTester tester = new PreSubClassTester();
+	PreSpecialAbilityTester tester = new PreSpecialAbilityTester();
 
 	@Override
-	public Class<SubClass> getCDOMClass()
+	public Class<SpecialAbility> getCDOMClass()
 	{
-		return SubClass.class;
+		return SpecialAbility.class;
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
 	@Override
 	public String getKind()
 	{
-		return "SUBCLASS";
+		return "TEMPLATE";
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
 	@Override
 	public boolean isTestStarting()
 	{
-		return false;
+		return true;
 	}
 
 }

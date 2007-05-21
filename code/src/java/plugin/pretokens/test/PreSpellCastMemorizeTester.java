@@ -6,10 +6,15 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
@@ -74,6 +79,28 @@ public class PreSpellCastMemorizeTester extends AbstractPrerequisiteTest
 		return PropertyFactory
 			.getFormattedString(
 				"PreSpellCastMemorize.toHtml_does_not_memorise", prereq.getOperator().toDisplayString()); //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int requiredNumber = Integer.parseInt(prereq.getOperand());
+		Boolean prereqMemorized =
+				Boolean.valueOf(prereq.getKey().toUpperCase().startsWith("Y"));
+		int runningTotal = 0;
+		
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<PCClass> list = activeGraph.getGrantedNodeList(PCClass.class);
+		for (PCClass aClass : list)
+		{
+			if (prereqMemorized.equals(aClass.get(ObjectKey.MEMORIZE_SPELLS)))
+			{
+				runningTotal++;
+			}
+		}
+
+		runningTotal =
+				prereq.getOperator().compare(runningTotal, requiredNumber);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }
