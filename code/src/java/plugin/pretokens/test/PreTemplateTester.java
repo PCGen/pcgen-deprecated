@@ -26,6 +26,9 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PCTemplate;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -64,7 +67,6 @@ public class PreTemplateTester extends AbstractPrerequisiteTest implements
 
 		if (!character.getTemplateList().isEmpty())
 		{
-
 			String templateKey = prereq.getKey().toUpperCase();
 			final int wildCard = templateKey.indexOf('%');
 			//handle wildcards (always assume they end the line)
@@ -95,6 +97,54 @@ public class PreTemplateTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "TEMPLATE"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal = 0;
+
+		final int number;
+		try
+		{
+			number = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException exceptn)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreTemplate.error", prereq.toString())); //$NON-NLS-1$
+		}
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<PCTemplate> list =
+				activeGraph.getGrantedNodeList(PCTemplate.class);
+		
+		if (!list.isEmpty())
+		{
+			String templateKey = prereq.getKey().toUpperCase();
+			int wildCard = templateKey.indexOf('%');
+			//handle wildcards (always assume they end the line)
+			if (wildCard >= 0)
+			{
+				templateKey = templateKey.substring(0, wildCard);
+				for (PCTemplate aTemplate : list)
+				{
+					if (aTemplate.getKeyName().toUpperCase().startsWith(
+						templateKey))
+					{
+						runningTotal++;
+					}
+				}
+			}
+			else
+			{
+				if (activeGraph.containsGranted(PCTemplate.class, templateKey))
+				{
+					runningTotal++;
+				}
+			}
+		}
+		runningTotal = prereq.getOperator().compare(runningTotal, number);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

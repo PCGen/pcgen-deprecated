@@ -26,9 +26,12 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.core.PCStat;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
@@ -72,6 +75,16 @@ public class PreStatTester extends AbstractPrerequisiteTest implements
 		return PropertyFactory
 			.getFormattedString(
 				"PreStat.toHtml", prereq.getKey(), prereq.getOperator().toString(), prereq.getOperand()); //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int targetNumber = Integer.parseInt(prereq.getOperand());
+		PCGenGraph graph = character.getActiveGraph();
+		PCStat stat = graph.getGrantedNode(PCStat.class, prereq.getKey());
+		int statVal = character.getTotalWeight(stat);
+		int runningTotal = prereq.getOperator().compare(statVal, targetNumber);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

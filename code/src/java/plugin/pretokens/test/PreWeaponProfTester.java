@@ -26,6 +26,11 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Equipment;
 import pcgen.core.EquipmentList;
 import pcgen.core.PlayerCharacter;
@@ -140,6 +145,73 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "WEAPONPROF"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal = 0;
+
+		final int number;
+		try
+		{
+			number = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException exceptn)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreFeat.error", prereq.toString())); //$NON-NLS-1$
+		}
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+		final String aString = prereq.getKey();
+		if ("DEITYWEAPON".equals(aString) && character.getDeity() != null) //$NON-NLS-1$
+		{
+			for (String weaponKey : CoreUtility.split(character.getDeity()
+				.getFavoredWeapon(), '|'))
+			{
+				if (activeGraph.containsGranted(WeaponProf.class, weaponKey))
+				{
+					runningTotal++;
+				}
+			}
+		}
+		else if (aString.startsWith("TYPE.") || aString.startsWith("TYPE=")) //$NON-NLS-1$ //$NON-NLS-2$
+		{
+			Type requiredType = Type.getConstant(aString.substring(5));
+			List<WeaponProf> list =
+				activeGraph.getGrantedNodeList(WeaponProf.class);
+			if (list != null)
+			{
+				for (WeaponProf wp : list)
+				{
+					if (wp.containsInList(ListKey.TYPE, requiredType))
+					{
+						runningTotal++;
+					}
+					else
+					{
+						final Equipment eq =
+								EquipmentList.getEquipmentNamed(wp.getKeyName());
+						if (eq != null)
+						{
+							if (eq.containsInList(ListKey.TYPE, requiredType))
+							{
+								runningTotal++;
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			if (activeGraph.containsGranted(WeaponProf.class, aString))
+			{
+				runningTotal++;
+			}
+		}
+		runningTotal = prereq.getOperator().compare(runningTotal, number);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

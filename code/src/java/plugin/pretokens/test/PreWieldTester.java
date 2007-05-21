@@ -28,6 +28,7 @@ import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
 /**
@@ -61,5 +62,11 @@ public class PreWieldTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "WIELD"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		throw new UnsupportedOperationException("PREWIELD is not a PC Prereq");
 	}
 }

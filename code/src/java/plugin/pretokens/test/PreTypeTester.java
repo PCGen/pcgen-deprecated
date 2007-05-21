@@ -127,4 +127,9 @@ public class PreTypeTester extends AbstractPrerequisiteTest implements
 				"PreType.toHtml", prereq.getOperator().toDisplayString(), prereq.getKey()); //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		throw new UnsupportedOperationException("PRETYPE is not a PC Prereq");
+	}
 }

@@ -37,4 +37,6 @@ public interface PrerequisiteTest {
 	public int passes(Prerequisite prereq, Equipment equipment, PlayerCharacter aPC) throws PrerequisiteException;
 	public String toHtmlString(Prerequisite prereq);
 	public String kindHandled();
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException;
 }

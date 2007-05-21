@@ -26,10 +26,12 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Vision;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.enumeration.VisionType;
 
@@ -73,6 +75,28 @@ public class PreVisionTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "VISION"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		final int requiredRange = Integer.parseInt(prereq.getOperand());
+		int runningTotal = 0;
+		VisionType requiredVisionType =
+				VisionType.getVisionType(prereq.getKey());
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+
+		for (Vision charVision : activeGraph.getGrantedNodeList(Vision.class))
+		{
+			if (charVision.getType().equals(requiredVisionType))
+			{
+				int visionRange = Integer.parseInt(charVision.getDistance());
+				runningTotal +=
+						prereq.getOperator()
+							.compare(visionRange, requiredRange);
+			}
+		}
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

@@ -26,8 +26,12 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.SubClass;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -85,6 +89,37 @@ public class PreSubClassTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "SUBCLASS"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal = 0;
+		int num;
+		try
+		{
+			num = Integer.parseInt(prereq.getOperand()); // number we must match
+		}
+		catch (NumberFormatException nfe)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreSubClass.error.badly_formed", prereq.toString())); //$NON-NLS-1$
+		}
+
+		String requiredClass = prereq.getKey();
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<SubClass> list = activeGraph.getGrantedNodeList(SubClass.class);
+		for (SubClass cl : list)
+		{
+			String subClassName = cl.getKeyName();
+			if (requiredClass.equalsIgnoreCase(subClassName))
+			{
+				runningTotal++;
+				break;
+			}
+		}
+
+		runningTotal = prereq.getOperator().compare(runningTotal, num);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

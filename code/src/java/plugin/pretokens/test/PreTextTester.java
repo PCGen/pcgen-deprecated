@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
@@ -63,6 +64,19 @@ public class PreTextTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "TEXT"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		// PRETEXT: is a flavor text string that needs
+		// to be displayed in the GUI, but the PC
+		// should always be qualified to take it, as
+		// it's a DM call/issue
+		if (prereq.getOperator().equals(PrerequisiteOperator.NEQ))
+		{
+			return countedTotal(prereq, 0);
+		}
+		return countedTotal(prereq, 1);
 	}
 
 }
