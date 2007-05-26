@@ -2285,6 +2285,7 @@ my %master_order = (
         'CSKILL',
         'RATEOFFIRE',
         'AUTO:EQUIP',
+        'AUTO:WEAPONPROF',
         'ADD:SPELLCASTER',
         'DESC',
     ],
@@ -5158,6 +5159,7 @@ if ( $cl_options{xcheck} ) {
 
     ###############################################
     # Type report
+    # This is the code used to change what types are/aren't reported.
     # Find the type entries that need to be reported
     %to_report = ();
     for my $linetype ( sort %referer_types ) {
