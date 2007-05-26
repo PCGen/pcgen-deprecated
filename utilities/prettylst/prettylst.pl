@@ -14562,6 +14562,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 [ 1718370 ] SHOWINMENU tag missing for PCC files
 
+[ 1722300 ] ABILITY tag in different locations
+
 =head2 v1.38 -- 2007.04.26
 
 =over 3
