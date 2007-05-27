@@ -17,7 +17,17 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.choice.AnyChooser;
+import pcgen.cdom.choice.PCChooser;
+import pcgen.cdom.choice.RemovingChooser;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.SkillCost;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
+import pcgen.core.Skill;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -63,5 +73,46 @@ public class NonClassSkillListToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "NONCLASSSKILLLIST";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return null;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return null;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not start with | : " + value);
+			return null;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not end with | : " + value);
+			return null;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return null;
+		}
+		AnyChooser<Skill> anyChooser = new AnyChooser<Skill>(Skill.class);
+		PCChooser<Skill> pcChooser = new PCChooser<Skill>(Skill.class);
+		pcChooser.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
+		RemovingChooser<Skill> chooser = new RemovingChooser<Skill>(anyChooser);
+		chooser.addRemovingChoiceSet(pcChooser);
+		return chooser;
 	}
 }

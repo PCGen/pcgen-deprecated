@@ -26,6 +26,7 @@
 package pcgen.persistence.lst;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -39,6 +40,6 @@ public interface ChooseLstToken extends LstToken
 {
 	public boolean parse(PObject po, String value);
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException;
 }

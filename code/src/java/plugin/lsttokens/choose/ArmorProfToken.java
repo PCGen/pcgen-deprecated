@@ -17,8 +17,22 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.Equipment;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 public class ArmorProfToken implements ChooseLstToken
@@ -81,5 +95,80 @@ public class ArmorProfToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "ARMORPROF";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return null;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return null;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not start with | : " + value);
+			return null;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not end with | : " + value);
+			return null;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return null;
+		}
+		int pipeLoc = value.indexOf("|");
+		if (pipeLoc == -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " must have two or more | delimited arguments : " + value);
+			return null;
+		}
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		String start = st.nextToken();
+		int count;
+		try
+		{
+			count = Integer.parseInt(start);
+		}
+		catch (NumberFormatException nfe)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " first argument must be an Integer : " + value);
+			return null;
+		}
+		List<CDOMReference<Equipment>> featList =
+				new ArrayList<CDOMReference<Equipment>>();
+		while (st.hasMoreTokens())
+		{
+			String tokString = st.nextToken();
+			if (Constants.LST_ANY.equals(tokString))
+			{
+				Logging.errorPrint("Cannot use ANY and another qualifier: "
+					+ value);
+				return null;
+			}
+			else
+			{
+				TokenUtilities.getTypeOrPrimitive(context, Equipment.class,
+					tokString);
+			}
+		}
+		SetChooser<Equipment> setChooser = new SetChooser<Equipment>(featList);
+		setChooser.setMaxSelections(FormulaFactory.getFormulaFor(count));
+		return setChooser;
 	}
 }

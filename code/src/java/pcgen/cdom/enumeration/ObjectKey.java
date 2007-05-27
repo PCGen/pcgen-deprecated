@@ -36,6 +36,7 @@ import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.base.util.DefaultMap;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.mode.Size;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
@@ -153,6 +154,8 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<BigDecimal> FACE_WIDTH = new ObjectKey<BigDecimal>();
 
 	public static final ObjectKey<BigDecimal> FACE_HEIGHT = new ObjectKey<BigDecimal>();
+
+	public static final ObjectKey<ChoiceSet<?>> CHOICE = new ObjectKey<ChoiceSet<?>>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 

@@ -23,6 +23,9 @@
 package plugin.lsttokens;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
@@ -117,7 +120,13 @@ public class ChooseLst implements GlobalLstToken
 			boolean parse = ChooseLoader.parseToken(obj, key, val, anInt);
 			if (!parse)
 			{
-				parseOld(obj, value, anInt);
+				// 514 deprecation changes
+				// Logging.errorPrint("CHOOSE: syntax you are using is
+				// deprecated: "
+				// + value);
+				// Logging.errorPrint(" Please use CHOOSE:SUBKEY|choices");
+				// Logging.errorPrint(" ... see the PCGen docs");
+				obj.setChoiceString(value);
 			}
 			return true;
 		}
@@ -125,23 +134,108 @@ public class ChooseLst implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-			throws PersistenceLayerException {
-		return ChooseLoader.parseLine(context, obj, value);
+		throws PersistenceLayerException
+	{
+		String token;
+		String rest = value;
+		int activeLoc = 0;
+		String count = null;
+		String maxCount = null;
+		int pipeLoc = value.indexOf(Constants.PIPE, activeLoc);
+		if (pipeLoc == -1)
+		{
+			Logging.errorPrint("CHOOSE: syntax you are using is not valid: "
+				+ value);
+			Logging.errorPrint(" Please use CHOOSE:SUBKEY|choices");
+			Logging.errorPrint(" ... see the PCGen docs");
+			return false;
+		}
+		while (pipeLoc != -1)
+		{
+			token = rest.substring(activeLoc, pipeLoc);
+			rest = rest.substring(pipeLoc + 1);
+			if (token.startsWith("COUNT="))
+			{
+				if (count != null)
+				{
+					Logging
+						.errorPrint("Cannot use COUNT more than once in CHOOSE: "
+							+ value);
+					return false;
+				}
+				count = token.substring(6);
+				if (count == null)
+				{
+					Logging.errorPrint("COUNT in CHOOSE must be a formula: "
+						+ value);
+					return false;
+				}
+			}
+			else if (token.startsWith("NUMCHOICES="))
+			{
+				if (maxCount != null)
+				{
+					Logging
+						.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
+							+ value);
+					return false;
+				}
+				maxCount = token.substring(11);
+				if (maxCount == null || maxCount.length() == 0)
+				{
+					Logging
+						.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
+							+ value);
+					return false;
+				}
+			}
+			else
+			{
+				break;
+			}
+			pipeLoc = rest.indexOf(Constants.PIPE, activeLoc);
+		}
+		String key;
+		String val;
+		if (rest.startsWith("FEAT="))
+		{
+			key = "FEAT";
+			val = rest.substring(5);
+		}
+		else
+		{
+			key = rest;
+			val = null;
+		}
+		ChoiceSet<?> chooser = ChooseLoader.parseLine(context, obj, key, val);
+		if (chooser == null)
+		{
+			return false;
+		}
+		if (maxCount == null)
+		{
+			chooser.setMaxSelections(FormulaFactory
+				.getFormulaFor(Integer.MAX_VALUE));
+		}
+		else
+		{
+			chooser.setMaxSelections(FormulaFactory.getFormulaFor(maxCount));
+		}
+		if (count == null)
+		{
+			chooser.setCount(FormulaFactory.getFormulaFor(1));
+		}
+		else
+		{
+			chooser.setCount(FormulaFactory.getFormulaFor(count));
+		}
+		obj.put(ObjectKey.CHOICE, chooser);
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	private void parseOld(PObject obj, String value, int anInt)
-	{
-		//514 deprecation changes
-//		Logging.errorPrint("CHOOSE: syntax you are using is deprecated: "
-//			+ value);
-//		Logging.errorPrint("  Please use CHOOSE:SUBKEY|choices");
-//		Logging.errorPrint("  ... see the PCGen docs");
-		obj.setChoiceString(value);
 	}
 }

@@ -17,8 +17,22 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.Ability;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 public class FeatAddToken implements ChooseLstToken
@@ -63,5 +77,60 @@ public class FeatAddToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "FEATADD";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return null;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return null;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not start with | : " + value);
+			return null;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not end with | : " + value);
+			return null;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return null;
+		}
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		List<CDOMReference<Ability>> featList =
+				new ArrayList<CDOMReference<Ability>>();
+		while (tok.hasMoreTokens())
+		{
+			String tokString = tok.nextToken();
+			if (Constants.LST_ANY.equals(tokString))
+			{
+				Logging.errorPrint("Cannot use ANY and another qualifier: "
+					+ value);
+				return null;
+			}
+			else
+			{
+				TokenUtilities.getTypeOrPrimitive(context, Ability.class,
+					AbilityCategory.FEAT, tokString);
+			}
+		}
+		//TODO Need to do the ADD ;)
+		return new SetChooser<Ability>(featList);
 	}
 }

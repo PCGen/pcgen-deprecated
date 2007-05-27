@@ -17,8 +17,18 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.Collections;
+
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.Equipment;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 public class EquipTypeToken implements ChooseLstToken
@@ -63,5 +73,44 @@ public class EquipTypeToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "EQUIPTYPE";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value.indexOf('|') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain | : " + value);
+			return null;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return null;
+		}
+		if (value.charAt(0) == '.')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not start with . : " + value);
+			return null;
+		}
+		if (value.charAt(value.length() - 1) == '.')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not end with . : " + value);
+			return null;
+		}
+		if (value.indexOf("..") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments uses double separator .. : " + value);
+			return null;
+		}
+		CDOMReference<Equipment> ref =
+				TokenUtilities
+					.getTypeReference(context, Equipment.class, value);
+		return new SetChooser<Equipment>(Collections.singletonList(ref));
 	}
 }

@@ -125,34 +125,40 @@ public final class TokenUtilities
 		if (s.startsWith(Constants.LST_TYPE_OLD)
 			|| s.startsWith(Constants.LST_TYPE))
 		{
-			String subStr = s.substring(5);
-			if (subStr.length() == 0)
-			{
-				Logging.errorPrint("Type may not be empty in: " + s);
-				return null;
-			}
-			if (subStr.charAt(0) == '.'
-				|| subStr.charAt(subStr.length() - 1) == '.')
-			{
-				Logging.errorPrint("Type may not start or end with . in: " + s);
-				return null;
-			}
-			String[] types = subStr.split("\\.");
-			for (String type : types)
-			{
-				if (type.length() == 0)
-				{
-					Logging
-						.errorPrint("Attempt to acquire empty Type in: " + s);
-					return null;
-				}
-			}
-			return context.ref.getCDOMTypeReference(cl, types);
+			return getTypeReference(context, cl, s.substring(5));
 		}
 		else
 		{
 			return context.ref.getCDOMReference(cl, s);
 		}
+	}
+
+	public static <T extends PObject> CDOMReference<T> getTypeReference(
+		LoadContext context, Class<T> cl, String subStr)
+	{
+		if (subStr.length() == 0)
+		{
+			Logging.errorPrint("Type may not be empty in: " + subStr);
+			return null;
+		}
+		if (subStr.charAt(0) == '.'
+			|| subStr.charAt(subStr.length() - 1) == '.')
+		{
+			Logging
+				.errorPrint("Type may not start or end with . in: " + subStr);
+			return null;
+		}
+		String[] types = subStr.split("\\.");
+		for (String type : types)
+		{
+			if (type.length() == 0)
+			{
+				Logging.errorPrint("Attempt to acquire empty Type in: "
+					+ subStr);
+				return null;
+			}
+		}
+		return context.ref.getCDOMTypeReference(cl, types);
 	}
 
 	public static DamageReduction getDamageReduction(String drString)

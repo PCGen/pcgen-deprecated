@@ -101,4 +101,10 @@ public class Constants
 	public static final String LST_SUBSTITUTIONCLASS_IDENTIFIER =
 			"SUBSTITUTIONCLASS:";
 
+	public static final String LST_PC = "PC";
+
+	public static final String LST_QUALIFY = "QUALIFY";
+
+	public static final String LST_LIST = "LIST";
+
 }

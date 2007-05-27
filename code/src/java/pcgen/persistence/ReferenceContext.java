@@ -17,6 +17,8 @@
  */
 package pcgen.persistence;
 
+import java.util.Collection;
+
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
@@ -172,5 +174,17 @@ public class ReferenceContext
 		Class<T> c, Category<T> cat)
 	{
 		return categorized.getReferenceManufacturer(c, cat);
+	}
+
+	public <T extends PObject> Collection<T> getConstructedCDOMObjects(
+		Class<T> c)
+	{
+		return simple.getConstructedCDOMObjects(c);
+	}
+
+	public <T extends PObject> boolean containsConstructedCDOMObject(
+		Class<T> c, String s)
+	{
+		return simple.containsConstructedCDOMObject(c, s);
 	}
 }
