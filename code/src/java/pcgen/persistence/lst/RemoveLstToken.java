@@ -18,13 +18,18 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
 
 /**
- * <code>AutoLstToken</code>
+ * <code>RemoveLstToken</code>
  * 
  * @author Thomas Parker <thpr@users.sourceforge.net>
  */
-public interface RemoveLstToken extends CDOMToken<PObject>
+public interface RemoveLstToken extends LstToken
 {
 	public boolean parse(PObject target, String value, int level);
+
+	public boolean parse(LoadContext context, PObject obj, String string);
+
+	public String[] unparse(LoadContext context, PObject object);
 }

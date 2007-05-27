@@ -83,8 +83,9 @@ public class AddLst implements GlobalLstToken
 		}
 		else if (value.startsWith("Language"))
 		{
-			Logging.errorPrint("Use of lower-case Language "
-				+ "in ADD is deprecated. Use upper-case LANGUAGE");
+			// 514 abbreviation cleanup
+//			Logging.errorPrint("Use of lower-case Language "
+//				+ "in ADD is deprecated. Use upper-case LANGUAGE");
 			key = "LANGUAGE";
 		}
 		else if (value.startsWith("LANGUAGE"))
@@ -109,8 +110,9 @@ public class AddLst implements GlobalLstToken
 		}
 		else
 		{
-			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA is deprecated.");
-			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
+			// 514 abbreviation cleanup
+//			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA is deprecated.");
+//			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
 			key = "SA";
 		}
 		String contents;
@@ -128,18 +130,20 @@ public class AddLst implements GlobalLstToken
 		{
 			if (key.equals("FEAT") && value.equals("FEAT"))
 			{
-				Logging.errorPrint("ADD:FEAT "
-					+ "should not be used with no parameters");
-				Logging.errorPrint("  This usage is deprecated");
-				Logging.errorPrint("  Please use BONUS:FEAT|POOL|1 instead");
+				// 514 abbreviation cleanup
+//				Logging.errorPrint("ADD:FEAT "
+//					+ "should not be used with no parameters");
+//				Logging.errorPrint("  This usage is deprecated");
+//				Logging.errorPrint("  Please use BONUS:FEAT|POOL|1 instead");
 				return obj.addBonusList("FEAT|POOL|1");
 			}
 			contents = value.substring(keyLength + 1);
 			if (value.charAt(keyLength) == '(')
 			{
-				Logging
-					.errorPrint("ADD: syntax with parenthesis is deprecated.");
-				Logging.errorPrint("Please use ADD:" + key + "|...");
+				// 514 abbreviation cleanup
+//				Logging
+//					.errorPrint("ADD: syntax with parenthesis is deprecated.");
+//				Logging.errorPrint("Please use ADD:" + key + "|...");
 				obj.addAddList(anInt, value);
 				return true;
 			}
@@ -147,9 +151,10 @@ public class AddLst implements GlobalLstToken
 			{
 				if (contents.charAt(keyLength) == ':')
 				{
-					Logging.errorPrint("Invalid ADD:SPELLLEVEL Syntax: "
-						+ value);
-					Logging.errorPrint("Please use ADD:SPELLLEVEL|...");
+					// 514 abbreviation cleanup
+//					Logging.errorPrint("Invalid ADD:SPELLLEVEL Syntax: "
+//						+ value);
+//					Logging.errorPrint("Please use ADD:SPELLLEVEL|...");
 					obj.addAddList(anInt, value);
 					return true;
 				}

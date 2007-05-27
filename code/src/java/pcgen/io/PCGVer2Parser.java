@@ -4052,9 +4052,16 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 			}
 			catch (NumberFormatException e)
 			{
-				// Something in the first 3 digits was not an integer
-				throw new PCGParseException(
-					"parseVersionLine", line, "Invalid PCGen version."); //$NON-NLS-1$
+				if (idx == 2 && (tokens[idx].startsWith("RC")))
+				{
+					pcgenVersionSuffix = tokens[2];
+				}
+				else
+				{
+					// Something in the first 3 digits was not an integer
+					throw new PCGParseException(
+						"parseVersionLine", line, "Invalid PCGen version."); //$NON-NLS-1$
+				}
 			}
 		}
 		if (tokens.length == 4)
@@ -4470,6 +4477,10 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 				}
 
 				aEquip.setOutputIndex(index);
+				if (aEquip.isAutomatic())
+				{
+					thePC.cacheOutputIndex(aEquip);
+				}
 			}
 			else if (TAG_COST.equals(tag))
 			{

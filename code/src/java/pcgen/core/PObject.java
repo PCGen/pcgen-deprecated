@@ -3221,7 +3221,8 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 					final Equipment newEq = aEq.clone();
 					newEq.setQty(1);
 					newEq.setAutomatic(true);
-					newEq.setOutputIndex(aList.size());
+					int index = aPC.getCachedOutputIndex(newEq.getKeyName());
+					newEq.setOutputIndex(index >= 0 ? index : aList.size()+1);
 					aList.add(newEq);
 				}
 			}
@@ -3394,6 +3395,22 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 			return true;
 		}
 
+
+		if (ccSkillList.contains("LIST"))
+		{
+			String aString;
+
+			for (int e = 0; e < getAssociatedCount(); ++e)
+			{
+				aString = getAssociated(e);
+
+				if (aName.startsWith(aString) || aString.startsWith(aName))
+				{
+					return true;
+				}
+			}
+		}
+		
 		for (String aString : getCcSkillList())
 		{
 			if (aString.lastIndexOf('%') >= 0)

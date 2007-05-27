@@ -495,7 +495,6 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 				EquipmentList.autoGenerateEquipment();
 			}
 
-			PObjectLoader.finishFeatProcessing();
 			//  Show the licenses
 			showLicensesIfNeeded();
 			showSponsorsIfNeeded();

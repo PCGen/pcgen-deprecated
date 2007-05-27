@@ -1,6 +1,6 @@
 /*
- * SpellLoader.java
- * Copyright 2001 (C) Bryan McRoberts <merton_monk@yahoo.com>
+ * ChooseLoader.java
+ * Copyright 2007 (C) Thomas Parker <thpr@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,54 +16,95 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * Created on February 22, 2002, 10:29 PM
+ * Created on February 17, 2007
  *
- * Current Ver: $Revision: 1600 $
- * Last Editor: $Author: thpr $
- * Last Edited: $Date: 2006-11-05 19:02:15 -0500 (Sun, 05 Nov 2006) $
- *
+ * $Id: AddLoader.java 2077 2007-01-27 16:45:58Z thpr $
  */
 package pcgen.persistence.lst;
 
 import java.util.Map;
 
-import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
+import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.util.Logging;
 
-public final class ChooseLoader {
+public final class ChooseLoader
+{
+	private ChooseLoader()
+	{
+		// Utility Class, no construction needed
+	}
 
-	private ChooseLoader() {
-		super();
+	/**
+	 * This method is static so it can be used by the ADD Token.
+	 * 
+	 * @param target
+	 * @param lstLine
+	 * @param source
+	 * @throws PersistenceLayerException
+	 */
+	public static boolean parseToken(PObject target, String key, String value,
+		int level)
+	{
+		Map<String, LstToken> tokenMap =
+				TokenStore.inst().getTokenMap(ChooseLstToken.class);
+		ChooseLstToken token = (ChooseLstToken) tokenMap.get(key);
+		if (token != null)
+		{
+			LstUtils.deprecationCheck(token, target, value);
+			if (!token.parse(target, value))
+			{
+				// 514 deprecation changes
+				// Logging
+				// .errorPrint("Error parsing CHOOSE: " + key + ":" + value);
+				return false;
+			}
+			return true;
+		}
+		else
+		{
+			// 514 deprecation changes
+			// Logging
+			// .errorPrint("Error parsing CHOOSE, invalid SubToken: " + key);
+			return false;
+		}
 	}
 
 	public static boolean parseLine(LoadContext context, CDOMObject obj,
-			String value) throws PersistenceLayerException {
+		String value) throws PersistenceLayerException
+	{
 
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		int equalLoc = value.indexOf(Constants.EQUALS);
-		if (pipeLoc != -1 && (equalLoc == -1 || pipeLoc < equalLoc)) {
+		if (pipeLoc != -1 && (equalLoc == -1 || pipeLoc < equalLoc))
+		{
 			String key = value.substring(0, pipeLoc);
 			String newValue = value.substring(pipeLoc + 1);
 			return processChoose(context, obj, value, key, newValue);
 		}
 
-		if (equalLoc != -1) {
+		if (equalLoc != -1)
+		{
 			String key = value.substring(0, equalLoc);
 			String newValue = value.substring(equalLoc + 1);
 			return processChoose(context, obj, value, key, newValue);
 		}
 
 		int openParenLoc = value.indexOf(Constants.OPEN_PAREN);
-		if (openParenLoc != -1) {
+		if (openParenLoc != -1)
+		{
 			String key = value.substring(0, openParenLoc);
 			int closeParenLoc = value.lastIndexOf(Constants.CLOSE_PAREN);
-			if (closeParenLoc == -1) {
+			if (closeParenLoc == -1)
+			{
 				Logging.errorPrint("Close Paren Error: " + value);
 				return false;
-			} else if (closeParenLoc != value.length() - 1) {
+			}
+			else if (closeParenLoc != value.length() - 1)
+			{
 				Logging.errorPrint("Close Paren not at end: " + value);
 				return false;
 			}
@@ -75,22 +116,27 @@ public final class ChooseLoader {
 	}
 
 	private static boolean processChoose(LoadContext context, CDOMObject obj,
-			String value, String key, String newValue)
-			throws PersistenceLayerException {
-		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
-				ChooseLstToken.class);
+		String value, String key, String newValue)
+		throws PersistenceLayerException
+	{
+		Map<String, LstToken> tokenMap =
+				TokenStore.inst().getTokenMap(ChooseLstToken.class);
 
 		ChooseLstToken token = (ChooseLstToken) tokenMap.get(key);
 
-		if (token != null) {
+		if (token != null)
+		{
 			LstUtils.deprecationCheck(token, obj, value);
-			if (!token.parse(context, obj, newValue)) {
+			if (!token.parse(context, obj, newValue))
+			{
 				Logging.errorPrint("Error parsing CHOOSE in "
-						+ obj.getDisplayName() + ": \"" + value + "\"");
+					+ obj.getDisplayName() + ": \"" + value + "\"");
 			}
-		} else {
-			//FIXME Consume for now - too frequent!
-			//Logging.errorPrint("Illegal CHOOSE info '" + value + "'");
+		}
+		else
+		{
+			// FIXME Consume for now - too frequent!
+			// Logging.errorPrint("Illegal CHOOSE info '" + value + "'");
 		}
 		return true;
 	}

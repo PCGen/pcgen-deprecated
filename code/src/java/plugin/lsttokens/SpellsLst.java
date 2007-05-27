@@ -91,10 +91,12 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 	 *            Line from the LST file without the SPELLS:
 	 * @return spells list
 	 */
-	private static List<PCSpell> createSpellsList(final String sourceLine)
+	private List<PCSpell> createSpellsList(final String sourceLine)
 	{
 		List<PCSpell> spellList = new ArrayList<PCSpell>();
 		StringTokenizer tok = new StringTokenizer(sourceLine, "|");
+		boolean isPre = false;
+		
 		if (tok.countTokens() > 1)
 		{
 			String spellBook = tok.nextToken();
@@ -107,14 +109,27 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				String token = tok.nextToken();
 				if (token.startsWith("CASTERLEVEL="))
 				{
+					if (isPre)
+					{
+						Logging.errorPrint("Invalid " + getTokenName() + ": " + sourceLine);
+						Logging.errorPrint("  PRExxx must be at the END of the Token");
+						isPre = false;
+					}
 					casterLevel = token.substring(12);
 				}
 				else if (token.startsWith("TIMES="))
 				{
+					if (isPre)
+					{
+						Logging.errorPrint("Invalid " + getTokenName() + ": " + sourceLine);
+						Logging.errorPrint("  PRExxx must be at the END of the Token");
+						isPre = false;
+					}
 					times = token.substring(6);
 				}
 				else if (token.startsWith("PRE") || token.startsWith("!PRE"))
 				{
+					isPre = true;
 					try
 					{
 						PreParserFactory factory =
@@ -128,6 +143,12 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				}
 				else
 				{
+					if (isPre)
+					{
+						Logging.errorPrint("Invalid " + getTokenName() + ": " + sourceLine);
+						Logging.errorPrint("  PRExxx must be at the END of the Token");
+						isPre = false;
+					}
 					preParseSpellList.add(token);
 				}
 			}

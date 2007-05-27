@@ -47,9 +47,10 @@ public class ExclusiveToken implements SkillLstToken
 		{
 			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
 			{
-				Logging.errorPrint("You should use 'YES' or 'NO' as the "
-					+ getTokenName());
-				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
+				// 514 abbreviation cleanup
+//				Logging.errorPrint("You should use 'YES' or 'NO' as the "
+//					+ getTokenName());
+//				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
 			}
 			set = true;
 		}
@@ -58,9 +59,10 @@ public class ExclusiveToken implements SkillLstToken
 			if (firstChar != 'N' && firstChar != 'n'
 				&& !value.equalsIgnoreCase("NO"))
 			{
-				Logging.errorPrint("You should use 'YES' or 'NO' as the "
-					+ getTokenName());
-				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
+				// 514 abbreviation cleanup
+//				Logging.errorPrint("You should use 'YES' or 'NO' as the "
+//					+ getTokenName());
+//				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
 			}
 			set = false;
 		}

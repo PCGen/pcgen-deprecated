@@ -51,19 +51,18 @@ public class RemoveLst implements GlobalLstToken
 		}
 		else
 		{
-			Logging.errorPrint("Lack of a SUBTOKEN for REMOVE is illegal: "
-				+ value);
+			Logging
+				.errorPrint(getTokenName() + " only supports FEAT: " + value);
 			return false;
 		}
 
-		String contents;
 		int keyLength = key.length();
-		contents = value.substring(keyLength + 1);
 		if (value.charAt(keyLength) == '(')
 		{
-			Logging
-				.errorPrint("REMOVE: syntax with parenthesis is deprecated.");
-			Logging.errorPrint("Please use REMOVE:" + key + "|...");
+			// 514 abbreviation cleanup
+			// Logging
+			// .errorPrint("REMOVE: syntax with parenthesis is deprecated.");
+			// Logging.errorPrint("Please use REMOVE:" + key + "|...");
 			if (anInt > -9)
 			{
 				obj.setRemoveString(anInt + "|" + value);
@@ -74,14 +73,9 @@ public class RemoveLst implements GlobalLstToken
 			}
 			return true;
 		}
-		if (value.charAt(keyLength) != '|')
-		{
-			Logging.errorPrint("Invalid REMOVE: Syntax: " + value);
-			Logging.errorPrint("Please use REMOVE:" + key + "|...");
-			return false;
-		}
-		// Guaranteed to be the new syntax here...
-		return RemoveLoader.parseLine(obj, key, contents, anInt);
+		// Guaranteed new format here
+		RemoveLoader.parseLine(obj, key, value.substring(keyLength + 1), anInt);
+		return true;
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)

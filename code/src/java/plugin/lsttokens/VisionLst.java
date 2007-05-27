@@ -80,8 +80,9 @@ public class VisionLst implements GlobalLstToken
 
 			if (visionString.indexOf(',') >= 0)
 			{
-				Logging
-					.errorPrint("Use of comma in VISION Tag is deprecated.  Use .CLEAR.[Vision] instead.");
+				// 514 abbreviation cleanup
+//				Logging
+//					.errorPrint("Use of comma in VISION Tag is deprecated.  Use .CLEAR.[Vision] instead.");
 				final StringTokenizer visionTok =
 						new StringTokenizer(visionString, ",");
 				String numberTok = visionTok.nextToken();

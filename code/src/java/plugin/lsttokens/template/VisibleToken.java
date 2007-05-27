@@ -54,39 +54,43 @@ public class VisibleToken implements PCTemplateLstToken
 	{
 		if (value.startsWith("DISPLAY"))
 		{
-			if (!value.equals("DISPLAY"))
-			{
-				Logging.errorPrint(getErrorMsgPrefix(template, value)
-					+ "DISPLAY (exact String, upper case)");
-			}
+			// 514 abbreviation cleanup
+//			if (!value.equals("DISPLAY"))
+//			{
+//				Logging.errorPrint(getErrorMsgPrefix(template, value)
+//					+ "DISPLAY (exact String, upper case)");
+//			}
 			template.setVisibility(Visibility.DISPLAY);
 		}
 		else if (value.startsWith("EXPORT"))
 		{
-			if (!value.equals("EXPORT"))
-			{
-				Logging.errorPrint(getErrorMsgPrefix(template, value)
-					+ "EXPORT (exact String, upper case)");
-			}
+			// 514 abbreviation cleanup
+//			if (!value.equals("EXPORT"))
+//			{
+//				Logging.errorPrint(getErrorMsgPrefix(template, value)
+//					+ "EXPORT (exact String, upper case)");
+//			}
 			template.setVisibility(Visibility.EXPORT);
 		}
 		else if (value.startsWith("NO"))
 		{
-			if (!value.equals("NO"))
-			{
-				Logging.errorPrint(getErrorMsgPrefix(template, value)
-					+ "NO (exact String, upper case)");
-			}
+			// 514 abbreviation cleanup
+//			if (!value.equals("NO"))
+//			{
+//				Logging.errorPrint(getErrorMsgPrefix(template, value)
+//					+ "NO (exact String, upper case)");
+//			}
 			template.setVisibility(Visibility.NO);
 		}
 		else
 		{
-			if (!value.equals("ALWAYS") && !value.equals("YES"))
-			{
-				Logging.errorPrint(getErrorMsgPrefix(template, value)
-					+ "DISPLAY, EXPORT, NO, YES or ALWAYS "
-					+ "(exact String, upper case)");
-			}
+			// 514 abbreviation cleanup
+//			if (!value.equals("ALWAYS") && !value.equals("YES"))
+//			{
+//				Logging.errorPrint(getErrorMsgPrefix(template, value)
+//					+ "DISPLAY, EXPORT, NO, YES or ALWAYS "
+//					+ "(exact String, upper case)");
+//			}
 			template.setVisibility(Visibility.YES);
 		}
 		return true;
@@ -163,16 +167,16 @@ public class VisibleToken implements PCTemplateLstToken
 	 *            The value of the visible tag.
 	 * @return The error message prefix
 	 */
-	private String getErrorMsgPrefix(PCTemplate template, String value)
-	{
-		StringBuffer buff = new StringBuffer();
-		buff.append("In template ");
-		buff.append(template.getDisplayName());
-		buff.append(", token ");
-		buff.append(getTokenName());
-		buff.append(", use of '");
-		buff.append(value);
-		buff.append("' is not valid, please use ");
-		return buff.toString();
-	}
+//	private String getErrorMsgPrefix(PCTemplate template, String value)
+//	{
+//		StringBuffer buff = new StringBuffer();
+//		buff.append("In template ");
+//		buff.append(template.getDisplayName());
+//		buff.append(", token ");
+//		buff.append(getTokenName());
+//		buff.append(", use of '");
+//		buff.append(value);
+//		buff.append("' is not valid, please use ");
+//		return buff.toString();
+//	}
 }

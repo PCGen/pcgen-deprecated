@@ -105,12 +105,10 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 			Logging.errorPrint(getTokenName()
 				+ " expecting a POBJECT Type, found: " + key);
 			Logging
-				.errorPrint("  5.12 Format is: QualifyType|Key[|Key] value was: "
+				.errorPrint("  5.14 Format is: QualifyType|Key[|Key] value was: "
 					+ value);
 			Logging.errorPrint("  Valid QualifyTypes are: "
 				+ StringPClassUtil.getValidStrings());
-			Logging
-				.errorPrint("  QUALIFY without a Type will fail after PCGen 5.12");
 			return false;
 		}
 		else

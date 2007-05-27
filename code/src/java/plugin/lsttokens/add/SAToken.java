@@ -54,9 +54,10 @@ public class SAToken implements AddLstToken
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA "
-				+ "is prohibited in new syntax.");
-			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
+			// 514 abbreviation cleanup
+//			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA "
+//				+ "is prohibited in new syntax.");
+//			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
 			return false;
 		}
 		String subToken = value.substring(0, pipeLoc);

@@ -173,8 +173,6 @@ public final class Equipment extends PObject implements Serializable,
 
 	private List<SpecialProperty> specialPropertyList = new ArrayList<SpecialProperty>();
 
-	private List<String> vFeatList = null; // virtual feat list
-
 	private boolean modifiersAllowed = true;
 
 	private boolean modifiersRequired = false;
@@ -2443,7 +2441,7 @@ public final class Equipment extends PObject implements Serializable,
 		try {
 			weightInPounds = Double.parseDouble(aString);
 		} catch (NumberFormatException ignore) {
-			// ignore
+			Logging.errorPrint("Invalid Weight in Equipment: " + aString);
 		}
 	}
 
@@ -2870,24 +2868,6 @@ public final class Equipment extends PObject implements Serializable,
 			addAltType(type);
 			typeListCachePrimary = null;
 			typeListCacheSecondary = null;
-		}
-	}
-
-	/**
-	 * Adds to the virtual feat list this item bestows upon its weilder.
-	 * 
-	 * @param vList
-	 *            a | delimited list of feats to add to the list
-	 */
-	public void addVFeatList(final String vList) {
-		final StringTokenizer aTok = new StringTokenizer(vList, "|");
-
-		while (aTok.hasMoreTokens()) {
-			if (vFeatList == null) {
-				vFeatList = new ArrayList<String>();
-			}
-
-			vFeatList.add(aTok.nextToken());
 		}
 	}
 

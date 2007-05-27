@@ -22,17 +22,18 @@
  */
 package pcgen.core.spell;
 
-import pcgen.base.util.DoubleKeyMap;
-import pcgen.core.CharacterDomain;
-import pcgen.core.PObject;
-import pcgen.core.PlayerCharacter;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import pcgen.core.Domain;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import pcgen.base.util.DoubleKeyMap;
+import pcgen.core.CharacterDomain;
+import pcgen.core.Domain;
+import pcgen.core.PObject;
+import pcgen.core.PlayerCharacter;
+import pcgen.core.Skill;
 
 /**
  * <code>PCSpellTracker</code> has a map that stores each key and it's corresponding
@@ -112,8 +113,9 @@ public class PCSpellTracker {
 			buildSpellInfoMap(spellInfoMap, key1, key2, domains.iterator());
 		}
 
-		if (!pc.getSkillList().isEmpty()) {
-			e = pc.getSkillList().iterator();
+		final List<Skill> skillList = new ArrayList<Skill>(pc.getSkillList());
+		if (!skillList.isEmpty()) {
+			e = skillList.iterator();
 			buildSpellInfoMap(spellInfoMap, key1, key2, e);
 		}
 
@@ -218,9 +220,10 @@ public class PCSpellTracker {
 			e = pc.getCharacterDomainList().iterator();
 			buildSpellLevelMap(levelMatch, e);
 		}
-
-		if (!pc.getSkillList().isEmpty()) {
-			e = pc.getSkillList().iterator();
+		
+		final List<Skill> skillList = new ArrayList<Skill>(pc.getSkillList());
+		if (!skillList.isEmpty()) {
+			e = skillList.iterator();
 			buildSpellLevelMap(levelMatch, e);
 		}
 

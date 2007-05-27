@@ -95,15 +95,24 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 
 		final Description desc =
 				new Description(EntityEncoder.decode(tok.nextToken()));
+		
+		boolean isPre = false;
 		while (tok.hasMoreTokens())
 		{
 			final String token = tok.nextToken();
 			if (PreParserFactory.isPreReqString(token)) //$NON-NLS-1$
 			{
 				desc.addPrerequisite(getPrerequisite(token));
+				isPre = true;
 			}
 			else
 			{
+				if (isPre)
+				{
+					Logging.errorPrint("Invalid " + getTokenName() + ": " + aDesc);
+					Logging.errorPrint("  PRExxx must be at the END of the Token");
+					isPre = false;
+				}
 				desc.addVariable(token);
 			}
 		}

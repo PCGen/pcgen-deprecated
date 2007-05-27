@@ -161,6 +161,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	// List of Equipment
 	private List<Equipment> equipmentList = new ArrayList<Equipment>();
 	private List<Equipment> equipmentMasterList = new ArrayList<Equipment>();
+	private Map<String, Integer> autoEquipOutputOrderCache = new HashMap<String, Integer>();
 	private List<PCLevelInfo> pcLevelInfo = new ArrayList<PCLevelInfo>();
 	// TODO This probably should not be a member but should be passed around
 	private List<BonusObj> processedBonusList = new ArrayList<BonusObj>();
@@ -2961,8 +2962,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			returnValue += li.getSkillPointsGained();
 		}
-
-		for (Skill aSkill : getSkillList())
+		
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
+		for (Skill aSkill : skillList)
 		{
 			for (String bSkill : aSkill.getRankList())
 			{
@@ -3651,8 +3653,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 		}
 
-		// Now check the feats to see if they modify the variable
-		for (Ability obj : aggregateFeatList())
+		// Now check Abilities to see if they modify the variable
+		for (Ability obj : getFullAbilitySet())
 		{
 			final String varInList = checkForVariableInList(obj,
 				variableString, isMax, Constants.EMPTY_STRING,
@@ -3666,7 +3668,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 		}
 
-		for (Skill obj : getSkillList())
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
+		for (Skill obj : skillList)
 		{
 			final String varInList = checkForVariableInList(obj,
 				variableString, isMax, Constants.EMPTY_STRING,
@@ -4078,6 +4081,43 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		setDirty(true);
 	}
 
+	/**
+	 * Cache the output index of an automatic equipment item.
+	 * @param key The key of the equipment item.
+	 * @param index The output index.
+	 */
+	public void cacheOutputIndex(String key, int index)
+	{
+		Logging.errorPrint("Caching " + key + " - " + index + " direct");
+		autoEquipOutputOrderCache.put(key, index);
+	}
+
+	/**
+	 * Cache the output index of an automatic equipment item.
+	 * @param item The equipment item.
+	 */
+	public void cacheOutputIndex(Equipment item)
+	{
+		if (item.isAutomatic())
+		{
+			Logging.errorPrint("Caching " + item.getKeyName() + " - " + item
+				.getOutputIndex() + " item");
+			autoEquipOutputOrderCache.put(item.getKeyName(), item
+				.getOutputIndex());
+		}
+	}
+	
+	/**
+	 * Retrieve the cached output idex of the automatic equipment item
+	 * @param key The key of the equipment item.
+	 * @return The output index.
+	 */
+	public int getCachedOutputIndex(String key)
+	{
+		Integer order = autoEquipOutputOrderCache.get(key);
+		return order != null ? order : -1;
+	}
+	
 	/**
 	 * Update the number of a particular equipment item the character possesses.
 	 * Mostly concerned with ensuring that the spellbook objects remain in sync
@@ -6432,7 +6472,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public Skill getSkillKeyed(final String skillKey)
 	{
-		for (Skill skill : getSkillList())
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
+		for (Skill skill : skillList)
 		{
 			if (skill.getKeyName().equalsIgnoreCase(skillKey))
 			{
@@ -6626,7 +6667,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			addSpells(ability);
 		}
 
-		for (Skill skill : getSkillList())
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
+		for (Skill skill : skillList)
 		{
 			addSpells(skill);
 		}
@@ -7668,7 +7710,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		//
 		// First, check to see if skill is already in list
 		//
-		for (Skill skill : getSkillList())
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
+		for (Skill skill : skillList)
 		{
 			if (skill.getKeyName().equals(addSkill.getKeyName()))
 			{
@@ -8782,7 +8825,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			SR = Math.max(SR, aFeat.getSR(this));
 		}
 
-		for (Skill skill : getSkillList())
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
+		for (Skill skill : skillList)
 		{
 			SR = Math.max(SR, skill.getSR(this));
 		}
@@ -9541,8 +9585,10 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public int languageNum(final boolean includeSpeakLanguage)
 	{
+		
 		int i = (int) getStatBonusTo("LANG", "BONUS");
 		final Race pcRace = getRace();
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
 
 		if (i < 0)
 		{
@@ -9551,7 +9597,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		if (includeSpeakLanguage)
 		{
-			for (Skill skill : getSkillList())
+			for (Skill skill : skillList)
 			{
 				if (skill.getChoiceString().indexOf("Language") >= 0)
 				{
@@ -12839,6 +12885,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	private void addNewSkills(final int level)
 	{
 		final List<Skill> addItems = new ArrayList<Skill>();
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
 
 		for (Skill aSkill : Globals.getSkillList())
 		{
@@ -12848,7 +12895,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				 * Must do brute force search - no guarantee it's sorted
 				 */
 				boolean found = false;
-				for (Skill sk : getSkillList()) {
+				for (Skill sk : skillList) {
 					if (sk.getKeyName().equals(aSkill.getKeyName())) {
 						found = true;
 						break;
@@ -14869,7 +14916,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		aClone.primaryWeapons.addAll(getPrimaryWeapons());
 		aClone.secondaryWeapons.addAll(getSecondaryWeapons());
 		aClone.shieldProfList.addAll(getShieldProfList());
-		for (Skill skill : getSkillList())
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
+		for (Skill skill : skillList)
 		{
 			aClone.skillList.add((skill.clone()));
 		}
@@ -17040,7 +17088,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 		}
 
-		for (Skill skill : getSkillList())
+		final List<Skill> skillList = new ArrayList<Skill>(getSkillList());
+		for (Skill skill : skillList)
 		{
 			final List<Ability> aList = skill.getVirtualFeatList();
 

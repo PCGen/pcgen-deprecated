@@ -51,16 +51,10 @@ public class SubregionToken implements PCTemplateLstToken
 			}
 			else
 			{
-				Logging.errorPrint("You should use 'YES' or 'NO' as the "
-					+ getTokenName());
-				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
+				// 514 abbreviation cleanup
+//				Logging.errorPrint("You should use 'YES' as the " + getTokenName());
+//				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
 			}
-		}
-		else if (value.equalsIgnoreCase("NO"))
-		{
-			Logging.errorPrint("You should use 'YES' or 'NO' as the "
-				+ getTokenName());
-			Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
 		}
 		template.setSubRegion(subregion);
 		return true;
