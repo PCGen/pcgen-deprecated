@@ -19,7 +19,7 @@
   <description>PCGen RPG character generator.</description>
   <shortDescription>PCGen RPG character generator.</shortDescription>
   <repository>
-    <connection>scm:svn:https://pcgen.svn.sourceforge.net/svnroot/pcgen/Trunk/pcgen</connection>
+    <connection>scm:svn:https://pcgen.svn.sourceforge.net/svnroot/pcgen/branches/5.12.x/pcgen</connection>
     <url>http://pcgen.svn.sourceforge.net/viewvc/pcgen/</url>
   </repository>
   <developers>
