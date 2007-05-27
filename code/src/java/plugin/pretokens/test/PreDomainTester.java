@@ -26,11 +26,17 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.core.Domain;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.Logging;
+import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
@@ -80,6 +86,44 @@ public class PreDomainTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "DOMAIN"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		int runningTotal = 0;
+		int number = 0;
+		try
+		{
+			number = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException e)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreDomain.error.bad_operand", prereq.toString())); //$NON-NLS-1$
+		}
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<Domain> list = activeGraph.getGrantedNodeList(Domain.class);
+
+		if (!list.isEmpty())
+		{
+			String domainKey = prereq.getKey();
+			//handle ANY
+			if (domainKey.equalsIgnoreCase("ANY"))
+			{
+				runningTotal += list.size();
+			}
+			else
+			{
+				if (activeGraph.containsGranted(Domain.class, domainKey))
+				{
+					runningTotal++;
+				}
+			}
+		}
+		runningTotal = prereq.getOperator().compare(runningTotal, number);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

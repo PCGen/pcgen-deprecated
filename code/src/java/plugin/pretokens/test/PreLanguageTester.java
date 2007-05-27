@@ -26,6 +26,11 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Globals;
 import pcgen.core.Language;
 import pcgen.core.PlayerCharacter;
@@ -86,6 +91,48 @@ public class PreLanguageTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "LANG"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		final String requiredLang = prereq.getKey();
+		final int requiredNumber = Integer.parseInt(prereq.getOperand());
+		int runningTotal = 0;
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+
+		if (requiredLang.equalsIgnoreCase("ANY")) { //$NON-NLS-1$
+			runningTotal = activeGraph.getGrantedNodeCount(Language.class);
+			System.err.println(runningTotal);
+			System.err.println(activeGraph.getGrantedNodeList(Language.class));
+		}
+		else if (requiredLang.startsWith("TYPE.") || requiredLang.startsWith("TYPE="))
+		{
+			Type requiredType = Type.getConstant(requiredLang.substring(5));
+			List<Language> list =
+					activeGraph.getGrantedNodeList(Language.class);
+			if (list != null)
+			{
+				for (Language lang : list)
+				{
+					if (lang.containsInList(ListKey.TYPE, requiredType))
+					{
+						runningTotal++;
+					}
+				}
+			}
+		}
+		else
+		{
+			if (activeGraph.containsGranted(Language.class, requiredLang))
+			{
+				runningTotal = 1;
+			}
+		}
+
+		runningTotal =
+				prereq.getOperator().compare(runningTotal, requiredNumber);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

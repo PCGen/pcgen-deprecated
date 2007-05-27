@@ -26,9 +26,16 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.ShieldProf;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
 /**
@@ -73,6 +80,39 @@ public class PreShieldProfTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "SHIELDPROF"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		final int numberRequired = Integer.parseInt(prereq.getOperand());
+		int runningTotal = 0;
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+		final String aString = prereq.getKey();
+			if (aString.startsWith("TYPE.") || aString.startsWith("TYPE=")) //$NON-NLS-1$ //$NON-NLS-2$
+		{
+			Type requiredType = Type.getConstant(aString.substring(5));
+			List<ShieldProf> list =
+					activeGraph.getGrantedNodeList(ShieldProf.class);
+			for (ShieldProf sp : list)
+			{
+				if (sp.containsInList(ListKey.TYPE, requiredType))
+				{
+					runningTotal++;
+				}
+			}
+		}
+		else
+		{
+			if (activeGraph.containsGranted(ShieldProf.class, aString))
+			{
+				runningTotal++;
+			}
+		}
+
+		runningTotal =
+				prereq.getOperator().compare(runningTotal, numberRequired);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

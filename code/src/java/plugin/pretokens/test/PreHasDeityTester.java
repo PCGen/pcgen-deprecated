@@ -28,9 +28,12 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.core.Deity;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
@@ -71,5 +74,28 @@ public class PreHasDeityTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "HAS.DEITY"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal;
+		PCGenGraph activeGraph = character.getActiveGraph();
+		boolean charHasDeity = activeGraph.getGrantedNodeCount(Deity.class) != 0;
+
+		String ucOp = prereq.getKey().toUpperCase();
+		boolean flag =
+				(ucOp.charAt(0) == 'Y' && charHasDeity)
+					|| (ucOp.charAt(0) == 'N' && !charHasDeity);
+		if (prereq.getOperator().equals(PrerequisiteOperator.EQ)
+			|| prereq.getOperator().equals(PrerequisiteOperator.GTEQ))
+		{
+			runningTotal = flag ? 1 : 0;
+		}
+		else
+		{
+			runningTotal = flag ? 0 : 1;
+		}
+
+		return countedTotal(prereq, runningTotal);
 	}
 }

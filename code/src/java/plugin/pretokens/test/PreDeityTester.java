@@ -9,6 +9,10 @@ package plugin.pretokens.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Pantheon;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.core.Deity;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -95,4 +99,66 @@ public class PreDeityTester extends AbstractPrerequisiteTest implements
 		return "DEITY"; //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		int runningTotal = 0;
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
+
+		if (prereq.getKey().startsWith("PANTHEON."))//$NON-NLS-1$
+		{
+			Pantheon p = Pantheon.valueOf(prereq.getKey().substring(9));
+			for (Deity d : list)
+			{
+				List<Pantheon> pantheonList = d.getListFor(ListKey.PANTHEON);
+				if (prereq.getOperator().equals(PrerequisiteOperator.EQ)
+					|| prereq.getOperator().equals(PrerequisiteOperator.GTEQ))
+				{
+					runningTotal += (pantheonList.contains(p)) ? 1 : 0;
+				}
+				else if (prereq.getOperator().equals(PrerequisiteOperator.NEQ)
+					|| prereq.getOperator().equals(PrerequisiteOperator.LT))
+				{
+					runningTotal += (pantheonList.contains(p)) ? 0 : 1;
+				}
+				else
+				{
+					throw new PrerequisiteException(PropertyFactory
+						.getFormattedString(
+							"PreDeity.error.bad_coparator", prereq.toString())); //$NON-NLS-1$
+				}
+			}
+		}
+		else
+		{
+			for (Deity d : list)
+			{
+				String charDeity = d.getKeyName();
+				if (prereq.getOperator().equals(PrerequisiteOperator.EQ)
+					|| prereq.getOperator().equals(PrerequisiteOperator.GTEQ))
+				{
+					runningTotal +=
+							(charDeity.equalsIgnoreCase(prereq.getKey())) ? 1
+								: 0;
+				}
+				else if (prereq.getOperator().equals(PrerequisiteOperator.NEQ)
+					|| prereq.getOperator().equals(PrerequisiteOperator.LT))
+				{
+					runningTotal +=
+							(charDeity.equalsIgnoreCase(prereq.getKey())) ? 0
+								: 1;
+				}
+				else
+				{
+					throw new PrerequisiteException(PropertyFactory
+						.getFormattedString(
+							"PreDeity.error.bad_coparator", prereq.toString())); //$NON-NLS-1$
+				}
+			}
+		}
+
+		return countedTotal(prereq, runningTotal);
+	}
 }
