@@ -60,4 +60,10 @@ public class PreEquipSecondaryTester extends PreEquippedTester implements
 		return "EQUIPSECONDARY"; //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		return passesCDOMPreEquipHandleTokens(prereq, character,
+			Equipment.EQUIPPED_SECONDARY);
+	}
 }

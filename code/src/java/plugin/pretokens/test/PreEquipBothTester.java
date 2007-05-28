@@ -60,4 +60,11 @@ public class PreEquipBothTester extends PreEquippedTester implements
 		return "EQUIPBOTH"; //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		return passesCDOMPreEquipHandleTokens(prereq, character,
+			Equipment.EQUIPPED_BOTH);
+	}
+
 }

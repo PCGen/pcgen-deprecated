@@ -57,13 +57,14 @@ import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.content.EquipmentSet;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.helper.EquipmentSet;
+import pcgen.cdom.helper.EquipmentSetFacade;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.character.CharacterSpell;
@@ -17665,10 +17666,20 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return null;
 	}
 
-	public EquipmentSet getEquipped()
+	public EquipmentSetFacade getEquipped()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<EquipmentSet> list = activeGraph.getGrantedNodeList(EquipmentSet.class);
+		int size = list.size();
+		if (size == 0)
+		{
+			return null;
+		}
+		else if (size == 1)
+		{
+			return new EquipmentSetFacade(activeGraph, list.get(0));
+		}
+		throw new IllegalStateException(
+			"Character can only have one Granted Equipment Set");
 	}
 
 	public int getTotalWeight(PrereqObject pro)
@@ -17677,10 +17688,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			return -1;
 		}
-		PCGenGraph graph = getActiveGraph();
 		DirectedNodeWeightCalculation<PrereqObject, PCGraphEdge> calc =
 				new DirectedNodeWeightCalculation<PrereqObject, PCGraphEdge>(
-					graph)
+					activeGraph)
 				{
 					@Override
 					protected int getEdgeWeight(int weight, PCGraphEdge edge)

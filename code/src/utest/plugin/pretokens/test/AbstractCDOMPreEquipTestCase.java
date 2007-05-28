@@ -1,46 +1,90 @@
-/*
- * Copyright (c) 2007 Tom Parker <thpr@users.sourceforge.net>
- * 
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
- */
 package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.content.EquipmentSet;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.core.Equipment;
+import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
-		AbstractCDOMPreTestTestCase<T>
+public abstract class AbstractCDOMPreEquipTestCase extends
+		AbstractCDOMPreTestTestCase<Equipment>
 {
 
-	public Prerequisite getAnyPrereq()
+	@Override
+	public Class<Equipment> getCDOMClass()
 	{
-		Prerequisite p;
-		p = new Prerequisite();
-		p.setKind(getKind());
-		p.setKey("ANY");
-		p.setOperand("2");
-		p.setOperator(PrerequisiteOperator.GTEQ);
-		return p;
+		return Equipment.class;
 	}
+
+	@Override
+	public Class<? extends PObject> getFalseClass()
+	{
+		return PCTemplate.class;
+	}
+
+	public abstract String getKind();
+
+	public abstract PrerequisiteTest getTest();
+
+	public abstract int getProperLocation();
+
+	public abstract int getFalseLocation();
+
+	private EquipmentSet activeSet = new EquipmentSet();
+
+	public Equipment equip(String s, int loc)
+	{
+		Equipment e = getObject(s);
+		equip(e, loc);
+		return e;
+	}
+
+	public void equip(Equipment e, int loc)
+	{
+		PCGenGraph graph = pc.getActiveGraph();
+		graph.addNode(e);
+		PCGraphGrantsEdge edge =
+				new PCGraphGrantsEdge(activeSet, e, "TestCase");
+		edge.setAssociation(AssociationKey.EQUIPMENT_LOCATION, Integer
+			.valueOf(loc));
+		graph.addEdge(edge);
+	}
+
+	public void unequip(Equipment e)
+	{
+		pc.getActiveGraph().removeNode(e);
+	}
+
+	public boolean isTypeLegal()
+	{
+		return true;
+	}
+
+	public boolean isWildcardLegal()
+	{
+		return true;
+	}
+
+	// public Prerequisite getAnyPrereq()
+	// {
+	// Prerequisite p;
+	// p = new Prerequisite();
+	// p.setKind(getKind());
+	// p.setKey("ANY");
+	// p.setOperand("2");
+	// p.setOperator(PrerequisiteOperator.GTEQ);
+	// return p;
+	// }
 
 	public Prerequisite getSimplePrereq()
 	{
@@ -59,7 +103,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		p = new Prerequisite();
 		p.setKind(getKind());
 		p.setKey("Wild%");
-		p.setOperand("2");
+		p.setOperand("1");
 		p.setOperator(PrerequisiteOperator.GTEQ);
 		return p;
 	}
@@ -70,7 +114,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		p = new Prerequisite();
 		p.setKind(getKind());
 		p.setKey("%");
-		p.setOperand("2");
+		p.setOperand("1");
 		p.setOperator(PrerequisiteOperator.GTEQ);
 		return p;
 	}
@@ -114,79 +158,9 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		p = new Prerequisite();
 		p.setKind(getKind());
 		p.setKey("TYPE=Martial");
-		p.setOperand("2");
+		p.setOperand("1");
 		p.setOperator(PrerequisiteOperator.GTEQ);
 		return p;
-	}
-
-	// TODO Need to test TYPE.Exotic.Heavy (to test two types at the same time)
-
-	public abstract String getKind();
-
-	public abstract PrerequisiteTest getTest();
-
-	public abstract boolean isWildcardLegal();
-
-	public abstract boolean isTestStarting();
-
-	public abstract boolean isTypeLegal();
-
-	public abstract boolean isAnyLegal();
-
-	// TODO Not relevant today, because PCGen 5.x supports only one deity
-	// @Test
-	// public void testInvalidCount()
-	// {
-	// Prerequisite prereq = getSimplePrereq();
-	// prereq.setOperand("x");
-	// try
-	// {
-	// getTest().passesCDOM(prereq, pc);
-	// fail();
-	// }
-	// catch (PrerequisiteException pe)
-	// {
-	// // OK (operand should be a number)
-	// }
-	// catch (NumberFormatException pe)
-	// {
-	// // OK (operand should be a number)
-	// }
-	// }
-
-	@Test
-	public void testAny() throws PrerequisiteException
-	{
-		if (isAnyLegal())
-		{
-			Prerequisite prereq = getAnyPrereq();
-			// PC Should start without
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Wild Mage");
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Wild Mage");
-			// Single object granted twice doesn't pass prereq
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Winged Mage");
-			assertEquals(1, getTest().passesCDOM(prereq, pc));
-			assertEquals(0, getTest().passesCDOM(getParenPrereq(), pc));
-		}
-	}
-
-	@Test
-	public void testFalseAny() throws PrerequisiteException
-	{
-		if (isAnyLegal())
-		{
-			Prerequisite prereq = getAnyPrereq();
-			// PC Should start without
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Wild Mage");
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantFalseObject("Winged Mage");
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			assertEquals(0, getTest().passesCDOM(getParenPrereq(), pc));
-		}
 	}
 
 	@Test
@@ -195,9 +169,10 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		grantCDOMObject("Wild Mage");
+		Equipment wild = equip("Wild Mage", getProperLocation());
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		grantCDOMObject("Winged Mage");
+		unequip(wild);
+		equip("Winged Mage", getProperLocation());
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		assertEquals(0, getTest().passesCDOM(getParenPrereq(), pc));
 	}
@@ -208,9 +183,11 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		grantCDOMObject("Wild Mage");
+		equip("Winged Mage", getFalseLocation());
+		// Wrong loc
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		grantFalseObject("Winged Mage");
+		equip("Wild Mage", getProperLocation());
+		// Wrong item
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -220,14 +197,13 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		Prerequisite prereq = getParenPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		grantCDOMObject("Crossbow (Heavy)");
+		equip("Crossbow (Heavy)", getProperLocation());
 		// Has Crossbow (Heavy)
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		// But not Katana
 		assertEquals(0, getTest().passesCDOM(getSimplePrereq(), pc));
-		// And maybe Generic Crossbow
-		assertEquals(isTestStarting() ? 1 : 0, getTest().passesCDOM(
-			getGenericPrereq(), pc));
+		// And not Generic Crossbow
+		assertEquals(0, getTest().passesCDOM(getGenericPrereq(), pc));
 	}
 
 	@Test
@@ -238,13 +214,11 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getWildcard();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Winged Creature");
-			// Still at zero qualifying
+			Equipment winged = equip("Winged Creature", getProperLocation());
+			// Not qualifying
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Wild Mage");
-			// Not enough
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Wild Beast");
+			unequip(winged);
+			equip("Wild Mage", getProperLocation());
 			assertEquals(1, getTest().passesCDOM(prereq, pc));
 		}
 	}
@@ -257,13 +231,11 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getWildcard();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Winged Creature");
-			// Still at zero qualifying
+			equip("Winged Creature", getProperLocation());
+			// Not qualifying
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Wild Mage");
+			equip("Wild Mage", getFalseLocation());
 			// Not enough
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantFalseObject("Wild Beast");
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 		}
 	}
@@ -276,31 +248,12 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getCountTemplates();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Winged Creature");
+			equip("Winged Creature", getFalseLocation());
 			// Still at zero qualifying
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Wild Mage");
+			equip("Wild Mage", getProperLocation());
 			// enough
 			assertEquals(1, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Wild Beast");
-			// more than enough
-			assertEquals(1, getTest().passesCDOM(prereq, pc));
-		}
-	}
-
-	@Test
-	public void testFalseCount() throws PrerequisiteException
-	{
-		if (isWildcardLegal())
-		{
-			Prerequisite prereq = getCountTemplates();
-			// PC Should start without
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantCDOMObject("Winged Creature");
-			// Still at zero qualifying
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			grantFalseObject("Wild Mage");
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
 		}
 	}
 
@@ -312,7 +265,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getTypeDotPrereq();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = grantCDOMObject("Katana");
+			PObject katana = equip("Katana", getProperLocation());
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -337,7 +290,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getTypeDotPrereq();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = grantFalseObject("Katana");
+			PObject katana = equip("Katana", getFalseLocation());
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -363,14 +316,10 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getTypeEqualsPrereq();
 			// PC Should start without the WeaponProf
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = grantCDOMObject("Katana");
+			PObject katana = equip("Katana", getProperLocation());
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
-			// Fails because only one is present
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject sword = grantCDOMObject("Longsword");
-			sword.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 			assertEquals(1, getTest().passesCDOM(prereq, pc));
 			katana.removeListFor(ListKey.TYPE);
 			// Isn't the proper type anymore
@@ -388,18 +337,13 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 	{
 		if (isTypeLegal())
 		{
-
 			Prerequisite prereq = getTypeEqualsPrereq();
 			// PC Should start without the WeaponProf
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = grantCDOMObject("Katana");
+			PObject katana = equip("Katana", getFalseLocation());
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
-			// Fails because only one is present
-			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject sword = grantFalseObject("Longsword");
-			sword.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 			// Would be 1 if true
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.removeListFor(ListKey.TYPE);
@@ -413,5 +357,11 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		}
 	}
 
+	// TODO Test where an EqMod has modified a TYPE of a piece of Equipment
+
+	// TODO Need to consider inverted? !PRE?
+
 	// TODO Complex Types (more than one type)
+
+	// TODO Test WIELDCATEGORY
 }

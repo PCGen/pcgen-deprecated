@@ -269,11 +269,10 @@ public class PreSkillTest extends AbstractCharacterTestCase
 		prereq.setOperand("10");
 
 		final Prerequisite subreq = new Prerequisite();
-		subreq.setKind("skill");
+		subreq.setKind("skill.tot");
 		subreq.setKey("TYPE.DEX");
 		subreq.setOperator(PrerequisiteOperator.GTEQ);
 		subreq.setOperand("1");
-		subreq.setTotalValues(true);
 
 		prereq.addPrerequisite(subreq);
 
@@ -288,11 +287,10 @@ public class PreSkillTest extends AbstractCharacterTestCase
 	public void testType() throws Exception
 	{
 		final Prerequisite subreq = new Prerequisite();
-		subreq.setKind("skill");
+		subreq.setKind("skill.tot");
 		subreq.setKey("TYPE.DEX");
 		subreq.setOperator(PrerequisiteOperator.GTEQ);
 		subreq.setOperand("7");
-		subreq.setTotalValues(true);
 
 		final PlayerCharacter character = getCharacter();
 		final boolean passes = PrereqHandler.passes(subreq, character, null);

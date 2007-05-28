@@ -102,6 +102,9 @@ public final class AssociationKey<T>
 	public static final AssociationKey<Integer> WEIGHT =
 			new AssociationKey<Integer>();
 
+	public static final AssociationKey<Integer> EQUIPMENT_LOCATION =
+			new AssociationKey<Integer>();
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey()

@@ -28,6 +28,9 @@ package plugin.pretokens.test;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.helper.EquipmentSetFacade;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.character.WieldCategory;
@@ -39,7 +42,7 @@ import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreEquipTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
@@ -47,7 +50,7 @@ public class PreEquipTester extends AbstractPrerequisiteTest implements
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -120,13 +123,13 @@ public class PreEquipTester extends AbstractPrerequisiteTest implements
 					}
 				}
 				else
-				//not a TYPE string
+				// not a TYPE string
 				{
 					final String eqName = eq.getName().toUpperCase();
 
 					if (targetEquip.indexOf('%') >= 0)
 					{
-						//handle wildcards (always assume
+						// handle wildcards (always assume
 						// they end the line)
 						final int percentPos = targetEquip.indexOf('%');
 						final String substring =
@@ -140,7 +143,7 @@ public class PreEquipTester extends AbstractPrerequisiteTest implements
 					}
 					else if (eqName.equalsIgnoreCase(targetEquip))
 					{
-						//just a straight String compare
+						// just a straight String compare
 						++runningTotal;
 						break;
 					}
@@ -154,11 +157,97 @@ public class PreEquipTester extends AbstractPrerequisiteTest implements
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
 	{
 		return "EQUIP"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		int runningTotal = 0;
+
+		final int number;
+		try
+		{
+			number = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException exceptn)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreFeat.error", prereq.toString())); //$NON-NLS-1$
+		}
+
+		EquipmentSetFacade set = character.getEquipped();
+		if (set != null)
+		{
+			String targetEquip = prereq.getKey();
+
+			for (Equipment eq : set.getEquipment())
+			{
+				if (targetEquip.startsWith("WIELDCATEGORY=")
+					|| targetEquip.startsWith("WIELDCATEGORY."))
+				{
+					WieldCategory wCat = eq.getEffectiveWieldCategory(character);
+					if ((wCat != null)
+						&& wCat.getName().equalsIgnoreCase(
+							targetEquip.substring(14)))
+					{
+						runningTotal++;
+						break;
+					}
+				}
+				else if (targetEquip.startsWith("TYPE=") || targetEquip.startsWith("TYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
+				{
+					StringTokenizer tok =
+						new StringTokenizer(targetEquip.substring(5), ".");
+					boolean match = true;
+					//
+					// Must match all listed types in order to qualify
+					//
+					while (tok.hasMoreTokens())
+					{
+						Type requiredType = Type.getConstant(tok.nextToken());
+						if (!eq.containsInList(ListKey.TYPE, requiredType))
+						{
+							match = false;
+							break;
+						}
+					}
+					if (match)
+					{
+						runningTotal++;
+						break;
+					}
+				}
+				else
+				// not a TYPE string
+				{
+					String eqName = eq.getKeyName();
+					int percentPos = targetEquip.indexOf('%');
+					if (percentPos >= 0)
+					{
+						// handle wildcards (always assume they
+						// end the line)
+						if (eqName.regionMatches(true, 0, targetEquip, 0, percentPos))
+						{
+							runningTotal++;
+							break;
+						}
+					}
+					else if (eqName.equalsIgnoreCase(targetEquip))
+					{
+						// just a straight String compare
+						runningTotal++;
+						break;
+					}
+				}
+			}
+		}
+		runningTotal = prereq.getOperator().compare(runningTotal, number);
+		return countedTotal(prereq, runningTotal);
 	}
 }

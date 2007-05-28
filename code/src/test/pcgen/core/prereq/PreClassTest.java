@@ -146,44 +146,6 @@ public class PreClassTest extends AbstractCharacterTestCase
 	}
 
 	/**
-	 * Test to ensure that a character will fail a test
-	 * if it does not have the correct number of levels
-	 * in the class.
-	 * @throws Exception
-	 */
-	public void testCharWithMultipleSpellClasses() throws Exception
-	{
-		final PCClass pcClass = new PCClass();
-		pcClass.setName("MyClass");
-		pcClass.setAbbrev("My");
-		pcClass.setSpellBaseStat("CHA");
-		pcClass.setSpellType("ARCANE");
-		pcClass.setCast(1, Arrays.asList("5,4".split(",")));
-
-		final PCClass pcClass2 = new PCClass();
-		pcClass2.setName("Other Class");
-		pcClass2.setAbbrev("OC");
-		pcClass.setSpellBaseStat("INT");
-		pcClass2.setSpellType("ARCANE");
-		pcClass2.setCast(1, Arrays.asList("5,4".split(",")));
-
-		final PlayerCharacter character = getCharacter();
-		character.incrementClassLevel(1, pcClass);
-		character.incrementClassLevel(2, pcClass2);
-
-		final Prerequisite prereq = new Prerequisite();
-		prereq.setKind("class");
-		prereq.setKey("SPELLCASTER.ARCANE");
-		prereq.setOperand("3");
-		prereq.setTotalValues(true);
-		prereq.setOperator(PrerequisiteOperator.GTEQ);
-
-		final PreClassTester test = new PreClassTester();
-		final int passes = test.passes(prereq, character);
-		assertEquals(3, passes);
-	}
-
-	/**
 	 * Test to ensure that a character without a named class cannot be found
 	 * @throws Exception
 	 */

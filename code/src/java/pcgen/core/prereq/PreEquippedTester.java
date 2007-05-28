@@ -27,6 +27,10 @@
 package pcgen.core.prereq;
 
 import java.util.StringTokenizer;
+
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.helper.EquipmentSetFacade;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.character.WieldCategory;
@@ -35,19 +39,25 @@ import pcgen.util.PropertyFactory;
 /**
  * @author wardc
  */
-public abstract class PreEquippedTester extends AbstractPrerequisiteTest {
+public abstract class PreEquippedTester extends AbstractPrerequisiteTest
+{
 
 	/**
 	 * Process the tokens and return the number that is not passed.
-	 *
+	 * 
 	 * @param prereq
-	 * @param character The pc to use.
-	 * @param equippedType The equipped type to look for (e.g. Equipment.EQUIPPED_TWO_HANDS)
-	 *
+	 * @param character
+	 *            The pc to use.
+	 * @param equippedType
+	 *            The equipped type to look for (e.g.
+	 *            Equipment.EQUIPPED_TWO_HANDS)
+	 * 
 	 * @return the number that did not pass
 	 * @throws PrerequisiteException
 	 */
-	public int passesPreEquipHandleTokens(final Prerequisite prereq, final PlayerCharacter character, final int equippedType) throws PrerequisiteException
+	public int passesPreEquipHandleTokens(final Prerequisite prereq,
+		final PlayerCharacter character, final int equippedType)
+		throws PrerequisiteException
 	{
 		// TODO refactor this code with PreEquipTester
 		boolean isEquipped = false;
@@ -55,28 +65,33 @@ public abstract class PreEquippedTester extends AbstractPrerequisiteTest {
 		if (!character.getEquipmentList().isEmpty())
 		{
 			final String aString = prereq.getKey();
-			for ( Equipment eq : character.getEquipmentList() )
+			for (Equipment eq : character.getEquipmentList())
 			{
 				//
 				// Only check equipment of the type we are interested in
 				//
-				if  (!eq.isEquipped() || (eq.getLocation() != equippedType))
+				if (!eq.isEquipped() || (eq.getLocation() != equippedType))
 				{
 					continue;
 				}
 
-				if (aString.startsWith("WIELDCATEGORY=") || aString.startsWith("WIELDCATEGORY."))
+				if (aString.startsWith("WIELDCATEGORY=")
+					|| aString.startsWith("WIELDCATEGORY."))
 				{
-					final WieldCategory wCat = eq.getEffectiveWieldCategory(character);
-					if ((wCat != null) && wCat.getName().equalsIgnoreCase(aString.substring(14)))
+					final WieldCategory wCat =
+							eq.getEffectiveWieldCategory(character);
+					if ((wCat != null)
+						&& wCat.getName().equalsIgnoreCase(
+							aString.substring(14)))
 					{
 						isEquipped = true;
 						break;
 					}
 				}
-				else if (aString.startsWith("TYPE=") || aString.startsWith("TYPE."))	//$NON-NLS-1$ //$NON-NLS-2$
+				else if (aString.startsWith("TYPE=") || aString.startsWith("TYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
 				{
-					StringTokenizer tok = new StringTokenizer(aString.substring(5), ".");
+					StringTokenizer tok =
+							new StringTokenizer(aString.substring(5), ".");
 					boolean match = false;
 					if (tok.hasMoreTokens())
 					{
@@ -85,7 +100,7 @@ public abstract class PreEquippedTester extends AbstractPrerequisiteTest {
 					//
 					// Must match all listed types in order to qualify
 					//
-					while(tok.hasMoreTokens())
+					while (tok.hasMoreTokens())
 					{
 						final String type = tok.nextToken();
 						if (!eq.isType(type))
@@ -100,15 +115,17 @@ public abstract class PreEquippedTester extends AbstractPrerequisiteTest {
 						break;
 					}
 				}
-				else	 //not a TYPE string
+				else
+				// not a TYPE string
 				{
 					final String eqName = eq.getName();
 					if (aString.indexOf('%') >= 0)
 					{
-						//handle wildcards (always assume they
+						// handle wildcards (always assume they
 						// end the line)
 						final int percentPos = aString.indexOf('%');
-						if (eqName.regionMatches(true, 0, aString, 0, percentPos))
+						if (eqName.regionMatches(true, 0, aString, 0,
+							percentPos))
 						{
 							isEquipped = true;
 							break;
@@ -116,7 +133,7 @@ public abstract class PreEquippedTester extends AbstractPrerequisiteTest {
 					}
 					else if (eqName.equalsIgnoreCase(aString))
 					{
-						//just a straight String compare
+						// just a straight String compare
 						isEquipped = true;
 						break;
 					}
@@ -127,7 +144,8 @@ public abstract class PreEquippedTester extends AbstractPrerequisiteTest {
 		final PrerequisiteOperator operator = prereq.getOperator();
 
 		int runningTotal;
-		if (operator.equals(PrerequisiteOperator.EQ) || operator.equals(PrerequisiteOperator.GTEQ))
+		if (operator.equals(PrerequisiteOperator.EQ)
+			|| operator.equals(PrerequisiteOperator.GTEQ))
 		{
 			runningTotal = isEquipped ? 1 : 0;
 		}
@@ -138,11 +156,115 @@ public abstract class PreEquippedTester extends AbstractPrerequisiteTest {
 		else
 		{
 			throw new PrerequisiteException(PropertyFactory.getFormattedString(
-					"PreEquipped.error.invalid_comparison", prereq.toString())); //$NON-NLS-1$
+				"PreEquipped.error.invalid_comparison", prereq.toString())); //$NON-NLS-1$
 		}
 
 		return countedTotal(prereq, runningTotal);
 
 	}
 
+	/**
+	 * Process the tokens and return the number that is not passed.
+	 * 
+	 * @param prereq
+	 * @param character
+	 *            The pc to use.
+	 * @param equippedType
+	 *            The equipped type to look for (e.g.
+	 *            Equipment.EQUIPPED_TWO_HANDS)
+	 * 
+	 * @return the number that did not pass
+	 * @throws PrerequisiteException
+	 */
+	public int passesCDOMPreEquipHandleTokens(final Prerequisite prereq,
+		final PlayerCharacter character, final int equippedType)
+		throws PrerequisiteException
+	{
+		EquipmentSetFacade set = character.getEquipped();
+		boolean isEquipped = false;
+
+		if (set != null)
+		{
+			String aString = prereq.getKey();
+
+			for (Equipment eq : set.getEquipment(equippedType))
+			{
+				if (aString.startsWith("WIELDCATEGORY=")
+					|| aString.startsWith("WIELDCATEGORY."))
+				{
+					WieldCategory wCat = eq.getEffectiveWieldCategory(character);
+					if ((wCat != null)
+						&& wCat.getName().equalsIgnoreCase(aString.substring(14)))
+					{
+						isEquipped = true;
+						break;
+					}
+				}
+				else if (aString.startsWith("TYPE=") || aString.startsWith("TYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
+				{
+					StringTokenizer tok =
+						new StringTokenizer(aString.substring(5), ".");
+					boolean match = true;
+					//
+					// Must match all listed types in order to qualify
+					//
+					while (tok.hasMoreTokens())
+					{
+						Type requiredType = Type.getConstant(tok.nextToken());
+						if (!eq.containsInList(ListKey.TYPE, requiredType))
+						{
+							match = false;
+							break;
+						}
+					}
+					if (match)
+					{
+						isEquipped = true;
+						break;
+					}
+				}
+				else
+				// not a TYPE string
+				{
+					String eqName = eq.getKeyName();
+					int percentPos = aString.indexOf('%');
+					if (percentPos >= 0)
+					{
+						// handle wildcards (always assume they
+						// end the line)
+						if (eqName.regionMatches(true, 0, aString, 0, percentPos))
+						{
+							isEquipped = true;
+							break;
+						}
+					}
+					else if (eqName.equalsIgnoreCase(aString))
+					{
+						// just a straight String compare
+						isEquipped = true;
+						break;
+					}
+				}
+			}
+		}
+		PrerequisiteOperator operator = prereq.getOperator();
+
+		int runningTotal;
+		if (operator.equals(PrerequisiteOperator.EQ)
+			|| operator.equals(PrerequisiteOperator.GTEQ))
+		{
+			runningTotal = isEquipped ? 1 : 0;
+		}
+		else if (operator.equals(PrerequisiteOperator.NEQ))
+		{
+			runningTotal = isEquipped ? 0 : 1;
+		}
+		else
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreEquipped.error.invalid_comparison", prereq.toString())); //$NON-NLS-1$
+		}
+
+		return countedTotal(prereq, runningTotal);
+	}
 }
