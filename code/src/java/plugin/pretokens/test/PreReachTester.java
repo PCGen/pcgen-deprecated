@@ -72,4 +72,23 @@ public class PreReachTester extends AbstractPrerequisiteTest implements
 	{
 		return "REACH"; //$NON-NLS-1$
 	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal;
+		try
+		{
+			int targetReach = Integer.parseInt(prereq.getOperand());
+
+			runningTotal =
+					prereq.getOperator().compare(character.getCDOMReach(),
+						targetReach);
+		}
+		catch (NumberFormatException nfe)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreReach.error.badly_formed", prereq.getOperand())); //$NON-NLS-1$
+		}
+		return countedTotal(prereq, runningTotal);
+	}
 }

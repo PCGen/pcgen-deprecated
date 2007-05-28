@@ -22,6 +22,11 @@ import pcgen.core.PObject;
 public final class PCClassLevel extends PObject
 {
 
+	/*
+	 * THIS MUST STAY OBJECT AND NOT PCCLASS!!!
+	 * 
+	 * Otherwise there is a circular dependence of this object and PCClass.
+	 */
 	private final Object classSource;
 
 	private final int classLevel;
@@ -32,6 +37,11 @@ public final class PCClassLevel extends PObject
 		classLevel = lvl;
 	}
 
+	public Object getSource()
+	{
+		return classSource;
+	}
+	
 	public int getClassLevel()
 	{
 		return classLevel;

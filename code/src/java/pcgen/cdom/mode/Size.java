@@ -64,6 +64,12 @@ public final class Size implements SequencedType, TypeSafeConstant
 		return FACTORY.getNextConstant(this);
 	}
 
+	public Size getPreviousSize()
+	{
+		// TODO What if null (if this is first?)
+		return FACTORY.getPreviousConstant(this);
+	}
+
 	@Override
 	public String toString()
 	{
@@ -88,6 +94,11 @@ public final class Size implements SequencedType, TypeSafeConstant
 	public static Size valueOf(String s)
 	{
 		return FACTORY.valueOf(s);
+	}
+
+	public static Size getConstant(int ordinal)
+	{
+		return FACTORY.getConstant(ordinal);
 	}
 
 	private static final TypeFactory FACTORY = new TypeFactory();

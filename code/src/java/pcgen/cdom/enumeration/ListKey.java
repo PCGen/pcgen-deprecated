@@ -35,6 +35,7 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.helper.Capacity;
 import pcgen.cdom.helper.Quality;
 import pcgen.core.Description;
+import pcgen.core.Domain;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PCClass;
 import pcgen.core.WeaponProf;

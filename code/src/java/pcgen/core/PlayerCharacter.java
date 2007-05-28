@@ -51,6 +51,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
+import pcgen.base.formula.Resolver;
+import pcgen.base.graph.visitor.DirectedBreadthFirstTraverseAlgorithm;
 import pcgen.base.graph.visitor.DirectedNodeWeightCalculation;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.HashMapToList;
@@ -58,6 +60,7 @@ import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.EquipmentSet;
+import pcgen.cdom.content.SpellResistance;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.cdom.enumeration.IntegerKey;
@@ -65,6 +68,8 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.helper.EquipmentSetFacade;
+import pcgen.cdom.inst.PCClassLevel;
+import pcgen.cdom.mode.Size;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.character.CharacterSpell;
@@ -109,6 +114,7 @@ import pcgen.util.enumeration.VisionType;
 public final class PlayerCharacter extends Observable implements Cloneable,
 		VariableContainer
 {
+	private static final Class<SpellResistance> SPELL_RESISTANCE_CLASS = SpellResistance.class;
 	// Constants for use in getBonus
 	/** ATTACKBONUS = 0 */
 	public static final int ATTACKBONUS = 0;
@@ -17813,6 +17819,163 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 		maxVal += (int) getTotalBonusTo("DR", key);
 		return maxVal;
+	}
+
+	/**
+	 * Determine the character's reach. This is based on their race, any applied
+	 * templates and any other bonuses to reach.
+	 * 
+	 * @return The reach radius.
+	 */
+	public int getCDOMReach()
+	{
+		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		int reach = 0;
+		for (Race r : list)
+		{
+			Integer rh = r.get(IntegerKey.REACH);
+			if (rh != null)
+			{
+				reach = rh.intValue();
+			}
+		}
+
+		// Scan templates for any overrides
+		List<PCTemplate> tlist = activeGraph.getGrantedNodeList(PCTemplate.class);
+		for (PCTemplate t : tlist)
+		{
+			Integer th = t.get(IntegerKey.REACH);
+			if (th != null)
+			{
+				reach = th.intValue();
+			}
+		}
+		reach += (int) getTotalBonusTo("COMBAT", "REACH");
+		return reach;
+	}
+
+	public int totalCDOMMonsterLevels()
+	{
+		List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
+		List<PCClassLevel> levellist = activeGraph.getGrantedNodeList(PCClassLevel.class);
+		int totalLevels = 0;
+		for (PCClass pcClass : classlist)
+		{
+			Boolean isM = pcClass.get(ObjectKey.IS_MONSTER);
+			if (isM != null && isM.booleanValue())
+			{
+				int classLevel = 0;
+				for (PCClassLevel pcl : levellist)
+				{
+					int level = pcClass.getCDOMLevel(pcl);
+					classLevel = Math.max(classLevel, level);
+				}
+				// Techically if classLevel == -1 we have a VERY funky PC
+				// but we'll let that fly for now
+				if (classLevel >= 0)
+				{
+					totalLevels += classLevel;
+				}
+			}
+		}
+		return totalLevels;
+	}
+
+	public int calcCharacterSR()
+	{
+		DirectedBreadthFirstTraverseAlgorithm<PrereqObject, PCGraphEdge> trav =
+				new DirectedBreadthFirstTraverseAlgorithm<PrereqObject, PCGraphEdge>(
+					activeGraph)
+				{
+					@Override
+					protected boolean canTraverseEdge(PCGraphEdge edge,
+						PrereqObject gn, int type)
+					{
+						return !(gn instanceof Equipment)
+							&& super.canTraverseEdge(edge, gn, type);
+					}
+				};
+		trav.traverseFromNode(activeGraph.getRoot());
+		Set<PrereqObject> list = trav.getVisitedNodes();
+		int res = 0;
+		for (PrereqObject pro : list)
+		{
+			if (SPELL_RESISTANCE_CLASS.isInstance(pro))
+			{
+				SpellResistance sr = SPELL_RESISTANCE_CLASS.cast(pro);
+				res = Math.max(res, sr.getReduction().resolve(this, ""));
+			}
+		}
+		res += (int) getTotalBonusTo("MISC", "SR");
+		//
+		// This would make more sense to just not add in the first place...
+		//
+		res -= (int) getEquipmentBonusTo("MISC", "SR");
+		return res;
+	}
+
+	public Size getCDOMSize()
+	{
+		Resolver<Size> resolver = null;
+		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		int mod = 0;
+		for (Race r : list)
+		{
+			Resolver<Size> res = r.get(ObjectKey.SIZE);
+			if (res != null)
+			{
+				resolver = res;
+			}
+			// Now see if there is a HD advancement in size
+			// (Such as for Dragons)
+			for (int i = 0; i < r.sizesAdvancedCDOM(totalCDOMMonsterLevels()); ++i)
+			{
+				mod++;
+			}
+		}
+
+		// Scan templates for any overrides
+		List<PCTemplate> tlist = activeGraph.getGrantedNodeList(PCTemplate.class);
+		for (PCTemplate t : tlist)
+		{
+			Resolver<Size> res = t.get(ObjectKey.SIZE);
+			if (res != null)
+			{
+				resolver = res;
+			}
+		}
+		// Now check and see if a class has modified
+		// the size of the character with something like:
+		// BONUS:SIZEMOD|NUMBER|+1
+		mod += (int) getTotalBonusTo("SIZEMOD", "NUMBER");
+
+		if (resolver == null)
+		{
+			return Size.getConstant(0);
+		}
+		
+		Size size = resolver.resolve();
+		while (mod < 0)
+		{
+			Size prev = size.getPreviousSize();
+			if (prev == null)
+			{
+				return size;
+			}
+			size = prev;
+			mod++;
+		}
+		while (mod > 0)
+		{
+			Size next = size.getNextSize();
+			if (next == null)
+			{
+				return size;
+			}
+			size = next;
+			mod--;
+		}
+		return size;
 	}
 
 	// public double getBonusValue(final String aBonusType, final String

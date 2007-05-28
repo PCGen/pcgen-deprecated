@@ -6783,6 +6783,10 @@ public class PCClass extends PObject {
 //		}
 //		theAutoAbilities.put(aCategory, aLevel, null);
 //	}
+
+	/*
+	 * BEGIN CDOM CODE
+	 */
 	
 	Map<Integer, PCClassLevel> levelMap = new HashMap<Integer, PCClassLevel>();
 	
@@ -6815,6 +6819,21 @@ public class PCClass extends PObject {
 	public boolean hasCDOMSpellProgression()
 	{
 		return spi != null;
+	}
+
+	public int getCDOMLevel(PCClassLevel pcl)
+	{
+		if (this.equals(pcl.getSource()))
+		{
+			for (Map.Entry<Integer, PCClassLevel> me : levelMap.entrySet())
+			{
+				if (me.getValue().equals(pcl))
+				{
+					return me.getKey().intValue();
+				}
+			}
+		}
+		return -1;
 	}
 	
 }

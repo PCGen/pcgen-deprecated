@@ -81,4 +81,29 @@ public class PreRegionTester extends AbstractPrerequisiteTest implements
 		return "REGION"; //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		final String requiredRegion = prereq.getKey().toUpperCase();
+		final String characterRegion = character.getFullRegion().toUpperCase();
+
+		final boolean sameRegion = characterRegion.startsWith(requiredRegion);
+
+		int runningTotal;
+		if (prereq.getOperator().equals(PrerequisiteOperator.EQ))
+		{
+			runningTotal = sameRegion ? 1 : 0;
+		}
+		else if (prereq.getOperator().equals(PrerequisiteOperator.NEQ))
+		{
+			runningTotal = sameRegion ? 0 : 1;
+		}
+		else
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreRegion.error.invalid_comparator", prereq.toString())); //$NON-NLS-1$
+		}
+
+		return countedTotal(prereq, runningTotal);
+	}
+
 }

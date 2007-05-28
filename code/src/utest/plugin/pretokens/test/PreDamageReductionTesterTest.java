@@ -109,6 +109,18 @@ public class PreDamageReductionTesterTest extends
 	}
 
 	@Test
+	public void testExactOr() throws PrerequisiteException
+	{
+		Prerequisite prereq = getOnePrereq();
+		// PC Should start without
+		assertEquals(0, getTest().passesCDOM(prereq, pc));
+		DamageReduction tenOne =
+				DamageReduction.getDamageReduction("10/+1 or +2");
+		grantObject(tenOne);
+		assertEquals(1, getTest().passesCDOM(prereq, pc));
+	}
+
+	@Test
 	public void testSurplus() throws PrerequisiteException
 	{
 		Prerequisite prereq = getOnePrereq();
@@ -120,8 +132,8 @@ public class PreDamageReductionTesterTest extends
 	}
 
 	// TODO Need to consider inverted? !PRE?
-	
+
 	// TODO Need to test DRs with or and and
-	
+
 	// TODO Need to test DRs that use variables...
 }

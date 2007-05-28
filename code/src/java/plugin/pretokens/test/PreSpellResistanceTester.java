@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
 /**
@@ -59,6 +60,15 @@ public class PreSpellResistanceTester extends AbstractPrerequisiteTest
 	public String kindHandled()
 	{
 		return "SR"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int requiredSR = Integer.parseInt(prereq.getOperand());
+		int characterSR = character.calcCharacterSR();
+		int runningTotal =
+				prereq.getOperator().compare(characterSR, requiredSR);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }
