@@ -19,13 +19,24 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.choice.CompoundOrChooser;
+import pcgen.cdom.choice.ListChooser;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.core.SpellList;
+import pcgen.core.spell.Spell;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
 public class SpellsToken implements ChooseLstToken
 {
+
+	private static final Class<SpellList> SPELLLIST_CLASS = SpellList.class;
 
 	public boolean parse(PObject po, String value)
 	{
@@ -79,5 +90,60 @@ public class SpellsToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SPELLS";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return null;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return null;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not start with | : " + value);
+			return null;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not end with | : " + value);
+			return null;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return null;
+		}
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		CompoundOrChooser<Spell> chooser = new CompoundOrChooser<Spell>();
+		while (tok.hasMoreTokens())
+		{
+			String tokText = tok.nextToken();
+			if (!tokText.startsWith("CLASS=") && !tokText.startsWith("DOMAIN="))
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " argument must start with CLASS= or DOMAIN= : "
+					+ tokText);
+				Logging.errorPrint("  Entire Token was: " + value);
+				return null;
+			}
+			String listName = tokText.substring(tokText.indexOf('=') + 1);
+			CDOMReference<SpellList> ref =
+					context.ref.getCDOMReference(SPELLLIST_CLASS, listName);
+			ListChooser<Spell> listChooser = new ListChooser<Spell>(ref);
+			chooser.addChoiceSet(listChooser);
+		}
+		return chooser;
 	}
 }

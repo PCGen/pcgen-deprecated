@@ -17,7 +17,13 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.enumeration.SpellSchool;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -40,5 +46,18 @@ public class SchoolsToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SCHOOLS";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value == null || "1".equals(value))
+		{
+			// No args - legal
+			return new SetChooser<SpellSchool>(SpellSchool.getAllConstants());
+		}
+		Logging.errorPrint("CHOOSE:" + getTokenName()
+			+ " may not have arguments: " + value);
+		return null;
 	}
 }

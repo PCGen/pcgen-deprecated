@@ -19,7 +19,7 @@ package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.choice.AnyChooser;
-import pcgen.cdom.choice.PCChooser;
+import pcgen.cdom.choice.PCChoiceFilter;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
@@ -109,10 +109,11 @@ public class NonClassSkillListToken implements ChooseLstToken
 			return null;
 		}
 		AnyChooser<Skill> anyChooser = new AnyChooser<Skill>(Skill.class);
-		PCChooser<Skill> pcChooser = new PCChooser<Skill>(Skill.class);
-		pcChooser.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
+		PCChoiceFilter<Skill> pcFilter = new PCChoiceFilter<Skill>(Skill.class);
+		//TODO I think this needs to be negated??
+		pcFilter.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		RemovingChooser<Skill> chooser = new RemovingChooser<Skill>(anyChooser);
-		chooser.addRemovingChoiceSet(pcChooser);
+		chooser.addRemovingChoiceFilter(pcFilter);
 		return chooser;
 	}
 }

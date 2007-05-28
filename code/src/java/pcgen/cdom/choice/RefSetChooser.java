@@ -33,43 +33,29 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChoiceSet;
 
-public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
+public class RefSetChooser<T extends PrereqObject> implements ChoiceSet<T>
 {
 
-	private final Set<ChoiceFilter<T>> set = new HashSet<ChoiceFilter<T>>();
-
-	private final ChoiceSet<T> baseSet;
+	private final Set<CDOMReference<T>> set;
 
 	private Formula count;
 
 	private Formula max;
 
-	public RemovingChooser(ChoiceSet<T> base)
+	public RefSetChooser(Collection<CDOMReference<T>> col)
 	{
 		super();
-		if (base == null)
+		if (col == null)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Choice Collection cannot be null");
 		}
-		baseSet = base;
-	}
-
-	public void addRemovingChoiceFilter(ChoiceFilter<T> cs)
-	{
-		if (cs == null)
+		if (col.isEmpty())
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Choice Collection cannot be empty");
 		}
-		set.add(cs);
-	}
-
-	public void addAllRemovingChoiceFilters(Collection<ChoiceFilter<T>> coll)
-	{
-		if (coll == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		set.addAll(coll);
+		set = new HashSet<CDOMReference<T>>(col);
 	}
 
 	public Formula getMaxSelections()
@@ -84,7 +70,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 
 	public Set<T> getSet()
 	{
-		return xxx;
+		return set;
 	}
 
 	@Override
@@ -103,7 +89,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 	@Override
 	public boolean equals(Object o)
 	{
-		if (!(o instanceof RemovingChooser))
+		if (!(o instanceof RefSetChooser))
 		{
 			return false;
 		}
@@ -111,7 +97,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 		{
 			return true;
 		}
-		RemovingChooser<?> cs = (RemovingChooser) o;
+		RefSetChooser<?> cs = (RefSetChooser) o;
 		return max == cs.max && count == cs.count && set.equals(cs.set);
 	}
 

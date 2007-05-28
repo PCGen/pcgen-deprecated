@@ -22,54 +22,35 @@
  */
 package pcgen.cdom.choice;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PObject;
 
-public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
+public class NumberChooser implements ChoiceSet<Integer>
 {
-
-	private final Set<ChoiceFilter<T>> set = new HashSet<ChoiceFilter<T>>();
-
-	private final ChoiceSet<T> baseSet;
 
 	private Formula count;
 
 	private Formula max;
+	
+	private int lowerBound;
+	
+	private int upperBound;
 
-	public RemovingChooser(ChoiceSet<T> base)
+	public NumberChooser(int minChoice, int maxChoice)
 	{
 		super();
-		if (base == null)
+		if (maxChoice < minChoice)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Min Choice must be less than or equal to Max Choice");
 		}
-		baseSet = base;
-	}
-
-	public void addRemovingChoiceFilter(ChoiceFilter<T> cs)
-	{
-		if (cs == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		set.add(cs);
-	}
-
-	public void addAllRemovingChoiceFilters(Collection<ChoiceFilter<T>> coll)
-	{
-		if (coll == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		set.addAll(coll);
+		lowerBound = minChoice;
+		upperBound = maxChoice;
 	}
 
 	public Formula getMaxSelections()
@@ -82,9 +63,9 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet()
+	public Set<Integer> getSet()
 	{
-		return xxx;
+		return set;
 	}
 
 	@Override
@@ -103,7 +84,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 	@Override
 	public boolean equals(Object o)
 	{
-		if (!(o instanceof RemovingChooser))
+		if (!(o instanceof NumberChooser))
 		{
 			return false;
 		}
@@ -111,7 +92,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 		{
 			return true;
 		}
-		RemovingChooser<?> cs = (RemovingChooser) o;
+		NumberChooser<?> cs = (NumberChooser) o;
 		return max == cs.max && count == cs.count && set.equals(cs.set);
 	}
 

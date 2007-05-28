@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.choice.RefSetChooser;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Ability;
@@ -126,10 +126,12 @@ public class FeatSelectToken implements ChooseLstToken
 			}
 			else
 			{
-				TokenUtilities.getTypeOrPrimitive(context, Ability.class,
-					AbilityCategory.FEAT, tokString);
+				CDOMReference<Ability> ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							Ability.class, AbilityCategory.FEAT, tokString);
+				featList.add(ref);
 			}
 		}
-		return new SetChooser<Ability>(featList);
+		return new RefSetChooser<Ability>(featList);
 	}
 }

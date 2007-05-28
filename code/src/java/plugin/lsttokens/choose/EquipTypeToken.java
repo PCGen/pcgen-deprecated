@@ -21,7 +21,7 @@ import java.util.Collections;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.choice.RefSetChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;
@@ -111,6 +111,6 @@ public class EquipTypeToken implements ChooseLstToken
 		CDOMReference<Equipment> ref =
 				TokenUtilities
 					.getTypeReference(context, Equipment.class, value);
-		return new SetChooser<Equipment>(Collections.singletonList(ref));
+		return new RefSetChooser<Equipment>(Collections.singletonList(ref));
 	}
 }

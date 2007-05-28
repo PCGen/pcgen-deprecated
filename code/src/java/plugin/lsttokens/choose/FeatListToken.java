@@ -26,7 +26,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.CompoundAndChooser;
 import pcgen.cdom.choice.PCChooser;
-import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.choice.RefSetChooser;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Ability;
@@ -128,12 +128,15 @@ public class FeatListToken implements ChooseLstToken
 			}
 			else
 			{
-				TokenUtilities.getTypeOrPrimitive(context, Ability.class,
-					AbilityCategory.FEAT, tokString);
+				CDOMReference<Ability> ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							Ability.class, AbilityCategory.FEAT, tokString);
+				featList.add(ref);
 			}
 		}
 		PCChooser<Ability> pcChooser = new PCChooser<Ability>(Ability.class);
-		SetChooser<Ability> setChooser = new SetChooser<Ability>(featList);
+		RefSetChooser<Ability> setChooser =
+				new RefSetChooser<Ability>(featList);
 		CompoundAndChooser<Ability> chooser = new CompoundAndChooser<Ability>();
 		chooser.addChoiceSet(setChooser);
 		chooser.addChoiceSet(pcChooser);

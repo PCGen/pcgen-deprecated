@@ -28,21 +28,19 @@ import java.util.Set;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChoiceSet;
 
-public class SetChooser<T extends PrereqObject> implements ChoiceSet<T>
+public class SetChooser<T> implements ChoiceSet<T>
 {
 
-	private final Set<CDOMReference<T>> set;
+	private final Set<T> set;
 
 	private Formula count;
 
 	private Formula max;
 
-	public SetChooser(Collection<CDOMReference<T>> col)
+	public SetChooser(Collection<T> col)
 	{
 		super();
 		if (col == null)
@@ -55,7 +53,7 @@ public class SetChooser<T extends PrereqObject> implements ChoiceSet<T>
 			throw new IllegalArgumentException(
 				"Choice Collection cannot be empty");
 		}
-		set = new HashSet<CDOMReference<T>>(col);
+		set = new HashSet<T>(col);
 	}
 
 	public Formula getMaxSelections()

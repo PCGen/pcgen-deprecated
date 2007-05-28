@@ -22,54 +22,35 @@
  */
 package pcgen.cdom.choice;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
+import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.CDOMListObject;
+import pcgen.core.PObject;
 
-public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
+public class ListChooser<T extends PObject> implements ChoiceSet<T>
 {
 
-	private final Set<ChoiceFilter<T>> set = new HashSet<ChoiceFilter<T>>();
-
-	private final ChoiceSet<T> baseSet;
+	private HashMapToList<AssociationKey<?>, Object> assoc;
 
 	private Formula count;
 
 	private Formula max;
 
-	public RemovingChooser(ChoiceSet<T> base)
+	public ListChooser(CDOMReference<? extends CDOMListObject<T>> cl)
 	{
 		super();
-		if (base == null)
+		if (cl == null)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Choice Class cannot be null");
 		}
-		baseSet = base;
-	}
-
-	public void addRemovingChoiceFilter(ChoiceFilter<T> cs)
-	{
-		if (cs == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		set.add(cs);
-	}
-
-	public void addAllRemovingChoiceFilters(Collection<ChoiceFilter<T>> coll)
-	{
-		if (coll == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		set.addAll(coll);
 	}
 
 	public Formula getMaxSelections()
@@ -84,7 +65,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 
 	public Set<T> getSet()
 	{
-		return xxx;
+		return set;
 	}
 
 	@Override
@@ -103,7 +84,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 	@Override
 	public boolean equals(Object o)
 	{
-		if (!(o instanceof RemovingChooser))
+		if (!(o instanceof ListChooser))
 		{
 			return false;
 		}
@@ -111,7 +92,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 		{
 			return true;
 		}
-		RemovingChooser<?> cs = (RemovingChooser) o;
+		ListChooser<?> cs = (ListChooser) o;
 		return max == cs.max && count == cs.count && set.equals(cs.set);
 	}
 
@@ -133,6 +114,15 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 		// "Max Selected for ChoiceSet must be >= 1");
 		// }
 		max = maxSelected;
+	}
+
+	public <A> void setAssociation(AssociationKey<A> ak, A val)
+	{
+		if (assoc == null)
+		{
+			assoc = new HashMapToList<AssociationKey<?>, Object>();
+		}
+		assoc.addToListFor(ak, val);
 	}
 
 	// public boolean validate()

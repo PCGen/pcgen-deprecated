@@ -28,7 +28,7 @@ import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
 import pcgen.cdom.choice.PCChooser;
 import pcgen.cdom.choice.QualifyChooser;
-import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.choice.RefSetChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Domain;
 import pcgen.core.PObject;
@@ -153,7 +153,7 @@ public class DomainToken implements ChooseLstToken
 		}
 		else
 		{
-			listSet = new SetChooser<Domain>(domainlist);
+			listSet = new RefSetChooser<Domain>(domainlist);
 		}
 		if (list.isEmpty())
 		{

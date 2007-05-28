@@ -18,6 +18,7 @@
 package plugin.lsttokens.choose;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -25,7 +26,8 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.choice.CompoundAndChooser;
+import pcgen.cdom.choice.RefSetChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;
@@ -37,6 +39,8 @@ import pcgen.util.Logging;
 
 public class ArmorProfToken implements ChooseLstToken
 {
+
+	private static final Class<Equipment> EQUIPMENT_CLASS = Equipment.class;
 
 	public boolean parse(PObject po, String value)
 	{
@@ -150,7 +154,7 @@ public class ArmorProfToken implements ChooseLstToken
 				+ " first argument must be an Integer : " + value);
 			return null;
 		}
-		List<CDOMReference<Equipment>> featList =
+		List<CDOMReference<Equipment>> eqList =
 				new ArrayList<CDOMReference<Equipment>>();
 		while (st.hasMoreTokens())
 		{
@@ -163,12 +167,21 @@ public class ArmorProfToken implements ChooseLstToken
 			}
 			else
 			{
-				TokenUtilities.getTypeOrPrimitive(context, Equipment.class,
-					tokString);
+				CDOMReference<Equipment> ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							EQUIPMENT_CLASS, tokString);
+				eqList.add(ref);
 			}
 		}
-		SetChooser<Equipment> setChooser = new SetChooser<Equipment>(featList);
+		CompoundAndChooser<Equipment> chooser = new CompoundAndChooser<Equipment>();
+		RefSetChooser<Equipment> setChooser = new RefSetChooser<Equipment>(eqList);
 		setChooser.setMaxSelections(FormulaFactory.getFormulaFor(count));
-		return setChooser;
+		chooser.addChoiceSet(setChooser);
+		CDOMReference<Equipment> armor =
+				TokenUtilities.getTypeReference(context, EQUIPMENT_CLASS,
+					"Armor");
+		chooser.addChoiceSet(new RefSetChooser<Equipment>(Collections
+			.singletonList(armor)));
+		return chooser;
 	}
 }

@@ -17,18 +17,26 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PCStat;
 import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
 public class StatToken implements ChooseLstToken
 {
+
+	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
 
 	public boolean parse(PObject po, String value)
 	{
@@ -83,5 +91,61 @@ public class StatToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "STAT";
+	}
+
+	public ChoiceSet<PCStat> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		Collection<PCStat> stats =
+				context.ref.getConstructedCDOMObjects(PCSTAT_CLASS);
+		// null means no args - use all stats - legal
+		if (value != null)
+		{
+			if (value.indexOf('[') != -1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments may not contain [] : " + value);
+				return null;
+			}
+			if (value.charAt(0) == '|')
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments may not start with | : " + value);
+				return null;
+			}
+			if (value.charAt(value.length() - 1) == '|')
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments may not end with | : " + value);
+				return null;
+			}
+			if (value.indexOf("||") != -1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments uses double separator || : " + value);
+				return null;
+			}
+			StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+			while (tok.hasMoreTokens())
+			{
+				String tokText = tok.nextToken();
+				PCStat stat =
+						context.ref.silentlyGetConstructedCDOMObject(
+							PCSTAT_CLASS, tokText);
+				if (stat == null)
+				{
+					Logging.errorPrint("Did not find STAT: " + tokText
+						+ " used in CHOOSE: " + value);
+					return null;
+				}
+				if (!stats.remove(stat))
+				{
+					Logging.errorPrint("STAT: " + tokText
+						+ " appeared twice in CHOOSE: " + value);
+					return null;
+				}
+			}
+		}
+		return new SetChooser<PCStat>(stats);
 	}
 }

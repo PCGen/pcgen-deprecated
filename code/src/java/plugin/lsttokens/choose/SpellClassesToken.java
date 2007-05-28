@@ -17,12 +17,25 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.choice.ObjectFilter;
+import pcgen.cdom.choice.PCChooser;
+import pcgen.cdom.choice.RemovingChooser;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PCClass;
+import pcgen.core.PCStat;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
 public class SpellClassesToken implements ChooseLstToken
 {
+
+	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
+	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
 	public boolean parse(PObject po, String value)
 	{
@@ -40,5 +53,29 @@ public class SpellClassesToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SPELLCLASSES";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value == null)
+		{
+			// No args - legal
+			PCChooser<PCClass> pcChooser =
+					PCChooser.getPCChooser(PCCLASS_CLASS);
+			RemovingChooser<PCClass> chooser =
+					new RemovingChooser<PCClass>(pcChooser);
+			ObjectFilter<PCClass> filter =
+					ObjectFilter.getObjectFilter(PCCLASS_CLASS);
+			// TODO Once this can be negated, it's probably better with null as
+			// the only arg, rather than grabbing the list
+			filter.setObjectFilter(ObjectKey.SPELL_STAT, context.ref
+				.getConstructedCDOMObjects(PCSTAT_CLASS));
+			chooser.addRemovingChoiceFilter(filter);
+			return chooser;
+		}
+		Logging.errorPrint("CHOOSE:" + getTokenName()
+			+ " may not have arguments: " + value);
+		return null;
 	}
 }
