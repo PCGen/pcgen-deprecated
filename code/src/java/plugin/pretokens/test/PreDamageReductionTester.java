@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
 import pcgen.core.DamageReduction;
@@ -70,5 +71,13 @@ public class PreDamageReductionTester extends AbstractPrerequisiteTest
 	public String kindHandled()
 	{
 		return "DR"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int target = Integer.parseInt(prereq.getOperand());
+		int val = character.getCDOMDamageReduction(prereq.getKey());
+		int runningTotal = prereq.getOperator().compare(val, target);
+		return countedTotal(prereq, runningTotal);
 	}
 }

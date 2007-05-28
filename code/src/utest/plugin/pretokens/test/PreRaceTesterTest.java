@@ -15,38 +15,65 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.cdom.base;
+package plugin.pretokens.test;
 
-import pcgen.base.formula.Formula;
+import pcgen.core.PCTemplate;
+import pcgen.core.PObject;
+import pcgen.core.Race;
+import pcgen.core.prereq.PrerequisiteTest;
 
-public final class FormulaFactory
+public class PreRaceTesterTest extends
+		AbstractCDOMObjectTestCase<Race>
 {
 
-	private FormulaFactory()
+	PreRaceTester tester = new PreRaceTester();
+
+	@Override
+	public Class<Race> getCDOMClass()
 	{
-		// Can't instantiate Utility Class
+		return Race.class;
 	}
 
-	public static Formula getFormulaFor(String s)
+	@Override
+	public Class<? extends PObject> getFalseClass()
 	{
-		if (s.length() == 0)
-		{
-			throw new IllegalArgumentException("Formula cannot be empty");
-		}
-		// try
-		// {
-		// int i = Integer.parseInt(s);
-		// }
-		// catch (NumberFormatException e)
-		// {
-		// //Okay, just not an integer
-		// return new JEPFormula(s);
-		// }
-		return new JEPFormula(s);
+		return PCTemplate.class;
 	}
 
-	public static Formula getFormulaFor(int i)
+	@Override
+	public String getKind()
 	{
-		return new JEPFormula(Integer.toString(i));
+		return "RACE";
 	}
+
+	@Override
+	public PrerequisiteTest getTest()
+	{
+		return tester;
+	}
+
+	@Override
+	public boolean isWildcardLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isTypeLegal()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isAnyLegal()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isTestStarting()
+	{
+		return false;
+	}
+
 }

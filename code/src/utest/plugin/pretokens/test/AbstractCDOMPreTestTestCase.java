@@ -76,7 +76,7 @@ public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
 		return getObject(getCDOMClass(), s);
 	}
 
-	public PCGraphGrantsEdge grantObject(PObject obj)
+	public PCGraphGrantsEdge grantObject(PrereqObject obj)
 	{
 		PCGenGraph graph = pc.getActiveGraph();
 		PrereqObject root = graph.getRoot();

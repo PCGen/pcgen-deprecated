@@ -18,6 +18,7 @@
 package pcgen.cdom.base;
 
 import pcgen.base.formula.Formula;
+import pcgen.core.PlayerCharacter;
 
 public class JEPFormula implements Formula
 {
@@ -46,5 +47,10 @@ public class JEPFormula implements Formula
 	{
 		return o instanceof JEPFormula
 			&& ((JEPFormula) o).formula.equals(formula);
+	}
+
+	public int resolve(PlayerCharacter character, String source)
+	{
+		return character.getVariableValue(formula, source).intValue();
 	}
 }

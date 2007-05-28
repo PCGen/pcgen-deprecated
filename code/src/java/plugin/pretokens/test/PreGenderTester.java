@@ -26,9 +26,11 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.enumeration.Gender;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
@@ -66,6 +68,18 @@ public class PreGenderTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "GENDER"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal;
+		Gender gen = character.getCDOMGender();
+		boolean matches =
+				gen != null
+					&& (gen.toString().equalsIgnoreCase(prereq.getKey()) ^
+							!prereq.getOperator().equals(PrerequisiteOperator.EQ));
+		runningTotal = matches ? 1 : 0;
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

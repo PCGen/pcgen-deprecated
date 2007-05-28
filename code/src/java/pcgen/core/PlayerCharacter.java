@@ -50,6 +50,7 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import pcgen.base.formula.Formula;
 import pcgen.base.graph.visitor.DirectedNodeWeightCalculation;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.HashMapToList;
@@ -57,6 +58,9 @@ import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.Gender;
+import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.helper.EquipmentSet;
@@ -335,8 +339,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		setStringFor(StringKey.HANDED, PropertyFactory.getString("in_right")); //$NON-NLS-1$
 	}
 
-	PCGenGraph activeGraph;
-	
 	public PlayerCharacter(boolean b)
 	{
 		variableProcessor = new VariableProcessorPC(this);
@@ -17644,6 +17646,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return reach;
 	}
 
+	/*
+	 * BEGIN CDOM CODE
+	 */
+
+	private PCGenGraph activeGraph;
+	private Gender genderCDOM; //TODO Need a default that isn't Globals based
+
 	public PCGenGraph getActiveGraph()
 	{
 		return activeGraph;
@@ -17682,6 +17691,118 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 				};
 		return calc.calculateNodeWeight(pro);
+	}
+
+	/**
+	 * Determine the number of hands the character has. This is based on their
+	 * race and any applied templates.
+	 * 
+	 * @return The number of hands.
+	 */
+	public int getCDOMHands()
+	{
+		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		int hands = 0;
+		for (Race r : list)
+		{
+			Integer rh = r.get(IntegerKey.HANDS);
+			if (rh != null)
+			{
+				hands = rh.intValue();
+			}
+		}
+
+		// Scan templates for any overrides
+		List<PCTemplate> tlist = activeGraph.getGrantedNodeList(PCTemplate.class);
+		for (PCTemplate t : tlist)
+		{
+			Integer th = t.get(IntegerKey.HANDS);
+			if (th != null)
+			{
+				hands = th.intValue();
+			}
+		}
+		return hands;
+	}
+	
+	/**
+	 * Determine the number of legs the character has. This is based on their
+	 * race and any applied templates.
+	 * 
+	 * @return The number of legs.
+	 */
+	public int getCDOMLegs()
+	{
+		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		int legs = 0;
+		for (Race r : list)
+		{
+			Integer rh = r.get(IntegerKey.LEGS);
+			if (rh != null)
+			{
+				legs = rh.intValue();
+			}
+		}
+
+		// Scan templates for any overrides
+		List<PCTemplate> tlist = activeGraph.getGrantedNodeList(PCTemplate.class);
+		for (PCTemplate t : tlist)
+		{
+			Integer th = t.get(IntegerKey.LEGS);
+			if (th != null)
+			{
+				legs = th.intValue();
+			}
+		}
+		return legs;
+	}
+
+	public void setCDOMGender(Gender g)
+	{
+		genderCDOM = g;
+	}
+
+	/**
+	 * Returns the character's gender.
+	 * 
+	 * This method will return the stored gender or the template locked gender
+	 * if there is one.
+	 * 
+	 * @return The Player Character's Gender
+	 */
+	public Gender getCDOMGender()
+	{
+		Gender gen = genderCDOM;
+		List<PCTemplate> tlist = activeGraph.getGrantedNodeList(PCTemplate.class);
+		for (PCTemplate t : tlist)
+		{
+			Gender g = t.get(ObjectKey.GENDER_LOCK);
+			if (g != null)
+			{
+				gen = g;
+			}
+		}
+		return gen;
+	}
+
+	public int getCDOMDamageReduction(String key)
+	{
+		int maxVal = -1;
+		for (pcgen.cdom.content.DamageReduction dr : getActiveGraph()
+			.getGrantedNodeList(pcgen.cdom.content.DamageReduction.class))
+		{
+			if (dr.getBypass().equalsIgnoreCase(key))
+			{
+				Formula f = dr.getReduction();
+				int val = f.resolve(this, "getDR");
+				if (val > maxVal)
+				{
+					maxVal = val;
+				}
+			}
+		}
+		maxVal += (int) getTotalBonusTo("DR", key);
+		return maxVal;
 	}
 
 	// public double getBonusValue(final String aBonusType, final String

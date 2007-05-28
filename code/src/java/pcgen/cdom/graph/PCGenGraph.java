@@ -70,8 +70,16 @@ public class PCGenGraph extends
 
 	public <T extends PrereqObject> int getGrantedNodeCount(Class<T> name)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		// Long/Slow implementation...
+		int count = 0;
+		for (PrereqObject pro : getNodeList())
+		{
+			if (name.isInstance(pro))
+			{
+				count++;
+			}
+		}
+		return count;
 	}
 
 	public CharacterDescription getDescription()

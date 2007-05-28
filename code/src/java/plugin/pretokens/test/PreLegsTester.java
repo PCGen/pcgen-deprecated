@@ -73,4 +73,23 @@ public class PreLegsTester extends AbstractPrerequisiteTest implements
 		return "LEGS"; //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal;
+		try
+		{
+			final int targetLegs = Integer.parseInt(prereq.getOperand());
+
+			runningTotal =
+					prereq.getOperator().compare(character.getCDOMLegs(),
+						targetLegs);
+		}
+		catch (NumberFormatException nfe)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreLegs.error.bad_operand", prereq.getOperand())); //$NON-NLS-1$
+		}
+		return countedTotal(prereq, runningTotal);
+	}
+
 }

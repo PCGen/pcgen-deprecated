@@ -27,13 +27,18 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Constants;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Race;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
 /**
@@ -139,6 +144,97 @@ public class PreRaceTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "RACE"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		final int reqnumber = Integer.parseInt(prereq.getOperand());
+		final String requiredRace = prereq.getKey();
+		int runningTotal = 0;
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+
+		if (requiredRace.startsWith("TYPE=") || requiredRace.startsWith("TYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
+		{
+			for (Race r : list)
+			{
+				StringTokenizer tok =
+					new StringTokenizer(requiredRace.substring(5), ".");
+				boolean match = true;
+				//
+				// Must match all listed types in order to qualify
+				//
+				while (tok.hasMoreTokens())
+				{
+					Type requiredType = Type.getConstant(tok.nextToken());
+					if (!r.containsInList(ListKey.TYPE, requiredType))
+					{
+						match = false;
+						break;
+					}
+				}
+				if (match)
+				{
+					++runningTotal;
+				}
+			}
+		}
+		else if (requiredRace.startsWith("RACETYPE=") || requiredRace.startsWith("RACETYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
+		{
+			return character.getRaceType().equalsIgnoreCase(
+				requiredRace.substring(9)) ? 1 : 0;
+		}
+		else if (requiredRace.startsWith("RACESUBTYPE=")
+			|| requiredRace.startsWith("RACESUBTYPE."))
+		{
+			final String reqType = requiredRace.substring(12);
+			for (String subType : character.getRacialSubTypes())
+			{
+				if (reqType.equalsIgnoreCase(subType))
+				{
+					++runningTotal;
+				}
+			}
+		}
+		else
+		{
+			for (Race r : list)
+			{
+				final String characterRace = r.getKeyName();
+				final int wild = requiredRace.indexOf('%');
+				if (wild == 0)
+				{
+					//
+					// Matches as long as race is not <none selected>
+					//
+					if (!characterRace.equalsIgnoreCase(Constants.s_NONESELECTED))
+					{
+						++runningTotal;
+					}
+				}
+				else if (wild > 0)
+				{
+					if (characterRace.regionMatches(true, 0, requiredRace, 0, wild))
+					{
+						++runningTotal;
+					}
+				}
+				else
+				{
+					if (characterRace.equalsIgnoreCase(requiredRace))
+					{
+						++runningTotal;
+					}
+				}
+			}
+		}
+
+		if (runningTotal > reqnumber)
+		{
+			runningTotal = reqnumber;
+		}
+		runningTotal = prereq.getOperator().compare(runningTotal, reqnumber);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

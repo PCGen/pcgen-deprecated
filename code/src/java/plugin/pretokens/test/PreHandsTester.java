@@ -72,4 +72,23 @@ public class PreHandsTester extends AbstractPrerequisiteTest implements
 	{
 		return "HANDS"; //$NON-NLS-1$
 	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal;
+		try
+		{
+			final int targetHands = Integer.parseInt(prereq.getOperand());
+
+			runningTotal =
+					prereq.getOperator().compare(character.getCDOMHands(),
+						targetHands);
+		}
+		catch (NumberFormatException nfe)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreHands.error.badly_formed", prereq.getOperand())); //$NON-NLS-1$
+		}
+		return countedTotal(prereq, runningTotal);
+	}
 }
