@@ -17,38 +17,40 @@
  */
 package plugin.lsttokens;
 
-import pcgen.core.Language;
+import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.core.Ability;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.testsupport.AbstractGlobalListTokenTestCase;
 
-public class LangAutoLstTest extends AbstractGlobalListTokenTestCase<Language>
+public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 {
 
 	@Override
 	public char getJoinCharacter()
 	{
-		return ',';
+		return '|';
 	}
 
 	@Override
-	public Class<Language> getTargetClass()
+	public Class<Ability> getTargetClass()
 	{
-		return Language.class;
+		return Ability.class;
 	}
 
 	@Override
 	public boolean isTypeLegal()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean isAllLegal()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
@@ -60,10 +62,10 @@ public class LangAutoLstTest extends AbstractGlobalListTokenTestCase<Language>
 	@Override
 	public boolean isClearLegal()
 	{
-		return true;
+		return false;
 	}
 
-	static GlobalLstToken token = new LangautoLst();
+	static GlobalLstToken token = new VFeatLst();
 	static PCTemplateLoader loader = new PCTemplateLoader();
 
 	@Override
@@ -82,5 +84,12 @@ public class LangAutoLstTest extends AbstractGlobalListTokenTestCase<Language>
 	public GlobalLstToken getToken()
 	{
 		return token;
+	}
+
+	@Override
+	protected void construct(LoadContext loadContext, String one)
+	{
+		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
+		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
 	}
 }

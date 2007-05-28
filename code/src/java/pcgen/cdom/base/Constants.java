@@ -52,6 +52,12 @@ public class Constants
 
 	public static final String LST_TYPE_OLD = "TYPE.";
 
+	public static final String LST_CROSSCLASS = "CROSSCLASS";
+
+	public static final String LST_EXCLUSIVE = "EXCLUSIVE";
+
+	public static final String LST_CLASS = "CLASS";
+
 	public static final String LST_CLASS_DOT = "CLASS.";
 
 	public static final String LST_CHOOSE = "CHOOSE:";
@@ -106,5 +112,7 @@ public class Constants
 	public static final String LST_QUALIFY = "QUALIFY";
 
 	public static final String LST_LIST = "LIST";
+
+	public static final String LST_NORANK = "NORANK";
 
 }

@@ -92,6 +92,9 @@ public class HitdieToken implements PCTemplateLstToken
 								+ getTokenName() + ": " + value);
 						return false;
 					}
+					// TODO Need to test for empty TYPE as well as failed
+					// leading and trailing . (needs to happen across ALL
+					// getCDOMTypeReference items)
 					owner =
 							context.ref.getCDOMTypeReference(PCCLASS_CLASS,
 								substring.split("\\."));

@@ -34,7 +34,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.content.ChoiceSet;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Kit;
 import pcgen.core.PObject;
 import pcgen.persistence.GraphChanges;
@@ -91,6 +91,7 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 					+ " must be > 0");
 				return false;
 			}
+			//TODO Kit is actually a ChooseSet combined with a ADD:KIT or something like that...
 			cl =
 					new ChoiceSet<CDOMSimpleSingleRef<Kit>>(count, tok
 						.countTokens());

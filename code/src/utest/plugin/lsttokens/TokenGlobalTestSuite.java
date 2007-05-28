@@ -34,7 +34,7 @@ import junit.framework.TestSuite;
 	SourceWebLstTest.class, SpellLevelLstTest.class, SpellsLstTest.class,
 	SrLstTest.class, TempdescLstTest.class, TemplateLstTest.class,
 	TypeLstTest.class, UdamLstTest.class, UmultLstTest.class,
-	UnencumberedmoveLstTest.class, VisionLstTest.class})
+	UnencumberedmoveLstTest.class, VFeatLstTest.class, VisionLstTest.class})
 public class TokenGlobalTestSuite extends TestSuite
 {
 	// No contents, see annotations

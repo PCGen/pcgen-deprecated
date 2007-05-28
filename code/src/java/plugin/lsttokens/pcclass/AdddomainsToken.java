@@ -29,7 +29,7 @@ import java.util.TreeSet;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.content.ChoiceSet;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Domain;
 import pcgen.core.Globals;
@@ -129,6 +129,7 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.DOT);
 
+		//TODO This is a list (*Domains), not a ChoiceSet
 		ChoiceSet<CDOMReference<Domain>> cl =
 				new ChoiceSet<CDOMReference<Domain>>(1, tok.countTokens());
 		while (tok.hasMoreTokens())

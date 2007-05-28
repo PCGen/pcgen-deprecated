@@ -19,6 +19,7 @@ package pcgen.persistence.lst;
 
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>RemoveLstToken</code>
@@ -29,7 +30,8 @@ public interface RemoveLstToken extends LstToken
 {
 	public boolean parse(PObject target, String value, int level);
 
-	public boolean parse(LoadContext context, PObject obj, String string);
+	public boolean parse(LoadContext context, PObject obj, String string)
+		throws PersistenceLayerException;
 
 	public String[] unparse(LoadContext context, PObject object);
 }

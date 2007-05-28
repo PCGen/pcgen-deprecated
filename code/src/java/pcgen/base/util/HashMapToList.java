@@ -23,6 +23,7 @@
 package pcgen.base.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -132,10 +133,10 @@ public class HashMapToList<K, V>
 	 *            The key indicating which List the objects in the given List
 	 *            should be added to.
 	 * @param list
-	 *            A List containing the items to be added to the List for the
-	 *            given key.
+	 *            A Collection containing the items to be added to the List for
+	 *            the given key.
 	 */
-	public void addAllToListFor(K key, List<V> list)
+	public void addAllToListFor(K key, Collection<V> list)
 	{
 		if (list == null || list.isEmpty())
 		{
