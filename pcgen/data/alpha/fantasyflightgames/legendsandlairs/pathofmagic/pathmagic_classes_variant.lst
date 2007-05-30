@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Thu Apr 26 23:59:39 2007 -- reformated by prettylst.pl v1.38 (build 2788)
+# CVS $Revision$ $Author$ -- Wed May 30 16:21:39 2007 -- reformated by prettylst.pl v1.38 (build 2788)
 SOURCELONG:Path of Magic	SOURCESHORT:Magic	SOURCEWEB:http://www.fantasyflightgames.com/llpom.html
 # Original Entry by: Ratheof Blithwyn
 
@@ -7,8 +7,8 @@ SOURCELONG:Path of Magic	SOURCESHORT:Magic	SOURCEWEB:http://www.fantasyflightgam
 # Variant classes
 #
 
-# Class Name		Hit Dice	Type			Abbreviation	Source Page		Automatic Languages	Save checks bonus											Combat bonus
-CLASS:Arcane Engineer	HD:6		TYPE:Base.PC	ABB:AEn		SOURCEPAGE:p.62	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
+# Class Name		Hit Dice	Type			Abbreviation	Max Level	Source Page		Automatic Languages	Save checks bonus											Combat bonus
+CLASS:Arcane Engineer	HD:6		TYPE:Base.PC	ABB:AEn		MAXLEVEL:20	SOURCEPAGE:p.62	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
 # Class Name		Skill Pts/Lvl	Class Skill
 CLASS:Arcane Engineer	STARTSKILLPTS:2	CSKILL:Alchemy|Concentration|TYPE.Craft|Heal|TYPE.Knowledge|TYPE.Profession|Spellcraft
 # Class Name		Spell Stat		Spell Type		Automaticaly Known Spell Levels	Spellbook		Caster level
@@ -16,30 +16,30 @@ CLASS:Arcane Engineer	SPELLSTAT:INT	SPELLTYPE:Arcane	KNOWNSPELLS:LEVEL=0			SPELL
 1	FEATAUTO:Simple Weapon Proficiency
 1	FEATAUTO:Armor Proficiency (Light)
 ###Block: Normal Level Progression
-1	CAST:3,1														BONUS:VAR|FMLevel|CL	FEATAUTO:Summon Familiar
+1	CAST:3,1														BONUS:VAR|FMLevel|CL									FEATAUTO:Summon Familiar
 2	CAST:4,2
 3	CAST:4,2,1				SA:Magitech Modification|PREFEAT:1,Craft Wondrous Item
 4	CAST:4,3,2
-5	CAST:4,3,2,1																						ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
+5	CAST:4,3,2,1																	ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
 6	CAST:4,3,3,2
 7	CAST:4,4,3,2,1
 8	CAST:4,4,3,3,2
 9	CAST:4,4,4,3,2,1
-10	CAST:4,4,4,3,3,2																						ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
+10	CAST:4,4,4,3,3,2																	ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
 11	CAST:4,4,4,4,3,2,1
 12	CAST:4,4,4,4,3,3,2
 13	CAST:4,4,4,4,4,3,2,1
 14	CAST:4,4,4,4,4,3,3,2		SA:Golem Study
-15	CAST:4,4,4,4,4,4,3,2,1																					ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
+15	CAST:4,4,4,4,4,4,3,2,1																ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
 16	CAST:4,4,4,4,4,4,3,3,2
 17	CAST:4,4,4,4,4,4,4,3,2,1
 18	CAST:4,4,4,4,4,4,4,3,3,2
 19	CAST:4,4,4,4,4,4,4,4,3,3	SA:Magitech Body
-20	CAST:4,4,4,4,4,4,4,4,4,4																				ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
+20	CAST:4,4,4,4,4,4,4,4,4,4															ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
 
 
-# Class Name	Hit Dice	Type			Abbreviation	Source Page		Automatic Languages	Save checks bonus											Combat bonus
-CLASS:Arsenalist	HD:4		TYPE:Base.PC	ABB:AEn		SOURCEPAGE:p.62	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
+# Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Automatic Languages	Save checks bonus											Combat bonus
+CLASS:Arsenalist	HD:4		TYPE:Base.PC	ABB:AEn		MAXLEVEL:20	SOURCEPAGE:p.62	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Arsenalist	STARTSKILLPTS:2	CSKILL:Alchemy|Concentration|TYPE.Craft|Intimidate|TYPE.Knowledge|Listen|TYPE.Profession|Search|Spellcraft
 # Class Name	Spell Stat		Spell Type		Automaticaly Known Spell Levels	Spellbook		Caster level
@@ -48,30 +48,30 @@ CLASS:Arsenalist	SPELLSTAT:INT	SPELLTYPE:Arcane	KNOWNSPELLS:LEVEL=0			SPELLBOOK:
 1	FEATAUTO:Armor Proficiency (Light)
 ###Block: Normal Level Progression
 1	CAST:3,1				SA:Secret of Gunpowder
-2	CAST:4,2								BONUS:VAR|FMLevel|CL					FEATAUTO:Summon Familiar
+2	CAST:4,2								BONUS:VAR|FMLevel|CL													FEATAUTO:Summon Familiar
 3	CAST:4,2,1
 4	CAST:4,3,2
-5	CAST:4,3,2,1																				ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
+5	CAST:4,3,2,1															ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
 6	CAST:4,3,3,2
 7	CAST:4,4,3,2,1
 8	CAST:4,4,3,3,2
 9	CAST:4,4,4,3,2,1
-10	CAST:4,4,4,3,3,2																				ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
+10	CAST:4,4,4,3,3,2															ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
 11	CAST:4,4,4,4,3,2,1		SA:Craft (Firearms)					CSKILL:Craft (Firearms)
 12	CAST:4,4,4,4,3,3,2
 13	CAST:4,4,4,4,4,3,2,1
 14	CAST:4,4,4,4,4,3,3,2
-15	CAST:4,4,4,4,4,4,3,2,1																			ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
+15	CAST:4,4,4,4,4,4,3,2,1														ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
 16	CAST:4,4,4,4,4,4,3,3,2
 17	CAST:4,4,4,4,4,4,4,3,2,1
 18	CAST:4,4,4,4,4,4,4,3,3,2
 19	CAST:4,4,4,4,4,4,4,4,3,3
-20	CAST:4,4,4,4,4,4,4,4,4,4	SA:Misfire Protection														ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
+20	CAST:4,4,4,4,4,4,4,4,4,4	SA:Misfire Protection									ADD:FEAT|1|TYPE=Metamagic,TYPE=ItemCreation
 # Add sample firearms as equipment???
 
 
-# Class Name	Hit Dice	Type			Abbreviation	Source Page		Automatic Languages	Save checks bonus											Combat bonus
-CLASS:Mind Weaver	HD:6		TYPE:Base.PC	ABB:MiW		SOURCEPAGE:p.68	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
+# Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Automatic Languages	Save checks bonus											Combat bonus
+CLASS:Mind Weaver	HD:6		TYPE:Base.PC	ABB:MiW		MAXLEVEL:20	SOURCEPAGE:p.68	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Mind Weaver	STARTSKILLPTS:2	CSKILL:Alchemy|Bluff|Concentration|TYPE.Craft|Diplomacy|Gather Information|Intimidate|TYPE.Knowledge|TYPE.Profession|Scry|Search|Sense Motive|Spellcraft
 # Class Name	Spell Stat		Spell Type		Memorize	Caster level
@@ -79,8 +79,8 @@ CLASS:Mind Weaver	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|M
 1	FEATAUTO:Simple Weapon Proficiency
 1	FEATAUTO:Armor Proficiency (Light)
 ###Block: Normal Level Progression
-1	CAST:5,3				KNOWN:4,2				SA:Spell Powers																ADD:FEAT|1|Spell Focus,TYPE=Metamagic
-2	CAST:6,4				KNOWN:5,2								BONUS:VAR|FMLevel|CL						FEATAUTO:Summon Familiar
+1	CAST:5,3				KNOWN:4,2				SA:Spell Powers											ADD:FEAT|1|Spell Focus,TYPE=Metamagic
+2	CAST:6,4				KNOWN:5,2								BONUS:VAR|FMLevel|CL													FEATAUTO:Summon Familiar
 3	CAST:6,5				KNOWN:5,3
 4	CAST:6,6,3				KNOWN:6,3,1				SA:Armor Adaptation					BONUS:MISC|SPELLFAILURE|-5
 5	CAST:6,6,4				KNOWN:6,4,2
@@ -88,7 +88,7 @@ CLASS:Mind Weaver	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|M
 7	CAST:6,6,6,4			KNOWN:7,5,3,2
 8	CAST:6,6,6,5,3			KNOWN:8,5,3,2,1			SA:Watching the Threads
 9	CAST:6,6,6,6,4			KNOWN:8,5,4,3,2
-10	CAST:6,6,6,6,5,3			KNOWN:9,5,4,3,2,1																					ADD:FEAT|1|Spell Focus,TYPE=Metamagic
+10	CAST:6,6,6,6,5,3			KNOWN:9,5,4,3,2,1																ADD:FEAT|1|Spell Focus,TYPE=Metamagic
 11	CAST:6,6,6,6,6,4			KNOWN:9,5,5,4,3,2
 12	CAST:6,6,6,6,6,4,3		KNOWN:9,5,5,4,3,2,1
 13	CAST:6,6,6,6,6,6,4		KNOWN:9,5,5,4,4,3,2		SA:Counterspell Savant
@@ -98,11 +98,11 @@ CLASS:Mind Weaver	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|M
 17	CAST:6,6,6,6,6,6,6,6,4		KNOWN:9,5,5,4,4,4,3,3,2
 18	CAST:6,6,6,6,6,6,6,6,5,3	KNOWN:9,5,5,4,4,4,3,3,2,1
 19	CAST:6,6,6,6,6,6,6,6,6,4	KNOWN:9,5,5,4,4,4,3,3,3,2
-20	CAST:6,6,6,6,6,6,6,6,6,6	KNOWN:9,5,5,4,4,4,3,3,3,3																			ADD:FEAT|1|Spell Focus,TYPE=Metamagic
+20	CAST:6,6,6,6,6,6,6,6,6,6	KNOWN:9,5,5,4,4,4,3,3,3,3														ADD:FEAT|1|Spell Focus,TYPE=Metamagic
 
 
-# Class Name	Hit Dice	Type			Abbreviation	Source Page		Automatic Languages	Save checks bonus											Combat bonus
-CLASS:Sun Mage	HD:4		TYPE:Base.PC	ABB:SuM		SOURCEPAGE:p.72	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
+# Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Automatic Languages	Save checks bonus											Combat bonus
+CLASS:Sun Mage	HD:4		TYPE:Base.PC	ABB:SuM		MAXLEVEL:20	SOURCEPAGE:p.72	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Sun Mage	STARTSKILLPTS:2	CSKILL:Alchemy|Concentration|TYPE.Craft|Heal|Intimidate|TYPE.Knowledge|TYPE.Profession|Spellcraft|Wilderness Lore
 # Class Name	Spell Stat		Spell Type		Memorize	Caster level

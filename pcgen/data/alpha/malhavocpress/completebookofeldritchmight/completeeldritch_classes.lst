@@ -1,9 +1,9 @@
-# CVS $Revision$ $Author$ -- Thu Apr 26 23:59:39 2007 -- reformated by prettylst.pl v1.38 (build 2788)
+# CVS $Revision$ $Author$ -- Wed May 30 15:58:35 2007 -- reformated by prettylst.pl v1.38 (build 2788)
 SOURCELONG:Malhavoc Press - The Complete Book of Eldritch Might	SOURCESHORT:BoEMC	SOURCEWEB:http://www.montecook.com
 # Original Entry by: Felipe Diniz
 
-# Class Name			Hit Dice	Type			Abbreviation	Source Page		Automatic Languages	Optionnal Weapon Prof.																Save checks bonus											Combat bonus
-CLASS:Bard (Monte Cook's)	HD:6		TYPE:Base.PC	ABB:Brd(MC)		SOURCEPAGE:p.5	LANGAUTO:Literacy		WEAPONBONUS:Longbow|Longbow (Composite)|Longsword|Rapier|Sap|Shortbow (Composite)|Sword (Short)|Shortbow|Whip	BONUS:CHECKS|BASE.Fortitude|CL/3	BONUS:CHECKS|BASE.Reflex,BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
+# Class Name			Hit Dice	Type			Abbreviation	Max Level	Source Page		Automatic Languages	Optionnal Weapon Prof.																Save checks bonus											Combat bonus
+CLASS:Bard (Monte Cook's)	HD:6		TYPE:Base.PC	ABB:Brd(MC)		MAXLEVEL:20	SOURCEPAGE:p.5	LANGAUTO:Literacy		WEAPONBONUS:Longbow|Longbow (Composite)|Longsword|Rapier|Sap|Shortbow (Composite)|Sword (Short)|Shortbow|Whip	BONUS:CHECKS|BASE.Fortitude|CL/3	BONUS:CHECKS|BASE.Reflex,BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name			Required AL
 CLASS:Bard (Monte Cook's)	PREALIGN:NG,TN,NE,CG,CN,CE
 # Class Name			Skill Pts/Lvl	Class Skill
@@ -35,8 +35,8 @@ CLASS:Bard (Monte Cook's)	SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTE
 19	CAST:0,12,0,9,0,6	KNOWN:0,11,0,8,0,4
 20	CAST:0,12,0,9,0,7	KNOWN:0,11,0,8,0,5	SA:Weave Melodies
 
-# Class Name			Hit Dice	Type			Abbreviation	Source Page		Automatic Languages	Save checks bonus											Combat bonus
-CLASS:Sorcerer (Monte Cook's)	HD:6		TYPE:Base.PC	ABB:Sor(MC)		SOURCEPAGE:p.10	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
+# Class Name			Hit Dice	Type			Abbreviation	Max Level	Source Page		Automatic Languages	Save checks bonus											Combat bonus
+CLASS:Sorcerer (Monte Cook's)	HD:6		TYPE:Base.PC	ABB:Sor(MC)		MAXLEVEL:20	SOURCEPAGE:p.10	LANGAUTO:Literacy		BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
 # Class Name			Skill Pts/Lvl	Class Skill
 CLASS:Sorcerer (Monte Cook's)	STARTSKILLPTS:4	CSKILL:Concentration|TYPE.Craft|Diplomacy|Gather Information|Knowledge (Arcana)|TYPE.Profession|Spellcraft
 # Class Name			Spell Stat		Spell Type		Memorize	Caster level
@@ -83,16 +83,16 @@ CLASS:Diplomancer	HD:6		TYPE:PC.Prestige	MAXLEVEL:10	SOURCEPAGE:p.26	BONUS:CHECK
 CLASS:Diplomancer	PREFEAT:2,Skill Focus(Diplomacy),Spell Focus(Enchantment)	PRESKILL:1,Diplomacy=10	PRESKILL:1,Sense Motive=8	PRESPELLSCHOOL:Enchantment,5,1
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Diplomancer	STARTSKILLPTS:4	CSKILL:Bluff|Concentration|Decipher Script|Diplomacy|Gather Information|Hide|Intimidate|TYPE.Knowledge|Listen|Search|Sense Motive|Spellcraft|Spot
-1	SA:Charm																																												SPELLS:ClassAbility|TIMES=1|Charm	ADD:SPELLCASTER|1|ANY
+1	SA:Charm																																												ADD:SPELLCASTER|1|ANY	SPELLS:ClassAbility|TIMES=1|Charm
 2	SA:Enchantment Affinity +% (Ex)|EnchantAffinity								BONUS:CASTERLEVEL|SCHOOL.Enchantment|EnchantAffinity	BONUS:DC|SCHOOL.Enchantment|EnchantAffinity|TYPE=Competence							DEFINE:EnchantAffinity|1
-3	SA:Magical Seduction/Attractiveness (Su)																																													ADD:SPELLCASTER|1|ANY
+3	SA:Magical Seduction/Attractiveness (Su)																																							ADD:SPELLCASTER|1|ANY
 4	SA:Protection from Evocations +%|ProtectionEvocations																																DEFINE:ProtectionEvocations|1
-5	SA:Insight into Secrets (Sp)																																															ADD:SPELLCASTER|1|ANY
+5	SA:Insight into Secrets (Sp)																																									ADD:SPELLCASTER|1|ANY
 6										BONUS:VAR|EnchantAffinity|1
-7	SA:Charisma Gift (Su)																															BONUS:STAT|CHA|1|TYPE=Inherent												ADD:SPELLCASTER|1|ANY
+7	SA:Charisma Gift (Su)																															BONUS:STAT|CHA|1|TYPE=Inherent						ADD:SPELLCASTER|1|ANY
 8										BONUS:VAR|ProtectionEvocations|1
-9	SA:Word Cunning (Su)																																																ADD:SPELLCASTER|1|ANY
-10										BONUS:VAR|EnchantAffinity|1																																						ADD:SPELLCASTER|1|ANY
+9	SA:Word Cunning (Su)																																										ADD:SPELLCASTER|1|ANY
+10										BONUS:VAR|EnchantAffinity|1																																ADD:SPELLCASTER|1|ANY
 
 # Class Name		Hit Dice	Type			Max Level	Source Page		Save checks bonus											Combat bonus
 CLASS:Eldritch Warrior	HD:8		TYPE:PC.Prestige	MAXLEVEL:10	SOURCEPAGE:p.27	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
@@ -186,15 +186,15 @@ CLASS:Mirror Master	STARTSKILLPTS:2	CSKILL:Concentration|TYPE.Craft|Knowledge (A
 8	SPELLLEVEL:CLASS|SPELLCASTER.Arcane=6|Eyebite,Mirror Calling (Greater),Mirror Truth
 10	SPELLLEVEL:CLASS|SPELLCASTER.Arcane=7|Mirror Portal,Simulacrum,Spell Turning
 ###Block: Normal Progression
-1	SA:Mirror Thoughts (Sp)																		SPELLS:Class Ability|TIMES=1|Detect Thoughts	ADD:SPELLCASTER|1|ANY
+1	SA:Mirror Thoughts (Sp)																		ADD:SPELLCASTER|1|ANY	SPELLS:Class Ability|TIMES=1|Detect Thoughts
 2	SA:Mirrored Eyes (Su)	SA:Bonus Spells (1st and 2nd)
-3																														ADD:SPELLCASTER|1|ANY
+3																						ADD:SPELLCASTER|1|ANY
 4	SA:Piercing Gaze (Ex)	SA:Bonus Spells (3rd and 4th)		BONUS:SKILL|Spot,Search,Intimidate,Sense Motive|2|TYPE=Competence
-5																														ADD:SPELLCASTER|1|ANY
+5																						ADD:SPELLCASTER|1|ANY
 6	SA:Mirror Step (Dimension Door)(Sp)	SA:Bonus Spells (5th)
-7																														ADD:SPELLCASTER|1|ANY
+7																						ADD:SPELLCASTER|1|ANY
 8	SA:Mirror Step (Teleport)(Sp)	SA:Bonus Spells (6th)
-9																														ADD:SPELLCASTER|1|ANY
+9																						ADD:SPELLCASTER|1|ANY
 10	SA:Mirror Step (Plane Shift)(Sp)	SA:Bonus Spells (7th)
 
 # Class Name	Hit Dice	Type			Max Level	Source Page		Save checks bonus											Combat bonus
