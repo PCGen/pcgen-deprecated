@@ -543,7 +543,7 @@ public class PreClassTest extends AbstractCharacterTestCase
 		assertEquals(1, test.passes(prereq, character));
 	}
 
-	public void testAnyLevelsTwoClasses() throws Exception
+	public void testLevelsTwoClasses() throws Exception
 	{
 		final PCClass pcClass = new PCClass();
 		pcClass.setName("MyClass");
@@ -558,19 +558,118 @@ public class PreClassTest extends AbstractCharacterTestCase
 		final PlayerCharacter character = getCharacter();
 		character.incrementClassLevel(1, pcClass);
 
-		final Prerequisite prereq = new Prerequisite();
-		prereq.setKind("class");
-		prereq.setKey("Any");
-		prereq.setOperand("2");
-		prereq.setOperator(PrerequisiteOperator.GTEQ);
+		final PreParserFactory factory = PreParserFactory.getInstance();
+		Prerequisite prereq = factory.parse("PRECLASS:2,MyClass=1,MyClass2=2");
 
-		final PreClassTester test = new PreClassTester();
-		assertEquals(0, test.passes(prereq, character));
+		assertEquals(false, PrereqHandler.passes(prereq, character, null));
 
 		character.incrementClassLevel(1, pcClass2);
-		assertEquals(0, test.passes(prereq, character));
+		assertEquals(false, PrereqHandler.passes(prereq, character, null));
 
 		character.incrementClassLevel(1, pcClass2);
-		assertEquals(1, test.passes(prereq, character));
+		assertEquals(true, PrereqHandler.passes(prereq, character, null));
+	}
+
+	public void testAnyLevelsTwoClasses() throws Exception
+	{
+		final PCClass pcClass = new PCClass();
+		pcClass.setName("MyClass");
+		pcClass.setAbbrev("My");
+		pcClass.setSpellType("ARCANE");
+
+		final PCClass pcClass2 = new PCClass();
+		pcClass2.setName("MyClass2");
+		pcClass2.setAbbrev("My2");
+		pcClass2.setSpellType("DIVINE");
+
+		final PlayerCharacter character = getCharacter();
+
+		final PreParserFactory factory = PreParserFactory.getInstance();
+		Prerequisite prereq = factory.parse("PRECLASS:2,ANY=1");
+
+		character.incrementClassLevel(1, pcClass);
+		assertEquals(false, PrereqHandler.passes(prereq, character, null));
+
+		character.incrementClassLevel(1, pcClass2);
+		assertEquals(true, PrereqHandler.passes(prereq, character, null));
+	}
+
+	public void testAnyTwoLevelsTwoClasses() throws Exception
+	{
+		final PCClass pcClass = new PCClass();
+		pcClass.setName("MyClass");
+		pcClass.setAbbrev("My");
+		pcClass.setSpellType("ARCANE");
+
+		final PCClass pcClass2 = new PCClass();
+		pcClass2.setName("MyClass2");
+		pcClass2.setAbbrev("My2");
+		pcClass2.setSpellType("DIVINE");
+
+		final PlayerCharacter character = getCharacter();
+
+		final PreParserFactory factory = PreParserFactory.getInstance();
+		Prerequisite prereq = factory.parse("PRECLASS:2,ANY=2");
+
+		character.incrementClassLevel(2, pcClass);
+		assertEquals(false, PrereqHandler.passes(prereq, character, null));
+
+		character.incrementClassLevel(1, pcClass2);
+		assertEquals(false, PrereqHandler.passes(prereq, character, null));
+
+		character.incrementClassLevel(1, pcClass2);
+		assertEquals(true, PrereqHandler.passes(prereq, character, null));
+	}
+
+	public void testSpellcasterLevelsTwoClasses() throws Exception
+	{
+		final PCClass pcClass = new PCClass();
+		pcClass.setName("MyClass");
+		pcClass.setAbbrev("My");
+		pcClass.setSpellType("ARCANE");
+		pcClass.addBonusList("0|CASTERLEVEL|MyClass|CL");
+
+		final PCClass pcClass2 = new PCClass();
+		pcClass2.setName("MyClass2");
+		pcClass2.setAbbrev("My2");
+		pcClass2.setSpellType("DIVINE");
+		pcClass.addBonusList("0|CASTERLEVEL|MyClass2|CL");
+
+		final PlayerCharacter character = getCharacter();
+
+		final PreParserFactory factory = PreParserFactory.getInstance();
+		Prerequisite prereq = factory.parse("PRECLASS:2,SPELLCASTER=1");
+
+		character.incrementClassLevel(1, pcClass);
+		assertEquals(false, PrereqHandler.passes(prereq, character, null));
+
+		character.incrementClassLevel(1, pcClass2);
+		assertEquals(true, PrereqHandler.passes(prereq, character, null));
+	}
+	
+	public void testSpellcasterTypeLevelsTwoClasses() throws Exception
+	{
+		final PCClass pcClass = new PCClass();
+		pcClass.setName("MyClass");
+		pcClass.setAbbrev("My");
+		pcClass.setSpellType("ARCANE");
+		pcClass.addBonusList("0|CASTERLEVEL|MyClass|CL");
+
+		final PCClass pcClass2 = new PCClass();
+		pcClass2.setName("MyClass2");
+		pcClass2.setAbbrev("My2");
+		pcClass2.setSpellType("ARCANE");
+		pcClass.addBonusList("0|CASTERLEVEL|MyClass2|CL");
+
+		final PlayerCharacter character = getCharacter();
+
+		final PreParserFactory factory = PreParserFactory.getInstance();
+		Prerequisite prereq = factory.parse("PRECLASS:2,SPELLCASTER.ARCANE=1");
+
+		character.incrementClassLevel(1, pcClass);
+		assertEquals(false, PrereqHandler.passes(prereq, character, null));
+
+		character.incrementClassLevel(1, pcClass2);
+		assertEquals(true, PrereqHandler.passes(prereq, character, null));
 	}
 }
