@@ -13,22 +13,20 @@ require_once('include/header.php.inc');
         it is best to use one of our regular releases available from the 
         <a href="http://pcgen.sourceforge.net/03_get_pcgen.php">downloads page</a> .</p>
         
-        <h2>PCGen Development Autobuilds (5.11.x)</h2>
-        <p>These are regular scheduled builds from the development branch of PCGen. Every eight hours, 
-        the project is checked for changes and if any have been made a new build is generated.
-        Note: the files are date stamped so the newer ones are further down the list.</p>
+        <h2>PCGen Development Autobuilds (5.13.x)</h2>
+        <p>These are regular scheduled builds from the development branch of PCGen. Every night, 
+        the project is checked for changes and if any have been made a new build is generated.</p>
         <ul>
           <li><a href="http://pcgen.sourceforge.net/autobuilds/">Autobuild report</a>
           <li><a href="http://pcgen.sourceforge.net/autobuilds/download.html">Download Autobuild</a>
         </ul>
 
-        <h2>PCGen Production Autobuilds (5.10.x)</h2>
-        <p>These are regular scheduled builds from the production branch of PCGen. Every four hours, 
+        <h2>PCGen Production Autobuilds (5.12.x)</h2>
+        <p>These are regular scheduled builds from the production branch of PCGen. Every night, 
         the project is checked for changes and if any have been made a new build is generated.
         This branch is only active when there is work going on to release a production fix release, 
         or when we are nearing a new full production release. The builds currently show the work we 
-        are doing towards the 5.10.2 release. Note: the files are date stamped so the newer ones are 
-        further down the list.</p>
+        are doing towards the 5.12.0 release.</p>
         <ul>
           <li><a href="http://pcgen.sourceforge.net/autobuilds-prod/">Autobuild report</a>
           <li><a href="http://pcgen.sourceforge.net/autobuilds-prod/download.html">Download Autobuild</a>
