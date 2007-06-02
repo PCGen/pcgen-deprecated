@@ -27,18 +27,21 @@ import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
+import pcgen.persistence.LoadContext;
 
 public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
 		TestCase
 {
 
 	PlayerCharacter pc;
+	LoadContext context = new LoadContext(new PCGenGraph());
 
 	@Override
 	@Before
 	public void setUp()
 	{
 		pc = new PlayerCharacter(false);
+		pc.setLoadContext(context);
 	}
 
 	public abstract Class<T> getCDOMClass();

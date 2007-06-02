@@ -83,4 +83,10 @@ public final class CDOMAllRef<T extends PrereqObject> extends CDOMGroupRef<T>
 				+ obj.getClass().getSimpleName());
 		}
 	}
+
+	@Override
+	public int getObjectCount()
+	{
+		return referencedList == null ? 0 : referencedList.size();
+	}
 }

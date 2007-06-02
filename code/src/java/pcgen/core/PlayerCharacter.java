@@ -18040,10 +18040,17 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	//TODO This should probably be a RunContext or some Facade of the LoadContext
 	// so that it isn't abused - thpr Jun 2, 2007
+	
+	private LoadContext context = null;
+	
 	public LoadContext getContext()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return context;
+	}
+
+	public void setLoadContext(LoadContext lc)
+	{
+		context = lc;
 	}
 
 

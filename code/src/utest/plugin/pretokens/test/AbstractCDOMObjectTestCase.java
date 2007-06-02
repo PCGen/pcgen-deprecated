@@ -86,13 +86,24 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		return p;
 	}
 
-	public Prerequisite getParenPrereq()
+	public Prerequisite getSubKeyPrereq()
 	{
 		Prerequisite p;
 		p = new Prerequisite();
 		p.setKind(getKind());
 		p.setKey("Crossbow");
 		p.setSubKey("Heavy");
+		p.setOperand("1");
+		p.setOperator(PrerequisiteOperator.GTEQ);
+		return p;
+	}
+
+	public Prerequisite getParenPrereq()
+	{
+		Prerequisite p;
+		p = new Prerequisite();
+		p.setKind(getKind());
+		p.setKey("Crossbow (Heavy)");
 		p.setOperand("1");
 		p.setOperator(PrerequisiteOperator.GTEQ);
 		return p;
@@ -134,6 +145,8 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 
 	public abstract boolean isAnyLegal();
 
+	public abstract boolean isSubKeyAware();
+
 	// TODO Not relevant today, because PCGen 5.x supports only one deity
 	// @Test
 	// public void testInvalidCount()
@@ -170,7 +183,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			grantCDOMObject("Winged Mage");
 			assertEquals(1, getTest().passesCDOM(prereq, pc));
-			assertEquals(0, getTest().passesCDOM(getParenPrereq(), pc));
+			assertEquals(0, getTest().passesCDOM(getSubKeyPrereq(), pc));
 		}
 	}
 
@@ -186,7 +199,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			grantFalseObject("Winged Mage");
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			assertEquals(0, getTest().passesCDOM(getParenPrereq(), pc));
+			assertEquals(0, getTest().passesCDOM(getSubKeyPrereq(), pc));
 		}
 	}
 
@@ -200,7 +213,6 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		grantCDOMObject("Winged Mage");
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
-		assertEquals(0, getTest().passesCDOM(getParenPrereq(), pc));
 	}
 
 	@Test
@@ -213,6 +225,19 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		grantFalseObject("Winged Mage");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
+	}
+
+	@Test
+	public void testFalseSubKey() throws PrerequisiteException
+	{
+		if (isSubKeyAware())
+		{
+			Prerequisite prereq = getSubKeyPrereq();
+			// PC Should start without
+			assertEquals(0, getTest().passesCDOM(prereq, pc));
+			grantCDOMObject("Crossbow");
+			assertEquals(0, getTest().passesCDOM(prereq, pc));
+		}
 	}
 
 	@Test
@@ -241,6 +266,27 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		// And maybe Generic Crossbow
 		assertEquals(isTestStarting() ? 1 : 0, getTest().passesCDOM(
 			getGenericPrereq(), pc));
+	}
+
+	@Test
+	public void testSubKey() throws PrerequisiteException
+	{
+		if (isSubKeyAware())
+		{
+			Prerequisite prereq = getSubKeyPrereq();
+			// PC Should start without
+			assertEquals(0, getTest().passesCDOM(prereq, pc));
+			grantCDOMObject("Crossbow (Light)");
+			assertEquals(0, getTest().passesCDOM(prereq, pc));
+			grantCDOMObject("Crossbow (Heavy)");
+			// Has Crossbow (Heavy)
+			assertEquals(1, getTest().passesCDOM(prereq, pc));
+			// But not Katana
+			assertEquals(0, getTest().passesCDOM(getSimplePrereq(), pc));
+			// And maybe Generic Crossbow
+			assertEquals(isTestStarting() ? 1 : 0, getTest().passesCDOM(
+				getGenericPrereq(), pc));
+		}
 	}
 
 	@Test

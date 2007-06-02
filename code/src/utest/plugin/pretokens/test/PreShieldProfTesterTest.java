@@ -76,6 +76,11 @@ public class PreShieldProfTesterTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isSubKeyAware()
+	{
+		return false;
+	}
 	// TODO need to test with Equipment having the type, not WeaponProf having
 	// the type :(
 }

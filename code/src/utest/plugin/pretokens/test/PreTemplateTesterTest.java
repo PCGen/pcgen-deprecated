@@ -76,4 +76,9 @@ public class PreTemplateTesterTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isSubKeyAware()
+	{
+		return false;
+	}
 }

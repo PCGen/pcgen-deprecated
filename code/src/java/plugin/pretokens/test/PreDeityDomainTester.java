@@ -29,11 +29,13 @@ package plugin.pretokens.test;
 import java.util.Collection;
 import java.util.List;
 
+import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Deity;
+import pcgen.core.Domain;
 import pcgen.core.DomainList;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -96,6 +98,7 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
 		throws PrerequisiteException
 	{
+		int requiredNumber = Integer.parseInt(prereq.getOperand());
 		int runningTotal = 0;
 		PCGenGraph activeGraph = character.getActiveGraph();
 		List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
@@ -107,29 +110,46 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 		for (Deity d : list)
 		{
 			Collection<LSTWriteable> mods = d.getListMods(dl);
-			if (requiresAny)
+			if (mods != null)
 			{
-				if (mods != null)
+				if (requiresAny)
 				{
-					runningTotal += mods.size();
-				}
-			}
-			else
-			{
-				for (LSTWriteable domain : mods)
-				{
-					String domainString = domain.getLSTformat();
-					if (Constants.LST_ALL.equals(domainString))
+					for (LSTWriteable domain : mods)
 					{
-						runningTotal++;
+						String domainString = domain.getLSTformat();
+						if (Constants.LST_ALL.equals(domainString))
+						{
+							CDOMGroupRef<Domain> ref =
+									character.getContext().ref
+										.getCDOMAllReference(Domain.class);
+							runningTotal = ref.getObjectCount();
+							break;
+						}
+						else
+						{
+							runningTotal++;
+						}
 					}
-					else if (domainString.equalsIgnoreCase(requiredDomain))
+				}
+				else
+				{
+					for (LSTWriteable domain : mods)
 					{
-						runningTotal++;
+						String domainString = domain.getLSTformat();
+						if (Constants.LST_ALL.equals(domainString))
+						{
+							runningTotal++;
+						}
+						else if (domainString.equalsIgnoreCase(requiredDomain))
+						{
+							runningTotal++;
+						}
 					}
 				}
 			}
 		}
+		runningTotal =
+				prereq.getOperator().compare(runningTotal, requiredNumber);
 		return countedTotal(prereq, runningTotal);
 	}
 

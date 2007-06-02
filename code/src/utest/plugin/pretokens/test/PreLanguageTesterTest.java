@@ -22,8 +22,7 @@ import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreLanguageTesterTest extends
-		AbstractCDOMObjectTestCase<Language>
+public class PreLanguageTesterTest extends AbstractCDOMObjectTestCase<Language>
 {
 
 	PreLanguageTester tester = new PreLanguageTester();
@@ -72,6 +71,12 @@ public class PreLanguageTesterTest extends
 
 	@Override
 	public boolean isTestStarting()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isSubKeyAware()
 	{
 		return false;
 	}

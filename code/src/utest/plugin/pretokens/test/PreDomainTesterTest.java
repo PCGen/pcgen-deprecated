@@ -75,4 +75,10 @@ public class PreDomainTesterTest extends AbstractCDOMObjectTestCase<Domain>
 		return false;
 	}
 
+	@Override
+	public boolean isSubKeyAware()
+	{
+		return false;
+	}
+
 }

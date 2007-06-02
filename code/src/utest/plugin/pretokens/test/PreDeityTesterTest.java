@@ -22,8 +22,7 @@ import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreDeityTesterTest extends
-		AbstractCDOMObjectTestCase<Deity>
+public class PreDeityTesterTest extends AbstractCDOMObjectTestCase<Deity>
 {
 
 	PreDeityTester tester = new PreDeityTester();
@@ -72,6 +71,12 @@ public class PreDeityTesterTest extends
 
 	@Override
 	public boolean isTestStarting()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isSubKeyAware()
 	{
 		return false;
 	}

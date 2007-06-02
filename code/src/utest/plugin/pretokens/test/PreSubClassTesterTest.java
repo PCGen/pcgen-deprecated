@@ -75,4 +75,9 @@ public class PreSubClassTesterTest extends AbstractCDOMObjectTestCase<SubClass>
 		return false;
 	}
 
+	@Override
+	public boolean isSubKeyAware()
+	{
+		return false;
+	}
 }

@@ -22,8 +22,7 @@ import pcgen.core.PObject;
 import pcgen.core.Race;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreRaceTesterTest extends
-		AbstractCDOMObjectTestCase<Race>
+public class PreRaceTesterTest extends AbstractCDOMObjectTestCase<Race>
 {
 
 	PreRaceTester tester = new PreRaceTester();
@@ -72,6 +71,12 @@ public class PreRaceTesterTest extends
 
 	@Override
 	public boolean isTestStarting()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isSubKeyAware()
 	{
 		return false;
 	}

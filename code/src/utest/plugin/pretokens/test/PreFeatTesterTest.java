@@ -79,7 +79,13 @@ public class PreFeatTesterTest extends AbstractCDOMObjectTestCase<Ability>
 	{
 		return false;
 	}
-	
+
+	@Override
+	public boolean isSubKeyAware()
+	{
+		return true;
+	}
+
 	@Override
 	public Ability getObject(String s)
 	{
@@ -87,7 +93,6 @@ public class PreFeatTesterTest extends AbstractCDOMObjectTestCase<Ability>
 		a.setCDOMCategory(AbilityCategory.FEAT);
 		return a;
 	}
-
 
 	@Test
 	public void testNotAFeat() throws PrerequisiteException
@@ -100,13 +105,14 @@ public class PreFeatTesterTest extends AbstractCDOMObjectTestCase<Ability>
 		grantObject(wrong);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		grantCDOMObject("Winged Mage");
-		//Pass, as it's a FEAT
+		// Pass, as it's a FEAT
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}
-	
-	//TODO Test subkey TYPE=
-	//TODO Test subkey TYPE.
-	//TODO Test Count Multiples on item w/ SubKey
-	//TODO Test subkey wildcard (%) also make sure to use count, just to get empty wildcard
-	
+
+	// TODO Test subkey TYPE=
+	// TODO Test subkey TYPE.
+	// TODO Test Count Multiples on item w/ SubKey
+	// TODO Test subkey wildcard (%) also make sure to use count, just to get
+	// empty wildcard
+
 }

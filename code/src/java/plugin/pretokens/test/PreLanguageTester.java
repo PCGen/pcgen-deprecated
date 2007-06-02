@@ -109,8 +109,6 @@ public class PreLanguageTester extends AbstractPrerequisiteTest implements
 
 		if (requiredLang.equalsIgnoreCase("ANY")) { //$NON-NLS-1$
 			runningTotal = activeGraph.getGrantedNodeCount(Language.class);
-			System.err.println(runningTotal);
-			System.err.println(activeGraph.getGrantedNodeList(Language.class));
 		}
 		else if (requiredLang.startsWith("TYPE.")
 			|| requiredLang.startsWith("TYPE="))

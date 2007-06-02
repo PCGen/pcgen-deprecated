@@ -76,4 +76,9 @@ public class PreSpecialAbilityTesterTest extends
 		return true;
 	}
 
+	@Override
+	public boolean isSubKeyAware()
+	{
+		return false;
+	}
 }

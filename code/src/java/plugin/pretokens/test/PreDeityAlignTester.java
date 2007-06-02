@@ -124,9 +124,10 @@ public class PreDeityAlignTester extends AbstractPrerequisiteTest implements
 		Alignment requiredAlign =
 				character.getContext().ref.getConstructedCDOMObject(
 					Alignment.class, prereq.getKey());
+		// TODO What if requiredAlign is null?
 		for (Deity d : list)
 		{
-			if (d.get(ObjectKey.ALIGNMENT).equals(requiredAlign))
+			if (requiredAlign.equals(d.get(ObjectKey.ALIGNMENT)))
 			{
 				runningTotal++;
 			}
