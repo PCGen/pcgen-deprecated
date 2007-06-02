@@ -21,28 +21,28 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.util.Collection;
-import java.util.Set;
+import java.io.StringWriter;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Domain;
+import pcgen.core.DomainList;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
+import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.PCClassUniversalLstToken;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -127,53 +127,120 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
-		StringTokenizer tok = new StringTokenizer(value, Constants.DOT);
+		CDOMReference<DomainList> allowedDomainList =
+				context.ref.getCDOMReference(DomainList.class, "*Allowed");
 
-		//TODO This is a list (*Domains), not a ChoiceSet
-		ChoiceSet<CDOMReference<Domain>> cl =
-				new ChoiceSet<CDOMReference<Domain>>(1, tok.countTokens());
+		StringTokenizer tok = new StringTokenizer(value, Constants.DOT);
 		while (tok.hasMoreTokens())
 		{
-			CDOMReference<Domain> ref =
-					TokenUtilities.getTypeOrPrimitive(context, DOMAIN_CLASS,
-						tok.nextToken());
-			if (ref == null)
+			String tokString = tok.nextToken();
+			Prerequisite prereq = null; // Do not initialize, null is
+			// significant!
+			String domainKey;
+
+			// Note: May contain PRExxx
+			if (tokString.indexOf("[") == -1)
 			{
-				return false;
+				domainKey = tokString;
 			}
-			cl.addChoice(ref);
+			else
+			{
+				int openBracketLoc = tokString.indexOf("[");
+				domainKey = tokString.substring(0, openBracketLoc);
+				if (!tokString.endsWith("]"))
+				{
+					Logging.errorPrint("Unresolved Prerequisite on Domain "
+						+ tokString + " in " + getTokenName());
+					return false;
+				}
+				prereq =
+						getPrerequisite(tokString.substring(openBracketLoc + 1,
+							tokString.length() - openBracketLoc - 2));
+			}
+			AssociatedPrereqObject apo =
+					context.list.addToList(getTokenName(), po,
+						allowedDomainList, context.ref.getCDOMReference(
+							DOMAIN_CLASS, domainKey));
+			if (prereq != null)
+			{
+				apo.addPrerequisite(prereq);
+			}
 		}
-		context.graph.grant(getTokenName(), po, cl);
+
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject po)
 	{
-		GraphChanges<ChoiceSet> changes =
-				context.graph.getChangesFromToken(getTokenName(), po,
-					ChoiceSet.class);
+		CDOMReference<DomainList> allowedDomainList =
+				context.ref.getCDOMReference(DomainList.class, "*Allowed");
+
+		GraphChanges<Domain> changes =
+				context.list.getChangesInList(getTokenName(), po,
+					allowedDomainList);
 		if (changes == null)
 		{
+			// Legal if no ADDDOMAIN was present
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		if (changes.hasRemovedItems() || changes.includesGlobalClear())
 		{
-			// Zero indicates no Token
+			context
+				.addWriteMessage(getTokenName() + " does not support .CLEAR");
 			return null;
 		}
-		if (added.size() > 1)
+		if (changes.hasAddedItems())
 		{
-			context.addWriteMessage(getTokenName()
-				+ " may only have one ChoiceSet linked in the Graph");
-			return null;
+			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+			StringBuilder sb = new StringBuilder();
+			boolean first = true;
+			for (LSTWriteable domain : changes.getAdded())
+			{
+				if (!first)
+				{
+					sb.append('.');
+				}
+				first = false;
+				sb.append(domain.getLSTformat());
+				AssociatedPrereqObject assoc =
+						changes.getAddedAssociation(domain);
+				List<Prerequisite> prereqs = assoc.getPrerequisiteList();
+				Prerequisite prereq;
+				if (prereqs == null || prereqs.size() == 0)
+				{
+					prereq = null;
+				}
+				else if (prereqs.size() == 1)
+				{
+					prereq = prereqs.get(0);
+				}
+				else
+				{
+					context.addWriteMessage("Added Domain from "
+						+ getTokenName() + " had more than one "
+						+ "Prerequisite: " + prereqs.size());
+					return null;
+				}
+				if (prereq != null)
+				{
+					sb.append('[');
+					StringWriter swriter = new StringWriter();
+					try
+					{
+						prereqWriter.write(swriter, prereq);
+					}
+					catch (PersistenceLayerException e)
+					{
+						context.addWriteMessage("Error writing Prerequisite: "
+							+ e);
+						return null;
+					}
+					sb.append(swriter.toString());
+					sb.append(']');
+				}
+			}
+			return new String[]{sb.toString()};
 		}
-		ChoiceSet<CDOMReference<?>> cs =
-				(ChoiceSet<CDOMReference<?>>) added.iterator().next();
-		Set<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		set.addAll(cs.getSet());
-		return new String[]{ReferenceUtilities
-			.joinLstFormat(set, Constants.DOT)};
+		return new String[]{};
 	}
 }

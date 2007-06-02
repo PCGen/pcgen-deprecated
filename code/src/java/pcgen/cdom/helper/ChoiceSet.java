@@ -33,4 +33,8 @@ public interface ChoiceSet<T>
 	public Formula getCount();
 
 	public Set<T> getSet();
+
+	public void setMaxSelections(Formula formulaFor);
+
+	public void setCount(Formula formulaFor);
 }

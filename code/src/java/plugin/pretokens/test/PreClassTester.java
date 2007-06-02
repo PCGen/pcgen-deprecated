@@ -6,11 +6,17 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
@@ -45,13 +51,12 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 	{
 		int runningTotal = 0;
 
-		final boolean sumLevels = prereq.isTotalValues();
 		final String aString = prereq.getKey().toUpperCase();
 		final int preClass = Integer.parseInt(prereq.getOperand());
 
 		if ("SPELLCASTER".equals(aString)) //$NON-NLS-1$
 		{
-			if (character.isSpellCaster(preClass, sumLevels))
+			if (character.isSpellCaster(preClass, false))
 			{
 				runningTotal = preClass;
 			}
@@ -59,7 +64,7 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 		else if (aString.startsWith("SPELLCASTER.")) //$NON-NLS-1$
 		{
 			if (character.isSpellCaster(aString.substring(12), preClass,
-				sumLevels))
+				false))
 			{
 				runningTotal = preClass;
 			}
@@ -102,6 +107,67 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 
 		return PropertyFactory.getFormattedString(
 			"PreClass.toHtml", prereq.getKey(), operator, level); //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<PCClassLevel> levellist = activeGraph.getGrantedNodeList(PCClassLevel.class);
+		String classString = prereq.getKey();
+		int runningTotal = 0;
+		if ("SPELLCASTER".equalsIgnoreCase(classString)) //$NON-NLS-1$
+		{
+			List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
+			for (PCClass pcClass : classlist)
+			{
+				int classLevels =
+						(int) character.getTotalBonusTo("CASTERLEVEL", pcClass
+							.getKeyName());
+				classLevels +=
+						(int) character.getTotalBonusTo("PCLEVEL", pcClass
+							.getKeyName());
+				runningTotal += getClassLevel(pcClass, levellist);
+			}
+			if (character.isSpellCaster(preClass, false))
+			{
+				runningTotal = preClass;
+			}
+		}
+		else if (aString.startsWith("SPELLCASTER.")) //$NON-NLS-1$
+		{
+			if (character.isSpellCaster(aString.substring(12), preClass,
+				false))
+			{
+				runningTotal = preClass;
+			}
+		}
+		else if (Constants.LST_ANY.equals(classString))
+		{
+			List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
+			for (PCClass pcClass : classlist)
+			{
+				runningTotal += getClassLevel(pcClass, levellist);
+			}
+		}
+		else
+		{
+			PCClass pcClass  = activeGraph.getGrantedNode(PCClass.class, classString);
+			runningTotal += getClassLevel(pcClass, levellist);
+		}
+		// return totalLevels;
+	}
+
+	private int getClassLevel(PCClass pcClass, List<PCClassLevel> levellist)
+	{
+		int classLevel = 0;
+		for (PCClassLevel pcl : levellist)
+		{
+			int level = pcClass.getCDOMLevel(pcl);
+			classLevel = Math.max(classLevel, level);
+		}
+		// Techically if classLevel == -1 we have a VERY funky PC
+		// but we'll let that fly for now
+		return Math.max(0, classLevel);
 	}
 
 }

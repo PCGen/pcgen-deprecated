@@ -84,4 +84,23 @@ public class PreAttackTester extends AbstractPrerequisiteTest implements
 				"PreAttack.toHtml", new Object[]{prereq.getOperator().toDisplayString(), prereq.getOperand()}); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal;
+		final int att = character.baseAttackBonus();
+
+		try
+		{
+			final int anInt = Integer.parseInt(prereq.getOperand());
+			runningTotal = prereq.getOperator().compare(att, anInt);
+		}
+		catch (NumberFormatException exc)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreAttack.error.badly_formed_attribute", prereq.getOperand())); //$NON-NLS-1$
+		}
+
+		return countedTotal(prereq, runningTotal);
+	}
+
 }

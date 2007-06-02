@@ -135,27 +135,27 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 				 * the graph would also make it harder to trace the source of
 				 * class skills, etc.)
 				 */
-				CDOMReference<Language> skill;
+				CDOMReference<Language> lang;
 				if (Constants.LST_ALL.equals(tokText))
 				{
 					foundAny = true;
-					skill = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
+					lang = context.ref.getCDOMAllReference(LANGUAGE_CLASS);
 				}
 				else
 				{
 					foundOther = true;
-					skill =
+					lang =
 							TokenUtilities.getTypeOrPrimitive(context,
 								LANGUAGE_CLASS, tokText);
 				}
-				if (skill == null)
+				if (lang == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
 						+ getTokenName() + ": " + value
 						+ " had an invalid reference: " + tokText);
 					return false;
 				}
-				addList.add(skill);
+				addList.add(lang);
 			}
 			firstToken = false;
 		}

@@ -25,9 +25,15 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.SpellDescriptor;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.core.spell.Spell;
 import pcgen.util.PropertyFactory;
@@ -80,5 +86,37 @@ public class PreSpellDescriptorTester extends AbstractPrerequisiteTest
 					prereq.getOperand(), prereq.getSubKey(), prereq.getKey()};
 		return PropertyFactory.getFormattedString(
 			"PreSpellDescriptor.toHtml", args); //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		SpellDescriptor descr = SpellDescriptor.getConstant(prereq.getKey());
+		int requiredLevel = Integer.parseInt(prereq.getSubKey());
+		int requiredNumber = Integer.parseInt(prereq.getOperand());
+
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<Spell> spells = activeGraph.getGrantedNodeList(Spell.class);
+		int qualifyCount = 0;
+		
+		for (Spell s : spells)
+		{
+			if (s.getListFor(ListKey.SPELL_DESCRIPTOR).contains(descr))
+			{
+				List<PCGraphEdge> assocEdges = activeGraph.getInwardEdgeList(s);
+				for (PCGraphEdge edge : assocEdges)
+				{
+					if (edge.getAssociation(AssociationKey.SPELL_LEVEL)
+						.intValue() >= requiredLevel)
+					{
+						qualifyCount++;
+						break;
+					}
+				}
+			}
+		}
+
+		int runningTotal =
+				prereq.getOperator().compare(qualifyCount, requiredNumber);
+		return countedTotal(prereq, runningTotal);
 	}
 }

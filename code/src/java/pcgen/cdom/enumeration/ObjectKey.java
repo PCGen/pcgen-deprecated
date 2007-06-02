@@ -38,6 +38,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.mode.Size;
+import pcgen.core.Alignment;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
@@ -129,7 +130,7 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<SkillArmorCheck> ARMOR_CHECK = new ObjectKey<SkillArmorCheck>();
 
-	public static final ObjectKey<AlignmentType> ALIGNMENT = new ObjectKey<AlignmentType>();
+	public static final ObjectKey<Alignment> ALIGNMENT = new ObjectKey<Alignment>();
 
 	public static final ObjectKey<DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>> COMPONENT_COST = new ObjectKey<DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>>();
 

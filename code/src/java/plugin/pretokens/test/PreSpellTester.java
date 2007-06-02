@@ -26,18 +26,22 @@
  */
 package plugin.pretokens.test;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import pcgen.core.CharacterDomain;
 import pcgen.core.Globals;
 import pcgen.core.PCSpell;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.SpellList;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.core.spell.Spell;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
-
-import java.util.List;
 
 /**
  * @author wardc
@@ -121,6 +125,53 @@ public class PreSpellTester extends AbstractPrerequisiteTest implements
 				new Object[]{prereq.getOperator().toDisplayString(),
 					prereq.getOperand(), prereq.getKey()};
 		return PropertyFactory.getFormattedString("PreSpell.toHtml", args); //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int requiredNumber = 0;
+		try
+		{
+			requiredNumber = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException e)
+		{
+			Logging
+				.errorPrint(PropertyFactory
+					.getString("PreSpell.error.badly_formed_attribute") + prereq.toString()); //$NON-NLS-1$
+		}
+
+		Set<Spell> spellSet = new HashSet<Spell>();
+		
+		// Build a list of all possible spells (innate)
+		List<Spell> aArrayList =
+				character.getActiveGraph().getGrantedNodeList(Spell.class);
+		String spellName = prereq.getKey();
+		int runningTotal = 0;
+
+		for (Spell aSpell : aArrayList)
+		{
+			if (aSpell.getKeyName().equalsIgnoreCase(spellName))
+			{
+				spellSet.add(aSpell);
+			}
+		}
+		
+		//From Lists (not innate)
+		List<SpellList> lists = character.getCDOMLists(SpellList.class);
+		if (lists != null)
+		{
+			for (SpellList sl : lists)
+			{
+				if (sl.containsKey(spellName))
+				{
+					spellSet.add(sl.get(spellName));
+				}
+			}
+		}
+		runningTotal =
+				prereq.getOperator().compare(spellSet.size(), requiredNumber);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

@@ -73,4 +73,23 @@ public class PreHPTester extends AbstractPrerequisiteTest implements
 		return "HP"; //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal;
+		try
+		{
+			final int targetHP = Integer.parseInt(prereq.getOperand());
+
+			runningTotal =
+					prereq.getOperator().compare(character.hitPoints(),
+						targetHP);
+		}
+		catch (NumberFormatException nfe)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreHP.error.bad_operand", prereq.getOperand())); //$NON-NLS-1$
+		}
+		return countedTotal(prereq, runningTotal);
+	}
+
 }

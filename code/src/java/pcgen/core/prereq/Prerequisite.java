@@ -44,11 +44,6 @@ public class Prerequisite implements Cloneable
 	private PrerequisiteOperator operator = PrerequisiteOperator.GTEQ;
 	private String operand = "1"; //$NON-NLS-1$
 	/**
-	 * Indicates that the total of skill ranks, class levels etc should be added
-	 * together when checking for a value.
-	 */
-	private boolean totalValues;
-	/**
 	 * Indicates that the number of qualifying objects should be tallied when
 	 * checking for a value.
 	 */
@@ -80,23 +75,6 @@ public class Prerequisite implements Cloneable
 				this.addPrerequisite(new Prerequisite(otherReq));
 			}
 		}
-	}
-
-	/**
-	 * @return Returns the totalValues.
-	 */
-	public final boolean isTotalValues()
-	{
-		return totalValues;
-	}
-
-	/**
-	 * @param totalValues
-	 *            The totalValues to set.
-	 */
-	public final void setTotalValues(final boolean totalValues)
-	{
-		this.totalValues = totalValues;
 	}
 
 	/**
@@ -245,11 +223,6 @@ public class Prerequisite implements Cloneable
 		{
 			buf.append(PropertyFactory
 				.getString("Prerequisite.count-multiples")); //$NON-NLS-1$
-		}
-
-		if (totalValues)
-		{
-			buf.append(PropertyFactory.getString("Prerequisite.total-values")); //$NON-NLS-1$
 		}
 
 		if (categoryName != null)
@@ -563,8 +536,7 @@ public class Prerequisite implements Cloneable
 		{
 			return false;
 		}
-		return totalValues == other.totalValues
-			&& countMultiples == other.countMultiples
+		return countMultiples == other.countMultiples
 			&& overrideQualify == other.overrideQualify
 			&& levelQualifier == other.levelQualifier
 			&& operator == other.operator

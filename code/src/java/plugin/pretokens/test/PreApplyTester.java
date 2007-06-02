@@ -151,4 +151,10 @@ public class PreApplyTester extends AbstractPrerequisiteTest implements
 				"PreApply.toHtml", prereq.getOperator().toString(), prereq.getOperand()); //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		return 0;
+	}
+
 }

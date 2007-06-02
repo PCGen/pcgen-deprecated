@@ -21,8 +21,8 @@
  */
 package plugin.lsttokens.deity;
 
-import pcgen.cdom.enumeration.AlignmentType;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.core.Alignment;
 import pcgen.core.Deity;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.DeityLstToken;
@@ -49,8 +49,8 @@ public class AlignToken implements DeityLstToken
 	{
 		try
 		{
-			context.obj.put(deity, ObjectKey.ALIGNMENT, AlignmentType
-				.valueOf(value));
+			context.obj.put(deity, ObjectKey.ALIGNMENT, context.ref
+				.getConstructedCDOMObject(Alignment.class, value));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -63,7 +63,7 @@ public class AlignToken implements DeityLstToken
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		AlignmentType at = context.obj.getObject(deity, ObjectKey.ALIGNMENT);
+		Alignment at = context.obj.getObject(deity, ObjectKey.ALIGNMENT);
 		if (at == null)
 		{
 			return null;

@@ -27,24 +27,30 @@
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
+import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
-import pcgen.core.prereq.PrerequisiteOperator;
-
 /**
  * @author wardc
- *
+ * 
  */
 public class PreSkillTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -83,8 +89,8 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 				{
 					for (String type : aSkill.getTypeList(false))
 					{
-						if (type.startsWith(
-							skillKey.substring(0, percentageSignPosition)))
+						if (type.startsWith(skillKey.substring(0,
+							percentageSignPosition)))
 						{
 							foundMatch = true;
 							break;
@@ -99,19 +105,11 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 				if (foundMatch)
 				{
 					foundSkill = foundMatch;
-					if (prereq.isTotalValues())
+					if (prereq.getOperator().compare(
+						aSkill.getTotalRank(character).intValue(),
+						requiredRanks) > 0)
 					{
-						runningTotal +=
-								aSkill.getTotalRank(character).intValue();
-					}
-					else
-					{
-						if (prereq.getOperator().compare(
-							aSkill.getTotalRank(character).intValue(),
-							requiredRanks) > 0)
-						{
-							runningTotal++;
-						}
+						runningTotal++;
 					}
 					if (runningTotal == 0)
 					{
@@ -124,28 +122,18 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 					.startsWith(skillKey.substring(0, percentageSignPosition))))
 			{
 				foundSkill = true;
-				if (prereq.isTotalValues())
+				if (prereq.getOperator().compare(
+					aSkill.getTotalRank(character).intValue(),
+					requiredRanks) > 0)
 				{
-					runningTotal += aSkill.getTotalRank(character).intValue();
-				}
-				else
-				{
-					if (prereq.getOperator().compare(
-						aSkill.getTotalRank(character).intValue(),
-						requiredRanks) > 0)
-					{
-						runningTotal++;
-					}
-				}
-				if (runningTotal > 0)
-				{
-					foundMatch = true;
+					runningTotal++;
 				}
 			}
 
-			if (prereq.isCountMultiples() || prereq.isTotalValues())
+			if (prereq.isCountMultiples())
 			{
-				// For counted totals we want to count all occurances, not just the first
+				// For counted totals we want to count all occurances, not just
+				// the first
 				foundMatch = false;
 			}
 			if (foundMatch)
@@ -166,7 +154,9 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -174,7 +164,9 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 		return "SKILL"; //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#toHtmlString(pcgen.core.prereq.Prerequisite)
 	 */
 	@Override
@@ -192,6 +184,78 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 					new Object[]{prereq.getOperator().toDisplayString(),
 						prereq.getOperand(), skillName});
 		return foo;
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		int requiredRanks = Integer.parseInt(prereq.getOperand());
+		// Compute the skill name from the Prerequisite
+		String requiredSkillKey = prereq.getKey().toUpperCase();
+		if (prereq.getSubKey() != null)
+		{
+			requiredSkillKey += " (" + prereq.getSubKey().toUpperCase() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		int runningTotal = 0;
+		PCGenGraph graph = character.getActiveGraph();
+		if ((requiredSkillKey.startsWith("TYPE.") || requiredSkillKey
+			.startsWith("TYPE=")))
+		{
+			Type requiredType = Type.getConstant(requiredSkillKey.substring(5));
+			List<Skill> list = graph.getGrantedNodeList(Skill.class);
+			for (Skill aSkill : list)
+			{
+				if (aSkill.containsInList(ListKey.TYPE, requiredType))
+				{
+					if (prereq.getOperator().compare(
+						character.getTotalWeight(aSkill), requiredRanks) > 0)
+					{
+						runningTotal++;
+					}
+				}
+			}
+		}
+		else
+		{
+			int percentLoc = requiredSkillKey.lastIndexOf('%');
+			if (percentLoc == -1)
+			{
+				Skill skill =
+						graph.getGrantedNode(Skill.class, requiredSkillKey);
+				if (prereq.getOperator().compare(
+					character.getTotalWeight(skill), requiredRanks) > 0)
+				{
+					runningTotal++;
+				}
+			}
+			else
+			{
+				List<Skill> list = graph.getGrantedNodeList(Skill.class);
+				for (Skill aSkill : list)
+				{
+					String aSkillKey = aSkill.getKeyName().toUpperCase();
+					if (aSkillKey.startsWith(requiredSkillKey.substring(0,
+						percentLoc)))
+					{
+						if (prereq.getOperator().compare(
+							character.getTotalWeight(aSkill), requiredRanks) > 0)
+						{
+							runningTotal++;
+						}
+					}
+				}
+			}
+		}
+		// // If we are looking for a negative test i.e. !PRESKILL and the PC
+		// // doesn't have the skill we have to return a match
+		// if (!foundSkill)
+		// {
+		// if (prereq.getOperator() == PrerequisiteOperator.LT)
+		// {
+		// runningTotal++;
+		// }
+		// }
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

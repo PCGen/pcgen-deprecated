@@ -26,6 +26,12 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.core.Alignment;
+import pcgen.core.Deity;
 import pcgen.core.Equipment;
 import pcgen.core.GameMode;
 import pcgen.core.Globals;
@@ -33,18 +39,21 @@ import pcgen.core.PlayerCharacter;
 import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreAlignTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -108,7 +117,9 @@ public class PreAlignTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -116,7 +127,9 @@ public class PreAlignTester extends AbstractPrerequisiteTest implements
 		return "align"; //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#toHtmlString(pcgen.core.prereq.Prerequisite)
 	 */
 	@Override
@@ -137,6 +150,50 @@ public class PreAlignTester extends AbstractPrerequisiteTest implements
 		return PropertyFactory
 			.getFormattedString(
 				"PreAlign.toHtml", prereq.getOperator().toDisplayString(), alignment); //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		int runningTotal = 0;
+
+		//
+		// If game mode doesn't support alignment, then pass the prereq
+		//
+		/*
+		 * TODO If Game Mode doesn't support alignment, shouldn't PREALIGN
+		 * produce a warning or be banned from use?? - thpr Jun 2, 2007
+		 */
+		if (Globals.getGameModeAlignmentText().length() == 0)
+		{
+			return countedTotal(prereq, 1);
+		}
+		String alignString = prereq.getKey();
+		PCGenGraph activeGraph = character.getActiveGraph();
+		Alignment pcAlign = character.getCDOMAlignment();
+		if (alignString.equalsIgnoreCase("Deity"))
+		{
+			List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
+			for (Deity d : list)
+			{
+				if (d.get(ObjectKey.ALIGNMENT).equals(pcAlign))
+				{
+					runningTotal++;
+				}
+			}
+		}
+		else
+		{
+			Alignment requiredAlign =
+					character.getContext().ref.getConstructedCDOMObject(
+						Alignment.class, alignString);
+			if (requiredAlign.equals(pcAlign))
+			{
+				runningTotal = 1;
+			}
+		}
+
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

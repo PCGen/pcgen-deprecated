@@ -26,14 +26,17 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -97,6 +100,20 @@ public class PreUnarmedAttackTester extends AbstractPrerequisiteTest implements
 		return PropertyFactory
 			.getFormattedString(
 				"PreUnarmedAttack.toHtml", prereq.getOperator().toString(), prereq.getOperand()); //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int att = 0;
+		int requiredValue = Integer.parseInt(prereq.getOperand());
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<PCClass> list = activeGraph.getGrantedNodeList(PCClass.class);
+		for (PCClass aClass : list)
+		{
+			att = Math.max(att, aClass.getBonusTo("COMBAT", "BAB", level, character));
+		}
+		int runningTotal = prereq.getOperator().compare(att, requiredValue);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

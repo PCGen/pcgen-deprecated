@@ -34,7 +34,7 @@ import java.util.Set;
  * passed; however, it reserves the right to return references to Objects it
  * contains to other Objects.
  * 
- * However, when any method in which DoubleKeyMapToList returns a Collection,
+ * However, when any method in which TripleKeyMapToList returns a Collection,
  * ownership of the Collection itself is transferred to the calling Object, but
  * the contents of the Collection (keys, values, etc.) are references whose
  * ownership should be respected.

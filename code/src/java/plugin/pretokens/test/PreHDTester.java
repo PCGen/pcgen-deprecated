@@ -87,4 +87,23 @@ public class PreHDTester extends AbstractPrerequisiteTest implements
 		return foo;
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal;
+		try
+		{
+			final int targetHD = Integer.parseInt(prereq.getOperand());
+
+			runningTotal =
+					prereq.getOperator().compare(character.totalCDOMMonsterLevels(),
+						targetHD);
+		}
+		catch (NumberFormatException nfe)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreHD.error.bad_operand", prereq.getOperand())); //$NON-NLS-1$
+		}
+		return countedTotal(prereq, runningTotal);
+	}
+
 }

@@ -34,6 +34,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.choice.RefSetChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Kit;
 import pcgen.core.PObject;
@@ -81,20 +82,17 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
-		ChoiceSet<CDOMSimpleSingleRef<Kit>> cl;
+		List<CDOMReference<Kit>> list = new ArrayList<CDOMReference<Kit>>();
+		int count;
 		try
 		{
-			int count = Integer.parseInt(tok.nextToken());
+			count = Integer.parseInt(tok.nextToken());
 			if (count <= 0)
 			{
 				Logging.errorPrint("Count in " + getTokenName()
 					+ " must be > 0");
 				return false;
 			}
-			//TODO Kit is actually a ChooseSet combined with a ADD:KIT or something like that...
-			cl =
-					new ChoiceSet<CDOMSimpleSingleRef<Kit>>(count, tok
-						.countTokens());
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -113,9 +111,10 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 			}
 			else
 			{
-				cl.addChoice(context.ref.getCDOMReference(KIT_CLASS, tokText));
+				list.add(context.ref.getCDOMReference(KIT_CLASS, tokText));
 			}
 		}
+		RefSetChooser<Kit> chooser = new RefSetChooser<Kit>(list);
 		context.graph.grant(getTokenName(), obj, cl);
 
 		return true;

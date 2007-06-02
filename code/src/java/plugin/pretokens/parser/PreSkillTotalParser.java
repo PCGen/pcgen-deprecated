@@ -75,9 +75,8 @@ public class PreSkillTotalParser extends AbstractPrerequisiteParser implements
 			}
 
 			Prerequisite subreq = new Prerequisite();
-			subreq.setKind("skill");
+			subreq.setKind("skill.tot");
 			subreq.setKey(token);
-			subreq.setTotalValues(true);
 			prereq.addPrerequisite(subreq);
 		}
 

@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
@@ -103,4 +104,42 @@ public class PreSpellTypeTester extends AbstractPrerequisiteTest implements
 				prereq.getOperand(), prereq.getKey(), prereq.getSubKey()});
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		final String castingType = prereq.getKey();
+		int requiredLevel;
+		int requiredNumber;
+		try
+		{
+			requiredLevel = Integer.parseInt(prereq.getSubKey());
+		}
+		catch (NumberFormatException e)
+		{
+			requiredLevel = 1;
+			Logging
+				.errorPrintLocalised(
+					"PreSpellType.Badly_formed_spell_type", prereq.getSubKey(), prereq.toString()); //$NON-NLS-1$
+		}
+
+		try
+		{
+			requiredNumber = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException e)
+		{
+			requiredNumber = 1;
+			Logging
+				.errorPrintLocalised(
+					"PreSpellType.Badly_formed_spell_type", prereq.getSubKey(), prereq.toString()); //$NON-NLS-1$
+		}
+
+		int runningTotal = 0;
+		if (character.canCastSpellTypeLevel(castingType, requiredLevel,
+			requiredNumber))
+		{
+			runningTotal = requiredNumber;
+		}
+
+		return countedTotal(prereq, runningTotal);
+	}
 }

@@ -136,4 +136,39 @@ public class PreVariableTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, (int) runningTotal);
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		String src = prereq.getSubKey() != null ? prereq.getSubKey() : "";
+		float aVar =
+				character.getVariableValue(prereq.getKey(), src).floatValue(); //$NON-NLS-1$
+		float aTarget =
+				character.getVariableValue(prereq.getOperand(), src)
+					.floatValue(); //$NON-NLS-1$
+
+		float runningTotal = prereq.getOperator().compare(aVar, aTarget);
+		if (CoreUtility.doublesEqual(runningTotal, 0.0))
+		{
+			return 0;
+		}
+		for (Prerequisite element : prereq.getPrerequisites())
+		{
+			PrerequisiteTestFactory factory =
+					PrerequisiteTestFactory.getInstance();
+			PrerequisiteTest test = factory.getTest(element.getKind());
+
+			if (test != null)
+			{
+				// all of the tests must pass, so just
+				// assign the value here, don't add
+				runningTotal = test.passes(element, character);
+				if (CoreUtility.doublesEqual(runningTotal, 0.0))
+				{
+					return 0;
+				}
+			}
+		}
+
+		return countedTotal(prereq, (int) runningTotal);
+	}
+
 }

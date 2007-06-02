@@ -51,7 +51,7 @@ public class SchoolsToken implements ChooseLstToken
 	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException
 	{
-		if (value == null || "1".equals(value))
+		if (value == null)
 		{
 			// No args - legal
 			return new SetChooser<SpellSchool>(SpellSchool.getAllConstants());

@@ -108,6 +108,7 @@ public class NonClassSkillListToken implements ChooseLstToken
 				+ " arguments uses double separator || : " + value);
 			return null;
 		}
+		//TODO So what are the args - not processed ?? oops
 		AnyChooser<Skill> anyChooser = new AnyChooser<Skill>(Skill.class);
 		PCChoiceFilter<Skill> pcFilter = new PCChoiceFilter<Skill>(Skill.class);
 		//TODO I think this needs to be negated??

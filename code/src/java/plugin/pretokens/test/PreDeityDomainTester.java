@@ -26,21 +26,33 @@
  */
 package plugin.pretokens.test;
 
+import java.util.Collection;
+import java.util.List;
+
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.core.Deity;
+import pcgen.core.DomainList;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -58,7 +70,9 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -66,7 +80,9 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 		return "DEITYDOMAIN"; //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#toHtmlString(pcgen.core.prereq.Prerequisite)
 	 */
 	@Override
@@ -75,6 +91,46 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 		return PropertyFactory
 			.getFormattedString(
 				"PreDeityDomain.toHtml", prereq.getOperator().toDisplayString(), prereq.getKey()); //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		int runningTotal = 0;
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
+		String requiredDomain = prereq.getKey();
+		boolean requiresAny = Constants.LST_ANY.equals(requiredDomain);
+		CDOMReference<DomainList> dl =
+				character.getContext().ref.getCDOMReference(DomainList.class,
+					"*Starting");
+		for (Deity d : list)
+		{
+			Collection<LSTWriteable> mods = d.getListMods(dl);
+			if (requiresAny)
+			{
+				if (mods != null)
+				{
+					runningTotal += mods.size();
+				}
+			}
+			else
+			{
+				for (LSTWriteable domain : mods)
+				{
+					String domainString = domain.getLSTformat();
+					if (Constants.LST_ALL.equals(domainString))
+					{
+						runningTotal++;
+					}
+					else if (domainString.equalsIgnoreCase(requiredDomain))
+					{
+						runningTotal++;
+					}
+				}
+			}
+		}
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

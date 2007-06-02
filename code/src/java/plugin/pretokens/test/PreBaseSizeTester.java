@@ -26,8 +26,15 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.base.formula.Resolver;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.mode.Size;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.Race;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -77,6 +84,26 @@ public class PreBaseSizeTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "BASESIZE"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal = 0;
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		char sizeChar = prereq.getOperand().toUpperCase().charAt(0);
+		Size requiredSize = Size.valueOf(String.valueOf(sizeChar));
+		int reqSizeOrdinal = requiredSize.getOrdinal();
+
+		for (Race r : list)
+		{
+			Resolver<Size> raceSize = r.get(ObjectKey.SIZE);
+			runningTotal =
+					prereq.getOperator().compare(
+						raceSize.resolve().getOrdinal(), reqSizeOrdinal);
+		}
+
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

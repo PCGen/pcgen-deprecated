@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
 /**
@@ -58,5 +59,14 @@ public class PreCityTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "CITY"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		if (character.getResidence().equalsIgnoreCase(prereq.getKey()))
+		{
+			return countedTotal(prereq, 1);
+		}
+		return countedTotal(prereq, 0);
 	}
 }

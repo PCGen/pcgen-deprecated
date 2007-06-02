@@ -34,8 +34,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.base.util.HashMapToList;
+import pcgen.base.util.QuadrupleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
@@ -43,15 +42,10 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.enumeration.SkillCost;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
 import pcgen.core.SpellList;
-import pcgen.core.WeaponProf;
-import pcgen.core.WeaponProfList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.GraphChanges;
@@ -347,11 +341,11 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists =
 				context.list.getChangedLists(obj, SpellList.class);
 
-		DoubleKeyMapToList<String, Set<Prerequisite>, String> m =
-				new DoubleKeyMapToList<String, Set<Prerequisite>, String>();
+		QuadrupleKeyMapToList<String, Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable> m =
+				new QuadrupleKeyMapToList<String, Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable>();
 		for (CDOMReference listRef : changedLists)
 		{
-			GraphChanges<WeaponProf> changes =
+			GraphChanges<Spell> changes =
 					context.list.getChangesInList(getTokenName(), obj, listRef);
 			if (changes == null)
 			{
@@ -367,8 +361,6 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 			if (changes.hasAddedItems())
 			{
 				Collection<LSTWriteable> addedCollection = changes.getAdded();
-				HashMapToList<Integer, LSTWriteable> hml =
-						new HashMapToList<Integer, LSTWriteable>();
 				for (LSTWriteable added : addedCollection)
 				{
 					AssociatedPrereqObject se =
@@ -381,63 +373,81 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 						return null;
 					}
 					Integer lvl = se.getAssociation(AssociationKey.SPELL_LEVEL);
-					hml.addToListFor(lvl, added);
-					StringBuilder sb = new StringBuilder();
-				}
-				SortedSet<LSTWriteable> spSet =
-						new TreeSet<LSTWriteable>(
-							TokenUtilities.WRITEABLE_SORTER);
-				StringBuilder sb = new StringBuilder();
-				for (Integer lvl : new TreeSet<Integer>(hml.getKeySet()))
-				{
-					sb.setLength(0);
-					spSet.clear();
-					spSet.addAll(hml.getListFor(lvl));
-					sb.append(ReferenceUtilities.joinLstFormat(slSet,
-						Constants.COMMA));
-					sb.append('=').append(lvl).append(Constants.PIPE);
-					sb.append(ReferenceUtilities.joinLstFormat(spSet,
-						Constants.COMMA));
-					m.addToListFor(type, new HashSet<Prerequisite>(agg
-						.getPrerequisiteList()), sb.toString());
+					Set<Prerequisite> prereqs =
+							new HashSet<Prerequisite>(se.getPrerequisiteList());
+					m.addToListFor(type, prereqs, listRef, lvl, added);
 				}
 			}
-			return list.toArray(new String[list.size()]);
-
-			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-			Set<String> list = new TreeSet<String>();
-			for (String type : m.getKeySet())
-			{
-				for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
-				{
-					StringBuilder sb = new StringBuilder();
-					Set<String> set =
-							new TreeSet<String>(m.getListFor(type, prereqs));
-					sb.append(StringUtil.join(set, Constants.PIPE));
-					if (prereqs != null && !prereqs.isEmpty())
-					{
-						for (Prerequisite p : prereqs)
-						{
-							StringWriter swriter = new StringWriter();
-							try
-							{
-								prereqWriter.write(swriter, p);
-							}
-							catch (PersistenceLayerException e)
-							{
-								context
-									.addWriteMessage("Error writing Prerequisite: "
-										+ e);
-								return null;
-							}
-							sb.append(Constants.PIPE)
-								.append(swriter.toString());
-						}
-					}
-					list.add(type + "|" + sb.toString());
-				}
-			}
-			return list.toArray(new String[list.size()]);
 		}
+		StringBuilder sb = new StringBuilder();
+		SortedSet<LSTWriteable> spSet =
+				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
+		for (String type : m.getKeySet())
+		{
+			for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
+			{
+				sb.setLength(0);
+				for (CDOMReference<CDOMList<? extends CDOMObject>> sl : m
+					.getTertiaryKeySet(type, prereqs))
+				{
+					for (Integer lvl : m.getQuaternaryKeySet(type, prereqs, sl))
+					{
+					}
+					spSet.clear();
+				}
+			}
+		}
+
+		for (String type : new TreeSet<String>(hml.getKeySet()))
+		{
+			for (Integer lvl : new TreeSet<Integer>(hml
+				.getSecondaryKeySet(type)))
+			{
+				sb.setLength(0);
+				spSet.clear();
+				spSet.addAll(hml.getListFor(type, lvl));
+
+				sb.append(ReferenceUtilities.joinLstFormat(slSet,
+					Constants.COMMA));
+				sb.append('=').append(lvl).append(Constants.PIPE);
+				sb.append(ReferenceUtilities.joinLstFormat(spSet,
+					Constants.COMMA));
+				m.addToListFor(type, new HashSet<Prerequisite>(agg
+					.getPrerequisiteList()), sb.toString());
+			}
+		}
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		Set<String> list = new TreeSet<String>();
+		for (String type : m.getKeySet())
+		{
+			for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
+			{
+				StringBuilder sb = new StringBuilder();
+				Set<String> set =
+						new TreeSet<String>(m.getListFor(type, prereqs));
+				sb.append(StringUtil.join(set, Constants.PIPE));
+				if (prereqs != null && !prereqs.isEmpty())
+				{
+					for (Prerequisite p : prereqs)
+					{
+						StringWriter swriter = new StringWriter();
+						try
+						{
+							prereqWriter.write(swriter, p);
+						}
+						catch (PersistenceLayerException e)
+						{
+							context
+								.addWriteMessage("Error writing Prerequisite: "
+									+ e);
+							return null;
+						}
+						sb.append(Constants.PIPE).append(swriter.toString());
+					}
+				}
+				list.add(type + "|" + sb.toString());
+			}
+		}
+		return list.toArray(new String[list.size()]);
 	}
 }

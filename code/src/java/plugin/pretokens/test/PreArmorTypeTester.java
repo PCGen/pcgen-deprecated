@@ -28,21 +28,28 @@ package plugin.pretokens.test;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.helper.EquipmentSetFacade;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
+import pcgen.util.Logging;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreArmorTypeTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 
@@ -94,11 +101,11 @@ public class PreArmorTypeTester extends AbstractPrerequisiteTest implements
 					}
 				}
 				else
-				{ //not a TYPE string
+				{ // not a TYPE string
 					final String eqName = eq.getName().toUpperCase();
 					if (desiredType.indexOf('%') >= 0)
 					{
-						//handle wildcards (always assume they
+						// handle wildcards (always assume they
 						// end the line)
 						final int percentPos = desiredType.indexOf('%');
 						final String substring =
@@ -118,7 +125,8 @@ public class PreArmorTypeTester extends AbstractPrerequisiteTest implements
 							break;
 						}
 					}
-					else if (eqName.equals(desiredType)) //just a straight String compare
+					else if (eqName.equals(desiredType)) // just a straight
+					// String compare
 					{
 						runningTotal++;
 						break;
@@ -129,7 +137,9 @@ public class PreArmorTypeTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -137,4 +147,79 @@ public class PreArmorTypeTester extends AbstractPrerequisiteTest implements
 		return "ARMORTYPE"; //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		String desiredType = prereq.getKey();
+
+		boolean isType =
+				(desiredType.startsWith("TYPE.") || desiredType
+					.startsWith("TYPE="));
+
+		int percentLoc = desiredType.lastIndexOf('%');
+		int runningTotal = 0;
+
+		EquipmentSetFacade set = character.getEquipped();
+		
+		for (Equipment equip : set.getEquipment())
+		{
+			if (!equip.isArmor())
+			{
+				continue;
+			}
+			if (isType)
+			{
+				if (percentLoc != -1)
+				{
+					Logging
+						.errorPrint("Pattern Matching in PREARMORTYPE not supported for Types");
+					break;
+				}
+				boolean match = false;
+				StringTokenizer tok =
+						new StringTokenizer(desiredType.substring(5), ".");
+				if (tok.hasMoreTokens())
+				{
+					match = true;
+				}
+				//
+				// Must match all listed types to qualify
+				//
+				while (tok.hasMoreTokens())
+				{
+					String tokString = tok.nextToken();
+					boolean typeMatch = false;
+					for (Type type : equip.getListFor(ListKey.TYPE))
+					{
+						if (!type.toString().equalsIgnoreCase(tokString))
+						{
+							typeMatch = true;
+							break;
+						}
+					}
+					if (!typeMatch)
+					{
+						match = false;
+						break;
+					}
+				}
+				if (match)
+				{
+					runningTotal++;
+				}
+			}
+			else
+			{
+				String equipKey = equip.getKeyName().toUpperCase();
+				if (equipKey.equalsIgnoreCase(desiredType)
+					|| ((percentLoc >= 0) && equipKey.startsWith(desiredType
+						.substring(0, percentLoc))))
+				{
+					runningTotal++;
+				}
+			}
+		}
+
+		return countedTotal(prereq, runningTotal);
+	}
 }

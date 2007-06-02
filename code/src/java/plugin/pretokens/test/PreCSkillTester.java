@@ -21,11 +21,20 @@
  *
  */package plugin.pretokens.test;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import pcgen.cdom.base.AssociatedObject;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.SkillCost;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
+import pcgen.core.SkillList;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
@@ -113,5 +122,66 @@ public class PreCSkillTester extends AbstractPrerequisiteTest implements
 					new Object[]{prereq.getOperator().toDisplayString(),
 						prereq.getOperand(), skillName});
 		return foo;
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int reqnumber = Integer.parseInt(prereq.getOperand());
+		int runningTotal = 0;
+
+		// Compute the skill name from the Prerequisite
+		String requiredSkillKey = prereq.getKey().toUpperCase();
+
+		if (prereq.getSubKey() != null)
+		{
+			requiredSkillKey += " (" + prereq.getSubKey().toUpperCase() + ")";
+		}
+
+		boolean isType =
+				(requiredSkillKey.startsWith("TYPE.") || requiredSkillKey.startsWith("TYPE="));
+
+		Set<Skill> matchingSkills = new HashSet<Skill>();
+		List<SkillList> skillLists = character.getCDOMLists(SkillList.class);
+		if (skillLists != null)
+		{
+			for (SkillList sl : skillLists)
+			{
+				if (isType)
+				{
+					//Skill name is actually type to compare for
+					requiredSkillKey = requiredSkillKey.substring(5);
+					List<Skill> skillList = sl.getList();
+					if (skillList == null)
+					{
+						continue;
+					}
+					for (Skill sk : skillList)
+					{
+						AssociatedObject assoc = sl.getAssociation(sk);
+						if (SkillCost.CLASS.equals(assoc
+							.getAssociation(AssociationKey.SKILL_COST)))
+						{
+							matchingSkills.add(sk);
+						}
+					}
+				}
+				else
+				{
+					if (sl.containsKey(requiredSkillKey))
+					{
+						Skill sk = sl.get(requiredSkillKey);
+						AssociatedObject assoc = sl.getAssociation(sk);
+						if (SkillCost.CLASS.equals(assoc
+							.getAssociation(AssociationKey.SKILL_COST)))
+						{
+							matchingSkills.add(sk);
+						}
+					}
+				}
+			}
+		}
+
+		runningTotal = prereq.getOperator().compare(matchingSkills.size(), reqnumber);
+		return countedTotal(prereq, runningTotal);
 	}
 }

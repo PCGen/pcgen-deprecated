@@ -56,7 +56,7 @@ public class PCGenGraph extends
 		// Long/Slow implementation...
 		for (PrereqObject pro : getNodeList())
 		{
-		if (name.isInstance(pro))
+			if (name.isInstance(pro))
 			{
 				T po = name.cast(pro);
 				if (s.equals(po.getKeyName()))

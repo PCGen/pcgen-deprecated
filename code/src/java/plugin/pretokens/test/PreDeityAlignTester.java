@@ -6,26 +6,35 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.core.Alignment;
+import pcgen.core.Deity;
 import pcgen.core.GameMode;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * 
+ * To change the template for this generated type comment go to Window -
+ * Preferences - Java - Code Generation - Code and Comments
  */
 public class PreDeityAlignTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -58,7 +67,7 @@ public class PreDeityAlignTester extends AbstractPrerequisiteTest implements
 				}
 				catch (NumberFormatException e)
 				{
-					// If it isn't a number, we expect the exception 
+					// If it isn't a number, we expect the exception
 					deityAlign = character.getDeity().getAlignment();
 				}
 			}
@@ -71,7 +80,7 @@ public class PreDeityAlignTester extends AbstractPrerequisiteTest implements
 			}
 			catch (NumberFormatException e)
 			{
-				// If it isn't a number, we expect the exception 
+				// If it isn't a number, we expect the exception
 			}
 
 			if (desiredAlign.equalsIgnoreCase(deityAlign))
@@ -83,7 +92,9 @@ public class PreDeityAlignTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -91,7 +102,9 @@ public class PreDeityAlignTester extends AbstractPrerequisiteTest implements
 		return "DEITYALIGN"; //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#toHtmlString(pcgen.core.prereq.Prerequisite)
 	 */
 	@Override
@@ -102,4 +115,22 @@ public class PreDeityAlignTester extends AbstractPrerequisiteTest implements
 				"PreDeityAlign.toHtml", prereq.getOperator().toDisplayString(), SettingsHandler.getGame().getShortAlignmentAtIndex(Integer.parseInt(prereq.getKey()))); //$NON-NLS-1$
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		int runningTotal = 0;
+		PCGenGraph activeGraph = character.getActiveGraph();
+		List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
+		Alignment requiredAlign =
+				character.getContext().ref.getConstructedCDOMObject(
+					Alignment.class, prereq.getKey());
+		for (Deity d : list)
+		{
+			if (d.get(ObjectKey.ALIGNMENT).equals(requiredAlign))
+			{
+				runningTotal++;
+			}
+		}
+		return countedTotal(prereq, runningTotal);
+	}
 }

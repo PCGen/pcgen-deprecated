@@ -22,18 +22,18 @@
 package plugin.lsttokens.deity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.Logging;
 import pcgen.base.util.PropertyFactory;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
+import pcgen.core.DomainList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.GraphChanges;
@@ -115,6 +115,9 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		boolean foundAny = false;
 		boolean foundOther = false;
 
+		/*
+		 * FIXME This isn't doing .CLEAR or .CLEAR. :(
+		 */
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
 		List<CDOMReference<Domain>> list =
 				new ArrayList<CDOMReference<Domain>>();
@@ -138,30 +141,45 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
+		CDOMReference<DomainList> dl =
+				context.ref.getCDOMReference(DomainList.class, "*Starting");
 		for (CDOMReference<Domain> ref : list)
 		{
-			//FIXME This really isn't a grant, but the DOMAINS possessed by the DEITY... :/
-			context.graph.grant(getTokenName(), deity, ref);
+			/*
+			 * FIXME This isn't doing PREREQs :(
+			 */
+			AssociatedPrereqObject ao =
+					context.list.addToList(getTokenName(), deity, dl, ref);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
+		CDOMReference<DomainList> dl =
+				context.ref.getCDOMReference(DomainList.class, "*Starting");
 		GraphChanges<Domain> changes =
-				context.graph.getChangesFromToken(getTokenName(), deity,
-					DOMAIN_CLASS);
+				context.list.getChangesInList(getTokenName(), deity, dl);
 		if (changes == null)
 		{
+			// Legal if no Language was present in the race
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		List<String> list = new ArrayList<String>();
+		if (changes.hasRemovedItems() || changes.includesGlobalClear())
 		{
-			// Zero indicates no Token
+			context
+				.addWriteMessage(getTokenName() + " does not support .CLEAR");
 			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(added,
-			Constants.COMMA)};
+		if (changes.hasAddedItems())
+		{
+			list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
+				Constants.COMMA));
+		}
+		/*
+		 * FIXME This isn't doing PREREQs :(
+		 */
+		return list.toArray(new String[list.size()]);
 	}
 }

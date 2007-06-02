@@ -95,6 +95,7 @@ import pcgen.core.utils.StringKey;
 import pcgen.gui.GuiConstants;
 import pcgen.io.PCGFile;
 import pcgen.io.exporttoken.BonusToken;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Delta;
@@ -17977,6 +17978,49 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 		return size;
 	}
+
+	public int getAssociatedCount(PrereqObject pro)
+	{
+		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(pro);
+		// TODO Need to consider mult yes/no stack yes/no
+		Set set = new HashSet();
+		for (PCGraphEdge edge : list)
+		{
+			set.add(edge.getAssociation(AssociationKey.ABILITY_ASSOCIATION));
+		}
+		return set.size();
+	}
+
+	public <AT extends PObject> List<AT> getAssociated(Ability a)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean containsAssociatedKey(Ability a, String assocKey)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Alignment getCDOMAlignment()
+	{
+		List<Alignment> align = activeGraph.getGrantedNodeList(Alignment.class);
+		if (align.size() > 1)
+		{
+			//Error
+		}
+		return align.size() == 0 ? null : align.get(0);
+	}
+
+	//TODO This should probably be a RunContext or some Facade of the LoadContext
+	// so that it isn't abused - thpr Jun 2, 2007
+	public LoadContext getContext()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	// public double getBonusValue(final String aBonusType, final String
 	// aBonusName )

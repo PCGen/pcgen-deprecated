@@ -34,8 +34,8 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.helper.Capacity;
 import pcgen.cdom.helper.Quality;
+import pcgen.core.Alignment;
 import pcgen.core.Description;
-import pcgen.core.Domain;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PCClass;
 import pcgen.core.WeaponProf;
@@ -83,8 +83,8 @@ public final class ListKey<T>
 
 	public static final ListKey<Type> PROFICIENCY_TYPES = new ListKey<Type>();
 
-	public static final ListKey<AlignmentType> FOLLOWER_ALIGN =
-			new ListKey<AlignmentType>();
+	public static final ListKey<Alignment> FOLLOWER_ALIGN =
+			new ListKey<Alignment>();
 
 	public static final ListKey<Capacity> CAPACITY = new ListKey<Capacity>();
 

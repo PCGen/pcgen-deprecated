@@ -26,6 +26,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.mode.Size;
 import pcgen.core.Equipment;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
@@ -74,6 +75,16 @@ public class PreSizeTester extends AbstractPrerequisiteTest implements
 	public String kindHandled()
 	{
 		return "SIZE"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		Size targetSize = Size.valueOf(prereq.getOperand());
+		Size pcSize = character.getCDOMSize();
+		int runningTotal =
+				prereq.getOperator().compare(pcSize.getOrdinal(),
+					targetSize.getOrdinal());
+		return countedTotal(prereq, runningTotal);
 	}
 
 }
