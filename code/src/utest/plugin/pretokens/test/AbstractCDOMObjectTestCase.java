@@ -91,7 +91,8 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		Prerequisite p;
 		p = new Prerequisite();
 		p.setKind(getKind());
-		p.setKey("Crossbow (Heavy)");
+		p.setKey("Crossbow");
+		p.setSubKey("Heavy");
 		p.setOperand("1");
 		p.setOperator(PrerequisiteOperator.GTEQ);
 		return p;
@@ -215,10 +216,22 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 	}
 
 	@Test
+	public void testFalseParen() throws PrerequisiteException
+	{
+		Prerequisite prereq = getParenPrereq();
+		// PC Should start without
+		assertEquals(0, getTest().passesCDOM(prereq, pc));
+		grantCDOMObject("Crossbow");
+		assertEquals(0, getTest().passesCDOM(prereq, pc));
+	}
+
+	@Test
 	public void testParen() throws PrerequisiteException
 	{
 		Prerequisite prereq = getParenPrereq();
 		// PC Should start without
+		assertEquals(0, getTest().passesCDOM(prereq, pc));
+		grantCDOMObject("Crossbow (Light)");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		grantCDOMObject("Crossbow (Heavy)");
 		// Has Crossbow (Heavy)

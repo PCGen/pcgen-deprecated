@@ -20,11 +20,10 @@ package plugin.lsttokens.deity;
 import java.net.URISyntaxException;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AlignmentType;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.core.Alignment;
 import pcgen.core.Deity;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
@@ -37,33 +36,30 @@ public class AlignTokenTest extends AbstractTokenTestCase<Deity>
 	static AlignToken token = new AlignToken();
 	static DeityLoader loader = new DeityLoader();
 
-	private static boolean classSetUpFired = false;
-
-	@BeforeClass
-	public static final void ltClassSetUp() throws PersistenceLayerException
-	{
-		AlignmentType.getConstant("LG");
-		AlignmentType.getConstant("LN");
-		AlignmentType.getConstant("LE");
-		AlignmentType.getConstant("NG");
-		AlignmentType.getConstant("TN");
-		AlignmentType.getConstant("NE");
-		AlignmentType.getConstant("CG");
-		AlignmentType.getConstant("CN");
-		AlignmentType.getConstant("CE");
-		classSetUpFired = true;
-	}
-
 	@Override
 	@Before
 	public final void setUp() throws PersistenceLayerException,
 		URISyntaxException
 	{
 		super.setUp();
-		if (!classSetUpFired)
-		{
-			ltClassSetUp();
-		}
+		primaryContext.ref.constructCDOMObject(Alignment.class, "LG");
+		primaryContext.ref.constructCDOMObject(Alignment.class, "LN");
+		primaryContext.ref.constructCDOMObject(Alignment.class, "LE");
+		primaryContext.ref.constructCDOMObject(Alignment.class, "NG");
+		primaryContext.ref.constructCDOMObject(Alignment.class, "TN");
+		primaryContext.ref.constructCDOMObject(Alignment.class, "NE");
+		primaryContext.ref.constructCDOMObject(Alignment.class, "CG");
+		primaryContext.ref.constructCDOMObject(Alignment.class, "CN");
+		primaryContext.ref.constructCDOMObject(Alignment.class, "CE");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "LG");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "LN");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "LE");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "NG");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "TN");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "NE");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "CG");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "CN");
+		secondaryContext.ref.constructCDOMObject(Alignment.class, "CE");
 	}
 
 	@Override
@@ -82,11 +78,6 @@ public class AlignTokenTest extends AbstractTokenTestCase<Deity>
 	public CDOMToken<Deity> getToken()
 	{
 		return token;
-	}
-
-	public Object getConstant(String string)
-	{
-		return AlignmentType.valueOf(string);
 	}
 
 	public ObjectKey<?> getObjectKey()

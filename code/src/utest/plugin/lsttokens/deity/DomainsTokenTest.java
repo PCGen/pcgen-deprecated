@@ -60,13 +60,13 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	@Override
 	public boolean isClearDotLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isClearLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

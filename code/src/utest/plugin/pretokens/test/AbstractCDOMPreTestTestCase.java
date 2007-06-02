@@ -78,8 +78,13 @@ public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
 
 	public PCGraphGrantsEdge grantObject(PrereqObject obj)
 	{
+		return grantObject(pc.getActiveGraph().getRoot(), obj);
+	}
+
+	protected PCGraphGrantsEdge grantObject(PrereqObject root, PrereqObject obj)
+	{
 		PCGenGraph graph = pc.getActiveGraph();
-		PrereqObject root = graph.getRoot();
+		graph.addNode(root);
 		graph.addNode(obj);
 		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(root, obj, "TestCase");
 		graph.addEdge(edge);

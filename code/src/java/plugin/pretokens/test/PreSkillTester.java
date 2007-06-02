@@ -27,6 +27,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
@@ -79,7 +80,8 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 
 		boolean foundMatch = false;
 		boolean foundSkill = false;
-		final List<Skill> skillList = new ArrayList<Skill>(character.getSkillList());
+		final List<Skill> skillList =
+				new ArrayList<Skill>(character.getSkillList());
 		for (Skill aSkill : skillList)
 		{
 			final String aSkillKey = aSkill.getKeyName().toUpperCase();
@@ -123,8 +125,7 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 			{
 				foundSkill = true;
 				if (prereq.getOperator().compare(
-					aSkill.getTotalRank(character).intValue(),
-					requiredRanks) > 0)
+					aSkill.getTotalRank(character).intValue(), requiredRanks) > 0)
 				{
 					runningTotal++;
 				}
@@ -201,17 +202,24 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 		if ((requiredSkillKey.startsWith("TYPE.") || requiredSkillKey
 			.startsWith("TYPE=")))
 		{
-			Type requiredType = Type.getConstant(requiredSkillKey.substring(5));
 			List<Skill> list = graph.getGrantedNodeList(Skill.class);
-			for (Skill aSkill : list)
+			SKILL: for (Skill aSkill : list)
 			{
-				if (aSkill.containsInList(ListKey.TYPE, requiredType))
+				StringTokenizer tok =
+						new StringTokenizer(requiredSkillKey.substring(5), ".");
+				// Must match all listed types in order to qualify
+				while (tok.hasMoreTokens())
 				{
-					if (prereq.getOperator().compare(
-						character.getTotalWeight(aSkill), requiredRanks) > 0)
+					Type requiredType = Type.getConstant(tok.nextToken());
+					if (!aSkill.containsInList(ListKey.TYPE, requiredType))
 					{
-						runningTotal++;
+						continue SKILL;
 					}
+				}
+				if (prereq.getOperator().compare(
+					character.getTotalWeight(aSkill), requiredRanks) > 0)
+				{
+					runningTotal++;
 				}
 			}
 		}
@@ -257,5 +265,4 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 		// }
 		return countedTotal(prereq, runningTotal);
 	}
-
 }

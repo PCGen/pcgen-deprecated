@@ -26,6 +26,7 @@
  */package plugin.pretokens.test;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
@@ -101,8 +102,7 @@ public class PreSkillTotTester extends AbstractPrerequisiteTest implements
 				if (foundMatch)
 				{
 					foundSkill = foundMatch;
-					runningTotal +=
-							aSkill.getTotalRank(character).intValue();
+					runningTotal += aSkill.getTotalRank(character).intValue();
 					if (runningTotal == 0)
 					{
 						foundMatch = false;
@@ -180,14 +180,21 @@ public class PreSkillTotTester extends AbstractPrerequisiteTest implements
 		if ((requiredSkillKey.startsWith("TYPE.") || requiredSkillKey
 			.startsWith("TYPE=")))
 		{
-			Type requiredType = Type.getConstant(requiredSkillKey.substring(5));
 			List<Skill> list = graph.getGrantedNodeList(Skill.class);
-			for (Skill aSkill : list)
+			SKILL: for (Skill aSkill : list)
 			{
-				if (aSkill.containsInList(ListKey.TYPE, requiredType))
+				StringTokenizer tok =
+						new StringTokenizer(requiredSkillKey.substring(5), ".");
+				// Must match all listed types in order to qualify
+				while (tok.hasMoreTokens())
 				{
-					runningTotal += character.getTotalWeight(aSkill);
+					Type requiredType = Type.getConstant(tok.nextToken());
+					if (!aSkill.containsInList(ListKey.TYPE, requiredType))
+					{
+						continue SKILL;
+					}
 				}
+				runningTotal += character.getTotalWeight(aSkill);
 			}
 		}
 		else
@@ -213,16 +220,7 @@ public class PreSkillTotTester extends AbstractPrerequisiteTest implements
 				}
 			}
 		}
-		// // If we are looking for a negative test i.e. !PRESKILL and the PC
-		// // doesn't have the skill we have to return a match
-		// if (!foundSkill)
-		// {
-		// if (prereq.getOperator() == PrerequisiteOperator.LT)
-		// {
-		// runningTotal++;
-		// }
-		// }
-		return countedTotal(prereq, runningTotal);
+		return Math.max(runningTotal, 0);
 	}
 
 }

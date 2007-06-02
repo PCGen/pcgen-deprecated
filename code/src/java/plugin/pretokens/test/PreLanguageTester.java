@@ -27,6 +27,7 @@
 package plugin.pretokens.test;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
@@ -42,13 +43,15 @@ import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreLanguageTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -85,7 +88,9 @@ public class PreLanguageTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -93,7 +98,8 @@ public class PreLanguageTester extends AbstractPrerequisiteTest implements
 		return "LANG"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
 	{
 		final String requiredLang = prereq.getKey();
 		final int requiredNumber = Integer.parseInt(prereq.getOperand());
@@ -106,19 +112,27 @@ public class PreLanguageTester extends AbstractPrerequisiteTest implements
 			System.err.println(runningTotal);
 			System.err.println(activeGraph.getGrantedNodeList(Language.class));
 		}
-		else if (requiredLang.startsWith("TYPE.") || requiredLang.startsWith("TYPE="))
+		else if (requiredLang.startsWith("TYPE.")
+			|| requiredLang.startsWith("TYPE="))
 		{
-			Type requiredType = Type.getConstant(requiredLang.substring(5));
 			List<Language> list =
 					activeGraph.getGrantedNodeList(Language.class);
 			if (list != null)
 			{
-				for (Language lang : list)
+				LANG: for (Language lang : list)
 				{
-					if (lang.containsInList(ListKey.TYPE, requiredType))
+					StringTokenizer tok =
+							new StringTokenizer(requiredLang.substring(5), ".");
+					// Must match all listed types in order to qualify
+					while (tok.hasMoreTokens())
 					{
-						runningTotal++;
+						Type requiredType = Type.getConstant(tok.nextToken());
+						if (!lang.containsInList(ListKey.TYPE, requiredType))
+						{
+							continue LANG;
+						}
 					}
+					runningTotal++;
 				}
 			}
 		}

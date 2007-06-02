@@ -27,6 +27,7 @@
 package plugin.pretokens.test;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
@@ -44,7 +45,7 @@ import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
@@ -52,28 +53,35 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 
 	/**
 	 * <b>Tag Name</b>: <code>PREWEAPONPROF:x,y,y</code><br />
-	 * &nbsp; <b>Variables Used (x)</b>: <i>Number</i> (The number of proficiencies that must match the specified requirements). <br/>
-	 * &nbsp; <b>Variables Used (y)</b>: <i>Text</i> (The name of a weapon proficiency). <br />
-	 * &nbsp; <b>Variables Used (y)</b>: <code>TYPE.</code><i>Text</i> (The name of a weaponprof type). <br />
-	 * &nbsp; <b>Variables Used (y)</b>: <code>DEITYWEAPON</code> (The favored weapon of the character's deity). <br />
+	 * &nbsp; <b>Variables Used (x)</b>: <i>Number</i> (The number of
+	 * proficiencies that must match the specified requirements). <br/> &nbsp;
+	 * <b>Variables Used (y)</b>: <i>Text</i> (The name of a weapon
+	 * proficiency). <br />
+	 * &nbsp; <b>Variables Used (y)</b>: <code>TYPE.</code><i>Text</i> (The
+	 * name of a weaponprof type). <br />
+	 * &nbsp; <b>Variables Used (y)</b>: <code>DEITYWEAPON</code> (The
+	 * favored weapon of the character's deity). <br />
 	 * <p />
 	 * <b>What it does:</b><br />
 	 * &nbsp; Sets weapon proficiency requirements.
 	 * <p />
-	 * <b>Examples</b>: <br/>
-	 * &nbsp; <code>PREWEAPONPROF:2,Kama,Katana</code><br />
+	 * <b>Examples</b>: <br/> &nbsp; <code>PREWEAPONPROF:2,Kama,Katana</code><br />
 	 * &nbsp; &nbsp; Character must have both "Kama" and "Katana".
 	 * <p />
 	 * &nbsp; <code>PREWEAPONPROF:1,TYPE.Exotic</code> <br />
-	 * &nbsp; &nbsp; Character must have proficiency with any one exotic weaponprof type.
+	 * &nbsp; &nbsp; Character must have proficiency with any one exotic
+	 * weaponprof type.
 	 * <p />
 	 * &nbsp; <code>PREWEAPONPROF:1,TYPE.Martial,Chain (Spiked)</code> <br />
-	 * &nbsp; &nbsp; Character must have proficiency with either the Chain (Spiked) or any martial weapon.
+	 * &nbsp; &nbsp; Character must have proficiency with either the Chain
+	 * (Spiked) or any martial weapon.
 	 * <p />
 	 * &nbsp; <code>PREWEAPONPROF:1,DEITYWEAPON</code> <br />
-	 * &nbsp; &nbsp; Weapon Prof in question must be one of the chosen deity's favored weapons.
+	 * &nbsp; &nbsp; Weapon Prof in question must be one of the chosen deity's
+	 * favored weapons.
 	 * 
-	 * @see pcgen.core.prereq.AbstractPrerequisiteTest#passes(pcgen.core.prereq.Prerequisite, pcgen.core.PlayerCharacter)
+	 * @see pcgen.core.prereq.AbstractPrerequisiteTest#passes(pcgen.core.prereq.Prerequisite,
+	 *      pcgen.core.PlayerCharacter)
 	 */
 	@Override
 	public int passes(final Prerequisite prereq, final PlayerCharacter character)
@@ -147,7 +155,8 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 		return "WEAPONPROF"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
 	{
 		int runningTotal = 0;
 
@@ -177,29 +186,45 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 		}
 		else if (aString.startsWith("TYPE.") || aString.startsWith("TYPE=")) //$NON-NLS-1$ //$NON-NLS-2$
 		{
-			Type requiredType = Type.getConstant(aString.substring(5));
 			List<WeaponProf> list =
-				activeGraph.getGrantedNodeList(WeaponProf.class);
+					activeGraph.getGrantedNodeList(WeaponProf.class);
 			if (list != null)
 			{
-				for (WeaponProf wp : list)
+				WEAPONPROF: for (WeaponProf wp : list)
 				{
-					if (wp.containsInList(ListKey.TYPE, requiredType))
+					StringTokenizer tok =
+							new StringTokenizer(aString.substring(5), ".");
+					// Must match all listed types in order to qualify
+					while (tok.hasMoreTokens())
 					{
-						runningTotal++;
-					}
-					else
-					{
-						final Equipment eq =
-								EquipmentList.getEquipmentNamed(wp.getKeyName());
-						if (eq != null)
+						Type requiredType = Type.getConstant(tok.nextToken());
+						if (!wp.containsInList(ListKey.TYPE, requiredType))
 						{
-							if (eq.containsInList(ListKey.TYPE, requiredType))
+							Equipment eq =
+									EquipmentList.getEquipmentNamed(wp
+										.getKeyName());
+							if (eq != null)
 							{
-								runningTotal++;
+								StringTokenizer eqtok =
+										new StringTokenizer(aString
+											.substring(5), ".");
+								// Must match all listed types in order to
+								// qualify
+								while (eqtok.hasMoreTokens())
+								{
+									Type requiredEqType =
+											Type.getConstant(tok.nextToken());
+									if (!eq.containsInList(ListKey.TYPE,
+										requiredEqType))
+									{
+										continue WEAPONPROF;
+									}
+								}
 							}
+							continue WEAPONPROF;
 						}
 					}
+					runningTotal++;
 				}
 			}
 		}

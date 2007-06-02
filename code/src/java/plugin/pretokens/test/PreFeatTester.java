@@ -433,15 +433,15 @@ public class PreFeatTester extends AbstractPrerequisiteTest implements
 		List<Ability> list = activeGraph.getGrantedNodeList(Ability.class);
 		ABILITY: for (Ability a : list)
 		{
-			if (!AbilityCategory.FEAT.equals(a.getCDOMCategory()))
+			if (!pcgen.cdom.enumeration.AbilityCategory.FEAT.equals(a
+				.getCDOMCategory()))
 			{
 				continue;
 			}
 			String featKey = a.getKeyName();
 			if (keyIsType)
 			{
-				StringTokenizer tok =
-						new StringTokenizer(key.substring(5), ".");
+				StringTokenizer tok = new StringTokenizer(key, ".");
 				// Must match all listed types in order to qualify
 				while (tok.hasMoreTokens())
 				{

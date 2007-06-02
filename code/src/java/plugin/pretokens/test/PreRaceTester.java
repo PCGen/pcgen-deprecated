@@ -156,11 +156,10 @@ public class PreRaceTester extends AbstractPrerequisiteTest implements
 
 		if (requiredRace.startsWith("TYPE=") || requiredRace.startsWith("TYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
 		{
-			for (Race r : list)
+			RACE: for (Race r : list)
 			{
 				StringTokenizer tok =
 					new StringTokenizer(requiredRace.substring(5), ".");
-				boolean match = true;
 				//
 				// Must match all listed types in order to qualify
 				//
@@ -169,14 +168,10 @@ public class PreRaceTester extends AbstractPrerequisiteTest implements
 					Type requiredType = Type.getConstant(tok.nextToken());
 					if (!r.containsInList(ListKey.TYPE, requiredType))
 					{
-						match = false;
-						break;
+						continue RACE;
 					}
 				}
-				if (match)
-				{
-					++runningTotal;
-				}
+				runningTotal++;
 			}
 		}
 		else if (requiredRace.startsWith("RACETYPE=") || requiredRace.startsWith("RACETYPE.")) //$NON-NLS-1$ //$NON-NLS-2$

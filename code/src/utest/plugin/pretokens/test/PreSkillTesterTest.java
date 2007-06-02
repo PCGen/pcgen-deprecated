@@ -18,20 +18,20 @@
 package plugin.pretokens.test;
 
 import pcgen.core.Language;
-import pcgen.core.PCStat;
 import pcgen.core.PObject;
+import pcgen.core.Skill;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreStatTesterTest extends
-		AbstractCDOMWeightedObjectTestCase<PCStat>
+public class PreSkillTesterTest extends
+		AbstractCDOMWeightedObjectTestCase<Skill>
 {
 
-	PreStatTester tester = new PreStatTester();
+	PreSkillTester tester = new PreSkillTester();
 
 	@Override
-	public Class<PCStat> getCDOMClass()
+	public Class<Skill> getCDOMClass()
 	{
-		return PCStat.class;
+		return Skill.class;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class PreStatTesterTest extends
 	@Override
 	public String getKind()
 	{
-		return "STAT";
+		return "SKILL";
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class PreStatTesterTest extends
 	@Override
 	public boolean isTypeLegal()
 	{
-		return false;
+		return true;
 	}
 
 }

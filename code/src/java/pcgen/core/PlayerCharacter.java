@@ -17702,8 +17702,19 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 					@Override
 					protected int getEdgeWeight(int weight, PCGraphEdge edge)
 					{
+						PrereqObject source = edge.getNodeAt(0);
 						Integer i = edge.getAssociation(AssociationKey.WEIGHT);
-						return weight * (i == null ? 1 : i.intValue());
+						int edgeWeight = i == null ? 1 : i.intValue();
+						if (source instanceof CDOMObject)
+						{
+							CDOMObject cdo = (CDOMObject) source;
+							Boolean mult = cdo.get(ObjectKey.MULTIPLE_ALLOWED);
+							if (mult == null || !mult.booleanValue())
+							{
+								return weight <= 0 ? 0 : edgeWeight;
+							}
+						}
+						return weight * edgeWeight;
 					}
 
 				};
@@ -17983,7 +17994,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	{
 		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(pro);
 		// TODO Need to consider mult yes/no stack yes/no
-		Set set = new HashSet();
+		List set = new ArrayList();
 		for (PCGraphEdge edge : list)
 		{
 			set.add(edge.getAssociation(AssociationKey.ABILITY_ASSOCIATION));
@@ -17993,13 +18004,27 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public <AT extends PObject> List<AT> getAssociated(Ability a)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(pro);
+		// TODO Need to consider mult yes/no stack yes/no
+		List<AT> set = new ArrayList<AT>();
+		for (PCGraphEdge edge : list)
+		{
+			set.add(edge.getAssociation(AssociationKey.ABILITY_ASSOCIATION));
+		}
+		return set;
 	}
 
 	public boolean containsAssociatedKey(Ability a, String assocKey)
 	{
-		// TODO Auto-generated method stub
+		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(a);
+		for (PCGraphEdge edge : list)
+		{
+			assoc = edge.getAssociation(AssociationKey.ABILITY_ASSOCIATION);
+			if (assoc.getKeyName().equals(assocKey))
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 

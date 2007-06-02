@@ -513,9 +513,9 @@ public class PreAbilityTester extends AbstractPrerequisiteTest implements
 		String key = prereq.getKey();
 		String subKey = prereq.getSubKey();
 		String categoryName = prereq.getCategoryName();
-		GameMode gameMode = SettingsHandler.getGame();
-		//TODO This doesn't get fetched from game Mode in the long run...
-		AbilityCategory category = gameMode.getAbilityCategory(categoryName);
+		pcgen.cdom.enumeration.AbilityCategory category =
+				pcgen.cdom.enumeration.AbilityCategory.valueOf(categoryName);
+		//TODO What if CATEGORY=null??
 		final boolean keyIsAny = key.equalsIgnoreCase("ANY"); //$NON-NLS-1$
 		boolean keyIsType = key.startsWith("TYPE=") || key.startsWith("TYPE."); //$NON-NLS-1$ //$NON-NLS-2$
 		boolean subKeyIsType =
@@ -542,8 +542,7 @@ public class PreAbilityTester extends AbstractPrerequisiteTest implements
 			String featKey = a.getKeyName();
 			if (!keyIsAny && keyIsType)
 			{
-				StringTokenizer tok =
-						new StringTokenizer(key.substring(5), ".");
+				StringTokenizer tok = new StringTokenizer(key, ".");
 				// Must match all listed types in order to qualify
 				while (tok.hasMoreTokens())
 				{
