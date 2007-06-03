@@ -117,4 +117,25 @@ public class PreMult  extends AbstractPrerequisiteTest implements PrerequisiteTe
 
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal=0;
+		final int targetNumber = Integer.parseInt( prereq.getOperand() );
+
+		for ( Prerequisite element : prereq.getPrerequisites() )
+		{
+			final PrerequisiteTestFactory factory = PrerequisiteTestFactory.getInstance();
+			final PrerequisiteTest test = factory.getTest(element.getKind());
+			if (test != null) {
+				runningTotal += test.passesCDOM(element, character);
+			}
+			else {
+				Logging.errorPrintLocalised("PreMult.cannot_find_subtest", element.getKind()); //$NON-NLS-1$
+			}
+		}
+
+		runningTotal = prereq.getOperator().compare(runningTotal, targetNumber);
+		return countedTotal(prereq, runningTotal);
+	}
+
 }

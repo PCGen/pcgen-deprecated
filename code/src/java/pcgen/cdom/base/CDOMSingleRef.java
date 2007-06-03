@@ -26,5 +26,11 @@ public abstract class CDOMSingleRef<T extends PrereqObject> extends
 		super(cl, nm);
 	}
 
+	@Override
+	public int getObjectCount()
+	{
+		return 1;
+	}
+
 	public abstract T resolvesTo();
 }

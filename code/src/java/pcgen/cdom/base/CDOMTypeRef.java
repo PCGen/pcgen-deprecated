@@ -98,4 +98,10 @@ public final class CDOMTypeRef<T extends PrereqObject> extends CDOMGroupRef<T>
 		}
 	}
 
+	@Override
+	public int getObjectCount()
+	{
+		return referencedList == null ? 0 : referencedList.size();
+	}
+
 }

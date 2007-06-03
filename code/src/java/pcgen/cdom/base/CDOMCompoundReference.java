@@ -85,4 +85,15 @@ public class CDOMCompoundReference<T extends PrereqObject> extends
 		throw new IllegalStateException(
 			"CompoundReference cannot be given a resolution");
 	}
+
+	@Override
+	public int getObjectCount()
+	{
+		int count = 0;
+		for (CDOMReference<?> ref : references)
+		{
+			count += ref.getObjectCount();
+		}
+		return count;
+	}
 }

@@ -105,6 +105,9 @@ public final class AssociationKey<T>
 	public static final AssociationKey<Integer> EQUIPMENT_LOCATION =
 			new AssociationKey<Integer>();
 
+	public static final AssociationKey<CDOMObject> ABILITY_ASSOCIATION =
+			new AssociationKey<CDOMObject>();
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey()

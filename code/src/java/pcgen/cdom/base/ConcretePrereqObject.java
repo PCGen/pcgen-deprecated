@@ -514,7 +514,6 @@ public class ConcretePrereqObject implements PrereqObject, RestrictedObject,
 		return sourceRes == null ? null : Collections
 			.unmodifiableList(sourceRes);
 	}
-	
 
 	public boolean equalsPrereqObject(PrereqObject other)
 	{
@@ -536,11 +535,14 @@ public class ConcretePrereqObject implements PrereqObject, RestrictedObject,
 		{
 			return false;
 		}
-		ArrayList<Prerequisite> removed = new ArrayList<Prerequisite>(thePrereqs);
+		ArrayList<Prerequisite> removed =
+				new ArrayList<Prerequisite>(thePrereqs);
 		removed.removeAll(otherPRL);
 		return removed.isEmpty();
 	}
 
+	// TODO Is this really the place for this? Would shorten GraphContext use if
+	// this is possible, but looks like this shouldn't be advised...
 	public Class<? extends PrereqObject> getReferenceClass()
 	{
 		return getClass();

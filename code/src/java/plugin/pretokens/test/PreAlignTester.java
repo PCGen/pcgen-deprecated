@@ -164,21 +164,25 @@ public class PreAlignTester extends AbstractPrerequisiteTest implements
 		 * TODO If Game Mode doesn't support alignment, shouldn't PREALIGN
 		 * produce a warning or be banned from use?? - thpr Jun 2, 2007
 		 */
-		if (Globals.getGameModeAlignmentText().length() == 0)
-		{
-			return countedTotal(prereq, 1);
-		}
+		// if (Globals.getGameModeAlignmentText().length() == 0)
+		// {
+		// return countedTotal(prereq, 1);
+		// }
 		String alignString = prereq.getKey();
 		PCGenGraph activeGraph = character.getActiveGraph();
 		Alignment pcAlign = character.getCDOMAlignment();
 		if (alignString.equalsIgnoreCase("Deity"))
 		{
 			List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
-			for (Deity d : list)
+			if (list != null)
 			{
-				if (d.get(ObjectKey.ALIGNMENT).equals(pcAlign))
+				for (Deity d : list)
 				{
-					runningTotal++;
+					Alignment alignment = d.get(ObjectKey.ALIGNMENT);
+					if (alignment != null && alignment.equals(pcAlign))
+					{
+						runningTotal++;
+					}
 				}
 			}
 		}

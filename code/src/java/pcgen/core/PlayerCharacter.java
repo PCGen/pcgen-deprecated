@@ -18025,9 +18025,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public <AT extends PObject> List<AT> getAssociated(Ability a)
 	{
-		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(pro);
+		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(a);
 		// TODO Need to consider mult yes/no stack yes/no
-		List<AT> set = new ArrayList<AT>();
+		List set = new ArrayList();
 		for (PCGraphEdge edge : list)
 		{
 			set.add(edge.getAssociation(AssociationKey.ABILITY_ASSOCIATION));
@@ -18040,7 +18040,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(a);
 		for (PCGraphEdge edge : list)
 		{
-			assoc = edge.getAssociation(AssociationKey.ABILITY_ASSOCIATION);
+			CDOMObject assoc = edge.getAssociation(AssociationKey.ABILITY_ASSOCIATION);
 			if (assoc.getKeyName().equals(assocKey))
 			{
 				return true;
