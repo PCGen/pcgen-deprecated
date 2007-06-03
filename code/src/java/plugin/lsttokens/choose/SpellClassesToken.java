@@ -37,12 +37,18 @@ public class SpellClassesToken implements ChooseLstToken
 	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
 	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
-	public boolean parse(PObject po, String value)
+	public boolean parse(PObject po, String prefix, String value)
 	{
 		if (value == null)
 		{
 			// No args - legal
-			po.setChoiceString(value);
+			StringBuilder sb = new StringBuilder();
+			if (prefix.length() > 0)
+			{
+				sb.append(prefix).append('|');
+			}
+			sb.append(getTokenName());
+			po.setChoiceString(sb.toString());
 			return true;
 		}
 		Logging.errorPrint("CHOOSE:" + getTokenName()

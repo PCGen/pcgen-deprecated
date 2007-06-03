@@ -38,7 +38,7 @@ public class StatToken implements ChooseLstToken
 
 	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
 
-	public boolean parse(PObject po, String value)
+	public boolean parse(PObject po, String prefix, String value)
 	{
 		if (value == null)
 		{
@@ -84,7 +84,13 @@ public class StatToken implements ChooseLstToken
 			Logging.errorPrint("Did not find STAT: " + tokText
 				+ " used in CHOOSE: " + value);
 		}
-		po.setChoiceString(value);
+		StringBuilder sb = new StringBuilder();
+		if (prefix.length() > 0)
+		{
+			sb.append(prefix).append('|');
+		}
+		sb.append(getTokenName()).append('|').append(value);
+		po.setChoiceString(sb.toString());
 		return true;
 	}
 

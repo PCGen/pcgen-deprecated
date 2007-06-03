@@ -50,30 +50,58 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 	public int passes(final Prerequisite prereq, final PlayerCharacter character)
 	{
 		int runningTotal = 0;
+		int countedTotal = 0;
 
 		final String aString = prereq.getKey().toUpperCase();
 		final int preClass = Integer.parseInt(prereq.getOperand());
 
 		if ("SPELLCASTER".equals(aString)) //$NON-NLS-1$
 		{
-			if (character.isSpellCaster(preClass, false))
+			int spellCaster = character.isSpellCaster(preClass, false);
+			if (spellCaster > 0)
 			{
-				runningTotal = preClass;
+				if (prereq.isCountMultiples())
+				{
+					countedTotal = spellCaster;
+				}
+				else
+				{
+					runningTotal = preClass;
+				}
 			}
 		}
 		else if (aString.startsWith("SPELLCASTER.")) //$NON-NLS-1$
 		{
-			if (character.isSpellCaster(aString.substring(12), preClass,
-				false))
+			int spellCaster =
+					character.isSpellCaster(aString.substring(12), preClass,
+						false);
+			if (spellCaster > 0)
 			{
-				runningTotal = preClass;
+				if (prereq.isCountMultiples())
+				{
+					countedTotal = spellCaster;
+				}
+				else
+				{
+					runningTotal = preClass;
+				}
 			}
 		}
-		else if ("ANY".equals(aString))
+		else if (aString.equals("ANY"))
 		{
 			for (PCClass cl : character.getClassList())
 			{
-				runningTotal += cl.getLevel();
+				if (prereq.isCountMultiples())
+				{
+					if (cl.getLevel() >= preClass)
+					{
+						countedTotal++;
+					}
+				}
+				else
+				{
+					runningTotal = Math.max(runningTotal, cl.getLevel());
+				}
 			}
 		}
 		else
@@ -81,11 +109,21 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 			final PCClass aClass = character.getClassKeyed(aString);
 			if (aClass != null)
 			{
-				runningTotal += aClass.getLevel();
+				if (prereq.isCountMultiples())
+				{
+					if (aClass.getLevel() >= preClass)
+					{
+						countedTotal++;
+					}
+				}
+				else
+				{
+					runningTotal += aClass.getLevel();
+				}
 			}
 		}
 		runningTotal = prereq.getOperator().compare(runningTotal, preClass);
-		return countedTotal(prereq, runningTotal);
+		return countedTotal(prereq, prereq.isCountMultiples() ? countedTotal : runningTotal);
 	}
 
 	/* (non-Javadoc)
@@ -111,6 +149,7 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 
 	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
 	{
+		//TODO given 5.12/5.14 changes, this just needs to be rewritten... thpr Jun 2, 2007
 		PCGenGraph activeGraph = character.getActiveGraph();
 		List<PCClassLevel> levellist = activeGraph.getGrantedNodeList(PCClassLevel.class);
 		String classString = prereq.getKey();

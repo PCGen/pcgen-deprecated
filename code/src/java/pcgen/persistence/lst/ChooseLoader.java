@@ -46,8 +46,8 @@ public final class ChooseLoader
 	 * @param source
 	 * @throws PersistenceLayerException
 	 */
-	public static boolean parseToken(PObject target, String key, String value,
-		int level)
+	public static boolean parseToken(PObject target, String prefix, String key,
+		String value, int level)
 	{
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(ChooseLstToken.class);
@@ -55,7 +55,7 @@ public final class ChooseLoader
 		if (token != null)
 		{
 			LstUtils.deprecationCheck(token, target, value);
-			if (!token.parse(target, value))
+			if (!token.parse(target, prefix, value))
 			{
 				// 514 deprecation changes
 				// Logging

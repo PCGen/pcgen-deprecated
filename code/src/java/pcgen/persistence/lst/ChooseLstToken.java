@@ -38,7 +38,7 @@ import pcgen.persistence.PersistenceLayerException;
  */
 public interface ChooseLstToken extends LstToken
 {
-	public boolean parse(PObject po, String value);
+	public boolean parse(PObject po, String prefix, String value);
 
 	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException;

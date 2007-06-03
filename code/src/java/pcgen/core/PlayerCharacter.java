@@ -6523,7 +6523,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public boolean isSpellCaster(final int minLevel)
 	{
-		return isSpellCaster(minLevel, false);
+		return isSpellCaster(minLevel, false) > 0;
 	}
 
 	/**
@@ -6538,7 +6538,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 *            together before the comparison.
 	 * @return boolean
 	 */
-	public boolean isSpellCaster(final int minLevel, final boolean sumOfLevels)
+	public int isSpellCaster(final int minLevel, final boolean sumOfLevels)
 	{
 		return isSpellCaster(null, minLevel, sumOfLevels);
 	}
@@ -6556,7 +6556,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public boolean isSpellCaster(final String spellType, final int minLevel)
 	{
-		return isSpellCaster(spellType, minLevel, false);
+		return isSpellCaster(spellType, minLevel, false) > 0;
 	}
 
 	/**
@@ -6573,9 +6573,10 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 *            together before the comparison.
 	 * @return boolean
 	 */
-	public boolean isSpellCaster(final String spellType, final int minLevel,
+	public int isSpellCaster(final String spellType, final int minLevel,
 		final boolean sumLevels)
 	{
+		int classTotal = 0;
 		int runningTotal = 0;
 
 		for (PCClass pcClass : classList)
@@ -6602,7 +6603,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				{
 					if (classLevels >= minLevel)
 					{
-						return true;
+						classTotal++;
 					}
 				}
 			}
@@ -6610,9 +6611,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		if (sumLevels)
 		{
-			return runningTotal >= minLevel;
+			return runningTotal >= minLevel ? 1 : 0;
 		}
-		return false;
+		return classTotal;
 	}
 
 	public boolean isSpellCastermax(final int maxLevel)
@@ -17153,7 +17154,27 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 		}
 
+		// Set this list now to avoid a loop when we ask for the object list
 		setStableVirtualFeatList(vFeatList);
+
+		// Add any virtual abilities with a category of FEAT
+		for (final PObject pobj : getPObjectList())
+		{
+			final List<String> abilityKeys =
+					pobj.getAbilityKeys(this, AbilityCategory.FEAT,
+						Ability.Nature.VIRTUAL);
+			for (final String key : abilityKeys)
+			{
+				final Ability added =
+						AbilityUtilities
+							.addCloneOfGlobalAbilityToListWithChoices(
+								vFeatList, AbilityCategory.FEAT, key);
+				if (added != null)
+				{
+					added.setFeatType(Ability.Nature.VIRTUAL);
+				}
+			}
+		}
 
 		return vFeatList;
 	}

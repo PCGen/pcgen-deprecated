@@ -17,19 +17,29 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
 public class NoChoiceToken implements ChooseLstToken
 {
 
-	public boolean parse(PObject po, String value)
+	public boolean parse(PObject po, String prefix, String value)
 	{
 		if (value == null)
 		{
 			// No args - legal
-			po.setChoiceString(value);
+			StringBuilder sb = new StringBuilder();
+			if (prefix.length() > 0)
+			{
+				sb.append(prefix).append('|');
+			}
+			sb.append(getTokenName());
+			po.setChoiceString(sb.toString());
 			return true;
 		}
 		Logging.errorPrint("CHOOSE:" + getTokenName()
@@ -40,5 +50,18 @@ public class NoChoiceToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "NOCHOICE";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value != null)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " may not have arguments: " + value);
+			return null;
+		}
+		//No args = legal
+		
 	}
 }
