@@ -24,18 +24,18 @@ import java.util.List;
 
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
+import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.chooser.ChooserUtilities;
 import pcgen.core.levelability.LevelAbility;
 import pcgen.core.prereq.PrereqHandler;
-import pcgen.core.utils.IntegerKey;
 import pcgen.core.utils.ListKey;
 import pcgen.core.utils.MessageType;
 import pcgen.core.utils.ShowMessageDelegate;
-import pcgen.core.utils.StringKey;
 import pcgen.util.Logging;
-import pcgen.util.enumeration.Tab;
 import pcgen.util.chooser.ChooserFactory;
 import pcgen.util.chooser.ChooserInterface;
+import pcgen.util.enumeration.Tab;
 
 /**
  * Definition and games rules for an Ability.

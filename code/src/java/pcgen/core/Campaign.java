@@ -24,11 +24,22 @@
  */
 package pcgen.core;
 
-import pcgen.core.utils.*;
-import pcgen.persistence.lst.CampaignSourceEntry;
-
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
+import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.enumeration.StringKey;
+import pcgen.core.utils.ListKey;
+import pcgen.core.utils.MessageType;
+import pcgen.core.utils.ShowMessageDelegate;
+import pcgen.persistence.lst.CampaignSourceEntry;
 
 /**
  * <code>Campaign</code>.

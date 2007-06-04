@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -80,7 +81,7 @@ public class PreBirthPlaceTesterTest extends TestCase
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
-		pc.setStringFor(pcgen.core.utils.StringKey.BIRTHPLACE, "Australia");
+		pc.setStringFor(StringKey.BIRTHPLACE, "Australia");
 		assertEquals(1, getTest().passesCDOM(flpre, pc));
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 	}

@@ -83,10 +83,10 @@ public class PreRegionTesterTest extends AbstractCDOMPreTestTestCase<PCTemplate>
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
-		pc.setStringFor(pcgen.core.utils.StringKey.REGION, "New York");
+		pc.setStringFor(StringKey.REGION, "New York");
 		assertEquals(1, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
-		pc.setStringFor(pcgen.core.utils.StringKey.SUB_REGION, "Finger Lakes");
+		pc.setStringFor(StringKey.SUB_REGION, "Finger Lakes");
 		assertEquals(1, getTest().passesCDOM(nypre, pc));
 		assertEquals(1, getTest().passesCDOM(flpre, pc));
 	}
@@ -108,10 +108,10 @@ public class PreRegionTesterTest extends AbstractCDOMPreTestTestCase<PCTemplate>
 		template.put(StringKey.SUB_REGION, "New York City");
 		assertEquals(1, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
-		pc.setStringFor(pcgen.core.utils.StringKey.SUB_REGION, "Finger Lakes");
+		pc.setStringFor(StringKey.SUB_REGION, "Finger Lakes");
 		assertEquals(1, getTest().passesCDOM(nypre, pc));
 		assertEquals(1, getTest().passesCDOM(flpre, pc));
-		pc.setStringFor(pcgen.core.utils.StringKey.REGION, "Australia");
+		pc.setStringFor(StringKey.REGION, "Australia");
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
 	}
@@ -124,10 +124,10 @@ public class PreRegionTesterTest extends AbstractCDOMPreTestTestCase<PCTemplate>
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
-		pc.setStringFor(pcgen.core.utils.StringKey.REGION, "Australia");
+		pc.setStringFor(StringKey.REGION, "Australia");
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
-		pc.setStringFor(pcgen.core.utils.StringKey.SUB_REGION, "Finger Lakes");
+		pc.setStringFor(StringKey.SUB_REGION, "Finger Lakes");
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
 		PObject falseObj = grantFalseObject("Template 1");
