@@ -83,10 +83,19 @@ public class PreRegionTester extends AbstractPrerequisiteTest implements
 
 	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
 	{
-		final String requiredRegion = prereq.getKey().toUpperCase();
-		final String characterRegion = character.getFullRegion().toUpperCase();
-
-		final boolean sameRegion = characterRegion.startsWith(requiredRegion);
+		String requiredRegion = prereq.getKey();
+		String charSubRegion = character.getCDOMSubRegion();
+		String charRegion = character.getCDOMRegion();
+		boolean sameRegion =
+				charRegion != null
+					&& charRegion.equalsIgnoreCase(requiredRegion);
+		if (!sameRegion && charSubRegion != null)
+		{
+			String totalRegion =
+					new StringBuilder().append(charRegion).append(" (").append(
+						charSubRegion).append(')').toString();
+			sameRegion = totalRegion.equalsIgnoreCase(requiredRegion);
+		}
 
 		int runningTotal;
 		if (prereq.getOperator().equals(PrerequisiteOperator.EQ))

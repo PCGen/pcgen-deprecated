@@ -18037,11 +18037,15 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public boolean containsAssociatedKey(Ability a, String assocKey)
 	{
+		if (assocKey == null)
+		{
+			return false;
+		}
 		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(a);
 		for (PCGraphEdge edge : list)
 		{
 			CDOMObject assoc = edge.getAssociation(AssociationKey.ABILITY_ASSOCIATION);
-			if (assoc.getKeyName().equals(assocKey))
+			if (assoc != null && assocKey.equals(assoc.getKeyName()))
 			{
 				return true;
 			}
@@ -18074,6 +18078,48 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		context = lc;
 	}
 
+	public String getCDOMSubRegion()
+	{
+		String pcSubRegion = getStringFor(StringKey.SUB_REGION);
+		if (pcSubRegion != null)
+		{
+			return pcSubRegion; // character's subregion trumps any from
+								// templates
+		}
+
+		for (PCTemplate template : activeGraph
+			.getGrantedNodeList(PCTemplate.class))
+		{
+			String tempSubRegion = template.get(pcgen.cdom.enumeration.StringKey.SUB_REGION);
+			if (tempSubRegion != null)
+			{
+				pcSubRegion = tempSubRegion;
+			}
+		}
+
+		return pcSubRegion;
+	}
+
+	public String getCDOMRegion()
+	{
+		String pcRegion = getStringFor(StringKey.REGION);
+		if (pcRegion != null)
+		{
+			return pcRegion; // character's region trumps any from templates
+		}
+
+		for (PCTemplate template : activeGraph
+			.getGrantedNodeList(PCTemplate.class))
+		{
+			String tempRegion = template.get(pcgen.cdom.enumeration.StringKey.REGION);
+			if (tempRegion != null)
+			{
+				pcRegion = tempRegion;
+			}
+		}
+
+		return pcRegion;
+	}
 
 	// public double getBonusValue(final String aBonusType, final String
 	// aBonusName )
