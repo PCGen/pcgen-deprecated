@@ -18,11 +18,11 @@ require_once('include/header.php.inc');
 
         <h1>PCGen Overview</h1>
 
-        <p>PCGen is a Java-based RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (Windows, Mac OS X, Linux, etc.). All datafiles are ASCII so they can be modified by users. All of this is work is performed uner the watchful gaze of the PCGen <a href="http://www.legolas.org/pcgen/pytw/#BoD">Board Of Directors</a>.</p>
+        <p>PCGen is a Java-based RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (Windows, Mac OS X, Linux, etc.). All datafiles are ASCII so they can be modified by users. All of this work is performed under the watchful gaze of the PCGen <a href="http://www.legolas.org/pcgen/pytw/#BoD">Board Of Directors</a>.</p>
 
         <h2>Publishers</h2>
 
-        <p>Are you a publisher, concerned about how PCGen may affect your product? Your concerns are understandable. Please read this <a href="https://sourceforge.net/docman/display_doc.php?docid=21131&group_id=25576" title="An open letter from Bryan McRoberts to all D20 publishers.">open letter from Bryan McRoberts</a>, the creator of PCGen. You may also be reassured to see the list of <a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/acknowledgments/sources.html" title="Books currently available in latest upcoming version of PCGen, sorted by publisher.">other publishers</a> which have chosen to improve their game by allowing its use with PCGen.  See <a href="http://www.legolas.org/pcgen/pytw/#Publishers">Publishers Wiki page</a> for more details</p>
+        <p>Are you a publisher, concerned about how PCGen may affect your product? Your concerns are understandable. Please read this <a href="https://sourceforge.net/docman/display_doc.php?docid=21131&group_id=25576" title="An open letter from Bryan McRoberts to all D20 publishers.">open letter from Bryan McRoberts</a>, the creator of PCGen. You may also be reassured to see the list of <a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/acknowledgments/sources.html" title="Books currently available in latest upcoming version of PCGen, sorted by publisher.">other publishers</a> which have chosen to improve their game by allowing its use with PCGen.  See <a href="http://pcgen.wiki.sourceforge.net/Publishers">Publishers Wiki page</a> for more details</p>
 
         <h2>PCGen Features</h2>
 
