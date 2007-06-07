@@ -18,7 +18,7 @@ require_once('include/header.php.inc');
 
         <h1>PCGen Overview</h1>
 
-        <p>PCGen is a Java-based RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (Windows, Mac OS X, Linux, etc.). All datafiles are ASCII so they can be modified by users. All of this work is performed under the watchful gaze of the PCGen <a href="http://www.legolas.org/pcgen/pytw/#BoD">Board Of Directors</a>.</p>
+        <p>PCGen is a Java-based RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (Windows, Mac OS X, Linux, etc.). All datafiles are ASCII so they can be modified by users. All of this work is performed under the watchful gaze of the PCGen <a href="http://pcgen.wiki.sourceforge.net/Board%20of%20Directors">Board Of Directors</a>.</p>
 
         <h2>Publishers</h2>
 
