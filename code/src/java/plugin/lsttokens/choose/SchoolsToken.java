@@ -60,6 +60,11 @@ public class SchoolsToken implements ChooseLstToken
 		if (value == null)
 		{
 			// No args - legal
+			/*
+			 * TODO Can't do it this way - this is order dependent, and the
+			 * SpellSchool constants pull must be performed at runtime, not
+			 * during LST load...
+			 */
 			return new SetChooser<SpellSchool>(SpellSchool.getAllConstants());
 		}
 		Logging.errorPrint("CHOOSE:" + getTokenName()

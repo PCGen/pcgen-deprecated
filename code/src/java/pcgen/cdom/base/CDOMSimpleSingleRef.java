@@ -17,6 +17,9 @@
  */
 package pcgen.cdom.base;
 
+import java.util.Collection;
+import java.util.Collections;
+
 public class CDOMSimpleSingleRef<T extends PrereqObject> extends
 		CDOMSingleRef<T>
 {
@@ -101,5 +104,11 @@ public class CDOMSimpleSingleRef<T extends PrereqObject> extends
 			throw new IllegalStateException(
 				"Cannot resolve a Single Reference twice");
 		}
+	}
+
+	@Override
+	public Collection<T> getContainedObjects()
+	{
+		return Collections.singleton(referencedObject);
 	}
 }

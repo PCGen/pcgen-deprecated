@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 (C) Tom Parker <thpr@sourceforge.net>
+ * Copyright 2007 (C) Tom Parker <thpr@sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,51 +14,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
- * Created on October 29, 2006.
- * 
- * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
- * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
 package pcgen.cdom.choice;
 
-import pcgen.base.util.HashMapToList;
-import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class PCChoiceFilter<T> implements ChoiceFilter<T>
+public class NegatingFilter<T extends PObject> implements ChoiceFilter<T>
 {
 
-	private HashMapToList<AssociationKey<?>, Object> assoc;
+	private ChoiceFilter<T> choiceFilter;
 
-	public static <T extends PObject> PCChoiceFilter<T> getPCChooser(Class<T> cl)
+	public static <T extends PObject> NegatingFilter<T> getNegatingFilter(
+		ChoiceFilter<T> cf)
 	{
-		return new PCChoiceFilter<T>(cl);
+		return new NegatingFilter<T>(cf);
 	}
 
-	public PCChoiceFilter(Class<T> cl)
+	public NegatingFilter(ChoiceFilter<T> cf)
 	{
 		super();
-		if (cl == null)
+		if (cf == null)
 		{
-			throw new IllegalArgumentException("Choice Class cannot be null");
+			throw new IllegalArgumentException("Choice Filter cannot be null");
 		}
-	}
-
-	public <A> void setAssociation(AssociationKey<A> ak, A val)
-	{
-		if (assoc == null)
-		{
-			assoc = new HashMapToList<AssociationKey<?>, Object>();
-		}
-		assoc.addToListFor(ak, val);
+		choiceFilter = cf;
 	}
 
 	public boolean remove(PlayerCharacter pc, T obj)
 	{
-		return pc.getActiveGraph().containsNode(obj);
+		return !choiceFilter.remove(pc, obj);
 	}
 
 }

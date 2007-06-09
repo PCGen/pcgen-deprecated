@@ -17,8 +17,8 @@
  */
 package plugin.lsttokens.choose;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
@@ -99,11 +99,10 @@ public class StatToken implements ChooseLstToken
 		return "STAT";
 	}
 
-	public ChoiceSet<PCStat> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
+	public ChoiceSet<PCStat> parse(LoadContext context, CDOMObject obj,
+		String value) throws PersistenceLayerException
 	{
-		Collection<PCStat> stats =
-				context.ref.getConstructedCDOMObjects(PCSTAT_CLASS);
+		Set<PCStat> stats = context.ref.getConstructedCDOMObjects(PCSTAT_CLASS);
 		// null means no args - use all stats - legal
 		if (value != null)
 		{

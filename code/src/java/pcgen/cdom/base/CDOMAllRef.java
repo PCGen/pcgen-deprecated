@@ -18,6 +18,8 @@
 package pcgen.cdom.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public final class CDOMAllRef<T extends PrereqObject> extends CDOMGroupRef<T>
@@ -88,5 +90,11 @@ public final class CDOMAllRef<T extends PrereqObject> extends CDOMGroupRef<T>
 	public int getObjectCount()
 	{
 		return referencedList == null ? 0 : referencedList.size();
+	}
+
+	@Override
+	public Collection<T> getContainedObjects()
+	{
+		return Collections.unmodifiableList(referencedList);
 	}
 }

@@ -18,6 +18,7 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.choice.NegatingFilter;
 import pcgen.cdom.choice.ObjectFilter;
 import pcgen.cdom.choice.PCChooser;
 import pcgen.cdom.choice.RemovingChooser;
@@ -34,7 +35,6 @@ import pcgen.util.Logging;
 public class SpellClassesToken implements ChooseLstToken
 {
 
-	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
 	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -73,11 +73,10 @@ public class SpellClassesToken implements ChooseLstToken
 					new RemovingChooser<PCClass>(pcChooser);
 			ObjectFilter<PCClass> filter =
 					ObjectFilter.getObjectFilter(PCCLASS_CLASS);
-			// TODO Once this can be negated, it's probably better with null as
-			// the only arg, rather than grabbing the list
-			filter.setObjectFilter(ObjectKey.SPELL_STAT, context.ref
-				.getConstructedCDOMObjects(PCSTAT_CLASS));
-			chooser.addRemovingChoiceFilter(filter);
+			// Note this means allow null, which is then negated
+			filter.setObjectFilter(ObjectKey.SPELL_STAT, null);
+			chooser.addRemovingChoiceFilter(NegatingFilter
+				.getNegatingFilter(filter));
 			return chooser;
 		}
 		Logging.errorPrint("CHOOSE:" + getTokenName()

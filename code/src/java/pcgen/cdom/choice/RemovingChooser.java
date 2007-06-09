@@ -24,14 +24,16 @@ package pcgen.cdom.choice;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PlayerCharacter;
 
 public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 {
@@ -82,9 +84,21 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet()
+	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return xxx;
+		Set<T> choices = new HashSet<T>(baseSet.getSet(pc));
+		for (ChoiceFilter<T> cf : set)
+		{
+			for (Iterator<T> it = choices.iterator(); it.hasNext();)
+			{
+				T next = it.next();
+				if (cf.remove(pc, next))
+				{
+					it.remove();
+				}
+			}
+		}
+		return choices;
 	}
 
 	@Override

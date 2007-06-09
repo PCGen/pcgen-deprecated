@@ -18,6 +18,9 @@
 package pcgen.cdom.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import pcgen.cdom.util.ReferenceUtilities;
 
@@ -90,10 +93,21 @@ public class CDOMCompoundReference<T extends PrereqObject> extends
 	public int getObjectCount()
 	{
 		int count = 0;
-		for (CDOMReference<?> ref : references)
+		for (CDOMReference<T> ref : references)
 		{
 			count += ref.getObjectCount();
 		}
 		return count;
+	}
+
+	@Override
+	public Collection<T> getContainedObjects()
+	{
+		Set<T> set = new HashSet<T>();
+		for (CDOMReference<T> ref : references)
+		{
+			set.addAll(ref.getContainedObjects());
+		}
+		return set;
 	}
 }

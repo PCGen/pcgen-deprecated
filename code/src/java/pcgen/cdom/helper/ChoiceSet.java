@@ -25,6 +25,7 @@ package pcgen.cdom.helper;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
+import pcgen.core.PlayerCharacter;
 
 public interface ChoiceSet<T>
 {
@@ -32,7 +33,7 @@ public interface ChoiceSet<T>
 
 	public Formula getCount();
 
-	public Set<T> getSet();
+	public Set<T> getSet(PlayerCharacter pc);
 
 	public void setMaxSelections(Formula formulaFor);
 

@@ -17,6 +17,9 @@
  */
 package pcgen.cdom.base;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import pcgen.core.SourceEntry;
 
 public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>
@@ -142,5 +145,11 @@ public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>
 	public void setName(String aName)
 	{
 		throw new UnsupportedOperationException("Don't do this");
+	}
+
+	@Override
+	public Collection<T> getContainedObjects()
+	{
+		return Collections.singleton(referencedObject);
 	}
 }

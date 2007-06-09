@@ -17,9 +17,9 @@
  */
 package pcgen.persistence;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToInstanceList;
@@ -186,10 +186,9 @@ public class SimpleReferenceContext
 		duplicates.removeListFor(cl, forgetKey);
 	}
 
-	public <T extends PObject> Collection<T> getConstructedCDOMObjects(
-		Class<T> name)
+	public <T extends PObject> Set<T> getConstructedCDOMObjects(Class<T> name)
 	{
-		return (Collection<T>) active.values(name);
+		return (Set<T>) active.values(name);
 	}
 
 	public <T extends PObject> boolean containsConstructedCDOMObject(

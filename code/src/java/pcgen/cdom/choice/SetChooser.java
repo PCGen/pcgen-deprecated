@@ -30,6 +30,7 @@ import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PlayerCharacter;
 
 public class SetChooser<T> implements ChoiceSet<T>
 {
@@ -66,7 +67,7 @@ public class SetChooser<T> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet()
+	public Set<T> getSet(PlayerCharacter pc)
 	{
 		return set;
 	}

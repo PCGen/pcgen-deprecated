@@ -17,6 +17,8 @@
  */
 package pcgen.cdom.base;
 
+import java.util.Collection;
+
 public abstract class CDOMReference<T extends PrereqObject> extends
 		ConcretePrereqObject implements LSTWriteable
 {
@@ -36,6 +38,7 @@ public abstract class CDOMReference<T extends PrereqObject> extends
 		return name;
 	}
 
+	@Override
 	public Class<T> getReferenceClass()
 	{
 		return clazz;
@@ -57,4 +60,6 @@ public abstract class CDOMReference<T extends PrereqObject> extends
 	public abstract String getLSTformat();
 
 	public abstract int getObjectCount();
+	
+	public abstract Collection<T> getContainedObjects();
 }

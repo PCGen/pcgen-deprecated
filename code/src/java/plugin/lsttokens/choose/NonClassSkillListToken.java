@@ -18,14 +18,17 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.choice.AnyChooser;
-import pcgen.cdom.choice.PCChoiceFilter;
+import pcgen.cdom.choice.NegatingFilter;
+import pcgen.cdom.choice.PCListFilter;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
+import pcgen.core.SkillList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
@@ -114,13 +117,16 @@ public class NonClassSkillListToken implements ChooseLstToken
 				+ " arguments uses double separator || : " + value);
 			return null;
 		}
-		//TODO So what are the args - not processed ?? oops
+		// TODO So what are the args - not processed ?? oops
 		AnyChooser<Skill> anyChooser = new AnyChooser<Skill>(Skill.class);
-		PCChoiceFilter<Skill> pcFilter = new PCChoiceFilter<Skill>(Skill.class);
-		//TODO I think this needs to be negated??
+		CDOMSimpleSingleRef<SkillList> ref =
+				context.ref.getCDOMReference(SkillList.class, "*Allowed");
+		PCListFilter<Skill> pcFilter =
+				new PCListFilter<Skill>(Skill.class, ref);
 		pcFilter.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		RemovingChooser<Skill> chooser = new RemovingChooser<Skill>(anyChooser);
-		chooser.addRemovingChoiceFilter(pcFilter);
+		chooser.addRemovingChoiceFilter(NegatingFilter
+			.getNegatingFilter(pcFilter));
 		return chooser;
 	}
 }

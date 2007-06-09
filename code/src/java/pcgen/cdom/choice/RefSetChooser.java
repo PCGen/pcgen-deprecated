@@ -32,6 +32,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PlayerCharacter;
 
 public class RefSetChooser<T extends PrereqObject> implements ChoiceSet<T>
 {
@@ -68,9 +69,14 @@ public class RefSetChooser<T extends PrereqObject> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet()
+	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return set;
+		Set<T> returnSet = new HashSet<T>();
+		for (CDOMReference<T> ref : set)
+		{
+			returnSet.addAll(ref.getContainedObjects());
+		}
+		return returnSet;
 	}
 
 	@Override

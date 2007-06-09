@@ -28,10 +28,10 @@ import java.util.Set;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PlayerCharacter;
 
 public class CompoundAndChooser<T extends PrereqObject> implements ChoiceSet<T>
 {
@@ -75,9 +75,21 @@ public class CompoundAndChooser<T extends PrereqObject> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet()
+	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return set;
+		Set<T> returnSet = null;
+		for (ChoiceSet<T> cs : set)
+		{
+			if (returnSet == null)
+			{
+				returnSet = new HashSet<T>(cs.getSet(pc));
+			}
+			else
+			{
+				returnSet.retainAll(cs.getSet(pc));
+			}
+		}
+		return returnSet;
 	}
 
 	@Override

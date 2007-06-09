@@ -26,9 +26,11 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
+import pcgen.cdom.choice.PCChoiceFilter;
 import pcgen.cdom.choice.PCChooser;
 import pcgen.cdom.choice.QualifyChooser;
 import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Domain;
 import pcgen.core.PObject;
@@ -39,6 +41,8 @@ import pcgen.util.Logging;
 
 public class DomainToken implements ChooseLstToken
 {
+
+	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
@@ -122,7 +126,7 @@ public class DomainToken implements ChooseLstToken
 		}
 		if (Constants.LST_ANY.equals(value))
 		{
-			return AnyChooser.getAnyChooser(Domain.class);
+			return AnyChooser.getAnyChooser(DOMAIN_CLASS);
 		}
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		List<ChoiceSet<Domain>> list = new ArrayList<ChoiceSet<Domain>>();
@@ -139,16 +143,21 @@ public class DomainToken implements ChooseLstToken
 			}
 			else if (Constants.LST_PC.equals(tokString))
 			{
-				list.add(PCChooser.getPCChooser(Domain.class));
+				list.add(PCChooser.getPCChooser(DOMAIN_CLASS));
 			}
 			else if (Constants.LST_QUALIFY.equals(tokString))
 			{
-				list.add(QualifyChooser.getQualifyChooser(Domain.class));
+				QualifyChooser<Domain> qc =
+						QualifyChooser.getQualifyChooser(DOMAIN_CLASS);
+				RemovingChooser<Domain> rc = new RemovingChooser<Domain>(qc);
+				rc.addRemovingChoiceFilter(PCChoiceFilter
+					.getPCChooser(DOMAIN_CLASS));
+				list.add(rc);
 			}
 			// TODO Need to do DEITY=
 			else
 			{
-				domainlist.add(context.ref.getCDOMReference(Domain.class,
+				domainlist.add(context.ref.getCDOMReference(DOMAIN_CLASS,
 					tokString));
 			}
 		}

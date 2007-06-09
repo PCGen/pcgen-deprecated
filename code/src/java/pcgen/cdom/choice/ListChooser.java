@@ -25,15 +25,14 @@ package pcgen.cdom.choice;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.CDOMListObject;
 import pcgen.core.PObject;
+import pcgen.core.PlayerCharacter;
 
 public class ListChooser<T extends PObject> implements ChoiceSet<T>
 {
@@ -44,13 +43,16 @@ public class ListChooser<T extends PObject> implements ChoiceSet<T>
 
 	private Formula max;
 
-	public ListChooser(CDOMReference<? extends CDOMListObject<T>> cl)
+	private CDOMSimpleSingleRef<? extends CDOMListObject<T>> listRef;
+
+	public ListChooser(CDOMSimpleSingleRef<? extends CDOMListObject<T>> cl)
 	{
 		super();
 		if (cl == null)
 		{
 			throw new IllegalArgumentException("Choice Class cannot be null");
 		}
+		listRef = cl;
 	}
 
 	public Formula getMaxSelections()
@@ -63,16 +65,17 @@ public class ListChooser<T extends PObject> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet()
+	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return set;
+		CDOMListObject<T> listObj = listRef.resolvesTo();
+		
 	}
 
 	@Override
 	public String toString()
 	{
 		return count.toString() + '<' + max.toString() + Constants.PIPE
-			+ StringUtil.join(set, Constants.PIPE);
+			+ "List: " + listRef;
 	}
 
 	@Override
@@ -93,7 +96,7 @@ public class ListChooser<T extends PObject> implements ChoiceSet<T>
 			return true;
 		}
 		ListChooser<?> cs = (ListChooser) o;
-		return max == cs.max && count == cs.count && set.equals(cs.set);
+		return max == cs.max && count == cs.count && listRef.equals(cs.listRef);
 	}
 
 	public void setCount(Formula choiceCount)

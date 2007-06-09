@@ -19,6 +19,8 @@ package pcgen.cdom.base;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import pcgen.base.lang.StringUtil;
@@ -104,4 +106,9 @@ public final class CDOMTypeRef<T extends PrereqObject> extends CDOMGroupRef<T>
 		return referencedList == null ? 0 : referencedList.size();
 	}
 
+	@Override
+	public Collection<T> getContainedObjects()
+	{
+		return Collections.unmodifiableList(referencedList);
+	}
 }

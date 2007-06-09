@@ -23,12 +23,15 @@
 package pcgen.cdom.choice;
 
 import java.util.Collection;
+import java.util.List;
 
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.core.PObject;
+import pcgen.core.PlayerCharacter;
 
-public class ObjectFilter<T> implements ChoiceFilter<T>
+public class ObjectFilter<T extends PObject> implements ChoiceFilter<T>
 {
 
 	private HashMapToList<ObjectKey<?>, Object> assoc;
@@ -64,6 +67,41 @@ public class ObjectFilter<T> implements ChoiceFilter<T>
 			assoc = new HashMapToList<ObjectKey<?>, Object>();
 		}
 		assoc.addAllToListFor(ak, val);
+	}
+
+	public boolean remove(PlayerCharacter pc, T obj)
+	{
+		if (assoc == null)
+		{
+			return false;
+		}
+		for (ObjectKey<?> key : assoc.getKeySet())
+		{
+			Object val = obj.get(key);
+			List<Object> list = assoc.getListFor(key);
+			boolean found = false;
+			for (Object o : list)
+			{
+				if (o == null)
+				{
+					if (val == null)
+					{
+						found = true;
+						break;
+					}
+				}
+				else if (o.equals(val))
+				{
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

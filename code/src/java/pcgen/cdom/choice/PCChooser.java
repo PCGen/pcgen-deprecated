@@ -22,17 +22,18 @@
  */
 package pcgen.cdom.choice;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
+import pcgen.core.PlayerCharacter;
 
-public class PCChooser<T> implements ChoiceSet<T>
+public class PCChooser<T extends PObject> implements ChoiceSet<T>
 {
 
 	private HashMapToList<AssociationKey<?>, Object> assoc;
@@ -40,6 +41,8 @@ public class PCChooser<T> implements ChoiceSet<T>
 	private Formula count;
 
 	private Formula max;
+
+	private Class<T> choiceClass;
 
 	public static <T extends PObject> PCChooser<T> getPCChooser(Class<T> cl)
 	{
@@ -53,6 +56,7 @@ public class PCChooser<T> implements ChoiceSet<T>
 		{
 			throw new IllegalArgumentException("Choice Class cannot be null");
 		}
+		choiceClass = cl;
 	}
 
 	public Formula getMaxSelections()
@@ -65,16 +69,17 @@ public class PCChooser<T> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet()
+	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return set;
+		return new HashSet<T>(pc.getActiveGraph().getGrantedNodeList(
+			choiceClass));
 	}
 
 	@Override
 	public String toString()
 	{
 		return count.toString() + '<' + max.toString() + Constants.PIPE
-			+ StringUtil.join(set, Constants.PIPE);
+			+ "PC: " + choiceClass;
 	}
 
 	@Override
@@ -95,7 +100,8 @@ public class PCChooser<T> implements ChoiceSet<T>
 			return true;
 		}
 		PCChooser<?> cs = (PCChooser) o;
-		return max == cs.max && count == cs.count && set.equals(cs.set);
+		return max == cs.max && count == cs.count
+			&& choiceClass.equals(cs.choiceClass);
 	}
 
 	public void setCount(Formula choiceCount)

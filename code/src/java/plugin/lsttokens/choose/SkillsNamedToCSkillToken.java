@@ -23,12 +23,14 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
+import pcgen.cdom.choice.NegatingFilter;
 import pcgen.cdom.choice.ObjectFilter;
-import pcgen.cdom.choice.PCChoiceFilter;
 import pcgen.cdom.choice.PCChooser;
+import pcgen.cdom.choice.PCListFilter;
 import pcgen.cdom.choice.RefSetChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -37,6 +39,7 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
+import pcgen.core.SkillList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
@@ -136,10 +139,12 @@ public class SkillsNamedToCSkillToken implements ChooseLstToken
 			base = parseChoices(context, value);
 		}
 		RemovingChooser<Skill> rc = new RemovingChooser<Skill>(base);
-		PCChoiceFilter<Skill> pcFilter = new PCChoiceFilter<Skill>(Skill.class);
-		//TODO I think this needs to be negated?
+		CDOMSimpleSingleRef<SkillList> ref =
+				context.ref.getCDOMReference(SkillList.class, "*Allowed");
+		PCListFilter<Skill> pcFilter =
+				new PCListFilter<Skill>(Skill.class, ref);
 		pcFilter.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
-		rc.addRemovingChoiceFilter(pcFilter);
+		rc.addRemovingChoiceFilter(NegatingFilter.getNegatingFilter(pcFilter));
 		return rc;
 	}
 

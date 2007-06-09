@@ -22,24 +22,26 @@
  */
 package pcgen.cdom.choice;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
+import pcgen.core.PlayerCharacter;
 
-public class QualifyChooser<T> implements ChoiceSet<T>
+public class QualifyChooser<T extends PObject> implements ChoiceSet<T>
 {
 
 	private Formula count;
 
 	private Formula max;
 
-	public static <T extends PObject> QualifyChooser<T> getQualifyChooser(Class<T> cl)
+	private Class<T> choiceClass;
+
+	public static <T extends PObject> QualifyChooser<T> getQualifyChooser(
+		Class<T> cl)
 	{
 		return new QualifyChooser<T>(cl);
 	}
@@ -51,6 +53,7 @@ public class QualifyChooser<T> implements ChoiceSet<T>
 		{
 			throw new IllegalArgumentException("Choice Class cannot be null");
 		}
+		choiceClass = cl;
 	}
 
 	public Formula getMaxSelections()
@@ -63,16 +66,26 @@ public class QualifyChooser<T> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet()
+	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return set;
+		Set<T> returnSet =
+				pc.getContext().ref.getConstructedCDOMObjects(choiceClass);
+		for (Iterator<T> it = returnSet.iterator(); it.hasNext();)
+		{
+			T next = it.next();
+			if (!next.qualifies(pc))
+			{
+				it.remove();
+			}
+		}
+		return returnSet;
 	}
 
 	@Override
 	public String toString()
 	{
 		return count.toString() + '<' + max.toString() + Constants.PIPE
-			+ StringUtil.join(set, Constants.PIPE);
+			+ "Qualify: " + choiceClass;
 	}
 
 	@Override
@@ -93,7 +106,9 @@ public class QualifyChooser<T> implements ChoiceSet<T>
 			return true;
 		}
 		QualifyChooser<?> cs = (QualifyChooser) o;
-		return max == cs.max && count == cs.count && set.equals(cs.set);
+		return max == cs.max && count == cs.count
+			&& choiceClass.equals(cs.choiceClass);
+
 	}
 
 	public void setCount(Formula choiceCount)

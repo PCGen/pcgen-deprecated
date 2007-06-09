@@ -23,12 +23,13 @@
 package pcgen.cdom.choice;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.PObject;
+import pcgen.core.PlayerCharacter;
 
 public class NumberChooser implements ChoiceSet<Integer>
 {
@@ -36,10 +37,12 @@ public class NumberChooser implements ChoiceSet<Integer>
 	private Formula count;
 
 	private Formula max;
-	
+
 	private int lowerBound;
-	
+
 	private int upperBound;
+
+	private Set<Integer> set = new TreeSet<Integer>();
 
 	public NumberChooser(int minChoice, int maxChoice)
 	{
@@ -51,6 +54,10 @@ public class NumberChooser implements ChoiceSet<Integer>
 		}
 		lowerBound = minChoice;
 		upperBound = maxChoice;
+		for (int i = lowerBound; i <= upperBound; i++)
+		{
+			set.add(Integer.valueOf(i));
+		}
 	}
 
 	public Formula getMaxSelections()
@@ -63,9 +70,9 @@ public class NumberChooser implements ChoiceSet<Integer>
 		return count;
 	}
 
-	public Set<Integer> getSet()
+	public Set<Integer> getSet(PlayerCharacter pc)
 	{
-		return set;
+		return new TreeSet<Integer>(set);
 	}
 
 	@Override
@@ -92,7 +99,7 @@ public class NumberChooser implements ChoiceSet<Integer>
 		{
 			return true;
 		}
-		NumberChooser<?> cs = (NumberChooser) o;
+		NumberChooser cs = (NumberChooser) o;
 		return max == cs.max && count == cs.count && set.equals(cs.set);
 	}
 
