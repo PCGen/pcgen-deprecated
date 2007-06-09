@@ -38,7 +38,9 @@ import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.core.spell.Spell;
 import pcgen.util.PropertyFactory;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author blithwyn
@@ -95,12 +97,15 @@ public class PreSpellDescriptorTester extends AbstractPrerequisiteTest
 		int requiredNumber = Integer.parseInt(prereq.getOperand());
 
 		PCGenGraph activeGraph = character.getActiveGraph();
+		// Build a list of all possible spells (innate & known)
 		List<Spell> spells = activeGraph.getGrantedNodeList(Spell.class);
-		int qualifyCount = 0;
+		
+		Set<Spell> spellSet = new HashSet<Spell>();
 		
 		for (Spell s : spells)
 		{
-			if (s.getListFor(ListKey.SPELL_DESCRIPTOR).contains(descr))
+			List<SpellDescriptor> descrList = s.getListFor(ListKey.SPELL_DESCRIPTOR);
+			if (descrList != null && descrList.contains(descr))
 			{
 				List<PCGraphEdge> assocEdges = activeGraph.getInwardEdgeList(s);
 				for (PCGraphEdge edge : assocEdges)
@@ -108,7 +113,7 @@ public class PreSpellDescriptorTester extends AbstractPrerequisiteTest
 					if (edge.getAssociation(AssociationKey.SPELL_LEVEL)
 						.intValue() >= requiredLevel)
 					{
-						qualifyCount++;
+						spellSet.add(s);
 						break;
 					}
 				}
@@ -116,7 +121,7 @@ public class PreSpellDescriptorTester extends AbstractPrerequisiteTest
 		}
 
 		int runningTotal =
-				prereq.getOperator().compare(qualifyCount, requiredNumber);
+			prereq.getOperator().compare(spellSet.size(), requiredNumber);
 		return countedTotal(prereq, runningTotal);
 	}
 }

@@ -34,7 +34,6 @@ import pcgen.core.CharacterDomain;
 import pcgen.core.Globals;
 import pcgen.core.PCSpell;
 import pcgen.core.PlayerCharacter;
-import pcgen.core.SpellList;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -143,11 +142,10 @@ public class PreSpellTester extends AbstractPrerequisiteTest implements
 
 		Set<Spell> spellSet = new HashSet<Spell>();
 		
-		// Build a list of all possible spells (innate)
+		// Build a list of all possible spells (innate & known)
 		List<Spell> aArrayList =
 				character.getActiveGraph().getGrantedNodeList(Spell.class);
 		String spellName = prereq.getKey();
-		int runningTotal = 0;
 
 		for (Spell aSpell : aArrayList)
 		{
@@ -156,20 +154,8 @@ public class PreSpellTester extends AbstractPrerequisiteTest implements
 				spellSet.add(aSpell);
 			}
 		}
-		
-		//From Lists (not innate)
-		List<SpellList> lists = character.getCDOMLists(SpellList.class);
-		if (lists != null)
-		{
-			for (SpellList sl : lists)
-			{
-				if (sl.containsKey(spellName))
-				{
-					spellSet.add(sl.get(spellName));
-				}
-			}
-		}
-		runningTotal =
+
+		int runningTotal =
 				prereq.getOperator().compare(spellSet.size(), requiredNumber);
 		return countedTotal(prereq, runningTotal);
 	}
