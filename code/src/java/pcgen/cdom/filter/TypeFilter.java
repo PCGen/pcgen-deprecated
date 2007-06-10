@@ -20,45 +20,49 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.choice;
+package pcgen.cdom.filter;
 
-import pcgen.base.util.HashMapToList;
-import pcgen.cdom.enumeration.AssociationKey;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class PCChoiceFilter<T> implements ChoiceFilter<T>
+public class TypeFilter implements ChoiceFilter<PObject>
 {
 
-	private HashMapToList<AssociationKey<?>, Object> assoc;
+	private List<Type> typeList;
 
-	public static <T extends PObject> PCChoiceFilter<T> getPCChooser(Class<T> cl)
-	{
-		return new PCChoiceFilter<T>(cl);
-	}
-
-	public PCChoiceFilter(Class<T> cl)
+	public TypeFilter(Collection<Type> types)
 	{
 		super();
-		if (cl == null)
+		if (types == null)
 		{
-			throw new IllegalArgumentException("Choice Class cannot be null");
+			throw new IllegalArgumentException("Type Collection cannot be null");
+		}
+		// Copy before test for empty (thread safety)
+		typeList = new ArrayList<Type>(types);
+		if (typeList.isEmpty())
+		{
+			throw new IllegalArgumentException(
+				"Type Collection cannot be empty");
 		}
 	}
 
-	public <A> void setAssociation(AssociationKey<A> ak, A val)
+	public boolean remove(PlayerCharacter pc, PObject obj)
 	{
-		if (assoc == null)
+		for (Type t : typeList)
 		{
-			assoc = new HashMapToList<AssociationKey<?>, Object>();
+			if (!obj.containsInList(ListKey.TYPE, t))
+			{
+				return true;
+			}
 		}
-		assoc.addToListFor(ak, val);
-	}
-
-	public boolean remove(PlayerCharacter pc, T obj)
-	{
-		return pc.getActiveGraph().containsNode(obj);
+		return false;
 	}
 
 }

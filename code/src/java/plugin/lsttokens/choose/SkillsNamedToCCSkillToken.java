@@ -27,15 +27,15 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
-import pcgen.cdom.choice.NegatingFilter;
-import pcgen.cdom.choice.ObjectFilter;
 import pcgen.cdom.choice.PCChooser;
-import pcgen.cdom.choice.PCListFilter;
 import pcgen.cdom.choice.RefSetChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SkillCost;
+import pcgen.cdom.filter.NegatingFilter;
+import pcgen.cdom.filter.ObjectFilter;
+import pcgen.cdom.filter.PCListFilter;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
@@ -141,8 +141,7 @@ public class SkillsNamedToCCSkillToken implements ChooseLstToken
 		RemovingChooser<Skill> rc = new RemovingChooser<Skill>(base);
 		CDOMSimpleSingleRef<SkillList> ref =
 				context.ref.getCDOMReference(SkillList.class, "*Allowed");
-		PCListFilter<Skill> pcFilter =
-				new PCListFilter<Skill>(Skill.class, ref);
+		PCListFilter<Skill> pcFilter = new PCListFilter<Skill>(ref);
 		pcFilter.setAssociation(AssociationKey.SKILL_COST,
 			SkillCost.CROSS_CLASS);
 		rc.addRemovingChoiceFilter(NegatingFilter.getNegatingFilter(pcFilter));

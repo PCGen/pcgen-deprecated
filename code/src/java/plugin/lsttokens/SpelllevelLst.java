@@ -341,8 +341,9 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists =
 				context.list.getChangedLists(obj, SpellList.class);
 
-		QuadrupleKeyMapToList<String, Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable> m =
-				new QuadrupleKeyMapToList<String, Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable>();
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		QuadrupleKeyMapToList<String, String, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable> m =
+				new QuadrupleKeyMapToList<String, String, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable>();
 		for (CDOMReference listRef : changedLists)
 		{
 			GraphChanges<Spell> changes =
@@ -375,7 +376,29 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 					Integer lvl = se.getAssociation(AssociationKey.SPELL_LEVEL);
 					Set<Prerequisite> prereqs =
 							new HashSet<Prerequisite>(se.getPrerequisiteList());
-					m.addToListFor(type, prereqs, listRef, lvl, added);
+					String prereqString = null;
+					if (prereqs != null && !prereqs.isEmpty())
+					{
+						List<String> list = new ArrayList<String>();
+						for (Prerequisite p : prereqs)
+						{
+							StringWriter swriter = new StringWriter();
+							try
+							{
+								prereqWriter.write(swriter, p);
+							}
+							catch (PersistenceLayerException e)
+							{
+								context
+									.addWriteMessage("Error writing Prerequisite: "
+										+ e);
+								return null;
+							}
+							list.add(swriter.toString());
+						}
+						prereqString = StringUtil.join(list, Constants.PIPE);
+					}
+					m.addToListFor(type, prereqString, listRef, lvl, added);
 				}
 			}
 		}
@@ -416,7 +439,6 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 					.getPrerequisiteList()), sb.toString());
 			}
 		}
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		Set<String> list = new TreeSet<String>();
 		for (String type : m.getKeySet())
 		{
@@ -426,25 +448,6 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 				Set<String> set =
 						new TreeSet<String>(m.getListFor(type, prereqs));
 				sb.append(StringUtil.join(set, Constants.PIPE));
-				if (prereqs != null && !prereqs.isEmpty())
-				{
-					for (Prerequisite p : prereqs)
-					{
-						StringWriter swriter = new StringWriter();
-						try
-						{
-							prereqWriter.write(swriter, p);
-						}
-						catch (PersistenceLayerException e)
-						{
-							context
-								.addWriteMessage("Error writing Prerequisite: "
-									+ e);
-							return null;
-						}
-						sb.append(Constants.PIPE).append(swriter.toString());
-					}
-				}
 				list.add(type + "|" + sb.toString());
 			}
 		}

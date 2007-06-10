@@ -20,7 +20,7 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.choice;
+package pcgen.cdom.filter;
 
 import java.util.Collection;
 import java.util.List;

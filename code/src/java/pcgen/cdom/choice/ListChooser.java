@@ -22,6 +22,8 @@
  */
 package pcgen.cdom.choice;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
@@ -68,7 +70,8 @@ public class ListChooser<T extends PObject> implements ChoiceSet<T>
 	public Set<T> getSet(PlayerCharacter pc)
 	{
 		CDOMListObject<T> listObj = listRef.resolvesTo();
-		
+		Collection<T> listContents = pc.getCDOMListContents(listObj);
+		return new HashSet<T>(listContents);
 	}
 
 	@Override

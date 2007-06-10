@@ -17,7 +17,11 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -76,5 +80,16 @@ public class SpellListToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SPELLLIST";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value) throws PersistenceLayerException
+	{
+		// TODO Auto-generated method stub
+		
+		// 1) Filter to get classes where SPELLBOOK = value
+		// 2) Get spellList for classes from 1)
+		// 3) get Known spells from that spelllist
+		
+		return null;
 	}
 }

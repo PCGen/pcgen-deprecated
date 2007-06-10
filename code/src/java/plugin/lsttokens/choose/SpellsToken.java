@@ -20,7 +20,7 @@ package plugin.lsttokens.choose;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.choice.CompoundOrChooser;
 import pcgen.cdom.choice.ListChooser;
 import pcgen.cdom.helper.ChoiceSet;
@@ -145,7 +145,7 @@ public class SpellsToken implements ChooseLstToken
 				return null;
 			}
 			String listName = tokText.substring(tokText.indexOf('=') + 1);
-			CDOMReference<SpellList> ref =
+			CDOMSimpleSingleRef<SpellList> ref =
 					context.ref.getCDOMReference(SPELLLIST_CLASS, listName);
 			ListChooser<Spell> listChooser = new ListChooser<Spell>(ref);
 			chooser.addChoiceSet(listChooser);

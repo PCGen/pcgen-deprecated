@@ -20,11 +20,11 @@ package plugin.lsttokens.choose;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.choice.AnyChooser;
-import pcgen.cdom.choice.NegatingFilter;
-import pcgen.cdom.choice.PCListFilter;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
+import pcgen.cdom.filter.NegatingFilter;
+import pcgen.cdom.filter.PCListFilter;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
@@ -121,8 +121,7 @@ public class NonClassSkillListToken implements ChooseLstToken
 		AnyChooser<Skill> anyChooser = new AnyChooser<Skill>(Skill.class);
 		CDOMSimpleSingleRef<SkillList> ref =
 				context.ref.getCDOMReference(SkillList.class, "*Allowed");
-		PCListFilter<Skill> pcFilter =
-				new PCListFilter<Skill>(Skill.class, ref);
+		PCListFilter<Skill> pcFilter = new PCListFilter<Skill>(ref);
 		pcFilter.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		RemovingChooser<Skill> chooser = new RemovingChooser<Skill>(anyChooser);
 		chooser.addRemovingChoiceFilter(NegatingFilter

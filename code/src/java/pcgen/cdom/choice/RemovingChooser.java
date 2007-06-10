@@ -38,7 +38,8 @@ import pcgen.core.PlayerCharacter;
 public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 {
 
-	private final Set<ChoiceFilter<T>> set = new HashSet<ChoiceFilter<T>>();
+	private final Set<ChoiceFilter<? super T>> set =
+			new HashSet<ChoiceFilter<? super T>>();
 
 	private final ChoiceSet<T> baseSet;
 
@@ -56,7 +57,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 		baseSet = base;
 	}
 
-	public void addRemovingChoiceFilter(ChoiceFilter<T> cs)
+	public void addRemovingChoiceFilter(ChoiceFilter<? super T> cs)
 	{
 		if (cs == null)
 		{
@@ -87,7 +88,7 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 	public Set<T> getSet(PlayerCharacter pc)
 	{
 		Set<T> choices = new HashSet<T>(baseSet.getSet(pc));
-		for (ChoiceFilter<T> cf : set)
+		for (ChoiceFilter<? super T> cf : set)
 		{
 			for (Iterator<T> it = choices.iterator(); it.hasNext();)
 			{

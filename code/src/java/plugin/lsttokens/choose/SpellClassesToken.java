@@ -18,11 +18,11 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.NegatingFilter;
-import pcgen.cdom.choice.ObjectFilter;
 import pcgen.cdom.choice.PCChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.filter.NegatingFilter;
+import pcgen.cdom.filter.ObjectFilter;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
