@@ -43,7 +43,7 @@ public class ListContext
 		return list;
 	}
 
-	public <T extends CDOMObject> GraphChanges<T> getChangesInMasterList(
+	public <T extends CDOMObject> MasterListChanges<T> getChangesInMasterList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl)
 	{
@@ -117,7 +117,7 @@ public class ListContext
 
 	}
 
-	public <T extends CDOMObject> GraphChanges<T> getChangesInList(
+	public <T extends CDOMObject> ListGraphChanges<T> getChangesInList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl)
 	{

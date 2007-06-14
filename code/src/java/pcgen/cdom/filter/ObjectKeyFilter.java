@@ -31,18 +31,18 @@ import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class ObjectFilter<T extends PObject> implements ChoiceFilter<T>
+public class ObjectKeyFilter<T extends PObject> implements ChoiceFilter<T>
 {
 
 	private HashMapToList<ObjectKey<?>, Object> assoc;
 
-	public static <T extends PObject> ObjectFilter<T> getObjectFilter(
+	public static <T extends PObject> ObjectKeyFilter<T> getObjectFilter(
 		Class<T> cl)
 	{
-		return new ObjectFilter<T>(cl);
+		return new ObjectKeyFilter<T>(cl);
 	}
 
-	public ObjectFilter(Class<T> cl)
+	public ObjectKeyFilter(Class<T> cl)
 	{
 		super();
 		if (cl == null)

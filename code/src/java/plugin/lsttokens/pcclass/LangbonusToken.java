@@ -31,7 +31,7 @@ import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.LanguageList;
 import pcgen.core.PCClass;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -119,10 +119,6 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 						+ " had an invalid .CLEAR. reference: " + clearText);
 					return false;
 				}
-				/*
-				 * TODO These clears commit changes when it is possible to later
-				 * return false :(
-				 */
 				removeList.add(lang);
 			}
 			else
@@ -191,7 +187,7 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 	{
 		CDOMReference<LanguageList> swl =
 				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
-		GraphChanges<Language> changes =
+		ListGraphChanges<Language> changes =
 				context.list.getChangesInList(getTokenName(), pcc, swl);
 		if (changes == null)
 		{

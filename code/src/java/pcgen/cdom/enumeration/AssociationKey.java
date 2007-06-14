@@ -78,9 +78,6 @@ public final class AssociationKey<T>
 	public static final AssociationKey<Integer> QUANTITY =
 			new AssociationKey<Integer>();
 
-	public static final AssociationKey<String> TYPE =
-			new AssociationKey<String>();
-
 	public static final AssociationKey<URI> RETIRED_BY =
 			new AssociationKey<URI>();
 

@@ -29,14 +29,13 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.util.ReferenceUtilities;
+import pcgen.core.ClassSkillList;
 import pcgen.core.Race;
 import pcgen.core.Skill;
-import pcgen.core.SkillList;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
@@ -50,7 +49,8 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 {
 	private static final Class<Skill> SKILL_CLASS = Skill.class;
 
-	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+	private static final Class<ClassSkillList> SKILLLIST_CLASS =
+			ClassSkillList.class;
 
 	@Override
 	public String getTokenName()
@@ -71,7 +71,7 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 			return false;
 		}
 
-		CDOMReference<SkillList> ref =
+		CDOMReference<ClassSkillList> ref =
 				context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
 
 		boolean firstToken = true;
@@ -168,9 +168,9 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		CDOMReference<SkillList> swl =
+		CDOMReference<ClassSkillList> swl =
 				context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
-		GraphChanges<Skill> changes =
+		ListGraphChanges<Skill> changes =
 				context.list.getChangesInList(getTokenName(), race, swl);
 		if (changes == null)
 		{
@@ -197,8 +197,9 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 		}
 		if (changes.hasAddedItems())
 		{
-			Collection<LSTWriteable> addedCollection = changes.getAdded();
-			for (LSTWriteable added : addedCollection)
+			Collection<CDOMReference<Skill>> addedCollection =
+					changes.getAdded();
+			for (CDOMReference<Skill> added : addedCollection)
 			{
 				AssociatedPrereqObject se = changes.getAddedAssociation(added);
 				if (!SkillCost.CLASS.equals(se

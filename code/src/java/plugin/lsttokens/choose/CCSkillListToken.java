@@ -25,11 +25,12 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.CompoundAndChooser;
-import pcgen.cdom.choice.PCChooser;
-import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.PCListChooser;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
@@ -120,17 +121,12 @@ public class CCSkillListToken implements ChooseLstToken
 				+ " arguments uses double separator ,, : " + value);
 			return null;
 		}
-		/*
-		 * TODO Not sure if this is really the correct reference here - what is
-		 * the place where one can gather ALL of the Class Skills for a given
-		 * PC?
-		 */
-		PCChooser<Skill> pcChooser = new PCChooser<Skill>(Skill.class);
-		pcChooser.setAssociation(AssociationKey.SKILL_COST,
-			SkillCost.CROSS_CLASS);
+		PCListChooser<Skill> lc =
+				new PCListChooser<Skill>(ClassSkillList.class);
+		lc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CROSS_CLASS);
 		if (Constants.LST_LIST.equals(value))
 		{
-			return pcChooser;
+			return lc;
 		}
 		else
 		{
@@ -159,10 +155,11 @@ public class CCSkillListToken implements ChooseLstToken
 						tokString));
 				}
 			}
-			RefSetChooser<Skill> setChooser = new RefSetChooser<Skill>(skillList);
+			ReferenceChooser<Skill> setChooser =
+					new ReferenceChooser<Skill>(skillList);
 			CompoundAndChooser<Skill> chooser = new CompoundAndChooser<Skill>();
 			chooser.addChoiceSet(setChooser);
-			chooser.addChoiceSet(pcChooser);
+			chooser.addChoiceSet(lc);
 			return chooser;
 		}
 	}

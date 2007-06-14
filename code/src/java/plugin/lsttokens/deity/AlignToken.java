@@ -49,8 +49,16 @@ public class AlignToken implements DeityLstToken
 	{
 		try
 		{
-			context.obj.put(deity, ObjectKey.ALIGNMENT, context.ref
-				.getConstructedCDOMObject(Alignment.class, value));
+			Alignment al =
+					context.ref
+						.getConstructedCDOMObject(Alignment.class, value);
+			if (al == null)
+			{
+				Logging.errorPrint("In " + getTokenName() + " " + value
+					+ " is not an Alignment");
+				return false;
+			}
+			context.obj.put(deity, ObjectKey.ALIGNMENT, al);
 			return true;
 		}
 		catch (IllegalArgumentException e)

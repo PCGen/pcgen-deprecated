@@ -23,16 +23,20 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
-import pcgen.cdom.choice.PCChooser;
-import pcgen.cdom.choice.QualifyChooser;
-import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.GrantedChooser;
+import pcgen.cdom.choice.ListTransformer;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.filter.PCChoiceFilter;
+import pcgen.cdom.filter.QualifyFilter;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.Deity;
 import pcgen.core.Domain;
+import pcgen.core.DomainList;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -143,18 +147,28 @@ public class DomainToken implements ChooseLstToken
 			}
 			else if (Constants.LST_PC.equals(tokString))
 			{
-				list.add(PCChooser.getPCChooser(DOMAIN_CLASS));
+				list.add(GrantedChooser.getPCChooser(DOMAIN_CLASS));
 			}
 			else if (Constants.LST_QUALIFY.equals(tokString))
 			{
-				QualifyChooser<Domain> qc =
-						QualifyChooser.getQualifyChooser(DOMAIN_CLASS);
-				RemovingChooser<Domain> rc = new RemovingChooser<Domain>(qc);
+				AnyChooser<Domain> ac = AnyChooser.getAnyChooser(DOMAIN_CLASS);
+				RemovingChooser<Domain> rc = new RemovingChooser<Domain>(ac);
+				rc.addRemovingChoiceFilter(new QualifyFilter());
 				rc.addRemovingChoiceFilter(PCChoiceFilter
-					.getPCChooser(DOMAIN_CLASS));
+					.getPCChoiceFilter(DOMAIN_CLASS));
 				list.add(rc);
 			}
-			// TODO Need to do DEITY=
+			else if (tokString.startsWith("DEITY="))
+			{
+				// TODO need to deal with case insensitivity
+				CDOMSimpleSingleRef<DomainList> dl =
+						context.ref.getCDOMReference(DomainList.class,
+							"*Starting");
+				ListTransformer<Domain> dpc =
+						new ListTransformer<Domain>(GrantedChooser
+							.getPCChooser(Deity.class), dl);
+				list.add(dpc);
+			}
 			else
 			{
 				domainlist.add(context.ref.getCDOMReference(DOMAIN_CLASS,
@@ -168,7 +182,7 @@ public class DomainToken implements ChooseLstToken
 		}
 		else
 		{
-			listSet = new RefSetChooser<Domain>(domainlist);
+			listSet = new ReferenceChooser<Domain>(domainlist);
 		}
 		if (list.isEmpty())
 		{

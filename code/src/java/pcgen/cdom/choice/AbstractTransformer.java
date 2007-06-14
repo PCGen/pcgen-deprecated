@@ -24,60 +24,60 @@ package pcgen.cdom.choice;
 
 import java.util.Set;
 
-import pcgen.cdom.base.Constants;
+import pcgen.base.formula.Formula;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class AnyChooser<T extends PObject> extends AbstractChooser<T>
+public abstract class AbstractTransformer<T extends PObject> implements
+		ChoiceSet<T>
 {
 
-	private Class<T> choiceClass;
+	private ChoiceSet<? extends PObject> choiceSet;
 
-	public static <T extends PObject> AnyChooser<T> getAnyChooser(Class<T> cl)
-	{
-		return new AnyChooser<T>(cl);
-	}
-
-	public AnyChooser(Class<T> cl)
+	public AbstractTransformer(ChoiceSet<? extends PObject> cs)
 	{
 		super();
-		if (cl == null)
+		if (cs == null)
 		{
-			throw new IllegalArgumentException("Choice Class cannot be null");
+			throw new IllegalArgumentException("Choice Set cannot be null");
 		}
-		choiceClass = cl;
+		choiceSet = cs;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Formula getCount()
 	{
-		return pc.getContext().ref.getConstructedCDOMObjects(choiceClass);
+		return choiceSet.getCount();
 	}
 
-	@Override
-	public String toString()
+	public Formula getMaxSelections()
 	{
-		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + "Any: " + choiceClass;
+		return choiceSet.getMaxSelections();
 	}
 
-	@Override
-	public int hashCode()
+	public void setCount(Formula formulaFor)
 	{
-		return chooserHashCode();
+		choiceSet.setCount(formulaFor);
 	}
 
-	@Override
-	public boolean equals(Object o)
+	public void setMaxSelections(Formula formulaFor)
 	{
-		if (!(o instanceof AnyChooser))
-		{
-			return false;
-		}
-		if (o == this)
-		{
-			return true;
-		}
-		AnyChooser<?> cs = (AnyChooser) o;
-		return equalsAbstractChooser(cs) && choiceClass.equals(cs.choiceClass);
+		choiceSet.setMaxSelections(formulaFor);
 	}
+
+	public int transformerHashCode()
+	{
+		return choiceSet.hashCode();
+	}
+
+	public boolean transformerEquals(AbstractTransformer<?> at)
+	{
+		return at == this || choiceSet.equals(choiceSet);
+	}
+
+	public Set<? extends PObject> getBaseSet(PlayerCharacter pc)
+	{
+		return choiceSet.getSet(pc);
+	}
+
 }

@@ -36,7 +36,7 @@ import pcgen.core.Domain;
 import pcgen.core.DomainList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -158,7 +158,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 	{
 		CDOMReference<DomainList> dl =
 				context.ref.getCDOMReference(DomainList.class, "*Starting");
-		GraphChanges<Domain> changes =
+		ListGraphChanges<Domain> changes =
 				context.list.getChangesInList(getTokenName(), deity, dl);
 		if (changes == null)
 		{

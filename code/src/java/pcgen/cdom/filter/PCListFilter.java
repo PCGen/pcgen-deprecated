@@ -24,7 +24,6 @@ package pcgen.cdom.filter;
 
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.core.CDOMListObject;
@@ -36,22 +35,22 @@ public class PCListFilter<T extends CDOMObject> implements ChoiceFilter<T>
 
 	private HashMapToList<AssociationKey<?>, Object> assoc;
 
-	private CDOMSimpleSingleRef<? extends CDOMListObject<T>> listRef;
+	private Class<? extends CDOMListObject<T>> listClass;
 
-	public static <T extends PObject> PCListFilter<T> getPCChooser(
-		CDOMSimpleSingleRef<? extends CDOMListObject<T>> ref)
+	public static <T extends PObject> PCListFilter<T> getPCListFilter(
+		Class<? extends CDOMListObject<T>> cl)
 	{
-		return new PCListFilter<T>(ref);
+		return new PCListFilter<T>(cl);
 	}
 
-	public PCListFilter(CDOMSimpleSingleRef<? extends CDOMListObject<T>> ref)
+	public PCListFilter(Class<? extends CDOMListObject<T>> cl)
 	{
 		super();
-		if (ref == null)
+		if (cl == null)
 		{
 			throw new IllegalArgumentException("Choice Class cannot be null");
 		}
-		listRef = ref;
+		listClass = cl;
 	}
 
 	public <A> void setAssociation(AssociationKey<A> ak, A val)
@@ -65,9 +64,13 @@ public class PCListFilter<T extends CDOMObject> implements ChoiceFilter<T>
 
 	public boolean remove(PlayerCharacter pc, T obj)
 	{
-		CDOMListObject<T> listObj = listRef.resolvesTo();
-		
-		// TODO Auto-generated method stub
+		for (CDOMListObject<T> list : pc.getCDOMLists(listClass))
+		{
+			if (pc.getCDOMListContents(list).contains(obj))
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 

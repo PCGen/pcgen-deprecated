@@ -26,6 +26,7 @@ import pcgen.base.formula.Formula;
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -283,7 +284,7 @@ public class GraphContext
 		}
 	}
 
-	public <T extends PrereqObject> GraphChanges<T> getChangesFromToken(
+	public <T extends PrereqObject & LSTWriteable> GraphChanges<T> getChangesFromToken(
 		String tokenName, CDOMObject pct, Class<T> name)
 	{
 		return new GraphChangesFacade<T>(graph, tokenName, pct, name);

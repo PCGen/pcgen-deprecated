@@ -34,8 +34,8 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.restriction.GroupRestriction;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PCClass;
-import pcgen.core.SkillList;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -52,7 +52,8 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 		PCClassClassLstToken
 {
 
-	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+	private static final Class<ClassSkillList> SKILLLIST_CLASS =
+			ClassSkillList.class;
 
 	@Override
 	public String getTokenName()
@@ -127,12 +128,12 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
-		Slot<SkillList> slot =
+		Slot<ClassSkillList> slot =
 				context.graph.addSlot(getTokenName(), pcc, SKILLLIST_CLASS,
 					FormulaFactory.getFormulaFor(count));
 
-		CDOMCompoundReference<SkillList> cr =
-				new CDOMCompoundReference<SkillList>(SKILLLIST_CLASS,
+		CDOMCompoundReference<ClassSkillList> cr =
+				new CDOMCompoundReference<ClassSkillList>(SKILLLIST_CLASS,
 					getTokenName() + " items");
 
 		boolean foundAny = false;
@@ -141,7 +142,7 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<SkillList> ref;
+			CDOMReference<ClassSkillList> ref;
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
@@ -168,7 +169,7 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
-		slot.addSinkRestriction(new GroupRestriction<SkillList>(
+		slot.addSinkRestriction(new GroupRestriction<ClassSkillList>(
 			SKILLLIST_CLASS, cr));
 
 		return true;
@@ -196,7 +197,7 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 				+ " Slot is allowed per PCClass");
 			return null;
 		}
-		Slot<SkillList> slot = (Slot<SkillList>) added.iterator().next();
+		Slot<?> slot = (Slot<?>) added.iterator().next();
 		if (!slot.getSlotClass().equals(SKILLLIST_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "

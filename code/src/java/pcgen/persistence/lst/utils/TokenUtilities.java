@@ -153,8 +153,8 @@ public final class TokenUtilities
 		{
 			if (type.length() == 0)
 			{
-				Logging.errorPrint("Attempt to acquire empty Type in: "
-					+ subStr);
+				Logging.errorPrint("Attempt to acquire empty Type "
+					+ "(the type String contains '..') in: " + subStr);
 				return null;
 			}
 		}

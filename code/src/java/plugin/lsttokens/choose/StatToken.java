@@ -22,7 +22,9 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.SetChooser;
+import pcgen.cdom.choice.AnyChooser;
+import pcgen.cdom.choice.RemovingChooser;
+import pcgen.cdom.filter.ReferenceFilter;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PCStat;
@@ -151,6 +153,9 @@ public class StatToken implements ChooseLstToken
 				}
 			}
 		}
-		return new SetChooser<PCStat>(stats);
+		AnyChooser<PCStat> ac = AnyChooser.getAnyChooser(PCStat.class);
+		RemovingChooser<PCStat> rc = new RemovingChooser<PCStat>(ac);
+		rc.addRemovingChoiceFilter(new ReferenceFilter<PCStat>(stats));
+		return rc;
 	}
 }

@@ -44,11 +44,12 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Campaign;
+import pcgen.core.ClassSpellList;
+import pcgen.core.DomainSpellList;
 import pcgen.core.PObject;
-import pcgen.core.SpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -241,11 +242,30 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 			String tokString = tok.nextToken();
 			String spellString = tok.nextToken();
 
-			if (!subParse(context, obj, tagType, tokString, spellString,
-				prereqs))
+			if (tagType.equalsIgnoreCase("CLASS"))
 			{
-				Logging.errorPrint("  " + getTokenName()
-					+ " error - entire token was " + value);
+				if (!subParse(context, obj, ClassSpellList.class, tokString,
+					spellString, prereqs))
+				{
+					Logging.errorPrint("  " + getTokenName()
+						+ " error - entire token was " + value);
+					return false;
+				}
+			}
+			else if (tagType.equalsIgnoreCase("DOMAIN"))
+			{
+				if (!subParse(context, obj, DomainSpellList.class, tokString,
+					spellString, prereqs))
+				{
+					Logging.errorPrint("  " + getTokenName()
+						+ " error - entire token was " + value);
+					return false;
+				}
+			}
+			else
+			{
+				Logging.errorPrint("First token of " + getTokenName()
+					+ " must be CLASS or DOMAIN:" + value);
 				return false;
 			}
 		}
@@ -253,9 +273,9 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	private boolean subParse(LoadContext context, CDOMObject obj,
-		String tagType, String tokString, String spellString,
-		List<Prerequisite> prereqs)
+	private <CL extends PObject & CDOMList<Spell>> boolean subParse(
+		LoadContext context, CDOMObject obj, Class<CL> tagType,
+		String tokString, String spellString, List<Prerequisite> prereqs)
 	{
 		int equalLoc = tokString.indexOf(Constants.EQUALS);
 		if (equalLoc == -1)
@@ -286,8 +306,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 
 		StringTokenizer clTok =
 				new StringTokenizer(casterString, Constants.COMMA);
-		List<CDOMReference<SpellList>> slList =
-				new ArrayList<CDOMReference<SpellList>>();
+		List<CDOMReference<? extends CDOMList<Spell>>> slList =
+				new ArrayList<CDOMReference<? extends CDOMList<Spell>>>();
 		while (clTok.hasMoreTokens())
 		{
 			String classString = clTok.nextToken();
@@ -308,8 +328,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 						+ getTokenName());
 				return false;
 			}
-			slList.add(context.ref.getCDOMReference(SpellList.class,
-				classString));
+			slList.add(context.ref.getCDOMReference(tagType, classString));
 		}
 
 		if (hasIllegalSeparator(',', spellString))
@@ -324,12 +343,11 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 			String spellName = spTok.nextToken();
 			CDOMReference<Spell> sp =
 					context.ref.getCDOMReference(Spell.class, spellName);
-			for (CDOMReference<SpellList> sl : slList)
+			for (CDOMReference<? extends CDOMList<Spell>> sl : slList)
 			{
 				AssociatedPrereqObject tpr =
 						context.list.addToList(getTokenName(), obj, sl, sp);
 				tpr.setAssociation(AssociationKey.SPELL_LEVEL, splLevel);
-				tpr.setAssociation(AssociationKey.TYPE, tagType);
 				tpr.addAllPrerequisites(prereqs);
 			}
 		}
@@ -339,14 +357,14 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists =
-				context.list.getChangedLists(obj, SpellList.class);
+				context.list.getChangedLists(obj, DomainSpellList.class);
 
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		QuadrupleKeyMapToList<String, String, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable> m =
 				new QuadrupleKeyMapToList<String, String, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable>();
 		for (CDOMReference listRef : changedLists)
 		{
-			GraphChanges<Spell> changes =
+			ListGraphChanges<Spell> changes =
 					context.list.getChangesInList(getTokenName(), obj, listRef);
 			if (changes == null)
 			{
@@ -366,13 +384,6 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 				{
 					AssociatedPrereqObject se =
 							changes.getAddedAssociation(added);
-					String type = se.getAssociation(AssociationKey.TYPE);
-					if (type == null)
-					{
-						context.addWriteMessage("Invalid " + getTokenName()
-							+ " link: has no TYPE");
-						return null;
-					}
 					Integer lvl = se.getAssociation(AssociationKey.SPELL_LEVEL);
 					Set<Prerequisite> prereqs =
 							new HashSet<Prerequisite>(se.getPrerequisiteList());

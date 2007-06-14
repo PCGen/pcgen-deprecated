@@ -25,18 +25,12 @@ package pcgen.cdom.choice;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PlayerCharacter;
 
-public class NumberChooser implements ChoiceSet<Integer>
+public class NumberChooser extends AbstractChooser<Integer>
 {
-
-	private Formula count;
-
-	private Formula max;
 
 	private int lowerBound;
 
@@ -60,16 +54,6 @@ public class NumberChooser implements ChoiceSet<Integer>
 		}
 	}
 
-	public Formula getMaxSelections()
-	{
-		return max;
-	}
-
-	public Formula getCount()
-	{
-		return count;
-	}
-
 	public Set<Integer> getSet(PlayerCharacter pc)
 	{
 		return new TreeSet<Integer>(set);
@@ -78,14 +62,14 @@ public class NumberChooser implements ChoiceSet<Integer>
 	@Override
 	public String toString()
 	{
-		return count.toString() + '<' + max.toString() + Constants.PIPE
-			+ StringUtil.join(set, Constants.PIPE);
+		return getCount().toString() + '<' + getMaxSelections().toString()
+			+ Constants.PIPE + StringUtil.join(set, Constants.PIPE);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return count.hashCode() + max.hashCode() * 23;
+		return chooserHashCode();
 	}
 
 	@Override
@@ -100,37 +84,6 @@ public class NumberChooser implements ChoiceSet<Integer>
 			return true;
 		}
 		NumberChooser cs = (NumberChooser) o;
-		return max == cs.max && count == cs.count && set.equals(cs.set);
+		return equalsAbstractChooser(cs) && set.equals(cs.set);
 	}
-
-	public void setCount(Formula choiceCount)
-	{
-		// if (choiceCount <= 0)
-		// {
-		// throw new IllegalArgumentException(
-		// "Count for ChoiceSet must be >= 1");
-		// }
-		count = choiceCount;
-	}
-
-	public void setMaxSelections(Formula maxSelected)
-	{
-		// if (maxSelected <= 0)
-		// {
-		// throw new IllegalArgumentException(
-		// "Max Selected for ChoiceSet must be >= 1");
-		// }
-		max = maxSelected;
-	}
-
-	// public boolean validate()
-	// {
-	// if (max < count)
-	// {
-	// Logging
-	// .errorPrint("Nonsensical ChoiceSet Max Selected must be >= Count");
-	// return false;
-	// }
-	// return true;
-	// }
 }

@@ -72,8 +72,8 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 
 	private final MapKeyMapToList mapChar = new MapKeyMapToList();
 
-	private final DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable, AssociatedPrereqObject> cdomListMods =
-			new DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable, AssociatedPrereqObject>();
+	private final DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject> cdomListMods =
+			new DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject>();
 
 	private Boolean namePI = null;
 
@@ -449,9 +449,11 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		return cdomListMods.containsKey(list);
 	}
 
-	public Collection<LSTWriteable> getListMods(CDOMReference list)
+	public <BT extends CDOMObject> Collection<CDOMReference<BT>> getListMods(
+		CDOMReference<? extends CDOMList<BT>> list)
 	{
-		Set<LSTWriteable> set = cdomListMods.getSecondaryKeySet(list);
+		CDOMReference listref = list;
+		Set set = cdomListMods.getSecondaryKeySet(listref);
 		if (set == null || set.isEmpty())
 		{
 			return null;
@@ -460,7 +462,7 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	}
 
 	public AssociatedPrereqObject getListAssociation(CDOMReference list,
-		LSTWriteable key)
+		CDOMReference key)
 	{
 		return cdomListMods.get(list, key);
 	}

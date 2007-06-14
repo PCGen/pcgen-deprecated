@@ -28,12 +28,8 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.content.ChallengeRating;
-import pcgen.cdom.content.DamageReduction;
-import pcgen.cdom.content.SpecialAbility;
-import pcgen.cdom.content.SpellResistance;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
@@ -41,11 +37,12 @@ import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstToken;
+import pcgen.persistence.lst.LstUtils;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.persistence.lst.PObjectLoader;
 import pcgen.persistence.lst.TokenStore;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -107,6 +104,7 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 	}
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
+		throws PersistenceLayerException
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
@@ -130,55 +128,42 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 				+ ": requires 3 colon separated elements (has one): " + value);
 			return false;
 		}
-		final String typeStr = tok.nextToken();
-		PrereqObject pro;
+		String typeStr = tok.nextToken();
 		if (!tok.hasMoreTokens())
 		{
 			Logging.errorPrint("Invalid " + getTokenName()
 				+ ": requires 3 colon separated elements (has two): " + value);
 			return false;
 		}
+		String argument = tok.nextToken();
 		/*
-		 * TODO Level, HD, and REPEATLEVEL all use these - should this be
-		 * generalized somehow?
+		 * TODO I think this is a .equals concern relative to duplicate creation
 		 */
-		if ("DR".equals(typeStr))
+		PCTemplate derivative = template.getPseudoTemplate();
+		derivative.put(ObjectKey.PSEUDO_PARENT, template);
+		derivative.addPrerequisite(prereq);
+		context.graph.grant(getTokenName(), template, derivative);
+		PCTemplateLstToken token =
+				TokenStore.inst().getToken(PCTemplateLstToken.class, typeStr);
+		if (token == null)
 		{
-			pro = TokenUtilities.getDamageReduction(tok.nextToken());
-			if (pro == null)
+			if (!PObjectLoader.parseTag(context, derivative, typeStr, argument))
 			{
-				Logging.errorPrint("Invalid " + getTokenName()
-					+ ": DR was not valid: " + value);
+				Logging.errorPrint("Illegal template Token '" + typeStr + "' '"
+					+ argument + "' for " + template.getDisplayName());
 				return false;
 			}
 		}
-		else if ("SR".equals(typeStr))
-		{
-			pro =
-					new SpellResistance(FormulaFactory.getFormulaFor(tok
-						.nextToken()));
-		}
-		else if ("SA".equals(typeStr))
-		{
-			/*
-			 * TODO FIXME This is insufficient (doesn't handle variables)
-			 */
-			pro = new SpecialAbility(tok.nextToken());
-		}
-		else if ("CR".equals(typeStr))
-		{
-			pro = new ChallengeRating(tok.nextToken());
-		}
 		else
 		{
-			Logging.errorPrint("Misunderstood Type in " + getTokenName() + ": "
-				+ typeStr + ". Tag was: " + value);
-			return false;
+			LstUtils.deprecationCheck(token, derivative, argument);
+			if (!token.parse(context, derivative, argument))
+			{
+				Logging.errorPrint("Error Parsing Token '" + typeStr
+					+ " in template " + template.getDisplayName());
+				return false;
+			}
 		}
-
-		PCGraphEdge edge =
-				context.graph.grant(getTokenName(), template, pro);
-		edge.addPrerequisite(prereq);
 		return true;
 	}
 
@@ -195,14 +180,22 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 
 		for (PCGraphEdge edge : edges)
 		{
-			StringBuilder sb = new StringBuilder();
-			if (edge.getPrerequisiteCount() != 1)
+			PrereqObject child = edge.getNodeAt(1);
+			if (!PCTemplate.class.isInstance(child))
 			{
-				context.addWriteMessage("Only one Prerequisiste allowed on "
-					+ getTokenName() + " derived edge");
+				context.addWriteMessage("Child from " + getTokenName()
+					+ " must be a PCTemplate");
 				return null;
 			}
-			Prerequisite prereq = edge.getPrerequisiteList().get(0);
+			PCTemplate pctChild = PCTemplate.class.cast(child);
+			if (pctChild.getPrerequisiteCount() != 1)
+			{
+				context.addWriteMessage("Only one Prerequisiste allowed on "
+					+ getTokenName() + " child PCTemplate");
+				return null;
+			}
+			StringBuilder sb = new StringBuilder();
+			Prerequisite prereq = pctChild.getPrerequisiteList().get(0);
 			String kind = prereq.getKind();
 			if (kind == null)
 			{
@@ -288,38 +281,38 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 					+ " derived edge must be HD");
 				return null;
 			}
-			List<PrereqObject> sinkNodes = edge.getSinkNodes();
-			if (sinkNodes == null || sinkNodes.size() != 1)
+			sb.append(':');
+
+			for (LstToken token : TokenStore.inst().getTokenMap(
+				PCTemplateLstToken.class).values())
 			{
-				context.addWriteMessage("Edge derived from " + getTokenName()
-					+ " must have only one sink");
-				return null;
+				StringBuilder sb2 = new StringBuilder();
+				sb2.append(sb).append(token.getTokenName()).append(':');
+				String[] s =
+						((PCTemplateLstToken) token).unparse(context, pctChild);
+				if (s != null)
+				{
+					for (String aString : s)
+					{
+						set.add(sb2.toString() + aString);
+					}
+				}
 			}
-			PrereqObject sink = sinkNodes.get(0);
-			if (sink instanceof DamageReduction)
+			for (LstToken token : TokenStore.inst().getTokenMap(
+				GlobalLstToken.class).values())
 			{
-				sb.append(":DR:").append(sink);
+				StringBuilder sb2 = new StringBuilder();
+				sb2.append(sb).append(token.getTokenName()).append(':');
+				String[] s =
+						((GlobalLstToken) token).unparse(context, pctChild);
+				if (s != null)
+				{
+					for (String aString : s)
+					{
+						set.add(sb2.toString() + aString);
+					}
+				}
 			}
-			else if (sink instanceof SpellResistance)
-			{
-				sb.append(":SR:").append(sink);
-			}
-			else if (sink instanceof SpecialAbility)
-			{
-				sb.append(":SA:").append(((SpecialAbility) sink).toLSTform());
-			}
-			else if (sink instanceof ChallengeRating)
-			{
-				sb.append(":CR:").append(((ChallengeRating) sink).getLSTformat());
-			}
-			else
-			{
-				context.addWriteMessage("Cannot write "
-					+ sink.getClass().getSimpleName() + " from "
-					+ getTokenName());
-				return null;
-			}
-			set.add(sb.toString());
 		}
 		return set.toArray(new String[set.size()]);
 	}

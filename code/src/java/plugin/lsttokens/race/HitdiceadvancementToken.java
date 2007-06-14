@@ -100,10 +100,6 @@ public class HitdiceadvancementToken extends AbstractToken implements
 
 		if (context.obj.containsListFor(race, ListKey.HITDICE_ADVANCEMENT))
 		{
-			/*
-			 * FIXME This is a problem for the editor, that parse is doing a
-			 * global GET?
-			 */
 			Logging.errorPrint("Encountered second " + getTokenName()
 				+ ": overwriting previous advancement list");
 			context.obj.removeList(race, ListKey.HITDICE_ADVANCEMENT);

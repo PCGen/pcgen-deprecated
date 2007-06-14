@@ -31,12 +31,12 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.core.ClassSkillList;
 import pcgen.core.Language;
 import pcgen.core.LanguageList;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
-import pcgen.core.SkillList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
@@ -60,7 +60,7 @@ public class PreCSkillTesterTest extends TestCase
 	{
 		pc = new PlayerCharacter(false);
 		pc.setLoadContext(context);
-		context.ref.constructCDOMObject(SkillList.class, "*Allowed");
+		context.ref.constructCDOMObject(ClassSkillList.class, "*Allowed");
 		context.ref.constructCDOMObject(LanguageList.class, "*Allowed");
 		make("Wild Mage");
 		make("Winged Mage");
@@ -184,8 +184,8 @@ public class PreCSkillTesterTest extends TestCase
 	{
 		CDOMReference<Skill> ref =
 				context.ref.getCDOMReference(getCDOMClass(), s);
-		SkillList list =
-				context.ref.getConstructedCDOMObject(SkillList.class,
+		ClassSkillList list =
+				context.ref.getConstructedCDOMObject(ClassSkillList.class,
 					"*Allowed");
 		pc.getActiveLists().addToList(list, ref, apo);
 		return context.ref.silentlyGetConstructedCDOMObject(getCDOMClass(), s);

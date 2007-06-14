@@ -26,7 +26,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.CompoundAndChooser;
-import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;
@@ -133,12 +133,12 @@ public class ShieldProfToken implements ChooseLstToken
 		}
 		CompoundAndChooser<Equipment> chooser =
 				new CompoundAndChooser<Equipment>();
-		RefSetChooser<Equipment> setChooser = new RefSetChooser<Equipment>(eqList);
+		ReferenceChooser<Equipment> setChooser = new ReferenceChooser<Equipment>(eqList);
 		chooser.addChoiceSet(setChooser);
 		CDOMReference<Equipment> shield =
 				TokenUtilities.getTypeReference(context, EQUIPMENT_CLASS,
 					"Shield");
-		chooser.addChoiceSet(new RefSetChooser<Equipment>(Collections
+		chooser.addChoiceSet(new ReferenceChooser<Equipment>(Collections
 			.singletonList(shield)));
 		return chooser;
 	}

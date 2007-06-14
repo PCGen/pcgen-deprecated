@@ -32,7 +32,7 @@ import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PCTemplate;
 import pcgen.core.WeaponProf;
 import pcgen.core.WeaponProfList;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
@@ -126,7 +126,7 @@ public class WeaponbonusToken extends AbstractToken implements
 	{
 		CDOMReference<WeaponProfList> swl =
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
-		GraphChanges<WeaponProf> changes =
+		ListGraphChanges<WeaponProf> changes =
 				context.list.getChangesInList(getTokenName(), pct, swl);
 		if (changes == null)
 		{

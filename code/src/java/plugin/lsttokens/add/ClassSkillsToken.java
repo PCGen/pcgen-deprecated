@@ -179,16 +179,16 @@ public class ClassSkillsToken implements AddLstToken
 		}
 
 		/*
-		 * BUG FIXME How do I get the slink out of this Slot to be allows and
-		 * not grants?
+		 * BUG FIXME How do I get the link out of this Slot to be allows and not
+		 * grants?
 		 */
 		/*
 		 * BUG FIXME This slot actually belongs to the Class' SkillList not to
 		 * the Class itself...
 		 */
 		Slot<Skill> slot =
-				context.graph.addSlot(getTokenName(), obj,
-					SKILL_CLASS, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), obj, SKILL_CLASS,
+					FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Skill>(SKILL_CLASS, cr));
 		slot.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 

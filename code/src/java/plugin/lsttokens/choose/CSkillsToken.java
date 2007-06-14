@@ -18,10 +18,11 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.PCChooser;
+import pcgen.cdom.choice.PCListChooser;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
@@ -66,13 +67,9 @@ public class CSkillsToken implements ChooseLstToken
 			return null;
 		}
 		// No args - legal
-		/*
-		 * TODO Not sure if this is really the correct reference here - what is
-		 * the place where one can gather ALL of the Class Skills for a given
-		 * PC?
-		 */
-		PCChooser<Skill> chooser = new PCChooser<Skill>(Skill.class);
-		chooser.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
-		return chooser;
+		PCListChooser<Skill> lc =
+				new PCListChooser<Skill>(ClassSkillList.class);
+		lc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CROSS_CLASS);
+		return lc;
 	}
 }

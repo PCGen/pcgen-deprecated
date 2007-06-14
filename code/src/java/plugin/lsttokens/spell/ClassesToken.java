@@ -36,11 +36,11 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.core.SpellList;
+import pcgen.core.ClassSpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.MasterListChanges;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLoader;
@@ -55,7 +55,8 @@ import pcgen.util.Logging;
 public class ClassesToken extends AbstractToken implements SpellLstToken
 {
 
-	private static final Class<SpellList> SPELLLIST_CLASS = SpellList.class;
+	private static final Class<ClassSpellList> SPELLLIST_CLASS =
+			ClassSpellList.class;
 
 	@Override
 	public String getTokenName()
@@ -68,9 +69,10 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		if (value.equals(".CLEAR"))
 		{
 			// 514 abbreviation cleanup
-//			Logging.errorPrint(".CLEAR is deprecated in " + getTokenName()
-//				+ " because it has side effects on DOMAINS:");
-//			Logging.errorPrint("  please use .CLEARALL to clear only CLASSES");
+			// Logging.errorPrint(".CLEAR is deprecated in " + getTokenName()
+			// + " because it has side effects on DOMAINS:");
+			// Logging.errorPrint(" please use .CLEARALL to clear only
+			// CLASSES");
 			spell.clearLevelInfo();
 			return true;
 		}
@@ -152,8 +154,8 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		boolean foundOther = false;
 
 		StringTokenizer pipeTok = new StringTokenizer(classKey, Constants.PIPE);
-		HashMapToList<Integer, CDOMReference<SpellList>> map =
-				new HashMapToList<Integer, CDOMReference<SpellList>>();
+		HashMapToList<Integer, CDOMReference<ClassSpellList>> map =
+				new HashMapToList<Integer, CDOMReference<ClassSpellList>>();
 
 		while (pipeTok.hasMoreTokens())
 		{
@@ -215,7 +217,7 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 
 			while (commaTok.hasMoreTokens())
 			{
-				CDOMReference<SpellList> ref;
+				CDOMReference<ClassSpellList> ref;
 				String token = commaTok.nextToken();
 				if (Constants.LST_ALL.equals(token))
 				{
@@ -225,8 +227,6 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 				else
 				{
 					foundOther = true;
-					// FIXME I think this really should be a SpellList, not the
-					// SpellList itself?
 					ref =
 							TokenUtilities.getTypeOrPrimitive(context,
 								SPELLLIST_CLASS, token);
@@ -247,7 +247,7 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		}
 		for (Integer level : map.getKeySet())
 		{
-			for (CDOMReference<SpellList> ref : map.getListFor(level))
+			for (CDOMReference<ClassSpellList> ref : map.getListFor(level))
 			{
 				AssociatedPrereqObject edge =
 						context.list.addToMasterList(getTokenName(), spell,
@@ -264,12 +264,12 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<SpellList>> dkmtl =
-				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<SpellList>>();
-		for (CDOMReference<SpellList> swl : context.list
+		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>> dkmtl =
+				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>>();
+		for (CDOMReference<ClassSpellList> swl : context.list
 			.getMasterLists(SPELLLIST_CLASS))
 		{
-			GraphChanges<Spell> changes =
+			MasterListChanges<Spell> changes =
 					context.list.getChangesInMasterList(getTokenName(), spell,
 						swl);
 			if (changes == null)
@@ -286,15 +286,22 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 			}
 			if (changes.includesGlobalClear())
 			{
+				// TODO Need to do something here
 				// list.add(Constants.LST_DOT_CLEARALL);
 			}
 			if (changes.hasAddedItems())
 			{
 				for (LSTWriteable added : changes.getAdded())
 				{
+					if (!spell.getLSTformat().equals(added))
+					{
+						context.addWriteMessage("Spell " + getTokenName()
+							+ " token cannot allow another Spell "
+							+ "(must only allow itself)");
+						return null;
+					}
 					AssociatedPrereqObject assoc =
 							changes.getAddedAssociation(added);
-					// TODO Check it's actually THIS spell...
 					List<Prerequisite> prereqs = assoc.getPrerequisiteList();
 					Prerequisite prereq;
 					if (prereqs == null || prereqs.size() == 0)
@@ -337,8 +344,8 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 			return null;
 		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<CDOMReference<SpellList>> set =
-				new TreeSet<CDOMReference<SpellList>>(
+		SortedSet<CDOMReference<ClassSpellList>> set =
+				new TreeSet<CDOMReference<ClassSpellList>>(
 					TokenUtilities.REFERENCE_SORTER);
 		SortedSet<Integer> levelSet = new TreeSet<Integer>();
 		List<String> list = new ArrayList<String>(dkmtl.firstKeyCount());

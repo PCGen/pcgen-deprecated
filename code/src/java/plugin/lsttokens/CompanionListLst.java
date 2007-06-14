@@ -47,7 +47,7 @@ import pcgen.core.FollowerOption;
 import pcgen.core.PObject;
 import pcgen.core.Race;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -350,7 +350,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 
 		for (CDOMReference ref : changedLists)
 		{
-			GraphChanges<Race> changes =
+			ListGraphChanges<Race> changes =
 					context.list.getChangesInList(getTokenName(), obj, ref);
 			if (changes == null)
 			{
@@ -365,8 +365,9 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			}
 			if (changes.hasAddedItems())
 			{
-				Collection<LSTWriteable> addedCollection = changes.getAdded();
-				for (LSTWriteable added : addedCollection)
+				Collection<CDOMReference<Race>> addedCollection =
+						changes.getAdded();
+				for (CDOMReference<Race> added : addedCollection)
 				{
 					AssociatedPrereqObject se =
 							changes.getAddedAssociation(added);
@@ -376,7 +377,6 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 							se
 								.getAssociation(AssociationKey.FOLLOWER_ADJUSTMENT);
 					m.addToListFor(prereqs, ref, fa, added);
-
 				}
 			}
 		}

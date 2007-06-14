@@ -23,8 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PCClass;
-import pcgen.core.SkillList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
@@ -44,8 +44,10 @@ public class IsMonsterTokenTest extends AbstractTokenTestCase<PCClass>
 		/*
 		 * FIXME This construction of *Starting should be unnecessary
 		 */
-		primaryContext.ref.constructCDOMObject(SkillList.class, "*Monster");
-		secondaryContext.ref.constructCDOMObject(SkillList.class, "*Monster");
+		primaryContext.ref
+			.constructCDOMObject(ClassSkillList.class, "*Monster");
+		secondaryContext.ref.constructCDOMObject(ClassSkillList.class,
+			"*Monster");
 		prefix = "CLASS:";
 	}
 

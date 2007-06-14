@@ -34,11 +34,11 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
+import pcgen.core.ClassSkillList;
 import pcgen.core.Skill;
-import pcgen.core.SkillList;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.MasterListChanges;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SkillLstToken;
@@ -51,7 +51,8 @@ import pcgen.util.Logging;
 public class ClassesToken extends AbstractToken implements SkillLstToken
 {
 
-	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+	private static final Class<ClassSkillList> SKILLLIST_CLASS =
+			ClassSkillList.class;
 
 	@Override
 	public String getTokenName()
@@ -80,8 +81,8 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		}
 
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
-		List<CDOMReference<SkillList>> allowed =
-				new ArrayList<CDOMReference<SkillList>>();
+		List<CDOMReference<ClassSkillList>> allowed =
+				new ArrayList<CDOMReference<ClassSkillList>>();
 		List<Prerequisite> prevented = new ArrayList<Prerequisite>();
 
 		while (pipeTok.hasMoreTokens())
@@ -115,14 +116,14 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 
 		if (!allowed.isEmpty())
 		{
-			for (CDOMReference<SkillList> ref : allowed)
+			for (CDOMReference<ClassSkillList> ref : allowed)
 			{
 				addSkillAllowed(context, skill, ref);
 			}
 		}
 		if (!prevented.isEmpty())
 		{
-			CDOMReference<SkillList> ref =
+			CDOMReference<ClassSkillList> ref =
 					context.ref.getCDOMAllReference(SKILLLIST_CLASS);
 			AssociatedPrereqObject allEdge =
 					addSkillAllowed(context, skill, ref);
@@ -133,13 +134,13 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		}
 		/*
 		 * TODO There is an All/Any mismatch here... (CLASSES uses ALL, PRECLASS
-		 * uses ANY)
+		 * uses ANY) (this is relevant because a PREREQ is added to the allEdge
 		 */
 		return true;
 	}
 
 	private AssociatedPrereqObject addSkillAllowed(LoadContext context,
-		Skill skill, CDOMReference<SkillList> ref)
+		Skill skill, CDOMReference<ClassSkillList> ref)
 	{
 		AssociatedPrereqObject edge =
 				context.list.addToMasterList(getTokenName(), skill, ref, skill);
@@ -149,18 +150,18 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 
 	public String[] unparse(LoadContext context, Skill skill)
 	{
-		CDOMGroupRef<SkillList> allRef =
+		CDOMGroupRef<ClassSkillList> allRef =
 				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
-		SortedSet<CDOMReference<SkillList>> set =
-				new TreeSet<CDOMReference<SkillList>>(
+		SortedSet<CDOMReference<ClassSkillList>> set =
+				new TreeSet<CDOMReference<ClassSkillList>>(
 					TokenUtilities.REFERENCE_SORTER);
 		boolean usesAll = false;
 		boolean usesIndividual = false;
 		boolean negated = false;
-		for (CDOMReference<SkillList> swl : context.list
+		for (CDOMReference<ClassSkillList> swl : context.list
 			.getMasterLists(SKILLLIST_CLASS))
 		{
-			GraphChanges<Skill> changes =
+			MasterListChanges<Skill> changes =
 					context.list.getChangesInMasterList(getTokenName(), skill,
 						swl);
 			if (changes == null)
@@ -185,7 +186,14 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 			{
 				for (LSTWriteable added : changes.getAdded())
 				{
-					// TODO Check it's actually THIS spell...
+
+					if (!skill.getLSTformat().equals(added))
+					{
+						context.addWriteMessage("Skill " + getTokenName()
+							+ " token cannot allow another Skill "
+							+ "(must only allow itself)");
+						return null;
+					}
 					AssociatedPrereqObject assoc =
 							changes.getAddedAssociation(added);
 					SkillCost sc =
@@ -251,7 +259,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 
 		boolean needBar = false;
 		StringBuilder sb = new StringBuilder();
-		for (CDOMReference<SkillList> ref : set)
+		for (CDOMReference<ClassSkillList> ref : set)
 		{
 			if (needBar)
 			{

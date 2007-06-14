@@ -26,75 +26,66 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import pcgen.base.lang.StringUtil;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.CDOMListObject;
+import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class CompoundAndChooser<T extends PrereqObject> extends
-		AbstractChooser<T>
+public class ListTransformer<T extends PObject> extends AbstractTransformer<T>
 {
 
-	private final Set<ChoiceSet<T>> set = new HashSet<ChoiceSet<T>>();
+	private CDOMSimpleSingleRef<? extends CDOMListObject<T>> listRef;
 
-	public CompoundAndChooser()
+	public ListTransformer(ChoiceSet<? extends PObject> cs,
+		CDOMSimpleSingleRef<? extends CDOMListObject<T>> cl)
 	{
-		super();
-	}
-
-	public void addChoiceSet(ChoiceSet<T> cs)
-	{
-		if (cs == null)
+		super(cs);
+		if (cl == null)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Dereference List cannot be null");
 		}
-		set.add(cs);
-	}
-
-	public void addAllChoiceSets(Collection<ChoiceSet<T>> coll)
-	{
-		if (coll == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		set.addAll(coll);
+		listRef = cl;
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
-		Set<T> returnSet = null;
-		for (ChoiceSet<T> cs : set)
+		Set<T> set = new HashSet<T>();
+		for (PObject obj : getBaseSet(pc))
 		{
-			if (returnSet == null)
+			Collection<CDOMReference<T>> mods = obj.getListMods(listRef);
+			if (mods != null)
 			{
-				returnSet = new HashSet<T>(cs.getSet(pc));
-			}
-			else
-			{
-				returnSet.retainAll(cs.getSet(pc));
+				for (CDOMReference<T> ref : mods)
+				{
+					set.addAll((Collection<? extends T>) ref
+						.getContainedObjects());
+				}
 			}
 		}
-		return returnSet;
+		return set;
 	}
 
 	@Override
 	public String toString()
 	{
 		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + StringUtil.join(set, Constants.PIPE);
+			+ Constants.PIPE + "List: " + listRef;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return chooserHashCode();
+		return transformerHashCode();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		if (!(o instanceof CompoundAndChooser))
+		if (!(o instanceof ListTransformer))
 		{
 			return false;
 		}
@@ -102,7 +93,7 @@ public class CompoundAndChooser<T extends PrereqObject> extends
 		{
 			return true;
 		}
-		CompoundAndChooser<?> cs = (CompoundAndChooser) o;
-		return equalsAbstractChooser(cs) && set.equals(cs.set);
+		ListTransformer<?> cs = (ListTransformer) o;
+		return listRef.equals(cs.listRef) && transformerEquals(cs);
 	}
 }

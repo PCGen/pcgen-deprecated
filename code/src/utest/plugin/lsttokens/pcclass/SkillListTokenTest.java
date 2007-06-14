@@ -21,8 +21,8 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
+import pcgen.core.ClassSkillList;
 import pcgen.core.PCClass;
-import pcgen.core.SkillList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
@@ -215,7 +215,7 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 
 	protected void construct(LoadContext loadContext, String one)
 	{
-		loadContext.ref.constructCDOMObject(SkillList.class, one);
+		loadContext.ref.constructCDOMObject(ClassSkillList.class, one);
 	}
 
 }

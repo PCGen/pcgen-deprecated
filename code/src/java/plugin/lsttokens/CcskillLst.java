@@ -36,11 +36,11 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.util.ReferenceUtilities;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
-import pcgen.core.SkillList;
-import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.MasterListChanges;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -55,7 +55,8 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken
 
 	private static final Class<Skill> SKILL_CLASS = Skill.class;
 
-	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+	private static final Class<ClassSkillList> CLASSSKILLLIST_CLASS =
+			ClassSkillList.class;
 
 	@Override
 	public String getTokenName()
@@ -153,9 +154,9 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken
 					return false;
 				}
 				AssociatedPrereqObject edge =
-						context.list.addToMasterList(getTokenName(), obj,
-							context.ref.getCDOMReference(SKILLLIST_CLASS,
-								"*Allowed"), ref);
+						context.list
+							.addToMasterList(getTokenName(), obj, context.ref
+								.getCDOMAllReference(CLASSSKILLLIST_CLASS), ref);
 				edge.setAssociation(AssociationKey.SKILL_COST,
 					SkillCost.CROSS_CLASS);
 			}
@@ -172,9 +173,9 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		CDOMGroupRef<SkillList> listRef =
-				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
-		GraphChanges<Skill> changes =
+		CDOMGroupRef<ClassSkillList> listRef =
+				context.ref.getCDOMAllReference(CLASSSKILLLIST_CLASS);
+		MasterListChanges<Skill> changes =
 				context.list.getChangesInMasterList(getTokenName(), obj,
 					listRef);
 		if (changes == null)

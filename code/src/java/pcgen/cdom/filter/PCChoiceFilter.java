@@ -33,7 +33,8 @@ public class PCChoiceFilter<T> implements ChoiceFilter<T>
 
 	private HashMapToList<AssociationKey<?>, Object> assoc;
 
-	public static <T extends PObject> PCChoiceFilter<T> getPCChooser(Class<T> cl)
+	public static <T extends PObject> PCChoiceFilter<T> getPCChoiceFilter(
+		Class<T> cl)
 	{
 		return new PCChoiceFilter<T>(cl);
 	}

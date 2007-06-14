@@ -28,21 +28,23 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.content.ChallengeRating;
-import pcgen.cdom.content.DamageReduction;
-import pcgen.cdom.content.SpecialAbility;
-import pcgen.cdom.content.SpellResistance;
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.inst.Aggregator;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.LstToken;
+import pcgen.persistence.lst.LstUtils;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.persistence.lst.PObjectLoader;
+import pcgen.persistence.lst.TokenStore;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
@@ -154,6 +156,7 @@ public class RepeatlevelToken extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
+		throws PersistenceLayerException
 	{
 		//
 		// x|y|z:level:<level assigned item>
@@ -312,29 +315,6 @@ public class RepeatlevelToken extends AbstractToken implements
 			Logging.errorPrint("  Line was: " + value);
 			return false;
 		}
-		PrereqObject pro;
-		if ("DR".equals(typeStr))
-		{
-			pro = TokenUtilities.getDamageReduction(contentStr);
-		}
-		else if ("SR".equals(typeStr))
-		{
-			pro = new SpellResistance(FormulaFactory.getFormulaFor(contentStr));
-		}
-		else if ("SA".equals(typeStr))
-		{
-			pro = new SpecialAbility(contentStr);
-		}
-		else if ("CR".equals(typeStr))
-		{
-			pro = new ChallengeRating(contentStr);
-		}
-		else
-		{
-			Logging.errorPrint("Misunderstood Type in " + getTokenName() + ": "
-				+ typeStr + ". Tag was: " + value);
-			return false;
-		}
 
 		Aggregator agg = new Aggregator(template, template, getTokenName());
 		agg.put(IntegerKey.CONSECUTIVE, Integer.valueOf(consecutive));
@@ -349,9 +329,39 @@ public class RepeatlevelToken extends AbstractToken implements
 		{
 			if ((consecutive == 0) || (count != 0))
 			{
-				PCGraphEdge edge =
-						context.graph.grant(getTokenName(), agg, pro);
-				edge.addAllPrerequisites(getPrerequisite("PRELEVEL:" + iLevel));
+				/*
+				 * TODO There is DEFINITELY an overlap problem here due to
+				 * equality
+				 */
+				PCTemplate derivative = template.getPseudoTemplate();
+				derivative.put(ObjectKey.PSEUDO_PARENT, template);
+				derivative
+					.addPrerequisite(getPrerequisite("PRELEVEL:" + iLevel));
+				context.graph.grant(getTokenName(), agg, derivative);
+				PCTemplateLstToken token =
+						TokenStore.inst().getToken(PCTemplateLstToken.class,
+							typeStr);
+				if (token == null)
+				{
+					if (!PObjectLoader.parseTag(context, derivative, typeStr,
+						contentStr))
+					{
+						Logging.errorPrint("Illegal template Token '" + typeStr
+							+ "' '" + value + "' for "
+							+ template.getDisplayName());
+						return false;
+					}
+				}
+				else
+				{
+					LstUtils.deprecationCheck(token, derivative, contentStr);
+					if (!token.parse(context, derivative, contentStr))
+					{
+						Logging.errorPrint("Error Parsing Token '" + typeStr
+							+ " in template " + template.getDisplayName());
+						return false;
+					}
+				}
 			}
 			if (consecutive != 0)
 			{
@@ -395,6 +405,7 @@ public class RepeatlevelToken extends AbstractToken implements
 			sb.append(consecutive).append(Constants.PIPE);
 			sb.append(maxLevel).append(Constants.COLON);
 			sb.append(iLevel).append(Constants.COLON);
+			String prefix = sb.toString();
 			Set<PCGraphEdge> subEdgeList =
 					context.graph.getChildLinksFromToken(getTokenName(), agg);
 			if (subEdgeList == null || subEdgeList.isEmpty())
@@ -404,17 +415,33 @@ public class RepeatlevelToken extends AbstractToken implements
 				return null;
 			}
 
-			boolean wroteContent = false;
-			for (PCGraphEdge subEdge : subEdgeList)
+			Set<String> set = new TreeSet<String>();
+
+			for (PCGraphEdge edge : subEdgeList)
 			{
-				if (subEdge.getPrerequisiteCount() != 1)
+				List<PrereqObject> sinkNodes = edge.getSinkNodes();
+				if (sinkNodes == null || sinkNodes.size() != 1)
+				{
+					context.addWriteMessage("Edge derived from "
+						+ getTokenName() + " must have only one sink");
+					return null;
+				}
+				PrereqObject child = sinkNodes.get(0);
+				if (!PCTemplate.class.isInstance(child))
+				{
+					context.addWriteMessage("Child from " + getTokenName()
+						+ " must be a PCTemplate");
+					return null;
+				}
+				PCTemplate pctChild = PCTemplate.class.cast(child);
+				if (pctChild.getPrerequisiteCount() != 1)
 				{
 					context
 						.addWriteMessage("Only one Prerequisiste allowed on "
-							+ getTokenName() + " derived edge");
+							+ getTokenName() + " child PCTemplate");
 					return null;
 				}
-				Prerequisite prereq = subEdge.getPrerequisiteList().get(0);
+				Prerequisite prereq = pctChild.getPrerequisiteList().get(0);
 				String kind = prereq.getKind();
 				if (kind.equalsIgnoreCase("LEVEL"))
 				{
@@ -426,51 +453,56 @@ public class RepeatlevelToken extends AbstractToken implements
 					}
 				}
 				else
-				// if (!kind.equalsIgnoreCase("LEVEL"))
 				{
+					// if (!kind.equalsIgnoreCase("LEVEL"))
 					context.addWriteMessage("Prerequisiste on "
 						+ getTokenName() + " derived edge must be LEVEL");
 					return null;
 				}
-				List<PrereqObject> sinkNodes = subEdge.getSinkNodes();
-				if (sinkNodes == null || sinkNodes.size() != 1)
+				if (!PrerequisiteOperator.GTEQ.equals(prereq.getOperator()))
 				{
-					context.addWriteMessage("Edge derived from "
-						+ getTokenName() + " must have only one sink");
+					context.addWriteMessage("Invalid Operator built on "
+						+ getTokenName() + " derived edge");
 					return null;
 				}
-				PrereqObject sink = sinkNodes.get(0);
-				if (!wroteContent)
+
+				for (LstToken token : TokenStore.inst().getTokenMap(
+					PCTemplateLstToken.class).values())
 				{
-					if (sink instanceof DamageReduction)
+					StringBuilder sb2 = new StringBuilder();
+					sb2.append(token.getTokenName()).append(':');
+					String[] s =
+							((PCTemplateLstToken) token).unparse(context,
+								pctChild);
+					if (s != null)
 					{
-						sb.append("DR:").append(sink);
+						for (String aString : s)
+						{
+							set.add(sb2.toString() + aString);
+						}
 					}
-					else if (sink instanceof SpellResistance)
+				}
+				for (LstToken token : TokenStore.inst().getTokenMap(
+					GlobalLstToken.class).values())
+				{
+					StringBuilder sb2 = new StringBuilder();
+					sb2.append(token.getTokenName()).append(':');
+					String[] s =
+							((GlobalLstToken) token).unparse(context, pctChild);
+					if (s != null)
 					{
-						sb.append("SR:").append(sink);
+						for (String aString : s)
+						{
+							set.add(sb2.toString() + aString);
+						}
 					}
-					else if (sink instanceof SpecialAbility)
-					{
-						sb.append("SA:").append(
-							((SpecialAbility) sink).toLSTform());
-					}
-					else if (sink instanceof ChallengeRating)
-					{
-						sb.append("CR:").append(
-							((ChallengeRating) sink).getLSTformat());
-					}
-					else
-					{
-						context.addWriteMessage("Cannot write "
-							+ sink.getClass().getSimpleName() + " from "
-							+ getTokenName());
-						return null;
-					}
-					wroteContent = true;
 				}
 			}
-			list.add(sb.toString());
+
+			for (String s : set)
+			{
+				list.add(prefix + s);
+			}
 		}
 		return list.toArray(new String[list.size()]);
 	}

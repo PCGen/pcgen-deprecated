@@ -18,7 +18,6 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -26,9 +25,9 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.filter.NegatingFilter;
 import pcgen.cdom.filter.PCListFilter;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
-import pcgen.core.SkillList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
@@ -119,9 +118,8 @@ public class NonClassSkillListToken implements ChooseLstToken
 		}
 		// TODO So what are the args - not processed ?? oops
 		AnyChooser<Skill> anyChooser = new AnyChooser<Skill>(Skill.class);
-		CDOMSimpleSingleRef<SkillList> ref =
-				context.ref.getCDOMReference(SkillList.class, "*Allowed");
-		PCListFilter<Skill> pcFilter = new PCListFilter<Skill>(ref);
+		PCListFilter<Skill> pcFilter =
+				new PCListFilter<Skill>(ClassSkillList.class);
 		pcFilter.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		RemovingChooser<Skill> chooser = new RemovingChooser<Skill>(anyChooser);
 		chooser.addRemovingChoiceFilter(NegatingFilter

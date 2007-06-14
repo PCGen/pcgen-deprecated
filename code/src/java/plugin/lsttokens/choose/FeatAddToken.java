@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Ability;
@@ -139,6 +139,6 @@ public class FeatAddToken implements ChooseLstToken
 			}
 		}
 		// TODO Need to do the ADD (to the PC) ;)
-		return new RefSetChooser<Ability>(featList);
+		return new ReferenceChooser<Ability>(featList);
 	}
 }

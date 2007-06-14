@@ -26,14 +26,15 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
-import pcgen.cdom.choice.PCChooser;
-import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.PCListChooser;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SkillCost;
-import pcgen.cdom.filter.ObjectFilter;
+import pcgen.cdom.filter.ObjectKeyFilter;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
@@ -144,30 +145,35 @@ public class SkillsNamedToken implements ChooseLstToken
 			}
 			else if (Constants.LST_CLASS.equals(tokString))
 			{
-				PCChooser<Skill> pcc = new PCChooser<Skill>(Skill.class);
+				PCListChooser<Skill> pcc =
+						new PCListChooser<Skill>(ClassSkillList.class);
 				pcc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 				list.add(pcc);
 			}
 			else if (Constants.LST_CROSSCLASS.equals(tokString))
 			{
-				PCChooser<Skill> pcc = new PCChooser<Skill>(Skill.class);
-				pcc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CROSS_CLASS);
+				PCListChooser<Skill> pcc =
+						new PCListChooser<Skill>(ClassSkillList.class);
+				pcc.setAssociation(AssociationKey.SKILL_COST,
+					SkillCost.CROSS_CLASS);
 				list.add(pcc);
 			}
 			else if (Constants.LST_EXCLUSIVE.equals(tokString))
 			{
-				PCChooser<Skill> pcc = new PCChooser<Skill>(Skill.class);
+				PCListChooser<Skill> pcc =
+						new PCListChooser<Skill>(ClassSkillList.class);
 				pcc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
-				pcc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CROSS_CLASS);
+				pcc.setAssociation(AssociationKey.SKILL_COST,
+					SkillCost.CROSS_CLASS);
 				RemovingChooser<Skill> rc = new RemovingChooser<Skill>(pcc);
-				ObjectFilter<Skill> of = new ObjectFilter<Skill>(Skill.class);
+				ObjectKeyFilter<Skill> of = new ObjectKeyFilter<Skill>(Skill.class);
 				of.setObjectFilter(ObjectKey.EXCLUSIVE, Boolean.TRUE);
 				rc.addRemovingChoiceFilter(of);
 				list.add(rc);
 			}
 			else if (Constants.LST_NORANK.equals(tokString))
 			{
-				//TODO Need an implementation here :(
+				// TODO Need an implementation here :(
 			}
 			else
 			{
@@ -184,7 +190,7 @@ public class SkillsNamedToken implements ChooseLstToken
 		}
 		else
 		{
-			listSet = new RefSetChooser<Skill>(skillList);
+			listSet = new ReferenceChooser<Skill>(skillList);
 		}
 		if (list.isEmpty())
 		{

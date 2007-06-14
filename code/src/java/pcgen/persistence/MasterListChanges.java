@@ -14,7 +14,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
-public class MasterListChanges<T extends CDOMObject> implements GraphChanges<T>
+public class MasterListChanges<T extends CDOMObject>
 {
 
 	private final DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject> map;

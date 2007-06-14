@@ -7,10 +7,9 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
-public class ListGraphChanges<T extends CDOMObject> implements GraphChanges<T>
+public class ListGraphChanges<T extends CDOMObject>
 {
 
 	private final CDOMObject owner;
@@ -38,25 +37,25 @@ public class ListGraphChanges<T extends CDOMObject> implements GraphChanges<T>
 		return false;
 	}
 
-	public Collection<LSTWriteable> getAdded()
+	public Collection<CDOMReference<T>> getAdded()
 	{
-		TreeSet<LSTWriteable> set =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
+		TreeSet<CDOMReference<T>> set =
+				new TreeSet<CDOMReference<T>>(TokenUtilities.WRITEABLE_SORTER);
 		set.addAll(owner.getListMods(ref));
 		return set;
 	}
 
-	public Collection<LSTWriteable> getRemoved()
+	public Collection<CDOMReference<T>> getRemoved()
 	{
 		return null;
 	}
 
-	public AssociatedPrereqObject getAddedAssociation(LSTWriteable added)
+	public AssociatedPrereqObject getAddedAssociation(CDOMReference<T> added)
 	{
 		return owner.getListAssociation(ref, added);
 	}
 
-	public AssociatedPrereqObject getRemovedAssociation(LSTWriteable added)
+	public AssociatedPrereqObject getRemovedAssociation(CDOMReference<T> added)
 	{
 		return null;
 	}

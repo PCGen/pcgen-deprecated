@@ -18,11 +18,11 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.PCChooser;
+import pcgen.cdom.choice.GrantedChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.filter.NegatingFilter;
-import pcgen.cdom.filter.ObjectFilter;
+import pcgen.cdom.filter.ObjectKeyFilter;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
@@ -67,12 +67,12 @@ public class SpellClassesToken implements ChooseLstToken
 		if (value == null)
 		{
 			// No args - legal
-			PCChooser<PCClass> pcChooser =
-					PCChooser.getPCChooser(PCCLASS_CLASS);
+			GrantedChooser<PCClass> pcChooser =
+					GrantedChooser.getPCChooser(PCCLASS_CLASS);
 			RemovingChooser<PCClass> chooser =
 					new RemovingChooser<PCClass>(pcChooser);
-			ObjectFilter<PCClass> filter =
-					ObjectFilter.getObjectFilter(PCCLASS_CLASS);
+			ObjectKeyFilter<PCClass> filter =
+					ObjectKeyFilter.getObjectFilter(PCCLASS_CLASS);
 			// Note this means allow null, which is then negated
 			filter.setObjectFilter(ObjectKey.SPELL_STAT, null);
 			chooser.addRemovingChoiceFilter(NegatingFilter

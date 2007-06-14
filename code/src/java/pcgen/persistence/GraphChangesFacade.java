@@ -15,7 +15,8 @@ import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
-public class GraphChangesFacade<T> implements GraphChanges<T>
+public class GraphChangesFacade<T extends PrereqObject & LSTWriteable>
+		implements GraphChanges<T>
 {
 
 	private final PCGenGraph graph;
@@ -56,12 +57,20 @@ public class GraphChangesFacade<T> implements GraphChanges<T>
 				{
 					continue;
 				}
-				if (childClass.isAssignableFrom(node.getClass())
-					|| (node instanceof CDOMReference && ((CDOMReference) node)
-						.getReferenceClass().equals(childClass)))
+				if (childClass.isAssignableFrom(node.getClass()))
 				{
+					//TODO Can the edge actually return an LSTWriteable?
 					set.add((LSTWriteable) node);
 					break;
+				}
+				else if (node instanceof CDOMReference)
+				{
+					CDOMReference<?> cdr = (CDOMReference) node;
+					if (cdr.getReferenceClass().equals(childClass))
+					{
+						set.add((LSTWriteable) node);
+						break;
+					}
 				}
 			}
 		}
@@ -93,8 +102,6 @@ public class GraphChangesFacade<T> implements GraphChanges<T>
 
 	public boolean hasAddedItems()
 	{
-		Set<LSTWriteable> set =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(source);
 		if (outwardEdgeList == null)
 		{

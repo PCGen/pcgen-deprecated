@@ -26,13 +26,22 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
+import pcgen.cdom.choice.GrantedChooser;
+import pcgen.cdom.choice.ListKeyTransformer;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.EqWield;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.filter.NegatingFilter;
+import pcgen.cdom.filter.ObjectKeyFilter;
 import pcgen.cdom.filter.TypeFilter;
 import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Constants;
+import pcgen.core.Deity;
+import pcgen.core.Equipment;
 import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
@@ -173,7 +182,11 @@ public class WeaponProfToken implements ChooseLstToken
 			return null;
 		}
 
-		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		StringTokenizer tok =
+				new StringTokenizer(value.substring(pipeLoc + 1),
+					Constants.PIPE);
+		List<ChoiceSet<WeaponProf>> choiceList =
+				new ArrayList<ChoiceSet<WeaponProf>>();
 		List<CDOMReference<WeaponProf>> refList =
 				new ArrayList<CDOMReference<WeaponProf>>();
 		ArrayList<ChoiceFilter<? super WeaponProf>> filterList =
@@ -183,14 +196,16 @@ public class WeaponProfToken implements ChooseLstToken
 			String tokString = tok.nextToken();
 			if ("DEITYWEAPON".equalsIgnoreCase(tokString))
 			{
-
+				choiceList.add(new ListKeyTransformer<WeaponProf>(
+					GrantedChooser.getPCChooser(Deity.class),
+					ListKey.DEITY_WEAPON));
 			}
 			else if (tokString.startsWith("FEAT="))
 			{
 				// TODO need CASE insensitive :P
 
 			}
-			else if (tokString.startsWith("WEILD."))
+			else if (tokString.startsWith("WIELD."))
 			{
 				EqWield w = EqWield.valueOf(tokString.substring(6));
 				if (w == null)
@@ -199,8 +214,18 @@ public class WeaponProfToken implements ChooseLstToken
 					Logging.errorPrint("  entire token was: " + value);
 					return null;
 				}
-				// TODO need CASE insensitive :P
+				RemovingChooser<Equipment> rc =
+						new RemovingChooser<Equipment>(
+							new AnyChooser<Equipment>(Equipment.class));
+				ObjectKeyFilter<Equipment> of =
+						ObjectKeyFilter.getObjectFilter(Equipment.class);
+				of.setObjectFilter(ObjectKey.WIELD, w);
+				rc
+					.addRemovingChoiceFilter(NegatingFilter
+						.getNegatingFilter(of));
+				// TODO Need to grab whatever the PROFICIENCY token stores...
 
+				// TODO need CASE insensitive :P
 			}
 			else if (tokString.startsWith("!TYPE=")
 				|| tokString.startsWith("!TYPE."))
@@ -226,15 +251,27 @@ public class WeaponProfToken implements ChooseLstToken
 				refList.add(ref);
 			}
 		}
-		// TODO add refList
-		// TODO check if OR is really necessary??
-		CompoundOrChooser<WeaponProf> chooser =
-			new CompoundOrChooser<WeaponProf>();
-		ChoiceSet<WeaponProf> retChooser = chooser;
+		if (!refList.isEmpty())
+		{
+			choiceList.add(new ReferenceChooser<WeaponProf>(refList));
+		}
+		ChoiceSet<WeaponProf> retChooser;
+		// Assume it is impossible to have choiceList empty
+		if (choiceList.size() == 1)
+		{
+			retChooser = choiceList.get(0);
+		}
+		else
+		{
+			CompoundOrChooser<WeaponProf> chooser =
+					new CompoundOrChooser<WeaponProf>();
+			chooser.addAllChoiceSets(choiceList);
+			retChooser = chooser;
+		}
 		if (filterList.isEmpty())
 		{
 			RemovingChooser<WeaponProf> rc =
-					new RemovingChooser<WeaponProf>(chooser);
+					new RemovingChooser<WeaponProf>(retChooser);
 			for (ChoiceFilter<? super WeaponProf> f : filterList)
 			{
 				rc.addRemovingChoiceFilter(f);

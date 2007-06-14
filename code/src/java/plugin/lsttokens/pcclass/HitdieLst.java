@@ -44,6 +44,7 @@ import pcgen.cdom.modifier.HitDieStep;
 import pcgen.core.PCClass;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLevelLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.util.Logging;
@@ -52,11 +53,13 @@ import pcgen.util.Logging;
  * @author djones4
  * 
  */
-public class HitdieLst implements PCClassLstToken, PCClassLevelLstToken
+public class HitdieLst extends AbstractToken implements PCClassLstToken,
+		PCClassLevelLstToken
 {
 
 	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "HITDIE";
@@ -94,6 +97,10 @@ public class HitdieLst implements PCClassLstToken, PCClassLevelLstToken
 						Logging
 							.errorPrint("Cannot have Empty Type Limitation in "
 								+ getTokenName() + ": " + value);
+						return false;
+					}
+					if (hasIllegalSeparator('.', substring))
+					{
 						return false;
 					}
 					owner =

@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.PCTemplate;
+import pcgen.core.PObject;
 import pcgen.core.Race;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -267,36 +268,38 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinJustRace() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		construct(Race.class, "Lion");
 		runRoundRobin("Familiar|Lion");
+	}
+
+	private <T extends PObject> void construct(Class<T> cl, String name)
+	{
+		T po = primaryContext.ref.constructCDOMObject(cl, name);
+		primaryContext.ref.getCDOMReference(cl, name).addResolution(po);
+		T so = secondaryContext.ref.constructCDOMObject(cl, name);
+		secondaryContext.ref.getCDOMReference(cl, name).addResolution(so);
 	}
 
 	@Test
 	public void testRoundRobinTwoRace() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		construct(Race.class, "Lion");
+		construct(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion,Tiger");
 	}
 
 	@Test
 	public void testRoundRobinFA() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
+		construct(Race.class, "Lion");
 		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-4");
 	}
 
 	@Test
 	public void testRoundRobinTwoFA() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		construct(Race.class, "Lion");
+		construct(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-4",
 			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
 	}
@@ -304,10 +307,8 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoType() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		construct(Race.class, "Lion");
+		construct(Race.class, "Tiger");
 		runRoundRobin("Companion|Lion|FOLLOWERADJUSTMENT:-5",
 			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
 	}
@@ -315,20 +316,16 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinComplex() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		construct(Race.class, "Lion");
+		construct(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion,Tiger|FOLLOWERADJUSTMENT:-3|!PRECLASS:1,Cleric=1|PRERACE:1,Human");
 	}
 
 	@Test
 	public void testRoundRobinTwoPRE() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Lion");
-		primaryContext.ref.constructCDOMObject(Race.class, "Tiger");
-		secondaryContext.ref.constructCDOMObject(Race.class, "Tiger");
+		construct(Race.class, "Lion");
+		construct(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-5",
 			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
 	}

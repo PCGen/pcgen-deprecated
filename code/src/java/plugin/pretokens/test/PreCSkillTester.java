@@ -31,15 +31,14 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.enumeration.Type;
+import pcgen.core.ClassSkillList;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
-import pcgen.core.SkillList;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
-import pcgen.persistence.LoadContext;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -148,57 +147,51 @@ public class PreCSkillTester extends AbstractPrerequisiteTest implements
 			requiredSkillKey += " (" + prereq.getSubKey().toUpperCase() + ")";
 		}
 
+		Set<ClassSkillList> lists =
+				character.getCDOMLists(ClassSkillList.class);
+		int matchCount =
+				lists == null ? 0 : doStuff(character, requiredSkillKey, lists);
+
+		runningTotal = prereq.getOperator().compare(matchCount, reqnumber);
+		return countedTotal(prereq, runningTotal);
+	}
+
+	private int doStuff(PlayerCharacter character, String requiredSkillKey,
+		Set<ClassSkillList> lists)
+	{
 		boolean isType =
 				(requiredSkillKey.startsWith("TYPE.") || requiredSkillKey
 					.startsWith("TYPE="));
+		String key = isType ? requiredSkillKey.substring(5) : requiredSkillKey;
 
 		Set<Skill> matchingSkills = new HashSet<Skill>();
-		LoadContext context = character.getContext();
-		SkillList sl =
-				context.ref.silentlyGetConstructedCDOMObject(SkillList.class,
-					"*Allowed");
-		Collection<Skill> skillList = character.getCDOMListContents(sl);
-		if (skillList != null)
+		for (ClassSkillList csl : lists)
 		{
-			if (isType)
+			Collection<Skill> skillList = character.getCDOMListContents(csl);
+			if (skillList != null)
 			{
-				// Skill name is actually type to compare for
-				requiredSkillKey = requiredSkillKey.substring(5);
-				SKILL: for (Skill sk : skillList)
+				if (isType)
 				{
-					StringTokenizer tok =
-							new StringTokenizer(requiredSkillKey, ".");
-					//
-					// Must match all listed types in order to qualify
-					// TODO sk.containsAllInList to avoid lots of
-					// StringTokenizers?
-					//
-					while (tok.hasMoreTokens())
+					// Skill name is actually type to compare for
+					SKILL: for (Skill sk : skillList)
 					{
-						Type requiredType = Type.getConstant(tok.nextToken());
-						if (!sk.containsInList(ListKey.TYPE, requiredType))
+						StringTokenizer tok = new StringTokenizer(key, ".");
+						//
+						// Must match all listed types in order to qualify
+						// TODO sk.containsAllInList to avoid lots of
+						// StringTokenizers?
+						//
+						while (tok.hasMoreTokens())
 						{
-							continue SKILL;
+							Type requiredType =
+									Type.getConstant(tok.nextToken());
+							if (!sk.containsInList(ListKey.TYPE, requiredType))
+							{
+								continue SKILL;
+							}
 						}
-					}
-					AssociatedObject assoc =
-							character.getListAssociation(sl, sk);
-					if (assoc != null
-						&& SkillCost.CLASS.equals(assoc
-							.getAssociation(AssociationKey.SKILL_COST)))
-					{
-						matchingSkills.add(sk);
-					}
-				}
-			}
-			else
-			{
-				for (Skill sk : skillList)
-				{
-					if (requiredSkillKey.equalsIgnoreCase(sk.getKeyName()))
-					{
 						AssociatedObject assoc =
-								character.getListAssociation(sl, sk);
+								character.getCDOMListAssociation(csl, sk);
 						if (assoc != null
 							&& SkillCost.CLASS.equals(assoc
 								.getAssociation(AssociationKey.SKILL_COST)))
@@ -207,11 +200,25 @@ public class PreCSkillTester extends AbstractPrerequisiteTest implements
 						}
 					}
 				}
+				else
+				{
+					for (Skill sk : skillList)
+					{
+						if (key.equalsIgnoreCase(sk.getKeyName()))
+						{
+							AssociatedObject assoc =
+									character.getCDOMListAssociation(csl, sk);
+							if (assoc != null
+								&& SkillCost.CLASS.equals(assoc
+									.getAssociation(AssociationKey.SKILL_COST)))
+							{
+								matchingSkills.add(sk);
+							}
+						}
+					}
+				}
 			}
 		}
-
-		runningTotal =
-				prereq.getOperator().compare(matchingSkills.size(), reqnumber);
-		return countedTotal(prereq, runningTotal);
+		return matchingSkills.size();
 	}
 }

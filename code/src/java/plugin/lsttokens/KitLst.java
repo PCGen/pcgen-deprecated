@@ -34,7 +34,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Kit;
 import pcgen.core.PObject;
@@ -114,7 +114,7 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 				list.add(context.ref.getCDOMReference(KIT_CLASS, tokText));
 			}
 		}
-		RefSetChooser<Kit> chooser = new RefSetChooser<Kit>(list);
+		ReferenceChooser<Kit> chooser = new ReferenceChooser<Kit>(list);
 		context.graph.grant(getTokenName(), obj, cl);
 
 		return true;

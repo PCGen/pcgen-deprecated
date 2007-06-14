@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.SpellList;
+import pcgen.core.DomainSpellList;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
@@ -216,9 +216,9 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testInvalidInputNotClassCompound()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		//Intentionally do NOT build Good
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		// Intentionally do NOT build Good
 		assertTrue(getToken().parse(primaryContext, primaryProf, "Fire,Good=4"));
 		assertFalse(primaryContext.ref.validate());
 	}
@@ -227,8 +227,8 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
 		runRoundRobin("Fire=4");
 	}
 
@@ -236,8 +236,8 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testRoundRobinPrereq() throws PersistenceLayerException
 	{
 		assertEquals(0, primaryContext.getWriteMessageCount());
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
 		runRoundRobin("Fire=4[PRERACE:1,Human]");
 	}
 
@@ -245,10 +245,10 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testRoundRobinComma() throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Good");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Good");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Good");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Good");
 		runRoundRobin("Fire,Good=4");
 	}
 
@@ -256,10 +256,10 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testRoundRobinPipe() throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Good");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Good");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Good");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Good");
 		runRoundRobin("Fire=3|Good=4");
 	}
 
@@ -267,12 +267,12 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	public void testRoundRobinCommaPipe() throws PersistenceLayerException
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Good");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Good");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Sun");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Sun");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Good");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Good");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Sun");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Sun");
 		runRoundRobin("Fire,Good=3|Sun=4");
 	}
 }

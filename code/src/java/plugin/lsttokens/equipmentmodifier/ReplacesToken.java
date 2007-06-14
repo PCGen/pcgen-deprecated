@@ -64,6 +64,9 @@ public class ReplacesToken extends AbstractToken implements
 		 * FIXME Should this actually be a Factory of some sort, since it IS
 		 * mosifying a piece of equipment? - yes, these are REMOVERs :) - akin
 		 * to how TEMPLATE:REMOVE works
+		 * 
+		 * HOWEVER, this can ONLY impact the Equipment, so it's not quite that
+		 * simple :(
 		 */
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
 		while (tok.hasMoreTokens())

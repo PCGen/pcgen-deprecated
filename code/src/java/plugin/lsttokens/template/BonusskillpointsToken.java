@@ -98,7 +98,8 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 		}
 		if (added.size() > 1)
 		{
-			// TODO Error message
+			context.addWriteMessage("Only one " + getTokenName()
+				+ " may exist in a Template");
 			return null;
 		}
 		ClassSkillPointFactory lcf =

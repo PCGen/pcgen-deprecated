@@ -21,8 +21,9 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
+import pcgen.core.ClassSpellList;
+import pcgen.core.DomainSpellList;
 import pcgen.core.PCClass;
-import pcgen.core.SpellList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
@@ -215,7 +216,8 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 
 	protected void construct(LoadContext loadContext, String one)
 	{
-		loadContext.ref.constructCDOMObject(SpellList.class, one);
+		loadContext.ref.constructCDOMObject(ClassSpellList.class, one);
+		loadContext.ref.constructCDOMObject(DomainSpellList.class, one);
 	}
 
 }

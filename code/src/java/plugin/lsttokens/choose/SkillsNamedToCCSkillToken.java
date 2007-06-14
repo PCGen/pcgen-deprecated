@@ -23,23 +23,22 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
-import pcgen.cdom.choice.PCChooser;
-import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.PCListChooser;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.filter.NegatingFilter;
-import pcgen.cdom.filter.ObjectFilter;
+import pcgen.cdom.filter.ObjectKeyFilter;
 import pcgen.cdom.filter.PCListFilter;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
-import pcgen.core.SkillList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
@@ -139,9 +138,8 @@ public class SkillsNamedToCCSkillToken implements ChooseLstToken
 			base = parseChoices(context, value);
 		}
 		RemovingChooser<Skill> rc = new RemovingChooser<Skill>(base);
-		CDOMSimpleSingleRef<SkillList> ref =
-				context.ref.getCDOMReference(SkillList.class, "*Allowed");
-		PCListFilter<Skill> pcFilter = new PCListFilter<Skill>(ref);
+		PCListFilter<Skill> pcFilter =
+				new PCListFilter<Skill>(ClassSkillList.class);
 		pcFilter.setAssociation(AssociationKey.SKILL_COST,
 			SkillCost.CROSS_CLASS);
 		rc.addRemovingChoiceFilter(NegatingFilter.getNegatingFilter(pcFilter));
@@ -165,25 +163,28 @@ public class SkillsNamedToCCSkillToken implements ChooseLstToken
 			}
 			else if (Constants.LST_CLASS.equals(tokString))
 			{
-				PCChooser<Skill> pcc = new PCChooser<Skill>(Skill.class);
+				PCListChooser<Skill> pcc =
+						new PCListChooser<Skill>(ClassSkillList.class);
 				pcc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 				list.add(pcc);
 			}
 			else if (Constants.LST_CROSSCLASS.equals(tokString))
 			{
-				PCChooser<Skill> pcc = new PCChooser<Skill>(Skill.class);
+				PCListChooser<Skill> pcc =
+						new PCListChooser<Skill>(ClassSkillList.class);
 				pcc.setAssociation(AssociationKey.SKILL_COST,
 					SkillCost.CROSS_CLASS);
 				list.add(pcc);
 			}
 			else if (Constants.LST_EXCLUSIVE.equals(tokString))
 			{
-				PCChooser<Skill> pcc = new PCChooser<Skill>(Skill.class);
+				PCListChooser<Skill> pcc =
+						new PCListChooser<Skill>(ClassSkillList.class);
 				pcc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 				pcc.setAssociation(AssociationKey.SKILL_COST,
 					SkillCost.CROSS_CLASS);
 				RemovingChooser<Skill> rc = new RemovingChooser<Skill>(pcc);
-				ObjectFilter<Skill> of = new ObjectFilter<Skill>(Skill.class);
+				ObjectKeyFilter<Skill> of = new ObjectKeyFilter<Skill>(Skill.class);
 				of.setObjectFilter(ObjectKey.EXCLUSIVE, Boolean.TRUE);
 				rc.addRemovingChoiceFilter(of);
 				list.add(rc);
@@ -207,7 +208,7 @@ public class SkillsNamedToCCSkillToken implements ChooseLstToken
 		}
 		else
 		{
-			listSet = new RefSetChooser<Skill>(skillList);
+			listSet = new ReferenceChooser<Skill>(skillList);
 		}
 		if (list.isEmpty())
 		{

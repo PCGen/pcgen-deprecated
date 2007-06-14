@@ -32,7 +32,7 @@ import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Race;
 import pcgen.core.WeaponProf;
 import pcgen.core.WeaponProfList;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
@@ -137,7 +137,7 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 	{
 		CDOMReference<WeaponProfList> swl =
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
-		GraphChanges<WeaponProf> changes =
+		ListGraphChanges<WeaponProf> changes =
 				context.list.getChangesInList(getTokenName(), race, swl);
 		if (changes == null)
 		{

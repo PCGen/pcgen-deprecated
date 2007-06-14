@@ -23,7 +23,6 @@ package plugin.lsttokens.template;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import pcgen.base.formula.AddingFormula;
@@ -43,17 +42,19 @@ import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with HITDIE Token
  */
-public class HitdieToken implements PCTemplateLstToken
+public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 {
 
 	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "HITDIE";
@@ -92,9 +93,10 @@ public class HitdieToken implements PCTemplateLstToken
 								+ getTokenName() + ": " + value);
 						return false;
 					}
-					// TODO Need to test for empty TYPE as well as failed
-					// leading and trailing . (needs to happen across ALL
-					// getCDOMTypeReference items)
+					if (hasIllegalSeparator('.', substring))
+					{
+						return false;
+					}
 					owner =
 							context.ref.getCDOMTypeReference(PCCLASS_CLASS,
 								substring.split("\\."));
@@ -299,13 +301,13 @@ public class HitdieToken implements PCTemplateLstToken
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		for (Iterator<LSTWriteable> it = added.iterator(); it.hasNext();)
+		for (LSTWriteable lw : added)
 		{
 			StringBuilder sb = new StringBuilder();
-			HitDieCommandFactory lcf = (HitDieCommandFactory) it.next();
-			AbstractHitDieModifier mod = lcf.getModifier();
+			HitDieCommandFactory hdcf = (HitDieCommandFactory) lw;
+			AbstractHitDieModifier mod = hdcf.getModifier();
 			sb.append(mod.getLSTform());
-			String lcfString = lcf.getLSTformat();
+			String lcfString = lw.getLSTformat();
 			if (!lcfString.equals(Constants.LST_ALL))
 			{
 				sb.append("|CLASS");

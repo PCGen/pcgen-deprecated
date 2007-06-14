@@ -28,14 +28,13 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.Domain;
 import pcgen.core.DomainList;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -175,7 +174,7 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 		CDOMReference<DomainList> allowedDomainList =
 				context.ref.getCDOMReference(DomainList.class, "*Allowed");
 
-		GraphChanges<Domain> changes =
+		ListGraphChanges<Domain> changes =
 				context.list.getChangesInList(getTokenName(), po,
 					allowedDomainList);
 		if (changes == null)
@@ -194,7 +193,7 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 			StringBuilder sb = new StringBuilder();
 			boolean first = true;
-			for (LSTWriteable domain : changes.getAdded())
+			for (CDOMReference<Domain> domain : changes.getAdded())
 			{
 				if (!first)
 				{

@@ -25,8 +25,8 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
-import pcgen.cdom.choice.PCChooser;
-import pcgen.cdom.choice.RefSetChooser;
+import pcgen.cdom.choice.GrantedChooser;
+import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.filter.PCChoiceFilter;
 import pcgen.cdom.helper.ChoiceSet;
@@ -198,7 +198,7 @@ public class ProficiencyToken implements ChooseLstToken
 		CompoundOrChooser<T> chooser = new CompoundOrChooser<T>();
 		if (second.equals("PC"))
 		{
-			chooser.addChoiceSet(new PCChooser<T>(cl));
+			chooser.addChoiceSet(new GrantedChooser<T>(cl));
 		}
 		else if (second.equals("ALL"))
 		{
@@ -225,7 +225,7 @@ public class ProficiencyToken implements ChooseLstToken
 						.nextToken());
 			refList.add(ref);
 		}
-		chooser.addChoiceSet(new RefSetChooser<T>(refList));
+		chooser.addChoiceSet(new ReferenceChooser<T>(refList));
 		return chooser;
 	}
 }

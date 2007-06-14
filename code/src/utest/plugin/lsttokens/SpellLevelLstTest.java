@@ -22,8 +22,9 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
+import pcgen.core.ClassSpellList;
+import pcgen.core.DomainSpellList;
 import pcgen.core.PCTemplate;
-import pcgen.core.SpellList;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -251,8 +252,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Cleric");
 		runRoundRobin("CLASS|Cleric=1|Fireball");
 	}
 
@@ -263,8 +265,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Cleric");
 		runRoundRobin("CLASS|Cleric=1|Fireball,Lightning Bolt");
 	}
 
@@ -275,8 +278,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Cleric");
 		runRoundRobin("CLASS|Cleric=1|Fireball|Cleric=2|Lightning Bolt");
 	}
 
@@ -287,10 +291,11 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
+		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Druid");
+		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Druid");
 		runRoundRobin("CLASS|Cleric,Druid=1|Fireball,Lightning Bolt");
 	}
 
@@ -301,10 +306,11 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
+		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Druid");
+		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Druid");
 		runRoundRobin("CLASS|Cleric=1|Fireball|Druid=2|Lightning Bolt");
 	}
 
@@ -495,8 +501,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
+			"Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball");
 	}
 
@@ -507,8 +514,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
+			"Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball,Lightning Bolt");
 	}
 
@@ -519,8 +527,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
+			"Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball|Cleric=2|Lightning Bolt");
 	}
 
@@ -532,10 +541,12 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Druid");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
+			"Cleric");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Druid");
+		secondaryContext.ref
+			.constructCDOMObject(DomainSpellList.class, "Druid");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball|Druid=2|Lightning Bolt");
 	}
 
@@ -544,8 +555,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	{
 		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
+			"Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball|PRERACE:1,Human");
 	}
 
@@ -556,8 +568,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
+			"Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball,Lightning Bolt|!PRECLASS:1,Cleric=1|PRERACE:1,Human");
 	}
 
@@ -568,8 +581,9 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
+			"Cleric");
 		runRoundRobin("DOMAIN|Cleric=1|Fireball",
 			"DOMAIN|Cleric=1|Lightning Bolt|PRERACE:1,Human");
 	}
@@ -581,10 +595,11 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
 		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Cleric");
-		primaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
-		secondaryContext.ref.constructCDOMObject(SpellList.class, "Fire");
+		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
 		runRoundRobin("CLASS|Cleric=1|Lightning Bolt", "DOMAIN|Fire=1|Fireball");
 	}
 

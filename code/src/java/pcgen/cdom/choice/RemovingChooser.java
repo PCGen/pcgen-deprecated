@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
@@ -35,17 +34,13 @@ import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PlayerCharacter;
 
-public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
+public class RemovingChooser<T extends PrereqObject> extends AbstractChooser<T>
 {
 
 	private final Set<ChoiceFilter<? super T>> set =
 			new HashSet<ChoiceFilter<? super T>>();
 
 	private final ChoiceSet<T> baseSet;
-
-	private Formula count;
-
-	private Formula max;
 
 	public RemovingChooser(ChoiceSet<T> base)
 	{
@@ -75,16 +70,6 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 		set.addAll(coll);
 	}
 
-	public Formula getMaxSelections()
-	{
-		return max;
-	}
-
-	public Formula getCount()
-	{
-		return count;
-	}
-
 	public Set<T> getSet(PlayerCharacter pc)
 	{
 		Set<T> choices = new HashSet<T>(baseSet.getSet(pc));
@@ -105,14 +90,14 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 	@Override
 	public String toString()
 	{
-		return count.toString() + '<' + max.toString() + Constants.PIPE
-			+ StringUtil.join(set, Constants.PIPE);
+		return getCount().toString() + '<' + getMaxSelections().toString()
+			+ Constants.PIPE + StringUtil.join(set, Constants.PIPE);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return count.hashCode() + max.hashCode() * 23;
+		return chooserHashCode();
 	}
 
 	@Override
@@ -127,37 +112,6 @@ public class RemovingChooser<T extends PrereqObject> implements ChoiceSet<T>
 			return true;
 		}
 		RemovingChooser<?> cs = (RemovingChooser) o;
-		return max == cs.max && count == cs.count && set.equals(cs.set);
+		return equalsAbstractChooser(cs) && set.equals(cs.set);
 	}
-
-	public void setCount(Formula choiceCount)
-	{
-		// if (choiceCount <= 0)
-		// {
-		// throw new IllegalArgumentException(
-		// "Count for ChoiceSet must be >= 1");
-		// }
-		count = choiceCount;
-	}
-
-	public void setMaxSelections(Formula maxSelected)
-	{
-		// if (maxSelected <= 0)
-		// {
-		// throw new IllegalArgumentException(
-		// "Max Selected for ChoiceSet must be >= 1");
-		// }
-		max = maxSelected;
-	}
-
-	// public boolean validate()
-	// {
-	// if (max < count)
-	// {
-	// Logging
-	// .errorPrint("Nonsensical ChoiceSet Max Selected must be >= Count");
-	// return false;
-	// }
-	// return true;
-	// }
 }

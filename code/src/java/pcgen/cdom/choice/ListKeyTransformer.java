@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 (C) Tom Parker <thpr@sourceforge.net>
+ * Copyright 2007 (C) Tom Parker <thpr@sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,87 +14,71 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
- * Created on October 29, 2006.
- * 
- * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
- * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
 package pcgen.cdom.choice;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import pcgen.base.lang.StringUtil;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class CompoundAndChooser<T extends PrereqObject> extends
-		AbstractChooser<T>
+public class ListKeyTransformer<T extends PObject> extends
+		AbstractTransformer<T>
 {
 
-	private final Set<ChoiceSet<T>> set = new HashSet<ChoiceSet<T>>();
+	private ListKey<? extends CDOMReference<T>> listkey;
 
-	public CompoundAndChooser()
+	public ListKeyTransformer(ChoiceSet<? extends PObject> cs,
+		ListKey<? extends CDOMReference<T>> lk)
 	{
-		super();
-	}
-
-	public void addChoiceSet(ChoiceSet<T> cs)
-	{
-		if (cs == null)
+		super(cs);
+		if (lk == null)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("List Key cannot be null");
 		}
-		set.add(cs);
-	}
-
-	public void addAllChoiceSets(Collection<ChoiceSet<T>> coll)
-	{
-		if (coll == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		set.addAll(coll);
+		listkey = lk;
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
-		Set<T> returnSet = null;
-		for (ChoiceSet<T> cs : set)
+		Set<T> set = new HashSet<T>();
+		for (PObject obj : getBaseSet(pc))
 		{
-			if (returnSet == null)
+			List<? extends CDOMReference<T>> objList = obj.getListFor(listkey);
+			if (objList != null)
 			{
-				returnSet = new HashSet<T>(cs.getSet(pc));
-			}
-			else
-			{
-				returnSet.retainAll(cs.getSet(pc));
+				for (CDOMReference<T> ref : objList)
+				{
+					set.addAll(ref.getContainedObjects());
+				}
 			}
 		}
-		return returnSet;
+		return set;
 	}
 
 	@Override
 	public String toString()
 	{
 		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + StringUtil.join(set, Constants.PIPE);
+			+ Constants.PIPE + "DeRef: " + listkey;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return chooserHashCode();
+		return transformerHashCode();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		if (!(o instanceof CompoundAndChooser))
+		if (!(o instanceof ListKeyTransformer))
 		{
 			return false;
 		}
@@ -102,7 +86,7 @@ public class CompoundAndChooser<T extends PrereqObject> extends
 		{
 			return true;
 		}
-		CompoundAndChooser<?> cs = (CompoundAndChooser) o;
-		return equalsAbstractChooser(cs) && set.equals(cs.set);
+		ListKeyTransformer<?> cs = (ListKeyTransformer) o;
+		return listkey.equals(cs.listkey) && transformerEquals(cs);
 	}
 }

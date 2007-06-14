@@ -28,6 +28,9 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
+import plugin.lsttokens.DrLst;
+import plugin.lsttokens.SaLst;
+import plugin.lsttokens.SrLst;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreLevelParser;
@@ -44,6 +47,10 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public static final void ltClassSetUp() throws PersistenceLayerException
 	{
 		TokenRegistration.register(new PreLevelParser());
+		TokenRegistration.register(new CrToken());
+		TokenRegistration.register(new DrLst());
+		TokenRegistration.register(new SrLst());
+		TokenRegistration.register(new SaLst());
 		classSetUpFired = true;
 	}
 
@@ -311,6 +318,12 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testRoundRobinMultiple() throws PersistenceLayerException
 	{
 		runRoundRobin("3:SR:Formula", "4:CR:Formula");
+	}
+
+	@Test
+	public void testRoundRobinMultipleSame() throws PersistenceLayerException
+	{
+		runRoundRobin("4:CR:Formula", "4:SA:Special Ability, Man!");
 	}
 
 }

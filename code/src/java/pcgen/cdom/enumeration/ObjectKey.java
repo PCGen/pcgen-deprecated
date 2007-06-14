@@ -34,6 +34,7 @@ import java.util.Map;
 import pcgen.base.formula.Resolver;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.base.util.DefaultMap;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.helper.ChoiceSet;
@@ -112,7 +113,7 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Double> WEIGHT = new ObjectKey<Double>();
 
-	public static final ObjectKey<EqWield> WEILD = new ObjectKey<EqWield>();
+	public static final ObjectKey<EqWield> WIELD = new ObjectKey<EqWield>();
 
 	public static final ObjectKey<CDOMSimpleSingleRef<WeaponProf>> WEAPON_PROF = new ObjectKey<CDOMSimpleSingleRef<WeaponProf>>();
 
@@ -157,6 +158,8 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<BigDecimal> FACE_HEIGHT = new ObjectKey<BigDecimal>();
 
 	public static final ObjectKey<ChoiceSet<?>> CHOICE = new ObjectKey<ChoiceSet<?>>();
+
+	public static final ObjectKey<CDOMObject> PSEUDO_PARENT = new ObjectKey<CDOMObject>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 

@@ -150,7 +150,14 @@ public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
 		{
 			if (me.getKey().equals(AttackType.GRAPPLE))
 			{
-				// TODO Validate same as MELEE?
+				// Validate same as MELEE
+				if (!me.getValue().equals(map.get(AttackType.MELEE)))
+				{
+					context
+						.addWriteMessage("Grapple Attack Cycle MUST be equal to "
+							+ "Melee Attack Cycle because it is not stored");
+					return null;
+				}
 			}
 			else
 			{

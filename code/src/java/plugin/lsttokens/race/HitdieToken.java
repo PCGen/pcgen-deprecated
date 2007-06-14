@@ -94,6 +94,10 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 								+ getTokenName() + ": " + value);
 						return false;
 					}
+					if (hasIllegalSeparator('.', substring))
+					{
+						return false;
+					}
 					owner =
 							context.ref.getCDOMTypeReference(PCCLASS_CLASS,
 								substring.split("\\."));

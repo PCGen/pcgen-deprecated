@@ -23,8 +23,8 @@ package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PCClass;
-import pcgen.core.SkillList;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassClassLstToken;
@@ -37,7 +37,8 @@ import pcgen.util.Logging;
 public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 {
 
-	private static final Class<SkillList> SKILLLIST_CLASS = SkillList.class;
+	private static final Class<ClassSkillList> SKILLLIST_CLASS =
+			ClassSkillList.class;
 
 	public String getTokenName()
 	{
@@ -77,9 +78,7 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 				return false;
 			}
 			set = Boolean.TRUE;
-			// TODO This isn't technically correct - should really add to the
-			// class list?
-			CDOMReference<SkillList> msl =
+			CDOMReference<ClassSkillList> msl =
 					context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
 			context.graph.grant(getTokenName(), pcc, msl);
 		}

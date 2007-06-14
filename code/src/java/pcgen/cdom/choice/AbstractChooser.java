@@ -22,41 +22,19 @@
  */
 package pcgen.cdom.choice;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import pcgen.base.formula.Formula;
-import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.PlayerCharacter;
 
-public class RefSetChooser<T extends PrereqObject> implements ChoiceSet<T>
+public abstract class AbstractChooser<T> implements ChoiceSet<T>
 {
-
-	private final Set<CDOMReference<T>> set;
 
 	private Formula count;
 
 	private Formula max;
 
-	public RefSetChooser(Collection<CDOMReference<T>> col)
+	public AbstractChooser()
 	{
 		super();
-		if (col == null)
-		{
-			throw new IllegalArgumentException(
-				"Choice Collection cannot be null");
-		}
-		if (col.isEmpty())
-		{
-			throw new IllegalArgumentException(
-				"Choice Collection cannot be empty");
-		}
-		set = new HashSet<CDOMReference<T>>(col);
 	}
 
 	public Formula getMaxSelections()
@@ -69,42 +47,18 @@ public class RefSetChooser<T extends PrereqObject> implements ChoiceSet<T>
 		return count;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
-	{
-		Set<T> returnSet = new HashSet<T>();
-		for (CDOMReference<T> ref : set)
-		{
-			returnSet.addAll(ref.getContainedObjects());
-		}
-		return returnSet;
-	}
-
-	@Override
-	public String toString()
-	{
-		return count.toString() + '<' + max.toString() + Constants.PIPE
-			+ StringUtil.join(set, Constants.PIPE);
-	}
-
-	@Override
-	public int hashCode()
+	public int chooserHashCode()
 	{
 		return count.hashCode() + max.hashCode() * 23;
 	}
 
-	@Override
-	public boolean equals(Object o)
+	public boolean equalsAbstractChooser(AbstractChooser<?> ac)
 	{
-		if (!(o instanceof RefSetChooser))
-		{
-			return false;
-		}
-		if (o == this)
+		if (ac == this)
 		{
 			return true;
 		}
-		RefSetChooser<?> cs = (RefSetChooser) o;
-		return max == cs.max && count == cs.count && set.equals(cs.set);
+		return max == ac.max && count == ac.count;
 	}
 
 	public void setCount(Formula choiceCount)

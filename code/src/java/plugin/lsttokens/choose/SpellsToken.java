@@ -22,11 +22,12 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.choice.CompoundOrChooser;
-import pcgen.cdom.choice.ListChooser;
+import pcgen.cdom.choice.PCListRefChooser;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.ClassSpellList;
 import pcgen.core.Constants;
+import pcgen.core.DomainSpellList;
 import pcgen.core.PObject;
-import pcgen.core.SpellList;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -36,7 +37,10 @@ import pcgen.util.Logging;
 public class SpellsToken implements ChooseLstToken
 {
 
-	private static final Class<SpellList> SPELLLIST_CLASS = SpellList.class;
+	private static final Class<ClassSpellList> CLASSSPELLLIST_CLASS =
+			ClassSpellList.class;
+	private static final Class<DomainSpellList> DOMAINSPELLLIST_CLASS =
+			DomainSpellList.class;
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
@@ -136,7 +140,27 @@ public class SpellsToken implements ChooseLstToken
 		while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
-			if (!tokText.startsWith("CLASS=") && !tokText.startsWith("DOMAIN="))
+			if (tokText.startsWith("CLASS="))
+			{
+				String listName = tokText.substring(tokText.indexOf('=') + 1);
+				CDOMSimpleSingleRef<ClassSpellList> ref =
+						context.ref.getCDOMReference(CLASSSPELLLIST_CLASS,
+							listName);
+				PCListRefChooser<Spell> listChooser =
+						new PCListRefChooser<Spell>(ref);
+				chooser.addChoiceSet(listChooser);
+			}
+			else if (tokText.startsWith("DOMAIN="))
+			{
+				String listName = tokText.substring(tokText.indexOf('=') + 1);
+				CDOMSimpleSingleRef<DomainSpellList> ref =
+						context.ref.getCDOMReference(DOMAINSPELLLIST_CLASS,
+							listName);
+				PCListRefChooser<Spell> listChooser =
+						new PCListRefChooser<Spell>(ref);
+				chooser.addChoiceSet(listChooser);
+			}
+			else
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
 					+ " argument must start with CLASS= or DOMAIN= : "
@@ -144,11 +168,6 @@ public class SpellsToken implements ChooseLstToken
 				Logging.errorPrint("  Entire Token was: " + value);
 				return null;
 			}
-			String listName = tokText.substring(tokText.indexOf('=') + 1);
-			CDOMSimpleSingleRef<SpellList> ref =
-					context.ref.getCDOMReference(SPELLLIST_CLASS, listName);
-			ListChooser<Spell> listChooser = new ListChooser<Spell>(ref);
-			chooser.addChoiceSet(listChooser);
 		}
 		return chooser;
 	}

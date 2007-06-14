@@ -17907,9 +17907,10 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return activeLists.getListContents(list);
 	}
 
-	public AssociatedObject getListAssociation(SkillList sl, Skill sk)
+	public <LT extends CDOMObject, T extends CDOMList<LT>> AssociatedObject getCDOMListAssociation(
+		T listObj, LT obj)
 	{
-		return activeLists.getListAssociation(sl, sk);
+		return activeLists.getListAssociation(listObj, obj);
 	}
 
 	public EquipmentSetFacade getEquipped()

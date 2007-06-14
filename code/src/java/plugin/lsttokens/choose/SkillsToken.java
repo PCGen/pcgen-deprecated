@@ -18,7 +18,7 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.PCChooser;
+import pcgen.cdom.choice.GrantedChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
@@ -60,7 +60,7 @@ public class SkillsToken implements ChooseLstToken
 		if (value == null)
 		{
 			// No args - legal
-			return PCChooser.getPCChooser(Skill.class);
+			return GrantedChooser.getPCChooser(Skill.class);
 		}
 		Logging.errorPrint("CHOOSE:" + getTokenName()
 			+ " may not have arguments: " + value);

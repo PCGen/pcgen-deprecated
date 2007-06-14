@@ -26,28 +26,23 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import pcgen.base.formula.Formula;
 import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.AssociatedObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.CDOMListObject;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class ListChooser<T extends PObject> implements ChoiceSet<T>
+public class PCListRefChooser<T extends PObject> extends AbstractChooser<T>
 {
 
 	private HashMapToList<AssociationKey<?>, Object> assoc;
 
-	private Formula count;
-
-	private Formula max;
-
 	private CDOMSimpleSingleRef<? extends CDOMListObject<T>> listRef;
 
-	public ListChooser(CDOMSimpleSingleRef<? extends CDOMListObject<T>> cl)
+	public PCListRefChooser(CDOMSimpleSingleRef<? extends CDOMListObject<T>> cl)
 	{
 		super();
 		if (cl == null)
@@ -57,40 +52,61 @@ public class ListChooser<T extends PObject> implements ChoiceSet<T>
 		listRef = cl;
 	}
 
-	public Formula getMaxSelections()
-	{
-		return max;
-	}
-
-	public Formula getCount()
-	{
-		return count;
-	}
-
 	public Set<T> getSet(PlayerCharacter pc)
 	{
 		CDOMListObject<T> listObj = listRef.resolvesTo();
 		Collection<T> listContents = pc.getCDOMListContents(listObj);
-		return new HashSet<T>(listContents);
+		Set<T> set = new HashSet<T>();
+		if (assoc == null)
+		{
+			set.addAll(listContents);
+		}
+		else
+		{
+			for (T obj : listContents)
+			{
+				AssociatedObject objAssoc =
+						pc.getCDOMListAssociation(listObj, obj);
+				for (AssociationKey<?> ak : assoc.getKeySet())
+				{
+					Object thisAssoc = objAssoc.getAssociation(ak);
+					for (Object requiredAssoc : assoc.getListFor(ak))
+					{
+						if (requiredAssoc == null)
+						{
+							if (thisAssoc == null)
+							{
+								set.add(obj);
+							}
+						}
+						else if (requiredAssoc.equals(thisAssoc))
+						{
+							set.add(obj);
+						}
+					}
+				}
+			}
+		}
+		return set;
 	}
 
 	@Override
 	public String toString()
 	{
-		return count.toString() + '<' + max.toString() + Constants.PIPE
-			+ "List: " + listRef;
+		return getCount().toString() + '<' + getMaxSelections().toString()
+			+ Constants.PIPE + "List: " + listRef;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return count.hashCode() + max.hashCode() * 23;
+		return chooserHashCode();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		if (!(o instanceof ListChooser))
+		if (!(o instanceof PCListRefChooser))
 		{
 			return false;
 		}
@@ -98,28 +114,8 @@ public class ListChooser<T extends PObject> implements ChoiceSet<T>
 		{
 			return true;
 		}
-		ListChooser<?> cs = (ListChooser) o;
-		return max == cs.max && count == cs.count && listRef.equals(cs.listRef);
-	}
-
-	public void setCount(Formula choiceCount)
-	{
-		// if (choiceCount <= 0)
-		// {
-		// throw new IllegalArgumentException(
-		// "Count for ChoiceSet must be >= 1");
-		// }
-		count = choiceCount;
-	}
-
-	public void setMaxSelections(Formula maxSelected)
-	{
-		// if (maxSelected <= 0)
-		// {
-		// throw new IllegalArgumentException(
-		// "Max Selected for ChoiceSet must be >= 1");
-		// }
-		max = maxSelected;
+		PCListRefChooser<?> cs = (PCListRefChooser) o;
+		return equalsAbstractChooser(cs) && listRef.equals(cs.listRef);
 	}
 
 	public <A> void setAssociation(AssociationKey<A> ak, A val)
@@ -130,15 +126,4 @@ public class ListChooser<T extends PObject> implements ChoiceSet<T>
 		}
 		assoc.addToListFor(ak, val);
 	}
-
-	// public boolean validate()
-	// {
-	// if (max < count)
-	// {
-	// Logging
-	// .errorPrint("Nonsensical ChoiceSet Max Selected must be >= Count");
-	// return false;
-	// }
-	// return true;
-	// }
 }

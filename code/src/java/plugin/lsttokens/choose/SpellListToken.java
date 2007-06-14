@@ -87,8 +87,12 @@ public class SpellListToken implements ChooseLstToken
 		// TODO Auto-generated method stub
 		
 		// 1) Filter to get classes where SPELLBOOK = value
+		// Solution = AnyChooser on Class with ObjectFilter
 		// 2) Get spellList for classes from 1)
+		// Solution = Class to ClassSpellList Transformer (ObjectKeyTransformer?)
 		// 3) get Known spells from that spelllist
+		// Solution = ??? (Can't just do an AND, probably need to have a false
+		// root tranverse occur in a GrantedChooser-like behavior)
 		
 		return null;
 	}

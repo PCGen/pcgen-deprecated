@@ -20,64 +20,44 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.choice;
+package pcgen.cdom.filter;
 
-import java.util.Set;
+import java.util.Collection;
 
-import pcgen.cdom.base.Constants;
+import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class AnyChooser<T extends PObject> extends AbstractChooser<T>
+public class ReferenceFilter<T extends PObject> implements ChoiceFilter<T>
 {
 
-	private Class<T> choiceClass;
-
-	public static <T extends PObject> AnyChooser<T> getAnyChooser(Class<T> cl)
+	public static <TT extends PObject> ReferenceFilter<TT> getReferenceFilter(
+		Collection<TT> coll)
 	{
-		return new AnyChooser<T>(cl);
+		return new ReferenceFilter<TT>(coll);
 	}
 
-	public AnyChooser(Class<T> cl)
+	private Collection<T> collection;
+
+	public ReferenceFilter(Collection<T> coll)
 	{
 		super();
-		if (cl == null)
+		if (coll == null)
 		{
-			throw new IllegalArgumentException("Choice Class cannot be null");
+			throw new IllegalArgumentException(
+				"Filter collection cannot be null");
 		}
-		choiceClass = cl;
-	}
-
-	public Set<T> getSet(PlayerCharacter pc)
-	{
-		return pc.getContext().ref.getConstructedCDOMObjects(choiceClass);
-	}
-
-	@Override
-	public String toString()
-	{
-		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + "Any: " + choiceClass;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return chooserHashCode();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (!(o instanceof AnyChooser))
+		if (coll.isEmpty())
 		{
-			return false;
+			throw new IllegalArgumentException(
+				"Filter collection cannot be empty");
 		}
-		if (o == this)
-		{
-			return true;
-		}
-		AnyChooser<?> cs = (AnyChooser) o;
-		return equalsAbstractChooser(cs) && choiceClass.equals(cs.choiceClass);
+		collection = coll;
 	}
+
+	public boolean remove(PlayerCharacter pc, T obj)
+	{
+		return collection.contains(obj);
+	}
+
 }

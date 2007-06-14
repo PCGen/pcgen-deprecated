@@ -20,64 +20,23 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.choice;
+package pcgen.cdom.filter;
 
-import java.util.Set;
-
-import pcgen.cdom.base.Constants;
+import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class AnyChooser<T extends PObject> extends AbstractChooser<T>
+public class QualifyFilter implements ChoiceFilter<PObject>
 {
 
-	private Class<T> choiceClass;
-
-	public static <T extends PObject> AnyChooser<T> getAnyChooser(Class<T> cl)
-	{
-		return new AnyChooser<T>(cl);
-	}
-
-	public AnyChooser(Class<T> cl)
+	public QualifyFilter()
 	{
 		super();
-		if (cl == null)
-		{
-			throw new IllegalArgumentException("Choice Class cannot be null");
-		}
-		choiceClass = cl;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public boolean remove(PlayerCharacter pc, PObject obj)
 	{
-		return pc.getContext().ref.getConstructedCDOMObjects(choiceClass);
+		return !obj.qualifies(pc);
 	}
 
-	@Override
-	public String toString()
-	{
-		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + "Any: " + choiceClass;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return chooserHashCode();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (!(o instanceof AnyChooser))
-		{
-			return false;
-		}
-		if (o == this)
-		{
-			return true;
-		}
-		AnyChooser<?> cs = (AnyChooser) o;
-		return equalsAbstractChooser(cs) && choiceClass.equals(cs.choiceClass);
-	}
 }

@@ -34,8 +34,8 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.restriction.GroupRestriction;
+import pcgen.core.ClassSpellList;
 import pcgen.core.PCClass;
-import pcgen.core.SpellList;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -52,7 +52,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 		PCClassClassLstToken
 {
 
-	private static Class<SpellList> SPELLLIST_CLASS = SpellList.class;
+	private static Class<ClassSpellList> SPELLLIST_CLASS = ClassSpellList.class;
 
 	@Override
 	public String getTokenName()
@@ -127,8 +127,8 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
-		CDOMCompoundReference<SpellList> cr =
-				new CDOMCompoundReference<SpellList>(SPELLLIST_CLASS,
+		CDOMCompoundReference<ClassSpellList> cr =
+				new CDOMCompoundReference<ClassSpellList>(SPELLLIST_CLASS,
 					getTokenName() + " items");
 		boolean foundAny = false;
 		boolean foundOther = false;
@@ -136,7 +136,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<SpellList> ref;
+			CDOMReference<ClassSpellList> ref;
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
@@ -163,11 +163,11 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
-		Slot<SpellList> slot =
-				context.graph.addSlot(getTokenName(), pcc,
-					SPELLLIST_CLASS, FormulaFactory.getFormulaFor(count));
+		Slot<ClassSpellList> slot =
+				context.graph.addSlot(getTokenName(), pcc, SPELLLIST_CLASS,
+					FormulaFactory.getFormulaFor(count));
 
-		slot.addSinkRestriction(new GroupRestriction<SpellList>(
+		slot.addSinkRestriction(new GroupRestriction<ClassSpellList>(
 			SPELLLIST_CLASS, cr));
 
 		return true;
@@ -195,7 +195,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 				+ " Slot is allowed per PCClass");
 			return null;
 		}
-		Slot<SpellList> slot = (Slot<SpellList>) added.iterator().next();
+		Slot<?> slot = (Slot<?>) added.iterator().next();
 		if (!slot.getSlotClass().equals(SPELLLIST_CLASS))
 		{
 			context.addWriteMessage("Invalid Slot Type associated with "

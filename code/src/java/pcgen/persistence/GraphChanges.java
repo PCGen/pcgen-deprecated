@@ -14,7 +14,6 @@ public interface GraphChanges<T>
 
 	public boolean hasAddedItems();
 
-	// TODO Someday these need to be properly Generic :/
 	public Collection<LSTWriteable> getAdded();
 
 	public Collection<LSTWriteable> getRemoved();
