@@ -17,25 +17,22 @@
  */
 package pcgen.cdom.content;
 
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.modifier.AbstractHitDieModifier;
-import pcgen.core.PCClass;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class HitDieCommandFactory extends ConcretePrereqObject implements
 		Comparable<HitDieCommandFactory>, LSTWriteable
 {
 
-	private final CDOMReference<PCClass> pcClass;
+	private final LSTWriteable owner;
 
 	private final AbstractHitDieModifier modifier;
 
-	public HitDieCommandFactory(CDOMReference<PCClass> cl,
-		AbstractHitDieModifier mod)
+	public HitDieCommandFactory(LSTWriteable cl, AbstractHitDieModifier mod)
 	{
-		pcClass = cl;
+		owner = cl;
 		modifier = mod;
 	}
 
@@ -46,13 +43,13 @@ public class HitDieCommandFactory extends ConcretePrereqObject implements
 
 	public String getLSTformat()
 	{
-		return pcClass.getLSTformat();
+		return owner.getLSTformat();
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return pcClass.hashCode() * 29 + modifier.hashCode();
+		return owner.hashCode() * 29 + modifier.hashCode();
 	}
 
 	@Override
@@ -67,12 +64,12 @@ public class HitDieCommandFactory extends ConcretePrereqObject implements
 			return false;
 		}
 		HitDieCommandFactory lcf = (HitDieCommandFactory) o;
-		return modifier.equals(lcf.modifier) && pcClass.equals(lcf.pcClass);
+		return modifier.equals(lcf.modifier) && owner.equals(lcf.owner);
 	}
 
 	public int compareTo(HitDieCommandFactory arg0)
 	{
-		int i = TokenUtilities.REFERENCE_SORTER.compare(pcClass, arg0.pcClass);
+		int i = TokenUtilities.WRITEABLE_SORTER.compare(owner, arg0.owner);
 		if (i == 0)
 		{
 			// TODO Need to fix this - AbstractHitDieModifier should be

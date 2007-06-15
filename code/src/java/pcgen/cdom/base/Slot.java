@@ -18,14 +18,13 @@
 package pcgen.cdom.base;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.helper.AssociationSupport;
 
-public class Slot<T extends PrereqObject> extends ConcretePrereqObject implements LSTWriteable
+public class Slot<T extends PrereqObject> extends ConcretePrereqObject
+		implements LSTWriteable
 {
 
 	private String name;
@@ -33,6 +32,8 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject implement
 	private final Class<T> slotClass;
 
 	private final Formula slotCount;
+
+	private AssociationSupport assoc;
 
 	public Slot(Class<T> cl)
 	{
@@ -136,38 +137,34 @@ public class Slot<T extends PrereqObject> extends ConcretePrereqObject implement
 			&& slotCount.equals(otherSlot.slotCount);
 	}
 
-	/*
-	 * CONSIDER Use AssociationSupport? - Tom Parker Apr 7 07
-	 */
-	private Map<AssociationKey<?>, Object> associationMap;
-	
-	public <AKT> void setAssociation(AssociationKey<AKT> key, AKT value)
+	public String getLSTformat()
 	{
-		if (associationMap == null)
-		{
-			associationMap = new HashMap<AssociationKey<?>, Object>();
-		}
-		associationMap.put(key, value);
+		return name;
 	}
 
-	public <AKT> AKT getAssociation(AssociationKey<AKT> key)
+	public <AT> AT getAssociation(AssociationKey<AT> ak)
 	{
-		return (AKT) (associationMap == null ? null : associationMap.get(key));
+		return assoc == null ? null : assoc.getAssociation(ak);
 	}
 
 	public Collection<AssociationKey<?>> getAssociationKeys()
 	{
-		return new HashSet<AssociationKey<?>>(associationMap.keySet());
+		return assoc == null ? null : assoc.getAssociationKeys();
 	}
 
 	public boolean hasAssociations()
 	{
-		return associationMap != null && !associationMap.isEmpty();
+		return assoc != null && assoc.hasAssociations();
 	}
 
-	public String getLSTformat()
+	public <AT> void setAssociation(AssociationKey<AT> name, AT value)
 	{
-		return name;
+		if (assoc == null)
+		{
+			assoc = new AssociationSupport();
+		}
+		assoc.setAssociation(name, value);
+
 	}
 
 }

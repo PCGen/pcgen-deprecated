@@ -116,13 +116,6 @@ public class SpropToken extends AbstractToken implements
 
 		while (true)
 		{
-			/*
-			 * FIXME This is the ONLY Token fixed so far for a leading pre:
-			 * Yarra Valley|PRELEVEL:4|Rheinhessen
-			 * 
-			 * This check needs to be universal in all the tokens that do this
-			 * trailing PRE check
-			 */
 			if (token.startsWith("PRE") || token.startsWith("!PRE"))
 			{
 				break;

@@ -59,10 +59,10 @@ public class TypeFilter implements ChoiceFilter<PObject>
 		{
 			if (!obj.containsInList(ListKey.TYPE, t))
 			{
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 }

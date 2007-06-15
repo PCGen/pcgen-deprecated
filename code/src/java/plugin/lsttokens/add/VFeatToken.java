@@ -29,6 +29,8 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.AbilityNature;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
 import pcgen.core.PObject;
@@ -171,11 +173,14 @@ public class VFeatToken implements AddLstToken
 		}
 
 		Slot<Ability> slot =
-				context.graph.addSlot(getTokenName(), obj,
-					ABILITY_CLASS, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), obj, ABILITY_CLASS,
+					FormulaFactory.getFormulaFor(count));
 		slot
 			.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS, cr));
-		// FIXME Slot needs to know AbilityNature.VIRTUAL ??
+		slot.setAssociation(AssociationKey.ABILITY_CATEGORY,
+			AbilityCategory.FEAT);
+		slot.setAssociation(AssociationKey.ABILITY_NATURE,
+			AbilityNature.VIRTUAL);
 
 		return true;
 	}

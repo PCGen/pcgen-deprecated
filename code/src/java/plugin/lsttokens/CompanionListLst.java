@@ -280,6 +280,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 		final List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
 
 		// The remainder of the elements are optional.
+		// TODO Need to force PRExxx to the END
 		while (tok.hasMoreTokens())
 		{
 			String optArg = tok.nextToken();

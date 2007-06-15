@@ -467,7 +467,7 @@ public class Prerequisite implements Cloneable
 	@Override
 	public int hashCode()
 	{
-		return kind.hashCode() ^ key.hashCode();
+		return kind.hashCode() ^ (key == null ? 0 : key.hashCode());
 	}
 
 	@Override

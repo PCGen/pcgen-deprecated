@@ -28,6 +28,7 @@ import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundOrChooser;
 import pcgen.cdom.choice.GrantedChooser;
 import pcgen.cdom.choice.ListKeyTransformer;
+import pcgen.cdom.choice.ObjectKeyTransformer;
 import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.enumeration.EqWield;
@@ -197,15 +198,14 @@ public class WeaponProfToken implements ChooseLstToken
 			if ("DEITYWEAPON".equalsIgnoreCase(tokString))
 			{
 				choiceList.add(new ListKeyTransformer<WeaponProf>(
-					GrantedChooser.getPCChooser(Deity.class),
+					GrantedChooser.getGrantedChooser(Deity.class),
 					ListKey.DEITY_WEAPON));
 			}
-			else if (tokString.startsWith("FEAT="))
+			else if (tokString.regionMatches(true, 0, "FEAT=", 0, 5))
 			{
-				// TODO need CASE insensitive :P
-
+				// TODO need Implementation
 			}
-			else if (tokString.startsWith("WIELD."))
+			else if (tokString.regionMatches(true, 0, "WIELD.", 0, 6))
 			{
 				EqWield w = EqWield.valueOf(tokString.substring(6));
 				if (w == null)
@@ -223,14 +223,14 @@ public class WeaponProfToken implements ChooseLstToken
 				rc
 					.addRemovingChoiceFilter(NegatingFilter
 						.getNegatingFilter(of));
-				// TODO Need to grab whatever the PROFICIENCY token stores...
-
-				// TODO need CASE insensitive :P
+				ObjectKeyTransformer<WeaponProf> okt =
+						new ObjectKeyTransformer<WeaponProf>(rc,
+							ObjectKey.WEAPON_PROF);
+				choiceList.add(okt);
 			}
 			else if (tokString.startsWith("!TYPE=")
 				|| tokString.startsWith("!TYPE."))
 			{
-
 				StringTokenizer typeTok =
 						new StringTokenizer(tokString.substring(6), ".");
 				List<Type> list = new ArrayList<Type>();
@@ -240,7 +240,7 @@ public class WeaponProfToken implements ChooseLstToken
 					list.add(requiredType);
 				}
 				TypeFilter tf = new TypeFilter(list);
-				filterList.add(tf);
+				filterList.add(NegatingFilter.getNegatingFilter(tf));
 			}
 			else
 			{
@@ -278,7 +278,7 @@ public class WeaponProfToken implements ChooseLstToken
 			}
 			retChooser = rc;
 		}
-		// TODO set Count
+		retChooser.setCount(FormulaFactory.getFormulaFor(count));
 		return retChooser;
 	}
 }

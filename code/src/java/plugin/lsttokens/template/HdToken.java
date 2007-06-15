@@ -136,9 +136,6 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 			return false;
 		}
 		String argument = tok.nextToken();
-		/*
-		 * TODO I think this is a .equals concern relative to duplicate creation
-		 */
 		PCTemplate derivative = template.getPseudoTemplate();
 		derivative.put(ObjectKey.PSEUDO_PARENT, template);
 		derivative.addPrerequisite(prereq);

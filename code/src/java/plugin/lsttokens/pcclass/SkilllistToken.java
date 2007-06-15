@@ -205,7 +205,6 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 				+ slot.getSlotClass().getSimpleName());
 			return null;
 		}
-		// TODO Need to validate Skill, not just CDOMListRef
 		String slotCount = slot.getSlotCount();
 		List<Restriction<?>> restr = slot.getSinkRestrictions();
 		if (restr.size() != 1)
@@ -215,6 +214,13 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 			return null;
 		}
 		Restriction<?> res = restr.get(0);
+		if (!res.getRestrictedType().equals(SKILLLIST_CLASS))
+		{
+			context.addWriteMessage("Invalid Restriction Type associated with "
+				+ getTokenName() + ": Type cannot be "
+				+ slot.getSlotClass().getSimpleName());
+			return null;
+		}
 		return new String[]{(slotCount + "|" + res.toLSTform())};
 	}
 }

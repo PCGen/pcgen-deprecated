@@ -329,12 +329,8 @@ public class RepeatlevelToken extends AbstractToken implements
 		{
 			if ((consecutive == 0) || (count != 0))
 			{
-				/*
-				 * TODO There is DEFINITELY an overlap problem here due to
-				 * equality
-				 */
 				PCTemplate derivative = template.getPseudoTemplate();
-				derivative.put(ObjectKey.PSEUDO_PARENT, template);
+				derivative.put(ObjectKey.PSEUDO_PARENT, agg);
 				derivative
 					.addPrerequisite(getPrerequisite("PRELEVEL:" + iLevel));
 				context.graph.grant(getTokenName(), agg, derivative);

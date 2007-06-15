@@ -68,7 +68,7 @@ public class SpellClassesToken implements ChooseLstToken
 		{
 			// No args - legal
 			GrantedChooser<PCClass> pcChooser =
-					GrantedChooser.getPCChooser(PCCLASS_CLASS);
+					GrantedChooser.getGrantedChooser(PCCLASS_CLASS);
 			RemovingChooser<PCClass> chooser =
 					new RemovingChooser<PCClass>(pcChooser);
 			ObjectKeyFilter<PCClass> filter =

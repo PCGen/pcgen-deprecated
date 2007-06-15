@@ -147,7 +147,7 @@ public class DomainToken implements ChooseLstToken
 			}
 			else if (Constants.LST_PC.equals(tokString))
 			{
-				list.add(GrantedChooser.getPCChooser(DOMAIN_CLASS));
+				list.add(GrantedChooser.getGrantedChooser(DOMAIN_CLASS));
 			}
 			else if (Constants.LST_QUALIFY.equals(tokString))
 			{
@@ -158,15 +158,14 @@ public class DomainToken implements ChooseLstToken
 					.getPCChoiceFilter(DOMAIN_CLASS));
 				list.add(rc);
 			}
-			else if (tokString.startsWith("DEITY="))
+			else if (tokString.regionMatches(true, 0, "DEITY=", 0, 6))
 			{
-				// TODO need to deal with case insensitivity
 				CDOMSimpleSingleRef<DomainList> dl =
 						context.ref.getCDOMReference(DomainList.class,
 							"*Starting");
 				ListTransformer<Domain> dpc =
 						new ListTransformer<Domain>(GrantedChooser
-							.getPCChooser(Deity.class), dl);
+							.getGrantedChooser(Deity.class), dl);
 				list.add(dpc);
 			}
 			else

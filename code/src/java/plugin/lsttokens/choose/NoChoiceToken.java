@@ -18,6 +18,7 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.choice.EmptyChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
@@ -61,7 +62,7 @@ public class NoChoiceToken implements ChooseLstToken
 				+ " may not have arguments: " + value);
 			return null;
 		}
-		//No args = legal
-		
+		// No args = legal
+		return new EmptyChooser();
 	}
 }

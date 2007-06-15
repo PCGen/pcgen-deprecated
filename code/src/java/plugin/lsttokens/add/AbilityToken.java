@@ -129,22 +129,24 @@ public class AbilityToken implements AddLstToken
 		if (category == null)
 		{
 			Logging.errorPrint("Malformed ADD Token: Missing Category: "
-					+ value);
+				+ value);
 			return false;
 		}
 		String nature = tokens[index++];
-		if (nature == null) {
+		if (nature == null)
+		{
 			Logging.errorPrint("Malformed ADD Token: Missing Nature: " + value);
 			return false;
 		}
 		String abilities = tokens[index++];
 
-		if (abilities == null) {
+		if (abilities == null)
+		{
 			Logging.errorPrint("Malformed ADD Token: Missing Abilities: "
-					+ value);
+				+ value);
 			return false;
 		}
-		
+
 		StringBuffer addString = new StringBuffer();
 		addString.append(getTokenName());
 		addString.append("(CATEGORY=");
@@ -292,8 +294,8 @@ public class AbilityToken implements AddLstToken
 			return false;
 		}
 		Slot<Ability> slot =
-				context.graph.addSlot(getTokenName(), obj,
-					ABILITY_CLASS, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), obj, ABILITY_CLASS,
+					FormulaFactory.getFormulaFor(count));
 		slot
 			.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS, cr));
 		slot.setAssociation(AssociationKey.ABILITY_CATEGORY, ac);
@@ -341,9 +343,6 @@ public class AbilityToken implements AddLstToken
 			return null;
 		}
 		Restriction<?> res = restr.get(0);
-		/*
-		 * TODO FIXME These need to account for CATEGORY and NATURE
-		 */
 		if (!"1".equals(slotCount))
 		{
 			result.append(slotCount).append(Constants.PIPE);

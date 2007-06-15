@@ -132,10 +132,6 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 				allEdge.addPrerequisite(prereq);
 			}
 		}
-		/*
-		 * TODO There is an All/Any mismatch here... (CLASSES uses ALL, PRECLASS
-		 * uses ANY) (this is relevant because a PREREQ is added to the allEdge
-		 */
 		return true;
 	}
 
@@ -187,7 +183,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 				for (LSTWriteable added : changes.getAdded())
 				{
 
-					if (!skill.getLSTformat().equals(added))
+					if (!skill.getLSTformat().equals(added.getLSTformat()))
 					{
 						context.addWriteMessage("Skill " + getTokenName()
 							+ " token cannot allow another Skill "

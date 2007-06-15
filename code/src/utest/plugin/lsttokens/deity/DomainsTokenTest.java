@@ -17,6 +17,9 @@
  */
 package plugin.lsttokens.deity;
 
+import java.net.URISyntaxException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.Deity;
@@ -27,11 +30,27 @@ import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.DeityLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreClassParser;
+import plugin.pretokens.parser.PreLevelParser;
+import plugin.pretokens.writer.PreClassWriter;
+import plugin.pretokens.writer.PreLevelWriter;
 
 public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 {
 	static DomainsToken token = new DomainsToken();
 	static DeityLoader loader = new DeityLoader();
+
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		TokenRegistration.register(new PreLevelParser());
+		TokenRegistration.register(new PreClassParser());
+		TokenRegistration.register(new PreLevelWriter());
+		TokenRegistration.register(new PreClassWriter());
+	}
 
 	@Override
 	public char getJoinCharacter()
@@ -96,7 +115,85 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	@Test
 	public void testRoundRobinAll() throws PersistenceLayerException
 	{
-		this.runRoundRobin("ALL");
+		runRoundRobin("ALL");
+	}
+
+	@Test
+	public void testInvalidOnlyPre() throws PersistenceLayerException
+	{
+		assertFalse(getToken()
+			.parse(primaryContext, primaryProf, "!PRELEVEL:3"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidEmbeddedNotPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"TestWP1|!PRELEVEL:3|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidBadPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"TestWP1,TestWP2|PREFOO:3"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidNotBadPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"TestWP1,TestWP2|!PREFOO:3"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidEmbeddedPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"TestWP1|PRELEVEL:4|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testRoundRobinPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1,TestWP2|PRELEVEL:5");
+	}
+
+	@Test
+	public void testRoundRobinNotPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1,TestWP2|!PRELEVEL:5");
+	}
+
+	@Test
+	public void testRoundRobinDoublePre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1,TestWP2|PRELEVEL:5|PRECLASS:1,Fighter=1");
 	}
 
 }

@@ -17,7 +17,13 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.choice.GrantedChooser;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.ArmorProf;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -46,5 +52,18 @@ public class ArmorTypeToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "ARMORTYPE";
+	}
+
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
+	{
+		if (value == null)
+		{
+			// No args - legal
+			return GrantedChooser.getGrantedChooser(ArmorProf.class);
+		}
+		Logging.errorPrint("CHOOSE:" + getTokenName()
+			+ " may not have arguments: " + value);
+		return null;
 	}
 }

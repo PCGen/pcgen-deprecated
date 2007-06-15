@@ -31,11 +31,11 @@ import pcgen.base.formula.AddingFormula;
 import pcgen.base.formula.DividingFormula;
 import pcgen.base.formula.MultiplyingFormula;
 import pcgen.base.formula.SubtractingFormula;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.HitDie;
 import pcgen.cdom.content.HitDieCommandFactory;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.PCClassLevel;
 import pcgen.cdom.modifier.AbstractHitDieModifier;
 import pcgen.cdom.modifier.HitDieFormula;
@@ -57,8 +57,6 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 		PCClassLevelLstToken
 {
 
-	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
-
 	@Override
 	public String getTokenName()
 	{
@@ -78,63 +76,12 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 		{
 			String lock = value;
 			int pipeLoc = lock.indexOf(Constants.PIPE);
-			if (pipeLoc != lock.lastIndexOf(Constants.PIPE))
-			{
-				Logging.errorPrint(getTokenName() + " has more than one pipe, "
-					+ "is not of format: <int>[|<prereq>]");
-				return false;
-			}
-			CDOMReference<PCClass> owner;
 			if (pipeLoc != -1)
 			{
-				// Has a limitation
-				String lockPre = lock.substring(pipeLoc + 1);
-				if (lockPre.startsWith("CLASS.TYPE="))
-				{
-					String substring = lock.substring(pipeLoc + 12);
-					if (substring.length() == 0)
-					{
-						Logging
-							.errorPrint("Cannot have Empty Type Limitation in "
-								+ getTokenName() + ": " + value);
-						return false;
-					}
-					if (hasIllegalSeparator('.', substring))
-					{
-						return false;
-					}
-					owner =
-							context.ref.getCDOMTypeReference(PCCLASS_CLASS,
-								substring.split("\\."));
-				}
-				else if (lockPre.startsWith("CLASS="))
-				{
-					String substring = lock.substring(pipeLoc + 7);
-					if (substring.length() == 0)
-					{
-						Logging
-							.errorPrint("Cannot have Empty Class Limitation in "
-								+ getTokenName() + ": " + value);
-						return false;
-					}
-					owner =
-							context.ref.getCDOMReference(PCCLASS_CLASS,
-								substring);
-				}
-				else
-				{
-					Logging.errorPrint("Invalid Limitation in HITDIE: "
-						+ lockPre);
-					return false;
-				}
-				lock = lock.substring(0, pipeLoc);
+				Logging.errorPrint(getTokenName() + " is invalid has a pipe: "
+					+ value);
+				return false;
 			}
-			else
-			{
-				// Unlimited
-				owner = context.ref.getCDOMAllReference(PCCLASS_CLASS);
-			}
-
 			AbstractHitDieModifier hdm;
 			if (lock.startsWith("%/"))
 			{
@@ -280,10 +227,8 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 			}
 
 			PCClassLevel pcl = cl.getClassLevel(level);
-			// BUG TODO FIXME This doesn't do what is intended, not limited to
-			// the level
-			HitDieCommandFactory cf = new HitDieCommandFactory(owner, hdm);
-			context.graph.grant(getTokenName(), pcl, cf);
+			HitDieCommandFactory cf = new HitDieCommandFactory(pcl, hdm);
+			pcl.put(ObjectKey.HITDIE, cf);
 		}
 		catch (NumberFormatException nfe)
 		{

@@ -131,8 +131,9 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 				if (assocTok.indexOf(']') == -1)
 				{
 					/*
-					 * TODO Can this be done in some way to learn from the EqMod
-					 * what the association actually is??
+					 * Unfortunately, can't learn from the EquipmentModifier
+					 * what the assocaition is because of order of processing
+					 * (no guarantee an EqMod has been imported yet)
 					 */
 					dkm.put(eqMod, AssociationKey.ONLY, assocTok);
 				}
@@ -251,9 +252,6 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 			sb.append(mod.getLSTformat());
 			if (assoc.hasAssociations())
 			{
-				/*
-				 * TODO FIXME These need to be sorted... :(
-				 */
 				Collection<AssociationKey<?>> akColl =
 						assoc.getAssociationKeys();
 				akColl.remove(AssociationKey.SOURCE_URI);

@@ -105,7 +105,7 @@ public class AlttypeToken implements EquipmentLstToken
 					removeType = false;
 				}
 				/*
-				 * BUG FIXME TODO Not sure how to handle this - it's a SET!
+				 * BUG TODO Not sure how to handle this - it's a SET!
 				 */
 				else if (!eq.containsInList(ListKey.ALT_TYPE, typeCon))
 				{

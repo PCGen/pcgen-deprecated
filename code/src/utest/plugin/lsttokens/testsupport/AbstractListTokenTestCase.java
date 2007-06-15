@@ -54,6 +54,14 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 	}
 
 	@Test
+	public void testInvalidInputJoinOnly() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			Character.toString(getJoinCharacter())));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		assertTrue(getToken().parse(primaryContext, primaryProf, "String"));
@@ -87,9 +95,13 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		{
 			construct(primaryContext, "TestWP1");
 			construct(primaryContext, "TestWP2");
-			assertTrue(getToken().parse(primaryContext, primaryProf,
-				"TestWP1|TestWP2"));
-			assertFalse(primaryContext.ref.validate());
+			boolean parse =
+					getToken().parse(primaryContext, primaryProf,
+						"TestWP1|TestWP2");
+			if (parse)
+			{
+				assertFalse(primaryContext.ref.validate());
+			}
 		}
 	}
 

@@ -37,6 +37,7 @@ import pcgen.base.util.DefaultMap;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.mode.Size;
 import pcgen.core.Alignment;
@@ -160,6 +161,8 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<ChoiceSet<?>> CHOICE = new ObjectKey<ChoiceSet<?>>();
 
 	public static final ObjectKey<CDOMObject> PSEUDO_PARENT = new ObjectKey<CDOMObject>();
+
+	public static final ObjectKey<HitDieCommandFactory> HITDIE = new ObjectKey<HitDieCommandFactory>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 

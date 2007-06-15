@@ -27,8 +27,14 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.Restriction;
+import pcgen.cdom.choice.GrantedChooser;
+import pcgen.cdom.choice.RemovingChooser;
 import pcgen.cdom.content.Remover;
 import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.AbilityNature;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.filter.CategoryFilter;
+import pcgen.cdom.filter.NegatingFilter;
 import pcgen.cdom.restriction.GroupRestriction;
 import pcgen.core.Ability;
 import pcgen.core.PObject;
@@ -146,8 +152,6 @@ public class FeatToken implements RemoveLstToken
 		CDOMCompoundReference<Ability> cr =
 				new CDOMCompoundReference<Ability>(ABILITY_CLASS,
 					getTokenName() + " items");
-		// FIXME Need to parse CLASS.*
-		// FIXME Need to parse CHOICE (should be ANY?)
 		boolean foundAny = false;
 		boolean foundOther = false;
 
@@ -161,6 +165,28 @@ public class FeatToken implements RemoveLstToken
 				ref =
 						context.ref.getCDOMAllReference(ABILITY_CLASS,
 							AbilityCategory.FEAT);
+			}
+			else if ("CHOICE".equalsIgnoreCase(token))
+			{
+				GrantedChooser<Ability> gc =
+						GrantedChooser.getGrantedChooser(Ability.class);
+				RemovingChooser<Ability> rc = new RemovingChooser<Ability>(gc);
+				CategoryFilter<Ability> cf =
+						new CategoryFilter<Ability>(AbilityCategory.FEAT);
+				rc
+					.addRemovingChoiceFilter(NegatingFilter
+						.getNegatingFilter(cf));
+				rc.setCount(FormulaFactory.getFormulaFor(count));
+
+				// FIXME Need to parse CHOICE (granted Chooser?)
+				//Hack (to allow compilation)
+				ref = null;
+			}
+			else if (token.regionMatches(true, 0, "CLASS.", 0, 6))
+			{
+				// FIXME Need to parse CLASS.*
+				//Hack (to allow compilation)
+				ref = null;
 			}
 			else
 			{
@@ -185,8 +211,9 @@ public class FeatToken implements RemoveLstToken
 		rem
 			.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS, cr));
 		context.graph.grant(getTokenName(), obj, rem);
-		// FIXME Slot needs to know AbilityNature.NORMAL ??
-
+		rem.setAssociation(AssociationKey.ABILITY_CATEGORY,
+			AbilityCategory.FEAT);
+		rem.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
 		return true;
 	}
 

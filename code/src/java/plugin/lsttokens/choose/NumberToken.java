@@ -169,8 +169,17 @@ public class NumberToken implements ChooseLstToken
 				+ " first argument was not MIN=");
 			return null;
 		}
-		//TODO Catch NFE
-		int min = Integer.parseInt(minString.substring(4));
+		int min;
+		try
+		{
+			min = Integer.parseInt(minString.substring(4));
+		}
+		catch (NumberFormatException nfe)
+		{
+			Logging.errorPrint("COUNT:" + getTokenName() + " " + minString
+				+ " was not MIN=<integer>");
+			return null;
+		}
 		String maxString = tok.nextToken();
 		if (!maxString.startsWith("MAX="))
 		{
@@ -178,8 +187,17 @@ public class NumberToken implements ChooseLstToken
 				+ " second argument was not MAX=");
 			return null;
 		}
-		//TODO Catch NFE
-		int max = Integer.parseInt(minString.substring(4));
+		int max;
+		try
+		{
+			max = Integer.parseInt(maxString.substring(4));
+		}
+		catch (NumberFormatException nfe)
+		{
+			Logging.errorPrint("COUNT:" + getTokenName() + " " + maxString
+				+ " was not MAX=<integer>");
+			return null;
+		}
 		String titleString = tok.nextToken();
 		if (!titleString.startsWith("TITLE="))
 		{
@@ -187,7 +205,7 @@ public class NumberToken implements ChooseLstToken
 				+ " third argument was not TITLE=");
 			return null;
 		}
-		//TODO Set Title
+		// TODO Set Title
 		return new NumberChooser(min, max);
 	}
 }

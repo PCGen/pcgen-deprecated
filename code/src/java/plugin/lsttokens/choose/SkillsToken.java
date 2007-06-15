@@ -60,7 +60,7 @@ public class SkillsToken implements ChooseLstToken
 		if (value == null)
 		{
 			// No args - legal
-			return GrantedChooser.getPCChooser(Skill.class);
+			return GrantedChooser.getGrantedChooser(Skill.class);
 		}
 		Logging.errorPrint("CHOOSE:" + getTokenName()
 			+ " may not have arguments: " + value);

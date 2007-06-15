@@ -2113,6 +2113,8 @@ public final class PCTemplate extends PObject implements HasCost
 	@Override
 	public boolean equals(Object o)
 	{
+		// TODO Need to add ObjectKey set from CDOMObject in order to ensure HD:
+		// and LEVEL: work correctly
 		return super.equals(o) && o instanceof PrereqObject
 			&& equalsPrereqObject((PrereqObject) o);
 	}

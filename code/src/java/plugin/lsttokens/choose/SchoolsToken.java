@@ -18,8 +18,7 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.SetChooser;
-import pcgen.cdom.enumeration.SpellSchool;
+import pcgen.cdom.choice.SpellSchoolChooser;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
@@ -61,11 +60,11 @@ public class SchoolsToken implements ChooseLstToken
 		{
 			// No args - legal
 			/*
-			 * TODO Can't do it this way - this is order dependent, and the
-			 * SpellSchool constants pull must be performed at runtime, not
+			 * Requires a unique chooser because this is order dependent, and
+			 * the SpellSchool constants pull must be performed at runtime, not
 			 * during LST load...
 			 */
-			return new SetChooser<SpellSchool>(SpellSchool.getAllConstants());
+			return new SpellSchoolChooser();
 		}
 		Logging.errorPrint("CHOOSE:" + getTokenName()
 			+ " may not have arguments: " + value);

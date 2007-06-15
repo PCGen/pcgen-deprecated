@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 (C) Tom Parker <thpr@sourceforge.net>
+ * Copyright 2007 (C) Tom Parker <thpr@sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,64 +14,64 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
- * Created on October 29, 2006.
- * 
- * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
- * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
 package pcgen.cdom.choice;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 
-public class GrantedChooser<T extends PObject> extends AbstractChooser<T>
+public class ObjectKeyTransformer<T extends PObject> extends
+		AbstractTransformer<T>
 {
 
-	private Class<T> choiceClass;
+	private ObjectKey<? extends CDOMReference<T>> objkey;
 
-	public static <T extends PObject> GrantedChooser<T> getGrantedChooser(Class<T> cl)
+	public ObjectKeyTransformer(ChoiceSet<? extends PObject> cs,
+		ObjectKey<? extends CDOMReference<T>> lk)
 	{
-		return new GrantedChooser<T>(cl);
-	}
-
-	public GrantedChooser(Class<T> cl)
-	{
-		super();
-		if (cl == null)
+		super(cs);
+		if (lk == null)
 		{
-			throw new IllegalArgumentException("Choice Class cannot be null");
+			throw new IllegalArgumentException("List Key cannot be null");
 		}
-		choiceClass = cl;
+		objkey = lk;
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return new HashSet<T>(pc.getActiveGraph().getGrantedNodeList(
-			choiceClass));
+		Set<T> set = new HashSet<T>();
+		for (PObject obj : getBaseSet(pc))
+		{
+			CDOMReference<T> ref = obj.get(objkey);
+			set.addAll(ref.getContainedObjects());
+		}
+		return set;
 	}
 
 	@Override
 	public String toString()
 	{
 		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + "PC: " + choiceClass;
+			+ Constants.PIPE + "DeRefObj: " + objkey;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return chooserHashCode();
+		return transformerHashCode();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		if (!(o instanceof GrantedChooser))
+		if (!(o instanceof ObjectKeyTransformer))
 		{
 			return false;
 		}
@@ -79,7 +79,7 @@ public class GrantedChooser<T extends PObject> extends AbstractChooser<T>
 		{
 			return true;
 		}
-		GrantedChooser<?> cs = (GrantedChooser) o;
-		return equalsAbstractChooser(cs) && choiceClass.equals(cs.choiceClass);
+		ObjectKeyTransformer<?> cs = (ObjectKeyTransformer) o;
+		return objkey.equals(cs.objkey) && transformerEquals(cs);
 	}
 }

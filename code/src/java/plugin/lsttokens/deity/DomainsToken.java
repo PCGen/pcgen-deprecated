@@ -21,10 +21,15 @@
  */
 package plugin.lsttokens.deity;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.util.HashMapToList;
 import pcgen.base.util.Logging;
 import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.AssociatedPrereqObject;
@@ -41,7 +46,9 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
 /**
  * Class deals with DOMAINS Token
@@ -112,46 +119,95 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			return false;
 		}
 
-		boolean foundAny = false;
-		boolean foundOther = false;
-
-		/*
-		 * FIXME This isn't doing .CLEAR or .CLEAR. :(
-		 */
-		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
+		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
+		StringTokenizer commaTok =
+				new StringTokenizer(pipeTok.nextToken(), Constants.COMMA);
 		List<CDOMReference<Domain>> list =
 				new ArrayList<CDOMReference<Domain>>();
-		while (tok.hasMoreTokens())
+		CDOMReference<DomainList> dl =
+				context.ref.getCDOMReference(DomainList.class, "*Starting");
+		boolean first = true;
+		while (commaTok.hasMoreTokens())
 		{
-			String tokString = tok.nextToken();
-			if (Constants.LST_ALL.equals(tokString))
+			String tokString = commaTok.nextToken();
+			if (tokString.startsWith("PRE") || tokString.startsWith("!PRE"))
 			{
-				foundAny = true;
+				Logging.errorPrint("Invalid " + getTokenName()
+					+ ": PRExxx was comma delimited : " + value);
+				return false;
+			}
+			if (Constants.LST_DOT_CLEAR.equals(tokString))
+			{
+				if (!first)
+				{
+					Logging.errorPrint("  Non-sensical " + getTokenName()
+						+ ": .CLEAR was not the first list item: " + value);
+					return false;
+				}
+				context.list.removeFromList(getTokenName(), deity, dl,
+					DOMAIN_CLASS);
+			}
+			else if (tokString.startsWith(Constants.LST_DOT_CLEAR_DOT))
+			{
+				CDOMReference<Domain> ref;
+				String clearText = tokString.substring(7);
+				if (Constants.LST_ALL.equals(clearText))
+				{
+					ref = context.ref.getCDOMAllReference(DOMAIN_CLASS);
+				}
+				else
+				{
+					ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								DOMAIN_CLASS, clearText);
+				}
+				if (ref == null)
+				{
+					Logging.errorPrint("  Error was encountered while parsing "
+						+ getTokenName());
+					return false;
+				}
+				context.list.removeFromList(getTokenName(), deity, dl, ref);
+			}
+			else if (Constants.LST_ALL.equals(tokString))
+			{
 				list.add(context.ref.getCDOMAllReference(DOMAIN_CLASS));
 			}
 			else
 			{
-				foundOther = true;
 				list.add(context.ref.getCDOMReference(DOMAIN_CLASS, tokString));
 			}
+			first = false;
 		}
-		if (foundAny && foundOther)
+
+		List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
+		while (pipeTok.hasMoreTokens())
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
-			return false;
+			String tokString = pipeTok.nextToken();
+			Prerequisite prereq = getPrerequisite(tokString);
+			if (prereq == null)
+			{
+				Logging.errorPrint("   (Did you put items after the "
+					+ "PRExxx tags in " + getTokenName() + ":?)");
+				return false;
+			}
+			prereqs.add(prereq);
 		}
+		finish(context, deity, list, prereqs);
+		return true;
+	}
+
+	private void finish(LoadContext context, Deity deity,
+		List<CDOMReference<Domain>> list, Collection<Prerequisite> c)
+	{
 		CDOMReference<DomainList> dl =
 				context.ref.getCDOMReference(DomainList.class, "*Starting");
 		for (CDOMReference<Domain> ref : list)
 		{
-			/*
-			 * FIXME This isn't doing PREREQs :(
-			 */
 			AssociatedPrereqObject ao =
 					context.list.addToList(getTokenName(), deity, dl, ref);
+			ao.addAllPrerequisites(c);
 		}
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
@@ -165,21 +221,54 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			// Legal if no Language was present in the race
 			return null;
 		}
-		List<String> list = new ArrayList<String>();
 		if (changes.hasRemovedItems() || changes.includesGlobalClear())
 		{
 			context
 				.addWriteMessage(getTokenName() + " does not support .CLEAR");
 			return null;
 		}
+		HashMapToList<List<Prerequisite>, CDOMReference<Domain>> map =
+				new HashMapToList<List<Prerequisite>, CDOMReference<Domain>>();
 		if (changes.hasAddedItems())
 		{
-			list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
-				Constants.COMMA));
+			for (CDOMReference<Domain> ref : changes.getAdded())
+			{
+				AssociatedPrereqObject assoc = changes.getAddedAssociation(ref);
+				List<Prerequisite> prereqs = assoc.getPrerequisiteList();
+				map.addToListFor(prereqs, ref);
+			}
 		}
-		/*
-		 * FIXME This isn't doing PREREQs :(
-		 */
-		return list.toArray(new String[list.size()]);
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		Set<String> set = new TreeSet<String>();
+		for (List<Prerequisite> prereqs : map.getKeySet())
+		{
+			Set<CDOMReference<Domain>> domainSet =
+					new TreeSet<CDOMReference<Domain>>(
+						TokenUtilities.REFERENCE_SORTER);
+			domainSet.addAll(map.getListFor(prereqs));
+			StringBuilder sb =
+					new StringBuilder(ReferenceUtilities.joinLstFormat(
+						domainSet, Constants.COMMA));
+			if (prereqs != null)
+			{
+				for (Prerequisite p : prereqs)
+				{
+					StringWriter swriter = new StringWriter();
+					try
+					{
+						prereqWriter.write(swriter, p);
+					}
+					catch (PersistenceLayerException e)
+					{
+						context.addWriteMessage("Error writing Prerequisite: "
+							+ e);
+						return null;
+					}
+					sb.append(Constants.PIPE).append(swriter.toString());
+				}
+			}
+			set.add(sb.toString());
+		}
+		return set.toArray(new String[set.size()]);
 	}
 }

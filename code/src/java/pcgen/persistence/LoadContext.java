@@ -66,6 +66,7 @@ public class LoadContext
 
 	public void addWriteMessage(String string)
 	{
+		System.err.println("!!" + string);
 		// TODO FIXME Silently consume for now - these are message generated
 		// during LST write...
 		writeMessageCount++;

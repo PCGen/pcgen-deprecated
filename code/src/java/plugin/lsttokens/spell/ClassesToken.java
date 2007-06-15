@@ -266,6 +266,7 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 	{
 		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>> dkmtl =
 				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>>();
+		List<String> list = new ArrayList<String>();
 		for (CDOMReference<ClassSpellList> swl : context.list
 			.getMasterLists(SPELLLIST_CLASS))
 		{
@@ -277,7 +278,6 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 				// Legal if no CLASSES was present in the Spell
 				continue;
 			}
-			// List<String> list = new ArrayList<String>();
 			if (changes.hasRemovedItems())
 			{
 				context.addWriteMessage(getTokenName()
@@ -286,14 +286,13 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 			}
 			if (changes.includesGlobalClear())
 			{
-				// TODO Need to do something here
-				// list.add(Constants.LST_DOT_CLEARALL);
+				list.add(Constants.LST_DOT_CLEARALL);
 			}
 			if (changes.hasAddedItems())
 			{
 				for (LSTWriteable added : changes.getAdded())
 				{
-					if (!spell.getLSTformat().equals(added))
+					if (!spell.getLSTformat().equals(added.getLSTformat()))
 					{
 						context.addWriteMessage("Spell " + getTokenName()
 							+ " token cannot allow another Spell "
@@ -340,15 +339,21 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		}
 		if (dkmtl.isEmpty())
 		{
-			// Legal if no CLASSES was present in the Spell
-			return null;
+			if (list.isEmpty())
+			{
+				// Legal if no CLASSES was present in the Spell
+				return null;
+			}
+			else
+			{
+				return list.toArray(new String[list.size()]);
+			}
 		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		SortedSet<CDOMReference<ClassSpellList>> set =
 				new TreeSet<CDOMReference<ClassSpellList>>(
 					TokenUtilities.REFERENCE_SORTER);
 		SortedSet<Integer> levelSet = new TreeSet<Integer>();
-		List<String> list = new ArrayList<String>(dkmtl.firstKeyCount());
 		for (Prerequisite prereq : dkmtl.getKeySet())
 		{
 			StringBuilder sb = new StringBuilder();

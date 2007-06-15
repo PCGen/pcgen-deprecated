@@ -20,66 +20,32 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.choice;
+package pcgen.cdom.filter;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import pcgen.cdom.base.Constants;
-import pcgen.core.PObject;
+import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.cdom.base.Category;
+import pcgen.cdom.helper.ChoiceFilter;
 import pcgen.core.PlayerCharacter;
 
-public class GrantedChooser<T extends PObject> extends AbstractChooser<T>
+public class CategoryFilter<T extends CategorizedCDOMObject<T>> implements
+		ChoiceFilter<T>
 {
 
-	private Class<T> choiceClass;
+	private Category<T> cat;
 
-	public static <T extends PObject> GrantedChooser<T> getGrantedChooser(Class<T> cl)
-	{
-		return new GrantedChooser<T>(cl);
-	}
-
-	public GrantedChooser(Class<T> cl)
+	public CategoryFilter(Category<T> category)
 	{
 		super();
-		if (cl == null)
+		if (category == null)
 		{
 			throw new IllegalArgumentException("Choice Class cannot be null");
 		}
-		choiceClass = cl;
+		cat = category;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public boolean remove(PlayerCharacter pc, T obj)
 	{
-		return new HashSet<T>(pc.getActiveGraph().getGrantedNodeList(
-			choiceClass));
+		return cat.equals(obj.getCDOMCategory());
 	}
 
-	@Override
-	public String toString()
-	{
-		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + "PC: " + choiceClass;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return chooserHashCode();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (!(o instanceof GrantedChooser))
-		{
-			return false;
-		}
-		if (o == this)
-		{
-			return true;
-		}
-		GrantedChooser<?> cs = (GrantedChooser) o;
-		return equalsAbstractChooser(cs) && choiceClass.equals(cs.choiceClass);
-	}
 }

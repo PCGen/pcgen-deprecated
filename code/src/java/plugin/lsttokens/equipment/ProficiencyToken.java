@@ -49,15 +49,6 @@ public class ProficiencyToken implements EquipmentLstToken
 	{
 		CDOMSimpleSingleRef<WeaponProf> wp =
 				context.ref.getCDOMReference(WeaponProf.class, value);
-		/*
-		 * TODO FIXME This really needs to be considered theoretical
-		 * information, not the type of link that is being done here (of storing
-		 * the WeaponProf). The reason is that WeaponProf may be a mutable
-		 * object, and therefore must not be the target of ObjectKey...
-		 * 
-		 * **WARNING** Any changes here need to be chained into NATURALATTACKS
-		 * as well
-		 */
 		context.obj.put(eq, ObjectKey.WEAPON_PROF, wp);
 		return true;
 	}

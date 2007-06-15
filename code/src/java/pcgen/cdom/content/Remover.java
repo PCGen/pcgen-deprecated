@@ -1,9 +1,6 @@
 package pcgen.cdom.content;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.ConcretePrereqObject;
@@ -12,12 +9,14 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.helper.AssociationSupport;
 
 public class Remover<T extends PrereqObject> extends ConcretePrereqObject
 		implements LSTWriteable
 {
 	private final Class<T> cl;
 	private final Formula removeCount;
+	private AssociationSupport assoc;
 
 	public Remover(Class<T> removedClass)
 	{
@@ -105,32 +104,27 @@ public class Remover<T extends PrereqObject> extends ConcretePrereqObject
 			&& removeCount.equals(otherRemover.removeCount);
 	}
 
-	/*
-	 * CONSIDER Use AssociationSupport? - Tom Parker Apr 7 07
-	 */
-	private Map<AssociationKey<?>, Object> associationMap;
-
-	public <AKT> void setAssociation(AssociationKey<AKT> key, AKT value)
+	public <AT> AT getAssociation(AssociationKey<AT> name)
 	{
-		if (associationMap == null)
-		{
-			associationMap = new HashMap<AssociationKey<?>, Object>();
-		}
-		associationMap.put(key, value);
-	}
-
-	public <AKT> AKT getAssociation(AssociationKey<AKT> key)
-	{
-		return (AKT) (associationMap == null ? null : associationMap.get(key));
+		return assoc == null ? null : assoc.getAssociation(name);
 	}
 
 	public Collection<AssociationKey<?>> getAssociationKeys()
 	{
-		return new HashSet<AssociationKey<?>>(associationMap.keySet());
+		return assoc == null ? null : assoc.getAssociationKeys();
 	}
 
 	public boolean hasAssociations()
 	{
-		return associationMap != null && !associationMap.isEmpty();
+		return assoc != null && assoc.hasAssociations();
+	}
+
+	public <AT> void setAssociation(AssociationKey<AT> name, AT value)
+	{
+		if (assoc == null)
+		{
+			assoc = new AssociationSupport();
+		}
+		assoc.setAssociation(name, value);
 	}
 }
