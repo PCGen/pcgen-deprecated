@@ -379,8 +379,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 			}
 			if (changes.hasAddedItems())
 			{
-				Collection<LSTWriteable> addedCollection = changes.getAdded();
-				for (LSTWriteable added : addedCollection)
+				Collection<CDOMReference<Spell>> addedCollection = changes.getAdded();
+				for (CDOMReference<Spell> added : addedCollection)
 				{
 					AssociatedPrereqObject se =
 							changes.getAddedAssociation(added);
@@ -409,7 +409,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 						}
 						prereqString = StringUtil.join(list, Constants.PIPE);
 					}
-					m.addToListFor(type, prereqString, listRef, lvl, added);
+					//m.addToListFor(type, prereqString, listRef, lvl, added);
 				}
 			}
 		}
@@ -418,7 +418,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 		for (String type : m.getKeySet())
 		{
-			for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
+			for (String prereqs : m.getSecondaryKeySet(type))
 			{
 				sb.setLength(0);
 				for (CDOMReference<CDOMList<? extends CDOMObject>> sl : m
@@ -431,37 +431,38 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 				}
 			}
 		}
-
-		for (String type : new TreeSet<String>(hml.getKeySet()))
-		{
-			for (Integer lvl : new TreeSet<Integer>(hml
-				.getSecondaryKeySet(type)))
-			{
-				sb.setLength(0);
-				spSet.clear();
-				spSet.addAll(hml.getListFor(type, lvl));
-
-				sb.append(ReferenceUtilities.joinLstFormat(slSet,
-					Constants.COMMA));
-				sb.append('=').append(lvl).append(Constants.PIPE);
-				sb.append(ReferenceUtilities.joinLstFormat(spSet,
-					Constants.COMMA));
-				m.addToListFor(type, new HashSet<Prerequisite>(agg
-					.getPrerequisiteList()), sb.toString());
-			}
-		}
-		Set<String> list = new TreeSet<String>();
-		for (String type : m.getKeySet())
-		{
-			for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
-			{
-				StringBuilder sb = new StringBuilder();
-				Set<String> set =
-						new TreeSet<String>(m.getListFor(type, prereqs));
-				sb.append(StringUtil.join(set, Constants.PIPE));
-				list.add(type + "|" + sb.toString());
-			}
-		}
-		return list.toArray(new String[list.size()]);
+//
+//		for (String type : new TreeSet<String>(hml.getKeySet()))
+//		{
+//			for (Integer lvl : new TreeSet<Integer>(hml
+//				.getSecondaryKeySet(type)))
+//			{
+//				sb.setLength(0);
+//				spSet.clear();
+//				spSet.addAll(hml.getListFor(type, lvl));
+//
+//				sb.append(ReferenceUtilities.joinLstFormat(slSet,
+//					Constants.COMMA));
+//				sb.append('=').append(lvl).append(Constants.PIPE);
+//				sb.append(ReferenceUtilities.joinLstFormat(spSet,
+//					Constants.COMMA));
+//				m.addToListFor(type, new HashSet<Prerequisite>(agg
+//					.getPrerequisiteList()), sb.toString());
+//			}
+//		}
+//		Set<String> list = new TreeSet<String>();
+//		for (String type : m.getKeySet())
+//		{
+//			for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
+//			{
+//				StringBuilder sb = new StringBuilder();
+//				Set<String> set =
+//						new TreeSet<String>(m.getListFor(type, prereqs));
+//				sb.append(StringUtil.join(set, Constants.PIPE));
+//				list.add(type + "|" + sb.toString());
+//			}
+//		}
+//		return list.toArray(new String[list.size()]);
+		return null;
 	}
 }

@@ -72,4 +72,9 @@ public class CSkillsToken implements ChooseLstToken
 		lc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CROSS_CLASS);
 		return lc;
 	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return null;
+	}
 }

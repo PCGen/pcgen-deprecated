@@ -61,8 +61,10 @@ import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.EquipmentSet;
+import pcgen.cdom.content.SimpleMovement;
 import pcgen.cdom.content.SpellResistance;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.Check;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -18111,7 +18113,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return reach;
 	}
 
-	public int totalCDOMMonsterLevels()
+	public int getTotalCDOMMonsterLevels()
 	{
 		List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
 		List<PCClassLevel> levellist =
@@ -18186,7 +18188,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 			// Now see if there is a HD advancement in size
 			// (Such as for Dragons)
-			for (int i = 0; i < r.sizesAdvancedCDOM(totalCDOMMonsterLevels()); ++i)
+			for (int i = 0; i < r.sizesAdvancedCDOM(getTotalCDOMMonsterLevels()); ++i)
 			{
 				mod++;
 			}
@@ -18349,6 +18351,89 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 
 		return pcRegion;
+	}
+
+	public int getCDOMMovement(String moveType)
+	{
+		BigDecimal maxMove = BigDecimal.ZERO;
+		for (SimpleMovement move : activeGraph
+			.getGrantedNodeList(SimpleMovement.class))
+		{
+			BigDecimal movement = move.getMovement();
+			if (movement.compareTo(maxMove) > 0)
+			{
+				maxMove = movement;
+			}
+		}
+		//TODO Handle MOVEA, BONUS, etc.
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getTotalCDOMCheck(Check check)
+	{
+		//TODO These are saving throws... not even sure how they are stored ;)
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getBaseCDOMCheck(Check check)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getAttackCount(AttackType unarmed)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getTotalCDOMPlayerLevels()
+	{
+		List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
+		List<PCClassLevel> levellist =
+				activeGraph.getGrantedNodeList(PCClassLevel.class);
+		int totalLevels = 0;
+		for (PCClass pcClass : classlist)
+		{
+			Boolean isM = pcClass.get(ObjectKey.IS_MONSTER);
+			if (isM == null || !isM.booleanValue())
+			{
+				int classLevel = 0;
+				for (PCClassLevel pcl : levellist)
+				{
+					int level = pcClass.getCDOMLevel(pcl);
+					classLevel = Math.max(classLevel, level);
+				}
+				// Techically if classLevel == -1 we have a VERY funky PC
+				// but we'll let that fly for now
+				if (classLevel >= 0)
+				{
+					totalLevels += classLevel;
+				}
+			}
+		}
+		return totalLevels;
+	}
+
+	public int getCDOMLevel(PCClass pcClass)
+	{
+		List<PCClassLevel> levellist =
+				activeGraph.getGrantedNodeList(PCClassLevel.class);
+		int classLevel = 0;
+		for (PCClassLevel pcl : levellist)
+		{
+			int level = pcClass.getCDOMLevel(pcl);
+			classLevel = Math.max(classLevel, level);
+		}
+		return classLevel;
+	}
+
+	public int getCDOMhitPoints()
+	{
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	// public double getBonusValue(final String aBonusType, final String

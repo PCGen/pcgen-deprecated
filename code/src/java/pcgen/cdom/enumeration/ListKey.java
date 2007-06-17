@@ -57,7 +57,7 @@ public final class ListKey<T>
 
 	public static final ListKey<Pantheon> PANTHEON = new ListKey<Pantheon>();
 
-	public static final ListKey<CDOMSimpleSingleRef<WeaponProf>> DEITY_WEAPON =
+	public static final ListKey<CDOMSimpleSingleRef<WeaponProf>> DEITYWEAPON =
 			new ListKey<CDOMSimpleSingleRef<WeaponProf>>();
 
 	public static final ListKey<RacePantheon> RACE_PANTHEON =
@@ -100,6 +100,10 @@ public final class ListKey<T>
 			new ListKey<CDOMReference<PCClass>>();
 
 	public static final ListKey<Quality> QUALITY = new ListKey<Quality>();
+
+	public static final ListKey<Type> ITEM = new ListKey<Type>();
+
+	public static final ListKey<Type> PROHIBITED_ITEM = new ListKey<Type>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey()

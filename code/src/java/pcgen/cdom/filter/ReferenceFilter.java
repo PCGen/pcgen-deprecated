@@ -23,10 +23,15 @@
 package pcgen.cdom.filter;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.ChoiceFilter;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class ReferenceFilter<T extends PObject> implements ChoiceFilter<T>
 {
@@ -58,6 +63,13 @@ public class ReferenceFilter<T extends PObject> implements ChoiceFilter<T>
 	public boolean remove(PlayerCharacter pc, T obj)
 	{
 		return collection.contains(obj);
+	}
+
+	public String getLSTformat()
+	{
+		Set<T> sortedSet = new TreeSet<T>(TokenUtilities.WRITEABLE_SORTER);
+		sortedSet.addAll(collection);
+		return ReferenceUtilities.joinLstFormat(sortedSet, Constants.PIPE);
 	}
 
 }

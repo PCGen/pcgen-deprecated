@@ -21,22 +21,25 @@
  */
 package plugin.lsttokens.spell;
 
-import java.util.List;
+import java.util.StringTokenizer;
 
-import pcgen.cdom.base.Restriction;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
-import pcgen.cdom.restriction.UnresolvedTypeRestriction;
-import pcgen.core.Equipment;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with ITEM Token
  */
-public class ItemToken implements SpellLstToken
+public class ItemToken extends AbstractToken implements SpellLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "ITEM";
@@ -50,53 +53,89 @@ public class ItemToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
-		int bracketLoc = value.indexOf('[');
-		boolean negate = false;
-		String itemString;
-		if (bracketLoc == 0)
+		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
-			// Check ends with bracket
-			if (value.lastIndexOf(']') != value.length() - 1)
+			return false;
+		}
+
+		StringTokenizer aTok = new StringTokenizer(value, Constants.COMMA);
+
+		while (aTok.hasMoreTokens())
+		{
+			String tokString = aTok.nextToken();
+			int bracketLoc = tokString.indexOf('[');
+			if (bracketLoc == 0)
 			{
-				return false;
+				// Check ends with bracket
+				if (tokString.lastIndexOf(']') != tokString.length() - 1)
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ ": mismatched open Bracket: " + tokString + " in "
+						+ value);
+					return false;
+				}
+				String substring =
+						tokString.substring(1, tokString.length() - 1);
+				if (substring.length() == 0)
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ ": cannot be empty item in brackets []");
+					return false;
+				}
+				Type t = Type.getConstant(substring);
+				context.obj.addToList(spell, ListKey.PROHIBITED_ITEM, t);
 			}
-			negate = true;
-			itemString = value.substring(1, value.length() - 1);
+			else
+			{
+				if (tokString.lastIndexOf(']') != -1)
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ ": mismatched close Bracket: " + tokString + " in "
+						+ value);
+					return false;
+				}
+				Type t = Type.getConstant(tokString);
+				context.obj.addToList(spell, ListKey.ITEM, t);
+			}
 		}
-		else
-		{
-			itemString = value;
-		}
-		Type t = Type.getConstant(itemString);
-		UnresolvedTypeRestriction<Equipment> tr =
-				new UnresolvedTypeRestriction<Equipment>(Equipment.class, t,
-					negate);
-		/*
-		 * CONSIDER FIXME Need to think about how this should work... this is
-		 * really an ANCESTOR restriction here, since it is based off of the
-		 * parent item (e.g. if it was [Weapon], and this was attached to an
-		 * EqMod??? What happens?)
-		 */
-		spell.addSourceRestriction(tr);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		List<Restriction<?>> resList = spell.getSourceRestrictions();
-		StringBuilder sb = new StringBuilder();
-		for (Restriction<?> r : resList)
+		Changes<Type> changes = context.obj.getListChanges(spell, ListKey.ITEM);
+		Changes<Type> proChanges =
+				context.obj.getListChanges(spell, ListKey.PROHIBITED_ITEM);
+		if (changes == null && proChanges == null)
 		{
-			if (r instanceof UnresolvedTypeRestriction)
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		boolean needComma = false;
+		if (changes != null)
+		{
+			for (Type t : changes.getAdded())
 			{
-				UnresolvedTypeRestriction<?> tr = (UnresolvedTypeRestriction) r;
-				if (tr.getRestrictedType().equals(Equipment.class))
+				if (needComma)
 				{
-					sb.append(getTokenName()).append(':')
-						.append(tr.toLSTform());
+					sb.append(',');
 				}
+				sb.append(t.toString());
+				needComma = true;
 			}
 		}
-		return sb.length() == 0 ? null : new String[]{sb.toString()};
+		if (proChanges != null)
+		{
+			for (Type t : proChanges.getAdded())
+			{
+				if (needComma)
+				{
+					sb.append(',');
+				}
+				sb.append('[').append(t.toString()).append(']');
+				needComma = true;
+			}
+		}
+		return new String[]{sb.toString()};
 	}
 }

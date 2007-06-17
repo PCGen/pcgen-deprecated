@@ -22,10 +22,8 @@
 package plugin.lsttokens.equipment;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
-import pcgen.cdom.content.Weight;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Equipment;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
@@ -75,8 +73,7 @@ public class WtToken implements EquipmentLstToken
 					+ " was expecting a decimal value >= 0 : " + value);
 				return false;
 			}
-			Weight w = new Weight(weight);
-			context.graph.grant(getTokenName(), eq, w);
+			context.obj.put(eq, ObjectKey.WEIGHT, weight);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -89,21 +86,11 @@ public class WtToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), eq,
-					Weight.class);
-		if (edgeList.isEmpty())
+		BigDecimal weight = context.obj.getObject(eq, ObjectKey.WEIGHT);
+		if (weight == null)
 		{
 			return null;
 		}
-		if (edgeList.size() > 1)
-		{
-			context
-				.addWriteMessage("A Piece of Equipment is only allowed one Weight");
-			return null;
-		}
-		PCGraphEdge edge = edgeList.iterator().next();
-		Weight w = (Weight) edge.getSinkNodes().get(0);
-		return new String[]{w.getWeight().toString()};
+		return new String[]{weight.toString()};
 	}
 }

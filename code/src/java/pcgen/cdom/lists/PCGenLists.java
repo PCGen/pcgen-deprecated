@@ -18,6 +18,7 @@
 package pcgen.cdom.lists;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import pcgen.base.util.DoubleKeyMap;
@@ -37,7 +38,15 @@ public class PCGenLists
 	{
 		DoubleKeyMap<T, LT, AssociatedPrereqObject> dkm =
 				(DoubleKeyMap<T, LT, AssociatedPrereqObject>) lists;
-		return dkm.getKeySet();
+		Set<T> returnSet = new HashSet<T>();
+		for (T list : dkm.getKeySet())
+		{
+			if (name.equals(list.getReferenceClass()))
+			{
+				returnSet.add(list);
+			}
+		}
+		return returnSet;
 	}
 
 	public <LT extends CDOMObject, T extends CDOMList<LT>> Collection<LT> getListContents(

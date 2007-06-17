@@ -30,6 +30,7 @@ import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PlayerCharacter;
 
 public class CompoundOrChooser<T extends PrereqObject> extends
@@ -97,5 +98,15 @@ public class CompoundOrChooser<T extends PrereqObject> extends
 		}
 		CompoundOrChooser<?> cs = (CompoundOrChooser) o;
 		return equalsAbstractChooser(cs) && set.equals(cs.set);
+	}
+
+	public String getLSTformat()
+	{
+		return ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
+	}
+
+	public Class<T> getChoiceClass()
+	{
+		return set == null ? null : set.iterator().next().getChoiceClass();
 	}
 }

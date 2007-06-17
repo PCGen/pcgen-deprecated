@@ -128,10 +128,6 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
-		Slot<ClassSkillList> slot =
-				context.graph.addSlot(getTokenName(), pcc, SKILLLIST_CLASS,
-					FormulaFactory.getFormulaFor(count));
-
 		CDOMCompoundReference<ClassSkillList> cr =
 				new CDOMCompoundReference<ClassSkillList>(SKILLLIST_CLASS,
 					getTokenName() + " items");
@@ -154,10 +150,12 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							SKILLLIST_CLASS, token);
-			}
-			if (ref == null)
-			{
-				return false;
+				if (ref == null)
+				{
+					Logging.errorPrint("Invalid SkillList: " + token + " in "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
 			}
 			cr.addReference(ref);
 		}
@@ -168,6 +166,10 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
+
+		Slot<ClassSkillList> slot =
+				context.graph.addSlot(getTokenName(), pcc, SKILLLIST_CLASS,
+					FormulaFactory.getFormulaFor(count));
 
 		slot.addSinkRestriction(new GroupRestriction<ClassSkillList>(
 			SKILLLIST_CLASS, cr));

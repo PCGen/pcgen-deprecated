@@ -25,9 +25,10 @@ package pcgen.cdom.helper;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.PlayerCharacter;
 
-public interface ChoiceSet<T>
+public interface ChoiceSet<T> extends LSTWriteable
 {
 	public Formula getMaxSelections();
 
@@ -38,4 +39,10 @@ public interface ChoiceSet<T>
 	public void setMaxSelections(Formula formulaFor);
 
 	public void setCount(Formula formulaFor);
+
+	public void setChooseType(String key);
+
+	public String getChooseType();
+	
+	public Class<T> getChoiceClass();
 }

@@ -32,11 +32,12 @@ import pcgen.core.Equipment;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class ShieldProfToken implements ChooseLstToken
+public class ShieldProfToken extends AbstractToken implements ChooseLstToken
 {
 
 	private static final Class<Equipment> EQUIPMENT_CLASS = Equipment.class;
@@ -55,24 +56,11 @@ public class ShieldProfToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{
@@ -83,6 +71,7 @@ public class ShieldProfToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "SHIELDPROF";
@@ -91,10 +80,10 @@ public class ShieldProfToken implements ChooseLstToken
 	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException
 	{
-		if (value.indexOf('|') != -1)
+		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain | : " + value);
+				+ " arguments may not contain , : " + value);
 			return null;
 		}
 		if (value.indexOf('[') != -1)
@@ -103,43 +92,43 @@ public class ShieldProfToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '.')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with . : " + value);
 			return null;
 		}
-		if (value.charAt(value.length() - 1) == '.')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with . : " + value);
-			return null;
-		}
-		if (value.indexOf("..") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator .. : " + value);
-			return null;
-		}
+
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
 		List<CDOMReference<Equipment>> eqList =
 				new ArrayList<CDOMReference<Equipment>>();
 		while (st.hasMoreTokens())
 		{
+			String tokString = st.nextToken();
 			CDOMReference<Equipment> eq =
 					TokenUtilities.getTypeOrPrimitive(context, EQUIPMENT_CLASS,
-						st.nextToken());
+						tokString);
+			if (eq == null)
+			{
+				Logging.errorPrint("Invalid Reference: " + tokString
+					+ " in CHOOSE:" + getTokenName() + ": " + value);
+				return null;
+			}
 			eqList.add(eq);
 		}
 		CompoundAndChooser<Equipment> chooser =
 				new CompoundAndChooser<Equipment>();
-		ReferenceChooser<Equipment> setChooser = new ReferenceChooser<Equipment>(eqList);
-		chooser.addChoiceSet(setChooser);
+		ReferenceChooser<Equipment> setChooser =
+				new ReferenceChooser<Equipment>(eqList);
+		chooser.addChoiceSet(setChooser, true);
 		CDOMReference<Equipment> shield =
 				TokenUtilities.getTypeReference(context, EQUIPMENT_CLASS,
 					"Shield");
 		chooser.addChoiceSet(new ReferenceChooser<Equipment>(Collections
-			.singletonList(shield)));
+			.singletonList(shield)), false);
 		return chooser;
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

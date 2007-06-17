@@ -18,6 +18,7 @@
 package plugin.lsttokens.choose;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -40,10 +41,11 @@ import pcgen.core.DomainList;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class DomainToken implements ChooseLstToken
+public class DomainToken extends AbstractToken implements ChooseLstToken
 {
 
 	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
@@ -62,24 +64,11 @@ public class DomainToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == ',')
+		if (hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with , : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return false;
-		}
+
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{
@@ -90,6 +79,7 @@ public class DomainToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "DOMAIN";
@@ -110,29 +100,16 @@ public class DomainToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == ',')
+		if (hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with , : " + value);
 			return null;
 		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with , : " + value);
-			return null;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return null;
-		}
+
 		if (Constants.LST_ANY.equals(value))
 		{
 			return AnyChooser.getAnyChooser(DOMAIN_CLASS);
 		}
-		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
 		List<ChoiceSet<Domain>> list = new ArrayList<ChoiceSet<Domain>>();
 		List<CDOMReference<Domain>> domainlist =
 				new ArrayList<CDOMReference<Domain>>();
@@ -152,20 +129,26 @@ public class DomainToken implements ChooseLstToken
 			else if (Constants.LST_QUALIFY.equals(tokString))
 			{
 				AnyChooser<Domain> ac = AnyChooser.getAnyChooser(DOMAIN_CLASS);
-				RemovingChooser<Domain> rc = new RemovingChooser<Domain>(ac);
-				rc.addRemovingChoiceFilter(new QualifyFilter());
+				RemovingChooser<Domain> rc =
+						new RemovingChooser<Domain>(ac, false);
+				rc.addRemovingChoiceFilter(new QualifyFilter(), true);
 				rc.addRemovingChoiceFilter(PCChoiceFilter
-					.getPCChoiceFilter(DOMAIN_CLASS));
+					.getPCChoiceFilter(DOMAIN_CLASS), false);
 				list.add(rc);
 			}
 			else if (tokString.regionMatches(true, 0, "DEITY=", 0, 6))
 			{
+				//TODO This isn't starting, it's a LISTKEY??
 				CDOMSimpleSingleRef<DomainList> dl =
 						context.ref.getCDOMReference(DomainList.class,
 							"*Starting");
+				CDOMSimpleSingleRef<Deity> ref =
+						context.ref.getCDOMReference(Deity.class, tokString
+							.substring(6));
 				ListTransformer<Domain> dpc =
-						new ListTransformer<Domain>(GrantedChooser
-							.getGrantedChooser(Deity.class), dl);
+						new ListTransformer<Domain>(
+							new ReferenceChooser<Deity>(Collections
+								.singleton(ref)), dl);
 				list.add(dpc);
 			}
 			else
@@ -197,5 +180,10 @@ public class DomainToken implements ChooseLstToken
 			}
 			return chooser;
 		}
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

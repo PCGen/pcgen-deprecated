@@ -75,6 +75,7 @@ public class AlteqmodToken extends AbstractToken implements EquipmentLstToken
 		}
 		if (Constants.LST_NONE.equals(value))
 		{
+			//TODO Does this have a clearing effect??
 			return true;
 		}
 		if (hasIllegalSeparator('.', value))
@@ -120,23 +121,6 @@ public class AlteqmodToken extends AbstractToken implements EquipmentLstToken
 
 			// The type of EqMod, eg: ABILITYPLUS
 			final String eqModKey = pipeTok.nextToken();
-
-			/*
-			 * TODO Need to handle these special cases???
-			 */
-			// if (eqModKey.equals(EQMOD_WEIGHT)) {
-			// if (pipeTok.hasMoreTokens()) {
-			// setWeightMod(pipeTok.nextToken().replace(',', '.'));
-			// }
-			// return;
-			// }
-			//
-			// if (eqModKey.equals(EQMOD_DAMAGE)) {
-			// if (pipeTok.hasMoreTokens()) {
-			// setDamageMod(pipeTok.nextToken());
-			// }
-			// return;
-			// }
 			CDOMReference<EquipmentModifier> eqMod =
 					context.ref.getCDOMReference(EQUIPMENT_MODIFIER_CLASS,
 						eqModKey);

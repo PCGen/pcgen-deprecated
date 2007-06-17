@@ -19,6 +19,7 @@ package plugin.lsttokens.pcclass;
 
 import java.net.URISyntaxException;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.Domain;
@@ -28,6 +29,9 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreRaceParser;
+import plugin.pretokens.writer.PreRaceWriter;
 
 public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 {
@@ -35,10 +39,16 @@ public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 	static DomainToken token = new DomainToken();
 	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
 
+	PreRaceParser prerace = new PreRaceParser();
+	PreRaceWriter preracewriter = new PreRaceWriter();
+
 	@Override
+	@Before
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
+		TokenRegistration.register(prerace);
+		TokenRegistration.register(preracewriter);
 		prefix = "CLASS:";
 	}
 
@@ -97,8 +107,73 @@ public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 	}
 
 	@Test
-	public void dummyTest()
+	public void testInvalidEmptyPre() throws PersistenceLayerException
 	{
-		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP1[]"));
+		assertTrue(primaryGraph.isEmpty());
 	}
+
+	@Test
+	public void testInvalidEmptyPre2() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP1["));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidEmptyPre3() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP1]"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidMismatchedBracket() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"TestWP1[PRERACE:Dwarf"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidTrailingAfterBracket()
+		throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"TestWP1[PRERACE:Dwarf]Hi"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testRoundRobinOnePre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1[PRERACE:1,Dwarf]");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinThreeWithPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP3");
+		runRoundRobin("TestWP1[PRERACE:1,Dwarf]" + getJoinCharacter()
+			+ "TestWP2[PRERACE:1,Human]" + getJoinCharacter() + "TestWP3");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
 }

@@ -26,7 +26,6 @@ import pcgen.cdom.enumeration.SubRegion;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.util.Logging;
 
 /**
  * Class deals with SUBREGION Token

@@ -86,4 +86,17 @@ public class NumberChooser extends AbstractChooser<Integer>
 		NumberChooser cs = (NumberChooser) o;
 		return equalsAbstractChooser(cs) && set.equals(cs.set);
 	}
+
+	public String getLSTformat()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("MIN=").append(lowerBound).append("|MAX=").append(upperBound);
+		return sb.toString();
+	}
+
+	public Class<Integer> getChoiceClass()
+	{
+		return Integer.class;
+	}
+
 }

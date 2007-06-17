@@ -454,7 +454,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|FEAT|ALL|TestWP1"));
+			getSubTokenString() + "|FEAT|ANY,TestWP1"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -463,7 +463,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|FEAT|TestWP1|ALL"));
+			getSubTokenString() + "|FEAT|TestWP1,ANY"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -471,7 +471,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	public void testInvalidInputAnyType() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|FEAT|ALL|TYPE=TestType"));
+			getSubTokenString() + "|FEAT|ANY,TYPE=TestType"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -479,7 +479,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	public void testInvalidInputTypeAny() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|FEAT|TYPE=TestType|ALL"));
+			getSubTokenString() + "|FEAT|TYPE=TestType,ANY"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -497,5 +497,69 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	public GlobalLstToken getToken()
 	{
 		return token;
+	}
+
+	// TODO This really need to check the object is also not modified, not just
+	// that the graph is empty (same with other tests here)
+	@Test
+	public void testInputInvalidAddsTypeNoSideEffect()
+		throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP3");
+		assertTrue(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|TestWP1,TestWP2"));
+		assertTrue(getToken().parse(secondaryContext, secondaryProf,
+			getSubTokenString() + "|FEAT|TestWP1,TestWP2"));
+		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|TestWP3,TYPE="));
+		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+	}
+
+	@Test
+	public void testInputInvalidAddsBasicNoSideEffect()
+		throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP3");
+		construct(primaryContext, "TestWP4");
+		construct(secondaryContext, "TestWP4");
+		assertTrue(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|TestWP1,TestWP2"));
+		assertTrue(getToken().parse(secondaryContext, secondaryProf,
+			getSubTokenString() + "|FEAT|TestWP1,TestWP2"));
+		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|TestWP3,,TestWP4"));
+		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+	}
+
+	@Test
+	public void testInputInvalidAddsAllNoSideEffect()
+		throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP3");
+		assertTrue(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|TestWP1,TestWP2"));
+		assertTrue(getToken().parse(secondaryContext, secondaryProf,
+			getSubTokenString() + "|FEAT|TestWP1,TestWP2"));
+		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			getSubTokenString() + "|FEAT|TestWP3,ANY"));
+		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
 }

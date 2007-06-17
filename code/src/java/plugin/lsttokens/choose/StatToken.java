@@ -17,6 +17,7 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -32,10 +33,11 @@ import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class StatToken implements ChooseLstToken
+public class StatToken extends AbstractToken implements ChooseLstToken
 {
 
 	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
@@ -53,22 +55,8 @@ public class StatToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		List<PCStat> list = SettingsHandler.getGame().getUnmodifiableStatList();
@@ -96,6 +84,7 @@ public class StatToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "STAT";
@@ -104,7 +93,7 @@ public class StatToken implements ChooseLstToken
 	public ChoiceSet<PCStat> parse(LoadContext context, CDOMObject obj,
 		String value) throws PersistenceLayerException
 	{
-		Set<PCStat> stats = context.ref.getConstructedCDOMObjects(PCSTAT_CLASS);
+		Set<PCStat> stats = new HashSet<PCStat>();
 		// null means no args - use all stats - legal
 		if (value != null)
 		{
@@ -114,22 +103,8 @@ public class StatToken implements ChooseLstToken
 					+ " arguments may not contain [] : " + value);
 				return null;
 			}
-			if (value.charAt(0) == '|')
+			if (hasIllegalSeparator('|', value))
 			{
-				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not start with | : " + value);
-				return null;
-			}
-			if (value.charAt(value.length() - 1) == '|')
-			{
-				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not end with | : " + value);
-				return null;
-			}
-			if (value.indexOf("||") != -1)
-			{
-				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments uses double separator || : " + value);
 				return null;
 			}
 			StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -145,17 +120,30 @@ public class StatToken implements ChooseLstToken
 						+ " used in CHOOSE: " + value);
 					return null;
 				}
-				if (!stats.remove(stat))
+				if (stats.contains(stat))
 				{
 					Logging.errorPrint("STAT: " + tokText
 						+ " appeared twice in CHOOSE: " + value);
 					return null;
 				}
+				stats.add(stat);
 			}
 		}
+		// if (??)
+		// {
+		// //TODO How to detect this??
+		// Logging.errorPrint("Removing All Stats in CHOOSE:" + getTokenName()
+		// + " is illegal: " + value);
+		// return null;
+		// }
 		AnyChooser<PCStat> ac = AnyChooser.getAnyChooser(PCStat.class);
-		RemovingChooser<PCStat> rc = new RemovingChooser<PCStat>(ac);
-		rc.addRemovingChoiceFilter(new ReferenceFilter<PCStat>(stats));
+		RemovingChooser<PCStat> rc = new RemovingChooser<PCStat>(ac, false);
+		rc.addRemovingChoiceFilter(new ReferenceFilter<PCStat>(stats), true);
 		return rc;
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

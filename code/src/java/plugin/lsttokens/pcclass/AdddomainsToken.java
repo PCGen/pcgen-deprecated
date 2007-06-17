@@ -138,23 +138,36 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 			String domainKey;
 
 			// Note: May contain PRExxx
-			if (tokString.indexOf("[") == -1)
+			int openBracketLoc = tokString.indexOf('[');
+			if (openBracketLoc == -1)
 			{
+				if (tokString.indexOf(']') != -1)
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ " must have '[' if it contains a PREREQ tag");
+					return false;
+				}
 				domainKey = tokString;
 			}
 			else
 			{
-				int openBracketLoc = tokString.indexOf("[");
-				domainKey = tokString.substring(0, openBracketLoc);
-				if (!tokString.endsWith("]"))
+				if (tokString.indexOf(']') != tokString.length() - 1)
 				{
-					Logging.errorPrint("Unresolved Prerequisite on Domain "
-						+ tokString + " in " + getTokenName());
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ " must end with ']' if it contains a PREREQ tag");
 					return false;
 				}
-				prereq =
-						getPrerequisite(tokString.substring(openBracketLoc + 1,
-							tokString.length() - openBracketLoc - 2));
+				domainKey = tokString.substring(0, openBracketLoc);
+				String prereqString =
+						tokString.substring(openBracketLoc + 1, tokString
+							.length() - 1);
+				if (prereqString.length() == 0)
+				{
+					Logging.errorPrint(getTokenName()
+						+ " cannot have empty prerequisite : " + value);
+					return false;
+				}
+				prereq = getPrerequisite(prereqString);
 			}
 			AssociatedPrereqObject apo =
 					context.list.addToList(getTokenName(), po,

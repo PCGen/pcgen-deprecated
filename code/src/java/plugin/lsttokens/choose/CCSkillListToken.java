@@ -24,6 +24,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundAndChooser;
 import pcgen.cdom.choice.PCListChooser;
 import pcgen.cdom.choice.ReferenceChooser;
@@ -35,10 +36,11 @@ import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class CCSkillListToken implements ChooseLstToken
+public class CCSkillListToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -55,24 +57,11 @@ public class CCSkillListToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == ',')
+		if (hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with , : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with , : " + value);
-			return false;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return false;
-		}
+
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{
@@ -83,6 +72,7 @@ public class CCSkillListToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "CCSKILLLIST";
@@ -103,24 +93,11 @@ public class CCSkillListToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == ',')
+		if (hasIllegalSeparator(',', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with , : " + value);
 			return null;
 		}
-		if (value.charAt(value.length() - 1) == ',')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with , : " + value);
-			return null;
-		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return null;
-		}
+
 		PCListChooser<Skill> lc =
 				new PCListChooser<Skill>(ClassSkillList.class);
 		lc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CROSS_CLASS);
@@ -130,37 +107,58 @@ public class CCSkillListToken implements ChooseLstToken
 		}
 		else
 		{
-			StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-			List<CDOMReference<Skill>> skillList =
-					new ArrayList<CDOMReference<Skill>>();
-			while (tok.hasMoreTokens())
+			ChoiceSet<Skill> setChooser;
+			if (Constants.LST_ANY.equals(value))
 			{
-				String tokString = tok.nextToken();
-				if (Constants.LST_ANY.equals(tokString))
+				setChooser = new AnyChooser<Skill>(Skill.class);
+			}
+			else
+			{
+				setChooser = getRefChooser(context, value);
+				if (setChooser == null)
 				{
-					Logging.errorPrint("Cannot use ANY and another qualifier: "
-						+ value);
 					return null;
-				}
-				else if (Constants.LST_LIST.equals(tokString))
-				{
-					Logging
-						.errorPrint("Cannot use LIST and another qualifier: "
-							+ value);
-					return null;
-				}
-				else
-				{
-					skillList.add(context.ref.getCDOMReference(Skill.class,
-						tokString));
 				}
 			}
-			ReferenceChooser<Skill> setChooser =
-					new ReferenceChooser<Skill>(skillList);
 			CompoundAndChooser<Skill> chooser = new CompoundAndChooser<Skill>();
-			chooser.addChoiceSet(setChooser);
-			chooser.addChoiceSet(lc);
+			chooser.addChoiceSet(setChooser, true);
+			chooser.addChoiceSet(lc, false);
 			return chooser;
 		}
+	}
+
+	private ReferenceChooser<Skill> getRefChooser(LoadContext context,
+		String value)
+	{
+		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
+		List<CDOMReference<Skill>> skillList =
+				new ArrayList<CDOMReference<Skill>>();
+		while (tok.hasMoreTokens())
+		{
+			String tokString = tok.nextToken();
+			if (Constants.LST_ANY.equals(tokString))
+			{
+				Logging.errorPrint("Cannot use ANY and another qualifier: "
+					+ value);
+				return null;
+			}
+			else if (Constants.LST_LIST.equals(tokString))
+			{
+				Logging.errorPrint("Cannot use LIST and another qualifier: "
+					+ value);
+				return null;
+			}
+			else
+			{
+				skillList.add(context.ref.getCDOMReference(Skill.class,
+					tokString));
+			}
+		}
+		return new ReferenceChooser<Skill>(skillList);
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

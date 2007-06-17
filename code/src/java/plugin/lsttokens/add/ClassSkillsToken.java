@@ -152,7 +152,7 @@ public class ClassSkillsToken implements AddLstToken
 		{
 			String token = tok.nextToken();
 			CDOMReference<Skill> ref;
-			if (Constants.LST_ALL.equals(token))
+			if (Constants.LST_ANY.equals(token))
 			{
 				foundAny = true;
 				ref = context.ref.getCDOMAllReference(SKILL_CLASS);
@@ -163,10 +163,16 @@ public class ClassSkillsToken implements AddLstToken
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context, SKILL_CLASS,
 							token);
-			}
-			if (ref == null)
-			{
-				return false;
+				if (ref == null)
+				{
+					Logging
+						.errorPrint("  Error was encountered while parsing ADD:"
+							+ getTokenName()
+							+ ": "
+							+ token
+							+ " is not a valid reference: " + value);
+					return false;
+				}
 			}
 			cr.addReference(ref);
 		}

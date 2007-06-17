@@ -29,6 +29,7 @@ import pcgen.core.PCTemplate;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with CR Token
@@ -56,8 +57,17 @@ public class CrToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		ChallengeRating cr = new ChallengeRating(value);
-		context.graph.grant(getTokenName(), template, cr);
+		try
+		{
+			ChallengeRating cr = new ChallengeRating(value);
+			context.graph.grant(getTokenName(), template, cr);
+		}
+		catch (IllegalArgumentException iae)
+		{
+			Logging.errorPrint("Invalid " + getTokenName() + ": "
+				+ iae.getLocalizedMessage());
+			return false;
+		}
 		return true;
 	}
 

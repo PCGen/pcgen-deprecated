@@ -69,4 +69,10 @@ public class FeatTokenTest extends AbstractAddTokenTestCase
 	{
 		return true;
 	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
 }

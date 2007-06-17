@@ -39,11 +39,12 @@ import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class SkillsNamedToken implements ChooseLstToken
+public class SkillsNamedToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -60,24 +61,11 @@ public class SkillsNamedToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{
@@ -88,6 +76,7 @@ public class SkillsNamedToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "SKILLSNAMED";
@@ -108,25 +97,12 @@ public class SkillsNamedToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return null;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return null;
-		}
-		if (Constants.LST_ALL.equals(value))
+
+		if (Constants.LST_ANY.equals(value) || Constants.LST_ALL.equals(value))
 		{
 			return AnyChooser.getAnyChooser(Skill.class);
 		}
@@ -137,10 +113,11 @@ public class SkillsNamedToken implements ChooseLstToken
 		while (tok.hasMoreTokens())
 		{
 			String tokString = tok.nextToken();
-			if (Constants.LST_ALL.equals(tokString))
+			if (Constants.LST_ANY.equals(tokString)
+				|| Constants.LST_ALL.equals(tokString))
 			{
-				Logging.errorPrint("Cannot use ALL and another qualifier: "
-					+ value);
+				Logging.errorPrint("Cannot use " + tokString
+					+ " and another qualifier: " + value);
 				return null;
 			}
 			else if (Constants.LST_CLASS.equals(tokString))
@@ -165,10 +142,12 @@ public class SkillsNamedToken implements ChooseLstToken
 				pcc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 				pcc.setAssociation(AssociationKey.SKILL_COST,
 					SkillCost.CROSS_CLASS);
-				RemovingChooser<Skill> rc = new RemovingChooser<Skill>(pcc);
-				ObjectKeyFilter<Skill> of = new ObjectKeyFilter<Skill>(Skill.class);
+				RemovingChooser<Skill> rc =
+						new RemovingChooser<Skill>(pcc, false);
+				ObjectKeyFilter<Skill> of =
+						new ObjectKeyFilter<Skill>(Skill.class);
 				of.setObjectFilter(ObjectKey.EXCLUSIVE, Boolean.TRUE);
-				rc.addRemovingChoiceFilter(of);
+				rc.addRemovingChoiceFilter(of, true);
 				list.add(rc);
 			}
 			else if (Constants.LST_NORANK.equals(tokString))
@@ -180,6 +159,12 @@ public class SkillsNamedToken implements ChooseLstToken
 				CDOMReference<Skill> ref =
 						TokenUtilities.getTypeOrPrimitive(context, Skill.class,
 							tokString);
+				if (ref == null)
+				{
+					Logging.errorPrint("Invalid Reference: " + tokString
+						+ " in CHOOSE:" + getTokenName() + ": " + value);
+					return null;
+				}
 				skillList.add(ref);
 			}
 		}
@@ -206,5 +191,10 @@ public class SkillsNamedToken implements ChooseLstToken
 			}
 			return chooser;
 		}
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

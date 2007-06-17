@@ -22,6 +22,7 @@
  */
 package plugin.lsttokens;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -453,7 +454,7 @@ public class NaturalattacksLst implements GlobalLstToken
 			anEquip.addToListFor(ListKey.TYPE, wt);
 		}
 
-		anEquip.put(ObjectKey.WEIGHT, Double.valueOf(0));
+		anEquip.put(ObjectKey.WEIGHT, BigDecimal.ZERO);
 
 		if (bonusAttacks > 0) {
 			// TODO FIXME anEquip.addBonusList("WEAPON|ATTACKS|" + bonusAttacks);

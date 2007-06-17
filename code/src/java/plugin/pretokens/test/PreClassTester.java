@@ -9,8 +9,9 @@ package plugin.pretokens.test;
 import java.util.List;
 
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
-import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
@@ -23,15 +24,17 @@ import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * 
+ * To change the template for this generated type comment go to Window -
+ * Preferences - Java - Code Generation - Code and Comments
  */
 public class PreClassTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -43,7 +46,9 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -123,10 +128,13 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 			}
 		}
 		runningTotal = prereq.getOperator().compare(runningTotal, preClass);
-		return countedTotal(prereq, prereq.isCountMultiples() ? countedTotal : runningTotal);
+		return countedTotal(prereq, prereq.isCountMultiples() ? countedTotal
+			: runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -134,7 +142,9 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 		return "CLASS"; //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#toHtmlString(pcgen.core.prereq.Prerequisite)
 	 */
 	@Override
@@ -147,66 +157,114 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 			"PreClass.toHtml", prereq.getKey(), operator, level); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
 	{
-		//TODO given 5.12/5.14 changes, this just needs to be rewritten... thpr Jun 2, 2007
+		// TODO given 5.12/5.14 changes, this just needs to be rewritten... thpr
+		// Jun 2, 2007
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<PCClassLevel> levellist = activeGraph.getGrantedNodeList(PCClassLevel.class);
 		String classString = prereq.getKey();
+		int preClass = Integer.parseInt(prereq.getOperand());
 		int runningTotal = 0;
+		int countedTotal = 0;
 		if ("SPELLCASTER".equalsIgnoreCase(classString)) //$NON-NLS-1$
 		{
-			List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
+			List<PCClass> classlist =
+					activeGraph.getGrantedNodeList(PCClass.class);
 			for (PCClass pcClass : classlist)
 			{
-				int classLevels =
-						(int) character.getTotalBonusTo("CASTERLEVEL", pcClass
-							.getKeyName());
-				classLevels +=
-						(int) character.getTotalBonusTo("PCLEVEL", pcClass
-							.getKeyName());
-				runningTotal += getClassLevel(pcClass, levellist);
-			}
-			if (character.isSpellCaster(preClass, false))
-			{
-				runningTotal = preClass;
+				Type type = pcClass.get(ObjectKey.SPELL_TYPE);
+				if (type != null)
+				{
+					int thisLevel = character.getCDOMLevel(pcClass);
+					if (prereq.isCountMultiples())
+					{
+						if (thisLevel >= preClass)
+						{
+							countedTotal++;
+						}
+					}
+					else
+					{
+						runningTotal += thisLevel;
+					}
+				}
 			}
 		}
-		else if (aString.startsWith("SPELLCASTER.")) //$NON-NLS-1$
+		else if (classString.startsWith("SPELLCASTER.")) //$NON-NLS-1$
 		{
-			if (character.isSpellCaster(aString.substring(12), preClass,
-				false))
+			String typeString = classString.substring(12);
+			try
 			{
-				runningTotal = preClass;
+				Type reqType = Type.valueOf(typeString);
+				List<PCClass> classlist =
+						activeGraph.getGrantedNodeList(PCClass.class);
+				for (PCClass pcClass : classlist)
+				{
+					Type type = pcClass.get(ObjectKey.SPELL_TYPE);
+					if (reqType.equals(type))
+					{
+						int thisLevel = character.getCDOMLevel(pcClass);
+						if (prereq.isCountMultiples())
+						{
+							if (thisLevel >= preClass)
+							{
+								countedTotal++;
+							}
+						}
+						else
+						{
+							runningTotal += thisLevel;
+						}
+					}
+				}
+			}
+			catch (IllegalArgumentException iae)
+			{
+				Logging.errorPrint("Invalid Type: " + typeString
+					+ " found in PRECLASS");
 			}
 		}
 		else if (Constants.LST_ANY.equals(classString))
 		{
-			List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
+			List<PCClass> classlist =
+					activeGraph.getGrantedNodeList(PCClass.class);
 			for (PCClass pcClass : classlist)
 			{
-				runningTotal += getClassLevel(pcClass, levellist);
+				int thisLevel = character.getCDOMLevel(pcClass);
+				if (prereq.isCountMultiples())
+				{
+					if (thisLevel >= preClass)
+					{
+						countedTotal++;
+					}
+				}
+				else
+				{
+					runningTotal += thisLevel;
+				}
 			}
 		}
+		// TODO need to account for type
 		else
 		{
-			PCClass pcClass  = activeGraph.getGrantedNode(PCClass.class, classString);
-			runningTotal += getClassLevel(pcClass, levellist);
+			PCClass pcClass =
+					activeGraph.getGrantedNode(PCClass.class, classString);
+			int thisLevel = character.getCDOMLevel(pcClass);
+			if (prereq.isCountMultiples())
+			{
+				if (thisLevel >= preClass)
+				{
+					countedTotal++;
+				}
+			}
+			else
+			{
+				runningTotal += thisLevel;
+			}
 		}
-		// return totalLevels;
+		runningTotal = prereq.getOperator().compare(runningTotal, preClass);
+		return countedTotal(prereq, prereq.isCountMultiples() ? countedTotal
+			: runningTotal);
 	}
-
-	private int getClassLevel(PCClass pcClass, List<PCClassLevel> levellist)
-	{
-		int classLevel = 0;
-		for (PCClassLevel pcl : levellist)
-		{
-			int level = pcClass.getCDOMLevel(pcl);
-			classLevel = Math.max(classLevel, level);
-		}
-		// Techically if classLevel == -1 we have a VERY funky PC
-		// but we'll let that fly for now
-		return Math.max(0, classLevel);
-	}
-
 }

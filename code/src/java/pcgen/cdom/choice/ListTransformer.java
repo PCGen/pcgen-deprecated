@@ -33,6 +33,7 @@ import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.CDOMListObject;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
+import pcgen.util.StringPClassUtil;
 
 public class ListTransformer<T extends PObject> extends AbstractTransformer<T>
 {
@@ -95,5 +96,11 @@ public class ListTransformer<T extends PObject> extends AbstractTransformer<T>
 		}
 		ListTransformer<?> cs = (ListTransformer) o;
 		return listRef.equals(cs.listRef) && transformerEquals(cs);
+	}
+
+	public String getLSTformat()
+	{
+		return StringPClassUtil.getStringFor(getBaseChoiceClass()) + '='
+			+ getBaseChoiceLSTformat();
 	}
 }

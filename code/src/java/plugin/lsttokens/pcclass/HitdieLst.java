@@ -22,17 +22,11 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import pcgen.base.formula.AddingFormula;
 import pcgen.base.formula.DividingFormula;
 import pcgen.base.formula.MultiplyingFormula;
 import pcgen.base.formula.SubtractingFormula;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.HitDie;
 import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -42,7 +36,6 @@ import pcgen.cdom.modifier.HitDieFormula;
 import pcgen.cdom.modifier.HitDieLock;
 import pcgen.cdom.modifier.HitDieStep;
 import pcgen.core.PCClass;
-import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLevelLstToken;
@@ -243,35 +236,12 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 	public String[] unparse(LoadContext context, PCClass pcc, int level)
 	{
 		PCClassLevel pcl = pcc.getClassLevel(level);
-		GraphChanges<HitDieCommandFactory> changes =
-				context.graph.getChangesFromToken(getTokenName(), pcl,
-					HitDieCommandFactory.class);
-		if (changes == null)
+		HitDieCommandFactory hdcf =
+				context.obj.getObject(pcl, ObjectKey.HITDIE);
+		if (hdcf == null)
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
-		{
-			return null;
-		}
-		List<String> list = new ArrayList<String>();
-		for (Iterator<LSTWriteable> it = added.iterator(); it.hasNext();)
-		{
-			StringBuilder sb = new StringBuilder();
-			HitDieCommandFactory lcf = (HitDieCommandFactory) it.next();
-			AbstractHitDieModifier mod = lcf.getModifier();
-			sb.append(mod.getLSTform());
-			String lcfString = lcf.getLSTformat();
-			if (!lcfString.equals(Constants.LST_ALL))
-			{
-				sb.append("|CLASS");
-				sb.append(lcfString.indexOf('=') == -1 ? '=' : '.');
-				sb.append(lcfString);
-			}
-			list.add(sb.toString());
-		}
-
-		return list.toArray(new String[list.size()]);
+		return new String[]{hdcf.getModifier().getLSTform()};
 	}
 }

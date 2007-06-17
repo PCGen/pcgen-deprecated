@@ -489,6 +489,28 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 	}
 
 	@Test
+	public void testValidClearDotAllNoSideEffects() throws PersistenceLayerException
+	{
+		if (isClearDotLegal() && isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP2");
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(getToken().parse(secondaryContext, secondaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+			assertTrue(getToken().parse(primaryContext, primaryProf, "ALL"));
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				".CLEAR.ALL"));
+			assertEquals("Bad Clear had Side Effects", primaryGraph,
+				secondaryGraph);
+		}
+	}
+
+	@Test
 	public void testInputInvalidAddsTypeNoSideEffect()
 		throws PersistenceLayerException
 	{

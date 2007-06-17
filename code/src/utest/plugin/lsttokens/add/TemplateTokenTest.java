@@ -58,4 +58,10 @@ public class TemplateTokenTest extends AbstractAddTokenTestCase
 	{
 		return false;
 	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
 }

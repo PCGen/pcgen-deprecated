@@ -78,7 +78,6 @@ public final class ChooseLoader
 	{
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(ChooseLstToken.class);
-
 		ChooseLstToken token = (ChooseLstToken) tokenMap.get(key);
 
 		if (token != null)

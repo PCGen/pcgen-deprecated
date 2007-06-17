@@ -153,10 +153,16 @@ public class SkillToken implements AddLstToken
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context, SKILL_CLASS,
 							token);
-			}
-			if (ref == null)
-			{
-				return false;
+				if (ref == null)
+				{
+					Logging
+						.errorPrint("  Error was encountered while parsing ADD:"
+							+ getTokenName()
+							+ ": "
+							+ token
+							+ " is not a valid reference: " + value);
+					return false;
+				}
 			}
 			cr.addReference(ref);
 		}
@@ -169,8 +175,8 @@ public class SkillToken implements AddLstToken
 		}
 
 		Slot<Skill> slot =
-				context.graph.addSlot(getTokenName(), obj,
-					SKILL_CLASS, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), obj, SKILL_CLASS,
+					FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Skill>(SKILL_CLASS, cr));
 
 		return true;

@@ -19,7 +19,6 @@ package plugin.lsttokens.pcclass;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassLevelLstToken;
 
@@ -171,6 +170,21 @@ public class HitDieTokenTest extends AbstractPCClassLevelTokenTestCase
 	}
 
 	@Test
+	public void testInvalidInputUpTooBig() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "%up5", 2));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputUpReallyTooBig()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "%up15", 2));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testInvalidInputHUpNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hup-3", 2));
@@ -208,6 +222,21 @@ public class HitDieTokenTest extends AbstractPCClassLevelTokenTestCase
 	public void testValidInputDown() throws PersistenceLayerException
 	{
 		assertTrue(getToken().parse(primaryContext, primaryProf, "%down4", 2));
+	}
+
+	@Test
+	public void testInvalidInputDownTooBig() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "%down5", 3));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputDownReallyTooBig()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "%down15", 3));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
@@ -267,37 +296,9 @@ public class HitDieTokenTest extends AbstractPCClassLevelTokenTestCase
 	}
 
 	@Test
-	public void testRoundRobinIntegerClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinIntegerType() throws PersistenceLayerException
-	{
-		runRoundRobin("2|CLASS.TYPE=Base");
-	}
-
-	@Test
 	public void testRoundRobinAdd() throws PersistenceLayerException
 	{
 		runRoundRobin("%+2");
-	}
-
-	@Test
-	public void testRoundRobinAddClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("%+2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinAddType() throws PersistenceLayerException
-	{
-		runRoundRobin("%+2|CLASS.TYPE=Base");
 	}
 
 	@Test
@@ -307,37 +308,9 @@ public class HitDieTokenTest extends AbstractPCClassLevelTokenTestCase
 	}
 
 	@Test
-	public void testRoundRobinSubtractClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("%-2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinSubtractType() throws PersistenceLayerException
-	{
-		runRoundRobin("%-2|CLASS.TYPE=Base");
-	}
-
-	@Test
 	public void testRoundRobinMultiply() throws PersistenceLayerException
 	{
 		runRoundRobin("%*2");
-	}
-
-	@Test
-	public void testRoundRobinMultiplyClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("%*2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinMultiplyType() throws PersistenceLayerException
-	{
-		runRoundRobin("%*2|CLASS.TYPE=Base");
 	}
 
 	@Test
@@ -347,37 +320,9 @@ public class HitDieTokenTest extends AbstractPCClassLevelTokenTestCase
 	}
 
 	@Test
-	public void testRoundRobinDivideClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("%/2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinDivideType() throws PersistenceLayerException
-	{
-		runRoundRobin("%/2|CLASS.TYPE=Base");
-	}
-
-	@Test
 	public void testRoundRobinUp() throws PersistenceLayerException
 	{
 		runRoundRobin("%up2");
-	}
-
-	@Test
-	public void testRoundRobinUpClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("%up2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinUpType() throws PersistenceLayerException
-	{
-		runRoundRobin("%up2|CLASS.TYPE=Base");
 	}
 
 	@Test
@@ -387,56 +332,14 @@ public class HitDieTokenTest extends AbstractPCClassLevelTokenTestCase
 	}
 
 	@Test
-	public void testRoundRobinHupClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("%Hup2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinHupType() throws PersistenceLayerException
-	{
-		runRoundRobin("%Hup2|CLASS.TYPE=Base");
-	}
-
-	@Test
 	public void testRoundRobinDown() throws PersistenceLayerException
 	{
 		runRoundRobin("%down2");
 	}
 
 	@Test
-	public void testRoundRobinDownClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("%down2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinDownType() throws PersistenceLayerException
-	{
-		runRoundRobin("%down2|CLASS.TYPE=Base");
-	}
-
-	@Test
 	public void testRoundRobinHdown() throws PersistenceLayerException
 	{
 		runRoundRobin("%Hdown2");
-	}
-
-	@Test
-	public void testRoundRobinHdownClass() throws PersistenceLayerException
-	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		runRoundRobin("%Hdown2|CLASS=Fighter");
-	}
-
-	@Test
-	public void testRoundRobinHdownType() throws PersistenceLayerException
-	{
-		runRoundRobin("%Hdown2|CLASS.TYPE=Base");
 	}
 }

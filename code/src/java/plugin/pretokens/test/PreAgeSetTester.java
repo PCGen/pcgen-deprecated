@@ -34,17 +34,20 @@ import pcgen.util.PropertyFactory;
 
 /**
  * @author perchrh
- *
+ * 
  */
 public class PreAgeSetTester extends AbstractPrerequisiteTest implements
-PrerequisiteTest
+		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
-	public int passes(final Prerequisite prereq, final PlayerCharacter character) throws PrerequisiteException
+	public int passes(final Prerequisite prereq, final PlayerCharacter character)
+		throws PrerequisiteException
 	{
 		final int ageset = Globals.getBioSet().getPCAgeSet(character);
 
@@ -61,12 +64,14 @@ PrerequisiteTest
 		}
 		catch (Exception e)
 		{
-			throw new PrerequisiteException(PropertyFactory.getFormattedString("PreAgeSet.error.badly_formed_attribute", prereq.getOperand())); //$NON-NLS-1$
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreAgeSet.error.badly_formed_attribute", prereq.getOperand())); //$NON-NLS-1$
 		}
-		
+
 		if (anInt == -1)
-		{ //String was not recognized
-			throw new PrerequisiteException(PropertyFactory.getFormattedString("PreAgeSet.error.badly_formed_attribute", prereq.getOperand())); //$NON-NLS-1$
+		{ // String was not recognized
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreAgeSet.error.badly_formed_attribute", prereq.getOperand())); //$NON-NLS-1$
 		}
 
 		runningTotal = prereq.getOperator().compare(ageset, anInt);
@@ -74,12 +79,47 @@ PrerequisiteTest
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
-	public String kindHandled() 
+	public String kindHandled()
 	{
 		return "AGESET"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		final int ageset = Globals.getBioSet().getPCAgeSet(character);
+
+		int runningTotal = -1;
+		int anInt;
+
+		try
+		{
+			anInt = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException exc)
+		{
+			anInt = Globals.getBioSet().getAgeSetNamed(prereq.getOperand());
+		}
+		catch (Exception e)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreAgeSet.error.badly_formed_attribute", prereq.getOperand())); //$NON-NLS-1$
+		}
+
+		if (anInt == -1)
+		{ // String was not recognized
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreAgeSet.error.badly_formed_attribute", prereq.getOperand())); //$NON-NLS-1$
+		}
+
+		runningTotal = prereq.getOperator().compare(ageset, anInt);
+
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

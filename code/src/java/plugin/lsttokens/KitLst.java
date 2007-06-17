@@ -23,26 +23,20 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.choice.ReferenceChooser;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Kit;
 import pcgen.core.PObject;
-import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -106,8 +100,13 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 			String tokText = tok.nextToken();
 			if (Constants.LST_DOT_CLEAR.equals(tokText))
 			{
-				context.graph.removeAll(getTokenName(), obj, ChoiceSet.class);
-				cl.clear();
+				if (!list.isEmpty())
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ " .CLEAR was not the first item: " + value);
+					return false;
+				}
+				context.obj.put(obj, ObjectKey.KIT_CHOICE, null);
 			}
 			else
 			{
@@ -115,43 +114,18 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 			}
 		}
 		ReferenceChooser<Kit> chooser = new ReferenceChooser<Kit>(list);
-		context.graph.grant(getTokenName(), obj, cl);
-
+		context.obj.put(obj, ObjectKey.KIT_CHOICE, chooser);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<ChoiceSet> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
-		if (changes == null)
+		ChoiceSet<?> choice = context.obj.getObject(obj, ObjectKey.KIT_CHOICE);
+		if (choice == null)
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
-		{
-			// Zero indicates no Token
-			return null;
-		}
-		List<String> list = new ArrayList<String>(added.size());
-		Set<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		for (LSTWriteable lw : added)
-		{
-			StringBuilder sb = new StringBuilder();
-			ChoiceSet<CDOMSimpleSingleRef<Kit>> cl =
-					(ChoiceSet<CDOMSimpleSingleRef<Kit>>) lw;
-			sb.append(cl.getCount());
-			set.clear();
-			set.addAll(cl.getSet());
-			for (CDOMReference<?> ref : set)
-			{
-				sb.append(Constants.PIPE).append(ref.getLSTformat());
-			}
-			list.add(sb.toString());
-		}
-		return list.toArray(new String[list.size()]);
+		// TODO Not sure how to unparse a CHOOSE ;)
+		return null;
 	}
 }

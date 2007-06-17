@@ -84,17 +84,34 @@ public class AlttypeToken implements EquipmentLstToken
 		StringTokenizer aTok = new StringTokenizer(value.trim(), Constants.DOT);
 
 		boolean removeType = false;
+		boolean sawControl = false;
 		while (aTok.hasMoreTokens())
 		{
 			String aType = aTok.nextToken();
 
 			if (Constants.LST_ADD.equals(aType))
 			{
+				if (sawControl)
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ " had two control sequences (ADD, REMOVE) in a row: "
+						+ value);
+					return false;
+				}
 				removeType = false;
+				sawControl = true;
 			}
 			else if (Constants.LST_REMOVE.equals(aType))
 			{
+				if (sawControl)
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ " had two control sequences (ADD, REMOVE) in a row: "
+						+ value);
+					return false;
+				}
 				removeType = true;
+				sawControl = true;
 			}
 			else
 			{
@@ -111,7 +128,15 @@ public class AlttypeToken implements EquipmentLstToken
 				{
 					context.obj.addToList(eq, ListKey.ALT_TYPE, typeCon);
 				}
+				sawControl = false;
 			}
+		}
+		if (sawControl)
+		{
+			Logging.errorPrint("Invalid " + getTokenName()
+				+ " had control sequence (ADD, REMOVE) as the last item: "
+				+ value);
+			return false;
 		}
 		return true;
 	}
@@ -124,6 +149,13 @@ public class AlttypeToken implements EquipmentLstToken
 		{
 			return null;
 		}
+		if (changes.includesGlobalClear())
+		{
+			context.addWriteMessage(getTokenName()
+				+ " does not support global clear");
+			return null;
+		}
+		// TODO Need to implement REMOVE...
 		return new String[]{StringUtil.join(changes.getAdded(), Constants.DOT)};
 	}
 }

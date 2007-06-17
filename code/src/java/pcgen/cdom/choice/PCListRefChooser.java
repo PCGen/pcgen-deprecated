@@ -126,4 +126,10 @@ public class PCListRefChooser<T extends PObject> extends AbstractChooser<T>
 		}
 		assoc.addToListFor(ak, val);
 	}
+
+	public String getLSTformat()
+	{
+		return listRef.getLSTformat();
+	}
+
 }

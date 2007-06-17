@@ -59,4 +59,10 @@ public class EquipTokenTest extends AbstractAddTokenTestCase
 	{
 		return true;
 	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
 }

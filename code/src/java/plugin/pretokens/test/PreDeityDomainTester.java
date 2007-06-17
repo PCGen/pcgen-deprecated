@@ -32,7 +32,6 @@ import java.util.List;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
@@ -109,12 +108,12 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 					"*Starting");
 		for (Deity d : list)
 		{
-			Collection<LSTWriteable> mods = d.getListMods(dl);
+			Collection<CDOMReference<Domain>> mods = d.getListMods(dl);
 			if (mods != null)
 			{
 				if (requiresAny)
 				{
-					for (LSTWriteable domain : mods)
+					for (CDOMReference<Domain> domain : mods)
 					{
 						String domainString = domain.getLSTformat();
 						if (Constants.LST_ALL.equals(domainString))
@@ -133,7 +132,7 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 				}
 				else
 				{
-					for (LSTWriteable domain : mods)
+					for (CDOMReference<Domain> domain : mods)
 					{
 						String domainString = domain.getLSTformat();
 						if (Constants.LST_ALL.equals(domainString))

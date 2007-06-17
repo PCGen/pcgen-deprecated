@@ -17,14 +17,15 @@
  */
 package plugin.lsttokens;
 
+import junit.framework.TestSuite;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
-import junit.framework.TestSuite;
 
 import plugin.lsttokens.ability.TokenAbilityTestSuite;
 import plugin.lsttokens.add.TokenAddTestSuite;
 import plugin.lsttokens.auto.TokenAutoTestSuite;
+import plugin.lsttokens.choose.TokenChooseTestSuite;
 import plugin.lsttokens.deity.TokenDeityTestSuite;
 import plugin.lsttokens.domain.TokenDomainTestSuite;
 import plugin.lsttokens.equipment.TokenEquipmentTestSuite;
@@ -40,12 +41,12 @@ import plugin.lsttokens.weaponprof.TokenWeaponProfTestSuite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({TokenGlobalTestSuite.class, TokenAbilityTestSuite.class,
 	TokenAddTestSuite.class, TokenAutoTestSuite.class,
-	TokenDeityTestSuite.class, TokenDomainTestSuite.class,
-	TokenEquipmentTestSuite.class, TokenEqModTestSuite.class,
-	TokenPCClassTestSuite.class, TokenRaceTestSuite.class,
-	TokenRemoveTestSuite.class, TokenSkillTestSuite.class,
-	TokenSpellTestSuite.class, TokenTemplateTestSuite.class,
-	TokenWeaponProfTestSuite.class})
+	TokenChooseTestSuite.class, TokenDeityTestSuite.class,
+	TokenDomainTestSuite.class, TokenEquipmentTestSuite.class,
+	TokenEqModTestSuite.class, TokenPCClassTestSuite.class,
+	TokenRaceTestSuite.class, TokenRemoveTestSuite.class,
+	TokenSkillTestSuite.class, TokenSpellTestSuite.class,
+	TokenTemplateTestSuite.class, TokenWeaponProfTestSuite.class})
 public class AllTokenUnitTests extends TestSuite
 {
 	// No contents, see annotations

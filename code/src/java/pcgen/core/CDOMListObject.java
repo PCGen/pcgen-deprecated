@@ -8,6 +8,12 @@ public class CDOMListObject<T extends CDOMObject> extends PObject implements
 {
 
 	@Override
+	public int hashCode()
+	{
+		return getClass().hashCode();
+	}
+
+	@Override
 	public boolean equals(Object o)
 	{
 		return o != null && o.getClass().equals(getClass());

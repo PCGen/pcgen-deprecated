@@ -89,4 +89,15 @@ public class ListKeyTransformer<T extends PObject> extends
 		ListKeyTransformer<?> cs = (ListKeyTransformer) o;
 		return listkey.equals(cs.listkey) && transformerEquals(cs);
 	}
+
+	public Class<T> getChoiceClass()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getLSTformat()
+	{
+		return listkey.toString();
+	}
 }

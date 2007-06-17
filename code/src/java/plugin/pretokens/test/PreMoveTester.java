@@ -28,9 +28,7 @@ package plugin.pretokens.test;
 
 import java.util.List;
 
-import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Movement;
-import pcgen.core.PCTemplate;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Race;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -52,9 +50,11 @@ public class PreMoveTester extends AbstractPrerequisiteTest implements
 		super();
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
-	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.prereq.Prerequisite, pcgen.core.PlayerCharacter)
+	 * 
+	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.prereq.Prerequisite,
+	 *      pcgen.core.PlayerCharacter)
 	 */
 	@Override
 	public int passes(final Prerequisite prereq, final PlayerCharacter character)
@@ -93,7 +93,9 @@ public class PreMoveTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -126,9 +128,9 @@ public class PreMoveTester extends AbstractPrerequisiteTest implements
 		return movements.get(0).getNumberOfMovementTypes() != 0;
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
 	{
-		int runningTotal = 0;
 		int moveAmount = 0;
 
 		String moveType = prereq.getKey();
@@ -141,21 +143,8 @@ public class PreMoveTester extends AbstractPrerequisiteTest implements
 			throw new PrerequisiteException(PropertyFactory.getFormattedString(
 				"PreMove.error.bad_operand", prereq.toString())); //$NON-NLS-1$
 		}
-		
-		PCGenGraph activeGraph = character.getActiveGraph();
-		List<Movement> list =
-				activeGraph.getGrantedNodeList(Movement.class);
 
-		for (Movement m : list)
-		{
-			String type = character.getMovementType(x);
-			int speed = character.getMovement(x).intValue();
-			if (moveType.equalsIgnoreCase(type) && speed >= moveAmount)
-			{
-				runningTotal += character.getMovement(x).intValue();
-			}
-		}
-
+		int runningTotal = character.getCDOMMovement(moveType);
 		runningTotal = prereq.getOperator().compare(runningTotal, moveAmount);
 		return countedTotal(prereq, runningTotal);
 	}

@@ -27,11 +27,12 @@ import pcgen.core.Equipment;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class EquipTypeToken implements ChooseLstToken
+public class EquipTypeToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -48,24 +49,11 @@ public class EquipTypeToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '.')
+		if (hasIllegalSeparator('.', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with . : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '.')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with . : " + value);
-			return false;
-		}
-		if (value.indexOf("..") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator .. : " + value);
-			return false;
-		}
+
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{
@@ -76,6 +64,7 @@ public class EquipTypeToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "EQUIPTYPE";
@@ -90,33 +79,35 @@ public class EquipTypeToken implements ChooseLstToken
 				+ " arguments may not contain | : " + value);
 			return null;
 		}
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return null;
+		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '.')
+		if (hasIllegalSeparator('.', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with . : " + value);
-			return null;
-		}
-		if (value.charAt(value.length() - 1) == '.')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with . : " + value);
-			return null;
-		}
-		if (value.indexOf("..") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator .. : " + value);
 			return null;
 		}
 		CDOMReference<Equipment> ref =
 				TokenUtilities
 					.getTypeReference(context, Equipment.class, value);
+		if (ref == null)
+		{
+			Logging.errorPrint("  Error was in CHOOSE:" + getTokenName());
+			return null;
+		}
 		return new ReferenceChooser<Equipment>(Collections.singletonList(ref));
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat().substring(5);
 	}
 }

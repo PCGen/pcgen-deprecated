@@ -48,11 +48,12 @@ import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class WeaponProfsToken implements ChooseLstToken
+public class WeaponProfsToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -69,22 +70,8 @@ public class WeaponProfsToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		StringBuilder sb = new StringBuilder();
@@ -97,6 +84,7 @@ public class WeaponProfsToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "WEAPONPROFS";
@@ -117,22 +105,8 @@ public class WeaponProfsToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
-			return null;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return null;
 		}
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -149,7 +123,7 @@ public class WeaponProfsToken implements ChooseLstToken
 			{
 				choiceList.add(new ListKeyTransformer<WeaponProf>(
 					GrantedChooser.getGrantedChooser(Deity.class),
-					ListKey.DEITY_WEAPON));
+					ListKey.DEITYWEAPON));
 			}
 			else if ("LIST".equalsIgnoreCase(tokString))
 			{
@@ -179,24 +153,24 @@ public class WeaponProfsToken implements ChooseLstToken
 				AnyChooser<Equipment> ac =
 						AnyChooser.getAnyChooser(Equipment.class);
 				RemovingChooser<Equipment> rc =
-						new RemovingChooser<Equipment>(ac);
+						new RemovingChooser<Equipment>(ac, false);
 				ObjectKeyFilter<Equipment> okf =
 						new ObjectKeyFilter<Equipment>(Equipment.class);
 				okf.setObjectFilter(ObjectKey.WIELD, EqWield.valueOf(wield));
 				rc.addRemovingChoiceFilter(NegatingFilter
-					.getNegatingFilter(okf));
+					.getNegatingFilter(okf), true);
 				// rc now captures all Equipment that matches the Wield
 				TypeFilter tf = new TypeFilter(list);
-				rc.addRemovingChoiceFilter(tf);
+				rc.addRemovingChoiceFilter(tf, true);
 				// rc now captures all Equipment that matches the Wield and Type
 				ObjectKeyTransformer<WeaponProf> okt =
 						new ObjectKeyTransformer<WeaponProf>(rc,
 							ObjectKey.WEAPON_PROF);
 				CompoundAndChooser<WeaponProf> cac =
 						new CompoundAndChooser<WeaponProf>();
-				cac.addChoiceSet(okt);
+				cac.addChoiceSet(okt, true);
 				cac.addChoiceSet(new GrantedChooser<WeaponProf>(
-					WeaponProf.class));
+					WeaponProf.class), false);
 				choiceList.add(cac);
 			}
 			else if (tokString.regionMatches(true, 0, "ADD.", 0, 4))
@@ -228,7 +202,13 @@ public class WeaponProfsToken implements ChooseLstToken
 				// This captures positive TYPE references
 				CDOMReference<WeaponProf> ref =
 						TokenUtilities.getTypeOrPrimitive(context,
-							WeaponProf.class, tok.nextToken());
+							WeaponProf.class, tokString);
+				if (ref == null)
+				{
+					Logging.errorPrint("Invalid Reference: " + tokString
+						+ " in CHOOSE:" + getTokenName() + ": " + value);
+					return null;
+				}
 				refList.add(ref);
 			}
 		}
@@ -237,8 +217,14 @@ public class WeaponProfsToken implements ChooseLstToken
 			choiceList.add(new ReferenceChooser<WeaponProf>(refList));
 		}
 		ChoiceSet<WeaponProf> retChooser;
-		// Assume it is impossible to have choiceList empty
-		if (choiceList.size() == 1)
+		int size = choiceList.size();
+		if (size == 0)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " must have at least one item that adds to the list");
+			return null;
+		}
+		else if (size == 1)
 		{
 			retChooser = choiceList.get(0);
 		}
@@ -252,13 +238,18 @@ public class WeaponProfsToken implements ChooseLstToken
 		if (filterList.isEmpty())
 		{
 			RemovingChooser<WeaponProf> rc =
-					new RemovingChooser<WeaponProf>(retChooser);
+					new RemovingChooser<WeaponProf>(retChooser, true);
 			for (ChoiceFilter<? super WeaponProf> f : filterList)
 			{
-				rc.addRemovingChoiceFilter(f);
+				rc.addRemovingChoiceFilter(f, true);
 			}
 			retChooser = rc;
 		}
 		return retChooser;
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

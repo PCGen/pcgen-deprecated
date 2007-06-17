@@ -26,10 +26,11 @@ import pcgen.core.Constants;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class NumberToken implements ChooseLstToken
+public class NumberToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -46,24 +47,11 @@ public class NumberToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
@@ -108,6 +96,7 @@ public class NumberToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "NUMBER";
@@ -128,24 +117,11 @@ public class NumberToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return null;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return null;
-		}
+
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
@@ -207,5 +183,10 @@ public class NumberToken implements ChooseLstToken
 		}
 		// TODO Set Title
 		return new NumberChooser(min, max);
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

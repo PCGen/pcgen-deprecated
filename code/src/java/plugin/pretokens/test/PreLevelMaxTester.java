@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
@@ -70,6 +71,15 @@ public class PreLevelMaxTester extends AbstractPrerequisiteTest implements
 		return PropertyFactory.getFormattedString("PreLevelMax.toHtml",
 			new Object[]{prereq.getOperator().toDisplayString(),
 				prereq.getOperand()}); // $NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		final int requiredLevel = Integer.parseInt(prereq.getOperand());
+		final int runningTotal =
+				prereq.getOperator().compare(character.getTotalCDOMPlayerLevels(),
+					requiredLevel);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

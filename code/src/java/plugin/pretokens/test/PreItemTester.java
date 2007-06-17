@@ -26,6 +26,8 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -36,16 +38,19 @@ import pcgen.core.utils.CoreUtility;
 import pcgen.util.PropertyFactory;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreItemTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	// TODO Refactor this with all the equipment tests.
@@ -97,12 +102,12 @@ public class PreItemTester extends AbstractPrerequisiteTest implements
 					}
 				}
 				else
-				{ //not a TYPE string
+				{ // not a TYPE string
 					final String eqName = eq.getName().toUpperCase();
 
 					if (aString.indexOf('%') >= 0)
 					{
-						//handle wildcards (always assume
+						// handle wildcards (always assume
 						// they end the line)
 						final int percentPos = aString.indexOf('%');
 						final String substring =
@@ -115,7 +120,7 @@ public class PreItemTester extends AbstractPrerequisiteTest implements
 					}
 					else if (eqName.equalsIgnoreCase(aString))
 					{
-						//just a straight String compare
+						// just a straight String compare
 						++runningTotal;
 						break;
 					}
@@ -127,12 +132,92 @@ public class PreItemTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
 	{
 		return "ITEM"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		final int number;
+		try
+		{
+			number = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException e)
+		{
+			throw new PrerequisiteException(PropertyFactory.getFormattedString(
+				"PreItem.error.bad_operand", prereq.toString())); //$NON-NLS-1$
+		}
+
+		int runningTotal = 0;
+
+		/*
+		 * TODO This is a RATHER interesting challenge - the problem here is
+		 * that this is NOT in the active graph - it is in the complete
+		 * character graph. However, there are also 'false' items that can be in
+		 * that complete graph, such as a deeply embedded AUTO:EQUIP, for which
+		 * the PC is not eligible... :P
+		 */
+		List<Equipment> list = null;
+		String aString = prereq.getKey();
+
+		for (Equipment eq : list)
+		{
+			if (aString.startsWith("TYPE=") || aString.startsWith("TYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
+			{
+				StringTokenizer tok =
+						new StringTokenizer(aString.substring(5), ".");
+				boolean match = true;
+				//
+				// Must match all listed types in order to qualify
+				//
+				while (tok.hasMoreTokens())
+				{
+					Type requiredType = Type.getConstant(tok.nextToken());
+					if (!eq.containsInList(ListKey.TYPE, requiredType))
+					{
+						match = false;
+						break;
+					}
+				}
+				if (match)
+				{
+					runningTotal++;
+					break;
+				}
+			}
+			else
+			// not a TYPE string
+			{
+				String eqName = eq.getKeyName();
+				int percentPos = aString.indexOf('%');
+				if (percentPos >= 0)
+				{
+					// handle wildcards (always assume they end the line)
+					if (eqName.regionMatches(true, 0, aString, 0, percentPos))
+					{
+						runningTotal++;
+						break;
+					}
+				}
+				else if (eqName.equalsIgnoreCase(aString))
+				{
+					// just a straight String compare
+					runningTotal++;
+					break;
+				}
+			}
+		}
+
+		runningTotal = prereq.getOperator().compare(runningTotal, number);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

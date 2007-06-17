@@ -24,6 +24,8 @@ package pcgen.cdom.choice;
 
 import java.util.Set;
 
+import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.cdom.base.Category;
 import pcgen.cdom.base.Constants;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
@@ -32,6 +34,8 @@ public class AnyChooser<T extends PObject> extends AbstractChooser<T>
 {
 
 	private Class<T> choiceClass;
+
+	private Category choiceCat;
 
 	public static <T extends PObject> AnyChooser<T> getAnyChooser(Class<T> cl)
 	{
@@ -45,12 +49,41 @@ public class AnyChooser<T extends PObject> extends AbstractChooser<T>
 		{
 			throw new IllegalArgumentException("Choice Class cannot be null");
 		}
+		if (CategorizedCDOMObject.class.isAssignableFrom(cl))
+		{
+			throw new IllegalArgumentException(
+				"Cannot use Categorized Class without a Category");
+		}
 		choiceClass = cl;
+	}
+
+	public <CT extends CategorizedCDOMObject<CT>> AnyChooser(Class<CT> cl,
+		Category<CT> cat)
+	{
+		super();
+		if (cl == null)
+		{
+			throw new IllegalArgumentException("Choice Class cannot be null");
+		}
+		if (cat == null)
+		{
+			throw new IllegalArgumentException("Choice Category cannot be null");
+		}
+		choiceClass = (Class<T>) cl;
+		choiceCat = cat;
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return pc.getContext().ref.getConstructedCDOMObjects(choiceClass);
+		if (choiceCat == null)
+		{
+			return pc.getContext().ref.getConstructedCDOMObjects(choiceClass);
+		}
+		else
+		{
+			return pc.getContext().ref.getConstructedCDOMObjects(choiceClass,
+				choiceCat);
+		}
 	}
 
 	@Override
@@ -80,4 +113,15 @@ public class AnyChooser<T extends PObject> extends AbstractChooser<T>
 		AnyChooser<?> cs = (AnyChooser) o;
 		return equalsAbstractChooser(cs) && choiceClass.equals(cs.choiceClass);
 	}
+
+	public String getLSTformat()
+	{
+		return "ANY";
+	}
+
+	public Class<T> getChoiceClass()
+	{
+		return choiceClass;
+	}
+
 }

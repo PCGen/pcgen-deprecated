@@ -23,9 +23,13 @@
 package pcgen.cdom.choice;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
@@ -37,12 +41,14 @@ import pcgen.core.PlayerCharacter;
 public class RemovingChooser<T extends PrereqObject> extends AbstractChooser<T>
 {
 
-	private final Set<ChoiceFilter<? super T>> set =
-			new HashSet<ChoiceFilter<? super T>>();
+	private final Map<ChoiceFilter<? super T>, Boolean> set =
+			new HashMap<ChoiceFilter<? super T>, Boolean>();
 
 	private final ChoiceSet<T> baseSet;
 
-	public RemovingChooser(ChoiceSet<T> base)
+	private final boolean baseSignificant;
+
+	public RemovingChooser(ChoiceSet<T> base, boolean significant)
 	{
 		super();
 		if (base == null)
@@ -50,30 +56,36 @@ public class RemovingChooser<T extends PrereqObject> extends AbstractChooser<T>
 			throw new IllegalArgumentException();
 		}
 		baseSet = base;
+		baseSignificant = significant;
 	}
 
-	public void addRemovingChoiceFilter(ChoiceFilter<? super T> cs)
+	public void addRemovingChoiceFilter(ChoiceFilter<? super T> cs,
+		boolean significant)
 	{
 		if (cs == null)
 		{
 			throw new IllegalArgumentException();
 		}
-		set.add(cs);
+		set.put(cs, Boolean.valueOf(significant));
 	}
 
-	public void addAllRemovingChoiceFilters(Collection<ChoiceFilter<T>> coll)
+	public void addAllRemovingChoiceFilters(Collection<ChoiceFilter<T>> coll,
+		boolean significant)
 	{
 		if (coll == null)
 		{
 			throw new IllegalArgumentException();
 		}
-		set.addAll(coll);
+		for (ChoiceFilter<T> cf : coll)
+		{
+			addRemovingChoiceFilter(cf, significant);
+		}
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
 		Set<T> choices = new HashSet<T>(baseSet.getSet(pc));
-		for (ChoiceFilter<? super T> cf : set)
+		for (ChoiceFilter<? super T> cf : set.keySet())
 		{
 			for (Iterator<T> it = choices.iterator(); it.hasNext();)
 			{
@@ -91,7 +103,7 @@ public class RemovingChooser<T extends PrereqObject> extends AbstractChooser<T>
 	public String toString()
 	{
 		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + StringUtil.join(set, Constants.PIPE);
+			+ Constants.PIPE + StringUtil.join(set.keySet(), Constants.PIPE);
 	}
 
 	@Override
@@ -113,5 +125,34 @@ public class RemovingChooser<T extends PrereqObject> extends AbstractChooser<T>
 		}
 		RemovingChooser<?> cs = (RemovingChooser) o;
 		return equalsAbstractChooser(cs) && set.equals(cs.set);
+	}
+
+	public String getLSTformat()
+	{
+		StringBuilder sb = new StringBuilder();
+		boolean needPipe = false;
+		if (baseSignificant)
+		{
+			sb.append(baseSet.getLSTformat());
+			needPipe = true;
+		}
+		Set<String> sortSet = new TreeSet<String>();
+		for (Entry<ChoiceFilter<? super T>, Boolean> me : set.entrySet())
+		{
+			if (me.getValue().booleanValue())
+			{
+				sortSet.add(me.getKey().getLSTformat());
+			}
+		}
+		for (String s : sortSet)
+		{
+			if (needPipe)
+			{
+				sb.append('|');
+			}
+			needPipe = true;
+			sb.append(s);
+		}
+		return sb.toString();
 	}
 }

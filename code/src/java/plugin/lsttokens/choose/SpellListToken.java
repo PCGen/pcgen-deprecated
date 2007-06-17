@@ -18,14 +18,20 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.choice.AnyChooser;
+import pcgen.cdom.choice.RemovingChooser;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.filter.ObjectKeyFilter;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class SpellListToken implements ChooseLstToken
+public class SpellListToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -42,24 +48,11 @@ public class SpellListToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		if (!value.equals("Y") && !value.equals("N") && !value.equals("1")
 			&& !value.equals("0"))
 		{
@@ -77,23 +70,31 @@ public class SpellListToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "SPELLLIST";
 	}
 
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value) throws PersistenceLayerException
+	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
+		throws PersistenceLayerException
 	{
-		// TODO Auto-generated method stub
-		
 		// 1) Filter to get classes where SPELLBOOK = value
-		// Solution = AnyChooser on Class with ObjectFilter
+		AnyChooser<PCClass> ac = new AnyChooser<PCClass>(PCClass.class);
+		ObjectKeyFilter<PCClass> spellBookFilter = new ObjectKeyFilter<PCClass>(PCClass.class);
+		spellBookFilter.setObjectFilter(ObjectKey.SPELLBOOK, Boolean.TRUE);
+		RemovingChooser<PCClass> rc = new RemovingChooser<PCClass>(ac, false);
+		rc.addRemovingChoiceFilter(spellBookFilter, false);
+		
+		// TODO Auto-generated method stub
+
 		// 2) Get spellList for classes from 1)
-		// Solution = Class to ClassSpellList Transformer (ObjectKeyTransformer?)
+		// Solution = Class to ClassSpellList Transformer
+		// (ObjectKeyTransformer?)
 		// 3) get Known spells from that spelllist
 		// Solution = ??? (Can't just do an AND, probably need to have a false
 		// root tranverse occur in a GrantedChooser-like behavior)
-		
+
 		return null;
 	}
 }

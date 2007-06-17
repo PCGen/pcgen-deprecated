@@ -148,10 +148,12 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							SPELLLIST_CLASS, token);
-			}
-			if (ref == null)
-			{
-				return false;
+				if (ref == null)
+				{
+					Logging.errorPrint("Invalid SpellList: " + token + " in "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
 			}
 			cr.addReference(ref);
 		}

@@ -34,7 +34,8 @@ public class GrantedChooser<T extends PObject> extends AbstractChooser<T>
 
 	private Class<T> choiceClass;
 
-	public static <T extends PObject> GrantedChooser<T> getGrantedChooser(Class<T> cl)
+	public static <T extends PObject> GrantedChooser<T> getGrantedChooser(
+		Class<T> cl)
 	{
 		return new GrantedChooser<T>(cl);
 	}
@@ -82,4 +83,15 @@ public class GrantedChooser<T extends PObject> extends AbstractChooser<T>
 		GrantedChooser<?> cs = (GrantedChooser) o;
 		return equalsAbstractChooser(cs) && choiceClass.equals(cs.choiceClass);
 	}
+
+	public String getLSTformat()
+	{
+		return "PC";
+	}
+
+	public Class<T> getChoiceClass()
+	{
+		return choiceClass;
+	}
+
 }

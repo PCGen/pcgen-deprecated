@@ -25,7 +25,6 @@ import pcgen.cdom.filter.NegatingFilter;
 import pcgen.cdom.filter.ObjectKeyFilter;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PCClass;
-import pcgen.core.PCStat;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -70,17 +69,22 @@ public class SpellClassesToken implements ChooseLstToken
 			GrantedChooser<PCClass> pcChooser =
 					GrantedChooser.getGrantedChooser(PCCLASS_CLASS);
 			RemovingChooser<PCClass> chooser =
-					new RemovingChooser<PCClass>(pcChooser);
+					new RemovingChooser<PCClass>(pcChooser, false);
 			ObjectKeyFilter<PCClass> filter =
 					ObjectKeyFilter.getObjectFilter(PCCLASS_CLASS);
 			// Note this means allow null, which is then negated
 			filter.setObjectFilter(ObjectKey.SPELL_STAT, null);
 			chooser.addRemovingChoiceFilter(NegatingFilter
-				.getNegatingFilter(filter));
+				.getNegatingFilter(filter), false);
 			return chooser;
 		}
 		Logging.errorPrint("CHOOSE:" + getTokenName()
 			+ " may not have arguments: " + value);
+		return null;
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
 		return null;
 	}
 }

@@ -59,4 +59,10 @@ public class ClassSkillsTokenTest extends AbstractAddTokenTestCase
 	{
 		return true;
 	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
 }

@@ -32,6 +32,8 @@ public abstract class AbstractChooser<T> implements ChoiceSet<T>
 
 	private Formula max;
 
+	private String type;
+
 	public AbstractChooser()
 	{
 		super();
@@ -49,7 +51,8 @@ public abstract class AbstractChooser<T> implements ChoiceSet<T>
 
 	public int chooserHashCode()
 	{
-		return count.hashCode() + max.hashCode() * 23;
+		return count == null ? 0 : count.hashCode()
+			+ (max == null ? 0 : max.hashCode() * 23);
 	}
 
 	public boolean equalsAbstractChooser(AbstractChooser<?> ac)
@@ -91,4 +94,14 @@ public abstract class AbstractChooser<T> implements ChoiceSet<T>
 	// }
 	// return true;
 	// }
+
+	public void setChooseType(String key)
+	{
+		type = key;
+	}
+
+	public String getChooseType()
+	{
+		return type;
+	}
 }

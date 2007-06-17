@@ -45,6 +45,11 @@ public abstract class AbstractAddTokenTestCase extends
 		TokenRegistration.register(getSubToken());
 	}
 
+	protected char getJoinCharacter()
+	{
+		return ',';
+	}
+
 	protected abstract AddLstToken getSubToken();
 
 	protected abstract <T extends PObject> Class<T> getSubTokenType();
@@ -91,6 +96,8 @@ public abstract class AbstractAddTokenTestCase extends
 	}
 
 	public abstract boolean isTypeLegal();
+
+	public abstract boolean isAllLegal();
 
 	@Test
 	public void testInvalidInputTypeEmpty() throws PersistenceLayerException
@@ -211,46 +218,6 @@ public abstract class AbstractAddTokenTestCase extends
 		}
 	}
 
-	/*
-	 * FIXME Actually need to test invalid items (can't do ANY _and_ other
-	 * items, not sensible):
-	 * 
-	 * getSubTokenString() + |ANY|Item1
-	 * 
-	 * getSubTokenString() + |Item1|ANY
-	 * 
-	 * getSubTokenString() + |ANY|TYPE=ThisType
-	 * 
-	 * getSubTokenString() + |TYPE=ThisType|ANY
-	 * 
-	 */
-	// FIXME These are invalid due to RC being overly protective at the moment
-	// @Test
-	// public void testInvalidInputAll()
-	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf,
-	// getSubTokenString() + "|ALL"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	//
-	// @Test
-	// public void testInvalidInputAny()
-	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf,
-	// getSubTokenString() + "|ANY"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	// @Test
-	// public void testInvalidInputCheckType()
-	// {
-	// if (!isTypeLegal())
-	// {
-	// assertTrue(token.parse(primaryContext, primaryProf,
-	// getSubTokenString() + "|TYPE=TestType"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	// }
-	//
 	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
@@ -529,46 +496,6 @@ public abstract class AbstractAddTokenTestCase extends
 		}
 	}
 
-	@Test
-	public void testInvalidInputAnyItem() throws PersistenceLayerException
-	{
-		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|ALL|TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
-	}
-
-	@Test
-	public void testInvalidInputItemAny() throws PersistenceLayerException
-	{
-		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1|ALL"));
-		assertTrue(primaryGraph.isEmpty());
-	}
-
-	@Test
-	public void testInvalidInputAnyType() throws PersistenceLayerException
-	{
-		if (isTypeLegal())
-		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				getSubTokenString() + "|ALL|TYPE=TestType"));
-			assertTrue(primaryGraph.isEmpty());
-		}
-	}
-
-	@Test
-	public void testInvalidInputTypeAny() throws PersistenceLayerException
-	{
-		if (isTypeLegal())
-		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				getSubTokenString() + "|TYPE=TestType|ALL"));
-			assertTrue(primaryGraph.isEmpty());
-		}
-	}
-
 	protected void construct(LoadContext loadContext, String one)
 	{
 		loadContext.ref.constructCDOMObject(getSubTokenType(), one);
@@ -580,4 +507,144 @@ public abstract class AbstractAddTokenTestCase extends
 		return token;
 	}
 
+	@Test
+	public void testInvalidInputAll() throws PersistenceLayerException
+	{
+		if (!isAllLegal())
+		{
+			try
+			{
+				boolean parse =
+						getToken().parse(primaryContext, primaryProf, "ANY");
+				if (parse)
+				{
+					// Only need to check if parsed as true
+					assertFalse(primaryContext.ref.validate());
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+				// This is okay too
+			}
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	// TODO This really need to check the object is also not modified, not just
+	// that the graph is empty (same with other tests here)
+	@Test
+	public void testInvalidInputAnyItem() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"ANY" + getJoinCharacter() + "TestWP1"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputItemAny() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + "ANY"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputAnyType() throws PersistenceLayerException
+	{
+		if (isTypeLegal() && isAllLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"ANY" + getJoinCharacter() + "TYPE=TestType"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInvalidInputTypeAny() throws PersistenceLayerException
+	{
+		if (isTypeLegal() && isAllLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TYPE=TestType" + getJoinCharacter() + "ANY"));
+			assertTrue(primaryGraph.isEmpty());
+		}
+	}
+
+	@Test
+	public void testInputInvalidAddsTypeNoSideEffect()
+		throws PersistenceLayerException
+	{
+		if (isTypeLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP2");
+			construct(primaryContext, "TestWP3");
+			construct(secondaryContext, "TestWP3");
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(getToken().parse(secondaryContext, secondaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TestWP3" + getJoinCharacter() + "TYPE="));
+			assertEquals("Bad Add had Side Effects", primaryGraph,
+				secondaryGraph);
+		}
+	}
+
+	@Test
+	public void testInputInvalidAddsBasicNoSideEffect()
+		throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP3");
+		construct(primaryContext, "TestWP4");
+		construct(secondaryContext, "TestWP4");
+		assertTrue(getToken().parse(primaryContext, primaryProf,
+			"TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertTrue(getToken().parse(secondaryContext, secondaryProf,
+			"TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"TestWP3" + getJoinCharacter() + getJoinCharacter() + "TestWP4"));
+		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+	}
+
+	@Test
+	public void testInputInvalidAddsAllNoSideEffect()
+		throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP2");
+			construct(primaryContext, "TestWP3");
+			construct(secondaryContext, "TestWP3");
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(getToken().parse(secondaryContext, secondaryProf,
+				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"TestWP3" + getJoinCharacter() + "ANY"));
+			assertEquals("Bad Add had Side Effects", primaryGraph,
+				secondaryGraph);
+		}
+	}
 }

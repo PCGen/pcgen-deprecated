@@ -80,4 +80,23 @@ public abstract class AbstractTransformer<T extends PObject> implements
 		return choiceSet.getSet(pc);
 	}
 
+	public String getChooseType()
+	{
+		return choiceSet.getChooseType();
+	}
+
+	public void setChooseType(String key)
+	{
+		choiceSet.setChooseType(key);
+	}
+
+	public String getBaseChoiceLSTformat()
+	{
+		return choiceSet.getLSTformat();
+	}
+
+	public Class<? extends PObject> getBaseChoiceClass()
+	{
+		return choiceSet.getChoiceClass();
+	}
 }

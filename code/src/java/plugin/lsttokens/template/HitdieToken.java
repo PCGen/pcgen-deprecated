@@ -213,8 +213,7 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 			else if (lock.startsWith("%Hup"))
 			{
 				// HITDIE:%upnum --- moves the hit die num steps up the die size
-				// list d4,d6,d8,d10,d12. Stops at d12.
-
+				// No limit.
 				int steps = Integer.parseInt(lock.substring(4));
 				if (steps <= 0)
 				{

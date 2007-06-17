@@ -279,6 +279,13 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	}
 
 	@Test
+	public void testInvalidBadTemplateToken() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "5:CR:-3"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testRoundRobinDR() throws PersistenceLayerException
 	{
 		runRoundRobin("2:DR:1/+3");

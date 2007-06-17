@@ -24,6 +24,7 @@ package plugin.lsttokens;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
@@ -35,7 +36,10 @@ import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLoader;
+import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.LstToken;
+import pcgen.persistence.lst.TokenStore;
 import pcgen.util.Logging;
 
 /**
@@ -125,7 +129,8 @@ public class ChooseLst implements GlobalLstToken
 				}
 			}
 			String prefixString = CoreUtility.join(prefixList, "|");
-			boolean parse = ChooseLoader.parseToken(obj, prefixString, key, val, anInt);
+			boolean parse =
+					ChooseLoader.parseToken(obj, prefixString, key, val, anInt);
 			if (!parse)
 			{
 				// 514 deprecation changes
@@ -144,20 +149,12 @@ public class ChooseLst implements GlobalLstToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException
 	{
-		String token;
+		String token = null;
 		String rest = value;
 		int activeLoc = 0;
 		String count = null;
 		String maxCount = null;
 		int pipeLoc = value.indexOf(Constants.PIPE, activeLoc);
-		if (pipeLoc == -1)
-		{
-			Logging.errorPrint("CHOOSE: syntax you are using is not valid: "
-				+ value);
-			Logging.errorPrint(" Please use CHOOSE:SUBKEY|choices");
-			Logging.errorPrint(" ... see the PCGen docs");
-			return false;
-		}
 		while (pipeLoc != -1)
 		{
 			token = rest.substring(activeLoc, pipeLoc);
@@ -210,10 +207,16 @@ public class ChooseLst implements GlobalLstToken
 			key = "FEAT";
 			val = rest.substring(5);
 		}
-		else
+		else if (pipeLoc == -1)
+
 		{
 			key = rest;
 			val = null;
+		}
+		else
+		{
+			key = token;
+			val = rest;
 		}
 		ChoiceSet<?> chooser = ChooseLoader.parseLine(context, obj, key, val);
 		if (chooser == null)
@@ -222,8 +225,11 @@ public class ChooseLst implements GlobalLstToken
 		}
 		if (maxCount == null)
 		{
-			chooser.setMaxSelections(FormulaFactory
-				.getFormulaFor(Integer.MAX_VALUE));
+			if (chooser.getMaxSelections() == null)
+			{
+				chooser.setMaxSelections(FormulaFactory
+					.getFormulaFor(Integer.MAX_VALUE));
+			}
 		}
 		else
 		{
@@ -231,19 +237,48 @@ public class ChooseLst implements GlobalLstToken
 		}
 		if (count == null)
 		{
-			chooser.setCount(FormulaFactory.getFormulaFor(1));
+			if (chooser.getCount() == null)
+			{
+				chooser.setCount(FormulaFactory.getFormulaFor(1));
+			}
 		}
 		else
 		{
 			chooser.setCount(FormulaFactory.getFormulaFor(count));
 		}
-		obj.put(ObjectKey.CHOICE, chooser);
+		chooser.setChooseType(key);
+		context.obj.put(obj, ObjectKey.CHOICE, chooser);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ChoiceSet<?> choice = context.obj.getObject(obj, ObjectKey.CHOICE);
+		if (choice == null)
+		{
+			// didn't have a chooser
+			return null;
+		}
+		Map<String, LstToken> tokenMap =
+				TokenStore.inst().getTokenMap(ChooseLstToken.class);
+		String chooseType = choice.getChooseType();
+		ChooseLstToken token = (ChooseLstToken) tokenMap.get(chooseType);
+		if (token != null)
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append(choice.getChooseType());
+			String unparsed = token.unparse(context, choice);
+			if (unparsed != null)
+			{
+				sb.append('|').append(unparsed);
+			}
+			return new String[]{sb.toString()};
+		}
+		else
+		{
+			context.addWriteMessage("Illegal CHOOSE Type '"
+				+ choice.getChooseType() + "'");
+			return null;
+		}
 	}
 }

@@ -160,12 +160,16 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 					ref =
 							TokenUtilities.getTypeOrPrimitive(context,
 								DOMAIN_CLASS, clearText);
-				}
-				if (ref == null)
-				{
-					Logging.errorPrint("  Error was encountered while parsing "
-						+ getTokenName());
-					return false;
+					if (ref == null)
+					{
+						Logging
+							.errorPrint("  Error was encountered while parsing "
+								+ getTokenName()
+								+ ": "
+								+ clearText
+								+ " is not a valid reference: " + value);
+						return false;
+					}
 				}
 				context.list.removeFromList(getTokenName(), deity, dl, ref);
 			}

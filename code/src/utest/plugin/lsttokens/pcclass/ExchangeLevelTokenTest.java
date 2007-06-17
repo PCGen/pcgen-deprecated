@@ -229,6 +229,33 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	}
 
 	@Test
+	public void testInvalidInputRemainingNaN()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"Paladin|11|10|x"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputDonateNaN()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"Paladin|11|x|1"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputMaxNaN()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"Paladin|x|10|1"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");

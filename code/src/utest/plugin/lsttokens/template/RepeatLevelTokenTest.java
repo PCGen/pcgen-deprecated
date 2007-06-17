@@ -276,12 +276,18 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	}
 
 	@Test
+	public void testInvalidBadTemplateToken() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"5|0|10:5:CR:-3"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testRoundRobinZeroConsecutive()
 		throws PersistenceLayerException
 	{
-		System.err.println("!Start");
 		runRoundRobin("5|0|10:5:SA:Sample Spec Abil");
-		System.err.println("!End");
 	}
 
 	@Test

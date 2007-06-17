@@ -31,10 +31,11 @@ import pcgen.core.PObject;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class SpellsToken implements ChooseLstToken
+public class SpellsToken extends AbstractToken implements ChooseLstToken
 {
 
 	private static final Class<ClassSpellList> CLASSSPELLLIST_CLASS =
@@ -56,24 +57,11 @@ public class SpellsToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
@@ -97,6 +85,7 @@ public class SpellsToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "SPELLS";
@@ -117,24 +106,11 @@ public class SpellsToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return null;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return null;
-		}
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		CompoundOrChooser<Spell> chooser = new CompoundOrChooser<Spell>();
 		while (tok.hasMoreTokens())
@@ -143,6 +119,12 @@ public class SpellsToken implements ChooseLstToken
 			if (tokText.startsWith("CLASS="))
 			{
 				String listName = tokText.substring(tokText.indexOf('=') + 1);
+				if (listName.length() == 0)
+				{
+					Logging.errorPrint("Argument to CLASS= in CHOOSE:"
+						+ getTokenName() + " cannot be empty");
+					return null;
+				}
 				CDOMSimpleSingleRef<ClassSpellList> ref =
 						context.ref.getCDOMReference(CLASSSPELLLIST_CLASS,
 							listName);
@@ -153,6 +135,12 @@ public class SpellsToken implements ChooseLstToken
 			else if (tokText.startsWith("DOMAIN="))
 			{
 				String listName = tokText.substring(tokText.indexOf('=') + 1);
+				if (listName.length() == 0)
+				{
+					Logging.errorPrint("Argument to DOMAIN= in CHOOSE:"
+						+ getTokenName() + " cannot be empty");
+					return null;
+				}
 				CDOMSimpleSingleRef<DomainSpellList> ref =
 						context.ref.getCDOMReference(DOMAINSPELLLIST_CLASS,
 							listName);
@@ -170,5 +158,10 @@ public class SpellsToken implements ChooseLstToken
 			}
 		}
 		return chooser;
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

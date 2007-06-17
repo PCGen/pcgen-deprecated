@@ -25,7 +25,10 @@ package pcgen.cdom.filter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.helper.ChoiceFilter;
@@ -63,6 +66,16 @@ public class TypeFilter implements ChoiceFilter<PObject>
 			}
 		}
 		return true;
+	}
+
+	public String getLSTformat()
+	{
+		Set<String> set = new TreeSet<String>();
+		for (Type t : typeList)
+		{
+			set.add(t.toString());
+		}
+		return "TYPE=" + StringUtil.join(set, ".");
 	}
 
 }

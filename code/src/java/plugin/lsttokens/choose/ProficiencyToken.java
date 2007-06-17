@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.choice.AnyChooser;
-import pcgen.cdom.choice.CompoundOrChooser;
+import pcgen.cdom.choice.CompoundAndChooser;
 import pcgen.cdom.choice.GrantedChooser;
 import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.choice.RemovingChooser;
@@ -37,11 +37,12 @@ import pcgen.core.ShieldProf;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class ProficiencyToken implements ChooseLstToken
+public class ProficiencyToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -58,24 +59,11 @@ public class ProficiencyToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
@@ -116,6 +104,7 @@ public class ProficiencyToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "PROFICIENCY";
@@ -136,24 +125,11 @@ public class ProficiencyToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return null;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return null;
-		}
+
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
@@ -194,22 +170,24 @@ public class ProficiencyToken implements ChooseLstToken
 	private <T extends PObject> ChoiceSet<T> continueProcessing(
 		LoadContext context, StringTokenizer tok, Class<T> cl)
 	{
-		String second = tok.nextToken();
-		CompoundOrChooser<T> chooser = new CompoundOrChooser<T>();
+		String tokString = tok.nextToken();
+		String second = tokString;
+		CompoundAndChooser<T> chooser = new CompoundAndChooser<T>();
 		if (second.equals("PC"))
 		{
-			chooser.addChoiceSet(new GrantedChooser<T>(cl));
+			chooser.addChoiceSet(new GrantedChooser<T>(cl), true);
 		}
 		else if (second.equals("ALL"))
 		{
-			chooser.addChoiceSet(new AnyChooser<T>(cl));
+			chooser.addChoiceSet(new AnyChooser<T>(cl), true);
+			// TODO IF second is all, is a third required??
 		}
 		else if (second.equals("UNIQUE"))
 		{
 			AnyChooser<T> base = new AnyChooser<T>(cl);
-			RemovingChooser<T> rem = new RemovingChooser<T>(base);
-			rem.addRemovingChoiceFilter(new PCChoiceFilter<T>(cl));
-			chooser.addChoiceSet(rem);
+			RemovingChooser<T> rem = new RemovingChooser<T>(base, false);
+			rem.addRemovingChoiceFilter(new PCChoiceFilter<T>(cl), true);
+			chooser.addChoiceSet(rem, true);
 		}
 		else
 		{
@@ -221,11 +199,21 @@ public class ProficiencyToken implements ChooseLstToken
 		while (tok.hasMoreTokens())
 		{
 			CDOMReference<T> ref =
-					TokenUtilities.getTypeOrPrimitive(context, cl, tok
-						.nextToken());
+					TokenUtilities.getTypeOrPrimitive(context, cl, tokString);
+			if (ref == null)
+			{
+				Logging.errorPrint("Invalid Reference: " + tokString
+					+ " in CHOOSE:" + getTokenName());
+				return null;
+			}
 			refList.add(ref);
 		}
-		chooser.addChoiceSet(new ReferenceChooser<T>(refList));
+		chooser.addChoiceSet(new ReferenceChooser<T>(refList), true);
 		return chooser;
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getLSTformat();
 	}
 }

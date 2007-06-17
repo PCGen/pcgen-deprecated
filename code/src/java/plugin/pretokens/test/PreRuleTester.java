@@ -129,4 +129,38 @@ public class PreRuleTester extends AbstractPrerequisiteTest implements
 			targetNumber));
 	}
 
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal = 0;
+		int targetNumber;
+
+		try
+		{
+			targetNumber = Integer.parseInt(prereq.getOperand());
+		}
+		catch (NumberFormatException ne)
+		{
+			// Not an error, just a string
+			targetNumber = 1;
+		}
+
+		if (Globals.checkRule(prereq.getKey()))
+		{
+			runningTotal = 1;
+		}
+
+		final PrerequisiteTestFactory factory =
+				PrerequisiteTestFactory.getInstance();
+		for (Prerequisite element : prereq.getPrerequisites())
+		{
+			final PrerequisiteTest test = factory.getTest(element.getKind());
+			if (test != null)
+			{
+				runningTotal += test.passes(element, character);
+			}
+		}
+		return countedTotal(prereq, prereq.getOperator().compare(runningTotal,
+			targetNumber));
+	}
+
 }

@@ -81,7 +81,7 @@ public class PreHPTester extends AbstractPrerequisiteTest implements
 			final int targetHP = Integer.parseInt(prereq.getOperand());
 
 			runningTotal =
-					prereq.getOperator().compare(character.hitPoints(),
+					prereq.getOperator().compare(character.getCDOMhitPoints(),
 						targetHP);
 		}
 		catch (NumberFormatException nfe)

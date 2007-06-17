@@ -288,4 +288,42 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Spell>
 		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Bard");
 		runRoundRobin("Sorcerer,Wizard=3|Bard=4");
 	}
+
+	// @Test(expected = IllegalArgumentException.class)
+	public void testInvalidInputAllPlus() throws PersistenceLayerException
+	{
+		try
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"Wizard,ALL=3"));
+		}
+		catch (IllegalArgumentException iae)
+		{
+			// OK as well
+		}
+	}
+
+	// @Test(expected = IllegalArgumentException.class)
+	public void testInvalidInputPlusAll() throws PersistenceLayerException
+	{
+		try
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				"ALL,Wizard=4"));
+		}
+		catch (IllegalArgumentException iae)
+		{
+			// OK as well
+		}
+	}
+
+	@Test
+	public void testRoundRobinAll() throws PersistenceLayerException
+	{
+		assertEquals(0, primaryContext.getWriteMessageCount());
+		runRoundRobin("ALL=3");
+		assertTrue(primaryContext.ref.validate());
+		assertEquals(0, primaryContext.getWriteMessageCount());
+	}
+
 }

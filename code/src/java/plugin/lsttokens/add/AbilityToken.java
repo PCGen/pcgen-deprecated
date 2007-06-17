@@ -279,10 +279,16 @@ public class AbilityToken implements AddLstToken
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							ABILITY_CLASS, ac, token);
-			}
-			if (ref == null)
-			{
-				return false;
+				if (ref == null)
+				{
+					Logging
+						.errorPrint("  Error was encountered while parsing ADD:"
+							+ getTokenName()
+							+ ": "
+							+ token
+							+ " is not a valid reference: " + value);
+					return false;
+				}
 			}
 			cr.addReference(ref);
 		}

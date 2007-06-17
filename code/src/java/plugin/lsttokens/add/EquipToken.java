@@ -152,10 +152,16 @@ public class EquipToken implements AddLstToken
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							EQUIPMENT_CLASS, token);
-			}
-			if (ref == null)
-			{
-				return false;
+				if (ref == null)
+				{
+					Logging
+						.errorPrint("  Error was encountered while parsing ADD:"
+							+ getTokenName()
+							+ ": "
+							+ token
+							+ " is not a valid reference: " + value);
+					return false;
+				}
 			}
 			cr.addReference(ref);
 		}
@@ -168,8 +174,8 @@ public class EquipToken implements AddLstToken
 		}
 
 		Slot<Equipment> slot =
-				context.graph.addSlot(getTokenName(), obj,
-					EQUIPMENT_CLASS, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), obj, EQUIPMENT_CLASS,
+					FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Equipment>(
 			EQUIPMENT_CLASS, cr));
 

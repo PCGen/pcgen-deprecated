@@ -271,6 +271,13 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	}
 
 	@Test
+	public void testInvalidBadTemplateToken() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "5:CR:-3"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testRoundRobinRangeDR() throws PersistenceLayerException
 	{
 		runRoundRobin("2-5:DR:1/+3");

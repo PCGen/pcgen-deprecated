@@ -154,17 +154,23 @@ public class SpellCasterToken implements AddLstToken
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							SPELL_PROG_CLASS, token);
-			}
-			if (ref == null)
-			{
-				return false;
+				if (ref == null)
+				{
+					Logging
+						.errorPrint("  Error was encountered while parsing ADD:"
+							+ getTokenName()
+							+ ": "
+							+ token
+							+ " is not a valid reference: " + value);
+					return false;
+				}
 			}
 			cr.addReference(ref);
 		}
 
 		Slot<SpellProgressionInfo> slot =
-				context.graph.addSlot(getTokenName(), obj,
-					SPELL_PROG_CLASS, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), obj, SPELL_PROG_CLASS,
+					FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<SpellProgressionInfo>(
 			SPELL_PROG_CLASS, cr));
 

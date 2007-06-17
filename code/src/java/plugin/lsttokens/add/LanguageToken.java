@@ -152,10 +152,16 @@ public class LanguageToken implements AddLstToken
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							LANGUAGE_CLASS, token);
-			}
-			if (ref == null)
-			{
-				return false;
+				if (ref == null)
+				{
+					Logging
+						.errorPrint("  Error was encountered while parsing ADD:"
+							+ getTokenName()
+							+ ": "
+							+ token
+							+ " is not a valid reference: " + value);
+					return false;
+				}
 			}
 			cr.addReference(ref);
 		}
@@ -168,8 +174,8 @@ public class LanguageToken implements AddLstToken
 		}
 
 		Slot<Language> slot =
-				context.graph.addSlot(getTokenName(), obj,
-					LANGUAGE_CLASS, FormulaFactory.getFormulaFor(count));
+				context.graph.addSlot(getTokenName(), obj, LANGUAGE_CLASS,
+					FormulaFactory.getFormulaFor(count));
 		slot.addSinkRestriction(new GroupRestriction<Language>(LANGUAGE_CLASS,
 			cr));
 

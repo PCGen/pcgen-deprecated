@@ -20,6 +20,7 @@ package pcgen.persistence;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import pcgen.base.util.TripleKeyMap;
 import pcgen.base.util.TripleKeyMapToInstanceList;
@@ -201,10 +202,10 @@ public class CategorizedReferenceContext
 		duplicates.removeListFor(cl, cat, forgetKey);
 	}
 
-	public <T extends PObject & CategorizedCDOMObject<T>> Collection<T> getConstructedCDOMObjects(
+	public <T extends PObject & CategorizedCDOMObject<T>> Set<T> getConstructedCDOMObjects(
 		Class<T> name, Category<T> cat)
 	{
-		return (Collection) active.values(name, cat);
+		return (Set<T>) active.values(name, cat);
 	}
 
 	public <T extends PObject & CategorizedCDOMObject<T>> boolean containsConstructedCDOMObject(

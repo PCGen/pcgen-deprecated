@@ -39,4 +39,9 @@ public class QualifyFilter implements ChoiceFilter<PObject>
 		return !obj.qualifies(pc);
 	}
 
+	public String getLSTformat()
+	{
+		return "QUALIFY";
+	}
+
 }

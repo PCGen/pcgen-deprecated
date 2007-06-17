@@ -25,9 +25,10 @@ import junit.framework.TestSuite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ArmortypeTokenTest.class, AssignToAllTokenTest.class,
 	ChargesTokenTest.class, CostdoubleTokenTest.class, CostpreTokenTest.class,
-	CostTokenTest.class, FormatcatTokenTest.class, FumblerangeTokenTest.class,
-	ItypeTokenTest.class, NameoptTokenTest.class, PlusTokenTest.class,
-	ReplacesTokenTest.class, SPropTokenTest.class, VisibleTokenTest.class})
+	CostTokenTest.class, DamageTokenTest.class, FormatcatTokenTest.class,
+	FumblerangeTokenTest.class, ItypeTokenTest.class, NameoptTokenTest.class,
+	PlusTokenTest.class, ReplacesTokenTest.class, SPropTokenTest.class,
+	VisibleTokenTest.class, WtTokenTest.class})
 public class TokenEqModTestSuite extends TestSuite
 {
 	// No contents, see annotations

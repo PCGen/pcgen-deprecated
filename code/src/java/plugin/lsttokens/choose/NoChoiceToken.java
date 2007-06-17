@@ -65,4 +65,9 @@ public class NoChoiceToken implements ChooseLstToken
 		// No args = legal
 		return new EmptyChooser();
 	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return null;
+	}
 }

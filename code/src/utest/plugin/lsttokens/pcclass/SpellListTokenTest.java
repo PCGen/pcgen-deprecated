@@ -75,6 +75,16 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 	}
 
 	@Test
+	public void testInvalidInputCountNaN() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"x|TestWP1|TestWP2"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testInvalidInputNoCount() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
@@ -94,33 +104,11 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		assertFalse(primaryContext.ref.validate());
 	}
 
-	// FIXME These are invalid due to RC being overly protective at the moment
-	// @Test
-	// public void testInvalidInputAll()
-	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf,
-	// "|ALL"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	//
-	// @Test
-	// public void testInvalidInputAny()
-	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf,
-	// "|ANY"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	// @Test
-	// public void testInvalidInputCheckType()
-	// {
-	// if (!isTypeLegal())
-	// {
-	// assertTrue(token.parse(primaryContext, primaryProf,
-	// "|TYPE=TestType"));
-	// assertFalse(primaryContext.ref.validate());
-	// }
-	// }
-	//
+	@Test
+	public void testValidInputAll() throws PersistenceLayerException
+	{
+		assertTrue(getToken().parse(primaryContext, primaryProf, "1|ALL"));
+	}
 
 	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
@@ -174,6 +162,46 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		assertTrue(getToken().parse(primaryContext, primaryProf,
 			"1|TestWP1|TestWP2"));
 		assertFalse(primaryContext.ref.validate());
+	}
+
+	// TODO This really need to check the object is also not modified, not just
+	// that the graph is empty (same with other tests here)
+	@Test
+	public void testInvalidInputAnyItem() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"1|ALL|TestWP1"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputItemAny() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"1|TestWP1|ALL"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInputInvalidAddsAllNoSideEffect()
+		throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP3");
+		assertTrue(getToken().parse(primaryContext, primaryProf,
+			"1|TestWP1|TestWP2"));
+		assertTrue(getToken().parse(secondaryContext, secondaryProf,
+			"1|TestWP1|TestWP2"));
+		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"1|TestWP3|ALL"));
+		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
 
 	@Test

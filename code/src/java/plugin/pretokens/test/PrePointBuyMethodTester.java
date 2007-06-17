@@ -27,6 +27,7 @@ import pcgen.core.PlayerCharacter;
 import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
 
@@ -78,6 +79,22 @@ public class PrePointBuyMethodTester extends AbstractPrerequisiteTest implements
 				PropertyFactory.getFormattedString("PrePointBuyMethod.toHtml", //$NON-NLS-1$
 					new Object[]{prereq.getKey()});
 		return foo;
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	{
+		int runningTotal = 0;
+		final GameMode gm = SettingsHandler.getGame();
+		if (gm != null)
+		{
+			final String purchaseMode = gm.getPurchaseModeMethodName();
+			if ((purchaseMode != null)
+				&& purchaseMode.equalsIgnoreCase(prereq.getKey()))
+			{
+				++runningTotal;
+			}
+		}
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

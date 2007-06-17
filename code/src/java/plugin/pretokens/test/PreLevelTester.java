@@ -29,23 +29,25 @@ package plugin.pretokens.test;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreLevelTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
 	public int passes(final Prerequisite prereq, final PlayerCharacter character)
 	{
-
 		final int requiredLevel = Integer.parseInt(prereq.getOperand());
 		final int runningTotal =
 				prereq.getOperator().compare(character.getTotalLevels(),
@@ -53,12 +55,28 @@ public class PreLevelTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
 	{
 		return "LEVEL"; //$NON-NLS-1$
+	}
+
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
+	{
+		int requiredLevel = Integer.parseInt(prereq.getOperand());
+		int levels = character.getTotalCDOMPlayerLevels();
+		/*
+		 * Only need monster levels, not Hit Dice, because Default Monster Mode
+		 * is gone
+		 */
+		levels += character.getTotalCDOMMonsterLevels();
+		int runningTotal = prereq.getOperator().compare(levels, requiredLevel);
+		return countedTotal(prereq, runningTotal);
 	}
 
 }

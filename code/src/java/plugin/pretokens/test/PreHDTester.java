@@ -35,13 +35,15 @@ import pcgen.util.PropertyFactory;
 
 /**
  * @author wardc
- *
+ * 
  */
 public class PreHDTester extends AbstractPrerequisiteTest implements
 		PrerequisiteTest
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#passes(pcgen.core.PlayerCharacter)
 	 */
 	@Override
@@ -65,7 +67,9 @@ public class PreHDTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#kindsHandled()
 	 */
 	public String kindHandled()
@@ -73,7 +77,9 @@ public class PreHDTester extends AbstractPrerequisiteTest implements
 		return "HD"; //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see pcgen.core.prereq.PrerequisiteTest#toHtmlString(pcgen.core.prereq.Prerequisite)
 	 */
 	@Override
@@ -87,16 +93,21 @@ public class PreHDTester extends AbstractPrerequisiteTest implements
 		return foo;
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+		throws PrerequisiteException
 	{
 		int runningTotal;
 		try
 		{
 			final int targetHD = Integer.parseInt(prereq.getOperand());
 
+			/*
+			 * Only need monster levels, not Hit Dice, because Default Monster
+			 * Mode is gone
+			 */
 			runningTotal =
-					prereq.getOperator().compare(character.totalCDOMMonsterLevels(),
-						targetHD);
+					prereq.getOperator().compare(
+						character.getTotalCDOMMonsterLevels(), targetHD);
 		}
 		catch (NumberFormatException nfe)
 		{

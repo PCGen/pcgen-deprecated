@@ -134,12 +134,6 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 		{
 			return false;
 		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return false;
-		}
 
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
 
@@ -153,6 +147,12 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 			int openBracketLoc = tok.indexOf('[');
 			if (openBracketLoc == -1)
 			{
+				if (tok.indexOf(']') != -1)
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+						+ " must have '[' if it contains a PREREQ tag");
+					return false;
+				}
 				domainKey = tok;
 			}
 			else

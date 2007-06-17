@@ -47,11 +47,12 @@ import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class WeaponProfToken implements ChooseLstToken
+public class WeaponProfToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -68,22 +69,8 @@ public class WeaponProfToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		int pipeLoc = value.indexOf("|");
@@ -114,6 +101,7 @@ public class WeaponProfToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "WEAPONPROF";
@@ -134,22 +122,8 @@ public class WeaponProfToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
-			return null;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return null;
 		}
 		int pipeLoc = value.indexOf("|");
@@ -183,9 +157,10 @@ public class WeaponProfToken implements ChooseLstToken
 			return null;
 		}
 
-		StringTokenizer tok =
-				new StringTokenizer(value.substring(pipeLoc + 1),
-					Constants.PIPE);
+		String rest = value.substring(pipeLoc + 1);
+		// TODO Support ANY as a looping mechanism for number only
+		// TODO Maybe add support for ANY and !TYPE?
+		StringTokenizer tok = new StringTokenizer(rest, Constants.PIPE);
 		List<ChoiceSet<WeaponProf>> choiceList =
 				new ArrayList<ChoiceSet<WeaponProf>>();
 		List<CDOMReference<WeaponProf>> refList =
@@ -199,7 +174,7 @@ public class WeaponProfToken implements ChooseLstToken
 			{
 				choiceList.add(new ListKeyTransformer<WeaponProf>(
 					GrantedChooser.getGrantedChooser(Deity.class),
-					ListKey.DEITY_WEAPON));
+					ListKey.DEITYWEAPON));
 			}
 			else if (tokString.regionMatches(true, 0, "FEAT=", 0, 5))
 			{
@@ -216,13 +191,12 @@ public class WeaponProfToken implements ChooseLstToken
 				}
 				RemovingChooser<Equipment> rc =
 						new RemovingChooser<Equipment>(
-							new AnyChooser<Equipment>(Equipment.class));
+							new AnyChooser<Equipment>(Equipment.class), false);
 				ObjectKeyFilter<Equipment> of =
 						ObjectKeyFilter.getObjectFilter(Equipment.class);
 				of.setObjectFilter(ObjectKey.WIELD, w);
-				rc
-					.addRemovingChoiceFilter(NegatingFilter
-						.getNegatingFilter(of));
+				rc.addRemovingChoiceFilter(
+					NegatingFilter.getNegatingFilter(of), true);
 				ObjectKeyTransformer<WeaponProf> okt =
 						new ObjectKeyTransformer<WeaponProf>(rc,
 							ObjectKey.WEAPON_PROF);
@@ -231,8 +205,19 @@ public class WeaponProfToken implements ChooseLstToken
 			else if (tokString.startsWith("!TYPE=")
 				|| tokString.startsWith("!TYPE."))
 			{
-				StringTokenizer typeTok =
-						new StringTokenizer(tokString.substring(6), ".");
+				String typeString = tokString.substring(6);
+				if (typeString.length() == 0)
+				{
+					Logging.errorPrint("CHOOSE:" + getTokenName()
+						+ " Type arguments may not be empty: " + value);
+					return null;
+				}
+				if (hasIllegalSeparator('.', typeString))
+				{
+					Logging.errorPrint("  Entire CHOOSE Token was: " + value);
+					return null;
+				}
+				StringTokenizer typeTok = new StringTokenizer(typeString, ".");
 				List<Type> list = new ArrayList<Type>();
 				while (typeTok.hasMoreTokens())
 				{
@@ -247,7 +232,13 @@ public class WeaponProfToken implements ChooseLstToken
 				// This captures positive TYPE references
 				CDOMReference<WeaponProf> ref =
 						TokenUtilities.getTypeOrPrimitive(context,
-							WeaponProf.class, tok.nextToken());
+							WeaponProf.class, tokString);
+				if (ref == null)
+				{
+					Logging.errorPrint("Invalid Reference: " + tokString
+						+ " in CHOOSE:" + getTokenName() + ": " + value);
+					return null;
+				}
 				refList.add(ref);
 			}
 		}
@@ -256,8 +247,14 @@ public class WeaponProfToken implements ChooseLstToken
 			choiceList.add(new ReferenceChooser<WeaponProf>(refList));
 		}
 		ChoiceSet<WeaponProf> retChooser;
-		// Assume it is impossible to have choiceList empty
-		if (choiceList.size() == 1)
+		int size = choiceList.size();
+		if (size == 0)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " must have at least one item that adds to the list");
+			return null;
+		}
+		else if (size == 1)
 		{
 			retChooser = choiceList.get(0);
 		}
@@ -268,17 +265,22 @@ public class WeaponProfToken implements ChooseLstToken
 			chooser.addAllChoiceSets(choiceList);
 			retChooser = chooser;
 		}
-		if (filterList.isEmpty())
+		if (!filterList.isEmpty())
 		{
 			RemovingChooser<WeaponProf> rc =
-					new RemovingChooser<WeaponProf>(retChooser);
+					new RemovingChooser<WeaponProf>(retChooser, true);
 			for (ChoiceFilter<? super WeaponProf> f : filterList)
 			{
-				rc.addRemovingChoiceFilter(f);
+				rc.addRemovingChoiceFilter(f, true);
 			}
 			retChooser = rc;
 		}
 		retChooser.setCount(FormulaFactory.getFormulaFor(count));
 		return retChooser;
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getCount().toString() + "|" + chooser.getLSTformat();
 	}
 }

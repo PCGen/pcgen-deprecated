@@ -42,4 +42,6 @@ public interface ChooseLstToken extends LstToken
 
 	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException;
+	
+	public String unparse(LoadContext context, ChoiceSet<?> chooser);
 }

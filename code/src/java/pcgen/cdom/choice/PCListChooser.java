@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.AssociatedObject;
 import pcgen.cdom.base.Constants;
@@ -127,5 +128,19 @@ public class PCListChooser<T extends PObject> extends AbstractChooser<T>
 			assoc = new HashMapToList<AssociationKey<?>, Object>();
 		}
 		assoc.addToListFor(ak, val);
+	}
+
+	public String getLSTformat()
+	{
+		if (assoc == null || assoc.size() != 1)
+		{
+			return "LIST";
+		}
+		else
+		{
+			return "LIST="
+				+ StringUtil.join(assoc.getListFor(assoc.getKeySet().iterator()
+					.next()), ",");
+		}
 	}
 }

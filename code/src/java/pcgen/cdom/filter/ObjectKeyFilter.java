@@ -25,6 +25,7 @@ package pcgen.cdom.filter;
 import java.util.Collection;
 import java.util.List;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.helper.ChoiceFilter;
@@ -102,6 +103,11 @@ public class ObjectKeyFilter<T extends PObject> implements ChoiceFilter<T>
 			}
 		}
 		return true;
+	}
+
+	public String getLSTformat()
+	{
+		return StringUtil.join(assoc.getKeySet(), ",");
 	}
 
 }

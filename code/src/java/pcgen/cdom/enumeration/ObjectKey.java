@@ -112,7 +112,7 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<EqModNameOpt> NAME_OPT = new ObjectKey<EqModNameOpt>();
 
-	public static final ObjectKey<Double> WEIGHT = new ObjectKey<Double>();
+	public static final ObjectKey<BigDecimal> WEIGHT = new ObjectKey<BigDecimal>();
 
 	public static final ObjectKey<EqWield> WIELD = new ObjectKey<EqWield>();
 
@@ -159,6 +159,8 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<BigDecimal> FACE_HEIGHT = new ObjectKey<BigDecimal>();
 
 	public static final ObjectKey<ChoiceSet<?>> CHOICE = new ObjectKey<ChoiceSet<?>>();
+
+	public static final ObjectKey<ChoiceSet<?>> KIT_CHOICE = new ObjectKey<ChoiceSet<?>>();
 
 	public static final ObjectKey<CDOMObject> PSEUDO_PARENT = new ObjectKey<CDOMObject>();
 

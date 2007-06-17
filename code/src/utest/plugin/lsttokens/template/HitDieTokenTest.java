@@ -85,6 +85,33 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	}
 
 	@Test
+	public void testInvalidInputStartDotTypeLimit()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"15|CLASS.TYPE=.Strange"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputEndDotTypeLimit()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"15|CLASS.TYPE=Strange."));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputDoubleDotTypeLimit()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf,
+			"15|CLASS.TYPE=Prestige..Strange"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testValidInputDivideNegative() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, "%/-2"));
@@ -181,6 +208,21 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	}
 
 	@Test
+	public void testInvalidInputUpTooBig() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "%up5"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputUpReallyTooBig()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "%up15"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
 	public void testValidInputUp() throws PersistenceLayerException
 	{
 		assertTrue(getToken().parse(primaryContext, primaryProf, "%up4"));
@@ -224,6 +266,21 @@ public class HitDieTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testValidInputDown() throws PersistenceLayerException
 	{
 		assertTrue(getToken().parse(primaryContext, primaryProf, "%down4"));
+	}
+
+	@Test
+	public void testInvalidInputDownTooBig() throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "%down5"));
+		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testInvalidInputDownReallyTooBig()
+		throws PersistenceLayerException
+	{
+		assertFalse(getToken().parse(primaryContext, primaryProf, "%down15"));
+		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test

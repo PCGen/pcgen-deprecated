@@ -15,39 +15,39 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.equipment;
+package plugin.lsttokens.equipmentmodifier;
 
 import java.math.BigDecimal;
 
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Equipment;
+import pcgen.core.EquipmentModifier;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentLoader;
+import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class WtTokenTest extends AbstractTokenTestCase<Equipment>
+public class WtTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 {
 	static WtToken token = new WtToken();
-	static EquipmentLoader loader = new EquipmentLoader();
+	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<EquipmentModifier> getCDOMClass()
 	{
-		return Equipment.class;
+		return EquipmentModifier.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public LstObjectFileLoader<EquipmentModifier> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMToken<EquipmentModifier> getToken()
 	{
 		return token;
 	}

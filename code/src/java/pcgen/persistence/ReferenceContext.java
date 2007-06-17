@@ -181,6 +181,12 @@ public class ReferenceContext
 		return simple.getConstructedCDOMObjects(c);
 	}
 
+	public <T extends PObject & CategorizedCDOMObject<T>> Set<T> getConstructedCDOMObjects(
+		Class<T> c, Category<T> cat)
+	{
+		return categorized.getConstructedCDOMObjects(c, cat);
+	}
+
 	public <T extends PObject> boolean containsConstructedCDOMObject(
 		Class<T> c, String s)
 	{

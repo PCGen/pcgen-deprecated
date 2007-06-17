@@ -90,11 +90,6 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
-		if (!tok.hasMoreTokens())
-		{
-			return false;
-		}
-
 		String token = tok.nextToken();
 
 		if (token.startsWith("PRE") || token.startsWith("!PRE"))

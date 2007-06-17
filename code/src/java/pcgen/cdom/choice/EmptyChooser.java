@@ -58,4 +58,14 @@ public class EmptyChooser extends AbstractChooser<Object>
 		}
 		return o == this || equalsAbstractChooser((EmptyChooser) o);
 	}
+
+	public String getLSTformat()
+	{
+		return null;
+	}
+
+	public Class<Object> getChoiceClass()
+	{
+		return null;
+	}
 }

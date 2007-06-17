@@ -25,12 +25,15 @@ package pcgen.cdom.choice;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PlayerCharacter;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class ReferenceChooser<T extends PrereqObject> extends
 		AbstractChooser<T>
@@ -38,7 +41,7 @@ public class ReferenceChooser<T extends PrereqObject> extends
 
 	private final Set<CDOMReference<T>> set;
 
-	public ReferenceChooser(Collection<CDOMReference<T>> col)
+	public ReferenceChooser(Collection<? extends CDOMReference<T>> col)
 	{
 		super();
 		if (col == null)
@@ -90,5 +93,18 @@ public class ReferenceChooser<T extends PrereqObject> extends
 		}
 		ReferenceChooser<?> cs = (ReferenceChooser) o;
 		return equalsAbstractChooser(cs) && set.equals(cs.set);
+	}
+
+	public String getLSTformat()
+	{
+		Set<CDOMReference<?>> sortedSet =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		sortedSet.addAll(set);
+		return ReferenceUtilities.joinLstFormat(sortedSet, Constants.PIPE);
+	}
+
+	public Class<T> getChoiceClass()
+	{
+		return set == null ? null : set.iterator().next().getReferenceClass();
 	}
 }

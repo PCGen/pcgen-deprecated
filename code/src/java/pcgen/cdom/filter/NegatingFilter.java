@@ -47,4 +47,9 @@ public class NegatingFilter<T extends PObject> implements ChoiceFilter<T>
 		return !choiceFilter.remove(pc, obj);
 	}
 
+	public String getLSTformat()
+	{
+		return '!' + choiceFilter.getLSTformat();
+	}
+
 }

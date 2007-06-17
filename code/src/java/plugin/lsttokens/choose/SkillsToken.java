@@ -66,4 +66,9 @@ public class SkillsToken implements ChooseLstToken
 			+ " may not have arguments: " + value);
 		return null;
 	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return null;
+	}
 }

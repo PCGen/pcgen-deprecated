@@ -26,6 +26,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.choice.AnyChooser;
 import pcgen.cdom.choice.CompoundAndChooser;
 import pcgen.cdom.choice.ReferenceChooser;
 import pcgen.cdom.helper.ChoiceSet;
@@ -33,11 +34,12 @@ import pcgen.core.Equipment;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class ArmorProfToken implements ChooseLstToken
+public class ArmorProfToken extends AbstractToken implements ChooseLstToken
 {
 
 	private static final Class<Equipment> EQUIPMENT_CLASS = Equipment.class;
@@ -56,24 +58,11 @@ public class ArmorProfToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return false;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return false;
-		}
+
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
@@ -102,6 +91,7 @@ public class ArmorProfToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "ARMORPROF";
@@ -122,24 +112,11 @@ public class ArmorProfToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return null;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
 			return null;
 		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return null;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
-			return null;
-		}
+
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
@@ -147,12 +124,10 @@ public class ArmorProfToken implements ChooseLstToken
 				+ " must have two or more | delimited arguments : " + value);
 			return null;
 		}
-		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
-		String start = st.nextToken();
 		int count;
 		try
 		{
-			count = Integer.parseInt(start);
+			count = Integer.parseInt(value.substring(0, pipeLoc));
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -160,6 +135,36 @@ public class ArmorProfToken implements ChooseLstToken
 				+ " first argument must be an Integer : " + value);
 			return null;
 		}
+		String rest = value.substring(pipeLoc + 1);
+		ChoiceSet<Equipment> cs;
+		if (Constants.LST_ANY.equals(rest))
+		{
+			cs = new AnyChooser<Equipment>(Equipment.class);
+		}
+		else
+		{
+			cs = getReferenceChooser(context, rest);
+			if (cs == null)
+			{
+				return null;
+			}
+		}
+		CompoundAndChooser<Equipment> chooser =
+				new CompoundAndChooser<Equipment>();
+		chooser.addChoiceSet(cs, true);
+		CDOMReference<Equipment> armor =
+				TokenUtilities.getTypeReference(context, EQUIPMENT_CLASS,
+					"Armor");
+		chooser.addChoiceSet(new ReferenceChooser<Equipment>(Collections
+			.singletonList(armor)), false);
+		chooser.setMaxSelections(FormulaFactory.getFormulaFor(count));
+		return chooser;
+	}
+
+	private ChoiceSet<Equipment> getReferenceChooser(LoadContext context,
+		String rest)
+	{
+		StringTokenizer st = new StringTokenizer(rest, Constants.PIPE);
 		List<CDOMReference<Equipment>> eqList =
 				new ArrayList<CDOMReference<Equipment>>();
 		while (st.hasMoreTokens())
@@ -167,8 +172,8 @@ public class ArmorProfToken implements ChooseLstToken
 			String tokString = st.nextToken();
 			if (Constants.LST_ANY.equals(tokString))
 			{
-				Logging.errorPrint("Cannot use ANY and another qualifier: "
-					+ value);
+				Logging.errorPrint("In CHOOSE:" + getTokenName()
+					+ ": Cannot use ANY and another qualifier: " + rest);
 				return null;
 			}
 			else
@@ -176,18 +181,21 @@ public class ArmorProfToken implements ChooseLstToken
 				CDOMReference<Equipment> ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							EQUIPMENT_CLASS, tokString);
+				if (ref == null)
+				{
+					Logging.errorPrint("Invalid Reference: " + tokString
+						+ " in CHOOSE:" + getTokenName() + ": " + rest);
+					return null;
+				}
 				eqList.add(ref);
 			}
 		}
-		CompoundAndChooser<Equipment> chooser = new CompoundAndChooser<Equipment>();
-		ReferenceChooser<Equipment> setChooser = new ReferenceChooser<Equipment>(eqList);
-		setChooser.setMaxSelections(FormulaFactory.getFormulaFor(count));
-		chooser.addChoiceSet(setChooser);
-		CDOMReference<Equipment> armor =
-				TokenUtilities.getTypeReference(context, EQUIPMENT_CLASS,
-					"Armor");
-		chooser.addChoiceSet(new ReferenceChooser<Equipment>(Collections
-			.singletonList(armor)));
-		return chooser;
+		return new ReferenceChooser<Equipment>(eqList);
+	}
+
+	public String unparse(LoadContext context, ChoiceSet<?> chooser)
+	{
+		return chooser.getMaxSelections().toString() + '|'
+			+ chooser.getLSTformat();
 	}
 }

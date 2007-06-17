@@ -23,8 +23,11 @@
 package pcgen.cdom.choice;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
@@ -36,35 +39,40 @@ public class CompoundAndChooser<T extends PrereqObject> extends
 		AbstractChooser<T>
 {
 
-	private final Set<ChoiceSet<T>> set = new HashSet<ChoiceSet<T>>();
+	private final Map<ChoiceSet<T>, Boolean> set =
+			new HashMap<ChoiceSet<T>, Boolean>();
 
 	public CompoundAndChooser()
 	{
 		super();
 	}
 
-	public void addChoiceSet(ChoiceSet<T> cs)
+	public void addChoiceSet(ChoiceSet<T> cs, boolean significant)
 	{
 		if (cs == null)
 		{
 			throw new IllegalArgumentException();
 		}
-		set.add(cs);
+		set.put(cs, Boolean.valueOf(significant));
 	}
 
-	public void addAllChoiceSets(Collection<ChoiceSet<T>> coll)
+	public void addAllChoiceSets(Collection<ChoiceSet<T>> coll,
+		boolean significant)
 	{
 		if (coll == null)
 		{
 			throw new IllegalArgumentException();
 		}
-		set.addAll(coll);
+		for (ChoiceSet<T> cs : coll)
+		{
+			addChoiceSet(cs, significant);
+		}
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
 		Set<T> returnSet = null;
-		for (ChoiceSet<T> cs : set)
+		for (ChoiceSet<T> cs : set.keySet())
 		{
 			if (returnSet == null)
 			{
@@ -82,7 +90,7 @@ public class CompoundAndChooser<T extends PrereqObject> extends
 	public String toString()
 	{
 		return getCount().toString() + '<' + getMaxSelections().toString()
-			+ Constants.PIPE + StringUtil.join(set, Constants.PIPE);
+			+ Constants.PIPE + StringUtil.join(set.keySet(), Constants.PIPE);
 	}
 
 	@Override
@@ -104,5 +112,30 @@ public class CompoundAndChooser<T extends PrereqObject> extends
 		}
 		CompoundAndChooser<?> cs = (CompoundAndChooser) o;
 		return equalsAbstractChooser(cs) && set.equals(cs.set);
+	}
+
+	public String getLSTformat()
+	{
+		StringBuilder sb = new StringBuilder();
+		boolean needComma = false;
+		for (Entry<ChoiceSet<T>, Boolean> me : set.entrySet())
+		{
+			if (me.getValue().booleanValue())
+			{
+				if (needComma)
+				{
+					sb.append(',');
+				}
+				sb.append(me.getKey().getLSTformat());
+				needComma = true;
+			}
+		}
+		return sb.toString();
+	}
+
+	public Class<T> getChoiceClass()
+	{
+		return set == null ? null : set.keySet().iterator().next()
+			.getChoiceClass();
 	}
 }
