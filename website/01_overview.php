@@ -49,7 +49,7 @@ require_once('include/header.php.inc');
 
         <h2>Technical Requirements</h2>
 
-        <p>PCGen 5.10.0+ needs to run under Java 1.5.x.  The <a href="http://java.sun.com/j2se/" title="The source for JAVA">Java runtime environment</a> is available for all common PC platforms, including Windows, Macintosh, Unix and Linux.</p>
+        <p>PCGen 5.10.0 (and above) needs to run under Java 1.5.x (or above).   The <a href="http://java.sun.com/j2se/" title="The source for JAVA">Java runtime environment</a> is available for all common PC platforms, including Windows, Macintosh, Unix and Linux.</p>
 
     </div> <!-- div content -->
 
