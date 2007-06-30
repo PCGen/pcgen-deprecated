@@ -251,9 +251,12 @@ public final class Kit extends PObject implements Comparable<Object>
 			bk.apply(pc);
 		}
 
-		final CharacterInfo pane = PCGen_Frame1.getCharacterPane();
-		pane.setPaneForUpdate(pane.infoInventory());
-		pane.refresh();
+        final CharacterInfo pane = PCGen_Frame1.getCharacterPane();
+        if (pane != null)
+        {
+            pane.setPaneForUpdate(pane.infoInventory ());
+            pane.refresh();
+        }
 
 		if (applyMode == APPLY_PERMANENT)
 		{
