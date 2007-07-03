@@ -19,7 +19,6 @@ package pcgen.cdom.content;
 
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.modifier.AbstractHitDieModifier;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class HitDieCommandFactory extends ConcretePrereqObject implements

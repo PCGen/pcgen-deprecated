@@ -25,8 +25,8 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
-import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.Changes;

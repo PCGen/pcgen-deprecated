@@ -1,4 +1,4 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.character;
 
 import java.util.ArrayList;
 import java.util.Collection;

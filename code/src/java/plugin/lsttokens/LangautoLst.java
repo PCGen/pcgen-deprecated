@@ -29,7 +29,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.util.ReferenceUtilities;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.PObject;
 import pcgen.persistence.GraphChanges;

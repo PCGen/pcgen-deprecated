@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.util.ReferenceUtilities;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Constants;
 import pcgen.core.Deity;
 import pcgen.core.PCClass;

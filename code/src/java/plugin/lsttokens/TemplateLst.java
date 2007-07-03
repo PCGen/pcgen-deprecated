@@ -33,7 +33,7 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.util.ReferenceUtilities;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Campaign;
 import pcgen.core.PCTemplate;
 import pcgen.core.PCTemplateList;

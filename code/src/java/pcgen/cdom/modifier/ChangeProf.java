@@ -21,6 +21,7 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.Modifier;
 import pcgen.core.WeaponProf;
 
 public class ChangeProf extends ConcretePrereqObject implements

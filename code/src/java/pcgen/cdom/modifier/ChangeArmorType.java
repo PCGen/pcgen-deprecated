@@ -19,6 +19,7 @@ package pcgen.cdom.modifier;
 
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.Modifier;
 import pcgen.cdom.enumeration.Type;
 
 public class ChangeArmorType extends ConcretePrereqObject implements

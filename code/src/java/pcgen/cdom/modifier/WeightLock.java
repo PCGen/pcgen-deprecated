@@ -17,6 +17,7 @@
  */
 package pcgen.cdom.modifier;
 
+import pcgen.cdom.content.Modifier;
 import pcgen.cdom.content.Weight;
 
 public class WeightLock implements Modifier<Weight>

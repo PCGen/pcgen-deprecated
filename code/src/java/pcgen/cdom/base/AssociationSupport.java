@@ -15,14 +15,13 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package pcgen.cdom.helper;
+package pcgen.cdom.base;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import pcgen.cdom.base.AssociatedObject;
 import pcgen.cdom.enumeration.AssociationKey;
 
 public class AssociationSupport implements AssociatedObject

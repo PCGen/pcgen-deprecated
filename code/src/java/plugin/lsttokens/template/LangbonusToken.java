@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.util.ReferenceUtilities;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.LanguageList;
 import pcgen.core.PCTemplate;

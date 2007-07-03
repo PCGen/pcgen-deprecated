@@ -17,6 +17,7 @@
  */
 package pcgen.cdom.modifier;
 
+import pcgen.cdom.content.AbstractHitDieModifier;
 import pcgen.cdom.content.HitDie;
 
 public class HitDieStep extends AbstractHitDieModifier

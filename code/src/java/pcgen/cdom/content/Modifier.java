@@ -15,43 +15,13 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package pcgen.cdom.util;
+package pcgen.cdom.content;
 
-import java.util.Collection;
-
-import pcgen.cdom.base.LSTWriteable;
-
-public final class ReferenceUtilities
+public interface Modifier<T>
 {
 
-	private ReferenceUtilities()
-	{
-		// Cannot construct utility class
-	}
+	public T applyModifier(T obj);
 
-	public static <T extends LSTWriteable> String joinLstFormat(
-		Collection<T> set, String separator)
-	{
-		if (set == null)
-		{
-			return "";
-		}
-
-		final StringBuilder result = new StringBuilder(set.size() * 10);
-
-		boolean needjoin = false;
-
-		for (LSTWriteable obj : set)
-		{
-			if (needjoin)
-			{
-				result.append(separator);
-			}
-			needjoin = true;
-			result.append(obj.getLSTformat());
-		}
-
-		return result.toString();
-	}
+	public Class<T> getModifiedClass();
 
 }

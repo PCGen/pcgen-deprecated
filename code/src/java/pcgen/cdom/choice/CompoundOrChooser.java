@@ -29,8 +29,8 @@ import java.util.Set;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PlayerCharacter;
 
 public class CompoundOrChooser<T extends PrereqObject> extends

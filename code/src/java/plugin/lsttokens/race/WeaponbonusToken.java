@@ -28,7 +28,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.util.ReferenceUtilities;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Race;
 import pcgen.core.WeaponProf;
 import pcgen.core.WeaponProfList;

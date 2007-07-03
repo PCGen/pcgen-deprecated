@@ -3,13 +3,13 @@ package pcgen.cdom.content;
 import java.util.Collection;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociationSupport;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.Restriction;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.AssociationSupport;
 
 public class Remover<T extends PrereqObject> extends ConcretePrereqObject
 		implements LSTWriteable

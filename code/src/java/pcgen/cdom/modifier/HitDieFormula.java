@@ -18,6 +18,7 @@
 package pcgen.cdom.modifier;
 
 import pcgen.base.formula.ReferenceFormula;
+import pcgen.cdom.content.AbstractHitDieModifier;
 import pcgen.cdom.content.HitDie;
 
 public class HitDieFormula extends AbstractHitDieModifier

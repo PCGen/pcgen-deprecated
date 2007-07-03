@@ -18,6 +18,7 @@
 package pcgen.cdom.modifier;
 
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.content.Modifier;
 import pcgen.cdom.content.SimpleMovement;
 
 public class MovementLock extends ConcretePrereqObject implements

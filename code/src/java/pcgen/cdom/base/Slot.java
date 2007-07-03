@@ -21,7 +21,6 @@ import java.util.Collection;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.AssociationSupport;
 
 public class Slot<T extends PrereqObject> extends ConcretePrereqObject
 		implements LSTWriteable

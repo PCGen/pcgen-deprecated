@@ -28,9 +28,9 @@ package plugin.pretokens.test;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.character.EquipmentSetFacade;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
-import pcgen.cdom.helper.EquipmentSetFacade;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.character.WieldCategory;

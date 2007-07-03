@@ -35,7 +35,7 @@ import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.util.ReferenceUtilities;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
 import pcgen.core.DomainList;

@@ -27,8 +27,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.helper.ChoiceFilter;
-import pcgen.cdom.util.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 import pcgen.persistence.lst.utils.TokenUtilities;

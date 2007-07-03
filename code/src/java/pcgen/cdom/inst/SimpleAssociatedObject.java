@@ -3,9 +3,9 @@ package pcgen.cdom.inst;
 import java.util.Collection;
 
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.AssociationSupport;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.AssociationSupport;
 
 public class SimpleAssociatedObject extends ConcretePrereqObject implements
 		AssociatedPrereqObject
