@@ -16,9 +16,6 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  * Created on Oct 31, 2006
- * 
- * Current Ver: $Revision: 1060 $ Last Editor: $Author: boomer70 $ Last Edited:
- * $Date: 2006-06-08 23:25:16 -0400 (Thu, 08 Jun 2006) $
  */
 package pcgen.base.util;
 
@@ -134,30 +131,67 @@ public class MapCollection extends AbstractCollection<Object>
 		return map.size() << 1;
 	}
 
+	/**
+	 * The Iterator used to iterate over the underlying Map
+	 * 
+	 * This Class is known to NOT FAIL FAST. DO NOT rely on fail fast behavior
+	 * of the Iterator of MapCollection to detect changes to the underlying Map.
+	 */
 	private static class MapCollectionIterator implements Iterator<Object>
 	{
+		/**
+		 * The current entry which this MapCollectionIterator is iterating over
+		 */
 		private Entry<?, ?> workingEntry;
 
+		/**
+		 * Indicates if the key for the workingEntry has been returned by this
+		 * Iterator
+		 */
 		private boolean returnedKey = false;
 
 		@SuppressWarnings("unchecked")
 		private final Iterator hashIterator;
 
+		/**
+		 * Constructs a new MapCollectionIterator to iterate over the given Map
+		 * 
+		 * @param m
+		 *            The Map this MapCollectionIterator will iterate over
+		 */
 		MapCollectionIterator(Map<?, ?> m)
 		{
 			hashIterator = m.entrySet().iterator();
 		}
 
+		/**
+		 * Indicates if this Iterator has an additional value
+		 * 
+		 * @see java.util.Iterator#hasNext()
+		 */
 		public boolean hasNext()
 		{
 			return returnedKey || hashIterator.hasNext();
 		}
 
+		/**
+		 * Not supported by MapCollectionIterator
+		 * 
+		 * @see java.util.Iterator#remove()
+		 * 
+		 * @throws UnsupportedOperationException
+		 *             if called
+		 */
 		public void remove()
 		{
 			throw new UnsupportedOperationException();
 		}
 
+		/**
+		 * Returns the next key or value from the underlying Map.
+		 * 
+		 * @see java.util.Iterator#next()
+		 */
 		public Object next()
 		{
 			if (returnedKey)

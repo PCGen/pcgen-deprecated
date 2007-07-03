@@ -16,10 +16,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 26, 2004
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.graph.core;
 
@@ -37,11 +33,20 @@ import java.util.Set;
  * In addition to simple lists of the nodes and edges present in a Graph, a Map
  * from each node to the adjacent edges is maintained.
  * 
- * This class provides a more balanced query speed for querying adjacent graph
- * elements. Specifically, an edge knows to which nodes it is connected. To
- * determine which edges a node is connected to requires a query to the Graph.
- * The Map maintained by this class prevents an iteration over the entire List
- * of edges whenever getAdjacentEdgeList(GraphNode n) is called.
+ * This Graph uses normal equality (.equals()) to determine equality for
+ * purposes of checking whether nodes and edges are already part of the Graph.
+ * 
+ * This Graph implementation provides a more balanced query speed for querying
+ * adjacent graph elements. Specifically, an edge knows to which nodes it is
+ * connected. To determine which edges a node is connected to requires a query
+ * to the Graph. The Map maintained by this class prevents an iteration over the
+ * entire List of edges whenever getAdjacentEdgeList(GraphNode n) is called.
+ * 
+ * If frequent testing of containsNode() or containsEdge() is required in a
+ * Graph (and the Graph has a large number of nodes), this is not a good Graph
+ * implementation. Because the contains test must iterate through a List, it is
+ * significantly slower than other possible implementations. For a Graph
+ * implementation that is much faster for such tests, see AbstractSetMapGraph.
  * 
  * WARNING: This AbstractListMapGraph contains a CACHE which uses the Nodes as a
  * KEY. Due to the functioning of a Map (it uses the .hashCode() method), if a
@@ -120,31 +125,27 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		{
 			return false;
 		}
-		// System.err.println("PRE:" + nodeList.contains(v) + " " +
-		// nodeEdgeMap.containsKey(v));
 		if (nodeEdgeMap.containsKey(v))
 		{
 			// Node already in this Graph
 			return false;
 		}
-		// System.err.println(nodeList.size());
 		nodeList.add(v);
-		// System.err.println(nodeList.size());
 		nodeEdgeMap.put(v, new HashSet<ET>());
-		// System.err.println("POST:" + nodeList.contains(v) + " " +
-		// nodeEdgeMap.containsKey(v));
-		// System.err.println("DBG:" + nodeList.get(nodeList.size() -
-		// 1).equals(v));
-		// System.err.println(v.getClass());
-		// System.err.println(System.identityHashCode(nodeList.get(nodeList.size()
-		// - 1)));
-		// System.err.println(System.identityHashCode(v));
-		// System.err.println(nodeList.get(nodeList.size() - 1));
-		// System.err.println(v);
 		gcs.fireGraphNodeChangeEvent(v, NodeChangeEvent.NODE_ADDED);
 		return true;
 	}
 
+	/**
+	 * Returns the node actually stored in the graph that is equal to the given
+	 * node. This is used to avoid memory leaks in the case of matching Nodes
+	 * (to avoid storing a Node that is .equal but not == in an edge that will
+	 * be placed into the Graph).
+	 * 
+	 * @param v
+	 *            The Node to be internalized.
+	 * @return The internalized version of the Node, relative to this Graph.
+	 */
 	public N getInternalizedNode(N v)
 	{
 		if (v == null)
@@ -155,16 +156,15 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 		{
 			// Node already in this Graph
 			/*
-			 * TODO FIXME This is using a slow method (array search) when it
-			 * would be nice to be able to get the reference from the Map.
-			 * However, that would require the use of Jakarta Common Collections
-			 * and extending their HashMap in order to do that (because it's
-			 * normally impossible to get a Key back out of a Map without
-			 * iterating over the Entries :/)
+			 * This is using a slow method (array search) when it would be nice
+			 * to be able to get the reference from the Map. However, that would
+			 * require the use of Jakarta Common Collections and extending their
+			 * HashMap in order to do that... because it's normally impossible
+			 * to get a Key back out of a Map without iterating over the Entries :/
 			 */
 			return nodeList.get(nodeList.indexOf(v));
 		}
-		// TODO FIXME Consider whether to return null or v... ?
+		// TODO Consider whether to return null or v... ?
 		return null;
 	}
 
@@ -472,14 +472,26 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	{
 		return nodeList.isEmpty() && edgeList.isEmpty();
 	}
-	
+
+	/**
+	 * Returns the number of nodes in this Graph.
+	 * 
+	 * @return The number of nodes in the Graph, as an integer
+	 */
 	public int getNodeCount()
 	{
 		return nodeList.size();
 	}
-	
+
+	/**
+	 * Clears this Graph, removing all Nodes and Edges from the Graph.
+	 */
 	public void clear()
 	{
+		/*
+		 * TODO This doesn't actually notify GraphChangeListeners, is that a
+		 * problem? - probably is ... thpr, 6/27/07
+		 */
 		nodeEdgeMap.clear();
 		nodeList.clear();
 		edgeList.clear();

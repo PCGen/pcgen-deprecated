@@ -16,16 +16,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 29, 2004
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.graph.core;
 
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+
+import pcgen.base.util.IdentityHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -70,14 +67,21 @@ public final class GraphUtilities
 	 * @return The Set of Descendent Nodes of the given Node within the given
 	 *         DirectionalGraph.
 	 */
-	public static <A, ET extends DirectionalEdge<A>> Set<A> getDescendentNodes(
+	public static <A, ET extends DirectionalEdge<A>> Collection<A> getDescendentNodes(
 		DirectionalGraph<A, ET> graph, A node)
 	{
 		if (!graph.containsNode(node))
 		{
 			return null;
 		}
-		Set<A> descendents = new HashSet<A>();
+		/*
+		 * Note that IdentityHashSet is used here because there is no guarantee
+		 * that the Nodes or Edges in a Graph are unique (relative to .equals).
+		 * However, it is guaranteed that they possess a unique identity (==)...
+		 * thus this is faster than, and prefereable to, storing the descendents
+		 * as a List.
+		 */
+		Collection<A> descendents = new IdentityHashSet<A>();
 		accumulateDescendentNodes(graph, node, descendents);
 		return descendents;
 	}
@@ -101,7 +105,7 @@ public final class GraphUtilities
 	 *            DirectionalGraph. This Set WILL BE MODIFIED by this method.
 	 */
 	private static <A, ET extends DirectionalEdge<A>> void accumulateDescendentNodes(
-		DirectionalGraph<A, ET> graph, A node, Set<A> descendents)
+		DirectionalGraph<A, ET> graph, A node, Collection<A> descendents)
 	{
 		List<ET> children = graph.getOutwardEdgeList(node);
 		for (ET edge : children)
@@ -114,13 +118,13 @@ public final class GraphUtilities
 						((DirectionalEdge<A>) edge).getNodeInterfaceType(gn);
 				if ((nodeInterfaceType & DirectionalEdge.SINK) == 0)
 				{
-					// code coverage not 100% here due to Eclipse compiler
+					// emma code coverage not 100% here due to Eclipse compiler
 					continue;
 				}
 				/*
 				 * Because this will return false if the Set already contains
 				 * graphNodes[i], then this safely handles the case where there
-				 * is a loop in the graph!
+				 * is a cycle (loop) in the graph!
 				 */
 				if (descendents.add(gn))
 				{

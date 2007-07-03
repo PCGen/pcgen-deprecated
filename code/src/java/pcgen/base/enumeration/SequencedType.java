@@ -19,7 +19,25 @@
  */
 package pcgen.base.enumeration;
 
+/**
+ * A SequencedType is an object that has a specific sequence in the instances of
+ * that class.
+ * 
+ * It is possible that the sequence number is unique, but that is not required.
+ * If you are looking for a unique identifier, a TypeSafeConstant should be
+ * used.
+ * 
+ * It is possible that the sequence number is sequential (1, 2, 3, etc.), but
+ * that is not required.
+ * 
+ * @author Tom Parker <thpr@users.sourceforge.net>
+ */
 public interface SequencedType
 {
+	/**
+	 * Returns the sequence number for the SequencedType.
+	 * 
+	 * @return An integer sequence number
+	 */
 	public int getSequence();
 }

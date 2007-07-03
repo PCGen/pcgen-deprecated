@@ -16,10 +16,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 26, 2004
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.graph.core;
 
@@ -37,11 +33,20 @@ import java.util.Set;
  * In addition to simple lists of the nodes and edges present in a Graph, a Map
  * from each node to the adjacent edges is maintained.
  * 
- * This class provides a more balanced query speed for querying adjacent graph
- * elements. Specifically, an edge knows to which nodes it is connected. To
- * determine which edges a node is connected to requires a query to the Graph.
- * The Map maintained by this class prevents an iteration over the entire List
- * of edges whenever getAdjacentEdgeList(GraphNode n) is called.
+ * This Graph uses normal equality (.equals()) to determine equality for
+ * purposes of checking whether nodes and edges are already part of the Graph.
+ * 
+ * This Graph implementation provides a more balanced query speed for querying
+ * adjacent graph elements. Specifically, an edge knows to which nodes it is
+ * connected. To determine which edges a node is connected to requires a query
+ * to the Graph. The Map maintained by this class prevents an iteration over the
+ * entire List of edges whenever getAdjacentEdgeList(GraphNode n) is called.
+ * 
+ * This Graph implementation also provides much faster .containsNode() or
+ * .containsEdge() processing speed than AbstractListMapGraph. However, if those
+ * methods are not called frequently or the number of Nodes and Edges in the
+ * Graph is small, then the use of AbstractListMapGraph would conserve memory
+ * relative to AbstractSetMapGraph.
  * 
  * WARNING: This AbstractSetMapGraph contains a CACHE which uses the Nodes as a
  * KEY. Due to the functioning of a Map (it uses the .hashCode() method), if a
@@ -70,13 +75,13 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 {
 
 	/**
-	 * The List of nodes contained in this Graph.
+	 * The Set of nodes contained in this Graph.
 	 */
 	private final Map<N, N> nodeMap;
 
 	/**
-	 * The List of edges contained in this Graph. An edge must be connected to a
-	 * node which is already in the nodeList (this makes no statement about
+	 * The Set of edges contained in this Graph. An edge must be connected to a
+	 * node which is already in the nodeMap (this makes no statement about
 	 * whether this addition is done implicitly by addEdge [it is in
 	 * AbstractSetMapGraph] or whether it is explicit).
 	 */
@@ -110,7 +115,8 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 
 	/**
 	 * Adds the given Node to the Graph. Returns true if the given Node was
-	 * successfully added.
+	 * successfully added. Because the Nodes in this Graph are a Set, this
+	 * method will return false if a Node is already present in the Graph.
 	 * 
 	 * @see pcgen.base.graph.core.Graph#addNode(java.lang.Object)
 	 */
@@ -131,21 +137,31 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 		return true;
 	}
 
+	/**
+	 * Returns the node actually stored in the graph that is equal to the given
+	 * node. This is used to avoid memory leaks in the case of matching Nodes
+	 * (to avoid storing a Node that is .equal but not == in an edge that will
+	 * be placed into the Graph).
+	 * 
+	 * @param v
+	 *            The Node to be internalized.
+	 * @return The internalized version of the Node, relative to this Graph.
+	 */
 	public N getInternalizedNode(N v)
 	{
 		if (v == null)
 		{
 			return null;
 		}
-		// TODO FIXME Consider whether to return null or v... if not in the
-		// Graph?
+		// TODO Consider whether to return null or v... if not in the Graph?
 		return nodeMap.get(v);
 	}
 
 	/**
 	 * Adds the given Edge to the Graph. Returns true if the given Edge was
 	 * successfully added. Implicitly adds any Nodes connected to the given Edge
-	 * to the Graph.
+	 * to the Graph. Because the Edges in this Graph are a Set, this method will
+	 * return false if an Edges is already present in the Graph.
 	 * 
 	 * @see pcgen.base.graph.core.Graph#addEdge(java.lang.Object)
 	 */
@@ -420,7 +436,8 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 			System.err.println(al2.equals(al));
 			if (al.equals(al2) && al2.equals(al))
 			{
-				System.err.println("Hash code modified after object add to graph");
+				System.err
+					.println("Hash code modified after object add to graph");
 			}
 			return false;
 		}
@@ -458,7 +475,7 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 		// This is really simple, but it works... and prevents a deep hash
 		return nodeMap.size() + edgeSet.size() * 23;
 	}
-	
+
 	/**
 	 * Returns true if this Graph is empty (has no Nodes and no Edges); false
 	 * otherwise.
@@ -469,14 +486,26 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 	{
 		return nodeMap.isEmpty() && edgeSet.isEmpty();
 	}
-	
+
+	/**
+	 * Returns the number of nodes in this Graph.
+	 * 
+	 * @return The number of nodes in the Graph, as an integer
+	 */
 	public int getNodeCount()
 	{
 		return nodeMap.size();
 	}
-	
+
+	/**
+	 * Clears this Graph, removing all Nodes and Edges from the Graph.
+	 */
 	public void clear()
 	{
+		/*
+		 * TODO This doesn't actually notify GraphChangeListeners, is that a
+		 * problem? - probably is ... thpr, 6/27/07
+		 */
 		nodeEdgeMap.clear();
 		nodeMap.clear();
 		edgeSet.clear();

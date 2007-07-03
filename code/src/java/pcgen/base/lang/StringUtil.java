@@ -1,6 +1,6 @@
 /*
- * Copyright (c) Thomas Parker 2007 derived from CoreUtility.java Copyright 2002
- * (C) Bryan McRoberts <merton_monk@yahoo.com>
+ * Copyright (c) Thomas Parker 2007
+ *   derived from CoreUtility.java Copyright 2002 (C) Bryan McRoberts <merton_monk@yahoo.com>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -21,7 +21,12 @@ package pcgen.base.lang;
 
 import java.util.Collection;
 
-
+/**
+ * This class provides utility functions (similar to java.lang.Math) for use in
+ * String manipulation.
+ * 
+ * @author Thomas Parker (thpr [at] yahoo.com)
+ */
 public final class StringUtil
 {
 
@@ -31,10 +36,11 @@ public final class StringUtil
 	}
 
 	/**
-	 * Concatenates the List into a String using the separator as the delimitor.
+	 * Concatenates the Collection of Strings into a String using the separator
+	 * as the delimiter.
 	 * 
 	 * @param strings
-	 *            An ArrayList of strings
+	 *            An Collection of strings
 	 * @param separator
 	 *            The separating string
 	 * @return A 'separator' separated String
@@ -46,11 +52,11 @@ public final class StringUtil
 	}
 
 	/**
-	 * Concatenates the List into a StringBuffer using the separator as the
-	 * delimitor.
+	 * Concatenates the Collection of Strings into a StringBuffer using the
+	 * separator as the delimiter.
 	 * 
 	 * @param strings
-	 *            An ArrayList of strings
+	 *            An Collection of strings
 	 * @param separator
 	 *            The separating character
 	 * @return A 'separator' separated String
@@ -120,6 +126,16 @@ public final class StringUtil
 		return sb.toString();
 	}
 
+	/**
+	 * Concatenates the Array of Strings into a String using the separator as
+	 * the delimiter.
+	 * 
+	 * @param strings
+	 *            An Array of strings
+	 * @param separator
+	 *            The separating string
+	 * @return A 'separator' separated String
+	 */
 	public static String join(String[] strings, String separator)
 	{
 		if (strings == null)

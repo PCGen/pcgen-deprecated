@@ -19,9 +19,30 @@
  */
 package pcgen.base.enumeration;
 
+/**
+ * A TypeSafeConstant is an object which will provide a unique integer
+ * identifier to every instance of that class (not unique to every
+ * TypeSafeConstant). This emulates behavior by the enum system in Java 1.5+.
+ * Note that the identifier should be unique per virtual machine; thus
+ * serialization and other forms of persistence of classes must ensure the
+ * uniqueness of identifiers of a TypeSafeConstant.
+ * 
+ * It is considered good behavior for a TypeSafeConstant to begin the ordinal
+ * count at zero. There may be an expectation by classes that use
+ * TypeSafeConstants that expect this behavior. In that case, such behavioral
+ * limitations should be documented in the TypeSafeConstant-using class.
+ * 
+ * @author Tom Parker <thpr@users.sourceforge.net>
+ */
 public interface TypeSafeConstant
 {
 
+	/**
+	 * Returns the unique ordinal for the instance of the TypeSafeConstant
+	 * class.
+	 * 
+	 * @return An integer identifier unique to this instance of the class.
+	 */
 	public int getOrdinal();
 
 }

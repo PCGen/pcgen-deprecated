@@ -25,13 +25,18 @@ import pcgen.base.graph.core.DirectionalGraph;
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
  * 
- * Treats all edges in the Graph as directed.
+ * Performs a Depth First Search of a Graph, treating all edges in the Graph as
+ * directed.
  * 
  * Note that use of this class over a simple DepthFirstTraverseAlgorithm is not
- * required, as it is possible in a DirectedGraph for a user to desire only
- * absolute distance or to know directional distance, depending on the
- * circumstances of the graph search.
+ * required in a DirectedGraph, as it is possible in a DirectedGraph for a user
+ * to desire only absolute distance or to know directional distance, depending
+ * on the circumstances of the graph search.
  * 
+ * The only edges which can be traversed are DirectionalEdges (unless Java
+ * Generics are ignored and canTraverseEdge is overridden by a subclass).
+ * 
+ * @see DepthFirstTraverseAlgorithm
  */
 public class DirectedDepthFirstTraverseAlgorithm<N, ET extends DirectionalEdge<N>>
 		extends DepthFirstTraverseAlgorithm<N, ET>

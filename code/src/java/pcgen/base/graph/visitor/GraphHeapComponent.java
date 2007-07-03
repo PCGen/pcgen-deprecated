@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Thomas Parker, 2004, 2005.
+ * Copyright (c) Thomas Parker, 2004-2007.
  * 
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -19,6 +19,8 @@
  */
 package pcgen.base.graph.visitor;
 
+import java.util.Comparator;
+
 import pcgen.base.graph.core.Edge;
 
 /**
@@ -28,8 +30,7 @@ import pcgen.base.graph.core.Edge;
  * as the Object in a TreeMap will convert the TreeMap into a Heap sorted based
  * on the compareTo method of this class.
  */
-public class GraphHeapComponent<N, ET extends Edge<N>> implements
-		Comparable<GraphHeapComponent<N, ET>>
+public class GraphHeapComponent<N, ET extends Edge<N>>
 {
 
 	/**
@@ -46,19 +47,6 @@ public class GraphHeapComponent<N, ET extends Edge<N>> implements
 	 * The node to be accessed during the search
 	 */
 	public final N node;
-
-	/**
-	 * This variable is required in order to guarantee (within even an
-	 * unreasonable JVM) that two GraphHeapComponent objects conform to the
-	 * "consistent with equals" contract of Comparable (and compareTo(Object o))
-	 */
-	private final int index;
-
-	/**
-	 * The master index used to create a unique identifier for each
-	 * GraphHeapComponent object.
-	 */
-	private static int ghcIndex = Integer.MIN_VALUE;
 
 	/**
 	 * Creates a new GraphHeapComponent with the given depth, edge, and node.
@@ -84,39 +72,68 @@ public class GraphHeapComponent<N, ET extends Edge<N>> implements
 		node = gn;
 		edge = ge;
 		distance = d;
-		index = getIndex();
 	}
 
 	/**
-	 * Returns a master index for this GraphHeapComponent. This is used to
-	 * create a unique identifier for each GraphHeapComponent object.
-	 */
-	private static synchronized int getIndex()
-	{
-		return ghcIndex++;
-	}
-
-	/**
-	 * Compares the given GraphHeapComponents to this GraphHeapComponent.
-	 * Returns -1 if the given GraphHeapComponent is less than this
-	 * GraphHeapComponent, 0 if the given GraphHeapComponent is equal to this
-	 * GraphHeapComponent, and 1 if the given GraphHeapComponent is greater than
-	 * this GraphHeapComponent.
+	 * Returns a String representation of this GraphHeapComponent
 	 * 
-	 * @return an integer indicating if the given GraphHeapComponent is less
-	 *         than, equal to, or greater than this GraphHeapComponent.
+	 * @see java.lang.Object#toString()
 	 */
-	public int compareTo(GraphHeapComponent<N, ET> secondGHC)
+	@Override
+	public String toString()
 	{
-		if (this.distance > secondGHC.distance)
-		{
-			return 1;
-		}
-		else if (this.distance < secondGHC.distance)
-		{
-			return -1;
-		}
-		// diff == 0.0
-		return this.index - secondGHC.index;
+		return "GraphHeapComponent: [" + node + "," + edge + "," + distance
+			+ "]";
 	}
+
+	/*
+	 * DISTANCE_COMPARATOR is created as a separate Comparator rather than
+	 * making GraphHeapComponent implement the Comparable interface, in order to
+	 * have a Comparator that is not consistent with equals. (If one made
+	 * GraphHeapComponent Comparable and did not have a consistent-with-equals
+	 * compareTo method, then storing a GraphHeapComponent into a TreeMap or
+	 * certain other collections would be impossible or frought with confusion.)
+	 * This is separate to avoid that confusion. It should not be integrated
+	 * into GraphHeapComponent as a compareTo method.
+	 */
+
+	/**
+	 * This Distance Comparator is used to compare the depth of two
+	 * GraphHeapComponents. Note that this Comparator is NOT CONSISTENT WITH
+	 * EQUALS, and therefore should NOT be used with a TreeSet or other Class
+	 * which expects a Comparator to be consistent with equals. This Comparator
+	 * can safely be used with a PriorityQueue, however, which does not assume
+	 * the Comparator used is consistent with equals.
+	 */
+	public static Comparator<GraphHeapComponent<?, ?>> DISTANCE_COMPARATOR =
+			new Comparator<GraphHeapComponent<?, ?>>()
+			{
+				/**
+				 * Compares the given GraphHeapComponents. Returns -1 if the
+				 * distance of the first GraphHeapComponent is less than the
+				 * distance of the second GraphHeapComponent, 0 if the given
+				 * GraphHeapComponents have equal distance, and 1 if the
+				 * distance of the first GraphHeapComponent is greater than the
+				 * distance of the second GraphHeapComponent. The calculation is
+				 * based *solely* on distance; thus this compare method is not
+				 * consistent with equals.
+				 * 
+				 * @return an integer indicating if the first GraphHeapComponent
+				 *         is less than, equal to, or greater than the second
+				 *         GraphHeapComponent.
+				 */
+				public int compare(GraphHeapComponent<?, ?> firstGHC,
+					GraphHeapComponent<?, ?> secondGHC)
+				{
+					if (firstGHC.distance > secondGHC.distance)
+					{
+						return 1;
+					}
+					else if (firstGHC.distance < secondGHC.distance)
+					{
+						return -1;
+					}
+					return 0;
+				}
+			};
 }

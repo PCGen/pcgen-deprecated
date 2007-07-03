@@ -41,8 +41,7 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 	private SortedMap<Integer, SCFValue<T>> typeMap;
 
 	/**
-	 * Creates a new AbstractSequencedConstantFactory - class
-	 * must be extended
+	 * Creates a new AbstractSequencedConstantFactory - class must be extended
 	 */
 	protected AbstractSequencedConstantFactory()
 	{
@@ -50,13 +49,15 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 	}
 
 	/**
-	 * Constructs a new SequencedConstant with the given String as the 
-	 * Constant name and the given integer as the Sequence 
+	 * Constructs a new SequencedConstant with the given String as the Constant
+	 * name and the given integer as the Sequence
 	 * 
-	 * @param s The String to be used as the SequencedConstants name
-	 * @param i The sequence of the SequencedConstant
-	 * @return The new SequencedConstant built with the given name
-	 * and sequence number
+	 * @param s
+	 *            The String to be used as the SequencedConstants name
+	 * @param i
+	 *            The sequence of the SequencedConstant
+	 * @return The new SequencedConstant built with the given name and sequence
+	 *         number
 	 */
 	public T constructConstant(String s, int i)
 	{
@@ -89,6 +90,14 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		return obj;
 	}
 
+	/**
+	 * Returns the appropriate Constant for the given (case insensitive) String
+	 * value
+	 * 
+	 * @param s
+	 *            The String for which the Constant should be returned.
+	 * @return The Constant for the given String
+	 */
 	public T valueOf(String s)
 	{
 		if (typeMap != null)
@@ -105,6 +114,15 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		throw new IllegalArgumentException(s);
 	}
 
+	/**
+	 * Returns the appropriate Constant for the given sequence number. Returns
+	 * null if there is no constant for the given sequence number
+	 * 
+	 * @param i
+	 *            The sequence number of the Constant to be returned.
+	 * @return The Constant with the given sequence number, or null if no
+	 *         constant has the given sequence number
+	 */
 	public T getConstant(int i)
 	{
 		if (typeMap != null)
@@ -118,6 +136,17 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		return null;
 	}
 
+	/**
+	 * Returns the Constant with the largest sequence number that is less than
+	 * or equal to the given sequence number. Returns null if there is no
+	 * Constant with a sequence number less than the given value.
+	 * 
+	 * @param i
+	 *            The upper bound sequence number
+	 * @return The Constant with the largest sequence number that is less than
+	 *         or equal to the given sequence number, or null if there is no
+	 *         Constant with a sequence number less than the given value.
+	 */
 	public T getLessThanEqualConstant(int i)
 	{
 		if (typeMap != null)
@@ -140,6 +169,17 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		return null;
 	}
 
+	/**
+	 * Returns the Constant with the smallest sequence number that is greater
+	 * than or equal to the given sequence number. Returns null if there is no
+	 * Constant with a sequence number greater than the given value.
+	 * 
+	 * @param i
+	 *            The lower bound sequence number
+	 * @return The Constant with the smallest sequence number that is greater
+	 *         than or equal to the given sequence number, or null if there is
+	 *         no Constant with a sequence number greater than the given value.
+	 */
 	public T getGreaterThanEqualConstant(int i)
 	{
 		SortedMap<Integer, SCFValue<T>> subMap =
@@ -155,6 +195,19 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		return null;
 	}
 
+	/**
+	 * Returns the Constant with the largest sequence number that is less than
+	 * the sequence number of the given Constant. Returns null if there is no
+	 * Constant with a sequence number smaller than the sequence number of the
+	 * given Constant.
+	 * 
+	 * @param current
+	 *            The Constant for which the previous Constant will be returned.
+	 * @return The Constant with the largest sequence number that is less than
+	 *         the sequence number of the given Constant, or null if there is no
+	 *         Constant with a sequence number smaller than the sequence number
+	 *         of the given Constant.
+	 */
 	public T getPreviousConstant(T current)
 	{
 		if (typeMap != null)
@@ -173,6 +226,19 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		return null;
 	}
 
+	/**
+	 * Returns the Constant with the smallest sequence number that is greater
+	 * than the sequence number of the given Constant. Returns null if there is
+	 * no Constant with a sequence number greater than the sequence number of
+	 * the given Constant.
+	 * 
+	 * @param current
+	 *            The Constant for which the next Constant will be returned.
+	 * @return The Constant with the smallest sequence number that is greater
+	 *         than the sequence number of the given Constant, or null if there
+	 *         is no Constant with a sequence number greater than the sequence
+	 *         number of the given Constant.
+	 */
 	public T getNextConstant(T current)
 	{
 		if (typeMap != null)
@@ -237,6 +303,14 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		}
 	}
 
+	/**
+	 * Returns the String representation of the given Constant
+	 * 
+	 * @param obj
+	 *            The constant for which the String representation should be
+	 *            returned
+	 * @return the String representation of the given Constant
+	 */
 	public String toString(T obj)
 	{
 		for (Map.Entry<Integer, SCFValue<T>> me : typeMap.entrySet())
@@ -249,11 +323,22 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		throw new UnreachableError();
 	}
 
+	/**
+	 * Clears all of the Constants defined by this class. Note that this does
+	 * not remove any Constants declared in the Constant class (as those are
+	 * considered 'permanent' members of the Sequenced Constant collection.
+	 */
 	public void clearConstants()
 	{
 		buildMap();
 	}
 
+	/**
+	 * Returns a Collection of all of the Constants for this class. The returned
+	 * Collection is unmodifiable.
+	 * 
+	 * @return an unmodifiable Collection of all of the Constants for this class
+	 */
 	public Collection<T> getAllConstants()
 	{
 		List<T> l = new ArrayList<T>(typeMap.size());

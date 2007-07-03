@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Thomas Parker, 2004, 2005, 2006.
+ * Copyright (c) Thomas Parker, 2004-2007.
  * 
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -16,24 +16,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 27, 2004
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.graph.core;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
  * 
- * A Graph is a set of nodes and edges (which connect the nodes and implement
- * the Edge interface). This is a structure related to graph theory (where the
- * nodes are typically called vertices - that term is avoided here because a
- * vertex has meaning in geometry which can result in confusion [especially to
- * the original programmer ;) ]).
+ * A Graph is a collection of nodes and edges (which connect the nodes and
+ * implement the Edge interface). This is a structure related to graph theory
+ * (where the nodes are typically called vertices - that term is avoided here
+ * because a vertex has meaning in geometry which can result in confusion
+ * [especially to the original programmer ;) ]).
  * 
  * In a typical (graph theory) graph, an edge is limited to connecting to only
  * two nodes. The Graph interface makes no such limitation. HyperEdges may be
@@ -51,8 +47,13 @@ public interface Graph<N, ET extends Edge<N>>
 {
 
 	/**
-	 * Adds the given Node to the Graph. Note that a given Node (as determined
-	 * by .equals()) can only be added to a Graph once.
+	 * Adds the given Node to the Graph.
+	 * 
+	 * Note that the rules for addition may differ between Graph
+	 * implementations. In no case can a Graph have two equal Nodes present in
+	 * the Graph (The nodes form a set). However, the definition of equality can
+	 * be determined by the Graph implementation. In some cases, equality may be
+	 * determined by .equals(), while in others it may be identity (==).
 	 * 
 	 * Returns true if the given Node was added to the Graph. Returns false if
 	 * the Node was not added to the Graph or if the given parameter was null.
@@ -64,16 +65,21 @@ public interface Graph<N, ET extends Edge<N>>
 	public boolean addNode(N v);
 
 	/**
-	 * Adds the given Edge to the Graph. Note that a given Edge (as determined
-	 * by .equals()) can only be added to a Graph once.
+	 * Adds the given Edge to the Graph.
 	 * 
-	 * Returns true if the given Edge was added to the Graph. Returns false if
-	 * the Edge was not added to the Graph or if the given parameter was null.
+	 * Note that the rules for addition may differ between Graph
+	 * implementations. In no case can a Graph have two equal Edges present in
+	 * the Graph (The nodes form a set). However, the definition of equality can
+	 * be determined by the Graph implementation. In some cases, equality may be
+	 * determined by .equals(), while in others it may be identity (==).
 	 * 
 	 * Note that some implementations of Graph may implicitly add any Nodes
 	 * connected to the Edge, while other implementations may prohibit adding an
 	 * Edge until all Nodes connected to the Edge are already present in the
 	 * Graph.
+	 * 
+	 * Returns true if the given Edge was added to the Graph. Returns false if
+	 * the Edge was not added to the Graph or if the given parameter was null.
 	 * 
 	 * @param e
 	 *            The Edge to add to the Graph
@@ -123,7 +129,7 @@ public interface Graph<N, ET extends Edge<N>>
 	 * Returns a List of the Edges in this Graph. Will return an Empty List (not
 	 * null) if there are no Edges in the Graph.
 	 * 
-	 * @return A List of the Edgse in this Graph
+	 * @return A List of the Edges in this Graph
 	 */
 	public List<ET> getEdgeList();
 
@@ -167,7 +173,7 @@ public interface Graph<N, ET extends Edge<N>>
 	 * @return A Set of the Edges that are adjacent (connected) to the given
 	 *         Node.
 	 */
-	public Set<ET> getAdjacentEdges(N v);
+	public Collection<ET> getAdjacentEdges(N v);
 
 	/**
 	 * Adds a new GraphChangeListener to receive GraphChangeEvents
@@ -214,7 +220,7 @@ public interface Graph<N, ET extends Edge<N>>
 	 *         Edges to this Graph; false otherwise
 	 */
 	public boolean equals(Object o);
-	
+
 	/**
 	 * Returns true if this Graph is empty (has no Nodes and no Edges); false
 	 * otherwise.
@@ -222,6 +228,9 @@ public interface Graph<N, ET extends Edge<N>>
 	 * @return true if this Graph is empty; false otherwise
 	 */
 	public boolean isEmpty();
-	
+
+	/**
+	 * Clears this Graph, removing all Nodes and Edges from the Graph.
+	 */
 	public void clear();
 }

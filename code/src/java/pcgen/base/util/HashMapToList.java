@@ -16,9 +16,6 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  * Created on Aug 29, 2004 Imported into PCGen on June 18, 2005.
- * 
- * Current Ver: $Revision: 1617 $ Last Editor: $Author: jdempsey $ Last Edited:
- * $Date: 2006-11-10 20:59:28 -0500 (Fri, 10 Nov 2006) $
  */
 package pcgen.base.util;
 
@@ -76,6 +73,10 @@ public class HashMapToList<K, V>
 	 * 
 	 * This method is reference-semantic and this MapToList will maintain a
 	 * strong reference to the key object given as an argument to this method.
+	 * 
+	 * Overuse of this method is discouraged, as it is *not required* to
+	 * initilize a List (the HashMapToList will automatically initialize a List
+	 * if an object is added to the list for a given key).
 	 * 
 	 * @param key
 	 *            The key for which a List should be initialized in this
@@ -260,6 +261,12 @@ public class HashMapToList<K, V>
 	 * passed into the method and ownership of the returned List is transferred
 	 * to the class calling this method.
 	 * 
+	 * Note: If you are only acquiring a single instance from a given list (and
+	 * acquiring that by the order in which it appears in the list) it is
+	 * probably much faster to use getElementInList, as that does not require
+	 * the internal list to be copied (getListFor copies the list in order to be
+	 * value-semantic)
+	 * 
 	 * @param key
 	 *            The key for which a copy of the list should be returned.
 	 * @return a copy of the List contained in this MapToList for the given key;
@@ -375,20 +382,47 @@ public class HashMapToList<K, V>
 	}
 
 	/**
+	 * Returns a specific element in the list for the given key. Note this is
+	 * much faster than retrieving a list for a given key (using getListFor) and
+	 * then performing a get on the returned list, because getListFor returns a
+	 * clone of the list for the given key.
+	 * 
 	 * @param key
+	 *            The key used to identify the list from which the specified
+	 *            value will be returned
 	 * @param i
-	 * @return Object
+	 *            The location in the list (for the given key) of the value to
+	 *            be returned
+	 * @return The value in the given location in the list for the given key
+	 * @throws IllegalArgumentException
+	 *             if the given key does not exist in this HashMapToList
+	 * @throws IndexOutOfBoundsException
+	 *             if the index is out of range for the list for the given key
+	 *             (index is less than zero OR greater than or equal to the size
+	 *             of the list)
 	 */
 	public V getElementInList(K key, int i)
 	{
-		return mapToList.get(key).get(i);
+		List<V> subList = mapToList.get(key);
+		if (subList == null)
+		{
+			throw new IllegalArgumentException(key
+				+ " is not a key in this HashMapToList");
+		}
+		return subList.get(i);
 	}
 
+	/**
+	 * Clears this HashMapToList (removes all keys/list combiantions)
+	 */
 	public void clear()
 	{
 		mapToList.clear();
 	}
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString()
 	{

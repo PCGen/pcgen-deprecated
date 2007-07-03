@@ -58,7 +58,7 @@ public class SubtractingFormula implements ReferenceFormula<Integer>
 	 */
 	public Integer resolve(Number... nums)
 	{
-		if (nums.length != 1)
+		if (nums == null || nums.length != 1)
 		{
 			throw new IllegalArgumentException(
 				"SubtractingFormula only has one backreference");

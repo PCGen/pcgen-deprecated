@@ -16,9 +16,6 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  * Created on Jun 16, 2005
- * 
- * Current Ver: $Revision: 1817 $ Last Editor: $Author: jdempsey $ Last Edited:
- * $Date: 2006-12-27 18:54:53 -0500 (Wed, 27 Dec 2006) $
  */
 package pcgen.base.util;
 

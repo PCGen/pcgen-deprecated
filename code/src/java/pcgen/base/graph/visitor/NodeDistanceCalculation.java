@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Thomas Parker, 2004, 2005.
+ * Copyright (c) Thomas Parker, 2004-2007.
  * 
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -19,17 +19,15 @@
  */
 package pcgen.base.graph.visitor;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.PriorityQueue;
 
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.graph.core.Edge;
 import pcgen.base.graph.core.Graph;
+import pcgen.base.util.IdentityHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -65,10 +63,11 @@ public class NodeDistanceCalculation<N, ET extends Edge<N>>
 
 	/**
 	 * The heap, used to keep track of parts of the Graph to be visited (in
-	 * order). Because this is an ORDERED set, this MUST remain a SortedSet, not
-	 * a generic Set.
+	 * order). A PriorityQueue used because it can handle items that have a
+	 * Comparator that is not consistent with equals (something a TreeSet, for
+	 * example, doesn't handle)
 	 */
-	private final SortedSet<GraphHeapComponent<N, ET>> heap;
+	private final PriorityQueue<GraphHeapComponent<N, ET>> heap;
 
 	/*
 	 * Technically, I think the use of this set for shortcutting processing
@@ -81,7 +80,7 @@ public class NodeDistanceCalculation<N, ET extends Edge<N>>
 	/**
 	 * A Set indicating the edges that have already been visited
 	 */
-	private final Set<ET> visitedEdgeSet;
+	private final IdentityHashSet<ET> visitedEdgeSet;
 
 	/**
 	 * A Map indicating the distance from the source of the search for each Node
@@ -136,9 +135,11 @@ public class NodeDistanceCalculation<N, ET extends Edge<N>>
 		 * traversing?
 		 */
 		upperLimit = limit;
-		heap = new TreeSet<GraphHeapComponent<N, ET>>();
-		nodeDistanceMap = new HashMap<N, Double>();
-		visitedEdgeSet = new HashSet<ET>();
+		heap =
+				new PriorityQueue<GraphHeapComponent<N, ET>>(20,
+					GraphHeapComponent.DISTANCE_COMPARATOR);
+		nodeDistanceMap = new IdentityHashMap<N, Double>();
+		visitedEdgeSet = new IdentityHashSet<ET>();
 	}
 
 	/**
@@ -202,8 +203,7 @@ public class NodeDistanceCalculation<N, ET extends Edge<N>>
 	{
 		while (!heap.isEmpty())
 		{
-			GraphHeapComponent<N, ET> ghc = heap.first();
-			heap.remove(ghc);
+			GraphHeapComponent<N, ET> ghc = heap.poll();
 			if (!nodeDistanceMap.containsKey(ghc.node))
 			{
 				nodeDistanceMap.put(ghc.node, Double.valueOf(ghc.distance));

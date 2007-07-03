@@ -22,6 +22,7 @@ import pcgen.core.PlayerCharacter;
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
  *
+ * A Formula is a mathematical formula which requires a context to resolve.
  */
 public interface Formula
 {

@@ -18,12 +18,8 @@
 package pcgen.base.graph.core;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-
-import pcgen.base.graph.core.Graph;
-import pcgen.base.graph.core.GraphChangeListener;
-import pcgen.base.graph.core.Edge;
 
 import junit.framework.TestCase;
 
@@ -56,35 +52,48 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		Integer node = new Integer(1);
 		Integer node2 = new Integer(2);
 		Integer node3 = new Integer(3);
+		assertEquals(0, getStrategy().getNodeCount());
+		assertTrue(getStrategy().isEmpty());
 		assertFalse(getStrategy().containsNode(node));
 		assertFalse(getStrategy().containsNode(node2));
 		assertNull(listener.lastAddNode);
+		// don't allow a null
+		assertFalse(getStrategy().addNode(null));
+		assertEquals(0, getStrategy().getNodeCount());
+		assertTrue(getStrategy().isEmpty());
+		assertNull(listener.lastAddNode);
+		// Now actually add one
 		assertTrue(getStrategy().addNode(node));
+		assertEquals(1, getStrategy().getNodeCount());
+		assertFalse(getStrategy().isEmpty());
 		assertTrue(getStrategy().containsNode(node));
 		assertFalse(getStrategy().containsNode(node2));
 		assertEquals(node, listener.lastAddNode);
-		// don't allow a null
-		assertFalse(getStrategy().addNode(null));
 		// don't allow a second time
 		listener.lastAddNode = null;
 		assertFalse(getStrategy().addNode(node));
 		assertNull(listener.lastAddNode);
+		assertEquals(1, getStrategy().getNodeCount());
 		// check that something else works!
 		assertTrue(getStrategy().addNode(node2));
 		assertTrue(getStrategy().containsNode(node2));
+		assertEquals(2, getStrategy().getNodeCount());
 		assertEquals(node2, listener.lastAddNode);
 		// check special case
 		assertFalse(getStrategy().containsNode(null));
 		assertEquals(2, getStrategy().getNodeList().size());
+		assertEquals(2, getStrategy().getNodeCount());
 		assertFalse(getStrategy().addNode(null));
 		// ensure it didn't get stored!
 		assertFalse(getStrategy().containsNode(null));
 		assertEquals(2, getStrategy().getNodeList().size());
+		assertEquals(2, getStrategy().getNodeCount());
 		assertEquals(node2, listener.lastAddNode);
 		//
 		assertTrue(getStrategy().addNode(node3));
 		assertTrue(getStrategy().containsNode(node3));
 		assertEquals(3, getStrategy().getNodeList().size());
+		assertEquals(3, getStrategy().getNodeCount());
 		assertEquals(node3, listener.lastAddNode);
 	}
 
@@ -100,10 +109,13 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		getStrategy().addGraphChangeListener(listener);
 		assertFalse(getStrategy().containsEdge(edge));
 		assertNull(listener.lastAddEdge);
+		assertTrue(getStrategy().isEmpty());
 		assertTrue(getStrategy().addEdge(edge));
+		assertFalse(getStrategy().isEmpty());
 		assertTrue(getStrategy().containsEdge(edge));
 		assertTrue(getStrategy().getEdgeList().contains(edge));
 		// implicit adding of nodes
+		assertEquals(2, getStrategy().getNodeCount());
 		assertTrue(getStrategy().containsNode(node1));
 		assertTrue(getStrategy().getNodeList().contains(node1));
 		assertTrue(getStrategy().containsNode(node2));
@@ -145,6 +157,38 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertTrue(getStrategy().containsEdge(he3));
 		assertEquals(he3, listener.lastAddEdge);
 		assertTrue(getStrategy().containsNode(node5));
+	}
+
+	public void testClear()
+	{
+		Integer node1 = new Integer(1);
+		Integer node2 = new Integer(2);
+		T edge = getLegalEdge(node1, node2);
+		getStrategy().addGraphChangeListener(listener);
+		assertFalse(getStrategy().containsEdge(edge));
+		assertNull(listener.lastAddEdge);
+		assertTrue(getStrategy().isEmpty());
+		assertTrue(getStrategy().addEdge(edge));
+		assertFalse(getStrategy().isEmpty());
+		assertTrue(getStrategy().containsEdge(edge));
+		assertTrue(getStrategy().getEdgeList().contains(edge));
+		// implicit adding of nodes
+		assertEquals(2, getStrategy().getNodeCount());
+		assertTrue(getStrategy().containsNode(node1));
+		assertTrue(getStrategy().getNodeList().contains(node1));
+		assertTrue(getStrategy().containsNode(node2));
+		assertTrue(getStrategy().getNodeList().contains(node2));
+		assertEquals(edge, listener.lastAddEdge);
+		// does not work a second time (multigraph not allowed THAT way!)
+		listener.lastAddEdge = null;
+		assertFalse(getStrategy().addEdge(edge));
+		assertNull(listener.lastAddEdge);
+		assertEquals(2, getStrategy().getNodeList().size());
+		getStrategy().clear();
+		assertEquals(0, getStrategy().getNodeList().size());
+		assertTrue(getStrategy().getEdgeList().isEmpty());
+		assertTrue(getStrategy().isEmpty());
+		// TODO Need to check that clear triggered listener items
 	}
 
 	protected abstract T getLegalEdge(Integer node1, Integer node2);
@@ -343,7 +387,7 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertTrue(getStrategy().addEdge(edge2));
 		assertTrue(getStrategy().addEdge(edge3));
 		assertTrue(getStrategy().addEdge(edge4));
-		Set<T> l = getStrategy().getAdjacentEdges(node1);
+		Collection<T> l = getStrategy().getAdjacentEdges(node1);
 		// order is not significant
 		assertEquals(3, l.size());
 		assertTrue(l.contains(edge1));
@@ -484,18 +528,18 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertEquals(testGraph.hashCode(), master.hashCode());
 		assertTrue(testGraph.addNode(node2));
 		assertFalse(testGraph.equals(master));
-		//Yes, NEW, not valueOf
+		// Yes, NEW, not valueOf
 		assertTrue(master.addNode(new Integer(2)));
-		//Test for .equals of the nodes
+		// Test for .equals of the nodes
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());
-		//		testGraph.addEdge(edge3);
-		//		assertFalse(testGraph.equals(master));
-		//		master.addEdge(altEdge3);
-		//		//Test for .equals of the edges
-		//		assertFalse(edge3 == altEdge3);
-		//		assertTrue(testGraph.equals(master));
-		//		assertEquals(testGraph.hashCode(), master.hashCode());
+		// testGraph.addEdge(edge3);
+		// assertFalse(testGraph.equals(master));
+		// master.addEdge(altEdge3);
+		// //Test for .equals of the edges
+		// assertFalse(edge3 == altEdge3);
+		// assertTrue(testGraph.equals(master));
+		// assertEquals(testGraph.hashCode(), master.hashCode());
 	}
 
 	/**

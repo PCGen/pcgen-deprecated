@@ -17,10 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
- * Current Ver: $Revision: 1609 $
- * Last Editor: $Author: $
- * Last Edited: $Date: 2006-11-10 00:41:21 -0500 (Fri, 10 Nov 2006) $
  */
 package pcgen.base.util;
 
@@ -49,7 +45,7 @@ import java.util.List;
  * <p>
  * 
  * @author boomer70 and Tom Parker <thpr@sourceforge.net>
- * @param <E>
+ * @param <E> The Class stored in the WeightedCollection
  * @see java.util.Collection
  */
 public class WeightedCollection<E> extends AbstractCollection<E>

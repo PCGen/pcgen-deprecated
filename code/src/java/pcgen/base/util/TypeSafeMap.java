@@ -16,10 +16,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Nov 10, 2006
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.util;
 
@@ -39,7 +35,10 @@ import pcgen.base.enumeration.TypeSafeConstant;
  * @author Thomas Parker (thpr [at] yahoo.com)
  * 
  * This is an implementation of the java.util.Map Interface which is designed to
- * be used with a TypeSafeConstant as the key to the Map.
+ * be used with a TypeSafeConstant as the key to the Map. This is optimized for
+ * speed, and may sacrifice memory in the case where the Map is sparse relative
+ * to the total number of keys in the TypeSafeConstant class. TypeSafeMap
+ * provides O(1) speed on a get.
  * 
  * **WARNING** This TypeSafeMap assumes that the TypeSafeConstant class used as
  * keys in this Graph all have ordinals which are greater than or equal to zero.
@@ -51,9 +50,9 @@ import pcgen.base.enumeration.TypeSafeConstant;
  * Note: When using an identity based Class which cannot be extended (such as
  * Class itself) as a key, one should use an IdentityHashMap rather than trying
  * to maintain a Class to TypeSafe entry and using TypeSafeMap. There is not
- * O(1) guaranteed behavior, but the it shoudl outperform (in most cases)
- * requiring a lookup of a TypeSafe Entry and then extracting the identity based
- * Class from the TypeSafe Entry.
+ * O(1) guaranteed behavior, but IdentityHashMap should outperform (in most
+ * cases) requiring a lookup of a TypeSafe Entry and then extracting the
+ * identity based Class from the TypeSafe Entry.
  */
 public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 {
@@ -83,6 +82,14 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 	 * Or do we force the passing of AbstractConstantFactory rather than the
 	 * Class of the Constant??
 	 */
+	/**
+	 * Constructs a new TypeSafeMap using objects of the given Class as keys in
+	 * the TypeSafeMap. The given class must be final and must implement the
+	 * TypeSafeConstant interface.
+	 * 
+	 * @param cl
+	 *            The Class to be used as the key in this TypeSafeMap
+	 */
 	public TypeSafeMap(Class<K> cl)
 	{
 		if (cl == null)
@@ -104,6 +111,14 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 		array = new Object[0];
 	}
 
+	/**
+	 * Constructs a new TypeSafeMap using the contents of the given TypeSafeMap
+	 * to initilize the TypeSafeMap. The Class used as keys in the TypeSafeMap
+	 * will match the class in the given TypeSafeMap.
+	 * 
+	 * @param value
+	 *            The TypeSafeMap to be used as to initialize this TypeSafeMap
+	 */
 	public TypeSafeMap(TypeSafeMap<K, V> value)
 	{
 		if (value == null)
@@ -224,6 +239,15 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 		return true;
 	}
 
+	/**
+	 * Returns the Set of Keys contained in this TypeSafeMap. This Set is backed
+	 * by the Map, so changes in the Map are reflected in the Set (and changes
+	 * to the Set impact the Map). This set supports removal (which will remove
+	 * the key/value pair from the underlying Map). This Set does not support
+	 * add or addAll operations.
+	 * 
+	 * @see java.util.Map#keySet()
+	 */
 	public Set<K> keySet()
 	{
 		return new KeySet<K>();

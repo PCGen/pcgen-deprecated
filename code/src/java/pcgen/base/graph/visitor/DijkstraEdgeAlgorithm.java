@@ -19,12 +19,11 @@
  */
 package pcgen.base.graph.visitor;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.PriorityQueue;
 
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.graph.core.Edge;
@@ -60,11 +59,11 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 
 	/**
 	 * The heap, used to keep track of parts of the Graph to be visited (in
-	 * order). Because this is an ORDERED set, this MUST remain a TreeSet, not a
-	 * generic Set.
+	 * order). A PriorityQueue used because it can handle items that have a
+	 * Comparator that is not consistent with equals (something a TreeSet, for
+	 * example, doesn't handle)
 	 */
-	private final SortedSet<GraphHeapComponent<N, ET>> heap =
-			new TreeSet<GraphHeapComponent<N, ET>>();
+	private final PriorityQueue<GraphHeapComponent<N, ET>> heap;
 
 	/**
 	 * A Map indicating the distance from the source of the search for each
@@ -132,8 +131,11 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 		 * traversing?
 		 */
 		upperLimit = limit;
-		edgeDistanceMap = new HashMap<ET, Double>();
-		nodeDistanceMap = new HashMap<N, Double>();
+		heap =
+				new PriorityQueue<GraphHeapComponent<N, ET>>(20,
+					GraphHeapComponent.DISTANCE_COMPARATOR);
+		edgeDistanceMap = new IdentityHashMap<ET, Double>();
+		nodeDistanceMap = new IdentityHashMap<N, Double>();
 	}
 
 	/**
@@ -237,12 +239,9 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	 */
 	private void runCalculation()
 	{
-		// int limit = graph.getEdgeList().size();
-		// while (distanceMap.keySet.size() != limit) {
 		while (!heap.isEmpty())
 		{
-			GraphHeapComponent<N, ET> ghc = heap.first();
-			heap.remove(ghc);
+			GraphHeapComponent<N, ET> ghc = heap.poll();
 			if (!edgeDistanceMap.containsKey(ghc.edge))
 			{
 				edgeDistanceMap.put(ghc.edge, Double.valueOf(ghc.distance));
@@ -265,8 +264,9 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 				 * iterateOverAdjacentNodes in DijkstraNodeAlgorithm) because if
 				 * the graph was calculateFrom(HyperEdge) then the node in the
 				 * heap has NOT been visited. Thus we need to visit everything,
-				 * and allow the edgeDistanceMap.containsKey() check above to
-				 * throw out when we have hit an edge a second time.
+				 * and allow the edgeDistanceMap.containsKey() check in
+				 * runCalculation() to throw out when we have hit an edge a
+				 * second time.
 				 */
 				if (!nodeDistanceMap.containsKey(destinationNode))
 				{
@@ -281,7 +281,7 @@ public class DijkstraEdgeAlgorithm<N, ET extends Edge<N>>
 	private void addGoodAdjacentEdgesToHeap(GraphHeapComponent<N, ET> ghc,
 		N destinationNode)
 	{
-		Set<ET> l = graph.getAdjacentEdges(destinationNode);
+		Collection<ET> l = graph.getAdjacentEdges(destinationNode);
 		l.remove(ghc.edge);
 		for (ET thisEdge : l)
 		{

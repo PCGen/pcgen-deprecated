@@ -16,9 +16,6 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  * Created on October 16, 2006
- * 
- * Current Ver: $Revision: 1.1 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2005/06/19 19:07:49 $
  */
 package pcgen.base.lang;
 
@@ -68,6 +65,9 @@ public class CaseInsensitiveString
 		string = s;
 	}
 
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object s)
 	{
@@ -79,6 +79,9 @@ public class CaseInsensitiveString
 		return false;
 	}
 
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode()
 	{
@@ -109,6 +112,11 @@ public class CaseInsensitiveString
 		return hash;
 	}
 
+	/**
+	 * Returns the underlying String for this CaseInsensitiveString
+	 * 
+	 * @return The underlying String for this CaseInsensitiveString
+	 */
 	@Override
 	public String toString()
 	{

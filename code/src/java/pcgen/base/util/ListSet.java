@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 (C) Tom Parker <thpr@sourceforge.net>
+ * Copyright 2005-2007 (C) Tom Parker <thpr@sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -16,9 +16,6 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  * Created on June 18, 2005.
- * 
- * Current Ver: $Revision: 1.1 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2005/06/19 19:07:49 $
  */
 package pcgen.base.util;
 

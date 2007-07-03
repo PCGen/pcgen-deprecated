@@ -1,8 +1,6 @@
 /*
  * Copyright (c) Thomas Parker, 2005.
  * 
- * This file is part of RPG-MapGen
- * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation; either version 2.1 of the License, or (at
@@ -18,7 +16,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Apr 23, 2005
- *
  */
 package pcgen.base.util;
 
@@ -34,12 +31,6 @@ import javax.swing.undo.AbstractUndoableEdit;
  */
 public class InsignificantUndoableEdit extends AbstractUndoableEdit
 {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5027887164541273747L;
-
 	/**
 	 * Construct a new InsignificantUndoableEdit
 	 */

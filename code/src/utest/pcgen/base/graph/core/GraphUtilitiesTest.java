@@ -17,13 +17,8 @@
  */
 package pcgen.base.graph.core;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
-
-import pcgen.base.graph.core.DefaultDirectionalHyperEdge;
-import pcgen.base.graph.core.DirectionalGraph;
-import pcgen.base.graph.core.DirectionalListMapGraph;
-import pcgen.base.graph.core.GraphUtilities;
 
 import junit.framework.TestCase;
 
@@ -77,7 +72,7 @@ public class GraphUtilitiesTest extends TestCase {
 	}
 
 	public void testGetDescendentNodes() {
-		Set<Integer> s = GraphUtilities.getDescendentNodes(graph2, node1);
+		Collection<Integer> s = GraphUtilities.getDescendentNodes(graph2, node1);
 		assertTrue(s.remove(node1));
 		assertTrue(s.remove(node2));
 		assertTrue(s.remove(node3));

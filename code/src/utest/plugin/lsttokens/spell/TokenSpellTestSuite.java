@@ -26,9 +26,9 @@ import junit.framework.TestSuite;
 @Suite.SuiteClasses({CastTimeTokenTest.class, ClassesTokenTest.class,
 	CompsTokenTest.class, CostTokenTest.class, CtTokenTest.class,
 	DescriptorTokenTest.class, DomainsTokenTest.class, DurationTokenTest.class,
-	ItemTokenTest.class, PPCostTokenTest.class, RangeTokenTest.class,
-	SaveInfoTokenTest.class, SchoolTokenTest.class, SpellResTokenTest.class,
-	StatTokenTest.class, SubschoolTokenTest.class, TargetAreaTokenTest.class,
+	PPCostTokenTest.class, RangeTokenTest.class, SaveInfoTokenTest.class,
+	SchoolTokenTest.class, SpellResTokenTest.class, StatTokenTest.class,
+	SubschoolTokenTest.class, TargetAreaTokenTest.class,
 	VariantsTokenTest.class, XPCostTokenTest.class})
 public class TokenSpellTestSuite extends TestSuite
 {

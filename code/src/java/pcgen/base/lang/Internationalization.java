@@ -1,6 +1,6 @@
 /*
- * Copyright (c) Thomas Parker, 2007. derived from Globals.java Copyright 2001
- * (C) Bryan McRoberts <merton_monk@yahoo.com>
+ * Copyright (c) Thomas Parker, 2007. 
+ * derived from Globals.java Copyright 2001 (C) Bryan McRoberts <merton_monk@yahoo.com>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,10 +17,6 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  * Created on April 21, 2001, 2:15 PM
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.lang;
 

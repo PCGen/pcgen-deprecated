@@ -23,11 +23,11 @@ import org.junit.runners.Suite;
 import junit.framework.TestSuite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({MapCollectionTest.class, ListSetTest.class,
+@Suite.SuiteClasses({DefaultMapTest.class, DoubleKeyMapTest.class,
+	DoubleKeyMapToInstanceListTest.class, DoubleKeyMapToListTest.class,
 	HashMapToListTest.class, HashMapToInstanceListTest.class,
-	DoubleKeyMapToInstanceListTest.class, DoubleKeyMapTest.class,
-	DefaultMapTest.class, TripleKeyMapTest.class, TypeSafeMapTest.class,
-	WeightedCollectionTest.class})
+	ListSetTest.class, MapCollectionTest.class, TripleKeyMapTest.class,
+	TypeSafeMapTest.class, WeightedCollectionTest.class})
 public class BaseUtilTestSuite extends TestSuite
 {
 	// No contents, see annotations

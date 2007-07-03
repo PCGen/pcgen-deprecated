@@ -19,6 +19,13 @@
  */
 package pcgen.base.enumeration;
 
+/**
+ * A TriState is a class that represents an object that has three states: Yes,
+ * No, and Undetermined. This is useful in situations where the Default state
+ * cannot be represented by the null value when using a Boolean object.
+ * 
+ * @author Tom Parker <thpr@users.sourceforge.net>
+ */
 public enum TriState
 {
 	YES {

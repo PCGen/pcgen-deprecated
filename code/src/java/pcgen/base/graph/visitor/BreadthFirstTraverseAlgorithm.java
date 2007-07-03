@@ -19,7 +19,6 @@
  */
 package pcgen.base.graph.visitor;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +26,7 @@ import java.util.Set;
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.graph.core.Edge;
 import pcgen.base.graph.core.Graph;
+import pcgen.base.util.IdentityHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -57,7 +57,7 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 * times), as well as to avoid an infinite loop in the case of a cycle in a
 	 * Graph.
 	 */
-	private final Set<N> visitedNodes = new HashSet<N>();
+	private final Set<N> visitedNodes = new IdentityHashSet<N>();
 
 	/**
 	 * A Set of the HyperEdges which have already been visited by this search
@@ -65,17 +65,17 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 * times), as well as to avoid an infinite loop in the case of a cycle in a
 	 * Graph.
 	 */
-	private final Set<ET> visitedEdges = new HashSet<ET>();
+	private final Set<ET> visitedEdges = new IdentityHashSet<ET>();
 
 	/**
 	 * Maintains the list of unvisited GraphNodes.
 	 */
-	private final Set<N> unvisitedNodes = new HashSet<N>();
+	private final Set<N> unvisitedNodes = new IdentityHashSet<N>();
 
 	/**
 	 * Maintains the list of unvisited HyperEdges.
 	 */
-	private final Set<ET> unvisitedEdges = new HashSet<ET>();
+	private final Set<ET> unvisitedEdges = new IdentityHashSet<ET>();
 
 	/**
 	 * Creates a new BreadthFirstTraverseAlgorithm to traverse the given Graph.
@@ -161,6 +161,15 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 		}
 	}
 
+	/**
+	 * Actually performs the traverse of the Graph.
+	 * 
+	 * The lists of visitedNodes and visitedEdges are required because this is a
+	 * Graph: It is possible to have a node or edge that is reachable in more
+	 * than one way, and it is also possible to have a cycle in the graph (a
+	 * cycle would cause an infinite loop if a tag and sweep system was not used
+	 * to identify nodes and edges that have already been visited.
+	 */
 	private void runVisiting()
 	{
 		while (!unvisitedNodes.isEmpty() || !unvisitedEdges.isEmpty())
@@ -182,6 +191,10 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 		}
 	}
 
+	/**
+	 * Queues up Edges to be visited if (1) The edge has not yet been visited
+	 * and (2) the edge can be traversed [is allowed to be visited]
+	 */
 	private void conditionallyVisitEdgesOnNode(N thisNode)
 	{
 		for (ET nextEdge : graph.getAdjacentEdges(thisNode))
@@ -194,6 +207,11 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 		}
 	}
 
+	/**
+	 * Queues up Nodes to be visited if (1) The node has not yet been visited
+	 * and (2) the edge can be traversed to reach the given node [the node is
+	 * allowed to be visited]
+	 */
 	private void conditionallyVisitNodesOnEdge(ET thisEdge)
 	{
 		List<N> graphNodes = thisEdge.getAdjacentNodes();
@@ -227,7 +245,7 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 */
 	public Set<N> getVisitedNodes()
 	{
-		return new HashSet<N>(visitedNodes);
+		return new IdentityHashSet<N>(visitedNodes);
 	}
 
 	/**
@@ -238,7 +256,7 @@ public class BreadthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 */
 	public Set<ET> getVisitedEdges()
 	{
-		return new HashSet<ET>(visitedEdges);
+		return new IdentityHashSet<ET>(visitedEdges);
 	}
 
 	/**

@@ -19,13 +19,13 @@
  */
 package pcgen.base.graph.visitor;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.graph.core.Edge;
 import pcgen.base.graph.core.Graph;
+import pcgen.base.util.IdentityHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -37,10 +37,6 @@ import pcgen.base.graph.core.Graph;
  * Note: This class uses the simple "remember which nodes (and edges) I've
  * already seen" method in order to avoid confusion from non-termination. This
  * may limit the size of the graph that can be traversed using this class.
- * 
- * If this traverse is constructed as a directional traverse, then the only
- * edges which can be traversed are DirectionalEdges (unless canTraverseEdge is
- * overridden by a subclass).
  */
 public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 {
@@ -56,7 +52,7 @@ public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 * times), as well as to avoid an infinite loop in the case of a cycle in a
 	 * Graph.
 	 */
-	private final Set<N> visitedNodes = new HashSet<N>();
+	private final Set<N> visitedNodes = new IdentityHashSet<N>();
 
 	/**
 	 * A Set of the HyperEdges which have already been visited by this search
@@ -64,7 +60,7 @@ public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 * times), as well as to avoid an infinite loop in the case of a cycle in a
 	 * Graph.
 	 */
-	private final Set<ET> visitedEdges = new HashSet<ET>();
+	private final Set<ET> visitedEdges = new IdentityHashSet<ET>();
 
 	/**
 	 * Creates a new DepthFirstTraverseAlgorithm to traverse the given Graph.
@@ -116,6 +112,15 @@ public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 		uncheckedTraverseFrom(gn);
 	}
 
+	/**
+	 * Actually performs a traverse of the Graph from the given Node.
+	 * 
+	 * The lists of visitedNodes and visitedEdges are required because this is a
+	 * Graph: It is possible to have a node or edge that is reachable in more
+	 * than one way, and it is also possible to have a cycle in the graph (a
+	 * cycle would cause an infinite loop if a tag and sweep system was not used
+	 * to identify nodes and edges that have already been visited.
+	 */
 	private void uncheckedTraverseFrom(N gn)
 	{
 		visitedNodes.add(gn);
@@ -168,6 +173,15 @@ public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 		uncheckedTraverseFrom(he);
 	}
 
+	/**
+	 * Actually performs a traverse of the Graph from the given Edge.
+	 * 
+	 * The lists of visitedNodes and visitedEdges are required because this is a
+	 * Graph: It is possible to have a node or edge that is reachable in more
+	 * than one way, and it is also possible to have a cycle in the graph (a
+	 * cycle would cause an infinite loop if a tag and sweep system was not used
+	 * to identify nodes and edges that have already been visited.
+	 */
 	private void uncheckedTraverseFrom(ET he)
 	{
 		visitedEdges.add(he);
@@ -191,7 +205,7 @@ public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 */
 	public Set<N> getVisitedNodes()
 	{
-		return new HashSet<N>(visitedNodes);
+		return new IdentityHashSet<N>(visitedNodes);
 	}
 
 	/**
@@ -202,7 +216,7 @@ public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>>
 	 */
 	public Set<ET> getVisitedEdges()
 	{
-		return new HashSet<ET>(visitedEdges);
+		return new IdentityHashSet<ET>(visitedEdges);
 	}
 
 	/**

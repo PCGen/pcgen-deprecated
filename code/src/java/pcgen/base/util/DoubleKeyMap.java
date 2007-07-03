@@ -16,9 +16,6 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  * Created on Jun 16, 2005
- * 
- * Current Ver: $Revision: 1567 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-01 20:15:34 -0500 (Wed, 01 Nov 2006) $
  */
 package pcgen.base.util;
 
@@ -117,6 +114,16 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 		return localMap.put(key2, value);
 	}
 
+	/**
+	 * Copies the key/value combinations from the given DoubleKeyMap into this
+	 * DoubleKeyMap. If this DoubleKeyMap already contained a mapping for the
+	 * any of the key combinations in the given DoubleKeyMap, the previous value
+	 * is overwritten.
+	 * 
+	 * @param dkm
+	 *            The DoubleKeyMap for which the key/value combinations should
+	 *            be placed into this DoubleKeyMap
+	 */
 	public void putAll(DoubleKeyMap<K1, K2, V> dkm)
 	{
 		for (Entry<K1, Map<K2, V>> me : dkm.map.entrySet())

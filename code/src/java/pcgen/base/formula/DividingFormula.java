@@ -44,6 +44,12 @@ public class DividingFormula implements ReferenceFormula<Integer>
 	 */
 	public DividingFormula(int denominator)
 	{
+		if (denominator == 0)
+		{
+			throw new IllegalArgumentException(
+				"Cannot build a DividingFormula that divides by Zero - "
+					+ "will always cause an ArithmeticException when resolved");
+		}
 		denom = denominator;
 	}
 
@@ -59,12 +65,16 @@ public class DividingFormula implements ReferenceFormula<Integer>
 	 */
 	public Integer resolve(Number... nums)
 	{
-		if (nums.length != 1)
+		if (nums == null || nums.length != 1)
 		{
 			throw new IllegalArgumentException(
 				"DividingFormula only has one backreference");
 		}
-		// TODO May not be correct (order of rounding op)
+		/*
+		 * Note that there is NOT an order of operations issue here with
+		 * rounding, and rounding first results in a faster & more accurate
+		 * calculation.
+		 */
 		return Integer.valueOf(nums[0].intValue() / denom);
 	}
 

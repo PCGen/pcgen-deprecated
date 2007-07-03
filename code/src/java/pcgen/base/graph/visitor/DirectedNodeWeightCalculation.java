@@ -14,17 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
- * 
- * Created on Oct 12, 2004
  */
 package pcgen.base.graph.visitor;
 
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.graph.core.DirectionalGraph;
-import pcgen.base.graph.core.DirectionalListMapGraph;
+import pcgen.base.graph.core.DirectionalIdentityEdgeMapGraph;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -49,19 +47,32 @@ public class DirectedNodeWeightCalculation<N, ET extends DirectionalEdge<N>>
 	private final ReverseDirectedBreadthFirstTraverseAlgorithm<N, ET> identification;
 
 	/**
-	 * Storage for the edges that were traversed and are relevant to weight
-	 * calculation
+	 * Storage for the Graph that was traversed and the Nodes/Edges that are
+	 * relevant to weight calculation
 	 */
 	private final DirectionalGraph<N, ET> relevantGraph =
-			new DirectionalListMapGraph<N, ET>();
+			new DirectionalIdentityEdgeMapGraph<N, ET>();
 
+	/**
+	 * The working graph, which is 'disassembled' as it is traversed, in order
+	 * to only calculate the weight for Nodes where the weight of all incoming
+	 * edges is known. This also serves as a method of detecting a loop in the
+	 * Graph.
+	 */
 	private final DirectionalGraph<N, ET> workingGraph =
-			new DirectionalListMapGraph<N, ET>();
+			new DirectionalIdentityEdgeMapGraph<N, ET>();
 
-	private final HashMap<N, Integer> nodeWeightMap = new HashMap<N, Integer>();
+	/**
+	 * The Map to store the weight of each Node in the relevantGraph
+	 */
+	private final IdentityHashMap<N, Integer> nodeWeightMap =
+			new IdentityHashMap<N, Integer>();
 
-	private final HashMap<ET, Integer> edgeWeightMap =
-			new HashMap<ET, Integer>();
+	/**
+	 * The Map to store the weight of each Edge in the relevantGraph
+	 */
+	private final IdentityHashMap<ET, Integer> edgeWeightMap =
+			new IdentityHashMap<ET, Integer>();
 
 	/**
 	 * Creates a new DirectedNodeWeightCalculation to traverse the given Graph.
@@ -107,7 +118,7 @@ public class DirectedNodeWeightCalculation<N, ET extends DirectionalEdge<N>>
 				"Node to traverse from cannot be null");
 		}
 		/*
-		 * FIXME This needs to be MULT:NO aware :(
+		 * FIXME For PCGen, this needs to be MULT:NO aware :(
 		 * 
 		 * One possibility is to make canTraverseEdge into a strategy, rather
 		 * than an extendable method in the Traverse Algorithms. The "problem"
@@ -153,6 +164,10 @@ public class DirectedNodeWeightCalculation<N, ET extends DirectionalEdge<N>>
 		return weight == null ? -1 : weight.intValue();
 	}
 
+	/**
+	 * Actually performs the DirectedNodeWeightCalculation based on the
+	 * sub-graph identified in the calculate*Weight method.
+	 */
 	private void runVisiting()
 	{
 		for (N node : identification.getVisitedNodes())
@@ -210,6 +225,20 @@ public class DirectedNodeWeightCalculation<N, ET extends DirectionalEdge<N>>
 		}
 	}
 
+	/**
+	 * Returns the weight for a given Edge. The incoming weight (before it is
+	 * modified by the edge) is provided as an argument.
+	 * 
+	 * This is a default implementation, designed to be overridden by child
+	 * classes. The default is to simply return the incoming weight (the edge
+	 * has a weight multiplier of one)
+	 * 
+	 * @param weight
+	 *            The incoming weight to the edge
+	 * @param edge
+	 *            The edge for which the weight is being calculated
+	 * @return The final weight of the given edge, as an integer
+	 */
 	protected int getEdgeWeight(int weight, ET edge)
 	{
 		return weight;

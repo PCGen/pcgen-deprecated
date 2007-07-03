@@ -16,10 +16,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 26, 2004
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.graph.core;
 
@@ -29,6 +25,9 @@ package pcgen.base.graph.core;
  * This Graph uses redundant storage to improve query speed for certain methods.
  * In addition to simple lists of the nodes and edges present in a Graph, a Map
  * from each node to the adjacent edges is maintained.
+ * 
+ * This Graph uses normal equality (.equals()) to determine equality for
+ * purposes of checking whether nodes and edges are already part of the Graph.
  * 
  * This class provides a more balanced query speed for querying adjacent graph
  * elements. Specifically, an edge knows to which nodes it is connected. To

@@ -24,40 +24,83 @@ import pcgen.base.lang.CaseInsensitiveString;
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
  * 
- * A DefaultMap is a HashMap that has uses a CaseInsensitiveString as the Key
+ * A CaseInsensitiveMap is a HashMap that has uses a CaseInsensitiveString as
+ * the Key This is a facilitating wrapper around HashMap to allow easy use of
+ * CaseInsensitiveString as the Key to a Map.
+ * 
+ * CaseInsensitiveMap gracefully handles non-String keys (defaults back to the
+ * same behavior as HashMap), including the null key. Note that this allows
+ * appropriate matching behavior when a CaseInsensitiveString is passed in as
+ * the key to one of the methods of CaseInsensitiveMap.
  * 
  * @param <V>
  *            The Type of the Values stored in this CaseInsensitiveMap
  */
-public class CaseInsensitiveMap<V> extends HashMap<CaseInsensitiveString, V>
+public class CaseInsensitiveMap<V> extends HashMap<Object, V>
 {
+	/*
+	 * Note this is forced to be HashMap<Object, V> not <CaseInsensitiveString,
+	 * V> due to generics an ensuring appropriate method overrides without
+	 * conflicts. If you don't believe that, try to rewrite the put method,
+	 * maintaining @Override and also avoiding any cast. - thpr 6/27/07
+	 */
 
-	private Object resolveObject(Object arg0)
+	/**
+	 * Used to resolve an incoming key to a CaseInsensitiveString, if
+	 * appropriate.
+	 * 
+	 * @param key
+	 *            The key to be resolved, if necessary
+	 * @return The key used for storing objects in the HashMap
+	 */
+	private Object resolveObject(Object key)
 	{
-		return arg0 instanceof String
-			? new CaseInsensitiveString((String) arg0) : arg0;
+		return key instanceof String ? new CaseInsensitiveString((String) key)
+			: key;
 	}
 
+	/**
+	 * Returns true if the CaseInsensitiveMap contains the given key
+	 * 
+	 * @see java.util.HashMap#containsKey(java.lang.Object)
+	 */
 	@Override
-	public boolean containsKey(Object arg0)
+	public boolean containsKey(Object key)
 	{
-		return super.containsKey(resolveObject(arg0));
+		return super.containsKey(resolveObject(key));
 	}
 
+	/**
+	 * Returns the value stored in this CaseInsensitiveMap for the given key.
+	 * 
+	 * @see java.util.HashMap#get(java.lang.Object)
+	 */
 	@Override
-	public V get(Object arg0)
+	public V get(Object key)
 	{
-		return super.get(resolveObject(arg0));
+		return super.get(resolveObject(key));
 	}
 
-	public V put(String arg0, V arg1)
-	{
-		return super.put(new CaseInsensitiveString(arg0), arg1);
-	}
-
+	/**
+	 * Puts the given key/value pair into this CaseInsensitiveMap
+	 * 
+	 * @return the value previously mapped to this key or null if no value was
+	 *         previously mapped to the given key
+	 */
 	@Override
-	public V remove(Object arg0)
+	public V put(Object key, V value)
 	{
-		return super.remove(resolveObject(arg0));
+		return super.put(resolveObject(key), value);
+	}
+
+	/**
+	 * Removes the value stored in this CaseInsensitiveMap for the given key
+	 * 
+	 * @see java.util.HashMap#remove(java.lang.Object)
+	 */
+	@Override
+	public V remove(Object key)
+	{
+		return super.remove(resolveObject(key));
 	}
 }

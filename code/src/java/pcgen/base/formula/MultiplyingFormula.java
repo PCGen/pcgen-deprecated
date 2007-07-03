@@ -59,7 +59,7 @@ public class MultiplyingFormula implements ReferenceFormula<Integer>
 	 */
 	public Integer resolve(Number... nums)
 	{
-		if (nums.length != 1)
+		if (nums == null || nums.length != 1)
 		{
 			throw new IllegalArgumentException(
 				"MultiplyingFormula only has one backreference");

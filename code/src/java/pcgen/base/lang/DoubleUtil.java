@@ -1,6 +1,6 @@
 /*
- * Copyright (c) Thomas Parker 2007 derived from CoreUtility.java Copyright 2002
- * (C) Bryan McRoberts <merton_monk@yahoo.com>
+ * Copyright (c) Thomas Parker 2007
+ * derived from CoreUtility.java Copyright 2002 (C) Bryan McRoberts <merton_monk@yahoo.com>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -19,6 +19,12 @@
  */
 package pcgen.base.lang;
 
+/**
+ * This class provides utility functions (similar to java.lang.Math) for use in
+ * Double calculations and manipulation.
+ * 
+ * @author Thomas Parker (thpr [at] yahoo.com)
+ */
 public final class DoubleUtil
 {
 
@@ -32,7 +38,9 @@ public final class DoubleUtil
 	 * 0.0001.
 	 * 
 	 * @param a
+	 *            the first double to be compared
 	 * @param b
+	 *            the second double to be compared
 	 * @return TRUE if equal, else FALSE
 	 */
 	public static boolean doublesEqual(double a, double b)
@@ -45,8 +53,13 @@ public final class DoubleUtil
 	 * Compare two doubles within a given epsilon.
 	 * 
 	 * @param a
+	 *            the first double to be compared
 	 * @param b
+	 *            the second double to be compared
 	 * @param eps
+	 *            the allowed difference between the two double values. If the
+	 *            absolute difference is less than this value, compareDouble
+	 *            will return true.
 	 * @return TRUE if equal, else FALSE
 	 */
 	public static boolean compareDouble(double a, double b, double eps)

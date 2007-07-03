@@ -17,6 +17,8 @@
  */
 package pcgen.base.graph.visitor;
 
+import java.util.Comparator;
+
 import pcgen.base.graph.core.DefaultGraphEdge;
 import pcgen.base.graph.visitor.GraphHeapComponent;
 import junit.framework.TestCase;
@@ -27,7 +29,8 @@ import junit.framework.TestCase;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class GraphHeapComponentTest extends TestCase {
+public class GraphHeapComponentTest extends TestCase
+{
 
 	GraphHeapComponent ghc1, ghc2, ghc3, ghc4, ghc5, ghc6, ghc7, ghc8, ghc9,
 			ghc0;
@@ -36,29 +39,35 @@ public class GraphHeapComponentTest extends TestCase {
 
 	DefaultGraphEdge ge67, ge8, ge9, ge0;
 
-	public static class TestGraphNode {
+	public static class TestGraphNode
+	{
 		private final int integer;
 
-		public TestGraphNode(int i) {
+		public TestGraphNode(int i)
+		{
 			integer = i;
 		}
 
 		@Override
-		public int hashCode() {
+		public int hashCode()
+		{
 			return integer;
 		}
 	}
 
-	public static class TestGraphEdge extends DefaultGraphEdge {
+	public static class TestGraphEdge extends DefaultGraphEdge
+	{
 		private final int integer;
 
-		public TestGraphEdge(Object n1, Object n2, int i) {
+		public TestGraphEdge(Object n1, Object n2, int i)
+		{
 			super(n1, n2);
 			integer = i;
 		}
 
 		@Override
-		public int hashCode() {
+		public int hashCode()
+		{
 			return integer;
 		}
 	}
@@ -70,7 +79,8 @@ public class GraphHeapComponentTest extends TestCase {
 	 * @throws Exception
 	 */
 	@Override
-	protected void setUp() throws Exception {
+	protected void setUp() throws Exception
+	{
 		gn6 = new TestGraphNode(6);
 		gn7 = new TestGraphNode(7);
 		gn8 = new TestGraphNode(-8);
@@ -91,47 +101,60 @@ public class GraphHeapComponentTest extends TestCase {
 		ghc9 = new GraphHeapComponent(0, ge9, gn90);
 	}
 
-	public void testGraphHeapComponent() {
-		try {
+	public void testGraphHeapComponent()
+	{
+		try
+		{
 			new GraphHeapComponent(0, ge9, null);
 			fail();
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e)
+		{
 			// OK
 		}
-		try {
+		try
+		{
 			new GraphHeapComponent(0, null, gn90);
 			fail();
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e)
+		{
 			// OK
 		}
-		try {
+		try
+		{
 			new GraphHeapComponent(0, null, null);
 			fail();
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e)
+		{
 			// OK
 		}
 	}
 
-	public void testCompareTo() {
-		assertEquals(-1, ghc1.compareTo(ghc2));
-		assertEquals(1, ghc1.compareTo(ghc3));
-		assertEquals(-1, ghc1.compareTo(ghc4));
-		assertEquals(1, ghc1.compareTo(ghc5));
-		assertEquals(0, ghc6.compareTo(ghc6));
-		assertTrue(ghc6.compareTo(ghc7) < 0);
-		assertTrue(ghc6.compareTo(ghc8) < 0);
-		assertTrue(ghc6.compareTo(ghc9) < 0);
-		assertTrue(ghc6.compareTo(ghc0) > 0);
-		assertTrue(ghc7.compareTo(ghc7) == 0);
-		assertTrue(ghc7.compareTo(ghc8) < 0);
-		assertTrue(ghc7.compareTo(ghc9) < 0);
-		assertTrue(ghc7.compareTo(ghc0) > 0);
-		assertTrue(ghc8.compareTo(ghc8) == 0);
-		assertTrue(ghc8.compareTo(ghc9) < 0);
-		assertTrue(ghc8.compareTo(ghc0) > 0);
-		assertTrue(ghc9.compareTo(ghc9) == 0);
-		assertTrue(ghc9.compareTo(ghc0) > 0);
-		assertTrue(ghc0.compareTo(ghc0) == 0);
+	public void testCompareTo()
+	{
+		Comparator<GraphHeapComponent<?, ?>> comp =
+				GraphHeapComponent.DISTANCE_COMPARATOR;
+		assertTrue(comp.compare(ghc1, ghc2) < 0);
+		assertTrue(comp.compare(ghc1, ghc3) > 0);
+		assertTrue(comp.compare(ghc1, ghc4) < 0);
+		assertTrue(comp.compare(ghc1, ghc5) > 0);
+		assertTrue(comp.compare(ghc6, ghc6) == 0);
+		assertTrue(comp.compare(ghc6, ghc7) == 0);
+		assertTrue(comp.compare(ghc6, ghc8) == 0);
+		assertTrue(comp.compare(ghc6, ghc9) == 0);
+		assertTrue(comp.compare(ghc6, ghc0) == 0);
+		assertTrue(comp.compare(ghc7, ghc7) == 0);
+		assertTrue(comp.compare(ghc7, ghc8) == 0);
+		assertTrue(comp.compare(ghc7, ghc9) == 0);
+		assertTrue(comp.compare(ghc7, ghc0) == 0);
+		assertTrue(comp.compare(ghc8, ghc8) == 0);
+		assertTrue(comp.compare(ghc8, ghc9) == 0);
+		assertTrue(comp.compare(ghc8, ghc0) == 0);
+		assertTrue(comp.compare(ghc9, ghc9) == 0);
+		assertTrue(comp.compare(ghc9, ghc0) == 0);
+		assertTrue(comp.compare(ghc0, ghc0) == 0);
 		// Check in case all 3 are identical! (should still be consistent with
 		// equals)
 		TestGraphNode gna = new TestGraphNode(6);
@@ -140,14 +163,14 @@ public class GraphHeapComponentTest extends TestCase {
 		assertEquals(ghc6.distance, ghca.distance, 0.0);
 		assertEquals(ghc6.node.hashCode(), ghca.node.hashCode());
 		assertEquals(ghc6.edge.hashCode(), ghca.edge.hashCode());
-		assertTrue(ghc6.compareTo(ghca) != 0);
+		assertTrue(comp.compare(ghc6, ghca) == 0);
 		// overflow!
-		GraphHeapComponent ghcb = new GraphHeapComponent(-Double.MAX_VALUE,
-				gea, gna);
-		GraphHeapComponent ghcc = new GraphHeapComponent(Double.MAX_VALUE, gea,
-				gna);
-		assertTrue(ghcb.compareTo(ghcc) < 0);
-		assertTrue(ghcc.compareTo(ghcb) > 0);
+		GraphHeapComponent ghcb =
+				new GraphHeapComponent(-Double.MAX_VALUE, gea, gna);
+		GraphHeapComponent ghcc =
+				new GraphHeapComponent(Double.MAX_VALUE, gea, gna);
+		assertTrue(comp.compare(ghcb, ghcc) < 0);
+		assertTrue(comp.compare(ghcc, ghcb) > 0);
 		// note do not care if the edge or node order changes - not really
 		// important
 	}

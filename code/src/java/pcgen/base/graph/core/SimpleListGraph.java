@@ -16,10 +16,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on Aug 26, 2004
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.graph.core;
 
@@ -34,6 +30,9 @@ import java.util.Set;
  * This class is a simple Graph which stores a List of the nodes and edges in
  * the Graph. While this may not be the most efficient storage mechanism from a
  * speed perspective, it is relatively efficient in terms of memory use.
+ * 
+ * This Graph uses normal equality (.equals()) to determine equality for
+ * purposes of checking whether nodes and edges are already part of the Graph.
  * 
  * Note: It is NOT possible for an edge to connect to a node which is not in the
  * graph. There are (at least) two side effects to this limit: (1) If an edge is
@@ -363,7 +362,7 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 		// This is really simple, but it works... and prevents a deep hash
 		return nodeList.size() + edgeList.size() * 23;
 	}
-	
+
 	/**
 	 * Returns true if this Graph is empty (has no Nodes and no Edges); false
 	 * otherwise.
@@ -374,14 +373,26 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 	{
 		return nodeList.isEmpty() && edgeList.isEmpty();
 	}
-	
+
+	/**
+	 * Returns the number of nodes in this Graph.
+	 * 
+	 * @return The number of nodes in the Graph, as an integer
+	 */
 	public int getNodeCount()
 	{
 		return nodeList.size();
 	}
-	
+
+	/**
+	 * Clears this Graph, removing all Nodes and Edges from the Graph.
+	 */
 	public void clear()
 	{
+		/*
+		 * TODO This doesn't actually notify GraphChangeListeners, is that a
+		 * problem? - probably is ... thpr, 6/27/07
+		 */
 		nodeList.clear();
 		edgeList.clear();
 	}

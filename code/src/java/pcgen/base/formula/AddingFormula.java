@@ -57,7 +57,7 @@ public class AddingFormula implements ReferenceFormula<Integer>
 	 */
 	public Integer resolve(Number... nums)
 	{
-		if (nums.length != 1)
+		if (nums == null || nums.length != 1)
 		{
 			throw new IllegalArgumentException(
 				"AddingFormula only has one backreference");

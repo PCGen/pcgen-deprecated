@@ -36,6 +36,8 @@ import pcgen.base.graph.core.GraphEdge;
 public class DirectionalListMapGraphTest extends
 		AbstractGraphTestCase<DirectionalEdge<Integer>> {
 
+	//TODO Need to test .equals behavior on nodes and edges
+	
 	private DirectionalListMapGraph<Integer, DirectionalEdge<Integer>> strategy;
 
 	@Override

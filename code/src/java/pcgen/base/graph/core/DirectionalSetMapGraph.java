@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Thomas Parker, 2005, 2006.
+ * Copyright (c) Thomas Parker, 2005-2007.
  * 
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -16,10 +16,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  * 
  * Created on May 18, 2005
- * 
- * Current Ver: $Revision: 1650 $ Last Editor: $Author: thpr $ Last Edited:
- * $Date: 2006-11-12 20:40:28 -0500 (Sun, 12 Nov 2006) $
- * 
  */
 package pcgen.base.graph.core;
 
@@ -34,6 +30,9 @@ import java.util.Set;
  * A DirectionalSetMapGraph is a DirectionalGraph. Thus, it requires that all
  * Edges added to the Graph are DirectionalEdges. Failure to abide by this
  * restriction will result in the addition of the edge failing.
+ * 
+ * This Graph uses normal equality (.equals()) to determine equality for
+ * purposes of checking whether nodes and edges are already part of the Graph.
  * 
  * This Graph uses redundant storage to improve query speed for certain methods.
  * In addition to simple lists of the nodes and edges present in a Graph, a Map
