@@ -82,7 +82,6 @@ public class LoadContext
 	{
 		return new ContextQueue(graph);
 	}
-
 	public SizeAdjustment getNextSize(SizeAdjustment size)
 	{
 		// TODO What if null (if this is last?)

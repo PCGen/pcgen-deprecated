@@ -143,7 +143,7 @@ public final class KitLoader extends LstLeveledObjectFileLoader<Kit> {
 
 	@Override
 	protected Kit parseLine(LoadContext context, Kit kit, String line,
-			CampaignSourceEntry source) throws PersistenceLayerException {
+			CampaignSourceEntry source) {
 		int tabLoc = line.indexOf("\t");
 		String firstToken;
 		if (tabLoc == -1) {

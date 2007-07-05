@@ -144,7 +144,7 @@ public final class FeatLoader extends AbilityLoader
 
 	@Override
 	public void parseLine(LoadContext context, Ability target, String lstLine,
-		CampaignSourceEntry source) throws PersistenceLayerException
+		CampaignSourceEntry source)
 	{
 		super.parseLine(context, target, lstLine, source);
 		context.ref.reassociateReference(AbilityCategory.FEAT, target);

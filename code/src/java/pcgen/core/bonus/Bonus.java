@@ -276,7 +276,8 @@ public class Bonus
 					}
 					catch ( PersistenceLayerException ple)
 					{
-						Logging.errorPrint(ple.getMessage(), ple);
+						//Logging.errorPrint(ple.getMessage(), ple);
+						Logging.errorPrint(ple.getMessage());
 					}
 				}
 				else if (aString.startsWith("TYPE=") || aString.startsWith("TYPE."))

@@ -180,7 +180,6 @@ public abstract class LstLeveledObjectFileLoader<T extends PObject> extends
 	 * @since 5.11
 	 */
 	public void completeObject(CampaignSourceEntry source, final PObject pObj)
-		throws PersistenceLayerException
 	{
 		if (pObj == null)
 		{
@@ -196,7 +195,8 @@ public abstract class LstLeveledObjectFileLoader<T extends PObject> extends
 			}
 			catch (ParseException e)
 			{
-				throw new PersistenceLayerException(e.toString());
+				Logging.errorPrintLocalised(
+					"Errors.LstFileLoader.ParseDate", sourceMap); //$NON-NLS-1$
 			}
 		}
 
@@ -434,10 +434,6 @@ public abstract class LstLeveledObjectFileLoader<T extends PObject> extends
 				try
 				{
 					target = parseLine(target, line, sourceEntry);
-					reference = parseLine(context, reference, line, sourceEntry);
-					// TODO - This is kind of a hack but we need to make sure
-					// that classes get added.
-					completeObject(sourceEntry, target);
 				}
 				catch (PersistenceLayerException ple)
 				{
@@ -457,6 +453,10 @@ public abstract class LstLeveledObjectFileLoader<T extends PObject> extends
 						.getString("Errors.LstFileLoader.Ignoring"), //$NON-NLS-1$
 						t);
 				}
+				reference = parseLine(context, reference, line, sourceEntry);
+				// TODO - This is kind of a hack but we need to make sure
+				// that classes get added.
+				completeObject(sourceEntry, target);
 			}
 		}
 
@@ -467,7 +467,7 @@ public abstract class LstLeveledObjectFileLoader<T extends PObject> extends
 	}
 
 	protected abstract T parseLine(LoadContext context, T reference,
-		String line, CampaignSourceEntry sourceEntry) throws PersistenceLayerException;
+		String line, CampaignSourceEntry sourceEntry);
 
 	/**
 	 * This method, when implemented, will perform a single .FORGET
@@ -568,61 +568,52 @@ public abstract class LstLeveledObjectFileLoader<T extends PObject> extends
 		}
 
 		// modify the object
-		try
+		for (ModEntry element : entryList)
 		{
-			for (ModEntry element : entryList)
+			try
 			{
-				try
+				boolean noSource = object.getSourceEntry() == null;
+				int hashCode = 0;
+				if (!noSource)
 				{
-					boolean noSource = object.getSourceEntry() == null;
-					int hashCode = 0;
-					if (!noSource)
-					{
-						hashCode = object.getSourceEntry().hashCode();
-					}
-
-					parseLine(object, element.getLstLine(), element.getSource());
-
-					if ((noSource && object.getSourceEntry() != null)
-						|| (!noSource && hashCode != object.getSourceEntry()
-							.hashCode()))
-					{
-						// We never had a source and now we do so set the source
-						// map or we did have a source and now the hashCode is
-						// different so the MOD line must have updated it.
-						try
-						{
-							object.setSourceMap(element.getSourceMap());
-						}
-						catch (ParseException notUsed)
-						{
-							Logging.errorPrintLocalised(
-								"Errors.LstFileLoader.ParseDate", sourceMap); //$NON-NLS-1$
-						}
-					}
+					hashCode = object.getSourceEntry().hashCode();
 				}
-				catch (PersistenceLayerException ple)
+
+				parseLine(object, element.getLstLine(), element.getSource());
+
+				if ((noSource && object.getSourceEntry() != null)
+					|| (!noSource && hashCode != object.getSourceEntry()
+						.hashCode()))
 				{
-					logError(PropertyFactory.getFormattedString(
-						"Errors.LstFileLoader.ModParseError", //$NON-NLS-1$
-						element.getSource().getURI(), element.getLineNumber(),
-						ple.getMessage()));
+					// We never had a source and now we do so set the source
+					// map or we did have a source and now the hashCode is
+					// different so the MOD line must have updated it.
+					try
+					{
+						object.setSourceMap(element.getSourceMap());
+					}
+					catch (ParseException notUsed)
+					{
+						Logging.errorPrintLocalised(
+							"Errors.LstFileLoader.ParseDate", sourceMap); //$NON-NLS-1$
+					}
 				}
 			}
-			completeObject(entry.getSource(), object);
+			catch (PersistenceLayerException ple)
+			{
+				logError(PropertyFactory.getFormattedString(
+					"Errors.LstFileLoader.ModParseError", //$NON-NLS-1$
+					element.getSource().getURI(), element.getLineNumber(), ple
+						.getMessage()));
+			}
 		}
-		catch (PersistenceLayerException ple)
-		{
-			logError(PropertyFactory.getFormattedString(
-				"Errors.LstFileLoader.ModParseError", //$NON-NLS-1$
-				entry.getSource().getURI(), entry.getLineNumber(), ple
-					.getMessage()));
-		}
+		completeObject(entry.getSource(), object);
 	}
 
 	/**
 	 * This method will process the lines containing a .COPY directive
-	 * @throws PersistenceLayerException 
+	 * 
+	 * @throws PersistenceLayerException
 	 */
 	private void processCopies() throws PersistenceLayerException
 	{

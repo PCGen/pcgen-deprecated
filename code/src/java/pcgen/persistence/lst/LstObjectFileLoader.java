@@ -44,17 +44,16 @@ import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
 /**
- * This class is an extension of the LstFileLoader that loads items
- * that are PObjects and have a source campaign associated with them.
- * Objects loaded by implementations of this class inherit the core
- * MOD/COPY/FORGET funcationality needed for core PObjects used
- * to directly create characters.
- *
+ * This class is an extension of the LstFileLoader that loads items that are
+ * PObjects and have a source campaign associated with them. Objects loaded by
+ * implementations of this class inherit the core MOD/COPY/FORGET funcationality
+ * needed for core PObjects used to directly create characters.
+ * 
  * <p>
  * Current Ver: $Revision$ <br>
  * Last Editor: $Author$ <br>
  * Last Edited: $Date$
- *
+ * 
  * @author AD9C15
  */
 public abstract class LstObjectFileLoader<T extends PObject> extends
@@ -95,10 +94,13 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 
 	/**
 	 * This method loads the given list of LST files.
-	 * @param fileList containing the list of files to read
-	 * @throws PersistenceLayerException 
+	 * 
+	 * @param fileList
+	 *            containing the list of files to read
+	 * @throws PersistenceLayerException
 	 */
-	public void loadLstFiles(LoadContext context, List<CampaignSourceEntry> fileList) throws PersistenceLayerException
+	public void loadLstFiles(LoadContext context,
+		List<CampaignSourceEntry> fileList) throws PersistenceLayerException
 	{
 		// Track which sources have been loaded already
 		TreeSet<URI> loadedFiles = new TreeSet<URI>();
@@ -122,8 +124,9 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 			}
 		}
 
-		//FIXME Need to ensure proper setSourceURI in the copy/mod/forget methods
-		
+		// FIXME Need to ensure proper setSourceURI in the copy/mod/forget
+		// methods
+
 		// Next we perform copy operations
 		processCopies(context);
 
@@ -137,27 +140,31 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 
 	/**
 	 * This method parses the LST file line, applying it to the provided target
-	 * object.  If the line indicates the start of a new target object, a new
+	 * object. If the line indicates the start of a new target object, a new
 	 * PObject of the appropriate type will be created prior to applying the
-	 * line contents.  Because of this behavior, it is necessary for this
-	 * method to return the new object.  Implementations of this method also
-	 * MUST call <code>completeObject</code> with the original target prior to 
-	 * returning the new value.
-	 *
-	 * @param lstLine String LST formatted line read from the source URL
-	 * @param target PObject to apply the line to, barring the start of a
-	 *         new object
-	 * @param source CampaignSourceEntry indicating the file that the line was
-	 *         read from as well as the Campaign object that referenced the file
-	 * @return PObject that was either created or modified by the provided
-	 *         LST line
-	 * @throws PersistenceLayerException if there is a problem with the LST syntax
+	 * line contents. Because of this behavior, it is necessary for this method
+	 * to return the new object. Implementations of this method also MUST call
+	 * <code>completeObject</code> with the original target prior to returning
+	 * the new value.
+	 * 
+	 * @param lstLine
+	 *            String LST formatted line read from the source URL
+	 * @param target
+	 *            PObject to apply the line to, barring the start of a new
+	 *            object
+	 * @param source
+	 *            CampaignSourceEntry indicating the file that the line was read
+	 *            from as well as the Campaign object that referenced the file
+	 * @return PObject that was either created or modified by the provided LST
+	 *         line
+	 * @throws PersistenceLayerException
+	 *             if there is a problem with the LST syntax
 	 */
 	public abstract void parseLine(T target, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException;
 
 	public void parseLine(LoadContext context, T target, String lstLine,
-		CampaignSourceEntry source) throws PersistenceLayerException
+		CampaignSourceEntry source)
 	{
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
@@ -174,7 +181,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 			// TODO Assumes it's a .MOD or something :/ - check this??
 			if (!source.getURI().equals(oldSource))
 			{
-				//TODO This should be a Supplemental URI list??
+				// TODO This should be a Supplemental URI list??
 				target.put(ObjectKey.SOURCE_URI, source.getURI());
 			}
 		}
@@ -199,39 +206,51 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 			String value =
 					(idxColon == colString.length() - 1) ? null : colString
 						.substring(idxColon + 1);
-			parseToken(context, target, key, value, source);
+			try
+			{
+				parseToken(context, target, key, value, source);
+			}
+			catch (Throwable t)
+			{
+				Logging.addParseMessage(Logging.ERROR, "Parse error in token "
+					+ key + ": " + t);
+			}
 		}
 	}
-	
+
 	public abstract void parseToken(LoadContext context, T target, String key,
-		String value, CampaignSourceEntry source) throws PersistenceLayerException;
-	
+		String value, CampaignSourceEntry source);
+
 	/**
 	 * This method is called by the loading framework to signify that the
 	 * loading of this object is complete and the object should be added to the
 	 * system.
 	 * 
-	 * <p>This method will check that the loaded object should be included via
-	 * a call to <code>includeObject</code> and if not add it to the list of
+	 * <p>
+	 * This method will check that the loaded object should be included via a
+	 * call to <code>includeObject</code> and if not add it to the list of
 	 * excluded objects.
 	 * 
-	 * <p>Once the object has been verified the method will call
-	 * <code>finishObject</code> to give each object a chance to complete 
+	 * <p>
+	 * Once the object has been verified the method will call
+	 * <code>finishObject</code> to give each object a chance to complete
 	 * processing.
 	 * 
-	 * <p>The object is then added to the system if it doesn't already exist.
-	 * If the object exists, the object sources are compared by date and if the
+	 * <p>
+	 * The object is then added to the system if it doesn't already exist. If
+	 * the object exists, the object sources are compared by date and if the
 	 * System setting allowing over-rides is set it will use the object from the
 	 * newer source.
 	 * 
-	 * @param pObj The object that has just completed loading.
+	 * @param pObj
+	 *            The object that has just completed loading.
 	 * 
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#includeObject(PObject)
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#finishObject(PObject)
 	 * @see pcgen.core.SettingsHandler#isAllowOverride()
 	 * 
 	 * @author boomer70 <boomer70@yahoo.com>
-	 * @throws PersistenceLayerException 
+	 * @throws PersistenceLayerException
 	 * 
 	 * @since 5.11
 	 */
@@ -306,7 +325,8 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	/**
 	 * Adds an object to the global repository.
 	 * 
-	 * @param pObj The object to add.
+	 * @param pObj
+	 *            The object to add.
 	 * 
 	 * @author boomer70 <boomer70@yahoo.com>
 	 * 
@@ -315,12 +335,14 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	protected abstract void addGlobalObject(final PObject pObj);
 
 	/**
-	 * This method is called when the end of data for a specific PObject
-	 * is found.
+	 * This method is called when the end of data for a specific PObject is
+	 * found.
 	 * 
-	 * <p>This method will only be called for objects that are to be included.
-	 *
-	 * @param target PObject to perform final operations on
+	 * <p>
+	 * This method will only be called for objects that are to be included.
+	 * 
+	 * @param target
+	 *            PObject to perform final operations on
 	 */
 	protected void finishObject(@SuppressWarnings("unused")
 	PObject target)
@@ -329,16 +351,16 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	}
 
 	/**
-	 * This method should be called by finishObject implementations in
-	 * order to check if the parsed object is affected by an INCLUDE or
-	 * EXCLUDE request.
-	 *
-	 * @param parsedObject PObject to determine whether to include in
-	 *         Globals etc.
-	 * @return boolean true if the object should be included, else false
-	 *         to exclude it
+	 * This method should be called by finishObject implementations in order to
+	 * check if the parsed object is affected by an INCLUDE or EXCLUDE request.
+	 * 
+	 * @param parsedObject
+	 *            PObject to determine whether to include in Globals etc.
+	 * @return boolean true if the object should be included, else false to
+	 *         exclude it
 	 */
-	protected final boolean includeObject(CampaignSourceEntry source, PObject parsedObject)
+	protected final boolean includeObject(CampaignSourceEntry source,
+		PObject parsedObject)
 	{
 		// Null check; never add nulls or objects without a name/key name
 		if ((parsedObject == null) || (parsedObject.getDisplayName() == null)
@@ -368,20 +390,24 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	}
 
 	/**
-	 * This method retrieves a PObject from globals by its key.
-	 * This is used to avoid duplicate loads, get objects to forget or
-	 * modify, etc.
-	 * @param aKey String key of PObject to retrieve
+	 * This method retrieves a PObject from globals by its key. This is used to
+	 * avoid duplicate loads, get objects to forget or modify, etc.
+	 * 
+	 * @param aKey
+	 *            String key of PObject to retrieve
 	 * @return PObject from Globals
 	 */
 	protected abstract T getObjectKeyed(String aKey);
 
 	/**
 	 * This method loads a single LST formatted file.
-	 * @param sourceEntry CampaignSourceEntry containing the absolute file path
-	 * or the URL from which to read LST formatted data.
+	 * 
+	 * @param sourceEntry
+	 *            CampaignSourceEntry containing the absolute file path or the
+	 *            URL from which to read LST formatted data.
 	 */
-	protected void loadLstFile(LoadContext context, CampaignSourceEntry sourceEntry)
+	protected void loadLstFile(LoadContext context,
+		CampaignSourceEntry sourceEntry)
 	{
 		setChanged();
 		notifyObservers(sourceEntry.getURI());
@@ -461,60 +487,59 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		}
 		else
 		{
+			T obj = context.ref.constructCDOMObject(getLoadClass(), firstToken);
+			obj.setName(firstToken);
+			obj.setSourceCampaign(sourceEntry.getCampaign());
+			obj.setSourceURI(sourceEntry.getURI());
+			// first column is the name; after that are LST tags
+			String restOfLine = line.substring(sepLoc).trim();
 			try
 			{
-				T obj =
-						context.ref.constructCDOMObject(getLoadClass(),
-							firstToken);
-				obj.setName(firstToken);
-				obj.setSourceCampaign(sourceEntry.getCampaign());
-				obj.setSourceURI(sourceEntry.getURI());
-				// first column is the name; after that are LST tags
-				String restOfLine = line.substring(sepLoc).trim();
-
 				parseLine(obj, restOfLine, sourceEntry);
-				parseLine(context, obj, line, sourceEntry);
-				return obj;
 			}
 			catch (PersistenceLayerException ple)
 			{
+				//TODO line number isn't -1 :(
 				logError(PropertyFactory.getFormattedString(
 					"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
 					sourceEntry.getURI(), currentLineNumber, ple.getMessage()));
 				Logging.debugPrint("Parse error:", ple); //$NON-NLS-1$
-				return null;
 			}
 			catch (Throwable t)
 			{
+				//TODO line number isn't -1 :(
 				logError(PropertyFactory.getFormattedString(
 					"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
 					sourceEntry.getURI(), currentLineNumber, t.getMessage()));
 				Logging.errorPrint(PropertyFactory
 					.getString("Errors.LstFileLoader.Ignoring"), //$NON-NLS-1$
 					t);
-				return null;
 			}
+			parseLine(context, obj, line, sourceEntry);
+			return obj;
 		}
 		return null;
 	}
 
 	/**
-	 * This method, when implemented, will perform a single .FORGET
-	 * operation.
-	 *
-	 * @param objToForget containing the object to forget
+	 * This method, when implemented, will perform a single .FORGET operation.
+	 * 
+	 * @param objToForget
+	 *            containing the object to forget
 	 */
 	protected abstract void performForget(T objToForget);
 
 	/**
 	 * This method will perform a single .COPY operation.
-	 *
-	 * @param baseName String name of the object to copy
-	 * @param copyName String name of the target object
-	 * @throws PersistenceLayerException 
+	 * 
+	 * @param baseName
+	 *            String name of the object to copy
+	 * @param copyName
+	 *            String name of the target object
+	 * @throws PersistenceLayerException
 	 */
-	private void performCopy(LoadContext context, CampaignSourceEntry source, String baseKey, String copyName)
-		throws PersistenceLayerException
+	private void performCopy(LoadContext context, CampaignSourceEntry source,
+		String baseKey, String copyName) throws PersistenceLayerException
 	{
 		T object = getObjectKeyed(baseKey);
 
@@ -534,13 +559,15 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	}
 
 	/**
-	 * This method will perform a single .COPY operation based on the LST
-	 * file content.
-	 * @param lstLine String containing the LST source for the
-	 * .COPY operation
-	 * @throws PersistenceLayerException 
+	 * This method will perform a single .COPY operation based on the LST file
+	 * content.
+	 * 
+	 * @param lstLine
+	 *            String containing the LST source for the .COPY operation
+	 * @throws PersistenceLayerException
 	 */
-	private void performCopy(LoadContext context, ModEntry me) throws PersistenceLayerException
+	private void performCopy(LoadContext context, ModEntry me)
+		throws PersistenceLayerException
 	{
 		String lstLine = me.getLstLine();
 		final int nameEnd = lstLine.indexOf(COPY_SUFFIX);
@@ -550,11 +577,11 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	}
 
 	/**
-	 * This method will perform a multi-line .MOD operation. This is used
-	 * for example in MODs of CLASSES which can have multiple lines. Loaders
-	 * can [typically] use the name without checking
-	 * for (or stripping off) .MOD due to the implementation of
-	 * PObject.setName()
+	 * This method will perform a multi-line .MOD operation. This is used for
+	 * example in MODs of CLASSES which can have multiple lines. Loaders can
+	 * [typically] use the name without checking for (or stripping off) .MOD due
+	 * to the implementation of PObject.setName()
+	 * 
 	 * @param entryList
 	 */
 	private void performMod(LoadContext context, List<ModEntry> entryList)
@@ -584,44 +611,34 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		{
 			for (ModEntry element : entryList)
 			{
-				try
+				boolean noSource = object.getSourceEntry() == null;
+				int hashCode = 0;
+				if (!noSource)
 				{
-					boolean noSource = object.getSourceEntry() == null;
-					int hashCode = 0;
-					if (!noSource)
-					{
-						hashCode = object.getSourceEntry().hashCode();
-					}
-
-					String line = element.getLstLine();
-					int sepLoc = line.indexOf(FIELD_SEPARATOR);
-					String restOfLine = line.substring(sepLoc).trim();
-					parseLine(object, restOfLine, element.getSource());
-
-					if ((noSource && object.getSourceEntry() != null)
-						|| (!noSource && hashCode != object.getSourceEntry()
-							.hashCode()))
-					{
-						// We never had a source and now we do so set the source
-						// map or we did have a source and now the hashCode is
-						// different so the MOD line must have updated it.
-						try
-						{
-							object.setSourceMap(element.getSourceMap());
-						}
-						catch (ParseException notUsed)
-						{
-							Logging.errorPrintLocalised(
-								"Errors.LstFileLoader.ParseDate", sourceMap); //$NON-NLS-1$
-						}
-					}
+					hashCode = object.getSourceEntry().hashCode();
 				}
-				catch (PersistenceLayerException ple)
+
+				String line = element.getLstLine();
+				int sepLoc = line.indexOf(FIELD_SEPARATOR);
+				String restOfLine = line.substring(sepLoc).trim();
+				parseLine(object, restOfLine, element.getSource());
+
+				if ((noSource && object.getSourceEntry() != null)
+					|| (!noSource && hashCode != object.getSourceEntry()
+						.hashCode()))
 				{
-					logError(PropertyFactory.getFormattedString(
-						"Errors.LstFileLoader.ModParseError", //$NON-NLS-1$
-						element.getSource().getURI(), element.getLineNumber(),
-						ple.getMessage()));
+					// We never had a source and now we do so set the source
+					// map or we did have a source and now the hashCode is
+					// different so the MOD line must have updated it.
+					try
+					{
+						object.setSourceMap(element.getSourceMap());
+					}
+					catch (ParseException notUsed)
+					{
+						Logging.errorPrintLocalised(
+							"Errors.LstFileLoader.ParseDate", sourceMap); //$NON-NLS-1$
+					}
 				}
 			}
 			completeObject(entry.getSource(), object);
@@ -642,9 +659,11 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 
 	/**
 	 * This method will process the lines containing a .COPY directive
-	 * @throws PersistenceLayerException 
+	 * 
+	 * @throws PersistenceLayerException
 	 */
-	private void processCopies(LoadContext context) throws PersistenceLayerException
+	private void processCopies(LoadContext context)
+		throws PersistenceLayerException
 	{
 		for (ModEntry me : copyLineList)
 		{
@@ -693,8 +712,8 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	}
 
 	/**
-	 * This class is an entry mapping a mod to its source.
-	 * Once created, instances of this class are immutable.
+	 * This class is an entry mapping a mod to its source. Once created,
+	 * instances of this class are immutable.
 	 */
 	public static class ModEntry
 	{
@@ -705,14 +724,17 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 
 		/**
 		 * ModEntry constructor.
-		 * @param aSource CampaignSourceEntry containing the MOD line
-		 *         [must not be null]
-		 * @param aLstLine LST syntax modification
-		 *         [must not be null]
+		 * 
+		 * @param aSource
+		 *            CampaignSourceEntry containing the MOD line [must not be
+		 *            null]
+		 * @param aLstLine
+		 *            LST syntax modification [must not be null]
 		 * @param aLineNumber
 		 * @param aSourceMap
 		 * 
-		 * @throws IllegalArgumentException if aSource or aLstLine is null.
+		 * @throws IllegalArgumentException
+		 *             if aSource or aLstLine is null.
 		 */
 		public ModEntry(final CampaignSourceEntry aSource,
 			final String aLstLine, final int aLineNumber,
@@ -720,7 +742,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		{
 			super();
 
-			// These are programming errors so the msgs don't need to be 
+			// These are programming errors so the msgs don't need to be
 			// internationalized.
 			if (aSource == null)
 			{
@@ -740,6 +762,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 
 		/**
 		 * This method gets the LST formatted source line for the .MOD
+		 * 
 		 * @return String in LST format, unmodified from the source file
 		 */
 		public String getLstLine()
@@ -749,6 +772,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 
 		/**
 		 * This method gets the source of the .MOD operation
+		 * 
 		 * @return CampaignSourceEntry indicating where the .MOD came from
 		 */
 		public CampaignSourceEntry getSource()
@@ -757,7 +781,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		}
 
 		/**
-		 *
+		 * 
 		 * @return The source map for this MOD entry
 		 */
 		public Map<String, String> getSourceMap()
@@ -766,7 +790,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		}
 
 		/**
-		 *
+		 * 
 		 * @return The line number of the original file for this MOD entry
 		 */
 		public int getLineNumber()

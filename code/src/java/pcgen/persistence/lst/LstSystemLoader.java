@@ -79,6 +79,7 @@ import pcgen.util.UnreachableError;
 public final class LstSystemLoader extends Observable implements SystemLoader,
 		Observer
 {
+
 	private static final FilenameFilter gameModeFileFilter =
 			new FilenameFilter()
 			{
@@ -470,7 +471,7 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 			equipmentLoader.loadLstFiles(context, equipmentFileList);
 			companionModLoader.loadLstFiles(context, companionmodFileList);
 			kitLoader.loadLstFiles(context, kitFileList);
-			
+
 			// Load the bio settings files
 			bioLoader.loadLstFiles(context, bioSetFileList);
 
@@ -499,6 +500,7 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 			showLicensesIfNeeded();
 			showSponsorsIfNeeded();
 			
+			context.ref.buildDerivedObjects();
 			context.ref.validate();
 		}
 		catch (Throwable thr)

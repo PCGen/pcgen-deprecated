@@ -29,17 +29,16 @@ import java.util.StringTokenizer;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- *
- * @author  David Rice <david-pcgen@jcuz.com>
+ * 
+ * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class WeaponProfLoader extends LstObjectFileLoader<WeaponProf>
+public final class WeaponProfLoader extends GenericLstLoader<WeaponProf>
 {
 	/** Creates a new instance of WeaponProfLoader */
 	public WeaponProfLoader()
@@ -48,7 +47,8 @@ public final class WeaponProfLoader extends LstObjectFileLoader<WeaponProf>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
+	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public void parseLine(WeaponProf prof, String lstLine,
@@ -105,7 +105,7 @@ public final class WeaponProfLoader extends LstObjectFileLoader<WeaponProf>
 	/**
 	 * Get the weapon prof object with key aKey
 	 * 
-	 * @param aKey 
+	 * @param aKey
 	 * @return PObject
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#getObjectKeyed(java.lang.String)
 	 */
@@ -131,34 +131,27 @@ public final class WeaponProfLoader extends LstObjectFileLoader<WeaponProf>
 	protected void addGlobalObject(final PObject pObj)
 	{
 		Globals.addWeaponProf((WeaponProf) pObj);
-		// TODO - What exactly is this doing?  Why would we set that it is not
+		// TODO - What exactly is this doing? Why would we set that it is not
 		// a new item when we just added it?
 		pObj.setNewItem(false);
 	}
 
 	@Override
-	public void parseToken(LoadContext context, WeaponProf wp, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
-		WeaponProfLstToken token = TokenStore.inst().getToken(WeaponProfLstToken.class,
-				key);
-		if (token == null) {
-			if (!PObjectLoader.parseTag(context, wp, key, value)) {
-				Logging.errorPrint("Illegal WeaponProf Token '" + key + "' for "
-						+ wp.getDisplayName() + " in " + source.getURI()
-						+ " of " + source.getCampaign() + ".");
-			}
-		} else {
-			LstUtils.deprecationCheck(token, wp, value);
-			if (!token.parse(context, wp, value))
-			{
-				Logging.errorPrint("Error parsing token " + key + " in WeaponProf "
-						+ wp.getDisplayName() + ':' + source.getURI() + ':'
-						+ value + "\"");
-			}
-		}
-	}
-	
-	@Override
-	public Class<WeaponProf> getLoadClass() {
+	public Class<WeaponProf> getLoadClass()
+	{
 		return WeaponProf.class;
+	}
+
+	@Override
+	public Class<? extends CDOMCompatibilityToken<WeaponProf>> getCompatibilityTokenClass()
+	{
+		//TODO Need to specify this
+		return null;
+	}
+
+	@Override
+	public Class<WeaponProfLstToken> getTokenClass()
+	{
+		return WeaponProfLstToken.class;
 	}
 }

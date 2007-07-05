@@ -39,11 +39,11 @@ import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- *
- * @author  David Rice <david-pcgen@jcuz.com>
+ * 
+ * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public class AbilityLoader extends LstObjectFileLoader<Ability>
+public class AbilityLoader extends GenericLstLoader<Ability>
 {
 	/** Creates a new instance of AbilityLoader */
 	public AbilityLoader()
@@ -52,7 +52,8 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
+	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public void parseLine(Ability ability, String lstLine,
@@ -86,11 +87,9 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 				LstUtils.deprecationCheck(token, anAbility, value);
 				if (!token.parse(anAbility, value))
 				{
-					Logging
-						.errorPrintLocalised(
-							"Errors.AbilityLoader.ParsingError", //$NON-NLS-1$
-							anAbility.getDisplayName(), source.getURI(),
-							colString);
+					Logging.errorPrintLocalised(
+						"Errors.AbilityLoader.ParsingError", //$NON-NLS-1$
+						anAbility.getDisplayName(), source.getURI(), colString);
 				}
 			}
 			//
@@ -101,9 +100,9 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 			{
 				continue;
 			}
-			/****************
-			 * TODO: The ADD: tag is parsed in PObjectLoader. This code never gets processed.
-			 ****************
+			/*******************************************************************
+			 * TODO: The ADD: tag is parsed in PObjectLoader. This code never
+			 * gets processed. ***************
 			 */
 			else if (colString.startsWith("ADD:"))
 			{
@@ -116,8 +115,8 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 			}
 		}
 
-		//setChanged();
-		//notifyObservers(anAbility);
+		// setChanged();
+		// notifyObservers(anAbility);
 
 		completeObject(source, anAbility);
 	}
@@ -132,19 +131,19 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 		{
 			return null;
 		}
-		
+
 		String abilityCatName;
 		String abilityKey;
-		
+
 		String[] parts = aKey.split("\\|");
 		if (parts.length == 2 && parts[0].startsWith("CATEGORY="))
 		{
 			abilityCatName = parts[0].substring(9);
-			abilityKey = parts[1]; 
+			abilityKey = parts[1];
 		}
 		else
 		{
-			abilityCatName =  Constants.ALL_CATEGORIES;
+			abilityCatName = Constants.ALL_CATEGORIES;
 			abilityKey = aKey;
 		}
 		return Globals.getAbilityKeyed(abilityCatName, abilityKey);
@@ -175,28 +174,8 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 	}
 
 	@Override
-	public void parseToken(LoadContext context, Ability ability, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
-		AbilityLstToken token = TokenStore.inst().getToken(AbilityLstToken.class,
-				key);
-		if (token == null) {
-			if (!PObjectLoader.parseTag(context, ability, key, value)) {
-				Logging.errorPrint("Illegal ability Token '" + key + "' for "
-						+ ability.getDisplayName() + " in " + source.getURI()
-						+ " of " + source.getCampaign() + ".");
-			}
-		} else {
-			LstUtils.deprecationCheck(token, ability, value);
-			if (!token.parse(context, ability, value))
-			{
-				Logging.errorPrint("Error parsing token " + key + " in ability "
-						+ ability.getDisplayName() + ':' + source.getURI() + ':'
-						+ value + "\"");
-			}
-		}
-	}
-
-	@Override
-	public Class<Ability> getLoadClass() {
+	public Class<Ability> getLoadClass()
+	{
 		return Ability.class;
 	}
 
@@ -204,7 +183,20 @@ public class AbilityLoader extends LstObjectFileLoader<Ability>
 	protected Ability getCDOMObjectKeyed(LoadContext context, String key)
 	{
 		throw new IllegalArgumentException("Cannot determine Category");
-//		return context.ref.getConstructedCDOMObject(getLoadClass(),
-//			AbilityCategory.FEAT, key);
+		// return context.ref.getConstructedCDOMObject(getLoadClass(),
+		// AbilityCategory.FEAT, key);
+	}
+
+	@Override
+	public Class<? extends CDOMCompatibilityToken<Ability>> getCompatibilityTokenClass()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<AbilityLstToken> getTokenClass()
+	{
+		return AbilityLstToken.class;
 	}
 }

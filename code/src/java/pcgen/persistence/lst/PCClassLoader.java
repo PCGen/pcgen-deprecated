@@ -22,10 +22,14 @@
  */
 package pcgen.persistence.lst;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.util.ReverseIntegerComparator;
+import pcgen.base.util.TripleKeyMap;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
@@ -53,7 +57,6 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 	@Override
 	public PCClass parseLine(LoadContext context, PCClass target,
 		String lstLine, CampaignSourceEntry source)
-		throws PersistenceLayerException
 	{
 		int tabLoc = lstLine.indexOf("\t");
 		String firstToken;
@@ -180,7 +183,6 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 
 	private void parseSubClassLine(LoadContext context, SubClass sc,
 		String restOfLine, CampaignSourceEntry source)
-		throws PersistenceLayerException
 	{
 		StringTokenizer colToken = new StringTokenizer(restOfLine, "\t");
 		while (colToken.hasMoreTokens())
@@ -221,7 +223,6 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 
 	private void parseClassLine(LoadContext context, PCClass target,
 		String lstLine, CampaignSourceEntry source)
-		throws PersistenceLayerException
 	{
 		StringTokenizer colToken = new StringTokenizer(lstLine, "\t");
 		while (colToken.hasMoreTokens())
@@ -446,11 +447,11 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			{
 				continue;
 			}
-			else if (colString.equals("HASSUBCLASS"))
+			else if (colString.startsWith("HASSUBCLASS:"))
 			{
 				pcClass.setHasSubClass(true);
 			}
-			else if (colString.equals("HASSUBSTITUTIONLEVEL"))
+			else if (colString.startsWith("HASSUBSTITUTIONLEVEL:"))
 			{
 				pcClass.setHasSubstitutionClass(true);
 			}
@@ -633,7 +634,6 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 
 	public void parseToken(LoadContext context, PCClass pcclass, String key,
 		String value, CampaignSourceEntry source)
-		throws PersistenceLayerException
 	{
 		PCClassUniversalLstToken univtoken =
 				TokenStore.inst().getToken(PCClassUniversalLstToken.class, key);
@@ -642,38 +642,141 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 
 		if (classtoken == null)
 		{
-			if (univtoken == null)
+			if (!processClassCompatible(context, pcclass, key, value, source))
 			{
-				if (!PObjectLoader.parseTag(context, pcclass, key, value))
+				if (univtoken == null)
 				{
-					Logging
-						.errorPrint("Illegal pcclass Token '" + key + "' for "
-							+ pcclass.getDisplayName() + " in "
-							+ source.getURI() + " of " + source.getCampaign()
-							+ ".");
+					Logging.clearParseMessages();
+					try
+					{
+						if (!PObjectLoader.parseTag(context, pcclass, key, value))
+						{
+							Logging.errorPrint("Illegal "
+								+ getLoadClass().getName() + " Token '" + key
+								+ "' for " + pcclass.getDisplayName() + " in "
+								+ source.getURI() + " of " + source.getCampaign()
+								+ ".");
+						}
+					}
+					catch (PersistenceLayerException e)
+					{
+						Logging
+							.errorPrint("Error parsing " + getLoadClass().getName()
+								+ " Token '" + key + "' for "
+								+ pcclass.getDisplayName() + " in " + source.getURI()
+								+ " of " + source.getCampaign() + ".");
+					}
 				}
-			}
-			else
-			{
-				LstUtils.deprecationCheck(univtoken, pcclass, value);
-				if (!univtoken.parse(context, pcclass, value))
+				else
 				{
-					Logging.errorPrint("Error parsing token " + key
-						+ " in pcclass " + pcclass.getDisplayName() + ':'
-						+ source.getURI() + ':' + value + "\"");
+					LstUtils.deprecationCheck(univtoken, pcclass, value);
+					try
+					{
+						if (!univtoken.parse(context, pcclass, value))
+						{
+							Logging.errorPrint("Error parsing token " + key
+								+ " in pcclass " + pcclass.getDisplayName() + ':'
+								+ source.getURI() + ':' + value + "\"");
+						}
+					}
+					catch (PersistenceLayerException e)
+					{
+						Logging
+							.errorPrint("Error parsing " + getLoadClass().getName()
+								+ " Token '" + key + "' for "
+								+ pcclass.getDisplayName() + " in " + source.getURI()
+								+ " of " + source.getCampaign() + ".");
+					}
 				}
 			}
 		}
 		else
 		{
 			LstUtils.deprecationCheck(classtoken, pcclass, value);
-			if (!classtoken.parse(context, pcclass, value))
+			try
 			{
-				Logging.errorPrint("Error parsing token " + key
-					+ " in pcclass " + pcclass.getDisplayName() + ':'
-					+ source.getURI() + ':' + value + "\"");
+				if (!classtoken.parse(context, pcclass, value))
+				{
+					Logging.markParseMessages();
+					if (processClassCompatible(context, pcclass, key, value, source))
+					{
+						Logging.clearParseMessages();
+					}
+					else
+					{
+						Logging.rewindParseMessages();
+						Logging.replayParsedMessages();
+						Logging.errorPrint("Error parsing token " + key
+							+ " in pcclass " + pcclass.getDisplayName() + ':'
+							+ source.getURI() + ':' + value + "\"");
+					}
+				}
+			}
+			catch (PersistenceLayerException e)
+			{
+				Logging.errorPrint("Error parsing " + getLoadClass().getName()
+					+ " Token '" + key + "' for " + pcclass.getDisplayName()
+					+ " in " + source.getURI() + " of " + source.getCampaign()
+					+ ".");
 			}
 		}
+	}
+
+	private static final ReverseIntegerComparator REVERSE =
+			new ReverseIntegerComparator();
+
+	private boolean processClassCompatible(LoadContext context, PCClass pcclass,
+		String key, String value, CampaignSourceEntry source)
+	{
+		Collection<? extends CDOMCompatibilityToken<PCClass>> tokens =
+				TokenStore.inst().getCompatibilityToken(
+					PCClassClassLstCompatibilityToken.class, key);
+		if (tokens != null && !tokens.isEmpty())
+		{
+			TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PCClass>> tkm =
+					new TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PCClass>>();
+			for (CDOMCompatibilityToken<PCClass> tok : tokens)
+			{
+				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
+					.valueOf(tok.compatibilitySubLevel()), Integer.valueOf(tok
+					.compatibilityPriority()), tok);
+			}
+			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
+			primarySet.addAll(tkm.getKeySet());
+			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
+			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
+			for (Integer level : primarySet)
+			{
+				secondarySet.addAll(tkm.getSecondaryKeySet(level));
+				for (Integer subLevel : secondarySet)
+				{
+					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
+					for (Integer priority : tertiarySet)
+					{
+						CDOMCompatibilityToken<PCClass> tok =
+								tkm.get(level, subLevel, priority);
+						try
+						{
+							if (tok.parse(context, pcclass, value))
+							{
+								return true;
+							}
+						}
+						catch (PersistenceLayerException e)
+						{
+							Logging.errorPrint("Error parsing "
+								+ getLoadClass().getName() + " Token '" + key
+								+ "' for " + pcclass.getDisplayName() + " in "
+								+ source.getURI() + " of "
+								+ source.getCampaign() + ".");
+						}
+					}
+					tertiarySet.clear();
+				}
+				secondarySet.clear();
+			}
+		}
+		return false;
 	}
 
 	/*

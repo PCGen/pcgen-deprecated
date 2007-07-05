@@ -29,17 +29,16 @@ import pcgen.core.Constants;
 import pcgen.core.Domain;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- *
- * @author  David Rice <david-pcgen@jcuz.com>
+ * 
+ * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public class DomainLoader extends LstObjectFileLoader<Domain>
+public class DomainLoader extends GenericLstLoader<Domain>
 {
 	/** Creates a new instance of DomainLoader */
 	public DomainLoader()
@@ -48,7 +47,8 @@ public class DomainLoader extends LstObjectFileLoader<Domain>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
+	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public void parseLine(Domain domain, String lstLine,
@@ -81,8 +81,8 @@ public class DomainLoader extends LstObjectFileLoader<Domain>
 				if (!token.parse(domain, value))
 				{
 					Logging.errorPrint("Error parsing domain "
-						+ domain.getDisplayName() + ':' + source.getURI()
-						+ ':' + colString + "\"");
+						+ domain.getDisplayName() + ':' + source.getURI() + ':'
+						+ colString + "\"");
 				}
 			}
 			else if (PObjectLoader.parseTag(domain, colString))
@@ -127,29 +127,21 @@ public class DomainLoader extends LstObjectFileLoader<Domain>
 	}
 
 	@Override
-	public void parseToken(LoadContext context, Domain domain, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
-		DomainLstToken token = TokenStore.inst().getToken(DomainLstToken.class,
-				key);
-
-		if (token == null) {
-			if (!PObjectLoader.parseTag(context, domain, key, value)) {
-				Logging.errorPrint("Illegal domain Token '" + key + "' for "
-						+ domain.getDisplayName() + " in " + source.getURI()
-						+ " of " + source.getCampaign() + ".");
-			}
-		} else {
-			LstUtils.deprecationCheck(token, domain, value);
-			if (!token.parse(context, domain, value))
-			{
-				Logging.errorPrint("Error parsing token " + key + " in domain "
-						+ domain.getDisplayName() + ':' + source.getURI() + ':'
-						+ value + "\"");
-			}
-		}
+	public Class<Domain> getLoadClass()
+	{
+		return Domain.class;
 	}
 
 	@Override
-	public Class<Domain> getLoadClass() {
-		return Domain.class;
+	public Class<? extends CDOMCompatibilityToken<Domain>> getCompatibilityTokenClass()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<DomainLstToken> getTokenClass()
+	{
+		return DomainLstToken.class;
 	}
 }

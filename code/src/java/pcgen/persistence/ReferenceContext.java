@@ -18,6 +18,7 @@
 package pcgen.persistence;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import pcgen.cdom.base.CDOMAddressedSingleRef;
@@ -29,7 +30,14 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
+import pcgen.core.ClassSkillList;
+import pcgen.core.ClassSpellList;
+import pcgen.core.Domain;
+import pcgen.core.DomainSpellList;
+import pcgen.core.PCClass;
 import pcgen.core.PObject;
+import pcgen.core.SpellProgressionInfo;
+import pcgen.core.SubClass;
 import pcgen.util.StringPClassUtil;
 
 public class ReferenceContext
@@ -195,6 +203,34 @@ public class ReferenceContext
 		Class<T> c, String s)
 	{
 		return simple.containsConstructedCDOMObject(c, s);
+	}
+
+	public void buildDerivedObjects()
+	{
+		Set<Domain> domains = simple.getConstructedCDOMObjects(Domain.class);
+		for (Domain d : domains)
+		{
+			simple.constructCDOMObject(DomainSpellList.class, d.getKeyName());
+		}
+		Set<PCClass> classes = simple.getConstructedCDOMObjects(PCClass.class);
+		for (PCClass pcc : classes)
+		{
+			simple.constructCDOMObject(ClassSkillList.class, pcc.getKeyName());
+			//TODO Need to limit which are built to only spellcasters...
+			simple.constructCDOMObject(ClassSpellList.class, pcc.getKeyName());
+			simple.constructCDOMObject(SpellProgressionInfo.class, pcc.getKeyName());
+			List<SubClass> subclasses = pcc.getSubClassList();
+			if (subclasses != null)
+			{
+				for (SubClass subcl : subclasses)
+				{
+					simple.constructCDOMObject(ClassSkillList.class, subcl.getKeyName());
+					//TODO Need to limit which are built to only spellcasters...
+					simple.constructCDOMObject(ClassSpellList.class, subcl.getKeyName());
+					simple.constructCDOMObject(SpellProgressionInfo.class, subcl.getKeyName());
+				}
+			}
+		}
 	}
 
 	public <T extends PObject> CDOMAddressedSingleRef<T> getCDOMAddressedReference(

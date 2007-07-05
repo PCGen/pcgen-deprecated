@@ -21,10 +21,22 @@
 package pcgen.util;
 
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+import pcgen.core.SettingsHandler;
 
 /**
- * This contains logging functions. Should probably be handled via Log4J.
+ * This contains logging functions. It is a proxy for the 
+ * Java logging API.
+ * 
  * @author     Jonas Karlsson <jujutsunerd@sf.net>
  * @version    $Revision$
  */
@@ -33,6 +45,60 @@ public class Logging
 	private static boolean debugMode = false;
 	private static final Toolkit s_TOOLKIT = Toolkit.getDefaultToolkit();
 
+	/** Log level for error output. */
+	public static final Level ERROR = Level.SEVERE;
+
+	/** Log level for LST error output. */
+	public static final Level LST_ERROR = PCGenLogLevel.LST_ERROR;
+
+	/** Logging level for LST warnings such as deprectaed syntax use. */
+	public static final Level LST_WARNING = PCGenLogLevel.LST_WARNING;
+
+	/** Logging level for LST information such as references to missing items in PRE or CHOOSE tags. */
+	public static final Level LST_INFO = PCGenLogLevel.LST_INFO;
+
+	/** Log level for application debug output. */
+	public static final Level DEBUG = Level.FINER;
+
+    /**
+     * Do any required initialisation of the Logger.
+     */
+    static
+	{
+    	// Set a default configuration file if none was specified.
+		Properties p = System.getProperties();
+		File propsFile =
+				new File(SettingsHandler.getDecodedPCGenFilesDir()
+					.getAbsolutePath()
+					+ File.separator + "logging.properties");
+		if (!propsFile.exists())
+		{
+			propsFile = new File("logging.properties");
+		}
+		if (propsFile.exists()
+			&& null == p.get("java.util.logging.config.file"))
+		{
+			p.put("java.util.logging.config.file", propsFile.getAbsolutePath());
+		}
+
+		// Get Java Loggign to read in the config. 
+    	try
+		{
+			LogManager.getLogManager().readConfiguration();
+		}
+		catch (SecurityException e)
+		{
+			System.err.println("Failed to read logging configuration. Error was:");
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			System.err
+				.println("Failed to read logging configuration. Error was:");
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Set debugging state: <code>true</code> is on.
 	 *
@@ -41,6 +107,16 @@ public class Logging
 	public static void setDebugMode(final boolean argDebugMode)
 	{
 		debugMode = argDebugMode;
+		if (debugMode)
+		{
+			Logger.getLogger("pcgen").setLevel(DEBUG);
+			Logger.getLogger("plugin").setLevel(DEBUG);
+		}
+		else
+		{
+			Logger.getLogger("pcgen").setLevel(LST_WARNING);
+			Logger.getLogger("plugin").setLevel(LST_WARNING);
+		}
 	}
 
 	/**
@@ -60,9 +136,10 @@ public class Logging
 	 */
 	public static void debugPrint(final String s)
 	{
-		if (isDebugMode())
+		Logger l = getLogger();
+		if (l.isLoggable(DEBUG))
 		{
-			System.out.println(s);
+			l.log(DEBUG, s);
 		}
 	}
 
@@ -74,9 +151,10 @@ public class Logging
 	 */
 	public static void debugPrint(final String param1, Object param2)
 	{
-		if (isDebugMode())
+		Logger l = getLogger();
+		if (l.isLoggable(DEBUG))
 		{
-			System.out.println(param1 + param2);
+			l.log(DEBUG, param1 + param2);
 		}
 	}
 
@@ -88,10 +166,11 @@ public class Logging
 	 */
 	public static void debugPrintLocalised(final String param1, Object param2)
 	{
-		if (isDebugMode())
+		Logger l = getLogger();
+		if (l.isLoggable(DEBUG))
 		{
 			String msg = PropertyFactory.getFormattedString(param1, param2);
-			System.out.println(msg);
+			l.log(DEBUG, msg);
 		}
 	}
 
@@ -105,11 +184,12 @@ public class Logging
 	public static void debugPrintLocalised(final String message, Object param1,
 		Object param2)
 	{
-		if (isDebugMode())
+		Logger l = getLogger();
+		if (l.isLoggable(DEBUG))
 		{
 			String msg =
 					PropertyFactory.getFormattedString(message, param1, param2);
-			System.out.println(msg);
+			l.log(DEBUG, msg);
 		}
 	}
 
@@ -160,9 +240,31 @@ public class Logging
 		}
 
 		final String msg = PropertyFactory.getFormattedString(aKey, varargs);
-		System.err.println(msg);
+		Logger l = getLogger();
+		if (l.isLoggable(ERROR))
+		{
+			l.log(ERROR, msg);
+		}
 	}
 
+	/**
+	 * Beep and print error message if PCGen is debugging.
+	 *
+	 * @param s String error message
+	 */
+	public static void deprecationPrint(final String s)
+	{
+		if (isDebugMode())
+		{
+			s_TOOLKIT.beep();
+		}
+		Logger l = getLogger();
+		if (l.isLoggable(LST_WARNING) && SettingsHandler.outputDeprecationMessages())
+		{
+			l.log(LST_WARNING, s);
+		}
+	}
+	
 	/**
 	 * Beep and print error message if PCGen is debugging.
 	 *
@@ -175,7 +277,11 @@ public class Logging
 			s_TOOLKIT.beep();
 		}
 
-		System.err.println(s);
+		Logger l = getLogger();
+		if (l.isLoggable(ERROR))
+		{
+			l.log(ERROR, s);
+		}
 	}
 
 	/**
@@ -228,5 +334,134 @@ public class Logging
 		sb.append(numFmt.format(rt.maxMemory() / 1024.0));
 		sb.append("Kb max.");
 		return sb.toString();
+	}
+
+	private static LinkedList<QueuedMessage> queuedMessages =
+			new LinkedList<QueuedMessage>();
+
+	public static void addParseMessage(Level lvl, String msg)
+	{
+		queuedMessages.add(new QueuedMessage(lvl, msg));
+	}
+
+	private static int queuedMessageMark = -1;
+
+	public static void markParseMessages()
+	{
+		queuedMessageMark = queuedMessages.size();
+	}
+
+	public static void rewindParseMessages()
+	{
+		while (queuedMessageMark > -1 && queuedMessages.size() > queuedMessageMark)
+		{
+			queuedMessages.removeLast();
+		}
+	}
+
+	public static void replayParsedMessages()
+	{
+		Logger l = getLogger();
+		for (QueuedMessage msg : queuedMessages)
+		{
+			if (l.isLoggable(msg.level))
+			{
+				l.log(msg.level, msg.message, msg.stackTrace);
+			}
+
+		}
+		queuedMessageMark = -1;
+	}
+
+	public static void clearParseMessages()
+	{
+		queuedMessageMark = -1;
+		queuedMessages.clear();
+	}
+
+	private static class QueuedMessage
+	{
+		public final Level level;
+		public final String message;
+		public final StackTraceElement[] stackTrace;
+
+		public QueuedMessage(Level lvl, String msg)
+		{
+			level = lvl;
+			message = msg;
+			stackTrace = Thread.currentThread().getStackTrace();
+		}
+	}
+
+	/**
+	 * Intentionally cause a NullPointerException and then print the stack trace.
+	 * Occasionally useful for debugging
+	 */
+	public static void printStackTrace()
+	{
+		String dummy = null;
+		try
+		{
+			dummy.length();
+		}
+		catch (NullPointerException npe)
+		{
+			npe.printStackTrace();
+		}
+	}
+
+	/**
+     * Retrieve a Logger object with the specified name. Generally 
+     * this name should be either the fully qualified class name, 
+     * or the package name.
+     * 
+     * @param name The name of the logger
+     * @return An instance of Logger that deals with the specified name.
+     */
+	private static java.util.logging.Logger getLogger()
+	{
+		StackTraceElement[] stack = new Throwable().getStackTrace();
+		StackTraceElement caller = null;
+
+		for (int i = 1; i < stack.length; i++) //1 to skip this method
+		{
+			if (!"pcgen.util.Logging".equals(stack[i].getClassName()))
+			{
+				caller = stack[i];
+				break;
+			}
+		}
+
+		String name =
+				(caller == null/*just in case*/) ? "" : caller.getClassName();
+
+		Logger l = java.util.logging.Logger.getLogger(name);
+		return l;
+	}
+
+	/**
+	 * List the current stack of all threads to STDOUT. 
+	 */
+	public static void reportAllThreads()
+	{
+		Map<Thread, StackTraceElement[]> allThreads = Thread.getAllStackTraces();
+		StringBuffer b = new StringBuffer();
+		for (Thread t : allThreads.keySet())
+		{
+			b.append("Thread: ");
+			b.append(t.getName());
+			b.append(", stacktrace:\n");
+			StackTraceElement[] traces = allThreads.get(t);
+			for (StackTraceElement element : traces)
+			{
+				b.append("  ");
+				b.append(element.toString());
+				b.append("\n");
+			}
+			
+		}
+		System.out.println("==== Thread listing ====");
+		System.out.println(b);
+		System.out.println("===== end listing  =====");
 	}
 }

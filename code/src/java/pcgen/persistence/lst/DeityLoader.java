@@ -29,18 +29,17 @@ import pcgen.core.Constants;
 import pcgen.core.Deity;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
  * This class is an LstObjectLoader that loads deity information.
- *
+ * 
  * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public class DeityLoader extends LstObjectFileLoader<Deity>
+public class DeityLoader extends GenericLstLoader<Deity>
 {
 	/**
 	 * Creates a new instance of DeityLoader
@@ -51,7 +50,8 @@ public class DeityLoader extends LstObjectFileLoader<Deity>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
+	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public void parseLine(Deity deity, String lstLine,
@@ -91,7 +91,7 @@ public class DeityLoader extends LstObjectFileLoader<Deity>
 			{
 				continue;
 			}
-			else 
+			else
 			{
 				Logging.errorPrint("Illegal deity info '" + colString
 					+ "' for " + deity.getDisplayName() + " in "
@@ -131,30 +131,21 @@ public class DeityLoader extends LstObjectFileLoader<Deity>
 	}
 
 	@Override
-	public void parseToken(LoadContext context, Deity deity, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
-
-		DeityLstToken token = TokenStore.inst().getToken(DeityLstToken.class,
-				key);
-
-		if (token == null) {
-			if (!PObjectLoader.parseTag(context, deity, key, value)) {
-				Logging.errorPrint("Illegal deity Token '" + key + "' for "
-						+ deity.getDisplayName() + " in " + source.getURI()
-						+ " of " + source.getCampaign() + ".");
-			}
-		} else {
-			LstUtils.deprecationCheck(token, deity, value);
-			if (!token.parse(context, deity, value))
-			{
-				Logging.errorPrint("Error parsing token " + key + " in deity "
-						+ deity.getDisplayName() + ':' + source.getURI() + ':'
-						+ value + "\"");
-			}
-		}
+	public Class<Deity> getLoadClass()
+	{
+		return Deity.class;
 	}
 
 	@Override
-	public Class<Deity> getLoadClass() {
-		return Deity.class;
+	public Class<? extends CDOMCompatibilityToken<Deity>> getCompatibilityTokenClass()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<DeityLstToken> getTokenClass()
+	{
+		return DeityLstToken.class;
 	}
 }

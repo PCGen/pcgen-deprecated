@@ -23,10 +23,14 @@
 package pcgen.persistence.lst;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.util.ReverseIntegerComparator;
+import pcgen.base.util.TripleKeyMap;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.CompoundAndFilter;
@@ -67,18 +71,16 @@ public final class ChooseLoader
 			LstUtils.deprecationCheck(token, target, value);
 			if (!token.parse(target, prefix, value))
 			{
-				// 514 deprecation changes
-				// Logging
-				// .errorPrint("Error parsing CHOOSE: " + key + ":" + value);
+				Logging.deprecationPrint("Error parsing CHOOSE: " + key + ":"
+					+ value);
 				return false;
 			}
 			return true;
 		}
 		else
 		{
-			// 514 deprecation changes
-			// Logging
-			// .errorPrint("Error parsing CHOOSE, invalid SubToken: " + key);
+			Logging.deprecationPrint("Error parsing CHOOSE, invalid SubToken: "
+				+ key);
 			return false;
 		}
 	}
@@ -91,23 +93,34 @@ public final class ChooseLoader
 				TokenStore.inst().getTokenMap(ChooseCDOMLstToken.class);
 		ChooseCDOMLstToken token = (ChooseCDOMLstToken) tokenMap.get(key);
 
-		if (token != null)
+		PrimitiveChoiceSet<?> chooser;
+		if (token == null)
 		{
-			LstUtils.deprecationCheck(token, obj, value);
-			PrimitiveChoiceSet<?> chooser = token.parse(context, obj, value);
+			chooser = processCompatible(context, obj, key, value);
 			if (chooser == null)
 			{
-				Logging.errorPrint("Error parsing CHOOSE in "
-					+ obj.getDisplayName() + ": \"" + value + "\"");
+				Logging.addParseMessage(Logging.LST_ERROR, "Illegal CHOOSE:"
+					+ key + " info '" + value + "'");
 				return null;
 			}
-			return chooser;
 		}
 		else
 		{
-			Logging.errorPrint("Illegal CHOOSE info '" + value + "'");
-			return null;
+			LstUtils.deprecationCheck(token, obj, value);
+			chooser = token.parse(context, obj, value);
+			if (chooser == null)
+			{
+				chooser = processCompatible(context, obj, key, value);
+				if (chooser == null)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR,
+						"Error parsing CHOOSE:" + key + " in "
+							+ obj.getDisplayName() + ": \"" + value + "\"");
+					return null;
+				}
+			}
 		}
+		return chooser;
 	}
 
 	public static <T extends PObject> PrimitiveChoiceSet<T> parseToken(
@@ -116,18 +129,18 @@ public final class ChooseLoader
 		// PC[TYPE=x|<primitive1>|<primitive2>|<primitive3>]|QUALIFIED[!TYPE=y,TYPE=z|<primitive4>]
 		if (value.charAt(0) == '|')
 		{
-			Logging.errorPrint("CHOOSE arguments may not start with | : "
-				+ value);
+			Logging.addParseMessage(Logging.LST_ERROR,
+				"CHOOSE arguments may not start with | : " + value);
 		}
 		if (value.charAt(value.length() - 1) == '|')
 		{
-			Logging
-				.errorPrint("CHOOSE arguments may not end with | : " + value);
+			Logging.addParseMessage(Logging.LST_ERROR,
+				"CHOOSE arguments may not end with | : " + value);
 		}
 		if (value.indexOf("||") != -1)
 		{
-			Logging.errorPrint("CHOOSE arguments uses double separator || : "
-				+ value);
+			Logging.addParseMessage(Logging.LST_ERROR,
+				"CHOOSE arguments uses double separator || : " + value);
 		}
 		List<PrimitiveChoiceFilter<T>> pcfList =
 				new ArrayList<PrimitiveChoiceFilter<T>>();
@@ -248,8 +261,7 @@ public final class ChooseLoader
 			tokKey = key.substring(0, equalLoc);
 			tokValue = key.substring(equalLoc + 1);
 		}
-		PrimitiveToken<T> prim =
-				TokenStore.inst().getPrimitive(cl, tokKey);
+		PrimitiveToken<T> prim = TokenStore.inst().getPrimitive(cl, tokKey);
 		if (prim == null)
 		{
 			if (tokKey.startsWith(Constants.LST_TYPE_OLD)
@@ -274,5 +286,62 @@ public final class ChooseLoader
 			prim.initialize(context, tokValue);
 		}
 		return prim;
+	}
+
+	private static final ReverseIntegerComparator REVERSE =
+			new ReverseIntegerComparator();
+
+	private static PrimitiveChoiceSet<?> processCompatible(LoadContext context,
+		CDOMObject pobj, String key, String value)
+	{
+		Collection<ChooseCompatibilityToken> tokens =
+				TokenStore.inst().getCompatibilityToken(
+					ChooseCompatibilityToken.class, key);
+		if (tokens != null && !tokens.isEmpty())
+		{
+			TripleKeyMap<Integer, Integer, Integer, ChooseCompatibilityToken> tkm =
+					new TripleKeyMap<Integer, Integer, Integer, ChooseCompatibilityToken>();
+			for (ChooseCompatibilityToken tok : tokens)
+			{
+				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
+					.valueOf(tok.compatibilitySubLevel()), Integer.valueOf(tok
+					.compatibilityPriority()), tok);
+			}
+			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
+			primarySet.addAll(tkm.getKeySet());
+			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
+			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
+			for (Integer level : primarySet)
+			{
+				secondarySet.addAll(tkm.getSecondaryKeySet(level));
+				for (Integer subLevel : secondarySet)
+				{
+					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
+					for (Integer priority : tertiarySet)
+					{
+						ChooseCompatibilityToken tok =
+								tkm.get(level, subLevel, priority);
+						try
+						{
+							PrimitiveChoiceSet<?> parse =
+									tok.parse(context, pobj, value);
+							if (parse != null)
+							{
+								return parse;
+							}
+						}
+						catch (PersistenceLayerException e)
+						{
+							Logging.addParseMessage(Logging.LST_ERROR,
+								"Error parsing CHOOSE Token '" + key + "' for "
+									+ pobj.getDisplayName());
+						}
+					}
+					tertiarySet.clear();
+				}
+				secondarySet.clear();
+			}
+		}
+		return null;
 	}
 }

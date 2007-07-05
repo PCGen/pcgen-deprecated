@@ -34,18 +34,17 @@ import pcgen.core.Globals;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
 
 /**
- *
- * @author  David Rice <david-pcgen@jcuz.com>
+ * 
+ * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class SpellLoader extends LstObjectFileLoader<Spell>
+public final class SpellLoader extends GenericLstLoader<Spell>
 {
 	/** Creates a new instance of SpellLoader */
 	public SpellLoader()
@@ -54,7 +53,8 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
+	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public void parseLine(Spell spell, String lstLine,
@@ -134,10 +134,12 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 
 	/**
 	 * @param spell
-	 * @param typeString should be CLASS or DOMAIN
-	 * @param listString should be name,name,name=level|name,name=level|etc
-	 * where name is the name of a class or domain and
-	 * level is an integer for this spell's level for the named class/domain
+	 * @param typeString
+	 *            should be CLASS or DOMAIN
+	 * @param listString
+	 *            should be name,name,name=level|name,name=level|etc where name
+	 *            is the name of a class or domain and level is an integer for
+	 *            this spell's level for the named class/domain
 	 * @throws PersistenceLayerException
 	 */
 	public static void setLevelList(Spell spell, final String typeString,
@@ -149,15 +151,20 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 
 		if (j < i)
 		{
-			Logging.errorPrint("Warning: Close Bracket before Open Bracket in Level List: " + listString);
+			Logging
+				.errorPrint("Warning: Close Bracket before Open Bracket in Level List: "
+					+ listString);
 			j = listString.length();
 		}
 
 		if (i >= 0)
 		{
 			preReqTag = listString.substring(i + 1, j);
-			if (preReqTag.length() == 0) {
-				Logging.errorPrint("Warning: Empty Prerequisite in Level List: " + listString);
+			if (preReqTag.length() == 0)
+			{
+				Logging
+					.errorPrint("Warning: Empty Prerequisite in Level List: "
+						+ listString);
 			}
 			listString = listString.substring(0, i);
 		}
@@ -167,7 +174,8 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 
 		while (aTok.hasMoreTokens())
 		{
-			final String aList = aTok.nextToken(); // could be name=x or name,name=x
+			final String aList = aTok.nextToken(); // could be name=x or
+													// name,name=x
 
 			final StringTokenizer bTok = new StringTokenizer(aList, "=", false);
 
@@ -234,29 +242,21 @@ public final class SpellLoader extends LstObjectFileLoader<Spell>
 	}
 
 	@Override
-	public void parseToken(LoadContext context, Spell spell, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
-		SpellLstToken token = TokenStore.inst().getToken(SpellLstToken.class,
-				key);
-
-		if (token == null) {
-			if (!PObjectLoader.parseTag(context, spell, key, value)) {
-				Logging.errorPrint("Illegal spell Token '" + key + "' for "
-						+ spell.getDisplayName() + " in " + source.getURI()
-						+ " of " + source.getCampaign() + ".");
-			}
-		} else {
-			LstUtils.deprecationCheck(token, spell, value);
-			if (!token.parse(context, spell, value))
-			{
-				Logging.errorPrint("Error parsing token " + key + " in spell "
-					+ spell.getDisplayName() + ':' + source.getURI() + ':'
-					+ value + "\"");
-			}
-		}
+	public Class<Spell> getLoadClass()
+	{
+		return Spell.class;
 	}
 
 	@Override
-	public Class<Spell> getLoadClass() {
-		return Spell.class;
+	public Class<? extends CDOMCompatibilityToken<Spell>> getCompatibilityTokenClass()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<SpellLstToken> getTokenClass()
+	{
+		return SpellLstToken.class;
 	}
 }

@@ -20,55 +20,68 @@ import pcgen.persistence.PersistenceManager;
 import pcgen.util.Logging;
 import pcgen.util.chooser.ChooserFactory;
 
-public class ReportUnconstructed {
+public class ReportUnconstructed
+{
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 
 		Globals.setUseGUI(false);
 
-		ShowMessageConsoleObserver messageObserver = new ShowMessageConsoleObserver();
+		ShowMessageConsoleObserver messageObserver =
+				new ShowMessageConsoleObserver();
 		ShowMessageDelegate.getInstance().addObserver(messageObserver);
 
 		PluginLoader ploader = PluginLoader.inst();
 		ploader.startSystemPlugins(Constants.s_SYSTEM_TOKENS);
 
-		try {
+		try
+		{
 			SettingsHandler.readOptionsProperties();
 			SettingsHandler.getOptionsFromProperties(null);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace(System.err);
 
 			String message = e.getMessage();
 
-			if ((message == null) || (message.length() == 0)) {
+			if ((message == null) || (message.length() == 0))
+			{
 				message = "Unknown error whilst reading options.ini";
 			}
 
-			message += "\n\nIt MAY be possible to fix this problem by deleting your options.ini file.";
+			message +=
+					"\n\nIt MAY be possible to fix this problem by deleting your options.ini file.";
 			ShowMessageDelegate.showMessageDialog(new MessageWrapper(message,
-					"PCGen - Error processing Options.ini", MessageType.ERROR));
+				"PCGen - Error processing Options.ini", MessageType.ERROR));
 
 			System.exit(0);
 		}
 
-		if (args.length == 0) {
+		if (args.length == 0)
+		{
 			Logging.errorPrint("You must specify Campaign Files (PCC files) "
-					+ "on the command line");
+				+ "on the command line");
 		}
 
 		ChooserFactory.setInterfaceClassname(NonGuiChooser.class.getName());
 		ChooserFactory.setRadioInterfaceClassname(NonGuiChooserRadio.class
-				.getName());
+			.getName());
 
 		final PersistenceManager pManager = PersistenceManager.getInstance();
-		try {
+		try
+		{
 			pManager.initialize();
 			ArrayList<Campaign> arrayList = new ArrayList<Campaign>();
-			for (String fn : args) {
-				Campaign c = Globals.getCampaignByURI(new File(fn).toURI(), true);
+
+			for (String fn : args)
+			{
+				Campaign c =
+						Globals.getCampaignByURI(new File(fn).toURI(), true);
 				if (c == null)
 				{
 					System.err.println("Can't find: " + fn);
@@ -79,10 +92,38 @@ public class ReportUnconstructed {
 				}
 			}
 			pManager.loadCampaigns(arrayList);
-		} catch (PersistenceLayerException e) {
+		}
+		catch (PersistenceLayerException e)
+		{
 			ShowMessageDelegate.showMessageDialog(e.getMessage(),
-					Constants.s_APPNAME, MessageType.WARNING);
+				Constants.s_APPNAME, MessageType.WARNING);
 		}
 
+		// ArrayList arrayList = new ArrayList();
+		// for (Campaign c : Globals.getCampaignList())
+		// {
+		// arrayList.clear();
+		// arrayList.add(c);
+		// try
+		// {
+		// final PersistenceManager pManager = PersistenceManager.getInstance();
+		// pManager.initialize();
+		// pManager.loadCampaigns(arrayList);
+		// System.err.println(c.getSourceURI());
+		// try
+		// {
+		// Thread.sleep(10000);
+		// }
+		// catch (InterruptedException e)
+		// {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+		// catch (PersistenceLayerException e)
+		// {
+		// e.printStackTrace();
+		// }
+		// }
 	}
 }

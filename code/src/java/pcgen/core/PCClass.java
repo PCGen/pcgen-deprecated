@@ -6792,7 +6792,9 @@ public class PCClass extends PObject {
 	
 	public PCClassLevel getClassLevel(int lvl) {
 		if (!levelMap.containsKey(lvl)) {
-			levelMap.put(lvl, new PCClassLevel(this, lvl));
+			PCClassLevel classLevel = new PCClassLevel(this, lvl);
+			classLevel.setName(getDisplayName() + "(" + lvl + ")");
+			levelMap.put(lvl, classLevel);
 		}
 		return levelMap.get(lvl);
 	}

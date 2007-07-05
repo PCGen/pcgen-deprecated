@@ -29,17 +29,16 @@ import pcgen.core.Constants;
 import pcgen.core.Globals;
 import pcgen.core.Language;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- *
- * @author  David Rice <david-pcgen@jcuz.com>
+ * 
+ * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-final class LanguageLoader extends LstObjectFileLoader<Language>
+final class LanguageLoader extends GenericLstLoader<Language>
 {
 	/** Creates a new instance of LanguageLoader */
 	public LanguageLoader()
@@ -48,7 +47,8 @@ final class LanguageLoader extends LstObjectFileLoader<Language>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
+	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public void parseLine(Language lang, String lstLine,
@@ -59,7 +59,7 @@ final class LanguageLoader extends LstObjectFileLoader<Language>
 
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(LanguageLstToken.class);
-		
+
 		while (colToken.hasMoreTokens())
 		{
 			final String colString = colToken.nextToken().trim();
@@ -129,32 +129,21 @@ final class LanguageLoader extends LstObjectFileLoader<Language>
 	}
 
 	@Override
-	public void parseToken(LoadContext context, Language lang, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
-
-		LanguageLstToken token = TokenStore.inst().getToken(LanguageLstToken.class, key);
-
-		if (token == null)
-		{
-			if (!PObjectLoader.parseTag(context, lang, key, value))
-			{
-				Logging.errorPrint("Unknown tag '" + key + "' in "
-						+ source.getURI());
-			}
-		}
-		else
-		{
-			LstUtils.deprecationCheck(token, lang, value);
-			if (!token.parse(context, lang, value))
-			{
-				Logging.errorPrint("Error parsing language "
-					+ lang.getDisplayName() + ':' + source.getURI() + ':'
-					+ value + "\"");
-			}
-		}
+	public Class<Language> getLoadClass()
+	{
+		return Language.class;
 	}
 
 	@Override
-	public Class<Language> getLoadClass() {
-		return Language.class;
+	public Class<? extends CDOMCompatibilityToken<Language>> getCompatibilityTokenClass()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<LanguageLstToken> getTokenClass()
+	{
+		return LanguageLstToken.class;
 	}
 }

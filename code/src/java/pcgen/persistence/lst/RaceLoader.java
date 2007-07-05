@@ -32,17 +32,16 @@ import pcgen.core.Constants;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
 import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- *
- * @author  David Rice <david-pcgen@jcuz.com>
+ * 
+ * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class RaceLoader extends LstObjectFileLoader<Race>
+public final class RaceLoader extends GenericLstLoader<Race>
 {
 	/** Creates a new instance of RaceLoader */
 	public RaceLoader()
@@ -51,7 +50,8 @@ public final class RaceLoader extends LstObjectFileLoader<Race>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
+	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public void parseLine(Race race, String lstLine, CampaignSourceEntry source)
@@ -111,7 +111,7 @@ public final class RaceLoader extends LstObjectFileLoader<Race>
 		if (race.getRaceType().equals(Constants.s_NONE))
 		{
 			/** TODO Uncomment this once the data is updated. */
-			//			logError("Race " + race.getName() + " has no race type.");
+			// logError("Race " + race.getName() + " has no race type.");
 		}
 
 		completeObject(source, race);
@@ -144,40 +144,22 @@ public final class RaceLoader extends LstObjectFileLoader<Race>
 		Globals.addRace((Race) pObj);
 	}
 
-
 	@Override
-	public void parseToken(LoadContext context, Race race, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
-		RaceLstToken token = TokenStore.inst().getToken(RaceLstToken.class,
-				key);
-		
-		/*
-		 * WARNING Doesn't handle:
-		 * 
-			else if (colString.startsWith("CHOOSE:LANGAUTO:"))
-			{
-				race.setChooseLanguageAutos(colString.substring(16));
-			}
-		 */
-
-		if (token == null) {
-			if (!PObjectLoader.parseTag(context, race, key, value)) {
-				Logging.errorPrint("Illegal race Token '" + key + "' for "
-						+ race.getDisplayName() + " in " + source.getURI()
-						+ " of " + source.getCampaign() + ".");
-			}
-		} else {
-			LstUtils.deprecationCheck(token, race, value);
-			if (!token.parse(context, race, value))
-			{
-				Logging.errorPrint("Error parsing token " + key + " in race "
-						+ race.getDisplayName() + ':' + source.getURI() + ':'
-						+ value + "\"");
-			}
-		}
+	public Class<Race> getLoadClass()
+	{
+		return Race.class;
 	}
 
 	@Override
-	public Class<Race> getLoadClass() {
-		return Race.class;
+	public Class<? extends CDOMCompatibilityToken<Race>> getCompatibilityTokenClass()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<RaceLstToken> getTokenClass()
+	{
+		return RaceLstToken.class;
 	}
 }

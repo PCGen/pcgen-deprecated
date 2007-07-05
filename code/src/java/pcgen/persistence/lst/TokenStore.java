@@ -1,12 +1,14 @@
 package pcgen.persistence.lst;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import pcgen.base.lang.UnreachableError;
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.core.PObject;
 import pcgen.util.Logging;
 
@@ -18,12 +20,17 @@ public class TokenStore
 	private static TokenStore inst;
 	private HashMap<Class<? extends LstToken>, Map<String, LstToken>> tokenTypeMap;
 	private final List<Class<? extends LstToken>> tokenTypeList;
+	private DoubleKeyMapToList<Class<? extends LstToken>, String, LstToken> tokenCompatibilityMap;
+	private final List<Class<? extends LstToken>> tokenCompatibilityList;
 
 	private TokenStore()
 	{
 		tokenTypeMap =
 				new HashMap<Class<? extends LstToken>, Map<String, LstToken>>();
 		tokenTypeList = new ArrayList<Class<? extends LstToken>>();
+		tokenCompatibilityMap =
+				new DoubleKeyMapToList<Class<? extends LstToken>, String, LstToken>();
+		tokenCompatibilityList = new ArrayList<Class<? extends LstToken>>();
 		populateTokenTypeList();
 	}
 
@@ -129,6 +136,13 @@ public class TokenStore
 		tokenTypeList.add(AutoLstToken.class);
 		tokenTypeList.add(AddLstToken.class);
 		tokenTypeList.add(RemoveLstToken.class);
+
+		// compatibility
+		tokenCompatibilityList.add(GlobalLstCompatibilityToken.class);
+		tokenCompatibilityList.add(EquipmentLstCompatibilityToken.class);
+		tokenCompatibilityList
+			.add(EquipmentModifierLstCompatibilityToken.class);
+		tokenCompatibilityList.add(PCClassClassLstCompatibilityToken.class);
 	}
 
 	/**
@@ -154,11 +168,28 @@ public class TokenStore
 				}
 			}
 		}
+		for (Class<? extends LstToken> tokClass : tokenCompatibilityList)
+		{
+			if (tokClass.isAssignableFrom(newToken.getClass()))
+			{
+				tokenCompatibilityMap.addToListFor(tokClass, newToken
+					.getTokenName(), newToken);
+
+				// TODO Someday need to test that it's a unique compatibility
+				// level...
+				// if (test != null)
+				// {
+				// Logging.errorPrint("More than one " + tokClass.getName()
+				// + " has the same token name: '"
+				// + newToken.getTokenName() + "'");
+				// }
+			}
+		}
 		if (PrimitiveToken.class.isAssignableFrom(newTokClass))
 		{
-			primitiveMap.put(((PrimitiveToken) newToken)
-				.getReferenceClass(), newToken.getTokenName(),
-				(Class<PrimitiveToken<?>>) newTokClass);
+			primitiveMap
+				.put(((PrimitiveToken) newToken).getReferenceClass(), newToken
+					.getTokenName(), (Class<PrimitiveToken<?>>) newTokClass);
 		}
 		if (ChooseLstQualifierToken.class.isAssignableFrom(newTokClass))
 		{
@@ -199,6 +230,12 @@ public class TokenStore
 			return null;
 		}
 		return name.cast(tokenMap.get(key));
+	}
+
+	public <T extends LstToken> Collection<T> getCompatibilityToken(
+		Class<T> name, String key)
+	{
+		return (Collection<T>) tokenCompatibilityMap.getListFor(name, key);
 	}
 
 	DoubleKeyMap<Class<?>, String, Class<PrimitiveToken<?>>> primitiveMap =

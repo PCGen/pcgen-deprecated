@@ -29,7 +29,6 @@ import pcgen.core.Constants;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -38,7 +37,7 @@ import pcgen.util.Logging;
  * @author  David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class SkillLoader extends LstObjectFileLoader<Skill>
+public final class SkillLoader extends GenericLstLoader<Skill>
 {
 	/** Creates a new instance of SkillLoader */
 	public SkillLoader()
@@ -135,29 +134,20 @@ public final class SkillLoader extends LstObjectFileLoader<Skill>
 	}
 
 	@Override
-	public void parseToken(LoadContext context, Skill skill, String key, String value, CampaignSourceEntry source) throws PersistenceLayerException {
-		SkillLstToken token = TokenStore.inst().getToken(SkillLstToken.class,
-				key);
-
-		if (token == null) {
-			if (!PObjectLoader.parseTag(context, skill, key, value)) {
-				Logging.errorPrint("Illegal skill Token '" + key + "' for "
-						+ skill.getDisplayName() + " in " + source.getURI()
-						+ " of " + source.getCampaign() + ".");
-			}
-		} else {
-			LstUtils.deprecationCheck(token, skill, value);
-			if (!token.parse(context, skill, value))
-			{
-				Logging.errorPrint("Error parsing token " + key + " in skill "
-						+ skill.getDisplayName() + ':' + source.getURI() + ':'
-						+ value + "\"");
-			}
-		}
-	}
-	
-	@Override
 	public Class<Skill> getLoadClass() {
 		return Skill.class;
+	}
+
+	@Override
+	public Class<? extends CDOMCompatibilityToken<Skill>> getCompatibilityTokenClass()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<SkillLstToken> getTokenClass()
+	{
+		return SkillLstToken.class;
 	}
 }

@@ -168,6 +168,8 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<HitDieCommandFactory> HITDIE = new ObjectKey<HitDieCommandFactory>();
 
+	public static final ObjectKey<Boolean> HAS_BONUS_SPELL_STAT = new ObjectKey<Boolean>();
+
 	public static final ObjectKey<CDOMSimpleSingleRef<ShieldProf>> SHIELD_PROF = new ObjectKey<CDOMSimpleSingleRef<ShieldProf>>();
 
 	public static final ObjectKey<CDOMSimpleSingleRef<ArmorProf>> ARMOR_PROF = new ObjectKey<CDOMSimpleSingleRef<ArmorProf>>();

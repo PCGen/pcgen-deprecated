@@ -13,7 +13,6 @@ public class PCClassLevelLoader
 
 	public static void parseLine(LoadContext context, PCClass pcclass,
 		String lstLine, CampaignSourceEntry source, int level)
-		throws PersistenceLayerException
 	{
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
@@ -48,24 +47,56 @@ public class PCClassLevelLoader
 			{
 				if (univtoken == null)
 				{
-					if (!PObjectLoader.parseTag(context, pcclass
-						.getClassLevel(level), key, value))
+					Logging.clearParseMessages();
+					try
 					{
-						Logging.errorPrint("Illegal pcclass Token '" + key
-							+ "' for " + pcclass.getDisplayName() + " in "
-							+ source.getURI() + " of " + source.getCampaign()
-							+ ".");
+						if (!PObjectLoader.parseTag(context, pcclass
+							.getClassLevel(level), key, value))
+						{
+							Logging.errorPrint("Illegal PCClass Level Token '"
+								+ key + "' for " + pcclass.getDisplayName()
+								+ " level " + level + " in " + source.getURI()
+								+ " of " + source.getCampaign() + ".");
+						}
+					}
+					catch (PersistenceLayerException e)
+					{
+						Logging
+							.errorPrint("Error parsing PCClass Level Token '"
+								+ key + "' for " + pcclass.getDisplayName()
+								+ " level " + level + " in " + source.getURI()
+								+ " of " + source.getCampaign() + ".");
+					}
+					catch (Throwable t)
+					{
+						Logging
+							.errorPrint("Error parsing PCClass Level Token '"
+								+ key + "' for " + pcclass.getDisplayName()
+								+ " level " + level + " in " + source.getURI()
+								+ " of " + source.getCampaign() + ".");
 					}
 				}
 				else
 				{
 					LstUtils.deprecationCheck(univtoken, pcclass, value);
-					if (!univtoken.parse(context, pcclass.getClassLevel(level),
-						value))
+					try
 					{
-						Logging.errorPrint("Error parsing token " + key
-							+ " in pcclass " + pcclass.getDisplayName() + ':'
-							+ source.getURI() + ':' + value + "\"");
+						if (!univtoken.parse(context, pcclass
+							.getClassLevel(level), value))
+						{
+							Logging.errorPrint("Error parsing token " + key
+								+ " in pcclass " + pcclass.getDisplayName()
+								+ " level " + level + ':' + source.getURI()
+								+ ':' + value + "\"");
+						}
+					}
+					catch (PersistenceLayerException e)
+					{
+						Logging
+							.errorPrint("Error parsing PCClass Level Token '"
+								+ key + "' for " + pcclass.getDisplayName()
+								+ " level " + level + " in " + source.getURI()
+								+ " of " + source.getCampaign() + ".");
 					}
 				}
 			}

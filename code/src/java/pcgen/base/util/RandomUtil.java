@@ -17,6 +17,8 @@ package pcgen.base.util;
 
 import java.util.Random;
 
+import pcgen.util.Logging;
+
 /**
  * This class provides utility functions for random number generation.
  * 

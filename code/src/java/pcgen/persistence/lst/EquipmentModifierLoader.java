@@ -32,7 +32,6 @@ import pcgen.core.Constants;
 import pcgen.core.EquipmentList;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -44,58 +43,74 @@ import pcgen.util.UnreachableError;
  * @version $Revision$
  */
 public final class EquipmentModifierLoader extends
-		LstObjectFileLoader<EquipmentModifier> {
+		GenericLstLoader<EquipmentModifier>
+{
 	@Override
-	protected void addGlobalObject(PObject pObj) {
+	protected void addGlobalObject(PObject pObj)
+	{
 		// getEquipmentKeyedNoCustom??
-		final EquipmentModifier aTemplate = EquipmentList.getModifierKeyed(pObj
-				.getKeyName());
-		if (aTemplate == null) {
+		final EquipmentModifier aTemplate =
+				EquipmentList.getModifierKeyed(pObj.getKeyName());
+		if (aTemplate == null)
+		{
 			EquipmentList.addEquipmentModifier((EquipmentModifier) pObj);
 		}
 
 	}
 
 	@Override
-	protected EquipmentModifier getObjectKeyed(String aKey) {
+	protected EquipmentModifier getObjectKeyed(String aKey)
+	{
 		return EquipmentList.getModifierKeyed(aKey);
 	}
 
 	@Override
 	public void parseLine(EquipmentModifier eqMod, String inputLine,
-			CampaignSourceEntry source) throws PersistenceLayerException {
-		final StringTokenizer colToken = new StringTokenizer(inputLine,
-				SystemLoader.TAB_DELIM);
+		CampaignSourceEntry source) throws PersistenceLayerException
+	{
+		final StringTokenizer colToken =
+				new StringTokenizer(inputLine, SystemLoader.TAB_DELIM);
 
-		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
-				EquipmentModifierLstToken.class);
-		while (colToken.hasMoreTokens()) {
-			while (colToken.hasMoreTokens()) {
+		Map<String, LstToken> tokenMap =
+				TokenStore.inst().getTokenMap(EquipmentModifierLstToken.class);
+		while (colToken.hasMoreTokens())
+		{
+			while (colToken.hasMoreTokens())
+			{
 				final String colString = colToken.nextToken().trim();
 
 				final int idxColon = colString.indexOf(':');
 				String key = "";
-				try {
+				try
+				{
 					key = colString.substring(0, idxColon);
-				} catch (Exception e) {
+				}
+				catch (Exception e)
+				{
 					// TODO Handle Exception
 				}
 
-				EquipmentModifierLstToken token = (EquipmentModifierLstToken) tokenMap
-						.get(key);
-				if (token != null) {
+				EquipmentModifierLstToken token =
+						(EquipmentModifierLstToken) tokenMap.get(key);
+				if (token != null)
+				{
 					final String value = colString.substring(idxColon + 1);
 					LstUtils.deprecationCheck(token, eqMod, value);
-					if (!token.parse(eqMod, value)) {
+					if (!token.parse(eqMod, value))
+					{
 						Logging.errorPrint("Error parsing ability "
-								+ eqMod.getDisplayName() + ':'
-								+ source.getURI() + ':' + colString + "\"");
+							+ eqMod.getDisplayName() + ':' + source.getURI()
+							+ ':' + colString + "\"");
 					}
-				} else if (PObjectLoader.parseTag(eqMod, colString)) {
+				}
+				else if (PObjectLoader.parseTag(eqMod, colString))
+				{
 					continue;
-				} else {
+				}
+				else
+				{
 					Logging.errorPrint("Illegal equipment modifier info "
-							+ source + ":" + " \"" + colString + "\"");
+						+ source + ":" + " \"" + colString + "\"");
 				}
 			}
 		}
@@ -104,26 +119,33 @@ public final class EquipmentModifierLoader extends
 	}
 
 	@Override
-	protected void performForget(EquipmentModifier objToForget) {
+	protected void performForget(EquipmentModifier objToForget)
+	{
 		throw new java.lang.UnsupportedOperationException(
-				"Cannot FORGET an EquipmentModifier");
+			"Cannot FORGET an EquipmentModifier");
 	}
 
 	/**
 	 * This method adds the default available equipment modififiers to the
 	 * Globals.
-	 * @throws PersistenceLayerException 
+	 * 
+	 * @throws PersistenceLayerException
 	 * 
 	 * @throws PersistenceLayerException
 	 *             if some bizarre error occurs, likely due to a change in
 	 *             EquipmentModifierLoader
 	 */
-	public void addDefaultEquipmentMods() throws PersistenceLayerException {
+	public void addDefaultEquipmentMods() throws PersistenceLayerException
+	{
 		CampaignSourceEntry source;
-		try {
-			source = new CampaignSourceEntry(new Campaign(),
-					new URI("file:/" + getClass().getName() + ".java"));
-		} catch (URISyntaxException e) {
+		try
+		{
+			source =
+					new CampaignSourceEntry(new Campaign(), new URI("file:/"
+						+ getClass().getName() + ".java"));
+		}
+		catch (URISyntaxException e)
+		{
 			throw new UnreachableError(e);
 		}
 		String aLine;
@@ -131,7 +153,8 @@ public final class EquipmentModifierLoader extends
 		anObj.setName("Add Type");
 		anObj.setSourceCampaign(source.getCampaign());
 		anObj.setSourceURI(source.getURI());
-		aLine = "KEY:ADDTYPE\tTYPE:ALL\tCOST:0\tNAMEOPT:NONAME\tSOURCELONG:PCGen Internal\tCHOOSE:COUNT=ALL|desired TYPE(s)|TYPE=EQTYPES";
+		aLine =
+				"KEY:ADDTYPE\tTYPE:ALL\tCOST:0\tNAMEOPT:NONAME\tSOURCELONG:PCGen Internal\tCHOOSE:COUNT=ALL|desired TYPE(s)|TYPE=EQTYPES";
 		parseLine(anObj, aLine, source);
 
 		//
@@ -154,33 +177,20 @@ public final class EquipmentModifierLoader extends
 	}
 
 	@Override
-	public Class<EquipmentModifier> getLoadClass() {
+	public Class<EquipmentModifier> getLoadClass()
+	{
 		return EquipmentModifier.class;
 	}
 
 	@Override
-	public void parseToken(LoadContext context, EquipmentModifier eqMod,
-			String key, String value, CampaignSourceEntry source)
-			throws PersistenceLayerException {
-		
-		EquipmentModifierLstToken token = TokenStore.inst().getToken(
-				EquipmentModifierLstToken.class, key);
+	public Class<EquipmentModifierLstCompatibilityToken> getCompatibilityTokenClass()
+	{
+		return EquipmentModifierLstCompatibilityToken.class;
+	}
 
-		if (token == null) {
-			if (!PObjectLoader.parseTag(context, eqMod, key, value)) {
-				Logging.errorPrint("Illegal EquipmentModifier Token '" + key
-						+ "' for " + eqMod.getDisplayName() + " in "
-						+ source.getURI() + " of " + source.getCampaign()
-						+ ".");
-			}
-		} else {
-			LstUtils.deprecationCheck(token, eqMod, value);
-			if (!token.parse(context, eqMod, value))
-			{
-				Logging.errorPrint("Error parsing token " + key
-						+ " in EquipmentModifier " + eqMod.getDisplayName()
-						+ ':' + source.getURI() + ':' + value + "\"");
-			}
-		}
+	@Override
+	public Class<EquipmentModifierLstToken> getTokenClass()
+	{
+		return EquipmentModifierLstToken.class;
 	}
 }
