@@ -531,6 +531,8 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 
 	/**
 	 * This method will perform a single .COPY operation.
+	 * @param entry 
+	 * @param context 
 	 * 
 	 * @param baseName
 	 *            String name of the object to copy
@@ -538,7 +540,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 	 *            String name of the target object
 	 * @throws PersistenceLayerException
 	 */
-	private void performCopy(LoadContext context, CampaignSourceEntry source,
+	private T performCopy(LoadContext context, CampaignSourceEntry source,
 		String baseKey, String copyName) throws PersistenceLayerException
 	{
 		T object = getObjectKeyed(baseKey);
@@ -549,13 +551,12 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 				"Errors.LstFileLoader.CopyObjectNotFound", //$NON-NLS-1$
 				baseKey));
 
-			return;
+			return null;
 		}
-
 		Class<T> cl = (Class<T>) object.getClass();
-		PObject clone =
-				context.ref.cloneConstructedCDOMObject(cl, object, copyName);
+		T clone = context.ref.cloneConstructedCDOMObject(cl, object, copyName);
 		completeObject(source, clone);
+		return clone;
 	}
 
 	/**
@@ -570,10 +571,29 @@ public abstract class LstObjectFileLoader<T extends PObject> extends
 		throws PersistenceLayerException
 	{
 		String lstLine = me.getLstLine();
-		final int nameEnd = lstLine.indexOf(COPY_SUFFIX);
-		final String baseName = lstLine.substring(0, nameEnd);
-		final String copyName = lstLine.substring(nameEnd + 6);
-		performCopy(context, me.getSource(), baseName, copyName);
+		int sepLoc = lstLine.indexOf(FIELD_SEPARATOR);
+		String name;
+		if (sepLoc != -1)
+		{
+			name = lstLine.substring(0, sepLoc);
+		}
+		else
+		{
+			name = lstLine;
+		}
+		final int nameEnd = name.indexOf(COPY_SUFFIX);
+		final String baseName = name.substring(0, nameEnd);
+		final String copyName = name.substring(nameEnd + 6);
+		T copy = performCopy(context, me.getSource(), baseName, copyName);
+		if (copy != null)
+		{
+			if (sepLoc != -1)
+			{
+				String restOfLine = me.getLstLine().substring(nameEnd + 6);
+				parseLine(copy, restOfLine, me.getSource());
+			}
+			completeObject(me.getSource(), copy);
+		}
 	}
 
 	/**

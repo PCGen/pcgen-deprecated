@@ -50,6 +50,12 @@ public class FeatToken extends AbstractToken implements ChooseLstToken
 				+ " will ignore arguments: "
 				+ value.substring(value.indexOf('|') + 1));
 		}
+		if (value.indexOf('|') != -1)
+		{
+			Logging.deprecationPrint("CHOOSE:" + getTokenName()
+				+ " will ignore arguments: "
+				+ value.substring(value.indexOf('|') + 1));
+		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{

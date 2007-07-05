@@ -61,6 +61,19 @@ public class SkillsNamedToCSkillToken extends AbstractToken implements
 				return false;
 			}
 		}
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		while (st.hasMoreTokens())
+		{
+			String tokString = st.nextToken();
+			int equalsLoc = tokString.indexOf("=");
+			if (equalsLoc == tokString.length() - 1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments must have value after = : " + tokString);
+				Logging.errorPrint("  entire token was: " + value);
+				return false;
+			}
+		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{

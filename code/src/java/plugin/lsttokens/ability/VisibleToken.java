@@ -29,18 +29,12 @@ import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
 /**
-<<<<<<< .working
- * <code>VisibleToken</code> handles the processing of the VISIBLE tag in the
- * definition of an Ability.
- * 
-=======
  * <code>VisibleToken</code> handles the processing of the VISIBLE tag in the
  * definition of an Ability.
  * 
  * Last Editor: $Author$ Last Edited: $Date: 2007-02-10 11:55:15 -0500
  * (Sat, 10 Feb 2007) $
  * 
->>>>>>> .merge-right.r2960
  * @author Devon Jones
  * @version $Revision$
  */
