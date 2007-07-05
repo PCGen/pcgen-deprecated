@@ -27,10 +27,12 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class ShieldProfTokenTest extends AbstractAutoTokenTestCase
 {
 
+	private static final ShieldProfToken SHIELD_PROF_TOKEN = new ShieldProfToken();
+
 	@Override
 	protected ShieldProfToken getSubToken()
 	{
-		return new ShieldProfToken();
+		return SHIELD_PROF_TOKEN;
 	}
 
 	@Override

@@ -65,7 +65,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 		return token;
 	}
 
-	private AddLstToken aToken = new SAToken();
+	private static AddLstToken aToken = new SAToken();
 
 	public String getSubTokenString()
 	{

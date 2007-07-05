@@ -28,10 +28,12 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class EquipTokenTest extends AbstractAutoTokenTestCase
 {
 
+	private static final EquipToken EQUIP_TOKEN = new EquipToken();
+
 	@Override
 	protected EquipToken getSubToken()
 	{
-		return new EquipToken();
+		return EQUIP_TOKEN;
 	}
 
 	@Override

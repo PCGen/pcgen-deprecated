@@ -57,18 +57,18 @@ public class AcCheckTokenTest extends AbstractIntegerTokenTestCase<Equipment>
 	@Override
 	public boolean isNegativeAllowed()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isZeroAllowed()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isPositiveAllowed()
 	{
-		return true;
+		return false;
 	}
 }

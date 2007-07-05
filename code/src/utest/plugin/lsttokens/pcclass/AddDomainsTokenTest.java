@@ -28,6 +28,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
+import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
 public class AddDomainsTokenTest extends
 		AbstractListTokenTestCase<PObject, Domain>

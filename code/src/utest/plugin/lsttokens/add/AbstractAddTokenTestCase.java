@@ -59,6 +59,21 @@ public abstract class AbstractAddTokenTestCase extends
 		return getSubToken().getTokenName();
 	}
 
+	public abstract boolean isTypeLegal();
+
+	public abstract boolean isAllLegal();
+
+	protected void construct(LoadContext loadContext, String one)
+	{
+		loadContext.ref.constructCDOMObject(getSubTokenType(), one);
+	}
+
+	@Override
+	public GlobalLstToken getToken()
+	{
+		return token;
+	}
+
 	@Test
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
@@ -94,10 +109,6 @@ public abstract class AbstractAddTokenTestCase extends
 			getSubTokenString() + "|TestWP1.TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
-
-	public abstract boolean isTypeLegal();
-
-	public abstract boolean isAllLegal();
 
 	@Test
 	public void testInvalidInputTypeEmpty() throws PersistenceLayerException
@@ -496,17 +507,6 @@ public abstract class AbstractAddTokenTestCase extends
 		}
 	}
 
-	protected void construct(LoadContext loadContext, String one)
-	{
-		loadContext.ref.constructCDOMObject(getSubTokenType(), one);
-	}
-
-	@Override
-	public GlobalLstToken getToken()
-	{
-		return token;
-	}
-
 	@Test
 	public void testInvalidInputAll() throws PersistenceLayerException
 	{
@@ -590,13 +590,23 @@ public abstract class AbstractAddTokenTestCase extends
 			construct(secondaryContext, "TestWP2");
 			construct(primaryContext, "TestWP3");
 			construct(secondaryContext, "TestWP3");
-			assertTrue(getToken().parse(primaryContext, primaryProf,
-				"TestWP1" + getJoinCharacter() + "TestWP2"));
-			assertTrue(getToken().parse(secondaryContext, secondaryProf,
-				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(getToken().parse(
+				primaryContext,
+				primaryProf,
+				getSubTokenString() + "|TestWP1" + getJoinCharacter()
+					+ "TestWP2"));
+			assertTrue(getToken().parse(
+				secondaryContext,
+				secondaryProf,
+				getSubTokenString() + "|TestWP1" + getJoinCharacter()
+					+ "TestWP2"));
 			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"TestWP3" + getJoinCharacter() + "TYPE="));
+			assertFalse(getToken()
+				.parse(
+					primaryContext,
+					primaryProf,
+					getSubTokenString() + "|TestWP3" + getJoinCharacter()
+						+ "TYPE="));
 			assertEquals("Bad Add had Side Effects", primaryGraph,
 				secondaryGraph);
 		}
@@ -615,12 +625,15 @@ public abstract class AbstractAddTokenTestCase extends
 		construct(primaryContext, "TestWP4");
 		construct(secondaryContext, "TestWP4");
 		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"TestWP1" + getJoinCharacter() + "TestWP2"));
+			getSubTokenString() + "|TestWP1" + getJoinCharacter() + "TestWP2"));
 		assertTrue(getToken().parse(secondaryContext, secondaryProf,
-			"TestWP1" + getJoinCharacter() + "TestWP2"));
+			getSubTokenString() + "|TestWP1" + getJoinCharacter() + "TestWP2"));
 		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP3" + getJoinCharacter() + getJoinCharacter() + "TestWP4"));
+		assertFalse(getToken().parse(
+			primaryContext,
+			primaryProf,
+			getSubTokenString() + "|TestWP3" + getJoinCharacter()
+				+ getJoinCharacter() + "TestWP4"));
 		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
 
@@ -636,13 +649,19 @@ public abstract class AbstractAddTokenTestCase extends
 			construct(secondaryContext, "TestWP2");
 			construct(primaryContext, "TestWP3");
 			construct(secondaryContext, "TestWP3");
-			assertTrue(getToken().parse(primaryContext, primaryProf,
-				"TestWP1" + getJoinCharacter() + "TestWP2"));
-			assertTrue(getToken().parse(secondaryContext, secondaryProf,
-				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(getToken().parse(
+				primaryContext,
+				primaryProf,
+				getSubTokenString() + "|TestWP1" + getJoinCharacter()
+					+ "TestWP2"));
+			assertTrue(getToken().parse(
+				secondaryContext,
+				secondaryProf,
+				getSubTokenString() + "|TestWP1" + getJoinCharacter()
+					+ "TestWP2"));
 			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"TestWP3" + getJoinCharacter() + "ANY"));
+				getSubTokenString() + "|TestWP3" + getJoinCharacter() + "ANY"));
 			assertEquals("Bad Add had Side Effects", primaryGraph,
 				secondaryGraph);
 		}

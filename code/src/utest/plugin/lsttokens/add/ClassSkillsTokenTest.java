@@ -17,16 +17,27 @@
  */
 package plugin.lsttokens.add;
 
-import pcgen.core.PCTemplate;
+import java.net.URISyntaxException;
+
+import pcgen.core.PCClass;
 import pcgen.core.Skill;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.persistence.lst.LstLoader;
+import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
 public class ClassSkillsTokenTest extends AbstractAddTokenTestCase
 {
 
-	private AddLstToken aToken = new ClassSkillsToken();
+	private static AddLstToken aToken = new ClassSkillsToken();
+
+	
+	@Override
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		super.setPrefix("CLASS:");
+	}
 
 	@Override
 	protected AddLstToken getSubToken()
@@ -41,15 +52,15 @@ public class ClassSkillsTokenTest extends AbstractAddTokenTestCase
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<PCClass> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return PCClass.class;
 	}
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public LstLoader<PCClass> getLoader()
 	{
 		return loader;
 	}

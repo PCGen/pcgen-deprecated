@@ -28,6 +28,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
 import plugin.lsttokens.testsupport.AbstractTypeSafeTokenTestCase;
+import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
 public class SpellTypeTokenTest extends AbstractTypeSafeTokenTestCase<PCClass>
 {

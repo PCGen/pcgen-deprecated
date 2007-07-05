@@ -28,7 +28,7 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class VFeatTokenTest extends AbstractAddTokenTestCase
 {
 
-	private AddLstToken aToken = new VFeatToken();
+	private static AddLstToken aToken = new VFeatToken();
 
 	@Override
 	protected AddLstToken getSubToken()

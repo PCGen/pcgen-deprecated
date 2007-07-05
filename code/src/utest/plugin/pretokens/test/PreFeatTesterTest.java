@@ -104,7 +104,8 @@ public class PreFeatTesterTest extends AbstractCDOMObjectTestCase<Ability>
 		wrong.setCDOMCategory(AbilityCategory.Mutation);
 		grantObject(wrong);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		grantCDOMObject("Winged Mage");
+		PObject right = grantCDOMObject("Winged Mage");
+		assertFalse(wrong.equals(right));
 		// Pass, as it's a FEAT
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}

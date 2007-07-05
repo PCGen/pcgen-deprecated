@@ -32,7 +32,7 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.persistence.lst.LstLoader;
 import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.TokenStore;
 
@@ -85,6 +85,12 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		TokenStore.inst().addToTokenMap(tok);
 	}
 
+	private String prefix = "";
+	
+	protected void setPrefix(String s)
+	{
+		prefix = (s == null ? "" : s);
+	}
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
 		// Default is not to write out anything
@@ -116,7 +122,7 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 				s).append('\t');
 		}
 		getLoader().parseLine(secondaryContext, secondaryProf,
-			"TestObj\t" + unparsedBuilt.toString(), testCampaign);
+			prefix + "TestObj\t" + unparsedBuilt.toString(), testCampaign);
 
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
@@ -147,5 +153,5 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 
 	public abstract GlobalLstToken getToken();
 
-	public abstract <T extends PObject> LstObjectFileLoader<T> getLoader();
+	public abstract <T extends PObject> LstLoader<T> getLoader();
 }

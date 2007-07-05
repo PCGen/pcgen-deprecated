@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.formula.FixedSizeResolver;
-import pcgen.cdom.mode.Size;
 import pcgen.core.Language;
 import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.core.Race;
+import pcgen.core.SizeAdjustment;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
@@ -27,11 +27,6 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 	public void classSetUp()
 	{
 		classSetUpFired = true;
-		Size.constructConstant("T", 0);
-		Size.constructConstant("S", 1);
-		Size.constructConstant("M", 2);
-		Size.constructConstant("L", 3);
-		Size.constructConstant("H", 4);
 	}
 
 	@Override
@@ -43,6 +38,11 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		{
 			classSetUp();
 		}
+		context.ref.constructCDOMObject(SizeAdjustment.class, "T");
+		context.ref.constructCDOMObject(SizeAdjustment.class, "S");
+		context.ref.constructCDOMObject(SizeAdjustment.class, "M");
+		context.ref.constructCDOMObject(SizeAdjustment.class, "L");
+		context.ref.constructCDOMObject(SizeAdjustment.class, "H");
 	}
 
 	@Override
@@ -69,17 +69,20 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 
 	private FixedSizeResolver getSmallSize()
 	{
-		return new FixedSizeResolver(Size.valueOf("S"));
+		return new FixedSizeResolver(context.ref.getConstructedCDOMObject(
+			SizeAdjustment.class, "S"));
 	}
 
 	private FixedSizeResolver getMediumSize()
 	{
-		return new FixedSizeResolver(Size.valueOf("M"));
+		return new FixedSizeResolver(context.ref.getConstructedCDOMObject(
+			SizeAdjustment.class, "M"));
 	}
 
 	private FixedSizeResolver getLargeSize()
 	{
-		return new FixedSizeResolver(Size.valueOf("L"));
+		return new FixedSizeResolver(context.ref.getConstructedCDOMObject(
+			SizeAdjustment.class, "L"));
 	}
 
 	public Prerequisite getMediumPrereq()

@@ -63,7 +63,7 @@ public class SlotsTokenTest extends AbstractIntegerTokenTestCase<Equipment>
 	@Override
 	public boolean isZeroAllowed()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

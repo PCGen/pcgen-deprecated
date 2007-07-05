@@ -27,6 +27,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
 import plugin.lsttokens.testsupport.AbstractIntegerTokenTestCase;
+import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
 public class MonSkillTokenTest extends
 		AbstractIntegerTokenTestCase<PCClass>

@@ -27,10 +27,12 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class WeaponProfTokenTest extends AbstractAutoTokenTestCase
 {
 
+	private static final WeaponProfToken WEAPON_PROF_TOKEN = new WeaponProfToken();
+
 	@Override
 	protected WeaponProfToken getSubToken()
 	{
-		return new WeaponProfToken();
+		return WEAPON_PROF_TOKEN;
 	}
 
 	@Override

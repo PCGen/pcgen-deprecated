@@ -27,10 +27,12 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class ArmorProfTokenTest extends AbstractAutoTokenTestCase
 {
 
+	private static final ArmorProfToken ARMOR_PROF_TOKEN = new ArmorProfToken();
+
 	@Override
 	protected ArmorProfToken getSubToken()
 	{
-		return new ArmorProfToken();
+		return ARMOR_PROF_TOKEN;
 	}
 
 	@Override

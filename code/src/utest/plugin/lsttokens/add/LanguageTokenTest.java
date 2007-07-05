@@ -26,7 +26,7 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class LanguageTokenTest extends AbstractAddTokenTestCase
 {
 
-	private AddLstToken aToken = new LanguageToken();
+	private static AddLstToken aToken = new LanguageToken();
 
 	@Override
 	protected AddLstToken getSubToken()

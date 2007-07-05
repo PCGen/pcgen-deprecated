@@ -26,7 +26,7 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class EquipTokenTest extends AbstractAddTokenTestCase
 {
 
-	private AddLstToken aToken = new EquipToken();
+	private static AddLstToken aToken = new EquipToken();
 
 	@Override
 	protected AddLstToken getSubToken()

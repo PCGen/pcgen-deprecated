@@ -26,7 +26,7 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class SpellCasterTokenTest extends AbstractAddTokenTestCase
 {
 
-	private AddLstToken aToken = new SpellCasterToken();
+	private static AddLstToken aToken = new SpellCasterToken();
 
 	@Override
 	protected AddLstToken getSubToken()
