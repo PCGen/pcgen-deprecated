@@ -205,7 +205,8 @@ public class CategorizedReferenceContext
 	public <T extends PObject & CategorizedCDOMObject<T>> Set<T> getConstructedCDOMObjects(
 		Class<T> name, Category<T> cat)
 	{
-		return (Set<T>) active.values(name, cat);
+		Set values = active.values(name, cat);
+		return values;
 	}
 
 	public <T extends PObject & CategorizedCDOMObject<T>> boolean containsConstructedCDOMObject(

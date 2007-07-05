@@ -69,7 +69,14 @@ public class ReportUnconstructed {
 			ArrayList<Campaign> arrayList = new ArrayList<Campaign>();
 			for (String fn : args) {
 				Campaign c = Globals.getCampaignByURI(new File(fn).toURI(), true);
-				arrayList.add(c);
+				if (c == null)
+				{
+					System.err.println("Can't find: " + fn);
+				}
+				else
+				{
+					arrayList.add(c);
+				}
 			}
 			pManager.loadCampaigns(arrayList);
 		} catch (PersistenceLayerException e) {

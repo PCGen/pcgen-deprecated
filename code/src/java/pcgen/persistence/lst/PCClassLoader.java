@@ -81,7 +81,6 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					target =
 							context.ref.constructCDOMObject(getLoadClass(),
 								className);
-					// TODO FIXME Assumes it's not a .MOD or something :/
 					target.setName(className);
 					target.setSourceCampaign(source.getCampaign());
 					target.setSourceURI(source.getURI());
@@ -90,15 +89,6 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			else
 			{
 				Logging.errorPrint("How did I see this line: " + lstLine);
-				try
-				{
-					Thread.sleep(1000);
-				}
-				catch (InterruptedException e)
-				{
-					// FIXME Auto-generated catch block
-					e.printStackTrace();
-				}
 				return null;
 			}
 		}
@@ -125,10 +115,10 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					sc = new SubClass();
 					sc.setSourceCampaign(source.getCampaign());
 					sc.setSourceURI(source.getURI());
+					sc.setName(subClassKey);
 					target.addSubClass(sc);
 				}
-				// FIXME
-				// SubClassLoader.parseLine(context, sc, restOfLine, source);
+				parseSubClassLine(context, sc, restOfLine, source);
 			}
 			else if (firstToken.startsWith("SUBCLASSLEVEL:"))
 			{
@@ -142,7 +132,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				{
 					Logging.errorPrint("Expected SUBSTITUTIONCLASS to have "
 						+ "additional Tags in " + source.getURI()
-						+ " (otherwize SUBSTITUTIONCLASS has no value)");
+						+ " (otherwise SUBSTITUTIONCLASS has no value)");
 				}
 				String subClassKey = firstToken.substring(18);
 				// TODO FIXME Should this really be through LoadContext??
@@ -153,11 +143,10 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					sc = new SubstitutionClass();
 					sc.setSourceCampaign(source.getCampaign());
 					sc.setSourceURI(source.getURI());
+					sc.setName(subClassKey);
 					target.addSubstitutionClass(sc);
 				}
-				// FIXME
-				// SubstitutionClassLoader.parseLine(context, sc, restOfLine,
-				// source);
+				parseClassLine(context, sc, restOfLine, source);
 			}
 			else if (firstToken.startsWith("SUBSTITUTIONCLASSLEVEL:"))
 			{
@@ -175,7 +164,6 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					target =
 							context.ref.constructCDOMObject(getLoadClass(),
 								firstToken.substring(6));
-					// TODO FIXME Assumes it's not a .MOD or something :/
 					target.setName(firstToken.substring(6));
 					target.setSourceCampaign(source.getCampaign());
 					target.setSourceURI(source.getURI());
@@ -188,6 +176,47 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			}
 		}
 		return target;
+	}
+
+	private void parseSubClassLine(LoadContext context, SubClass sc,
+		String restOfLine, CampaignSourceEntry source)
+		throws PersistenceLayerException
+	{
+		StringTokenizer colToken = new StringTokenizer(restOfLine, "\t");
+		while (colToken.hasMoreTokens())
+		{
+			String colString = colToken.nextToken().trim();
+			int idxColon = colString.indexOf(':');
+			if (idxColon == -1)
+			{
+				Logging.errorPrint("Invalid Token - does not contain a colon: "
+					+ colString);
+				return;
+			}
+			else if (idxColon == 0)
+			{
+				Logging.errorPrint("Invalid Token - starts with a colon: "
+					+ colString);
+				return;
+			}
+			String key = colString.substring(0, idxColon);
+			String value =
+					(idxColon == colString.length() - 1) ? null : colString
+						.substring(idxColon + 1);
+			SubClassLstToken subclasstoken =
+					TokenStore.inst().getToken(SubClassLstToken.class, key);
+
+			if (subclasstoken != null)
+			{
+				LstUtils.deprecationCheck(subclasstoken, sc, value);
+				if (subclasstoken.parse(context, sc, value))
+				{
+					continue;
+				}
+			}
+			
+			parseToken(context, sc, key, value, source);
+		}
 	}
 
 	private void parseClassLine(LoadContext context, PCClass target,

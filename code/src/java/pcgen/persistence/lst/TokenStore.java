@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pcgen.base.lang.UnreachableError;
+import pcgen.base.util.DoubleKeyMap;
+import pcgen.core.PObject;
 import pcgen.util.Logging;
 
 /**
@@ -26,6 +29,7 @@ public class TokenStore
 
 	/**
 	 * Create an instance of TokenStore and return it.
+	 * 
 	 * @return an instance of TokenStore and return it.
 	 */
 	public static TokenStore inst()
@@ -39,7 +43,7 @@ public class TokenStore
 
 	private void populateTokenTypeList()
 	{
-		//Campaign data
+		// Campaign data
 		tokenTypeList.add(GlobalLstToken.class);
 		tokenTypeList.add(AbilityLstToken.class);
 		tokenTypeList.add(CampaignLstToken.class);
@@ -61,7 +65,7 @@ public class TokenStore
 		tokenTypeList.add(SubClassLstToken.class);
 		tokenTypeList.add(SubstitutionClassLstToken.class);
 		tokenTypeList.add(WeaponProfLstToken.class);
-		//Kits
+		// Kits
 		tokenTypeList.add(KitLstToken.class);
 		tokenTypeList.add(BaseKitLstToken.class);
 		tokenTypeList.add(KitAbilityLstToken.class);
@@ -76,7 +80,7 @@ public class TokenStore
 		tokenTypeList.add(KitStartpackLstToken.class);
 		tokenTypeList.add(KitTableLstToken.class);
 
-		//miscinfo.lst
+		// miscinfo.lst
 		tokenTypeList.add(GameModeLstToken.class);
 		tokenTypeList.add(AbilityCategoryLstToken.class);
 		tokenTypeList.add(BaseDiceLstToken.class);
@@ -86,41 +90,42 @@ public class TokenStore
 		tokenTypeList.add(UnitSetLstToken.class);
 		tokenTypeList.add(WieldCategoryLstToken.class);
 
-		//statsandchecks.lst
+		// statsandchecks.lst
 		tokenTypeList.add(StatsAndChecksLstToken.class);
 		tokenTypeList.add(PCAlignmentLstToken.class);
 		tokenTypeList.add(BonusSpellLstToken.class);
 		tokenTypeList.add(PCCheckLstToken.class);
 		tokenTypeList.add(PCStatLstToken.class);
 
-		//sizeAdjustment.ts
+		// sizeAdjustment.ts
 		tokenTypeList.add(SizeAdjustmentLstToken.class);
 
-		//rules.js
+		// rules.js
 		tokenTypeList.add(RuleCheckLstToken.class);
 
-		//pointbuymethod.lst
+		// pointbuymethod.lst
 		tokenTypeList.add(PointBuyLstToken.class);
 		tokenTypeList.add(PointBuyMethodLstToken.class);
 		tokenTypeList.add(PointBuyStatLstToken.class);
 
-		//level.lst
+		// level.lst
 		tokenTypeList.add(LevelLstToken.class);
 
-		//equipmentslots.lst
+		// equipmentslots.lst
 		tokenTypeList.add(EquipSlotLstToken.class);
 
-		//load.lst
+		// load.lst
 		tokenTypeList.add(LoadInfoLstToken.class);
 
-		//paperinfo.lst
+		// paperinfo.lst
 		tokenTypeList.add(PaperInfoLstToken.class);
 
-		//sponsors.lst
+		// sponsors.lst
 		tokenTypeList.add(SponsorLstToken.class);
-		
-		//subtokens
+
+		// subtokens
 		tokenTypeList.add(ChooseLstToken.class);
+		tokenTypeList.add(ChooseCDOMLstToken.class);
 		tokenTypeList.add(AutoLstToken.class);
 		tokenTypeList.add(AddLstToken.class);
 		tokenTypeList.add(RemoveLstToken.class);
@@ -128,13 +133,15 @@ public class TokenStore
 
 	/**
 	 * Add the new token to the token map
+	 * 
 	 * @param newToken
 	 */
 	public void addToTokenMap(LstToken newToken)
 	{
+		Class<? extends LstToken> newTokClass = newToken.getClass();
 		for (Class<? extends LstToken> tokClass : tokenTypeList)
 		{
-			if (tokClass.isAssignableFrom(newToken.getClass()))
+			if (tokClass.isAssignableFrom(newTokClass))
 			{
 				Map<String, LstToken> tokenMap = getTokenMap(tokClass);
 				LstToken test = tokenMap.put(newToken.getTokenName(), newToken);
@@ -147,10 +154,28 @@ public class TokenStore
 				}
 			}
 		}
+		if (PrimitiveToken.class.isAssignableFrom(newTokClass))
+		{
+			primitiveMap.put(((PrimitiveToken) newToken)
+				.getReferenceClass(), newToken.getTokenName(),
+				(Class<PrimitiveToken<?>>) newTokClass);
+		}
+		if (ChooseLstQualifierToken.class.isAssignableFrom(newTokClass))
+		{
+			qualifierMap.put(((ChooseLstQualifierToken) newToken)
+				.getChoiceClass(), newToken.getTokenName(),
+				(Class<ChooseLstQualifierToken<?>>) newTokClass);
+		}
+		if (ChooseLstGlobalQualifierToken.class.isAssignableFrom(newTokClass))
+		{
+			globalQualifierMap.put(newToken.getTokenName(),
+				(Class<ChooseLstGlobalQualifierToken<?>>) newTokClass);
+		}
 	}
 
 	/**
 	 * Get the token map
+	 * 
 	 * @param tokInterface
 	 * @return the token map
 	 */
@@ -166,12 +191,83 @@ public class TokenStore
 		return tokenMap;
 	}
 
-	public <T extends LstToken> T getToken(Class<T> name, String key) {
+	public <T extends LstToken> T getToken(Class<T> name, String key)
+	{
 		Map<String, LstToken> tokenMap = tokenTypeMap.get(name);
 		if (tokenMap == null)
 		{
 			return null;
 		}
 		return name.cast(tokenMap.get(key));
+	}
+
+	DoubleKeyMap<Class<?>, String, Class<PrimitiveToken<?>>> primitiveMap =
+			new DoubleKeyMap<Class<?>, String, Class<PrimitiveToken<?>>>();
+
+	public <T> PrimitiveToken<T> getPrimitive(Class<T> name, String tokKey)
+	{
+		Class<PrimitiveToken<?>> cptc = primitiveMap.get(name, tokKey);
+		try
+		{
+			return (PrimitiveToken<T>) cptc.newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new UnreachableError("new Instance on " + cptc
+				+ " should not fail in getPrimitive", e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new UnreachableError("new Instance on " + cptc
+				+ " should not fail due to access", e);
+		}
+	}
+
+	DoubleKeyMap<Class<? extends PObject>, String, Class<ChooseLstQualifierToken<?>>> qualifierMap =
+			new DoubleKeyMap<Class<? extends PObject>, String, Class<ChooseLstQualifierToken<?>>>();
+
+	public <T extends PObject> ChooseLstQualifierToken<T> getChooseQualifier(
+		Class<T> domain_class, String key)
+	{
+		Class<ChooseLstQualifierToken<?>> clqtc =
+				qualifierMap.get(domain_class, key);
+		try
+		{
+			return (ChooseLstQualifierToken<T>) clqtc.newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new UnreachableError("new Instance on " + clqtc
+				+ " should not fail in getChooseQualifier", e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new UnreachableError("new Instance on " + clqtc
+				+ " should not fail due to access", e);
+		}
+	}
+
+	HashMap<String, Class<ChooseLstGlobalQualifierToken<?>>> globalQualifierMap =
+			new HashMap<String, Class<ChooseLstGlobalQualifierToken<?>>>();
+
+	public <T extends PObject> ChooseLstGlobalQualifierToken<T> getGlobalChooseQualifier(
+		String key)
+	{
+		Class<ChooseLstGlobalQualifierToken<?>> clgqtc =
+				globalQualifierMap.get(key);
+		try
+		{
+			return (ChooseLstGlobalQualifierToken<T>) clgqtc.newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new UnreachableError("new Instance on " + clgqtc
+				+ " should not fail in getGlobalChooseQualifier", e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new UnreachableError("new Instance on " + clgqtc
+				+ " should not fail due to access", e);
+		}
 	}
 }

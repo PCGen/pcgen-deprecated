@@ -22,18 +22,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import pcgen.base.formula.Formula;
 import pcgen.base.graph.core.DirectionalEdge;
+import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.util.Logging;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.PObject;
 
 public class GraphContext
 {
@@ -71,20 +71,6 @@ public class GraphContext
 			node = pro;
 		}
 		return node;
-	}
-
-	public <S extends PrereqObject> Slot<S> addSlot(String tokenName,
-		CDOMObject pro, Class<S> slotClass, Formula count)
-	{
-		Slot<S> slot = new Slot<S>(slotClass, count);
-		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(pro, slot, tokenName);
-		edge.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
-		if (!graph.addEdge(edge))
-		{
-			Logging.errorPrint("Failed Add for Slot " + tokenName + " " + pro
-				+ " " + slotClass + " " + count);
-		}
-		return slot;
 	}
 
 	/*
@@ -214,6 +200,26 @@ public class GraphContext
 		graph.addNode(node);
 		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(obj, node, sourceToken);
 		edge.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
+		/*
+		 * TODO In order to allow certain behavior, such as FEAT:Foo|Foo
+		 * (awarding a feat twice from the same object), one MUST store into the
+		 * edge (1) The source [already done], (2) The source line (protects
+		 * against MODs and multiple tokens doing the grant) (3) The source
+		 * column (protects against a single line having multiple tokens doing
+		 * the grant) and (4) The request count [the count of objects granted by
+		 * the token located in the given source on the given line at the given
+		 * column].
+		 * 
+		 * By doing this method (of making the instance local only to the token
+		 * instance at a given line and column, one can keep thread safe loading
+		 * (order independent)) while allowing multiple semi-identical edge
+		 * instances.
+		 * 
+		 * Actually the question should be: What is the value of line and column
+		 * in this case - can't the source request count simple be based on the
+		 * URL and still allow thread-safe loading of different files by
+		 * different loaders in parallel?
+		 */
 		graph.addEdge(edge);
 		return edge;
 	}
@@ -288,5 +294,40 @@ public class GraphContext
 		String tokenName, CDOMObject pct, Class<T> name)
 	{
 		return new GraphChangesFacade<T>(graph, tokenName, pct, name);
+	}
+
+	public <T extends PrereqObject, A> CDOMEdgeReference getEdgeReference(
+		PObject parent, Class<T> childClass, String childName,
+		Class<A> assocClass)
+	{
+		if (parent == null)
+		{
+			throw new IllegalArgumentException("Choice Parent cannot be null");
+		}
+		if (childClass == null)
+		{
+			throw new IllegalArgumentException("Child Class cannot be null");
+		}
+		if (childName == null)
+		{
+			throw new IllegalArgumentException("Child Name cannot be null");
+		}
+		if (assocClass == null)
+		{
+			throw new IllegalArgumentException(
+				"Association Class cannot be null");
+		}
+		if (childClass.equals(ChoiceSet.class))
+		{
+			/*
+			 * TODO This choice set needs to be stored and validated as existing &
+			 * having the appropriate assocClass after LST load is complete
+			 */
+			return new CDOMEdgeReference(parent, assocClass, childName);
+		}
+		else
+		{
+			throw new IllegalArgumentException();
+		}
 	}
 }

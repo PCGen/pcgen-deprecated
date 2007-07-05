@@ -17,10 +17,18 @@
  */
 package pcgen.persistence.lst;
 
+import java.io.StringWriter;
+import java.util.Collection;
+import java.util.TreeSet;
+
+import pcgen.base.lang.StringUtil;
 import pcgen.base.lang.UnreachableError;
 import pcgen.base.util.Logging;
+import pcgen.cdom.base.Constants;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 
 public abstract class AbstractToken
@@ -101,4 +109,32 @@ public abstract class AbstractToken
 
 	protected abstract String getTokenName();
 
+	private static final PrerequisiteWriter prereqWriter =
+			new PrerequisiteWriter();
+
+	protected String getPrerequisiteString(LoadContext context,
+		Collection<Prerequisite> prereqs)
+	{
+		String prereqString = null;
+		if (prereqs != null && !prereqs.isEmpty())
+		{
+			TreeSet<String> list = new TreeSet<String>();
+			for (Prerequisite p : prereqs)
+			{
+				StringWriter swriter = new StringWriter();
+				try
+				{
+					prereqWriter.write(swriter, p);
+				}
+				catch (PersistenceLayerException e)
+				{
+					context.addWriteMessage("Error writing Prerequisite: " + e);
+					return null;
+				}
+				list.add(swriter.toString());
+			}
+			prereqString = StringUtil.join(list, Constants.PIPE);
+		}
+		return prereqString;
+	}
 }

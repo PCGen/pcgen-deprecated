@@ -6835,5 +6835,12 @@ public class PCClass extends PObject {
 		}
 		return -1;
 	}
+
+	private ClassSkillList cdomClassSkillList = new ClassSkillList();
+	
+	public ClassSkillList getCDOMClassSkillList()
+	{
+		return cdomClassSkillList;
+	}
 	
 }

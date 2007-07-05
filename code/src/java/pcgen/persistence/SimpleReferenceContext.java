@@ -24,6 +24,7 @@ import java.util.Set;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToInstanceList;
 import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
@@ -43,13 +44,16 @@ public class SimpleReferenceContext
 			new DoubleKeyMapToInstanceList<Class, String, PObject>();
 
 	private DoubleKeyMap<Class, String, PObject> active =
-			new DoubleKeyMap<Class, String, PObject>();
+		new DoubleKeyMap<Class, String, PObject>();
 
 	private HashMapToList<Class, String> deferred =
 			new HashMapToList<Class, String>();
 
 	private DoubleKeyMap<Class, String, CDOMSimpleSingleRef> referenced =
 			new DoubleKeyMap<Class, String, CDOMSimpleSingleRef>();
+
+	private DoubleKeyMap<CDOMObject, Class, CDOMAddressedSingleRef> addressed =
+		new DoubleKeyMap<CDOMObject, Class, CDOMAddressedSingleRef>();
 
 	public SimpleReferenceContext()
 	{
@@ -102,7 +106,7 @@ public class SimpleReferenceContext
 		{
 			Logging.errorPrint("Someone expected " + c.getSimpleName() + " "
 				+ val + " to exist.");
-			Thread.dumpStack();
+			//Thread.dumpStack();
 		}
 		return obj;
 	}
@@ -401,5 +405,19 @@ public class SimpleReferenceContext
 				return c;
 			}
 		};
+	}
+	
+	public <T extends PObject> CDOMAddressedSingleRef<T> getAddressedReference(
+		CDOMObject obj, Class<T> name, String addressName)
+	{
+		CDOMAddressedSingleRef<T> addr = addressed.get(obj, name);
+		if (addr == null)
+		{
+			addr =
+					new CDOMAddressedSingleRef<T>(obj, name,
+						addressName);
+			addressed.put(obj, name, addr);
+		}
+		return addr;
 	}
 }

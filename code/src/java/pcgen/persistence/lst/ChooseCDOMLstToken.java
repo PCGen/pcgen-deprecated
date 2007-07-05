@@ -25,14 +25,20 @@
  */
 package pcgen.persistence.lst;
 
-import pcgen.core.PObject;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>ChooseLstToken</code>
  * 
  * @author Thomas Parker <thpr@users.sourceforge.net>
  */
-public interface ChooseLstToken extends LstToken
+public interface ChooseCDOMLstToken extends LstToken
 {
-	public boolean parse(PObject po, String prefix, String value);
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
+		String value) throws PersistenceLayerException;
+
+	// public String unparse(LoadContext context, ChoiceSet<?> chooser);
 }

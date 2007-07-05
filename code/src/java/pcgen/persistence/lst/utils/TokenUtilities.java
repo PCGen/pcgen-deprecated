@@ -18,8 +18,10 @@
 package pcgen.persistence.lst.utils;
 
 import java.util.Comparator;
+import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.CDOMCompoundAndReference;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
@@ -278,5 +280,61 @@ public final class TokenUtilities
 				return base.compareTo(arg1.getLSTformat());
 			}
 		}
+	}
+
+	public static <T extends PObject> CDOMReference<T> getCompoundReference(
+		LoadContext context, Class<T> cl, String value)
+	{
+		if (value == null || value.length() == 0)
+		{
+			Logging
+				.errorPrint("Compound Reference arguments may not be empty : "
+					+ value);
+			return null;
+		}
+		if (value.indexOf(',') == -1)
+		{
+			return getTypeOrPrimitive(context, cl, value);
+		}
+		if (value.charAt(0) == ',')
+		{
+			Logging
+				.errorPrint("Compound Reference arguments may not start with , : "
+					+ value);
+			return null;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging
+				.errorPrint("Compound Reference arguments may not end with , : "
+					+ value);
+			return null;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging
+				.errorPrint("Compound Reference arguments uses double separator ,, : "
+					+ value);
+			return null;
+		}
+		StringTokenizer st = new StringTokenizer(value, ",");
+		CDOMCompoundAndReference<T> andRef =
+				new CDOMCompoundAndReference<T>(cl, value);
+		while (st.hasMoreTokens())
+		{
+			String tokString = st.nextToken();
+			// TODO Need to implement !TYPE parsing and how that is handled in
+			// the CompoundReference
+			CDOMReference<T> ref = getTypeOrPrimitive(context, cl, tokString);
+			if (ref == null)
+			{
+				Logging
+					.errorPrint("Compound Reference arguments has invalid reference : "
+						+ tokString);
+				return null;
+			}
+			andRef.addReference(ref);
+		}
+		return andRef;
 	}
 }

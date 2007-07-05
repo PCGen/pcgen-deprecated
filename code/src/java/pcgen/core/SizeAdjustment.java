@@ -20,24 +20,33 @@
  */
 package pcgen.core;
 
-import pcgen.core.utils.CoreUtility;
-
 import java.util.List;
+
+import pcgen.base.enumeration.TypeSafeConstant;
 import pcgen.core.bonus.BonusObj;
+import pcgen.core.utils.CoreUtility;
 
 /**
  * <code>SizeAdjustment</code>.
- *
+ * 
  * @author Greg Bingleman <byngl@users.sourceforge.net>
  * @version $Revision$
  */
-public final class SizeAdjustment extends PObject
+public final class SizeAdjustment extends PObject implements TypeSafeConstant
 {
 	private String abbreviation = ""; // should be 1-character long
 	private boolean isDefaultSize = false;
+	private static int ordinalCounter = 0;
+	private final int ordinal;
+
+	public SizeAdjustment()
+	{
+		ordinal = ordinalCounter++;
+	}
 
 	/**
 	 * Set abbreviation
+	 * 
 	 * @param ab
 	 */
 	public void setAbbreviation(final String ab)
@@ -47,6 +56,7 @@ public final class SizeAdjustment extends PObject
 
 	/**
 	 * Get abbreviation
+	 * 
 	 * @return abbreviation
 	 */
 	public String getAbbreviation()
@@ -56,9 +66,10 @@ public final class SizeAdjustment extends PObject
 
 	/**
 	 * Activates (checks PrereqToUse) and returns list of BonusObj's
+	 * 
 	 * @param aPC
 	 * @return active bonuses
-	 **/
+	 */
 	public List<BonusObj> getActiveBonuses(final PlayerCharacter aPC)
 	{
 		super.activateBonuses(aPC);
@@ -68,6 +79,7 @@ public final class SizeAdjustment extends PObject
 
 	/**
 	 * Set is default size to true or false
+	 * 
 	 * @param arg
 	 */
 	public void setIsDefaultSize(final boolean arg)
@@ -77,17 +89,19 @@ public final class SizeAdjustment extends PObject
 
 	public String toString()
 	{
-		return "pcgen.core.SizeAdjustment{" + "abbreviation='" + abbreviation + "'" + "}";
+		return "pcgen.core.SizeAdjustment{" + "abbreviation='" + abbreviation
+			+ "'" + "}";
 	}
 
-	double getBonusTo(final PlayerCharacter aPC, final String bonusType, final List<String> typeList, double defaultValue)
+	double getBonusTo(final PlayerCharacter aPC, final String bonusType,
+		final List<String> typeList, double defaultValue)
 	{
-		for ( String type : typeList )
+		for (String type : typeList)
 		{
 			/*
-			 * TODO:  The standard for these bonuses should probably be TYPE=, but
-			 * the bonus objects only correctly match TYPE.  The bonus objects
-			 * probably need to be reevaluated to standardize this usage
+			 * TODO: The standard for these bonuses should probably be TYPE=,
+			 * but the bonus objects only correctly match TYPE. The bonus
+			 * objects probably need to be reevaluated to standardize this usage
 			 */
 			final double a = bonusTo(bonusType, "TYPE." + type, aPC, aPC);
 
@@ -105,5 +119,10 @@ public final class SizeAdjustment extends PObject
 	boolean isDefaultSize()
 	{
 		return isDefaultSize;
+	}
+
+	public int getOrdinal()
+	{
+		return ordinal;
 	}
 }

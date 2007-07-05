@@ -74,7 +74,6 @@ import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.inst.PCClassLevel;
 import pcgen.cdom.lists.PCGenLists;
-import pcgen.cdom.mode.Size;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.character.CharacterSpell;
@@ -18174,14 +18173,14 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return res;
 	}
 
-	public Size getCDOMSize()
+	public SizeAdjustment getCDOMSize()
 	{
-		Resolver<Size> resolver = null;
+		Resolver<SizeAdjustment> resolver = null;
 		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
 		int mod = 0;
 		for (Race r : list)
 		{
-			Resolver<Size> res = r.get(ObjectKey.SIZE);
+			Resolver<SizeAdjustment> res = r.get(ObjectKey.SIZE);
 			if (res != null)
 			{
 				resolver = res;
@@ -18199,7 +18198,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				activeGraph.getGrantedNodeList(PCTemplate.class);
 		for (PCTemplate t : tlist)
 		{
-			Resolver<Size> res = t.get(ObjectKey.SIZE);
+			Resolver<SizeAdjustment> res = t.get(ObjectKey.SIZE);
 			if (res != null)
 			{
 				resolver = res;
@@ -18212,13 +18211,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		if (resolver == null)
 		{
-			return Size.getConstant(0);
+			return context.gameMode.getDefaultSizeAdjustment();
 		}
 
-		Size size = resolver.resolve();
+		SizeAdjustment size = resolver.resolve();
 		while (mod < 0)
 		{
-			Size prev = size.getPreviousSize();
+			SizeAdjustment prev = context.getPreviousSize(size);
 			if (prev == null)
 			{
 				return size;
@@ -18228,7 +18227,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 		while (mod > 0)
 		{
-			Size next = size.getNextSize();
+			SizeAdjustment next = context.getNextSize(size);
 			if (next == null)
 			{
 				return size;

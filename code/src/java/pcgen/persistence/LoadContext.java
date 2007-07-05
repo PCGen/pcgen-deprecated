@@ -22,6 +22,7 @@ import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.GameMode;
 import pcgen.core.SettingsHandler;
+import pcgen.core.SizeAdjustment;
 
 public class LoadContext
 {
@@ -30,7 +31,7 @@ public class LoadContext
 	public final ListContext list;
 
 	public final ReferenceContext ref;
-	
+
 	public final ObjectContext obj;
 
 	public final GameMode gameMode;
@@ -80,6 +81,18 @@ public class LoadContext
 	public ContextQueue getContextQueue()
 	{
 		return new ContextQueue(graph);
+	}
+
+	public SizeAdjustment getNextSize(SizeAdjustment size)
+	{
+		// TODO What if null (if this is last?)
+		return null;
+	}
+
+	public SizeAdjustment getPreviousSize(SizeAdjustment size)
+	{
+		// TODO What if null (if this is last?)
+		return null;
 	}
 
 }

@@ -26,6 +26,7 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.SubClass;
+import pcgen.persistence.LoadContext;
 
 /**
  * <code>SubClassLstToken</code>
@@ -41,4 +42,6 @@ public interface SubClassLstToken extends LstToken
 	 * @return true if parse OK
 	 */
 	public abstract boolean parse(SubClass subclass, String value);
+
+	public abstract boolean parse(LoadContext context, SubClass sc, String value);
 }

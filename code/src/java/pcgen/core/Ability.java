@@ -912,9 +912,26 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 	 * @return true if they are equal
 	 */
     @Override
-	public boolean equals(Object other)
+	public boolean equals(Object o)
 	{
-		return other instanceof Ability && this.compareTo(other) == 0;
+    	if (o == this)
+    	{
+    		return true;
+    	}
+    	if (o instanceof Ability)
+		{
+    		Ability other = (Ability) o;
+    		if (getCDOMCategory() != null)
+    		{
+    			if (other.getCDOMCategory() == null
+					|| !other.getCDOMCategory().equals(getCDOMCategory()))
+				{
+					return false;
+				}
+			}
+			return other.getCDOMCategory() == null && compareTo(other) == 0;
+		}
+    	return false;
 	}
     
     /**

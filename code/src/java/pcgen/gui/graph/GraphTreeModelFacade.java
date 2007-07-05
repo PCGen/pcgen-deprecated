@@ -12,11 +12,8 @@ import javax.swing.tree.TreePath;
 
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.graph.PCGenGraph;
-import pcgen.cdom.graph.PCGraphActivationEdge;
-import pcgen.cdom.graph.PCGraphAllowsEdge;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.graph.PCGraphHoldsEdge;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
@@ -65,40 +62,6 @@ public class GraphTreeModelFacade implements TreeModel {
 			}
 			return "";
 		}
-	}
-
-	public class AllowsReference extends Reference {
-
-		public AllowsReference(PrereqObject pro) {
-			super(pro);
-		}
-
-		public String toString() {
-			return "ALLOW (theoretical edge): " + super.toString();
-		}
-
-	}
-	public class ActivationReference extends Reference {
-
-		public ActivationReference(PrereqObject pro) {
-			super(pro);
-		}
-
-		public String toString() {
-			return "ACTIVATION (conditional edge): " + super.toString();
-		}
-
-	}
-	public class HoldsReference extends Reference {
-
-		public HoldsReference(PrereqObject pro) {
-			super(pro);
-		}
-
-		public String toString() {
-			return "HOLDS (container edge): " + super.toString();
-		}
-
 	}
 
 	public class SomethingReference extends Reference {
@@ -167,12 +130,6 @@ public class GraphTreeModelFacade implements TreeModel {
 			PCGraphEdge edge = outwardEdgeList.get(arg1);
 			if (edge instanceof PCGraphGrantsEdge) {
 				return new Reference(edge.getSinkNodes().get(0));
-			} else if (edge instanceof PCGraphAllowsEdge) {
-				return new AllowsReference(edge.getSinkNodes().get(0));
-			} else if (edge instanceof PCGraphHoldsEdge) {
-				return new HoldsReference(edge.getSinkNodes().get(0));
-			} else if (edge instanceof PCGraphActivationEdge) {
-				return new ActivationReference(edge.getSinkNodes().get(0));
 			} else {
 				return new SomethingReference(edge.getSinkNodes().get(0));
 			}

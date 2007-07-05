@@ -17,12 +17,16 @@
  */
 package pcgen.persistence;
 
+import java.util.HashMap;
 import java.util.Set;
 
+import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
+import pcgen.cdom.base.CDOMDirectSingleRef;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
 import pcgen.core.PObject;
@@ -191,5 +195,24 @@ public class ReferenceContext
 		Class<T> c, String s)
 	{
 		return simple.containsConstructedCDOMObject(c, s);
+	}
+
+	public <T extends PObject> CDOMAddressedSingleRef<T> getCDOMAddressedReference(
+		CDOMObject obj, Class<T> name, String string)
+	{
+		return simple.getAddressedReference(obj, name, string);
+	}
+
+	private HashMap<PObject, CDOMSingleRef<?>> directRef =
+			new HashMap<PObject, CDOMSingleRef<?>>();
+
+	public <T extends PObject> CDOMSingleRef<T> getCDOMDirectReference(T obj)
+	{
+		CDOMSingleRef<?> ref = directRef.get(obj);
+		if (ref == null)
+		{
+			ref = new CDOMDirectSingleRef<T>(obj);
+		}
+		return (CDOMSingleRef<T>) ref;
 	}
 }
