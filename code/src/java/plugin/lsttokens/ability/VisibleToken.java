@@ -64,63 +64,59 @@ public class VisibleToken implements AbilityLstToken
 		final String visType = value.toUpperCase();
 		if (visType.startsWith("EXPORT"))
 		{
-			// 514 abbreviation cleanup
-//			if (!"EXPORT".equalsIgnoreCase(visType))
-//			{
-//				Logging.errorPrint("Abbreviation used in " + getTokenName()
-//					+ " in Ability");
-//				Logging.errorPrint(" " + visType + " is not a valid value for "
-//					+ getTokenName());
-//				Logging
-//					.errorPrint(" assuming you meant EXPORT, please use EXPORT (exact String, upper case) in the LST file");
-//				Logging.errorPrint(" This will break after PCGen 5.12");
-//			}
+			if (!"EXPORT".equalsIgnoreCase(visType))
+			{
+				Logging.deprecationPrint("Abbreviation used in "
+					+ getTokenName() + " in Ability");
+				Logging.deprecationPrint(" " + visType
+					+ " is not a valid value for " + getTokenName());
+				Logging
+					.deprecationPrint(" assuming you meant EXPORT, please use EXPORT (exact String, upper case) in the LST file");
+				Logging.deprecationPrint(" This will break after PCGen 5.14");
+			}
 			ability.setVisibility(Visibility.EXPORT);
 		}
 		else if (visType.startsWith("NO"))
 		{
-			// 514 abbreviation cleanup
-//			if (!"NO".equalsIgnoreCase(visType))
-//			{
-//				Logging.errorPrint("Abbreviation used in " + getTokenName()
-//					+ " in Ability");
-//				Logging.errorPrint(" " + visType + " is not a valid value for "
-//					+ getTokenName());
-//				Logging
-//					.errorPrint(" assuming you meant NO, please use NO (exact String, upper case) in the LST file");
-//				Logging.errorPrint(" This will break after PCGen 5.12");
-//			}
+			if (!"NO".equalsIgnoreCase(visType))
+			{
+				Logging.deprecationPrint("Abbreviation used in "
+					+ getTokenName() + " in Ability");
+				Logging.deprecationPrint(" " + visType
+					+ " is not a valid value for " + getTokenName());
+				Logging
+					.deprecationPrint(" assuming you meant NO, please use NO (exact String, upper case) in the LST file");
+				Logging.deprecationPrint(" This will break after PCGen 5.14");
+			}
 			ability.setVisibility(Visibility.NO);
 		}
 		else if (visType.startsWith("DISPLAY"))
 		{
-			// 514 abbreviation cleanup
-//			if (!"DISPLAY".equalsIgnoreCase(visType))
-//			{
-//				Logging.errorPrint("Abbreviation used in " + getTokenName()
-//					+ " in Ability");
-//				Logging.errorPrint(" " + visType + " is not a valid value for "
-//					+ getTokenName());
-//				Logging
-//					.errorPrint(" assuming you meant DISPLAY, please use DISPLAY (exact String, upper case) in the LST file");
-//				Logging.errorPrint(" This will break after PCGen 5.12");
-//			}
+			if (!"DISPLAY".equalsIgnoreCase(visType))
+			{
+				Logging.deprecationPrint("Abbreviation used in "
+					+ getTokenName() + " in Ability");
+				Logging.deprecationPrint(" " + visType
+					+ " is not a valid value for " + getTokenName());
+				Logging
+					.deprecationPrint(" assuming you meant DISPLAY, please use DISPLAY (exact String, upper case) in the LST file");
+				Logging.deprecationPrint(" This will break after PCGen 5.14");
+			}
 			ability.setVisibility(Visibility.DISPLAY);
 		}
 		else
 		{
-			// 514 abbreviation cleanup
-//			if (!"YES".equalsIgnoreCase(visType))
-//			{
-//				Logging.errorPrint("Unexpected value used in " + getTokenName()
-//					+ " in Ability");
-//				Logging.errorPrint(" " + visType + " is not a valid value for "
-//					+ getTokenName());
-//				Logging
-//					.errorPrint(" Valid values in Ability are EXPORT, NO, DISPLAY, and YES");
-//				Logging
-//					.errorPrint(" assuming you meant YES, please use YES (exact String, upper case) in the LST file");
-//			}
+			if (!"YES".equalsIgnoreCase(visType))
+			{
+				Logging.deprecationPrint("Unexpected value used in "
+					+ getTokenName() + " in Ability");
+				Logging.deprecationPrint(" " + visType
+					+ " is not a valid value for " + getTokenName());
+				Logging
+					.deprecationPrint(" Valid values in Ability are EXPORT, NO, DISPLAY, and YES");
+				Logging
+					.deprecationPrint(" assuming you meant YES, please use YES (exact String, upper case) in the LST file");
+			}
 			ability.setVisibility(Visibility.YES);
 		}
 		return true;

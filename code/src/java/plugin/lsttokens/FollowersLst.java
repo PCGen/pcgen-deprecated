@@ -26,7 +26,6 @@ package plugin.lsttokens;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
@@ -36,6 +35,7 @@ import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.util.Logging;
 
 /**
  * This class implements support for the FOLLOWERS LST token.

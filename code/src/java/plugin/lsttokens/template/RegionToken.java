@@ -26,6 +26,7 @@ import pcgen.cdom.enumeration.Region;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with REGION Token
@@ -41,6 +42,8 @@ public class RegionToken implements PCTemplateLstToken
 	public boolean parse(PCTemplate template, String value)
 	{
 		String region = value;
+		// CONSIDER This prohibits any Region that starts with Y ... too
+		// general? - thpr 10/27/06
 		char firstChar = value.charAt(0);
 		if (firstChar == 'y' || firstChar == 'Y')
 		{
@@ -50,9 +53,10 @@ public class RegionToken implements PCTemplateLstToken
 			}
 			else
 			{
-				// 514 abbreviation cleanup
-//				Logging.errorPrint("You should use 'YES' as the " + getTokenName());
-//				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
+				Logging.deprecationPrint("You should use 'YES' as the "
+					+ getTokenName());
+				Logging
+					.deprecationPrint("Abbreviations will fail after PCGen 5.14");
 			}
 		}
 

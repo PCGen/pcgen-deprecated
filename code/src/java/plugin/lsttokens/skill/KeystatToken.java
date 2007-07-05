@@ -21,13 +21,12 @@
  */
 package plugin.lsttokens.skill;
 
-import pcgen.base.util.Logging;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PCStat;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.SkillLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with KEYSTAT Token
@@ -49,7 +48,6 @@ public class KeystatToken implements SkillLstToken
 	}
 
 	public boolean parse(LoadContext context, Skill skill, String value)
-		throws PersistenceLayerException
 	{
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)

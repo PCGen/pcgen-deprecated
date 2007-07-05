@@ -33,7 +33,6 @@ import pcgen.core.LanguageList;
 import pcgen.core.PCClass;
 import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
@@ -65,7 +64,6 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{

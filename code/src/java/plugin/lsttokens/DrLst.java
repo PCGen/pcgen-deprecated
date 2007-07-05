@@ -28,7 +28,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.DamageReduction;
@@ -41,6 +40,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.util.Logging;
 
 /**
  * @author djones4

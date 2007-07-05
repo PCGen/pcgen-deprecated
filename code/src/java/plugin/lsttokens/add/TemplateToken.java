@@ -37,7 +37,6 @@ import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.util.Logging;
@@ -80,7 +79,6 @@ public class TemplateToken extends AbstractToken implements AddLstToken
 	}
 
 	public boolean parse(LoadContext context, PObject obj, String value)
-		throws PersistenceLayerException
 	{
 		if (value.length() == 0)
 		{

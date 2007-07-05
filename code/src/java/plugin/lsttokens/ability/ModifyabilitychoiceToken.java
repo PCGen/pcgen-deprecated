@@ -23,7 +23,6 @@ package plugin.lsttokens.ability;
 
 import pcgen.core.Ability;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbilityLstToken;
 
 /**
@@ -44,7 +43,6 @@ public class ModifyabilitychoiceToken implements AbilityLstToken
 	}
 
 	public boolean parse(LoadContext context, Ability ability, String value)
-		throws PersistenceLayerException
 	{
 		// FIXME Auto-generated method stub
 		return false;

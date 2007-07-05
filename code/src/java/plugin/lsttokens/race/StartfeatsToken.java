@@ -75,7 +75,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 			final PreParserFactory factory = PreParserFactory.getInstance();
 			final StringBuffer buf = new StringBuffer();
 
-			buf.append("PREMULT:1,[PREHD:1],[PRELEVEL:1]");
+			buf.append("PREMULT:1,[PREHD:1+],[PRELEVEL:1]");
 
 			final Prerequisite prereq = factory.parse(buf.toString());
 			bon.addPreReq(prereq);
@@ -145,7 +145,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		 * monkeys on one of the lists in early 2007 - Tom Parker Mar/28/2007
 		 */
 		Prerequisite prereq =
-				getPrerequisite("PREMULT:1,[PRELEVEL:1],[PREHD:1]");
+				getPrerequisite("PREMULT:1,[PRELEVEL:1],[PREHD:1+]");
 		gfedge.addPreReq(prereq);
 		return true;
 	}

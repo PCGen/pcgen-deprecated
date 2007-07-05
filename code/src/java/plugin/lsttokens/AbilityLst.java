@@ -32,7 +32,6 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.base.util.Logging;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
@@ -57,6 +56,7 @@ import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
 /**

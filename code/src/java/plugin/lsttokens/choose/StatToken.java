@@ -36,6 +36,7 @@ public class StatToken extends AbstractToken implements ChooseLstToken
 		if (value == null)
 		{
 			// No args - use all stats - legal
+			po.setChoiceString(getTokenName());
 			return true;
 		}
 		if (value.indexOf('[') != -1)

@@ -33,7 +33,6 @@ import pcgen.cdom.inst.Aggregator;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
@@ -67,7 +66,6 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		List<SpellProhibitor> spList = subParse(context, pcc, value);
 		if (spList == null || spList.isEmpty())

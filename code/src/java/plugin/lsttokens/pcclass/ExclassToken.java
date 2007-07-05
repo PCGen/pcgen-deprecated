@@ -25,7 +25,6 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.util.Logging;
@@ -48,7 +47,6 @@ public class ExclassToken implements PCClassLstToken, PCClassClassLstToken
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		if (value.length() == 0)
 		{

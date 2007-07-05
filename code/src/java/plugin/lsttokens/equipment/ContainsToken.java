@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.base.util.Logging;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
@@ -40,6 +39,7 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
 import pcgen.util.BigDecimalHelper;
+import pcgen.util.Logging;
 
 /**
  * Deals with CONTAINS token
@@ -92,7 +92,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 		int percentLoc = weightCapacity.indexOf(Constants.PERCENT);
 		if (percentLoc != weightCapacity.lastIndexOf(Constants.PERCENT))
 		{
-			Logging.errorPrint("Cannot have two weight reduction "
+			Logging.addParseMessage(Logging.LST_ERROR,"Cannot have two weight reduction "
 				+ "characters (indicated by %): " + value);
 			return false;
 		}
@@ -101,7 +101,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			if (hadAsterisk)
 			{
 				Logging
-					.errorPrint("Cannot have Constant Weight (indicated by *) "
+				.addParseMessage(Logging.LST_ERROR,"Cannot have Constant Weight (indicated by *) "
 						+ "and weight reduction (indicated by %): " + value);
 				return false;
 			}
@@ -163,7 +163,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 								typeString.substring(equalLoc + 1)));
 					if (BigDecimal.ZERO.compareTo(itemNumber) >= 0)
 					{
-						Logging.errorPrint("Cannot have negative quantity of "
+						Logging.addParseMessage(Logging.LST_ERROR,"Cannot have negative quantity of "
 							+ itemType + ": " + value);
 						return false;
 					}

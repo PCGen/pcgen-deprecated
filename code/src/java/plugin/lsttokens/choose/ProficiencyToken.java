@@ -77,6 +77,18 @@ public class ProficiencyToken extends AbstractToken implements ChooseLstToken
 				+ " second argument was not PC, ALL, or UNIQUE");
 			return false;
 		}
+		while (tok.hasMoreTokens())
+		{
+			String tokString = tok.nextToken();
+			int equalsLoc = tokString.indexOf("=");
+			if (equalsLoc == tokString.length() - 1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments must have value after = : " + tokString);
+				Logging.errorPrint("  entire token was: " + value);
+				return false;
+			}
+		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{

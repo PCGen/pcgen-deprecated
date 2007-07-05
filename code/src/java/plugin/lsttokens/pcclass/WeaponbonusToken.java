@@ -34,7 +34,6 @@ import pcgen.core.WeaponProf;
 import pcgen.core.WeaponProfList;
 import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
@@ -71,7 +70,6 @@ public class WeaponbonusToken extends AbstractToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		return parseWeaponBonus(context, pcc, value);
 	}

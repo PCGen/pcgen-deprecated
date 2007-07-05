@@ -141,7 +141,6 @@ public class ProhibitspellToken extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		SpellProhibitor sp = subParse(context, pcc, value);
 		if (sp == null)

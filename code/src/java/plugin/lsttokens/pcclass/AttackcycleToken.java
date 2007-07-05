@@ -28,14 +28,13 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.base.util.Logging;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.util.Logging;
 import pcgen.util.enumeration.AttackType;
 
 /**
@@ -92,7 +91,6 @@ public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{

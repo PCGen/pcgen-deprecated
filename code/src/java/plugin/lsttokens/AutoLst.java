@@ -26,7 +26,6 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AutoLoader;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.util.Logging;
@@ -55,7 +54,7 @@ public class AutoLst implements GlobalLstToken
 		return AutoLoader.parseLine(obj, subKey, value);
 	}
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value) throws PersistenceLayerException
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		int barLoc = value.indexOf(Constants.PIPE);
 		if (barLoc == -1)

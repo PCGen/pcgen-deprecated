@@ -26,7 +26,6 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
 import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 
 /**
@@ -69,7 +68,6 @@ public class BonusLst implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
 	{
 		value = CoreUtility.replaceAll(value, "<this>", obj.getKeyName());
 		// TODO FIXME Hack to keep BONUSes working!

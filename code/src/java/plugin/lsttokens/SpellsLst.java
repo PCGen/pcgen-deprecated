@@ -109,10 +109,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				{
 					if (isPre)
 					{
-						Logging.errorPrint("Invalid " + getTokenName() + ": "
-							+ sourceLine);
-						Logging
-							.errorPrint("  PRExxx must be at the END of the Token");
+						Logging.addParseMessage(Logging.LST_ERROR, "Invalid "
+							+ getTokenName() + ": " + sourceLine);
+						Logging.addParseMessage(Logging.LST_ERROR,
+							"  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					casterLevel = token.substring(12);
@@ -121,10 +121,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				{
 					if (isPre)
 					{
-						Logging.errorPrint("Invalid " + getTokenName() + ": "
-							+ sourceLine);
-						Logging
-							.errorPrint("  PRExxx must be at the END of the Token");
+						Logging.addParseMessage(Logging.LST_ERROR, "Invalid "
+							+ getTokenName() + ": " + sourceLine);
+						Logging.addParseMessage(Logging.LST_ERROR,
+							"  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					times = token.substring(6);
@@ -140,17 +140,18 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 					}
 					catch (PersistenceLayerException ple)
 					{
-						Logging.errorPrint(ple.getMessage(), ple);
+						Logging.addParseMessage(Logging.LST_ERROR, ple
+							.getMessage());
 					}
 				}
 				else
 				{
 					if (isPre)
 					{
-						Logging.errorPrint("Invalid " + getTokenName() + ": "
-							+ sourceLine);
-						Logging
-							.errorPrint("  PRExxx must be at the END of the Token");
+						Logging.addParseMessage(Logging.LST_ERROR, "Invalid "
+							+ getTokenName() + ": " + sourceLine);
+						Logging.addParseMessage(Logging.LST_ERROR,
+							"  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					preParseSpellList.add(token);
@@ -224,7 +225,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 
 		if (!tok.hasMoreTokens())
 		{
-			Logging.errorPrint(getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 				+ ": minimally requires a Spell Name");
 			return false;
 		}
@@ -236,13 +237,13 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			times = token.substring(6);
 			if (times.length() == 0)
 			{
-				Logging.errorPrint("Error in Times in " + getTokenName()
-					+ ": argument was empty");
+				Logging.addParseMessage(Logging.LST_ERROR, "Error in Times in "
+					+ getTokenName() + ": argument was empty");
 				return false;
 			}
 			if (!tok.hasMoreTokens())
 			{
-				Logging.errorPrint(getTokenName()
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 					+ ": minimally requires a Spell Name (after TIMES=)");
 				return false;
 			}
@@ -255,13 +256,14 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			casterLevel = token.substring(12);
 			if (casterLevel.length() == 0)
 			{
-				Logging.errorPrint("Error in Caster Level in " + getTokenName()
-					+ ": argument was empty");
+				Logging.addParseMessage(Logging.LST_ERROR,
+					"Error in Caster Level in " + getTokenName()
+						+ ": argument was empty");
 				return false;
 			}
 			if (!tok.hasMoreTokens())
 			{
-				Logging.errorPrint(getTokenName()
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 					+ ": minimally requires a Spell Name (after CASTERLEVEL=)");
 				return false;
 			}
@@ -270,19 +272,19 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 
 		if (token.charAt(0) == ',')
 		{
-			Logging.errorPrint(getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 				+ " Spell arguments may not start with , : " + token);
 			return false;
 		}
 		if (token.charAt(token.length() - 1) == ',')
 		{
-			Logging.errorPrint(getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 				+ " Spell arguments may not end with , : " + token);
 			return false;
 		}
 		if (token.indexOf(",,") != -1)
 		{
-			Logging.errorPrint(getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 				+ " Spell arguments uses double separator ,, : " + token);
 			return false;
 		}
@@ -323,8 +325,9 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			Prerequisite prereq = getPrerequisite(token);
 			if (prereq == null)
 			{
-				Logging.errorPrint("   (Did you put spells after the "
-					+ "PRExxx tags in " + getTokenName() + ":?)");
+				Logging.addParseMessage(Logging.LST_ERROR,
+					"   (Did you put spells after the "
+						+ "PRExxx tags in SPELLS:?)");
 				return false;
 			}
 			prereqs.add(prereq);

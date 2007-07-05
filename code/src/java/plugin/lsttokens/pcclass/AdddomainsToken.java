@@ -119,7 +119,6 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PObject po, String value)
-		throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('.', value))
 		{

@@ -24,7 +24,6 @@ package plugin.lsttokens.pcclass;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.util.Logging;
@@ -60,7 +59,6 @@ public class AbbToken implements PCClassLstToken, PCClassClassLstToken
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		if (value.length() == 0)
 		{

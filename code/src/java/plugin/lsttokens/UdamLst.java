@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
@@ -34,6 +33,7 @@ import pcgen.core.PObject;
 import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.util.Logging;
 
 /**
  * @author djones4

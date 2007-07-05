@@ -68,11 +68,10 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 	{
 		if (value.equals(".CLEAR"))
 		{
-			// 514 abbreviation cleanup
-			// Logging.errorPrint(".CLEAR is deprecated in " + getTokenName()
-			// + " because it has side effects on DOMAINS:");
-			// Logging.errorPrint(" please use .CLEARALL to clear only
-			// CLASSES");
+			Logging.deprecationPrint(".CLEAR is deprecated in "
+				+ getTokenName() + " because it has side effects on DOMAINS:");
+			Logging
+				.deprecationPrint("  please use .CLEARALL to clear only CLASSES");
 			spell.clearLevelInfo();
 			return true;
 		}

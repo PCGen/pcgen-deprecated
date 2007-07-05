@@ -430,7 +430,6 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			return null;
 		}
 
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		Set<String> set = new TreeSet<String>();
 		SortedSet<LSTWriteable> refSet =
 				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);

@@ -39,7 +39,6 @@ import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.MasterListChanges;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SkillLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -67,7 +66,6 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 	}
 
 	public boolean parse(LoadContext context, Skill skill, String value)
-		throws PersistenceLayerException
 	{
 		if (Constants.LST_ALL.equals(value))
 		{

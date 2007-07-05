@@ -26,6 +26,7 @@ import pcgen.cdom.enumeration.SubRace;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with SUBRACE Token
@@ -50,9 +51,10 @@ public class SubraceToken implements PCTemplateLstToken
 			}
 			else
 			{
-				// 514 abbreviation cleanup
-//				Logging.errorPrint("You should use 'YES' as the " + getTokenName());
-//				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
+				Logging.deprecationPrint("You should use 'YES' as the "
+					+ getTokenName());
+				Logging
+					.deprecationPrint("Abbreviations will fail after PCGen 5.14");
 			}
 		}
 

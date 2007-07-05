@@ -123,7 +123,6 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PObject po, String value)
-		throws PersistenceLayerException
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{

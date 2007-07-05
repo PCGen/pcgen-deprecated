@@ -39,7 +39,6 @@ import pcgen.core.Ability;
 import pcgen.core.PObject;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -82,7 +81,6 @@ public class VFeatToken extends AbstractToken implements AddLstToken
 	}
 
 	public boolean parse(LoadContext context, PObject obj, String value)
-		throws PersistenceLayerException
 	{
 		if (value.length() == 0)
 		{

@@ -58,9 +58,10 @@ public class AssigntoallToken implements EquipmentModifierLstToken
 		}
 		else
 		{
-			Logging.errorPrint("Did not understand " + getTokenName()
-				+ " value: " + value);
-			Logging.errorPrint("Must be YES or NO");
+			Logging
+				.addParseMessage(Logging.LST_ERROR, "Did not understand "
+					+ getTokenName() + " value: " + value
+					+ "\n  Must be YES or NO");
 			return false;
 		}
 		context.obj.put(mod, ObjectKey.ASSIGN_TO_ALL, set);

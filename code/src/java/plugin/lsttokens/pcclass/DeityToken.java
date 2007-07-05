@@ -32,7 +32,6 @@ import pcgen.core.Deity;
 import pcgen.core.PCClass;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
@@ -65,7 +64,6 @@ public class DeityToken extends AbstractToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{

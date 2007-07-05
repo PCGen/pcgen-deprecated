@@ -27,7 +27,6 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -35,6 +34,7 @@ import pcgen.cdom.enumeration.VariableKey;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.util.Logging;
 
 /**
  * @author djones4

@@ -21,11 +21,11 @@
  */
 package plugin.lsttokens.pcclass;
 
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.util.Logging;
@@ -50,8 +50,13 @@ public class BonusspellstatToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
+		if (Constants.LST_NONE.equals(value))
+		{
+			context.obj.put(pcc, ObjectKey.HAS_BONUS_SPELL_STAT, Boolean.FALSE);
+			return true;
+		}
+		context.obj.put(pcc, ObjectKey.HAS_BONUS_SPELL_STAT, Boolean.TRUE);
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{

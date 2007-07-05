@@ -48,6 +48,7 @@ import pcgen.persistence.lst.RemoveLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
+
 public class FeatToken extends AbstractToken implements RemoveLstToken
 {
 	private static final Class<Ability> ABILITY_CLASS = Ability.class;

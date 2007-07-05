@@ -17,6 +17,9 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.StringTokenizer;
+
+import pcgen.core.Constants;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
@@ -33,11 +36,37 @@ public class WeaponProfToken extends AbstractToken implements ChooseLstToken
 				+ " arguments may not contain , : " + value);
 			return false;
 		}
-		if (value.indexOf('[') != -1)
+		String suffix = "";
+		int bracketLoc;
+		while ((bracketLoc = value.lastIndexOf('[')) != -1)
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
-			return false;
+			int closeLoc = value.indexOf("]", bracketLoc);
+			if (closeLoc != value.length() - 1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments does not contain matching brackets: "
+					+ value);
+				return false;
+			}
+			String bracketString = value.substring(bracketLoc + 1, closeLoc);
+			if ("WEAPONPROF".equals(bracketString))
+			{
+				//This is okay.
+				suffix = "[WEAPONPROF]" + suffix;
+			}
+			else if (bracketString.startsWith("FEAT="))
+			{
+				// This is okay.
+				suffix = "[" + bracketString + "]" + suffix;
+			}
+			else
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments may not contain [" + bracketString + "] : "
+					+ value);
+				return false;
+			}
+			value = value.substring(0, bracketLoc);
 		}
 		if (hasIllegalSeparator('|', value))
 		{
@@ -61,12 +90,25 @@ public class WeaponProfToken extends AbstractToken implements ChooseLstToken
 				+ " first argument must be an Integer : " + value);
 			return false;
 		}
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		while (st.hasMoreTokens())
+		{
+			String tokString = st.nextToken();
+			int equalsLoc = tokString.indexOf("=");
+			if (equalsLoc == tokString.length() - 1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments must have value after = : " + tokString);
+				Logging.errorPrint("  entire token was: " + value);
+				return false;
+			}
+		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{
 			sb.append(prefix).append('|');
 		}
-		sb.append(getTokenName()).append('|').append(value);
+		sb.append(getTokenName()).append('|').append(value).append(suffix);
 		po.setChoiceString(sb.toString());
 		return true;
 	}

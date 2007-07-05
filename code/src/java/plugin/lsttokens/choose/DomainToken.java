@@ -17,6 +17,9 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.Constants;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
@@ -44,6 +47,19 @@ public class DomainToken extends AbstractToken implements ChooseLstToken
 			return false;
 		}
 
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		while (st.hasMoreTokens())
+		{
+			String tokString = st.nextToken();
+			int equalsLoc = tokString.indexOf("=");
+			if (equalsLoc == tokString.length() - 1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments must have value after = : " + tokString);
+				Logging.errorPrint("  entire token was: " + value);
+				return false;
+			}
+		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{

@@ -17,11 +17,14 @@
  */
 package plugin.lsttokens.choose;
 
-import pcgen.core.Equipment;
+import java.util.StringTokenizer;
+
+import pcgen.core.Constants;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
+
 
 public class ShieldProfToken extends AbstractToken implements ChooseLstToken
 {
@@ -45,6 +48,19 @@ public class ShieldProfToken extends AbstractToken implements ChooseLstToken
 			return false;
 		}
 
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		while (st.hasMoreTokens())
+		{
+			String tokString = st.nextToken();
+			int equalsLoc = tokString.indexOf("=");
+			if (equalsLoc == tokString.length() - 1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments must have value after = : " + tokString);
+				Logging.errorPrint("  entire token was: " + value);
+				return false;
+			}
+		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{

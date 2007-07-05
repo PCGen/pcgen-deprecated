@@ -29,7 +29,6 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
-import pcgen.base.util.Logging;
 import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
@@ -47,6 +46,7 @@ import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.util.Logging;
 
 /**
  * Class deals with DOMAINS Token

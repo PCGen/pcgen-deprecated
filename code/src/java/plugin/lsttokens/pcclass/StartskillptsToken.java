@@ -26,7 +26,6 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 
@@ -49,7 +48,6 @@ public class StartskillptsToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
-		throws PersistenceLayerException
 	{
 		context.obj.put(pcc, FormulaKey.START_SKILL_POINTS, FormulaFactory
 			.getFormulaFor(value));

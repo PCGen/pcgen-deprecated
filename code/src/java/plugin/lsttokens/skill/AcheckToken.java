@@ -21,13 +21,12 @@
  */
 package plugin.lsttokens.skill;
 
-import pcgen.base.util.Logging;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SkillArmorCheck;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.SkillLstToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with ACHECK Token
@@ -47,7 +46,6 @@ public class AcheckToken implements SkillLstToken
 	}
 
 	public boolean parse(LoadContext context, Skill skill, String value)
-		throws PersistenceLayerException
 	{
 		try
 		{

@@ -70,18 +70,15 @@ public class ChooseLst implements GlobalLstToken
 			while (true)
 			{
 				int pipeLoc = val.indexOf(Constants.PIPE, activeLoc);
-				if (pipeLoc == -1)
+				if (val.startsWith("FEAT="))
 				{
-					if (val.startsWith("FEAT="))
-					{
-						key = "FEAT";
-						val = val.substring(5);
-					}
-					else
-					{
-						key = val;
-						val = null;
-					}
+					key = "FEAT";
+					val = val.substring(5);
+				}
+				else if (pipeLoc == -1)
+				{
+					key = val;
+					val = null;
 				}
 				else
 				{
@@ -154,13 +151,12 @@ public class ChooseLst implements GlobalLstToken
 	{
 		String token = null;
 		String rest = value;
-		int activeLoc = 0;
 		String count = null;
 		String maxCount = null;
-		int pipeLoc = value.indexOf(Constants.PIPE, activeLoc);
+		int pipeLoc = value.indexOf(Constants.PIPE);
 		while (pipeLoc != -1)
 		{
-			token = rest.substring(activeLoc, pipeLoc);
+			token = rest.substring(0, pipeLoc);
 			rest = rest.substring(pipeLoc + 1);
 			if (token.startsWith("COUNT="))
 			{
@@ -201,7 +197,7 @@ public class ChooseLst implements GlobalLstToken
 			{
 				break;
 			}
-			pipeLoc = rest.indexOf(Constants.PIPE, activeLoc);
+			pipeLoc = rest.indexOf(Constants.PIPE);
 		}
 		String key;
 		String val;

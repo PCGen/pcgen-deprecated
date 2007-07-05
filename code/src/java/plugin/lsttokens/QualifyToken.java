@@ -50,7 +50,6 @@ import pcgen.core.WeaponProf;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.ReferenceManufacturer;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -140,7 +139,6 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
 	{
 		if (!getLegalTypes().contains(obj.getClass()))
 		{

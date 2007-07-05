@@ -27,7 +27,6 @@ import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.FeatParser;
@@ -46,14 +45,12 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 	}
 
 	public boolean parse(PObject obj, String value, int anInt)
-		throws PersistenceLayerException
 	{
 		obj.addVirtualFeats(FeatParser.parseVirtualFeatList(value));
 		return true;
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{

@@ -88,12 +88,6 @@ public class HitdiceadvancementToken extends AbstractToken implements
 		{
 			return false;
 		}
-		if (value.indexOf(',') == -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " must have more than one comma delimited argument");
-			return false;
-		}
 
 		final StringTokenizer commaTok =
 				new StringTokenizer(value, Constants.COMMA);

@@ -80,10 +80,8 @@ public class VisionLst implements GlobalLstToken
 
 			if (visionString.indexOf(',') >= 0)
 			{
-				// 514 abbreviation cleanup
-				// Logging
-				// .errorPrint("Use of comma in VISION Tag is deprecated. Use
-				// .CLEAR.[Vision] instead.");
+				Logging
+					.deprecationPrint("Use of comma in VISION Tag is deprecated.  Use .CLEAR.[Vision] instead.");
 				final StringTokenizer visionTok =
 						new StringTokenizer(visionString, ",");
 				String numberTok = visionTok.nextToken();
@@ -170,9 +168,9 @@ public class VisionLst implements GlobalLstToken
 				}
 				catch (IllegalArgumentException e)
 				{
-					Logging.errorPrint("Bad Syntax for Cleared Vision in "
-						+ getTokenName());
-					Logging.errorPrint(e.getMessage());
+					Logging.addParseMessage(Logging.LST_ERROR,
+						"Bad Syntax for Cleared Vision in " + getTokenName());
+					Logging.addParseMessage(Logging.LST_ERROR, e.getMessage());
 					return false;
 				}
 			}
@@ -189,9 +187,9 @@ public class VisionLst implements GlobalLstToken
 				}
 				catch (IllegalArgumentException e)
 				{
-					Logging.errorPrint("Bad Syntax for Vision in "
-						+ getTokenName());
-					Logging.errorPrint(e.getMessage());
+					Logging.addParseMessage(Logging.LST_ERROR,
+						"Bad Syntax for Vision in " + getTokenName());
+					Logging.addParseMessage(Logging.LST_ERROR, e.getMessage());
 					return false;
 				}
 			}

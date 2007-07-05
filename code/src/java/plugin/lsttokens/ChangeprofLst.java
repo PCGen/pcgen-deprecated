@@ -32,7 +32,6 @@ import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
-import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -46,6 +45,7 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.util.Logging;
 
 /**
  * @author djones4

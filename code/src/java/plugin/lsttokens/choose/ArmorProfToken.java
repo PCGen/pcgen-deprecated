@@ -17,6 +17,9 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.Constants;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
@@ -61,6 +64,21 @@ public class ArmorProfToken extends AbstractToken implements ChooseLstToken
 			Logging.errorPrint("CHOOSE:" + getTokenName()
 				+ " first argument must be an Integer : " + value);
 			return false;
+		}
+		StringTokenizer st =
+				new StringTokenizer(value.substring(pipeLoc + 1),
+					Constants.PIPE);
+		while (st.hasMoreTokens())
+		{
+			String tokString = st.nextToken();
+			int equalsLoc = tokString.indexOf("=");
+			if (equalsLoc == tokString.length() - 1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments must have value after = : " + tokString);
+				Logging.errorPrint("  entire token was: " + value);
+				return false;
+			}
 		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)

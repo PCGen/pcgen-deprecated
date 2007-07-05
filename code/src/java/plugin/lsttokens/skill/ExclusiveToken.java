@@ -24,7 +24,6 @@ package plugin.lsttokens.skill;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.SkillLstToken;
 import pcgen.util.Logging;
 
@@ -47,10 +46,10 @@ public class ExclusiveToken implements SkillLstToken
 		{
 			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
 			{
-				// 514 abbreviation cleanup
-//				Logging.errorPrint("You should use 'YES' or 'NO' as the "
-//					+ getTokenName());
-//				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
+				Logging.deprecationPrint("You should use 'YES' or 'NO' as the "
+					+ getTokenName());
+				Logging
+					.deprecationPrint("Abbreviations will fail after PCGen 5.14");
 			}
 			set = true;
 		}
@@ -59,10 +58,10 @@ public class ExclusiveToken implements SkillLstToken
 			if (firstChar != 'N' && firstChar != 'n'
 				&& !value.equalsIgnoreCase("NO"))
 			{
-				// 514 abbreviation cleanup
-//				Logging.errorPrint("You should use 'YES' or 'NO' as the "
-//					+ getTokenName());
-//				Logging.errorPrint("Abbreviations will fail after PCGen 5.12");
+				Logging.deprecationPrint("You should use 'YES' or 'NO' as the "
+					+ getTokenName());
+				Logging
+					.deprecationPrint("Abbreviations will fail after PCGen 5.14");
 			}
 			set = false;
 		}
@@ -71,7 +70,6 @@ public class ExclusiveToken implements SkillLstToken
 	}
 
 	public boolean parse(LoadContext context, Skill skill, String value)
-		throws PersistenceLayerException
 	{
 		Boolean exclusive;
 		if (value.equalsIgnoreCase("NO"))

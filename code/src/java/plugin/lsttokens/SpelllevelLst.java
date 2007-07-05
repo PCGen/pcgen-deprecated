@@ -308,6 +308,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 				 * the function isn't any different.
 				 * 
 				 * Actually, I think it IS necessary still - thpr 1/8/07
+				 * It is, since this is actually a TYPE
 				 */
 				classString = classString.substring(12);
 			}
@@ -318,7 +319,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 						+ getTokenName());
 				return false;
 			}
-			slList.add(context.ref.getCDOMReference(tagType, classString));
+			slList.add(context.ref.getCDOMTypeReference(tagType, classString));
 		}
 
 		if (hasIllegalSeparator(',', spellString))

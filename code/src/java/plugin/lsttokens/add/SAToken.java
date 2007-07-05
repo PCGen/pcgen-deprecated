@@ -38,7 +38,6 @@ import pcgen.core.PObject;
 import pcgen.core.SpecialAbility;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.util.Logging;
@@ -59,10 +58,9 @@ public class SAToken extends AbstractToken implements AddLstToken
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			// 514 abbreviation cleanup
-			// Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA "
-			// + "is prohibited in new syntax.");
-			// Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
+			Logging.deprecationPrint("Lack of a SUBTOKEN for ADD:SA "
+				+ "is prohibited in new syntax.");
+			Logging.deprecationPrint("Please use ADD:SA|name|[count|]X,X");
 			return false;
 		}
 		String subToken = value.substring(0, pipeLoc);
@@ -90,7 +88,6 @@ public class SAToken extends AbstractToken implements AddLstToken
 	}
 
 	public boolean parse(LoadContext context, PObject obj, String value)
-		throws PersistenceLayerException
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)

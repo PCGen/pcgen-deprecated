@@ -140,7 +140,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 			 * is that this equality check would then test for Prerequisites, et
 			 * al.
 			 */
-			context.graph.remove(getTokenName(), obj, desc);
+			//context.graph.remove(getTokenName(), obj, desc);
 			// context.obj
 			// .removeFromList(obj, new Description(value.substring(7)));
 			return true;

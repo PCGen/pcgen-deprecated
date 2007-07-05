@@ -40,7 +40,6 @@ import pcgen.core.SpellFilter;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.PCClassUniversalLstToken;
@@ -151,7 +150,6 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 	}
 
 	public boolean parse(LoadContext context, PObject po, String value)
-		throws PersistenceLayerException
 	{
 		String known;
 		if (value.startsWith(".CLEAR"))
