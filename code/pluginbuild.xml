@@ -22,7 +22,7 @@ jar-all-plugins - Generate the plugin jar files
 	<property name="systemlstplugins.dir" value="${plugins.dir}/systemlstplugins" />
 	<property name="jepplugins.dir" value="${plugins.dir}/jepplugins" />
 
-	<target name="jar-all-plugins" depends="makeplugindirs,jar-gmgen-plugins,jar-export-plugins,jar-bonus-plugins,jar-pre-plugins,jar-lst-plugins, jar-systemlst-plugins, jar-jep-plugins, jar-deprecated-plugin" description="Build (Link) plugin jar files">
+	<target name="jar-all-plugins" depends="makeplugindirs,jar-gmgen-plugins,jar-export-plugins,jar-bonus-plugins,jar-pre-plugins,jar-lst-plugins, jar-compatibility-plugins,jar-systemlst-plugins, jar-jep-plugins, jar-deprecated-plugin" description="Build (Link) plugin jar files">
 	</target>
 
 	<target name="jar-gmgen-plugins" depends="makeplugindirs" description="Build (Link) GMGen plugin jar files">
@@ -1888,7 +1888,7 @@ jar-all-plugins - Generate the plugin jar files
 		</jar>
 	</target>
 
-	<target name="jar-lst-plugins" depends="jar-lst-global-plugins, jar-lst-ability-plugins, jar-lst-add-plugins, jar-lst-auto-plugins, jar-lst-campaign-plugins, jar-lst-choose-plugins, jar-lst-class-plugins, jar-lst-companionmod-plugins, jar-lst-diety-plugins, jar-lst-domain-plugins, jar-lst-equipment-plugins, jar-lst-equipmentmodifier-plugins, jar-lst-race-plugins, jar-lst-skill-plugins, jar-lst-spell-plugins, jar-lst-subclass-plugins, jar-lst-substitutionlevel-plugins, jar-lst-template-plugins, jar-lst-weaponprof-plugins, jar-lst-kit-plugins" description="Build (Link) Lst Token plugin jar files">
+	<target name="jar-lst-plugins" depends="jar-lst-global-plugins, jar-lst-ability-plugins, jar-lst-add-plugins, jar-lst-auto-plugins, jar-lst-campaign-plugins, jar-lst-choose-plugins, jar-lst-choose-6-plugins, jar-lst-class-plugins, jar-lst-companionmod-plugins, jar-lst-diety-plugins, jar-lst-domain-plugins, jar-lst-equipment-plugins, jar-lst-equipmentmodifier-plugins, jar-lst-race-plugins, jar-lst-skill-plugins, jar-lst-spell-plugins, jar-lst-subclass-plugins, jar-lst-substitutionlevel-plugins, jar-lst-template-plugins, jar-lst-weaponprof-plugins, jar-lst-kit-plugins" description="Build (Link) Lst Token plugin jar files">
 	</target>
 
 	<target name="jar-lst-global-plugins" depends="makeplugindirs" description="Build (Link) Global Lst Token plugin jar files">
@@ -2314,13 +2314,14 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-		<jar jarfile="${lstplugins.dir}/AddLstToken-SPELLLEVEL.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<!--		<jar jarfile="${lstplugins.dir}/AddLstToken-SPELLLEVEL.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/add/SpellLevelToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
+-->
 		<jar jarfile="${lstplugins.dir}/AddLstToken-TEMPLATE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -2667,6 +2668,17 @@ jar-all-plugins - Generate the plugin jar files
 		</jar>
 	</target>
 
+	<target name="jar-lst-choose-6-plugins" depends="makeplugindirs" description="Build (Link) Choose Lst Token plugin jar files for PCGen 6.0">
+		<!-- Choose tokens-->
+		<jar jarfile="${lstplugins.dir}/ChooseToken-6-NUMBER.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lsttokens/choose/subtoken/NumberToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
 	<target name="jar-lst-choose-plugins" depends="makeplugindirs" description="Build (Link) Choose Lst Token plugin jar files">
 		<!-- Choose tokens-->
 		<jar jarfile="${lstplugins.dir}/ChooseToken-ARMORPROF.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
@@ -2788,15 +2800,14 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-RACE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<jar jarfile="${lstplugins.dir}/ChooseToken-RACE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/choose/RaceToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
--->
-<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-SALIST.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-SALIST.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/choose/SAListToken.class" />
@@ -2853,14 +2864,13 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-SPELLLEVEL.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<jar jarfile="${lstplugins.dir}/ChooseToken-SPELLLEVEL.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/choose/SpellLevelToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
--->
 		<jar jarfile="${lstplugins.dir}/ChooseToken-SPELLLIST.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -2882,7 +2892,7 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-STRING.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-STRING.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/choose/StringToken.class" />
@@ -2992,27 +3002,6 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-		<jar jarfile="${lstplugins.dir}/ClassLstToken-HASSPELLFORMULA.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/pcclass/HasspellformulaToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/ClassLstToken-HASSUBCLASS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/pcclass/HassubclassToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/ClassLstToken-HASSUBSTITUTIONLEVEL.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/pcclass/HassubstitutionlevelToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
 		<jar jarfile="${lstplugins.dir}/ClassLstToken-HD.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -3111,13 +3100,6 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-		<jar jarfile="${lstplugins.dir}/ClassLstToken-PRERACETYPE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/pcclass/PreracetypeToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
 		<jar jarfile="${lstplugins.dir}/ClassLstToken-PROHIBITED.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -3178,13 +3160,6 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/pcclass/StartskillptsToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/ClassLstToken-TEMPLATE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/pcclass/TemplateToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -3611,13 +3586,6 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/equipmentmodifier/AssigntoallToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/EquipmentModifierLstToken-BONUS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/equipmentmodifier/BonusToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -4279,13 +4247,6 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-		<jar jarfile="${lstplugins.dir}/TemplateLstToken-TEMPLATE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/template/TemplateToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
 		<jar jarfile="${lstplugins.dir}/TemplateLstToken-VISIBLE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4746,6 +4707,95 @@ jar-all-plugins - Generate the plugin jar files
 			</fileset>
 		</jar>
 
+	</target>
+
+	<target name="jar-compatibility-plugins" depends="jar-compatibility-global-plugins,jar-compatibility-equipment-plugins,jar-compatibility-equipmentmodifier-plugins,jar-compatibility-pcclassclass-plugins" description="Build (Link) Lst Compatibility Token plugin jar files">
+	</target>
+
+	<target name="jar-compatibility-global-plugins" depends="makeplugindirs" description="Build (Link) Global Lst Compatibility Token plugin jar files">
+		<!-- Global Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-CHOOSE-5-14-MinMaxTitle.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Choose514Lst_MinMaxTitle.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-CHOOSE-5-14-NameMinMax.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Choose514Lst_NameMinMax.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-SPELLS-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Spells514Lst.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-VISION-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Vision514Lst.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-compatibility-equipment-plugins" depends="makeplugindirs" description="Build (Link) Equipment Lst Compatibility Token plugin jar files">
+		<!-- Equipment Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/EquipmentCompatibilityToken-CONTAINS-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/equipment/Contains512Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-compatibility-equipmentmodifier-plugins" depends="makeplugindirs" description="Build (Link) Equipment Modifier Lst Compatibility Token plugin jar files">
+		<!-- Equipment Modifier Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/EquipmentModifierCompatibilityToken-ASSIGNTOALL-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/equipmentmodifier/Assigntoall514Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-compatibility-pcclassclass-plugins" depends="makeplugindirs" description="Build (Link) PCClass Class Lst Compatibility Token plugin jar files">
+		<!-- PCClass Class Line Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/ClassClassCompatibilityToken-HASSPELLFORMULA-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/pcclass/HasSpellFormula514Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/ClassClassCompatibilityToken-HASSUBCLASS-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/pcclass/HasSubClass514Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/ClassClassCompatibilityToken-HASSUBSTITUTIONLEVEL-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/pcclass/HasSubstitutionLevel514Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/ClassClassCompatibilityToken-PRERACETYPE-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/pcclass/Preracetype512Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
 	</target>
 
 	<target name="jar-jep-plugins" depends="makeplugindirs" description="Build (Link) Jep Command plugin jar files">
@@ -6016,92 +6066,6 @@ jar-all-plugins - Generate the plugin jar files
 	</target>
 
 	<target name="jar-deprecated-plugin" depends="manifest" description="Build (Link) plugin jar files">
-		<jar jarfile="${lstplugins.dir}/RaceLstToken-DEPRECATED-LANGNUM.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/LangnumToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/TemplateLstToken-DEPRECATED-LEVELSPERFEAT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/LevelsperfeatToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/ClassLstToken-BAB.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/ClassBabToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${preplugins.dir}/PreToken-PREDEFAULTMONSTER.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/PreDefaultMonsterParser.class" />
-					<include name="plugin/lsttokens/deprecated/PreDefaultMonsterTester.class" />
-					<include name="plugin/lsttokens/deprecated/PreDefaultMonsterWriter.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/RaceLstToken-HITDICE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/HitdiceToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/RaceLstToken-INIT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/InitToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/RaceLstToken-MFEAT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/MfeatToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/LstToken-MOVEA.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/MoveaLst.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/EquipmentModifierLstToken-ADDPROF.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/AddprofToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/ClassLstToken-XPPENALTY.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/XppenaltyToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/SkillListToken-CHOOSE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/SkillListToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
-		<jar jarfile="${lstplugins.dir}/ChooseToken-WEAPONFOCUS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/deprecated/WeaponFocusToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
 	</target>
 
 	<target name="manifest" description="Write the Java manifest">
