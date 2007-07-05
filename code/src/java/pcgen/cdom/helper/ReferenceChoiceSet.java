@@ -22,68 +22,67 @@
  */
 package pcgen.cdom.helper;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
-import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.PlayerCharacter;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
-public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
-		LSTWriteable
+public class ReferenceChoiceSet<T extends PrereqObject> implements
+		PrimitiveChoiceSet<T>
 {
 
-	private final PrimitiveChoiceSet<T> pcs;
+	private final Set<CDOMReference<T>> set;
 
-	private final String setName;
-
-	public ChoiceSet(String name, PrimitiveChoiceSet<T> choice)
+	public ReferenceChoiceSet(Collection<? extends CDOMReference<T>> col)
 	{
-		if (choice == null)
+		super();
+		if (col == null)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Choice Collection cannot be null");
 		}
-		if (name == null)
+		if (col.isEmpty())
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Choice Collection cannot be empty");
 		}
-		pcs = choice;
-		setName = name;
-	}
-
-	/*
-	 * TODO can this be improved to uniquify this a BIT more? Otherwise a LOT of
-	 * ChoiceSets will share hashCodes :(
-	 */
-	public int chooserHashCode()
-	{
-		return setName.hashCode();
+		set = new HashSet<CDOMReference<T>>(col);
 	}
 
 	public String getLSTformat()
 	{
-		return pcs.getLSTformat();
+		Set<CDOMReference<?>> sortedSet =
+				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		sortedSet.addAll(set);
+		return ReferenceUtilities.joinLstFormat(sortedSet, Constants.COMMA);
 	}
 
 	public Class<T> getChoiceClass()
 	{
-		return pcs.getChoiceClass();
+		return set == null ? null : set.iterator().next().getReferenceClass();
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return pcs.getSet(pc);
-	}
-
-	public String getName()
-	{
-		return setName;
+		Set<T> returnSet = new HashSet<T>();
+		for (CDOMReference<T> ref : set)
+		{
+			returnSet.addAll(ref.getContainedObjects());
+		}
+		return returnSet;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return setName.hashCode() ^ pcs.hashCode();
+		return set.size();
 	}
 
 	@Override
@@ -93,10 +92,10 @@ public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
 		{
 			return true;
 		}
-		if (o instanceof ChoiceSet)
+		if (o instanceof ReferenceChoiceSet)
 		{
-			ChoiceSet<?> other = (ChoiceSet) o;
-			return setName.equals(other.setName) && pcs.equals(other.pcs);
+			ReferenceChoiceSet<?> other = (ReferenceChoiceSet) o;
+			return set.equals(other.set);
 		}
 		return false;
 	}

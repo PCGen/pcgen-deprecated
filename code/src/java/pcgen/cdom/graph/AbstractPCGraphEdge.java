@@ -26,9 +26,11 @@ import java.util.List;
 import java.util.Map;
 
 import pcgen.base.graph.core.DirectionalEdge;
+import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.AssociationListKey;
 
 public abstract class AbstractPCGraphEdge extends ConcretePrereqObject
 {
@@ -200,12 +202,13 @@ public abstract class AbstractPCGraphEdge extends ConcretePrereqObject
 
 	public <T> T getAssociation(AssociationKey<T> name)
 	{
-		return (T) (associationMap == null ? null : associationMap.get(name));
+		return associationMap == null ? null : (T) associationMap.get(name);
 	}
 
 	public Collection<AssociationKey<?>> getAssociationKeys()
 	{
-		return new HashSet<AssociationKey<?>>(associationMap.keySet());
+		return associationMap == null ? null : new HashSet<AssociationKey<?>>(
+			associationMap.keySet());
 	}
 
 	public boolean hasAssociations()
@@ -228,5 +231,27 @@ public abstract class AbstractPCGraphEdge extends ConcretePrereqObject
 	{
 		return firstNode.toString() + "->" + secondNode.toString() + " "
 			+ associationMap + " " + getPreReqList();
+	}
+
+	private HashMapToList<AssociationListKey<?>, Object> assocListMap = null;
+
+	public <T> void addToAssociationList(AssociationListKey<T> key, T value)
+	{
+		if (assocListMap == null)
+		{
+			assocListMap = new HashMapToList<AssociationListKey<?>, Object>();
+		}
+		assocListMap.addToListFor(key, value);
+	}
+
+	public <T> List<T> getAssociationListFor(AssociationListKey<T> listKey)
+	{
+		return assocListMap == null ? null : (List<T>) assocListMap
+			.getListFor(listKey);
+	}
+
+	public Collection<AssociationListKey<?>> getAssociationListKeys()
+	{
+		return assocListMap == null ? null : assocListMap.getKeySet();
 	}
 }

@@ -39,11 +39,13 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.mode.Size;
 import pcgen.core.Alignment;
+import pcgen.core.ArmorProf;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
+import pcgen.core.ShieldProf;
+import pcgen.core.SizeAdjustment;
 import pcgen.core.WeaponProf;
 import pcgen.util.enumeration.DefaultTriState;
 import pcgen.util.enumeration.Visibility;
@@ -61,8 +63,8 @@ public final class ObjectKey<T> {
 	 * 
 	 * have a .cast(Object o) method on ObjectKey???
 	 */
-	public static final ObjectKey<Resolver<Size>> SIZE =
-			new ObjectKey<Resolver<Size>>();
+	public static final ObjectKey<Resolver<SizeAdjustment>> SIZE =
+			new ObjectKey<Resolver<SizeAdjustment>>();
 	
 	public static final ObjectKey<Region> REGION = new ObjectKey<Region>();
 
@@ -165,6 +167,12 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<CDOMObject> PSEUDO_PARENT = new ObjectKey<CDOMObject>();
 
 	public static final ObjectKey<HitDieCommandFactory> HITDIE = new ObjectKey<HitDieCommandFactory>();
+
+	public static final ObjectKey<CDOMSimpleSingleRef<ShieldProf>> SHIELD_PROF = new ObjectKey<CDOMSimpleSingleRef<ShieldProf>>();
+
+	public static final ObjectKey<CDOMSimpleSingleRef<ArmorProf>> ARMOR_PROF = new ObjectKey<CDOMSimpleSingleRef<ArmorProf>>();
+
+	public static final ObjectKey<BigDecimal>  PROHIBITED_COST = new ObjectKey<BigDecimal>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 

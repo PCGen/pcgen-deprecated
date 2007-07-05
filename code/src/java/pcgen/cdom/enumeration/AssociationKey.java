@@ -28,6 +28,7 @@ import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.util.Map;
 
+import pcgen.base.formula.Formula;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMObject;
 
@@ -104,6 +105,15 @@ public final class AssociationKey<T>
 
 	public static final AssociationKey<CDOMObject> ABILITY_ASSOCIATION =
 			new AssociationKey<CDOMObject>();
+
+	public static final AssociationKey<AssociationListKey<?>> CHOICE_KEY =
+			new AssociationKey<AssociationListKey<?>>();
+
+	public static final AssociationKey<Formula> CHOICE_COUNT =
+			new AssociationKey<Formula>();
+
+	public static final AssociationKey<Formula> CHOICE_MAXCOUNT =
+			new AssociationKey<Formula>();
 
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 

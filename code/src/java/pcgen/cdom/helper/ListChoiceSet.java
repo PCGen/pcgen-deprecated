@@ -22,68 +22,54 @@
  */
 package pcgen.cdom.helper;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.CDOMList;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PlayerCharacter;
 
-public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
-		LSTWriteable
+public class ListChoiceSet<T extends CDOMObject> implements
+		PrimitiveChoiceSet<T>
 {
 
-	private final PrimitiveChoiceSet<T> pcs;
+	private final CDOMList<T> list;
 
-	private final String setName;
-
-	public ChoiceSet(String name, PrimitiveChoiceSet<T> choice)
+	public ListChoiceSet(CDOMList<T> cdomList)
 	{
-		if (choice == null)
+		super();
+		if (cdomList == null)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Choice Collection cannot be null");
 		}
-		if (name == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		pcs = choice;
-		setName = name;
-	}
-
-	/*
-	 * TODO can this be improved to uniquify this a BIT more? Otherwise a LOT of
-	 * ChoiceSets will share hashCodes :(
-	 */
-	public int chooserHashCode()
-	{
-		return setName.hashCode();
+		list = cdomList;
 	}
 
 	public String getLSTformat()
 	{
-		return pcs.getLSTformat();
+		return "LIST:" + list.toString();
 	}
 
 	public Class<T> getChoiceClass()
 	{
-		return pcs.getChoiceClass();
+		return list.getListClass();
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return pcs.getSet(pc);
-	}
-
-	public String getName()
-	{
-		return setName;
+		/*
+		 * FUTURE This seems to be wrapping a Collection into a Set... can
+		 * getSet relax to a Collection or can getCODMListContents tighten to a
+		 * set?
+		 */
+		return new HashSet<T>(pc.getCDOMListContents(list));
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return setName.hashCode() ^ pcs.hashCode();
+		return list.hashCode();
 	}
 
 	@Override
@@ -93,10 +79,10 @@ public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
 		{
 			return true;
 		}
-		if (o instanceof ChoiceSet)
+		if (o instanceof ListChoiceSet)
 		{
-			ChoiceSet<?> other = (ChoiceSet) o;
-			return setName.equals(other.setName) && pcs.equals(other.pcs);
+			ListChoiceSet<?> other = (ListChoiceSet) o;
+			return list.equals(other.list);
 		}
 		return false;
 	}

@@ -52,6 +52,10 @@ public class Constants
 
 	public static final String LST_TYPE_OLD = "TYPE.";
 
+	public static final String LST_NOT_TYPE = "!TYPE=";
+
+	public static final String LST_NOT_TYPE_OLD = "!TYPE.";
+
 	public static final String LST_CROSSCLASS = "CROSSCLASS";
 
 	public static final String LST_EXCLUSIVE = "EXCLUSIVE";
@@ -114,5 +118,7 @@ public class Constants
 	public static final String LST_LIST = "LIST";
 
 	public static final String LST_NORANK = "NORANK";
+
+	public static final String CHOOSE = "CHOOSE";
 
 }

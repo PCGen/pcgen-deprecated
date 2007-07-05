@@ -30,12 +30,11 @@ import pcgen.base.util.DoubleKeyMap;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
-import pcgen.cdom.enumeration.MapKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.VariableKey;
 import pcgen.cdom.util.ListKeyMapToList;
-import pcgen.cdom.util.MapKeyMapToList;
+import pcgen.core.PCTemplateChooseList;
 import pcgen.core.SourceEntry;
 
 public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
@@ -69,8 +68,6 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 
 	/** A map of Lists for the object */
 	private final ListKeyMapToList listChar = new ListKeyMapToList();
-
-	private final MapKeyMapToList mapChar = new MapKeyMapToList();
 
 	private final DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject> cdomListMods =
 			new DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject>();
@@ -244,40 +241,6 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		return listChar.removeFromListFor(key, obj);
 	}
 
-	/*
-	 * TODO would be REALLY nice to remove these MapKey items as unnecessary
-	 */
-	public final <SK, SV> boolean addToListFor(MapKey<SK, SV> key1, SK key2,
-		SV value)
-	{
-		return mapChar.addToListFor(key1, key2, value);
-	}
-
-	public final boolean containsKey(MapKey<?, ?> key1)
-	{
-		return mapChar.containsKey(key1);
-	}
-
-	public final <SK> boolean containsKey(MapKey<SK, ?> key1, SK key2)
-	{
-		return mapChar.containsKey(key1, key2);
-	}
-
-	public final <SK, SV> List<SV> getListFor(MapKey<SK, SV> key1, SK key2)
-	{
-		return mapChar.getListFor(key1, key2);
-	}
-
-	public final <SK, SV> List<SV> removeListFor(MapKey<SK, SV> key1, SK key2)
-	{
-		return mapChar.removeListFor(key1, key2);
-	}
-
-	public final <SK> Set<SK> getKeySet(MapKey<SK, ?> key1)
-	{
-		return mapChar.getKeySet(key1);
-	}
-
 	public final Boolean getDescPIObject()
 	{
 		return descPI;
@@ -404,7 +367,6 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		obj.variableChar.putAll(variableChar);
 		obj.objectChar.putAll(objectChar);
 		obj.listChar.addAllLists(listChar);
-		obj.mapChar.addAll(mapChar);
 		obj.addAllPrerequisites(getPrerequisiteList());
 		obj.objectChar.put(ObjectKey.RETIRED, Boolean.TRUE);
 		Integer seq = integerChar.get(IntegerKey.SEQUENCE_NUMBER);
@@ -475,5 +437,21 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	public String getLSTformat()
 	{
 		return getKeyName();
+	}
+
+	private PCTemplateChooseList tcl = null;
+
+	public boolean hasCDOMTemplateChooseList()
+	{
+		return tcl == null;
+	}
+
+	public PCTemplateChooseList getCDOMTemplateChooseList()
+	{
+		if (tcl == null)
+		{
+			tcl = new PCTemplateChooseList();
+		}
+		return tcl;
 	}
 }

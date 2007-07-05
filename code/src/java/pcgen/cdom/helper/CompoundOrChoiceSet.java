@@ -22,82 +22,48 @@
  */
 package pcgen.cdom.helper;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
-import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.PlayerCharacter;
 
-public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
-		LSTWriteable
+public class CompoundOrChoiceSet<T extends PrereqObject> implements
+		PrimitiveChoiceSet<T>
 {
 
-	private final PrimitiveChoiceSet<T> pcs;
+	private final Set<PrimitiveChoiceSet<T>> set =
+			new HashSet<PrimitiveChoiceSet<T>>();
 
-	private final String setName;
-
-	public ChoiceSet(String name, PrimitiveChoiceSet<T> choice)
+	public CompoundOrChoiceSet(Collection<PrimitiveChoiceSet<T>> coll)
 	{
-		if (choice == null)
+		if (coll == null)
 		{
 			throw new IllegalArgumentException();
 		}
-		if (name == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		pcs = choice;
-		setName = name;
-	}
-
-	/*
-	 * TODO can this be improved to uniquify this a BIT more? Otherwise a LOT of
-	 * ChoiceSets will share hashCodes :(
-	 */
-	public int chooserHashCode()
-	{
-		return setName.hashCode();
-	}
-
-	public String getLSTformat()
-	{
-		return pcs.getLSTformat();
-	}
-
-	public Class<T> getChoiceClass()
-	{
-		return pcs.getChoiceClass();
+		set.addAll(coll);
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return pcs.getSet(pc);
-	}
-
-	public String getName()
-	{
-		return setName;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return setName.hashCode() ^ pcs.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (o == this)
+		Set<T> returnSet = new HashSet<T>();
+		for (PrimitiveChoiceSet<T> cs : set)
 		{
-			return true;
+			returnSet.addAll(cs.getSet(pc));
 		}
-		if (o instanceof ChoiceSet)
-		{
-			ChoiceSet<?> other = (ChoiceSet) o;
-			return setName.equals(other.setName) && pcs.equals(other.pcs);
-		}
-		return false;
+		return returnSet;
+	}
+
+	public String getLSTformat()
+	{
+		return ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
+	}
+
+	public Class<T> getChoiceClass()
+	{
+		return set == null ? null : set.iterator().next().getChoiceClass();
 	}
 }

@@ -27,6 +27,7 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.core.spell.Spell;
 
 public class PCGenLists
 {
@@ -36,10 +37,8 @@ public class PCGenLists
 	public <LT extends CDOMObject, T extends CDOMList<LT>> Set<T> getLists(
 		Class<T> name)
 	{
-		DoubleKeyMap<T, LT, AssociatedPrereqObject> dkm =
-				(DoubleKeyMap<T, LT, AssociatedPrereqObject>) lists;
-		Set<T> returnSet = new HashSet<T>();
-		for (T list : dkm.getKeySet())
+		Set returnSet = new HashSet();
+		for (CDOMList<? extends CDOMObject> list : lists.getKeySet())
 		{
 			if (name.equals(list.getReferenceClass()))
 			{
@@ -52,17 +51,14 @@ public class PCGenLists
 	public <LT extends CDOMObject, T extends CDOMList<LT>> Collection<LT> getListContents(
 		T list)
 	{
-		DoubleKeyMap<T, LT, AssociatedPrereqObject> dkm =
-				(DoubleKeyMap<T, LT, AssociatedPrereqObject>) lists;
-		return dkm.getSecondaryKeySet(list);
+		Set secondaryKeySet = lists.getSecondaryKeySet(list);
+		return secondaryKeySet;
 	}
 
 	public <LT extends CDOMObject, T extends CDOMList<LT>> AssociatedObject getListAssociation(
 		T sl, LT sk)
 	{
-		DoubleKeyMap<T, LT, AssociatedPrereqObject> dkm =
-				(DoubleKeyMap<T, LT, AssociatedPrereqObject>) lists;
-		return dkm.get(sl, sk);
+		return lists.get(sl, sk);
 	}
 
 	public <LT extends CDOMObject, T extends CDOMList<LT>> void addToList(
@@ -72,5 +68,11 @@ public class PCGenLists
 		{
 			lists.put(list, obj, apo);
 		}
+	}
+
+	public <LT extends CDOMObject, T extends CDOMList<LT>> boolean listContains(
+		T list, Spell obj)
+	{
+		return lists.containsKey(list, obj);
 	}
 }

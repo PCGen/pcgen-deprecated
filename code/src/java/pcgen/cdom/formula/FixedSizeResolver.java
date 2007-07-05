@@ -1,26 +1,26 @@
 package pcgen.cdom.formula;
 
 import pcgen.base.formula.Resolver;
-import pcgen.cdom.mode.Size;
+import pcgen.core.SizeAdjustment;
 
-public class FixedSizeResolver implements Resolver<Size>
+public class FixedSizeResolver implements Resolver<SizeAdjustment>
 {
 
-	private final Size size;
+	private final SizeAdjustment size;
 
-	public FixedSizeResolver(Size s)
+	public FixedSizeResolver(SizeAdjustment s)
 	{
 		size = s;
 	}
 
-	public Size resolve()
+	public SizeAdjustment resolve()
 	{
 		return size;
 	}
 
 	public String toLSTFormat()
 	{
-		return size.toLSTFormat();
+		return size.getAbbreviation();
 	}
 
 }

@@ -33,9 +33,9 @@ import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.helper.Capacity;
+import pcgen.cdom.helper.Qualifier;
 import pcgen.cdom.helper.Quality;
 import pcgen.core.Alignment;
-import pcgen.core.Description;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PCClass;
 import pcgen.core.WeaponProf;
@@ -88,8 +88,6 @@ public final class ListKey<T>
 
 	public static final ListKey<Capacity> CAPACITY = new ListKey<Capacity>();
 
-	public static final ListKey<Description> DESC = new ListKey<Description>();
-
 	public static final ListKey<RaceSubType> REMOVED_RACESUBTYPE =
 			new ListKey<RaceSubType>();
 
@@ -104,6 +102,8 @@ public final class ListKey<T>
 	public static final ListKey<Type> ITEM = new ListKey<Type>();
 
 	public static final ListKey<Type> PROHIBITED_ITEM = new ListKey<Type>();
+
+	public static final ListKey<Qualifier> QUALIFY = new ListKey<Qualifier>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey()

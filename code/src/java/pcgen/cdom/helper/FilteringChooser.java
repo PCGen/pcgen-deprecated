@@ -22,82 +22,60 @@
  */
 package pcgen.cdom.helper;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
-import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.core.PlayerCharacter;
 
-public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
-		LSTWriteable
+public class FilteringChooser<T extends PrereqObject> implements
+		PrimitiveChoiceSet<T>
 {
 
-	private final PrimitiveChoiceSet<T> pcs;
+	private final PrimitiveChoiceFilter<? super T> removingFilter;
 
-	private final String setName;
+	private final PrimitiveChoiceSet<T> baseSet;
 
-	public ChoiceSet(String name, PrimitiveChoiceSet<T> choice)
+	public FilteringChooser(PrimitiveChoiceSet<T> base,
+		PrimitiveChoiceFilter<? super T> cf)
 	{
-		if (choice == null)
+		super();
+		if (base == null)
 		{
 			throw new IllegalArgumentException();
 		}
-		if (name == null)
+		if (cf == null)
 		{
 			throw new IllegalArgumentException();
 		}
-		pcs = choice;
-		setName = name;
-	}
-
-	/*
-	 * TODO can this be improved to uniquify this a BIT more? Otherwise a LOT of
-	 * ChoiceSets will share hashCodes :(
-	 */
-	public int chooserHashCode()
-	{
-		return setName.hashCode();
-	}
-
-	public String getLSTformat()
-	{
-		return pcs.getLSTformat();
-	}
-
-	public Class<T> getChoiceClass()
-	{
-		return pcs.getChoiceClass();
+		baseSet = base;
+		removingFilter = cf;
 	}
 
 	public Set<T> getSet(PlayerCharacter pc)
 	{
-		return pcs.getSet(pc);
-	}
-
-	public String getName()
-	{
-		return setName;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return setName.hashCode() ^ pcs.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (o == this)
+		Set<T> choices = new HashSet<T>(baseSet.getSet(pc));
+		for (Iterator<T> it = choices.iterator(); it.hasNext();)
 		{
-			return true;
+			if (!removingFilter.allow(pc, it.next()))
+			{
+				it.remove();
+			}
 		}
-		if (o instanceof ChoiceSet)
-		{
-			ChoiceSet<?> other = (ChoiceSet) o;
-			return setName.equals(other.setName) && pcs.equals(other.pcs);
-		}
-		return false;
+		return choices;
+	}
+
+	public String getLSTformat()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(baseSet.getLSTformat()).append('[');
+		sb.append(removingFilter.getLSTformat()).append(']');
+		return sb.toString();
+	}
+
+	public Class<T> getChoiceClass()
+	{
+		return baseSet.getChoiceClass();
 	}
 }

@@ -44,8 +44,7 @@ import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
  * 
  * @author boomer70 <boomer70@yahoo.com>
  */
-public class ConcretePrereqObject implements PrereqObject, RestrictedObject,
-		Cloneable
+public class ConcretePrereqObject implements PrereqObject, Cloneable
 {
 	/**
 	 * The list of prerequisites
@@ -470,49 +469,6 @@ public class ConcretePrereqObject implements PrereqObject, RestrictedObject,
 			}
 		}
 		return writer.toString();
-	}
-
-	private List<Restriction<?>> sinkRes = null;
-
-	public boolean addSinkRestriction(Restriction<?> r)
-	{
-		if (sinkRes == null)
-		{
-			sinkRes = new ArrayList<Restriction<?>>();
-		}
-		return sinkRes.add(r);
-	}
-
-	public boolean hasSinkRestrictions()
-	{
-		return sinkRes != null && !sinkRes.isEmpty();
-	}
-
-	public List<Restriction<?>> getSinkRestrictions()
-	{
-		return sinkRes == null ? null : Collections.unmodifiableList(sinkRes);
-	}
-
-	private List<Restriction<?>> sourceRes = null;
-
-	public boolean addSourceRestriction(Restriction<?> r)
-	{
-		if (sourceRes == null)
-		{
-			sourceRes = new ArrayList<Restriction<?>>();
-		}
-		return sourceRes.add(r);
-	}
-
-	public boolean hasSourceRestrictions()
-	{
-		return sourceRes != null && !sourceRes.isEmpty();
-	}
-
-	public List<Restriction<?>> getSourceRestrictions()
-	{
-		return sourceRes == null ? null : Collections
-			.unmodifiableList(sourceRes);
 	}
 
 	public boolean equalsPrereqObject(PrereqObject other)

@@ -39,10 +39,10 @@ public class PCGraphGrantsEdge extends AbstractPCGraphEdge implements
 	 * @see pcbase.graph.core.GraphEdge#createReplacementEdge(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public PCGraphAllowsEdge createReplacementEdge(PrereqObject gn1,
+	public PCGraphGrantsEdge createReplacementEdge(PrereqObject gn1,
 		PrereqObject gn2)
 	{
-		PCGraphAllowsEdge edge = new PCGraphAllowsEdge(gn1, gn2, source);
+		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(gn1, gn2, source);
 		copyAssociationMapTo(edge);
 		edge.addAllPrerequisites(getPrerequisiteList());
 		return edge;

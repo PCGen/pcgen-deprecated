@@ -19,8 +19,11 @@ package pcgen.cdom.base;
 
 import java.util.Collection;
 
+import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.core.PlayerCharacter;
+
 public abstract class CDOMReference<T extends PrereqObject> extends
-		ConcretePrereqObject implements LSTWriteable
+		ConcretePrereqObject implements LSTWriteable, PrimitiveChoiceFilter<T>
 {
 
 	private final String name;
@@ -47,6 +50,11 @@ public abstract class CDOMReference<T extends PrereqObject> extends
 	public abstract void addResolution(T obj);
 
 	public abstract boolean contains(T obj);
+	
+	public boolean allow(PlayerCharacter pc, T obj)
+	{
+		return contains(obj);
+	}
 
 	@Override
 	public String toString()

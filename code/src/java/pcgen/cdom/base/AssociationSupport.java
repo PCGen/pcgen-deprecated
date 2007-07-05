@@ -52,4 +52,29 @@ public class AssociationSupport implements AssociatedObject
 		return associationMap != null && !associationMap.isEmpty();
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return associationMap == null ? 0 : associationMap.size();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == this)
+		{
+			return true;
+		}
+		if (o instanceof AssociationSupport)
+		{
+			AssociationSupport other = (AssociationSupport) o;
+			if (associationMap == null || associationMap.isEmpty())
+			{
+				return other.associationMap == null
+					|| other.associationMap.isEmpty();
+			}
+			return associationMap.equals(other.associationMap);
+		}
+		return false;
+	}
 }
