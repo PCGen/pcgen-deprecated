@@ -23,23 +23,26 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
+import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.utils.CoreUtility;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstToken;
-import pcgen.persistence.lst.TokenStore;
 import pcgen.util.Logging;
 
 /**
@@ -218,67 +221,43 @@ public class ChooseLst implements GlobalLstToken
 			key = token;
 			val = rest;
 		}
-		ChoiceSet<?> chooser = ChooseLoader.parseLine(context, obj, key, val);
+		PrimitiveChoiceSet<?> chooser =
+				ChooseLoader.parseToken(context, obj, key, val);
 		if (chooser == null)
 		{
 			return false;
 		}
-		if (maxCount == null)
-		{
-			if (chooser.getMaxSelections() == null)
-			{
-				chooser.setMaxSelections(FormulaFactory
-					.getFormulaFor(Integer.MAX_VALUE));
-			}
-		}
-		else
-		{
-			chooser.setMaxSelections(FormulaFactory.getFormulaFor(maxCount));
-		}
-		if (count == null)
-		{
-			if (chooser.getCount() == null)
-			{
-				chooser.setCount(FormulaFactory.getFormulaFor(1));
-			}
-		}
-		else
-		{
-			chooser.setCount(FormulaFactory.getFormulaFor(count));
-		}
-		chooser.setChooseType(key);
-		context.obj.put(obj, ObjectKey.CHOICE, chooser);
+		Formula maxFormula =
+				maxCount == null ? FormulaFactory
+					.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
+					.getFormulaFor(maxCount);
+		Formula countFormula =
+				count == null ? FormulaFactory.getFormulaFor(1)
+					: FormulaFactory.getFormulaFor(count);
+		ChoiceSet<?> choiceSet = new ChoiceSet(Constants.CHOOSE, chooser);
+		PCGraphGrantsEdge edge =
+				context.graph.grant(getTokenName(), obj, choiceSet);
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		ChoiceSet<?> choice = context.obj.getObject(obj, ObjectKey.CHOICE);
-		if (choice == null)
+		GraphChanges<ChoiceSet> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
+					ChoiceSet.class);
+		if (changes == null)
 		{
-			// didn't have a chooser
 			return null;
 		}
-		Map<String, LstToken> tokenMap =
-				TokenStore.inst().getTokenMap(ChooseLstToken.class);
-		String chooseType = choice.getChooseType();
-		ChooseLstToken token = (ChooseLstToken) tokenMap.get(chooseType);
-		if (token != null)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.append(choice.getChooseType());
-			String unparsed = token.unparse(context, choice);
-			if (unparsed != null)
-			{
-				sb.append('|').append(unparsed);
-			}
-			return new String[]{sb.toString()};
-		}
-		else
-		{
-			context.addWriteMessage("Illegal CHOOSE Type '"
-				+ choice.getChooseType() + "'");
+			// Zero indicates no Token
 			return null;
 		}
+		return new String[]{ReferenceUtilities.joinLstFormat(added,
+			Constants.PIPE)};
 	}
 }

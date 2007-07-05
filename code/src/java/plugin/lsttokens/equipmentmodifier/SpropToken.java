@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.equipmentmodifier;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,10 +34,8 @@ import pcgen.core.EquipmentModifier;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.util.Logging;
 
 /**
@@ -176,7 +173,6 @@ public class SpropToken extends AbstractToken implements
 			// Zero indicates no Token
 			return null;
 		}
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		List<String> list = new ArrayList<String>();
 		for (LSTWriteable ab : added)
 		{
@@ -190,21 +186,8 @@ public class SpropToken extends AbstractToken implements
 			}
 			if (sp.hasPrerequisites())
 			{
-				for (Prerequisite p : sp.getPrerequisiteList())
-				{
-					StringWriter swriter = new StringWriter();
-					try
-					{
-						prereqWriter.write(swriter, p);
-					}
-					catch (PersistenceLayerException e)
-					{
-						context.addWriteMessage("Error writing Prerequisite: "
-							+ e);
-						return null;
-					}
-					sb.append(Constants.PIPE).append(swriter.toString());
-				}
+				sb.append(Constants.PIPE);
+				sb.append(getPrerequisiteString(context, sp.getPrerequisiteList()));
 			}
 			list.add(sb.toString());
 		}

@@ -22,7 +22,6 @@
  */
 package plugin.lsttokens;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -53,7 +52,6 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
 
@@ -96,7 +94,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 		List<PCSpell> spellList = new ArrayList<PCSpell>();
 		StringTokenizer tok = new StringTokenizer(sourceLine, "|");
 		boolean isPre = false;
-		
+
 		if (tok.countTokens() > 1)
 		{
 			String spellBook = tok.nextToken();
@@ -111,8 +109,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				{
 					if (isPre)
 					{
-						Logging.errorPrint("Invalid " + getTokenName() + ": " + sourceLine);
-						Logging.errorPrint("  PRExxx must be at the END of the Token");
+						Logging.errorPrint("Invalid " + getTokenName() + ": "
+							+ sourceLine);
+						Logging
+							.errorPrint("  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					casterLevel = token.substring(12);
@@ -121,8 +121,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				{
 					if (isPre)
 					{
-						Logging.errorPrint("Invalid " + getTokenName() + ": " + sourceLine);
-						Logging.errorPrint("  PRExxx must be at the END of the Token");
+						Logging.errorPrint("Invalid " + getTokenName() + ": "
+							+ sourceLine);
+						Logging
+							.errorPrint("  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					times = token.substring(6);
@@ -145,8 +147,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				{
 					if (isPre)
 					{
-						Logging.errorPrint("Invalid " + getTokenName() + ": " + sourceLine);
-						Logging.errorPrint("  PRExxx must be at the END of the Token");
+						Logging.errorPrint("Invalid " + getTokenName() + ": "
+							+ sourceLine);
+						Logging
+							.errorPrint("  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					preParseSpellList.add(token);
@@ -320,7 +324,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			if (prereq == null)
 			{
 				Logging.errorPrint("   (Did you put spells after the "
-					+ "PRExxx tags in SPELLS:?)");
+					+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
 			prereqs.add(prereq);
@@ -395,7 +399,6 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				.getPrerequisiteList()), am, new Thingy(lw, dc));
 		}
 
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		Set<String> set = new TreeSet<String>();
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
@@ -430,22 +433,8 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 				sb.append(StringUtil.join(spellSet, Constants.PIPE));
 				if (prereqs != null && !prereqs.isEmpty())
 				{
-					for (Prerequisite p : prereqs)
-					{
-						StringWriter swriter = new StringWriter();
-						try
-						{
-							prereqWriter.write(swriter, p);
-						}
-						catch (PersistenceLayerException e)
-						{
-							context
-								.addWriteMessage("Error writing Prerequisite: "
-									+ e);
-							return null;
-						}
-						sb.append(Constants.PIPE).append(swriter.toString());
-					}
+					sb.append(Constants.PIPE);
+					sb.append(getPrerequisiteString(context, prereqs));
 				}
 				set.add(sb.toString());
 			}

@@ -30,7 +30,6 @@ import java.util.TreeSet;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.Description;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
@@ -95,7 +94,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 
 		final Description desc =
 				new Description(EntityEncoder.decode(tok.nextToken()));
-		
+
 		boolean isPre = false;
 		while (tok.hasMoreTokens())
 		{
@@ -109,8 +108,10 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 			{
 				if (isPre)
 				{
-					Logging.errorPrint("Invalid " + getTokenName() + ": " + aDesc);
-					Logging.errorPrint("  PRExxx must be at the END of the Token");
+					Logging.errorPrint("Invalid " + getTokenName() + ": "
+						+ aDesc);
+					Logging
+						.errorPrint("  PRExxx must be at the END of the Token");
 					isPre = false;
 				}
 				desc.addVariable(token);
@@ -129,7 +130,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.obj.removeList(obj, ListKey.DESC);
+			context.graph.removeAll(getTokenName(), obj, Description.class);
 			return true;
 		}
 		if (value.startsWith(Constants.LST_DOT_CLEAR_DOT))
@@ -139,8 +140,9 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 			 * is that this equality check would then test for Prerequisites, et
 			 * al.
 			 */
-			context.obj.removeFromList(obj, ListKey.DESC, new Description(value
-				.substring(7)));
+			context.graph.remove(getTokenName(), obj, desc);
+			// context.obj
+			// .removeFromList(obj, new Description(value.substring(7)));
 			return true;
 		}
 

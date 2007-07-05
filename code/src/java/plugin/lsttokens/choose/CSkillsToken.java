@@ -17,16 +17,7 @@
  */
 package plugin.lsttokens.choose;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.PCListChooser;
-import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.enumeration.SkillCost;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
-import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -55,26 +46,5 @@ public class CSkillsToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "CSKILLS";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		if (value != null)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " may not have arguments: " + value);
-			return null;
-		}
-		// No args - legal
-		PCListChooser<Skill> lc =
-				new PCListChooser<Skill>(ClassSkillList.class);
-		lc.setAssociation(AssociationKey.SKILL_COST, SkillCost.CROSS_CLASS);
-		return lc;
-	}
-
-	public String unparse(LoadContext context, ChoiceSet<?> chooser)
-	{
-		return null;
 	}
 }

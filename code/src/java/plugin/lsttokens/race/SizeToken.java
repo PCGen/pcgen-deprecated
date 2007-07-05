@@ -24,8 +24,8 @@ package plugin.lsttokens.race;
 import pcgen.base.formula.Resolver;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.formula.FixedSizeResolver;
-import pcgen.cdom.mode.Size;
 import pcgen.core.Race;
+import pcgen.core.SizeAdjustment;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.util.Logging;
@@ -51,8 +51,15 @@ public class SizeToken implements RaceLstToken
 	{
 		try
 		{
-			context.obj.put(race, ObjectKey.SIZE, new FixedSizeResolver(Size
-				.valueOf(value)));
+			SizeAdjustment size =
+					context.ref.getConstructedCDOMObject(SizeAdjustment.class,
+						value);
+			if (size == null)
+			{
+				Logging.errorPrint("Unable to find Size: " + value);
+				return false;
+			}
+			context.obj.put(race, ObjectKey.SIZE, new FixedSizeResolver(size));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -65,7 +72,8 @@ public class SizeToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Resolver<Size> res = context.obj.getObject(race, ObjectKey.SIZE);
+		Resolver<SizeAdjustment> res =
+				context.obj.getObject(race, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

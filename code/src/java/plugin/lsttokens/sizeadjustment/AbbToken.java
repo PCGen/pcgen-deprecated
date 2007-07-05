@@ -1,6 +1,5 @@
 package plugin.lsttokens.sizeadjustment;
 
-import pcgen.cdom.mode.Size;
 import pcgen.core.SizeAdjustment;
 import pcgen.persistence.lst.SizeAdjustmentLstToken;
 
@@ -19,8 +18,6 @@ public class AbbToken implements SizeAdjustmentLstToken
 		return "ABB";
 	}
 
-	private static int count = 1;
-	
 	/**
 	 * Parse the abbreviation token
 	 * @param sa 
@@ -29,7 +26,6 @@ public class AbbToken implements SizeAdjustmentLstToken
 	 */
 	public boolean parse(SizeAdjustment sa, String value)
 	{
-		Size.constructConstant(value, count++);
 		sa.setAbbreviation(value);
 		return true;
 	}

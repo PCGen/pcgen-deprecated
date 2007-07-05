@@ -31,10 +31,10 @@ import java.util.List;
 import pcgen.base.formula.Resolver;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
-import pcgen.cdom.mode.Size;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Race;
+import pcgen.core.SizeAdjustment;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -91,13 +91,15 @@ public class PreBaseSizeTester extends AbstractPrerequisiteTest implements
 		int runningTotal = 0;
 		PCGenGraph activeGraph = character.getActiveGraph();
 		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
-		char sizeChar = prereq.getOperand().toUpperCase().charAt(0);
-		Size requiredSize = Size.valueOf(String.valueOf(sizeChar));
+		String sizeAbb = prereq.getOperand().toUpperCase();
+		SizeAdjustment requiredSize =
+				character.getContext().ref.getConstructedCDOMObject(
+					SizeAdjustment.class, sizeAbb);
 		int reqSizeOrdinal = requiredSize.getOrdinal();
 
 		for (Race r : list)
 		{
-			Resolver<Size> raceSize = r.get(ObjectKey.SIZE);
+			Resolver<SizeAdjustment> raceSize = r.get(ObjectKey.SIZE);
 			runningTotal =
 					prereq.getOperator().compare(
 						raceSize.resolve().getOrdinal(), reqSizeOrdinal);

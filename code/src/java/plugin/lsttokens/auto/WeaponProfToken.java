@@ -29,11 +29,16 @@ import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.factory.GrantFactory;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.core.ArmorProf;
 import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
 import pcgen.core.prereq.Prerequisite;
@@ -103,22 +108,19 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 		boolean foundOther = false;
 
 		StringTokenizer tok = new StringTokenizer(weaponProfs, Constants.PIPE);
-		List<CDOMReference<WeaponProf>> refs =
-				new ArrayList<CDOMReference<WeaponProf>>();
+		List<PrereqObject> refs = new ArrayList<PrereqObject>();
 
 		while (tok.hasMoreTokens())
 		{
 			String aProf = tok.nextToken();
 			if ("%LIST".equals(value))
 			{
-				/*
-				 * FIXME Need to figure out how to handle this!!!
-				 */
-				// for (Iterator<AssociatedChoice<String>> e =
-				// getAssociatedList()
-				// .iterator(); e.hasNext();) {
-				// aList.add(e.next().getDefaultChoice());
-				// }
+				CDOMEdgeReference assocref =
+						context.graph.getEdgeReference(obj, ChoiceSet.class,
+							"Choice", WEAPONPROF_CLASS);
+				GrantFactory<ArmorProf> gf =
+						new GrantFactory<ArmorProf>(assocref);
+				refs.add(gf);
 			}
 			else
 			{
@@ -150,7 +152,7 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 			return false;
 		}
 
-		for (CDOMReference<WeaponProf> ref : refs)
+		for (PrereqObject ref : refs)
 		{
 			PCGraphGrantsEdge edge =
 					context.graph.grant(getTokenName(), obj, ref);

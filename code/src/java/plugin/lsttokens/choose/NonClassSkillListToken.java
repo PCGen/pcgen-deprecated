@@ -17,19 +17,7 @@
  */
 package plugin.lsttokens.choose;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.AnyChooser;
-import pcgen.cdom.choice.RemovingChooser;
-import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.enumeration.SkillCost;
-import pcgen.cdom.filter.NegatingFilter;
-import pcgen.cdom.filter.PCListFilter;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
-import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
@@ -71,36 +59,5 @@ public class NonClassSkillListToken extends AbstractToken implements
 	public String getTokenName()
 	{
 		return "NONCLASSSKILLLIST";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		if (value.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
-			return null;
-		}
-		if (value.indexOf('[') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
-			return null;
-		}
-		if (hasIllegalSeparator('|', value))
-		{
-			return null;
-		}
-
-		// TODO So what are the args - not processed ?? oops
-		AnyChooser<Skill> anyChooser = new AnyChooser<Skill>(Skill.class);
-		PCListFilter<Skill> pcFilter =
-				new PCListFilter<Skill>(ClassSkillList.class);
-		pcFilter.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
-		RemovingChooser<Skill> chooser = new RemovingChooser<Skill>(anyChooser);
-		chooser.addRemovingChoiceFilter(NegatingFilter
-			.getNegatingFilter(pcFilter));
-		return chooser;
 	}
 }

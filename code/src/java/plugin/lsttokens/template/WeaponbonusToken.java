@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
@@ -71,12 +70,6 @@ public class WeaponbonusToken extends AbstractToken implements
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		return parseWeaponBonus(context, template, value);
-	}
-
-	public boolean parseWeaponBonus(LoadContext context, CDOMObject obj,
-		String value)
-	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
 			return false;
@@ -96,7 +89,7 @@ public class WeaponbonusToken extends AbstractToken implements
 				foundAny = true;
 				CDOMReference<WeaponProf> ref =
 						context.ref.getCDOMAllReference(WEAPONPROF_CLASS);
-				context.list.addToList(getTokenName(), obj, swl, ref);
+				context.list.addToList(getTokenName(), template, swl, ref);
 			}
 			else
 			{
@@ -110,7 +103,7 @@ public class WeaponbonusToken extends AbstractToken implements
 						+ getTokenName());
 					return false;
 				}
-				context.list.addToList(getTokenName(), obj, swl, ref);
+				context.list.addToList(getTokenName(), template, swl, ref);
 			}
 		}
 		if (foundAny && foundOther)

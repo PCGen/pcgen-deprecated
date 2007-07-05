@@ -62,19 +62,20 @@ public class MovecloneLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<Movement> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					Movement.class);
-		if (changes == null)
-		{
-			return null;
-		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
-		{
-			// Zero indicates no Token
-			return null;
-		}
-		return added.toArray(new String[added.size()]);
+		return null;
+		// GraphChanges<Movement> changes =
+		// context.graph.getChangesFromToken(getTokenName(), obj,
+		// Movement.class);
+		// if (changes == null)
+		// {
+		// return null;
+		// }
+		// Collection<LSTWriteable> added = changes.getAdded();
+		// if (added == null || added.isEmpty())
+		// {
+		// // Zero indicates no Token
+		// return null;
+		// }
+		// return added.toArray(new String[added.size()]);
 	}
 }

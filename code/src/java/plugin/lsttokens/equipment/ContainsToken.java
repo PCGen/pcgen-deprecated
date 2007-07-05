@@ -22,6 +22,7 @@
 package plugin.lsttokens.equipment;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -73,6 +74,10 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			return false;
 		}
 
+		/*
+		 * TODO I believe this needs to clear the List and if it already
+		 * contains something, then should it provide an informational message?
+		 */
 		String weightCapacity = pipeTok.nextToken();
 
 		boolean hadAsterisk = false;
@@ -124,11 +129,12 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			return false;
 		}
 
+		List<Capacity> capacityList = new ArrayList<Capacity>();
 		boolean limited = true;
 		if (!pipeTok.hasMoreTokens())
 		{
 			limited = false;
-			context.obj.addToList(eq, ListKey.CAPACITY, Capacity.ANY);
+			capacityList.add(Capacity.ANY);
 		}
 
 		BigDecimal limitedCapacity = BigDecimal.ZERO;
@@ -145,8 +151,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			{
 				limited = false;
 				Type t = Type.getConstant(typeString);
-				context.obj.addToList(eq, ListKey.CAPACITY, new Capacity(t,
-					Capacity.UNLIMITED));
+				capacityList.add(new Capacity(t, Capacity.UNLIMITED));
 			}
 			else
 			{
@@ -167,8 +172,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 						limitedCapacity = limitedCapacity.add(itemNumber);
 					}
 					Type t = Type.getConstant(itemType);
-					context.obj.addToList(eq, ListKey.CAPACITY, new Capacity(t,
-						itemNumber));
+					capacityList.add(new Capacity(t, itemNumber));
 				}
 				catch (NumberFormatException nfe)
 				{
@@ -177,30 +181,23 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			}
 		}
 
-		/*
-		 * TODO FIXME Can this be optimized, or can CAPACITY be placed more than
-		 * once in a piece of Equipment?
-		 * 
-		 * I think it CAN'T because then the limitedCapacity could be messed up
-		 * anyway... :/
-		 */
-		/*
-		 * FIXME This is a problem for the editor, that parse is doing a global
-		 * GET?
-		 */
-		List<Capacity> list = eq.getListFor(ListKey.CAPACITY);
-		for (Capacity cap : list)
+		boolean requiresTotal = true;
+		for (Capacity cap : capacityList)
 		{
+			context.obj.addToList(eq, ListKey.CAPACITY, cap);
 			if (cap.getType() == null)
 			{
-				return true;
+				requiresTotal = false;
 			}
 		}
 
-		BigDecimal totalCapacity =
-				limited ? limitedCapacity : Capacity.UNLIMITED;
-		context.obj.addToList(eq, ListKey.CAPACITY, Capacity
-			.getTotalCapacity(totalCapacity));
+		if (requiresTotal)
+		{
+			BigDecimal totalCapacity =
+					limited ? limitedCapacity : Capacity.UNLIMITED;
+			context.obj.addToList(eq, ListKey.CAPACITY, Capacity
+				.getTotalCapacity(totalCapacity));
+		}
 
 		return true;
 	}

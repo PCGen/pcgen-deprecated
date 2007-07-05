@@ -17,12 +17,7 @@
  */
 package plugin.lsttokens.choose;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.SpellSchoolChooser;
-import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -51,28 +46,5 @@ public class SchoolsToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SCHOOLS";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		if (value == null)
-		{
-			// No args - legal
-			/*
-			 * Requires a unique chooser because this is order dependent, and
-			 * the SpellSchool constants pull must be performed at runtime, not
-			 * during LST load...
-			 */
-			return new SpellSchoolChooser();
-		}
-		Logging.errorPrint("CHOOSE:" + getTokenName()
-			+ " may not have arguments: " + value);
-		return null;
-	}
-
-	public String unparse(LoadContext context, ChoiceSet<?> chooser)
-	{
-		return null;
 	}
 }

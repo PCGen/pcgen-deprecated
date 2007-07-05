@@ -18,10 +18,11 @@
 package plugin.lsttokens.choose;
 
 import pcgen.core.PObject;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class UserInputToken implements ChooseLstToken
+public class UserInputToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -83,6 +84,7 @@ public class UserInputToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "USERINPUT";

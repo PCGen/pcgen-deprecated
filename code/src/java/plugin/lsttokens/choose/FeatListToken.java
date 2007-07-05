@@ -17,26 +17,9 @@
  */
 package plugin.lsttokens.choose;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.Constants;
-import pcgen.cdom.choice.AnyChooser;
-import pcgen.cdom.choice.CompoundAndChooser;
-import pcgen.cdom.choice.GrantedChooser;
-import pcgen.cdom.choice.ReferenceChooser;
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.Ability;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 public class FeatListToken extends AbstractToken implements ChooseLstToken
@@ -75,83 +58,5 @@ public class FeatListToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "FEATLIST";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		if (value.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
-			return null;
-		}
-		if (value.indexOf('[') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
-			return null;
-		}
-		if (hasIllegalSeparator('|', value))
-		{
-			return null;
-		}
-
-		ChoiceSet<Ability> cs;
-		if (Constants.LST_ANY.equals(value))
-		{
-			cs = new AnyChooser<Ability>(Ability.class, AbilityCategory.FEAT);
-		}
-		else
-		{
-			cs = getReferenceChooser(context, value);
-			if (cs == null)
-			{
-				return null;
-			}
-		}
-		CompoundAndChooser<Ability> chooser = new CompoundAndChooser<Ability>();
-		GrantedChooser<Ability> pcChooser =
-				new GrantedChooser<Ability>(Ability.class);
-		chooser.addChoiceSet(cs, true);
-		chooser.addChoiceSet(pcChooser, false);
-		return chooser;
-	}
-
-	private ChoiceSet<Ability> getReferenceChooser(LoadContext context,
-		String value)
-	{
-		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-		List<CDOMReference<Ability>> featList =
-				new ArrayList<CDOMReference<Ability>>();
-		while (tok.hasMoreTokens())
-		{
-			String tokString = tok.nextToken();
-			if (Constants.LST_ANY.equals(tokString))
-			{
-				Logging.errorPrint("Cannot use ANY and another qualifier: "
-					+ value);
-				return null;
-			}
-			else
-			{
-				CDOMReference<Ability> ref =
-						TokenUtilities.getTypeOrPrimitive(context,
-							Ability.class, AbilityCategory.FEAT, tokString);
-				if (ref == null)
-				{
-					Logging.errorPrint("Invalid Reference: " + tokString
-						+ " in CHOOSE:" + getTokenName() + ": " + value);
-					return null;
-				}
-				featList.add(ref);
-			}
-		}
-		return new ReferenceChooser<Ability>(featList);
-	}
-
-	public String unparse(LoadContext context, ChoiceSet<?> chooser)
-	{
-		return chooser.getLSTformat();
 	}
 }

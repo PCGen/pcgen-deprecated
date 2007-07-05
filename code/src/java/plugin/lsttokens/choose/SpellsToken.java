@@ -19,29 +19,14 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
-import pcgen.cdom.choice.CompoundOrChooser;
-import pcgen.cdom.choice.PCListRefChooser;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.ClassSpellList;
 import pcgen.core.Constants;
-import pcgen.core.DomainSpellList;
 import pcgen.core.PObject;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
 public class SpellsToken extends AbstractToken implements ChooseLstToken
 {
-
-	private static final Class<ClassSpellList> CLASSSPELLLIST_CLASS =
-			ClassSpellList.class;
-	private static final Class<DomainSpellList> DOMAINSPELLLIST_CLASS =
-			DomainSpellList.class;
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
@@ -89,79 +74,5 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SPELLS";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		if (value.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
-			return null;
-		}
-		if (value.indexOf('[') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
-			return null;
-		}
-		if (hasIllegalSeparator('|', value))
-		{
-			return null;
-		}
-
-		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-		CompoundOrChooser<Spell> chooser = new CompoundOrChooser<Spell>();
-		while (tok.hasMoreTokens())
-		{
-			String tokText = tok.nextToken();
-			if (tokText.startsWith("CLASS="))
-			{
-				String listName = tokText.substring(tokText.indexOf('=') + 1);
-				if (listName.length() == 0)
-				{
-					Logging.errorPrint("Argument to CLASS= in CHOOSE:"
-						+ getTokenName() + " cannot be empty");
-					return null;
-				}
-				CDOMSimpleSingleRef<ClassSpellList> ref =
-						context.ref.getCDOMReference(CLASSSPELLLIST_CLASS,
-							listName);
-				PCListRefChooser<Spell> listChooser =
-						new PCListRefChooser<Spell>(ref);
-				chooser.addChoiceSet(listChooser);
-			}
-			else if (tokText.startsWith("DOMAIN="))
-			{
-				String listName = tokText.substring(tokText.indexOf('=') + 1);
-				if (listName.length() == 0)
-				{
-					Logging.errorPrint("Argument to DOMAIN= in CHOOSE:"
-						+ getTokenName() + " cannot be empty");
-					return null;
-				}
-				CDOMSimpleSingleRef<DomainSpellList> ref =
-						context.ref.getCDOMReference(DOMAINSPELLLIST_CLASS,
-							listName);
-				PCListRefChooser<Spell> listChooser =
-						new PCListRefChooser<Spell>(ref);
-				chooser.addChoiceSet(listChooser);
-			}
-			else
-			{
-				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " argument must start with CLASS= or DOMAIN= : "
-					+ tokText);
-				Logging.errorPrint("  Entire Token was: " + value);
-				return null;
-			}
-		}
-		return chooser;
-	}
-
-	public String unparse(LoadContext context, ChoiceSet<?> chooser)
-	{
-		return chooser.getLSTformat();
 	}
 }

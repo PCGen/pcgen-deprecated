@@ -17,16 +17,7 @@
  */
 package plugin.lsttokens.choose;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.AnyChooser;
-import pcgen.cdom.choice.RemovingChooser;
-import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.filter.ObjectKeyFilter;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.PCClass;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
@@ -74,27 +65,5 @@ public class SpellListToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SPELLLIST";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		// 1) Filter to get classes where SPELLBOOK = value
-		AnyChooser<PCClass> ac = new AnyChooser<PCClass>(PCClass.class);
-		ObjectKeyFilter<PCClass> spellBookFilter = new ObjectKeyFilter<PCClass>(PCClass.class);
-		spellBookFilter.setObjectFilter(ObjectKey.SPELLBOOK, Boolean.TRUE);
-		RemovingChooser<PCClass> rc = new RemovingChooser<PCClass>(ac, false);
-		rc.addRemovingChoiceFilter(spellBookFilter, false);
-		
-		// TODO Auto-generated method stub
-
-		// 2) Get spellList for classes from 1)
-		// Solution = Class to ClassSpellList Transformer
-		// (ObjectKeyTransformer?)
-		// 3) get Known spells from that spelllist
-		// Solution = ??? (Can't just do an AND, probably need to have a false
-		// root tranverse occur in a GrantedChooser-like behavior)
-
-		return null;
 	}
 }

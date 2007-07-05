@@ -21,15 +21,28 @@
  */
 package plugin.lsttokens.template;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.Slot;
+import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.AbilityNature;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.factory.GrantFactory;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.Ability;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
 
@@ -69,6 +82,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 	}
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
+		throws PersistenceLayerException
 	{
 		int featCount;
 		try
@@ -76,8 +90,8 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			featCount = Integer.parseInt(value);
 			if (featCount <= 0)
 			{
-				Logging.errorPrint("Invalid integer in " + getTokenName()
-					+ ": must be greater than zero");
+				Logging.errorPrint("Number in " + getTokenName()
+					+ " must be greater than zero: " + value);
 				return false;
 			}
 		}
@@ -88,42 +102,109 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			return false;
 		}
 
-		context.graph.addSlot(getTokenName(), template, ABILITY_CLASS,
-			FormulaFactory.getFormulaFor(featCount));
-
+		CDOMGroupRef<Ability> ref =
+				context.ref.getCDOMAllReference(ABILITY_CLASS,
+					AbilityCategory.FEAT);
+		ReferenceChoiceSet<Ability> rcs =
+				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
+		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
+		PCGraphGrantsEdge edge =
+				context.graph.grant(getTokenName(), template, cs);
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+			.getFormulaFor(featCount));
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+			.getFormulaFor(featCount));
+		GrantFactory<Ability> gf = new GrantFactory<Ability>(edge);
+		/*
+		 * FUTURE Technically, this Category item should not be in the
+		 * GrantFactory, as it really belogs as something that can be extracted
+		 * from the ChoiceSet...
+		 */
+		gf
+			.setAssociation(AssociationKey.ABILITY_CATEGORY,
+				AbilityCategory.FEAT);
+		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
+		context.graph.grant(getTokenName(), template, gf);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, PCTemplate template)
 	{
-		GraphChanges<Slot> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					Slot.class);
-		if (changes == null)
+		GraphChanges<ChoiceSet> choiceChanges =
+				context.graph.getChangesFromToken(getTokenName(), template,
+					ChoiceSet.class);
+		if (choiceChanges == null)
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<LSTWriteable> added = choiceChanges.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token present
 			return null;
 		}
-		if (added.size() > 1)
+		GraphChanges<GrantFactory> grantChanges =
+				context.graph.getChangesFromToken(getTokenName(), template,
+					GrantFactory.class);
+		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
+		if (grantAdded == null || grantAdded.isEmpty())
 		{
-			context.addWriteMessage("Invalid Slot Count " + added.size()
-				+ " associated with " + getTokenName()
-				+ ": Only one Slot allowed.");
+			// Zero indicates no Token present
 			return null;
 		}
-		Slot<Ability> slot = (Slot<Ability>) added.iterator().next();
-		if (!slot.getSlotClass().equals(ABILITY_CLASS))
+		List<String> addStrings = new ArrayList<String>();
+		for (LSTWriteable lstw : added)
 		{
-			context.addWriteMessage("Invalid Slot Type associated with "
-				+ getTokenName() + ": Type cannot be "
-				+ slot.getSlotClass().getSimpleName());
-			return null;
+			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
+			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
+			{
+				AbilityNature nat = null;
+				AbilityCategory cat = null;
+				for (LSTWriteable gw : grantAdded)
+				{
+					GrantFactory<?> gf = (GrantFactory<?>) gw;
+					if (gf.usesChoiceSet(cs))
+					{
+						cat =
+								gf
+									.getAssociation(AssociationKey.ABILITY_CATEGORY);
+						nat = gf.getAssociation(AssociationKey.ABILITY_NATURE);
+						break;
+					}
+				}
+				if (nat == null)
+				{
+					context
+						.addWriteMessage("Unable to find Nature for GrantFactory");
+					return null;
+				}
+				if (cat == null)
+				{
+					context
+						.addWriteMessage("Unable to find Category for GrantFactory");
+					return null;
+				}
+				if (!AbilityCategory.FEAT.equals(cat)
+					|| !AbilityNature.NORMAL.equals(nat))
+				{
+					// can't handle those here!
+					continue;
+				}
+				AssociatedPrereqObject assoc =
+						choiceChanges.getAddedAssociation(lstw);
+				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
+				{
+					context.addWriteMessage("Unable to find " + getTokenName()
+						+ " Count");
+					return null;
+				}
+				addStrings.add(f.toString());
+
+				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+			}
 		}
-		return new String[]{slot.getSlotCount()};
+		return addStrings.toArray(new String[addStrings.size()]);
 	}
+
 }

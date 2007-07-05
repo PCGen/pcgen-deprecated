@@ -17,28 +17,33 @@
  */
 package plugin.lsttokens.add;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.cdom.base.CDOMCompoundReference;
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.Restriction;
-import pcgen.cdom.base.Slot;
-import pcgen.cdom.restriction.GroupRestriction;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.factory.GrantFactory;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
 import pcgen.core.SpecialAbility;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.util.Logging;
 
-public class SAToken implements AddLstToken
+public class SAToken extends AbstractToken implements AddLstToken
 {
 
 	private static final Class<SpecialAbility> SPECABILITY_CLASS =
@@ -55,9 +60,9 @@ public class SAToken implements AddLstToken
 		if (pipeLoc == -1)
 		{
 			// 514 abbreviation cleanup
-//			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA "
-//				+ "is prohibited in new syntax.");
-//			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
+			// Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA "
+			// + "is prohibited in new syntax.");
+			// Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
 			return false;
 		}
 		String subToken = value.substring(0, pipeLoc);
@@ -78,6 +83,7 @@ public class SAToken implements AddLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "SA";
@@ -132,58 +138,39 @@ public class SAToken implements AddLstToken
 			items = rest.substring(pipeLoc + 1);
 		}
 
-		if (items.length() == 0)
+		if (isEmpty(items) || hasIllegalSeparator(',', items))
 		{
-			Logging.errorPrint("Invalid: Empty SAs in ADD:" + getTokenName()
-				+ ": " + value);
 			return false;
 		}
 
-		if (items.charAt(0) == ',')
-		{
-			Logging.errorPrint(getTokenName() + " List may not start with , : "
-				+ value);
-			return false;
-		}
-		if (items.charAt(items.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName() + " List may not end with , : "
-				+ value);
-			return false;
-		}
-		if (items.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " SA List uses double separator ,, : " + value);
-			return false;
-		}
-
+		List<CDOMReference<SpecialAbility>> refs =
+				new ArrayList<CDOMReference<SpecialAbility>>();
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
-		Slot<SpecialAbility> slot =
-				context.graph.addSlot(getTokenName(), obj, SPECABILITY_CLASS,
-					FormulaFactory.getFormulaFor(count));
-		slot.setName(name);
-		CDOMCompoundReference<SpecialAbility> cr =
-				new CDOMCompoundReference<SpecialAbility>(SPECABILITY_CLASS,
-					getTokenName() + " items");
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
 			context.ref.constructIfNecessary(SPECABILITY_CLASS, token);
-			cr.addReference(context.ref.getCDOMReference(SPECABILITY_CLASS,
-				token));
+			refs.add(context.ref.getCDOMReference(SPECABILITY_CLASS, token));
 		}
-
-		slot.addSinkRestriction(new GroupRestriction<SpecialAbility>(
-			SPECABILITY_CLASS, cr));
+		ReferenceChoiceSet<SpecialAbility> rcs =
+				new ReferenceChoiceSet<SpecialAbility>(refs);
+		ChoiceSet<SpecialAbility> cs = new ChoiceSet<SpecialAbility>(name, rcs);
+		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+			.getFormulaFor(count));
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+			.getFormulaFor(Integer.MAX_VALUE));
+		GrantFactory<SpecialAbility> gf =
+				new GrantFactory<SpecialAbility>(edge);
+		context.graph.grant(getTokenName(), obj, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<Slot> changes =
+		GraphChanges<ChoiceSet> changes =
 				context.graph.getChangesFromToken(getTokenName(), obj,
-					Slot.class);
+					ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;
@@ -194,35 +181,32 @@ public class SAToken implements AddLstToken
 			// Zero indicates no Token present
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (LSTWriteable lw : added)
+		TreeSet<String> addStrings = new TreeSet<String>();
+		for (LSTWriteable lstw : added)
 		{
-			Slot<SpecialAbility> slot = (Slot<SpecialAbility>) lw;
-			if (!slot.getSlotClass().equals(SPECABILITY_CLASS))
+			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
+			if (SPECABILITY_CLASS.equals(cs.getChoiceClass()))
 			{
-				context.addWriteMessage("Invalid Slot Type associated with "
-					+ getTokenName() + ": Type cannot be "
-					+ slot.getSlotClass().getSimpleName());
-				return null;
+				AssociatedPrereqObject assoc =
+						changes.getAddedAssociation(lstw);
+				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
+				{
+					// Error
+					return null;
+				}
+				StringBuilder sb = new StringBuilder();
+				sb.append(cs.getName()).append(Constants.PIPE);
+				String fString = f.toString();
+				if (!"1".equals(fString))
+				{
+					sb.append(fString).append(Constants.PIPE);
+				}
+				sb.append(cs.getLSTformat());
+				addStrings.add(sb.toString());
+				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
 			}
-			String slotCount = slot.getSlotCount();
-			List<Restriction<?>> restr = slot.getSinkRestrictions();
-			if (restr.size() != 1)
-			{
-				context.addWriteMessage("Slot for " + getTokenName()
-					+ " must have only one restriction");
-				return null;
-			}
-			Restriction<?> res = restr.get(0);
-			StringBuilder sb = new StringBuilder();
-			sb.append(slot.getName()).append('|');
-			if (!"1".equals(slotCount))
-			{
-				sb.append(slotCount).append('|');
-			}
-			sb.append(res.toLSTform());
-			set.add(sb.toString());
 		}
-		return set.toArray(new String[set.size()]);
+		return addStrings.toArray(new String[addStrings.size()]);
 	}
 }

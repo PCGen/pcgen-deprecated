@@ -107,9 +107,15 @@ public class TypeLst implements GlobalLstToken
 					removeType = false;
 				}
 				/*
-				 * BUG FIXME TODO Not sure how to handle this - it's a SET!
+				 * TODO is it a problem that this unconditionally adds, as Type
+				 * is a SET? This problem exists elsewhere (in the TYPE token,
+				 * for example), so I doubt this is a serious issue.
+				 * Additionally, the tests that take place are for .contains,
+				 * which will pass even if multiple items are present. The
+				 * problem exists in removal - what if a type exists multiple
+				 * times in the list?
 				 */
-				else if (!obj.containsInList(ListKey.TYPE, typeCon))
+				else
 				{
 					context.obj.addToList(obj, ListKey.TYPE, typeCon);
 				}

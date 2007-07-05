@@ -49,9 +49,9 @@ public class AccheckToken implements EquipmentLstToken
 		try
 		{
 			Integer acc = Integer.valueOf(value);
-			if (acc.intValue() <= 0)
+			if (acc.intValue() > 0)
 			{
-				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				Logging.errorPrint(getTokenName() + " must be an integer <= 0");
 				return false;
 			}
 			context.obj.put(eq, IntegerKey.AC_CHECK, acc);
@@ -73,9 +73,9 @@ public class AccheckToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		if (check.intValue() <= 0)
+		if (check.intValue() > 0)
 		{
-			context.addWriteMessage(getTokenName() + " must be an integer > 0");
+			context.addWriteMessage(getTokenName() + " must be an integer <= 0");
 			return null;
 		}
 		return new String[]{check.toString()};

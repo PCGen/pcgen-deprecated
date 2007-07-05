@@ -17,24 +17,12 @@
  */
 package plugin.lsttokens.choose;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.GrantedChooser;
-import pcgen.cdom.choice.RemovingChooser;
-import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.filter.NegatingFilter;
-import pcgen.cdom.filter.ObjectKeyFilter;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.PCClass;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
 public class SpellClassesToken implements ChooseLstToken
 {
-
-	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
@@ -58,33 +46,5 @@ public class SpellClassesToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SPELLCLASSES";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		if (value == null)
-		{
-			// No args - legal
-			GrantedChooser<PCClass> pcChooser =
-					GrantedChooser.getGrantedChooser(PCCLASS_CLASS);
-			RemovingChooser<PCClass> chooser =
-					new RemovingChooser<PCClass>(pcChooser, false);
-			ObjectKeyFilter<PCClass> filter =
-					ObjectKeyFilter.getObjectFilter(PCCLASS_CLASS);
-			// Note this means allow null, which is then negated
-			filter.setObjectFilter(ObjectKey.SPELL_STAT, null);
-			chooser.addRemovingChoiceFilter(NegatingFilter
-				.getNegatingFilter(filter), false);
-			return chooser;
-		}
-		Logging.errorPrint("CHOOSE:" + getTokenName()
-			+ " may not have arguments: " + value);
-		return null;
-	}
-
-	public String unparse(LoadContext context, ChoiceSet<?> chooser)
-	{
-		return null;
 	}
 }

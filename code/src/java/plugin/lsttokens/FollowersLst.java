@@ -23,22 +23,16 @@
  */
 package plugin.lsttokens;
 
-import java.util.Collection;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.util.Logging;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.Slot;
 import pcgen.core.CompanionList;
 import pcgen.core.PObject;
-import pcgen.core.character.Follower;
-import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -158,44 +152,18 @@ public class FollowersLst implements GlobalLstToken
 		}
 		Formula num = FormulaFactory.getFormulaFor(followerNumber);
 
-		context.ref.getCDOMReference(CompanionList.class, followerType);
+		CDOMSimpleSingleRef<CompanionList> cl =
+				context.ref.getCDOMReference(CompanionList.class, followerType);
 
-		// Slot<Follower> slot =
-		context.graph
-			.addSlot(getTokenName(), obj, Follower.class, num);
-
-		// TODO I need to add a Restriction that is GRAPH AWARE, since
-		// a graph traversal will need to take place...
-		// slot.addSinkRestriction(cr);
+		/*
+		 * TODO This is NOT a slot, since it sets a limit. It is really a
+		 * Modifier, and should be stored as such...
+		 */
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<Slot> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					Slot.class);
-		if (changes == null)
-		{
-			return null;
-		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
-		{
-			// Zero indicates no Token
-			return null;
-		}
-		Set<String> set = new TreeSet<String>();
-		for (LSTWriteable lw : added)
-		{
-			StringBuilder sb = new StringBuilder();
-			Slot<Follower> s = (Slot<Follower>) lw;
-			// TODO Process the CompanionList Type?
-			// sb.append();
-			sb.append(Constants.PIPE);
-			sb.append(s.getSlotCount());
-			set.add(sb.toString());
-		}
-		return set.toArray(new String[set.size()]);
+		return null;
 	}
 }

@@ -25,9 +25,9 @@ package plugin.lsttokens;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
@@ -36,7 +36,6 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.Type;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
 import pcgen.core.Globals;
@@ -51,7 +50,7 @@ import pcgen.util.Logging;
 
 /**
  * @author djones4
- *
+ * 
  */
 public class NaturalattacksLst implements GlobalLstToken
 {
@@ -67,13 +66,15 @@ public class NaturalattacksLst implements GlobalLstToken
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.GlobalLstToken#parse(pcgen.core.PObject, java.lang.String, int)
+	 * @see pcgen.persistence.lst.GlobalLstToken#parse(pcgen.core.PObject,
+	 *      java.lang.String, int)
 	 */
 	public boolean parse(PObject obj, String value, int anInt)
 	{
 		// first entry is primary, others are secondary
 		// lets try the format:
-		// NATURALATTACKS:primary weapon name,num attacks,damage|secondary1 weapon
+		// NATURALATTACKS:primary weapon name,num attacks,damage|secondary1
+		// weapon
 		// name,num attacks,damage|secondary2.....
 		// damage will be of the form XdY+Z or XdY-Z
 		List<Equipment> naturalWeapons = parseNaturalAttacks(obj, value);
@@ -88,10 +89,11 @@ public class NaturalattacksLst implements GlobalLstToken
 	 * NATURAL WEAPONS CODE <p/>first natural weapon is primary, the rest are
 	 * secondary; NATURALATTACKS:primary weapon name,weapon type,num
 	 * attacks,damage|secondary1 weapon name,weapon type,num
-	 * attacks,damage|secondary2 format is exactly as it would be in an equipment
-	 * lst file Type is of the format Weapon.Natural.Melee.Bludgeoning number of
-	 * attacks is the number of attacks with that weapon at BAB (for primary), or
-	 * BAB - 5 (for secondary)
+	 * attacks,damage|secondary2 format is exactly as it would be in an
+	 * equipment lst file Type is of the format Weapon.Natural.Melee.Bludgeoning
+	 * number of attacks is the number of attacks with that weapon at BAB (for
+	 * primary), or BAB - 5 (for secondary)
+	 * 
 	 * @param obj
 	 * @param aString
 	 * @return List
@@ -169,15 +171,16 @@ public class NaturalattacksLst implements GlobalLstToken
 	}
 
 	/**
-	 * Create the Natural weapon equipment item aTok = primary weapon name,weapon
-	 * type,num attacks,damage for Example:
+	 * Create the Natural weapon equipment item aTok = primary weapon
+	 * name,weapon type,num attacks,damage for Example:
 	 * Tentacle,Weapon.Natural.Melee.Slashing,*4,1d6
+	 * 
 	 * @param aTok
 	 * @param aSize
 	 * @return natural weapon
 	 */
 	private static Equipment createNaturalWeapon(PObject obj,
-			StringTokenizer aTok, String aSize)
+		StringTokenizer aTok, String aSize)
 	{
 		final String attackName = aTok.nextToken();
 
@@ -191,7 +194,7 @@ public class NaturalattacksLst implements GlobalLstToken
 
 		anEquip.setName(attackName);
 		anEquip.setKeyName(obj.getClass().getSimpleName() + "," + obj.getKey()
-				+ "," + attackName);
+			+ "," + attackName);
 		anEquip.setTypeInfo(profType);
 		anEquip.setWeight("0");
 		anEquip.setSize(aSize, true);
@@ -253,7 +256,7 @@ public class NaturalattacksLst implements GlobalLstToken
 
 		anEquip.setSlots(handsRequired);
 
-		//these values need to be locked.
+		// these values need to be locked.
 		anEquip.setQty(new Float(1));
 		anEquip.setNumberCarried(new Float(1));
 		anEquip.setAttacksProgress(attacksProgress);
@@ -274,19 +277,22 @@ public class NaturalattacksLst implements GlobalLstToken
 		return anEquip;
 	}
 
-	public boolean parse(LoadContext context, CDOMObject obj, String value) {
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
+	{
 		// first entry is primary, others are secondary
 		// lets try the format:
 		// NATURALATTACKS:primary weapon name,num attacks,damage|secondary1
 		// weapon
 		// name,num attacks,damage|secondary2.....
 		// damage will be of the form XdY+Z or XdY-Z
-		List<Equipment> naturalWeapons = parseNaturalAttacks(context, obj,
-				value);
-		if (naturalWeapons == null) {
+		List<Equipment> naturalWeapons =
+				parseNaturalAttacks(context, obj, value);
+		if (naturalWeapons == null)
+		{
 			return false;
 		}
-		for (Equipment weapon : naturalWeapons) {
+		for (Equipment weapon : naturalWeapons)
+		{
 			context.graph.grant(getTokenName(), obj, weapon);
 		}
 		return true;
@@ -306,34 +312,20 @@ public class NaturalattacksLst implements GlobalLstToken
 	 * @return List
 	 */
 	private List<Equipment> parseNaturalAttacks(LoadContext context,
-			CDOMObject obj, String aString) {
+		CDOMObject obj, String aString)
+	{
 		// Currently, this isn't going to work with monk attacks
 		// - their unarmed stuff won't be affected.
 
-		Set<PCGraphEdge> links = context.graph.getChildLinks(obj, SizeAdjustment.class);
-		if (links.size() > 1) {
-			// TODO Error
-		}
 		/*
-		 * FIXME This is an order of operations issue - what is the Natural Attack 
-		 * is struck before the Size is struck?? - That produces a bug, so this 
-		 * needs to be deferred resolution...
+		 * This does not immediately resolve the Size, because it is an order of
+		 * operations issue. This token must allow the SIZE token to appear
+		 * AFTER this token in the LST file. Thus a deferred resolution (using a
+		 * Resolver) is required.
 		 */
-		SizeAdjustment size;
-		if (links.size() == 1) {
-			/*
-			 * FUTURE OH MY THIS IS UGLY - Can some better collection help out here?
-			 * Don't want to go to a SortedSet, though first() would help... maybe
-			 * something in the Jakarta Collections could provide a shortcut here?
-			 */
-			size = (SizeAdjustment) links.iterator().next().getSinkNodes().get(0);
-		} else {
-			size = context.getGameMode().getDefaultSizeAdjustment();
-		}
-		if (size == null) {
-			Logging.errorPrint("Internal Error to " + getTokenName() + ". Size not found");
-			return null;
-		}
+		CDOMAddressedSingleRef<SizeAdjustment> size =
+				context.ref.getCDOMAddressedReference(obj,
+					SizeAdjustment.class, "Size Adjustment");
 
 		int count = 1;
 		final StringTokenizer attackTok = new StringTokenizer(aString, "|");
@@ -342,18 +334,25 @@ public class NaturalattacksLst implements GlobalLstToken
 		// with "better" ones
 		List<Equipment> naturalWeapons = new ArrayList<Equipment>();
 
-		while (attackTok.hasMoreTokens()) {
-			Equipment anEquip = createNaturalWeapon(context, obj, attackTok
-					.nextToken(), size);
+		while (attackTok.hasMoreTokens())
+		{
+			String tokString = attackTok.nextToken();
+			Equipment anEquip =
+					createNaturalWeapon(context, obj, tokString, size);
 
-			if (anEquip == null) {
-				// TODO Error
+			if (anEquip == null)
+			{
+				Logging.errorPrint("Natural Weapon Creation Failed for : "
+					+ tokString);
 				return null;
 			}
 
-			if (count == 1) {
+			if (count == 1)
+			{
 				anEquip.put(StringKey.MODIFIED_NAME, "Natural/Primary");
-			} else {
+			}
+			else
+			{
 				anEquip.put(StringKey.MODIFIED_NAME, "Natural/Secondary");
 			}
 
@@ -376,53 +375,60 @@ public class NaturalattacksLst implements GlobalLstToken
 	 * @return natural weapon
 	 */
 	private Equipment createNaturalWeapon(LoadContext context, CDOMObject obj,
-			String wpn, SizeAdjustment size) {
+		String wpn, CDOMAddressedSingleRef<SizeAdjustment> size)
+	{
 		StringTokenizer commaTok = new StringTokenizer(wpn, Constants.COMMA);
 
-		if (commaTok.countTokens() != 4) {
+		if (commaTok.countTokens() != 4)
+		{
 			Logging.errorPrint("Invalid Build of " + "Natural Weapon in "
-					+ getTokenName() + ": " + wpn);
+				+ getTokenName() + ": " + wpn);
 			return null;
 		}
 
 		String attackName = commaTok.nextToken();
 
-		if (attackName.equalsIgnoreCase(Constants.LST_NONE)) {
+		if (attackName.equalsIgnoreCase(Constants.LST_NONE))
+		{
 			Logging.errorPrint("Attempt to Build 'None' as a "
-					+ "Natural Weapon in " + getTokenName() + ": " + wpn);
+				+ "Natural Weapon in " + getTokenName() + ": " + wpn);
 			return null;
 		}
 
 		Equipment anEquip = new Equipment();
 		anEquip.setName(attackName);
 		/*
-		 * This really can't be raw equipment... It really never needs to
-		 * be referred to, but this means that duplicates are never being
-		 * detected and resolved... this needs to have a KEY defined,
-		 * to keep it unique... hopefully this is good enough :)
+		 * This really can't be raw equipment... It really never needs to be
+		 * referred to, but this means that duplicates are never being detected
+		 * and resolved... this needs to have a KEY defined, to keep it
+		 * unique... hopefully this is good enough :)
 		 */
 		anEquip.setKeyName(obj.getClass().getSimpleName() + ","
-				+ obj.getKeyName() + "," + attackName);
+			+ obj.getKeyName() + "," + attackName);
 		/*
-		 * Perhaps the construction above should be through context
-		 * just to guarantee uniqueness of the key?? - that's too paranoid
+		 * Perhaps the construction above should be through context just to
+		 * guarantee uniqueness of the key?? - that's too paranoid
 		 */
 
 		String profType = commaTok.nextToken();
 		String numAttacks = commaTok.nextToken();
 
 		boolean attacksProgress = true;
-		if ((numAttacks.length() > 0) && (numAttacks.charAt(0) == '*')) {
+		if ((numAttacks.length() > 0) && (numAttacks.charAt(0) == '*'))
+		{
 			numAttacks = numAttacks.substring(1);
 			attacksProgress = false;
 		}
 
 		int bonusAttacks = 0;
-		try {
+		try
+		{
 			bonusAttacks = Integer.parseInt(numAttacks) - 1;
-		} catch (NumberFormatException exc) {
+		}
+		catch (NumberFormatException exc)
+		{
 			Logging.errorPrint("Non-numeric value for number of attacks in "
-					+ getTokenName() + ": '" + numAttacks + "'");
+				+ getTokenName() + ": '" + numAttacks + "'");
 			return null;
 		}
 
@@ -432,20 +438,25 @@ public class NaturalattacksLst implements GlobalLstToken
 		// allow hands to be required to equip natural weapons
 		int handsRequired = 0;
 
-		if (commaTok.hasMoreTokens()) {
+		if (commaTok.hasMoreTokens())
+		{
 			final String hString = commaTok.nextToken();
 
-			try {
+			try
+			{
 				handsRequired = Integer.parseInt(hString);
-			} catch (NumberFormatException exc) {
+			}
+			catch (NumberFormatException exc)
+			{
 				Logging.errorPrint("Non-numeric value for hands required: '"
-						+ hString + "'");
+					+ hString + "'");
 				return null;
 			}
 		}
 
 		StringTokenizer dotTok = new StringTokenizer(profType, Constants.DOT);
-		while (dotTok.hasMoreTokens()) {
+		while (dotTok.hasMoreTokens())
+		{
 			/*
 			 * FUTURE How are types made type safe?
 			 */
@@ -456,8 +467,10 @@ public class NaturalattacksLst implements GlobalLstToken
 
 		anEquip.put(ObjectKey.WEIGHT, BigDecimal.ZERO);
 
-		if (bonusAttacks > 0) {
-			// TODO FIXME anEquip.addBonusList("WEAPON|ATTACKS|" + bonusAttacks);
+		if (bonusAttacks > 0)
+		{
+			// TODO FIXME anEquip.addBonusList("WEAPON|ATTACKS|" +
+			// bonusAttacks);
 		}
 
 		EquipmentHead equipHead = new EquipmentHead(anEquip, 1);
@@ -466,13 +479,15 @@ public class NaturalattacksLst implements GlobalLstToken
 		equipHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(2));
 
 		context.ref.constructIfNecessary(WEAPONPROF_CLASS, attackName);
-		CDOMSimpleSingleRef<WeaponProf> wp = context.ref.getCDOMReference(WEAPONPROF_CLASS, attackName);
+		CDOMSimpleSingleRef<WeaponProf> wp =
+				context.ref.getCDOMReference(WEAPONPROF_CLASS, attackName);
 		anEquip.put(ObjectKey.WEAPON_PROF, wp);
 		context.graph.grant(getTokenName(), anEquip, wp);
 
 		anEquip.put(IntegerKey.SLOTS, Integer.valueOf(handsRequired));
 
-		// TODO FIXME these values need to be locked (how precisely is this done?)
+		// TODO FIXME these values need to be locked (how precisely is this
+		// done?)
 		// I think Quantity and number carried are actually PCGenGraph locks,
 		// not
 		// inherent to the Equipment itself...
@@ -481,7 +496,7 @@ public class NaturalattacksLst implements GlobalLstToken
 		// anEquip.setQty(new Float(1));
 		// anEquip.setNumberCarried(new Float(1));
 		anEquip.put(ObjectKey.ATTACKS_PROGRESS, Boolean
-				.valueOf(attacksProgress));
+			.valueOf(attacksProgress));
 
 		/*
 		 * TODO FIXME I'm almost convinced that Equipment CANNOT be done with

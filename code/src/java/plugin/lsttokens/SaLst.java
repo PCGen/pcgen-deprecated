@@ -22,7 +22,6 @@
  */
 package plugin.lsttokens;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,7 +41,6 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
 
@@ -313,31 +311,16 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			// Zero indicates no Token
 			return null;
 		}
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		List<String> list = new ArrayList<String>(added.size());
 		for (LSTWriteable lw : added)
 		{
 			StringBuilder sb = new StringBuilder();
 			SpecialAbility ab = (SpecialAbility) lw;
 			sb.append(ab.getDisplayName());
-			List<Prerequisite> prereqs = ab.getPrerequisiteList();
-			if (prereqs != null && !prereqs.isEmpty())
+			if (ab.hasPrerequisites())
 			{
-				for (Prerequisite p : prereqs)
-				{
-					StringWriter swriter = new StringWriter();
-					try
-					{
-						prereqWriter.write(swriter, p);
-					}
-					catch (PersistenceLayerException e)
-					{
-						context.addWriteMessage("Error writing Prerequisite: "
-							+ e);
-						return null;
-					}
-					sb.append(Constants.PIPE).append(swriter.toString());
-				}
+				sb.append(Constants.PIPE);
+				sb.append(getPrerequisiteString(context, ab.getPrerequisiteList()));
 			}
 			list.add(sb.toString());
 		}

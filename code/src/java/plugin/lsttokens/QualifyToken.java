@@ -22,6 +22,7 @@
 package plugin.lsttokens;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -33,7 +34,8 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.cdom.enumeration.MapKey;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.helper.Qualifier;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Deity;
@@ -46,6 +48,7 @@ import pcgen.core.Race;
 import pcgen.core.Skill;
 import pcgen.core.WeaponProf;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.ReferenceManufacturer;
@@ -174,10 +177,8 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 		{
 			CDOMReference<? extends PObject> ref =
 					rm.getReference(st.nextToken());
-			/*
-			 * TODO Direct object call :( and the only use of MapKey :(
-			 */
-			obj.addToListFor(MapKey.QUALIFY, rm.getCDOMClass(), ref);
+			obj.addToListFor(ListKey.QUALIFY, new Qualifier(rm.getCDOMClass(),
+				ref));
 		}
 
 		return true;
@@ -185,34 +186,28 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<Class<? extends PObject>> keys = obj.getKeySet(MapKey.QUALIFY);
-		if (keys == null || keys.isEmpty())
+		Changes<Qualifier> changes =
+				context.obj.getListChanges(obj, ListKey.QUALIFY);
+		if (changes == null)
 		{
 			return null;
 		}
+		Collection<Qualifier> quals = changes.getAdded();
 		HashMapToList<String, CDOMReference<?>> map =
 				new HashMapToList<String, CDOMReference<?>>();
-		for (Class<? extends PObject> cl : keys)
+		for (Qualifier qual : quals)
 		{
-			List<CDOMReference<?>> values = obj.getListFor(MapKey.QUALIFY, cl);
-			if (values == null || values.isEmpty())
-			{
-				context.addWriteMessage("Invalid Empty List in "
-					+ getTokenName() + " for " + cl.getSimpleName());
-				return null;
-			}
+			Class<? extends PObject> cl = qual.getQualifiedClass();
 			String s = StringPClassUtil.getStringFor(cl);
-			for (CDOMReference<?> ref : values)
+			CDOMReference<?> ref = qual.getQualifiedReference();
+			String key = s;
+			if (ref instanceof CategorizedCDOMReference)
 			{
-				String key = s;
-				if (ref instanceof CategorizedCDOMReference)
-				{
-					Category<?> cat =
-							((CategorizedCDOMReference) ref).getCDOMCategory();
-					key += '=' + cat.toString();
-				}
-				map.addToListFor(key, ref);
+				Category<?> cat =
+						((CategorizedCDOMReference) ref).getCDOMCategory();
+				key += '=' + cat.toString();
 			}
+			map.addToListFor(key, ref);
 		}
 		Set<CDOMReference<?>> set =
 				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);

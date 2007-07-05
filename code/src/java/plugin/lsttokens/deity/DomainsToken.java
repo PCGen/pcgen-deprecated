@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.deity;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,7 +45,6 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
@@ -242,7 +240,6 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 				map.addToListFor(prereqs, ref);
 			}
 		}
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		Set<String> set = new TreeSet<String>();
 		for (List<Prerequisite> prereqs : map.getKeySet())
 		{
@@ -253,23 +250,10 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			StringBuilder sb =
 					new StringBuilder(ReferenceUtilities.joinLstFormat(
 						domainSet, Constants.COMMA));
-			if (prereqs != null)
+			if (prereqs != null && !prereqs.isEmpty())
 			{
-				for (Prerequisite p : prereqs)
-				{
-					StringWriter swriter = new StringWriter();
-					try
-					{
-						prereqWriter.write(swriter, p);
-					}
-					catch (PersistenceLayerException e)
-					{
-						context.addWriteMessage("Error writing Prerequisite: "
-							+ e);
-						return null;
-					}
-					sb.append(Constants.PIPE).append(swriter.toString());
-				}
+				sb.append(Constants.PIPE);
+				sb.append(getPrerequisiteString(context, prereqs));
 			}
 			set.add(sb.toString());
 		}

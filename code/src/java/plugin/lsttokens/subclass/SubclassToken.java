@@ -1,6 +1,7 @@
 package plugin.lsttokens.subclass;
 
 import pcgen.core.SubClass;
+import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SubClassLstToken;
 
 /**
@@ -18,5 +19,11 @@ public class SubclassToken implements SubClassLstToken
 	{
 		subclass.setName(value);
 		return true;
+	}
+
+	public boolean parse(LoadContext context, SubClass sc, String value)
+	{
+		// NOT USED in CDOM
+		return false;
 	}
 }

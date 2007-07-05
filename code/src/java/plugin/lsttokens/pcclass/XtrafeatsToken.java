@@ -21,16 +21,23 @@
  */
 package plugin.lsttokens.pcclass;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.restriction.GroupRestriction;
+import pcgen.cdom.factory.GrantFactory;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.Ability;
 import pcgen.core.PCClass;
 import pcgen.persistence.GraphChanges;
@@ -100,73 +107,112 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 			return false;
 		}
 
-		Slot<Ability> slot =
-				context.graph.addSlot(getTokenName(), pcc,
-					ABILITY_CLASS, FormulaFactory.getFormulaFor(featCount));
+		CDOMGroupRef<Ability> ref =
+				context.ref.getCDOMAllReference(ABILITY_CLASS,
+					AbilityCategory.FEAT);
+		ReferenceChoiceSet<Ability> rcs =
+				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
+		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
+		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), pcc, cs);
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+			.getFormulaFor(featCount));
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+			.getFormulaFor(featCount));
+		GrantFactory<Ability> gf = new GrantFactory<Ability>(edge);
+		/*
+		 * FUTURE Technically, this Category item should not be in the
+		 * GrantFactory, as it really belogs as something that can be extracted
+		 * from the ChoiceSet...
+		 */
+		gf
+			.setAssociation(AssociationKey.ABILITY_CATEGORY,
+				AbilityCategory.FEAT);
+		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
 		/*
 		 * Unlike Race's STARTFEATS, no prereq is required here since this in a
 		 * PCClass, it guarantees the Character is at least level 1. - Tom
 		 * Parker Apr 7, 2007
 		 */
-		CDOMGroupRef<Ability> ref =
-				context.ref.getCDOMAllReference(ABILITY_CLASS,
-					AbilityCategory.FEAT);
-
-		slot.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS,
-			ref));
-		slot.setAssociation(AssociationKey.ABILITY_CATEGORY,
-			AbilityCategory.FEAT);
-		slot
-			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
+		context.graph.grant(getTokenName(), pcc, gf);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, PCClass obj)
 	{
-		GraphChanges<Slot> changes =
-				context.graph.getChangesFromToken(getTokenName(), pcc,
-					Slot.class);
-		if (changes == null)
+		GraphChanges<ChoiceSet> choiceChanges =
+				context.graph.getChangesFromToken(getTokenName(), obj,
+					ChoiceSet.class);
+		if (choiceChanges == null)
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<LSTWriteable> added = choiceChanges.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token present
 			return null;
 		}
-		if (added.size() > 1)
+		GraphChanges<GrantFactory> grantChanges =
+				context.graph.getChangesFromToken(getTokenName(), obj,
+					GrantFactory.class);
+		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
+		if (grantAdded == null || grantAdded.isEmpty())
 		{
-			context.addWriteMessage("Error in " + pcc.getKeyName()
-				+ ": Only one " + getTokenName()
-				+ " Slot is allowed per PCClass");
+			// Zero indicates no Token present
 			return null;
 		}
-		Slot<Ability> slot = (Slot<Ability>) added.iterator().next();
-		if (!slot.getSlotClass().equals(ABILITY_CLASS))
+		List<String> addStrings = new ArrayList<String>();
+		for (LSTWriteable lstw : added)
 		{
-			context.addWriteMessage("Invalid Slot Type associated with "
-				+ getTokenName() + ": Type cannot be "
-				+ slot.getSlotClass().getSimpleName());
-			return null;
+			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
+			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
+			{
+				AbilityNature nat = null;
+				AbilityCategory cat = null;
+				for (LSTWriteable gw : grantAdded)
+				{
+					GrantFactory<?> gf = (GrantFactory<?>) gw;
+					if (gf.usesChoiceSet(cs))
+					{
+						cat =
+								gf
+									.getAssociation(AssociationKey.ABILITY_CATEGORY);
+						nat = gf.getAssociation(AssociationKey.ABILITY_NATURE);
+						break;
+					}
+				}
+				if (nat == null)
+				{
+					context
+						.addWriteMessage("Unable to find Nature for GrantFactory");
+					return null;
+				}
+				if (cat == null)
+				{
+					context
+						.addWriteMessage("Unable to find Category for GrantFactory");
+					return null;
+				}
+				if (!AbilityCategory.FEAT.equals(cat)
+					|| !AbilityNature.NORMAL.equals(nat))
+				{
+					// can't handle those here!
+					continue;
+				}
+				AssociatedPrereqObject assoc =
+						choiceChanges.getAddedAssociation(lstw);
+				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
+				{
+					context.addWriteMessage("Unable to find " + getTokenName()
+						+ " Count");
+					return null;
+				}
+				addStrings.add(f.toString());
+
+				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+			}
 		}
-		if (!AbilityCategory.FEAT.equals(slot
-			.getAssociation(AssociationKey.ABILITY_CATEGORY)))
-		{
-			context.addWriteMessage("Invalid Ability Category associated with "
-				+ getTokenName() + ": Category cannot be "
-				+ slot.getAssociation(AssociationKey.ABILITY_CATEGORY));
-			return null;
-		}
-		if (!AbilityNature.NORMAL.equals(slot
-			.getAssociation(AssociationKey.ABILITY_NATURE)))
-		{
-			context.addWriteMessage("Invalid Ability Nature associated with "
-				+ getTokenName() + ": Category cannot be "
-				+ slot.getAssociation(AssociationKey.ABILITY_NATURE));
-			return null;
-		}
-		return new String[]{slot.getSlotCount()};
+		return addStrings.toArray(new String[addStrings.size()]);
 	}
 }

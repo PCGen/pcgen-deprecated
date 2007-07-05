@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +41,6 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.ProhibitedSpellType;
@@ -295,25 +293,10 @@ public class ProhibitspellToken extends AbstractToken implements
 			String joinChar = getJoinChar(pst, spValues);
 			sb.append(StringUtil.join(spValues, joinChar));
 
-			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-			List<Prerequisite> prereqs = sp.getPreReqList();
-			if (prereqs != null && !prereqs.isEmpty())
+			if (sp.hasPrerequisites())
 			{
-				for (Prerequisite p : prereqs)
-				{
-					StringWriter swriter = new StringWriter();
-					try
-					{
-						prereqWriter.write(swriter, p);
-					}
-					catch (PersistenceLayerException e)
-					{
-						context.addWriteMessage("Error writing Prerequisite: "
-							+ e);
-						return null;
-					}
-					sb.append(Constants.PIPE).append(swriter.toString());
-				}
+				sb.append(Constants.PIPE);
+				sb.append(getPrerequisiteString(context, sp.getPrerequisiteList()));
 			}
 			list.add(sb.toString());
 		}

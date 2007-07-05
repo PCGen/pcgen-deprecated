@@ -55,7 +55,7 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
-			Logging.errorPrint("Invalid Stat Abbreviation in Token + "
+			Logging.errorPrint("Invalid Stat Abbreviation in "
 				+ getTokenName() + ": " + value);
 			return false;
 		}

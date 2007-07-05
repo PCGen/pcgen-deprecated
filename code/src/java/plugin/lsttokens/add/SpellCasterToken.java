@@ -17,28 +17,33 @@
  */
 package plugin.lsttokens.add;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMCompoundReference;
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.Restriction;
-import pcgen.cdom.base.Slot;
-import pcgen.cdom.restriction.GroupRestriction;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.factory.GrantFactory;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.SpellProgressionInfo;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class SpellCasterToken implements AddLstToken
+public class SpellCasterToken extends AbstractToken implements AddLstToken
 {
 
 	private static final Class<SpellProgressionInfo> SPELL_PROG_CLASS =
@@ -75,6 +80,7 @@ public class SpellCasterToken implements AddLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "SPELLCASTER";
@@ -113,22 +119,8 @@ public class SpellCasterToken implements AddLstToken
 			items = value.substring(pipeLoc + 1);
 		}
 
-		if (items.charAt(0) == ',')
+		if (isEmpty(items) || hasIllegalSeparator(',', items))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , see: " + value);
-			return false;
-		}
-		if (items.charAt(items.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , see: " + value);
-			return false;
-		}
-		if (items.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
@@ -136,9 +128,8 @@ public class SpellCasterToken implements AddLstToken
 		boolean foundAny = false;
 		boolean foundOther = false;
 
-		CDOMCompoundReference<SpellProgressionInfo> cr =
-				new CDOMCompoundReference<SpellProgressionInfo>(
-					SPELL_PROG_CLASS, getTokenName() + " items");
+		List<CDOMReference<SpellProgressionInfo>> refs =
+				new ArrayList<CDOMReference<SpellProgressionInfo>>();
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
@@ -165,14 +156,8 @@ public class SpellCasterToken implements AddLstToken
 					return false;
 				}
 			}
-			cr.addReference(ref);
+			refs.add(ref);
 		}
-
-		Slot<SpellProgressionInfo> slot =
-				context.graph.addSlot(getTokenName(), obj, SPELL_PROG_CLASS,
-					FormulaFactory.getFormulaFor(count));
-		slot.addSinkRestriction(new GroupRestriction<SpellProgressionInfo>(
-			SPELL_PROG_CLASS, cr));
 
 		if (foundAny && foundOther)
 		{
@@ -181,14 +166,27 @@ public class SpellCasterToken implements AddLstToken
 			return false;
 		}
 
+		ReferenceChoiceSet<SpellProgressionInfo> rcs =
+				new ReferenceChoiceSet<SpellProgressionInfo>(refs);
+		ChoiceSet<SpellProgressionInfo> cs =
+				new ChoiceSet<SpellProgressionInfo>("ADD", rcs);
+		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+			.getFormulaFor(count));
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+			.getFormulaFor(Integer.MAX_VALUE));
+		GrantFactory<SpellProgressionInfo> gf =
+				new GrantFactory<SpellProgressionInfo>(edge);
+		gf.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(1));
+		context.graph.grant(getTokenName(), obj, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<Slot> changes =
+		GraphChanges<ChoiceSet> changes =
 				context.graph.getChangesFromToken(getTokenName(), obj,
-					Slot.class);
+					ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;
@@ -199,40 +197,32 @@ public class SpellCasterToken implements AddLstToken
 			// Zero indicates no Token present
 			return null;
 		}
-		if (added.size() > 1)
+		List<String> addStrings = new ArrayList<String>();
+		for (LSTWriteable lstw : added)
 		{
-			context.addWriteMessage("Error in " + obj.getKeyName()
-				+ ": Only one " + getTokenName()
-				+ " Slot is allowed per Object");
-			return null;
+			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
+			if (SPELL_PROG_CLASS.equals(cs.getChoiceClass()))
+			{
+				AssociatedPrereqObject assoc =
+						changes.getAddedAssociation(lstw);
+				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
+				{
+					// Error
+					return null;
+				}
+				String fString = f.toString();
+				if ("1".equals(fString))
+				{
+					addStrings.add(cs.getLSTformat());
+				}
+				else
+				{
+					addStrings.add(fString + "|" + cs.getLSTformat());
+				}
+				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+			}
 		}
-		Slot<SpellProgressionInfo> slot =
-				(Slot<SpellProgressionInfo>) added.iterator().next();
-		if (!slot.getSlotClass().equals(SPELL_PROG_CLASS))
-		{
-			context.addWriteMessage("Invalid Slot Type associated with "
-				+ getTokenName() + ": Type cannot be "
-				+ slot.getSlotClass().getSimpleName());
-			return null;
-		}
-		String slotCount = slot.getSlotCount();
-		String result;
-		List<Restriction<?>> restr = slot.getSinkRestrictions();
-		if (restr.size() != 1)
-		{
-			context.addWriteMessage("Slot for " + getTokenName()
-				+ " must have only one restriction");
-			return null;
-		}
-		Restriction<?> res = restr.get(0);
-		if ("1".equals(slotCount))
-		{
-			result = res.toLSTform();
-		}
-		else
-		{
-			result = slotCount + "|" + res.toLSTform();
-		}
-		return new String[]{result};
+		return addStrings.toArray(new String[addStrings.size()]);
 	}
 }

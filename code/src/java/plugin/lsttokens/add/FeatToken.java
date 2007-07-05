@@ -17,31 +17,35 @@
  */
 package plugin.lsttokens.add;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMCompoundReference;
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.Restriction;
-import pcgen.cdom.base.Slot;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.restriction.GroupRestriction;
+import pcgen.cdom.factory.GrantFactory;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.Ability;
 import pcgen.core.PObject;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
-public class FeatToken implements AddLstToken
+public class FeatToken extends AbstractToken implements AddLstToken
 {
 	private static final Class<Ability> ABILITY_CLASS = Ability.class;
 
@@ -76,6 +80,7 @@ public class FeatToken implements AddLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "FEAT";
@@ -114,29 +119,14 @@ public class FeatToken implements AddLstToken
 			items = value.substring(pipeLoc + 1);
 		}
 
-		if (items.charAt(0) == ',')
+		if (isEmpty(items) || hasIllegalSeparator(',', items))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with , see: " + value);
-			return false;
-		}
-		if (items.charAt(items.length() - 1) == ',')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with , see: " + value);
-			return false;
-		}
-		if (items.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		CDOMCompoundReference<Ability> cr =
-				new CDOMCompoundReference<Ability>(ABILITY_CLASS,
-					getTokenName() + " items");
+		List<CDOMReference<Ability>> refs =
+				new ArrayList<CDOMReference<Ability>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
 
@@ -168,7 +158,7 @@ public class FeatToken implements AddLstToken
 					return false;
 				}
 			}
-			cr.addReference(ref);
+			refs.add(ref);
 		}
 
 		if (foundAny && foundOther)
@@ -178,67 +168,109 @@ public class FeatToken implements AddLstToken
 			return false;
 		}
 
-		Slot<Ability> slot =
-				context.graph.addSlot(getTokenName(), obj, ABILITY_CLASS,
-					FormulaFactory.getFormulaFor(count));
-		slot
-			.addSinkRestriction(new GroupRestriction<Ability>(ABILITY_CLASS, cr));
-		slot.setAssociation(AssociationKey.ABILITY_CATEGORY,
-			AbilityCategory.FEAT);
-		slot
-			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
-
+		ReferenceChoiceSet<Ability> rcs = new ReferenceChoiceSet<Ability>(refs);
+		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("ADD", rcs);
+		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+			.getFormulaFor(count));
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+			.getFormulaFor(Integer.MAX_VALUE));
+		GrantFactory<Ability> gf = new GrantFactory<Ability>(edge);
+		/*
+		 * FUTURE Technically, this Category item should not be in the
+		 * GrantFactory, as it really belogs as something that can be extracted
+		 * from the ChoiceSet...
+		 */
+		gf
+			.setAssociation(AssociationKey.ABILITY_CATEGORY,
+				AbilityCategory.FEAT);
+		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
+		context.graph.grant(getTokenName(), obj, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<Slot> changes =
+		GraphChanges<ChoiceSet> choiceChanges =
 				context.graph.getChangesFromToken(getTokenName(), obj,
-					Slot.class);
-		if (changes == null)
+					ChoiceSet.class);
+		if (choiceChanges == null)
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<LSTWriteable> added = choiceChanges.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token present
 			return null;
 		}
-		if (added.size() > 1)
+		GraphChanges<GrantFactory> grantChanges =
+				context.graph.getChangesFromToken(getTokenName(), obj,
+					GrantFactory.class);
+		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
+		if (grantAdded == null || grantAdded.isEmpty())
 		{
-			context.addWriteMessage("Error in " + obj.getKeyName()
-				+ ": Only one " + getTokenName()
-				+ " Slot is allowed per Object");
+			// Zero indicates no Token present
 			return null;
 		}
-		Slot<Ability> slot = (Slot<Ability>) added.iterator().next();
-		if (!slot.getSlotClass().equals(ABILITY_CLASS))
+		List<String> addStrings = new ArrayList<String>();
+		for (LSTWriteable lstw : added)
 		{
-			context.addWriteMessage("Invalid Slot Type associated with "
-				+ getTokenName() + ": Type cannot be "
-				+ slot.getSlotClass().getSimpleName());
-			return null;
+			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
+			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
+			{
+				AbilityNature nat = null;
+				AbilityCategory cat = null;
+				for (LSTWriteable gw : grantAdded)
+				{
+					GrantFactory<?> gf = (GrantFactory<?>) gw;
+					if (gf.usesChoiceSet(cs))
+					{
+						cat =
+								gf
+									.getAssociation(AssociationKey.ABILITY_CATEGORY);
+						nat = gf.getAssociation(AssociationKey.ABILITY_NATURE);
+						break;
+					}
+				}
+				if (nat == null)
+				{
+					context
+						.addWriteMessage("Unable to find Nature for GrantFactory");
+					return null;
+				}
+				if (cat == null)
+				{
+					context
+						.addWriteMessage("Unable to find Category for GrantFactory");
+					return null;
+				}
+				if (!AbilityCategory.FEAT.equals(cat)
+					|| !AbilityNature.NORMAL.equals(nat))
+				{
+					// will be done with VFEAT or ABILITY
+					continue;
+				}
+				AssociatedPrereqObject assoc =
+						choiceChanges.getAddedAssociation(lstw);
+				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
+				{
+					context.addWriteMessage("Unable to find Choice Count");
+					return null;
+				}
+				String fString = f.toString();
+				StringBuilder sb = new StringBuilder();
+				if (!"1".equals(fString))
+				{
+					sb.append(fString).append(Constants.PIPE);
+				}
+				sb.append(cs.getLSTformat());
+				addStrings.add(sb.toString());
+
+				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+			}
 		}
-		String slotCount = slot.getSlotCount();
-		String result;
-		List<Restriction<?>> restr = slot.getSinkRestrictions();
-		if (restr.size() != 1)
-		{
-			context.addWriteMessage("Slot for " + getTokenName()
-				+ " must have only one restriction");
-			return null;
-		}
-		Restriction<?> res = restr.get(0);
-		if ("1".equals(slotCount))
-		{
-			result = res.toLSTform();
-		}
-		else
-		{
-			result = slotCount + "|" + res.toLSTform();
-		}
-		return new String[]{result};
+		return addStrings.toArray(new String[addStrings.size()]);
 	}
 }

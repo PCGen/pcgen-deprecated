@@ -24,8 +24,8 @@ package plugin.lsttokens.equipment;
 import pcgen.base.formula.Resolver;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.formula.FixedSizeResolver;
-import pcgen.cdom.mode.Size;
 import pcgen.core.Equipment;
+import pcgen.core.SizeAdjustment;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
 import pcgen.util.Logging;
@@ -51,8 +51,15 @@ public class SizeToken implements EquipmentLstToken
 	{
 		try
 		{
-			context.obj.put(eq, ObjectKey.SIZE, new FixedSizeResolver(Size
-				.valueOf(value)));
+			SizeAdjustment size =
+					context.ref.getConstructedCDOMObject(SizeAdjustment.class,
+						value);
+			if (size == null)
+			{
+				Logging.errorPrint("Unable to find Size: " + value);
+				return false;
+			}
+			context.obj.put(eq, ObjectKey.SIZE, new FixedSizeResolver(size));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -65,7 +72,8 @@ public class SizeToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Resolver<Size> res = context.obj.getObject(eq, ObjectKey.SIZE);
+		Resolver<SizeAdjustment> res =
+				context.obj.getObject(eq, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

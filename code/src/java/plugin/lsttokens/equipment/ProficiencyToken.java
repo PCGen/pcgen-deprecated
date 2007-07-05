@@ -47,6 +47,10 @@ public class ProficiencyToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
+		/*
+		 * BUG TODO This is a problem - it is not necessarily a WEAPON
+		 * proficiency - could be Shield or Armor... :P
+		 */
 		CDOMSimpleSingleRef<WeaponProf> wp =
 				context.ref.getCDOMReference(WeaponProf.class, value);
 		context.obj.put(eq, ObjectKey.WEAPON_PROF, wp);

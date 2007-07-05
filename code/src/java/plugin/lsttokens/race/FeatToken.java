@@ -21,7 +21,6 @@
  */
 package plugin.lsttokens.race;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,7 +30,6 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
@@ -50,10 +48,8 @@ import pcgen.core.Race;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
@@ -204,7 +200,6 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 				.getPrerequisiteList()), ab);
 		}
 
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		SortedSet<LSTWriteable> set =
 				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 
@@ -218,25 +213,9 @@ public class FeatToken extends AbstractToken implements RaceLstToken
 			String ab = ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
-				TreeSet<String> prereqSet = new TreeSet<String>();
-				for (Prerequisite p : prereqs)
-				{
-					StringWriter swriter = new StringWriter();
-					try
-					{
-						prereqWriter.write(swriter, p);
-					}
-					catch (PersistenceLayerException e)
-					{
-						context.addWriteMessage("Error writing Prerequisite: "
-							+ e);
-						return null;
-					}
-					prereqSet.add(swriter.toString());
-				}
 				ab =
 						ab + Constants.PIPE
-							+ StringUtil.join(prereqSet, Constants.PIPE);
+							+ getPrerequisiteString(context, prereqs);
 			}
 			list.add(ab);
 		}

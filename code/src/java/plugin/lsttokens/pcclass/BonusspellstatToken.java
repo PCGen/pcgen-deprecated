@@ -55,7 +55,16 @@ public class BonusspellstatToken implements PCClassLstToken,
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
-			Logging.errorPrint("Invalid Stat Abbreviation in Token + "
+			/*
+			 * TODO There are two special values here: None and Default.
+			 * 
+			 * Default shoudn't be encountered, and that is equivalent to storing
+			 * null.
+			 * 
+			 * None is an explicit case of not having a BONUS_SPELL_STAT and must
+			 * be handled... :P
+			 */
+			Logging.errorPrint("Invalid Stat Abbreviation in "
 				+ getTokenName() + ": " + value);
 			return false;
 		}

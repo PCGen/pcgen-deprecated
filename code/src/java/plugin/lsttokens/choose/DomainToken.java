@@ -17,38 +17,13 @@
  */
 package plugin.lsttokens.choose;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
-import pcgen.cdom.base.Constants;
-import pcgen.cdom.choice.AnyChooser;
-import pcgen.cdom.choice.CompoundOrChooser;
-import pcgen.cdom.choice.GrantedChooser;
-import pcgen.cdom.choice.ListTransformer;
-import pcgen.cdom.choice.ReferenceChooser;
-import pcgen.cdom.choice.RemovingChooser;
-import pcgen.cdom.filter.PCChoiceFilter;
-import pcgen.cdom.filter.QualifyFilter;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.Deity;
-import pcgen.core.Domain;
-import pcgen.core.DomainList;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
 public class DomainToken extends AbstractToken implements ChooseLstToken
 {
-
-	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
@@ -83,107 +58,5 @@ public class DomainToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "DOMAIN";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		if (value.indexOf('|') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain | : " + value);
-			return null;
-		}
-		if (value.indexOf('[') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
-			return null;
-		}
-		if (hasIllegalSeparator(',', value))
-		{
-			return null;
-		}
-
-		if (Constants.LST_ANY.equals(value))
-		{
-			return AnyChooser.getAnyChooser(DOMAIN_CLASS);
-		}
-		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
-		List<ChoiceSet<Domain>> list = new ArrayList<ChoiceSet<Domain>>();
-		List<CDOMReference<Domain>> domainlist =
-				new ArrayList<CDOMReference<Domain>>();
-		while (tok.hasMoreTokens())
-		{
-			String tokString = tok.nextToken();
-			if (Constants.LST_ANY.equals(tokString))
-			{
-				Logging.errorPrint("Cannot use ANY and another qualifier: "
-					+ value);
-				return null;
-			}
-			else if (Constants.LST_PC.equals(tokString))
-			{
-				list.add(GrantedChooser.getGrantedChooser(DOMAIN_CLASS));
-			}
-			else if (Constants.LST_QUALIFY.equals(tokString))
-			{
-				AnyChooser<Domain> ac = AnyChooser.getAnyChooser(DOMAIN_CLASS);
-				RemovingChooser<Domain> rc =
-						new RemovingChooser<Domain>(ac, false);
-				rc.addRemovingChoiceFilter(new QualifyFilter(), true);
-				rc.addRemovingChoiceFilter(PCChoiceFilter
-					.getPCChoiceFilter(DOMAIN_CLASS), false);
-				list.add(rc);
-			}
-			else if (tokString.regionMatches(true, 0, "DEITY=", 0, 6))
-			{
-				//TODO This isn't starting, it's a LISTKEY??
-				CDOMSimpleSingleRef<DomainList> dl =
-						context.ref.getCDOMReference(DomainList.class,
-							"*Starting");
-				CDOMSimpleSingleRef<Deity> ref =
-						context.ref.getCDOMReference(Deity.class, tokString
-							.substring(6));
-				ListTransformer<Domain> dpc =
-						new ListTransformer<Domain>(
-							new ReferenceChooser<Deity>(Collections
-								.singleton(ref)), dl);
-				list.add(dpc);
-			}
-			else
-			{
-				domainlist.add(context.ref.getCDOMReference(DOMAIN_CLASS,
-					tokString));
-			}
-		}
-		ChoiceSet<Domain> listSet;
-		if (domainlist.isEmpty())
-		{
-			listSet = null;
-		}
-		else
-		{
-			listSet = new ReferenceChooser<Domain>(domainlist);
-		}
-		if (list.isEmpty())
-		{
-			return listSet;
-		}
-		else
-		{
-			CompoundOrChooser<Domain> chooser = new CompoundOrChooser<Domain>();
-			chooser.addAllChoiceSets(list);
-			if (listSet != null)
-			{
-				chooser.addChoiceSet(listSet);
-			}
-			return chooser;
-		}
-	}
-
-	public String unparse(LoadContext context, ChoiceSet<?> chooser)
-	{
-		return chooser.getLSTformat();
 	}
 }

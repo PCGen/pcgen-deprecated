@@ -91,18 +91,6 @@ public class QualityToken implements EquipmentLstToken
 				+ "format is: QualityType|Quality value was: " + value);
 			return false;
 		}
-		/*
-		 * TODO CONSIDER Is this really to a LIST?? That's what is done in
-		 * CDOMObject, but I'm not sure that's necessary or desired in this
-		 * case?
-		 * 
-		 * Actually this is ONE valid form, but not CPU-nice... List is okay
-		 * since the Key is QUALITY and the values are the key/value pairs...
-		 * This would be better in a MapKey, but MapKey today is really a
-		 * MapToListKey, so some additional thinking has to occur here. Should
-		 * this be an ObjectKey to a Map? There is some initialization overhead
-		 * to that but it seems reasonable.
-		 */
 		context.obj.addToList(eq, ListKey.QUALITY, new Quality(key, val));
 		return true;
 	}

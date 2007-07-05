@@ -30,20 +30,25 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.factory.GrantFactory;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.ListChoiceSet;
 import pcgen.core.Campaign;
 import pcgen.core.PCTemplate;
-import pcgen.core.PCTemplateList;
+import pcgen.core.PCTemplateChooseList;
 import pcgen.core.PObject;
 import pcgen.persistence.GraphChanges;
 import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -54,8 +59,8 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 
 	private static final Class<PCTemplate> PCTEMPLATE_CLASS = PCTemplate.class;
 
-	private static final Class<PCTemplateList> PCTEMPLATELIST_CLASS =
-			PCTemplateList.class;
+	private static final Class<PCTemplateChooseList> PCTEMPLATECHOOSELIST_CLASS =
+			PCTemplateChooseList.class;
 
 	@Override
 	public String getTokenName()
@@ -77,25 +82,34 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 	{
 		if (value.startsWith(Constants.LST_CHOOSE))
 		{
-			// TODO TCT is not enough to keep this unique across different
-			// Templates
-			CDOMReference<PCTemplateList> ref =
-					context.ref.getCDOMReference(PCTEMPLATELIST_CLASS, "*TCT");
+			PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
+			CDOMSingleRef<PCTemplateChooseList> ref =
+					context.ref.getCDOMDirectReference(tcl);
 			boolean returnval =
 					parseChoose(context, cdo, ref, value
 						.substring(Constants.LST_CHOOSE.length()));
 			if (returnval)
 			{
-				context.graph.addSlot(getTokenName(), cdo, PCTEMPLATE_CLASS,
+				ListChoiceSet<PCTemplate> rcs =
+						new ListChoiceSet<PCTemplate>(tcl);
+				ChoiceSet<PCTemplate> cs =
+						new ChoiceSet<PCTemplate>("ADD", rcs);
+				PCGraphGrantsEdge edge =
+						context.graph.grant(getTokenName(), cdo, cs);
+				edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+					.getFormulaFor(1));
+				edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT,
 					FormulaFactory.getFormulaFor(1));
-				// TODO Need to get the restriction attached to this slot...
+				GrantFactory<PCTemplate> gf =
+						new GrantFactory<PCTemplate>(edge);
+				context.graph.grant(getTokenName(), cdo, gf);
 			}
 			return returnval;
 		}
 		else if (value.startsWith(Constants.LST_ADDCHOICE))
 		{
-			CDOMReference<PCTemplateList> ref =
-					context.ref.getCDOMAllReference(PCTEMPLATELIST_CLASS);
+			CDOMReference<PCTemplateChooseList> ref =
+					context.ref.getCDOMAllReference(PCTEMPLATECHOOSELIST_CLASS);
 			return parseChoose(context, cdo, ref, value
 				.substring(Constants.LST_ADDCHOICE.length()));
 		}
@@ -121,29 +135,10 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 	}
 
 	public boolean parseChoose(LoadContext context, CDOMObject obj,
-		CDOMReference<PCTemplateList> swl, String value)
+		CDOMReference<PCTemplateChooseList> swl, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 
@@ -165,13 +160,14 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 				context.graph.getChangesFromToken(getTokenName(), cdo,
 					PCTEMPLATE_CLASS);
 
-		CDOMReference<PCTemplateList> tctRef =
-				context.ref.getCDOMReference(PCTEMPLATELIST_CLASS, "*TCT");
-		CDOMReference<PCTemplateList> allRef =
-				context.ref.getCDOMAllReference(PCTEMPLATELIST_CLASS);
+		PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
+		CDOMSingleRef<PCTemplateChooseList> ref =
+				context.ref.getCDOMDirectReference(tcl);
+		CDOMReference<PCTemplateChooseList> allRef =
+				context.ref.getCDOMAllReference(PCTEMPLATECHOOSELIST_CLASS);
 
 		ListGraphChanges<PCTemplate> tctChanges =
-				context.list.getChangesInList(getTokenName(), cdo, tctRef);
+				context.list.getChangesInList(getTokenName(), cdo, ref);
 		ListGraphChanges<PCTemplate> allChanges =
 				context.list.getChangesInList(getTokenName(), cdo, allRef);
 

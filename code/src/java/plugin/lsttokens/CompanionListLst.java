@@ -23,7 +23,6 @@
  */
 package plugin.lsttokens;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -148,7 +147,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 					// We can't expand races here since this is a global tag
 					// and races may not have been processed yet.
 					// For the same reason ANY will be passed on.
-					// TODO Need to figure out how to deal with this issue.
+					// OLDTODO Need to figure out how to deal with this issue.
 					races.add(subTok.nextToken());
 				}
 
@@ -276,14 +275,18 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			return false;
 		}
 
-		Integer followerAdjustment = null;
-		final List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
+		if (!tok.hasMoreTokens())
+		{
+			// No other args, so we're done
+			finish(context, obj, companionType, races, null, null);
+			return true;
+		}
 
 		// The remainder of the elements are optional.
-		// TODO Need to force PRExxx to the END
-		while (tok.hasMoreTokens())
+		Integer followerAdjustment = null;
+		String optArg = tok.nextToken();
+		while (true)
 		{
-			String optArg = tok.nextToken();
 			if (optArg.startsWith(FOLLOWERADJUSTMENT))
 			{
 				if (followerAdjustment != null)
@@ -293,8 +296,14 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 					return false;
 				}
 
-				// FIXME Check =
-				String adj = optArg.substring(FOLLOWERADJUSTMENT.length() + 1);
+				int faStringLength = FOLLOWERADJUSTMENT.length();
+				if (optArg.length() <= faStringLength)
+				{
+					Logging.errorPrint("Empty FOLLOWERALIGN value in "
+						+ getTokenName() + " is prohibited");
+					return false;
+				}
+				String adj = optArg.substring(faStringLength + 1);
 
 				try
 				{
@@ -311,7 +320,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			}
 			else if (optArg.startsWith("PRE") || optArg.startsWith("!PRE"))
 			{
-				prereqs.add(getPrerequisite(optArg));
+				break;
 			}
 			else
 			{
@@ -321,8 +330,43 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 						+ optArg);
 				return false;
 			}
+			if (!tok.hasMoreTokens())
+			{
+				// No prereqs, so we're done
+				finish(context, obj, companionType, races, followerAdjustment,
+					null);
+				return true;
+			}
+			optArg = tok.nextToken();
 		}
 
+		List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
+
+		while (true)
+		{
+			Prerequisite prereq = getPrerequisite(optArg);
+			if (prereq == null)
+			{
+				Logging.errorPrint("   (Did you put items after the "
+					+ "PRExxx tags in " + getTokenName() + ":?)");
+				return false;
+			}
+			prereqs.add(prereq);
+			if (!tok.hasMoreTokens())
+			{
+				break;
+			}
+			optArg = tok.nextToken();
+		}
+
+		finish(context, obj, companionType, races, followerAdjustment, prereqs);
+		return true;
+	}
+
+	private void finish(LoadContext context, CDOMObject obj,
+		String companionType, Set<CDOMReference<Race>> races,
+		Integer followerAdjustment, List<Prerequisite> prereqs)
+	{
 		context.ref.constructIfNecessary(CompanionList.class, companionType);
 		CDOMReference<CompanionList> ref =
 				context.ref
@@ -339,7 +383,6 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			}
 			edge.addAllPrerequisites(prereqs);
 		}
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
@@ -394,26 +437,10 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 		StringBuilder sb = new StringBuilder();
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			String prereqString = "";
+			String prereqString = null;
 			if (prereqs != null && !prereqs.isEmpty())
 			{
-				sb.setLength(0);
-				for (Prerequisite p : prereqs)
-				{
-					StringWriter swriter = new StringWriter();
-					try
-					{
-						prereqWriter.write(swriter, p);
-					}
-					catch (PersistenceLayerException e)
-					{
-						context.addWriteMessage("Error writing Prerequisite: "
-							+ e);
-						return null;
-					}
-					sb.append(Constants.PIPE).append(swriter.toString());
-				}
-				prereqString = sb.toString();
+				prereqString = getPrerequisiteString(context, prereqs);
 			}
 
 			for (CDOMReference<CompanionList> cl : m
@@ -434,7 +461,11 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 						sb.append("FOLLOWERADJUSTMENT:");
 						sb.append(fa);
 					}
-					sb.append(prereqString);
+					if (prereqString != null)
+					{
+						sb.append(Constants.PIPE);
+						sb.append(prereqString);
+					}
 					set.add(sb.toString());
 				}
 			}

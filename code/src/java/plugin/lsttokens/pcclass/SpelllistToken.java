@@ -26,14 +26,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMCompoundReference;
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.Restriction;
-import pcgen.cdom.base.Slot;
-import pcgen.cdom.restriction.GroupRestriction;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.factory.GrantFactory;
+import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.ClassSpellList;
 import pcgen.core.PCClass;
 import pcgen.persistence.GraphChanges;
@@ -127,9 +130,8 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
-		CDOMCompoundReference<ClassSpellList> cr =
-				new CDOMCompoundReference<ClassSpellList>(SPELLLIST_CLASS,
-					getTokenName() + " items");
+		List<CDOMReference<ClassSpellList>> refs =
+				new ArrayList<CDOMReference<ClassSpellList>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
 
@@ -155,7 +157,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 					return false;
 				}
 			}
-			cr.addReference(ref);
+			refs.add(ref);
 		}
 
 		if (foundAny && foundOther)
@@ -165,21 +167,26 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
-		Slot<ClassSpellList> slot =
-				context.graph.addSlot(getTokenName(), pcc, SPELLLIST_CLASS,
-					FormulaFactory.getFormulaFor(count));
-
-		slot.addSinkRestriction(new GroupRestriction<ClassSpellList>(
-			SPELLLIST_CLASS, cr));
-
+		ReferenceChoiceSet<ClassSpellList> rcs =
+				new ReferenceChoiceSet<ClassSpellList>(refs);
+		ChoiceSet<ClassSpellList> cs =
+				new ChoiceSet<ClassSpellList>(getTokenName(), rcs);
+		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), pcc, cs);
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+			.getFormulaFor(count));
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+			.getFormulaFor(Integer.MAX_VALUE));
+		GrantFactory<ClassSpellList> gf =
+				new GrantFactory<ClassSpellList>(edge);
+		context.graph.grant(getTokenName(), pcc, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		GraphChanges<Slot> changes =
+		GraphChanges<ChoiceSet> changes =
 				context.graph.getChangesFromToken(getTokenName(), pcc,
-					Slot.class);
+					ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;
@@ -190,30 +197,24 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			// Zero indicates no Token present
 			return null;
 		}
-		if (added.size() > 1)
+		List<String> addStrings = new ArrayList<String>();
+		for (LSTWriteable lstw : added)
 		{
-			context.addWriteMessage("Error in " + pcc.getKeyName()
-				+ ": Only one " + getTokenName()
-				+ " Slot is allowed per PCClass");
-			return null;
+			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
+			if (SPELLLIST_CLASS.equals(cs.getChoiceClass()))
+			{
+				AssociatedPrereqObject assoc =
+						changes.getAddedAssociation(lstw);
+				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
+				{
+					// Error
+					return null;
+				}
+				addStrings.add(f.toString() + "|" + cs.getLSTformat());
+				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+			}
 		}
-		Slot<?> slot = (Slot<?>) added.iterator().next();
-		if (!slot.getSlotClass().equals(SPELLLIST_CLASS))
-		{
-			context.addWriteMessage("Invalid Slot Type associated with "
-				+ getTokenName() + ": Type cannot be "
-				+ slot.getSlotClass().getSimpleName());
-			return null;
-		}
-		String slotCount = slot.getSlotCount();
-		List<Restriction<?>> restr = slot.getSinkRestrictions();
-		if (restr.size() != 1)
-		{
-			context.addWriteMessage("Slot for " + getTokenName()
-				+ " must have only one restriction");
-			return null;
-		}
-		Restriction<?> res = restr.get(0);
-		return new String[]{(slotCount + "|" + res.toLSTform())};
+		return addStrings.toArray(new String[addStrings.size()]);
 	}
 }

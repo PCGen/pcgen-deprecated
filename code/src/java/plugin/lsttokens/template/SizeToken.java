@@ -26,8 +26,8 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.formula.FixedSizeResolver;
 import pcgen.cdom.formula.FormulaSizeResolver;
-import pcgen.cdom.mode.Size;
 import pcgen.core.PCTemplate;
+import pcgen.core.SizeAdjustment;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
 
@@ -50,14 +50,17 @@ public class SizeToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		Resolver<Size> res;
-		try
-		{
-			res = new FixedSizeResolver(Size.valueOf(value));
-		}
-		catch (IllegalArgumentException e)
+		SizeAdjustment size =
+				context.ref.silentlyGetConstructedCDOMObject(
+					SizeAdjustment.class, value);
+		Resolver<SizeAdjustment> res;
+		if (size == null)
 		{
 			res = new FormulaSizeResolver(FormulaFactory.getFormulaFor(value));
+		}
+		else
+		{
+			res = new FixedSizeResolver(size);
 		}
 		context.obj.put(template, ObjectKey.SIZE, res);
 		return true;
@@ -65,7 +68,8 @@ public class SizeToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate template)
 	{
-		Resolver<Size> res = context.obj.getObject(template, ObjectKey.SIZE);
+		Resolver<SizeAdjustment> res =
+				context.obj.getObject(template, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

@@ -56,9 +56,9 @@ public class SlotsToken implements EquipmentLstToken
 		try
 		{
 			Integer slots = Integer.valueOf(value);
-			if (slots.intValue() <= 0)
+			if (slots.intValue() < 0)
 			{
-				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
 			context.obj.put(eq, IntegerKey.SLOTS, slots);
@@ -80,9 +80,9 @@ public class SlotsToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		if (slots.intValue() <= 0)
+		if (slots.intValue() < 0)
 		{
-			context.addWriteMessage(getTokenName() + " must be an integer > 0");
+			context.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
 		return new String[]{slots.toString()};

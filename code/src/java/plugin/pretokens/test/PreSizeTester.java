@@ -26,10 +26,10 @@
  */
 package plugin.pretokens.test;
 
-import pcgen.cdom.mode.Size;
 import pcgen.core.Equipment;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.SizeAdjustment;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -79,8 +79,10 @@ public class PreSizeTester extends AbstractPrerequisiteTest implements
 
 	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
 	{
-		Size targetSize = Size.valueOf(prereq.getOperand());
-		Size pcSize = character.getCDOMSize();
+		SizeAdjustment targetSize =
+				character.getContext().ref.getConstructedCDOMObject(
+					SizeAdjustment.class, prereq.getOperand());
+		SizeAdjustment pcSize = character.getCDOMSize();
 		int runningTotal =
 				prereq.getOperator().compare(pcSize.getOrdinal(),
 					targetSize.getOrdinal());

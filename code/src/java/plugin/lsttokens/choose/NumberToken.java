@@ -19,13 +19,8 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.choice.NumberChooser;
-import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
@@ -100,93 +95,5 @@ public class NumberToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "NUMBER";
-	}
-
-	public ChoiceSet<?> parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
-	{
-		if (value.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
-			return null;
-		}
-		if (value.indexOf('[') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
-			return null;
-		}
-		if (hasIllegalSeparator('|', value))
-		{
-			return null;
-		}
-
-		int pipeLoc = value.indexOf("|");
-		if (pipeLoc == -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " must have two or more | delimited arguments : " + value);
-			return null;
-		}
-		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-		if (tok.countTokens() != 3)
-		{
-			Logging
-				.errorPrint("COUNT:" + getTokenName()
-					+ " requires three arguments, MIN=, MAX= and TITLE= : "
-					+ value);
-			return null;
-		}
-		String minString = tok.nextToken();
-		if (!minString.startsWith("MIN="))
-		{
-			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " first argument was not MIN=");
-			return null;
-		}
-		int min;
-		try
-		{
-			min = Integer.parseInt(minString.substring(4));
-		}
-		catch (NumberFormatException nfe)
-		{
-			Logging.errorPrint("COUNT:" + getTokenName() + " " + minString
-				+ " was not MIN=<integer>");
-			return null;
-		}
-		String maxString = tok.nextToken();
-		if (!maxString.startsWith("MAX="))
-		{
-			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " second argument was not MAX=");
-			return null;
-		}
-		int max;
-		try
-		{
-			max = Integer.parseInt(maxString.substring(4));
-		}
-		catch (NumberFormatException nfe)
-		{
-			Logging.errorPrint("COUNT:" + getTokenName() + " " + maxString
-				+ " was not MAX=<integer>");
-			return null;
-		}
-		String titleString = tok.nextToken();
-		if (!titleString.startsWith("TITLE="))
-		{
-			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " third argument was not TITLE=");
-			return null;
-		}
-		// TODO Set Title
-		return new NumberChooser(min, max);
-	}
-
-	public String unparse(LoadContext context, ChoiceSet<?> chooser)
-	{
-		return chooser.getLSTformat();
 	}
 }
