@@ -22,14 +22,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CDOMCompoundReference<T extends PrereqObject> extends
+public class CDOMCompoundOrReference<T extends PrereqObject> extends
 		CDOMGroupRef<T>
 {
 
 	private ArrayList<CDOMReference<T>> references =
 			new ArrayList<CDOMReference<T>>();
 
-	public CDOMCompoundReference(Class<T> cl, String nm)
+	public CDOMCompoundOrReference(Class<T> cl, String nm)
 	{
 		super(cl, nm);
 	}
