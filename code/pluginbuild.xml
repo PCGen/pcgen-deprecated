@@ -2995,13 +2995,6 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-		<jar jarfile="${lstplugins.dir}/ClassLstToken-FEATAUTO.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/pcclass/FeatautoToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
 		<jar jarfile="${lstplugins.dir}/ClassLstToken-HD.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4709,7 +4702,7 @@ jar-all-plugins - Generate the plugin jar files
 
 	</target>
 
-	<target name="jar-compatibility-plugins" depends="jar-compatibility-global-plugins,jar-compatibility-equipment-plugins,jar-compatibility-equipmentmodifier-plugins,jar-compatibility-pcclassclass-plugins" description="Build (Link) Lst Compatibility Token plugin jar files">
+	<target name="jar-compatibility-plugins" depends="jar-compatibility-global-plugins,jar-compatibility-equipment-plugins,jar-compatibility-equipmentmodifier-plugins,jar-compatibility-pcclass-plugins" description="Build (Link) Lst Compatibility Token plugin jar files">
 	</target>
 
 	<target name="jar-compatibility-global-plugins" depends="makeplugindirs" description="Build (Link) Global Lst Compatibility Token plugin jar files">
@@ -4766,8 +4759,15 @@ jar-all-plugins - Generate the plugin jar files
 		</jar>
 	</target>
 
-	<target name="jar-compatibility-pcclassclass-plugins" depends="makeplugindirs" description="Build (Link) PCClass Class Lst Compatibility Token plugin jar files">
-		<!-- PCClass Class Line Lst tokens-->
+	<target name="jar-compatibility-pcclass-plugins" depends="makeplugindirs" description="Build (Link) PCClass Lst Compatibility Token plugin jar files">
+		<!-- PCClass Class Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/ClassClassCompatibilityToken-FEATAUTO-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/pcclass/FeatAuto512Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/ClassClassCompatibilityToken-HASSPELLFORMULA-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>

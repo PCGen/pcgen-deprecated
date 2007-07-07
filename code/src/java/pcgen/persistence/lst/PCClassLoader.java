@@ -42,8 +42,8 @@ import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- *
- * @author  David Rice <david-pcgen@jcuz.com>
+ * 
+ * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
 public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
@@ -98,7 +98,8 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		try
 		{
 			int lvl = Integer.parseInt(firstToken);
-			PCClassLevelLoader.parseLine(context, target, restOfLine, source, lvl);
+			PCClassLevelLoader.parseLine(context, target, restOfLine, source,
+				lvl);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -216,7 +217,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					continue;
 				}
 			}
-			
+
 			parseToken(context, sc, key, value, source);
 		}
 	}
@@ -248,9 +249,10 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			parseToken(context, target, key, value, source);
 		}
 	}
-	
+
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
+	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public PCClass parseLine(PCClass target, String lstLine,
@@ -259,9 +261,9 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		PCClass pcClass = target;
 
 		/*
-		 * FIXME TODO This should probably be done AFTER SUB*CLASS string checking,
-		 * as a null PCClass with SUB* items is meaningless... and an error that should
-		 * be flagged to the user - thpr 1/10/07
+		 * FIXME TODO This should probably be done AFTER SUB*CLASS string
+		 * checking, as a null PCClass with SUB* items is meaningless... and an
+		 * error that should be flagged to the user - thpr 1/10/07
 		 */
 		if (pcClass == null)
 		{
@@ -415,7 +417,8 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					pcClass.setSourceURI(source.getURI());
 					pcClass.setSourceCampaign(source.getCampaign());
 				}
-				// need to grab PCClass instance for this .MOD minus the .MOD part of the name
+				// need to grab PCClass instance for this .MOD minus the .MOD
+				// part of the name
 				else if (name.endsWith(".MOD"))
 				{
 					pcClass =
@@ -435,7 +438,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					// I think we can ignore this, as
 					// it's supposed to be the level #
 					// but could be almost anything else
-					Logging.errorPrint("Expected a level value, but got '"
+					Logging.debugPrint("Expected a level value, but got '"
 						+ colString + "' instead in " + source.getURI(), nfe);
 				}
 
@@ -468,7 +471,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				LstUtils.deprecationCheck(token, pcClass, value);
 				if (!token.parse(pcClass, value, iLevel))
 				{
-					Logging.errorPrint("Error parsing ability "
+					Logging.debugPrint("Error parsing pcclass "
 						+ pcClass.getDisplayName() + ':' + source.getURI()
 						+ ':' + colString + "\"");
 				}
@@ -482,7 +485,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				if (!(pcClass instanceof SubClass)
 					&& !(pcClass instanceof SubstitutionClass))
 				{
-					Logging.errorPrint("Illegal class info tag '" + colString
+					Logging.debugPrint("Illegal class info tag '" + colString
 						+ "' in " + source.getURI());
 				}
 			}
@@ -554,7 +557,8 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		}
 
 		final int tabIndex = lstLine.indexOf(SystemLoader.TAB_DELIM);
-		int count = consecutive - 1; // first one already added by processing of lstLine, so skip it
+		int count = consecutive - 1; // first one already added by processing
+		// of lstLine, so skip it
 		for (int lvl = iLevel + lvlIncrement; lvl <= maxLevel; lvl +=
 				lvlIncrement)
 		{
@@ -644,61 +648,54 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		{
 			if (!processClassCompatible(context, pcclass, key, value, source))
 			{
-				if (univtoken == null)
+				processUniversalToken(context, pcclass, key, value, source,
+					univtoken);
+			}
+		}
+		else
+		{
+			processClassToken(context, pcclass, key, value, source, classtoken);
+		}
+	}
+
+	static void processUniversalToken(LoadContext context, PObject po,
+		String key, String value, CampaignSourceEntry source,
+		PCClassUniversalLstToken univtoken)
+	{
+		if (univtoken == null)
+		{
+			if (!processUniversalCompatible(context, po, key, value, source))
+			{
+				Logging.clearParseMessages();
+				try
 				{
-					Logging.clearParseMessages();
-					try
+					if (!PObjectLoader.parseTag(context, po, key, value))
 					{
-						if (!PObjectLoader.parseTag(context, pcclass, key, value))
-						{
-							Logging.errorPrint("Illegal "
-								+ getLoadClass().getName() + " Token '" + key
-								+ "' for " + pcclass.getDisplayName() + " in "
-								+ source.getURI() + " of " + source.getCampaign()
-								+ ".");
-						}
-					}
-					catch (PersistenceLayerException e)
-					{
-						Logging
-							.errorPrint("Error parsing " + getLoadClass().getName()
-								+ " Token '" + key + "' for "
-								+ pcclass.getDisplayName() + " in " + source.getURI()
-								+ " of " + source.getCampaign() + ".");
+						Logging.errorPrint("Illegal PCClass Token '" + key
+							+ "' for " + po.getDisplayName() + " in "
+							+ source.getURI() + " of " + source.getCampaign()
+							+ ".");
 					}
 				}
-				else
+				catch (PersistenceLayerException e)
 				{
-					LstUtils.deprecationCheck(univtoken, pcclass, value);
-					try
-					{
-						if (!univtoken.parse(context, pcclass, value))
-						{
-							Logging.errorPrint("Error parsing token " + key
-								+ " in pcclass " + pcclass.getDisplayName() + ':'
-								+ source.getURI() + ':' + value + "\"");
-						}
-					}
-					catch (PersistenceLayerException e)
-					{
-						Logging
-							.errorPrint("Error parsing " + getLoadClass().getName()
-								+ " Token '" + key + "' for "
-								+ pcclass.getDisplayName() + " in " + source.getURI()
-								+ " of " + source.getCampaign() + ".");
-					}
+					Logging
+						.errorPrint("Error parsing PCClass Token '" + key
+							+ "' for " + po.getDisplayName() + " in "
+							+ source.getURI() + " of " + source.getCampaign()
+							+ ".");
 				}
 			}
 		}
 		else
 		{
-			LstUtils.deprecationCheck(classtoken, pcclass, value);
+			LstUtils.deprecationCheck(univtoken, po, value);
 			try
 			{
-				if (!classtoken.parse(context, pcclass, value))
+				if (!univtoken.parse(context, po, value))
 				{
-					Logging.markParseMessages();
-					if (processClassCompatible(context, pcclass, key, value, source))
+					if (processUniversalCompatible(context, po, key, value,
+						source))
 					{
 						Logging.clearParseMessages();
 					}
@@ -707,26 +704,111 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 						Logging.rewindParseMessages();
 						Logging.replayParsedMessages();
 						Logging.errorPrint("Error parsing token " + key
-							+ " in pcclass " + pcclass.getDisplayName() + ':'
+							+ " in pcclass " + po.getDisplayName() + ':'
 							+ source.getURI() + ':' + value + "\"");
 					}
 				}
 			}
 			catch (PersistenceLayerException e)
 			{
-				Logging.errorPrint("Error parsing " + getLoadClass().getName()
-					+ " Token '" + key + "' for " + pcclass.getDisplayName()
-					+ " in " + source.getURI() + " of " + source.getCampaign()
-					+ ".");
+				Logging.errorPrint("Error parsing PCClass Token '" + key
+					+ "' for " + po.getDisplayName() + " in " + source.getURI()
+					+ " of " + source.getCampaign() + ".");
 			}
+		}
+	}
+
+	private static boolean processUniversalCompatible(LoadContext context,
+		PObject po, String key, String value, CampaignSourceEntry source)
+	{
+		Collection<? extends CDOMCompatibilityToken<PObject>> tokens =
+				TokenStore.inst().getCompatibilityToken(
+					PCClassUniversalLstCompatibilityToken.class, key);
+		if (tokens != null && !tokens.isEmpty())
+		{
+			TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PObject>> tkm =
+					new TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PObject>>();
+			for (CDOMCompatibilityToken<PObject> tok : tokens)
+			{
+				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
+					.valueOf(tok.compatibilitySubLevel()), Integer.valueOf(tok
+					.compatibilityPriority()), tok);
+			}
+			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
+			primarySet.addAll(tkm.getKeySet());
+			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
+			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
+			for (Integer level : primarySet)
+			{
+				secondarySet.addAll(tkm.getSecondaryKeySet(level));
+				for (Integer subLevel : secondarySet)
+				{
+					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
+					for (Integer priority : tertiarySet)
+					{
+						CDOMCompatibilityToken<PObject> tok =
+								tkm.get(level, subLevel, priority);
+						try
+						{
+							if (tok.parse(context, po, value))
+							{
+								return true;
+							}
+						}
+						catch (PersistenceLayerException e)
+						{
+							Logging.errorPrint("Error parsing PCClass Token '"
+								+ key + "' for " + po.getDisplayName() + " in "
+								+ source.getURI() + " of "
+								+ source.getCampaign() + ".");
+						}
+					}
+					tertiarySet.clear();
+				}
+				secondarySet.clear();
+			}
+		}
+		return false;
+	}
+
+	private void processClassToken(LoadContext context, PCClass pcclass,
+		String key, String value, CampaignSourceEntry source,
+		PCClassClassLstToken classtoken)
+	{
+		LstUtils.deprecationCheck(classtoken, pcclass, value);
+		try
+		{
+			if (!classtoken.parse(context, pcclass, value))
+			{
+				Logging.markParseMessages();
+				if (processClassCompatible(context, pcclass, key, value, source))
+				{
+					Logging.clearParseMessages();
+				}
+				else
+				{
+					Logging.rewindParseMessages();
+					Logging.replayParsedMessages();
+					Logging.errorPrint("Error parsing token " + key
+						+ " in pcclass " + pcclass.getDisplayName() + ':'
+						+ source.getURI() + ':' + value + "\"");
+				}
+			}
+		}
+		catch (PersistenceLayerException e)
+		{
+			Logging.errorPrint("Error parsing " + getLoadClass().getName()
+				+ " Token '" + key + "' for " + pcclass.getDisplayName()
+				+ " in " + source.getURI() + " of " + source.getCampaign()
+				+ ".");
 		}
 	}
 
 	private static final ReverseIntegerComparator REVERSE =
 			new ReverseIntegerComparator();
 
-	private boolean processClassCompatible(LoadContext context, PCClass pcclass,
-		String key, String value, CampaignSourceEntry source)
+	private boolean processClassCompatible(LoadContext context,
+		PCClass pcclass, String key, String value, CampaignSourceEntry source)
 	{
 		Collection<? extends CDOMCompatibilityToken<PCClass>> tokens =
 				TokenStore.inst().getCompatibilityToken(
@@ -783,6 +865,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 	 * FIXME parseToken should only be used for PCClass - what about
 	 * PCClassLevel?
 	 */
+	@Override
 	public Class<PCClass> getLoadClass()
 	{
 		return PCClass.class;

@@ -30,10 +30,13 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.core.Ability;
+import pcgen.core.GameMode;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
 import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
+import pcgen.core.SizeAdjustment;
+import pcgen.core.SystemCollections;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
@@ -44,7 +47,7 @@ public class SimpleReferenceContext
 			new DoubleKeyMapToInstanceList<Class, String, PObject>();
 
 	private DoubleKeyMap<Class, String, PObject> active =
-		new DoubleKeyMap<Class, String, PObject>();
+			new DoubleKeyMap<Class, String, PObject>();
 
 	private HashMapToList<Class, String> deferred =
 			new HashMapToList<Class, String>();
@@ -53,7 +56,7 @@ public class SimpleReferenceContext
 			new DoubleKeyMap<Class, String, CDOMSimpleSingleRef>();
 
 	private DoubleKeyMap<CDOMObject, Class, CDOMAddressedSingleRef> addressed =
-		new DoubleKeyMap<CDOMObject, Class, CDOMAddressedSingleRef>();
+			new DoubleKeyMap<CDOMObject, Class, CDOMAddressedSingleRef>();
 
 	public SimpleReferenceContext()
 	{
@@ -62,11 +65,16 @@ public class SimpleReferenceContext
 
 	private void initialize()
 	{
-		List<PCStat> statList =
-				SettingsHandler.getGame().getUnmodifiableStatList();
+		GameMode game = SettingsHandler.getGame();
+		List<PCStat> statList = game.getUnmodifiableStatList();
 		for (PCStat stat : statList)
 		{
 			active.put(PCStat.class, stat.getAbb(), stat);
+		}
+		for (int i = 0; i < game.getSizeAdjustmentListSize(); i++)
+		{
+			SizeAdjustment sa = game.getSizeAdjustmentAtIndex(i);
+			active.put(SizeAdjustment.class, sa.getAbbreviation(), sa);
 		}
 	}
 
@@ -106,7 +114,7 @@ public class SimpleReferenceContext
 		{
 			Logging.errorPrint("Someone expected " + c.getSimpleName() + " "
 				+ val + " to exist.");
-			//Thread.dumpStack();
+			// Thread.dumpStack();
 		}
 		return obj;
 	}
@@ -406,16 +414,14 @@ public class SimpleReferenceContext
 			}
 		};
 	}
-	
+
 	public <T extends PObject> CDOMAddressedSingleRef<T> getAddressedReference(
 		CDOMObject obj, Class<T> name, String addressName)
 	{
 		CDOMAddressedSingleRef<T> addr = addressed.get(obj, name);
 		if (addr == null)
 		{
-			addr =
-					new CDOMAddressedSingleRef<T>(obj, name,
-						addressName);
+			addr = new CDOMAddressedSingleRef<T>(obj, name, addressName);
 			addressed.put(obj, name, addr);
 		}
 		return addr;

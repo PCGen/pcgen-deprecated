@@ -4,7 +4,6 @@ import java.util.StringTokenizer;
 
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
@@ -45,60 +44,8 @@ public class PCClassLevelLoader
 
 			if (levelToken == null)
 			{
-				if (univtoken == null)
-				{
-					Logging.clearParseMessages();
-					try
-					{
-						if (!PObjectLoader.parseTag(context, pcclass
-							.getClassLevel(level), key, value))
-						{
-							Logging.errorPrint("Illegal PCClass Level Token '"
-								+ key + "' for " + pcclass.getDisplayName()
-								+ " level " + level + " in " + source.getURI()
-								+ " of " + source.getCampaign() + ".");
-						}
-					}
-					catch (PersistenceLayerException e)
-					{
-						Logging
-							.errorPrint("Error parsing PCClass Level Token '"
-								+ key + "' for " + pcclass.getDisplayName()
-								+ " level " + level + " in " + source.getURI()
-								+ " of " + source.getCampaign() + ".");
-					}
-					catch (Throwable t)
-					{
-						Logging
-							.errorPrint("Error parsing PCClass Level Token '"
-								+ key + "' for " + pcclass.getDisplayName()
-								+ " level " + level + " in " + source.getURI()
-								+ " of " + source.getCampaign() + ".");
-					}
-				}
-				else
-				{
-					LstUtils.deprecationCheck(univtoken, pcclass, value);
-					try
-					{
-						if (!univtoken.parse(context, pcclass
-							.getClassLevel(level), value))
-						{
-							Logging.errorPrint("Error parsing token " + key
-								+ " in pcclass " + pcclass.getDisplayName()
-								+ " level " + level + ':' + source.getURI()
-								+ ':' + value + "\"");
-						}
-					}
-					catch (PersistenceLayerException e)
-					{
-						Logging
-							.errorPrint("Error parsing PCClass Level Token '"
-								+ key + "' for " + pcclass.getDisplayName()
-								+ " level " + level + " in " + source.getURI()
-								+ " of " + source.getCampaign() + ".");
-					}
-				}
+				PCClassLoader.processUniversalToken(context, pcclass
+					.getClassLevel(level), key, value, source, univtoken);
 			}
 			else
 			{

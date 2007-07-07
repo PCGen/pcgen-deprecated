@@ -35,9 +35,9 @@ public abstract class GenericLstLoader<T extends PObject> extends
 					{
 						Logging.errorPrint("Illegal "
 							+ getLoadClass().getName() + " Token '" + key
-							+ "' for " + pobj.getDisplayName() + " in "
-							+ source.getURI() + " of " + source.getCampaign()
-							+ ".");
+							+ "' for " + pobj.getDisplayName() + " value: "
+							+ value + " in " + source.getURI() + " of "
+							+ source.getCampaign() + ".");
 					}
 				}
 				catch (PersistenceLayerException e)
