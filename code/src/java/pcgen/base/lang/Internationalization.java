@@ -35,7 +35,6 @@ public final class Internationalization
 		// Can't instantiate
 	}
 
-	/** These are for the Internationalization project. */
 	private static String language = "en"; //$NON-NLS-1$
 
 	private static String country = "US"; //$NON-NLS-1$

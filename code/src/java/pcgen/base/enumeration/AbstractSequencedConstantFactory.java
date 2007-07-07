@@ -31,6 +31,19 @@ import java.util.TreeMap;
 import pcgen.base.lang.CaseInsensitiveString;
 import pcgen.base.lang.UnreachableError;
 
+/**
+ * @author Tom Parker <thpr@users.sourceforge.net>
+ * 
+ * An AbstractSequencedConstantFactory is a framework used to develop non-enum
+ * (meaning expandable) Type Safe Constants that have additional sequencing
+ * information beyond the ordinal of the Type Safe Constant. Typically, this
+ * would be used to create a sequence of objects where the sequence numbers are
+ * not sequential (but using this class makes the ordinals sequential)
+ * 
+ * @param <T>
+ *            The sequenced type (This should be the class that extends the
+ *            Factory)
+ */
 public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstant & SequencedType>
 		implements Serializable
 {
@@ -83,7 +96,7 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 			{
 				throw new IllegalArgumentException(
 					"Attempt to redefine constant value " + i + " to " + s
-						+ " was " + o.string);
+						+ ", value was " + o.string);
 			}
 			obj = o.constant;
 		}
@@ -257,10 +270,36 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		return null;
 	}
 
+	/**
+	 * Returns a new Constant of the given class.
+	 * 
+	 * The extending class is responsible for ensuring that the Constant is
+	 * given a unique ordinal.
+	 * 
+	 * @param name
+	 *            The String identifier for the Constant to be built
+	 * @param i
+	 *            The sequence number of the constant to be built.
+	 * @return A new Constant, with an ordinal that is unique to the child
+	 *         class.
+	 */
 	protected abstract T getConstantInstance(String name, int i);
 
+	/**
+	 * Must return the class that extends the AbstractSequencedConstantFactory.
+	 * This is done in order to allow any constants declared as "public static
+	 * final" constants within the class that extends the
+	 * AbstractSequencedConstantFactory to be integrated into the Constant pool.
+	 * 
+	 * @return the class that extends the AbstractSequencedConstantFactory
+	 */
 	protected abstract Class<T> getConstantClass();
 
+	/**
+	 * Actually build the set of Constants, using any "public static final"
+	 * constants within the child (extending) class as initial values in the
+	 * Constant pool.
+	 */
 	private void buildMap()
 	{
 		typeMap = new TreeMap<Integer, SCFValue<T>>();
@@ -284,8 +323,8 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 						{
 							throw new UnreachableError(
 								"Attempt to redefine constant value " + i
-									+ " to " + fields[i].getName() + " was "
-									+ typeMap.get(in));
+									+ " to " + fields[i].getName()
+									+ ", value was " + typeMap.get(in));
 						}
 						typeMap.put(in, new SCFValue<T>(fields[i].getName(),
 							tObj));
@@ -327,6 +366,13 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 	 * Clears all of the Constants defined by this class. Note that this does
 	 * not remove any Constants declared in the Constant class (as those are
 	 * considered 'permanent' members of the Sequenced Constant collection.
+	 * 
+	 * Note that this *will not* reset the ordinal count, because that is a
+	 * dangerous operation. As there could be outstanding references to
+	 * constants that would be removed from the Constant pool, no reuse of
+	 * ordinals is driven by this method. As a result, calling this method may
+	 * result in a Constant Pool which does not have sequentially numbered
+	 * ordinal values.
 	 */
 	public void clearConstants()
 	{
@@ -349,6 +395,15 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 		return Collections.unmodifiableList(l);
 	}
 
+	/**
+	 * This is simply used as a holder of values in the Constant pool. This is
+	 * required in order to store both the String value and the Constant itself,
+	 * as the Constants are stored in the AbstractSequencedConstantFactory by
+	 * their sequence number.
+	 * 
+	 * @param <HET>
+	 *            The constant type
+	 */
 	protected static class SCFValue<HET extends SequencedType>
 	{
 		public final CaseInsensitiveString string;

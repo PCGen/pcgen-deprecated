@@ -206,7 +206,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			edge.setAssociation(AssociationKey.EQUIPMENT_NATURE,
 				EquipmentNature.AUTOMATIC);
 			edge.setAssociation(AssociationKey.QUANTITY, INTEGER_ONE);
-			// TODO Need to account for these
+			// TODO Need to account for output index??
 			// newEq.setOutputIndex(aList.size());
 		}
 

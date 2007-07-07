@@ -75,7 +75,13 @@ public class AlteqmodToken extends AbstractToken implements EquipmentLstToken
 		}
 		if (Constants.LST_NONE.equals(value))
 		{
-			//TODO Does this have a clearing effect??
+			/*
+			 * As strange as this sounds, this does not have a clearning effect,
+			 * it is simply ignored.
+			 * 
+			 * CONSIDER This should probably be a warning of useless behavior -
+			 * thpr 7/7/07
+			 */
 			return true;
 		}
 		if (hasIllegalSeparator('.', value))

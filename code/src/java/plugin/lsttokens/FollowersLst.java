@@ -30,6 +30,8 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.helper.FollowerLimit;
 import pcgen.core.CompanionList;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
@@ -150,15 +152,11 @@ public class FollowersLst implements GlobalLstToken
 				+ " cannot be empty");
 			return false;
 		}
-		Formula num = FormulaFactory.getFormulaFor(followerNumber);
-
 		CDOMSimpleSingleRef<CompanionList> cl =
 				context.ref.getCDOMReference(CompanionList.class, followerType);
-
-		/*
-		 * TODO This is NOT a slot, since it sets a limit. It is really a
-		 * Modifier, and should be stored as such...
-		 */
+		Formula num = FormulaFactory.getFormulaFor(followerNumber);
+		context.obj.addToList(obj, ListKey.FOLLOWERS,
+			new FollowerLimit(cl, num));
 		return true;
 	}
 

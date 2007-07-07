@@ -33,6 +33,7 @@ import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.helper.Capacity;
+import pcgen.cdom.helper.FollowerLimit;
 import pcgen.cdom.helper.Qualifier;
 import pcgen.cdom.helper.Quality;
 import pcgen.core.Alignment;
@@ -104,6 +105,8 @@ public final class ListKey<T>
 	public static final ListKey<Type> PROHIBITED_ITEM = new ListKey<Type>();
 
 	public static final ListKey<Qualifier> QUALIFY = new ListKey<Qualifier>();
+
+	public static final ListKey<FollowerLimit> FOLLOWERS = new ListKey<FollowerLimit>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey()
