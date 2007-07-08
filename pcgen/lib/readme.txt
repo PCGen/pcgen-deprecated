@@ -12,7 +12,7 @@ fop/xalan-2.5.2.jar -- from fop 0.20.5 distribution, used by fop
 fop/xercesImpl-2.5.0.jar -- from fop 0.20.5 distribution, used by fop
 fop/xml-apis.jar -- from fop 0.20.5 distribution, used by fop
 
-javancss/* TODO What is it? What uses it? What is it's license?
+javancss/* -- A source measurement tool. There is an ant task that runs it. http://www.kclee.com/clemens/java/javancss/, GPL license, version 21.41.
 
 jep/djep-2.24.jar -- Used by Gmgen. Adds dice functionality to JEP. TODO Should probably be removed and replaced with JEP plugins.
 jep/jep-2.3.1.jar -- "Java Expression Parser" http://www.singularsys.com/jep/ (GPL project, but we have a license exception. See the jep/jep.LICENSE.EXCEPTIONS.txt file.)
