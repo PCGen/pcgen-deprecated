@@ -38,7 +38,8 @@ public final class Skill extends BonusObj
 
 	private static final String[] bonusTags = {"LIST", "ALL"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		for (int i = 0; i < bonusTags.length; ++i)
 		{

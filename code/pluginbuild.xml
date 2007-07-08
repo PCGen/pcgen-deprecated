@@ -4702,11 +4702,39 @@ jar-all-plugins - Generate the plugin jar files
 
 	</target>
 
-	<target name="jar-compatibility-plugins" depends="jar-compatibility-global-plugins,jar-compatibility-equipment-plugins,jar-compatibility-equipmentmodifier-plugins,jar-compatibility-pcclass-plugins" description="Build (Link) Lst Compatibility Token plugin jar files">
+	<target name="jar-compatibility-plugins" depends="jar-compatibility-global-plugins,jar-compatibility-equipment-plugins,jar-compatibility-equipmentmodifier-plugins,jar-compatibility-pcclass-plugins,jar-compatibility-race-plugins" description="Build (Link) Lst Compatibility Token plugin jar files">
 	</target>
 
 	<target name="jar-compatibility-global-plugins" depends="makeplugindirs" description="Build (Link) Global Lst Compatibility Token plugin jar files">
 		<!-- Global Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-BONUS-5-14-DefMonChecks.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Bonus514Lst_DefMonChecks.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-BONUS-5-14-DefMonCombatBab.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Bonus514Lst_DefMonCombatBab.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-BONUS-5-14-DefMonSkilllist.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Bonus514Lst_DefMonSkillList.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-BONUS-5-14-DefMonStat.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Bonus514Lst_DefMonStat.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-CHOOSE-5-14-MinMaxTitle.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4793,6 +4821,24 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/pcclass/Preracetype512Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-compatibility-race-plugins" depends="makeplugindirs" description="Build (Link) Race Lst Compatibility Token plugin jar files">
+		<!-- Race Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/RaceCompatibilityToken-HITDICE-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/race/HitDice512Lst_DefMon.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/RaceCompatibilityToken-MFEAT-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/race/MFeat512Lst_DefMon.class" />
 				</patternset>
 			</fileset>
 		</jar>

@@ -36,7 +36,8 @@ package pcgen.core.bonus;
 public abstract class MultiTagBonusObj extends BonusObj
 {
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		for (int i = 0; i < getBonusTagLength(); ++i)
 		{

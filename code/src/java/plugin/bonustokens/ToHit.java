@@ -38,7 +38,8 @@ public final class ToHit extends BonusObj
 
 	private static final String[] bonusTags = {"TOHIT"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		for (int i = 0; i < bonusTags.length; ++i)
 		{

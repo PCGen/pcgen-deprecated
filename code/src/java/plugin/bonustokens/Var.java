@@ -40,7 +40,8 @@ public final class Var extends BonusObj
 	/**
 	 * @see pcgen.core.bonus.BonusObj#parseToken(java.lang.String)
 	 */
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		addBonusInfo(token);
 

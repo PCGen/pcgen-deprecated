@@ -39,7 +39,8 @@ public final class UDam extends BonusObj
 {
 	private static final String[] bonusHandled = {"UDAM"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		if (token.startsWith("CLASS=") || token.startsWith("CLASS."))
 		{

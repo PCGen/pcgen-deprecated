@@ -40,6 +40,7 @@ import pcgen.core.Alignment;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PCClass;
 import pcgen.core.WeaponProf;
+import pcgen.core.bonus.BonusObj;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
@@ -107,6 +108,8 @@ public final class ListKey<T>
 	public static final ListKey<Qualifier> QUALIFY = new ListKey<Qualifier>();
 
 	public static final ListKey<FollowerLimit> FOLLOWERS = new ListKey<FollowerLimit>();
+
+	public static final ListKey<BonusObj> BONUSES = new ListKey<BonusObj>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey()

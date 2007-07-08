@@ -11,7 +11,8 @@ public class Followers extends BonusObj
 		return bonusHandled;
 	}
 
-	protected boolean parseToken(final String argToken)
+	@Override
+	public boolean parseToken(final String argToken)
 	{
 		//		Collection<String> followerTypes = Globals.getFollowerTypes();
 		//		if ( followerTypes.contains( argToken ) )

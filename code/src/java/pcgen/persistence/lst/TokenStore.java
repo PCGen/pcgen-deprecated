@@ -144,6 +144,7 @@ public class TokenStore
 			.add(EquipmentModifierLstCompatibilityToken.class);
 		tokenCompatibilityList.add(PCClassClassLstCompatibilityToken.class);
 		tokenCompatibilityList.add(PCClassUniversalLstCompatibilityToken.class);
+		tokenCompatibilityList.add(RaceLstCompatibilityToken.class);
 	}
 
 	/**

@@ -37,7 +37,8 @@ public final class Feat extends BonusObj
 {
 	private static final String[] bonusHandled = {"FEAT"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		if ("POOL".equals(token) || "MONSTERPOOL".equals(token)
 			|| "PCPOOL".equals(token))

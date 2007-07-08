@@ -589,4 +589,49 @@ public final class Kit extends PObject implements Comparable<Object>
 		aKit.testApplyKit(aPC, thingsToAdd, warnings);
 		aKit.processKit(aPC, thingsToAdd, 0);
 	}
+
+	/*
+	 * CDOM DefaultMonsterCompatibility System
+	 */
+	private int endingBab = Integer.MIN_VALUE;
+
+	public void setCompatEndingBAB(int i)
+	{
+		endingBab = i;
+	}
+
+	private int endingWill = Integer.MIN_VALUE;
+
+	public void setCompatEndingWillCheck(int checkValue)
+	{
+		endingWill = checkValue;
+	}
+
+	private int endingFortitude = Integer.MIN_VALUE;
+
+	public void setCompatEndingFortitudeCheck(int checkValue)
+	{
+		endingFortitude = checkValue;
+	}
+
+	private int endingReflex = Integer.MIN_VALUE;
+
+	public void setCompatEndingReflexCheck(int checkValue)
+	{
+		endingReflex = checkValue;
+	}
+
+	private int hitDice = Integer.MIN_VALUE;
+
+	public void setCompatHitDice(int i)
+	{
+		hitDice = i;
+	}
+
+	private int dieSize = Integer.MIN_VALUE;
+
+	public void setCompatHitDiceSize(int i)
+	{
+		dieSize = i;
+	}
 }

@@ -1217,4 +1217,15 @@ public final class Race extends PObject
 		}
 		return 0;
 	}
+
+	private Kit defaultMonsterKit;
+	
+	public Kit getCompatMonsterKit()
+	{
+		if (defaultMonsterKit == null)
+		{
+			defaultMonsterKit = new Kit();
+		}
+		return defaultMonsterKit;
+	}
 }

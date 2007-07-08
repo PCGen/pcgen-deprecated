@@ -61,9 +61,9 @@ public abstract class AbstractToken
 		}
 		catch (PersistenceLayerException ple)
 		{
-			Logging.errorPrint("Error parsing Prerequisite in "
-				+ getTokenName() + ": " + token);
-			Logging.errorPrint("  " + ple.getMessage(), ple);
+			Logging.addParseMessage(Logging.LST_ERROR,
+				"Error parsing Prerequisite in " + getTokenName() + ": "
+					+ token + "\n  " + ple.getMessage());
 		}
 		return null;
 	}
@@ -72,19 +72,19 @@ public abstract class AbstractToken
 	{
 		if (value.charAt(0) == separator)
 		{
-			Logging.errorPrint(getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 				+ " arguments may not start with " + separator + " : " + value);
 			return true;
 		}
 		if (value.charAt(value.length() - 1) == separator)
 		{
-			Logging.errorPrint(getTokenName() + " arguments may not end with "
-				+ separator + " : " + value);
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				+ " arguments may not end with " + separator + " : " + value);
 			return true;
 		}
 		if (value.indexOf(String.valueOf(new char[]{separator, separator})) != -1)
 		{
-			Logging.errorPrint(getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 				+ " arguments uses double separator " + separator + separator
 				+ " : " + value);
 			return true;
@@ -96,12 +96,14 @@ public abstract class AbstractToken
 	{
 		if (value == null)
 		{
-			Logging.errorPrint(getTokenName() + " may not have null argument");
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				+ " may not have null argument");
 			return true;
 		}
 		if (value.length() == 0)
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				+ " may not have empty argument");
 			return true;
 		}
 		return false;

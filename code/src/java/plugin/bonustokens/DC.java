@@ -49,7 +49,8 @@ public final class DC extends BonusObj
 	 *    TYPE.<CasterType>
 	 *    SPELL.<SpellName>
 	 */
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		for (int i = 0; i < bonusTags.length; ++i)
 		{

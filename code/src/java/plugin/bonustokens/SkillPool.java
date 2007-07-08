@@ -36,7 +36,8 @@ public final class SkillPool extends BonusObj
 {
 	private static final String[] bonusHandled = {"SKILLPOOL"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		if (token.startsWith("CLASS"))
 		{

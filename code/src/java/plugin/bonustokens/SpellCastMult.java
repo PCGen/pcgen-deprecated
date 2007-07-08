@@ -43,7 +43,8 @@ public final class SpellCastMult extends BonusObj
 	 * @param token
 	 * @return
 	 */
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		int idx = token.indexOf(";LEVEL=");
 

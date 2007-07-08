@@ -25,16 +25,17 @@
  */
 package pcgen.core.bonus;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import pcgen.base.lang.UnreachableError;
 import pcgen.core.Constants;
 import pcgen.core.bonus.BonusObj.StackType;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * <code>Bonus</code>
@@ -53,6 +54,25 @@ public class Bonus
 		// Constructor
 	}
 
+	public static BonusObj getBonusOfType(String name)
+	{
+		bonusMapEntry bEntry = BONUS_TAG_MAP.get(name);
+		if (bEntry == null)
+		{
+			return null;
+		}
+		try
+		{
+			return (BonusObj) bEntry.getBonusClass().newInstance();
+		}
+		catch (Exception exc)
+		{
+			throw new UnreachableError(
+				"BonusObj objects must have zero-argument public constructor. "
+					+ bEntry.getBonusClass() + " did not: " + exc.getLocalizedMessage());
+		}
+	}
+	
 	/**
 	 * Get the bonus type given a name
 	 * @param bonusName
@@ -277,7 +297,7 @@ public class Bonus
 					catch ( PersistenceLayerException ple)
 					{
 						//Logging.errorPrint(ple.getMessage(), ple);
-						Logging.errorPrint(ple.getMessage());
+						Logging.debugPrint(ple.getMessage());
 					}
 				}
 				else if (aString.startsWith("TYPE=") || aString.startsWith("TYPE."))

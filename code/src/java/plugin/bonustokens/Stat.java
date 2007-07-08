@@ -43,7 +43,8 @@ public final class Stat extends BonusObj
 	private static final String[] bonusTags =
 			{"BASESPELLSTAT", "BASESPELLKNOWNSTAT"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		for (int i = 0; i < bonusTags.length; ++i)
 		{

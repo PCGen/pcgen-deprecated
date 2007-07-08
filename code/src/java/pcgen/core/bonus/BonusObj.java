@@ -684,12 +684,12 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 		return sb.toString();
 	}
 
-	protected void setBonusName(final String aName)
+	public void setBonusName(final String aName)
 	{
 		bonusName = aName;
 	}
 
-	protected void setTypeOfBonus(final int type)
+	public void setTypeOfBonus(final int type)
 	{
 		typeOfBonus = type;
 	}
@@ -712,7 +712,7 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 		}
 	}
 
-	protected boolean addType(final String typeString)
+	public boolean addType(final String typeString)
 	{
 		if (bonusType.length() == 0)
 		{
@@ -766,7 +766,7 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 		this.addOnceOnly = addOnceOnly;
 	}
 
-	protected boolean parseToken(final String token)
+	public boolean parseToken(final String token)
 	{
 		System.err.println("Need to override parseToken in " + getClass().getName());
 		return false;

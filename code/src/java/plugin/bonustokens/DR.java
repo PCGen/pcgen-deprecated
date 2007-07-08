@@ -36,7 +36,8 @@ public final class DR extends BonusObj
 {
 	private static final String[] bonusHandled = {"DR"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		addBonusInfo(token);
 

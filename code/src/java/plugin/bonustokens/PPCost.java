@@ -36,7 +36,8 @@ public final class PPCost extends BonusObj
 {
 	private static final String[] bonusHandled = {"PPCOST"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		if (token.startsWith("TYPE="))
 		{

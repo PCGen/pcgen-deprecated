@@ -45,7 +45,7 @@ public final class AbilityPool extends BonusObj
 	 * @see pcgen.core.bonus.BonusObj#parseToken(java.lang.String)
 	 */
 	@Override
-	protected boolean parseToken(final String token)
+	public boolean parseToken(final String token)
 	{
 		if (token == null)
 		{

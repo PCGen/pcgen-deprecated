@@ -36,7 +36,8 @@ public final class ACValue extends BonusObj
 {
 	private static final String[] bonusHandled = {"ACVALUE"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		addBonusInfo(token);
 

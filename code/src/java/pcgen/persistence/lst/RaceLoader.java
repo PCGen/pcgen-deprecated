@@ -87,7 +87,7 @@ public final class RaceLoader extends GenericLstLoader<Race>
 				LstUtils.deprecationCheck(token, race, value);
 				if (!token.parse(race, value))
 				{
-					Logging.errorPrint("Error parsing race "
+					Logging.debugPrint("Error parsing race "
 						+ race.getDisplayName() + ':' + source.getURI() + ':'
 						+ colString + "\"");
 				}
@@ -98,7 +98,7 @@ public final class RaceLoader extends GenericLstLoader<Race>
 			}
 			else
 			{
-				Logging.errorPrint("Illegal race tag '" + colString + "' in "
+				Logging.debugPrint("Illegal race tag '" + colString + "' in "
 					+ source.getURI());
 			}
 		}
@@ -153,8 +153,7 @@ public final class RaceLoader extends GenericLstLoader<Race>
 	@Override
 	public Class<? extends CDOMCompatibilityToken<Race>> getCompatibilityTokenClass()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return RaceLstCompatibilityToken.class;
 	}
 
 	@Override

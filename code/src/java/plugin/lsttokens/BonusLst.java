@@ -22,16 +22,27 @@
  */
 package plugin.lsttokens;
 
+import java.util.StringTokenizer;
+
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.core.bonus.BonusObj;
+import pcgen.core.bonus.BonusObj.StackType;
+import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.BonusLoader;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
  */
-public class BonusLst implements GlobalLstToken
+public class BonusLst extends AbstractToken implements GlobalLstToken
 {
 
 	/**
@@ -39,6 +50,7 @@ public class BonusLst implements GlobalLstToken
 	 * 
 	 * @return token name
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "BONUS";
@@ -70,8 +82,66 @@ public class BonusLst implements GlobalLstToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		value = CoreUtility.replaceAll(value, "<this>", obj.getKeyName());
-		// TODO FIXME Hack to keep BONUSes working!
-		return ((PObject) obj).addBonusList(value);
+		StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
+		String bonusName = aTok.nextToken().toUpperCase();
+		String bonusInfo = aTok.nextToken().toUpperCase();
+		String bValue =
+				aTok.hasMoreTokens() ? aTok.nextToken().toUpperCase() : "0";
+
+		BonusObj bonus =
+				BonusLoader
+					.getBonus(context, obj, bonusName, bonusInfo, bValue);
+
+		while (aTok.hasMoreTokens())
+		{
+			String aString = aTok.nextToken().toUpperCase();
+
+			if (PreParserFactory.isPreReqString(aString))
+			{
+				Prerequisite prereq = getPrerequisite(aString);
+				if (prereq == null)
+				{
+					return false;
+				}
+				bonus.addPreReq(prereq);
+			}
+			else if (aString.startsWith("TYPE=") || aString.startsWith("TYPE."))
+			{
+				String bonusType = aString.substring(5);
+				int dotLoc = bonusType.indexOf('.');
+				if (dotLoc != -1)
+				{
+					final String stackingFlag = bonusType.substring(dotLoc + 1);
+					// TODO - Need to reset bonusType to exclude this but
+					// there is too much dependancy on it being there
+					// built into the code.
+					if (stackingFlag.startsWith("REPLACE")) //$NON-NLS-1$
+					{
+						bonus.setStackingFlag(StackType.REPLACE);
+					}
+					else if (stackingFlag.startsWith("STACK")) //$NON-NLS-1$
+					{
+						bonus.setStackingFlag(StackType.STACK);
+					}
+				}
+				boolean result = bonus.addType(bonusType);
+
+				if (!result)
+				{
+					Logging.errorPrint(new StringBuffer().append(
+						"Could not add type ").append(aString.substring(5))
+						.append(" to bonusType ").append(bonusName).toString());
+				}
+			}
+			else
+			{
+				Logging.errorPrint(new StringBuffer().append(getTokenName())
+					.append(" error: Unexpected argument: ").append(aString)
+					.append(" to bonus ").append(bonusName).toString());
+			}
+		}
+		context.obj.addToList(obj, ListKey.BONUSES, bonus);
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)

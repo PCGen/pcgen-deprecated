@@ -38,7 +38,8 @@ public final class Checks extends BonusObj
 {
 	private static final String[] bonusHandled = {"CHECKS"};
 
-	protected boolean parseToken(final String argToken)
+	@Override
+	public boolean parseToken(final String argToken)
 	{
 		boolean isBase = false;
 		final String token;

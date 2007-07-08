@@ -36,7 +36,8 @@ public final class PointBuy extends BonusObj
 {
 	private static final String[] bonusHandled = {"POINTBUY"};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		if ("POINTS".equals(token))
 		{

@@ -43,7 +43,8 @@ public final class SpellKnown extends BonusObj
 	 * @param token
 	 * @return TRUE or FALSE
 	 */
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		int idx = token.indexOf(";LEVEL=");
 

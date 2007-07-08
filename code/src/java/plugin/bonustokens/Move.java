@@ -42,7 +42,8 @@ public final class Move extends BonusObj
 			{Load.LIGHT.toString(), Load.MEDIUM.toString(),
 				Load.HEAVY.toString(), Load.OVERLOAD.toString()};
 
-	protected boolean parseToken(final String token)
+	@Override
+	public boolean parseToken(final String token)
 	{
 		for (int i = 0; i < bonusTags.length; ++i)
 		{
