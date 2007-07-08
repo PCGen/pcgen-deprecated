@@ -17,7 +17,13 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
+import pcgen.core.Skill;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -46,5 +52,26 @@ public class CSkillsToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "CSKILLS";
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
+		String value) throws PersistenceLayerException
+	{
+		return ChooseLoader.parseToken(context, Skill.class, "CLASS");
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
 	}
 }

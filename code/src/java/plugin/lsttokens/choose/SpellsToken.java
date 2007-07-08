@@ -19,13 +19,21 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.core.spell.Spell;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class SpellsToken extends AbstractToken implements ChooseLstToken
+public class SpellsToken extends AbstractToken implements ChooseLstToken,
+		ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -82,5 +90,79 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SPELLS";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return null;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return null;
+		}
+		if (hasIllegalSeparator('|', value))
+		{
+			return null;
+		}
+
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		StringBuilder sb = new StringBuilder();
+		boolean needPipe = false;
+		while (tok.hasMoreTokens())
+		{
+			String tokText = tok.nextToken();
+			int equalsLoc = tokText.indexOf("=");
+			if (equalsLoc == tokText.length() - 1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments must have value after = : " + tokText);
+				Logging.errorPrint("  entire token was: " + value);
+				return null;
+			}
+			if (needPipe)
+			{
+				sb.append(Constants.PIPE);
+			}
+			if (tokText.startsWith("CLASS="))
+			{
+				sb.append("CLASSLIST=").append(tokText.substring(6));
+			}
+			else if (tokText.startsWith("DOMAIN="))
+			{
+				sb.append("DOMAINLIST=").append(tokText.substring(7));
+			}
+			else
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " argument must start with CLASS= or DOMAIN= : "
+					+ tokText);
+				Logging.errorPrint("  Entire Token was: " + value);
+				return null;
+			}
+			needPipe = true;
+		}
+		return ChooseLoader.parseToken(context, Spell.class, sb.toString());
 	}
 }

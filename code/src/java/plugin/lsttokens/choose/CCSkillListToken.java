@@ -17,8 +17,14 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
+import pcgen.core.Skill;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -58,5 +64,47 @@ public class CCSkillListToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "CCSKILLLIST";
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
+		String value) throws PersistenceLayerException
+	{
+		String newValue = "CROSSCLASS";
+		if (value != null)
+		{
+			if (value.indexOf('|') != -1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments may not contain | : " + value);
+				return null;
+			}
+			if (value.indexOf('[') != -1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments may not contain [] : " + value);
+				return null;
+			}
+			if (hasIllegalSeparator(',', value))
+			{
+				return null;
+			}
+			newValue += "[" + value + "]";
+		}
+		return ChooseLoader.parseToken(context, Skill.class, newValue);
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
 	}
 }

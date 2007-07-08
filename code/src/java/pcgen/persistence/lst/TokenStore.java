@@ -138,6 +138,7 @@ public class TokenStore
 		tokenTypeList.add(RemoveLstToken.class);
 
 		// compatibility
+		tokenCompatibilityList.add(ChooseCompatibilityToken.class);
 		tokenCompatibilityList.add(GlobalLstCompatibilityToken.class);
 		tokenCompatibilityList.add(EquipmentLstCompatibilityToken.class);
 		tokenCompatibilityList
@@ -187,25 +188,35 @@ public class TokenStore
 				// }
 			}
 		}
+	}
+
+	public void addToPrimitiveMap(PrimitiveToken<?> p)
+	{
+		Class<? extends PrimitiveToken> newTokClass = p.getClass();
 		if (PrimitiveToken.class.isAssignableFrom(newTokClass))
 		{
 			primitiveMap
-				.put(((PrimitiveToken) newToken).getReferenceClass(), newToken
+				.put(((PrimitiveToken) p).getReferenceClass(), p
 					.getTokenName(), (Class<PrimitiveToken<?>>) newTokClass);
 		}
+	}
+	
+	public void addToQualifierMap(QualifierToken<?> p)
+	{
+		Class<? extends QualifierToken> newTokClass = p.getClass();
 		if (ChooseLstQualifierToken.class.isAssignableFrom(newTokClass))
 		{
-			qualifierMap.put(((ChooseLstQualifierToken) newToken)
-				.getChoiceClass(), newToken.getTokenName(),
+			qualifierMap.put(((ChooseLstQualifierToken<?>) p)
+				.getChoiceClass(), p.getTokenName(),
 				(Class<ChooseLstQualifierToken<?>>) newTokClass);
 		}
 		if (ChooseLstGlobalQualifierToken.class.isAssignableFrom(newTokClass))
 		{
-			globalQualifierMap.put(newToken.getTokenName(),
+			globalQualifierMap.put(p.getTokenName(),
 				(Class<ChooseLstGlobalQualifierToken<?>>) newTokClass);
 		}
 	}
-
+	
 	/**
 	 * Get the token map
 	 * 
@@ -246,6 +257,10 @@ public class TokenStore
 	public <T> PrimitiveToken<T> getPrimitive(Class<T> name, String tokKey)
 	{
 		Class<PrimitiveToken<?>> cptc = primitiveMap.get(name, tokKey);
+		if (cptc == null)
+		{
+			return null;
+		}
 		try
 		{
 			return (PrimitiveToken<T>) cptc.newInstance();
@@ -270,6 +285,10 @@ public class TokenStore
 	{
 		Class<ChooseLstQualifierToken<?>> clqtc =
 				qualifierMap.get(domain_class, key);
+		if (clqtc == null)
+		{
+			return null;
+		}
 		try
 		{
 			return (ChooseLstQualifierToken<T>) clqtc.newInstance();
@@ -294,6 +313,10 @@ public class TokenStore
 	{
 		Class<ChooseLstGlobalQualifierToken<?>> clgqtc =
 				globalQualifierMap.get(key);
+		if (clgqtc == null)
+		{
+			return null;
+		}
 		try
 		{
 			return (ChooseLstGlobalQualifierToken<T>) clgqtc.newInstance();

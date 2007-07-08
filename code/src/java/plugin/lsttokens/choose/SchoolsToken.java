@@ -17,11 +17,18 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.SpellSchool;
+import pcgen.cdom.helper.CollectionChoiceSet;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class SchoolsToken implements ChooseLstToken
+public class SchoolsToken implements ChooseLstToken, ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -45,5 +52,27 @@ public class SchoolsToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SCHOOLS";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		return new CollectionChoiceSet<SpellSchool>(SpellSchool
+			.getAllConstants());
 	}
 }

@@ -15,67 +15,32 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package plugin.lsttokens.choose;
+package plugin.lsttokens.choose.subtoken;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.ArmorProf;
-import pcgen.core.PObject;
+import pcgen.core.PCStat;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseCDOMLstToken;
 import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.util.Logging;
 
-public class ArmorTypeToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+public class PCStatToken extends AbstractToken implements ChooseCDOMLstToken
 {
 
-	public boolean parse(PObject po, String prefix, String value)
-	{
-		if (value == null)
-		{
-			// No args - legal
-			StringBuilder sb = new StringBuilder();
-			if (prefix.length() > 0)
-			{
-				sb.append(prefix).append('|');
-			}
-			sb.append(getTokenName());
-			po.setChoiceString(sb.toString());
-			return true;
-		}
-		Logging.deprecationPrint("CHOOSE:" + getTokenName()
-			+ " will ignore arguments: " + value);
-		return false;
-	}
+	private static final Class<PCStat> STAT_CLASS = PCStat.class;
 
 	@Override
 	public String getTokenName()
 	{
-		return "ARMORTYPE";
+		return "PCSTAT";
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
 		String value) throws PersistenceLayerException
 	{
-		return ChooseLoader.parseToken(context, ArmorProf.class, "PC");
+		return ChooseLoader.parseToken(context, STAT_CLASS, value);
 	}
 
-	public int compatibilityLevel()
-	{
-		return 5;
-	}
-
-	public int compatibilityPriority()
-	{
-		return 0;
-	}
-
-	public int compatibilitySubLevel()
-	{
-		return 14;
-	}
 }

@@ -22,7 +22,7 @@ jar-all-plugins - Generate the plugin jar files
 	<property name="systemlstplugins.dir" value="${plugins.dir}/systemlstplugins" />
 	<property name="jepplugins.dir" value="${plugins.dir}/jepplugins" />
 
-	<target name="jar-all-plugins" depends="makeplugindirs,jar-gmgen-plugins,jar-export-plugins,jar-bonus-plugins,jar-pre-plugins,jar-lst-plugins, jar-compatibility-plugins,jar-systemlst-plugins, jar-jep-plugins, jar-deprecated-plugin" description="Build (Link) plugin jar files">
+	<target name="jar-all-plugins" depends="makeplugindirs,jar-gmgen-plugins,jar-export-plugins,jar-bonus-plugins,jar-pre-plugins,jar-lst-plugins, jar-compatibility-plugins,jar-systemlst-plugins, jar-jep-plugins, jar-deprecated-plugin,jar-primitive-plugins,jar-qualifier-plugins" description="Build (Link) plugin jar files">
 	</target>
 
 	<target name="jar-gmgen-plugins" depends="makeplugindirs" description="Build (Link) GMGen plugin jar files">
@@ -2670,6 +2670,13 @@ jar-all-plugins - Generate the plugin jar files
 
 	<target name="jar-lst-choose-6-plugins" depends="makeplugindirs" description="Build (Link) Choose Lst Token plugin jar files for PCGen 6.0">
 		<!-- Choose tokens-->
+		<jar jarfile="${lstplugins.dir}/ChooseToken-6-NOCHOICE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lsttokens/choose/subtoken/NoChoiceToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/ChooseToken-6-NUMBER.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -2807,7 +2814,7 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-SALIST.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-SALIST.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/choose/SAListToken.class" />
@@ -6106,6 +6113,224 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/sponsor/TextToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-primitive-plugins" depends="jar-primitive-deity-plugins,jar-primitive-domain-plugins,jar-primitive-equipment-plugins,jar-primitive-spell-plugins,jar-primitive-weaponprof-plugins" description="Build (Link) Lst Primitive Token plugin jar files">
+	</target>
+
+	<target name="jar-primitive-deity-plugins" depends="makeplugindirs" description="Build (Link) Deity Primitive Token plugin jar files">
+		<!-- Deity Primitive tokens-->
+		<jar jarfile="${lstplugins.dir}/DeityPrimitive-ALIGN.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/deity/AlignToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/DeityPrimitive-PANTHEON.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/deity/PantheonToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-primitive-domain-plugins" depends="makeplugindirs" description="Build (Link) Domain Primitive Token plugin jar files">
+		<!-- Domain Primitive tokens-->
+		<jar jarfile="${lstplugins.dir}/DomainPrimitive-DEITY.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/domain/DeityToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-primitive-equipment-plugins" depends="makeplugindirs" description="Build (Link) Equipment Primitive Token plugin jar files">
+		<!-- Equipment Primitive tokens-->
+		<jar jarfile="${lstplugins.dir}/EquipmentPrimitive-WIELD.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/equipment/WieldToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-primitive-spell-plugins" depends="makeplugindirs" description="Build (Link) Spell Primitive Token plugin jar files">
+		<!-- Spell Primitive tokens-->
+		<jar jarfile="${lstplugins.dir}/SpellPrimitive-CLASSLIST.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/spell/ClassListToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SpellPrimitive-DOMAINLIST.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/spell/DomainListToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-primitive-weaponprof-plugins" depends="makeplugindirs" description="Build (Link) Weapon Prof Primitive Token plugin jar files">
+		<!-- Weapon Prof Primitive tokens-->
+		<jar jarfile="${lstplugins.dir}/WeaponProfPrimitive-DEITYWEAPON.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/weaponprof/DeityWeaponToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-qualifier-plugins" depends="jar-qualifier-armorprof-plugins,jar-qualifier-global-plugins,jar-qualifier-shieldprof-plugins,jar-qualifier-skill-plugins,jar-qualifier-stat-plugins,jar-qualifier-weaponprof-plugins" description="Build (Link) Lst Compatibility Token plugin jar files">
+	</target>
+
+	<target name="jar-qualifier-armorprof-plugins" depends="makeplugindirs" description="Build (Link) Armor Prof Qualifier Token plugin jar files">
+		<!-- Armor Prof Qualifier tokens-->
+		<jar jarfile="${lstplugins.dir}/ArmorProfQualifier-EQUIPMENT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/armorprof/EquipmentToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-qualifier-global-plugins" depends="makeplugindirs" description="Build (Link) Global Qualifier Token plugin jar files">
+		<!-- Global Qualifier tokens-->
+		<jar jarfile="${lstplugins.dir}/GlobalQualifier-ALL.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/pobject/AllToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalQualifier-PC.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/pobject/PCToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalQualifier-QUALIFIED.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/pobject/QualifiedToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalQualifier-UNIQUE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/pobject/UniqueToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-qualifier-shieldprof-plugins" depends="makeplugindirs" description="Build (Link) Shield Prof Qualifier Token plugin jar files">
+		<!-- Shield Prof Qualifier tokens-->
+		<jar jarfile="${lstplugins.dir}/ShieldProfQualifier-EQUIPMENT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/shieldprof/EquipmentToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-qualifier-skill-plugins" depends="makeplugindirs" description="Build (Link) Spell Qualifier Token plugin jar files">
+		<!-- Skill Qualifier tokens-->
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-ALLOWED.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/AllowedToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-CLASS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/ClassToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-CROSSCLASS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/CrossClassToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-EXCLUSIVE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/ExclusiveToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-NORANK.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/NoRankToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-NOTCLASS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/NotClassToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-NOTCROSSCLASS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/NotCrossClassToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-NOTEXCLUSIVE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/NotExclusiveToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-qualifier-stat-plugins" depends="makeplugindirs" description="Build (Link) Stat Qualifier Token plugin jar files">
+		<!-- Stat Qualifier tokens-->
+		<jar jarfile="${lstplugins.dir}/StatQualifier-REMOVE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/stat/RemoveToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-qualifier-weaponprof-plugins" depends="makeplugindirs" description="Build (Link) Weapon Prof Qualifier Token plugin jar files">
+		<!-- Weapon Prof Qualifier tokens-->
+		<jar jarfile="${lstplugins.dir}/WeaponProfQualifier-DEITYWEAPON.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/weaponprof/DeityWeaponToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/WeaponProfQualifier-EQUIPMENT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/weaponprof/EquipmentToken.class" />
 				</patternset>
 			</fileset>
 		</jar>

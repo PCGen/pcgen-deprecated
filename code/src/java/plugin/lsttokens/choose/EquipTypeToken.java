@@ -17,8 +17,17 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.core.Constants;
+import pcgen.core.Equipment;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
@@ -58,5 +67,56 @@ public class EquipTypeToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "EQUIPTYPE";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return null;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return null;
+		}
+		if (hasIllegalSeparator('|', value))
+		{
+			return null;
+		}
+
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		StringBuilder sb = new StringBuilder();
+		boolean needPipe = false;
+		while (tok.hasMoreTokens())
+		{
+			String tokText = tok.nextToken();
+			if (needPipe)
+			{
+				sb.append(Constants.PIPE);
+			}
+			sb.append("TYPE=").append(tokText);
+			needPipe = true;
+		}
+		return ChooseLoader.parseToken(context, Equipment.class, sb.toString());
 	}
 }

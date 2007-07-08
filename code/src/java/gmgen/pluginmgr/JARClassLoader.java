@@ -47,6 +47,8 @@ import pcgen.core.prereq.PrerequisiteTestFactory;
 import pcgen.io.ExportHandler;
 import pcgen.io.exporttoken.Token;
 import pcgen.persistence.lst.LstToken;
+import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.persistence.lst.QualifierToken;
 import pcgen.persistence.lst.TokenStore;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriterFactory;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriterInterface;
@@ -452,6 +454,8 @@ public class JARClassLoader extends ClassLoader
 		if(system.equals(Constants.s_SYSTEM_TOKENS)) {
 			loadOutputTokenClass(clazz, modifiers);
 			loadLstTokens(clazz, modifiers);
+			loadPrimitives(clazz, modifiers);
+			loadQualifiers(clazz, modifiers);
 			loadBonusTokens(clazz, name, modifiers);
 			loadPreTokens(clazz, modifiers);
 			loadJepCommands(clazz, modifiers);
@@ -498,6 +502,24 @@ public class JARClassLoader extends ClassLoader
 		{
 			LstToken pl = (LstToken) clazz.newInstance();
 			TokenStore.inst().addToTokenMap(pl);
+		}
+	}
+
+	private void loadPrimitives(Class<?> clazz, int modifiers) throws Exception
+	{
+		if (!Modifier.isInterface(modifiers) && !Modifier.isAbstract(modifiers) && PrimitiveToken.class.isAssignableFrom(clazz))
+		{
+			PrimitiveToken<?> pl = (PrimitiveToken<?>) clazz.newInstance();
+			TokenStore.inst().addToPrimitiveMap(pl);
+		}
+	}
+
+	private void loadQualifiers(Class<?> clazz, int modifiers) throws Exception
+	{
+		if (!Modifier.isInterface(modifiers) && !Modifier.isAbstract(modifiers) && QualifierToken.class.isAssignableFrom(clazz))
+		{
+			QualifierToken pl = (QualifierToken) clazz.newInstance();
+			TokenStore.inst().addToQualifierMap(pl);
 		}
 	}
 

@@ -20,15 +20,22 @@ package plugin.lsttokens.choose;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PCStat;
 import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class StatToken extends AbstractToken implements ChooseLstToken
+public class StatToken extends AbstractToken implements ChooseLstToken,
+		ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -78,5 +85,42 @@ public class StatToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "STAT";
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
+		String value) throws PersistenceLayerException
+	{
+		String newValue = null;
+		// null means no args - use all stats - legal
+		if (value != null)
+		{
+			if (value.indexOf('[') != -1)
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments may not contain [] : " + value);
+				return null;
+			}
+			if (hasIllegalSeparator('|', value))
+			{
+				return null;
+			}
+			newValue = "REMOVE[" + value + "]";
+		}
+		return ChooseLoader.parseToken(context, PCStat.class, newValue);
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
 	}
 }

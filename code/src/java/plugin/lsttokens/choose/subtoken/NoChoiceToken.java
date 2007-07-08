@@ -18,29 +18,32 @@
 package plugin.lsttokens.choose.subtoken;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.NoChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.PCStat;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseCDOMLstToken;
-import pcgen.persistence.lst.ChooseLoader;
+import pcgen.util.Logging;
 
-public class StatToken extends AbstractToken implements ChooseCDOMLstToken
+public class NoChoiceToken extends AbstractToken implements ChooseCDOMLstToken
 {
-
-	private static final Class<PCStat> STAT_CLASS = PCStat.class;
 
 	@Override
 	public String getTokenName()
 	{
-		return "STAT";
+		return "NOCHOICE";
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
 		String value) throws PersistenceLayerException
 	{
-		return ChooseLoader.parseToken(context, STAT_CLASS, value);
+		if (value != null)
+		{
+			Logging.errorPrint(getTokenName() + " had arguments. "
+				+ "Must not have arguments: " + value);
+			return null;
+		}
+		return new NoChoiceSet();
 	}
-
 }

@@ -100,7 +100,7 @@ public final class ChooseLoader
 			if (chooser == null)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, "Illegal CHOOSE:"
-					+ key + " info '" + value + "'");
+					+ key + " ... '" + value + "'");
 				return null;
 			}
 		}
@@ -152,16 +152,47 @@ public final class ChooseLoader
 		{
 			int pipeLoc = remainingValue.indexOf("|");
 			int openBracketLoc = remainingValue.indexOf("[");
-			if (pipeLoc > 0 && pipeLoc < openBracketLoc)
+			if (pipeLoc == -1 && openBracketLoc == -1)
 			{
-				PrimitiveChoiceFilter<T> pcf =
-						ChooseLoader.getPrimitiveChoiceFilter(context, poClass,
-							remainingValue.substring(0, pipeLoc));
-				pcfList.add(pcf);
+				// Could be a primitive or a Qualifier...
+				String key = remainingValue.toString();
+				PrimitiveChoiceSet<T> qual =
+						getQualifier(context, poClass, key, null);
+				if (qual == null)
+				{
+					PrimitiveChoiceFilter<T> pcf =
+							ChooseLoader.getPrimitiveChoiceFilter(context,
+								poClass, key);
+					pcfList.add(pcf);
+				}
+				else
+				{
+					pcsList.add(qual);
+				}
+				remainingValue.setLength(0);
+			}
+			else if (pipeLoc > 0 && pipeLoc < openBracketLoc)
+			{
+				// Still could be a primitive or a Qualifier...
+				String key = remainingValue.substring(0, pipeLoc);
+				PrimitiveChoiceSet<T> qual =
+						getQualifier(context, poClass, key, null);
+				if (qual == null)
+				{
+					PrimitiveChoiceFilter<T> pcf =
+							ChooseLoader.getPrimitiveChoiceFilter(context,
+								poClass, key);
+					pcfList.add(pcf);
+				}
+				else
+				{
+					pcsList.add(qual);
+				}
 				remainingValue.delete(0, pipeLoc);
 			}
 			else
 			{
+				// bracket before pipe :)
 				int closeBracketLoc = remainingValue.indexOf("]");
 				if (remainingValue.lastIndexOf("[", closeBracketLoc) != openBracketLoc)
 				{
@@ -185,26 +216,14 @@ public final class ChooseLoader
 				{
 					remainingValue.delete(0, closeBracketLoc + 1);
 				}
-				TokenStore ts = TokenStore.inst();
-				ChooseLstQualifierToken<T> qual =
-						ts.getChooseQualifier(poClass, key);
+				PrimitiveChoiceSet<T> qual =
+						getQualifier(context, poClass, key, args);
 				if (qual == null)
 				{
-					ChooseLstGlobalQualifierToken<T> potoken =
-							ts.getGlobalChooseQualifier(key);
-					if (potoken == null)
-					{
-						// TODO Error (token with brackets not found)
-						throw new IllegalStateException();
-					}
-					potoken.initialize(context, poClass, value);
-					pcsList.add(potoken);
+					// TODO Error bracketed item must be a qualifier
+					throw new IllegalStateException();
 				}
-				else
-				{
-					qual.initialize(context, poClass, args);
-					pcsList.add(qual);
-				}
+				pcsList.add(qual);
 			}
 		}
 		if (!pcfList.isEmpty())
@@ -225,6 +244,29 @@ public final class ChooseLoader
 		else
 		{
 			return new CompoundOrChoiceSet<T>(pcsList);
+		}
+	}
+
+	public static <T extends PObject> PrimitiveChoiceSet<T> getQualifier(
+		LoadContext context, Class<T> cl, String key, String value)
+	{
+		TokenStore ts = TokenStore.inst();
+		ChooseLstQualifierToken<T> qual = ts.getChooseQualifier(cl, key);
+		if (qual == null)
+		{
+			ChooseLstGlobalQualifierToken<T> potoken =
+					ts.getGlobalChooseQualifier(key);
+			if (potoken == null)
+			{
+				return null;
+			}
+			potoken.initialize(context, cl, value);
+			return potoken;
+		}
+		else
+		{
+			qual.initialize(context, cl, value);
+			return qual;
 		}
 	}
 

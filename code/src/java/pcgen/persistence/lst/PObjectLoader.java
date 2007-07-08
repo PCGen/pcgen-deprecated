@@ -25,6 +25,7 @@
  */
 package pcgen.persistence.lst;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeSet;
@@ -181,7 +182,8 @@ public final class PObjectLoader
 				Logging.addParseMessage(Logging.LST_ERROR,
 					"Error parsing token " + key + " in "
 						+ wp.getClass().getName() + " " + wp.getDisplayName()
-						+ ": " + t.getLocalizedMessage());
+						+ ": " + t.getLocalizedMessage()
+						+ Arrays.toString(t.getStackTrace()));
 				globalParse = false;
 			}
 			if (globalParse)

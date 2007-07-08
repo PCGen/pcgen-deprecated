@@ -136,7 +136,7 @@ public final class SpellSchool implements TypeSafeConstant
 	{
 		if (typeMap == null)
 		{
-			return null;
+			typeMap = new CaseInsensitiveMap<SpellSchool>();
 		}
 		return Collections.unmodifiableCollection(typeMap.values());
 	}
