@@ -5,7 +5,7 @@
   <id>pcgen_prod</id>
   <groupId>pcgen</groupId>
   <name>PCGen Production Branch</name>
-  <currentVersion>5.12.0RC4</currentVersion>
+  <currentVersion>5.12.0</currentVersion>
   <organization>
     <name>SourceForge</name>
     <url>http://sourceforge.net/</url>
@@ -430,6 +430,11 @@
       <id>5.12.0RC4</id>
       <name>5.12.0RC4</name>
       <tag>release-5.12.0RC4</tag>
+    </version>
+    <version>
+      <id>5.12.0</id>
+      <name>5.12.0</name>
+      <tag>release-5.12.0</tag>
     </version>
   </versions>
 </project>
