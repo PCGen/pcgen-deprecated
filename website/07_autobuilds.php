@@ -25,8 +25,8 @@ require_once('include/header.php.inc');
         <p>These are regular scheduled builds from the production branch of PCGen. Every night, 
         the project is checked for changes and if any have been made a new build is generated.
         This branch is only active when there is work going on to release a production fix release, 
-        or when we are nearing a new full production release. The builds currently show the work we 
-        are doing towards the 5.12.0 release.</p>
+        or when we are nearing a new full production release. The builds currently show any fixes we 
+        are doing to the 5.12.0 release.</p>
         <ul>
           <li><a href="http://pcgen.sourceforge.net/autobuilds-prod/">Autobuild report</a>
           <li><a href="http://pcgen.sourceforge.net/autobuilds-prod/download.html">Download Autobuild</a>
