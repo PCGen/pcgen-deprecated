@@ -51,7 +51,8 @@ public class RangeToken implements EquipmentLstToken
 			Integer range = Integer.valueOf(value);
 			if (range.intValue() < 0)
 			{
-				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " must be an integer >= 0");
 				return false;
 			}
 			context.obj.put(eq, IntegerKey.RANGE, range);
@@ -59,7 +60,7 @@ public class RangeToken implements EquipmentLstToken
 		}
 		catch (NumberFormatException nfe)
 		{
-			Logging.errorPrint(getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 				+ " expected an integer.  Tag must be of the form: "
 				+ getTokenName() + ":<int>");
 			return false;

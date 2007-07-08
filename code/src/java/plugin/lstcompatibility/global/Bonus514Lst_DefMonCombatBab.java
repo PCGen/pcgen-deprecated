@@ -61,16 +61,15 @@ public class Bonus514Lst_DefMonCombatBab extends AbstractToken implements
 			// Only looking for Default Monster items
 			return false;
 		}
-		String aString = aTok.nextToken().toUpperCase();
-		if (!aString.equals("PREDEFAULTMONSTER:Y"))
+		while (aTok.hasMoreTokens())
 		{
-			// Only looking for Default Monster items
-			return false;
-		}
-		if (aTok.hasMoreTokens())
-		{
-			// Only looking for Default Monster items, no types expected...
-			return false;
+			String aString = aTok.nextToken().toUpperCase();
+			if (!aString.equals("PREDEFAULTMONSTER:Y")
+				&& !aString.equals("TYPE=BASE.REPLACE"))
+			{
+				// Only looking for Default Monster items
+				return false;
+			}
 		}
 		Kit kit = ((Race) obj).getCompatMonsterKit();
 		kit.setCompatEndingBAB(Integer.parseInt(bValue));

@@ -45,7 +45,7 @@ public class ChallengeRating extends ConcretePrereqObject implements
 		try
 		{
 			int i = Integer.parseInt(testString);
-			if (i <= 0)
+			if (i < 0)
 			{
 				throw new IllegalArgumentException(
 					"Challenge Rating cannot be negative");

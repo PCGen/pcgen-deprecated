@@ -69,7 +69,7 @@ public class WtToken implements EquipmentLstToken
 			BigDecimal weight = new BigDecimal(value);
 			if (weight.compareTo(BigDecimal.ZERO) < 0)
 			{
-				Logging.errorPrint(getTokenName()
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 					+ " was expecting a decimal value >= 0 : " + value);
 				return false;
 			}
@@ -78,8 +78,8 @@ public class WtToken implements EquipmentLstToken
 		}
 		catch (NumberFormatException nfe)
 		{
-			Logging.errorPrint("Expected a Double for " + getTokenName() + ": "
-				+ value);
+			Logging.addParseMessage(Logging.LST_ERROR, "Expected a Double for "
+				+ getTokenName() + ": " + value);
 			return false;
 		}
 	}

@@ -21,16 +21,16 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.core.PCClass;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
-import plugin.lsttokens.testsupport.AbstractIntegerTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractFormulaTokenTestCase;
 import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
 public class MonNonSkillTHDTokenTest extends
-		AbstractIntegerTokenTestCase<PCClass>
+		AbstractFormulaTokenTestCase<PCClass>
 {
 
 	static MonnonskillhdToken token = new MonnonskillhdToken();
@@ -62,27 +62,9 @@ public class MonNonSkillTHDTokenTest extends
 	}
 
 	@Override
-	public IntegerKey getIntegerKey()
+	public FormulaKey getFormulaKey()
 	{
-		return IntegerKey.MONSTER_NON_SKILL_HD;
-	}
-
-	@Override
-	public boolean isNegativeAllowed()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isZeroAllowed()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isPositiveAllowed()
-	{
-		return true;
+		return FormulaKey.MONSTER_NON_SKILL_HD;
 	}
 
 	@Test

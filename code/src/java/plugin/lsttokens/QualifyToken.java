@@ -36,6 +36,7 @@ import pcgen.cdom.base.Category;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.Qualifier;
+import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Deity;
@@ -134,8 +135,8 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 	public List<Class<? extends PObject>> getLegalTypes()
 	{
 		return Arrays.asList(Ability.class, Deity.class, Domain.class,
-			Equipment.class, PCClass.class, Race.class, Skill.class,
-			Spell.class, PCTemplate.class, WeaponProf.class);
+			Equipment.class, PCClass.class, PCClassLevel.class, Race.class,
+			Skill.class, Spell.class, PCTemplate.class, WeaponProf.class);
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)

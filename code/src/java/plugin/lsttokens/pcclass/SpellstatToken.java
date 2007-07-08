@@ -50,6 +50,9 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
+		/*
+		 * TODO Need to support "SPELL"
+		 */
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{

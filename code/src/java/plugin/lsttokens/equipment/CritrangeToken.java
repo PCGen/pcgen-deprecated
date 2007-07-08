@@ -54,18 +54,21 @@ public class CritrangeToken implements EquipmentLstToken
 		try
 		{
 			Integer cr = Integer.valueOf(value);
-			if (cr.intValue() <= 0)
+			if (cr.intValue() < 0)
 			{
-				Logging.errorPrint(getTokenName() + " cannot be <= 0");
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " cannot be < 0");
 				return false;
 			}
-			context.obj.put(getEquipmentHead(context, eq, 1), IntegerKey.CRIT_RANGE, cr);
+			context.obj.put(getEquipmentHead(context, eq, 1),
+				IntegerKey.CRIT_RANGE, cr);
 			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
-			Logging.errorPrint(getTokenName() + " expected an integer.  "
-				+ "Tag must be of the form: " + getTokenName() + ":<int>");
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				+ " expected an integer.  " + "Tag must be of the form: "
+				+ getTokenName() + ":<int>");
 			return false;
 		}
 	}

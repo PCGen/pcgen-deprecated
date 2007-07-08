@@ -137,7 +137,8 @@ public class BonusLst extends AbstractToken implements GlobalLstToken
 			{
 				Logging.errorPrint(new StringBuffer().append(getTokenName())
 					.append(" error: Unexpected argument: ").append(aString)
-					.append(" to bonus ").append(bonusName).toString());
+					.append(" to bonus ").append(bonusName).append(
+						"; value was: ").append(value).toString());
 			}
 		}
 		context.obj.addToList(obj, ListKey.BONUSES, bonus);

@@ -21,12 +21,13 @@
  */
 package plugin.lsttokens.pcclass;
 
-import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.util.Logging;
 
 /**
  * Class deals with MONNONSKILLHD Token
@@ -48,36 +49,20 @@ public class MonnonskillhdToken implements PCClassLstToken,
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
-		try
-		{
-			Integer in = Integer.valueOf(value);
-			if (in.intValue() <= 0)
-			{
-				Logging.errorPrint(getTokenName() + " must be an integer > 0");
-				return false;
-			}
-			context.obj.put(pcc, IntegerKey.MONSTER_NON_SKILL_HD, in);
-			return true;
-		}
-		catch (NumberFormatException nfe)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " expected an integer.  Tag must be of the form: "
-				+ getTokenName() + ":<int>");
-			return false;
-		}
+		/*
+		 * TODO Trailing PRE legal :P
+		 */
+		context.obj.put(pcc, FormulaKey.MONSTER_NON_SKILL_HD, FormulaFactory
+			.getFormulaFor(value));
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Integer msp = context.obj.getInteger(pcc, IntegerKey.MONSTER_NON_SKILL_HD);
+		Formula msp =
+				context.obj.getFormula(pcc, FormulaKey.MONSTER_NON_SKILL_HD);
 		if (msp == null)
 		{
-			return null;
-		}
-		if (msp.intValue() <= 0)
-		{
-			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
 		return new String[]{msp.toString()};
