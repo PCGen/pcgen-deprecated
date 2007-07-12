@@ -68,7 +68,12 @@ public class EquipmentToken implements ChooseLstQualifierToken<WeaponProf>
 						{
 							profs.add(prof.resolvesTo());
 						}
-						// TODO else use equipment name?
+						/*
+						 * TODO use eqquipment name if prof is null? There is
+						 * generally an issue here with what the default Weapon
+						 * Proficiency is when a piece of Equipment doesn't have
+						 * a PROFICUENCY: token
+						 */
 					}
 				}
 			}

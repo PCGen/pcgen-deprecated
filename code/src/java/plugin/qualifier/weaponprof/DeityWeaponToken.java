@@ -48,7 +48,6 @@ public class DeityWeaponToken implements ChooseLstQualifierToken<WeaponProf>
 
 	public Set<WeaponProf> getSet(PlayerCharacter pc)
 	{
-		// TODO Where does the filter hit??
 		Set<WeaponProf> set = new HashSet<WeaponProf>();
 		List<Deity> list = pc.getActiveGraph().getGrantedNodeList(Deity.class);
 		if (list != null)
@@ -59,7 +58,11 @@ public class DeityWeaponToken implements ChooseLstQualifierToken<WeaponProf>
 						deity.getListFor(ListKey.DEITYWEAPON);
 				for (CDOMSimpleSingleRef<WeaponProf> weapon : weapons)
 				{
-					set.add(weapon.resolvesTo());
+					WeaponProf wp = weapon.resolvesTo();
+					if (pcs == null || pcs.allow(pc, wp))
+					{
+						set.add(wp);
+					}
 				}
 			}
 		}
