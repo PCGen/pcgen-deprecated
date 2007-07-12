@@ -21,20 +21,28 @@
  */
 package plugin.lsttokens.pcclass;
 
+import java.util.StringTokenizer;
+
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.PCClass;
+import pcgen.core.bonus.BonusObj;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.BonusLoader;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 
 /**
  * Class deals with MONSKILL Token
  */
-public class MonskillToken implements PCClassLstToken, PCClassClassLstToken
+public class MonskillToken extends AbstractToken implements PCClassLstToken,
+		PCClassClassLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "MONSKILL";
@@ -49,11 +57,20 @@ public class MonskillToken implements PCClassLstToken, PCClassClassLstToken
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
-		/*
-		 * TODO Trailing PRE legal :P
-		 */
-		context.obj.put(pcc, FormulaKey.MONSTER_SKILL_POINTS, FormulaFactory
-			.getFormulaFor(value));
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return false;
+		}
+		StringTokenizer st = new StringTokenizer(Constants.PIPE, value);
+		BonusObj bonus =
+				BonusLoader.getBonus(context, pcc, "MONSKILLPTS", "NUMBER", st
+					.nextToken());
+		bonus.addPreReq(getPrerequisite("PRELEVELMAX:1"));
+		while (st.hasMoreTokens())
+		{
+			bonus.addPreReq(getPrerequisite(st.nextToken()));
+		}
+		context.obj.addToList(pcc, ListKey.BONUSES, bonus);
 		return true;
 	}
 

@@ -107,13 +107,13 @@ public class TypeLst implements GlobalLstToken
 					removeType = false;
 				}
 				/*
-				 * TODO is it a problem that this unconditionally adds, as Type
-				 * is a SET? This problem exists elsewhere (in the ALTTYPE
-				 * token, for example), so I doubt this is a serious issue.
-				 * Additionally, the tests that take place are for .contains,
-				 * which will pass even if multiple items are present. The
-				 * problem exists in removal - what if a type exists multiple
-				 * times in the list?
+				 * Hopefully this is not a problem that this unconditionally
+				 * adds, even though Type is technically a SET? This problem
+				 * exists elsewhere (in the ALTTYPE token of Equipment, for
+				 * example), so I doubt this is a serious issue. Additionally,
+				 * the tests that take place are for .contains, which will pass
+				 * even if multiple items are present. The problem exists in
+				 * removal - what if a type exists multiple times in the list?
 				 */
 				else
 				{

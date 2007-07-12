@@ -122,17 +122,18 @@ public class AlttypeToken implements EquipmentLstToken
 					removeType = false;
 				}
 				/*
-				 * Type is a set, so we're trying to avoid duplication here.
+				 * Type is a set, so we're trying to avoid duplication here, but
+				 * that isn't really legal to directly access the object. So if
+				 * a type is actually encountered a second time, we are forced
+				 * to add it again. This may be a problem, and requires some
+				 * special processing in REMOVE to remove all the instances of a
+				 * TYPE
+				 * 
 				 * This isn't a pretty way to do it (given that we're storing it
 				 * in a ListKey, not a SetKey [as those don't exist]), but it
 				 * functions well enough.
-				 * 
-				 * TODO The problem here is that the object is being directly
-				 * addressed (eq.containsInList), which is improper in a
-				 * token... thus this should probably ignore the fact that it's
-				 * a Set, and just add it a second time??
 				 */
-				else if (!eq.containsInList(ListKey.ALT_TYPE, typeCon))
+				else
 				{
 					context.obj.addToList(eq, ListKey.ALT_TYPE, typeCon);
 				}
