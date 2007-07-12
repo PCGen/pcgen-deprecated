@@ -2698,8 +2698,12 @@ public class PObject extends PrereqObject implements Cloneable, Serializable, Co
 		{
 			for (String s : aaKeys) 
 			{
-				txt.append("\tAUTO:").append(s).append(Constants.PIPE).append(
-					mapChar.get(MapKey.AUTO_ARRAY, s));
+				String value = mapChar.get(MapKey.AUTO_ARRAY, s);
+				if (value != null && value.trim().length() > 0)
+				{
+					txt.append("\tAUTO:").append(s).append(Constants.PIPE)
+						.append(value);
+				}
 			}
 		}
 
@@ -2812,7 +2816,7 @@ public class PObject extends PrereqObject implements Cloneable, Serializable, Co
 					if (l != null) {
 						boolean started = false;
 						for (String key : l) {
-							if (!"alwaysValid".equals(key)) {
+							if (!"alwaysValid".equals(key) && !"".equals(key)) {
 								if (started) {
 									txt.append(Constants.PIPE);
 								} else {
@@ -3955,6 +3959,20 @@ public class PObject extends PrereqObject implements Cloneable, Serializable, Co
 		}
 	}
 
+	/**
+	 * Clear out the list of bonus weapon proficiency keys that 
+	 * this object will grant to characters. 
+	 */
+	public void clearWeaponProfBonus()
+	{
+		weaponProfBonus = null;
+	}
+
+	/**
+	 * Add an entry to the list of bonus weapon proficiency keys that 
+	 * this object will grant to characters. 
+	 * @param aString The key of the weapon proficiency to be added.
+	 */
 	public void addWeaponProfBonus(final String aString)
 	{
 		if ( weaponProfBonus == null )
