@@ -14495,7 +14495,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	private void removeObjectsForLevelInfo(final PCLevelInfo li)
 	{
-		for (PObject object : li.getObjects())
+		for (Ability object : li.getObjects())
 		{
 
 			// remove this object from the feats lists
@@ -16938,7 +16938,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return null;
 	}
 
-	public int addAbility(final PCLevelInfo LevelInfo,
+	public int addAbility(
 		final AbilityCategory aCategory, final String aKey,
 		final boolean addIt, final boolean singleChoice)
 	{
@@ -16997,7 +16997,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			anAbility = anAbility.clone();
 
 			// addFeat(anAbility, LevelInfo);
-			addAbility(aCategory, anAbility, LevelInfo);
+			addAbility(aCategory, anAbility, null);
 			anAbility.getTemplates(isImporting(), this);
 		}
 

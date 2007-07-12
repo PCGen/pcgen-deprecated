@@ -656,8 +656,8 @@ public final class InfoAbility extends BaseCharacterInfoTab implements
 			}
 			else
 			{
-				getPc().addAbility(null, theCategory, anAbility.getKeyName(),
-					true, false);
+				getPc().addAbility(theCategory, anAbility.getKeyName(), true,
+					false);
 			}
 		}
 		catch (Exception exc)

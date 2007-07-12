@@ -60,16 +60,18 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 	{
 		int tabLoc = lstLine.indexOf("\t");
 		String firstToken;
+		String restOfLine;
 		if (tabLoc == -1)
 		{
 			// Error??
 			firstToken = lstLine;
+			restOfLine = "";
 		}
 		else
 		{
 			firstToken = lstLine.substring(0, tabLoc);
+			restOfLine = lstLine.substring(tabLoc + 1);
 		}
-		String restOfLine = lstLine.substring(tabLoc + 1);
 
 		if (target == null)
 		{

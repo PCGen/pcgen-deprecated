@@ -98,7 +98,7 @@ public class HitdiceadvancementToken extends AbstractToken implements
 				+ ": overwriting previous advancement list");
 			context.obj.removeList(race, ListKey.HITDICE_ADVANCEMENT);
 		}
-		int last = 0;
+		int last = 1;
 		while (commaTok.hasMoreTokens())
 		{
 			String tok = commaTok.nextToken();
@@ -118,10 +118,10 @@ public class HitdiceadvancementToken extends AbstractToken implements
 				try
 				{
 					hd = Integer.parseInt(tok);
-					if (hd <= last)
+					if (hd < last)
 					{
 						Logging.errorPrint("Found " + hd + " in "
-							+ getTokenName() + " but was <= zero "
+							+ getTokenName() + " but was < 1 "
 							+ "or the previous value in the list: " + value);
 						return false;
 					}
@@ -170,7 +170,7 @@ public class HitdiceadvancementToken extends AbstractToken implements
 			}
 			else
 			{
-				if (hd.intValue() <= last)
+				if (hd.intValue() < last)
 				{
 					Logging.errorPrint("Found " + hd + " in " + getTokenName()
 						+ " but was <= zero "

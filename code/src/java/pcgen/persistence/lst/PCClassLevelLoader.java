@@ -1,7 +1,11 @@
 package pcgen.persistence.lst;
 
+import java.util.Collection;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.util.ReverseIntegerComparator;
+import pcgen.base.util.TripleKeyMap;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.SystemLoader;
@@ -22,13 +26,13 @@ public class PCClassLevelLoader
 			if (idxColon == -1)
 			{
 				Logging.errorPrint("Invalid Token - does not contain a colon: "
-					+ colString);
+					+ colString + " in source: " + source);
 				return;
 			}
 			else if (idxColon == 0)
 			{
 				Logging.errorPrint("Invalid Token - starts with a colon: "
-					+ colString);
+					+ colString + " in source: " + source);
 				return;
 			}
 			String key = colString.substring(0, idxColon);
@@ -44,19 +48,83 @@ public class PCClassLevelLoader
 
 			if (levelToken == null)
 			{
-				PCClassLoader.processUniversalToken(context, pcclass
-					.getClassLevel(level), key, value, source, univtoken);
+				if (!processLevelCompatible(context, pcclass, key, value,
+					source, level))
+				{
+					PCClassLoader.processUniversalToken(context, pcclass
+						.getClassLevel(level), key, value, source, univtoken);
+				}
 			}
 			else
 			{
 				LstUtils.deprecationCheck(levelToken, pcclass, value);
 				if (!levelToken.parse(context, pcclass, value, level))
 				{
-					Logging.errorPrint("Error parsing token " + key
-						+ " in pcclass " + pcclass.getDisplayName() + ':'
-						+ source.getURI() + ':' + value + "\"");
+					Logging.markParseMessages();
+					if (processLevelCompatible(context, pcclass, key, value,
+						source, level))
+					{
+						Logging.clearParseMessages();
+					}
+					else
+					{
+						Logging.rewindParseMessages();
+						Logging.replayParsedMessages();
+						Logging.errorPrint("Error parsing token " + key
+							+ " in pcclass " + pcclass.getDisplayName()
+							+ " level " + level + ' ' + source.getURI()
+							+ ": \"" + value + "\"");
+					}
 				}
 			}
 		}
+	}
+
+	private static final ReverseIntegerComparator REVERSE =
+			new ReverseIntegerComparator();
+
+	private static boolean processLevelCompatible(LoadContext context,
+		PCClass pcclass, String key, String value, CampaignSourceEntry source,
+		int level)
+	{
+		Collection<PCClassLevelLstCompatibilityToken> tokens =
+				TokenStore.inst().getCompatibilityToken(
+					PCClassLevelLstCompatibilityToken.class, key);
+		if (tokens != null && !tokens.isEmpty())
+		{
+			TripleKeyMap<Integer, Integer, Integer, PCClassLevelLstCompatibilityToken> tkm =
+					new TripleKeyMap<Integer, Integer, Integer, PCClassLevelLstCompatibilityToken>();
+			for (PCClassLevelLstCompatibilityToken tok : tokens)
+			{
+				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
+					.valueOf(tok.compatibilitySubLevel()), Integer.valueOf(tok
+					.compatibilityPriority()), tok);
+			}
+			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
+			primarySet.addAll(tkm.getKeySet());
+			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
+			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
+			for (Integer compatLevel : primarySet)
+			{
+				secondarySet.addAll(tkm.getSecondaryKeySet(compatLevel));
+				for (Integer subLevel : secondarySet)
+				{
+					tertiarySet.addAll(tkm.getTertiaryKeySet(compatLevel,
+						subLevel));
+					for (Integer priority : tertiarySet)
+					{
+						PCClassLevelLstCompatibilityToken tok =
+								tkm.get(compatLevel, subLevel, priority);
+						if (tok.parse(context, pcclass, value, level))
+						{
+							return true;
+						}
+					}
+					tertiarySet.clear();
+				}
+				secondarySet.clear();
+			}
+		}
+		return false;
 	}
 }

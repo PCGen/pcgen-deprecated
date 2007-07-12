@@ -2197,7 +2197,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 					{
 						if (element.getClassKeyName().equalsIgnoreCase(aClass.getKeyName()))
 						{
-							for (Ability aFeat : (List<Ability>)element.getObjects())
+							for (Ability aFeat : element.getObjects())
 							{
 								if (!theFeatList.contains(aFeat))
 									theFeatList.add(aFeat);

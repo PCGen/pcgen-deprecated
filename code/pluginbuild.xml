@@ -4735,6 +4735,13 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-BONUS-5-14-DefMonSkill.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Bonus514Lst_DefMonSkill.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-BONUS-5-14-DefMonStat.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4817,13 +4824,14 @@ jar-all-plugins - Generate the plugin jar files
 
 	<target name="jar-compatibility-pcclass-plugins" depends="makeplugindirs" description="Build (Link) PCClass Lst Compatibility Token plugin jar files">
 		<!-- PCClass Class Lst tokens-->
-		<jar jarfile="${lstplugins.dir}/ClassClassCompatibilityToken-FEATAUTO-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<jar jarfile="${lstplugins.dir}/ClassUniversalCompatibilityToken-FEATAUTO-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/pcclass/FeatAuto512Token.class" />
 				</patternset>
 			</fileset>
 		</jar>
+		
 		<jar jarfile="${lstplugins.dir}/ClassClassCompatibilityToken-HASSPELLFORMULA-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4849,6 +4857,21 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/pcclass/Preracetype512Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		
+		<jar jarfile="${lstplugins.dir}/ClassLevelCompatibilityToken-PROHIBITSPELL-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/pcclass/Prohibitspell514Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/ClassLevelCompatibilityToken-WEAPONBONUS-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/pcclass/Weaponbonus514Token.class" />
 				</patternset>
 			</fileset>
 		</jar>

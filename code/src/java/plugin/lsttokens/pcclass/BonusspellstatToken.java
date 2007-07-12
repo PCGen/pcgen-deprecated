@@ -57,20 +57,16 @@ public class BonusspellstatToken implements PCClassLstToken,
 			return true;
 		}
 		context.obj.put(pcc, ObjectKey.HAS_BONUS_SPELL_STAT, Boolean.TRUE);
+		/*
+		 * TODO Does this consume DEFAULT in some way, so that it can set
+		 * HAS_BONUS_SPELL_STAT to true, but not trigger the creation of
+		 * BONUS_SPELL_STAT?
+		 */
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
-			/*
-			 * TODO There are two special values here: None and Default.
-			 * 
-			 * Default shoudn't be encountered, and that is equivalent to storing
-			 * null.
-			 * 
-			 * None is an explicit case of not having a BONUS_SPELL_STAT and must
-			 * be handled... :P
-			 */
-			Logging.errorPrint("Invalid Stat Abbreviation in "
-				+ getTokenName() + ": " + value);
+			Logging.errorPrint("Invalid Stat Abbreviation in " + getTokenName()
+				+ ": " + value);
 			return false;
 		}
 		context.obj.put(pcc, ObjectKey.BONUS_SPELL_STAT, pcs);

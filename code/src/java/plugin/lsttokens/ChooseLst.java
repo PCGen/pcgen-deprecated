@@ -235,6 +235,15 @@ public class ChooseLst implements GlobalLstToken
 				context.graph.grant(getTokenName(), obj, choiceSet);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
+		/*
+		 * TODO There is a problem here because there is an association source
+		 * issue - how does one determine which object of a MULT:YES item was
+		 * the source of a particular choice? Alternately, if this is placed on
+		 * the incoming edge to this object, then there is a problem with a
+		 * MULT:NO item and preserving the choices if the first source edge
+		 * (which would have the associations) is removed (and avoiding a
+		 * validation based contract)
+		 */
 		return true;
 	}
 

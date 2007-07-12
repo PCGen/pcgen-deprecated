@@ -50,14 +50,17 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
-		/*
-		 * TODO Need to support "SPELL"
-		 */
+		if ("SPELL".equalsIgnoreCase(value))
+		{
+			context.obj.put(pcc, ObjectKey.USE_SPELL_SPELL_STAT, Boolean.FALSE);
+			return true;
+		}
+		context.obj.put(pcc, ObjectKey.USE_SPELL_SPELL_STAT, Boolean.TRUE);
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
-			Logging.errorPrint("Invalid Stat Abbreviation in "
-				+ getTokenName() + ": " + value);
+			Logging.errorPrint("Invalid Stat Abbreviation in " + getTokenName()
+				+ ": " + value);
 			return false;
 		}
 		context.obj.put(pcc, ObjectKey.SPELL_STAT, pcs);
