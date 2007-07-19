@@ -85,17 +85,16 @@ public abstract class AbstractCritRangeTokenTestCase extends
 	}
 
 	@Test
-	public void testInvalidZeroInput() throws PersistenceLayerException
-	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
-		assertTrue(primaryGraph.isEmpty());
-	}
-
-	@Test
 	public void testInvalidEmptyInput() throws PersistenceLayerException
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
 		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testRoundRobinZero() throws PersistenceLayerException
+	{
+		runRoundRobin("0");
 	}
 
 	@Test

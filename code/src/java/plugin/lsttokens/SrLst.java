@@ -64,7 +64,7 @@ public class SrLst implements GlobalLstToken
 	{
 		if (".CLEAR".equals(value))
 		{
-			context.graph.removeAll(getTokenName(), obj, SpellResistance.class);
+			context.graph.removeAll(getTokenName(), obj);
 		}
 		else
 		{

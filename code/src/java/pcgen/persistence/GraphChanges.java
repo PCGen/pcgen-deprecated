@@ -7,7 +7,6 @@ import pcgen.cdom.base.LSTWriteable;
 
 public interface GraphChanges<T>
 {
-
 	public boolean hasRemovedItems();
 
 	public boolean includesGlobalClear();

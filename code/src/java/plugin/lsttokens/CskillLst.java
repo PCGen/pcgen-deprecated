@@ -100,7 +100,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 						+ ": .CLEAR was not the first list item");
 					return false;
 				}
-				context.graph.removeAll(getTokenName(), obj, SKILL_CLASS);
+				context.graph.removeAll(getTokenName(), obj);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{

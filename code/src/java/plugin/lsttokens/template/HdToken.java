@@ -28,12 +28,12 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteOperator;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -166,25 +166,18 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), pct);
-		if (edges.isEmpty())
+		GraphChanges<PCTemplate> changes =
+				context.graph.getChangesFromToken(getTokenName(), pct,
+					PCTemplate.class);
+		if (changes == null)
 		{
 			return null;
 		}
 
 		Set<String> set = new TreeSet<String>();
-
-		for (PCGraphEdge edge : edges)
+		for (LSTWriteable lstw : changes.getAdded())
 		{
-			PrereqObject child = edge.getNodeAt(1);
-			if (!PCTemplate.class.isInstance(child))
-			{
-				context.addWriteMessage("Child from " + getTokenName()
-					+ " must be a PCTemplate");
-				return null;
-			}
-			PCTemplate pctChild = PCTemplate.class.cast(child);
+			PCTemplate pctChild = PCTemplate.class.cast(lstw);
 			if (pctChild.getPrerequisiteCount() != 1)
 			{
 				context.addWriteMessage("Only one Prerequisiste allowed on "
@@ -310,6 +303,10 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 					}
 				}
 			}
+		}
+		if (set.isEmpty())
+		{
+			return null;
 		}
 		return set.toArray(new String[set.size()]);
 	}

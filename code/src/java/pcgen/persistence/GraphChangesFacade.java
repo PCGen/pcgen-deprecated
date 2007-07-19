@@ -38,6 +38,10 @@ public class GraphChangesFacade<T extends PrereqObject & LSTWriteable>
 
 	public Collection<LSTWriteable> getAdded()
 	{
+		/*
+		 * TODO If there is more than one link to the same edge, this is a problem,
+		 * because it uses a set
+		 */
 		Set<LSTWriteable> set =
 				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(source);

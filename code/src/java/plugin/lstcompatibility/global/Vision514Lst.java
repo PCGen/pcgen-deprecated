@@ -76,7 +76,7 @@ public class Vision514Lst implements GlobalLstCompatibilityToken
 
 			if (".CLEAR".equals(visionString))
 			{
-				context.graph.removeAll(getTokenName(), obj, VISION_CLASS);
+				context.graph.removeAll(getTokenName(), obj);
 				continue;
 			}
 
@@ -101,7 +101,7 @@ public class Vision514Lst implements GlobalLstCompatibilityToken
 			{
 				if (visionString.startsWith(".SET."))
 				{
-					context.graph.removeAll(getTokenName(), obj, VISION_CLASS);
+					context.graph.removeAll(getTokenName(), obj);
 					visionString = visionString.substring(5);
 				}
 				try

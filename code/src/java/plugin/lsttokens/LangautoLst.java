@@ -87,7 +87,7 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 				{
 					return false;
 				}
-				context.graph.removeAll(getTokenName(), obj, LANGUAGE_CLASS);
+				context.graph.removeAll(getTokenName(), obj);
 			}
 			else
 			{

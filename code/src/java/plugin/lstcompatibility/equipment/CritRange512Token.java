@@ -21,12 +21,7 @@
  */
 package plugin.lstcompatibility.equipment;
 
-import java.util.Set;
-
-import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.IntegerKey;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstCompatibilityToken;
@@ -51,41 +46,10 @@ public class CritRange512Token implements EquipmentLstCompatibilityToken
 		}
 		catch (NumberFormatException nfe)
 		{
-			context.obj.put(getEquipmentHead(context, eq, 1),
+			context.obj.put(context.graph.getEquipmentHead(eq, 1),
 				IntegerKey.CRIT_RANGE, Integer.valueOf(0));
 			return true;
 		}
-	}
-
-	protected EquipmentHead getEquipmentHead(LoadContext context, Equipment eq,
-		int index)
-	{
-		EquipmentHead head = getEquipmentHeadReference(context, eq, index);
-		if (head == null)
-		{
-			// Isn't there already, so create new
-			head = new EquipmentHead(this, index);
-			context.graph.grant(Constants.VT_EQ_HEAD, eq, head);
-		}
-		return head;
-	}
-
-	private EquipmentHead getEquipmentHeadReference(LoadContext context,
-		Equipment eq, int index)
-	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(Constants.VT_EQ_HEAD, eq,
-					EquipmentHead.class);
-		for (PCGraphEdge edge : edges)
-		{
-			EquipmentHead head =
-					(EquipmentHead) edge.getSinkNodes().iterator().next();
-			if (head.getHeadIndex() == index)
-			{
-				return head;
-			}
-		}
-		return null;
 	}
 
 	public int compatibilityLevel()

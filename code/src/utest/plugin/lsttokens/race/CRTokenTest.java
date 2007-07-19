@@ -66,18 +66,9 @@ public class CRTokenTest extends AbstractTokenTestCase<Race>
 	}
 
 	@Test
-	public void testBadInputZero() throws PersistenceLayerException
+	public void testRoundRobinZero() throws PersistenceLayerException
 	{
-		try
-		{
-			boolean parse = getToken().parse(primaryContext, primaryProf, "0");
-			assertFalse(parse);
-		}
-		catch (IllegalArgumentException e)
-		{
-			// OK
-		}
-		assertTrue(primaryGraph.isEmpty());
+		runRoundRobin("0");
 	}
 
 	@Test

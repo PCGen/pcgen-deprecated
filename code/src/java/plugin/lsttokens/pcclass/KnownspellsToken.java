@@ -154,7 +154,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		String known;
 		if (value.startsWith(".CLEAR"))
 		{
-			context.graph.removeAll(getTokenName(), po, SpellFilter.class);
+			context.graph.removeAll(getTokenName(), po);
 
 			if (".CLEAR".equals(value))
 			{

@@ -22,16 +22,17 @@
 package plugin.lsttokens.pcclass;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.inst.Aggregator;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
@@ -112,33 +113,52 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), pcc,
+		GraphChanges<Aggregator> changes =
+				context.graph.getChangesFromToken(getTokenName(), pcc,
 					Aggregator.class);
-		if (edges == null || edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		if (edges.size() != 1)
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			return null;
+		}
+		if (added.size() != 1)
 		{
 			context.addWriteMessage("Can only have one Aggregator from "
 				+ getTokenName());
 			return null;
 		}
-		Aggregator agg = (Aggregator) edges.iterator().next().getNodeAt(1);
-		Set<PCGraphEdge> aggEdges =
-				context.graph.getChildLinksFromToken(getTokenName(), agg,
+		Aggregator agg = (Aggregator) added.iterator().next();
+
+		GraphChanges<SpellProhibitor> aggChanges =
+				context.graph.getChangesFromToken(getTokenName(), agg,
 					SpellProhibitor.class);
-		if (aggEdges == null || aggEdges.size() != 2)
+		if (aggChanges == null)
+		{
+			context.addWriteMessage("Invalid Aggregator in " + getTokenName()
+				+ " must have changes");
+			return null;
+		}
+		Collection<LSTWriteable> aggAdded = aggChanges.getAdded();
+		if (aggAdded == null)
+		{
+			context.addWriteMessage("Invalid Aggregator in " + getTokenName()
+				+ " must have added changes");
+			return null;
+		}
+		if (aggAdded.size() != 2)
 		{
 			context.addWriteMessage("Invalid Aggregator in " + getTokenName()
 				+ " must have two children");
 			return null;
 		}
 		String retString = null;
-		for (PCGraphEdge aggEdge : aggEdges)
+		for (LSTWriteable lstw : aggAdded)
 		{
-			SpellProhibitor sp = (SpellProhibitor) aggEdge.getNodeAt(1);
+			SpellProhibitor sp = SpellProhibitor.class.cast(lstw);
 			String st = StringUtil.join(sp.getValueSet(), Constants.COMMA);
 			if (retString == null)
 			{

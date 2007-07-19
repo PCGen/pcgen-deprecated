@@ -28,6 +28,7 @@ public class LoadContext
 {
 
 	public final GraphContext graph;
+	
 	public final ListContext list;
 
 	public final ReferenceContext ref;
@@ -36,11 +37,21 @@ public class LoadContext
 
 	public final GameMode gameMode;
 
+	public LoadContext()
+	{
+		graph = new EditorGraphContext(new PCGenGraph());
+		obj = new EditorObjectContext();
+		list = new EditorListContext();
+		ref = new ReferenceContext();
+		// TODO FIXME This is a hack
+		gameMode = SettingsHandler.getGame();
+	}
+
 	public LoadContext(PCGenGraph pgg)
 	{
-		graph = new GraphContext(pgg);
-		obj = new ObjectContext();
-		list = new ListContext();
+		graph = new RuntimeGraphContext(pgg);
+		obj = new RuntimeObjectContext();
+		list = new RuntimeListContext();
 		ref = new ReferenceContext();
 		// TODO FIXME This is a hack
 		gameMode = SettingsHandler.getGame();

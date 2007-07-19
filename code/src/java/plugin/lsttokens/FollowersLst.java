@@ -24,6 +24,7 @@
 package plugin.lsttokens;
 
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
@@ -34,6 +35,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.FollowerLimit;
 import pcgen.core.CompanionList;
 import pcgen.core.PObject;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -162,6 +164,20 @@ public class FollowersLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		return null;
+		Changes<FollowerLimit> changes =
+				context.obj.getListChanges(obj, ListKey.FOLLOWERS);
+		if (changes == null)
+		{
+			return null;
+		}
+		TreeSet<String> returnSet = new TreeSet<String>();
+		for (FollowerLimit fl : changes.getAdded())
+		{
+			String followerType = fl.getCompanionList().getLSTformat();
+			Formula followerNumber = fl.getValue();
+			returnSet.add(followerType + Constants.PIPE
+				+ followerNumber.toString());
+		}
+		return returnSet.toArray(new String[returnSet.size()]);
 	}
 }

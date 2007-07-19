@@ -21,11 +21,7 @@
  */
 package plugin.lsttokens.equipment;
 
-import java.util.Set;
-
-import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.StringKey;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
 import pcgen.persistence.LoadContext;
@@ -50,45 +46,14 @@ public class AltdamageToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		context.obj.put(getEquipmentHead(context, eq, 2), StringKey.DAMAGE,
-			value);
+		context.obj.put(context.graph.getEquipmentHead(eq, 2),
+			StringKey.DAMAGE, value);
 		return true;
-	}
-
-	protected EquipmentHead getEquipmentHead(LoadContext context, Equipment eq,
-		int index)
-	{
-		EquipmentHead head = getEquipmentHeadReference(context, eq, index);
-		if (head == null)
-		{
-			// Isn't there already, so create new
-			head = new EquipmentHead(this, index);
-			context.graph.grant(Constants.VT_EQ_HEAD, eq, head);
-		}
-		return head;
-	}
-
-	private EquipmentHead getEquipmentHeadReference(LoadContext context,
-		Equipment eq, int index)
-	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(Constants.VT_EQ_HEAD, eq,
-					EquipmentHead.class);
-		for (PCGraphEdge edge : edges)
-		{
-			EquipmentHead head =
-					(EquipmentHead) edge.getSinkNodes().iterator().next();
-			if (head.getHeadIndex() == index)
-			{
-				return head;
-			}
-		}
-		return null;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EquipmentHead head = getEquipmentHeadReference(context, eq, 2);
+		EquipmentHead head = context.graph.getEquipmentHeadReference(eq, 2);
 		if (head == null)
 		{
 			return null;

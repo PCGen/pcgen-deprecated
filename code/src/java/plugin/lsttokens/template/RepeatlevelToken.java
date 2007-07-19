@@ -22,12 +22,14 @@
 package plugin.lsttokens.template;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -36,6 +38,7 @@ import pcgen.cdom.inst.Aggregator;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteOperator;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -45,7 +48,6 @@ import pcgen.persistence.lst.LstUtils;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.persistence.lst.PObjectLoader;
 import pcgen.persistence.lst.TokenStore;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -54,6 +56,8 @@ import pcgen.util.Logging;
 public class RepeatlevelToken extends AbstractToken implements
 		PCTemplateLstToken
 {
+
+	private static final Class<Aggregator> AGGREGATOR_CLASS = Aggregator.class;
 
 	@Override
 	public String getTokenName()
@@ -376,22 +380,18 @@ public class RepeatlevelToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Set<PCGraphEdge> edgeList =
-				context.graph.getChildLinksFromToken(getTokenName(), pct,
-					Aggregator.class);
-		if (edgeList == null || edgeList.isEmpty())
+		GraphChanges<Aggregator> changes =
+				context.graph.getChangesFromToken(getTokenName(), pct,
+					AGGREGATOR_CLASS);
+		if (changes == null)
 		{
 			return null;
 		}
-		TreeSet<Aggregator> aggSet =
-				new TreeSet<Aggregator>(TokenUtilities.AGG_COMPARATOR);
-		for (PCGraphEdge edge : edgeList)
+		Collection<LSTWriteable> added = changes.getAdded();
+		List<String> list = new ArrayList<String>(added.size());
+		for (LSTWriteable lstw : added)
 		{
-			aggSet.add((Aggregator) edge.getSinkNodes().get(0));
-		}
-		List<String> list = new ArrayList<String>(aggSet.size());
-		for (Aggregator agg : aggSet)
-		{
+			Aggregator agg = AGGREGATOR_CLASS.cast(lstw);
 			StringBuilder sb = new StringBuilder();
 			Integer consecutive = agg.get(IntegerKey.CONSECUTIVE);
 			Integer maxLevel = agg.get(IntegerKey.MAX_LEVEL);

@@ -212,7 +212,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.graph.removeAll(getTokenName(), obj, SA_CLASS);
+			context.graph.removeAll(getTokenName(), obj);
 			firstToken = tok.nextToken();
 		}
 

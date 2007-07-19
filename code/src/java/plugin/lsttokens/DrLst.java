@@ -123,7 +123,7 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 	{
 		if (".CLEAR".equals(value))
 		{
-			context.graph.removeAll(getTokenName(), obj, DR_CLASS);
+			context.graph.removeAll(getTokenName(), obj);
 			return true;
 		}
 

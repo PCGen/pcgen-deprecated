@@ -57,13 +57,6 @@ public class HitDiceAdvancementTokenTest extends AbstractTokenTestCase<Race>
 		assertTrue(primaryGraph.isEmpty());
 	}
 
-	@Test
-	public void testInvalidNotEnoughValues() throws PersistenceLayerException
-	{
-		assertFalse(token.parse(primaryContext, primaryProf, "1"));
-		assertTrue(primaryGraph.isEmpty());
-	}
-
 	// @Test
 	// public void testInvalidTooManyValues() throws PersistenceLayerException
 	// {
@@ -132,6 +125,12 @@ public class HitDiceAdvancementTokenTest extends AbstractTokenTestCase<Race>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5,*8"));
 		assertTrue(primaryGraph.isEmpty());
+	}
+
+	@Test
+	public void testRoundRobinSingle() throws PersistenceLayerException
+	{
+		this.runRoundRobin("1");
 	}
 
 	@Test

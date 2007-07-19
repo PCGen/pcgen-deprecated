@@ -1,37 +1,12 @@
 package pcgen.persistence;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class Changes<T>
+public interface Changes<T>
 {
+	public Collection<T> getAdded();
 
-	List<T> added = new ArrayList<T>();
-	boolean globallyCleared = false;
+	public boolean isEmpty();
 
-	public void addAdded(T obj)
-	{
-		added.add(obj);
-	}
-
-	public Collection<T> getAdded()
-	{
-		return added;
-	}
-
-	public boolean isEmpty()
-	{
-		return added.isEmpty() && !globallyCleared;
-	}
-
-	public void setGloballyCleared()
-	{
-		globallyCleared = true;
-	}
-
-	public boolean includesGlobalClear()
-	{
-		return globallyCleared;
-	}
+	public boolean includesGlobalClear();
 }

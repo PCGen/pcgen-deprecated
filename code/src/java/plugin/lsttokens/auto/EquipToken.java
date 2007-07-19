@@ -22,24 +22,26 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
-import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.EquipmentNature;
 import pcgen.cdom.factory.GrantFactory;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -155,48 +157,8 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			return false;
 		}
 
-		TOKENS: for (PrereqObject ref : refs)
+		for (PrereqObject ref : refs)
 		{
-			Set<PCGraphEdge> edges =
-					context.graph.getChildLinksFromToken(getTokenName(), obj,
-						EQUIPMENT_CLASS);
-			for (PCGraphEdge edge : edges)
-			{
-				CDOMReference<Equipment> ab =
-						(CDOMReference<Equipment>) edge.getSinkNodes().get(0);
-				if (ab.equals(ref))
-				{
-					List<Prerequisite> prl = edge.getPrerequisiteList();
-					if (prereq == null && (prl == null || prl.isEmpty()))
-					{
-						Integer q =
-								edge.getAssociation(AssociationKey.QUANTITY);
-						edge.setAssociation(AssociationKey.QUANTITY, Integer
-							.valueOf(q.intValue() + 1));
-						continue TOKENS;
-					}
-					if (prereq != null)
-					{
-						if (prl == null || prl.isEmpty())
-						{
-							// Can't use
-						}
-						else if (prl.get(0).equals(prereq))
-						{
-							Integer q =
-									edge
-										.getAssociation(AssociationKey.QUANTITY);
-							edge.setAssociation(AssociationKey.QUANTITY,
-								Integer.valueOf(q.intValue() + 1));
-							continue TOKENS;
-						}
-						else
-						{
-							// Can't use
-						}
-					}
-				}
-			}
 			PCGraphGrantsEdge edge =
 					context.graph.grant(getTokenName(), obj, ref);
 			if (prereq != null)
@@ -215,39 +177,51 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		Set<PCGraphEdge> edges =
-				context.graph.getChildLinksFromToken(getTokenName(), obj,
+		GraphChanges<Equipment> changes =
+				context.graph.getChangesFromToken(getTokenName(), obj,
 					EQUIPMENT_CLASS);
-		if (edges == null || edges.isEmpty())
+		if (changes == null)
 		{
 			return null;
 		}
-		DoubleKeyMap<Set<Prerequisite>, CDOMReference<Equipment>, Integer> m =
-				new DoubleKeyMap<Set<Prerequisite>, CDOMReference<Equipment>, Integer>();
-		for (PCGraphEdge edge : edges)
+		HashMapToList<Set<Prerequisite>, LSTWriteable> m =
+				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+		for (LSTWriteable lstw : changes.getAdded())
 		{
-			CDOMReference<Equipment> ab =
-					(CDOMReference<Equipment>) edge.getSinkNodes().get(0);
-			m.put(new HashSet<Prerequisite>(edge.getPrerequisiteList()), ab,
-				edge.getAssociation(AssociationKey.QUANTITY));
+			AssociatedPrereqObject assoc = changes.getAddedAssociation(lstw);
+			m.addToListFor(new HashSet<Prerequisite>(assoc
+				.getPrerequisiteList()), lstw);
 		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<CDOMReference<Equipment>> set =
-				new TreeSet<CDOMReference<Equipment>>(
-					TokenUtilities.REFERENCE_SORTER);
+		TreeMap<LSTWriteable, Integer> map =
+				new TreeMap<LSTWriteable, Integer>(
+					TokenUtilities.WRITEABLE_SORTER);
 
-		String[] array = new String[m.firstKeyCount()];
+		String[] array = new String[m.size()];
 		int index = 0;
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			set.clear();
-			set.addAll(m.getSecondaryKeySet(prereqs));
+			map.clear();
+			for (LSTWriteable lstw : m.getListFor(prereqs))
+			{
+				Integer existing = map.get(lstw);
+				if (existing == null)
+				{
+					existing = Integer.valueOf(1);
+				}
+				else
+				{
+					existing = Integer.valueOf(existing.intValue() + 1);
+				}
+				map.put(lstw, existing);
+				System.err.println(map);
+			}
 			StringBuilder sb = new StringBuilder();
 			boolean needPipe = false;
-			for (CDOMReference<Equipment> ref : set)
+			for (Entry<LSTWriteable, Integer> me : map.entrySet())
 			{
-				String lstFormat = ref.getLSTformat();
-				for (int i = 0; i < m.get(prereqs, ref).intValue(); i++)
+				String lstFormat = me.getKey().getLSTformat();
+				for (int i = 0; i < me.getValue().intValue(); i++)
 				{
 					if (needPipe)
 					{

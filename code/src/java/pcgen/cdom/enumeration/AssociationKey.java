@@ -115,6 +115,9 @@ public final class AssociationKey<T>
 	public static final AssociationKey<Formula> CHOICE_MAXCOUNT =
 			new AssociationKey<Formula>();
 
+	public static final AssociationKey<URI> GLOBAL_REMOVE =
+		new AssociationKey<URI>();
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey()
