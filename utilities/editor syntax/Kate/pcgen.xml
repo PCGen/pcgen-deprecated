@@ -464,6 +464,7 @@
       <item> PREREACHGTEQ </item>
       <item> PREREACHLT </item>
       <item> PREREACHLTEQ </item>
+      <item> PREREGION </item>
       <item> PRESA </item>
       <item> PRESIZEEQ </item>
       <item> PRESIZEGT </item>
@@ -484,6 +485,7 @@
       <item> PRETYPE </item>
       <item> PREVAREQ </item>
       <item> PREVARNEQ </item>
+      <item> PREVARGT </item>
       <item> PREVARGTEQ </item>
       <item> PREVARLT </item>
       <item> PREVARLTEQ </item>
