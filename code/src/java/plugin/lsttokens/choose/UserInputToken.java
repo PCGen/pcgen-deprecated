@@ -27,6 +27,12 @@ public class UserInputToken extends AbstractToken implements ChooseLstToken
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
+		if (value == null)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " requires additional arguments");
+			return false;
+		}
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()

@@ -30,10 +30,10 @@ public class NumberToken extends AbstractToken implements ChooseLstToken
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
-		if (value.indexOf(',') != -1)
+		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+				+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf('[') != -1)

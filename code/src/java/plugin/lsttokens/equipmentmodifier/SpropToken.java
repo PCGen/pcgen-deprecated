@@ -53,7 +53,14 @@ public class SpropToken extends AbstractToken implements
 
 	public boolean parse(EquipmentModifier mod, String value)
 	{
-		mod.addSpecialProperty(pcgen.core.SpecialProperty.createFromLst(value));
+		if (".CLEAR".equals(value))
+		{
+			mod.clearSpecialProperties();
+		}
+		else
+		{
+			mod.addSpecialProperty(pcgen.core.SpecialProperty.createFromLst(value));
+		}
 		return true;
 	}
 

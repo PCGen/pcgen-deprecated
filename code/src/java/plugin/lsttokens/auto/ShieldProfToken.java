@@ -62,8 +62,14 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 		return "SHIELDPROF";
 	}
 
-	public boolean parse(PObject target, String value)
+	public boolean parse(PObject target, String value, int level)
 	{
+		if (level > 1)
+		{
+			Logging.errorPrint("AUTO:" + getTokenName()
+				+ " is not supported on class level lines");
+			return false;
+		}
 		target.addAutoArray(getTokenName(), value);
 		return true;
 	}

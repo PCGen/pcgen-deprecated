@@ -790,7 +790,13 @@ public class EncounterPlugin extends GMBPlugin implements ActionListener,
 
 		try
 		{
-			crNum = -1 * Integer.parseInt(crSplit[1]);
+			//	FIX: for tracker 1472565 - Kevin F. - 07/21/2007
+			//	check that the cr has a "/" in order to use the second element
+			//	of crSplit.  There might be a better way to do this?
+			if( cr.indexOf("/") >= 0 )
+				crNum = -1 * Integer.parseInt(crSplit[1]);
+			else
+				crNum = Integer.parseInt(cr);			
 		}
 		catch (NumberFormatException e)
 		{
@@ -1052,16 +1058,16 @@ public class EncounterPlugin extends GMBPlugin implements ActionListener,
 		}
 
 		// make sure we can add item to that slot in this EquipSet
-		if (!canAddEquip(pc, eSet, locName, eqI))
+		if (!canAddEquip(pc, eSet, location, eqI))
 		{
 			JOptionPane.showMessageDialog(null, "Can not equip "
-				+ eqI.getName() + " to " + locName, "GMGen",
+				+ eqI.getName() + " to " + location, "GMGen",
 				JOptionPane.ERROR_MESSAGE);
 
 			return null;
 		}
 
-		return locName;
+		return location;
 	}
 
 	private static boolean canAddEquip(PlayerCharacter pc, EquipSet eSet,

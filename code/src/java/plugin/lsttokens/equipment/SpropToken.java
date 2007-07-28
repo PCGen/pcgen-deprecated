@@ -52,7 +52,14 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 
 	public boolean parse(Equipment eq, String value)
 	{
-		eq.addSpecialProperty(pcgen.core.SpecialProperty.createFromLst(value));
+		if (".CLEAR".equals(value))
+		{
+			eq.clearSpecialProperties();
+		}
+		else
+		{
+			eq.addSpecialProperty(pcgen.core.SpecialProperty.createFromLst(value));
+		}
 		return true;
 	}
 

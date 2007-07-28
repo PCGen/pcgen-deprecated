@@ -51,7 +51,22 @@ public class RacesubtypeToken extends AbstractToken implements RaceLstToken
 		while (tok.hasMoreTokens())
 		{
 			String subType = tok.nextToken();
-			race.addRacialSubType(subType);
+			if (subType.indexOf(".CLEAR") != -1)
+			{
+				if (".CLEAR".equals(subType))
+				{
+					race.clearRacialSubTypes();
+				}
+				else
+				{
+					subType = subType.substring(7);
+					race.removeRacialSubType(subType);
+				}
+			}
+			else
+			{
+				race.addRacialSubType(subType);
+			}
 		}
 		return true;
 	}
