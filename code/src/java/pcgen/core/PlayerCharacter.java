@@ -7941,6 +7941,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		// }
 		// all the exists checks are done.
 
+		// don't allow adding spells which are not qualified for.
+		if (!PrereqHandler.passesAll(aSpell.getPreReqList(), this, aSpell))
+		{
+			return "You do not qualify for " + acs.getSpell().getDisplayName()
+				+ ".";
+		}
+		
 		// don't allow adding spells which are prohibited to known
 		// or prepared lists
 		// But if a spell is both prohibited and in a speciality
@@ -8127,6 +8134,18 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				&& !aClass.getSpellSupport().containsCharacterSpell(acs))
 			{
 				aClass.getSpellSupport().addCharacterSpell(acs);
+			}
+			else if (isEmpty)
+			{
+				// Make sure that we are working on the same spell object, not just the same spell
+				for (CharacterSpell characterSpell : aClass.getSpellSupport()
+					.getCharacterSpellList())
+				{
+					if (characterSpell.equals(acs))
+					{
+						acs = characterSpell;
+					}
+				}
 			}
 			si = acs.addInfo(adjSpellLevel, 1, bookName, aFeatList);
 

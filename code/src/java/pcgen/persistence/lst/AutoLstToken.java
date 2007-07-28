@@ -35,7 +35,7 @@ import pcgen.persistence.LoadContext;
  */
 public interface AutoLstToken extends CDOMToken<PObject>
 {
-	public boolean parse(PObject target, String value);
+	public boolean parse(PObject target, String value, int level);
 
 	public boolean parse(LoadContext context, PObject obj, String value);
 }

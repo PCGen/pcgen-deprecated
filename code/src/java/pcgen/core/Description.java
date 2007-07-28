@@ -58,6 +58,8 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 	private static final String VAR_CHOICE = "%CHOICE"; //$NON-NLS-1$
 	private static final String VAR_LIST = "%LIST"; //$NON-NLS-1$
 
+	private static final String VAR_FEATS = "%FEAT="; //$NON-NLS-1$
+	
 	private static final String VAR_MARKER = "$$VAR:"; //$NON-NLS-1$
 
 	/**
@@ -211,7 +213,7 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 					{
 						if (theOwner != null)
 						{
-							buf.append(theOwner.getDisplayName());
+							buf.append(theOwner.getOutputName());
 						}
 					}
 					else if (var.equals(VAR_CHOICE))
@@ -237,7 +239,33 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 							}
 						}
 					}
-					else if (var.startsWith("\"")) //$NON-NLS-1$
+					else if ( var.startsWith(VAR_FEATS) )
+					{
+						final String featName = var.substring(VAR_FEATS.length());
+						if (featName.startsWith("TYPE=") || featName.startsWith("TYPE."))
+						{
+							final List<Ability> feats = aPC.getAggregateAbilityList(AbilityCategory.FEAT);
+							boolean first = true;
+							for ( final Ability feat : feats )
+							{
+								if (feat.isType(featName.substring(5)))
+								{
+									if (!first)
+									{
+										buf.append(Constants.COMMA + ' ');
+									}
+									buf.append(feat.getDescription(aPC));
+									first = false;
+								}
+							}
+						}
+						else
+						{
+							final Ability feat = aPC.getAbilityKeyed(AbilityCategory.FEAT, featName);
+							buf.append(feat.getDescription(aPC));
+						}
+					}
+					else if ( var.startsWith("\"") ) //$NON-NLS-1$
 					{
 						buf.append(var.substring(1, var.length() - 1));
 					}

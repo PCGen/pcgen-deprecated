@@ -584,6 +584,11 @@ public final class Race extends PObject
 		racialSubTypes.add(aSubType);
 	}
 
+	public void clearRacialSubTypes()
+	{
+		racialSubTypes.clear();
+	}
+	
 	public boolean removeRacialSubType(final String aSubType)
 	{
 		return racialSubTypes.remove(aSubType);
@@ -886,6 +891,7 @@ public final class Race extends PObject
 			aRace.hands = hands;
 			aRace.reach = reach;
 			aRace.face = face;
+			aRace.racialSubTypes = new ArrayList<String>(racialSubTypes);
 		}
 		catch (CloneNotSupportedException exc)
 		{

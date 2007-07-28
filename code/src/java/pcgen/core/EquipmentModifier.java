@@ -589,6 +589,11 @@ public final class EquipmentModifier extends PObject implements Comparable<Objec
 	{
 		specialPropertyList.add(sprop);
 	}
+	
+	public void clearSpecialProperties()
+	{
+		specialPropertyList.clear();
+	}
 
 	/**
 	 * Get raw special properties

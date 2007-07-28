@@ -2704,10 +2704,14 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 		Set<String> aaKeys = mapChar.getKeySet(MapKey.AUTO_ARRAY);
 		if (aaKeys != null)
 		{
-			for (String s : aaKeys) 
+			for (String s : aaKeys)
 			{
-				txt.append("\tAUTO:").append(s).append(Constants.PIPE).append(
-					mapChar.get(MapKey.AUTO_ARRAY, s));
+				String value = mapChar.get(MapKey.AUTO_ARRAY, s);
+				if (value != null && value.trim().length() > 0)
+				{
+					txt.append("\tAUTO:").append(s).append(Constants.PIPE)
+						.append(value);
+				}
 			}
 		}
 
@@ -2820,7 +2824,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 					if (l != null) {
 						boolean started = false;
 						for (String key : l) {
-							if (!"alwaysValid".equals(key)) {
+							if (!"alwaysValid".equals(key) && !"".equals(key)) {
 								if (started) {
 									txt.append(Constants.PIPE);
 								} else {
@@ -3979,6 +3983,20 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 		}
 	}
 
+	/**
+	 * Clear out the list of bonus weapon proficiency keys that 
+	 * this object will grant to characters. 
+	 */
+	public void clearWeaponProfBonus()
+	{
+		weaponProfBonus = null;
+	}
+
+	/**
+	 * Add an entry to the list of bonus weapon proficiency keys that 
+	 * this object will grant to characters. 
+	 * @param aString The key of the weapon proficiency to be added.
+	 */
 	public void addWeaponProfBonus(final String aString)
 	{
 		if ( weaponProfBonus == null )
@@ -4103,7 +4121,26 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 		abilities.add(anAbility);
 	}
 	
-	public List<String> getAbilityKeys(final PlayerCharacter aPC, final AbilityCategory aCategory, final Ability.Nature aNature)
+	public List<QualifiedObject<String>> getRawAbilityObjects(
+		final AbilityCategory aCategory, final Ability.Nature aNature)
+	{
+		List<QualifiedObject<String>> abilities = theAbilities.get(aCategory, aNature);
+		if ( abilities == null )
+		{
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(theAbilities.get(aCategory, aNature));
+	}
+	
+	public boolean removeAbility(final AbilityCategory aCategory,
+		final Ability.Nature aNature, QualifiedObject<String> qo)
+	{
+		List<QualifiedObject<String>> abilities = theAbilities.get(aCategory, aNature);
+		return abilities != null && abilities.remove(qo);
+	}
+	
+	public List<String> getAbilityKeys(final PlayerCharacter aPC,
+		final AbilityCategory aCategory, final Ability.Nature aNature)
 	{
 		final List<QualifiedObject<String>> abilities = theAbilities.get(aCategory, aNature);
 		if ( abilities == null )

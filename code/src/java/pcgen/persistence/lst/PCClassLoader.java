@@ -349,7 +349,8 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			else
 			{
 				if ((pcClass.getSubstitutionClassList() != null)
-					&& !pcClass.getSubstitutionClassList().isEmpty())
+					&& !pcClass.getSubstitutionClassList().isEmpty()
+					&& lstLine.length() > 18)
 				{
 					substitutionClass =
 							(SubstitutionClass) pcClass

@@ -47,7 +47,7 @@ public final class AutoLoader
 	 * @param source
 	 * @throws PersistenceLayerException
 	 */
-	public static boolean parseLine(PObject target, String key, String value)
+	public static boolean parseLine(PObject target, String key, String value, int level)
 	{
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(AutoLstToken.class);
@@ -55,7 +55,7 @@ public final class AutoLoader
 		if (token != null)
 		{
 			LstUtils.deprecationCheck(token, target, value);
-			if (!token.parse(target, value))
+			if (!token.parse(target, value, level))
 			{
 				Logging.errorPrint("Error parsing AUTO: " + key + "|" + value);
 				return false;

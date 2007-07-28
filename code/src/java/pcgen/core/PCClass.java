@@ -412,7 +412,7 @@ public class PCClass extends PObject {
 	 * FINALALLCLASSLEVELS Might as well place this into all PCCLassLevels, since it
 	 * does seem to apply to all of them individually
 	 */
-	private List<String> deityList = new ArrayList<String>(2);
+	private List<String> deityList = new ArrayList<String>();
 
 	/*
 	 * FUTURETYPESAFETY This should not be a String, but a member of a Typesafe
@@ -3301,12 +3301,12 @@ public class PCClass extends PObject {
 		}
 
 		pccTxt.append("\tHD:").append(hitDie);
-		checkAdd(pccTxt, "ANY", "DEITY:", CoreUtility.join(deityList, '|'));
+		checkAdd(pccTxt, "ANY", "DEITY:", CoreUtility.join(deityList,
+			Constants.PIPE));
 		if (attackCycleMap != null) {
 			checkAdd(pccTxt, "", "ATTACKCYCLE", CoreUtility.join(new MapCollection(
 					attackCycleMap), Constants.PIPE));
 		}
-		checkAdd(pccTxt, "", "CASTAS:", castAs);
 		
 		if (prohibitedSchools != null) {
 			pccTxt.append('\t').append("PROHIBITED:");
@@ -4707,7 +4707,7 @@ public class PCClass extends PObject {
 	 * PlayerCharacter... (double dispatch)
 	 */
 	public boolean isProhibited(final Spell aSpell, final PlayerCharacter aPC) {
-		if (!PrereqHandler.passesAll(aSpell.getPreReqList(), aPC, this)) {
+		if (!PrereqHandler.passesAll(aSpell.getPreReqList(), aPC, aSpell)) {
 			return true;
 		}
 
