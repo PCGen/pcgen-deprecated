@@ -12,8 +12,6 @@ fop/xalan-2.5.2.jar -- from fop 0.20.5 distribution, used by fop
 fop/xercesImpl-2.5.0.jar -- from fop 0.20.5 distribution, used by fop
 fop/xml-apis.jar -- from fop 0.20.5 distribution, used by fop
 
-javancss/* TODO What is it? What uses it? What is it's license?
-
 jep/djep-2.24.jar -- Used by Gmgen. Adds dice functionality to JEP. TODO Should probably be removed and replaced with JEP plugins.
 jep/jep-2.3.1.jar -- "Java Expression Parser" http://www.singularsys.com/jep/ (GPL project, but we have a license exception. See the jep/jep.LICENSE.EXCEPTIONS.txt file.)
 jep/RngPack-1.1a.jar -- RngPack http://www.honeylocust.com/RngPack/ used by JEP/PJEP
