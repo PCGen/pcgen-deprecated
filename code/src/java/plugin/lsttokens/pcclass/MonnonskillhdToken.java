@@ -60,7 +60,7 @@ public class MonnonskillhdToken extends AbstractToken implements
 		{
 			return false;
 		}
-		StringTokenizer st = new StringTokenizer(Constants.PIPE, value);
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
 		BonusObj bonus =
 				BonusLoader.getBonus(context, pcc, "MONNONSKILLHD", "NUMBER",
 					st.nextToken());

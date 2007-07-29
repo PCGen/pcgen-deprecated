@@ -92,10 +92,16 @@ public abstract class AbstractFactory<T extends PrereqObject> extends
 		}
 		if (assoc == null || !assoc.hasAssociations())
 		{
-			return e.equals(other.e)
+			return edgeMatches(other)
 				&& (other.assoc == null || !other.assoc.hasAssociations());
 		}
-		return e.equals(other.e) && assoc.equals(other.assoc);
+		return edgeMatches(other) && assoc.equals(other.assoc);
+	}
+
+	private boolean edgeMatches(AbstractFactory<?> other)
+	{
+		return (e == null && other.e == null)
+			|| (e != null && e.equals(other.e));
 	}
 
 	public String getLSTformat()
@@ -105,10 +111,6 @@ public abstract class AbstractFactory<T extends PrereqObject> extends
 
 	public boolean usesChoiceSet(ChoiceSet<?> cs)
 	{
-		if (e == null)
-		{
-			e = edgeRef.resolvesTo();
-		}
-		return cs != null && cs.equals(e.getNodeAt(1));
+		return cs != null && cs.equals(getEdge().getNodeAt(1));
 	}
 }
