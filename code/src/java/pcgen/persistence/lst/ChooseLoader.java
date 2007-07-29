@@ -171,7 +171,8 @@ public final class ChooseLoader
 				}
 				remainingValue.setLength(0);
 			}
-			else if (pipeLoc > 0 && pipeLoc < openBracketLoc)
+			else if (openBracketLoc == -1 || pipeLoc > 0
+				&& pipeLoc < openBracketLoc)
 			{
 				// Still could be a primitive or a Qualifier...
 				String key = remainingValue.substring(0, pipeLoc);
@@ -306,21 +307,21 @@ public final class ChooseLoader
 		PrimitiveToken<T> prim = TokenStore.inst().getPrimitive(cl, tokKey);
 		if (prim == null)
 		{
-			if (tokKey.startsWith(Constants.LST_TYPE_OLD)
-				|| tokKey.startsWith(Constants.LST_TYPE))
+			if (key.startsWith(Constants.LST_TYPE_OLD)
+				|| key.startsWith(Constants.LST_TYPE))
 			{
-				return TokenUtilities.getTypeReference(context, cl, tokKey
+				return TokenUtilities.getTypeReference(context, cl, key
 					.substring(5));
 			}
-			else if (tokKey.startsWith(Constants.LST_NOT_TYPE_OLD)
-				|| tokKey.startsWith(Constants.LST_NOT_TYPE))
+			else if (key.startsWith(Constants.LST_NOT_TYPE_OLD)
+				|| key.startsWith(Constants.LST_NOT_TYPE))
 			{
 				return new NegatingFilter<T>(TokenUtilities.getTypeReference(
-					context, cl, tokKey.substring(5)));
+					context, cl, key.substring(6)));
 			}
 			else
 			{
-				return context.ref.getCDOMReference(cl, tokKey);
+				return context.ref.getCDOMReference(cl, key);
 			}
 		}
 		else

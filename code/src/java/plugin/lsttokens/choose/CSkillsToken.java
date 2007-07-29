@@ -23,11 +23,12 @@ import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class CSkillsToken implements ChooseLstToken
+public class CSkillsToken implements ChooseLstToken, ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)

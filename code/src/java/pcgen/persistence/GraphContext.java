@@ -28,7 +28,6 @@ import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
-import pcgen.core.PObject;
 
 public interface GraphContext
 {
@@ -55,7 +54,7 @@ public interface GraphContext
 		String tokenName, CDOMObject pct, Class<T> name);
 
 	public <T extends PrereqObject, A> CDOMEdgeReference getEdgeReference(
-		PObject parent, Class<T> childClass, String childName,
+		CDOMObject parent, Class<T> childClass, String childName,
 		Class<A> assocClass);
 
 	public EquipmentHead getEquipmentHead(Equipment eq, int i);

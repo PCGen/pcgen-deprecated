@@ -19,13 +19,21 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class FeatSelectToken extends AbstractToken implements ChooseLstToken
+public class FeatSelectToken extends AbstractToken implements ChooseLstToken,
+		ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -80,5 +88,27 @@ public class FeatSelectToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "FEATSELECT";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		// TODO Need to tell the parser the CATEGORY is FEAT
+		return ChooseLoader.parseToken(context, Ability.class, value);
 	}
 }

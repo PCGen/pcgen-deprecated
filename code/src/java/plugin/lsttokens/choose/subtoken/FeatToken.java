@@ -40,6 +40,7 @@ public class FeatToken extends AbstractToken implements ChooseCDOMLstToken
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
 		String value) throws PersistenceLayerException
 	{
+		//TODO Need to set the CATEGORY somehow ?
 		return ChooseLoader.parseToken(context, ABILITY_CLASS, value);
 	}
 

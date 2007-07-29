@@ -19,13 +19,28 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMEdgeReference;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.AbilityNature;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.factory.GrantFactory;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.core.Ability;
+import pcgen.core.ArmorProf;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class FeatAddToken extends AbstractToken implements ChooseLstToken
+public class FeatAddToken extends AbstractToken implements ChooseLstToken,
+		ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -80,5 +95,45 @@ public class FeatAddToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "FEATADD";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		// TODO Need to tell the parser the CATEGORY is FEAT
+		PrimitiveChoiceSet<Ability> pcs =
+				ChooseLoader.parseToken(context, Ability.class, "QUALIFIED["
+					+ value + "]");
+		CDOMEdgeReference assocref =
+				context.graph.getEdgeReference(cdo, ChoiceSet.class, "CHOOSE",
+					Ability.class);
+		GrantFactory<ArmorProf> gf = new GrantFactory<ArmorProf>(assocref);
+
+		/*
+		 * FUTURE Technically, this Category item should not be in the
+		 * GrantFactory, as it really belogs as something that can be extracted
+		 * from the ChoiceSet...
+		 */
+		gf
+			.setAssociation(AssociationKey.ABILITY_CATEGORY,
+				AbilityCategory.FEAT);
+		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
+		context.graph.grant(getTokenName(), cdo, gf);
+		return pcs;
 	}
 }

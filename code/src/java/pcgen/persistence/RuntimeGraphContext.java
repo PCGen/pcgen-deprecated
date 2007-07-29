@@ -35,7 +35,6 @@ import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
-import pcgen.core.PObject;
 
 public class RuntimeGraphContext implements GraphContext
 {
@@ -190,7 +189,7 @@ public class RuntimeGraphContext implements GraphContext
 	}
 
 	public <T extends PrereqObject, A> CDOMEdgeReference getEdgeReference(
-		PObject parent, Class<T> childClass, String childName,
+		CDOMObject parent, Class<T> childClass, String childName,
 		Class<A> assocClass)
 	{
 		if (parent == null)
