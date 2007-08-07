@@ -446,5 +446,10 @@
       <name>5.12.1</name>
       <tag>release-5.12.1</tag>
     </version>
+    <version>
+      <id>5.12.1</id>
+      <name>5.12.1</name>
+      <tag>release-5.12.1a</tag>
+    </version>
   </versions>
 </project>
