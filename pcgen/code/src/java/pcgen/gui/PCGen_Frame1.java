@@ -3465,8 +3465,11 @@ public class PCGen_Frame1 extends JFrame implements GMBComponent, Observer, PCLo
 			catch(Exception e)
 			{
 				e.getMessage();
-				e.printStackTrace();
-				System.out.println(event.toString());
+				if (Logging.isDebugMode())
+				{
+					e.printStackTrace();
+					System.out.println(event.toString());
+				}
 			}
 			finally
 			{
