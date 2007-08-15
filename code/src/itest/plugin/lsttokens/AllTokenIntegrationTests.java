@@ -27,6 +27,8 @@ import junit.framework.TestSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import plugin.lsttokens.loader.TokenGlobalLoaderTestSuite;
+
 /**
  * <code>AllTokenIntegrationTests</code> is a TestSuite that imports runs 
  * all the integration tests for Tokens.
@@ -35,7 +37,7 @@ import org.junit.runners.Suite;
  * @version $Revision$
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TokenGlobalTestSuite.class})
+@Suite.SuiteClasses({TokenGlobalLoaderTestSuite.class})
 public class AllTokenIntegrationTests extends TestSuite{
 	//no content, see annotations
 }
