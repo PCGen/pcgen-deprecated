@@ -30,6 +30,7 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
@@ -187,6 +188,41 @@ public class EditorGraphContext implements GraphContext
 		}
 	}
 
+	public <T extends PrereqObject, A> CDOMEdgeReference getEdgeReference(
+		CDOMSingleRef<?> parent, Class<T> childClass, String childName,
+		Class<A> assocClass)
+	{
+		if (parent == null)
+		{
+			throw new IllegalArgumentException("Choice Parent cannot be null");
+		}
+		if (childClass == null)
+		{
+			throw new IllegalArgumentException("Child Class cannot be null");
+		}
+		if (childName == null)
+		{
+			throw new IllegalArgumentException("Child Name cannot be null");
+		}
+		if (assocClass == null)
+		{
+			throw new IllegalArgumentException(
+				"Association Class cannot be null");
+		}
+		if (childClass.equals(ChoiceSet.class))
+		{
+			/*
+			 * TODO This choice set needs to be stored and validated as existing &
+			 * having the appropriate assocClass after LST load is complete
+			 */
+			return new CDOMEdgeReference(parent, assocClass, childName);
+		}
+		else
+		{
+			throw new IllegalArgumentException();
+		}
+	}
+
 	public EquipmentHead getEquipmentHead(Equipment eq, int index)
 	{
 		EquipmentHead head = getEquipmentHeadReference(eq, index);
@@ -274,6 +310,14 @@ public class EditorGraphContext implements GraphContext
 					{
 						continue;
 					}
+					if (extractURI != null)
+					{
+						if (!extractURI.equals(edge
+							.getAssociation(AssociationKey.SOURCE_URI)))
+						{
+							continue;
+						}
+					}
 					if (childClass.isAssignableFrom(node.getClass()))
 					{
 						// TODO Can the edge actually return an LSTWriteable?
@@ -302,6 +346,14 @@ public class EditorGraphContext implements GraphContext
 			{
 				if (added.equals(edge.getNodeAt(1)))
 				{
+					if (extractURI != null)
+					{
+						if (!extractURI.equals(edge
+							.getAssociation(AssociationKey.SOURCE_URI)))
+						{
+							continue;
+						}
+					}
 					return edge;
 				}
 			}
@@ -333,6 +385,14 @@ public class EditorGraphContext implements GraphContext
 					if (edge.getAssociation(AssociationKey.RETIRED_BY) == null)
 					{
 						continue;
+					}
+					if (extractURI != null)
+					{
+						if (!extractURI.equals(edge
+							.getAssociation(AssociationKey.SOURCE_URI)))
+						{
+							continue;
+						}
 					}
 					if (childClass.isAssignableFrom(node.getClass()))
 					{
@@ -377,6 +437,14 @@ public class EditorGraphContext implements GraphContext
 				{
 					continue;
 				}
+				if (extractURI != null)
+				{
+					if (!extractURI.equals(edge
+						.getAssociation(AssociationKey.SOURCE_URI)))
+					{
+						continue;
+					}
+				}
 				for (PrereqObject node : edge.getAdjacentNodes())
 				{
 					if (edge.getNodeInterfaceType(node) != DirectionalEdge.SINK)
@@ -411,6 +479,14 @@ public class EditorGraphContext implements GraphContext
 				if (edge.getAssociation(AssociationKey.RETIRED_BY) == null)
 				{
 					continue;
+				}
+				if (extractURI != null)
+				{
+					if (!extractURI.equals(edge
+						.getAssociation(AssociationKey.SOURCE_URI)))
+					{
+						continue;
+					}
 				}
 				for (PrereqObject node : edge.getAdjacentNodes())
 				{
