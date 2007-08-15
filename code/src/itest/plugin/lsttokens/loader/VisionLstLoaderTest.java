@@ -81,7 +81,6 @@ public class VisionLstLoaderTest extends AbstractTokenLoaderTestCase{
 	}
 	
 
-	/*
 	public void testEditorContext() throws PersistenceLayerException
 	{
 		context = new LoadContext();
@@ -89,20 +88,18 @@ public class VisionLstLoaderTest extends AbstractTokenLoaderTestCase{
 		URI modURI = modCampaign.getURI();
 		context.obj.setSourceURI(sourceURI);
 		context.graph.setSourceURI(sourceURI);
-		testParse(context, "VISION:Normal(30')");
+		testParse(context, "Normal (30')");
 		context.obj.setSourceURI(modURI);
 		context.graph.setSourceURI(modURI);
-		testParse(context, "VISION:Darkvision(20')");
-		testParse(context, "VISION:.CLEAR.Normal(30')");
+		testParse(context, "Darkvision (20')");
+		testParse(context, ".CLEAR.Normal (30')");
 		context.obj.setExtractURI(sourceURI);
 		context.graph.setExtractURI(sourceURI);
-		testUnparse(context, "VISION:Normal(30')");
+		testUnparse(context, "Normal (30')");
 		context.obj.setExtractURI(modURI);
 		context.graph.setExtractURI(modURI);
-		testUnparse(context, "VISION:Darkvision(20')|VISION:.CLEAR.Normal(30')");
+		testUnparse(context, ".CLEAR.Normal (30')|Darkvision (20')");
 	}
-	*/
-	
 	
 
 }
