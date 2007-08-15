@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.Vision;
@@ -210,13 +209,47 @@ public class VisionLst implements GlobalLstToken
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		StringBuilder returnString = new StringBuilder();
+		boolean needsBar = false;
+		if (changes.includesGlobalClear())
 		{
-			// Zero indicates no Token
+			if (needsBar)
+			{
+				returnString.append(Constants.LST_DOT_CLEAR);
+			}
+			needsBar = true;
+		}
+		Collection<LSTWriteable> removed = changes.getRemoved();
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (removed != null && !removed.isEmpty())
+		{
+			for (LSTWriteable lstw : removed)
+			{
+				if (needsBar)
+				{
+					returnString.append(Constants.PIPE);
+				}
+				needsBar = true;
+				returnString.append(Constants.LST_DOT_CLEAR_DOT);
+				returnString.append(lstw.getLSTformat());
+			}
+		}
+		if (added != null && !added.isEmpty())
+		{
+			for (LSTWriteable lstw : added)
+			{
+				if (needsBar)
+				{
+					returnString.append(Constants.PIPE);
+				}
+				needsBar = true;
+				returnString.append(lstw.getLSTformat());
+			}
+		}
+		if (needsBar == false)
+		{
 			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(added,
-			Constants.PIPE)};
+		return new String[]{returnString.toString()};
 	}
 }
