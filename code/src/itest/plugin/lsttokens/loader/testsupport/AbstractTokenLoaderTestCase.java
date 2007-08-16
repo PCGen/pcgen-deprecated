@@ -83,7 +83,6 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase {
 		}
 		graph = new PCGenGraph();
 		context = new LoadContext(graph);
-		//context = new LoadContext();
 		prof = context.ref.constructCDOMObject(getCDOMClass(),
 		"TestObj");
 		
@@ -104,20 +103,34 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase {
 	public abstract String[] getTestArray();
 	
 	/*
-	 * Test the provided testArray
+	 * Test the provided testArray in Runtime Context
 	 */
-	public void testTestArray() throws PersistenceLayerException
+	public void testTestArrayInRuntimeContext() throws PersistenceLayerException
 	{
+		String[] testData = getTestArray();
+		if (isClearable()) {
+				runClearAllTest(testData);
+		}
+		if (isDotClearable()) {
+			runClearAllIndexesTest(testData);
+		}
+	}
+	
+	/*
+	 * Test the provided testArray in Editor Context
+	 */
+	public void testTestArrayInEditorContext() throws PersistenceLayerException
+	{
+		context = new LoadContext();
 		String[] testData = getTestArray();
 		if (isClearable()) {
 			runClearAllTest(testData);
 		}
 		if (isDotClearable()) {
-			runClearAllIndexesTest(testData);	
+			runClearAllIndexesTest(testData);
 		}
-		
-		
 	}
+	
 	
 	protected abstract boolean isClearable();
 	
@@ -131,7 +144,9 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase {
 
 	protected void testParse(LoadContext context, String tok ) throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(context, prof, tok ));
+		assertTrue("Couldn't parse" + getToken().getTokenName() + 
+				" in " + context.getContextType() + " Context.",
+				getToken().parse(context, prof, tok ));
 	}
 	
 	protected void testUnparse(LoadContext context, String... str) throws PersistenceLayerException
@@ -140,8 +155,9 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase {
 		assertEquals(str.length,unparsed.length);
 	
 		for (int i = 0; i < str.length; i++) {
-			assertEquals("Expected " + i + " item to be equal", str[i],
-					unparsed[i]);
+			assertEquals("Expected " + i + " item to be equal in " 
+					+ context.getContextType() + " Context.", 
+					str[i], unparsed[i]);
 		}
 	}
 	

@@ -17,6 +17,8 @@
  */
 package pcgen.persistence;
 
+import java.net.URI;
+
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.graph.PCGenGraph;
@@ -36,6 +38,8 @@ public class LoadContext
 	public final ObjectContext obj;
 
 	public final GameMode gameMode;
+	
+	private final String contextType;
 
 	public LoadContext()
 	{
@@ -45,6 +49,7 @@ public class LoadContext
 		ref = new ReferenceContext();
 		// TODO FIXME This is a hack
 		gameMode = SettingsHandler.getGame();
+		contextType = "Editor";
 	}
 
 	public LoadContext(PCGenGraph pgg)
@@ -55,6 +60,7 @@ public class LoadContext
 		ref = new ReferenceContext();
 		// TODO FIXME This is a hack
 		gameMode = SettingsHandler.getGame();
+		contextType = "Runtime";
 	}
 
 	public <T extends PrereqObject> CDOMGroupRef<T> groupChildNodesOfClass(
@@ -103,6 +109,35 @@ public class LoadContext
 	{
 		// TODO What if null (if this is last?)
 		return null;
+	}
+	
+	/**
+	 * Sets the extract URI. This is a shortcut for setting 
+	 * the URI on both the graph and obj members.
+	 * @param extractURI
+	 */
+	public void setExtractURI(URI extractURI)
+	{
+		obj.setExtractURI(extractURI);
+		graph.setExtractURI(extractURI);
+	}
+
+	/**
+	 * Sets the source URI. This is a shortcut for setting 
+	 * the URI on both the graph and obj members.
+	 * @param sourceURI
+	 */
+	public void setSourceURI(URI sourceURI)
+	{
+		obj.setSourceURI(sourceURI);
+		graph.setSourceURI(sourceURI);
+	}
+	/*
+	 * Get the type of context we're running in (either Editor or Runtime)
+	 */
+	public String getContextType()
+	{
+		return contextType;
 	}
 
 }
