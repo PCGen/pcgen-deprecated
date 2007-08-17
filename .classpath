@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/.svn/*" kind="src" path="code/build/src"/>
+	<classpathentry kind="src" path="code/src/itest"/>
 	<classpathentry excluding="**/.svn/*" kind="src" path="code/src/java"/>
 	<classpathentry excluding="**/.svn/*" kind="src" path="code/src/test"/>
 	<classpathentry kind="src" path="code/src/utest"/>
