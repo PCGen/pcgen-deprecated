@@ -161,9 +161,26 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase {
 		}
 	}
 	
+	
+	/**
+	 * Test is the token was successfully cleared.
+	 * @param context
+	 * @throws PersistenceLayerException
+	 */
 	protected void testCleared(LoadContext context) throws PersistenceLayerException
 	{
-		assertNull(getToken().unparse(context, prof));
+		// TODO Rewrite this using inner classes as a Strategy.
+		if (context.getContextType() == "Runtime" ) {
+			assertNull(getToken().unparse(context, prof));
+		}
+		if (context.getContextType() == "Editor" ) {
+			String[] unparsed = getToken().unparse(context, prof);
+			for (int i = 0; i < unparsed.length; i++) {
+				assertEquals("Expected " + i + " item to be .CLEAR in Editor Context.", 
+						".CLEAR", unparsed[i]);
+			}
+		}
+		
 	}
 	
 	public void runClearAllTest(String... str) throws PersistenceLayerException
