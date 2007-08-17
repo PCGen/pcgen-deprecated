@@ -213,6 +213,10 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
 			context.graph.removeAll(getTokenName(), obj);
+			if (!tok.hasMoreTokens())
+			{
+				return true;
+			}
 			firstToken = tok.nextToken();
 		}
 
@@ -306,12 +310,16 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		List<String> list = new ArrayList<String>(added.size() + 1);
+		if (changes.includesGlobalClear())
 		{
-			// Zero indicates no Token
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		else if (added.isEmpty())
+		{
+			// Zero indicates no Token (and no global clear, so nothing to do)
 			return null;
 		}
-		List<String> list = new ArrayList<String>(added.size());
 		for (LSTWriteable lw : added)
 		{
 			StringBuilder sb = new StringBuilder();
