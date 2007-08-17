@@ -144,6 +144,24 @@ public class EditorGraphContext implements GraphContext
 
 	public void removeAll(String tokenName, PrereqObject obj)
 	{
+		List<PCGraphEdge> edges = graph.getOutwardEdgeList(obj);
+		for (PCGraphEdge edge : edges)
+		{
+			if (!edge.getSourceToken().equals(tokenName))
+			{
+				continue;
+			}
+			if (extractURI != null)
+			{
+				if (!extractURI.equals(edge
+					.getAssociation(AssociationKey.SOURCE_URI)))
+				{
+					continue;
+				}
+			}
+			edge.setAssociation(AssociationKey.IRRELEVANT, Boolean.TRUE);
+			graph.removeEdge(edge);
+		}
 		globalRemoveSet.addToListFor(sourceURI, obj, tokenName);
 	}
 
@@ -300,23 +318,28 @@ public class EditorGraphContext implements GraphContext
 				{
 					continue;
 				}
+				if (edge.getAssociation(AssociationKey.RETIRED_BY) != null)
+				{
+					continue;
+				}
+				Boolean irrel = edge.getAssociation(AssociationKey.IRRELEVANT);
+				if (irrel != null && irrel.booleanValue())
+				{
+					continue;
+				}
+				if (extractURI != null)
+				{
+					if (!extractURI.equals(edge
+						.getAssociation(AssociationKey.SOURCE_URI)))
+					{
+						continue;
+					}
+				}
 				for (PrereqObject node : edge.getAdjacentNodes())
 				{
 					if (edge.getNodeInterfaceType(node) != DirectionalEdge.SINK)
 					{
 						continue;
-					}
-					if (edge.getAssociation(AssociationKey.RETIRED_BY) != null)
-					{
-						continue;
-					}
-					if (extractURI != null)
-					{
-						if (!extractURI.equals(edge
-							.getAssociation(AssociationKey.SOURCE_URI)))
-						{
-							continue;
-						}
 					}
 					if (childClass.isAssignableFrom(node.getClass()))
 					{
@@ -354,6 +377,11 @@ public class EditorGraphContext implements GraphContext
 							continue;
 						}
 					}
+					Boolean irrel = edge.getAssociation(AssociationKey.IRRELEVANT);
+					if (irrel != null && irrel.booleanValue())
+					{
+						continue;
+					}
 					return edge;
 				}
 			}
@@ -376,23 +404,28 @@ public class EditorGraphContext implements GraphContext
 				{
 					continue;
 				}
+				Boolean irrel = edge.getAssociation(AssociationKey.IRRELEVANT);
+				if (irrel != null && irrel.booleanValue())
+				{
+					continue;
+				}
+				if (edge.getAssociation(AssociationKey.RETIRED_BY) == null)
+				{
+					continue;
+				}
+				if (extractURI != null)
+				{
+					if (!extractURI.equals(edge
+						.getAssociation(AssociationKey.SOURCE_URI)))
+					{
+						continue;
+					}
+				}
 				for (PrereqObject node : edge.getAdjacentNodes())
 				{
 					if (edge.getNodeInterfaceType(node) != DirectionalEdge.SINK)
 					{
 						continue;
-					}
-					if (edge.getAssociation(AssociationKey.RETIRED_BY) == null)
-					{
-						continue;
-					}
-					if (extractURI != null)
-					{
-						if (!extractURI.equals(edge
-							.getAssociation(AssociationKey.SOURCE_URI)))
-						{
-							continue;
-						}
 					}
 					if (childClass.isAssignableFrom(node.getClass()))
 					{
@@ -430,6 +463,11 @@ public class EditorGraphContext implements GraphContext
 			for (PCGraphEdge edge : outwardEdgeList)
 			{
 				if (!edge.getSourceToken().equals(token))
+				{
+					continue;
+				}
+				Boolean irrel = edge.getAssociation(AssociationKey.IRRELEVANT);
+				if (irrel != null && irrel.booleanValue())
 				{
 					continue;
 				}
@@ -473,6 +511,11 @@ public class EditorGraphContext implements GraphContext
 			for (PCGraphEdge edge : outwardEdgeList)
 			{
 				if (!edge.getSourceToken().equals(token))
+				{
+					continue;
+				}
+				Boolean irrel = edge.getAssociation(AssociationKey.IRRELEVANT);
+				if (irrel != null && irrel.booleanValue())
 				{
 					continue;
 				}
