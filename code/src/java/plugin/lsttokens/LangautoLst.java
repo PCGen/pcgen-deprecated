@@ -29,7 +29,6 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.PObject;
 import pcgen.persistence.GraphChanges;
@@ -133,12 +132,27 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		StringBuilder sb = new StringBuilder();
+		boolean needComma = false;
+		if (changes.includesGlobalClear())
 		{
-			// Zero indicates no Token
+			sb.append(Constants.LST_DOT_CLEAR);
+			needComma = true;
+		}
+		else if (added.isEmpty())
+		{
+			// Zero indicates no Token (and no global clear, so nothing to do)
 			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(added,
-			Constants.COMMA)};
+		for (LSTWriteable lw : added)
+		{
+			if (needComma)
+			{
+				sb.append(Constants.COMMA);
+			}
+			needComma = true;
+			sb.append(lw.getLSTformat());
+		}
+		return new String[]{sb.toString()};
 	}
 }
