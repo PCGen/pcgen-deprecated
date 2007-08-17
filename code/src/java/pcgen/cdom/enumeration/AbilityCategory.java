@@ -98,7 +98,8 @@ public final class AbilityCategory implements TypeSafeConstant, Category<Ability
 		{
 			typeMap = new CaseInsensitiveMap<AbilityCategory>();
 		}
-		AbilityCategory o = typeMap.get(s);
+		String lookup = s.replace('_', ' ');
+		AbilityCategory o = typeMap.get(lookup);
 		if (o == null)
 		{
 			/*
@@ -109,8 +110,8 @@ public final class AbilityCategory implements TypeSafeConstant, Category<Ability
 				throw new IllegalArgumentException(
 					"Type Name cannot be zero length");
 			}
-			o = new AbilityCategory(s);
-			typeMap.put(s, o);
+			o = new AbilityCategory(lookup);
+			typeMap.put(lookup, o);
 		}
 		return o;
 	}

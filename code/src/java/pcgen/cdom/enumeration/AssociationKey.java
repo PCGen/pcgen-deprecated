@@ -118,6 +118,9 @@ public final class AssociationKey<T>
 	public static final AssociationKey<URI> GLOBAL_REMOVE =
 		new AssociationKey<URI>();
 
+	public static final AssociationKey<Boolean> IRRELEVANT =
+			new AssociationKey<Boolean>();
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey()
