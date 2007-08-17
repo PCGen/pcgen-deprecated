@@ -19,7 +19,8 @@ public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 	{
 		if (value != null)
 		{
-			// TODO Error
+			throw new IllegalArgumentException(
+				"Deity Weapon Primitive does not allow a value");
 		}
 	}
 

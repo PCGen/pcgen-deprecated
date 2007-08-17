@@ -121,4 +121,6 @@ public class Constants
 
 	public static final String CHOOSE = "CHOOSE";
 
+	public static final String LST_SPELL = "SPELL";
+
 }
