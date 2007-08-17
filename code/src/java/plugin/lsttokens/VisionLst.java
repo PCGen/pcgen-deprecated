@@ -213,10 +213,7 @@ public class VisionLst implements GlobalLstToken
 		boolean needsBar = false;
 		if (changes.includesGlobalClear())
 		{
-			if (needsBar)
-			{
-				returnString.append(Constants.LST_DOT_CLEAR);
-			}
+			returnString.append(Constants.LST_DOT_CLEAR);
 			needsBar = true;
 		}
 		Collection<LSTWriteable> removed = changes.getRemoved();
