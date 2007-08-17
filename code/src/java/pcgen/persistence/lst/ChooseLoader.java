@@ -189,7 +189,7 @@ public final class ChooseLoader
 				{
 					pcsList.add(qual);
 				}
-				remainingValue.delete(0, pipeLoc);
+				remainingValue.delete(0, pipeLoc + 1);
 			}
 			else
 			{
