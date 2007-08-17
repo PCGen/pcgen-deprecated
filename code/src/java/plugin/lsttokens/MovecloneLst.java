@@ -22,13 +22,9 @@
  */
 package plugin.lsttokens;
 
-import java.util.Collection;
-
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
-import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 

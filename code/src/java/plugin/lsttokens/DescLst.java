@@ -22,14 +22,14 @@
  */
 package plugin.lsttokens;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Description;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
@@ -140,7 +140,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 			 * is that this equality check would then test for Prerequisites, et
 			 * al.
 			 */
-			//context.graph.remove(getTokenName(), obj, desc);
+			// context.graph.remove(getTokenName(), obj, desc);
 			// context.obj
 			// .removeFromList(obj, new Description(value.substring(7)));
 			return true;
@@ -236,16 +236,30 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		List<String> list = new ArrayList<String>();
+		if (changes.hasRemovedItems())
 		{
-			// Zero indicates no Token
-			return null;
+			if (changes.includesGlobalClear())
+			{
+				context.addWriteMessage("Non-sensical relationship in "
+					+ getTokenName()
+					+ ": global .CLEAR and local .CLEAR. performed");
+				return null;
+			}
+			list.add(Constants.LST_DOT_CLEAR_DOT
+				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+					",|.CLEAR."));
 		}
-		Set<String> list = new TreeSet<String>();
-		for (LSTWriteable lw : added)
+		if (changes.includesGlobalClear())
 		{
-			list.add(lw.getLSTformat());
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		if (changes.hasAddedItems())
+		{
+			for (LSTWriteable lw : changes.getAdded())
+			{
+				list.add(lw.getLSTformat());
+			}
 		}
 		return list.toArray(new String[list.size()]);
 	}

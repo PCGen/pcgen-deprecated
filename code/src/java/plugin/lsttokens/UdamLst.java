@@ -22,7 +22,9 @@
  */
 package plugin.lsttokens;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
@@ -93,12 +95,21 @@ public class UdamLst implements GlobalLstToken
 		{
 			return null;
 		}
+		List<String> returnList = new ArrayList<String>(2);
+		if (changes.includesGlobalClear())
+		{
+			returnList.add(Constants.LST_DOT_CLEAR);
+		}
 		Collection<String> list = changes.getAdded();
-		if (list.size() != 9)
+		if (list.size() == 9)
+		{
+			returnList.add(StringUtil.join(list, Constants.COMMA));
+		}
+		if (returnList.isEmpty())
 		{
 			// Error
 			return null;
 		}
-		return new String[]{StringUtil.join(list, Constants.COMMA)};
+		return returnList.toArray(new String[returnList.size()]);
 	}
 }

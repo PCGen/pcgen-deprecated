@@ -22,6 +22,9 @@
  */
 package plugin.lsttokens;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
@@ -131,6 +134,21 @@ public class TypeLst implements GlobalLstToken
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(changes.getAdded(), Constants.DOT)};
+		List<String> returnList = new ArrayList<String>(2);
+		if (changes.includesGlobalClear())
+		{
+			returnList.add(Constants.LST_DOT_CLEAR);
+		}
+		Collection<Type> list = changes.getAdded();
+		if (list.size() == 9)
+		{
+			returnList.add(StringUtil.join(list, Constants.DOT));
+		}
+		if (returnList.isEmpty())
+		{
+			// Error
+			return null;
+		}
+		return returnList.toArray(new String[returnList.size()]);
 	}
 }

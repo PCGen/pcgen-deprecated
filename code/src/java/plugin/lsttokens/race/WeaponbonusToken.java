@@ -22,6 +22,7 @@
 package plugin.lsttokens.race;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -144,29 +145,13 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 			// Legal if no WEAPONBONUS was present in the race
 			return null;
 		}
-		List<String> list = new ArrayList<String>();
-		if (changes.hasRemovedItems())
+		Collection<CDOMReference<WeaponProf>> added = changes.getAdded();
+		if (added.isEmpty())
 		{
-			if (changes.includesGlobalClear())
-			{
-				context.addWriteMessage("Non-sensical relationship in "
-					+ getTokenName()
-					+ ": global .CLEAR and local .CLEAR. performed");
-				return null;
-			}
-			list.add(Constants.LST_DOT_CLEAR_DOT
-				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
-					"|.CLEAR."));
+			// Zero indicates no Token (and no global clear, so nothing to do)
+			return null;
 		}
-		if (changes.includesGlobalClear())
-		{
-			list.add(Constants.LST_DOT_CLEAR);
-		}
-		if (changes.hasAddedItems())
-		{
-			list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
-				Constants.PIPE));
-		}
-		return list.toArray(new String[list.size()]);
+		return new String[]{ReferenceUtilities.joinLstFormat(added,
+			Constants.PIPE)};
 	}
 }

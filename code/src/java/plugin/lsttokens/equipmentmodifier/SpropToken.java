@@ -67,6 +67,16 @@ public class SpropToken extends AbstractToken implements
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return false;
+		}
+		if (Constants.LST_DOT_CLEAR.equals(value))
+		{
+			context.graph.removeAll(getTokenName(), mod);
+			return true;
+		}
+
 		SpecialProperty sa = subParse(context, mod, value);
 		if (sa == null)
 		{
@@ -79,11 +89,6 @@ public class SpropToken extends AbstractToken implements
 	public SpecialProperty subParse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
-		if (isEmpty(value) || hasIllegalSeparator('|', value))
-		{
-			return null;
-		}
-
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		String firstToken = tok.nextToken();

@@ -65,6 +65,16 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return false;
+		}
+		if (Constants.LST_DOT_CLEAR.equals(value))
+		{
+			context.graph.removeAll(getTokenName(), eq);
+			return true;
+		}
+
 		SpecialProperty sa = subParse(context, eq, value);
 		if (sa == null)
 		{

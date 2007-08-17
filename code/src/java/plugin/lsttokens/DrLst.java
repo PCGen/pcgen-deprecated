@@ -24,11 +24,13 @@ package plugin.lsttokens;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.DamageReduction;
 import pcgen.core.PCClass;
@@ -186,9 +188,14 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		List<String> list = new ArrayList<String>(added.size() + 1);
+		if (changes.includesGlobalClear())
 		{
-			// Zero indicates no Token
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		else if (added.isEmpty())
+		{
+			// Zero indicates no Token (and no global clear, so nothing to do)
 			return null;
 		}
 		Set<String> set = new TreeSet<String>();
@@ -196,6 +203,7 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 		{
 			set.add(lw.getLSTformat());
 		}
-		return set.toArray(new String[set.size()]);
+		list.addAll(set);
+		return list.toArray(new String[list.size()]);
 	}
 }
