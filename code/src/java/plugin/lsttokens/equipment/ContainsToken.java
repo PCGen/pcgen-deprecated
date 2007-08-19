@@ -92,16 +92,17 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 		int percentLoc = weightCapacity.indexOf(Constants.PERCENT);
 		if (percentLoc != weightCapacity.lastIndexOf(Constants.PERCENT))
 		{
-			Logging.addParseMessage(Logging.LST_ERROR,"Cannot have two weight reduction "
-				+ "characters (indicated by %): " + value);
+			Logging.addParseMessage(Logging.LST_ERROR,
+				"Cannot have two weight reduction "
+					+ "characters (indicated by %): " + value);
 			return false;
 		}
 		if (percentLoc != -1)
 		{
 			if (hadAsterisk)
 			{
-				Logging
-				.addParseMessage(Logging.LST_ERROR,"Cannot have Constant Weight (indicated by *) "
+				Logging.addParseMessage(Logging.LST_ERROR,
+					"Cannot have Constant Weight (indicated by *) "
 						+ "and weight reduction (indicated by %): " + value);
 				return false;
 			}
@@ -119,15 +120,35 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			}
 		}
 
-		try
+		BigDecimal weightCap;
+		if ("UNLIM".equals(weightCapacity))
 		{
-			context.obj.put(eq, ObjectKey.CONTAINER_WEIGHT_CAPACITY,
-				new BigDecimal(weightCapacity));
+			weightCap = Capacity.UNLIMITED;
 		}
-		catch (NumberFormatException ex)
+		else
 		{
-			return false;
+			try
+			{
+				weightCap =
+						BigDecimalHelper.trimBigDecimal(new BigDecimal(
+							weightCapacity));
+				if (BigDecimal.ZERO.compareTo(weightCap) >= 0)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR,
+						"Weight Capacity must be > 0: " + weightCapacity
+							+ "\n  Use 'UNLIM' (not -1) for unlimited Count");
+					return false;
+				}
+			}
+			catch (NumberFormatException ex)
+			{
+				Logging
+					.errorPrint("Weight Capacity must be 'UNLIM or a number > 0: "
+						+ weightCapacity);
+				return false;
+			}
 		}
+		context.obj.put(eq, ObjectKey.CONTAINER_WEIGHT_CAPACITY, weightCap);
 
 		List<Capacity> capacityList = new ArrayList<Capacity>();
 		boolean limited = true;
@@ -156,28 +177,42 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			else
 			{
 				String itemType = typeString.substring(0, equalLoc);
-				try
+				String itemNumString = typeString.substring(equalLoc + 1);
+				BigDecimal itemNumber;
+				if ("UNLIM".equals(itemNumString))
 				{
-					BigDecimal itemNumber =
-							BigDecimalHelper.trimBigDecimal(new BigDecimal(
-								typeString.substring(equalLoc + 1)));
-					if (BigDecimal.ZERO.compareTo(itemNumber) >= 0)
+					limited = false;
+					itemNumber = Capacity.UNLIMITED;
+				}
+				else
+				{
+					try
 					{
-						Logging.addParseMessage(Logging.LST_ERROR,"Cannot have negative quantity of "
-							+ itemType + ": " + value);
+						itemNumber =
+								BigDecimalHelper.trimBigDecimal(new BigDecimal(
+									itemNumString));
+					}
+					catch (NumberFormatException ex)
+					{
+						Logging.errorPrint("Item Number for " + itemType
+							+ " must be 'UNLIM' or a number > 0: "
+							+ itemNumString);
 						return false;
 					}
-					if (limited)
+					if (BigDecimal.ZERO.compareTo(itemNumber) >= 0)
 					{
-						limitedCapacity = limitedCapacity.add(itemNumber);
+						Logging.addParseMessage(Logging.LST_ERROR,
+							"Cannot have negative quantity of " + itemType
+								+ ": " + value);
+						return false;
 					}
-					Type t = Type.getConstant(itemType);
-					capacityList.add(new Capacity(t, itemNumber));
 				}
-				catch (NumberFormatException nfe)
+				if (limited)
 				{
-					return false;
+					limitedCapacity = limitedCapacity.add(itemNumber);
 				}
+				Type t = Type.getConstant(itemType);
+				capacityList.add(new Capacity(t, itemNumber));
 			}
 		}
 
