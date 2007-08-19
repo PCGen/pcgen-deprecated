@@ -24,11 +24,16 @@ package plugin.lsttokens.pcclass;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.enumeration.ProhibitedSpellType;
+import pcgen.cdom.enumeration.SpellSchool;
+import pcgen.cdom.enumeration.SpellSubSchool;
 import pcgen.cdom.inst.Aggregator;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
@@ -37,7 +42,6 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.util.enumeration.ProhibitedSpellType;
 
 /**
  * Class deals with PROHIBITED Token
@@ -68,21 +72,21 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
-		List<SpellProhibitor> spList = subParse(context, pcc, value);
+		List<SpellProhibitor<?>> spList = subParse(context, pcc, value);
 		if (spList == null || spList.isEmpty())
 		{
 			return false;
 		}
 		Aggregator agg = new Aggregator(pcc, pcc, getTokenName());
 		context.graph.grant(getTokenName(), pcc, agg);
-		for (SpellProhibitor sp : spList)
+		for (SpellProhibitor<?> sp : spList)
 		{
 			context.graph.grant(getTokenName(), agg, sp);
 		}
 		return true;
 	}
 
-	public List<SpellProhibitor> subParse(LoadContext context, PCClass pcc,
+	public List<SpellProhibitor<?>> subParse(LoadContext context, PCClass pcc,
 		String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
@@ -90,9 +94,9 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 			return null;
 		}
 
-		SpellProhibitor spSchool = new SpellProhibitor();
+		SpellProhibitor<SpellSchool> spSchool = new SpellProhibitor<SpellSchool>();
 		spSchool.setType(ProhibitedSpellType.SCHOOL);
-		SpellProhibitor spSubSchool = new SpellProhibitor();
+		SpellProhibitor<SpellSubSchool> spSubSchool = new SpellProhibitor<SpellSubSchool>();
 		spSubSchool.setType(ProhibitedSpellType.SUBSCHOOL);
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
@@ -100,12 +104,11 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 		while (tok.hasMoreTokens())
 		{
 			String aValue = tok.nextToken();
-			// TODO This is a String, should it be typesafe?
-			spSchool.addValue(aValue);
-			spSubSchool.addValue(aValue);
+			spSchool.addValue(SpellSchool.getConstant(aValue));
+			spSubSchool.addValue(SpellSubSchool.getConstant(aValue));
 		}
 
-		List<SpellProhibitor> list = new ArrayList<SpellProhibitor>(2);
+		List<SpellProhibitor<?>> list = new ArrayList<SpellProhibitor<?>>(2);
 		list.add(spSchool);
 		list.add(spSubSchool);
 		return list;
@@ -159,7 +162,13 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 		for (LSTWriteable lstw : aggAdded)
 		{
 			SpellProhibitor sp = SpellProhibitor.class.cast(lstw);
-			String st = StringUtil.join(sp.getValueSet(), Constants.COMMA);
+			Set<?> valueSet = sp.getValueSet();
+			Set<String> stringSet = new TreeSet<String>();
+			for (Object o : valueSet)
+			{
+				stringSet.add(o.toString());
+			}
+			String st = StringUtil.join(stringSet, Constants.COMMA);
 			if (retString == null)
 			{
 				retString = st;

@@ -21,12 +21,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-import pcgen.base.enumeration.TypeSafeConstant;
 import pcgen.core.spell.Spell;
 
-public abstract class ProhibitedSpellType<T extends TypeSafeConstant>
+public abstract class ProhibitedSpellType<T>
 {
 
 	private static final Class<ProhibitedSpellType> PST_CLASS =
@@ -46,6 +46,18 @@ public abstract class ProhibitedSpellType<T extends TypeSafeConstant>
 				{
 					return SpellDescriptor.class;
 				}
+
+				@Override
+				public int getRequiredCount(Collection<SpellDescriptor> l)
+				{
+					return l.size();
+				}
+
+				@Override
+				public SpellDescriptor getTypeValue(String value)
+				{
+					return SpellDescriptor.getConstant(value);
+				}
 			};
 
 	public static final ProhibitedSpellType<SpellDescriptor> DESCRIPTOR =
@@ -61,6 +73,18 @@ public abstract class ProhibitedSpellType<T extends TypeSafeConstant>
 				public Class<SpellDescriptor> getReferencedClass()
 				{
 					return SpellDescriptor.class;
+				}
+
+				@Override
+				public int getRequiredCount(Collection<SpellDescriptor> l)
+				{
+					return l.size();
+				}
+
+				@Override
+				public SpellDescriptor getTypeValue(String value)
+				{
+					return SpellDescriptor.getConstant(value);
 				}
 			};
 
@@ -78,6 +102,18 @@ public abstract class ProhibitedSpellType<T extends TypeSafeConstant>
 				{
 					return SpellSchool.class;
 				}
+
+				@Override
+				public int getRequiredCount(Collection<SpellSchool> l)
+				{
+					return l.size();
+				}
+
+				@Override
+				public SpellSchool getTypeValue(String value)
+				{
+					return SpellSchool.getConstant(value);
+				}
 			};
 
 	public static final ProhibitedSpellType<SpellSubSchool> SUBSCHOOL =
@@ -94,6 +130,46 @@ public abstract class ProhibitedSpellType<T extends TypeSafeConstant>
 				{
 					return SpellSubSchool.class;
 				}
+
+				@Override
+				public int getRequiredCount(Collection<SpellSubSchool> l)
+				{
+					return l.size();
+				}
+
+				@Override
+				public SpellSubSchool getTypeValue(String value)
+				{
+					return SpellSubSchool.getConstant(value);
+				}
+			};
+
+	public static final ProhibitedSpellType<String> SPELL =
+			new ProhibitedSpellType<String>("Spell")
+			{
+				@Override
+				public Collection<String> getCheckList(Spell s)
+				{
+					return Collections.singletonList(s.getKeyName());
+				}
+
+				@Override
+				public Class<String> getReferencedClass()
+				{
+					return String.class;
+				}
+
+				@Override
+				public int getRequiredCount(Collection<String> l)
+				{
+					return 1;
+				}
+
+				@Override
+				public String getTypeValue(String value)
+				{
+					return value;
+				}
 			};
 
 	private final String text;
@@ -107,15 +183,19 @@ public abstract class ProhibitedSpellType<T extends TypeSafeConstant>
 
 	public abstract Class<T> getReferencedClass();
 
+	public abstract int getRequiredCount(Collection<T> l);
+
+	public abstract T getTypeValue(String value);
+	
 	@Override
 	public String toString()
 	{
 		return text;
 	}
 
-	public static ProhibitedSpellType getReference(String s)
+	public static ProhibitedSpellType<?> getReference(String s)
 	{
-		for (ProhibitedSpellType type : values())
+		for (ProhibitedSpellType<?> type : values())
 		{
 			if (type.text.equalsIgnoreCase(s))
 			{
@@ -125,10 +205,10 @@ public abstract class ProhibitedSpellType<T extends TypeSafeConstant>
 		throw new IllegalArgumentException(s);
 	}
 
-	public static List<ProhibitedSpellType> values()
+	public static List<ProhibitedSpellType<?>> values()
 	{
 		// TODO Cache this list
-		List<ProhibitedSpellType> list = new ArrayList<ProhibitedSpellType>();
+		List<ProhibitedSpellType<?>> list = new ArrayList<ProhibitedSpellType<?>>();
 		Field[] fields = PST_CLASS.getDeclaredFields();
 		for (int i = 0; i < fields.length; i++)
 		{

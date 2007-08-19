@@ -25,13 +25,13 @@
  */
 package pcgen.core;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.enumeration.ProhibitedSpellType;
 import pcgen.core.spell.Spell;
-import pcgen.util.enumeration.ProhibitedSpellType;
 
 /**
  * @author stefan
@@ -39,38 +39,38 @@ import pcgen.util.enumeration.ProhibitedSpellType;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public class SpellProhibitor extends ConcretePrereqObject implements
+public class SpellProhibitor<T> extends ConcretePrereqObject implements
 		LSTWriteable
 {
 
-	private ProhibitedSpellType type = null;
-	private Set<String> valueSet = null;
+	private ProhibitedSpellType<T> type = null;
+	private Set<T> valueSet = null;
 
 	public SpellProhibitor()
 	{
 		// Empty Construtor
 	}
 
-	public ProhibitedSpellType getType()
+	public ProhibitedSpellType<T> getType()
 	{
 		return type;
 	}
 
-	public Set<String> getValueSet()
+	public Set<T> getValueSet()
 	{
 		return valueSet;
 	}
 
-	public void setType(ProhibitedSpellType prohibitedType)
+	public void setType(ProhibitedSpellType<T> prohibitedType)
 	{
 		type = prohibitedType;
 	}
 
-	public void addValue(String value)
+	public void addValue(T value)
 	{
 		if (valueSet == null)
 		{
-			valueSet = new TreeSet<String>();
+			valueSet = new HashSet<T>();
 		}
 		valueSet.add(value);
 	}
@@ -95,11 +95,11 @@ public class SpellProhibitor extends ConcretePrereqObject implements
 
 		int hits = 0;
 
-		for (String typeDesc : type.getCheckList(s))
+		for (T typeDesc : type.getCheckList(s))
 		{
-			for (String prohib : valueSet)
+			for (T prohib : valueSet)
 			{
-				if (prohib.equalsIgnoreCase(typeDesc))
+				if (prohib.equals(typeDesc))
 				{
 					hits++;
 				}
@@ -126,7 +126,7 @@ public class SpellProhibitor extends ConcretePrereqObject implements
 		{
 			return false;
 		}
-		SpellProhibitor other = (SpellProhibitor) o;
+		SpellProhibitor<?> other = (SpellProhibitor) o;
 		if ((type == null && other.type == null)
 			|| (type != null && type.equals(other.type)))
 		{

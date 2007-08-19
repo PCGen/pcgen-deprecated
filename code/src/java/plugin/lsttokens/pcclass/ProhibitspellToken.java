@@ -28,10 +28,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.enumeration.ProhibitedSpellType;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
 import pcgen.core.prereq.Prerequisite;
@@ -43,7 +45,6 @@ import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
-import pcgen.util.enumeration.ProhibitedSpellType;
 
 /**
  * Class deals with PROHIBITSPELL Token
@@ -87,8 +88,10 @@ public class ProhibitspellToken extends AbstractToken implements
 			{
 				if (isPre)
 				{
-					Logging.errorPrint("Invalid " + getTokenName() + ": " + value);
-					Logging.errorPrint("  PRExxx must be at the END of the Token");
+					Logging.errorPrint("Invalid " + getTokenName() + ": "
+						+ value);
+					Logging
+						.errorPrint("  PRExxx must be at the END of the Token");
 				}
 				final StringTokenizer elements =
 						new StringTokenizer(aString, ".", false);
@@ -142,7 +145,7 @@ public class ProhibitspellToken extends AbstractToken implements
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
-		SpellProhibitor sp = subParse(context, pcc, value);
+		SpellProhibitor<?> sp = subParse(context, pcc, value);
 		if (sp == null)
 		{
 			return false;
@@ -151,7 +154,7 @@ public class ProhibitspellToken extends AbstractToken implements
 		return true;
 	}
 
-	public SpellProhibitor subParse(LoadContext context, PCClass pcc,
+	public SpellProhibitor<?> subParse(LoadContext context, PCClass pcc,
 		String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
@@ -160,8 +163,6 @@ public class ProhibitspellToken extends AbstractToken implements
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-
-		SpellProhibitor spellProb = new SpellProhibitor();
 
 		String token = tok.nextToken();
 
@@ -173,11 +174,11 @@ public class ProhibitspellToken extends AbstractToken implements
 			return null;
 		}
 		String pstString = token.substring(0, dotLoc);
-		ProhibitedSpellType type;
+		ProhibitedSpellType<?> type;
+
 		try
 		{
-			type = ProhibitedSpellType.valueOf(pstString);
-			spellProb.setType(type);
+			type = ProhibitedSpellType.getReference(pstString);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -188,56 +189,14 @@ public class ProhibitspellToken extends AbstractToken implements
 					", "));
 			return null;
 		}
-		String args = token.substring(dotLoc + 1);
-		if (args.length() == 0)
-		{
-			Logging.errorPrint(getTokenName() + " " + type
-				+ " has no arguments: " + value);
-			return null;
-		}
 
-		String joinChar = getJoinChar(type, new LinkedList<String>());
-		if (args.indexOf(joinChar) == 0)
+		SpellProhibitor<?> spellProb =
+				typeSafeParse(context, pcc, type, token.substring(dotLoc + 1));
+		if (spellProb == null)
 		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments may not start with " + joinChar + " : " + value);
+			Logging.errorPrint("  entire token value was: " + value);
 			return null;
 		}
-		if (args.lastIndexOf(joinChar) == args.length() - 1)
-		{
-			Logging.errorPrint(getTokenName() + " arguments may not end with "
-				+ joinChar + " : " + value);
-			return null;
-		}
-		if (args.indexOf(joinChar + joinChar) != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator " + joinChar + joinChar
-				+ " : " + value);
-			return null;
-		}
-
-		StringTokenizer elements = new StringTokenizer(args, joinChar);
-		while (elements.hasMoreTokens())
-		{
-			String aValue = elements.nextToken();
-			if (type.equals(ProhibitedSpellType.ALIGNMENT)
-				&& (!aValue.equalsIgnoreCase("GOOD"))
-				&& (!aValue.equalsIgnoreCase("EVIL"))
-				&& (!aValue.equalsIgnoreCase("LAWFUL"))
-				&& (!aValue.equalsIgnoreCase("CHAOTIC")))
-			{
-				Logging.errorPrint("Illegal PROHIBITSPELL:ALIGNMENT subtag '"
-					+ aValue + "'");
-				return null;
-			}
-			else
-			{
-				// TODO This is a String, should it be typesafe?
-				spellProb.addValue(aValue);
-			}
-		}
-
 		if (!tok.hasMoreTokens())
 		{
 			// No prereqs, so we're done
@@ -265,6 +224,60 @@ public class ProhibitspellToken extends AbstractToken implements
 		return spellProb;
 	}
 
+	private <T> SpellProhibitor<T> typeSafeParse(LoadContext context, PCClass pcc,
+		ProhibitedSpellType<T> type, String args)
+	{
+		SpellProhibitor<T> spellProb = new SpellProhibitor<T>();
+		spellProb.setType(type);
+		if (args.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " " + type
+				+ " has no arguments");
+			return null;
+		}
+
+		String joinChar = getJoinChar(type, new LinkedList<T>());
+		if (args.indexOf(joinChar) == 0)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments may not start with " + joinChar);
+			return null;
+		}
+		if (args.lastIndexOf(joinChar) == args.length() - 1)
+		{
+			Logging.errorPrint(getTokenName() + " arguments may not end with "
+				+ joinChar);
+			return null;
+		}
+		if (args.indexOf(joinChar + joinChar) != -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " arguments uses double separator " + joinChar + joinChar);
+			return null;
+		}
+
+		StringTokenizer elements = new StringTokenizer(args, joinChar);
+		while (elements.hasMoreTokens())
+		{
+			String aValue = elements.nextToken();
+			if (type.equals(ProhibitedSpellType.ALIGNMENT)
+				&& (!aValue.equalsIgnoreCase("GOOD"))
+				&& (!aValue.equalsIgnoreCase("EVIL"))
+				&& (!aValue.equalsIgnoreCase("LAWFUL"))
+				&& (!aValue.equalsIgnoreCase("CHAOTIC")))
+			{
+				Logging.errorPrint("Illegal PROHIBITSPELL:ALIGNMENT subtag '"
+					+ aValue + "'");
+				return null;
+			}
+			else
+			{
+				spellProb.addValue(type.getTypeValue(aValue));
+			}
+		}
+		return spellProb;
+	}
+
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		GraphChanges<SpellProhibitor> changes =
@@ -288,22 +301,28 @@ public class ProhibitspellToken extends AbstractToken implements
 			ProhibitedSpellType pst = sp.getType();
 			sb.append(pst.toString().toUpperCase());
 			sb.append('.');
-			Set<String> spValues = sp.getValueSet();
-			String joinChar = getJoinChar(pst, spValues);
-			sb.append(StringUtil.join(spValues, joinChar));
+			Set<?> valueSet = sp.getValueSet();
+			Set<String> stringSet = new TreeSet<String>();
+			for (Object o : valueSet)
+			{
+				stringSet.add(o.toString());
+			}
+			String joinChar = getJoinChar(pst, valueSet);
+			sb.append(StringUtil.join(stringSet, joinChar));
 
 			if (sp.hasPrerequisites())
 			{
 				sb.append(Constants.PIPE);
-				sb.append(getPrerequisiteString(context, sp.getPrerequisiteList()));
+				sb.append(getPrerequisiteString(context, sp
+					.getPrerequisiteList()));
 			}
 			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
 	}
 
-	private String getJoinChar(ProhibitedSpellType pst,
-		Collection<String> spValues)
+	private <T> String getJoinChar(ProhibitedSpellType<T> pst,
+		Collection<T> spValues)
 	{
 		return pst.getRequiredCount(spValues) == 1 ? Constants.COMMA
 			: Constants.DOT;

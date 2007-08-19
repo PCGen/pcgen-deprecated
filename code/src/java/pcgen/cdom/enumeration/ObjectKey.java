@@ -46,6 +46,7 @@ import pcgen.core.PCClass;
 import pcgen.core.PCStat;
 import pcgen.core.ShieldProf;
 import pcgen.core.SizeAdjustment;
+import pcgen.core.SpellProhibitor;
 import pcgen.core.WeaponProf;
 import pcgen.util.enumeration.DefaultTriState;
 import pcgen.util.enumeration.Visibility;
@@ -177,6 +178,8 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<BigDecimal>  PROHIBITED_COST = new ObjectKey<BigDecimal>();
 
 	public static final ObjectKey<Boolean> USE_SPELL_SPELL_STAT = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<SpellProhibitor<?>> SELETED_SPELLS = new ObjectKey<SpellProhibitor<?>>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 
