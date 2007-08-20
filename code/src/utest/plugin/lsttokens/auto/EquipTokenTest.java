@@ -92,7 +92,6 @@ public class EquipTokenTest extends AbstractAutoTokenTestCase
 	public void testRoundRobinDupeDiffPrereqs()
 		throws PersistenceLayerException
 	{
-		System.err.println("=");
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin(getSubTokenString() + "|TestWP1[PRERACE:1,Human]",
