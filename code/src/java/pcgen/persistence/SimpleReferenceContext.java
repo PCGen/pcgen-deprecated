@@ -238,6 +238,15 @@ public class SimpleReferenceContext
 		{
 			throw new IllegalArgumentException(val);
 		}
+		try
+		{
+			Integer.parseInt(val);
+			throw new IllegalArgumentException(val);
+		}
+		catch (NumberFormatException nfe)
+		{
+			// ok
+		}
 		if (val.startsWith("TYPE"))
 		{
 			throw new IllegalArgumentException(val);

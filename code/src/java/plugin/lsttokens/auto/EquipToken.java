@@ -77,7 +77,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 
 	public boolean parse(LoadContext context, PObject obj, String value)
 	{
-		String armorProfs;
+		String equipItems;
 		Prerequisite prereq = null; // Do not initialize, null is significant!
 
 		/*
@@ -87,12 +87,12 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		// Note: May contain PRExxx
 		if (value.indexOf("[") == -1)
 		{
-			armorProfs = value;
+			equipItems = value;
 		}
 		else
 		{
 			int openBracketLoc = value.indexOf("[");
-			armorProfs = value.substring(0, openBracketLoc);
+			equipItems = value.substring(0, openBracketLoc);
 			if (!value.endsWith("]"))
 			{
 				Logging.errorPrint("Unresolved Prerequisite in "
@@ -110,7 +110,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			}
 		}
 
-		if (hasIllegalSeparator('|', armorProfs))
+		if (hasIllegalSeparator('|', equipItems))
 		{
 			return false;
 		}
@@ -118,7 +118,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		boolean foundAny = false;
 		boolean foundOther = false;
 
-		StringTokenizer tok = new StringTokenizer(armorProfs, Constants.PIPE);
+		StringTokenizer tok = new StringTokenizer(equipItems, Constants.PIPE);
 		List<PrereqObject> refs = new ArrayList<PrereqObject>();
 
 		while (tok.hasMoreTokens())
