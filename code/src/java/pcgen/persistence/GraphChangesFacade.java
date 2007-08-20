@@ -2,10 +2,11 @@ package pcgen.persistence;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import pcgen.base.graph.core.DirectionalEdge;
+import pcgen.base.util.MapToList;
+import pcgen.base.util.TreeMapToList;
+import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -38,16 +39,13 @@ public class GraphChangesFacade<T extends PrereqObject & LSTWriteable>
 
 	public Collection<LSTWriteable> getAdded()
 	{
-		/*
-		 * TODO If there is more than one link to the same edge, this is a problem,
-		 * because it uses a set
-		 */
-		Set<LSTWriteable> set =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
+		Collection<LSTWriteable> coll =
+				new WeightedCollection<LSTWriteable>(
+					TokenUtilities.WRITEABLE_SORTER);
 		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(source);
 		if (outwardEdgeList == null)
 		{
-			return set;
+			return coll;
 		}
 		for (PCGraphEdge edge : outwardEdgeList)
 		{
@@ -63,8 +61,8 @@ public class GraphChangesFacade<T extends PrereqObject & LSTWriteable>
 				}
 				if (childClass.isAssignableFrom(node.getClass()))
 				{
-					//TODO Can the edge actually return an LSTWriteable?
-					set.add((LSTWriteable) node);
+					// TODO Can the edge actually return an LSTWriteable?
+					coll.add((LSTWriteable) node);
 					break;
 				}
 				else if (node instanceof CDOMReference)
@@ -72,26 +70,55 @@ public class GraphChangesFacade<T extends PrereqObject & LSTWriteable>
 					CDOMReference<?> cdr = (CDOMReference) node;
 					if (cdr.getReferenceClass().equals(childClass))
 					{
-						set.add((LSTWriteable) node);
+						coll.add((LSTWriteable) node);
 						break;
 					}
 				}
 			}
 		}
-		return set;
+		return coll;
 	}
 
-	public AssociatedPrereqObject getAddedAssociation(LSTWriteable added)
+	public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations()
 	{
+		TreeMapToList<LSTWriteable, AssociatedPrereqObject> coll =
+				new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
+					TokenUtilities.WRITEABLE_SORTER);
 		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(source);
+		if (outwardEdgeList == null)
+		{
+			return coll;
+		}
 		for (PCGraphEdge edge : outwardEdgeList)
 		{
-			if (added.equals(edge.getNodeAt(1)))
+			if (!edge.getSourceToken().equals(token))
 			{
-				return edge;
+				continue;
+			}
+			for (PrereqObject node : edge.getAdjacentNodes())
+			{
+				if (edge.getNodeInterfaceType(node) != DirectionalEdge.SINK)
+				{
+					continue;
+				}
+				if (childClass.isAssignableFrom(node.getClass()))
+				{
+					// TODO Can the edge actually return an LSTWriteable?
+					coll.addToListFor((LSTWriteable) node, edge);
+					break;
+				}
+				else if (node instanceof CDOMReference)
+				{
+					CDOMReference<?> cdr = (CDOMReference) node;
+					if (cdr.getReferenceClass().equals(childClass))
+					{
+						coll.addToListFor((LSTWriteable) node, edge);
+						break;
+					}
+				}
 			}
 		}
-		return null;
+		return coll;
 	}
 
 	public Collection<LSTWriteable> getRemoved()
@@ -99,7 +126,7 @@ public class GraphChangesFacade<T extends PrereqObject & LSTWriteable>
 		return null;
 	}
 
-	public AssociatedPrereqObject getRemovedAssociation(LSTWriteable added)
+	public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations()
 	{
 		return null;
 	}

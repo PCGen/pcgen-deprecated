@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
@@ -52,9 +51,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstUtils;
-import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
@@ -431,8 +428,6 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 		}
 
 		Set<String> set = new TreeSet<String>();
-		SortedSet<LSTWriteable> refSet =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 		StringBuilder sb = new StringBuilder();
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
@@ -450,10 +445,8 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 					sb.setLength(0);
 					sb.append(cl.getLSTformat());
 					sb.append(Constants.PIPE);
-					refSet.clear();
-					refSet.addAll(m.getListFor(prereqs, cl, fa));
-					sb.append(ReferenceUtilities.joinLstFormat(refSet,
-						Constants.COMMA));
+					sb.append(ReferenceUtilities.joinLstFormat(m.getListFor(
+						prereqs, cl, fa), Constants.COMMA));
 					if (fa != null)
 					{
 						sb.append(Constants.PIPE);

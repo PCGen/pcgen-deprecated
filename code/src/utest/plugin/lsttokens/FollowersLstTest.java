@@ -111,7 +111,7 @@ public class FollowersLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidReversed() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(CompanionList.class, "Follower");
-		assertTrue(token.parse(primaryContext, primaryProf, "4|Follower"));
+		assertTrue(token.parse(primaryContext, primaryProf, "Formula|Follower"));
 		assertFalse(primaryContext.ref.validate());
 	}
 

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -196,10 +197,11 @@ public class FeatToken extends AbstractToken implements AddLstToken
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = choiceChanges.getAdded();
-		if (added == null || added.isEmpty())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				choiceChanges.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
-			// Zero indicates no Token present
+			// Zero indicates no Token
 			return null;
 		}
 		GraphChanges<GrantFactory> grantChanges =
@@ -212,7 +214,7 @@ public class FeatToken extends AbstractToken implements AddLstToken
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : added)
+		for (LSTWriteable lstw : mtl.getKeySet())
 		{
 			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
 			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
@@ -249,8 +251,14 @@ public class FeatToken extends AbstractToken implements AddLstToken
 					// will be done with VFEAT or ABILITY
 					continue;
 				}
-				AssociatedPrereqObject assoc =
-						choiceChanges.getAddedAssociation(lstw);
+				List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
+				if (assocList.size() != 1)
+				{
+					context
+						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
+					return null;
+				}
+				AssociatedPrereqObject assoc = assocList.get(0);
 				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{

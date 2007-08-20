@@ -26,9 +26,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -206,68 +209,70 @@ public class AlteqmodToken extends AbstractToken implements EquipmentLstToken
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		boolean needDot = false;
-		for (LSTWriteable mod : added)
+		TreeSet<String> set = new TreeSet<String>();
+		for (LSTWriteable mod : mtl.getKeySet())
 		{
-			AssociatedPrereqObject assoc = changes.getAddedAssociation(mod);
-			if (needDot)
+			for (AssociatedPrereqObject assoc : mtl.getListFor(mod))
 			{
-				sb.append('.');
-			}
-			needDot = true;
-			sb.append(mod.getLSTformat());
-			if (assoc.hasAssociations())
-			{
-				Collection<AssociationKey<?>> akColl =
-						assoc.getAssociationKeys();
-				akColl.remove(AssociationKey.SOURCE_URI);
-				if (!akColl.isEmpty())
+				StringBuilder sb = new StringBuilder();
+				sb.append(mod.getLSTformat());
+				if (assoc.hasAssociations())
 				{
-					sb.append(Constants.PIPE);
-				}
-				if (akColl.size() == 1)
-				{
-					AssociationKey<?> ak = akColl.iterator().next();
-					if (AssociationKey.ONLY.equals(ak))
+					Collection<AssociationKey<?>> akColl =
+							assoc.getAssociationKeys();
+					akColl.remove(AssociationKey.SOURCE_URI);
+					akColl.remove(AssociationKey.FILE_LOCATION);
+					if (!akColl.isEmpty())
 					{
-						sb.append((String) assoc.getAssociation(ak));
+						sb.append(Constants.PIPE);
 					}
-					else
+					if (akColl.size() == 1)
 					{
-						String st = (String) assoc.getAssociation(ak);
-						sb.append(ak).append('[').append(st).append(']');
-					}
-				}
-				else if (akColl.size() != 0)
-				{
-					TreeMap<String, String> map = new TreeMap<String, String>();
-					for (AssociationKey<?> ak : akColl)
-					{
+						AssociationKey<?> ak = akColl.iterator().next();
 						if (AssociationKey.ONLY.equals(ak))
 						{
-							context.addWriteMessage("Edge Association ONLY is "
-								+ "not valid if more than one association "
-								+ "is required");
-							return null;
+							sb.append((String) assoc.getAssociation(ak));
 						}
-						map.put(ak.toString(), (String) assoc
-							.getAssociation(ak));
+						else
+						{
+							String st = (String) assoc.getAssociation(ak);
+							sb.append(ak).append('[').append(st).append(']');
+						}
 					}
-					for (Entry<String, String> ae : map.entrySet())
+					else if (akColl.size() != 0)
 					{
-						sb.append(ae.getKey()).append('[')
-							.append(ae.getValue()).append(']');
+						TreeMap<String, String> map =
+								new TreeMap<String, String>();
+						for (AssociationKey<?> ak : akColl)
+						{
+							if (AssociationKey.ONLY.equals(ak))
+							{
+								context
+									.addWriteMessage("Edge Association ONLY is "
+										+ "not valid if more than one association "
+										+ "is required");
+								return null;
+							}
+							map.put(ak.toString(), (String) assoc
+								.getAssociation(ak));
+						}
+						for (Entry<String, String> ae : map.entrySet())
+						{
+							sb.append(ae.getKey()).append('[').append(
+								ae.getValue()).append(']');
+						}
 					}
 				}
+				set.add(sb.toString());
 			}
 		}
-		return new String[]{sb.toString()};
+		return new String[] {StringUtil.join(set, Constants.DOT)};
 	}
 }

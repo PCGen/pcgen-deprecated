@@ -22,15 +22,14 @@
 package plugin.lsttokens.template;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
@@ -50,7 +49,6 @@ import pcgen.persistence.GraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -169,48 +167,46 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		HashMapToList<Set<Prerequisite>, LSTWriteable> m =
+		MapToList<Set<Prerequisite>, LSTWriteable> m =
 				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : added)
+		for (LSTWriteable ab : mtl.getKeySet())
 		{
-			AssociatedPrereqObject assoc = changes.getAddedAssociation(ab);
-			AbilityNature an =
-					assoc.getAssociation(AssociationKey.ABILITY_NATURE);
-			if (!AbilityNature.NORMAL.equals(an))
+			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 			{
-				context.addWriteMessage("Abilities awarded by "
-					+ getTokenName() + " must be of NORMAL AbilityNature");
-				return null;
+				AbilityNature an =
+						assoc.getAssociation(AssociationKey.ABILITY_NATURE);
+				if (!AbilityNature.NORMAL.equals(an))
+				{
+					context.addWriteMessage("Abilities awarded by "
+						+ getTokenName() + " must be of NORMAL AbilityNature");
+					return null;
+				}
+				if (!AbilityCategory.FEAT
+					.equals(((CategorizedCDOMReference<Ability>) ab)
+						.getCDOMCategory()))
+				{
+					context.addWriteMessage("Abilities awarded by "
+						+ getTokenName() + " must be of CATEGORY FEAT");
+					return null;
+				}
+				m.addToListFor(new HashSet<Prerequisite>(assoc
+					.getPrerequisiteList()), ab);
 			}
-			if (!AbilityCategory.FEAT
-				.equals(((CategorizedCDOMReference<Ability>) ab)
-					.getCDOMCategory()))
-			{
-				context.addWriteMessage("Abilities awarded by "
-					+ getTokenName() + " must be of CATEGORY FEAT");
-				return null;
-			}
-			m.addToListFor(new HashSet<Prerequisite>(assoc
-				.getPrerequisiteList()), ab);
 		}
 
-		SortedSet<LSTWriteable> set =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
-
 		Set<String> list = new TreeSet<String>();
-
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			List<LSTWriteable> abilities = m.getListFor(prereqs);
-			set.clear();
-			set.addAll(abilities);
-			String ab = ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
+			String ab =
+					ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+						Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				ab =

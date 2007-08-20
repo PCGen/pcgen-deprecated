@@ -22,10 +22,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import pcgen.base.graph.core.DirectionalEdge;
+import pcgen.base.io.FileLocationFactory;
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.MapToList;
+import pcgen.base.util.TreeMapToList;
+import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMObject;
@@ -55,6 +58,8 @@ public class EditorGraphContext implements GraphContext
 
 	private URI extractURI;
 
+	private FileLocationFactory locFac = new FileLocationFactory();
+	
 	public EditorGraphContext(PCGenGraph pgg)
 	{
 		graph = pgg;
@@ -64,6 +69,7 @@ public class EditorGraphContext implements GraphContext
 	{
 		URI oldURI = sourceURI;
 		sourceURI = source;
+		locFac.newFile();
 		return oldURI;
 	}
 
@@ -128,6 +134,7 @@ public class EditorGraphContext implements GraphContext
 		graph.addNode(node);
 		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(obj, node, sourceToken);
 		edge.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
+		edge.setAssociation(AssociationKey.FILE_LOCATION, locFac.getFileLocation());
 		graph.addEdge(edge);
 		return edge;
 	}
@@ -138,6 +145,7 @@ public class EditorGraphContext implements GraphContext
 		graph.addNode(node);
 		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(obj, node, sourceToken);
 		edge.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
+		edge.setAssociation(AssociationKey.FILE_LOCATION, locFac.getFileLocation());
 		edge.setAssociation(AssociationKey.RETIRED_BY, sourceURI);
 		graph.addEdge(edge);
 	}
@@ -304,13 +312,14 @@ public class EditorGraphContext implements GraphContext
 
 		public Collection<LSTWriteable> getAdded()
 		{
-			Set<LSTWriteable> set =
-					new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
+			Collection<LSTWriteable> coll =
+					new WeightedCollection<LSTWriteable>(
+						TokenUtilities.WRITEABLE_SORTER);
 			List<PCGraphEdge> outwardEdgeList =
 					graph.getOutwardEdgeList(source);
 			if (outwardEdgeList == null)
 			{
-				return set;
+				return coll;
 			}
 			for (PCGraphEdge edge : outwardEdgeList)
 			{
@@ -344,7 +353,7 @@ public class EditorGraphContext implements GraphContext
 					if (childClass.isAssignableFrom(node.getClass()))
 					{
 						// TODO Can the edge actually return an LSTWriteable?
-						set.add((LSTWriteable) node);
+						coll.add((LSTWriteable) node);
 						break;
 					}
 					else if (node instanceof CDOMReference)
@@ -352,51 +361,85 @@ public class EditorGraphContext implements GraphContext
 						CDOMReference<?> cdr = (CDOMReference) node;
 						if (cdr.getReferenceClass().equals(childClass))
 						{
-							set.add((LSTWriteable) node);
+							coll.add((LSTWriteable) node);
 							break;
 						}
 					}
 				}
 			}
-			return set;
+			return coll;
 		}
 
-		public AssociatedPrereqObject getAddedAssociation(LSTWriteable added)
+		public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations()
 		{
-			List<PCGraphEdge> outwardEdgeList =
-					graph.getOutwardEdgeList(source);
-			for (PCGraphEdge edge : outwardEdgeList)
-			{
-				if (added.equals(edge.getNodeAt(1)))
-				{
-					if (extractURI != null)
-					{
-						if (!extractURI.equals(edge
-							.getAssociation(AssociationKey.SOURCE_URI)))
-						{
-							continue;
-						}
-					}
-					Boolean irrel = edge.getAssociation(AssociationKey.IRRELEVANT);
-					if (irrel != null && irrel.booleanValue())
-					{
-						continue;
-					}
-					return edge;
-				}
-			}
-			return null;
-		}
-
-		public Collection<LSTWriteable> getRemoved()
-		{
-			Set<LSTWriteable> set =
-					new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
+			TreeMapToList<LSTWriteable, AssociatedPrereqObject> coll =
+				new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
+					TokenUtilities.WRITEABLE_SORTER);
 			List<PCGraphEdge> outwardEdgeList =
 					graph.getOutwardEdgeList(source);
 			if (outwardEdgeList == null)
 			{
-				return set;
+				return coll;
+			}
+			for (PCGraphEdge edge : outwardEdgeList)
+			{
+				if (!edge.getSourceToken().equals(token))
+				{
+					continue;
+				}
+				if (edge.getAssociation(AssociationKey.RETIRED_BY) != null)
+				{
+					continue;
+				}
+				Boolean irrel = edge.getAssociation(AssociationKey.IRRELEVANT);
+				if (irrel != null && irrel.booleanValue())
+				{
+					continue;
+				}
+				if (extractURI != null)
+				{
+					if (!extractURI.equals(edge
+						.getAssociation(AssociationKey.SOURCE_URI)))
+					{
+						continue;
+					}
+				}
+				for (PrereqObject node : edge.getAdjacentNodes())
+				{
+					if (edge.getNodeInterfaceType(node) != DirectionalEdge.SINK)
+					{
+						continue;
+					}
+					if (childClass.isAssignableFrom(node.getClass()))
+					{
+						// TODO Can the edge actually return an LSTWriteable?
+						coll.addToListFor((LSTWriteable) node, edge);
+						break;
+					}
+					else if (node instanceof CDOMReference)
+					{
+						CDOMReference<?> cdr = (CDOMReference) node;
+						if (cdr.getReferenceClass().equals(childClass))
+						{
+							coll.addToListFor((LSTWriteable) node, edge);
+							break;
+						}
+					}
+				}
+			}
+			return coll;
+		}
+
+		public Collection<LSTWriteable> getRemoved()
+		{
+			Collection<LSTWriteable> coll =
+					new WeightedCollection<LSTWriteable>(
+						TokenUtilities.WRITEABLE_SORTER);
+			List<PCGraphEdge> outwardEdgeList =
+					graph.getOutwardEdgeList(source);
+			if (outwardEdgeList == null)
+			{
+				return coll;
 			}
 			for (PCGraphEdge edge : outwardEdgeList)
 			{
@@ -430,7 +473,7 @@ public class EditorGraphContext implements GraphContext
 					if (childClass.isAssignableFrom(node.getClass()))
 					{
 						// TODO Can the edge actually return an LSTWriteable?
-						set.add((LSTWriteable) node);
+						coll.add((LSTWriteable) node);
 						break;
 					}
 					else if (node instanceof CDOMReference)
@@ -438,16 +481,16 @@ public class EditorGraphContext implements GraphContext
 						CDOMReference<?> cdr = (CDOMReference) node;
 						if (cdr.getReferenceClass().equals(childClass))
 						{
-							set.add((LSTWriteable) node);
+							coll.add((LSTWriteable) node);
 							break;
 						}
 					}
 				}
 			}
-			return set;
+			return coll;
 		}
 
-		public AssociatedPrereqObject getRemovedAssociation(LSTWriteable added)
+		public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations()
 		{
 			return null;
 		}
@@ -552,5 +595,10 @@ public class EditorGraphContext implements GraphContext
 		{
 			return globalRemoveSet.containsInList(extractURI, source, token);
 		}
+	}
+
+	public void setLine(int i)
+	{
+		locFac.setLine(i);
 	}
 }

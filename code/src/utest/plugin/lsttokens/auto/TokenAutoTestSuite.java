@@ -24,7 +24,7 @@ import junit.framework.TestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ArmorProfTokenTest.class, EquipTokenTest.class,
-	ShieldProfTokenTest.class, WeaponProfTokenTest.class})
+	FeatTokenTest.class, ShieldProfTokenTest.class, WeaponProfTokenTest.class})
 public class TokenAutoTestSuite extends TestSuite
 {
 	// No contents, see annotations

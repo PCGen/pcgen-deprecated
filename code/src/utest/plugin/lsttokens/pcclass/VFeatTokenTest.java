@@ -205,4 +205,45 @@ public class VFeatTokenTest extends AbstractListTokenTestCase<PObject, Ability>
 		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1", "TestWP2");
 	}
 
+	@Test
+	public void testRoundRobinDupe() throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|TestWP1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeOnePrereq() throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeDiffPrereqs()
+			throws PersistenceLayerException {
+		System.err.println("=");
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1", "TestWP1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeTwoDiffPrereqs()
+			throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human",
+				"TestWP2|TestWP2|PRERACE:1,Elf");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
 }

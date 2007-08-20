@@ -21,6 +21,8 @@ import org.junit.Test;
 
 import pcgen.core.PCTemplate;
 import pcgen.core.ArmorProf;
+import pcgen.core.PObject;
+import pcgen.persistence.lst.LstLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 
@@ -55,6 +57,18 @@ public class ArmorProfTokenTest extends AbstractAutoTokenTestCase
 		return PCTemplate.class;
 	}
 
+	@Override
+	protected boolean isTypeLegal()
+	{
+		return true;
+	}
+	
+	@Override
+	protected boolean isPrereqLegal()
+	{
+		return true;
+	}
+	
 	@Test
 	public void dummyTest()
 	{

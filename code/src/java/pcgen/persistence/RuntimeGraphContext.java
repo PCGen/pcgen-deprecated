@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import pcgen.base.graph.core.DirectionalEdge;
+import pcgen.base.io.FileLocationFactory;
 import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
@@ -45,6 +46,8 @@ public class RuntimeGraphContext implements GraphContext
 
 	private URI extractURI;
 
+	private FileLocationFactory locFac = new FileLocationFactory();
+
 	public RuntimeGraphContext(PCGenGraph pgg)
 	{
 		graph = pgg;
@@ -54,6 +57,7 @@ public class RuntimeGraphContext implements GraphContext
 	{
 		URI oldURI = sourceURI;
 		sourceURI = source;
+		locFac.newFile();
 		return oldURI;
 	}
 
@@ -118,26 +122,8 @@ public class RuntimeGraphContext implements GraphContext
 		graph.addNode(node);
 		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(obj, node, sourceToken);
 		edge.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
-		/*
-		 * TODO In order to allow certain behavior, such as FEAT:Foo|Foo
-		 * (awarding a feat twice from the same object), one MUST store into the
-		 * edge (1) The source [already done], (2) The source line (protects
-		 * against MODs and multiple tokens doing the grant) (3) The source
-		 * column (protects against a single line having multiple tokens doing
-		 * the grant) and (4) The request count [the count of objects granted by
-		 * the token located in the given source on the given line at the given
-		 * column].
-		 * 
-		 * By doing this method (of making the instance local only to the token
-		 * instance at a given line and column, one can keep thread safe loading
-		 * (order independent)) while allowing multiple semi-identical edge
-		 * instances.
-		 * 
-		 * Actually the question should be: What is the value of line and column
-		 * in this case - can't the source request count simple be based on the
-		 * URL and still allow thread-safe loading of different files by
-		 * different loaders in parallel?
-		 */
+		edge.setAssociation(AssociationKey.FILE_LOCATION, locFac
+			.getFileLocation());
 		graph.addEdge(edge);
 		return edge;
 	}
@@ -265,5 +251,10 @@ public class RuntimeGraphContext implements GraphContext
 			}
 		}
 		return null;
+	}
+
+	public void setLine(int i)
+	{
+		locFac.setLine(i);
 	}
 }

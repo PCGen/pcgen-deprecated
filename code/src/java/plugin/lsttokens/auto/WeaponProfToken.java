@@ -19,15 +19,13 @@ package plugin.lsttokens.auto;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMReference;
@@ -180,34 +178,39 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		HashMapToList<Set<Prerequisite>, LSTWriteable> m =
 				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : added)
+		for (LSTWriteable ab : mtl.getKeySet())
 		{
-			AssociatedPrereqObject assoc = changes.getAddedAssociation(ab);
+			List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
+			if (assocList.size() != 1)
+			{
+				context
+					.addWriteMessage("Only one Association to a CHOOSE can be made per object");
+				return null;
+			}
+			AssociatedPrereqObject assoc = assocList.get(0);
 			m.addToListFor(new HashSet<Prerequisite>(assoc
 				.getPrerequisiteList()), ab);
 		}
 
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<LSTWriteable> set =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 
 		String[] array = new String[m.size()];
 		int index = 0;
 
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			List<LSTWriteable> profs = m.getListFor(prereqs);
-			set.clear();
-			set.addAll(profs);
-			String ab = ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
+			String ab =
+				ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+					Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				if (prereqs.size() > 1)

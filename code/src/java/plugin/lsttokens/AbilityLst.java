@@ -24,20 +24,20 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -55,7 +55,6 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
@@ -179,8 +178,10 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 				{
 					if (isPre)
 					{
-						Logging.errorPrint("Invalid " + getTokenName() + ": " + aValue);
-						Logging.errorPrint("  PRExxx must be at the END of the Token");
+						Logging.errorPrint("Invalid " + getTokenName() + ": "
+							+ aValue);
+						Logging
+							.errorPrint("  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					abilityList.add(key);
@@ -282,25 +283,26 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		DoubleKeyMapToList<AbilityNature, Category<Ability>, LSTWriteable> m =
 				new DoubleKeyMapToList<AbilityNature, Category<Ability>, LSTWriteable>();
-		for (LSTWriteable ab : added)
+		for (LSTWriteable ab : mtl.getKeySet())
 		{
-			AssociatedPrereqObject assoc = changes.getAddedAssociation(ab);
-			AbilityNature nature =
-					assoc.getAssociation(AssociationKey.ABILITY_NATURE);
-			m.addToListFor(nature, ((CategorizedCDOMReference<Ability>) ab)
-				.getCDOMCategory(), ab);
+			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
+			{
+				AbilityNature nature =
+						assoc.getAssociation(AssociationKey.ABILITY_NATURE);
+				m.addToListFor(nature, ((CategorizedCDOMReference<Ability>) ab)
+					.getCDOMCategory(), ab);
+			}
 		}
 
-		SortedSet<LSTWriteable> set =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 		Set<String> returnSet = new TreeSet<String>();
 		for (AbilityNature nature : m.getKeySet())
 		{
@@ -308,13 +310,9 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 			{
 				StringBuilder sb = new StringBuilder();
 				sb.append(category).append(Constants.PIPE);
-				sb.append(nature);
-				set.clear();
-				set.addAll(m.getListFor(nature, category));
-				for (LSTWriteable a : set)
-				{
-					sb.append(Constants.PIPE).append(a.getLSTformat());
-				}
+				sb.append(nature).append(Constants.PIPE);
+				sb.append(ReferenceUtilities.joinLstFormat(m.getListFor(nature,
+					category), Constants.PIPE));
 				returnSet.add(sb.toString());
 			}
 		}

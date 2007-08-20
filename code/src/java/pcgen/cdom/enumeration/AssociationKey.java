@@ -29,6 +29,7 @@ import java.net.URI;
 import java.util.Map;
 
 import pcgen.base.formula.Formula;
+import pcgen.base.io.FileLocation;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMObject;
 
@@ -120,6 +121,9 @@ public final class AssociationKey<T>
 
 	public static final AssociationKey<Boolean> IRRELEVANT =
 			new AssociationKey<Boolean>();
+
+	public static final AssociationKey<FileLocation> FILE_LOCATION =
+		new AssociationKey<FileLocation>();
 
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 

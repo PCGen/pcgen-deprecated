@@ -38,20 +38,22 @@ import plugin.pretokens.writer.PreClassWriter;
 import plugin.pretokens.writer.PreRaceWriter;
 
 public class FeatTokenTest extends
-		AbstractListTokenTestCase<PCTemplate, Ability>
-{
+		AbstractListTokenTestCase<PCTemplate, Ability> {
 	static FeatToken token = new FeatToken();
+
 	static PCTemplateLoader loader = new PCTemplateLoader();
 
 	PreClassParser preclass = new PreClassParser();
+
 	PreClassWriter preclasswriter = new PreClassWriter();
+
 	PreRaceParser prerace = new PreRaceParser();
+
 	PreRaceWriter preracewriter = new PreRaceWriter();
 
 	@Override
 	@Before
-	public void setUp() throws PersistenceLayerException, URISyntaxException
-	{
+	public void setUp() throws PersistenceLayerException, URISyntaxException {
 		super.setUp();
 		TokenRegistration.register(preclass);
 		TokenRegistration.register(preclasswriter);
@@ -60,147 +62,167 @@ public class FeatTokenTest extends
 	}
 
 	@Override
-	public char getJoinCharacter()
-	{
+	public char getJoinCharacter() {
 		return '|';
 	}
 
 	@Override
-	public Class<Ability> getTargetClass()
-	{
+	public Class<Ability> getTargetClass() {
 		return Ability.class;
 	}
 
 	@Override
-	public boolean isTypeLegal()
-	{
+	public boolean isTypeLegal() {
 		return false;
 	}
 
 	@Override
-	public boolean isAllLegal()
-	{
+	public boolean isAllLegal() {
 		return false;
 	}
 
 	@Override
-	public boolean isClearDotLegal()
-	{
+	public boolean isClearDotLegal() {
 		return false;
 	}
 
 	@Override
-	public boolean isClearLegal()
-	{
+	public boolean isClearLegal() {
 		return false;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
-	{
+	public Class<PCTemplate> getCDOMClass() {
 		return PCTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
-	{
+	public LstObjectFileLoader<PCTemplate> getLoader() {
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCTemplate> getToken()
-	{
+	public CDOMToken<PCTemplate> getToken() {
 		return token;
 	}
 
 	@Override
-	protected void construct(LoadContext loadContext, String one)
-	{
+	protected void construct(LoadContext loadContext, String one) {
 		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
 		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
 	}
 
 	@Test
-	public void testInvalidInputEmpty()
-	{
+	public void testInvalidInputEmpty() {
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
-	public void testInvalidInputOnlyPre()
-	{
+	public void testInvalidInputOnlyPre() {
 		construct(primaryContext, "TestWP1");
-		try
-		{
+		try {
 			assertFalse(token.parse(primaryContext, primaryProf,
-				"PRECLASS:1,Fighter=1"));
-		}
-		catch (IllegalArgumentException e)
-		{
+					"PRECLASS:1,Fighter=1"));
+		} catch (IllegalArgumentException e) {
 			// this is okay too :)
 		}
 		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
-	public void testInvalidInputEmbeddedPre()
-	{
+	public void testInvalidInputEmbeddedPre() {
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
-			"TestWP1|PRECLASS:1,Fighter=1|TestWP2"));
+				"TestWP1|PRECLASS:1,Fighter=1|TestWP2"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
-	public void testInvalidInputDoublePipePre()
-	{
+	public void testInvalidInputDoublePipePre() {
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
-			"TestWP1||PRECLASS:1,Fighter=1"));
+				"TestWP1||PRECLASS:1,Fighter=1"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
-	public void testInvalidInputPostPrePipe()
-	{
+	public void testInvalidInputPostPrePipe() {
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
-			"TestWP1|PRECLASS:1,Fighter=1|"));
+				"TestWP1|PRECLASS:1,Fighter=1|"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
 	@Test
-	public void testRoundRobinPre() throws PersistenceLayerException
-	{
+	public void testRoundRobinPre() throws PersistenceLayerException {
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1");
 	}
 
 	@Test
-	public void testRoundRobinTwoPre() throws PersistenceLayerException
-	{
+	public void testRoundRobinTwoPre() throws PersistenceLayerException {
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|!PRERACE:1,Human|PRECLASS:1,Fighter=1");
 	}
 
 	@Test
-	public void testRoundRobinNotPre() throws PersistenceLayerException
-	{
+	public void testRoundRobinNotPre() throws PersistenceLayerException {
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|!PRECLASS:1,Fighter=1");
 	}
 
 	@Test
-	public void testRoundRobinWWoPre() throws PersistenceLayerException
-	{
+	public void testRoundRobinWWoPre() throws PersistenceLayerException {
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1", "TestWP2");
+	}
+
+	@Test
+	public void testRoundRobinDupe() throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|TestWP1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeOnePrereq() throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeDiffPrereqs()
+			throws PersistenceLayerException {
+		System.err.println("=");
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1", "TestWP1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeTwoDiffPrereqs()
+			throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human",
+				"TestWP2|TestWP2|PRERACE:1,Elf");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
 	}
 }

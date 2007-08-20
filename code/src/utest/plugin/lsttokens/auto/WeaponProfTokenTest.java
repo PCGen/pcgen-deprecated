@@ -55,6 +55,18 @@ public class WeaponProfTokenTest extends AbstractAutoTokenTestCase
 		return PCTemplate.class;
 	}
 
+	@Override
+	protected boolean isTypeLegal()
+	{
+		return true;
+	}
+	
+	@Override
+	protected boolean isPrereqLegal()
+	{
+		return true;
+	}
+	
 	@Test
 	public void dummyTest()
 	{

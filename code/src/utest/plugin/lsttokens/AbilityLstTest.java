@@ -191,4 +191,74 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 		secondaryContext.ref.reassociateReference(ac, ab);
 		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil2", "NEWCAT|VIRTUAL|Abil3|Abil4");
 	}
+
+	@Test
+	public void testRoundRobinDupe() throws PersistenceLayerException
+	{
+		Ability ab =
+				primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeDiffNature() throws PersistenceLayerException
+	{
+		Ability ab =
+				primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		runRoundRobin("FEAT|NORMAL|Abil1", "FEAT|VIRTUAL|Abil1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	// @Test
+	// public void testRoundRobinDupeOnePrereq() throws
+	// PersistenceLayerException
+	// {
+	// Ability ab =
+	// primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+	// ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+	// runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1|PRERACE:1,Human");
+	// assertTrue(primaryContext.ref.validate());
+	// assertTrue(secondaryContext.ref.validate());
+	// }
+	//	
+	// @Test
+	// public void testRoundRobinDupeDiffPrereqs()
+	// throws PersistenceLayerException
+	// {
+	// Ability ab =
+	// primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+	// ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+	// runRoundRobin("FEAT|VIRTUAL|Abil1",
+	// "FEAT|VIRTUAL|Abil1|PRERACE:1,Human");
+	// assertTrue(primaryContext.ref.validate());
+	// assertTrue(secondaryContext.ref.validate());
+	// }
+	//
+	// @Test
+	// public void testRoundRobinDupeTwoDiffPrereqs()
+	// throws PersistenceLayerException
+	// {
+	// Ability ab =
+	// primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+	// ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+	// runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1|PRERACE:1,Elf",
+	// "FEAT|VIRTUAL|Abil1|PRERACE:1,Human");
+	// assertTrue(primaryContext.ref.validate());
+	// assertTrue(secondaryContext.ref.validate());
+	// }
 }

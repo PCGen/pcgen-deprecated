@@ -2,6 +2,7 @@ package pcgen.persistence;
 
 import java.util.Collection;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.LSTWriteable;
 
@@ -17,8 +18,8 @@ public interface GraphChanges<T>
 
 	public Collection<LSTWriteable> getRemoved();
 
-	public AssociatedPrereqObject getAddedAssociation(LSTWriteable added);
+	public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations();
 
-	public AssociatedPrereqObject getRemovedAssociation(LSTWriteable added);
+	public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations();
 
 }

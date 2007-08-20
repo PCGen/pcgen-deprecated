@@ -431,14 +431,14 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	public void testRoundRobinCountLimitedReducing()
 		throws PersistenceLayerException
 	{
-		this.runRoundRobin("25%-1|Any=100");
+		this.runRoundRobin("25%UNLIM|Any=100");
 	}
 
 	@Test
 	public void testRoundRobinCountLimitedCursedAdding()
 		throws PersistenceLayerException
 	{
-		this.runRoundRobin("-35%-1|Any=100");
+		this.runRoundRobin("-35%UNLIM|Any=100");
 	}
 
 	@Test
@@ -451,20 +451,20 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	@Test
 	public void testRoundRobinTypeUnlimited() throws PersistenceLayerException
 	{
-		this.runRoundRobin("-1");
+		this.runRoundRobin("UNLIM");
 	}
 
 	@Test
 	public void testRoundRobinTypeCountLimited()
 		throws PersistenceLayerException
 	{
-		this.runRoundRobin("-1|Any=100");
+		this.runRoundRobin("UNLIM|Any=100");
 	}
 
 	@Test
 	public void testRoundRobinTypeComplexWeightUnlimited()
 		throws PersistenceLayerException
 	{
-		this.runRoundRobin("-1|Total=10|Paper=10|Scroll=10");
+		this.runRoundRobin("UNLIM|Total=10|Paper=10|Scroll=10");
 	}
 }

@@ -23,16 +23,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.EquipmentNature;
 import pcgen.cdom.factory.GrantFactory;
@@ -190,53 +190,32 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		{
 			return null;
 		}
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
+		{
+			// Zero indicates no Token
+			return null;
+		}
 		HashMapToList<Set<Prerequisite>, LSTWriteable> m =
 				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable lstw : changes.getAdded())
+		for (LSTWriteable lstw : mtl.getKeySet())
 		{
-			AssociatedPrereqObject assoc = changes.getAddedAssociation(lstw);
-			m.addToListFor(new HashSet<Prerequisite>(assoc
-				.getPrerequisiteList()), lstw);
+			for (AssociatedPrereqObject assoc : mtl.getListFor(lstw))
+			{
+				m.addToListFor(new HashSet<Prerequisite>(assoc
+					.getPrerequisiteList()), lstw);
+			}
 		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		TreeMap<LSTWriteable, Integer> map =
-				new TreeMap<LSTWriteable, Integer>(
-					TokenUtilities.WRITEABLE_SORTER);
 
 		String[] array = new String[m.size()];
 		int index = 0;
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			map.clear();
-			for (LSTWriteable lstw : m.getListFor(prereqs))
-			{
-				Integer existing = map.get(lstw);
-				if (existing == null)
-				{
-					existing = Integer.valueOf(1);
-				}
-				else
-				{
-					existing = Integer.valueOf(existing.intValue() + 1);
-				}
-				map.put(lstw, existing);
-				System.err.println(map);
-			}
 			StringBuilder sb = new StringBuilder();
-			boolean needPipe = false;
-			for (Entry<LSTWriteable, Integer> me : map.entrySet())
-			{
-				String lstFormat = me.getKey().getLSTformat();
-				for (int i = 0; i < me.getValue().intValue(); i++)
-				{
-					if (needPipe)
-					{
-						sb.append(Constants.PIPE);
-					}
-					needPipe = true;
-					sb.append(lstFormat);
-				}
-			}
+			sb.append(ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+				Constants.PIPE));
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				if (prereqs.size() > 1)

@@ -17,10 +17,13 @@
  */
 package plugin.lsttokens;
 
+import org.junit.Test;
+
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.core.Ability;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
@@ -91,5 +94,48 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 	{
 		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
 		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
+	}
+
+
+	@Test
+	public void testRoundRobinDupe() throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|TestWP1");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeOnePrereq() throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeDiffPrereqs()
+			throws PersistenceLayerException {
+		System.err.println("=");
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1", "TestWP1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeTwoDiffPrereqs()
+			throws PersistenceLayerException {
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human",
+				"TestWP2|TestWP2|PRERACE:1,Elf");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
 	}
 }

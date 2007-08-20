@@ -461,6 +461,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 			firstToken = line.substring(0, sepLoc);
 		}
 
+		context.setLine(currentLineNumber);
 		// check for comments, copies, mods, and forgets
 		if ((line.length() == 0)
 			|| (line.charAt(0) == LstFileLoader.LINE_COMMENT_CHAR))

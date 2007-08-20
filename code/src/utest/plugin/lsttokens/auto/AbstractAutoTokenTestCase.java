@@ -62,6 +62,12 @@ public abstract class AbstractAutoTokenTestCase extends
 
 	protected abstract <T extends PObject> Class<T> getSubTokenType();
 
+	// protected abstract boolean isAnyLegal();
+
+	protected abstract boolean isTypeLegal();
+
+	protected abstract boolean isPrereqLegal();
+
 	public String getSubTokenString()
 	{
 		return getSubToken().getTokenName();
@@ -106,71 +112,95 @@ public abstract class AbstractAutoTokenTestCase extends
 	@Test
 	public void testInvalidInputTypeEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TYPE="));
-		assertTrue(primaryGraph.isEmpty());
+		if (isTypeLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TYPE="));
+			assertTrue(primaryGraph.isEmpty());
+		}
 	}
 
 	@Test
 	public void testInvalidInputTypeUnterminated()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TYPE=One."));
-		assertTrue(primaryGraph.isEmpty());
+		if (isTypeLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TYPE=One."));
+			assertTrue(primaryGraph.isEmpty());
+		}
 	}
 
 	@Test
 	public void testInvalidInputTypeDoubleSeparator()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TYPE=One..Two"));
-		assertTrue(primaryGraph.isEmpty());
+		if (isTypeLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TYPE=One..Two"));
+			assertTrue(primaryGraph.isEmpty());
+		}
 	}
 
 	@Test
 	public void testInvalidInputTypeFalseStart()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TYPE=.One"));
-		assertTrue(primaryGraph.isEmpty());
+		if (isTypeLegal())
+		{
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TYPE=.One"));
+			assertTrue(primaryGraph.isEmpty());
+		}
 	}
 
-	@Test
-	public void testInvalidInputAnyItem() throws PersistenceLayerException
-	{
-		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|ANY|TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
-	}
-
-	@Test
-	public void testInvalidInputItemAny() throws PersistenceLayerException
-	{
-		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1|ANY"));
-		assertTrue(primaryGraph.isEmpty());
-	}
-
-	@Test
-	public void testInvalidInputAnyType() throws PersistenceLayerException
-	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|ANY|TYPE=TestType"));
-		assertTrue(primaryGraph.isEmpty());
-	}
-
-	@Test
-	public void testInvalidInputTypeAny() throws PersistenceLayerException
-	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TYPE=TestType|ANY"));
-		assertTrue(primaryGraph.isEmpty());
-	}
+	// @Test
+	// public void testInvalidInputAnyItem() throws PersistenceLayerException
+	// {
+	// if (isAnyLegal())
+	// {
+	// construct(primaryContext, "TestWP1");
+	// assertFalse(getToken().parse(primaryContext, primaryProf,
+	// getSubTokenString() + "|ANY|TestWP1"));
+	// assertTrue(primaryGraph.isEmpty());
+	// }
+	// }
+	//
+	// @Test
+	// public void testInvalidInputItemAny() throws PersistenceLayerException
+	// {
+	// if (isAnyLegal())
+	// {
+	// construct(primaryContext, "TestWP1");
+	// assertFalse(getToken().parse(primaryContext, primaryProf,
+	// getSubTokenString() + "|TestWP1|ANY"));
+	// assertTrue(primaryGraph.isEmpty());
+	// }
+	// }
+	//
+	// @Test
+	// public void testInvalidInputAnyType() throws PersistenceLayerException
+	// {
+	// if (isTypeLegal() && isAnyLegal())
+	// {
+	// assertFalse(getToken().parse(primaryContext, primaryProf,
+	// getSubTokenString() + "|ANY|TYPE=TestType"));
+	// assertTrue(primaryGraph.isEmpty());
+	// }
+	// }
+	//
+	// @Test
+	// public void testInvalidInputTypeAny() throws PersistenceLayerException
+	// {
+	// if (isTypeLegal() && isAnyLegal())
+	// {
+	// assertFalse(getToken().parse(primaryContext, primaryProf,
+	// getSubTokenString() + "|TYPE=TestType|ANY"));
+	// assertTrue(primaryGraph.isEmpty());
+	// }
+	// }
 
 	// FIXME Need to implement!
 	// @Test
@@ -184,20 +214,26 @@ public abstract class AbstractAutoTokenTestCase extends
 	@Test
 	public void testInvalidEmptyPrereq() throws PersistenceLayerException
 	{
-		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1[]"));
-		assertTrue(primaryGraph.isEmpty());
+		if (isPrereqLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TestWP1[]"));
+			assertTrue(primaryGraph.isEmpty());
+		}
 	}
 
 	@Test
 	public void testInvalidUnterminatedPrereq()
 		throws PersistenceLayerException
 	{
-		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1[PRERACE:1,Human"));
-		assertTrue(primaryGraph.isEmpty());
+		if (isPrereqLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TestWP1[PRERACE:1,Human"));
+			assertTrue(primaryGraph.isEmpty());
+		}
 	}
 
 	@Test
@@ -242,39 +278,50 @@ public abstract class AbstractAutoTokenTestCase extends
 	public void testInvalidInputCheckTypeEqualLength()
 		throws PersistenceLayerException
 	{
-		// Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't
-		// consume the |
-		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1|TYPE=TestType|TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		if (isTypeLegal())
+		{
+			// Explicitly do NOT build TestWP2 (this checks that the TYPE=
+			// doesn't
+			// consume the |
+			construct(primaryContext, "TestWP1");
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TestWP1|TYPE=TestType|TestWP2"));
+			assertFalse(primaryContext.ref.validate());
+		}
 	}
 
 	@Test
 	public void testInvalidInputCheckTypeDotLength()
 		throws PersistenceLayerException
 	{
-		// Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't
-		// consume the |
-		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(
-			primaryContext,
-			primaryProf,
-			getSubTokenString()
-				+ "|TestWP1|TYPE.TestType.OtherTestType|TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		if (isTypeLegal())
+		{
+			// Explicitly do NOT build TestWP2 (this checks that the TYPE=
+			// doesn't
+			// consume the |
+			construct(primaryContext, "TestWP1");
+			assertTrue(getToken().parse(
+				primaryContext,
+				primaryProf,
+				getSubTokenString()
+					+ "|TestWP1|TYPE.TestType.OtherTestType|TestWP2"));
+			assertFalse(primaryContext.ref.validate());
+		}
 	}
 
 	@Test
 	public void testInvalidEmbeddedPrereq() throws PersistenceLayerException
 	{
-		construct(primaryContext, "TestWP1");
-		construct(secondaryContext, "TestWP1");
-		construct(primaryContext, "TestWP2");
-		construct(secondaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1[PRERACE:1,Human]|TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		if (isPrereqLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP2");
+			assertFalse(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TestWP1[PRERACE:1,Human]|TestWP2"));
+			assertTrue(primaryGraph.isEmpty());
+		}
 	}
 
 	@Test
@@ -288,21 +335,24 @@ public abstract class AbstractAutoTokenTestCase extends
 		assertTrue(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1|TestWP2"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TYPE=TestType"));
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TYPE.TestType"));
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|TestWP1|TestWP2|TYPE=TestType"));
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(
-			primaryContext,
-			primaryProf,
-			getSubTokenString()
-				+ "|TestWP1|TestWP2|TYPE=TestType.OtherTestType"));
-		assertTrue(primaryContext.ref.validate());
+		if (isTypeLegal())
+		{
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TYPE=TestType"));
+			assertTrue(primaryContext.ref.validate());
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TYPE.TestType"));
+			assertTrue(primaryContext.ref.validate());
+			assertTrue(getToken().parse(primaryContext, primaryProf,
+				getSubTokenString() + "|TestWP1|TestWP2|TYPE=TestType"));
+			assertTrue(primaryContext.ref.validate());
+			assertTrue(getToken().parse(
+				primaryContext,
+				primaryProf,
+				getSubTokenString()
+					+ "|TestWP1|TestWP2|TYPE=TestType.OtherTestType"));
+			assertTrue(primaryContext.ref.validate());
+		}
 	}
 
 	@Test
@@ -320,13 +370,16 @@ public abstract class AbstractAutoTokenTestCase extends
 	@Test
 	public void testRoundRobinOnePrereq() throws PersistenceLayerException
 	{
-		construct(primaryContext, "TestWP1");
-		construct(primaryContext, "TestWP2");
-		construct(secondaryContext, "TestWP1");
-		construct(secondaryContext, "TestWP2");
-		runRoundRobin(getSubTokenString() + "|TestWP1[PRERACE:1,Human]");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
+		if (isPrereqLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP2");
+			runRoundRobin(getSubTokenString() + "|TestWP1[PRERACE:1,Human]");
+			assertTrue(primaryContext.ref.validate());
+			assertTrue(secondaryContext.ref.validate());
+		}
 	}
 
 	@Test
@@ -346,31 +399,40 @@ public abstract class AbstractAutoTokenTestCase extends
 	@Test
 	public void testRoundRobinWithEqualType() throws PersistenceLayerException
 	{
-		construct(primaryContext, "TestWP1");
-		construct(primaryContext, "TestWP2");
-		construct(secondaryContext, "TestWP1");
-		construct(secondaryContext, "TestWP2");
-		runRoundRobin(getSubTokenString()
-			+ "|TestWP1|TestWP2|TYPE=OtherTestType|TYPE=TestType");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
+		if (isTypeLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP2");
+			runRoundRobin(getSubTokenString()
+				+ "|TestWP1|TestWP2|TYPE=OtherTestType|TYPE=TestType");
+			assertTrue(primaryContext.ref.validate());
+			assertTrue(secondaryContext.ref.validate());
+		}
 	}
 
 	@Test
 	public void testRoundRobinTestEquals() throws PersistenceLayerException
 	{
-		runRoundRobin(getSubTokenString() + "|TYPE=TestType");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
+		if (isTypeLegal())
+		{
+			runRoundRobin(getSubTokenString() + "|TYPE=TestType");
+			assertTrue(primaryContext.ref.validate());
+			assertTrue(secondaryContext.ref.validate());
+		}
 	}
 
 	@Test
 	public void testRoundRobinTestEqualThree() throws PersistenceLayerException
 	{
-		runRoundRobin(getSubTokenString()
-			+ "|TYPE=TestAltType.TestThirdType.TestType");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
+		if (isTypeLegal())
+		{
+			runRoundRobin(getSubTokenString()
+				+ "|TYPE=TestAltType.TestThirdType.TestType");
+			assertTrue(primaryContext.ref.validate());
+			assertTrue(secondaryContext.ref.validate());
+		}
 	}
 
 	protected void construct(LoadContext loadContext, String one)

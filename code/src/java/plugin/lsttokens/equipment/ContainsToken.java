@@ -268,7 +268,14 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			// CONSIDER ERROR??
 			return null;
 		}
-		sb.append(cap);
+		if (Capacity.UNLIMITED.equals(cap))
+		{
+			sb.append("UNLIM");
+		}
+		else
+		{
+			sb.append(cap);
+		}
 
 		Collection<Capacity> capacityList = changes.getAdded();
 		if (capacityList.size() == 1)

@@ -261,6 +261,10 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 				list.add(lw.getLSTformat());
 			}
 		}
+		if (list.isEmpty())
+		{
+			return null;
+		}
 		return list.toArray(new String[list.size()]);
 	}
 }

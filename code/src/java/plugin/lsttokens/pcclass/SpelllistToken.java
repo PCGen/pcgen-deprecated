@@ -22,11 +22,11 @@
 package plugin.lsttokens.pcclass;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -189,20 +189,27 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
-			// Zero indicates no Token present
+			// Zero indicates no Token
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : added)
+		for (LSTWriteable lstw : mtl.getKeySet())
 		{
 			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
 			if (SPELLLIST_CLASS.equals(cs.getChoiceClass()))
 			{
-				AssociatedPrereqObject assoc =
-						changes.getAddedAssociation(lstw);
+				List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
+				if (assocList.size() != 1)
+				{
+					context
+						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
+					return null;
+				}
+				AssociatedPrereqObject assoc = assocList.get(0);
 				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{

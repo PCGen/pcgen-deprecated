@@ -23,11 +23,11 @@ package plugin.lsttokens.pcclass;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
@@ -195,17 +195,25 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		List<String> list = new ArrayList<String>();
-		for (LSTWriteable ab : added)
+		for (LSTWriteable ab : mtl.getKeySet())
 		{
-			AssociatedPrereqObject assoc = changes.getAddedAssociation(ab);
+			List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
+			if (assocList.size() != 1)
+			{
+				context
+					.addWriteMessage("Only one Association to a CHOOSE can be made per object");
+				return null;
+			}
+			AssociatedPrereqObject assoc = assocList.get(0);
 			StringBuilder sb = new StringBuilder();
 			sb.append(ab.getLSTformat());
 			if (assoc.hasPrerequisites())

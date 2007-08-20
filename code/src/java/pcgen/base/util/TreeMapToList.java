@@ -21,11 +21,12 @@ package pcgen.base.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -35,21 +36,28 @@ import java.util.Set;
  * class).
  * 
  * This class is reference-semantic. In appropriate cases (such as calling the
- * addToListFor method), HashMapToList will maintain a reference to the given
- * Object. HashMapToList will not modify any of the Objects it is passed;
+ * addToListFor method), TreeMapToList will maintain a reference to the given
+ * Object. TreeMapToList will not modify any of the Objects it is passed;
  * however, it reserves the right to return references to Objects it contains to
  * other Objects.
  * 
- * However, when any method in which HashMapToList returns a Collection,
+ * However, when any method in which TreeMapToList returns a Collection,
  * ownership of the Collection itself is transferred to the calling Object, but
  * the contents of the Collection (keys, values, etc.) are references whose
  * ownership should be respected.
+ * 
+ * Note that this sorts keys in the same fashion as TreeMap: according to the
+ * natural order for the key's class (see Comparable), or by the comparator
+ * provided at construction. Thus, the keys in the TreeMapToList must be
+ * Comparable, or a Comparator must be provided. All association cautions with
+ * TreeMap (such as consistent-with-equals operation) must also be observed in
+ * TreeMapToList (see TreeMap)
  * 
  * CAUTION: This is a convenience method for use in Java 1.4 and is not
  * appropriate for use in Java 1.5 (Typed Collections are probably more
  * appropriate)
  */
-public class HashMapToList<K, V> implements MapToList<K, V>
+public class TreeMapToList<K, V> implements MapToList<K, V>
 {
 
 	/**
@@ -57,14 +65,31 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 	 */
 	// TODO FIXME only protected due to .equals ugliness in core, change back w/
 	// new core
-	protected final Map<K, List<V>> mapToList = new HashMap<K, List<V>>();
+	protected final Map<K, List<V>> mapToList;
+	
+	private final Comparator<K> comparator;
 
 	/**
-	 * Creates a new HashMapToList
+	 * Creates a new TreeMapToList
 	 */
-	public HashMapToList()
+	public TreeMapToList()
 	{
-		super();
+		mapToList = new TreeMap<K, List<V>>();
+		comparator = null;
+	}
+
+	/**
+	 * Creates a new TreeMapToList using the given Comparator as the Comparator
+	 * for the underlying TreeSet
+	 * 
+	 * @param comp
+	 *            The Comparator to be used as the Comparator for the keys in
+	 *            this TreeMapToList
+	 */
+	public TreeMapToList(Comparator<K> comp)
+	{
+		mapToList = new TreeMap<K, List<V>>(comp);
+		comparator = comp;
 	}
 
 	/**
@@ -75,7 +100,7 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 	 * strong reference to the key object given as an argument to this method.
 	 * 
 	 * Overuse of this method is discouraged, as it is *not required* to
-	 * initilize a List (the HashMapToList will automatically initialize a List
+	 * initilize a List (the TreeMapToList will automatically initialize a List
 	 * if an object is added to the list for a given key).
 	 * 
 	 * @param key
@@ -379,7 +404,9 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 	{
 		// Need to 'clone' the Set, since Map returns a set that is still
 		// associated with the Map
-		return new HashSet<K>(mapToList.keySet());
+		TreeSet<K> set = new TreeSet<K>(comparator);
+		set.addAll(mapToList.keySet());
+		return set;
 	}
 
 	/**
@@ -396,7 +423,7 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 	 *            be returned
 	 * @return The value in the given location in the list for the given key
 	 * @throws IllegalArgumentException
-	 *             if the given key does not exist in this HashMapToList
+	 *             if the given key does not exist in this TreeMapToList
 	 * @throws IndexOutOfBoundsException
 	 *             if the index is out of range for the list for the given key
 	 *             (index is less than zero OR greater than or equal to the size
@@ -408,13 +435,13 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 		if (subList == null)
 		{
 			throw new IllegalArgumentException(key
-				+ " is not a key in this HashMapToList");
+				+ " is not a key in this TreeMapToList");
 		}
 		return subList.get(i);
 	}
 
 	/**
-	 * Clears this HashMapToList (removes all keys/list combiantions)
+	 * Clears this TreeMapToList (removes all keys/list combiantions)
 	 */
 	public void clear()
 	{

@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import pcgen.base.formula.Formula;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
@@ -137,10 +138,11 @@ public class BonusfeatsToken implements PCTemplateLstToken
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = choiceChanges.getAdded();
-		if (added == null || added.isEmpty())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				choiceChanges.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
-			// Zero indicates no Token present
+			// Zero indicates no Token
 			return null;
 		}
 		GraphChanges<GrantFactory> grantChanges =
@@ -153,7 +155,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : added)
+		for (LSTWriteable lstw : mtl.getKeySet())
 		{
 			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
 			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
@@ -190,8 +192,14 @@ public class BonusfeatsToken implements PCTemplateLstToken
 					// can't handle those here!
 					continue;
 				}
-				AssociatedPrereqObject assoc =
-						choiceChanges.getAddedAssociation(lstw);
+				List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
+				if (assocList.size() != 1)
+				{
+					context
+						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
+					return null;
+				}
+				AssociatedPrereqObject assoc = assocList.get(0);
 				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
@@ -206,5 +214,4 @@ public class BonusfeatsToken implements PCTemplateLstToken
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
 	}
-
 }

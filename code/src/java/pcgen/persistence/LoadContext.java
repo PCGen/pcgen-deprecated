@@ -30,7 +30,7 @@ public class LoadContext
 {
 
 	public final GraphContext graph;
-	
+
 	public final ListContext list;
 
 	public final ReferenceContext ref;
@@ -38,7 +38,7 @@ public class LoadContext
 	public final ObjectContext obj;
 
 	public final GameMode gameMode;
-	
+
 	private final String contextType;
 
 	public LoadContext()
@@ -99,6 +99,7 @@ public class LoadContext
 	{
 		return new ContextQueue(graph);
 	}
+
 	public SizeAdjustment getNextSize(SizeAdjustment size)
 	{
 		// TODO What if null (if this is last?)
@@ -110,10 +111,11 @@ public class LoadContext
 		// TODO What if null (if this is last?)
 		return null;
 	}
-	
+
 	/**
-	 * Sets the extract URI. This is a shortcut for setting 
-	 * the URI on both the graph and obj members.
+	 * Sets the extract URI. This is a shortcut for setting the URI on both the
+	 * graph and obj members.
+	 * 
 	 * @param extractURI
 	 */
 	public void setExtractURI(URI extractURI)
@@ -123,8 +125,9 @@ public class LoadContext
 	}
 
 	/**
-	 * Sets the source URI. This is a shortcut for setting 
-	 * the URI on both the graph and obj members.
+	 * Sets the source URI. This is a shortcut for setting the URI on both the
+	 * graph and obj members.
+	 * 
 	 * @param sourceURI
 	 */
 	public void setSourceURI(URI sourceURI)
@@ -132,12 +135,18 @@ public class LoadContext
 		obj.setSourceURI(sourceURI);
 		graph.setSourceURI(sourceURI);
 	}
+
 	/*
 	 * Get the type of context we're running in (either Editor or Runtime)
 	 */
 	public String getContextType()
 	{
 		return contextType;
+	}
+
+	public void setLine(int i)
+	{
+		graph.setLine(i);
 	}
 
 }

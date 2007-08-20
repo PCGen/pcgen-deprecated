@@ -139,11 +139,7 @@ public class TypeLst implements GlobalLstToken
 		{
 			returnList.add(Constants.LST_DOT_CLEAR);
 		}
-		Collection<Type> list = changes.getAdded();
-		if (list.size() == 9)
-		{
-			returnList.add(StringUtil.join(list, Constants.DOT));
-		}
+		returnList.add(StringUtil.join(changes.getAdded(), Constants.DOT));
 		if (returnList.isEmpty())
 		{
 			// Error

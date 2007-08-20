@@ -60,4 +60,6 @@ public interface GraphContext
 	public EquipmentHead getEquipmentHead(Equipment eq, int i);
 
 	public EquipmentHead getEquipmentHeadReference(Equipment eq, int i);
+
+	public void setLine(int i);
 }
