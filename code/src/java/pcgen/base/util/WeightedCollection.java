@@ -23,8 +23,9 @@ package pcgen.base.util;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
+import java.util.TreeSet;
 
 /**
  * An implementation of the <tt>Collection</tt> interface that allows objects
@@ -45,7 +46,8 @@ import java.util.List;
  * <p>
  * 
  * @author boomer70 and Tom Parker <thpr@sourceforge.net>
- * @param <E> The Class stored in the WeightedCollection
+ * @param <E>
+ *            The Class stored in the WeightedCollection
  * @see java.util.Collection
  */
 public class WeightedCollection<E> extends AbstractCollection<E>
@@ -54,7 +56,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	/**
 	 * The actual list where the data is stored.
 	 */
-	private List<WeightedItem<E>> theData;
+	private Collection<WeightedItem<E>> theData;
 
 	/**
 	 * Default constructor. Creates an empty collection.
@@ -90,6 +92,26 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	{
 		this();
 		addAll(c, 1);
+	}
+
+	/**
+	 * Constructs an empty collection with the specified initial capacity.
+	 * 
+	 * @param comp
+	 *            The Comparator this Set will use to determine equality
+	 */
+	public WeightedCollection(Comparator<E> comp)
+	{
+		if (comp == null)
+		{
+			theData = new ArrayList<WeightedItem<E>>();
+		}
+		else
+		{
+			theData =
+					new TreeSet<WeightedItem<E>>(new WeightedItemComparator<E>(
+						comp));
+		}
 	}
 
 	/**
@@ -472,8 +494,8 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 			{
 				WeightedItem<?> wi = (WeightedItem) o;
 				return theWeight == wi.theWeight
-					&& (theElement == null && wi.theElement == null 
-						|| theElement != null && theElement.equals(wi.theElement));
+					&& (theElement == null && wi.theElement == null || theElement != null
+						&& theElement.equals(wi.theElement));
 			}
 			return false;
 		}
@@ -533,7 +555,8 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	private class UnweightedIterator implements Iterator<E>
 	{
 		/** An iterator that iterates over the raw data elements. */
-		private final Iterator<WeightedItem<E>> realIterator = theData.iterator();
+		private final Iterator<WeightedItem<E>> realIterator =
+				theData.iterator();
 
 		/**
 		 * Checks if there are any more elements in the iteration.
@@ -571,4 +594,22 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		}
 	}
 
+	private static class WeightedItemComparator<WICT> implements
+			Comparator<WeightedItem<WICT>>
+	{
+
+		private final Comparator<WICT> delegateComparator;
+
+		public WeightedItemComparator(Comparator<WICT> comp)
+		{
+			delegateComparator = comp;
+		}
+
+		public int compare(WeightedItem<WICT> arg0, WeightedItem<WICT> arg1)
+		{
+			return delegateComparator.compare(arg0.getElement(), arg1
+				.getElement());
+		}
+
+	}
 }
