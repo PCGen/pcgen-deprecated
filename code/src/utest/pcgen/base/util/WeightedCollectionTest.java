@@ -56,7 +56,7 @@ public class WeightedCollectionTest extends TestCase {
 	@Test
 	public void testBadCollectionConstructor() {
 		try {
-			new WeightedCollection(null);
+			new WeightedCollection((Collection) null);
 			fail();
 		} catch (NullPointerException npe) {
 			// OK
