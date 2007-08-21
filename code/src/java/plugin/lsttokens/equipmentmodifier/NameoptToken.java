@@ -64,12 +64,13 @@ public class NameoptToken implements EquipmentModifierLstToken
 				return false;
 			}
 			optString = "TEXT";
-			context.obj.put(mod, StringKey.NAME_TEXT, value.substring(5));
+			context.getObjectContext().put(mod, StringKey.NAME_TEXT,
+				value.substring(5));
 		}
 		try
 		{
-			context.obj.put(mod, ObjectKey.NAME_OPT, EqModNameOpt
-				.valueOf(optString));
+			context.getObjectContext().put(mod, ObjectKey.NAME_OPT,
+				EqModNameOpt.valueOf(optString));
 			return true;
 		}
 		catch (IllegalArgumentException iae)
@@ -82,8 +83,10 @@ public class NameoptToken implements EquipmentModifierLstToken
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		EqModNameOpt opt = context.obj.getObject(mod, ObjectKey.NAME_OPT);
-		String text = context.obj.getString(mod, StringKey.NAME_TEXT);
+		EqModNameOpt opt =
+				context.getObjectContext().getObject(mod, ObjectKey.NAME_OPT);
+		String text =
+				context.getObjectContext().getString(mod, StringKey.NAME_TEXT);
 		if (opt == null)
 		{
 			if (text == null)

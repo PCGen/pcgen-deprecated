@@ -74,7 +74,7 @@ public class WtToken implements EquipmentModifierLstToken
 					+ " was expecting a decimal value >= 0 : " + value);
 				return false;
 			}
-			context.obj.put(mod, ObjectKey.WEIGHT, weight);
+			context.getObjectContext().put(mod, ObjectKey.WEIGHT, weight);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -87,7 +87,8 @@ public class WtToken implements EquipmentModifierLstToken
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		BigDecimal weight = context.obj.getObject(mod, ObjectKey.WEIGHT);
+		BigDecimal weight =
+				context.getObjectContext().getObject(mod, ObjectKey.WEIGHT);
 		if (weight == null)
 		{
 			return null;

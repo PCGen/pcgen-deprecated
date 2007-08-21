@@ -52,13 +52,15 @@ public class FumblerangeToken implements EquipmentModifierLstToken
 			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
-		context.obj.put(mod, StringKey.FUMBLE_RANGE, value);
+		context.getObjectContext().put(mod, StringKey.FUMBLE_RANGE, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		String range = context.obj.getString(mod, StringKey.FUMBLE_RANGE);
+		String range =
+				context.getObjectContext().getString(mod,
+					StringKey.FUMBLE_RANGE);
 		if (range == null)
 		{
 			return null;

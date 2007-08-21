@@ -181,11 +181,13 @@ public class AlteqmodToken extends AbstractToken implements EquipmentLstToken
 				}
 			}
 		}
-		EquipmentHead altHead = context.graph.getEquipmentHead(eq, 2);
+		EquipmentHead altHead =
+				context.getGraphContext().getEquipmentHead(eq, 2);
 		for (CDOMReference<EquipmentModifier> eqMod : mods)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), altHead, eqMod);
+					context.getGraphContext().grant(getTokenName(), altHead,
+						eqMod);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(eqMod))
 			{
 				edge.setAssociation(ak, dkm.get(eqMod, ak));
@@ -197,14 +199,15 @@ public class AlteqmodToken extends AbstractToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EquipmentHead head = context.graph.getEquipmentHeadReference(eq, 2);
+		EquipmentHead head =
+				context.getGraphContext().getEquipmentHeadReference(eq, 2);
 		if (head == null)
 		{
 			return null;
 		}
 		GraphChanges<EquipmentModifier> changes =
-				context.graph.getChangesFromToken(getTokenName(), head,
-					EQUIPMENT_MODIFIER_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					head, EQUIPMENT_MODIFIER_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -273,6 +276,6 @@ public class AlteqmodToken extends AbstractToken implements EquipmentLstToken
 				set.add(sb.toString());
 			}
 		}
-		return new String[] {StringUtil.join(set, Constants.DOT)};
+		return new String[]{StringUtil.join(set, Constants.DOT)};
 	}
 }

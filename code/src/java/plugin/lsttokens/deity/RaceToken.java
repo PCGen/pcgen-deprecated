@@ -69,8 +69,8 @@ public class RaceToken extends AbstractToken implements DeityLstToken
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
-			context.obj.addToList(deity, ListKey.RACE_PANTHEON, RacePantheon
-				.getConstant(tok.nextToken()));
+			context.getObjectContext().addToList(deity, ListKey.RACE_PANTHEON,
+				RacePantheon.getConstant(tok.nextToken()));
 		}
 		return true;
 	}
@@ -78,7 +78,8 @@ public class RaceToken extends AbstractToken implements DeityLstToken
 	public String[] unparse(LoadContext context, Deity deity)
 	{
 		Changes<RacePantheon> changes =
-				context.obj.getListChanges(deity, ListKey.RACE_PANTHEON);
+				context.getObjectContext().getListChanges(deity,
+					ListKey.RACE_PANTHEON);
 		if (changes == null)
 		{
 			return null;

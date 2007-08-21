@@ -55,7 +55,7 @@ public class RangeToken implements EquipmentLstToken
 					+ " must be an integer >= 0");
 				return false;
 			}
-			context.obj.put(eq, IntegerKey.RANGE, range);
+			context.getObjectContext().put(eq, IntegerKey.RANGE, range);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -69,7 +69,8 @@ public class RangeToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer range = context.obj.getInteger(eq, IntegerKey.RANGE);
+		Integer range =
+				context.getObjectContext().getInteger(eq, IntegerKey.RANGE);
 		if (range == null)
 		{
 			return null;

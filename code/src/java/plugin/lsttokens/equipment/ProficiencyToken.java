@@ -53,14 +53,14 @@ public class ProficiencyToken implements EquipmentLstToken
 		 */
 		CDOMSimpleSingleRef<WeaponProf> wp =
 				context.ref.getCDOMReference(WeaponProf.class, value);
-		context.obj.put(eq, ObjectKey.WEAPON_PROF, wp);
+		context.getObjectContext().put(eq, ObjectKey.WEAPON_PROF, wp);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		CDOMSimpleSingleRef<WeaponProf> wp =
-				context.obj.getObject(eq, ObjectKey.WEAPON_PROF);
+				context.getObjectContext().getObject(eq, ObjectKey.WEAPON_PROF);
 		if (wp == null)
 		{
 			return null;

@@ -54,7 +54,7 @@ public class SpellfailureToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			context.obj.put(eq, IntegerKey.SPELL_FAILURE, sf);
+			context.getObjectContext().put(eq, IntegerKey.SPELL_FAILURE, sf);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -68,7 +68,9 @@ public class SpellfailureToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer sf = context.obj.getInteger(eq, IntegerKey.SPELL_FAILURE);
+		Integer sf =
+				context.getObjectContext().getInteger(eq,
+					IntegerKey.SPELL_FAILURE);
 		if (sf == null)
 		{
 			return null;

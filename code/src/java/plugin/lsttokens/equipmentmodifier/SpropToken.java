@@ -59,7 +59,8 @@ public class SpropToken extends AbstractToken implements
 		}
 		else
 		{
-			mod.addSpecialProperty(pcgen.core.SpecialProperty.createFromLst(value));
+			mod.addSpecialProperty(pcgen.core.SpecialProperty
+				.createFromLst(value));
 		}
 		return true;
 	}
@@ -73,7 +74,7 @@ public class SpropToken extends AbstractToken implements
 		}
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.graph.removeAll(getTokenName(), mod);
+			context.getGraphContext().removeAll(getTokenName(), mod);
 			return true;
 		}
 
@@ -82,7 +83,7 @@ public class SpropToken extends AbstractToken implements
 		{
 			return false;
 		}
-		context.graph.grant(getTokenName(), mod, sa);
+		context.getGraphContext().grant(getTokenName(), mod, sa);
 		return true;
 	}
 
@@ -95,7 +96,7 @@ public class SpropToken extends AbstractToken implements
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.graph.removeAll(getTokenName(), mod);
+			context.getGraphContext().removeAll(getTokenName(), mod);
 			firstToken = tok.nextToken();
 		}
 
@@ -173,8 +174,8 @@ public class SpropToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		GraphChanges<SpecialProperty> changes =
-				context.graph.getChangesFromToken(getTokenName(), mod,
-					SpecialProperty.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					mod, SpecialProperty.class);
 		if (changes == null)
 		{
 			return null;
@@ -199,7 +200,8 @@ public class SpropToken extends AbstractToken implements
 			if (sp.hasPrerequisites())
 			{
 				sb.append(Constants.PIPE);
-				sb.append(getPrerequisiteString(context, sp.getPrerequisiteList()));
+				sb.append(getPrerequisiteString(context, sp
+					.getPrerequisiteList()));
 			}
 			list.add(sb.toString());
 		}

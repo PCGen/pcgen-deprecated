@@ -91,14 +91,15 @@ public class QualityToken implements EquipmentLstToken
 				+ "format is: QualityType|Quality value was: " + value);
 			return false;
 		}
-		context.obj.addToList(eq, ListKey.QUALITY, new Quality(key, val));
+		context.getObjectContext().addToList(eq, ListKey.QUALITY,
+			new Quality(key, val));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Changes<Quality> changes =
-				context.obj.getListChanges(eq, ListKey.QUALITY);
+				context.getObjectContext().getListChanges(eq, ListKey.QUALITY);
 		if (changes == null)
 		{
 			return null;

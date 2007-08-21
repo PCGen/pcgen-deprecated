@@ -55,13 +55,15 @@ public class AlignToken implements DeityLstToken
 				+ " is not an Alignment");
 			return false;
 		}
-		context.obj.put(deity, ObjectKey.ALIGNMENT, al);
+		context.getObjectContext().put(deity, ObjectKey.ALIGNMENT, al);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		Alignment at = context.obj.getObject(deity, ObjectKey.ALIGNMENT);
+		Alignment at =
+				context.getObjectContext()
+					.getObject(deity, ObjectKey.ALIGNMENT);
 		if (at == null)
 		{
 			return null;

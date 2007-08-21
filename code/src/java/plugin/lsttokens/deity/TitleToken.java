@@ -51,13 +51,14 @@ public class TitleToken implements DeityLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		context.obj.put(deity, StringKey.TITLE, value);
+		context.getObjectContext().put(deity, StringKey.TITLE, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		String title = context.obj.getString(deity, StringKey.TITLE);
+		String title =
+				context.getObjectContext().getString(deity, StringKey.TITLE);
 		if (title == null)
 		{
 			return null;

@@ -60,14 +60,16 @@ public class PageUsageToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		context.obj.put(eq, FormulaKey.PAGE_USAGE, FormulaFactory
-			.getFormulaFor(value));
+		context.getObjectContext().put(eq, FormulaKey.PAGE_USAGE,
+			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Formula f = context.obj.getFormula(eq, FormulaKey.PAGE_USAGE);
+		Formula f =
+				context.getObjectContext()
+					.getFormula(eq, FormulaKey.PAGE_USAGE);
 		if (f == null)
 		{
 			return null;

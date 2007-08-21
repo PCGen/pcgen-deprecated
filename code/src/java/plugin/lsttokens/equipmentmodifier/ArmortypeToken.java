@@ -83,7 +83,7 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 			 * does the above throw exceptions, etc.
 			 */
 			ChangeArmorType cat = new ChangeArmorType(oldType, newType);
-			context.graph.grant(getTokenName(), mod, cat);
+			context.getGraphContext().grant(getTokenName(), mod, cat);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -95,8 +95,8 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		GraphChanges<ChangeArmorType> changes =
-				context.graph.getChangesFromToken(getTokenName(), mod,
-					ChangeArmorType.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					mod, ChangeArmorType.class);
 		if (changes == null)
 		{
 			return null;

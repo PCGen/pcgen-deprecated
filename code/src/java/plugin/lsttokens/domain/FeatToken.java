@@ -145,7 +145,8 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 		for (CDOMReference<Ability> ability : abilityList)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, ability);
+					context.getGraphContext().grant(getTokenName(), obj,
+						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
 				AbilityNature.NORMAL);
 			if (prereqs != null)
@@ -161,8 +162,8 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 	public String[] unparse(LoadContext context, Domain domain)
 	{
 		GraphChanges<Ability> changes =
-				context.graph.getChangesFromToken(getTokenName(), domain,
-					ABILITY_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					domain, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -206,8 +207,8 @@ public class FeatToken extends AbstractToken implements DomainLstToken
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			String ab =
-				ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-					Constants.PIPE);
+					ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+						Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				ab =

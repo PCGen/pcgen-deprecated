@@ -48,14 +48,15 @@ public class CostpreToken implements EquipmentModifierLstToken
 	public boolean parse(LoadContext context, EquipmentModifier mod,
 		String value)
 	{
-		context.obj.put(mod, FormulaKey.BASECOST, FormulaFactory
-			.getFormulaFor(value));
+		context.getObjectContext().put(mod, FormulaKey.BASECOST,
+			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Formula f = context.obj.getFormula(mod, FormulaKey.BASECOST);
+		Formula f =
+				context.getObjectContext().getFormula(mod, FormulaKey.BASECOST);
 		if (f == null)
 		{
 			return null;

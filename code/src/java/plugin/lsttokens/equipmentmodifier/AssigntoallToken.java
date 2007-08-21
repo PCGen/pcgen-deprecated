@@ -64,13 +64,15 @@ public class AssigntoallToken implements EquipmentModifierLstToken
 					+ "\n  Must be YES or NO");
 			return false;
 		}
-		context.obj.put(mod, ObjectKey.ASSIGN_TO_ALL, set);
+		context.getObjectContext().put(mod, ObjectKey.ASSIGN_TO_ALL, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Boolean stacks = context.obj.getObject(mod, ObjectKey.ASSIGN_TO_ALL);
+		Boolean stacks =
+				context.getObjectContext().getObject(mod,
+					ObjectKey.ASSIGN_TO_ALL);
 		if (stacks == null)
 		{
 			return null;

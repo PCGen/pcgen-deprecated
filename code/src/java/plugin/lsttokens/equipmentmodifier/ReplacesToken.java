@@ -66,7 +66,8 @@ public class ReplacesToken extends AbstractToken implements
 			CDOMSimpleSingleRef<EquipmentModifier> ref =
 					context.ref.getCDOMReference(EquipmentModifier.class, tok
 						.nextToken());
-			context.obj.addToList(mod, ListKey.REPLACED_KEYS, ref);
+			context.getObjectContext().addToList(mod, ListKey.REPLACED_KEYS,
+				ref);
 		}
 		return true;
 	}
@@ -74,7 +75,8 @@ public class ReplacesToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		Changes<CDOMSimpleSingleRef<EquipmentModifier>> changes =
-				context.obj.getListChanges(mod, ListKey.REPLACED_KEYS);
+				context.getObjectContext().getListChanges(mod,
+					ListKey.REPLACED_KEYS);
 		if (changes == null)
 		{
 			return null;

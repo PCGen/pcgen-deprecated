@@ -54,7 +54,7 @@ public class EdrToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			context.obj.put(eq, IntegerKey.EDR, edr);
+			context.getObjectContext().put(eq, IntegerKey.EDR, edr);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -68,7 +68,7 @@ public class EdrToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer edr = context.obj.getInteger(eq, IntegerKey.EDR);
+		Integer edr = context.getObjectContext().getInteger(eq, IntegerKey.EDR);
 		if (edr == null)
 		{
 			return null;

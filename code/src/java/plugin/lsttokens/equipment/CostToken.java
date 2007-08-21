@@ -57,7 +57,7 @@ public class CostToken implements EquipmentLstToken
 					+ " must be a positive number: " + value);
 				return false;
 			}
-			context.obj.put(eq, ObjectKey.COST, cost);
+			context.getObjectContext().put(eq, ObjectKey.COST, cost);
 			return true;
 		}
 		catch (NumberFormatException e)
@@ -69,7 +69,8 @@ public class CostToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		BigDecimal bd = context.obj.getObject(eq, ObjectKey.COST);
+		BigDecimal bd =
+				context.getObjectContext().getObject(eq, ObjectKey.COST);
 		if (bd == null)
 		{
 			return null;

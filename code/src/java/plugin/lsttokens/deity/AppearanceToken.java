@@ -51,13 +51,15 @@ public class AppearanceToken implements DeityLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		context.obj.put(deity, StringKey.APPEARANCE, value);
+		context.getObjectContext().put(deity, StringKey.APPEARANCE, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		String appearance = context.obj.getString(deity, StringKey.APPEARANCE);
+		String appearance =
+				context.getObjectContext().getString(deity,
+					StringKey.APPEARANCE);
 		if (appearance == null)
 		{
 			return null;

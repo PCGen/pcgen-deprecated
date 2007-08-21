@@ -58,7 +58,8 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		}
 		else
 		{
-			eq.addSpecialProperty(pcgen.core.SpecialProperty.createFromLst(value));
+			eq.addSpecialProperty(pcgen.core.SpecialProperty
+				.createFromLst(value));
 		}
 		return true;
 	}
@@ -71,7 +72,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		}
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.graph.removeAll(getTokenName(), eq);
+			context.getGraphContext().removeAll(getTokenName(), eq);
 			return true;
 		}
 
@@ -80,7 +81,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		{
 			return false;
 		}
-		context.graph.grant(getTokenName(), eq, sa);
+		context.getGraphContext().grant(getTokenName(), eq, sa);
 		return true;
 	}
 
@@ -98,7 +99,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.graph.removeAll(getTokenName(), eq);
+			context.getGraphContext().removeAll(getTokenName(), eq);
 			firstToken = tok.nextToken();
 		}
 
@@ -176,8 +177,8 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		GraphChanges<SpecialProperty> changes =
-				context.graph.getChangesFromToken(getTokenName(), eq,
-					SpecialProperty.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					eq, SpecialProperty.class);
 		if (changes == null)
 		{
 			return null;
@@ -202,7 +203,8 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 			if (sp.hasPrerequisites())
 			{
 				sb.append(Constants.PIPE);
-				sb.append(getPrerequisiteString(context, sp.getPrerequisiteList()));
+				sb.append(getPrerequisiteString(context, sp
+					.getPrerequisiteList()));
 			}
 			list.add(sb.toString());
 		}

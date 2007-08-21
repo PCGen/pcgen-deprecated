@@ -61,7 +61,7 @@ public class SlotsToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
-			context.obj.put(eq, IntegerKey.SLOTS, slots);
+			context.getObjectContext().put(eq, IntegerKey.SLOTS, slots);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -75,14 +75,16 @@ public class SlotsToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer slots = context.obj.getInteger(eq, IntegerKey.SLOTS);
+		Integer slots =
+				context.getObjectContext().getInteger(eq, IntegerKey.SLOTS);
 		if (slots == null)
 		{
 			return null;
 		}
 		if (slots.intValue() < 0)
 		{
-			context.addWriteMessage(getTokenName() + " must be an integer >= 0");
+			context
+				.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
 		return new String[]{slots.toString()};

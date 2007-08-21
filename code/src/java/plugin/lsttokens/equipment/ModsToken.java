@@ -71,8 +71,8 @@ public class ModsToken implements EquipmentLstToken
 	{
 		try
 		{
-			context.obj.put(eq, ObjectKey.MOD_CONTROL, EqModControl
-				.valueOf(value));
+			context.getObjectContext().put(eq, ObjectKey.MOD_CONTROL,
+				EqModControl.valueOf(value));
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -85,7 +85,8 @@ public class ModsToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EqModControl control = context.obj.getObject(eq, ObjectKey.MOD_CONTROL);
+		EqModControl control =
+				context.getObjectContext().getObject(eq, ObjectKey.MOD_CONTROL);
 		if (control == null)
 		{
 			return null;

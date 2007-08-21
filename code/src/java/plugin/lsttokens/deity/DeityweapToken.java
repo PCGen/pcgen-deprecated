@@ -64,8 +64,12 @@ public class DeityweapToken extends AbstractToken implements DeityLstToken
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
-			context.obj.addToList(deity, ListKey.DEITYWEAPON, context.ref
-				.getCDOMReference(WEAPONPROF_CLASS, tok.nextToken()));
+			context.getObjectContext()
+				.addToList(
+					deity,
+					ListKey.DEITYWEAPON,
+					context.ref.getCDOMReference(WEAPONPROF_CLASS, tok
+						.nextToken()));
 		}
 		return true;
 	}
@@ -73,7 +77,8 @@ public class DeityweapToken extends AbstractToken implements DeityLstToken
 	public String[] unparse(LoadContext context, Deity deity)
 	{
 		Changes<CDOMSimpleSingleRef<WeaponProf>> changes =
-				context.obj.getListChanges(deity, ListKey.DEITYWEAPON);
+				context.getObjectContext().getListChanges(deity,
+					ListKey.DEITYWEAPON);
 		if (changes == null)
 		{
 			return null;

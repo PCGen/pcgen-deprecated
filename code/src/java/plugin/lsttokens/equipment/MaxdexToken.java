@@ -48,7 +48,8 @@ public class MaxdexToken implements EquipmentLstToken
 	{
 		try
 		{
-			context.obj.put(eq, IntegerKey.MAX_DEX_BONUS, Integer.valueOf(value));
+			context.getObjectContext().put(eq, IntegerKey.MAX_DEX_BONUS,
+				Integer.valueOf(value));
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -62,7 +63,9 @@ public class MaxdexToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer maxDexBonus = context.obj.getInteger(eq, IntegerKey.MAX_DEX_BONUS);
+		Integer maxDexBonus =
+				context.getObjectContext().getInteger(eq,
+					IntegerKey.MAX_DEX_BONUS);
 		if (maxDexBonus == null)
 		{
 			return null;

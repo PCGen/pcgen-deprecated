@@ -74,7 +74,7 @@ public class NumPagesToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			context.obj.put(eq, IntegerKey.NUM_PAGES, pages);
+			context.getObjectContext().put(eq, IntegerKey.NUM_PAGES, pages);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -88,7 +88,8 @@ public class NumPagesToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer pages = context.obj.getInteger(eq, IntegerKey.NUM_PAGES);
+		Integer pages =
+				context.getObjectContext().getInteger(eq, IntegerKey.NUM_PAGES);
 		if (pages == null)
 		{
 			return null;

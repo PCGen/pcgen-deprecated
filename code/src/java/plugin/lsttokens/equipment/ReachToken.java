@@ -61,7 +61,7 @@ public class ReachToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			context.obj.put(eq, IntegerKey.REACH, reach);
+			context.getObjectContext().put(eq, IntegerKey.REACH, reach);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -75,7 +75,8 @@ public class ReachToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		Integer reach = context.obj.getInteger(eq, IntegerKey.REACH);
+		Integer reach =
+				context.getObjectContext().getInteger(eq, IntegerKey.REACH);
 		if (reach == null)
 		{
 			return null;

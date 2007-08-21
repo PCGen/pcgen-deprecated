@@ -69,8 +69,8 @@ public class PantheonToken extends AbstractToken implements DeityLstToken
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
-			context.obj.addToList(deity, ListKey.PANTHEON, Pantheon
-				.getConstant(tok.nextToken()));
+			context.getObjectContext().addToList(deity, ListKey.PANTHEON,
+				Pantheon.getConstant(tok.nextToken()));
 		}
 		return true;
 	}
@@ -78,7 +78,8 @@ public class PantheonToken extends AbstractToken implements DeityLstToken
 	public String[] unparse(LoadContext context, Deity deity)
 	{
 		Changes<Pantheon> changes =
-				context.obj.getListChanges(deity, ListKey.PANTHEON);
+				context.getObjectContext().getListChanges(deity,
+					ListKey.PANTHEON);
 		if (changes == null)
 		{
 			return null;

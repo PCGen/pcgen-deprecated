@@ -50,14 +50,16 @@ public class FumblerangeToken implements EquipmentLstToken
 		{
 			return false;
 		}
-		context.obj.put(eq, StringKey.FUMBLE_RANGE, Constants.LST_DOT_CLEAR
-			.equals(value) ? null : value);
+		context.getObjectContext().put(eq, StringKey.FUMBLE_RANGE,
+			Constants.LST_DOT_CLEAR.equals(value) ? null : value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		String range = context.obj.getString(eq, StringKey.FUMBLE_RANGE);
+		String range =
+				context.getObjectContext()
+					.getString(eq, StringKey.FUMBLE_RANGE);
 		if (range == null)
 		{
 			return null;

@@ -194,7 +194,7 @@ public class ArmorProfToken extends AbstractToken implements ChooseLstToken,
 		Formula countFormula = FormulaFactory.getFormulaFor(1);
 		ChoiceSet<Equipment> chooser = new ChoiceSet<Equipment>("Choose", pcs);
 		PCGraphGrantsEdge edge =
-				context.graph.grant(getTokenName(), cdo, chooser);
+				context.getGraphContext().grant(getTokenName(), cdo, chooser);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		return true;

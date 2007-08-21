@@ -142,8 +142,8 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 						+ ": .CLEAR was not the first list item: " + value);
 					return false;
 				}
-				context.list.removeFromList(getTokenName(), deity, dl,
-					DOMAIN_CLASS);
+				context.getListContext().removeFromList(getTokenName(), deity,
+					dl, DOMAIN_CLASS);
 			}
 			else if (tokString.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -169,7 +169,8 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 						return false;
 					}
 				}
-				context.list.removeFromList(getTokenName(), deity, dl, ref);
+				context.getListContext().removeFromList(getTokenName(), deity,
+					dl, ref);
 			}
 			else if (Constants.LST_ALL.equals(tokString))
 			{
@@ -207,7 +208,8 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		for (CDOMReference<Domain> ref : list)
 		{
 			AssociatedPrereqObject ao =
-					context.list.addToList(getTokenName(), deity, dl, ref);
+					context.getListContext().addToList(getTokenName(), deity,
+						dl, ref);
 			ao.addAllPrerequisites(c);
 		}
 	}
@@ -217,7 +219,8 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		CDOMReference<DomainList> dl =
 				context.ref.getCDOMReference(DomainList.class, "*Starting");
 		ListGraphChanges<Domain> changes =
-				context.list.getChangesInList(getTokenName(), deity, dl);
+				context.getListContext().getChangesInList(getTokenName(),
+					deity, dl);
 		if (changes == null)
 		{
 			// Legal if no Language was present in the race

@@ -84,8 +84,8 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 		if (weightCapacity.charAt(0) == Constants.CHAR_ASTERISK)
 		{
 			hadAsterisk = true;
-			context.obj.put(eq, ObjectKey.CONTAINER_CONSTANT_WEIGHT,
-				Boolean.TRUE);
+			context.getObjectContext().put(eq,
+				ObjectKey.CONTAINER_CONSTANT_WEIGHT, Boolean.TRUE);
 			weightCapacity = weightCapacity.substring(1);
 		}
 
@@ -111,8 +111,9 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 
 			try
 			{
-				context.obj.put(eq, IntegerKey.CONTAINER_REDUCE_WEIGHT, Integer
-					.valueOf(redString));
+				context.getObjectContext().put(eq,
+					IntegerKey.CONTAINER_REDUCE_WEIGHT,
+					Integer.valueOf(redString));
 			}
 			catch (NumberFormatException ex)
 			{
@@ -148,7 +149,8 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 				return false;
 			}
 		}
-		context.obj.put(eq, ObjectKey.CONTAINER_WEIGHT_CAPACITY, weightCap);
+		context.getObjectContext().put(eq, ObjectKey.CONTAINER_WEIGHT_CAPACITY,
+			weightCap);
 
 		List<Capacity> capacityList = new ArrayList<Capacity>();
 		boolean limited = true;
@@ -219,7 +221,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 		boolean requiresTotal = true;
 		for (Capacity cap : capacityList)
 		{
-			context.obj.addToList(eq, ListKey.CAPACITY, cap);
+			context.getObjectContext().addToList(eq, ListKey.CAPACITY, cap);
 			if (cap.getType() == null)
 			{
 				requiresTotal = false;
@@ -230,8 +232,8 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 		{
 			BigDecimal totalCapacity =
 					limited ? limitedCapacity : Capacity.UNLIMITED;
-			context.obj.addToList(eq, ListKey.CAPACITY, Capacity
-				.getTotalCapacity(totalCapacity));
+			context.getObjectContext().addToList(eq, ListKey.CAPACITY,
+				Capacity.getTotalCapacity(totalCapacity));
 		}
 
 		return true;
@@ -240,7 +242,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Changes<Capacity> changes =
-				context.obj.getListChanges(eq, ListKey.CAPACITY);
+				context.getObjectContext().getListChanges(eq, ListKey.CAPACITY);
 		if (changes == null)
 		{
 			return null;
@@ -248,21 +250,24 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 		StringBuilder sb = new StringBuilder();
 
 		Boolean b =
-				context.obj.getObject(eq, ObjectKey.CONTAINER_CONSTANT_WEIGHT);
+				context.getObjectContext().getObject(eq,
+					ObjectKey.CONTAINER_CONSTANT_WEIGHT);
 		if (b != null && b.booleanValue())
 		{
 			sb.append(Constants.CHAR_ASTERISK);
 		}
 
 		Integer reducePercent =
-				context.obj.getInteger(eq, IntegerKey.CONTAINER_REDUCE_WEIGHT);
+				context.getObjectContext().getInteger(eq,
+					IntegerKey.CONTAINER_REDUCE_WEIGHT);
 		if (reducePercent != null)
 		{
 			sb.append(reducePercent).append(Constants.PERCENT);
 		}
 
 		BigDecimal cap =
-				context.obj.getObject(eq, ObjectKey.CONTAINER_WEIGHT_CAPACITY);
+				context.getObjectContext().getObject(eq,
+					ObjectKey.CONTAINER_WEIGHT_CAPACITY);
 		if (cap == null)
 		{
 			// CONSIDER ERROR??

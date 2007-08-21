@@ -51,13 +51,15 @@ public class SymbolToken implements DeityLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		context.obj.put(deity, StringKey.HOLY_ITEM, value);
+		context.getObjectContext().put(deity, StringKey.HOLY_ITEM, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)
 	{
-		String holyItem = context.obj.getString(deity, StringKey.HOLY_ITEM);
+		String holyItem =
+				context.getObjectContext()
+					.getString(deity, StringKey.HOLY_ITEM);
 		if (holyItem == null)
 		{
 			return null;

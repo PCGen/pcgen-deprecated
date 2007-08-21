@@ -61,7 +61,7 @@ public class AlttypeToken implements EquipmentLstToken
 		{
 			if (Constants.LST_DOT_CLEAR.equals(value))
 			{
-				context.obj.removeList(eq, ListKey.ALT_TYPE);
+				context.getObjectContext().removeList(eq, ListKey.ALT_TYPE);
 				return true;
 			}
 			Logging.errorPrint(getTokenName()
@@ -118,7 +118,8 @@ public class AlttypeToken implements EquipmentLstToken
 				Type typeCon = Type.getConstant(aType);
 				if (removeType)
 				{
-					context.obj.removeFromList(eq, ListKey.ALT_TYPE, typeCon);
+					context.getObjectContext().removeFromList(eq,
+						ListKey.ALT_TYPE, typeCon);
 					removeType = false;
 				}
 				/*
@@ -135,7 +136,8 @@ public class AlttypeToken implements EquipmentLstToken
 				 */
 				else
 				{
-					context.obj.addToList(eq, ListKey.ALT_TYPE, typeCon);
+					context.getObjectContext().addToList(eq, ListKey.ALT_TYPE,
+						typeCon);
 				}
 				sawControl = false;
 			}
@@ -153,7 +155,7 @@ public class AlttypeToken implements EquipmentLstToken
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Changes<Type> changes =
-				context.obj.getListChanges(eq, ListKey.ALT_TYPE);
+				context.getObjectContext().getListChanges(eq, ListKey.ALT_TYPE);
 		if (changes == null)
 		{
 			return null;

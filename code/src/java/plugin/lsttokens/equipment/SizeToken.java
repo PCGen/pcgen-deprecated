@@ -59,7 +59,8 @@ public class SizeToken implements EquipmentLstToken
 				Logging.errorPrint("Unable to find Size: " + value);
 				return false;
 			}
-			context.obj.put(eq, ObjectKey.SIZE, new FixedSizeResolver(size));
+			context.getObjectContext().put(eq, ObjectKey.SIZE,
+				new FixedSizeResolver(size));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -73,7 +74,7 @@ public class SizeToken implements EquipmentLstToken
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
 		Resolver<SizeAdjustment> res =
-				context.obj.getObject(eq, ObjectKey.SIZE);
+				context.getObjectContext().getObject(eq, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

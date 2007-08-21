@@ -120,8 +120,8 @@ public class FeatAddToken extends AbstractToken implements ChooseLstToken,
 				ChooseLoader.parseToken(context, Ability.class, "QUALIFIED["
 					+ value + "]");
 		CDOMEdgeReference assocref =
-				context.graph.getEdgeReference(cdo, ChoiceSet.class, "CHOOSE",
-					Ability.class);
+				context.getGraphContext().getEdgeReference(cdo,
+					ChoiceSet.class, "CHOOSE", Ability.class);
 		GrantFactory<ArmorProf> gf = new GrantFactory<ArmorProf>(assocref);
 
 		/*
@@ -133,7 +133,7 @@ public class FeatAddToken extends AbstractToken implements ChooseLstToken,
 			.setAssociation(AssociationKey.ABILITY_CATEGORY,
 				AbilityCategory.FEAT);
 		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
-		context.graph.grant(getTokenName(), cdo, gf);
+		context.getGraphContext().grant(getTokenName(), cdo, gf);
 		return pcs;
 	}
 }

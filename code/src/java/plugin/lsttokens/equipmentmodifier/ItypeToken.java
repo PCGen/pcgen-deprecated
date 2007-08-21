@@ -64,7 +64,7 @@ public class ItypeToken extends AbstractToken implements
 		while (tok.hasMoreTokens())
 		{
 			Type t = Type.getConstant(tok.nextToken());
-			context.obj.addToList(mod, ListKey.ITEM_TYPES, t);
+			context.getObjectContext().addToList(mod, ListKey.ITEM_TYPES, t);
 		}
 		return true;
 	}
@@ -72,7 +72,8 @@ public class ItypeToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
 		Changes<Type> changes =
-				context.obj.getListChanges(mod, ListKey.ITEM_TYPES);
+				context.getObjectContext().getListChanges(mod,
+					ListKey.ITEM_TYPES);
 		if (changes == null)
 		{
 			return null;

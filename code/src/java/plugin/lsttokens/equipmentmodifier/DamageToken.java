@@ -43,15 +43,17 @@ public class DamageToken implements EquipmentModifierLstToken
 		return false;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod, String value)
+	public boolean parse(LoadContext context, EquipmentModifier mod,
+		String value)
 	{
-		context.obj.put(mod, StringKey.DAMAGE, value);
+		context.getObjectContext().put(mod, StringKey.DAMAGE, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		String damage = context.obj.getString(mod, StringKey.DAMAGE);
+		String damage =
+				context.getObjectContext().getString(mod, StringKey.DAMAGE);
 		if (damage == null)
 		{
 			return null;
