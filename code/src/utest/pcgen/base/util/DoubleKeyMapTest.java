@@ -178,31 +178,31 @@ public class DoubleKeyMapTest extends TestCase
 	public void testClearIsEmpty()
 	{
 		assertTrue(dkm.isEmpty());
-		assertEquals(0, dkm.firstKeyCount());
+		assertEquals(0, dkm.primaryKeyCount());
 		populate();
 		assertFalse(dkm.isEmpty());
-		assertEquals(5, dkm.firstKeyCount());
+		assertEquals(5, dkm.primaryKeyCount());
 		dkm.clear();
 		assertTrue(dkm.isEmpty());
-		assertEquals(0, dkm.firstKeyCount());
+		assertEquals(0, dkm.primaryKeyCount());
 		dkm.put(null, Double.valueOf(3), 'F');
 		assertFalse(dkm.isEmpty());
-		assertEquals(1, dkm.firstKeyCount());
+		assertEquals(1, dkm.primaryKeyCount());
 		dkm.clear();
 		assertTrue(dkm.isEmpty());
-		assertEquals(0, dkm.firstKeyCount());
+		assertEquals(0, dkm.primaryKeyCount());
 		dkm.put(Integer.valueOf(3), null, 'G');
 		assertFalse(dkm.isEmpty());
-		assertEquals(1, dkm.firstKeyCount());
+		assertEquals(1, dkm.primaryKeyCount());
 		dkm.clear();
 		assertTrue(dkm.isEmpty());
-		assertEquals(0, dkm.firstKeyCount());
+		assertEquals(0, dkm.primaryKeyCount());
 		dkm.put(Integer.valueOf(5), Double.valueOf(6), null);
 		assertFalse(dkm.isEmpty());
-		assertEquals(1, dkm.firstKeyCount());
+		assertEquals(1, dkm.primaryKeyCount());
 		dkm.clear();
 		assertTrue(dkm.isEmpty());
-		assertEquals(0, dkm.firstKeyCount());
+		assertEquals(0, dkm.primaryKeyCount());
 	}
 
 	@Test

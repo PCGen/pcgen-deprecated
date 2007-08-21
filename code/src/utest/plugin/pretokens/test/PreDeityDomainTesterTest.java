@@ -111,13 +111,15 @@ public class PreDeityDomainTesterTest extends
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject deity = grantCDOMObject("ThisDeity");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		context.list.addToList("TestCase", deity, domainList, water);
+		context.getListContext()
+			.addToList("TestCase", deity, domainList, water);
 		// not enough
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		context.list.addToList("TestCase", deity, domainList, water);
+		context.getListContext()
+			.addToList("TestCase", deity, domainList, water);
 		// single object twice doesn't qualify
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		context.list.addToList("TestCase", deity, domainList, fire);
+		context.getListContext().addToList("TestCase", deity, domainList, fire);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -128,12 +130,12 @@ public class PreDeityDomainTesterTest extends
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject deity = grantCDOMObject("Wild Mage");
-		context.list.addToList("TestCase", deity, domainList, context.ref
-			.getCDOMReference(Domain.class, "Water"));
+		context.getListContext().addToList("TestCase", deity, domainList,
+			context.ref.getCDOMReference(Domain.class, "Water"));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject fo = grantFalseObject("Winged Mage");
-		context.list.addToList("TestCase", fo, domainList, context.ref
-			.getCDOMReference(Domain.class, "Fire"));
+		context.getListContext().addToList("TestCase", fo, domainList,
+			context.ref.getCDOMReference(Domain.class, "Fire"));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -145,9 +147,10 @@ public class PreDeityDomainTesterTest extends
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject deity = grantCDOMObject("Wild Mage");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		context.list.addToList("TestCase", deity, domainList, water);
+		context.getListContext()
+			.addToList("TestCase", deity, domainList, water);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		context.list.addToList("TestCase", deity, domainList, fire);
+		context.getListContext().addToList("TestCase", deity, domainList, fire);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -158,10 +161,11 @@ public class PreDeityDomainTesterTest extends
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject deity = grantCDOMObject("Wild Mage");
-		context.list.addToList("TestCase", deity, domainList, water);
+		context.getListContext()
+			.addToList("TestCase", deity, domainList, water);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject fo = grantFalseObject("Winged Mage");
-		context.list.addToList("TestCase", fo, domainList, fire);
+		context.getListContext().addToList("TestCase", fo, domainList, fire);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -172,7 +176,8 @@ public class PreDeityDomainTesterTest extends
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject deity = grantCDOMObject("Wild Mage");
-		context.list.addToList("TestCase", deity, domainList, allDomains);
+		context.getListContext().addToList("TestCase", deity, domainList,
+			allDomains);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -183,7 +188,8 @@ public class PreDeityDomainTesterTest extends
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject deity = grantCDOMObject("Wild Mage");
-		context.list.addToList("TestCase", deity, domainList, allDomains);
+		context.getListContext().addToList("TestCase", deity, domainList,
+			allDomains);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -199,8 +205,10 @@ public class PreDeityDomainTesterTest extends
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject deity = grantCDOMObject("Wild Mage");
-		context.list.addToList("TestCase", deity, domainList, water);
-		context.list.addToList("TestCase", deity, domainList, allDomains);
+		context.getListContext()
+			.addToList("TestCase", deity, domainList, water);
+		context.getListContext().addToList("TestCase", deity, domainList,
+			allDomains);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		prereq.setOperand(Integer.toString(allDomains.getObjectCount()));
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
@@ -218,8 +226,10 @@ public class PreDeityDomainTesterTest extends
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		PObject deity = grantCDOMObject("Wild Mage");
-		context.list.addToList("TestCase", deity, domainList, allDomains);
-		context.list.addToList("TestCase", deity, domainList, water);
+		context.getListContext().addToList("TestCase", deity, domainList,
+			allDomains);
+		context.getListContext()
+			.addToList("TestCase", deity, domainList, water);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		prereq.setOperand(Integer.toString(allDomains.getObjectCount()));
 		assertEquals(1, getTest().passesCDOM(prereq, pc));

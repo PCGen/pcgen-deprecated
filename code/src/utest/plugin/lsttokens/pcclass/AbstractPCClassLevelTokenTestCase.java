@@ -30,6 +30,7 @@ import pcgen.core.Campaign;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.RuntimeLoadContext;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.PCClassLevelLoader;
@@ -70,8 +71,8 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		TokenRegistration.register(getToken());
 		primaryGraph = new PCGenGraph();
 		secondaryGraph = new PCGenGraph();
-		primaryContext = new LoadContext(primaryGraph);
-		secondaryContext = new LoadContext(secondaryGraph);
+		primaryContext = new RuntimeLoadContext(primaryGraph);
+		secondaryContext = new RuntimeLoadContext(secondaryGraph);
 		primaryProf =
 				primaryContext.ref.constructCDOMObject(getCDOMClass(),
 					"TestObj");

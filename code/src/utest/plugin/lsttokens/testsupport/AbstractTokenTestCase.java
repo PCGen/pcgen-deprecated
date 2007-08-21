@@ -30,6 +30,7 @@ import pcgen.core.Campaign;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.RuntimeLoadContext;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.persistence.lst.LstLoader;
@@ -71,13 +72,13 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		TokenRegistration.register(getToken());
 		primaryGraph = new PCGenGraph();
 		secondaryGraph = new PCGenGraph();
-		primaryContext = new LoadContext(primaryGraph);
-		secondaryContext = new LoadContext(secondaryGraph);
+		primaryContext = new RuntimeLoadContext(primaryGraph);
+		secondaryContext = new RuntimeLoadContext(secondaryGraph);
 		URI testURI = testCampaign.getURI();
-		primaryContext.obj.setSourceURI(testURI);
-		primaryContext.obj.setExtractURI(testURI);
-		secondaryContext.obj.setSourceURI(testURI);
-		secondaryContext.obj.setExtractURI(testURI);
+		primaryContext.getObjectContext().setSourceURI(testURI);
+		primaryContext.getObjectContext().setExtractURI(testURI);
+		secondaryContext.getObjectContext().setSourceURI(testURI);
+		secondaryContext.getObjectContext().setExtractURI(testURI);
 		primaryProf =
 				primaryContext.ref.constructCDOMObject(getCDOMClass(),
 					"TestObj");

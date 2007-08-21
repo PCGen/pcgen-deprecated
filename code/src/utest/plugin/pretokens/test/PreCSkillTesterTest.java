@@ -42,6 +42,7 @@ import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.RuntimeLoadContext;
 
 public class PreCSkillTesterTest extends TestCase
 {
@@ -52,7 +53,7 @@ public class PreCSkillTesterTest extends TestCase
 	AssociatedPrereqObject crAPO = new SimpleAssociatedObject();
 
 	PlayerCharacter pc;
-	LoadContext context = new LoadContext(new PCGenGraph());
+	LoadContext context = new RuntimeLoadContext(new PCGenGraph());
 
 	@Override
 	@Before
