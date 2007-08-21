@@ -1,0 +1,213 @@
+/*
+ * Copyright (c) 2007 Tom Parker <thpr@users.sourceforge.net>
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+package plugin.lsttokens.editcontext.testsupport;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.core.Campaign;
+import pcgen.core.PObject;
+import pcgen.persistence.EditorLoadContext;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.CDOMToken;
+import pcgen.persistence.lst.CampaignSourceEntry;
+import pcgen.persistence.lst.LstLoader;
+import pcgen.persistence.lst.LstToken;
+import pcgen.persistence.lst.TokenStore;
+import plugin.lsttokens.testsupport.TokenRegistration;
+
+public abstract class AbstractIntegrationTestCase<T extends PObject> extends
+		TestCase
+{
+	protected PCGenGraph primaryGraph;
+	protected PCGenGraph secondaryGraph;
+	protected LoadContext primaryContext;
+	protected LoadContext secondaryContext;
+	protected T primaryProf;
+	protected T secondaryProf;
+	protected String prefix = "";
+	protected int expectedPrimaryMessageCount = 0;
+
+	private static boolean classSetUpFired = false;
+	protected static CampaignSourceEntry testCampaign;
+	protected static CampaignSourceEntry modCampaign;
+
+	public abstract LstLoader<T> getLoader();
+
+	public abstract CDOMToken<T> getToken();
+
+	@BeforeClass
+	public static final void classSetUp() throws URISyntaxException
+	{
+		testCampaign =
+				new CampaignSourceEntry(new Campaign(), new URI(
+					"file:/Test%20Case"));
+		modCampaign =
+				new CampaignSourceEntry(new Campaign(), new URI(
+					"file:/Test%20Case%20Modifier"));
+		classSetUpFired = true;
+	}
+
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		if (!classSetUpFired)
+		{
+			classSetUp();
+		}
+		// Yea, this causes warnings...
+		TokenRegistration.register(getToken());
+		primaryGraph = new PCGenGraph();
+		secondaryGraph = new PCGenGraph();
+		primaryContext = new EditorLoadContext(primaryGraph);
+		secondaryContext = new EditorLoadContext(secondaryGraph);
+		primaryProf =
+				primaryContext.ref.constructCDOMObject(getCDOMClass(),
+					"TestObj");
+		secondaryProf =
+				secondaryContext.ref.constructCDOMObject(getCDOMClass(),
+					"TestObj");
+	}
+
+	public abstract Class<? extends T> getCDOMClass();
+
+	public static void addToken(LstToken tok)
+	{
+		TokenStore.inst().addToTokenMap(tok);
+	}
+
+	protected void verifyCleanStart()
+	{
+		// Default is not to write out anything
+		assertNull(getToken().unparse(primaryContext, primaryProf));
+		// Ensure the graphs are the same at the start
+		assertEquals(primaryGraph, secondaryGraph);
+		// Ensure the graphs are the same at the start
+		assertEquals(primaryProf, secondaryProf);
+	}
+
+	protected void commit(CampaignSourceEntry campaign, TestContext tc,
+		String... str) throws PersistenceLayerException
+	{
+		StringBuilder unparsedBuilt = new StringBuilder();
+		for (String s : str)
+		{
+			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
+				s).append('\t');
+		}
+		URI uri = campaign.getURI();
+		primaryContext.setSourceURI(uri);
+		getLoader().parseLine(primaryContext, primaryProf,
+			prefix + "TestObj\t" + unparsedBuilt.toString(), campaign);
+		tc.putText(uri, str);
+		tc.putCampaign(uri, campaign);
+	}
+
+	protected void emptyCommit(CampaignSourceEntry campaign, TestContext tc)
+		throws PersistenceLayerException
+	{
+		URI uri = campaign.getURI();
+		primaryContext.setSourceURI(uri);
+		getLoader().parseLine(primaryContext, primaryProf, prefix + "TestObj",
+			campaign);
+		tc.putText(uri, null);
+		tc.putCampaign(uri, campaign);
+	}
+
+	public void completeRoundRobin(TestContext tc)
+		throws PersistenceLayerException
+	{
+		for (URI uri : tc.getURIs())
+		{
+			List<String> str = tc.getText(uri);
+			primaryContext.setExtractURI(uri);
+			// Get back the appropriate token:
+			String[] unparsed = getToken().unparse(primaryContext, primaryProf);
+			if (str == null)
+			{
+				assertNull("Expecting empty unparsed", unparsed);
+				getLoader().parseLine(secondaryContext, secondaryProf,
+					prefix + "TestObj", tc.getCampaign(uri));
+				continue;
+			}
+			assertEquals(str.size(), unparsed.length);
+
+			for (int i = 0; i < str.size(); i++)
+			{
+				assertEquals("Expected " + i + " item to be equal", str.get(i),
+					unparsed[i]);
+			}
+
+			// Do round Robin
+			StringBuilder unparsedBuilt = new StringBuilder();
+			for (String s : unparsed)
+			{
+				unparsedBuilt.append(getToken().getTokenName()).append(':')
+					.append(s).append('\t');
+			}
+			secondaryContext.setSourceURI(uri);
+			getLoader().parseLine(secondaryContext, secondaryProf,
+				prefix + "TestObj\t" + unparsedBuilt.toString(),
+				tc.getCampaign(uri));
+		}
+
+		// Ensure the objects are the same
+		assertEquals(primaryProf, secondaryProf);
+
+		// Ensure the graphs are the same
+		assertEquals(primaryGraph, secondaryGraph);
+
+		// And that it comes back out the same again
+		for (URI uri : tc.getURIs())
+		{
+			List<String> str = tc.getText(uri);
+			secondaryContext.setExtractURI(uri);
+			// Get back the appropriate token:
+			String[] unparsed =
+					getToken().unparse(secondaryContext, secondaryProf);
+			if (str == null)
+			{
+				assertNull(unparsed);
+				continue;
+			}
+			assertEquals(str.size(), unparsed.length);
+
+			for (int i = 0; i < str.size(); i++)
+			{
+				assertEquals("Expected " + i + " item to be equal", str.get(i),
+					unparsed[i]);
+			}
+		}
+
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+		assertEquals(expectedPrimaryMessageCount, primaryContext
+			.getWriteMessageCount());
+		assertEquals(0, secondaryContext.getWriteMessageCount());
+	}
+
+}
