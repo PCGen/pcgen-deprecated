@@ -23,13 +23,10 @@
 package plugin.lsttokens.loader;
 
 import java.net.URI;
-//import java.net.URISyntaxException;
 
-//import org.junit.Before;
-//import org.junit.Test;
-
+import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
+import pcgen.persistence.EditorLoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
@@ -83,7 +80,7 @@ public class VisionLstLoaderTest extends AbstractTokenLoaderTestCase{
 
 	public void testEditorContextMultipleSources() throws PersistenceLayerException
 	{
-		context = new LoadContext();
+		context = new EditorLoadContext(new PCGenGraph());
 		URI sourceURI = sourceCampaign.getURI();
 		URI modURI = modCampaign.getURI();
 		context.setSourceURI(sourceURI);
