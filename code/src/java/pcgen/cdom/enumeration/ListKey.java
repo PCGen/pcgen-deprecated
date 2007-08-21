@@ -32,6 +32,7 @@ import java.util.Map;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.helper.AttackCycle;
 import pcgen.cdom.helper.Capacity;
 import pcgen.cdom.helper.FollowerLimit;
 import pcgen.cdom.helper.Qualifier;
@@ -110,6 +111,8 @@ public final class ListKey<T>
 	public static final ListKey<FollowerLimit> FOLLOWERS = new ListKey<FollowerLimit>();
 
 	public static final ListKey<BonusObj> BONUSES = new ListKey<BonusObj>();
+
+	public static final ListKey<AttackCycle> ATTACK_CYCLE = new ListKey<AttackCycle>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey()

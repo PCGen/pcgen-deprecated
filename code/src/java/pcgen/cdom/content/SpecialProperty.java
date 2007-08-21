@@ -55,7 +55,8 @@ public class SpecialProperty extends TextProperty implements LSTWriteable
 		}
 		SpecialProperty other = (SpecialProperty) o;
 		return property.equals(other.property)
-			&& super.matchesFormulaList(other);
+			&& super.matchesFormulaList(other)
+			&& super.equalsPrereqObject(other);
 	}
 
 	public String getLSTformat()
