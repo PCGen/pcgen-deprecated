@@ -112,7 +112,7 @@ public class Weaponbonus514Token extends AbstractToken implements
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
 		for (CDOMReference<WeaponProf> prof : list)
 		{
-			context.list.addToList(getTokenName(), pcc, swl, prof);
+			context.getListContext().addToList(getTokenName(), pcc, swl, prof);
 		}
 		return true;
 	}

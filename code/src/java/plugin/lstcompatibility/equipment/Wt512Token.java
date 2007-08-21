@@ -57,7 +57,8 @@ public class Wt512Token implements EquipmentLstCompatibilityToken
 		}
 		catch (NumberFormatException nfe)
 		{
-			context.obj.put(eq, ObjectKey.WEIGHT, BigDecimal.ZERO);
+			context.getObjectContext().put(eq, ObjectKey.WEIGHT,
+				BigDecimal.ZERO);
 			return true;
 		}
 	}

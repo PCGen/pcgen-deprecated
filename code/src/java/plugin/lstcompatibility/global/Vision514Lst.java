@@ -76,7 +76,7 @@ public class Vision514Lst implements GlobalLstCompatibilityToken
 
 			if (".CLEAR".equals(visionString))
 			{
-				context.graph.removeAll(getTokenName(), obj);
+				context.getGraphContext().removeAll(getTokenName(), obj);
 				continue;
 			}
 
@@ -87,7 +87,7 @@ public class Vision514Lst implements GlobalLstCompatibilityToken
 					// TODO Need to defer unlink until prove that there are no
 					// errors
 					Vision vis = getVision(visionString.substring(7));
-					context.graph.remove(getTokenName(), obj, vis);
+					context.getGraphContext().remove(getTokenName(), obj, vis);
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -101,7 +101,7 @@ public class Vision514Lst implements GlobalLstCompatibilityToken
 			{
 				if (visionString.startsWith(".SET."))
 				{
-					context.graph.removeAll(getTokenName(), obj);
+					context.getGraphContext().removeAll(getTokenName(), obj);
 					visionString = visionString.substring(5);
 				}
 				try
@@ -119,7 +119,7 @@ public class Vision514Lst implements GlobalLstCompatibilityToken
 		}
 		for (Vision vis : list)
 		{
-			context.graph.grant(getTokenName(), obj, vis);
+			context.getGraphContext().grant(getTokenName(), obj, vis);
 		}
 		return true;
 	}

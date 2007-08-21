@@ -212,7 +212,7 @@ public class Spells514Lst extends AbstractToken implements
 		for (CDOMReference<Spell> spell : dkm.getKeySet())
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, spell);
+					context.getGraphContext().grant(getTokenName(), obj, spell);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(spell))
 			{
 				edge.setAssociation(ak, dkm.get(spell, ak));

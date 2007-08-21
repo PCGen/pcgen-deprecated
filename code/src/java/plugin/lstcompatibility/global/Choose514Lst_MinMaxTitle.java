@@ -234,7 +234,8 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 				count == null ? FormulaFactory.getFormulaFor(1)
 					: FormulaFactory.getFormulaFor(count);
 		ChoiceSet<?> cs = new ChoiceSet("Choose", chooser);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), obj, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		return true;

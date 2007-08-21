@@ -79,8 +79,8 @@ public class Contains512Token extends AbstractToken implements
 		if (weightCapacity.charAt(0) == Constants.CHAR_ASTERISK)
 		{
 			hadAsterisk = true;
-			context.obj.put(eq, ObjectKey.CONTAINER_CONSTANT_WEIGHT,
-				Boolean.TRUE);
+			context.getObjectContext().put(eq,
+				ObjectKey.CONTAINER_CONSTANT_WEIGHT, Boolean.TRUE);
 			weightCapacity = weightCapacity.substring(1);
 		}
 
@@ -106,8 +106,9 @@ public class Contains512Token extends AbstractToken implements
 
 			try
 			{
-				context.obj.put(eq, IntegerKey.CONTAINER_REDUCE_WEIGHT, Integer
-					.valueOf(redString));
+				context.getObjectContext().put(eq,
+					IntegerKey.CONTAINER_REDUCE_WEIGHT,
+					Integer.valueOf(redString));
 			}
 			catch (NumberFormatException ex)
 			{
@@ -117,7 +118,8 @@ public class Contains512Token extends AbstractToken implements
 
 		try
 		{
-			context.obj.put(eq, ObjectKey.CONTAINER_WEIGHT_CAPACITY,
+			context.getObjectContext().put(eq,
+				ObjectKey.CONTAINER_WEIGHT_CAPACITY,
 				new BigDecimal(weightCapacity));
 		}
 		catch (NumberFormatException ex)
@@ -187,7 +189,7 @@ public class Contains512Token extends AbstractToken implements
 		boolean requiresTotal = true;
 		for (Capacity cap : capacityList)
 		{
-			context.obj.addToList(eq, ListKey.CAPACITY, cap);
+			context.getObjectContext().addToList(eq, ListKey.CAPACITY, cap);
 			if (cap.getType() == null)
 			{
 				requiresTotal = false;
@@ -198,8 +200,8 @@ public class Contains512Token extends AbstractToken implements
 		{
 			BigDecimal totalCapacity =
 					limited ? limitedCapacity : Capacity.UNLIMITED;
-			context.obj.addToList(eq, ListKey.CAPACITY, Capacity
-				.getTotalCapacity(totalCapacity));
+			context.getObjectContext().addToList(eq, ListKey.CAPACITY,
+				Capacity.getTotalCapacity(totalCapacity));
 		}
 
 		return true;

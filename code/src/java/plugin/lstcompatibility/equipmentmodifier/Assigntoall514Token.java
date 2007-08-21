@@ -51,7 +51,7 @@ public class Assigntoall514Token implements
 		{
 			set = Boolean.FALSE;
 		}
-		context.obj.put(mod, ObjectKey.ASSIGN_TO_ALL, set);
+		context.getObjectContext().put(mod, ObjectKey.ASSIGN_TO_ALL, set);
 		return true;
 	}
 

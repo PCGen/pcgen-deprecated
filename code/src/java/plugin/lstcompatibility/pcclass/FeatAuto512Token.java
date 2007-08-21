@@ -107,7 +107,8 @@ public class FeatAuto512Token extends AbstractToken implements
 		for (CDOMReference<Ability> ability : abilityList)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, ability);
+					context.getGraphContext().grant(getTokenName(), obj,
+						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
 				AbilityNature.AUTOMATIC);
 			if (prereqs != null)

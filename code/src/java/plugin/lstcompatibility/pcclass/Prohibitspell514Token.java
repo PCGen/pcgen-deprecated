@@ -62,7 +62,7 @@ public class Prohibitspell514Token extends AbstractToken implements
 		{
 			return false;
 		}
-		context.graph.grant(getTokenName(), pcc, sp);
+		context.getGraphContext().grant(getTokenName(), pcc, sp);
 		return true;
 	}
 
