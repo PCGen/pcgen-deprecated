@@ -180,7 +180,8 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 
 		ReferenceChoiceSet<Skill> rcs = new ReferenceChoiceSet<Skill>(refs);
 		ChoiceSet<Skill> cs = new ChoiceSet<Skill>("ADD", rcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), obj, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -188,15 +189,15 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 		ClassSkillList csl = ((PCClass) obj).getCDOMClassSkillList();
 		AllowFactory<Skill> af = new AllowFactory<Skill>(edge, csl);
 		af.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
-		context.graph.grant(getTokenName(), obj, af);
+		context.getGraphContext().grant(getTokenName(), obj, af);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<ChoiceSet> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;

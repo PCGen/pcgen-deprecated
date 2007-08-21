@@ -169,7 +169,8 @@ public class FeatToken extends AbstractToken implements AddLstToken
 
 		ReferenceChoiceSet<Ability> rcs = new ReferenceChoiceSet<Ability>(refs);
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("ADD", rcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), obj, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -184,15 +185,15 @@ public class FeatToken extends AbstractToken implements AddLstToken
 			.setAssociation(AssociationKey.ABILITY_CATEGORY,
 				AbilityCategory.FEAT);
 		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
-		context.graph.grant(getTokenName(), obj, gf);
+		context.getGraphContext().grant(getTokenName(), obj, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<ChoiceSet> choiceChanges =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChoiceSet.class);
 		if (choiceChanges == null)
 		{
 			return null;
@@ -205,8 +206,8 @@ public class FeatToken extends AbstractToken implements AddLstToken
 			return null;
 		}
 		GraphChanges<GrantFactory> grantChanges =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					GrantFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, GrantFactory.class);
 		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
 		if (grantAdded == null || grantAdded.isEmpty())
 		{

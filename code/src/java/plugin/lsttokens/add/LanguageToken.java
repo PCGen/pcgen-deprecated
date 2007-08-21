@@ -165,21 +165,22 @@ public class LanguageToken extends AbstractToken implements AddLstToken
 		ReferenceChoiceSet<Language> rcs =
 				new ReferenceChoiceSet<Language>(refs);
 		ChoiceSet<Language> cs = new ChoiceSet<Language>("ADD", rcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), obj, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
 		GrantFactory<Language> gf = new GrantFactory<Language>(edge);
-		context.graph.grant(getTokenName(), obj, gf);
+		context.getGraphContext().grant(getTokenName(), obj, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<ChoiceSet> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;

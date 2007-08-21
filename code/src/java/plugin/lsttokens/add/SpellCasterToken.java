@@ -168,7 +168,8 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 				new ReferenceChoiceSet<SpellProgressionInfo>(refs);
 		ChoiceSet<SpellProgressionInfo> cs =
 				new ChoiceSet<SpellProgressionInfo>("ADD", rcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), obj, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -176,15 +177,15 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 		GrantFactory<SpellProgressionInfo> gf =
 				new GrantFactory<SpellProgressionInfo>(edge);
 		gf.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(1));
-		context.graph.grant(getTokenName(), obj, gf);
+		context.getGraphContext().grant(getTokenName(), obj, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<ChoiceSet> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;

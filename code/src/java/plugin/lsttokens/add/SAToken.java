@@ -152,22 +152,23 @@ public class SAToken extends AbstractToken implements AddLstToken
 		ReferenceChoiceSet<SpecialAbility> rcs =
 				new ReferenceChoiceSet<SpecialAbility>(refs);
 		ChoiceSet<SpecialAbility> cs = new ChoiceSet<SpecialAbility>(name, rcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), obj, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
 		GrantFactory<SpecialAbility> gf =
 				new GrantFactory<SpecialAbility>(edge);
-		context.graph.grant(getTokenName(), obj, gf);
+		context.getGraphContext().grant(getTokenName(), obj, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<ChoiceSet> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;

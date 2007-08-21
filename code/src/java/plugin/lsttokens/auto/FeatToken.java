@@ -139,14 +139,15 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 				String name = feat.substring(7);
 				CDOMCategorizedSingleRef<Ability> ability =
 						context.ref.getCDOMReference(ABILITY_CLASS, ac, name);
-				context.graph.remove(getTokenName(), obj, ability);
+				context.getGraphContext().remove(getTokenName(), obj, ability);
 			}
 			else
 			{
 				CDOMCategorizedSingleRef<Ability> ability =
 						context.ref.getCDOMReference(ABILITY_CLASS, ac, feat);
 				PCGraphGrantsEdge edge =
-						context.graph.grant(getTokenName(), obj, ability);
+						context.getGraphContext().grant(getTokenName(), obj,
+							ability);
 				edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
 			}
 		}
@@ -156,8 +157,8 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<Ability> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ABILITY_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -202,8 +203,8 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			String ab =
-				ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-					Constants.PIPE);
+					ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+						Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				ab =

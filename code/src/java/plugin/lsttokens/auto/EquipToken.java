@@ -127,8 +127,8 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			if ("%LIST".equals(value))
 			{
 				CDOMEdgeReference assocref =
-						context.graph.getEdgeReference(obj, ChoiceSet.class,
-							"Choice", EQUIPMENT_CLASS);
+						context.getGraphContext().getEdgeReference(obj,
+							ChoiceSet.class, "Choice", EQUIPMENT_CLASS);
 				GrantFactory<Equipment> gf =
 						new GrantFactory<Equipment>(assocref);
 				refs.add(gf);
@@ -166,7 +166,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		for (PrereqObject ref : refs)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, ref);
+					context.getGraphContext().grant(getTokenName(), obj, ref);
 			if (prereq != null)
 			{
 				edge.addPreReq(prereq);
@@ -184,8 +184,8 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<Equipment> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					EQUIPMENT_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, EQUIPMENT_CLASS);
 		if (changes == null)
 		{
 			return null;

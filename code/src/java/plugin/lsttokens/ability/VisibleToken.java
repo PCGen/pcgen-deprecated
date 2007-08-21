@@ -141,13 +141,15 @@ public class VisibleToken implements AbilityLstToken
 				+ " tag: " + value);
 			return false;
 		}
-		context.obj.put(ability, ObjectKey.VISIBILITY, vis);
+		context.getObjectContext().put(ability, ObjectKey.VISIBILITY, vis);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
-		Visibility vis = context.obj.getObject(ability, ObjectKey.VISIBILITY);
+		Visibility vis =
+				context.getObjectContext().getObject(ability,
+					ObjectKey.VISIBILITY);
 		if (vis == null)
 		{
 			return null;

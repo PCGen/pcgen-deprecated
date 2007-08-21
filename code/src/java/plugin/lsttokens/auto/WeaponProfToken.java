@@ -120,8 +120,8 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 			if ("%LIST".equals(value))
 			{
 				CDOMEdgeReference assocref =
-						context.graph.getEdgeReference(obj, ChoiceSet.class,
-							"Choice", WEAPONPROF_CLASS);
+						context.getGraphContext().getEdgeReference(obj,
+							ChoiceSet.class, "Choice", WEAPONPROF_CLASS);
 				GrantFactory<ArmorProf> gf =
 						new GrantFactory<ArmorProf>(assocref);
 				refs.add(gf);
@@ -159,7 +159,7 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 		for (PrereqObject ref : refs)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, ref);
+					context.getGraphContext().grant(getTokenName(), obj, ref);
 			if (prereq != null)
 			{
 				edge.addPreReq(prereq);
@@ -172,8 +172,8 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<WeaponProf> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					WEAPONPROF_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, WEAPONPROF_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -209,8 +209,8 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			String ab =
-				ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-					Constants.PIPE);
+					ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+						Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				if (prereqs.size() > 1)

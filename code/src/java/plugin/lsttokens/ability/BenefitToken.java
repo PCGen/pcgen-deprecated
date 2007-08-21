@@ -71,13 +71,15 @@ public class BenefitToken extends AbstractToken implements AbilityLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		context.obj.put(ability, StringKey.BENEFIT, value);
+		context.getObjectContext().put(ability, StringKey.BENEFIT, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
-		String benefit = context.obj.getString(ability, StringKey.BENEFIT);
+		String benefit =
+				context.getObjectContext()
+					.getString(ability, StringKey.BENEFIT);
 		if (benefit == null)
 		{
 			return null;
@@ -88,7 +90,8 @@ public class BenefitToken extends AbstractToken implements AbilityLstToken
 	/**
 	 * Parses the BENEFIT tag into a Description object.
 	 * 
-	 * @param aDesc The LST tag
+	 * @param aDesc
+	 *            The LST tag
 	 * @return A <tt>Description</tt> object
 	 */
 	public Description parseBenefit(final String aDesc)
@@ -97,7 +100,7 @@ public class BenefitToken extends AbstractToken implements AbilityLstToken
 
 		final Description desc =
 				new Description(EntityEncoder.decode(tok.nextToken()));
-		
+
 		boolean isPre = false;
 		while (tok.hasMoreTokens())
 		{
@@ -111,8 +114,10 @@ public class BenefitToken extends AbstractToken implements AbilityLstToken
 			{
 				if (isPre)
 				{
-					Logging.errorPrint("Invalid " + getTokenName() + ": " + aDesc);
-					Logging.errorPrint("  PRExxx must be at the END of the Token");
+					Logging.errorPrint("Invalid " + getTokenName() + ": "
+						+ aDesc);
+					Logging
+						.errorPrint("  PRExxx must be at the END of the Token");
 					isPre = false;
 				}
 				desc.addVariable(token);
