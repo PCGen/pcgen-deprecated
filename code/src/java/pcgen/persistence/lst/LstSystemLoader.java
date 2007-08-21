@@ -43,7 +43,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.graph.PCGenGraph;
@@ -65,6 +64,7 @@ import pcgen.core.utils.CoreUtility;
 import pcgen.gui.pcGenGUI;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.RuntimeLoadContext;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
@@ -392,7 +392,7 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 
 		PCGenGraph master = new PCGenGraph();
 		Globals.setMasterGraph(master);
-		LoadContext context = new LoadContext(master);
+		LoadContext context = new RuntimeLoadContext(master);
 		
 		if (aSelectedCampaignsList.size() == 0)
 		{

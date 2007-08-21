@@ -293,6 +293,6 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	 */
 	public int firstKeyCount()
 	{
-		return map.firstKeyCount();
+		return map.primaryKeyCount();
 	}
 }

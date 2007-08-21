@@ -59,10 +59,4 @@ public final class Aggregator extends CDOMObject
 			&& other.aggregatorSource.equals(aggregatorSource)
 			&& isCDOMEqual(other) && equalsPrereqObject(other);
 	}
-
-	@Override
-	protected CDOMObject getRawReplacement()
-	{
-		return new Aggregator(aggregatorOwner, aggregatorSource, aggSourceToken);
-	}
 }

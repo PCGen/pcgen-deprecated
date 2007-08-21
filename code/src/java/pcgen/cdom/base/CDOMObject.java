@@ -352,52 +352,6 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		return true;
 	}
 
-	public CDOMObject getRetiredReference()
-	{
-		Boolean retired = get(ObjectKey.RETIRED);
-		if (retired != null && retired.booleanValue() == true)
-		{
-			throw new IllegalStateException(
-				"Cannot get retired reference for an object that is already retired");
-		}
-		CDOMObject obj = getRawReplacement();
-		obj.integerChar.putAll(integerChar);
-		obj.stringChar.putAll(stringChar);
-		obj.formulaChar.putAll(formulaChar);
-		obj.variableChar.putAll(variableChar);
-		obj.objectChar.putAll(objectChar);
-		obj.listChar.addAllLists(listChar);
-		obj.addAllPrerequisites(getPrerequisiteList());
-		obj.objectChar.put(ObjectKey.RETIRED, Boolean.TRUE);
-		Integer seq = integerChar.get(IntegerKey.SEQUENCE_NUMBER);
-		if (seq == null)
-		{
-			seq = Integer.valueOf(1);
-			obj.integerChar.put(IntegerKey.SEQUENCE_NUMBER, seq);
-		}
-		seq = Integer.valueOf(seq.intValue() + 1);
-		integerChar.put(IntegerKey.SEQUENCE_NUMBER, seq);
-		return obj;
-	}
-
-	protected CDOMObject getRawReplacement()
-	{
-		CDOMObject obj;
-		try
-		{
-			obj = this.getClass().newInstance();
-		}
-		catch (InstantiationException e)
-		{
-			throw new InternalError(e.getMessage());
-		}
-		catch (IllegalAccessException e)
-		{
-			throw new InternalError(e.getMessage());
-		}
-		return obj;
-	}
-
 	// TODO Generic Type Safety rather than CDOMObject
 	public <T extends CDOMObject> AssociatedPrereqObject putToList(
 		CDOMReference list, CDOMReference<T> granted,

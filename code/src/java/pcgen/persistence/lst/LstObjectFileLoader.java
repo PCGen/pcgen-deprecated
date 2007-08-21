@@ -118,7 +118,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 			// Check if the CSE has already been loaded before loading it
 			if (!loadedFiles.contains(sourceEntry))
 			{
-				context.graph.setSourceURI(sourceEntry.getURI());
+				context.setSourceURI(sourceEntry.getURI());
 				loadLstFile(context, sourceEntry);
 				loadedFiles.add(sourceEntry);
 			}

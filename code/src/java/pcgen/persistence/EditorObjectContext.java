@@ -36,8 +36,8 @@ import pcgen.cdom.enumeration.VariableKey;
 public class EditorObjectContext implements ObjectContext
 {
 
-	private DoubleKeyMap<URI, CDOMObject, CDOMObject> positiveMap =
-			new DoubleKeyMap<URI, CDOMObject, CDOMObject>();
+	private DoubleKeyMap<CDOMObject, URI, CDOMObject> positiveMap =
+			new DoubleKeyMap<CDOMObject, URI, CDOMObject>();
 
 	private DoubleKeyMap<URI, CDOMObject, CDOMObject> negativeMap =
 			new DoubleKeyMap<URI, CDOMObject, CDOMObject>();
@@ -74,9 +74,14 @@ public class EditorObjectContext implements ObjectContext
 		return negative;
 	}
 
+	public int getPositiveCount(CDOMObject cdo)
+	{
+		return positiveMap.secondaryKeyCount(cdo);
+	}
+
 	private CDOMObject getPositive(URI source, CDOMObject cdo)
 	{
-		CDOMObject positive = positiveMap.get(source, cdo);
+		CDOMObject positive = positiveMap.get(cdo, source);
 		if (positive == null)
 		{
 			try
@@ -94,7 +99,7 @@ public class EditorObjectContext implements ObjectContext
 					"CDOM Objects must have a public zero argument constructor",
 					e);
 			}
-			positiveMap.put(source, cdo, positive);
+			positiveMap.put(cdo, source, positive);
 		}
 		return positive;
 	}

@@ -21,46 +21,22 @@ import java.net.URI;
 
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.GameMode;
 import pcgen.core.SettingsHandler;
 import pcgen.core.SizeAdjustment;
 
-public class LoadContext
+public abstract class LoadContext
 {
-
-	public final GraphContext graph;
-
-	public final ListContext list;
 
 	public final ReferenceContext ref;
 
-	public final ObjectContext obj;
-
 	public final GameMode gameMode;
-
-	private final String contextType;
 
 	public LoadContext()
 	{
-		graph = new EditorGraphContext(new PCGenGraph());
-		obj = new EditorObjectContext();
-		list = new EditorListContext();
 		ref = new ReferenceContext();
 		// TODO FIXME This is a hack
 		gameMode = SettingsHandler.getGame();
-		contextType = "Editor";
-	}
-
-	public LoadContext(PCGenGraph pgg)
-	{
-		graph = new RuntimeGraphContext(pgg);
-		obj = new RuntimeObjectContext();
-		list = new RuntimeListContext();
-		ref = new ReferenceContext();
-		// TODO FIXME This is a hack
-		gameMode = SettingsHandler.getGame();
-		contextType = "Runtime";
 	}
 
 	public <T extends PrereqObject> CDOMGroupRef<T> groupChildNodesOfClass(
@@ -97,7 +73,7 @@ public class LoadContext
 
 	public ContextQueue getContextQueue()
 	{
-		return new ContextQueue(graph);
+		return new ContextQueue(getGraphContext());
 	}
 
 	public SizeAdjustment getNextSize(SizeAdjustment size)
@@ -120,8 +96,8 @@ public class LoadContext
 	 */
 	public void setExtractURI(URI extractURI)
 	{
-		obj.setExtractURI(extractURI);
-		graph.setExtractURI(extractURI);
+		getObjectContext().setExtractURI(extractURI);
+		getGraphContext().setExtractURI(extractURI);
 	}
 
 	/**
@@ -132,21 +108,23 @@ public class LoadContext
 	 */
 	public void setSourceURI(URI sourceURI)
 	{
-		obj.setSourceURI(sourceURI);
-		graph.setSourceURI(sourceURI);
+		getObjectContext().setSourceURI(sourceURI);
+		getGraphContext().setSourceURI(sourceURI);
 	}
 
 	/*
 	 * Get the type of context we're running in (either Editor or Runtime)
 	 */
-	public String getContextType()
-	{
-		return contextType;
-	}
+	public abstract String getContextType();
 
 	public void setLine(int i)
 	{
-		graph.setLine(i);
+		getGraphContext().setLine(i);
 	}
 
+	public abstract GraphContext getGraphContext();
+
+	public abstract ObjectContext getObjectContext();
+
+	public abstract ListContext getListContext();
 }

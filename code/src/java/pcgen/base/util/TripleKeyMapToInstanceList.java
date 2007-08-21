@@ -359,7 +359,7 @@ public class TripleKeyMapToInstanceList<K1, K2, K3, V> // implements Cloneable
 	 */
 	public int firstKeyCount()
 	{
-		return dkmtl.firstKeyCount();
+		return dkmtl.primaryKeyCount();
 	}
 
 	/**

@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import pcgen.cdom.base.CDOMObject;
+
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
  * 
@@ -315,9 +317,29 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	 * 
 	 * @return the number of primary keys in this DoubleKeyMap
 	 */
-	public int firstKeyCount()
+	public int primaryKeyCount()
 	{
 		return map.size();
+	}
+
+	/**
+	 * Returns the number of secondary keys in this DoubleKeyMap for the given
+	 * primary key
+	 * 
+	 * @param aPrimaryKey
+	 *            The primary key for which the number of secondary keys will be
+	 *            returned
+	 * @return the number of secondary keys in this DoubleKeyMap for the given
+	 *         primary key
+	 */
+	public int secondaryKeyCount(K1 aPrimaryKey)
+	{
+		final Map<K2, V> localMap = map.get(aPrimaryKey);
+		if (localMap == null)
+		{
+			return 0;
+		}
+		return localMap.size();
 	}
 
 	@SuppressWarnings("unchecked")
