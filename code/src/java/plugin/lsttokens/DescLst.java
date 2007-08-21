@@ -130,7 +130,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.graph.removeAll(getTokenName(), obj);
+			context.getGraphContext().removeAll(getTokenName(), obj);
 			return true;
 		}
 		if (value.startsWith(Constants.LST_DOT_CLEAR_DOT))
@@ -151,7 +151,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 		{
 			return false;
 		}
-		context.graph.grant(getTokenName(), obj, d);
+		context.getGraphContext().grant(getTokenName(), obj, d);
 		return true;
 	}
 
@@ -230,8 +230,8 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<Description> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					Description.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, Description.class);
 		if (changes == null)
 		{
 			return null;

@@ -349,7 +349,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 		for (CDOMReference<Spell> spell : dkm.getKeySet())
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, spell);
+					context.getGraphContext().grant(getTokenName(), obj, spell);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(spell))
 			{
 				edge.setAssociation(ak, dkm.get(spell, ak));
@@ -367,8 +367,8 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<Spell> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					Spell.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, Spell.class);
 		if (changes == null)
 		{
 			return null;

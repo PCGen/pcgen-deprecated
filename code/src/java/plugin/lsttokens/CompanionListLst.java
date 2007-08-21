@@ -372,7 +372,8 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 		for (CDOMReference<Race> race : races)
 		{
 			AssociatedPrereqObject edge =
-					context.list.addToList(getTokenName(), obj, ref, race);
+					context.getListContext().addToList(getTokenName(), obj,
+						ref, race);
 			if (followerAdjustment != null)
 			{
 				edge.setAssociation(AssociationKey.FOLLOWER_ADJUSTMENT,
@@ -385,14 +386,16 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists =
-				context.list.getChangedLists(obj, CompanionList.class);
+				context.getListContext().getChangedLists(obj,
+					CompanionList.class);
 		TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CompanionList>, Integer, LSTWriteable> m =
 				new TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CompanionList>, Integer, LSTWriteable>();
 
 		for (CDOMReference ref : changedLists)
 		{
 			ListGraphChanges<Race> changes =
-					context.list.getChangesInList(getTokenName(), obj, ref);
+					context.getListContext().getChangesInList(getTokenName(),
+						obj, ref);
 			if (changes == null)
 			{
 				// Legal if no COMPANIONLIST was present

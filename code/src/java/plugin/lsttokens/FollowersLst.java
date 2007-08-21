@@ -157,7 +157,7 @@ public class FollowersLst implements GlobalLstToken
 		CDOMSimpleSingleRef<CompanionList> cl =
 				context.ref.getCDOMReference(CompanionList.class, followerType);
 		Formula num = FormulaFactory.getFormulaFor(followerNumber);
-		context.obj.addToList(obj, ListKey.FOLLOWERS,
+		context.getObjectContext().addToList(obj, ListKey.FOLLOWERS,
 			new FollowerLimit(cl, num));
 		return true;
 	}
@@ -165,7 +165,8 @@ public class FollowersLst implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Changes<FollowerLimit> changes =
-				context.obj.getListChanges(obj, ListKey.FOLLOWERS);
+				context.getObjectContext().getListChanges(obj,
+					ListKey.FOLLOWERS);
 		if (changes == null)
 		{
 			return null;

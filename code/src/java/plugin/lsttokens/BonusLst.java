@@ -141,7 +141,7 @@ public class BonusLst extends AbstractToken implements GlobalLstToken
 						"; value was: ").append(value).toString());
 			}
 		}
-		context.obj.addToList(obj, ListKey.BONUSES, bonus);
+		context.getObjectContext().addToList(obj, ListKey.BONUSES, bonus);
 		return true;
 	}
 

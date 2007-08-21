@@ -232,7 +232,7 @@ public class ChooseLst implements GlobalLstToken
 					: FormulaFactory.getFormulaFor(count);
 		ChoiceSet<?> choiceSet = new ChoiceSet(Constants.CHOOSE, chooser);
 		PCGraphGrantsEdge edge =
-				context.graph.grant(getTokenName(), obj, choiceSet);
+				context.getGraphContext().grant(getTokenName(), obj, choiceSet);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		/*
@@ -250,8 +250,8 @@ public class ChooseLst implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<ChoiceSet> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;

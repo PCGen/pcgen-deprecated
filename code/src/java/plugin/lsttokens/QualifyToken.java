@@ -186,7 +186,7 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Changes<Qualifier> changes =
-				context.obj.getListChanges(obj, ListKey.QUALIFY);
+				context.getObjectContext().getListChanges(obj, ListKey.QUALIFY);
 		if (changes == null)
 		{
 			return null;

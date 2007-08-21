@@ -81,8 +81,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 	 * @param level
 	 *            int level at which the ability is gained
 	 */
-	public void parseSpecialAbility(PObject obj, String aString,
-		int level)
+	public void parseSpecialAbility(PObject obj, String aString, int level)
 	{
 		StringTokenizer aTok = new StringTokenizer(aString, "|", true);
 
@@ -97,7 +96,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 		SpecialAbility sa = new SpecialAbility();
 
 		boolean isPre = false;
-		
+
 		while (aTok.hasMoreTokens())
 		{
 			String cString = aTok.nextToken();
@@ -161,7 +160,8 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			}
 			catch (PersistenceLayerException notUsed)
 			{
-				Logging.errorPrint("Failed to assign level prerequisite.", notUsed);
+				Logging.errorPrint("Failed to assign level prerequisite.",
+					notUsed);
 			}
 		}
 		if (obj instanceof PCClass)
@@ -212,7 +212,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.graph.removeAll(getTokenName(), obj);
+			context.getGraphContext().removeAll(getTokenName(), obj);
 			if (!tok.hasMoreTokens())
 			{
 				return true;
@@ -231,7 +231,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 		if (!tok.hasMoreTokens())
 		{
-			context.graph.grant(getTokenName(), obj, sa);
+			context.getGraphContext().grant(getTokenName(), obj, sa);
 			return true;
 		}
 
@@ -262,7 +262,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 				// No prereqs, so we're done
 				// CONSIDER This is a HACK and not the long term strategy of SA:
 				sa.setName(saName.toString());
-				context.graph.grant(getTokenName(), obj, sa);
+				context.getGraphContext().grant(getTokenName(), obj, sa);
 				return true;
 			}
 			token = tok.nextToken();
@@ -296,15 +296,15 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			}
 			token = tok.nextToken();
 		}
-		context.graph.grant(getTokenName(), obj, sa);
+		context.getGraphContext().grant(getTokenName(), obj, sa);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<SpecialAbility> changes =
-				context.graph
-					.getChangesFromToken(getTokenName(), obj, SA_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, SA_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -328,7 +328,8 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 			if (ab.hasPrerequisites())
 			{
 				sb.append(Constants.PIPE);
-				sb.append(getPrerequisiteString(context, ab.getPrerequisiteList()));
+				sb.append(getPrerequisiteString(context, ab
+					.getPrerequisiteList()));
 			}
 			list.add(sb.toString());
 		}

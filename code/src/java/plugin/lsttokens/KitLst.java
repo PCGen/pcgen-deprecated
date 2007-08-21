@@ -103,7 +103,7 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 		}
 		ChoiceSet<?> choiceSet = new ChoiceSet("KIT", chooser);
 		PCGraphGrantsEdge edge =
-				context.graph.grant(getTokenName(), obj, choiceSet);
+				context.getGraphContext().grant(getTokenName(), obj, choiceSet);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -113,7 +113,8 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		ChoiceSet<?> choice = context.obj.getObject(obj, ObjectKey.KIT_CHOICE);
+		ChoiceSet<?> choice =
+				context.getObjectContext().getObject(obj, ObjectKey.KIT_CHOICE);
 		if (choice == null)
 		{
 			return null;

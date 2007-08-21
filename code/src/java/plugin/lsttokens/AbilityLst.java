@@ -268,7 +268,8 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 					context.ref.getCDOMReference(ABILITY_CLASS, ac, tok
 						.nextToken());
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, ability);
+					context.getGraphContext().grant(getTokenName(), obj,
+						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
 		}
 		return true;
@@ -277,8 +278,8 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<Ability> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ABILITY_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;

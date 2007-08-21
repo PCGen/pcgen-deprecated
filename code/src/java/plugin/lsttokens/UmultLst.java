@@ -59,7 +59,7 @@ public class UmultLst implements GlobalLstToken
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.obj.put(obj, IntegerKey.UMULT, null);
+			context.getObjectContext().put(obj, IntegerKey.UMULT, null);
 		}
 		else
 		{
@@ -73,7 +73,7 @@ public class UmultLst implements GlobalLstToken
 					Logging.errorPrint("  Expecting a positive integer");
 					return false;
 				}
-				context.obj.put(obj, IntegerKey.UMULT, i);
+				context.getObjectContext().put(obj, IntegerKey.UMULT, i);
 			}
 			catch (NumberFormatException nfe)
 			{
@@ -87,7 +87,8 @@ public class UmultLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Integer mult = context.obj.getInteger(obj, IntegerKey.UMULT);
+		Integer mult =
+				context.getObjectContext().getInteger(obj, IntegerKey.UMULT);
 		if (mult == null)
 		{
 			return null;

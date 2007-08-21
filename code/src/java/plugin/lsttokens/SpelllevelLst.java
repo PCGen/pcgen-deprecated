@@ -307,8 +307,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 				 * TODO Deprecate the use of SPELLCASTER? No need for it, since
 				 * the function isn't any different.
 				 * 
-				 * Actually, I think it IS necessary still - thpr 1/8/07
-				 * It is, since this is actually a TYPE
+				 * Actually, I think it IS necessary still - thpr 1/8/07 It is,
+				 * since this is actually a TYPE
 				 */
 				classString = classString.substring(12);
 			}
@@ -337,7 +337,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 			for (CDOMReference<? extends CDOMList<Spell>> sl : slList)
 			{
 				AssociatedPrereqObject tpr =
-						context.list.addToList(getTokenName(), obj, sl, sp);
+						context.getListContext().addToList(getTokenName(), obj,
+							sl, sp);
 				tpr.setAssociation(AssociationKey.SPELL_LEVEL, splLevel);
 				tpr.addAllPrerequisites(prereqs);
 			}
@@ -348,11 +349,13 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedDomainLists =
-				context.list.getChangedLists(obj, DomainSpellList.class);
+				context.getListContext().getChangedLists(obj,
+					DomainSpellList.class);
 		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<Spell>> domainMap =
 				getMap(context, obj, changedDomainLists);
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedClassLists =
-				context.list.getChangedLists(obj, ClassSpellList.class);
+				context.getListContext().getChangedLists(obj,
+					ClassSpellList.class);
 		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<Spell>> classMap =
 				getMap(context, obj, changedDomainLists);
 
@@ -419,7 +422,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		for (CDOMReference listRef : changedLists)
 		{
 			ListGraphChanges<Spell> changes =
-					context.list.getChangesInList(getTokenName(), obj, listRef);
+					context.getListContext().getChangesInList(getTokenName(),
+						obj, listRef);
 			if (changes == null)
 			{
 				// Legal if no SPELLLEVEL was present

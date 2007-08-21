@@ -121,7 +121,8 @@ public class UnencumberedmoveLst extends AbstractToken implements
 						+ getTokenName() + " this is not valid.");
 					return false;
 				}
-				context.obj.put(obj, ObjectKey.UNENCUMBERED_LOAD, load);
+				context.getObjectContext().put(obj,
+					ObjectKey.UNENCUMBERED_LOAD, load);
 				setLoad = true;
 			}
 			catch (IllegalArgumentException e)
@@ -136,7 +137,8 @@ public class UnencumberedmoveLst extends AbstractToken implements
 							+ getTokenName() + " this is not valid.");
 						return false;
 					}
-					context.obj.put(obj, ObjectKey.UNENCUMBERED_ARMOR, at);
+					context.getObjectContext().put(obj,
+						ObjectKey.UNENCUMBERED_ARMOR, at);
 					setArmor = true;
 				}
 				catch (IllegalArgumentException e2)
@@ -154,8 +156,11 @@ public class UnencumberedmoveLst extends AbstractToken implements
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		pcgen.cdom.enumeration.Load load =
-				context.obj.getObject(obj, ObjectKey.UNENCUMBERED_LOAD);
-		ArmorType at = context.obj.getObject(obj, ObjectKey.UNENCUMBERED_ARMOR);
+				context.getObjectContext().getObject(obj,
+					ObjectKey.UNENCUMBERED_LOAD);
+		ArmorType at =
+				context.getObjectContext().getObject(obj,
+					ObjectKey.UNENCUMBERED_ARMOR);
 		if (load == null && at == null)
 		{
 			return null;

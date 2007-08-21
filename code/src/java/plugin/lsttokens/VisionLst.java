@@ -154,7 +154,7 @@ public class VisionLst implements GlobalLstToken
 
 			if (".CLEAR".equals(visionString))
 			{
-				context.graph.removeAll(getTokenName(), obj);
+				context.getGraphContext().removeAll(getTokenName(), obj);
 				continue;
 			}
 
@@ -163,7 +163,7 @@ public class VisionLst implements GlobalLstToken
 				try
 				{
 					Vision vis = Vision.getVision(visionString.substring(7));
-					context.graph.remove(getTokenName(), obj, vis);
+					context.getGraphContext().remove(getTokenName(), obj, vis);
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -177,7 +177,7 @@ public class VisionLst implements GlobalLstToken
 			{
 				if (visionString.startsWith(".SET."))
 				{
-					context.graph.removeAll(getTokenName(), obj);
+					context.getGraphContext().removeAll(getTokenName(), obj);
 					visionString = visionString.substring(5);
 				}
 				try
@@ -195,7 +195,7 @@ public class VisionLst implements GlobalLstToken
 		}
 		for (Vision vis : list)
 		{
-			context.graph.grant(getTokenName(), obj, vis);
+			context.getGraphContext().grant(getTokenName(), obj, vis);
 		}
 		return true;
 	}
@@ -203,8 +203,8 @@ public class VisionLst implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<Vision> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					VISION_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, VISION_CLASS);
 		if (changes == null)
 		{
 			return null;

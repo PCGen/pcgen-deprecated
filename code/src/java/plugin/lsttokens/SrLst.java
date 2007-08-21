@@ -67,11 +67,12 @@ public class SrLst implements GlobalLstToken
 	{
 		if (".CLEAR".equals(value))
 		{
-			context.graph.removeAll(getTokenName(), obj);
+			context.getGraphContext().removeAll(getTokenName(), obj);
 		}
 		else
 		{
-			context.graph.grant(getTokenName(), obj, getSpellResistance(value));
+			context.getGraphContext().grant(getTokenName(), obj,
+				getSpellResistance(value));
 		}
 		return true;
 	}
@@ -84,8 +85,8 @@ public class SrLst implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<SpellResistance> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					SpellResistance.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, SpellResistance.class);
 		if (changes == null)
 		{
 			return null;

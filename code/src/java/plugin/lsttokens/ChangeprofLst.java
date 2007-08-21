@@ -182,7 +182,7 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 		}
 		for (ChangeProf cp : list)
 		{
-			context.graph.grant(getTokenName(), obj, cp);
+			context.getGraphContext().grant(getTokenName(), obj, cp);
 		}
 		return true;
 	}
@@ -190,8 +190,8 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<ChangeProf> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChangeProf.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChangeProf.class);
 		if (changes == null)
 		{
 			return null;

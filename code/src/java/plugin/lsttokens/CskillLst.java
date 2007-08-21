@@ -100,7 +100,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 						+ ": .CLEAR was not the first list item");
 					return false;
 				}
-				context.graph.removeAll(getTokenName(), obj);
+				context.getGraphContext().removeAll(getTokenName(), obj);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -122,7 +122,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 						+ getTokenName());
 					return false;
 				}
-				context.graph.remove(getTokenName(), obj, ref);
+				context.getGraphContext().remove(getTokenName(), obj, ref);
 			}
 			else
 			{
@@ -152,7 +152,8 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 					return false;
 				}
 				AssociatedPrereqObject edge =
-						context.list.addToMasterList(getTokenName(), obj,
+						context.getListContext().addToMasterList(
+							getTokenName(), obj,
 							context.ref.getCDOMAllReference(SKILLLIST_CLASS),
 							ref);
 				edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
@@ -173,8 +174,8 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 		CDOMGroupRef<ClassSkillList> listRef =
 				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
 		MasterListChanges<Skill> changes =
-				context.list.getChangesInMasterList(getTokenName(), obj,
-					listRef);
+				context.getListContext().getChangesInMasterList(getTokenName(),
+					obj, listRef);
 		if (changes == null)
 		{
 			// Legal if no CSKILL was present

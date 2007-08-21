@@ -118,7 +118,8 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 		for (CDOMReference<Ability> ability : abilityList)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, ability);
+					context.getGraphContext().grant(getTokenName(), obj,
+						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
 				AbilityNature.VIRTUAL);
 			if (prereqs != null)
@@ -134,8 +135,8 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject cdo)
 	{
 		GraphChanges<Ability> changes =
-				context.graph.getChangesFromToken(getTokenName(), cdo,
-					ABILITY_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					cdo, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -179,8 +180,8 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			String ab =
-				ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-					Constants.PIPE);
+					ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+						Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				ab =

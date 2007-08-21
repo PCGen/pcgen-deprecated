@@ -86,7 +86,7 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 				{
 					return false;
 				}
-				context.graph.removeAll(getTokenName(), obj);
+				context.getGraphContext().removeAll(getTokenName(), obj);
 			}
 			else
 			{
@@ -109,7 +109,7 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 						+ getTokenName());
 					return false;
 				}
-				context.graph.grant(getTokenName(), obj, ref);
+				context.getGraphContext().grant(getTokenName(), obj, ref);
 			}
 			firstToken = true;
 		}
@@ -125,8 +125,8 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<Language> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					LANGUAGE_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, LANGUAGE_CLASS);
 		if (changes == null)
 		{
 			return null;

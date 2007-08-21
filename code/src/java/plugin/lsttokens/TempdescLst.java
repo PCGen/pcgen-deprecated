@@ -49,14 +49,16 @@ public class TempdescLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		context.obj.put(obj, StringKey.TEMP_DESCRIPTION, EntityEncoder
-			.decode(value));
+		context.getObjectContext().put(obj, StringKey.TEMP_DESCRIPTION,
+			EntityEncoder.decode(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		String descr = context.obj.getString(obj, StringKey.TEMP_DESCRIPTION);
+		String descr =
+				context.getObjectContext().getString(obj,
+					StringKey.TEMP_DESCRIPTION);
 		if (descr == null)
 		{
 			return null;

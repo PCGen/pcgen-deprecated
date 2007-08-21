@@ -59,7 +59,7 @@ public class UdamLst implements GlobalLstToken
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.obj.removeList(obj, ListKey.UDAM);
+			context.getObjectContext().removeList(obj, ListKey.UDAM);
 		}
 		else
 		{
@@ -71,18 +71,19 @@ public class UdamLst implements GlobalLstToken
 					+ " requires 9 comma separated values");
 				return false;
 			}
-			if (context.obj.containsListFor(obj, ListKey.UDAM))
+			if (context.getObjectContext().containsListFor(obj, ListKey.UDAM))
 			{
 				Logging.errorPrint(obj.getDisplayName() + " already has "
 					+ getTokenName() + " set.");
 				Logging.errorPrint("  It will be redefined, "
 					+ "but you should be using " + getTokenName() + ":.CLEAR");
-				context.obj.removeList(obj, ListKey.UDAM);
+				context.getObjectContext().removeList(obj, ListKey.UDAM);
 			}
 
 			while (tok.hasMoreTokens())
 			{
-				context.obj.addToList(obj, ListKey.UDAM, tok.nextToken());
+				context.getObjectContext().addToList(obj, ListKey.UDAM,
+					tok.nextToken());
 			}
 		}
 		return true;
@@ -90,7 +91,8 @@ public class UdamLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Changes<String> changes = context.obj.getListChanges(obj, ListKey.UDAM);
+		Changes<String> changes =
+				context.getObjectContext().getListChanges(obj, ListKey.UDAM);
 		if (changes == null)
 		{
 			return null;

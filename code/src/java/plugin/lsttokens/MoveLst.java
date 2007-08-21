@@ -100,8 +100,8 @@ public class MoveLst extends AbstractToken implements GlobalLstToken
 						+ " was negative");
 					return false;
 				}
-				context.graph.grant(getTokenName(), obj, new SimpleMovement(
-					moveType, distance));
+				context.getGraphContext().grant(getTokenName(), obj,
+					new SimpleMovement(moveType, distance));
 			}
 			catch (NumberFormatException e)
 			{
@@ -118,8 +118,8 @@ public class MoveLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<SimpleMovement> changes =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					SimpleMovement.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, SimpleMovement.class);
 		if (changes == null)
 		{
 			return null;

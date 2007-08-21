@@ -65,7 +65,7 @@ public class TypeLst implements GlobalLstToken
 		}
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.obj.removeList(obj, ListKey.TYPE);
+			context.getObjectContext().removeList(obj, ListKey.TYPE);
 			return true;
 		}
 		if (value.charAt(0) == '.')
@@ -106,7 +106,8 @@ public class TypeLst implements GlobalLstToken
 				Type typeCon = Type.getConstant(aType);
 				if (removeType)
 				{
-					context.obj.removeFromList(obj, ListKey.TYPE, typeCon);
+					context.getObjectContext().removeFromList(obj,
+						ListKey.TYPE, typeCon);
 					removeType = false;
 				}
 				/*
@@ -120,7 +121,8 @@ public class TypeLst implements GlobalLstToken
 				 */
 				else
 				{
-					context.obj.addToList(obj, ListKey.TYPE, typeCon);
+					context.getObjectContext().addToList(obj, ListKey.TYPE,
+						typeCon);
 				}
 			}
 		}
@@ -129,7 +131,8 @@ public class TypeLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Changes<Type> changes = context.obj.getListChanges(obj, ListKey.TYPE);
+		Changes<Type> changes =
+				context.getObjectContext().getListChanges(obj, ListKey.TYPE);
 		if (changes == null)
 		{
 			return null;

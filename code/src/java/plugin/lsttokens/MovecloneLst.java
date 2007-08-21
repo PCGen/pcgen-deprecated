@@ -52,7 +52,7 @@ public class MovecloneLst implements GlobalLstToken
 	{
 		Movement cm = Movement.getMovementFrom(value);
 		cm.setMoveRatesFlag(2);
-		context.graph.grant(getTokenName(), obj, cm);
+		context.getGraphContext().grant(getTokenName(), obj, cm);
 		return true;
 	}
 

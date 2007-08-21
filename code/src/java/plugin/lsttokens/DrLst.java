@@ -125,7 +125,7 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 	{
 		if (".CLEAR".equals(value))
 		{
-			context.graph.removeAll(getTokenName(), obj);
+			context.getGraphContext().removeAll(getTokenName(), obj);
 			return true;
 		}
 
@@ -174,15 +174,15 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 			}
 			dr.addPrerequisite(prereq);
 		}
-		context.graph.grant(getTokenName(), obj, dr);
+		context.getGraphContext().grant(getTokenName(), obj, dr);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		GraphChanges<DamageReduction> changes =
-				context.graph
-					.getChangesFromToken(getTokenName(), obj, DR_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, DR_CLASS);
 		if (changes == null)
 		{
 			return null;

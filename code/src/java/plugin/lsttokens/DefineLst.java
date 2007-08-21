@@ -84,7 +84,8 @@ public class DefineLst implements GlobalLstToken
 		{
 			Formula f =
 					FormulaFactory.getFormulaFor(value.substring(barLoc + 1));
-			context.obj.put(obj, VariableKey.getConstant(var), f);
+			context.getObjectContext()
+				.put(obj, VariableKey.getConstant(var), f);
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -97,7 +98,7 @@ public class DefineLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Set<VariableKey> keys = context.obj.getVariableKeys(obj);
+		Set<VariableKey> keys = context.getObjectContext().getVariableKeys(obj);
 		if (keys == null || keys.isEmpty())
 		{
 			return null;
@@ -106,7 +107,7 @@ public class DefineLst implements GlobalLstToken
 		for (VariableKey key : keys)
 		{
 			set.add(key.toString() + Constants.PIPE
-				+ context.obj.getVariable(obj, key));
+				+ context.getObjectContext().getVariable(obj, key));
 		}
 		return set.toArray(new String[set.size()]);
 	}

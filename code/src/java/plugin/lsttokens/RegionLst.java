@@ -55,13 +55,14 @@ public class RegionLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		context.obj.put(obj, StringKey.REGION, value);
+		context.getObjectContext().put(obj, StringKey.REGION, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		String region = context.obj.getString(obj, StringKey.REGION);
+		String region =
+				context.getObjectContext().getString(obj, StringKey.REGION);
 		if (region == null)
 		{
 			return null;

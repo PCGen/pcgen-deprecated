@@ -95,14 +95,15 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 				ChoiceSet<PCTemplate> cs =
 						new ChoiceSet<PCTemplate>("ADD", rcs);
 				PCGraphGrantsEdge edge =
-						context.graph.grant(getTokenName(), cdo, cs);
+						context.getGraphContext()
+							.grant(getTokenName(), cdo, cs);
 				edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 					.getFormulaFor(1));
 				edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT,
 					FormulaFactory.getFormulaFor(1));
 				GrantFactory<PCTemplate> gf =
 						new GrantFactory<PCTemplate>(edge);
-				context.graph.grant(getTokenName(), cdo, gf);
+				context.getGraphContext().grant(getTokenName(), cdo, gf);
 			}
 			return returnval;
 		}
@@ -127,7 +128,7 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 				String tokText = tok.nextToken();
 				CDOMSimpleSingleRef<PCTemplate> ref =
 						context.ref.getCDOMReference(PCTEMPLATE_CLASS, tokText);
-				context.graph.grant(getTokenName(), cdo, ref);
+				context.getGraphContext().grant(getTokenName(), cdo, ref);
 			}
 		}
 
@@ -149,7 +150,7 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 			CDOMSimpleSingleRef<PCTemplate> ref =
 					context.ref.getCDOMReference(PCTEMPLATE_CLASS, tok
 						.nextToken());
-			context.list.addToList(getTokenName(), obj, swl, ref);
+			context.getListContext().addToList(getTokenName(), obj, swl, ref);
 		}
 		return true;
 	}
@@ -157,8 +158,8 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 	public String[] unparse(LoadContext context, CDOMObject cdo)
 	{
 		GraphChanges<PCTemplate> changes =
-				context.graph.getChangesFromToken(getTokenName(), cdo,
-					PCTEMPLATE_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					cdo, PCTEMPLATE_CLASS);
 
 		PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
 		CDOMSingleRef<PCTemplateChooseList> ref =
@@ -167,9 +168,11 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 				context.ref.getCDOMAllReference(PCTEMPLATECHOOSELIST_CLASS);
 
 		ListGraphChanges<PCTemplate> tctChanges =
-				context.list.getChangesInList(getTokenName(), cdo, ref);
+				context.getListContext().getChangesInList(getTokenName(), cdo,
+					ref);
 		ListGraphChanges<PCTemplate> allChanges =
-				context.list.getChangesInList(getTokenName(), cdo, allRef);
+				context.getListContext().getChangesInList(getTokenName(), cdo,
+					allRef);
 
 		if (changes == null && tctChanges == null && allChanges == null)
 		{
