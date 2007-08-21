@@ -102,37 +102,54 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase
 	public abstract String[] getTestArray();
 
 	/*
-	 * Test the provided testArray in Runtime Context
+	 * Test Clearing the provided testArray in Runtime Context
 	 */
 	public void testTestArrayInRuntimeContext()
 		throws PersistenceLayerException
 	{
-		String[] testData = getTestArray();
-		if (isClearable())
-		{
-			runClearAllTest(testData);
-		}
-		if (isDotClearable())
-		{
-			runClearAllIndexesTest(testData);
-		}
+		runClearAllTest(getTestArray());
+	}
+	
+	/*
+	 * Test clearing the context before adding the testData to ensure that it doesn't 
+	 * get cleared.
+	 */
+	public void testPreClearTestArrayInRuntimeContext() 
+		throws PersistenceLayerException
+	{
+		runPreClearAllTest(getTestArray());
+	}
+	/*
+	 * Try to clear every element in the testarray.
+	 */
+	public void testDotClearTestArrayInRuntimeContext() 
+		throws PersistenceLayerException, URISyntaxException
+	{
+		runClearAllIndexesTest(getTestArray());
 	}
 
 	/*
 	 * Test the provided testArray in Editor Context
 	 */
-	public void testTestArrayInEditorContext() throws PersistenceLayerException
+	public void testClearTestArrayInEditorContext() 
+		throws PersistenceLayerException
 	{
 		context = new EditorLoadContext(new PCGenGraph());
-		String[] testData = getTestArray();
-		if (isClearable())
-		{
-			runClearAllTest(testData);
-		}
-		if (isDotClearable())
-		{
-			runClearAllIndexesTest(testData);
-		}
+		runClearAllTest(getTestArray());
+	}
+	
+	public void testPreClearTestArrayInEditorContext() 
+		throws PersistenceLayerException
+	{
+		context = new EditorLoadContext(new PCGenGraph());
+		runPreClearAllTest(getTestArray());
+	}
+	
+	public void testDotClearTestArrayInEditorContext() 
+		throws PersistenceLayerException, URISyntaxException
+	{
+		context = new EditorLoadContext(new PCGenGraph());
+		runClearAllIndexesTest(getTestArray());
 	}
 
 	protected abstract boolean isClearable();
@@ -195,6 +212,9 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase
 
 	public void runClearAllTest(String... str) throws PersistenceLayerException
 	{
+		if (!isClearable()) {
+			return;
+		}
 		for (String s : str)
 		{
 			testParse(context, s);
@@ -204,15 +224,30 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase
 		testCleared(context);
 	}
 
+	public void runPreClearAllTest(String... str) throws PersistenceLayerException
+	{
+		if (!isClearable()) {
+			return;
+		}
+		testParse(context,".CLEAR");
+		for (String s : str) {
+			testParse(context,s);
+		}
+		assertNotNull(getToken().unparse(context, prof));
+	}
+	
 	/*
 	 * Clear each element of the array and test the results
 	 */
-	public void runClearAllIndexesTest(String... str)
-		throws PersistenceLayerException
+	public void runClearAllIndexesTest(String... str) 
+		throws PersistenceLayerException, URISyntaxException
 	{
-		for (int i = 0; i < str.length; i++)
-		{
-			runClearIndexTest(i, str);
+		if (!isDotClearable()) {
+			return;
+		}
+		for (int i = 0; i < str.length; i++) {
+			setUp();
+			runClearIndexTest(i,str);
 		}
 	}
 
