@@ -275,7 +275,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 			}
 
 			HitDieCommandFactory cf = new HitDieCommandFactory(owner, hdm);
-			context.graph.grant(getTokenName(), race, cf);
+			context.getGraphContext().grant(getTokenName(), race, cf);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -290,8 +290,8 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 	public String[] unparse(LoadContext context, Race race)
 	{
 		GraphChanges<HitDieCommandFactory> changes =
-				context.graph.getChangesFromToken(getTokenName(), race,
-					HitDieCommandFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					race, HitDieCommandFactory.class);
 		if (changes == null)
 		{
 			return null;

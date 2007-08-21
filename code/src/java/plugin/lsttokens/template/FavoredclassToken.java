@@ -98,7 +98,8 @@ public class FavoredclassToken extends AbstractToken implements
 					+ getTokenName());
 				return false;
 			}
-			context.obj.addToList(cdo, ListKey.FAVORED_CLASS, ref);
+			context.getObjectContext().addToList(cdo, ListKey.FAVORED_CLASS,
+				ref);
 		}
 		if (foundAny && foundOther)
 		{
@@ -112,7 +113,8 @@ public class FavoredclassToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Changes<CDOMReference<PCClass>> changes =
-				context.obj.getListChanges(pct, ListKey.FAVORED_CLASS);
+				context.getObjectContext().getListChanges(pct,
+					ListKey.FAVORED_CLASS);
 		if (changes == null)
 		{
 			return null;

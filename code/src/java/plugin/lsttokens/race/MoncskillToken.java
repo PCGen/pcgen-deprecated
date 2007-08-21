@@ -93,8 +93,8 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 						+ ": When used, .CLEAR must be the first argument");
 					return false;
 				}
-				context.list.removeFromList(getTokenName(), race, ref,
-					SKILL_CLASS);
+				context.getListContext().removeFromList(getTokenName(), race,
+					ref, SKILL_CLASS);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -116,7 +116,8 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 						+ getTokenName());
 					return false;
 				}
-				context.list.removeFromList(getTokenName(), race, ref, skill);
+				context.getListContext().removeFromList(getTokenName(), race,
+					ref, skill);
 			}
 			else
 			{
@@ -160,7 +161,8 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 		for (CDOMReference<Skill> skill : list)
 		{
 			AssociatedPrereqObject tpr =
-					context.list.addToList(getTokenName(), race, ref, skill);
+					context.getListContext().addToList(getTokenName(), race,
+						ref, skill);
 			tpr.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		}
 		return true;
@@ -171,7 +173,8 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 		CDOMReference<ClassSkillList> swl =
 				context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
 		ListGraphChanges<Skill> changes =
-				context.list.getChangesInList(getTokenName(), race, swl);
+				context.getListContext().getChangesInList(getTokenName(), race,
+					swl);
 		if (changes == null)
 		{
 			// Legal if no MONCSKILL was present in the race

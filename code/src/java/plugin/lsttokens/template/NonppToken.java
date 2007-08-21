@@ -62,7 +62,7 @@ public class NonppToken implements PCTemplateLstToken
 					+ "less than or equal to zero: " + value);
 				return false;
 			}
-			context.obj.put(template, IntegerKey.NONPP, nonpp);
+			context.getObjectContext().put(template, IntegerKey.NONPP, nonpp);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -75,7 +75,8 @@ public class NonppToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Integer nonpp = context.obj.getInteger(pct, IntegerKey.NONPP);
+		Integer nonpp =
+				context.getObjectContext().getInteger(pct, IntegerKey.NONPP);
 		if (nonpp == null)
 		{
 			return null;

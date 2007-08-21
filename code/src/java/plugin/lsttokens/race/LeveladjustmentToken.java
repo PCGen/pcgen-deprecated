@@ -47,14 +47,16 @@ public class LeveladjustmentToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
-		context.obj.put(race, FormulaKey.LEVEL_ADJUSTMENT, FormulaFactory
-			.getFormulaFor(value));
+		context.getObjectContext().put(race, FormulaKey.LEVEL_ADJUSTMENT,
+			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Formula f = context.obj.getFormula(race, FormulaKey.LEVEL_ADJUSTMENT);
+		Formula f =
+				context.getObjectContext().getFormula(race,
+					FormulaKey.LEVEL_ADJUSTMENT);
 		if (f == null)
 		{
 			return null;

@@ -149,7 +149,8 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 		for (CDOMReference<Ability> ability : abilityList)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, ability);
+					context.getGraphContext().grant(getTokenName(), obj,
+						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
 				AbilityNature.VIRTUAL);
 			if (prereqs != null)
@@ -165,8 +166,8 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 	public String[] unparse(LoadContext context, PObject pct)
 	{
 		GraphChanges<Ability> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					ABILITY_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pct, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -210,8 +211,8 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			String ab =
-				ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-					Constants.PIPE);
+					ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+						Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				ab =

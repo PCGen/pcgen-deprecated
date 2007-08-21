@@ -112,7 +112,8 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 		ReferenceChoiceSet<Ability> rcs =
 				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), pcc, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), pcc, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -132,15 +133,15 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 		 * PCClass, it guarantees the Character is at least level 1. - Tom
 		 * Parker Apr 7, 2007
 		 */
-		context.graph.grant(getTokenName(), pcc, gf);
+		context.getGraphContext().grant(getTokenName(), pcc, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass obj)
 	{
 		GraphChanges<ChoiceSet> choiceChanges =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChoiceSet.class);
 		if (choiceChanges == null)
 		{
 			return null;
@@ -153,8 +154,8 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		GraphChanges<GrantFactory> grantChanges =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					GrantFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, GrantFactory.class);
 		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
 		if (grantAdded == null || grantAdded.isEmpty())
 		{

@@ -51,8 +51,11 @@ public class DeityToken extends AbstractToken implements PCClassLstToken,
 		return "DEITY";
 	}
 
-	/* (non-Javadoc)
-	 * @see pcgen.persistence.lst.PCClassLstToken#parse(pcgen.core.PCClass, java.lang.String, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see pcgen.persistence.lst.PCClassLstToken#parse(pcgen.core.PCClass,
+	 *      java.lang.String, int)
 	 */
 	public boolean parse(PCClass pcclass, String value, int level)
 	{
@@ -84,7 +87,7 @@ public class DeityToken extends AbstractToken implements PCClassLstToken,
 			String tokText = tok.nextToken();
 			CDOMReference<Deity> deity =
 					context.ref.getCDOMReference(DEITY_CLASS, tokText);
-			context.graph.grant(getTokenName(), pcc, deity);
+			context.getGraphContext().grant(getTokenName(), pcc, deity);
 		}
 		return true;
 	}
@@ -92,8 +95,8 @@ public class DeityToken extends AbstractToken implements PCClassLstToken,
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		GraphChanges<Deity> changes =
-				context.graph.getChangesFromToken(getTokenName(), pcc,
-					DEITY_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pcc, DEITY_CLASS);
 		if (changes == null)
 		{
 			return null;

@@ -87,11 +87,12 @@ public class VariantsToken extends AbstractToken implements SpellLstToken
 						+ getTokenName() + ": " + value);
 					return false;
 				}
-				context.obj.removeList(spell, ListKey.VARIANTS);
+				context.getObjectContext().removeList(spell, ListKey.VARIANTS);
 			}
 			else
 			{
-				context.obj.addToList(spell, ListKey.VARIANTS, tok);
+				context.getObjectContext().addToList(spell, ListKey.VARIANTS,
+					tok);
 			}
 			first = false;
 		}
@@ -101,7 +102,8 @@ public class VariantsToken extends AbstractToken implements SpellLstToken
 	public String[] unparse(LoadContext context, Spell spell)
 	{
 		Changes<String> changes =
-				context.obj.getListChanges(spell, ListKey.VARIANTS);
+				context.getObjectContext().getListChanges(spell,
+					ListKey.VARIANTS);
 		if (changes == null)
 		{
 			return null;

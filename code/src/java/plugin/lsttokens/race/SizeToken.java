@@ -59,7 +59,8 @@ public class SizeToken implements RaceLstToken
 				Logging.errorPrint("Unable to find Size: " + value);
 				return false;
 			}
-			context.obj.put(race, ObjectKey.SIZE, new FixedSizeResolver(size));
+			context.getObjectContext().put(race, ObjectKey.SIZE,
+				new FixedSizeResolver(size));
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -73,7 +74,7 @@ public class SizeToken implements RaceLstToken
 	public String[] unparse(LoadContext context, Race race)
 	{
 		Resolver<SizeAdjustment> res =
-				context.obj.getObject(race, ObjectKey.SIZE);
+				context.getObjectContext().getObject(race, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

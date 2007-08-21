@@ -87,13 +87,15 @@ public class ExclusiveToken implements SkillLstToken
 			Logging.errorPrint("Must be YES or NO");
 			return false;
 		}
-		context.obj.put(skill, ObjectKey.EXCLUSIVE, exclusive);
+		context.getObjectContext().put(skill, ObjectKey.EXCLUSIVE, exclusive);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Skill skill)
 	{
-		Boolean exclusive = context.obj.getObject(skill, ObjectKey.EXCLUSIVE);
+		Boolean exclusive =
+				context.getObjectContext()
+					.getObject(skill, ObjectKey.EXCLUSIVE);
 		if (exclusive == null)
 		{
 			return null;

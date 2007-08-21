@@ -121,7 +121,8 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		ReferenceChoiceSet<Ability> rcs =
 				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), race, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), race, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -137,7 +138,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 				AbilityCategory.FEAT);
 		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
 		PCGraphGrantsEdge gfedge =
-				context.graph.grant(getTokenName(), race, gf);
+				context.getGraphContext().grant(getTokenName(), race, gf);
 		/*
 		 * This prereq exists solely to prevent the ability to select Feats
 		 * before first level. It simply aligns this to the rules that provide
@@ -154,8 +155,8 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 	public String[] unparse(LoadContext context, Race race)
 	{
 		GraphChanges<ChoiceSet> choiceChanges =
-				context.graph.getChangesFromToken(getTokenName(), race,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					race, ChoiceSet.class);
 		if (choiceChanges == null)
 		{
 			return null;
@@ -168,8 +169,8 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 			return null;
 		}
 		GraphChanges<GrantFactory> grantChanges =
-				context.graph.getChangesFromToken(getTokenName(), race,
-					GrantFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					race, GrantFactory.class);
 		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
 		if (grantAdded == null || grantAdded.isEmpty())
 		{

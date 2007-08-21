@@ -50,14 +50,16 @@ public class SaveinfoToken implements SpellLstToken
 		{
 			return false;
 		}
-		context.obj.put(spell, StringKey.SAVE_INFO, Constants.LST_DOT_CLEAR
-			.equals(value) ? null : value);
+		context.getObjectContext().put(spell, StringKey.SAVE_INFO,
+			Constants.LST_DOT_CLEAR.equals(value) ? null : value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		String saveInfo = context.obj.getString(spell, StringKey.SAVE_INFO);
+		String saveInfo =
+				context.getObjectContext()
+					.getString(spell, StringKey.SAVE_INFO);
 		if (saveInfo == null)
 		{
 			return null;

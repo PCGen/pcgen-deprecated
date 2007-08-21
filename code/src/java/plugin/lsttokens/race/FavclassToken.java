@@ -98,7 +98,8 @@ public class FavclassToken extends AbstractToken implements RaceLstToken
 					+ getTokenName());
 				return false;
 			}
-			context.obj.addToList(cdo, ListKey.FAVORED_CLASS, ref);
+			context.getObjectContext().addToList(cdo, ListKey.FAVORED_CLASS,
+				ref);
 		}
 		if (foundAny && foundOther)
 		{
@@ -112,7 +113,8 @@ public class FavclassToken extends AbstractToken implements RaceLstToken
 	public String[] unparse(LoadContext context, Race race)
 	{
 		Changes<CDOMReference<PCClass>> changes =
-				context.obj.getListChanges(race, ListKey.FAVORED_CLASS);
+				context.getObjectContext().getListChanges(race,
+					ListKey.FAVORED_CLASS);
 		if (changes == null)
 		{
 			return null;

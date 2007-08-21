@@ -57,13 +57,15 @@ public class SpelltypeToken implements PCClassLstToken, PCClassClassLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		context.obj.put(pcc, ObjectKey.SPELL_TYPE, Type.getConstant(value));
+		context.getObjectContext().put(pcc, ObjectKey.SPELL_TYPE,
+			Type.getConstant(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Type type = context.obj.getObject(pcc, ObjectKey.SPELL_TYPE);
+		Type type =
+				context.getObjectContext().getObject(pcc, ObjectKey.SPELL_TYPE);
 		if (type == null)
 		{
 			return null;

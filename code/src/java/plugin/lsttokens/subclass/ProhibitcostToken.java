@@ -43,7 +43,7 @@ public class ProhibitcostToken implements SubClassLstToken
 					+ " must be a positive number: " + value);
 				return false;
 			}
-			context.obj.put(sc, ObjectKey.PROHIBITED_COST, cost);
+			context.getObjectContext().put(sc, ObjectKey.PROHIBITED_COST, cost);
 			return true;
 		}
 		catch (NumberFormatException e)

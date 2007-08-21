@@ -50,14 +50,15 @@ public class RangeToken implements SpellLstToken
 		{
 			return false;
 		}
-		context.obj.put(spell, StringKey.RANGE, Constants.LST_DOT_CLEAR
-			.equals(value) ? null : value);
+		context.getObjectContext().put(spell, StringKey.RANGE,
+			Constants.LST_DOT_CLEAR.equals(value) ? null : value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		String range = context.obj.getString(spell, StringKey.RANGE);
+		String range =
+				context.getObjectContext().getString(spell, StringKey.RANGE);
 		if (range == null)
 		{
 			return null;

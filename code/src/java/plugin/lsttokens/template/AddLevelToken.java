@@ -102,15 +102,15 @@ public class AddLevelToken implements PCTemplateLstToken
 			return false;
 		}
 		LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
-		context.graph.grant(getTokenName(), template, cf);
+		context.getGraphContext().grant(getTokenName(), template, cf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		GraphChanges<LevelCommandFactory> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					LevelCommandFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pct, LevelCommandFactory.class);
 		if (changes == null)
 		{
 			return null;

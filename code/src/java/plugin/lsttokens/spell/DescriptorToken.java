@@ -70,7 +70,8 @@ public class DescriptorToken extends AbstractToken implements SpellLstToken
 
 		while (aTok.hasMoreTokens())
 		{
-			context.obj.addToList(spell, ListKey.SPELL_DESCRIPTOR,
+			context.getObjectContext().addToList(spell,
+				ListKey.SPELL_DESCRIPTOR,
 				SpellDescriptor.getConstant(aTok.nextToken()));
 		}
 		return true;
@@ -79,7 +80,8 @@ public class DescriptorToken extends AbstractToken implements SpellLstToken
 	public String[] unparse(LoadContext context, Spell spell)
 	{
 		Changes<SpellDescriptor> changes =
-				context.obj.getListChanges(spell, ListKey.SPELL_DESCRIPTOR);
+				context.getObjectContext().getListChanges(spell,
+					ListKey.SPELL_DESCRIPTOR);
 		if (changes == null)
 		{
 			return null;

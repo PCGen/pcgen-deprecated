@@ -110,7 +110,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
 		PCGraphGrantsEdge edge =
-				context.graph.grant(getTokenName(), template, cs);
+				context.getGraphContext().grant(getTokenName(), template, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -125,15 +125,15 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			.setAssociation(AssociationKey.ABILITY_CATEGORY,
 				AbilityCategory.FEAT);
 		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
-		context.graph.grant(getTokenName(), template, gf);
+		context.getGraphContext().grant(getTokenName(), template, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate template)
 	{
 		GraphChanges<ChoiceSet> choiceChanges =
-				context.graph.getChangesFromToken(getTokenName(), template,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					template, ChoiceSet.class);
 		if (choiceChanges == null)
 		{
 			return null;
@@ -146,8 +146,8 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			return null;
 		}
 		GraphChanges<GrantFactory> grantChanges =
-				context.graph.getChangesFromToken(getTokenName(), template,
-					GrantFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					template, GrantFactory.class);
 		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
 		if (grantAdded == null || grantAdded.isEmpty())
 		{

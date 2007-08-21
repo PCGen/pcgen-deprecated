@@ -49,14 +49,16 @@ public class StartskillptsToken implements PCClassLstToken,
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
-		context.obj.put(pcc, FormulaKey.START_SKILL_POINTS, FormulaFactory
-			.getFormulaFor(value));
+		context.getObjectContext().put(pcc, FormulaKey.START_SKILL_POINTS,
+			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Formula f = context.obj.getFormula(pcc, FormulaKey.START_SKILL_POINTS);
+		Formula f =
+				context.getObjectContext().getFormula(pcc,
+					FormulaKey.START_SKILL_POINTS);
 		if (f == null)
 		{
 			return null;

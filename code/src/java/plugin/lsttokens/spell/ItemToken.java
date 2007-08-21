@@ -83,7 +83,8 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 					return false;
 				}
 				Type t = Type.getConstant(substring);
-				context.obj.addToList(spell, ListKey.PROHIBITED_ITEM, t);
+				context.getObjectContext().addToList(spell,
+					ListKey.PROHIBITED_ITEM, t);
 			}
 			else
 			{
@@ -95,7 +96,7 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 					return false;
 				}
 				Type t = Type.getConstant(tokString);
-				context.obj.addToList(spell, ListKey.ITEM, t);
+				context.getObjectContext().addToList(spell, ListKey.ITEM, t);
 			}
 		}
 		return true;
@@ -103,9 +104,11 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		Changes<Type> changes = context.obj.getListChanges(spell, ListKey.ITEM);
+		Changes<Type> changes =
+				context.getObjectContext().getListChanges(spell, ListKey.ITEM);
 		Changes<Type> proChanges =
-				context.obj.getListChanges(spell, ListKey.PROHIBITED_ITEM);
+				context.getObjectContext().getListChanges(spell,
+					ListKey.PROHIBITED_ITEM);
 		if (changes == null && proChanges == null)
 		{
 			return null;

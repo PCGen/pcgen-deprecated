@@ -78,10 +78,10 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 		Aggregator agg = new Aggregator(pcc, pcc, getTokenName());
-		context.graph.grant(getTokenName(), pcc, agg);
+		context.getGraphContext().grant(getTokenName(), pcc, agg);
 		for (SpellProhibitor<?> sp : spList)
 		{
-			context.graph.grant(getTokenName(), agg, sp);
+			context.getGraphContext().grant(getTokenName(), agg, sp);
 		}
 		return true;
 	}
@@ -94,9 +94,11 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 			return null;
 		}
 
-		SpellProhibitor<SpellSchool> spSchool = new SpellProhibitor<SpellSchool>();
+		SpellProhibitor<SpellSchool> spSchool =
+				new SpellProhibitor<SpellSchool>();
 		spSchool.setType(ProhibitedSpellType.SCHOOL);
-		SpellProhibitor<SpellSubSchool> spSubSchool = new SpellProhibitor<SpellSubSchool>();
+		SpellProhibitor<SpellSubSchool> spSubSchool =
+				new SpellProhibitor<SpellSubSchool>();
 		spSubSchool.setType(ProhibitedSpellType.SUBSCHOOL);
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
@@ -117,8 +119,8 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		GraphChanges<Aggregator> changes =
-				context.graph.getChangesFromToken(getTokenName(), pcc,
-					Aggregator.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pcc, Aggregator.class);
 		if (changes == null)
 		{
 			return null;
@@ -137,8 +139,8 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 		Aggregator agg = (Aggregator) added.iterator().next();
 
 		GraphChanges<SpellProhibitor> aggChanges =
-				context.graph.getChangesFromToken(getTokenName(), agg,
-					SpellProhibitor.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					agg, SpellProhibitor.class);
 		if (aggChanges == null)
 		{
 			context.addWriteMessage("Invalid Aggregator in " + getTokenName()

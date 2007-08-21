@@ -63,7 +63,7 @@ public class LevelsperfeatToken implements PCClassLstToken,
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			context.obj.put(pcc, IntegerKey.LEVELS_PER_FEAT, in);
+			context.getObjectContext().put(pcc, IntegerKey.LEVELS_PER_FEAT, in);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -77,15 +77,16 @@ public class LevelsperfeatToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Integer lpf = context.obj.getInteger(pcc, IntegerKey.LEVELS_PER_FEAT);
+		Integer lpf =
+				context.getObjectContext().getInteger(pcc,
+					IntegerKey.LEVELS_PER_FEAT);
 		if (lpf == null)
 		{
 			return null;
 		}
 		if (lpf.intValue() <= 0)
 		{
-			context
-				.addWriteMessage(getTokenName() + " must be an integer > 0");
+			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
 		return new String[]{lpf.toString()};

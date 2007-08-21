@@ -70,8 +70,8 @@ public class SchoolToken extends AbstractToken implements SpellLstToken
 
 		while (aTok.hasMoreTokens())
 		{
-			context.obj.addToList(spell, ListKey.SPELL_SCHOOL, SpellSchool
-				.getConstant(aTok.nextToken()));
+			context.getObjectContext().addToList(spell, ListKey.SPELL_SCHOOL,
+				SpellSchool.getConstant(aTok.nextToken()));
 		}
 		return true;
 	}
@@ -79,7 +79,8 @@ public class SchoolToken extends AbstractToken implements SpellLstToken
 	public String[] unparse(LoadContext context, Spell spell)
 	{
 		Changes<SpellSchool> changes =
-				context.obj.getListChanges(spell, ListKey.SPELL_SCHOOL);
+				context.getObjectContext().getListChanges(spell,
+					ListKey.SPELL_SCHOOL);
 		if (changes == null)
 		{
 			return null;

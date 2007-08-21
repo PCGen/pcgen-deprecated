@@ -98,12 +98,13 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		if (Constants.LST_DOT_CLEARALL.equals(value))
 		{
 			Collection<CDOMReference> masterLists =
-					context.list.getMasterLists(SPELLLIST_CLASS);
+					context.getListContext().getMasterLists(SPELLLIST_CLASS);
 			if (masterLists != null)
 			{
 				for (CDOMReference list : masterLists)
 				{
-					context.list.clearMasterList(getTokenName(), spell, list);
+					context.getListContext().clearMasterList(getTokenName(),
+						spell, list);
 				}
 			}
 			return true;
@@ -249,8 +250,8 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 			for (CDOMReference<ClassSpellList> ref : map.getListFor(level))
 			{
 				AssociatedPrereqObject edge =
-						context.list.addToMasterList(getTokenName(), spell,
-							ref, spell);
+						context.getListContext().addToMasterList(
+							getTokenName(), spell, ref, spell);
 				edge.setAssociation(AssociationKey.SPELL_LEVEL, level);
 				if (prereq != null)
 				{
@@ -266,12 +267,12 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>> dkmtl =
 				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>>();
 		List<String> list = new ArrayList<String>();
-		for (CDOMReference<ClassSpellList> swl : context.list
+		for (CDOMReference<ClassSpellList> swl : context.getListContext()
 			.getMasterLists(SPELLLIST_CLASS))
 		{
 			MasterListChanges<Spell> changes =
-					context.list.getChangesInMasterList(getTokenName(), spell,
-						swl);
+					context.getListContext().getChangesInMasterList(
+						getTokenName(), spell, swl);
 			if (changes == null)
 			{
 				// Legal if no CLASSES was present in the Spell

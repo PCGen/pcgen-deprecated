@@ -72,13 +72,15 @@ public class MemorizeToken implements PCClassLstToken, PCClassClassLstToken
 			}
 			set = Boolean.FALSE;
 		}
-		context.obj.put(pcc, ObjectKey.MEMORIZE_SPELLS, set);
+		context.getObjectContext().put(pcc, ObjectKey.MEMORIZE_SPELLS, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Boolean mem = context.obj.getObject(pcc, ObjectKey.MEMORIZE_SPELLS);
+		Boolean mem =
+				context.getObjectContext().getObject(pcc,
+					ObjectKey.MEMORIZE_SPELLS);
 		if (mem == null)
 		{
 			return null;

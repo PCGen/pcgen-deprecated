@@ -78,7 +78,7 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 			set = Boolean.TRUE;
 			CDOMReference<ClassSkillList> msl =
 					context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
-			context.graph.grant(getTokenName(), pcc, msl);
+			context.getGraphContext().grant(getTokenName(), pcc, msl);
 		}
 		else
 		{
@@ -93,13 +93,14 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 			}
 			set = Boolean.FALSE;
 		}
-		context.obj.put(pcc, ObjectKey.IS_MONSTER, set);
+		context.getObjectContext().put(pcc, ObjectKey.IS_MONSTER, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Boolean isM = context.obj.getObject(pcc, ObjectKey.IS_MONSTER);
+		Boolean isM =
+				context.getObjectContext().getObject(pcc, ObjectKey.IS_MONSTER);
 		if (isM == null)
 		{
 			return null;

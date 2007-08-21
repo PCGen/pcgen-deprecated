@@ -53,10 +53,12 @@ public class BonusspellstatToken implements PCClassLstToken,
 	{
 		if (Constants.LST_NONE.equals(value))
 		{
-			context.obj.put(pcc, ObjectKey.HAS_BONUS_SPELL_STAT, Boolean.FALSE);
+			context.getObjectContext().put(pcc, ObjectKey.HAS_BONUS_SPELL_STAT,
+				Boolean.FALSE);
 			return true;
 		}
-		context.obj.put(pcc, ObjectKey.HAS_BONUS_SPELL_STAT, Boolean.TRUE);
+		context.getObjectContext().put(pcc, ObjectKey.HAS_BONUS_SPELL_STAT,
+			Boolean.TRUE);
 		/*
 		 * TODO Does this consume DEFAULT in some way, so that it can set
 		 * HAS_BONUS_SPELL_STAT to true, but not trigger the creation of
@@ -69,13 +71,15 @@ public class BonusspellstatToken implements PCClassLstToken,
 				+ ": " + value);
 			return false;
 		}
-		context.obj.put(pcc, ObjectKey.BONUS_SPELL_STAT, pcs);
+		context.getObjectContext().put(pcc, ObjectKey.BONUS_SPELL_STAT, pcs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		PCStat pcs = context.obj.getObject(pcc, ObjectKey.BONUS_SPELL_STAT);
+		PCStat pcs =
+				context.getObjectContext().getObject(pcc,
+					ObjectKey.BONUS_SPELL_STAT);
 		if (pcs == null)
 		{
 			return null;

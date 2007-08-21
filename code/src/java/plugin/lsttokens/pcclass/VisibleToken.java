@@ -91,13 +91,14 @@ public class VisibleToken implements PCClassLstToken, PCClassClassLstToken
 			Logging.errorPrint("Can't understand Visibility: " + value);
 			return false;
 		}
-		context.obj.put(pcc, ObjectKey.VISIBILITY, vis);
+		context.getObjectContext().put(pcc, ObjectKey.VISIBILITY, vis);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Visibility vis = context.obj.getObject(pcc, ObjectKey.VISIBILITY);
+		Visibility vis =
+				context.getObjectContext().getObject(pcc, ObjectKey.VISIBILITY);
 		if (vis == null)
 		{
 			return null;

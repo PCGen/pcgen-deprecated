@@ -130,7 +130,7 @@ public class WeaponbonusToken extends AbstractToken implements PCClassLstToken,
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
 		for (CDOMReference<WeaponProf> prof : list)
 		{
-			context.list.addToList(getTokenName(), obj, swl, prof);
+			context.getListContext().addToList(getTokenName(), obj, swl, prof);
 		}
 		return true;
 	}
@@ -140,7 +140,8 @@ public class WeaponbonusToken extends AbstractToken implements PCClassLstToken,
 		CDOMReference<WeaponProfList> swl =
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
 		ListGraphChanges<WeaponProf> changes =
-				context.list.getChangesInList(getTokenName(), pcc, swl);
+				context.getListContext().getChangesInList(getTokenName(), pcc,
+					swl);
 		if (changes == null)
 		{
 			// Legal if no WEAPONBONUS was present in the race

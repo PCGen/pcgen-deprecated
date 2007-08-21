@@ -71,13 +71,15 @@ public class HandsToken implements WeaponProfLstToken
 				return false;
 			}
 		}
-		context.obj.put(prof, IntegerKey.HANDS, Integer.valueOf(hands));
+		context.getObjectContext().put(prof, IntegerKey.HANDS,
+			Integer.valueOf(hands));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, WeaponProf prof)
 	{
-		Integer i = context.obj.getInteger(prof, IntegerKey.HANDS);
+		Integer i =
+				context.getObjectContext().getInteger(prof, IntegerKey.HANDS);
 		/*
 		 * Not a required Token, so it's possible it was never set. If so, don't
 		 * write anything.
@@ -103,6 +105,6 @@ public class HandsToken implements WeaponProfLstToken
 		{
 			hands = i.toString();
 		}
-		return new String[] { hands };
+		return new String[]{hands};
 	}
 }

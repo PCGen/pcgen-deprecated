@@ -61,7 +61,7 @@ public class ReachToken implements PCTemplateLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
-			context.obj.put(template, IntegerKey.REACH, i);
+			context.getObjectContext().put(template, IntegerKey.REACH, i);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -75,7 +75,8 @@ public class ReachToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Integer reach = context.obj.getInteger(pct, IntegerKey.REACH);
+		Integer reach =
+				context.getObjectContext().getInteger(pct, IntegerKey.REACH);
 		if (reach == null)
 		{
 			return null;

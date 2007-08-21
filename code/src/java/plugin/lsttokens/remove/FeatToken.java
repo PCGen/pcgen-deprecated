@@ -211,13 +211,14 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 			pcs = new CompoundOrChoiceSet<Ability>(pcsList);
 		}
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("REMOVE", pcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), obj, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), obj, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
 		RemoveFactory<Ability> rf = new RemoveFactory<Ability>(edge);
-		context.graph.grant(getTokenName(), obj, rf);
+		context.getGraphContext().grant(getTokenName(), obj, rf);
 		/*
 		 * FUTURE Technically, this Category item should not be in the
 		 * RemoveFactory, as it really belogs as something that can be extracted
@@ -233,8 +234,8 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 	public String[] unparse(LoadContext context, PObject obj)
 	{
 		GraphChanges<ChoiceSet> choiceChanges =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, ChoiceSet.class);
 		if (choiceChanges == null)
 		{
 			return null;
@@ -247,8 +248,8 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 			return null;
 		}
 		GraphChanges<RemoveFactory> grantChanges =
-				context.graph.getChangesFromToken(getTokenName(), obj,
-					RemoveFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					obj, RemoveFactory.class);
 		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
 		if (grantAdded == null || grantAdded.isEmpty())
 		{

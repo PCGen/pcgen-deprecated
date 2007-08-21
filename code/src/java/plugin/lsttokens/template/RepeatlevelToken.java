@@ -326,7 +326,7 @@ public class RepeatlevelToken extends AbstractToken implements
 		agg.put(IntegerKey.LEVEL_INCREMENT, Integer.valueOf(lvlIncrement));
 		agg.put(IntegerKey.START_LEVEL, Integer.valueOf(iLevel));
 
-		context.graph.grant(getTokenName(), template, agg);
+		context.getGraphContext().grant(getTokenName(), template, agg);
 
 		for (int count = consecutive; iLevel <= maxLevel; iLevel +=
 				lvlIncrement)
@@ -337,7 +337,8 @@ public class RepeatlevelToken extends AbstractToken implements
 				derivative.put(ObjectKey.PSEUDO_PARENT, agg);
 				derivative
 					.addPrerequisite(getPrerequisite("PRELEVEL:" + iLevel));
-				context.graph.grant(getTokenName(), agg, derivative);
+				context.getGraphContext()
+					.grant(getTokenName(), agg, derivative);
 				PCTemplateLstToken token =
 						TokenStore.inst().getToken(PCTemplateLstToken.class,
 							typeStr);
@@ -381,8 +382,8 @@ public class RepeatlevelToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		GraphChanges<Aggregator> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					AGGREGATOR_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pct, AGGREGATOR_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -403,7 +404,8 @@ public class RepeatlevelToken extends AbstractToken implements
 			sb.append(iLevel).append(Constants.COLON);
 			String prefix = sb.toString();
 			Set<PCGraphEdge> subEdgeList =
-					context.graph.getChildLinksFromToken(getTokenName(), agg);
+					context.getGraphContext().getChildLinksFromToken(
+						getTokenName(), agg);
 			if (subEdgeList == null || subEdgeList.isEmpty())
 			{
 				context.addWriteMessage("Aggregator for " + getTokenName()

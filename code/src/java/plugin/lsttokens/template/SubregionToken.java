@@ -64,14 +64,15 @@ public class SubregionToken implements PCTemplateLstToken
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
 		String subregion = value;
-		context.obj.put(template, ObjectKey.SUBREGION, SubRegion
-			.getConstant(subregion));
+		context.getObjectContext().put(template, ObjectKey.SUBREGION,
+			SubRegion.getConstant(subregion));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		SubRegion targetArea = context.obj.getObject(pct, ObjectKey.SUBREGION);
+		SubRegion targetArea =
+				context.getObjectContext().getObject(pct, ObjectKey.SUBREGION);
 		if (targetArea == null)
 		{
 			return null;

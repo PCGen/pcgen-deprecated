@@ -61,7 +61,7 @@ public class LegsToken implements RaceLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
-			context.obj.put(race, IntegerKey.LEGS, in);
+			context.getObjectContext().put(race, IntegerKey.LEGS, in);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -75,7 +75,8 @@ public class LegsToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Integer legs = context.obj.getInteger(race, IntegerKey.LEGS);
+		Integer legs =
+				context.getObjectContext().getInteger(race, IntegerKey.LEGS);
 		if (legs == null)
 		{
 			return null;

@@ -87,14 +87,16 @@ public class UseuntrainedToken implements SkillLstToken
 			Logging.errorPrint("Must be YES or NO");
 			return false;
 		}
-		context.obj.put(skill, ObjectKey.USE_UNTRAINED, untrained);
+		context.getObjectContext().put(skill, ObjectKey.USE_UNTRAINED,
+			untrained);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Skill skill)
 	{
 		Boolean useUntrained =
-				context.obj.getObject(skill, ObjectKey.USE_UNTRAINED);
+				context.getObjectContext().getObject(skill,
+					ObjectKey.USE_UNTRAINED);
 		if (useUntrained == null)
 		{
 			return null;

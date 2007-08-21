@@ -67,7 +67,7 @@ public class HandsToken implements RaceLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
-			context.obj.put(race, IntegerKey.HANDS, in);
+			context.getObjectContext().put(race, IntegerKey.HANDS, in);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -81,7 +81,8 @@ public class HandsToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Integer hands = context.obj.getInteger(race, IntegerKey.HANDS);
+		Integer hands =
+				context.getObjectContext().getInteger(race, IntegerKey.HANDS);
 		if (hands == null)
 		{
 			return null;

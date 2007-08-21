@@ -62,7 +62,7 @@ public class HdToken implements PCClassLstToken, PCClassClassLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer > 0");
 				return false;
 			}
-			context.obj.put(pcc, IntegerKey.HIT_DIE, in);
+			context.getObjectContext().put(pcc, IntegerKey.HIT_DIE, in);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -76,15 +76,15 @@ public class HdToken implements PCClassLstToken, PCClassClassLstToken
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Integer lpf = context.obj.getInteger(pcc, IntegerKey.HIT_DIE);
+		Integer lpf =
+				context.getObjectContext().getInteger(pcc, IntegerKey.HIT_DIE);
 		if (lpf == null)
 		{
 			return null;
 		}
 		if (lpf.intValue() <= 0)
 		{
-			context
-				.addWriteMessage(getTokenName() + " must be an integer > 0");
+			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
 		return new String[]{lpf.toString()};

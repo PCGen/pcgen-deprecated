@@ -83,7 +83,7 @@ public class XpcostToken implements SpellLstToken
 					+ " requires a positive Integer");
 				return false;
 			}
-			context.obj.put(spell, IntegerKey.XP_COST, xpCost);
+			context.getObjectContext().put(spell, IntegerKey.XP_COST, xpCost);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -97,7 +97,9 @@ public class XpcostToken implements SpellLstToken
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		Integer i = context.obj.getInteger(spell, IntegerKey.XP_COST);
+		Integer i =
+				context.getObjectContext()
+					.getInteger(spell, IntegerKey.XP_COST);
 		if (i == null)
 		{
 			return null;

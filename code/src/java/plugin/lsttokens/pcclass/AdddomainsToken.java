@@ -169,9 +169,9 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 				prereq = getPrerequisite(prereqString);
 			}
 			AssociatedPrereqObject apo =
-					context.list.addToList(getTokenName(), po,
-						allowedDomainList, context.ref.getCDOMReference(
-							DOMAIN_CLASS, domainKey));
+					context.getListContext().addToList(getTokenName(), po,
+						allowedDomainList,
+						context.ref.getCDOMReference(DOMAIN_CLASS, domainKey));
 			if (prereq != null)
 			{
 				apo.addPrerequisite(prereq);
@@ -187,7 +187,7 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 				context.ref.getCDOMReference(DomainList.class, "*Allowed");
 
 		ListGraphChanges<Domain> changes =
-				context.list.getChangesInList(getTokenName(), po,
+				context.getListContext().getChangesInList(getTokenName(), po,
 					allowedDomainList);
 		if (changes == null)
 		{

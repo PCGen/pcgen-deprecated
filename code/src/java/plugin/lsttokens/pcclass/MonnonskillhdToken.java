@@ -69,14 +69,15 @@ public class MonnonskillhdToken extends AbstractToken implements
 		{
 			bonus.addPreReq(getPrerequisite(st.nextToken()));
 		}
-		context.obj.addToList(pcc, ListKey.BONUSES, bonus);
+		context.getObjectContext().addToList(pcc, ListKey.BONUSES, bonus);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		Formula msp =
-				context.obj.getFormula(pcc, FormulaKey.MONSTER_NON_SKILL_HD);
+				context.getObjectContext().getFormula(pcc,
+					FormulaKey.MONSTER_NON_SKILL_HD);
 		if (msp == null)
 		{
 			return null;

@@ -62,14 +62,14 @@ public class CrToken implements RaceLstToken
 	public boolean parse(LoadContext context, Race race, String value)
 	{
 		ChallengeRating cr = new ChallengeRating(value);
-		context.graph.grant(getTokenName(), race, cr);
+		context.getGraphContext().grant(getTokenName(), race, cr);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
 		GraphChanges<ChallengeRating> changes =
-				context.graph.getChangesFromToken(getTokenName(), race,
+				context.getGraphContext().getChangesFromToken(getTokenName(), race,
 					ChallengeRating.class);
 		if (changes == null)
 		{

@@ -145,7 +145,8 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 		for (CDOMReference<Ability> ability : abilityList)
 		{
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), obj, ability);
+					context.getGraphContext().grant(getTokenName(), obj,
+						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
 				AbilityNature.NORMAL);
 			if (prereqs != null)
@@ -161,8 +162,8 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		GraphChanges<Ability> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					ABILITY_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pct, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;

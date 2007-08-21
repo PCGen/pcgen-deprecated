@@ -169,22 +169,23 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 				new ReferenceChoiceSet<ClassSpellList>(refs);
 		ChoiceSet<ClassSpellList> cs =
 				new ChoiceSet<ClassSpellList>(getTokenName(), rcs);
-		PCGraphGrantsEdge edge = context.graph.grant(getTokenName(), pcc, cs);
+		PCGraphGrantsEdge edge =
+				context.getGraphContext().grant(getTokenName(), pcc, cs);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
 		GrantFactory<ClassSpellList> gf =
 				new GrantFactory<ClassSpellList>(edge);
-		context.graph.grant(getTokenName(), pcc, gf);
+		context.getGraphContext().grant(getTokenName(), pcc, gf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		GraphChanges<ChoiceSet> changes =
-				context.graph.getChangesFromToken(getTokenName(), pcc,
-					ChoiceSet.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pcc, ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;

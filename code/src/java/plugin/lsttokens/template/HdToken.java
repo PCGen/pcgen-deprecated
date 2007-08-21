@@ -108,7 +108,7 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.graph.removeAll(getTokenName(), template);
+			context.getGraphContext().removeAll(getTokenName(), template);
 			return true;
 		}
 
@@ -139,7 +139,7 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 		PCTemplate derivative = template.getPseudoTemplate();
 		derivative.put(ObjectKey.PSEUDO_PARENT, template);
 		derivative.addPrerequisite(prereq);
-		context.graph.grant(getTokenName(), template, derivative);
+		context.getGraphContext().grant(getTokenName(), template, derivative);
 		PCTemplateLstToken token =
 				TokenStore.inst().getToken(PCTemplateLstToken.class, typeStr);
 		if (token == null)
@@ -167,8 +167,8 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		GraphChanges<PCTemplate> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					PCTemplate.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pct, PCTemplate.class);
 		if (changes == null)
 		{
 			return null;

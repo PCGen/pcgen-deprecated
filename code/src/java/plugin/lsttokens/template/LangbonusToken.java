@@ -158,22 +158,23 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 		}
 		if (removeAll)
 		{
-			context.list.removeFromList(getTokenName(), template, swl,
-				LANGUAGE_CLASS);
+			context.getListContext().removeFromList(getTokenName(), template,
+				swl, LANGUAGE_CLASS);
 		}
 		if (!removeList.isEmpty())
 		{
 			for (CDOMReference<Language> lang : removeList)
 			{
-				context.list
-					.removeFromList(getTokenName(), template, swl, lang);
+				context.getListContext().removeFromList(getTokenName(),
+					template, swl, lang);
 			}
 		}
 		if (!addList.isEmpty())
 		{
 			for (CDOMReference<Language> lang : addList)
 			{
-				context.list.addToList(getTokenName(), template, swl, lang);
+				context.getListContext().addToList(getTokenName(), template,
+					swl, lang);
 			}
 		}
 		return true;
@@ -184,7 +185,8 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 		CDOMReference<LanguageList> swl =
 				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
 		ListGraphChanges<Language> changes =
-				context.list.getChangesInList(getTokenName(), pct, swl);
+				context.getListContext().getChangesInList(getTokenName(), pct,
+					swl);
 		if (changes == null)
 		{
 			// Legal if no Language was present in the race

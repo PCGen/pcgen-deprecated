@@ -56,13 +56,15 @@ public class StatToken implements SpellLstToken
 				+ getTokenName() + ": " + value);
 			return false;
 		}
-		context.obj.put(spell, ObjectKey.SPELL_STAT, pcs);
+		context.getObjectContext().put(spell, ObjectKey.SPELL_STAT, pcs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		PCStat pcs = context.obj.getObject(spell, ObjectKey.SPELL_STAT);
+		PCStat pcs =
+				context.getObjectContext().getObject(spell,
+					ObjectKey.SPELL_STAT);
 		if (pcs == null)
 		{
 			return null;

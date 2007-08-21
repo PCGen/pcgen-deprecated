@@ -50,14 +50,15 @@ public class DurationToken implements SpellLstToken
 		{
 			return false;
 		}
-		context.obj.put(spell, StringKey.DURATION, Constants.LST_DOT_CLEAR
-			.equals(value) ? null : value);
+		context.getObjectContext().put(spell, StringKey.DURATION,
+			Constants.LST_DOT_CLEAR.equals(value) ? null : value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
-		String duration = context.obj.getString(spell, StringKey.DURATION);
+		String duration =
+				context.getObjectContext().getString(spell, StringKey.DURATION);
 		if (duration == null)
 		{
 			return null;

@@ -55,14 +55,14 @@ public class ExclassToken implements PCClassLstToken, PCClassClassLstToken
 		}
 		CDOMReference<PCClass> cl =
 				context.ref.getCDOMReference(PCClass.class, value);
-		context.obj.put(pcc, ObjectKey.EX_CLASS, cl);
+		context.getObjectContext().put(pcc, ObjectKey.EX_CLASS, cl);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		CDOMReference<PCClass> cl =
-				context.obj.getObject(pcc, ObjectKey.EX_CLASS);
+				context.getObjectContext().getObject(pcc, ObjectKey.EX_CLASS);
 		if (cl == null)
 		{
 			return null;

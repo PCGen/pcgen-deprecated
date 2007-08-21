@@ -67,7 +67,7 @@ public class LegsToken implements PCTemplateLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
-			context.obj.put(template, IntegerKey.LEGS, in);
+			context.getObjectContext().put(template, IntegerKey.LEGS, in);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -81,7 +81,8 @@ public class LegsToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Integer legs = context.obj.getInteger(pct, IntegerKey.LEGS);
+		Integer legs =
+				context.getObjectContext().getInteger(pct, IntegerKey.LEGS);
 		if (legs == null)
 		{
 			return null;

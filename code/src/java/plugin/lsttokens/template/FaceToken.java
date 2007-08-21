@@ -93,7 +93,8 @@ public class FaceToken implements PCTemplateLstToken
 		return parseFace(context, template, value);
 	}
 
-	protected boolean parseFace(LoadContext context, PCTemplate fObj, String value)
+	protected boolean parseFace(LoadContext context, PCTemplate fObj,
+		String value)
 	{
 		int commaLoc = value.indexOf(Constants.COMMA);
 		if (commaLoc != value.lastIndexOf(Constants.COMMA))
@@ -155,8 +156,8 @@ public class FaceToken implements PCTemplateLstToken
 					+ value);
 				return false;
 			}
-			context.obj.put(fObj, ObjectKey.FACE_WIDTH, width);
-			context.obj.put(fObj, ObjectKey.FACE_HEIGHT, height);
+			context.getObjectContext().put(fObj, ObjectKey.FACE_WIDTH, width);
+			context.getObjectContext().put(fObj, ObjectKey.FACE_HEIGHT, height);
 		}
 		else
 		{
@@ -177,16 +178,20 @@ public class FaceToken implements PCTemplateLstToken
 				Logging.errorPrint("Misunderstood Double in Tag: " + value);
 				return false;
 			}
-			context.obj.put(fObj, ObjectKey.FACE_WIDTH, width);
-			context.obj.put(fObj, ObjectKey.FACE_HEIGHT, BigDecimal.ZERO);
+			context.getObjectContext().put(fObj, ObjectKey.FACE_WIDTH, width);
+			context.getObjectContext().put(fObj, ObjectKey.FACE_HEIGHT,
+				BigDecimal.ZERO);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		BigDecimal width = context.obj.getObject(pct, ObjectKey.FACE_WIDTH);
-		BigDecimal height = context.obj.getObject(pct, ObjectKey.FACE_HEIGHT);
+		BigDecimal width =
+				context.getObjectContext().getObject(pct, ObjectKey.FACE_WIDTH);
+		BigDecimal height =
+				context.getObjectContext()
+					.getObject(pct, ObjectKey.FACE_HEIGHT);
 		if (width == null && height == null)
 		{
 			return null;

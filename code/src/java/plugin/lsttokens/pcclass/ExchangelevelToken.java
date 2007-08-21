@@ -112,7 +112,7 @@ public class ExchangelevelToken extends AbstractToken implements
 		try
 		{
 			LevelExchange le = new LevelExchange(cl, mindl, maxdl, minrem);
-			context.graph.grant(getTokenName(), pcc, le);
+			context.getGraphContext().grant(getTokenName(), pcc, le);
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -127,8 +127,8 @@ public class ExchangelevelToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		GraphChanges<LevelExchange> changes =
-				context.graph.getChangesFromToken(getTokenName(), pcc,
-					LevelExchange.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pcc, LevelExchange.class);
 		if (changes == null)
 		{
 			return null;

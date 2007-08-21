@@ -92,11 +92,13 @@ public class HitdiceadvancementToken extends AbstractToken implements
 		final StringTokenizer commaTok =
 				new StringTokenizer(value, Constants.COMMA);
 
-		if (context.obj.containsListFor(race, ListKey.HITDICE_ADVANCEMENT))
+		if (context.getObjectContext().containsListFor(race,
+			ListKey.HITDICE_ADVANCEMENT))
 		{
 			Logging.errorPrint("Encountered second " + getTokenName()
 				+ ": overwriting previous advancement list");
-			context.obj.removeList(race, ListKey.HITDICE_ADVANCEMENT);
+			context.getObjectContext().removeList(race,
+				ListKey.HITDICE_ADVANCEMENT);
 		}
 		int last = 1;
 		while (commaTok.hasMoreTokens())
@@ -132,8 +134,8 @@ public class HitdiceadvancementToken extends AbstractToken implements
 					return false;
 				}
 			}
-			context.obj.addToList(race, ListKey.HITDICE_ADVANCEMENT, Integer
-				.valueOf(hd));
+			context.getObjectContext().addToList(race,
+				ListKey.HITDICE_ADVANCEMENT, Integer.valueOf(hd));
 		}
 		return true;
 	}
@@ -141,7 +143,8 @@ public class HitdiceadvancementToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, Race race)
 	{
 		Changes<Integer> changes =
-				context.obj.getListChanges(race, ListKey.HITDICE_ADVANCEMENT);
+				context.getObjectContext().getListChanges(race,
+					ListKey.HITDICE_ADVANCEMENT);
 		if (changes == null)
 		{
 			return null;

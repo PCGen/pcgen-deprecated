@@ -68,7 +68,8 @@ public class SubschoolToken extends AbstractToken implements SpellLstToken
 
 		while (aTok.hasMoreTokens())
 		{
-			context.obj.addToList(spell, ListKey.SPELL_SUBSCHOOL,
+			context.getObjectContext().addToList(spell,
+				ListKey.SPELL_SUBSCHOOL,
 				SpellSubSchool.getConstant(aTok.nextToken()));
 		}
 		return true;
@@ -77,7 +78,8 @@ public class SubschoolToken extends AbstractToken implements SpellLstToken
 	public String[] unparse(LoadContext context, Spell spell)
 	{
 		Changes<SpellSubSchool> changes =
-				context.obj.getListChanges(spell, ListKey.SPELL_SUBSCHOOL);
+				context.getObjectContext().getListChanges(spell,
+					ListKey.SPELL_SUBSCHOOL);
 		if (changes == null)
 		{
 			return null;

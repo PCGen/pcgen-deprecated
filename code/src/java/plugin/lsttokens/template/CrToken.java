@@ -60,7 +60,7 @@ public class CrToken implements PCTemplateLstToken
 		try
 		{
 			ChallengeRating cr = new ChallengeRating(value);
-			context.graph.grant(getTokenName(), template, cr);
+			context.getGraphContext().grant(getTokenName(), template, cr);
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -74,8 +74,8 @@ public class CrToken implements PCTemplateLstToken
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		GraphChanges<ChallengeRating> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					ChallengeRating.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pct, ChallengeRating.class);
 		if (changes == null)
 		{
 			return null;

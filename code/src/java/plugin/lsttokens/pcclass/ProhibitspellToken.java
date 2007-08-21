@@ -150,7 +150,7 @@ public class ProhibitspellToken extends AbstractToken implements
 		{
 			return false;
 		}
-		context.graph.grant(getTokenName(), pcc, sp);
+		context.getGraphContext().grant(getTokenName(), pcc, sp);
 		return true;
 	}
 
@@ -224,8 +224,8 @@ public class ProhibitspellToken extends AbstractToken implements
 		return spellProb;
 	}
 
-	private <T> SpellProhibitor<T> typeSafeParse(LoadContext context, PCClass pcc,
-		ProhibitedSpellType<T> type, String args)
+	private <T> SpellProhibitor<T> typeSafeParse(LoadContext context,
+		PCClass pcc, ProhibitedSpellType<T> type, String args)
 	{
 		SpellProhibitor<T> spellProb = new SpellProhibitor<T>();
 		spellProb.setType(type);
@@ -281,8 +281,8 @@ public class ProhibitspellToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		GraphChanges<SpellProhibitor> changes =
-				context.graph.getChangesFromToken(getTokenName(), pcc,
-					SpellProhibitor.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pcc, SpellProhibitor.class);
 		if (changes == null)
 		{
 			return null;

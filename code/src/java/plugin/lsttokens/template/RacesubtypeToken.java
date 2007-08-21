@@ -58,7 +58,7 @@ public class RacesubtypeToken extends AbstractToken implements
 		{
 			return false;
 		}
-		
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
@@ -73,13 +73,14 @@ public class RacesubtypeToken extends AbstractToken implements
 					Logging.errorPrint("  Requires an argument");
 					return false;
 				}
-				context.obj.addToList(template, ListKey.REMOVED_RACESUBTYPE,
+				context.getObjectContext().addToList(template,
+					ListKey.REMOVED_RACESUBTYPE,
 					RaceSubType.getConstant(substring));
 			}
 			else
 			{
-				context.obj.addToList(template, ListKey.RACESUBTYPE,
-					RaceSubType.getConstant(aType));
+				context.getObjectContext().addToList(template,
+					ListKey.RACESUBTYPE, RaceSubType.getConstant(aType));
 			}
 		}
 		return true;
@@ -88,9 +89,11 @@ public class RacesubtypeToken extends AbstractToken implements
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		Changes<RaceSubType> addedChanges =
-				context.obj.getListChanges(pct, ListKey.RACESUBTYPE);
+				context.getObjectContext().getListChanges(pct,
+					ListKey.RACESUBTYPE);
 		Changes<RaceSubType> removedChanges =
-				context.obj.getListChanges(pct, ListKey.REMOVED_RACESUBTYPE);
+				context.getObjectContext().getListChanges(pct,
+					ListKey.REMOVED_RACESUBTYPE);
 		if (addedChanges == null && removedChanges == null)
 		{
 			return null;

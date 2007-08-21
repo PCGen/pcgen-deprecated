@@ -52,7 +52,7 @@ import pcgen.util.Logging;
 public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		PCClassUniversalLstToken
 {
-	
+
 	private static final Class<Spell> SPELL_CLASS = Spell.class;
 
 	@Override
@@ -82,7 +82,8 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 			else
 			{
 				Logging.errorPrint("Invalid KNOWNSPELLS Syntax using .CLEAR");
-				Logging.errorPrint("Please separate .CLEAR from the rest of the token with a |");
+				Logging
+					.errorPrint("Please separate .CLEAR from the rest of the token with a |");
 				rest = value.substring(6);
 			}
 			pipeTok = new StringTokenizer(rest, Constants.PIPE);
@@ -154,7 +155,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		String known;
 		if (value.startsWith(".CLEAR"))
 		{
-			context.graph.removeAll(getTokenName(), po);
+			context.getGraphContext().removeAll(getTokenName(), po);
 
 			if (".CLEAR".equals(value))
 			{
@@ -271,7 +272,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 				sp = context.ref.getCDOMAllReference(SPELL_CLASS);
 			}
 			KnownSpellIdentifier ksi = new KnownSpellIdentifier(sp, levelLim);
-			context.graph.grant(getTokenName(), po, ksi);
+			context.getGraphContext().grant(getTokenName(), po, ksi);
 		}
 		return true;
 	}
@@ -279,8 +280,8 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 	public String[] unparse(LoadContext context, PObject po)
 	{
 		GraphChanges<KnownSpellIdentifier> changes =
-				context.graph.getChangesFromToken(getTokenName(), po,
-					KnownSpellIdentifier.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					po, KnownSpellIdentifier.class);
 		if (changes == null)
 		{
 			return null;

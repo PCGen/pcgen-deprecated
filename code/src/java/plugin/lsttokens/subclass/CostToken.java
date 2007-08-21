@@ -43,7 +43,7 @@ public class CostToken implements SubClassLstToken
 					+ " must be a positive number: " + value);
 				return false;
 			}
-			context.obj.put(sc, ObjectKey.COST, cost);
+			context.getObjectContext().put(sc, ObjectKey.COST, cost);
 			return true;
 		}
 		catch (NumberFormatException e)

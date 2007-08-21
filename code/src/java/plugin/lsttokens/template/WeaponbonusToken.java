@@ -88,7 +88,8 @@ public class WeaponbonusToken extends AbstractToken implements
 				foundAny = true;
 				CDOMReference<WeaponProf> ref =
 						context.ref.getCDOMAllReference(WEAPONPROF_CLASS);
-				context.list.addToList(getTokenName(), template, swl, ref);
+				context.getListContext().addToList(getTokenName(), template,
+					swl, ref);
 			}
 			else
 			{
@@ -102,7 +103,8 @@ public class WeaponbonusToken extends AbstractToken implements
 						+ getTokenName());
 					return false;
 				}
-				context.list.addToList(getTokenName(), template, swl, ref);
+				context.getListContext().addToList(getTokenName(), template,
+					swl, ref);
 			}
 		}
 		if (foundAny && foundOther)
@@ -119,7 +121,8 @@ public class WeaponbonusToken extends AbstractToken implements
 		CDOMReference<WeaponProfList> swl =
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
 		ListGraphChanges<WeaponProf> changes =
-				context.list.getChangesInList(getTokenName(), pct, swl);
+				context.getListContext().getChangesInList(getTokenName(), pct,
+					swl);
 		if (changes == null)
 		{
 			// Legal if no WEAPONBONUS was present in the race

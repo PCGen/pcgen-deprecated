@@ -158,21 +158,23 @@ public class LangbonusToken extends AbstractToken implements RaceLstToken
 		}
 		if (removeAll)
 		{
-			context.list.removeFromList(getTokenName(), race, swl,
+			context.getListContext().removeFromList(getTokenName(), race, swl,
 				LANGUAGE_CLASS);
 		}
 		if (!removeList.isEmpty())
 		{
 			for (CDOMReference<Language> lang : removeList)
 			{
-				context.list.removeFromList(getTokenName(), race, swl, lang);
+				context.getListContext().removeFromList(getTokenName(), race,
+					swl, lang);
 			}
 		}
 		if (!addList.isEmpty())
 		{
 			for (CDOMReference<Language> lang : addList)
 			{
-				context.list.addToList(getTokenName(), race, swl, lang);
+				context.getListContext().addToList(getTokenName(), race, swl,
+					lang);
 			}
 		}
 		return true;
@@ -183,7 +185,8 @@ public class LangbonusToken extends AbstractToken implements RaceLstToken
 		CDOMReference<LanguageList> swl =
 				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
 		ListGraphChanges<Language> changes =
-				context.list.getChangesInList(getTokenName(), race, swl);
+				context.getListContext().getChangesInList(getTokenName(), race,
+					swl);
 		if (changes == null)
 		{
 			// Legal if no Language was present in the race

@@ -116,13 +116,15 @@ public class VisibleToken implements PCTemplateLstToken
 			Logging.errorPrint("Can't understand Visibility: " + value);
 			return false;
 		}
-		context.obj.put(template, ObjectKey.VISIBILITY, vis);
+		context.getObjectContext().put(template, ObjectKey.VISIBILITY, vis);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate template)
 	{
-		Visibility vis = context.obj.getObject(template, ObjectKey.VISIBILITY);
+		Visibility vis =
+				context.getObjectContext().getObject(template,
+					ObjectKey.VISIBILITY);
 		if (vis == null)
 		{
 			return null;

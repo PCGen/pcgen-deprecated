@@ -273,7 +273,7 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 			}
 
 			HitDieCommandFactory cf = new HitDieCommandFactory(owner, hdm);
-			context.graph.grant(getTokenName(), template, cf);
+			context.getGraphContext().grant(getTokenName(), template, cf);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -288,8 +288,8 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		GraphChanges<HitDieCommandFactory> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					HitDieCommandFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pct, HitDieCommandFactory.class);
 		if (changes == null)
 		{
 			return null;

@@ -81,7 +81,7 @@ public class RacesubtypeToken extends AbstractToken implements RaceLstToken
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
-			context.obj.addToList(race, ListKey.RACESUBTYPE, RaceSubType
+			context.getObjectContext().addToList(race, ListKey.RACESUBTYPE, RaceSubType
 				.getConstant(tok.nextToken()));
 		}
 		return true;
@@ -90,7 +90,7 @@ public class RacesubtypeToken extends AbstractToken implements RaceLstToken
 	public String[] unparse(LoadContext context, Race race)
 	{
 		Changes<RaceSubType> changes =
-				context.obj.getListChanges(race, ListKey.RACESUBTYPE);
+				context.getObjectContext().getListChanges(race, ListKey.RACESUBTYPE);
 		if (changes == null)
 		{
 			return null;

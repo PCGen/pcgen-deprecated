@@ -126,7 +126,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.graph.removeAll(getTokenName(), po);
+			context.getGraphContext().removeAll(getTokenName(), po);
 			return true;
 		}
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
@@ -177,7 +177,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 					context.ref.getCDOMReference(DOMAIN_CLASS, domainKey);
 
 			PCGraphGrantsEdge edge =
-					context.graph.grant(getTokenName(), po, domain);
+					context.getGraphContext().grant(getTokenName(), po, domain);
 			if (prereq != null)
 			{
 				edge.addPrerequisite(prereq);
@@ -189,8 +189,8 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 	public String[] unparse(LoadContext context, PObject po)
 	{
 		GraphChanges<Domain> changes =
-				context.graph.getChangesFromToken(getTokenName(), po,
-					DOMAIN_CLASS);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					po, DOMAIN_CLASS);
 		if (changes == null)
 		{
 			return null;

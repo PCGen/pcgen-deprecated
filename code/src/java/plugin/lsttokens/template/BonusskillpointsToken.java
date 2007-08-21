@@ -77,15 +77,15 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 		}
 
 		ClassSkillPointFactory cf = new ClassSkillPointFactory(skillCount);
-		context.graph.grant(getTokenName(), template, cf);
+		context.getGraphContext().grant(getTokenName(), template, cf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
 		GraphChanges<ClassSkillPointFactory> changes =
-				context.graph.getChangesFromToken(getTokenName(), pct,
-					ClassSkillPointFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pct, ClassSkillPointFactory.class);
 		if (changes == null)
 		{
 			return null;

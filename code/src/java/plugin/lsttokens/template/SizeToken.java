@@ -62,14 +62,14 @@ public class SizeToken implements PCTemplateLstToken
 		{
 			res = new FixedSizeResolver(size);
 		}
-		context.obj.put(template, ObjectKey.SIZE, res);
+		context.getObjectContext().put(template, ObjectKey.SIZE, res);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate template)
 	{
 		Resolver<SizeAdjustment> res =
-				context.obj.getObject(template, ObjectKey.SIZE);
+				context.getObjectContext().getObject(template, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;

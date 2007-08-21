@@ -48,7 +48,7 @@ public class ChoiceToken implements SubClassLstToken
 			SpellProhibitor<?> sp =
 					getSpellProhib(ProhibitedSpellType.getReference(type),
 						value.substring(pipeLoc + 1));
-			context.obj.put(sc, ObjectKey.SELETED_SPELLS, sp);
+			context.getObjectContext().put(sc, ObjectKey.SELETED_SPELLS, sp);
 		}
 		else
 		{

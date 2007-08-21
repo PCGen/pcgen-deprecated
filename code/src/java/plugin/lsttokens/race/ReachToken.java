@@ -61,7 +61,7 @@ public class ReachToken implements RaceLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
-			context.obj.put(race, IntegerKey.REACH, i);
+			context.getObjectContext().put(race, IntegerKey.REACH, i);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -73,7 +73,8 @@ public class ReachToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		Integer reach = context.obj.getInteger(race, IntegerKey.REACH);
+		Integer reach =
+				context.getObjectContext().getInteger(race, IntegerKey.REACH);
 		if (reach == null)
 		{
 			return null;

@@ -52,10 +52,12 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 	{
 		if ("SPELL".equalsIgnoreCase(value))
 		{
-			context.obj.put(pcc, ObjectKey.USE_SPELL_SPELL_STAT, Boolean.FALSE);
+			context.getObjectContext().put(pcc, ObjectKey.USE_SPELL_SPELL_STAT,
+				Boolean.FALSE);
 			return true;
 		}
-		context.obj.put(pcc, ObjectKey.USE_SPELL_SPELL_STAT, Boolean.TRUE);
+		context.getObjectContext().put(pcc, ObjectKey.USE_SPELL_SPELL_STAT,
+			Boolean.TRUE);
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
@@ -63,13 +65,14 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 				+ ": " + value);
 			return false;
 		}
-		context.obj.put(pcc, ObjectKey.SPELL_STAT, pcs);
+		context.getObjectContext().put(pcc, ObjectKey.SPELL_STAT, pcs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		PCStat pcs = context.obj.getObject(pcc, ObjectKey.SPELL_STAT);
+		PCStat pcs =
+				context.getObjectContext().getObject(pcc, ObjectKey.SPELL_STAT);
 		if (pcs == null)
 		{
 			return null;

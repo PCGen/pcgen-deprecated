@@ -48,14 +48,14 @@ public class CrformulaToken implements PCClassLstToken, PCClassClassLstToken
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
-		context.obj
-			.put(pcc, FormulaKey.CR, FormulaFactory.getFormulaFor(value));
+		context.getObjectContext().put(pcc, FormulaKey.CR,
+			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Formula f = context.obj.getFormula(pcc, FormulaKey.CR);
+		Formula f = context.getObjectContext().getFormula(pcc, FormulaKey.CR);
 		if (f == null)
 		{
 			return null;

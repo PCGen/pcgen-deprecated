@@ -67,7 +67,7 @@ public class HandsToken implements PCTemplateLstToken
 				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
-			context.obj.put(template, IntegerKey.HANDS, in);
+			context.getObjectContext().put(template, IntegerKey.HANDS, in);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -81,7 +81,8 @@ public class HandsToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Integer hands = context.obj.getInteger(pct, IntegerKey.HANDS);
+		Integer hands =
+				context.getObjectContext().getInteger(pct, IntegerKey.HANDS);
 		if (hands == null)
 		{
 			return null;

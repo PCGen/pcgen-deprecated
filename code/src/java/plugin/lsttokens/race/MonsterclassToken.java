@@ -109,15 +109,15 @@ public class MonsterclassToken implements RaceLstToken
 			return false;
 		}
 		LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
-		context.graph.grant(getTokenName(), race, cf);
+		context.getGraphContext().grant(getTokenName(), race, cf);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)
 	{
 		GraphChanges<LevelCommandFactory> changes =
-				context.graph.getChangesFromToken(getTokenName(), race,
-					LevelCommandFactory.class);
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					race, LevelCommandFactory.class);
 		if (changes == null)
 		{
 			return null;

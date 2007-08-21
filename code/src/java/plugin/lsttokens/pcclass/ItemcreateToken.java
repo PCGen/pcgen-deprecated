@@ -48,7 +48,8 @@ public class ItemcreateToken implements PCClassLstToken, PCClassClassLstToken
 
 	public boolean parse(LoadContext context, PCClass pcc, String value)
 	{
-		context.obj.put(pcc, FormulaKey.ITEM_CREATION_MULTIPLIER,
+		context.getObjectContext().put(pcc,
+			FormulaKey.ITEM_CREATION_MULTIPLIER,
 			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
@@ -56,8 +57,8 @@ public class ItemcreateToken implements PCClassLstToken, PCClassClassLstToken
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
 		Formula f =
-				context.obj
-					.getFormula(pcc, FormulaKey.ITEM_CREATION_MULTIPLIER);
+				context.getObjectContext().getFormula(pcc,
+					FormulaKey.ITEM_CREATION_MULTIPLIER);
 		if (f == null)
 		{
 			return null;

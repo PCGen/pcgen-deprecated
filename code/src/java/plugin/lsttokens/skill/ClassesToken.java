@@ -137,7 +137,8 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		Skill skill, CDOMReference<ClassSkillList> ref)
 	{
 		AssociatedPrereqObject edge =
-				context.list.addToMasterList(getTokenName(), skill, ref, skill);
+				context.getListContext().addToMasterList(getTokenName(), skill,
+					ref, skill);
 		edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		return edge;
 	}
@@ -152,12 +153,12 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		boolean usesAll = false;
 		boolean usesIndividual = false;
 		boolean negated = false;
-		for (CDOMReference<ClassSkillList> swl : context.list
+		for (CDOMReference<ClassSkillList> swl : context.getListContext()
 			.getMasterLists(SKILLLIST_CLASS))
 		{
 			MasterListChanges<Skill> changes =
-					context.list.getChangesInMasterList(getTokenName(), skill,
-						swl);
+					context.getListContext().getChangesInMasterList(
+						getTokenName(), skill, swl);
 			if (changes == null)
 			{
 				// Legal if no CLASSES was present in the Skill

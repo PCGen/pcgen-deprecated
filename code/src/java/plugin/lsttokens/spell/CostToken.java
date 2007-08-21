@@ -162,14 +162,15 @@ public class CostToken implements SpellLstToken
 				return false;
 			}
 		}
-		context.obj.put(spell, ObjectKey.COMPONENT_COST, dm);
+		context.getObjectContext().put(spell, ObjectKey.COMPONENT_COST, dm);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Spell spell)
 	{
 		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
-				context.obj.getObject(spell, ObjectKey.COMPONENT_COST);
+				context.getObjectContext().getObject(spell,
+					ObjectKey.COMPONENT_COST);
 		if (dm == null)
 		{
 			return null;
