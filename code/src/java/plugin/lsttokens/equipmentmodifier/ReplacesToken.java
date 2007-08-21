@@ -77,7 +77,7 @@ public class ReplacesToken extends AbstractToken implements
 		Changes<CDOMSimpleSingleRef<EquipmentModifier>> changes =
 				context.getObjectContext().getListChanges(mod,
 					ListKey.REPLACED_KEYS);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

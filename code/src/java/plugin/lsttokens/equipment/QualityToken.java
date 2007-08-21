@@ -100,7 +100,7 @@ public class QualityToken implements EquipmentLstToken
 	{
 		Changes<Quality> changes =
 				context.getObjectContext().getListChanges(eq, ListKey.QUALITY);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

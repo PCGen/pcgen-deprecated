@@ -86,7 +86,7 @@ public class EditorObjectContext implements ObjectContext
 		{
 			try
 			{
-				positive = cdo.getClass().newInstance();
+				positive = CDOMObject.class.newInstance();//cdo.getClass().newInstance();
 			}
 			catch (InstantiationException e)
 			{
@@ -193,9 +193,9 @@ public class EditorObjectContext implements ObjectContext
 
 	public <T> Changes<T> getListChanges(CDOMObject cdo, ListKey<T> lk)
 	{
-		return new CollectionChanges<T>(cdo.getListFor(lk), getNegative(extractURI,
-			cdo).getListFor(lk), globalClearSet.containsInList(extractURI, cdo,
-			lk));
+		return new CollectionChanges<T>(getPositive(extractURI, cdo)
+			.getListFor(lk), getNegative(extractURI, cdo).getListFor(lk),
+			globalClearSet.containsInList(extractURI, cdo, lk));
 	}
 
 	public URI getExtractURI()

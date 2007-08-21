@@ -39,7 +39,7 @@ import pcgen.core.Domain;
 import pcgen.core.DomainList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
-import pcgen.persistence.ListGraphChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -142,8 +142,8 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 						+ ": .CLEAR was not the first list item: " + value);
 					return false;
 				}
-				context.getListContext().removeFromList(getTokenName(), deity,
-					dl, DOMAIN_CLASS);
+				context.getListContext().removeAllFromList(getTokenName(),
+					deity, dl);
 			}
 			else if (tokString.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -218,10 +218,10 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 	{
 		CDOMReference<DomainList> dl =
 				context.ref.getCDOMReference(DomainList.class, "*Starting");
-		ListGraphChanges<Domain> changes =
+		Changes<CDOMReference<Domain>> changes =
 				context.getListContext().getChangesInList(getTokenName(),
 					deity, dl);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			// Legal if no Language was present in the race
 			return null;

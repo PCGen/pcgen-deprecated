@@ -167,17 +167,7 @@ public class RuntimeObjectContext implements ObjectContext
 
 	public <T> Changes<T> getListChanges(CDOMObject cdo, ListKey<T> lk)
 	{
-		List<T> list = cdo.getListFor(lk);
-		if (list == null || list.isEmpty())
-		{
-			return null;
-		}
-		RuntimeChanges<T> changes = new RuntimeChanges<T>();
-		for (T obj : list)
-		{
-			changes.addAdded(obj);
-		}
-		return changes;
+		return new CollectionChanges<T>(cdo.getListFor(lk), null, false);
 		// List<CDOMCommand> list = cdo.getListFor(MapKey.COMMANDS, lk);
 		// if (list == null || list.isEmpty())
 		// {

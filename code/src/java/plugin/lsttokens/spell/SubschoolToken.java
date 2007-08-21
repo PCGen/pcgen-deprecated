@@ -80,7 +80,7 @@ public class SubschoolToken extends AbstractToken implements SpellLstToken
 		Changes<SpellSubSchool> changes =
 				context.getObjectContext().getListChanges(spell,
 					ListKey.SPELL_SUBSCHOOL);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

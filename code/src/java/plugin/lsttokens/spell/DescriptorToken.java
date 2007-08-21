@@ -82,7 +82,7 @@ public class DescriptorToken extends AbstractToken implements SpellLstToken
 		Changes<SpellDescriptor> changes =
 				context.getObjectContext().getListChanges(spell,
 					ListKey.SPELL_DESCRIPTOR);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

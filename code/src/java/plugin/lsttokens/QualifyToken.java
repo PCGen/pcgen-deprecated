@@ -187,7 +187,7 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 	{
 		Changes<Qualifier> changes =
 				context.getObjectContext().getListChanges(obj, ListKey.QUALIFY);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

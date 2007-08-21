@@ -104,21 +104,25 @@ public class VariantsToken extends AbstractToken implements SpellLstToken
 		Changes<String> changes =
 				context.getObjectContext().getListChanges(spell,
 					ListKey.VARIANTS);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
 		Collection<?> added = changes.getAdded();
-		if (changes.includesGlobalClear())
+		boolean globalClear = changes.includesGlobalClear();
+		if (globalClear)
 		{
 			sb.append(Constants.LST_DOT_CLEAR);
-			if (!added.isEmpty())
+		}
+		if (added != null && !added.isEmpty())
+		{
+			if (globalClear)
 			{
 				sb.append(Constants.PIPE);
 			}
+			sb.append(StringUtil.join(added, Constants.PIPE));
 		}
-		sb.append(StringUtil.join(changes.getAdded(), Constants.PIPE));
 		return new String[]{sb.toString()};
 	}
 }

@@ -41,7 +41,7 @@ import pcgen.core.DomainSpellList;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.ListGraphChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -421,10 +421,10 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 
 		for (CDOMReference listRef : changedLists)
 		{
-			ListGraphChanges<Spell> changes =
+			Changes changes =
 					context.getListContext().getChangesInList(getTokenName(),
 						obj, listRef);
-			if (changes == null)
+			if (changes == null || changes.isEmpty())
 			{
 				// Legal if no SPELLLEVEL was present
 				continue;

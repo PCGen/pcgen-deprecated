@@ -1,8 +1,12 @@
 package pcgen.persistence;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
@@ -15,6 +19,30 @@ import pcgen.cdom.inst.SimpleAssociatedObject;
 
 public class RuntimeListContext implements ListContext
 {
+	private URI sourceURI;
+
+	private URI extractURI;
+
+	public URI getExtractURI()
+	{
+		return extractURI;
+	}
+
+	public void setExtractURI(URI extractURI)
+	{
+		this.extractURI = extractURI;
+	}
+
+	public URI getSourceURI()
+	{
+		return sourceURI;
+	}
+
+	public void setSourceURI(URI sourceURI)
+	{
+		this.sourceURI = sourceURI;
+	}
+
 	private final DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject> masterList =
 			new DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject>();
 
@@ -43,16 +71,30 @@ public class RuntimeListContext implements ListContext
 		return list;
 	}
 
-	public <T extends CDOMObject> MasterListChanges<T> getChangesInMasterList(
+	public <T extends CDOMObject> Changes<LSTWriteable> getChangesInMasterList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl)
 	{
-		if (masterList.containsListFor(swl))
+		Set<LSTWriteable> added = masterList.getSecondaryKeySet(swl);
+		Map<LSTWriteable, AssociatedPrereqObject> owned =
+				new HashMap<LSTWriteable, AssociatedPrereqObject>();
+		for (LSTWriteable lw : added)
 		{
-			// TODO Deal with matching the token & owner... :/
-			return new MasterListChanges<T>(tokenName, owner, masterList, swl);
+			List<AssociatedPrereqObject> list = masterList.getListFor(swl, lw);
+			for (AssociatedPrereqObject assoc : list)
+			{
+				if (owner.equals(assoc.getAssociation(AssociationKey.OWNER)))
+				{
+					owned.put(lw, assoc);
+					break;
+				}
+			}
 		}
-		return null;
+		if (owned.isEmpty())
+		{
+			return null;
+		}
+		return new AssociatedCollectionChanges<LSTWriteable>(owned, null, false);
 	}
 
 	public <T extends CDOMObject> void clearMasterList(String tokenName,
@@ -100,10 +142,8 @@ public class RuntimeListContext implements ListContext
 		return list;
 	}
 
-	// TODO May not need the Class<T> reference here, just make this
-	// removeAllFromList?
-	public <T extends CDOMObject> void removeFromList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl, Class<T> cl)
+	public <T extends CDOMObject> void removeAllFromList(String tokenName,
+		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl)
 	{
 		// TODO Auto-generated method stub
 
@@ -117,14 +157,14 @@ public class RuntimeListContext implements ListContext
 
 	}
 
-	public <T extends CDOMObject> ListGraphChanges<T> getChangesInList(
+	public <T extends CDOMObject> Changes<CDOMReference<T>> getChangesInList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl)
 	{
 		if (owner.hasListMods(swl))
 		{
 			// TODO Deal with matching the token... :/
-			return new ListGraphChanges<T>(owner, swl);
+			return new ListChanges<T>(owner, null, swl, false);
 		}
 		return null;
 	}

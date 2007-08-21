@@ -39,8 +39,8 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.core.ClassSpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.MasterListChanges;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLoader;
@@ -270,10 +270,9 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		for (CDOMReference<ClassSpellList> swl : context.getListContext()
 			.getMasterLists(SPELLLIST_CLASS))
 		{
-			MasterListChanges<Spell> changes =
-					context.getListContext().getChangesInMasterList(
-						getTokenName(), spell, swl);
-			if (changes == null)
+			 Changes<LSTWriteable> changes = context.getListContext().getChangesInMasterList(
+				getTokenName(), spell, swl);
+			if (changes == null || changes.isEmpty())
 			{
 				// Legal if no CLASSES was present in the Spell
 				continue;

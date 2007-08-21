@@ -115,7 +115,7 @@ public class FavclassToken extends AbstractToken implements RaceLstToken
 		Changes<CDOMReference<PCClass>> changes =
 				context.getObjectContext().getListChanges(race,
 					ListKey.FAVORED_CLASS);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

@@ -167,7 +167,7 @@ public class FollowersLst implements GlobalLstToken
 		Changes<FollowerLimit> changes =
 				context.getObjectContext().getListChanges(obj,
 					ListKey.FOLLOWERS);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

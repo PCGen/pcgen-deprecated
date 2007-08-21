@@ -243,7 +243,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 	{
 		Changes<Capacity> changes =
 				context.getObjectContext().getListChanges(eq, ListKey.CAPACITY);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

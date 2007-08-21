@@ -37,8 +37,8 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.core.ClassSkillList;
 import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.MasterListChanges;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SkillLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -156,10 +156,9 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		for (CDOMReference<ClassSkillList> swl : context.getListContext()
 			.getMasterLists(SKILLLIST_CLASS))
 		{
-			MasterListChanges<Skill> changes =
-					context.getListContext().getChangesInMasterList(
-						getTokenName(), skill, swl);
-			if (changes == null)
+			Changes<LSTWriteable> changes = context.getListContext().getChangesInMasterList(
+				getTokenName(), skill, swl);
+			if (changes == null || changes.isEmpty())
 			{
 				// Legal if no CLASSES was present in the Skill
 				continue;

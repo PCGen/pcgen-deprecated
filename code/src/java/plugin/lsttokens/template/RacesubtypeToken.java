@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.template;
 
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
@@ -94,15 +95,17 @@ public class RacesubtypeToken extends AbstractToken implements
 		Changes<RaceSubType> removedChanges =
 				context.getObjectContext().getListChanges(pct,
 					ListKey.REMOVED_RACESUBTYPE);
-		if (addedChanges == null && removedChanges == null)
+		Collection<RaceSubType> added = addedChanges.getAdded();
+		Collection<RaceSubType> removed = removedChanges.getAdded();
+		if (added == null && removed == null)
 		{
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
 		boolean needPipe = false;
-		if (addedChanges != null)
+		if (added != null)
 		{
-			for (RaceSubType rst : addedChanges.getAdded())
+			for (RaceSubType rst : added)
 			{
 				if (needPipe)
 				{
@@ -112,9 +115,9 @@ public class RacesubtypeToken extends AbstractToken implements
 				needPipe = true;
 			}
 		}
-		if (removedChanges != null)
+		if (removed != null)
 		{
-			for (RaceSubType rst : removedChanges.getAdded())
+			for (RaceSubType rst : removed)
 			{
 				if (needPipe)
 				{

@@ -80,7 +80,7 @@ public class RaceToken extends AbstractToken implements DeityLstToken
 		Changes<RacePantheon> changes =
 				context.getObjectContext().getListChanges(deity,
 					ListKey.RACE_PANTHEON);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

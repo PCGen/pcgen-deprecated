@@ -34,7 +34,7 @@ import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.ListGraphChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -186,10 +186,10 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 		CDOMReference<DomainList> allowedDomainList =
 				context.ref.getCDOMReference(DomainList.class, "*Allowed");
 
-		ListGraphChanges<Domain> changes =
+		Changes<CDOMReference<Domain>> changes =
 				context.getListContext().getChangesInList(getTokenName(), po,
 					allowedDomainList);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			// Legal if no ADDDOMAIN was present
 			return null;

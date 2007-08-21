@@ -1,17 +1,18 @@
 package pcgen.persistence;
 
 import java.util.Collection;
+import java.util.Map;
 
 import pcgen.cdom.base.AssociatedPrereqObject;
 
-public class CollectionChanges<T> implements Changes<T>
+public class AssociatedCollectionChanges<T> implements Changes<T>
 {
-	private Collection<T> positive;
-	private Collection<T> negative;
+	private Map<T, AssociatedPrereqObject> positive;
+	private Map<T, AssociatedPrereqObject> negative;
 	private boolean clear;
 
-	public CollectionChanges(Collection<T> added, Collection<T> removed,
-		boolean globallyCleared)
+	public AssociatedCollectionChanges(Map<T, AssociatedPrereqObject> added,
+		Map<T, AssociatedPrereqObject> removed, boolean globallyCleared)
 	{
 		positive = added;
 		negative = removed;
@@ -30,7 +31,7 @@ public class CollectionChanges<T> implements Changes<T>
 
 	public Collection<T> getAdded()
 	{
-		return positive;
+		return positive.keySet();
 	}
 
 	public boolean hasAddedItems()
@@ -40,7 +41,7 @@ public class CollectionChanges<T> implements Changes<T>
 
 	public Collection<T> getRemoved()
 	{
-		return negative;
+		return negative.keySet();
 	}
 
 	public boolean hasRemovedItems()
@@ -50,11 +51,11 @@ public class CollectionChanges<T> implements Changes<T>
 
 	public AssociatedPrereqObject getAddedAssociation(T added)
 	{
-		return null;
+		return positive.get(added);
 	}
 
 	public AssociatedPrereqObject getRemovedAssociation(T removed)
 	{
-		return null;
+		return negative.get(removed);
 	}
 }

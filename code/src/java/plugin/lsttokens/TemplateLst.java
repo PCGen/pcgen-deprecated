@@ -44,8 +44,8 @@ import pcgen.core.Campaign;
 import pcgen.core.PCTemplate;
 import pcgen.core.PCTemplateChooseList;
 import pcgen.core.PObject;
+import pcgen.persistence.Changes;
 import pcgen.persistence.GraphChanges;
-import pcgen.persistence.ListGraphChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -167,10 +167,10 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 		CDOMReference<PCTemplateChooseList> allRef =
 				context.ref.getCDOMAllReference(PCTEMPLATECHOOSELIST_CLASS);
 
-		ListGraphChanges<PCTemplate> tctChanges =
+		Changes<CDOMReference<PCTemplate>> tctChanges =
 				context.getListContext().getChangesInList(getTokenName(), cdo,
 					ref);
-		ListGraphChanges<PCTemplate> allChanges =
+		Changes<CDOMReference<PCTemplate>> allChanges =
 				context.getListContext().getChangesInList(getTokenName(), cdo,
 					allRef);
 

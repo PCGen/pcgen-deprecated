@@ -74,7 +74,7 @@ public class ItypeToken extends AbstractToken implements
 		Changes<Type> changes =
 				context.getObjectContext().getListChanges(mod,
 					ListKey.ITEM_TYPES);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

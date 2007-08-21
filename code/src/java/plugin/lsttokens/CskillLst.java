@@ -39,8 +39,8 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.MasterListChanges;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
@@ -173,10 +173,10 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 	{
 		CDOMGroupRef<ClassSkillList> listRef =
 				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
-		MasterListChanges<Skill> changes =
+		Changes<LSTWriteable> changes =
 				context.getListContext().getChangesInMasterList(getTokenName(),
 					obj, listRef);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			// Legal if no CSKILL was present
 			return null;

@@ -21,6 +21,8 @@
  */
 package plugin.lsttokens.equipment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
@@ -156,17 +158,25 @@ public class AlttypeToken implements EquipmentLstToken
 	{
 		Changes<Type> changes =
 				context.getObjectContext().getListChanges(eq, ListKey.ALT_TYPE);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
+		List<String> returnList = new ArrayList<String>(2);
 		if (changes.includesGlobalClear())
 		{
-			context.addWriteMessage(getTokenName()
-				+ " does not support global clear");
+			returnList.add(Constants.LST_DOT_CLEAR);
+		}
+		if (changes.hasAddedItems())
+		{
+			returnList.add(StringUtil.join(changes.getAdded(), Constants.DOT));
+		}
+		if (returnList.isEmpty())
+		{
+			// Error
 			return null;
 		}
 		// TODO Need to implement REMOVE...
-		return new String[]{StringUtil.join(changes.getAdded(), Constants.DOT)};
+		return returnList.toArray(new String[returnList.size()]);
 	}
 }

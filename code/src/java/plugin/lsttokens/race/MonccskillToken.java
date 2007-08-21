@@ -35,7 +35,7 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.core.ClassSkillList;
 import pcgen.core.Race;
 import pcgen.core.Skill;
-import pcgen.persistence.ListGraphChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
@@ -93,8 +93,8 @@ public class MonccskillToken extends AbstractToken implements RaceLstToken
 						+ ": When used, .CLEAR must be the first argument");
 					return false;
 				}
-				context.getListContext().removeFromList(getTokenName(), race,
-					ref, SKILL_CLASS);
+				context.getListContext().removeAllFromList(getTokenName(),
+					race, ref);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -174,10 +174,10 @@ public class MonccskillToken extends AbstractToken implements RaceLstToken
 	{
 		CDOMReference<ClassSkillList> swl =
 				context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
-		ListGraphChanges<Skill> changes =
+		Changes<CDOMReference<Skill>> changes =
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			// Legal if no MONCSKILL was present in the race
 			return null;

@@ -81,7 +81,7 @@ public class SchoolToken extends AbstractToken implements SpellLstToken
 		Changes<SpellSchool> changes =
 				context.getObjectContext().getListChanges(spell,
 					ListKey.SPELL_SCHOOL);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

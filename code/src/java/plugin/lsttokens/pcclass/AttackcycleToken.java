@@ -21,15 +21,16 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 import pcgen.base.lang.StringUtil;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.helper.AttackCycle;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
@@ -115,7 +116,8 @@ public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
 				return false;
 			}
 			String cycle = aTok.nextToken();
-			pcc.setAttackCycle(at, cycle);
+			context.getObjectContext().addToList(pcc, ListKey.ATTACK_CYCLE,
+				new AttackCycle(at, cycle));
 			/*
 			 * This is a bit of a hack - it is designed to account for the fact
 			 * that the BAB tag in ATTACKCYCLE actually impacts both
@@ -130,7 +132,8 @@ public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
 			 */
 			if (at.equals(AttackType.MELEE))
 			{
-				pcc.setAttackCycle(AttackType.GRAPPLE, cycle);
+				context.getObjectContext().addToList(pcc, ListKey.ATTACK_CYCLE,
+					new AttackCycle(AttackType.GRAPPLE, cycle));
 			}
 		}
 		return true;
@@ -138,29 +141,42 @@ public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Map<AttackType, String> map = pcc.getAttackCycle();
-		if (map == null || map.isEmpty())
+		Changes<AttackCycle> changes =
+				context.getObjectContext().getListChanges(pcc,
+					ListKey.ATTACK_CYCLE);
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
 		Set<String> set = new TreeSet<String>();
-		for (Entry<AttackType, String> me : map.entrySet())
+		String grappleValue = null;
+		String meleeValue = null;
+		for (AttackCycle ac : changes.getAdded())
 		{
-			if (me.getKey().equals(AttackType.GRAPPLE))
+			AttackType attackType = ac.getAttackType();
+			if (attackType.equals(AttackType.GRAPPLE))
 			{
-				// Validate same as MELEE
-				if (!me.getValue().equals(map.get(AttackType.MELEE)))
-				{
-					context
-						.addWriteMessage("Grapple Attack Cycle MUST be equal to "
-							+ "Melee Attack Cycle because it is not stored");
-					return null;
-				}
+				grappleValue = ac.getValue();
 			}
 			else
 			{
-				set.add(me.getKey().getIdentifier() + Constants.PIPE
-					+ me.getValue());
+				if (attackType.equals(AttackType.MELEE))
+				{
+					meleeValue = ac.getValue();
+				}
+				set.add(new StringBuilder().append(attackType.getIdentifier())
+					.append(Constants.PIPE).append(ac.getValue()).toString());
+			}
+		}
+		if (grappleValue != null)
+		{
+			// Validate same as MELEE
+			if (!grappleValue.equals(meleeValue))
+			{
+				context.addWriteMessage("Grapple Attack Cycle (" + grappleValue
+					+ ") MUST be equal to " + "Melee Attack Cycle ("
+					+ meleeValue + ") because it is not stored");
+				return null;
 			}
 		}
 		return new String[]{StringUtil.join(set, Constants.PIPE)};

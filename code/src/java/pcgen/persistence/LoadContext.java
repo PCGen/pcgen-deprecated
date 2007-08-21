@@ -98,6 +98,7 @@ public abstract class LoadContext
 	{
 		getObjectContext().setExtractURI(extractURI);
 		getGraphContext().setExtractURI(extractURI);
+		getListContext().setExtractURI(extractURI);
 	}
 
 	/**
@@ -110,6 +111,7 @@ public abstract class LoadContext
 	{
 		getObjectContext().setSourceURI(sourceURI);
 		getGraphContext().setSourceURI(sourceURI);
+		getListContext().setSourceURI(sourceURI);
 	}
 
 	/*

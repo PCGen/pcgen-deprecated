@@ -133,7 +133,7 @@ public class TypeLst implements GlobalLstToken
 	{
 		Changes<Type> changes =
 				context.getObjectContext().getListChanges(obj, ListKey.TYPE);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
@@ -142,7 +142,10 @@ public class TypeLst implements GlobalLstToken
 		{
 			returnList.add(Constants.LST_DOT_CLEAR);
 		}
-		returnList.add(StringUtil.join(changes.getAdded(), Constants.DOT));
+		if (changes.hasAddedItems())
+		{
+			returnList.add(StringUtil.join(changes.getAdded(), Constants.DOT));
+		}
 		if (returnList.isEmpty())
 		{
 			// Error

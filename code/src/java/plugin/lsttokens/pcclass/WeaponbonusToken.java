@@ -33,7 +33,7 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.PCClass;
 import pcgen.core.WeaponProf;
 import pcgen.core.WeaponProfList;
-import pcgen.persistence.ListGraphChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
@@ -139,10 +139,10 @@ public class WeaponbonusToken extends AbstractToken implements PCClassLstToken,
 	{
 		CDOMReference<WeaponProfList> swl =
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
-		ListGraphChanges<WeaponProf> changes =
+		Changes<CDOMReference<WeaponProf>> changes =
 				context.getListContext().getChangesInList(getTokenName(), pcc,
 					swl);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			// Legal if no WEAPONBONUS was present in the race
 			return null;

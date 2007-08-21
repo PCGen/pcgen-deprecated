@@ -31,7 +31,7 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.LanguageList;
 import pcgen.core.Race;
-import pcgen.persistence.ListGraphChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
@@ -158,8 +158,8 @@ public class LangbonusToken extends AbstractToken implements RaceLstToken
 		}
 		if (removeAll)
 		{
-			context.getListContext().removeFromList(getTokenName(), race, swl,
-				LANGUAGE_CLASS);
+			context.getListContext().removeAllFromList(getTokenName(), race,
+				swl);
 		}
 		if (!removeList.isEmpty())
 		{
@@ -184,10 +184,10 @@ public class LangbonusToken extends AbstractToken implements RaceLstToken
 	{
 		CDOMReference<LanguageList> swl =
 				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
-		ListGraphChanges<Language> changes =
+		Changes<CDOMReference<Language>> changes =
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			// Legal if no Language was present in the race
 			return null;
@@ -204,7 +204,7 @@ public class LangbonusToken extends AbstractToken implements RaceLstToken
 			}
 			list.add(Constants.LST_DOT_CLEAR_DOT
 				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
-					",|.CLEAR."));
+					",.CLEAR."));
 		}
 		if (changes.includesGlobalClear())
 		{

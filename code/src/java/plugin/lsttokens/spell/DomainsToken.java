@@ -40,8 +40,8 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.core.DomainSpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.MasterListChanges;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLoader;
@@ -272,10 +272,10 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 		for (CDOMReference<DomainSpellList> swl : context.getListContext()
 			.getMasterLists(SPELLLIST_CLASS))
 		{
-			MasterListChanges<Spell> changes =
+			Changes<LSTWriteable> changes =
 					context.getListContext().getChangesInMasterList(
 						getTokenName(), spell, swl);
-			if (changes == null)
+			if (changes == null || changes.isEmpty())
 			{
 				// Legal if no DOMAINS was present in the Spell
 				continue;

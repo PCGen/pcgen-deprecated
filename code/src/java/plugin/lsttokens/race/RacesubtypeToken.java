@@ -91,7 +91,7 @@ public class RacesubtypeToken extends AbstractToken implements RaceLstToken
 	{
 		Changes<RaceSubType> changes =
 				context.getObjectContext().getListChanges(race, ListKey.RACESUBTYPE);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

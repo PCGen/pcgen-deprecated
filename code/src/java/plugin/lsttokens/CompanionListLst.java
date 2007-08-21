@@ -45,7 +45,7 @@ import pcgen.core.FollowerOption;
 import pcgen.core.PObject;
 import pcgen.core.Race;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.ListGraphChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -393,10 +393,10 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 
 		for (CDOMReference ref : changedLists)
 		{
-			ListGraphChanges<Race> changes =
+			Changes changes =
 					context.getListContext().getChangesInList(getTokenName(),
 						obj, ref);
-			if (changes == null)
+			if (changes == null || changes.isEmpty())
 			{
 				// Legal if no COMPANIONLIST was present
 				continue;

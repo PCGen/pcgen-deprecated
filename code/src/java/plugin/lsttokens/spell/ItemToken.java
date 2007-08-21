@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.spell;
 
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
@@ -109,15 +110,13 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 		Changes<Type> proChanges =
 				context.getObjectContext().getListChanges(spell,
 					ListKey.PROHIBITED_ITEM);
-		if (changes == null && proChanges == null)
-		{
-			return null;
-		}
+		Collection<Type> changeAdded = changes.getAdded();
+		Collection<Type> proAdded = proChanges.getAdded();
 		StringBuilder sb = new StringBuilder();
 		boolean needComma = false;
-		if (changes != null)
+		if (changeAdded != null)
 		{
-			for (Type t : changes.getAdded())
+			for (Type t : changeAdded)
 			{
 				if (needComma)
 				{
@@ -127,9 +126,9 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 				needComma = true;
 			}
 		}
-		if (proChanges != null)
+		if (proAdded != null)
 		{
-			for (Type t : proChanges.getAdded())
+			for (Type t : proAdded)
 			{
 				if (needComma)
 				{

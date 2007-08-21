@@ -68,7 +68,9 @@ public class CategoryToken implements AbilityLstToken
 					ObjectKey.CATEGORY);
 		if (ac == null)
 		{
-			context.addWriteMessage("Abilities must have an AbilityCategory");
+			// TODO How to handle this for .MODs... this isn't ALWAYS required
+			// context.addWriteMessage("Abilities must have an
+			// AbilityCategory");
 			return null;
 		}
 		return new String[]{ac.toString()};

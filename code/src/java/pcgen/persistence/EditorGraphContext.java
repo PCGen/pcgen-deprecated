@@ -153,22 +153,25 @@ public class EditorGraphContext implements GraphContext
 	public void removeAll(String tokenName, PrereqObject obj)
 	{
 		List<PCGraphEdge> edges = graph.getOutwardEdgeList(obj);
-		for (PCGraphEdge edge : edges)
+		if (edges != null)
 		{
-			if (!edge.getSourceToken().equals(tokenName))
+			for (PCGraphEdge edge : edges)
 			{
-				continue;
-			}
-			if (extractURI != null)
-			{
-				if (!extractURI.equals(edge
-					.getAssociation(AssociationKey.SOURCE_URI)))
+				if (!edge.getSourceToken().equals(tokenName))
 				{
 					continue;
 				}
+				if (extractURI != null)
+				{
+					if (!extractURI.equals(edge
+						.getAssociation(AssociationKey.SOURCE_URI)))
+					{
+						continue;
+					}
+				}
+				edge.setAssociation(AssociationKey.IRRELEVANT, Boolean.TRUE);
+				graph.removeEdge(edge);
 			}
-			edge.setAssociation(AssociationKey.IRRELEVANT, Boolean.TRUE);
-			graph.removeEdge(edge);
 		}
 		globalRemoveSet.addToListFor(sourceURI, obj, tokenName);
 	}

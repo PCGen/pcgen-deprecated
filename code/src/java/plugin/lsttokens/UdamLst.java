@@ -93,7 +93,7 @@ public class UdamLst implements GlobalLstToken
 	{
 		Changes<String> changes =
 				context.getObjectContext().getListChanges(obj, ListKey.UDAM);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

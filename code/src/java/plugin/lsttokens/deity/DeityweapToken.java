@@ -79,7 +79,7 @@ public class DeityweapToken extends AbstractToken implements DeityLstToken
 		Changes<CDOMSimpleSingleRef<WeaponProf>> changes =
 				context.getObjectContext().getListChanges(deity,
 					ListKey.DEITYWEAPON);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

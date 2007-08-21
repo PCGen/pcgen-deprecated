@@ -145,7 +145,7 @@ public class HitdiceadvancementToken extends AbstractToken implements
 		Changes<Integer> changes =
 				context.getObjectContext().getListChanges(race,
 					ListKey.HITDICE_ADVANCEMENT);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}

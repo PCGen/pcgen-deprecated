@@ -3,9 +3,14 @@ package pcgen.persistence;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+import pcgen.base.lang.UnreachableError;
+import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.TripleKeyMap;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
@@ -19,7 +24,6 @@ public class EditorListContext implements ListContext
 	private URI sourceURI;
 
 	private URI extractURI;
-
 
 	public URI getExtractURI()
 	{
@@ -41,8 +45,41 @@ public class EditorListContext implements ListContext
 		this.sourceURI = sourceURI;
 	}
 
-	private final DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject> masterList =
-			new DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject>();
+	private static class ListOwner
+	{
+		public final CDOMReference<? extends CDOMList<?>> ref;
+		public final CDOMObject owner;
+
+		public ListOwner(CDOMReference<? extends CDOMList<?>> reference,
+			CDOMObject cdo)
+		{
+			ref = reference;
+			owner = cdo;
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return owner.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object o)
+		{
+			if (o instanceof ListOwner)
+			{
+				ListOwner other = (ListOwner) o;
+				return owner.equals(other.owner) && ref.equals(other.ref);
+			}
+			return false;
+		}
+	}
+
+	private TripleKeyMap<URI, ListOwner, LSTWriteable, AssociatedPrereqObject> positiveMasterMap =
+			new TripleKeyMap<URI, ListOwner, LSTWriteable, AssociatedPrereqObject>();
+
+	private DoubleKeyMapToList<URI, CDOMObject, CDOMReference<? extends CDOMList<?>>> masterClearSet =
+			new DoubleKeyMapToList<URI, CDOMObject, CDOMReference<? extends CDOMList<?>>>();
 
 	public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(
 		String tokenName, CDOMObject owner,
@@ -51,7 +88,8 @@ public class EditorListContext implements ListContext
 		SimpleAssociatedObject a = new SimpleAssociatedObject();
 		a.setAssociation(AssociationKey.OWNER, owner);
 		a.setAssociation(AssociationKey.TOKEN, tokenName);
-		masterList.addToListFor(list, allowed, a);
+		positiveMasterMap
+			.put(sourceURI, new ListOwner(list, owner), allowed, a);
 		return a;
 	}
 
@@ -59,45 +97,100 @@ public class EditorListContext implements ListContext
 		Class<? extends CDOMList<?>> cl)
 	{
 		ArrayList<CDOMReference> list = new ArrayList<CDOMReference>();
-		for (CDOMReference ref : masterList.getKeySet())
+		Set<ListOwner> set = positiveMasterMap.getSecondaryKeySet(extractURI);
+		if (set != null)
 		{
-			if (cl.equals(ref.getReferenceClass()))
+			for (ListOwner lo : set)
 			{
-				list.add(ref);
+				if (cl.equals(lo.ref.getReferenceClass()))
+				{
+					list.add(lo.ref);
+				}
 			}
 		}
 		return list;
 	}
 
-	public <T extends CDOMObject> MasterListChanges<T> getChangesInMasterList(
+	public <T extends CDOMObject> Changes<LSTWriteable> getChangesInMasterList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl)
 	{
-		if (masterList.containsListFor(swl))
+		Map<LSTWriteable, AssociatedPrereqObject> map =
+				new HashMap<LSTWriteable, AssociatedPrereqObject>();
+		ListOwner lo = new ListOwner(swl, owner);
+		Set<LSTWriteable> added =
+				positiveMasterMap.getTertiaryKeySet(extractURI, lo);
+		for (LSTWriteable lw : added)
 		{
-			// TODO Deal with matching the token & owner... :/
-			return new MasterListChanges<T>(tokenName, owner, masterList, swl);
+			map.put(lw, positiveMasterMap.get(extractURI, lo, lw));
 		}
-		return null;
+		return new AssociatedCollectionChanges<LSTWriteable>(map, null,
+			masterClearSet.containsInList(extractURI, owner, swl));
 	}
 
 	public <T extends CDOMObject> void clearMasterList(String tokenName,
 		CDOMObject owner, CDOMReference<? extends CDOMList<T>> list)
 	{
-		for (LSTWriteable lw : masterList.getSecondaryKeySet(list))
+		masterClearSet.addToListFor(sourceURI, owner, list);
+	}
+
+	private DoubleKeyMap<CDOMObject, URI, CDOMObject> positiveMap =
+			new DoubleKeyMap<CDOMObject, URI, CDOMObject>();
+
+	private DoubleKeyMap<CDOMObject, URI, CDOMObject> negativeMap =
+			new DoubleKeyMap<CDOMObject, URI, CDOMObject>();
+
+	private DoubleKeyMapToList<URI, CDOMObject, CDOMReference<? extends CDOMList<?>>> globalClearSet =
+			new DoubleKeyMapToList<URI, CDOMObject, CDOMReference<? extends CDOMList<?>>>();
+
+	private CDOMObject getPositive(URI source, CDOMObject cdo)
+	{
+		CDOMObject positive = positiveMap.get(cdo, source);
+		if (positive == null)
 		{
-			List<AssociatedPrereqObject> assocList =
-					masterList.getListFor(list, lw);
-			for (AssociatedPrereqObject assoc : assocList)
+			try
 			{
-				if (owner.equals(assoc.getAssociation(AssociationKey.OWNER))
-					&& tokenName.equals(assoc
-						.getAssociation(AssociationKey.TOKEN)))
-				{
-					masterList.removeFromListFor(list, lw, assoc);
-				}
+				positive = cdo.getClass().newInstance();
 			}
+			catch (InstantiationException e)
+			{
+				throw new UnreachableError(
+					"CDOM Objects must have a zero argument constructor", e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new UnreachableError(
+					"CDOM Objects must have a public zero argument constructor",
+					e);
+			}
+			positiveMap.put(cdo, source, positive);
 		}
+		return positive;
+	}
+
+	private CDOMObject getNegative(URI source, CDOMObject cdo)
+	{
+		CDOMObject negative = negativeMap.get(cdo, source);
+		if (negative == null)
+		{
+			try
+			{
+				negative = cdo.getClass().newInstance();
+			}
+			catch (InstantiationException e)
+			{
+				throw new UnreachableError(
+					"CDOM Objects must have a zero argument constructor", e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new UnreachableError(
+					"CDOM Objects must have a public zero argument constructor",
+					e);
+			}
+			negativeMap.put(cdo, source, negative);
+		}
+		return negative;
 	}
 
 	public <T extends CDOMObject> AssociatedPrereqObject addToList(
@@ -106,8 +199,19 @@ public class EditorListContext implements ListContext
 	{
 		SimpleAssociatedObject a = new SimpleAssociatedObject();
 		a.setAssociation(AssociationKey.TOKEN, tokenName);
-		owner.putToList(list, allowed, a);
+		CDOMObject pos = getPositive(sourceURI, owner);
+		pos.putToList(list, allowed, a);
 		return a;
+	}
+
+	public <T extends CDOMObject> void removeFromList(String tokenName,
+		CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
+		CDOMReference<T> ref)
+	{
+		SimpleAssociatedObject a = new SimpleAssociatedObject();
+		a.setAssociation(AssociationKey.TOKEN, tokenName);
+		CDOMObject pos = getNegative(sourceURI, owner);
+		pos.putToList(list, ref, a);
 	}
 
 	public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getChangedLists(
@@ -126,32 +230,18 @@ public class EditorListContext implements ListContext
 		return list;
 	}
 
-	// TODO May not need the Class<T> reference here, just make this
-	// removeAllFromList?
-	public <T extends CDOMObject> void removeFromList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl, Class<T> cl)
+	public <T extends CDOMObject> void removeAllFromList(String tokenName,
+		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl)
 	{
-		// TODO Auto-generated method stub
-
+		globalClearSet.addToListFor(sourceURI, owner, swl);
 	}
 
-	public <T extends CDOMObject> void removeFromList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl,
-		CDOMReference<T> ref)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public <T extends CDOMObject> ListGraphChanges<T> getChangesInList(
+	public <T extends CDOMObject> Changes<CDOMReference<T>> getChangesInList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl)
 	{
-		if (owner.hasListMods(swl))
-		{
-			// TODO Deal with matching the token... :/
-			return new ListGraphChanges<T>(owner, swl);
-		}
-		return null;
+		return new ListChanges<T>(getPositive(extractURI, owner), getNegative(
+			extractURI, owner), swl, globalClearSet.containsInList(extractURI,
+			owner, swl));
 	}
 }

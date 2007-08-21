@@ -80,7 +80,7 @@ public class PantheonToken extends AbstractToken implements DeityLstToken
 		Changes<Pantheon> changes =
 				context.getObjectContext().getListChanges(deity,
 					ListKey.PANTHEON);
-		if (changes == null)
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
