@@ -3,10 +3,10 @@ package pcgen.persistence;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
@@ -16,6 +16,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class RuntimeListContext implements ListContext
 {
@@ -77,7 +78,8 @@ public class RuntimeListContext implements ListContext
 	{
 		Set<LSTWriteable> added = masterList.getSecondaryKeySet(swl);
 		Map<LSTWriteable, AssociatedPrereqObject> owned =
-				new HashMap<LSTWriteable, AssociatedPrereqObject>();
+				new TreeMap<LSTWriteable, AssociatedPrereqObject>(
+					TokenUtilities.WRITEABLE_SORTER);
 		for (LSTWriteable lw : added)
 		{
 			List<AssociatedPrereqObject> list = masterList.getListFor(swl, lw);

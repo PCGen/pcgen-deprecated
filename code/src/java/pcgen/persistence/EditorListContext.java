@@ -3,9 +3,9 @@ package pcgen.persistence;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import pcgen.base.lang.UnreachableError;
 import pcgen.base.util.DoubleKeyMap;
@@ -18,6 +18,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class EditorListContext implements ListContext
 {
@@ -56,13 +57,13 @@ public class EditorListContext implements ListContext
 			ref = reference;
 			owner = cdo;
 		}
-		
+
 		@Override
 		public int hashCode()
 		{
 			return owner.hashCode();
 		}
-		
+
 		@Override
 		public boolean equals(Object o)
 		{
@@ -116,7 +117,8 @@ public class EditorListContext implements ListContext
 		CDOMReference<? extends CDOMList<T>> swl)
 	{
 		Map<LSTWriteable, AssociatedPrereqObject> map =
-				new HashMap<LSTWriteable, AssociatedPrereqObject>();
+				new TreeMap<LSTWriteable, AssociatedPrereqObject>(
+					TokenUtilities.WRITEABLE_SORTER);
 		ListOwner lo = new ListOwner(swl, owner);
 		Set<LSTWriteable> added =
 				positiveMasterMap.getTertiaryKeySet(extractURI, lo);

@@ -29,6 +29,9 @@ import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 import plugin.lsttokens.testsupport.PCClassLoaderFacade;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreRaceParser;
+import plugin.pretokens.writer.PreRaceWriter;
 
 public class AddDomainsTokenTest extends
 		AbstractListTokenTestCase<PObject, Domain>
@@ -37,10 +40,15 @@ public class AddDomainsTokenTest extends
 	static AdddomainsToken token = new AdddomainsToken();
 	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
 
+	PreRaceParser prerace = new PreRaceParser();
+	PreRaceWriter preracewriter = new PreRaceWriter();
+
 	@Override
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
+		TokenRegistration.register(prerace);
+		TokenRegistration.register(preracewriter);
 		prefix = "CLASS:";
 	}
 

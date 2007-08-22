@@ -91,7 +91,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"|TestWP1|TestWP2"));
+			"|TestWP1,TestWP2"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -115,7 +115,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1|TestWP1|"));
+		assertFalse(getToken().parse(primaryContext, primaryProf, "1|TestWP1,"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -123,7 +123,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 	public void testInvalidListStart() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1||TestWP1"));
+		assertFalse(getToken().parse(primaryContext, primaryProf, "1|,TestWP1"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -141,7 +141,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"-1|TestWP1|TestWP2"));
+			"-1|TestWP1,TestWP2"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -151,7 +151,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP2||TestWP1"));
+			"1|TestWP2,,TestWP1"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -161,7 +161,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		// Explicitly do NOT build TestWP2
 		construct(primaryContext, "TestWP1");
 		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP1|TestWP2"));
+			"1|TestWP1,TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -172,7 +172,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|ALL|TestWP1"));
+			"1|ALL,TestWP1"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -181,7 +181,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP1|ALL"));
+			"1|TestWP1,ALL"));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -196,12 +196,12 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(primaryContext, "TestWP3");
 		construct(secondaryContext, "TestWP3");
 		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP1|TestWP2"));
+			"1|TestWP1,TestWP2"));
 		assertTrue(getToken().parse(secondaryContext, secondaryProf,
-			"1|TestWP1|TestWP2"));
+			"1|TestWP1,TestWP2"));
 		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP3|ALL"));
+			"1|TestWP3,ALL"));
 		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
 
@@ -213,11 +213,11 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		assertTrue(getToken().parse(primaryContext, primaryProf, "1|TestWP1"));
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP1|TestWP2"));
+			"1|TestWP1,TestWP2"));
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"2|TestWP1|TestWP2"));
+			"2|TestWP1,TestWP2"));
 		assertTrue(primaryContext.ref.validate());
 	}
 
@@ -240,7 +240,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP3");
-		runRoundRobin("2|TestWP1|TestWP2|TestWP3");
+		runRoundRobin("2|TestWP1,TestWP2,TestWP3");
 	}
 
 	protected void construct(LoadContext loadContext, String one)

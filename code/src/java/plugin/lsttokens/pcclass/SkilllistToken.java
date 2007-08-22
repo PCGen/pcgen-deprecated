@@ -103,18 +103,29 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 		{
 			return false;
 		}
-		if (value.indexOf('|') == -1)
+		int pipeLoc = value.indexOf('|');
+		if (pipeLoc == -1)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " may not have only one argument");
+				+ " may not have only one pipe separated argument: " + value);
+			return false;
+		}
+		if (pipeLoc != value.lastIndexOf('|'))
+		{
+			Logging.errorPrint(getTokenName() + " may have only one pipe: "
+				+ value);
 			return false;
 		}
 
-		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		String rest = value.substring(pipeLoc + 1);
+		if (hasIllegalSeparator(',', rest))
+		{
+			return false;
+		}
 		int count;
 		try
 		{
-			count = Integer.parseInt(tok.nextToken());
+			count = Integer.parseInt(value.substring(0, pipeLoc));
 			if (count <= 0)
 			{
 				Logging.errorPrint("Number in " + getTokenName()
@@ -129,6 +140,7 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 
+		StringTokenizer tok = new StringTokenizer(rest, Constants.COMMA);
 		List<CDOMReference<ClassSkillList>> refs =
 				new ArrayList<CDOMReference<ClassSkillList>>();
 
