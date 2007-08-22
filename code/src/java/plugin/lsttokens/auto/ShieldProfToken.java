@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
@@ -131,7 +129,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 			else
 			{
 				CDOMReference<ShieldProf> ref;
-				if (Constants.LST_ANY.equalsIgnoreCase(aProf))
+				if (Constants.LST_ALL.equalsIgnoreCase(aProf))
 				{
 					foundAny = true;
 					ref = context.ref.getCDOMAllReference(SHIELDPROF_CLASS);

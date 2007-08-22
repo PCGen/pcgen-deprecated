@@ -120,7 +120,7 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 			{
 				if (needComma)
 				{
-					sb.append(',');
+					sb.append(Constants.COMMA);
 				}
 				sb.append(t.toString());
 				needComma = true;
@@ -132,11 +132,15 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 			{
 				if (needComma)
 				{
-					sb.append(',');
+					sb.append(Constants.COMMA);
 				}
 				sb.append('[').append(t.toString()).append(']');
 				needComma = true;
 			}
+		}
+		if (sb.length() == 0)
+		{
+			return null;
 		}
 		return new String[]{sb.toString()};
 	}

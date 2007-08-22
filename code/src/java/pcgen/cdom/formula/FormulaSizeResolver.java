@@ -16,7 +16,7 @@ public class FormulaSizeResolver implements Resolver<SizeAdjustment>
 
 	public SizeAdjustment resolve()
 	{
-		//TODO Need to define how this will happen
+		// TODO Need to define how this will happen
 		return null;
 	}
 
@@ -25,4 +25,16 @@ public class FormulaSizeResolver implements Resolver<SizeAdjustment>
 		return size.toString();
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return size.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return o instanceof FormulaSizeResolver
+			&& size.equals(((FormulaSizeResolver) o).size);
+	}
 }

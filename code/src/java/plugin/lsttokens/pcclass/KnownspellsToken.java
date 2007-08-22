@@ -152,50 +152,31 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 
 	public boolean parse(LoadContext context, PObject po, String value)
 	{
-		String known;
-		if (value.startsWith(".CLEAR"))
-		{
-			context.getGraphContext().removeAll(getTokenName(), po);
-
-			if (".CLEAR".equals(value))
-			{
-				return true;
-			}
-
-			known = value.substring(6);
-		}
-		else
-		{
-			known = value;
-		}
-
-		if (isEmpty(known) || hasIllegalSeparator('|', known))
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
 			return false;
 		}
 
-		StringTokenizer pipeTok = new StringTokenizer(known, Constants.PIPE);
+		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
+		boolean firstToken = true;
 
 		while (pipeTok.hasMoreTokens())
 		{
 			String totalFilter = pipeTok.nextToken();
-
-			if (totalFilter.charAt(0) == ',')
+			if (Constants.LST_DOT_CLEAR.equals(totalFilter))
 			{
-				Logging.errorPrint(getTokenName()
-					+ " arguments may not start with , : " + value);
-				return false;
+				if (!firstToken)
+				{
+					Logging.errorPrint("Non-sensical situation was "
+						+ "encountered while parsing " + getTokenName()
+						+ ": When used, .CLEAR must be the first argument");
+					return false;
+				}
+				context.getGraphContext().removeAll(getTokenName(), po);
+				continue;
 			}
-			if (totalFilter.charAt(totalFilter.length() - 1) == ',')
+			if (hasIllegalSeparator(',', totalFilter))
 			{
-				Logging.errorPrint(getTokenName()
-					+ " arguments may not end with , : " + value);
-				return false;
-			}
-			if (totalFilter.indexOf(",,") != -1)
-			{
-				Logging.errorPrint(getTokenName()
-					+ " arguments uses double separator ,, : " + value);
 				return false;
 			}
 

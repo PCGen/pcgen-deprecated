@@ -115,9 +115,6 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			return false;
 		}
 
-		boolean foundAny = false;
-		boolean foundOther = false;
-
 		StringTokenizer tok = new StringTokenizer(equipItems, Constants.PIPE);
 		List<PrereqObject> refs = new ArrayList<PrereqObject>();
 
@@ -135,32 +132,15 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			}
 			else
 			{
-				CDOMReference<Equipment> ref;
-				if (Constants.LST_ANY.equalsIgnoreCase(aProf))
-				{
-					foundAny = true;
-					ref = context.ref.getCDOMAllReference(EQUIPMENT_CLASS);
-				}
-				else
-				{
-					foundOther = true;
-					ref =
-							TokenUtilities.getTypeOrPrimitive(context,
-								EQUIPMENT_CLASS, aProf);
-				}
+				CDOMReference<Equipment> ref =
+						TokenUtilities.getTypeOrPrimitive(context,
+							EQUIPMENT_CLASS, aProf);
 				if (ref == null)
 				{
 					return false;
 				}
 				refs.add(ref);
 			}
-		}
-
-		if (foundAny && foundOther)
-		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
-			return false;
 		}
 
 		for (PrereqObject ref : refs)

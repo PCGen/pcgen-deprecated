@@ -44,7 +44,6 @@ import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -157,15 +156,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			else
 			{
 				foundOther = true;
-				ref =
-						TokenUtilities.getTypeOrPrimitive(context,
-							SPELLLIST_CLASS, token);
-				if (ref == null)
-				{
-					Logging.errorPrint("Invalid SpellList: " + token + " in "
-						+ getTokenName() + ": " + value);
-					return false;
-				}
+				ref = context.ref.getCDOMReference(SPELLLIST_CLASS, token);
 			}
 			refs.add(ref);
 		}

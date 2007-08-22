@@ -82,6 +82,11 @@ public class EditorListContext implements ListContext
 	private DoubleKeyMapToList<URI, CDOMObject, CDOMReference<? extends CDOMList<?>>> masterClearSet =
 			new DoubleKeyMapToList<URI, CDOMObject, CDOMReference<? extends CDOMList<?>>>();
 
+	public boolean hasMasterLists()
+	{
+		return !positiveMasterMap.isEmpty() && masterClearSet.isEmpty();
+	}
+
 	public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> list, LSTWriteable allowed)

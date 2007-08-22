@@ -49,26 +49,17 @@ public class SizeToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
-		try
+		SizeAdjustment size =
+				context.ref.getConstructedCDOMObject(SizeAdjustment.class,
+					value);
+		if (size == null)
 		{
-			SizeAdjustment size =
-					context.ref.getConstructedCDOMObject(SizeAdjustment.class,
-						value);
-			if (size == null)
-			{
-				Logging.errorPrint("Unable to find Size: " + value);
-				return false;
-			}
-			context.getObjectContext().put(race, ObjectKey.SIZE,
-				new FixedSizeResolver(size));
-			return true;
-		}
-		catch (IllegalArgumentException e)
-		{
-			Logging.errorPrint("Invalid Size in " + getTokenName() + ": "
-				+ value);
+			Logging.errorPrint("Unable to find Size: " + value);
 			return false;
 		}
+		context.getObjectContext().put(race, ObjectKey.SIZE,
+			new FixedSizeResolver(size));
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)

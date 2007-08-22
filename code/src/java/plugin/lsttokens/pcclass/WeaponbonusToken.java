@@ -150,7 +150,9 @@ public class WeaponbonusToken extends AbstractToken implements PCClassLstToken,
 		Collection<CDOMReference<WeaponProf>> added = changes.getAdded();
 		if (added.isEmpty())
 		{
-			// Zero indicates no Token (and no global clear, so nothing to do)
+			// Zero indicates no add, which is an error
+			context.addWriteMessage(getTokenName()
+				+ " was expecting non-empty changes to include Added items");
 			return null;
 		}
 		return new String[]{ReferenceUtilities.joinLstFormat(added,

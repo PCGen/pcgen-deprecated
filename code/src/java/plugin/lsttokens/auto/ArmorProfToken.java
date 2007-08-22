@@ -132,7 +132,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			else
 			{
 				CDOMReference<ArmorProf> ref;
-				if (Constants.LST_ANY.equalsIgnoreCase(aProf))
+				if (Constants.LST_ALL.equalsIgnoreCase(aProf))
 				{
 					foundAny = true;
 					ref = context.ref.getCDOMAllReference(ARMORPROF_CLASS);

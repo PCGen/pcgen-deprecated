@@ -122,6 +122,8 @@ public class FavoredclassToken extends AbstractToken implements
 		Collection<CDOMReference<PCClass>> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
+			context.addWriteMessage(getTokenName()
+				+ " was expecting non-empty changes to include added items");
 			return null;
 		}
 		return new String[]{ReferenceUtilities.joinLstFormat(added,

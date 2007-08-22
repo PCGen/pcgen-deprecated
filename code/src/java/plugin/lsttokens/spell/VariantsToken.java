@@ -123,6 +123,13 @@ public class VariantsToken extends AbstractToken implements SpellLstToken
 			}
 			sb.append(StringUtil.join(added, Constants.PIPE));
 		}
+		if (sb.length() == 0)
+		{
+			context.addWriteMessage(getTokenName()
+				+ " was expecting non-empty changes to include "
+				+ "added items or global clear");
+			return null;
+		}
 		return new String[]{sb.toString()};
 	}
 }

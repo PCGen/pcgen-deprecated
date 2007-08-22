@@ -26,8 +26,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import pcgen.cdom.base.CDOMObject;
-
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
  * 
@@ -373,5 +371,18 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 			return localMap.values().remove(obj);
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return map.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return o instanceof DoubleKeyMap
+			&& map.equals(((DoubleKeyMap<?, ?, ?>) o).map);
 	}
 }

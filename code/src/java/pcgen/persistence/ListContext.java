@@ -19,6 +19,8 @@ public interface ListContext
 	public Collection<CDOMReference> getMasterLists(
 		Class<? extends CDOMList<?>> cl);
 
+	public boolean hasMasterLists();
+
 	public <T extends CDOMObject> Changes<LSTWriteable> getChangesInMasterList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl);

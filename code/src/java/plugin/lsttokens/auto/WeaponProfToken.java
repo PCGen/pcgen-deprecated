@@ -129,7 +129,7 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken
 			else
 			{
 				CDOMReference<WeaponProf> ref;
-				if (Constants.LST_ANY.equalsIgnoreCase(aProf))
+				if (Constants.LST_ALL.equalsIgnoreCase(aProf))
 				{
 					foundAny = true;
 					ref = context.ref.getCDOMAllReference(WEAPONPROF_CLASS);

@@ -215,6 +215,14 @@ public class LangbonusToken extends AbstractToken implements RaceLstToken
 			list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
 				Constants.COMMA));
 		}
+		if (list.isEmpty())
+		{
+			// Zero indicates no add or global clear, which is an error
+			context.addWriteMessage(getTokenName()
+				+ " was expecting non-empty changes to include "
+				+ "added items or global clear");
+			return null;
+		}
 		return list.toArray(new String[list.size()]);
 	}
 }

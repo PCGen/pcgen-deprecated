@@ -22,10 +22,10 @@
  */
 package pcgen.cdom.util;
 
+import java.util.List;
+
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.enumeration.ListKey;
-
-import java.util.List;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
@@ -152,5 +152,18 @@ public class ListKeyMapToList
 	public <T> boolean containsInList(ListKey<T> key, T value)
 	{
 		return map.containsInList(key, value);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return map.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return o instanceof ListKeyMapToList
+			&& map.equals(((ListKeyMapToList) o).map);
 	}
 }

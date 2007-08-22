@@ -23,4 +23,16 @@ public class FixedSizeResolver implements Resolver<SizeAdjustment>
 		return size.getAbbreviation();
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return size.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return o instanceof FixedSizeResolver
+			&& size.equals(((FixedSizeResolver) o).size);
+	}
 }

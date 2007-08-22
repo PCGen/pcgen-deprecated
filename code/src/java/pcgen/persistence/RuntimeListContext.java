@@ -58,6 +58,11 @@ public class RuntimeListContext implements ListContext
 		return a;
 	}
 
+	public boolean hasMasterLists()
+	{
+		return !masterList.isEmpty();
+	}
+
 	public Collection<CDOMReference> getMasterLists(
 		Class<? extends CDOMList<?>> cl)
 	{

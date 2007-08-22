@@ -71,6 +71,9 @@ public class BenefitToken extends AbstractToken implements AbilityLstToken
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
+		/*
+		 * TODO This was changed in 5.x to be a DESC, not just a String - ugh!
+		 */
 		context.getObjectContext().put(ability, StringKey.BENEFIT, value);
 		return true;
 	}

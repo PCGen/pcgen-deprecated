@@ -32,4 +32,21 @@ public class SimpleAssociatedObject extends ConcretePrereqObject implements
 	{
 		assoc.setAssociation(name, value);
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return assoc.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof SimpleAssociatedObject)
+		{
+			SimpleAssociatedObject other = (SimpleAssociatedObject) o;
+			return assoc.equals(other.assoc) && equalsPrereqObject(other);
+		}
+		return false;
+	}
 }

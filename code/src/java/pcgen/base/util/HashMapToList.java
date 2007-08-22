@@ -429,4 +429,24 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 	{
 		return mapToList.toString();
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return mapToList.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof HashMapToList)
+		{
+			return mapToList.equals(((HashMapToList<?, ?>) o).mapToList);
+		}
+		else if (o instanceof MapToList)
+		{
+			//TODO
+		}
+		return false;
+	}
 }

@@ -342,13 +342,18 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 			System.err.println(objectChar + " " + cdo.objectChar);
 			return false;
 		}
-		/*
-		 * FIXME Test these items
-		 * 
-		 * private final ListKeyMapToList listChar = new ListKeyMapToList();
-		 * 
-		 * private final MapKeyMapToList mapChar = new MapKeyMapToList();
-		 */
+		if (!listChar.equals(cdo.listChar))
+		{
+			System.err.println("CDOM Inequality List");
+			System.err.println(listChar + " " + cdo.listChar);
+			return false;
+		}
+		if (!cdomListMods.equals(cdo.cdomListMods))
+		{
+			System.err.println("CDOM Inequality ListMods");
+			System.err.println(cdomListMods + " " + cdo.cdomListMods);
+			return false;
+		}
 		return true;
 	}
 

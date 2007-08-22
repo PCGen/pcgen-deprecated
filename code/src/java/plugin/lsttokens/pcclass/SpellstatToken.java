@@ -73,10 +73,33 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 	{
 		PCStat pcs =
 				context.getObjectContext().getObject(pcc, ObjectKey.SPELL_STAT);
-		if (pcs == null)
+		Boolean useStat =
+				context.getObjectContext().getObject(pcc,
+					ObjectKey.USE_SPELL_SPELL_STAT);
+		if (useStat == null)
 		{
+			if (pcs != null)
+			{
+				context
+					.addWriteMessage(getTokenName()
+						+ " expected USE_SPELL_SPELL_STAT to exist if SPELL_STAT was defined");
+			}
 			return null;
 		}
-		return new String[]{pcs.getKeyName()};
+		if (useStat.booleanValue())
+		{
+			if (pcs == null)
+			{
+				context
+					.addWriteMessage(getTokenName()
+						+ " expected SPELL_STAT to exist since  USE_SPELL_SPELL_STAT was false");
+				return null;
+			}
+			return new String[]{pcs.getKeyName()};
+		}
+		else
+		{
+			return new String[]{"SPELL"};
+		}
 	}
 }
