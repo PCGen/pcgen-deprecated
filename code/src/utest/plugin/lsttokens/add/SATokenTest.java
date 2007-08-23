@@ -75,59 +75,66 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidInputOnePipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Slot Name"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Slot Name"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNullSecond() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Slot Name|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Slot Name|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNullStartItem()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Slot Name|,Item"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Slot Name|,Item"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyName() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "||Item"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "||Item"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNullEndItem() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Slot Name|Item,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Slot Name|Item,"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNullMiddleItem()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Slot Name|Item,,Item2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Slot Name|Item,,Item2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputooManyPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Slot Name|Item|Item2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Slot Name|Item|Item2"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidZeroCount() throws PersistenceLayerException
+	{
+		assertFalse(parse(getSubTokenString() + "|Slot Name|0|TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidNegativeCount() throws PersistenceLayerException
+	{
+		assertFalse(parse(getSubTokenString() + "|Slot Name|-4|TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test

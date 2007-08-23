@@ -65,7 +65,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Ability>
 	public void testInvalidInputString()
 	{
 		internalTestInvalidInputString(null);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test

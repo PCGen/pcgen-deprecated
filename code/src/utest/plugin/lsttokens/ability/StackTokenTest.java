@@ -55,7 +55,7 @@ public class StackTokenTest extends AbstractTokenTestCase<Ability>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test

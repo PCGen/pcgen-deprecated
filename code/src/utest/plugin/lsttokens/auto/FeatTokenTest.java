@@ -66,6 +66,12 @@ public class FeatTokenTest extends AbstractAutoTokenTestCase
 	}
 
 	@Override
+	protected boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
 	protected boolean isTypeLegal()
 	{
 		return false;
@@ -83,8 +89,6 @@ public class FeatTokenTest extends AbstractAutoTokenTestCase
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin(getSubTokenString() + "|TestWP1|TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	// @Test

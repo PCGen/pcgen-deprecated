@@ -77,34 +77,37 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidOnlyCount() throws PersistenceLayerException
+	{
+		assertFalse(parse(getSubTokenString() + "|1"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidInputOneArg() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Mutation"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTwoArg() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Mutation|NORMAL"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputThreeArg() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|2|Mutation|NORMAL"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|2|Mutation|NORMAL"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNotAnAbility() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|Abil1"));
+		assertTrue(parse(getSubTokenString() + "|1|Mutation|NORMAL|Abil1"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -113,9 +116,9 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TestWP1|TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString()
+			+ "|1|Mutation|NORMAL|TestWP1|TestWP2"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -123,51 +126,48 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TestWP1.TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|1|Mutation|NORMAL|TestWP1.TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
 	@Test
 	public void testInvalidInputTypeEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TYPE="));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|1|Mutation|NORMAL|TYPE="));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTypeUnterminated()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TYPE=One."));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|1|Mutation|NORMAL|TYPE=One."));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTypeDoubleSeparator()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TYPE=One..Two"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString()
+			+ "|1|Mutation|NORMAL|TYPE=One..Two"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTypeFalseStart()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TYPE=.One"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|1|Mutation|NORMAL|TYPE=.One"));
+		assertNoSideEffects();
 	}
 
 	// FIXME These are invalid due to RC being overly protective at the moment
 	// @Test
 	// public void testInvalidInputAll()
 	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf,
+	// assertTrue(parse(
 	// getSubTokenString() + "|ALL"));
 	// assertFalse(primaryContext.ref.validate());
 	// }
@@ -175,7 +175,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	// @Test
 	// public void testInvalidInputAny()
 	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf,
+	// assertTrue(parse(
 	// getSubTokenString() + "|ANY"));
 	// assertFalse(primaryContext.ref.validate());
 	// }
@@ -195,36 +195,32 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TestWP1,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|1|Mutation|NORMAL|TestWP1,"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListStart() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|,TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|1|Mutation|NORMAL|,TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidZeroCount() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|0|Mutation|NORMAL|TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|0|Mutation|NORMAL|TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeCount() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|-4|Mutation|NORMAL|TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|-4|Mutation|NORMAL|TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -232,9 +228,9 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TestWP2,,TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString()
+			+ "|1|Mutation|NORMAL|TestWP2,,TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -242,8 +238,8 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		// Explicitly do NOT build TestWP2
 		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|1|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|1|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -254,11 +250,8 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		// Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't
 		// consume the ,
 		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(
-			primaryContext,
-			primaryProf,
-			getSubTokenString()
-				+ "|1|Mutation|NORMAL|TestWP1,TYPE=TestType,TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|1|Mutation|NORMAL|TestWP1,TYPE=TestType,TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -269,12 +262,8 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		// Explicitly do NOT build TestWP2 (this checks that the TYPE= doesn't
 		// consume the ,
 		construct(primaryContext, "TestWP1");
-		assertTrue(getToken()
-			.parse(
-				primaryContext,
-				primaryProf,
-				getSubTokenString()
-					+ "|1|Mutation|NORMAL|TestWP1,TYPE.TestType.OtherTestType,TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|1|Mutation|NORMAL|TestWP1,TYPE.TestType.OtherTestType,TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -283,52 +272,35 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP1"));
+		assertTrue(parse(getSubTokenString() + "|Mutation|NORMAL|TestWP1"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TYPE=TestType"));
+		assertTrue(parse(getSubTokenString() + "|Mutation|NORMAL|TYPE=TestType"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TYPE.TestType"));
+		assertTrue(parse(getSubTokenString() + "|Mutation|NORMAL|TYPE.TestType"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(
-			primaryContext,
-			primaryProf,
-			getSubTokenString()
-				+ "|Mutation|NORMAL|TestWP1,TestWP2,TYPE=TestType"));
+		assertTrue(parse(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2,TYPE=TestType"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken()
-			.parse(
-				primaryContext,
-				primaryProf,
-				getSubTokenString()
-					+ "|Mutation|NORMAL|TestWP1,TestWP2,TYPE=TestType.OtherTestType"));
+		assertTrue(parse(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2,TYPE=TestType.OtherTestType"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|2|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|2|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|2|Mutation|NORMAL|TYPE=TestType"));
+		assertTrue(parse(getSubTokenString()
+			+ "|2|Mutation|NORMAL|TYPE=TestType"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|6|Mutation|NORMAL|TYPE.TestType"));
+		assertTrue(parse(getSubTokenString()
+			+ "|6|Mutation|NORMAL|TYPE.TestType"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(
-			primaryContext,
-			primaryProf,
-			getSubTokenString()
-				+ "|8|Mutation|NORMAL|TestWP1,TestWP2,TYPE=TestType"));
+		assertTrue(parse(getSubTokenString()
+			+ "|8|Mutation|NORMAL|TestWP1,TestWP2,TYPE=TestType"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken()
-			.parse(
-				primaryContext,
-				primaryProf,
-				getSubTokenString()
-					+ "|3|Mutation|NORMAL|TestWP1,TestWP2,TYPE=TestType.OtherTestType"));
+		assertTrue(parse(getSubTokenString()
+			+ "|3|Mutation|NORMAL|TestWP1,TestWP2,TYPE=TestType.OtherTestType"));
 		assertTrue(primaryContext.ref.validate());
 	}
 
@@ -340,8 +312,6 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin(getSubTokenString() + "|Mutation|NORMAL|TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -355,48 +325,30 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin(getSubTokenString()
 			+ "|Mutation|NORMAL|TestWP1,TestWP2,TestWP3");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
 	public void testRoundRobinWithEqualType() throws PersistenceLayerException
 	{
-		if (true)
-		{
-			construct(primaryContext, "TestWP1");
-			construct(primaryContext, "TestWP2");
-			construct(secondaryContext, "TestWP1");
-			construct(secondaryContext, "TestWP2");
-			runRoundRobin(getSubTokenString()
-				+ "|Mutation|NORMAL|TestWP1,TestWP2,TYPE=OtherTestType,TYPE=TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
-		}
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2,TYPE=OtherTestType,TYPE=TestType");
 	}
 
 	@Test
 	public void testRoundRobinTestEquals() throws PersistenceLayerException
 	{
-		if (true)
-		{
-			runRoundRobin(getSubTokenString()
-				+ "|Mutation|NORMAL|TYPE=TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
-		}
+		runRoundRobin(getSubTokenString() + "|Mutation|NORMAL|TYPE=TestType");
 	}
 
 	@Test
 	public void testRoundRobinTestEqualThree() throws PersistenceLayerException
 	{
-		if (true)
-		{
-			runRoundRobin(getSubTokenString()
-				+ "|Mutation|NORMAL|TYPE=TestAltType.TestThirdType.TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
-		}
+		runRoundRobin(getSubTokenString()
+			+ "|Mutation|NORMAL|TYPE=TestAltType.TestThirdType.TestType");
 	}
 
 	@Test
@@ -410,85 +362,63 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin(getSubTokenString()
 			+ "|2|Mutation|NORMAL|TestWP1,TestWP2,TestWP3");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
 	public void testRoundRobinCountThreeWithEqualType()
 		throws PersistenceLayerException
 	{
-		if (true)
-		{
-			construct(primaryContext, "TestWP1");
-			construct(primaryContext, "TestWP2");
-			construct(secondaryContext, "TestWP1");
-			construct(secondaryContext, "TestWP2");
-			runRoundRobin(getSubTokenString()
-				+ "|3|Mutation|NORMAL|TestWP1,TestWP2,TYPE=OtherTestType,TYPE=TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
-		}
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin(getSubTokenString()
+			+ "|3|Mutation|NORMAL|TestWP1,TestWP2,TYPE=OtherTestType,TYPE=TestType");
 	}
 
 	@Test
 	public void testRoundRobinCountTwoTestEquals()
 		throws PersistenceLayerException
 	{
-		if (true)
-		{
-			runRoundRobin(getSubTokenString()
-				+ "|2|Mutation|NORMAL|TYPE=TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
-		}
+		runRoundRobin(getSubTokenString() + "|2|Mutation|NORMAL|TYPE=TestType");
 	}
 
 	@Test
 	public void testRoundRobinCountFourTestEqualThree()
 		throws PersistenceLayerException
 	{
-		if (true)
-		{
-			runRoundRobin(getSubTokenString()
-				+ "|4|Mutation|NORMAL|TYPE=TestAltType.TestThirdType.TestType");
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(secondaryContext.ref.validate());
-		}
+		runRoundRobin(getSubTokenString()
+			+ "|4|Mutation|NORMAL|TYPE=TestAltType.TestThirdType.TestType");
 	}
 
 	@Test
 	public void testInvalidInputAnyItem() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|ANY,TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Mutation|ANY,TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputItemAny() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|TestWP1,ANY"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Mutation|TestWP1,ANY"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputAnyType() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|ANY,TYPE=TestType"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Mutation|ANY,TYPE=TestType"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTypeAny() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|TYPE=TestType,ANY"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getSubTokenString() + "|Mutation|TYPE=TestType,ANY"));
+		assertNoSideEffects();
 	}
 
 	static AddLst token = new AddLst();
@@ -519,13 +449,13 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP2");
 		construct(primaryContext, "TestWP3");
 		construct(secondaryContext, "TestWP3");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP2"));
-		assertTrue(getToken().parse(secondaryContext, secondaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parseSecondary(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP3,TYPE="));
+		assertFalse(parse(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP3,TYPE="));
 		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
 
@@ -541,13 +471,13 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP3");
 		construct(primaryContext, "TestWP4");
 		construct(secondaryContext, "TestWP4");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP2"));
-		assertTrue(getToken().parse(secondaryContext, secondaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parseSecondary(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP3,,TestWP4"));
+		assertFalse(parse(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP3,,TestWP4"));
 		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
 
@@ -561,13 +491,12 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP2");
 		construct(primaryContext, "TestWP3");
 		construct(secondaryContext, "TestWP3");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP2"));
-		assertTrue(getToken().parse(secondaryContext, secondaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parse(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2"));
+		assertTrue(parseSecondary(getSubTokenString()
+			+ "|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getSubTokenString() + "|Mutation|NORMAL|TestWP3,ANY"));
+		assertFalse(parse(getSubTokenString() + "|Mutation|NORMAL|TestWP3,ANY"));
 		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
 }

@@ -27,7 +27,8 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class WeaponProfTokenTest extends AbstractAutoTokenTestCase
 {
 
-	private static final WeaponProfToken WEAPON_PROF_TOKEN = new WeaponProfToken();
+	private static final WeaponProfToken WEAPON_PROF_TOKEN =
+			new WeaponProfToken();
 
 	@Override
 	protected WeaponProfToken getSubToken()
@@ -56,17 +57,23 @@ public class WeaponProfTokenTest extends AbstractAutoTokenTestCase
 	}
 
 	@Override
+	protected boolean isAllLegal()
+	{
+		return true;
+	}
+
+	@Override
 	protected boolean isTypeLegal()
 	{
 		return true;
 	}
-	
+
 	@Override
 	protected boolean isPrereqLegal()
 	{
 		return true;
 	}
-	
+
 	@Test
 	public void dummyTest()
 	{

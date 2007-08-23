@@ -27,7 +27,8 @@ import pcgen.persistence.lst.PCTemplateLoader;
 public class ShieldProfTokenTest extends AbstractAutoTokenTestCase
 {
 
-	private static final ShieldProfToken SHIELD_PROF_TOKEN = new ShieldProfToken();
+	private static final ShieldProfToken SHIELD_PROF_TOKEN =
+			new ShieldProfToken();
 
 	@Override
 	protected ShieldProfToken getSubToken()
@@ -56,17 +57,23 @@ public class ShieldProfTokenTest extends AbstractAutoTokenTestCase
 	}
 
 	@Override
+	protected boolean isAllLegal()
+	{
+		return true;
+	}
+
+	@Override
 	protected boolean isTypeLegal()
 	{
 		return true;
 	}
-	
+
 	@Override
 	protected boolean isPrereqLegal()
 	{
 		return true;
 	}
-	
+
 	@Test
 	public void dummyTest()
 	{

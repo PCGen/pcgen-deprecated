@@ -57,25 +57,29 @@ public class EquipTokenTest extends AbstractAutoTokenTestCase
 	}
 
 	@Override
+	protected boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Override
 	protected boolean isTypeLegal()
 	{
 		return true;
 	}
-	
+
 	@Override
 	protected boolean isPrereqLegal()
 	{
 		return true;
 	}
-	
+
 	@Test
 	public void testRoundRobinDupe() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin(getSubTokenString() + "|TestWP1|TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -84,8 +88,6 @@ public class EquipTokenTest extends AbstractAutoTokenTestCase
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin(getSubTokenString() + "|TestWP1|TestWP1[PRERACE:1,Human]");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -96,8 +98,6 @@ public class EquipTokenTest extends AbstractAutoTokenTestCase
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin(getSubTokenString() + "|TestWP1[PRERACE:1,Human]",
 			getSubTokenString() + "|TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -111,7 +111,5 @@ public class EquipTokenTest extends AbstractAutoTokenTestCase
 		runRoundRobin(
 			getSubTokenString() + "|TestWP1|TestWP1[PRERACE:1,Human]",
 			getSubTokenString() + "|TestWP2|TestWP2[PRERACE:1,Elf]");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 }
