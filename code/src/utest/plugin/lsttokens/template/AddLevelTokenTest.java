@@ -53,69 +53,67 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testInvalidInputNoPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter:3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter:3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoClass() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoLevelCount() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyLevelCount()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter| "));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter| "));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTwoPipes() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "Fighter|3|3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter|3|3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDecimalLevelCount()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "Fighter|3.5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter|3.5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegativeLevelCount()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter|-5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter|-5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputZeroLevelCount()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter|0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter|0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNotAClass() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "NotAClass|3"));
+		assertTrue(parse("NotAClass|3"));
 		assertFalse(primaryContext.ref.validate());
 	}
 

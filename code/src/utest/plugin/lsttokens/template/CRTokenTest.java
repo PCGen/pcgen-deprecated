@@ -55,14 +55,13 @@ public class CRTokenTest extends AbstractTokenTestCase<PCTemplate>
 	{
 		try
 		{
-			boolean parse = getToken().parse(primaryContext, primaryProf, "-1");
-			assertFalse(parse);
+			assertFalse(parse("-1"));
 		}
 		catch (IllegalArgumentException e)
 		{
 			// OK
 		}
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test

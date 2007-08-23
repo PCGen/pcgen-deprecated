@@ -86,201 +86,179 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testInvalidNoSubcommand() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1|2|20:5:"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20:5:"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNumberOnly() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1|2|20"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOneColon() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1|2|20:5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20:5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyStartLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|20::SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20::SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadStartLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|20:StartLevel:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20:StartLevel:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadIncrementLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"IncrLevel|2|20:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("IncrLevel|2|20:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadSkipLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|SkipLevel|20:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|SkipLevel|20:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadMaxLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|MaxLevel:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|MaxLevel:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeStartLevel()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|20:-4:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20:-4:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeIncrementLevel()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"-1|2|20:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-1|2|20:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeSkipLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|-2|20:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|-2|20:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyMaxLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyCommand() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|30:5::Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|30:5::Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeMaxLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|-5:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|-5:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTooManyColons() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|20:4:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20:4:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTooManyBars() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|20|40:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20|40:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoMaxLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoFirstToken() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, ":5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(":5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSkipLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1||20:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1||20:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoIncrementLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"|3|20:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|3|20:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSubcommandArgs() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|20:5:SA:"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20:5:SA:"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidStartGreaterThanEnd()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|2|20:50:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|2|20:50:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoIncrement() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"10|2|20:15:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10|2|20:15:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSkipUse() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5|4|20:5:SA:Stuff"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|4|20:5:SA:Stuff"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadTemplateToken() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5|0|10:5:CR:-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|0|10:5:CR:-3"));
+		assertNoSideEffects();
 	}
 
 	@Test

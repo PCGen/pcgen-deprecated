@@ -26,7 +26,8 @@ import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class BonusSkillPointsTokenTest extends AbstractTokenTestCase<PCTemplate>
+public class BonusSkillPointsTokenTest extends
+		AbstractTokenTestCase<PCTemplate>
 {
 
 	static BonusskillpointsToken token = new BonusskillpointsToken();
@@ -53,46 +54,40 @@ public class BonusSkillPointsTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testInvalidInput() throws PersistenceLayerException
 	{
-		//Always ensure get is unchanged
+		// Always ensure get is unchanged
 		// since no invalid item should set or reset the value
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TYPE=TestType"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TYPE.TestType"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "ALL"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "ANY"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "FIVE"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "4.5"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1/2"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
-		assertEquals(primaryGraph, secondaryGraph);
-		//Require Integer greater than zero
-		assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
-		assertEquals(primaryGraph, secondaryGraph);
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP"));
+		assertNoSideEffects();
+		assertFalse(parse("String"));
+		assertNoSideEffects();
+		assertFalse(parse("TYPE=TestType"));
+		assertNoSideEffects();
+		assertFalse(parse("TYPE.TestType"));
+		assertNoSideEffects();
+		assertFalse(parse("ALL"));
+		assertNoSideEffects();
+		assertFalse(parse("ANY"));
+		assertNoSideEffects();
+		assertFalse(parse("FIVE"));
+		assertNoSideEffects();
+		assertFalse(parse("4.5"));
+		assertNoSideEffects();
+		assertFalse(parse("1/2"));
+		assertNoSideEffects();
+		assertFalse(parse("1+3"));
+		assertNoSideEffects();
+		// Require Integer greater than zero
+		assertFalse(parse("-1"));
+		assertNoSideEffects();
+		assertFalse(parse("0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
-
-		assertTrue(getToken().parse(primaryContext, primaryProf, "1"));
-
+		assertTrue(parse("5"));
+		assertTrue(parse("1"));
 	}
 
 	@Test

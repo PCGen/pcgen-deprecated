@@ -53,46 +53,47 @@ public class GenderLockTokenTest extends AbstractTokenTestCase<PCTemplate>
 	}
 
 	@Test
-	public void testInvalidInputString()
+	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
-	public void testInvalidInputStringSet()
+	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "Male"));
+		assertTrue(parse("Male"));
 		assertEquals(Gender.Male, primaryProf.get(ObjectKey.GENDER_LOCK));
 		internalTestInvalidInputString(Gender.Male);
 		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)
+		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.GENDER_LOCK));
-		assertFalse(token.parse(primaryContext, primaryProf, "Always"));
+		assertFalse(parse("Always"));
 		assertEquals(val, primaryProf.get(ObjectKey.GENDER_LOCK));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.GENDER_LOCK));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.GENDER_LOCK));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.GENDER_LOCK));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.GENDER_LOCK));
-		//Note case sensitivity
-		assertFalse(token.parse(primaryContext, primaryProf, "MALE"));
+		// Note case sensitivity
+		assertFalse(parse("MALE"));
 	}
 
 	@Test
-	public void testValidInputs()
+	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "Male"));
+		assertTrue(parse("Male"));
 		assertEquals(Gender.Male, primaryProf.get(ObjectKey.GENDER_LOCK));
-		assertTrue(token.parse(primaryContext, primaryProf, "Female"));
+		assertTrue(parse("Female"));
 		assertEquals(Gender.Female, primaryProf.get(ObjectKey.GENDER_LOCK));
-		assertTrue(token.parse(primaryContext, primaryProf, "Neuter"));
+		assertTrue(parse("Neuter"));
 		assertEquals(Gender.Neuter, primaryProf.get(ObjectKey.GENDER_LOCK));
 	}
 

@@ -52,47 +52,48 @@ public class RemovableTokenTest extends AbstractTokenTestCase<PCTemplate>
 	}
 
 	@Test
-	public void testInvalidInputString()
+	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
-	public void testInvalidInputStringSet()
+	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.REMOVABLE));
 		internalTestInvalidInputString(Boolean.TRUE);
 		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Object val)
+		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.REMOVABLE));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.REMOVABLE));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.REMOVABLE));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.REMOVABLE));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.REMOVABLE));
 	}
 
 	@Test
-	public void testValidInputs()
+	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.REMOVABLE));
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.REMOVABLE));
-		//We're nice enough to be case insensitive here...
-		assertTrue(token.parse(primaryContext, primaryProf, "YeS"));
+		// We're nice enough to be case insensitive here...
+		assertTrue(parse("YeS"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.REMOVABLE));
-		assertTrue(token.parse(primaryContext, primaryProf, "Yes"));
+		assertTrue(parse("Yes"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.REMOVABLE));
-		assertTrue(token.parse(primaryContext, primaryProf, "No"));
+		assertTrue(parse("No"));
 		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.REMOVABLE));
 	}
 

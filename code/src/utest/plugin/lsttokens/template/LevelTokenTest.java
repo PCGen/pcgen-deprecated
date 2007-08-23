@@ -87,202 +87,192 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testInvalidInputHDonly() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3|SR|3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3|SR|3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOneColon() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SR|2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:SR|2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyHD() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ":DR:3/+1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(":DR:3/+1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptySubtype() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "4::3/+1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("4::3/+1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyDR() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:DR:"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:DR:"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyDRNoColon()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:DR"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:DR"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoSlashDR() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:DR:1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:DR:1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTwoSlashDR() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"3+:DR:1/3/+4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3+:DR:1/3/+4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptySR() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SR:"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:SR:"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptySA() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SA:"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:SA:"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyCR() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:CR:"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:CR:"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptySRNoColon()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SR"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:SR"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptySANoColon()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SA"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:SA"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyCRNoColon()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:CR"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:CR"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoAbbrs() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:C:3"));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:D:1/+2"));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:CRA:3"));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:DRA:1/+2"));
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"3:SAA:Special"));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3:SRA:1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3:C:3"));
+		assertFalse(parse("3:D:1/+2"));
+		assertFalse(parse("3:CRA:3"));
+		assertFalse(parse("3:DRA:1/+2"));
+		assertFalse(parse("3:SAA:Special"));
+		assertFalse(parse("3:SRA:1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputBadClear() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, ".CLEARSTUFF"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(".CLEARSTUFF"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoSpecificClear()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			".CLEAR.3:CR:3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(".CLEAR.3:CR:3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputBadHDRangePlus()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"+3:SA:Special Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("+3:SA:Special Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputBadHDRangeMult()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"*3:SA:Special Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("*3:SA:Special Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputBadHDRangeTwoDash()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1-3:SA:Special Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1-3:SA:Special Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputBadHDRangeEndDash()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"4-:SA:Special Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("4-:SA:Special Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputBadHDRangeEndPlus()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"4+:SA:Special Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("4+:SA:Special Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputBadHDRangeUpTo()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"-4:SA:Special Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-4:SA:Special Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadTemplateToken() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "5:CR:-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5:CR:-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
