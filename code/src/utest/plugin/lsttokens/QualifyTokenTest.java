@@ -66,59 +66,58 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTypeOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "SPELL"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTypeBarOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "SPELL|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyType() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidCatTypeNoEqual() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "ABILITY|Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ABILITY|Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNonCatTypeEquals() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SPELL=Arcane|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL=Arcane|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellbookAndSpellBarOnly()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "SPELL|Fireball|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL|Fireball|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellBarStarting() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "SPELL||Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL||Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -143,7 +142,9 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	public void testRoundRobinTwoBooksJustSpell()
 		throws PersistenceLayerException
 	{
-		Ability a = primaryContext.ref.constructCDOMObject(Ability.class, "My Feat");
+		Ability a =
+				primaryContext.ref
+					.constructCDOMObject(Ability.class, "My Feat");
 		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, a);
 		a = secondaryContext.ref.constructCDOMObject(Ability.class, "My Feat");
 		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, a);

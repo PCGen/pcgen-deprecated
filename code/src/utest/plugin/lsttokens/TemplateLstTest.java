@@ -90,16 +90,14 @@ public class TemplateLstTest extends
 	@Test
 	public void testChooseInvalidInputString() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"CHOOSE:String"));
+		assertTrue(parse("CHOOSE:String"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
 	@Test
 	public void testChooseInvalidInputType() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"CHOOSE:TestType"));
+		assertTrue(parse("CHOOSE:TestType"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -109,8 +107,7 @@ public class TemplateLstTest extends
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"CHOOSE:TestWP1,TestWP2"));
+		assertTrue(parse("CHOOSE:TestWP1,TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -120,8 +117,7 @@ public class TemplateLstTest extends
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"CHOOSE:TestWP1.TestWP2"));
+		assertTrue(parse("CHOOSE:TestWP1.TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -129,18 +125,16 @@ public class TemplateLstTest extends
 	public void testChooseInvalidListEnd() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"CHOOSE:TestWP1" + getJoinCharacter()));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CHOOSE:TestWP1" + getJoinCharacter()));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testChooseInvalidListStart() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"CHOOSE:" + getJoinCharacter() + "TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CHOOSE:" + getJoinCharacter() + "TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -149,12 +143,9 @@ public class TemplateLstTest extends
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(
-			primaryContext,
-			primaryProf,
-			"CHOOSE:TestWP2" + getJoinCharacter() + getJoinCharacter()
-				+ "TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CHOOSE:TestWP2" + getJoinCharacter()
+			+ getJoinCharacter() + "TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -163,8 +154,7 @@ public class TemplateLstTest extends
 	{
 		// Explicitly do NOT build testChooseWP2
 		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"CHOOSE:TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertTrue(parse("CHOOSE:TestWP1" + getJoinCharacter() + "TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -173,10 +163,9 @@ public class TemplateLstTest extends
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
+		assertTrue(parse("TestWP1"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"CHOOSE:TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertTrue(parse("CHOOSE:TestWP1" + getJoinCharacter() + "TestWP2"));
 		assertTrue(primaryContext.ref.validate());
 	}
 
@@ -188,8 +177,6 @@ public class TemplateLstTest extends
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("CHOOSE:TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -203,8 +190,6 @@ public class TemplateLstTest extends
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("CHOOSE:TestWP1" + getJoinCharacter() + "TestWP2"
 			+ getJoinCharacter() + "TestWP3");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 }

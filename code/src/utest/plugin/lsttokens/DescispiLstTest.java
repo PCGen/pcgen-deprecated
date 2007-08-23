@@ -60,7 +60,7 @@ public class DescispiLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertTrue(primaryProf.isDescPI());
 		internalTestInvalidInputString(Boolean.TRUE);
 		assertTrue(primaryGraph.isEmpty());
@@ -70,38 +70,38 @@ public class DescispiLstTest extends AbstractGlobalTokenTestCase
 		throws PersistenceLayerException
 	{
 		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertTrue(primaryProf.isDescPI());
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertFalse(primaryProf.isDescPI());
 		// We're nice enough to be case insensitive here...
-		assertTrue(token.parse(primaryContext, primaryProf, "YeS"));
+		assertTrue(parse("YeS"));
 		assertTrue(primaryProf.isDescPI());
-		assertTrue(token.parse(primaryContext, primaryProf, "Yes"));
+		assertTrue(parse("Yes"));
 		assertTrue(primaryProf.isDescPI());
-		assertTrue(token.parse(primaryContext, primaryProf, "No"));
+		assertTrue(parse("No"));
 		assertFalse(primaryProf.isDescPI());
 		// And we also allow single characters
-		assertTrue(token.parse(primaryContext, primaryProf, "Y"));
+		assertTrue(parse("Y"));
 		assertTrue(primaryProf.isDescPI());
-		assertTrue(token.parse(primaryContext, primaryProf, "N"));
+		assertTrue(parse("N"));
 		assertFalse(primaryProf.isDescPI());
-		assertTrue(token.parse(primaryContext, primaryProf, "y"));
+		assertTrue(parse("y"));
 		assertTrue(primaryProf.isDescPI());
-		assertTrue(token.parse(primaryContext, primaryProf, "n"));
+		assertTrue(parse("n"));
 		assertFalse(primaryProf.isDescPI());
 	}
 

@@ -55,23 +55,23 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidInputNoNumber() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TestType"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestType"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputMissingNumber()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|TestType"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|TestType"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputMissingItem() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "2|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("2|"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -79,9 +79,8 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"2||TestWP1|TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("2||TestWP1|TestWP2"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -89,8 +88,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP1,TestWP2"));
+		assertTrue(parse("1|TestWP1,TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -99,8 +97,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP1.TestWP2"));
+		assertTrue(parse("1|TestWP1.TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -108,32 +105,32 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1|TestWP1|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|TestWP1|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListStart() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1||TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1||TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidZeroCount() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "0|TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("0|TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeCount() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "-4|TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-4|TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -141,9 +138,8 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP2||TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1|TestWP2||TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -151,8 +147,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		// Explicitly do NOT build TestWP2
 		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP1|TestWP2"));
+		assertTrue(parse("1|TestWP1|TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -161,10 +156,9 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf, "1|TestWP1"));
+		assertTrue(parse("1|TestWP1"));
 		assertTrue(primaryContext.ref.validate());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"1|TestWP1|TestWP2"));
+		assertTrue(parse("1|TestWP1|TestWP2"));
 		assertTrue(primaryContext.ref.validate());
 	}
 
@@ -174,8 +168,6 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("1|TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -188,8 +180,6 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("1|TestWP1|TestWP2|TestWP3");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -202,8 +192,6 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("2|TestWP1|TestWP2|TestWP3");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	protected void construct(LoadContext loadContext, String one)

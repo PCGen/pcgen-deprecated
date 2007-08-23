@@ -54,64 +54,64 @@ public class FollowersLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTypeOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Follower"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Follower"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTypeBarOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Follower|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Follower|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyType() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoPipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Follower||4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Follower||4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoPipeTypeTwo() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Follower|Pet|4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Follower|Pet|4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBarEnding() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Follower|4|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Follower|4|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBarStarting() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|Follower|4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Follower|4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidReversed() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(CompanionList.class, "Follower");
-		assertTrue(token.parse(primaryContext, primaryProf, "Formula|Follower"));
+		assertTrue(parse("Formula|Follower"));
 		assertFalse(primaryContext.ref.validate());
 	}
 

@@ -76,39 +76,36 @@ public class DescLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SA Number %||VarF"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SA Number %||VarF"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEndingPipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "SA Number|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SA Number|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidStartingPipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|Var"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Var"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidVarAfterPre() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SA % plus %|Var|PRECLASS:1,Fighter|Var2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SA % plus %|Var|PRECLASS:1,Fighter|Var2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyPre() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"PRECLASS:1,Fighter"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("PRECLASS:1,Fighter"));
+		assertNoSideEffects();
 	}
 
 	@Test

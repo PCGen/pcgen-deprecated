@@ -82,135 +82,122 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellbookOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "SpellBook"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellbookBarOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "SpellBook|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptySpellbook() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellbookAndSpellBarOnly()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|Fireball|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|Fireball|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellCommaStarting()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|,Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|,Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellCommaEnding() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|Fireball,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|Fireball,"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellDoubleComma() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|Fireball,,DCFormula"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|Fireball,,DCFormula"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|Fireball||Lightning Bolt"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|Fireball||Lightning Bolt"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellEmbeddedPre() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|Fireball|PRERACE:1,Human|Lightning Bolt"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|Fireball|PRERACE:1,Human|Lightning Bolt"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadTimes() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|TIMES=|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|TIMES=|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyTimes() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|TIMES=3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|TIMES=3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyTimesBar() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|TIMES=3|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|TIMES=3|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyLevel() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|CASTERLEVEL=3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|CASTERLEVEL=3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyLevelBar() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|CASTERLEVEL=3|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|CASTERLEVEL=3|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyTimes() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook||Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook||Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadCasterLevel() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"SpellBook|CASTERLEVEL=|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SpellBook|CASTERLEVEL=|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -218,14 +205,13 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		try
 		{
-			assertFalse(token.parse(primaryContext, primaryProf,
-				"SpellBook|CASTERLEVEL=4|TIMES=2|Fireball"));
+			assertFalse(parse("SpellBook|CASTERLEVEL=4|TIMES=2|Fireball"));
 		}
 		catch (IllegalArgumentException iae)
 		{
 			// This is ok too
 		}
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -233,14 +219,13 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	{
 		try
 		{
-			assertFalse(token.parse(primaryContext, primaryProf,
-				"SpellBook|TIMES=2|PRERACE:1,Human"));
+			assertFalse(parse("SpellBook|TIMES=2|PRERACE:1,Human"));
 		}
 		catch (IllegalArgumentException iae)
 		{
 			// This is ok too
 		}
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test

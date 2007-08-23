@@ -79,116 +79,108 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListNameOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Familiar"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListNameBarOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Familiar|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyListName() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|Lion"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Lion"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTypeRaceBarOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Familiar|Lion|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidRaceCommaStarting() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Familiar|,Lion"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|,Lion"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidRaceCommaEnding() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Familiar|Lion,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion,"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidRaceDoubleComma() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Lion,,Tiger"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion,,Tiger"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidRacePipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Lion|Tiger"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion|Tiger"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellEmbeddedPre() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Lion|PRERACE:1,Human|Tiger"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion|PRERACE:1,Human|Tiger"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNonSensicalAnyLast()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Tiger,Any"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Tiger,Any"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNonSensicalAnyFirst()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Any,Lion"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Any,Lion"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmbeddedFA() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|FOLLOWERADJUSTMENT:-4|Lion"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|FOLLOWERADJUSTMENT:-4|Lion"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyFOLLOWERADJUSTMENT()
 		throws PersistenceLayerException
 	{
-		boolean parse =
-				token.parse(primaryContext, primaryProf,
-					"Familiar|FOLLOWERADJUSTMENT:-3");
+		boolean parse = parse("Familiar|FOLLOWERADJUSTMENT:-3");
 		if (parse)
 		{
 			assertFalse(primaryContext.ref.validate());
 		}
 		else
 		{
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -196,49 +188,44 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidMultipleFOLLOWERADJUSTMENT()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Lion|FOLLOWERADJUSTMENT:-2|FOLLOWERADJUSTMENT:-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion|FOLLOWERADJUSTMENT:-2|FOLLOWERADJUSTMENT:-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyFOLLOWERADJUSTMENTBar()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|FOLLOWERADJUSTMENT:-3|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|FOLLOWERADJUSTMENT:-3|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyTimes() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Familiar||Lion"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar||Lion"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadFA() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Lion|FOLLOWERADJUSTMENT:"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion|FOLLOWERADJUSTMENT:"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidFANaN() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Lion|FOLLOWERADJUSTMENT:-T"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion|FOLLOWERADJUSTMENT:-T"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidFADecimal() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Familiar|Lion|FOLLOWERADJUSTMENT:-4.5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Familiar|Lion|FOLLOWERADJUSTMENT:-4.5"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -247,20 +234,19 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 		try
 		{
 			boolean parse =
-					token.parse(primaryContext, primaryProf,
-						"Familiar|FOLLOWERADJUSTMENT:-3|PRERACE:1,Human");
+					parse("Familiar|FOLLOWERADJUSTMENT:-3|PRERACE:1,Human");
 			if (parse)
 			{
 				assertFalse(primaryContext.ref.validate());
 			}
 			else
 			{
-				assertTrue(primaryGraph.isEmpty());
+				assertNoSideEffects();
 			}
 		}
 		catch (IllegalArgumentException iae)
 		{
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 			// This is ok too
 		}
 	}

@@ -84,167 +84,152 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidClassOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "CLASS"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidClassBarOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "CLASS|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyClass() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|Cleric=1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Cleric=1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptySpell() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "CLASS|Cleric=1|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=1|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellCommaStarting()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=1|,Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=1|,Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellCommaEnding() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=1|Fireball,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=1|Fireball,"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellDoubleComma() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=1|Fireball,,Lightning Bolt"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=1|Fireball,,Lightning Bolt"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellDoublePipe1() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "CLASS||Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS||Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSpellLevel() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellLevelNaN() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=CL|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=CL|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellLevelDecimal() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=4.5|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=4.5|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellLevelNoEquals()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric 4|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric 4|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellLevelJustLevel()
 		throws PersistenceLayerException
 	{
-		assertFalse(token
-			.parse(primaryContext, primaryProf, "CLASS|4|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|4|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidForgotSpell() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=4|PRERACE:1,Human"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=4|PRERACE:1,Human"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellLevelDoubleEquals()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric==5|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric==5|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellDoublePipe2() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=1||Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=1||Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSpellDoublePipe3() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=1|Fireball||Druid=2|Lightning Bolt"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=1|Fireball||Druid=2|Lightning Bolt"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptySPELLCASTER() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|SPELLCASTER.=1|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|SPELLCASTER.=1|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTrailingPipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS|Cleric=1|Fireball|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS|Cleric=1|Fireball|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidLeadingPipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"CLASS||Cleric=1|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS||Cleric=1|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -317,182 +302,164 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidDomainOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "CLASS"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("CLASS"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainBarOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "DOMAIN|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyDomain() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|Cleric=1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Cleric=1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainEmptySpell() throws PersistenceLayerException
 	{
-		assertFalse(token
-			.parse(primaryContext, primaryProf, "DOMAIN|Cleric=1|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=1|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellCommaStarting()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=1|,Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=1|,Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellCommaEnding()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=1|Fireball,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=1|Fireball,"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellDoubleComma()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=1|Fireball,,Lightning Bolt"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=1|Fireball,,Lightning Bolt"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellDoublePipe1()
 		throws PersistenceLayerException
 	{
-		assertFalse(token
-			.parse(primaryContext, primaryProf, "DOMAIN||Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN||Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainNoSpellLevel()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellLevelNaN()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=CL|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=CL|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellLevelDecimal()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=4.5|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=4.5|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellLevelDoubleEquals()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric==5|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric==5|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellDoublePipe2()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=1||Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=1||Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainSpellDoublePipe3()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=1|Fireball||Druid=2|Lightning Bolt"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=1|Fireball||Druid=2|Lightning Bolt"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainEmptySPELLCASTER()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|SPELLCASTER.=1|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|SPELLCASTER.=1|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainTrailingPipe()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=1|Fireball|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=1|Fireball|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainLeadingPipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN||Cleric=1|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN||Cleric=1|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainCasterCommaTrailing()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric,=1|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric,=1|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainCasterCommaLeading()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|,Cleric=1|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|,Cleric=1|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainCasterCommaDouble()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric,,Druid=1|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric,,Druid=1|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDomainCasterDoubleAssignAttempt()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"DOMAIN|Cleric=4,Druid=1|Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DOMAIN|Cleric=4,Druid=1|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test

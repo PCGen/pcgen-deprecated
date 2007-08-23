@@ -52,52 +52,51 @@ public class MoveLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOneItem() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Normal"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoValue() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Normal,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal,"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOnlyValue() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ",30"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(",30"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTwoComma() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Normal,,30"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal,,30"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputThreeItems() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal,30,Darkvision"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal,30,Darkvision"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegativeMovement()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Normal,-30"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal,-30"));
+		assertNoSideEffects();
 	}
 
 	@Test

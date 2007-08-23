@@ -102,8 +102,6 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -111,8 +109,6 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -122,8 +118,6 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1", "TestWP1|PRERACE:1,Human");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -135,7 +129,5 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human",
 				"TestWP2|TestWP2|PRERACE:1,Elf");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 }

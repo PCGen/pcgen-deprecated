@@ -54,88 +54,85 @@ public class ChangeProfLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSourceOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Hammer"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Hammer"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSourceEqualOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Hammer="));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Hammer="));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidSourceEqualOnlyTypeTwo()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Hammer=Martial|Pipe="));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Hammer=Martial|Pipe="));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptySource() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "=Martial"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("=Martial"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoEquals() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Hammer==Martial"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Hammer==Martial"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoEqualsTypeTwo() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Hammer=TYPE.Heavy=Martial"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Hammer=TYPE.Heavy=Martial"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBarEnding() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Hammer=Martial|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Hammer=Martial|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBarStarting() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|Hammer=Martial"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Hammer=Martial"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Hammer=Martial||Pipe=Exotic"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Hammer=Martial||Pipe=Exotic"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidReversed() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "Martial=Hammer"));
+		assertTrue(parse("Martial=Hammer"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
 	@Test
 	public void testInvalidResultPrimitive() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "Hammer=Pipe"));
+		assertTrue(parse("Hammer=Pipe"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -144,14 +141,13 @@ public class ChangeProfLstTest extends AbstractGlobalTokenTestCase
 	{
 		try
 		{
-			assertFalse(token.parse(primaryContext, primaryProf,
-				"Hammer=TYPE.Heavy"));
+			assertFalse(parse("Hammer=TYPE.Heavy"));
 		}
 		catch (IllegalArgumentException e)
 		{
 			// This is okay too
 		}
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test

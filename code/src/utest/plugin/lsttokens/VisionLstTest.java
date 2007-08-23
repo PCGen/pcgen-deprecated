@@ -53,141 +53,128 @@ public class VisionLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidNoOpenParen() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Darkvision 25')"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Darkvision 25')"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoCloseParen() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Darkvision (25'"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Darkvision (25'"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoParen() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "Darkvision 25'"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Darkvision 25'"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidExtraStuff() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Darkvision (25')Normal"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Darkvision (25')Normal"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidExtraStuffAfterFoot()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Darkvision (25'm)"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Darkvision (25'm)"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDecimalFoot() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Darkvision (25.5')"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Darkvision (25.5')"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDistanceNaN() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Darkvision (zzzb32')"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Darkvision (zzzb32')"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void test2InvalidNoOpenParen() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal|Darkvision 25')"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal|Darkvision 25')"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void test2InvalidNoCloseParen() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal|Darkvision (25'"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal|Darkvision (25'"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void test2InvalidNoParen() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal|Darkvision 25'"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal|Darkvision 25'"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void test2InvalidExtraStuff() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal|Darkvision (25')Normal"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal|Darkvision (25')Normal"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void test2InvalidExtraStuffAfterFoot()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal|Darkvision (25'm)"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal|Darkvision (25'm)"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void test2InvalidDecimalFoot() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal|Darkvision (25.5')"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal|Darkvision (25.5')"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void test2InvalidDistanceNaN() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal|Darkvision (zzzb32')"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal|Darkvision (zzzb32')"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoComma() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"Normal,Darkvision"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Normal,Darkvision"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidDistanceFormula() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf,
-			"Darkvision (zzzb32)"));
+		assertTrue(parse("Darkvision (zzzb32)"));
 	}
 
 	@Test
 	public void testValidDistanceNoSpaceNumber()
 		throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "Darkvision(20')"));
+		assertTrue(parse("Darkvision(20')"));
 	}
 
 	@Test
 	public void testValidDistanceNoSpaceShortNumber()
 		throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "Darkvision(5')"));
+		assertTrue(parse("Darkvision(5')"));
 	}
 
 	@Test

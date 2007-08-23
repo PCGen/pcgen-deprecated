@@ -72,59 +72,56 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 	public void testChooseInvalidInputPipeOnly()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testChooseInvalidInputRandomString()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("String"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testChooseInvalidInputEndPipe()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "HeavyLoad|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("HeavyLoad|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testChooseInvalidInputStartPipe()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|HeavyLoad"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|HeavyLoad"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testChooseInvalidInputDoublePipe()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"HeavyLoad||HeavyArmor"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("HeavyLoad||HeavyArmor"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testChooseInvalidInputDoubleLoad()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"HeavyLoad|MediumLoad"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("HeavyLoad|MediumLoad"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testChooseInvalidInputDoubleArmor()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"MediumArmor|HeavyArmor"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("MediumArmor|HeavyArmor"));
+		assertNoSideEffects();
 	}
 
 	@Test

@@ -52,85 +52,85 @@ public class DrLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidNoSlash() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "+1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("+1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoReduction() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoKey() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "/+3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("/+3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoSlash() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/3/+3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/3/+3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoOrSpace() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/+3 or"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/+3 or"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoOrSuffix() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/+3 or "));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/+3 or "));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoAndSpace() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/+3 and"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/+3 and"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoAndSuffix() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/+3 and "));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/+3 and "));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSpaceOr() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/or +3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/or +3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoOrPrefix() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/ or +3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/ or +3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSpaceAnd() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/and +3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/and +3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoAndPrefix() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "10/ and +3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("10/ and +3"));
+		assertNoSideEffects();
 	}
 
 	@Test

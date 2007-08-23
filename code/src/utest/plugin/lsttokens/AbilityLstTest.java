@@ -55,68 +55,65 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidCategoryOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "FEAT"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("FEAT"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidCategoryBarOnly() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "FEAT|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("FEAT|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyCategory() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "|NORMAL|Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|NORMAL|Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyNature() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "FEAT||Abil"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("FEAT||Abil"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyAbility() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf, "FEAT|NORMAL|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("FEAT|NORMAL|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDoubleBarAbility() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"FEAT|NORMAL|Abil1||Abil2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("FEAT|NORMAL|Abil1||Abil2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDoubleBarStartAbility()
 		throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"FEAT|NORMAL||Abil1|Abil2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("FEAT|NORMAL||Abil1|Abil2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBarEndAbility() throws PersistenceLayerException
 	{
-		assertFalse(token.parse(primaryContext, primaryProf,
-			"FEAT|NORMAL|Abil1|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("FEAT|NORMAL|Abil1|"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -201,8 +198,6 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
 		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -214,8 +209,6 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
 		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1", "FEAT|VIRTUAL|Abil1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	// @Test
