@@ -39,7 +39,7 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 		// Set value
 		for (String s : str)
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, s, 2));
+			assertTrue(parse(s, 2));
 		}
 		// Doesn't pollute other levels
 		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
@@ -93,8 +93,6 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 			assertEquals("Expected " + i + " item to be equal", unparsed[i],
 				sUnparsed[i]);
 		}
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 		assertEquals(0, primaryContext.getWriteMessageCount());
 		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
@@ -102,28 +100,28 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 	@Test
 	public void testInvalidListEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "", 2));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("", 2));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1,", 2));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1,", 2));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListStart() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ",1", 2));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(",1", 2));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListDoubleJoin() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1,,2", 2));
+		assertFalse(parse("1,,2", 2));
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -131,8 +129,8 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 	public void testInvalidListNegativeNumber()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1,-2", 2));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1,-2", 2));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -145,6 +143,12 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 	public void testRoundRobinList() throws PersistenceLayerException
 	{
 		runRoundRobin("3,2,1");
+	}
+
+	@Test
+	public void testRoundRobinFormula() throws PersistenceLayerException
+	{
+		runRoundRobin("Form,Form2+Form3,1");
 	}
 
 }

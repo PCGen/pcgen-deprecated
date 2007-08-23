@@ -78,146 +78,132 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOnlyType() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "ALIGNMENT"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoValue() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "ALIGNMENT."));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT."));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoType() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ".Good"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(".Good"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputLeadingPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"|ALIGNMENT.Good"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|ALIGNMENT.Good"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"ALIGNMENT.Good|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT.Good|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoubleDot() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"ALIGNMENT..Good"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT..Good"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingDot() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"ALIGNMENT.Lawful."));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT.Lawful."));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingDotContinued()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"ALIGNMENT.Lawful.|PRECLASS:1,Fighter"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT.Lawful.|PRECLASS:1,Fighter"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoubleDotSeparator()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"ALIGNMENT.Lawful..Good"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT.Lawful..Good"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDotComma() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"SPELL.,Fireball"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL.,Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingComma()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"SPELL.Fireball,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL.Fireball,"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingCommaContinued()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"SPELL.Fireball,|PRECLASS:1,Fighter"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL.Fireball,|PRECLASS:1,Fighter"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoubleCommaSeparator()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"SPELL.Fireball,,Lightning Bolt"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("SPELL.Fireball,,Lightning Bolt"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"ALIGNMENT.Good||PRECLASS:1,Fighte"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT.Good||PRECLASS:1,Fighte"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNeutral() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"ALIGNMENT.Neutral"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("ALIGNMENT.Neutral"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNotAType() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"NOTATYPE.Good"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("NOTATYPE.Good"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTwoLimits() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"DESCRIPTOR.Fear|DESCRIPTOR.Fire"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("DESCRIPTOR.Fear|DESCRIPTOR.Fire"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -225,7 +211,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"PRECLASS:1,Fighter=1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -277,7 +263,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SPELL.Fireball,Lightning Bolt|PRECLASS:1,Fighter=1|TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -286,7 +272,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"SPELL.Fireball||PRECLASS:1,Fighter=1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -294,7 +280,7 @@ public class ProhibitspellTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test

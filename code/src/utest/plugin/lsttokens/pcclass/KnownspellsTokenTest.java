@@ -91,8 +91,8 @@ public class KnownspellsTokenTest extends
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Override
@@ -103,34 +103,31 @@ public class KnownspellsTokenTest extends
 		{
 			construct(primaryContext, "TestWP1");
 			construct(primaryContext, "TestWP2");
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"TestWP1,TestWP2"));
+			assertFalse(parse("TestWP1,TestWP2"));
 		}
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTwoType() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TYPE=TestWP1,TYPE=TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TYPE=TestWP1,TYPE=TestWP2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputSpellAndType() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1,TYPE=TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1,TYPE=TestWP2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputLevelEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "LEVEL="));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("LEVEL="));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -138,9 +135,8 @@ public class KnownspellsTokenTest extends
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"LEVEL=One"));
-			assertTrue(primaryGraph.isEmpty());
+			assertFalse(parse("LEVEL=One"));
+			assertNoSideEffects();
 		}
 	}
 
@@ -149,9 +145,38 @@ public class KnownspellsTokenTest extends
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"LEVEL=1.0"));
-			assertTrue(primaryGraph.isEmpty());
+			assertFalse(parse("LEVEL=1.0"));
+			assertNoSideEffects();
+		}
+	}
+
+	@Test
+	public void testInvalidInputStart() throws PersistenceLayerException
+	{
+		if (isTypeLegal())
+		{
+			assertFalse(parse(",LEVEL=2"));
+			assertNoSideEffects();
+		}
+	}
+
+	@Test
+	public void testInvalidInputEnd() throws PersistenceLayerException
+	{
+		if (isTypeLegal())
+		{
+			assertFalse(parse("LEVEL=2,"));
+			assertNoSideEffects();
+		}
+	}
+
+	@Test
+	public void testInvalidInputDouble() throws PersistenceLayerException
+	{
+		if (isTypeLegal())
+		{
+			assertFalse(parse("TYPE=Foo,,LEVEL=2"));
+			assertNoSideEffects();
 		}
 	}
 
@@ -160,9 +185,8 @@ public class KnownspellsTokenTest extends
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"LEVEL=1,LEVEL=2"));
-			assertTrue(primaryGraph.isEmpty());
+			assertFalse(parse("LEVEL=1,LEVEL=2"));
+			assertNoSideEffects();
 		}
 	}
 

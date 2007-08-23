@@ -111,33 +111,32 @@ public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 	public void testInvalidEmptyPre() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP1[]"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1[]"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyPre2() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP1["));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1["));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyPre3() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP1]"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1]"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMismatchedBracket() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1[PRERACE:Dwarf"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1[PRERACE:Dwarf"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -145,9 +144,8 @@ public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 		throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1[PRERACE:Dwarf]Hi"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1[PRERACE:Dwarf]Hi"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -158,8 +156,6 @@ public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("TestWP1[PRERACE:1,Dwarf]");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -173,8 +169,6 @@ public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("TestWP1[PRERACE:1,Dwarf]" + getJoinCharacter()
 			+ "TestWP2[PRERACE:1,Human]" + getJoinCharacter() + "TestWP3");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 }

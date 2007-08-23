@@ -64,32 +64,31 @@ public class ProhibitedTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoubleSeparator()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Lawful,,Good"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Lawful,,Good"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputLeadingComma() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ",Chaos"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(",Chaos"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingComma()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Evocation,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Evocation,"));
+		assertNoSideEffects();
 	}
 
 	@Test

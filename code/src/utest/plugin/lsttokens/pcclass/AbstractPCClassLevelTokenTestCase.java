@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
 import pcgen.core.PCClass;
@@ -103,7 +104,7 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		// Set value
 		for (String s : str)
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, s, 2));
+			assertTrue(parse(s, 2));
 		}
 		// Doesn't pollute other levels
 		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
@@ -156,4 +157,39 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 
 	public abstract PCClassLevelLstToken getToken();
 
+	public void isCDOMEqual(CDOMObject cdo1, CDOMObject cdo2)
+	{
+		assertTrue(cdo1.isCDOMEqual(cdo2));
+	}
+
+	public void assertNoSideEffects()
+	{
+		assertTrue(primaryGraph.isEmpty());
+		isCDOMEqual(primaryProf, secondaryProf);
+		assertFalse(primaryContext.getListContext().hasMasterLists());
+		assertEquals(primaryGraph, secondaryGraph);
+	}
+
+	public boolean parse(String str, int level)
+		throws PersistenceLayerException
+	{
+		boolean b = getToken().parse(primaryContext, primaryProf, str, level);
+		if (b)
+		{
+			// primaryContext.commit();
+		}
+		return b;
+	}
+
+	public boolean parseSecondary(String str, int level)
+		throws PersistenceLayerException
+	{
+		boolean b =
+				getToken().parse(secondaryContext, secondaryProf, str, level);
+		if (b)
+		{
+			// secondaryContext.commit();
+		}
+		return b;
+	}
 }

@@ -62,84 +62,81 @@ public class AttackCycleTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoCycle() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "BAB"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("BAB"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyCycle() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "BAB|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("BAB|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyType() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOpenStart() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|BAB|3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|BAB|3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOpenEnd() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "BAB|4|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("BAB|4|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoublePipeTypeOne()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "BAB||5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("BAB||5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoublePipeTypeTwo()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"BAB|5||UAB|5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("BAB|5||UAB|5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoublePipeTypeThree()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"BAB|5|UAB||4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("BAB|5|UAB||4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputGAB() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "GAB|5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("GAB|5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputGABSecond() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "BAB|4|GAB|5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("BAB|4|GAB|5"));
+		assertNoSideEffects();
 	}
 
 	@Test

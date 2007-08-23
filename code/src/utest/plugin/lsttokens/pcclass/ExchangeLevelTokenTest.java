@@ -67,43 +67,40 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoLevels() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Paladin"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyMin() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin||5|3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin||5|3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyMax() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|5||3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|5||3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyRem() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|6|5|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|6|5|"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -111,43 +108,39 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "Paladin|6|5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|6|5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTooManyPipes() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|6|5|4|3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|6|5|4|3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyClass() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|4|3|2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|4|3|2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOpenStart() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"|Paladin|6|5|4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Paladin|6|5|4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOpenEnd() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|6|5|4|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|6|5|4|"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -155,9 +148,8 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin||6|5|4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin||6|5|4"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -165,95 +157,81 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 		throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getTargetClass(), "Paladin");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|6||5|4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|6||5|4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoublePipeTypeThree()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|6|5||4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|6|5||4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputRemTooLow() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|5|2|1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|5|2|1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegativeMax() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|-5|2|1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|-5|2|1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputZeroMax() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|0|2|1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|0|2|1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegativeDonate()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|5|-2|1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|5|-2|1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputZeroDonate() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|5|0|1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|5|0|1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegativeRemaining()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|4|5|-1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|4|5|-1"));
+		assertNoSideEffects();
 	}
 
 	@Test
-	public void testInvalidInputRemainingNaN()
-		throws PersistenceLayerException
+	public void testInvalidInputRemainingNaN() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|11|10|x"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|11|10|x"));
+		assertNoSideEffects();
 	}
 
 	@Test
-	public void testInvalidInputDonateNaN()
-		throws PersistenceLayerException
+	public void testInvalidInputDonateNaN() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|11|x|1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|11|x|1"));
+		assertNoSideEffects();
 	}
 
 	@Test
-	public void testInvalidInputMaxNaN()
-		throws PersistenceLayerException
+	public void testInvalidInputMaxNaN() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Paladin|x|10|1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Paladin|x|10|1"));
+		assertNoSideEffects();
 	}
 
 	@Test

@@ -69,35 +69,41 @@ public class SpellStatTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testInvalidNotAStat() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "NAN"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("NAN"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMultipleStatComma() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "STR,INT"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("STR,INT"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMultipleStatBar() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "STR|INT"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("STR|INT"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMultipleStatDot() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "STR.INT"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("STR.INT"));
+		assertNoSideEffects();
 	}
 
 	@Test
-	public void testRoundRobinDisplay() throws PersistenceLayerException
+	public void testRoundRobinStat() throws PersistenceLayerException
 	{
 		runRoundRobin("STR");
+	}
+
+	@Test
+	public void testRoundRobinSpell() throws PersistenceLayerException
+	{
+		runRoundRobin("SPELL");
 	}
 
 }
