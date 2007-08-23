@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
@@ -105,8 +106,9 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		// Set value
 		for (String s : str)
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, s));
+			assertTrue(parse(s));
 		}
+		primaryProf.put(ObjectKey.SOURCE_URI, testCampaign.getURI());
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 
 		assertEquals(str.length, unparsed.length);
@@ -128,7 +130,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 			prefix + "TestObj\t" + unparsedBuilt.toString(), testCampaign);
 
 		// Ensure the objects are the same
-		assertEquals(primaryProf, secondaryProf);
+		isCDOMEqual(primaryProf, secondaryProf);
 
 		// Ensure the graphs are the same
 		assertEquals(primaryGraph, secondaryGraph);
@@ -148,6 +150,39 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		assertEquals(expectedPrimaryMessageCount, primaryContext
 			.getWriteMessageCount());
 		assertEquals(0, secondaryContext.getWriteMessageCount());
+	}
+
+	public void isCDOMEqual(T cdo1, T cdo2)
+	{
+		assertTrue(cdo1.isCDOMEqual(cdo2));
+	}
+
+	public void assertNoSideEffects()
+	{
+		assertTrue(primaryGraph.isEmpty());
+		isCDOMEqual(primaryProf, secondaryProf);
+		assertFalse(primaryContext.getListContext().hasMasterLists());
+		assertEquals(primaryGraph, secondaryGraph);
+	}
+
+	public boolean parse(String str) throws PersistenceLayerException
+	{
+		boolean b = getToken().parse(primaryContext, primaryProf, str);
+		if (b)
+		{
+			// primaryContext.commit();
+		}
+		return b;
+	}
+
+	public boolean parseSecondary(String str) throws PersistenceLayerException
+	{
+		boolean b = getToken().parse(secondaryContext, secondaryProf, str);
+		if (b)
+		{
+			// secondaryContext.commit();
+		}
+		return b;
 	}
 
 	public abstract LstLoader<T> getLoader();

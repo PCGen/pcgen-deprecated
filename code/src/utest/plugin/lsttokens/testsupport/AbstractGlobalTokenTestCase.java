@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
@@ -87,11 +88,12 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 	}
 
 	private String prefix = "";
-	
+
 	protected void setPrefix(String s)
 	{
 		prefix = (s == null ? "" : s);
 	}
+
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
 		// Default is not to write out anything
@@ -102,7 +104,7 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		// Set value
 		for (String s : str)
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, s));
+			assertTrue(parse(s));
 		}
 		// Get back the appropriate token:
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
@@ -147,9 +149,32 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 
+	public boolean parse(String s) throws PersistenceLayerException
+	{
+		return getToken().parse(primaryContext, primaryProf, s);
+	}
+
+	public boolean parseSecondary(String s) throws PersistenceLayerException
+	{
+		return getToken().parse(secondaryContext, secondaryProf, s);
+	}
+
 	protected String getTokenName()
 	{
 		return getToken().getTokenName();
+	}
+
+	public void isCDOMEqual(CDOMObject cdo1, CDOMObject cdo2)
+	{
+		assertTrue(cdo1.isCDOMEqual(cdo2));
+	}
+
+	public void assertNoSideEffects()
+	{
+		assertTrue(primaryGraph.isEmpty());
+		isCDOMEqual(primaryProf, secondaryProf);
+		assertFalse(primaryContext.getListContext().hasMasterLists());
+		assertEquals(primaryGraph, secondaryGraph);
 	}
 
 	public abstract GlobalLstToken getToken();

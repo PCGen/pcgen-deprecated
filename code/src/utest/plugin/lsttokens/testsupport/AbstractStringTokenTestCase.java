@@ -31,7 +31,9 @@ public abstract class AbstractStringTokenTestCase<T extends PObject> extends
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+		assertFalse(parse(""));
+		assertEquals(null, primaryProf.get(getStringKey()));
+		assertNoSideEffects();
 	}
 
 	protected abstract boolean isClearLegal();
@@ -41,8 +43,7 @@ public abstract class AbstractStringTokenTestCase<T extends PObject> extends
 	{
 		try
 		{
-			assertEquals(isClearLegal(), getToken().parse(primaryContext,
-				primaryProf, ".CLEAR"));
+			assertEquals(isClearLegal(), parse(".CLEAR"));
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -56,19 +57,15 @@ public abstract class AbstractStringTokenTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Niederösterreich"));
+		assertTrue(parse("Niederösterreich"));
 		assertEquals("Niederösterreich", primaryProf.get(getStringKey()));
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, "Finger Lakes"));
+		assertTrue(parse("Finger Lakes"));
 		assertEquals("Finger Lakes", primaryProf.get(getStringKey()));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Rheinhessen"));
+		assertTrue(parse("Rheinhessen"));
 		assertEquals("Rheinhessen", primaryProf.get(getStringKey()));
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Languedoc-Roussillon"));
+		assertTrue(parse("Languedoc-Roussillon"));
 		assertEquals("Languedoc-Roussillon", primaryProf.get(getStringKey()));
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, "Yarra Valley"));
+		assertTrue(parse("Yarra Valley"));
 		assertEquals("Yarra Valley", primaryProf.get(getStringKey()));
 	}
 
@@ -80,17 +77,17 @@ public abstract class AbstractStringTokenTestCase<T extends PObject> extends
 		String[] unparsed;
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be equal", unparsed);
 		}
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Start"));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Mod"));
+		assertTrue(parse("Start"));
+		assertTrue(parse("Mod"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertEquals("Expected item to be equal", "Mod", unparsed[0]);
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be equal", unparsed);
 		}

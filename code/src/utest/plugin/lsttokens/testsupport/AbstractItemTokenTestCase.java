@@ -19,10 +19,10 @@ package plugin.lsttokens.testsupport;
 
 import org.junit.Test;
 
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
 public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PObject>
 		extends AbstractTokenTestCase<T>
@@ -32,17 +32,27 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 
 	public abstract boolean isClearLegal();
 
+	public abstract ObjectKey<?> getObjectKey();
+
+	@Test
+	public void testInvalidInputEmpty() throws PersistenceLayerException
+	{
+		assertFalse(parse(""));
+		assertNull(primaryProf.get(getObjectKey()));
+		assertNoSideEffects();
+	}
+
 	@Test
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "String"));
+		assertTrue(parse("String"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
 	@Test
 	public void testInvalidInputType() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestType"));
+		assertTrue(parse("TestType"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -51,8 +61,7 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"TestWP1,TestWP2"));
+		assertTrue(parse("TestWP1,TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -61,8 +70,7 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"TestWP1|TestWP2"));
+		assertTrue(parse("TestWP1|TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -71,8 +79,7 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"TestWP1.TestWP2"));
+		assertTrue(parse("TestWP1.TestWP2"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -80,14 +87,14 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	// @Test
 	// public void testInvalidInputAll()
 	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf, "ALL"));
+	// assertTrue(parse( "ALL"));
 	// assertFalse(primaryContext.ref.validate());
 	// }
 	//
 	// @Test
 	// public void testInvalidInputAny()
 	// {
-	// assertTrue(getToken().parse(primaryContext, primaryProf, "ANY"));
+	// assertTrue(parse( "ANY"));
 	// assertFalse(primaryContext.ref.validate());
 	// }
 	// @Test
@@ -109,17 +116,17 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 		construct(primaryContext, "TestWP2");
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be equal", unparsed);
 		}
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		assertTrue(parse("TestWP1"));
+		assertTrue(parse("TestWP2"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertEquals("Expected item to be equal", "TestWP2", unparsed[0]);
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be equal", unparsed);
 		}
@@ -129,7 +136,7 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	public void testValidInputs() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
+		assertTrue(parse("TestWP1"));
 		assertTrue(primaryContext.ref.validate());
 	}
 

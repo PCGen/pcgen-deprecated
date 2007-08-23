@@ -38,7 +38,7 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 	public void testInvalidInputUnset() throws PersistenceLayerException
 	{
 		testInvalidInputs(null);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -53,8 +53,7 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 		{
 			con = Integer.valueOf(-3);
 		}
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, con.toString()));
+		assertTrue(parse(con.toString()));
 		assertEquals(con, primaryProf.get(getIntegerKey()));
 		testInvalidInputs(con);
 		assertTrue(primaryGraph.isEmpty());
@@ -65,42 +64,40 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 		// Always ensure get is unchanged
 		// since no invalid item should set or reset the value
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TestWP"));
+		assertFalse(parse("TestWP"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "ANY"));
+		assertFalse(parse("ANY"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "FIVE"));
+		assertFalse(parse("FIVE"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "4.5"));
+		assertFalse(parse("4.5"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1/2"));
+		assertFalse(parse("1/2"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
+		assertFalse(parse("1+3"));
 		assertEquals(val, primaryProf.get(getIntegerKey()));
 		// Require Integer greater than or equal to zero
 		if (!isNegativeAllowed())
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
+			assertFalse(parse("-1"));
 			assertEquals(val, primaryProf.get(getIntegerKey()));
 		}
 		if (!isPositiveAllowed())
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf, "1"));
+			assertFalse(parse("1"));
 			assertEquals(val, primaryProf.get(getIntegerKey()));
 		}
 		if (!isZeroAllowed())
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
+			assertFalse(parse("0"));
 			assertEquals(val, primaryProf.get(getIntegerKey()));
 		}
 	}
@@ -110,19 +107,19 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 	{
 		if (isPositiveAllowed())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
+			assertTrue(parse("5"));
 			assertEquals(Integer.valueOf(5), primaryProf.get(getIntegerKey()));
-			assertTrue(getToken().parse(primaryContext, primaryProf, "1"));
+			assertTrue(parse("1"));
 			assertEquals(Integer.valueOf(1), primaryProf.get(getIntegerKey()));
 		}
 		if (isZeroAllowed())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, "0"));
+			assertTrue(parse("0"));
 			assertEquals(Integer.valueOf(0), primaryProf.get(getIntegerKey()));
 		}
 		if (isNegativeAllowed())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, "-2"));
+			assertTrue(parse("-2"));
 			assertEquals(Integer.valueOf(-2), primaryProf.get(getIntegerKey()));
 		}
 	}
@@ -186,15 +183,15 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 	{
 		if (isPositiveAllowed())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
-			assertTrue(getToken().parse(primaryContext, primaryProf, "1"));
+			assertTrue(parse("5"));
+			assertTrue(parse("1"));
 			String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertEquals("Expected item to be equal", "1", unparsed[0]);
 		}
 		else
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, "-2"));
-			assertTrue(getToken().parse(primaryContext, primaryProf, "-4"));
+			assertTrue(parse("-2"));
+			assertTrue(parse("-4"));
 			String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertEquals("Expected item to be equal", "-4", unparsed[0]);
 		}

@@ -38,7 +38,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testValidInputSimple() throws PersistenceLayerException
 	{
 		List<?> coll;
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Rheinhessen"));
+		assertTrue(parse("Rheinhessen"));
 		coll = primaryProf.getListFor(getListKey());
 		assertEquals(1, coll.size());
 		assertTrue(coll.contains(getConstant("Rheinhessen")));
@@ -48,8 +48,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testValidInputNonEnglish() throws PersistenceLayerException
 	{
 		List<?> coll;
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Niederösterreich"));
+		assertTrue(parse("Niederösterreich"));
 		coll = primaryProf.getListFor(getListKey());
 		assertEquals(1, coll.size());
 		assertTrue(coll.contains(getConstant("Niederösterreich")));
@@ -59,8 +58,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testValidInputSpace() throws PersistenceLayerException
 	{
 		List<?> coll;
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, "Finger Lakes"));
+		assertTrue(parse("Finger Lakes"));
 		coll = primaryProf.getListFor(getListKey());
 		assertEquals(1, coll.size());
 		assertTrue(coll.contains(getConstant("Finger Lakes")));
@@ -70,8 +68,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testValidInputHyphen() throws PersistenceLayerException
 	{
 		List<?> coll;
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Languedoc-Roussillon"));
+		assertTrue(parse("Languedoc-Roussillon"));
 		coll = primaryProf.getListFor(getListKey());
 		assertEquals(1, coll.size());
 		assertTrue(coll.contains(getConstant("Languedoc-Roussillon")));
@@ -81,8 +78,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testValidInputY() throws PersistenceLayerException
 	{
 		List<?> coll;
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, "Yarra Valley"));
+		assertTrue(parse("Yarra Valley"));
 		coll = primaryProf.getListFor(getListKey());
 		assertEquals(1, coll.size());
 		assertTrue(coll.contains(getConstant("Yarra Valley")));
@@ -92,8 +88,8 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testValidInputList() throws PersistenceLayerException
 	{
 		List<?> coll;
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Niederösterreich" + getJoinCharacter() + "Finger Lakes"));
+		assertTrue(parse("Niederösterreich" + getJoinCharacter()
+			+ "Finger Lakes"));
 		coll = primaryProf.getListFor(getListKey());
 		assertEquals(2, coll.size());
 		assertTrue(coll.contains(getConstant("Niederösterreich")));
@@ -104,10 +100,10 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testValidInputMultList() throws PersistenceLayerException
 	{
 		List<?> coll;
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Niederösterreich" + getJoinCharacter() + "Finger Lakes"));
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Languedoc-Roussillon" + getJoinCharacter() + "Rheinhessen"));
+		assertTrue(parse("Niederösterreich" + getJoinCharacter()
+			+ "Finger Lakes"));
+		assertTrue(parse("Languedoc-Roussillon" + getJoinCharacter()
+			+ "Rheinhessen"));
 		coll = primaryProf.getListFor(getListKey());
 		assertEquals(4, coll.size());
 		assertTrue(coll.contains(getConstant("Niederösterreich")));
@@ -122,33 +118,31 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	// public void testInvalidListEmpty() throws PersistenceLayerException
 	// {
 	// primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
-	// assertFalse(getToken().parse(primaryContext, primaryProf, ""));
+	// assertFalse(parse( ""));
 	// }
 
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1" + getJoinCharacter()));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1" + getJoinCharacter()));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidListStart() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			getJoinCharacter() + "TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(getJoinCharacter() + "TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -156,9 +150,9 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	{
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP1");
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP2" + getJoinCharacter() + getJoinCharacter() + "TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP2" + getJoinCharacter() + getJoinCharacter()
+			+ "TestWP1"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -214,25 +208,24 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 		String[] unparsed;
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be null", unparsed);
 		}
 		if (isClearDotLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf,
-				".CLEAR.TestWP1"));
+			assertTrue(parse(".CLEAR.TestWP1"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be equal", unparsed);
 		}
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		assertTrue(parse("TestWP1"));
+		assertTrue(parse("TestWP2"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertEquals("Expected item to be equal", "TestWP1"
 			+ getJoinCharacter() + "TestWP2", unparsed[0]);
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be null", unparsed);
 		}
@@ -242,15 +235,14 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testReplacementInputsTwo() throws PersistenceLayerException
 	{
 		String[] unparsed;
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		assertTrue(parse("TestWP1"));
+		assertTrue(parse("TestWP2"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertEquals("Expected item to be equal", "TestWP1"
 			+ getJoinCharacter() + "TestWP2", unparsed[0]);
 		if (isClearDotLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf,
-				".CLEAR.TestWP1"));
+			assertTrue(parse(".CLEAR.TestWP1"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertEquals("Expected item to be equal", "TestWP2", unparsed[0]);
 		}
@@ -261,9 +253,8 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	{
 		if (isClearLegal())
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"TestWP1" + getJoinCharacter() + ".CLEAR"));
-			assertTrue(primaryGraph.isEmpty());
+			assertFalse(parse("TestWP1" + getJoinCharacter() + ".CLEAR"));
+			assertNoSideEffects();
 		}
 	}
 
@@ -273,8 +264,7 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 		if (isClearDotLegal())
 		{
 			// DoNotConstruct TestWP1
-			assertTrue(getToken().parse(primaryContext, primaryProf,
-				".CLEAR.TestWP1"));
+			assertTrue(parse(".CLEAR.TestWP1"));
 			assertFalse(primaryContext.ref.validate());
 		}
 	}
@@ -285,16 +275,12 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	{
 		if (isClearDotLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf,
-				"TestWP1" + getJoinCharacter() + "TestWP2"));
-			assertTrue(getToken().parse(secondaryContext, secondaryProf,
-				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
+				+ "TestWP2"));
 			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-			assertFalse(getToken().parse(
-				primaryContext,
-				primaryProf,
-				"TestWP3" + getJoinCharacter() + ".CLEAR.TestWP2"
-					+ getJoinCharacter() + "ALL"));
+			assertFalse(parse("TestWP3" + getJoinCharacter() + ".CLEAR.TestWP2"
+				+ getJoinCharacter() + "ALL"));
 			assertEquals("Bad Clear had Side Effects", primaryGraph,
 				secondaryGraph);
 		}
@@ -304,13 +290,11 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	public void testInputInvalidAddsBasicNoSideEffect()
 		throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"TestWP1" + getJoinCharacter() + "TestWP2"));
-		assertTrue(getToken().parse(secondaryContext, secondaryProf,
-			"TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertTrue(parseSecondary("TestWP1" + getJoinCharacter() + "TestWP2"));
 		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP3" + getJoinCharacter() + getJoinCharacter() + "TestWP4"));
+		assertFalse(parse("TestWP3" + getJoinCharacter() + getJoinCharacter()
+			+ "TestWP4"));
 		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
 
@@ -320,16 +304,12 @@ public abstract class AbstractGlobalTypeSafeListTestCase extends
 	{
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf,
-				"TestWP1" + getJoinCharacter() + "TestWP2"));
-			assertTrue(getToken().parse(secondaryContext, secondaryProf,
-				"TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
+			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
+				+ "TestWP2"));
 			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-			assertFalse(getToken().parse(
-				primaryContext,
-				primaryProf,
-				".CLEAR" + getJoinCharacter() + "TestWP3" + getJoinCharacter()
-					+ "ALL"));
+			assertFalse(parse(".CLEAR" + getJoinCharacter() + "TestWP3"
+				+ getJoinCharacter() + "ALL"));
 			assertEquals("Bad Clear had Side Effects", primaryGraph,
 				secondaryGraph);
 		}

@@ -41,23 +41,19 @@ public abstract class AbstractTypeSafeTokenTestCase<T extends PObject> extends
 			getConstant("Languedoc-Roussillon");
 			getConstant("Yarra Valley");
 		}
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Niederösterreich"));
+		assertTrue(parse("Niederösterreich"));
 		assertEquals(getConstant("Niederösterreich"), primaryProf
 			.get(getObjectKey()));
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, "Finger Lakes"));
+		assertTrue(parse("Finger Lakes"));
 		assertEquals(getConstant("Finger Lakes"), primaryProf
 			.get(getObjectKey()));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Rheinhessen"));
+		assertTrue(parse("Rheinhessen"));
 		assertEquals(getConstant("Rheinhessen"), primaryProf
 			.get(getObjectKey()));
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Languedoc-Roussillon"));
+		assertTrue(parse("Languedoc-Roussillon"));
 		assertEquals(getConstant("Languedoc-Roussillon"), primaryProf
 			.get(getObjectKey()));
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, "Yarra Valley"));
+		assertTrue(parse("Yarra Valley"));
 		assertEquals(getConstant("Yarra Valley"), primaryProf
 			.get(getObjectKey()));
 	}
@@ -79,19 +75,38 @@ public abstract class AbstractTypeSafeTokenTestCase<T extends PObject> extends
 		}
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be equal", unparsed);
 		}
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		assertTrue(parse("TestWP1"));
+		assertTrue(parse("TestWP2"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertEquals("Expected item to be equal", "TestWP2", unparsed[0]);
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be equal", unparsed);
+		}
+	}
+
+	@Test
+	public void testInvalidPreconstruction() throws PersistenceLayerException
+	{
+		if (requiresPreconstruction())
+		{
+			try
+			{
+				if (parse("Not Preconstructed"))
+				{
+					assertFalse(primaryContext.ref.validate());
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+				// OK as well
+			}
 		}
 	}
 

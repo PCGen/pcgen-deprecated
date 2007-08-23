@@ -29,19 +29,15 @@ public abstract class AbstractGlobalStringTokenTestCase extends
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Niederösterreich"));
+		assertTrue(parse("Niederösterreich"));
 		assertEquals("Niederösterreich", primaryProf.get(getStringKey()));
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, "Finger Lakes"));
+		assertTrue(parse("Finger Lakes"));
 		assertEquals("Finger Lakes", primaryProf.get(getStringKey()));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Rheinhessen"));
+		assertTrue(parse("Rheinhessen"));
 		assertEquals("Rheinhessen", primaryProf.get(getStringKey()));
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Languedoc-Roussillon"));
+		assertTrue(parse("Languedoc-Roussillon"));
 		assertEquals("Languedoc-Roussillon", primaryProf.get(getStringKey()));
-		assertTrue(getToken()
-			.parse(primaryContext, primaryProf, "Yarra Valley"));
+		assertTrue(parse("Yarra Valley"));
 		assertEquals("Yarra Valley", primaryProf.get(getStringKey()));
 	}
 

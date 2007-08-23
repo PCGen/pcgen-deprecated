@@ -29,12 +29,11 @@ public abstract class AbstractGlobalFormulaTokenTestCase extends
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Variable1"));
+		assertTrue(parse("Variable1"));
 		assertEquals("Variable1", primaryProf.get(getFormulaKey()).toString());
-		assertTrue(getToken().parse(primaryContext, primaryProf, "3"));
+		assertTrue(parse("3"));
 		assertEquals("3", primaryProf.get(getFormulaKey()).toString());
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"3+CL(\"Fighter\""));
+		assertTrue(parse("3+CL(\"Fighter\""));
 		assertEquals("3+CL(\"Fighter\"", primaryProf.get(getFormulaKey())
 			.toString());
 	}
@@ -44,8 +43,8 @@ public abstract class AbstractGlobalFormulaTokenTestCase extends
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test

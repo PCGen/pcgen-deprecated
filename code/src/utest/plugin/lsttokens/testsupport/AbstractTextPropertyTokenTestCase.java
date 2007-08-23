@@ -62,79 +62,71 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidPipeOnly() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEndsPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Yarra Valley|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Yarra Valley|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidStartsPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"|Yarra Valley"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Yarra Valley"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Yarra Valley||Rheinhessen"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Yarra Valley||Rheinhessen"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyPre() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "!PRELEVEL:3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("!PRELEVEL:3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmbeddedNotPre() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Yarra Valley|!PRELEVEL:3|Rheinhessen"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Yarra Valley|!PRELEVEL:3|Rheinhessen"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadPre() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Yarra Valley|Rheinhessen|PREFOO:3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Yarra Valley|Rheinhessen|PREFOO:3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNotBadPre() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Yarra Valley|Rheinhessen|!PREFOO:3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Yarra Valley|Rheinhessen|!PREFOO:3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmbeddedPre() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Yarra Valley|PRELEVEL:4|Rheinhessen"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Yarra Valley|PRELEVEL:4|Rheinhessen"));
+		assertNoSideEffects();
 	}
 
 	@Test
