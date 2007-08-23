@@ -81,59 +81,56 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputLeadingBar() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|Wizard"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Wizard"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingBar() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Wizard|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Wizard|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegationMix() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Wizard|!Sorcerer"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Wizard|!Sorcerer"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegationMixTwo()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"!Wizard|Sorcerer"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("!Wizard|Sorcerer"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Wizard||Sorcerer"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Wizard||Sorcerer"));
+		assertNoSideEffects();
 	}
 
 	// @Test
 	// public void testInvalidInputEmptyType() throws PersistenceLayerException
 	// {
-	// assertFalse(getToken().parse(primaryContext, primaryProf, "TYPE."));
+	// assertFalse(parse( "TYPE."));
 	// }
 
 	@Test
 	public void testInvalidInputNotClass() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Wizard"));
+		assertTrue(parse("Wizard"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -141,8 +138,7 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	public void testInvalidInputNotClassCompound()
 		throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"Wizard|Sorcerer"));
+		assertTrue(parse("Wizard|Sorcerer"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -151,13 +147,13 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	{
 		try
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"Wizard|ALL"));
+			assertFalse(parse("Wizard|ALL"));
 		}
 		catch (IllegalArgumentException iae)
 		{
 			// OK as well
 		}
+		assertNoSideEffects();
 	}
 
 	// @Test(expected = IllegalArgumentException.class)
@@ -166,29 +162,27 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	{
 		try
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"!Wizard|ALL"));
+			assertFalse(parse("!Wizard|ALL"));
 		}
 		catch (IllegalArgumentException iae)
 		{
 			// OK as well
 		}
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegativeAll() throws PersistenceLayerException
 	{
 		// This technically gets caught by the PRECLASS parser...
-		assertFalse(getToken().parse(primaryContext, primaryProf, "!ALL"));
+		assertFalse(parse("!ALL"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testRoundRobinAll() throws PersistenceLayerException
 	{
-		assertEquals(0, primaryContext.getWriteMessageCount());
 		runRoundRobin("ALL");
-		assertTrue(primaryContext.ref.validate());
-		assertEquals(0, primaryContext.getWriteMessageCount());
 	}
 
 	@Test

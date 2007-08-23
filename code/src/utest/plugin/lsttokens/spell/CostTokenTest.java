@@ -56,99 +56,92 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	@Test
 	public void testBadDefaultNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "-5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadDefaultNaN() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "YES"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("YES"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadDefaultTailingPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "5|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadTailingPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5|Wizard,10|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|Wizard,10|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadNoDefault() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Wizard,10"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Wizard,10"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadLeadingPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadDoublePipeToStart() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5||Sorcerer,50|Wizard,10"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5||Sorcerer,50|Wizard,10"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5|Sorcerer,50||Wizard,10"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|Sorcerer,50||Wizard,10"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadDoubleComma() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5|Sorcerer,50|Wizard,,10"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|Sorcerer,50|Wizard,,10"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadSameClass() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5|Wizard,50|Wizard,10"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|Wizard,50|Wizard,10"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadNegativeClassCost() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5|Wizard,-10"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|Wizard,-10"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadTrailingComma() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"5|Sorcerer,50|Wizard,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|Sorcerer,50|Wizard,"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -156,9 +149,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		try
 		{
-			boolean parse =
-					getToken().parse(primaryContext, primaryProf,
-						"5|Sorcerer,50|,25");
+			boolean parse = parse("5|Sorcerer,50|,25");
 			if (parse)
 			{
 				fail();
@@ -168,29 +159,29 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 		{
 			// OK
 		}
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadTwoDefaults() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "5|50"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("5|50"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
 		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm;
-		assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
+		assertTrue(parse("5"));
 		dm = primaryProf.get(ObjectKey.COMPONENT_COST);
 		assertTrue(dm.isEmpty());
 		assertEquals(Integer.valueOf(5), dm.getDefaultValue());
-		assertTrue(getToken().parse(primaryContext, primaryProf, "1"));
+		assertTrue(parse("1"));
 		dm = primaryProf.get(ObjectKey.COMPONENT_COST);
 		assertTrue(dm.isEmpty());
 		assertEquals(Integer.valueOf(1), dm.getDefaultValue());
-		assertTrue(getToken().parse(primaryContext, primaryProf, "0"));
+		assertTrue(parse("0"));
 		dm = primaryProf.get(ObjectKey.COMPONENT_COST);
 		assertTrue(dm.isEmpty());
 		assertEquals(Integer.valueOf(0), dm.getDefaultValue());

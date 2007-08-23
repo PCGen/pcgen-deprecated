@@ -72,143 +72,139 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputClassOnly() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputLevelOnly() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputChainClassOnly()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "Fire=3|Good"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=3|Good"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoubleEquals() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire==4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire==4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputBadLevel() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=Good"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=Good"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegativeLevel()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=-4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=-4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputLeadingBar() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|Fire=4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Fire=4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingBar() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=4|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=4|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Fire=3||Good=4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=3||Good=4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoubleComma() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Fire,,Good=4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire,,Good=4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputLeadingComma() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ",Fire=4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(",Fire=4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingEquals()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=4="));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=4="));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoubleSet() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=4=3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=4=3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTrailingComma()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire,=4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire,=4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyType() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TYPE.=4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TYPE.=4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyPrerequisite()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fire=4[]"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=4[]"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputOpenEndedPrerequisite()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Fire=4[PRERACE:1,Human"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fire=4[PRERACE:1,Human"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNotClass() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Fire=4"));
+		assertTrue(parse("Fire=4"));
 		assertFalse(primaryContext.ref.validate());
 	}
 
@@ -219,8 +215,15 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
 		// Intentionally do NOT build Good
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Fire,Good=4"));
+		assertTrue(parse("Fire,Good=4"));
 		assertFalse(primaryContext.ref.validate());
+	}
+
+	@Test
+	public void testValidInputClearAll() throws PersistenceLayerException
+	{
+		assertTrue(parse(".CLEARALL"));
+		assertTrue(primaryContext.ref.validate());
 	}
 
 	@Test
@@ -281,13 +284,13 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		try
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"Fire,ALL=3"));
+			assertFalse(parse("Fire,ALL=3"));
 		}
 		catch (IllegalArgumentException iae)
 		{
 			// OK as well
 		}
+		assertNoSideEffects();
 	}
 
 	// @Test(expected = IllegalArgumentException.class)
@@ -295,21 +298,18 @@ public class DomainsTokenTest extends AbstractTokenTestCase<Spell>
 	{
 		try
 		{
-			assertFalse(getToken().parse(primaryContext, primaryProf,
-				"ALL,Fire=4"));
+			assertFalse(parse("ALL,Fire=4"));
 		}
 		catch (IllegalArgumentException iae)
 		{
 			// OK as well
 		}
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testRoundRobinAll() throws PersistenceLayerException
 	{
-		assertEquals(0, primaryContext.getWriteMessageCount());
 		runRoundRobin("ALL=3");
-		assertTrue(primaryContext.ref.validate());
-		assertEquals(0, primaryContext.getWriteMessageCount());
 	}
 }

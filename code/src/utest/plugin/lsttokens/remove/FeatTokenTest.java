@@ -71,7 +71,7 @@ public class FeatTokenTest extends AbstractRemoveTokenTestCase
 	}
 
 	@Override
-	public boolean isAllLegal()
+	public boolean isAnyLegal()
 	{
 		return true;
 	}

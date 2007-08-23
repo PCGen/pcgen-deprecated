@@ -55,7 +55,7 @@ public class UseuntrainedTokenTest extends AbstractTokenTestCase<Skill>
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
 		internalTestInvalidInputString(null);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
