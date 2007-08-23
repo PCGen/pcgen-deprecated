@@ -55,281 +55,275 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	public void testInvalidInputTooManyLimits()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"15|CLASS=Fighter|CLASS.TYPE=Base"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("15|CLASS=Fighter|CLASS.TYPE=Base"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNotALimit() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"15|PRECLASS:1,Fighter"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("15|PRECLASS:1,Fighter"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyLimit() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "15|CLASS="));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("15|CLASS="));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyTypeLimit()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"15|CLASS.TYPE="));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("15|CLASS.TYPE="));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputStartDotTypeLimit()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"15|CLASS.TYPE=.Strange"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("15|CLASS.TYPE=.Strange"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEndDotTypeLimit()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"15|CLASS.TYPE=Strange."));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("15|CLASS.TYPE=Strange."));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoubleDotTypeLimit()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"15|CLASS.TYPE=Prestige..Strange"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("15|CLASS.TYPE=Prestige..Strange"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputDivideNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%/-2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%/-2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputDivideZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%/0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%/0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputDivide() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "%/4"));
+		assertTrue(parse("%/4"));
 	}
 
 	@Test
 	public void testInvalidInputAddNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%+-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%+-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputAddZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%+0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%+0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputAdd() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "%+4"));
+		assertTrue(parse("%+4"));
 	}
 
 	@Test
 	public void testInvalidInputMultiplyNegative()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%*-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%*-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputMultiplyZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%*0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%*0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputMultiply() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "%*4"));
+		assertTrue(parse("%*4"));
 	}
 
 	@Test
 	public void testInvalidInputSubtractNegative()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%--3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%--3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputSubtractZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%-0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%-0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputSubtract() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "%-4"));
+		assertTrue(parse("%-4"));
 	}
 
 	@Test
 	public void testInvalidInputUpNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%up-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%up-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputUpZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%up0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%up0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputUp() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "%up4"));
+		assertTrue(parse("%up4"));
 	}
 
 	@Test
 	public void testInvalidInputUpTooBig() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%up5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%up5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputUpReallyTooBig()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%up15"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%up15"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputHUpNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hup-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%Hup-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputHUpZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hup0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%Hup0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputHUp() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "%Hup4"));
+		assertTrue(parse("%Hup4"));
 	}
 
 	@Test
 	public void testInvalidInputDownNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%down-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%down-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDownZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%down0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%down0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputDown() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "%down4"));
+		assertTrue(parse("%down4"));
 	}
 
 	@Test
 	public void testInvalidInputHdownNegative()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hdown-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%Hdown-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputHdownZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%Hdown0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%Hdown0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputHdown() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "%Hdown4"));
+		assertTrue(parse("%Hdown4"));
 	}
 
 	@Test
 	public void testInvalidInputDownTooBig() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%down5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%down5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDownReallyTooBig()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%down15"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%down15"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "-3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDecimal() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3.5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3.5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputMisspell() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "%upn5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("%upn5"));
+		assertNoSideEffects();
 	}
 
 	@Test

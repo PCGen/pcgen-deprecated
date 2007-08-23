@@ -54,44 +54,42 @@ public class MonsterClassTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testInvalidNoColon() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoColon() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "Fighter:4:1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter:4:1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidLevelNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter:-4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter:-4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidLevelZero() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Fighter:0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter:0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidLevelNaN() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Fighter:Level"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Fighter:Level"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadClass() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "Fighter:4"));
+		assertTrue(parse("Fighter:4"));
 		assertFalse(primaryContext.ref.validate());
 	}
 

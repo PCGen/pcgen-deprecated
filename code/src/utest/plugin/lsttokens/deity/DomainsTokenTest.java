@@ -121,9 +121,8 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	@Test
 	public void testInvalidOnlyPre() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "!PRELEVEL:3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("!PRELEVEL:3"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -131,9 +130,8 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1|!PRELEVEL:3|TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1|!PRELEVEL:3|TestWP2"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -141,9 +139,8 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1,TestWP2|PREFOO:3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1,TestWP2|PREFOO:3"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -151,9 +148,8 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1,TestWP2|!PREFOO:3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1,TestWP2|!PREFOO:3"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -161,9 +157,8 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1|PRELEVEL:4|TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TestWP1|PRELEVEL:4|TestWP2"));
+		assertNoSideEffects();
 	}
 
 	@Test

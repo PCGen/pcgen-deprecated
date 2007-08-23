@@ -88,29 +88,29 @@ public class AlignTokenTest extends AbstractTokenTestCase<Deity>
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidFormula() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1+3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInteger() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidString() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("String"));
+		assertNoSideEffects();
 	}
 
 	@Test

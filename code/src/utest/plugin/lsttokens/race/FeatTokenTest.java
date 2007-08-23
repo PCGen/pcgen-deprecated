@@ -123,7 +123,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 	public void testInvalidInputEmpty()
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -139,7 +139,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 		{
 			// this is okay too :)
 		}
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -148,7 +148,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1||PRECLASS:1,Fighter=1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 		construct(primaryContext, "TestWP1");
 		assertFalse(token.parse(primaryContext, primaryProf,
 			"TestWP1|PRECLASS:1,Fighter=1|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -208,8 +208,6 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|TestWP1");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -217,8 +215,6 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -228,8 +224,6 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1", "TestWP1|PRERACE:1,Human");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 
 	@Test
@@ -241,7 +235,5 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human",
 				"TestWP2|TestWP2|PRERACE:1,Elf");
-		assertTrue(primaryContext.ref.validate());
-		assertTrue(secondaryContext.ref.validate());
 	}
 }

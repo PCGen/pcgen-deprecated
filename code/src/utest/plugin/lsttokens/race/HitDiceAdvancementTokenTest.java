@@ -54,7 +54,7 @@ public class HitDiceAdvancementTokenTest extends AbstractTokenTestCase<Race>
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	// @Test
@@ -68,63 +68,63 @@ public class HitDiceAdvancementTokenTest extends AbstractTokenTestCase<Race>
 	public void testInvalidEmptyValue1() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, ",2,3,4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyValue2() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "1,,3,4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyValueLast() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "1,2,3,"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeValue() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "-1,2,3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDecreasingValue() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5,3,8"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmbeddedSplat() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5,*,8"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNaN() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5,N"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTooMuchSplat() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5,8*"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTooMuchAfterSplat() throws PersistenceLayerException
 	{
 		assertFalse(token.parse(primaryContext, primaryProf, "5,*8"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
