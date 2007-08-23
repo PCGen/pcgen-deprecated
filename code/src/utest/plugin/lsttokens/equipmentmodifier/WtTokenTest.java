@@ -55,43 +55,42 @@ public class WtTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	@Test
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("String"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputType() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TYPE=TestType"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TYPE=TestType"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputFormula() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1+3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputFraction() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1/2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1/2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testValidInputDecimal() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "4.5"));
+		assertTrue(parse("4.5"));
 		BigDecimal weight = primaryProf.get(ObjectKey.WEIGHT);
 		assertEquals(new BigDecimal(4.5), weight);
 	}
@@ -99,7 +98,7 @@ public class WtTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	@Test
 	public void testValidInputInteger() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "5"));
+		assertTrue(parse("5"));
 		BigDecimal weight = primaryProf.get(ObjectKey.WEIGHT);
 		assertEquals(new BigDecimal(5), weight);
 	}
@@ -107,7 +106,7 @@ public class WtTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	@Test
 	public void testValidInputZero() throws PersistenceLayerException
 	{
-		assertTrue(getToken().parse(primaryContext, primaryProf, "0"));
+		assertTrue(parse("0"));
 		BigDecimal weight = primaryProf.get(ObjectKey.WEIGHT);
 		assertEquals(new BigDecimal(0), weight);
 	}

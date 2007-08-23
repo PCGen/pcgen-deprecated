@@ -52,51 +52,50 @@ public class QualityTokenTest extends AbstractTokenTestCase<Equipment>
 	@Test
 	public void testInvalidNoPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "NoPipe"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("NoPipe"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"One|Two|Three"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("One|Two|Three"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Two||Pipe"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Two||Pipe"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidOnlyPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyKey() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|Value"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Value"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyValue() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Key|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Key|"));
+		assertNoSideEffects();
 	}
 
 	@Test

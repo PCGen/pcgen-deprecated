@@ -54,8 +54,7 @@ public class ModsTokenTest extends AbstractTokenTestCase<Equipment>
 	{
 		try
 		{
-			boolean parse =
-					getToken().parse(primaryContext, primaryProf, "INVALID");
+			boolean parse = parse("INVALID");
 			assertFalse(parse);
 		}
 		catch (IllegalArgumentException e)
@@ -67,8 +66,8 @@ public class ModsTokenTest extends AbstractTokenTestCase<Equipment>
 	@Test
 	public void testBadInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test

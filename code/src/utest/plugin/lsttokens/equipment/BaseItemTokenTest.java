@@ -17,6 +17,7 @@
  */
 package plugin.lsttokens.equipment;
 
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Equipment;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentLoader;
@@ -58,5 +59,11 @@ public class BaseItemTokenTest extends
 	public boolean isClearLegal()
 	{
 		return false;
+	}
+
+	@Override
+	public ObjectKey<?> getObjectKey()
+	{
+		return ObjectKey.BASE_ITEM;
 	}
 }

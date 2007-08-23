@@ -51,6 +51,7 @@ public class DamageTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 		return loader;
 	}
 
+	//TODO Should Damage be tightened up?
 	// @Test
 	// public void testInvalidStringInput() throws PersistenceLayerException
 	// {

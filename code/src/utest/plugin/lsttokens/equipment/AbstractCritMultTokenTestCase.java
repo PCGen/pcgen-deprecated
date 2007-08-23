@@ -46,85 +46,85 @@ public abstract class AbstractCritMultTokenTestCase extends
 	@Test
 	public void testInvalidStringInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 	}
 
 	@Test
 	public void testInvalidTypeInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDecimalInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "4.5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("4.5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidFractionInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1/2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1/2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidFunctionInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1+3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidZeroInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTimesNegativeInput()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "x-1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("x-1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTimesZeroInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "x0"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("x0"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoTimesInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTimesNaNInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "xY"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("xY"));
+		assertNoSideEffects();
 	}
 
 	@Test

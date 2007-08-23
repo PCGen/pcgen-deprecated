@@ -53,16 +53,14 @@ public class SPropTokenTest extends
 	@Test
 	public void testInvalidDoubleClear() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			".CLEAR|.CLEAR|Second"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(".CLEAR|.CLEAR|Second"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidClearAsVariable() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Second|.CLEAR"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Second|.CLEAR"));
+		assertNoSideEffects();
 	}
 }

@@ -89,104 +89,93 @@ public abstract class AbstractEqModTokenTestCase extends
 	@Test
 	public void testInvalidMiddleNone() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"EQMOD1.NONE.EQMOD2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("EQMOD1.NONE.EQMOD2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidStartingNone() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "NONE.EQMOD2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("NONE.EQMOD2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEndingNone() throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "EQMOD2.NONE"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("EQMOD2.NONE"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyAssociation() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "EQMOD2|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("EQMOD2|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTrailingAssociation()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"EQMOD2|Assoc|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("EQMOD2|Assoc|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyModAssociation()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"|Assoc|Assoc2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Assoc|Assoc2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptySecondModAssociation()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"MOD1.|Assoc|Assoc2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("MOD1.|Assoc|Assoc2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptySecondModAfterAssociation()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"MOD1|ModAssoc.|Assoc|Assoc2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("MOD1|ModAssoc.|Assoc|Assoc2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyComplexAssociation()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"MOD1|ModAssoc[]"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("MOD1|ModAssoc[]"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoOpenBracketComplexAssociation()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"MOD1|ModAssoc Assoc]"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("MOD1|ModAssoc Assoc]"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoOpenBracketComplexAssociation()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"MOD1|ModAssoc[[Assoc]"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("MOD1|ModAssoc[[Assoc]"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDoubleBarAssociation()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"EQMOD2|Assoc||Assoc2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("EQMOD2|Assoc||Assoc2"));
+		assertNoSideEffects();
 	}
 
 	public void testRoundRobinOnlyAssociation()

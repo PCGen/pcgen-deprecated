@@ -53,57 +53,57 @@ public class ChargesTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	@Test
 	public void testInvalidEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTwoPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "4|5|6"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("4|5|6"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMinNaN() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "String|4"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("String|4"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMaxNaN() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "3|Str"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("3|Str"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMinNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "-4|5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-4|5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMaxNegative() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "6|-7"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("6|-7"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidMaxLTMin() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "7|3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("7|3"));
+		assertNoSideEffects();
 	}
 
 	@Test

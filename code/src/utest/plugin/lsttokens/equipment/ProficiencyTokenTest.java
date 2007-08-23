@@ -17,6 +17,7 @@
  */
 package plugin.lsttokens.equipment;
 
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Equipment;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.lst.CDOMToken;
@@ -58,5 +59,11 @@ public class ProficiencyTokenTest extends
 	public boolean isClearLegal()
 	{
 		return false;
+	}
+
+	@Override
+	public ObjectKey<?> getObjectKey()
+	{
+		return ObjectKey.WEAPON_PROF;
 	}
 }

@@ -46,49 +46,50 @@ public abstract class AbstractCritRangeTokenTestCase extends
 	@Test
 	public void testInvalidStringInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTypeInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidDecimalInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "4.5"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("4.5"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidFractionInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1/2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1/2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidFunctionInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1+3"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("1+3"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "-1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("-1"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyInput() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test

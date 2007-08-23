@@ -54,8 +54,7 @@ public class NameoptTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	{
 		try
 		{
-			boolean parse =
-					getToken().parse(primaryContext, primaryProf, "INVALID");
+			boolean parse = parse("INVALID");
 			assertFalse(parse);
 		}
 		catch (IllegalArgumentException e)
@@ -67,22 +66,22 @@ public class NameoptTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	@Test
 	public void testBadInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadInputPlainText() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TEXT"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TEXT"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testBadInputEmptyText() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "TEXT="));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("TEXT="));
+		assertNoSideEffects();
 	}
 
 	@Test

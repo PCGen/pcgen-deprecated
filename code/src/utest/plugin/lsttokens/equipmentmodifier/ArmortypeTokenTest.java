@@ -54,45 +54,43 @@ public class ArmortypeTokenTest extends
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ""));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse(""));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputNoResult() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Medium"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Medium"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptyResult() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "Medium|"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Medium|"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputEmptySource() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "|Medium"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("|Medium"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputDoublePipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Light||Medium"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Light||Medium"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidInputTwoPipe() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"Light|Medium|Heavy"));
-		assertTrue(primaryGraph.isEmpty());
+		assertFalse(parse("Light|Medium|Heavy"));
+		assertNoSideEffects();
 	}
 
 	@Test

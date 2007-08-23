@@ -86,19 +86,18 @@ public class AltTypeTokenTest extends AbstractTypeSafeListTestCase<Equipment>
 	public void testReplacementRemove() throws PersistenceLayerException
 	{
 		String[] unparsed;
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"REMOVE.TestWP1"));
+		assertTrue(parse("REMOVE.TestWP1"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertNull("Expected item to be equal", unparsed);
 
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "ADD.TestWP2"));
+		assertTrue(parse("TestWP1"));
+		assertTrue(parse("ADD.TestWP2"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertEquals("Expected item to be equal", "TestWP1"
 			+ getJoinCharacter() + "TestWP2", unparsed[0]);
 		if (isClearLegal())
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, ".CLEAR"));
+			assertTrue(parse(".CLEAR"));
 			unparsed = getToken().unparse(primaryContext, primaryProf);
 			assertNull("Expected item to be null", unparsed);
 		}
@@ -108,13 +107,12 @@ public class AltTypeTokenTest extends AbstractTypeSafeListTestCase<Equipment>
 	public void testReplacementRemoveTwo() throws PersistenceLayerException
 	{
 		String[] unparsed;
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP1"));
-		assertTrue(getToken().parse(primaryContext, primaryProf, "TestWP2"));
+		assertTrue(parse("TestWP1"));
+		assertTrue(parse("TestWP2"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertEquals("Expected item to be equal", "TestWP1"
 			+ getJoinCharacter() + "TestWP2", unparsed[0]);
-		assertTrue(getToken().parse(primaryContext, primaryProf,
-			"REMOVE.TestWP1"));
+		assertTrue(parse("REMOVE.TestWP1"));
 		unparsed = getToken().unparse(primaryContext, primaryProf);
 		assertEquals("Expected item to be equal", "TestWP2", unparsed[0]);
 	}
@@ -123,30 +121,30 @@ public class AltTypeTokenTest extends AbstractTypeSafeListTestCase<Equipment>
 	public void testInputInvalidRemoveNoTrailing()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1.REMOVE"));
+		assertFalse(parse("TestWP1.REMOVE"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInputInvalidAddNoTrailing()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken()
-			.parse(primaryContext, primaryProf, "TestWP1.ADD"));
+		assertFalse(parse("TestWP1.ADD"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInputInvalidAddRemove() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1.ADD.REMOVE.TestWP2"));
+		assertFalse(parse("TestWP1.ADD.REMOVE.TestWP2"));
+		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInputInvalidRemoveAdd() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf,
-			"TestWP1.REMOVE.ADD.TestWP2"));
+		assertFalse(parse("TestWP1.REMOVE.ADD.TestWP2"));
+		assertNoSideEffects();
 	}
 
 }
