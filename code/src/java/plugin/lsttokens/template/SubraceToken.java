@@ -64,9 +64,8 @@ public class SubraceToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		String subrace = value;
 		context.getObjectContext().put(template, ObjectKey.SUBRACE,
-			SubRace.getConstant(subrace));
+			SubRace.getConstant(value));
 		return true;
 	}
 

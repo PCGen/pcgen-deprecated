@@ -58,10 +58,18 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		int skillCount;
 		try
 		{
-			skillCount = Integer.parseInt(value);
+			int skillCount = Integer.parseInt(value);
+			if (skillCount <= 0)
+			{
+				Logging.errorPrint(getTokenName()
+					+ " must be an integer greater than zero");
+				return false;
+			}
+			ClassSkillPointFactory cf = new ClassSkillPointFactory(skillCount);
+			context.getGraphContext().grant(getTokenName(), template, cf);
+			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -69,16 +77,6 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 				+ value);
 			return false;
 		}
-		if (skillCount <= 0)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " must be an integer greater than zero");
-			return false;
-		}
-
-		ClassSkillPointFactory cf = new ClassSkillPointFactory(skillCount);
-		context.getGraphContext().grant(getTokenName(), template, cf);
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)

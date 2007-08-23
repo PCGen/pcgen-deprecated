@@ -222,6 +222,7 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 			PCClassLevel pcl = cl.getClassLevel(level);
 			HitDieCommandFactory cf = new HitDieCommandFactory(pcl, hdm);
 			context.getObjectContext().put(pcl, ObjectKey.HITDIE, cf);
+			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -230,7 +231,6 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 			Logging.errorPrint("  Must be an Integer");
 			return false;
 		}
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc, int level)

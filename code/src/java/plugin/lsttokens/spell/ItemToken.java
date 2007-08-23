@@ -83,9 +83,8 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 						+ ": cannot be empty item in brackets []");
 					return false;
 				}
-				Type t = Type.getConstant(substring);
 				context.getObjectContext().addToList(spell,
-					ListKey.PROHIBITED_ITEM, t);
+					ListKey.PROHIBITED_ITEM, Type.getConstant(substring));
 			}
 			else
 			{
@@ -96,8 +95,8 @@ public class ItemToken extends AbstractToken implements SpellLstToken
 						+ value);
 					return false;
 				}
-				Type t = Type.getConstant(tokString);
-				context.getObjectContext().addToList(spell, ListKey.ITEM, t);
+				context.getObjectContext().addToList(spell, ListKey.ITEM,
+					Type.getConstant(tokString));
 			}
 		}
 		return true;

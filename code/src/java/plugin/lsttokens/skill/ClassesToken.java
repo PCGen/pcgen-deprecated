@@ -79,9 +79,8 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		}
 
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
-		List<CDOMReference<ClassSkillList>> allowed =
-				new ArrayList<CDOMReference<ClassSkillList>>();
 		List<Prerequisite> prevented = new ArrayList<Prerequisite>();
+		boolean added = false;
 
 		while (pipeTok.hasMoreTokens())
 		{
@@ -100,27 +99,21 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 			}
 			else
 			{
-				allowed.add(context.ref.getCDOMReference(SKILLLIST_CLASS,
-					className));
-			}
-		}
-		if (!prevented.isEmpty() && !allowed.isEmpty())
-		{
-			Logging.errorPrint("Non-sensical " + getTokenName() + ": " + value);
-			Logging.errorPrint("  Token contains both negated "
-				+ "and non-negated class references");
-			return false;
-		}
-
-		if (!allowed.isEmpty())
-		{
-			for (CDOMReference<ClassSkillList> ref : allowed)
-			{
-				addSkillAllowed(context, skill, ref);
+				addSkillAllowed(context, skill, context.ref.getCDOMReference(
+					SKILLLIST_CLASS, className));
+				added = true;
 			}
 		}
 		if (!prevented.isEmpty())
 		{
+			if (added)
+			{
+				Logging.errorPrint("Non-sensical " + getTokenName() + ": "
+					+ value);
+				Logging.errorPrint("  Token contains both negated "
+					+ "and non-negated class references");
+				return false;
+			}
 			CDOMReference<ClassSkillList> ref =
 					context.ref.getCDOMAllReference(SKILLLIST_CLASS);
 			AssociatedPrereqObject allEdge =
@@ -156,8 +149,9 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		for (CDOMReference<ClassSkillList> swl : context.getListContext()
 			.getMasterLists(SKILLLIST_CLASS))
 		{
-			Changes<LSTWriteable> changes = context.getListContext().getChangesInMasterList(
-				getTokenName(), skill, swl);
+			Changes<LSTWriteable> changes =
+					context.getListContext().getChangesInMasterList(
+						getTokenName(), skill, swl);
 			if (changes == null || changes.isEmpty())
 			{
 				// Legal if no CLASSES was present in the Skill

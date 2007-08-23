@@ -79,7 +79,6 @@ public class MonccskillToken extends AbstractToken implements RaceLstToken
 		boolean foundOther = false;
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-		List<CDOMReference<Skill>> list = new ArrayList<CDOMReference<Skill>>();
 
 		while (tok.hasMoreTokens())
 		{
@@ -148,7 +147,11 @@ public class MonccskillToken extends AbstractToken implements RaceLstToken
 						+ getTokenName());
 					return false;
 				}
-				list.add(skill);
+				AssociatedPrereqObject apo =
+						context.getListContext().addToList(getTokenName(),
+							race, ref, skill);
+				apo.setAssociation(AssociationKey.SKILL_COST,
+					SkillCost.CROSS_CLASS);
 			}
 			firstToken = false;
 		}
@@ -157,15 +160,6 @@ public class MonccskillToken extends AbstractToken implements RaceLstToken
 			Logging.errorPrint("Non-sensical " + getTokenName()
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
-		}
-		for (CDOMReference<Skill> skill : list)
-		{
-			AssociatedPrereqObject tpr =
-					context.getListContext().addToList(getTokenName(), race,
-						ref, skill);
-			tpr
-				.setAssociation(AssociationKey.SKILL_COST,
-					SkillCost.CROSS_CLASS);
 		}
 		return true;
 	}

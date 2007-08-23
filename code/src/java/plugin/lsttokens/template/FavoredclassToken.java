@@ -78,8 +78,8 @@ public class FavoredclassToken extends AbstractToken implements
 
 		while (tok.hasMoreTokens())
 		{
-			CDOMReference<PCClass> ref;
 			String token = tok.nextToken();
+			CDOMReference<PCClass> ref;
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
@@ -91,12 +91,12 @@ public class FavoredclassToken extends AbstractToken implements
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							PCCLASS_CLASS, token);
-			}
-			if (ref == null)
-			{
-				Logging.errorPrint("  ...error encountered in "
-					+ getTokenName());
-				return false;
+				if (ref == null)
+				{
+					Logging.errorPrint("  ...error encountered in "
+						+ getTokenName());
+					return false;
+				}
 			}
 			context.getObjectContext().addToList(cdo, ListKey.FAVORED_CLASS,
 				ref);

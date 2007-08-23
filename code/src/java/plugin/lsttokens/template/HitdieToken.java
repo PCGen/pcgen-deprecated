@@ -274,6 +274,7 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 
 			HitDieCommandFactory cf = new HitDieCommandFactory(owner, hdm);
 			context.getGraphContext().grant(getTokenName(), template, cf);
+			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -282,7 +283,6 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 			Logging.errorPrint("  Must be an Integer");
 			return false;
 		}
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)

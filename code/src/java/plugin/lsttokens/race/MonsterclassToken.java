@@ -90,17 +90,19 @@ public class MonsterclassToken implements RaceLstToken
 		String classString = value.substring(0, colonLoc);
 		CDOMSimpleSingleRef<PCClass> cl =
 				context.ref.getCDOMReference(PCCLASS_CLASS, classString);
-		int lvls;
 		try
 		{
 			String numLevels = value.substring(colonLoc + 1);
-			lvls = Integer.parseInt(numLevels);
+			int lvls = Integer.parseInt(numLevels);
 			if (lvls <= 0)
 			{
 				Logging.errorPrint("Number of levels in " + getTokenName()
 					+ " must be greater than zero: " + value);
 				return false;
 			}
+			LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
+			context.getGraphContext().grant(getTokenName(), race, cf);
+			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -108,9 +110,6 @@ public class MonsterclassToken implements RaceLstToken
 				+ " must be an integer greater than zero: " + value);
 			return false;
 		}
-		LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
-		context.getGraphContext().grant(getTokenName(), race, cf);
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)

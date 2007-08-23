@@ -64,7 +64,7 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 
 	public boolean parse(PCClass pcclass, String value, int level)
 	{
-		final StringTokenizer aTok = new StringTokenizer(value, "|");
+		final StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
 		int skillCount = 0;
 
 		if (value.indexOf('|') >= 0)

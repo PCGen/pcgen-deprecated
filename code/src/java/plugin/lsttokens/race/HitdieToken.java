@@ -276,6 +276,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 
 			HitDieCommandFactory cf = new HitDieCommandFactory(owner, hdm);
 			context.getGraphContext().grant(getTokenName(), race, cf);
+			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -284,7 +285,6 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 			Logging.errorPrint("  Must be an Integer");
 			return false;
 		}
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, Race race)

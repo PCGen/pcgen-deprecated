@@ -68,14 +68,9 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 		}
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
-		boolean removeAll = false;
 		boolean foundAny = false;
 		boolean foundOther = false;
 		boolean firstToken = true;
-		List<CDOMReference<Language>> addList =
-				new ArrayList<CDOMReference<Language>>();
-		List<CDOMReference<Language>> removeList =
-				new ArrayList<CDOMReference<Language>>();
 		CDOMReference<LanguageList> swl =
 				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
 
@@ -91,7 +86,8 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 						+ ": When used, .CLEAR must be the first argument");
 					return false;
 				}
-				removeAll = true;
+				context.getListContext().removeAllFromList(getTokenName(),
+					template, swl);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -114,7 +110,8 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 						+ " had an invalid .CLEAR. reference: " + clearText);
 					return false;
 				}
-				removeList.add(lang);
+				context.getListContext().removeFromList(getTokenName(),
+					template, swl, lang);
 			}
 			else
 			{
@@ -146,7 +143,8 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 						+ " had an invalid reference: " + tokText);
 					return false;
 				}
-				addList.add(lang);
+				context.getListContext().addToList(getTokenName(), template,
+					swl, lang);
 			}
 			firstToken = false;
 		}
@@ -155,27 +153,6 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 			Logging.errorPrint("Non-sensical " + getTokenName()
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
-		}
-		if (removeAll)
-		{
-			context.getListContext().removeAllFromList(getTokenName(),
-				template, swl);
-		}
-		if (!removeList.isEmpty())
-		{
-			for (CDOMReference<Language> lang : removeList)
-			{
-				context.getListContext().removeFromList(getTokenName(),
-					template, swl, lang);
-			}
-		}
-		if (!addList.isEmpty())
-		{
-			for (CDOMReference<Language> lang : addList)
-			{
-				context.getListContext().addToList(getTokenName(), template,
-					swl, lang);
-			}
 		}
 		return true;
 	}

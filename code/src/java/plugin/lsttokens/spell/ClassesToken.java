@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -114,12 +113,6 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		{
 			return false;
 		}
-		if (value.indexOf(",,") != -1)
-		{
-			Logging.errorPrint(getTokenName()
-				+ " arguments uses double separator ,, : " + value);
-			return false;
-		}
 
 		// Note: May contain PRExxx
 		String classKey;
@@ -154,8 +147,6 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		boolean foundOther = false;
 
 		StringTokenizer pipeTok = new StringTokenizer(classKey, Constants.PIPE);
-		HashMapToList<Integer, CDOMReference<ClassSpellList>> map =
-				new HashMapToList<Integer, CDOMReference<ClassSpellList>>();
 
 		while (pipeTok.hasMoreTokens())
 		{
@@ -199,16 +190,8 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 				return false;
 			}
 
-			if (nameList.charAt(0) == ',')
+			if (this.hasIllegalSeparator(',', nameList))
 			{
-				Logging.errorPrint(getTokenName()
-					+ " classes may not start with , : " + value);
-				return false;
-			}
-			if (nameList.charAt(nameList.length() - 1) == ',')
-			{
-				Logging.errorPrint(getTokenName()
-					+ " classes may not end with , : " + value);
 				return false;
 			}
 
@@ -236,19 +219,6 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 						return false;
 					}
 				}
-				map.addToListFor(level, ref);
-			}
-		}
-		if (foundAny && foundOther)
-		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
-			return false;
-		}
-		for (Integer level : map.getKeySet())
-		{
-			for (CDOMReference<ClassSpellList> ref : map.getListFor(level))
-			{
 				AssociatedPrereqObject edge =
 						context.getListContext().addToMasterList(
 							getTokenName(), spell, ref, spell);
@@ -258,6 +228,12 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 					edge.addPrerequisite(prereq);
 				}
 			}
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ANY and a specific reference: " + value);
+			return false;
 		}
 		return true;
 	}
@@ -270,8 +246,9 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		for (CDOMReference<ClassSpellList> swl : context.getListContext()
 			.getMasterLists(SPELLLIST_CLASS))
 		{
-			 Changes<LSTWriteable> changes = context.getListContext().getChangesInMasterList(
-				getTokenName(), spell, swl);
+			Changes<LSTWriteable> changes =
+					context.getListContext().getChangesInMasterList(
+						getTokenName(), spell, swl);
 			if (changes == null || changes.isEmpty())
 			{
 				// Legal if no CLASSES was present in the Spell

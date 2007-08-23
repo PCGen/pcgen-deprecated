@@ -31,6 +31,7 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PCClass;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLstToken;
 import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
@@ -38,11 +39,12 @@ import pcgen.util.Logging;
 /**
  * Class deals with COST Token
  */
-public class CostToken implements SpellLstToken
+public class CostToken extends AbstractToken implements SpellLstToken
 {
 
 	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "COST";
@@ -56,16 +58,8 @@ public class CostToken implements SpellLstToken
 
 	public boolean parse(LoadContext context, Spell spell, String value)
 	{
-		if (value.length() == 0)
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " requires the default value to exist");
-			return false;
-		}
-		if (value.charAt(0) == '|')
-		{
-			Logging.errorPrint(getTokenName()
-				+ " requires default value; may not start with | : " + value);
 			return false;
 		}
 
@@ -73,30 +67,6 @@ public class CostToken implements SpellLstToken
 		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
 				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
 		String defaultCost = pipeTok.nextToken();
-
-		int startRest = value.indexOf(Constants.PIPE);
-		if (startRest != -1)
-		{
-			if (value.charAt(value.length() - 1) == '|')
-			{
-				Logging.errorPrint(getTokenName()
-					+ " arguments may not end with | : " + value);
-				return false;
-			}
-			if (value.charAt(startRest + 1) == '|')
-			{
-				Logging.errorPrint(getTokenName()
-					+ " arguments may not start with | : " + value);
-				return false;
-			}
-			if (value.indexOf("||") != -1)
-			{
-				Logging.errorPrint(getTokenName()
-					+ " arguments uses double separator || : " + value);
-				return false;
-			}
-		}
-
 		try
 		{
 			Integer i = Integer.valueOf(defaultCost);

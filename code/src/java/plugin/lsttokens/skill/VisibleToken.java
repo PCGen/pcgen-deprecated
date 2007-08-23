@@ -196,6 +196,7 @@ public class VisibleToken implements SkillLstToken
 		try
 		{
 			vis = Visibility.valueOf(visString);
+			context.getObjectContext().put(skill, ObjectKey.VISIBILITY, vis);
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -213,7 +214,6 @@ public class VisibleToken implements SkillLstToken
 			}
 			context.getObjectContext().put(skill, ObjectKey.READ_ONLY, Boolean.TRUE);
 		}
-		context.getObjectContext().put(skill, ObjectKey.VISIBILITY, vis);
 		return true;
 	}
 

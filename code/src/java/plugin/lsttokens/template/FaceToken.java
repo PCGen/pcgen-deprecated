@@ -119,18 +119,18 @@ public class FaceToken implements PCTemplateLstToken
 					+ getTokenName() + ":<num>[,<num>]");
 				return false;
 			}
-			BigDecimal width;
-			BigDecimal height;
 			try
 			{
 				String widthString = value.substring(0, commaLoc).trim();
-				width = new BigDecimal(widthString);
+				BigDecimal width = new BigDecimal(widthString);
 				if (width.compareTo(BigDecimal.ZERO) < 0)
 				{
 					Logging.errorPrint("Cannot have negative width in "
 						+ getTokenName() + ": " + value);
 					return false;
 				}
+				context.getObjectContext().put(fObj, ObjectKey.FACE_WIDTH,
+					width);
 			}
 			catch (NumberFormatException nfe)
 			{
@@ -142,13 +142,15 @@ public class FaceToken implements PCTemplateLstToken
 			try
 			{
 				String heightString = value.substring(commaLoc + 1).trim();
-				height = new BigDecimal(heightString);
+				BigDecimal height = new BigDecimal(heightString);
 				if (height.compareTo(BigDecimal.ZERO) < 0)
 				{
 					Logging.errorPrint("Cannot have negative height in "
 						+ getTokenName() + ": " + value);
 					return false;
 				}
+				context.getObjectContext().put(fObj, ObjectKey.FACE_HEIGHT,
+					height);
 			}
 			catch (NumberFormatException ne)
 			{
@@ -156,31 +158,29 @@ public class FaceToken implements PCTemplateLstToken
 					+ value);
 				return false;
 			}
-			context.getObjectContext().put(fObj, ObjectKey.FACE_WIDTH, width);
-			context.getObjectContext().put(fObj, ObjectKey.FACE_HEIGHT, height);
 		}
 		else
 		{
-			BigDecimal width;
 			try
 			{
 				String widthString = value;
-				width = new BigDecimal(widthString);
+				BigDecimal width = new BigDecimal(widthString);
 				if (width.compareTo(BigDecimal.ZERO) < 0)
 				{
 					Logging.errorPrint("Cannot have negative width in "
 						+ getTokenName() + ": " + value);
 					return false;
 				}
+				context.getObjectContext().put(fObj, ObjectKey.FACE_WIDTH,
+					width);
+				context.getObjectContext().put(fObj, ObjectKey.FACE_HEIGHT,
+					BigDecimal.ZERO);
 			}
 			catch (NumberFormatException nfe)
 			{
 				Logging.errorPrint("Misunderstood Double in Tag: " + value);
 				return false;
 			}
-			context.getObjectContext().put(fObj, ObjectKey.FACE_WIDTH, width);
-			context.getObjectContext().put(fObj, ObjectKey.FACE_HEIGHT,
-				BigDecimal.ZERO);
 		}
 		return true;
 	}

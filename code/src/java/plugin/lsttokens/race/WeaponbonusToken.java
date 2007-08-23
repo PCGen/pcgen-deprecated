@@ -21,9 +21,7 @@
  */
 package plugin.lsttokens.race;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
@@ -82,32 +80,28 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 			return false;
 		}
 
+		CDOMReference<WeaponProfList> swl =
+				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		boolean foundAny = false;
 		boolean foundOther = false;
-		List<CDOMReference<WeaponProf>> list =
-				new ArrayList<CDOMReference<WeaponProf>>();
 
 		while (tok.hasMoreTokens())
 		{
-			/*
-			 * Note this HAS to be done one-by-one, because the
-			 * .clearChildNodeOfClass method above does NOT recognize the C/CC
-			 * Skill object and therefore doesn't know how to search the
-			 * sublists
-			 */
 			String tokText = tok.nextToken();
+			CDOMReference<WeaponProf> ref;
 			if (Constants.LST_ALL.equals(tokText))
 			{
 				foundAny = true;
-				CDOMReference<WeaponProf> ref =
-						context.ref.getCDOMAllReference(WEAPONPROF_CLASS);
-				list.add(ref);
+				ref = context.ref.getCDOMAllReference(WEAPONPROF_CLASS);
+				context.getListContext().addToList(getTokenName(), obj, swl,
+					ref);
 			}
 			else
 			{
 				foundOther = true;
-				CDOMReference<WeaponProf> ref =
+				ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							WEAPONPROF_CLASS, tokText);
 				if (ref == null)
@@ -116,20 +110,14 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 						+ getTokenName());
 					return false;
 				}
-				list.add(ref);
 			}
+			context.getListContext().addToList(getTokenName(), obj, swl, ref);
 		}
 		if (foundAny && foundOther)
 		{
 			Logging.errorPrint("Non-sensical " + getTokenName()
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
-		}
-		CDOMReference<WeaponProfList> swl =
-				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
-		for (CDOMReference<WeaponProf> prof : list)
-		{
-			context.getListContext().addToList(getTokenName(), obj, swl, prof);
 		}
 		return true;
 	}

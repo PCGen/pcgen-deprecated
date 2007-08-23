@@ -82,16 +82,18 @@ public class AddLevelToken implements PCTemplateLstToken
 		CDOMSimpleSingleRef<PCClass> cl =
 				context.ref.getCDOMReference(PCClass.class, classString);
 		String numLevels = value.substring(pipeLoc + 1);
-		int lvls;
 		try
 		{
-			lvls = Integer.parseInt(numLevels);
+			int lvls = Integer.parseInt(numLevels);
 			if (lvls <= 0)
 			{
 				Logging.errorPrint("Number of Levels granted in "
 					+ getTokenName() + " must be greater than zero");
 				return false;
 			}
+			LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
+			context.getGraphContext().grant(getTokenName(), template, cf);
+			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -101,9 +103,6 @@ public class AddLevelToken implements PCTemplateLstToken
 				+ " requires at format: Class|LevelCount");
 			return false;
 		}
-		LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
-		context.getGraphContext().grant(getTokenName(), template, cf);
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate pct)

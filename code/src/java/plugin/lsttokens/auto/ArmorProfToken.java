@@ -18,7 +18,6 @@
 package plugin.lsttokens.auto;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +30,6 @@ import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.factory.GrantFactory;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
@@ -115,7 +113,6 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 		boolean foundOther = false;
 
 		StringTokenizer tok = new StringTokenizer(armorProfs, Constants.PIPE);
-		List<PrereqObject> refs = new ArrayList<PrereqObject>();
 
 		while (tok.hasMoreTokens())
 		{
@@ -127,7 +124,13 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 							ChoiceSet.class, "Choice", ARMORPROF_CLASS);
 				GrantFactory<ArmorProf> gf =
 						new GrantFactory<ArmorProf>(assocref);
-				refs.add(gf);
+				PCGraphGrantsEdge edge =
+						context.getGraphContext()
+							.grant(getTokenName(), obj, gf);
+				if (prereq != null)
+				{
+					edge.addPreReq(prereq);
+				}
 			}
 			else
 			{
@@ -148,7 +151,13 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 				{
 					return false;
 				}
-				refs.add(ref);
+				PCGraphGrantsEdge edge =
+						context.getGraphContext().grant(getTokenName(), obj,
+							ref);
+				if (prereq != null)
+				{
+					edge.addPreReq(prereq);
+				}
 			}
 		}
 
@@ -157,16 +166,6 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			Logging.errorPrint("Non-sensical " + getTokenName()
 				+ ": Contains ANY and a specific reference: " + value);
 			return false;
-		}
-
-		for (PrereqObject ref : refs)
-		{
-			PCGraphGrantsEdge edge =
-					context.getGraphContext().grant(getTokenName(), obj, ref);
-			if (prereq != null)
-			{
-				edge.addPreReq(prereq);
-			}
 		}
 
 		return true;

@@ -66,9 +66,8 @@ public class RegionToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		String region = value;
 		context.getObjectContext().put(template, ObjectKey.REGION,
-			Region.getConstant(region));
+			Region.getConstant(value));
 		return true;
 	}
 

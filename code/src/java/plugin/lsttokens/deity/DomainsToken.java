@@ -22,7 +22,6 @@
 package plugin.lsttokens.deity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -31,7 +30,9 @@ import java.util.TreeSet;
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Deity;
@@ -120,10 +121,11 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
 		StringTokenizer commaTok =
 				new StringTokenizer(pipeTok.nextToken(), Constants.COMMA);
-		List<CDOMReference<Domain>> list =
-				new ArrayList<CDOMReference<Domain>>();
 		CDOMReference<DomainList> dl =
 				context.ref.getCDOMReference(DomainList.class, "*Starting");
+		ArrayList<AssociatedPrereqObject> proList =
+				new ArrayList<AssociatedPrereqObject>();
+
 		boolean first = true;
 		while (commaTok.hasMoreTokens())
 		{
@@ -174,16 +176,21 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			}
 			else if (Constants.LST_ALL.equals(tokString))
 			{
-				list.add(context.ref.getCDOMAllReference(DOMAIN_CLASS));
+				CDOMGroupRef<Domain> ref =
+						context.ref.getCDOMAllReference(DOMAIN_CLASS);
+				proList.add(context.getListContext().addToList(getTokenName(),
+					deity, dl, ref));
 			}
 			else
 			{
-				list.add(context.ref.getCDOMReference(DOMAIN_CLASS, tokString));
+				CDOMSimpleSingleRef<Domain> ref =
+						context.ref.getCDOMReference(DOMAIN_CLASS, tokString);
+				proList.add(context.getListContext().addToList(getTokenName(),
+					deity, dl, ref));
 			}
 			first = false;
 		}
 
-		List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
 		while (pipeTok.hasMoreTokens())
 		{
 			String tokString = pipeTok.nextToken();
@@ -194,24 +201,13 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 					+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
-			prereqs.add(prereq);
+			for (AssociatedPrereqObject ao : proList)
+			{
+				ao.addAllPrerequisites(prereq);
+			}
 		}
-		finish(context, deity, list, prereqs);
-		return true;
-	}
 
-	private void finish(LoadContext context, Deity deity,
-		List<CDOMReference<Domain>> list, Collection<Prerequisite> c)
-	{
-		CDOMReference<DomainList> dl =
-				context.ref.getCDOMReference(DomainList.class, "*Starting");
-		for (CDOMReference<Domain> ref : list)
-		{
-			AssociatedPrereqObject ao =
-					context.getListContext().addToList(getTokenName(), deity,
-						dl, ref);
-			ao.addAllPrerequisites(c);
-		}
+		return true;
 	}
 
 	public String[] unparse(LoadContext context, Deity deity)

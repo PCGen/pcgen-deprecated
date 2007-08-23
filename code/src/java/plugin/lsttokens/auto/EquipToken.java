@@ -18,9 +18,7 @@
 package plugin.lsttokens.auto;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -28,7 +26,6 @@ import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMEdgeReference;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
@@ -116,37 +113,30 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		}
 
 		StringTokenizer tok = new StringTokenizer(equipItems, Constants.PIPE);
-		List<PrereqObject> refs = new ArrayList<PrereqObject>();
 
 		while (tok.hasMoreTokens())
 		{
 			String aProf = tok.nextToken();
+			PrereqObject pro;
 			if ("%LIST".equals(value))
 			{
 				CDOMEdgeReference assocref =
 						context.getGraphContext().getEdgeReference(obj,
 							ChoiceSet.class, "Choice", EQUIPMENT_CLASS);
-				GrantFactory<Equipment> gf =
-						new GrantFactory<Equipment>(assocref);
-				refs.add(gf);
+				pro = new GrantFactory<Equipment>(assocref);
 			}
 			else
 			{
-				CDOMReference<Equipment> ref =
+				pro =
 						TokenUtilities.getTypeOrPrimitive(context,
 							EQUIPMENT_CLASS, aProf);
-				if (ref == null)
+				if (pro == null)
 				{
 					return false;
 				}
-				refs.add(ref);
 			}
-		}
-
-		for (PrereqObject ref : refs)
-		{
 			PCGraphGrantsEdge edge =
-					context.getGraphContext().grant(getTokenName(), obj, ref);
+					context.getGraphContext().grant(getTokenName(), obj, pro);
 			if (prereq != null)
 			{
 				edge.addPreReq(prereq);

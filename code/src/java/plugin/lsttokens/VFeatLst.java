@@ -2,7 +2,6 @@ package plugin.lsttokens;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -12,7 +11,6 @@ import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
@@ -55,7 +53,7 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 			return false;
 		}
 
-		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		String token = tok.nextToken();
 
@@ -66,20 +64,24 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 			return false;
 		}
 
-		List<CDOMReference<Ability>> abilityList =
-				new ArrayList<CDOMReference<Ability>>();
+		ArrayList<PCGraphGrantsEdge> edgeList =
+				new ArrayList<PCGraphGrantsEdge>();
 
 		while (true)
 		{
 			CDOMCategorizedSingleRef<Ability> ability =
 					context.ref.getCDOMReference(ABILITY_CLASS,
 						AbilityCategory.FEAT, token);
-			abilityList.add(ability);
+			PCGraphGrantsEdge edge =
+					context.getGraphContext().grant(getTokenName(), obj,
+						ability);
+			edge.setAssociation(AssociationKey.ABILITY_NATURE,
+				AbilityNature.VIRTUAL);
+			edgeList.add(edge);
 
 			if (!tok.hasMoreTokens())
 			{
 				// No prereqs, so we're done
-				finish(context, obj, abilityList, null);
 				return true;
 			}
 			token = tok.nextToken();
@@ -89,7 +91,6 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 			}
 		}
 
-		List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
 		while (true)
 		{
 			Prerequisite prereq = getPrerequisite(token);
@@ -99,7 +100,10 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 					+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
-			prereqs.add(prereq);
+			for (PCGraphGrantsEdge edge : edgeList)
+			{
+				edge.addPreReq(prereq);
+			}
 			if (!tok.hasMoreTokens())
 			{
 				break;
@@ -107,29 +111,7 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 			token = tok.nextToken();
 		}
 
-		finish(context, obj, abilityList, prereqs);
-
 		return true;
-	}
-
-	private void finish(LoadContext context, CDOMObject obj,
-		List<CDOMReference<Ability>> abilityList, List<Prerequisite> prereqs)
-	{
-		for (CDOMReference<Ability> ability : abilityList)
-		{
-			PCGraphGrantsEdge edge =
-					context.getGraphContext().grant(getTokenName(), obj,
-						ability);
-			edge.setAssociation(AssociationKey.ABILITY_NATURE,
-				AbilityNature.VIRTUAL);
-			if (prereqs != null)
-			{
-				for (Prerequisite prereq : prereqs)
-				{
-					edge.addPrerequisite(prereq);
-				}
-			}
-		}
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject cdo)
