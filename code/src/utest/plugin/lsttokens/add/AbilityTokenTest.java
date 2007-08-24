@@ -499,4 +499,18 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		assertFalse(parse(getSubTokenString() + "|Mutation|NORMAL|TestWP3,ANY"));
 		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
 	}
+	
+	@Test
+	public void testRoundRobinDouble() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP3");
+		runRoundRobin(getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP3",
+			getSubTokenString() + "|Mutation|AUTOMATIC|TestWP1,TestWP2");
+	}
+
 }

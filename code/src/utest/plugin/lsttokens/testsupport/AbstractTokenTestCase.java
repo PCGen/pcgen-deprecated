@@ -109,6 +109,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 			assertTrue(parse(s));
 		}
 		primaryProf.put(ObjectKey.SOURCE_URI, testCampaign.getURI());
+		secondaryProf.put(ObjectKey.SOURCE_URI, testCampaign.getURI());
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 
 		assertEquals(str.length, unparsed.length);

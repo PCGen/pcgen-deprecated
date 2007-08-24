@@ -98,7 +98,7 @@ public class DomainTokenTest extends AbstractListTokenTestCase<PObject, Domain>
 	@Override
 	public boolean isClearLegal()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

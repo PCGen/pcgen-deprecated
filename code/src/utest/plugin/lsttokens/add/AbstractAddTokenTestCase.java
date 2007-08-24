@@ -409,6 +409,19 @@ public abstract class AbstractAddTokenTestCase extends
 	}
 
 	@Test
+	public void testRoundRobinDouble() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP3");
+		runRoundRobin(getSubTokenString() + "|TestWP1,TestWP3",
+			getSubTokenString() + "|TestWP1,TestWP2");
+	}
+
+	@Test
 	public void testRoundRobinWithEqualType() throws PersistenceLayerException
 	{
 		if (isTypeLegal())
