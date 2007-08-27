@@ -27,11 +27,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
@@ -211,7 +211,7 @@ public class Spells514Lst extends AbstractToken implements
 	{
 		for (CDOMReference<Spell> spell : dkm.getKeySet())
 		{
-			PCGraphGrantsEdge edge =
+			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), obj, spell);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(spell))
 			{

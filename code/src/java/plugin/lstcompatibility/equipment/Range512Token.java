@@ -46,8 +46,7 @@ public class Range512Token implements EquipmentLstCompatibilityToken
 		}
 		catch (NumberFormatException nfe)
 		{
-			context.getObjectContext().put(
-				context.getGraphContext().getEquipmentHead(eq, 1),
+			context.getObjectContext().put(eq.getEquipmentHead(1),
 				IntegerKey.RANGE, Integer.valueOf(0));
 			return true;
 		}

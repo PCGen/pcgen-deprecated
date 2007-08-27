@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -32,7 +33,6 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Ability;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
@@ -106,7 +106,7 @@ public class FeatAuto512Token extends AbstractToken implements
 	{
 		for (CDOMReference<Ability> ability : abilityList)
 		{
-			PCGraphGrantsEdge edge =
+			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), obj,
 						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
