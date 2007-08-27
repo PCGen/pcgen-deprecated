@@ -92,14 +92,8 @@ public class HitdiceadvancementToken extends AbstractToken implements
 		final StringTokenizer commaTok =
 				new StringTokenizer(value, Constants.COMMA);
 
-		if (context.getObjectContext().containsListFor(race,
-			ListKey.HITDICE_ADVANCEMENT))
-		{
-			Logging.errorPrint("Encountered second " + getTokenName()
-				+ ": overwriting previous advancement list");
-			context.getObjectContext().removeList(race,
-				ListKey.HITDICE_ADVANCEMENT);
-		}
+		context.getObjectContext()
+			.removeList(race, ListKey.HITDICE_ADVANCEMENT);
 		int last = 1;
 		while (commaTok.hasMoreTokens())
 		{

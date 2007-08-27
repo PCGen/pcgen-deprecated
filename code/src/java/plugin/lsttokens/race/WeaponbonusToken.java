@@ -27,11 +27,12 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Race;
 import pcgen.core.WeaponProf;
 import pcgen.core.WeaponProfList;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
@@ -126,20 +127,18 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 	{
 		CDOMReference<WeaponProfList> swl =
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
-		Changes<CDOMReference<WeaponProf>> changes =
+		AssociatedChanges<CDOMReference<WeaponProf>> changes =
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
-		if (changes == null || changes.isEmpty())
+		if (changes == null)
 		{
 			// Legal if no WEAPONBONUS was present in the race
 			return null;
 		}
-		Collection<CDOMReference<WeaponProf>> added = changes.getAdded();
+		Collection<LSTWriteable> added = changes.getAdded();
 		if (added.isEmpty())
 		{
-			// Zero indicates no add, which is an error
-			context.addWriteMessage(getTokenName()
-				+ " was expecting non-empty changes to include Added items");
+			// Zero indicates no add
 			return null;
 		}
 		return new String[]{ReferenceUtilities.joinLstFormat(added,

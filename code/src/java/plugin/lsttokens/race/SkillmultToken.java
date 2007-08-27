@@ -42,7 +42,7 @@ public class SkillmultToken implements RaceLstToken
 	{
 		try
 		{
-			race.setInitialSkillMultiplier(Integer.parseInt(value));
+			race.setInitialSkillMultiplier(Integer.decode(value));
 			return true;
 		}
 		catch (NumberFormatException nfe)

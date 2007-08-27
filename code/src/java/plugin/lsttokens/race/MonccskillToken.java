@@ -22,20 +22,22 @@
 package plugin.lsttokens.race;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.core.ClassSkillList;
 import pcgen.core.Race;
 import pcgen.core.Skill;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
@@ -168,10 +170,10 @@ public class MonccskillToken extends AbstractToken implements RaceLstToken
 	{
 		CDOMReference<ClassSkillList> swl =
 				context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
-		Changes<CDOMReference<Skill>> changes =
+		AssociatedChanges<CDOMReference<Skill>> changes =
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
-		if (changes == null || changes.isEmpty())
+		if (changes == null)
 		{
 			// Legal if no MONCSKILL was present in the race
 			return null;
@@ -196,22 +198,29 @@ public class MonccskillToken extends AbstractToken implements RaceLstToken
 		}
 		if (changes.hasAddedItems())
 		{
-			Collection<CDOMReference<Skill>> addedCollection =
-					changes.getAdded();
-			for (CDOMReference<Skill> added : addedCollection)
+			MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+					changes.getAddedAssociations();
+			Set<LSTWriteable> added = mtl.getKeySet();
+			for (LSTWriteable ab : added)
 			{
-				AssociatedPrereqObject se = changes.getAddedAssociation(added);
-				if (!SkillCost.CROSS_CLASS.equals(se
-					.getAssociation(AssociationKey.SKILL_COST)))
+				for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 				{
-					context
-						.addWriteMessage("Skill Cost must be CROSS_CLASS for Token "
-							+ getTokenName());
-					return null;
+					if (!SkillCost.CROSS_CLASS.equals(assoc
+						.getAssociation(AssociationKey.SKILL_COST)))
+					{
+						context
+							.addWriteMessage("Skill Cost must be CROSS_CLASS for Token "
+								+ getTokenName());
+						return null;
+					}
 				}
 			}
-			list.add(ReferenceUtilities.joinLstFormat(addedCollection,
-				Constants.PIPE));
+			list.add(ReferenceUtilities.joinLstFormat(added, Constants.PIPE));
+		}
+		if (list.isEmpty())
+		{
+			// Zero indicates no add or clear
+			return null;
 		}
 		return list.toArray(new String[list.size()]);
 	}

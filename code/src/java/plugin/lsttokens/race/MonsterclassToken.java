@@ -33,7 +33,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelCommandFactory;
 import pcgen.core.PCClass;
 import pcgen.core.Race;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.util.Logging;
@@ -114,7 +114,7 @@ public class MonsterclassToken implements RaceLstToken
 
 	public String[] unparse(LoadContext context, Race race)
 	{
-		GraphChanges<LevelCommandFactory> changes =
+		AssociatedChanges<LevelCommandFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					race, LevelCommandFactory.class);
 		if (changes == null)
