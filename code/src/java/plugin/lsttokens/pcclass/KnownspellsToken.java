@@ -38,7 +38,7 @@ import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.SpellFilter;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
@@ -260,7 +260,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PObject po)
 	{
-		GraphChanges<KnownSpellIdentifier> changes =
+		AssociatedChanges<KnownSpellIdentifier> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					po, KnownSpellIdentifier.class);
 		if (changes == null)

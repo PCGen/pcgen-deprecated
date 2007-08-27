@@ -30,7 +30,7 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Constants;
 import pcgen.core.Deity;
 import pcgen.core.PCClass;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
@@ -94,7 +94,7 @@ public class DeityToken extends AbstractToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		GraphChanges<Deity> changes =
+		AssociatedChanges<Deity> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, DEITY_CLASS);
 		if (changes == null)

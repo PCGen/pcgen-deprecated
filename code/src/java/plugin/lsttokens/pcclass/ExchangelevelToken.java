@@ -29,7 +29,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelExchange;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
@@ -126,7 +126,7 @@ public class ExchangelevelToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		GraphChanges<LevelExchange> changes =
+		AssociatedChanges<LevelExchange> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, LevelExchange.class);
 		if (changes == null)

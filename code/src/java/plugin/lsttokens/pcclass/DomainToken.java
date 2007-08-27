@@ -32,13 +32,12 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Domain;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -176,7 +175,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 			CDOMSimpleSingleRef<Domain> domain =
 					context.ref.getCDOMReference(DOMAIN_CLASS, domainKey);
 
-			PCGraphGrantsEdge edge =
+			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), po, domain);
 			if (prereq != null)
 			{
@@ -188,7 +187,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PObject po)
 	{
-		GraphChanges<Domain> changes =
+		AssociatedChanges<Domain> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					po, DOMAIN_CLASS);
 		if (changes == null)

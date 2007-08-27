@@ -37,7 +37,7 @@ import pcgen.cdom.enumeration.SpellSubSchool;
 import pcgen.cdom.inst.Aggregator;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstToken;
@@ -118,7 +118,7 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		GraphChanges<Aggregator> changes =
+		AssociatedChanges<Aggregator> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, Aggregator.class);
 		if (changes == null)
@@ -138,7 +138,7 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 		}
 		Aggregator agg = (Aggregator) added.iterator().next();
 
-		GraphChanges<SpellProhibitor> aggChanges =
+		AssociatedChanges<SpellProhibitor> aggChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					agg, SpellProhibitor.class);
 		if (aggChanges == null)
@@ -163,7 +163,7 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 		String retString = null;
 		for (LSTWriteable lstw : aggAdded)
 		{
-			SpellProhibitor sp = SpellProhibitor.class.cast(lstw);
+			SpellProhibitor<?> sp = SpellProhibitor.class.cast(lstw);
 			Set<?> valueSet = sp.getValueSet();
 			Set<String> stringSet = new TreeSet<String>();
 			for (Object o : valueSet)

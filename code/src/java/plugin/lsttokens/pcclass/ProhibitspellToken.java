@@ -37,7 +37,7 @@ import pcgen.cdom.enumeration.ProhibitedSpellType;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -280,7 +280,7 @@ public class ProhibitspellToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		GraphChanges<SpellProhibitor> changes =
+		AssociatedChanges<SpellProhibitor> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, SpellProhibitor.class);
 		if (changes == null)
@@ -296,7 +296,7 @@ public class ProhibitspellToken extends AbstractToken implements
 		List<String> list = new ArrayList<String>();
 		for (LSTWriteable lstw : added)
 		{
-			SpellProhibitor sp = (SpellProhibitor) lstw;
+			SpellProhibitor<?> sp = (SpellProhibitor) lstw;
 			StringBuilder sb = new StringBuilder();
 			ProhibitedSpellType pst = sp.getType();
 			sb.append(pst.toString().toUpperCase());

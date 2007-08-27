@@ -25,16 +25,18 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.Domain;
 import pcgen.core.DomainList;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -186,10 +188,10 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 		CDOMReference<DomainList> allowedDomainList =
 				context.ref.getCDOMReference(DomainList.class, "*Allowed");
 
-		Changes<CDOMReference<Domain>> changes =
+		AssociatedChanges<CDOMReference<Domain>> changes =
 				context.getListContext().getChangesInList(getTokenName(), po,
 					allowedDomainList);
-		if (changes == null || changes.isEmpty())
+		if (changes == null)
 		{
 			// Legal if no ADDDOMAIN was present
 			return null;
@@ -200,12 +202,18 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 				.addWriteMessage(getTokenName() + " does not support .CLEAR");
 			return null;
 		}
-		if (changes.hasAddedItems())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
-			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-			StringBuilder sb = new StringBuilder();
-			boolean first = true;
-			for (CDOMReference<Domain> domain : changes.getAdded())
+			return null;
+		}
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (LSTWriteable domain : mtl.getKeySet())
+		{
+			for (AssociatedPrereqObject assoc : mtl.getListFor(domain))
 			{
 				if (!first)
 				{
@@ -213,8 +221,6 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 				}
 				first = false;
 				sb.append(domain.getLSTformat());
-				AssociatedPrereqObject assoc =
-						changes.getAddedAssociation(domain);
 				List<Prerequisite> prereqs = assoc.getPrerequisiteList();
 				Prerequisite prereq;
 				if (prereqs == null || prereqs.size() == 0)
@@ -250,8 +256,7 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 					sb.append(']');
 				}
 			}
-			return new String[]{sb.toString()};
 		}
-		return new String[]{};
+		return new String[]{sb.toString()};
 	}
 }
