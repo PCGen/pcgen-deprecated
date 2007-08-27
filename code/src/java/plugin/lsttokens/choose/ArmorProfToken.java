@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.Equipment;
@@ -193,7 +193,7 @@ public class ArmorProfToken extends AbstractToken implements ChooseLstToken,
 		Formula maxFormula = FormulaFactory.getFormulaFor(count);
 		Formula countFormula = FormulaFactory.getFormulaFor(1);
 		ChoiceSet<Equipment> chooser = new ChoiceSet<Equipment>("Choose", pcs);
-		PCGraphGrantsEdge edge =
+		AssociatedPrereqObject edge =
 				context.getGraphContext().grant(getTokenName(), cdo, chooser);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);

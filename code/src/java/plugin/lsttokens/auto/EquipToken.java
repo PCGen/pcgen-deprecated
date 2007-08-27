@@ -25,20 +25,19 @@ import java.util.StringTokenizer;
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMEdgeReference;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.EquipmentNature;
-import pcgen.cdom.factory.GrantFactory;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.GrantActor;
+import pcgen.core.ArmorProf;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -117,33 +116,32 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		while (tok.hasMoreTokens())
 		{
 			String aProf = tok.nextToken();
-			PrereqObject pro;
+			AssociatedPrereqObject apo;
 			if ("%LIST".equals(value))
 			{
-				CDOMEdgeReference assocref =
-						context.getGraphContext().getEdgeReference(obj,
-							ChoiceSet.class, "Choice", EQUIPMENT_CLASS);
-				pro = new GrantFactory<Equipment>(assocref);
+				ChooseActionContainer container = obj.getChooseContainer();
+				GrantActor<ArmorProf> actor = new GrantActor<ArmorProf>();
+				container.addActor(actor);
+				apo = actor;
 			}
 			else
 			{
-				pro =
+				CDOMReference<Equipment> ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							EQUIPMENT_CLASS, aProf);
-				if (pro == null)
+				if (ref == null)
 				{
 					return false;
 				}
+				apo = context.getGraphContext().grant(getTokenName(), obj, ref);
 			}
-			PCGraphGrantsEdge edge =
-					context.getGraphContext().grant(getTokenName(), obj, pro);
 			if (prereq != null)
 			{
-				edge.addPreReq(prereq);
+				apo.addPrerequisite(prereq);
 			}
-			edge.setAssociation(AssociationKey.EQUIPMENT_NATURE,
+			apo.setAssociation(AssociationKey.EQUIPMENT_NATURE,
 				EquipmentNature.AUTOMATIC);
-			edge.setAssociation(AssociationKey.QUANTITY, INTEGER_ONE);
+			apo.setAssociation(AssociationKey.QUANTITY, INTEGER_ONE);
 			// TODO Need to account for output index??
 			// newEq.setOutputIndex(aList.size());
 		}
@@ -153,7 +151,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<Equipment> changes =
+		AssociatedChanges<Equipment> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, EQUIPMENT_CLASS);
 		if (changes == null)

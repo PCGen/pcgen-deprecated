@@ -19,17 +19,19 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMEdgeReference;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.factory.GrantFactory;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Ability;
-import pcgen.core.ArmorProf;
 import pcgen.core.Constants;
+import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -115,25 +117,23 @@ public class FeatAddToken extends AbstractToken implements ChooseLstToken,
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
 		String value) throws PersistenceLayerException
 	{
-		// TODO Need to tell the parser the CATEGORY is FEAT
+		ChooseActionContainer container = cdo.getChooseContainer();
+		AssociatedPrereqObject edge =
+				context.getGraphContext().grant(getTokenName(), cdo, container);
+		container.addActor(new GrantActor<PCTemplate>());
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+			.getFormulaFor(1));
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+			.getFormulaFor(1));
+		edge.setAssociation(AssociationKey.ABILITY_CATEGORY,
+			AbilityCategory.FEAT);
+		edge
+			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
 		PrimitiveChoiceSet<Ability> pcs =
 				ChooseLoader.parseToken(context, Ability.class, "QUALIFIED["
 					+ value + "]");
-		CDOMEdgeReference assocref =
-				context.getGraphContext().getEdgeReference(cdo,
-					ChoiceSet.class, "CHOOSE", Ability.class);
-		GrantFactory<ArmorProf> gf = new GrantFactory<ArmorProf>(assocref);
-
-		/*
-		 * FUTURE Technically, this Category item should not be in the
-		 * GrantFactory, as it really belogs as something that can be extracted
-		 * from the ChoiceSet...
-		 */
-		gf
-			.setAssociation(AssociationKey.ABILITY_CATEGORY,
-				AbilityCategory.FEAT);
-		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
-		context.getGraphContext().grant(getTokenName(), cdo, gf);
+		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("ADD", pcs);
+		edge.setAssociation(AssociationKey.CHOICE, cs);
 		return pcs;
 	}
 }

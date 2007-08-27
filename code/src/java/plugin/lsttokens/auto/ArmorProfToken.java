@@ -26,18 +26,16 @@ import java.util.StringTokenizer;
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.cdom.factory.GrantFactory;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.content.ChooseActionContainer;
+import pcgen.cdom.helper.GrantActor;
 import pcgen.core.ArmorProf;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -119,17 +117,12 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			String aProf = tok.nextToken();
 			if ("%LIST".equals(value))
 			{
-				CDOMEdgeReference assocref =
-						context.getGraphContext().getEdgeReference(obj,
-							ChoiceSet.class, "Choice", ARMORPROF_CLASS);
-				GrantFactory<ArmorProf> gf =
-						new GrantFactory<ArmorProf>(assocref);
-				PCGraphGrantsEdge edge =
-						context.getGraphContext()
-							.grant(getTokenName(), obj, gf);
+				ChooseActionContainer container = obj.getChooseContainer();
+				GrantActor<ArmorProf> actor = new GrantActor<ArmorProf>();
+				container.addActor(actor);
 				if (prereq != null)
 				{
-					edge.addPreReq(prereq);
+					actor.addPrerequisite(prereq);
 				}
 			}
 			else
@@ -151,12 +144,12 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 				{
 					return false;
 				}
-				PCGraphGrantsEdge edge =
+				AssociatedPrereqObject edge =
 						context.getGraphContext().grant(getTokenName(), obj,
 							ref);
 				if (prereq != null)
 				{
-					edge.addPreReq(prereq);
+					edge.addPrerequisite(prereq);
 				}
 			}
 		}
@@ -173,7 +166,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<ArmorProf> changes =
+		AssociatedChanges<ArmorProf> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, ARMORPROF_CLASS);
 		if (changes == null)

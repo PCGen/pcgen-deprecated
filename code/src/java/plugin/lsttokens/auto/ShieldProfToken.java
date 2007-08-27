@@ -26,19 +26,16 @@ import java.util.StringTokenizer;
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.cdom.factory.GrantFactory;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.ArmorProf;
+import pcgen.cdom.content.ChooseActionContainer;
+import pcgen.cdom.helper.GrantActor;
 import pcgen.core.PObject;
 import pcgen.core.ShieldProf;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -116,17 +113,12 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 			String aProf = tok.nextToken();
 			if ("%LIST".equals(value))
 			{
-				CDOMEdgeReference assocref =
-						context.getGraphContext().getEdgeReference(obj,
-							ChoiceSet.class, "Choice", SHIELDPROF_CLASS);
-				GrantFactory<ArmorProf> gf =
-						new GrantFactory<ArmorProf>(assocref);
-				PCGraphGrantsEdge edge =
-						context.getGraphContext()
-							.grant(getTokenName(), obj, gf);
+				ChooseActionContainer container = obj.getChooseContainer();
+				GrantActor<ShieldProf> actor = new GrantActor<ShieldProf>();
+				container.addActor(actor);
 				if (prereq != null)
 				{
-					edge.addPreReq(prereq);
+					actor.addPrerequisite(prereq);
 				}
 			}
 			else
@@ -148,12 +140,12 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 				{
 					return false;
 				}
-				PCGraphGrantsEdge edge =
+				AssociatedPrereqObject edge =
 						context.getGraphContext().grant(getTokenName(), obj,
 							ref);
 				if (prereq != null)
 				{
-					edge.addPreReq(prereq);
+					edge.addPrerequisite(prereq);
 				}
 			}
 		}
@@ -170,7 +162,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<ShieldProf> changes =
+		AssociatedChanges<ShieldProf> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, SHIELDPROF_CLASS);
 		if (changes == null)

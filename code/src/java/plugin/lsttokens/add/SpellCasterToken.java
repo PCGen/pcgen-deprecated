@@ -28,14 +28,15 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.factory.GrantFactory;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
+import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.core.SpellProgressionInfo;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
@@ -164,34 +165,34 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 			return false;
 		}
 
-		ReferenceChoiceSet<SpellProgressionInfo> rcs =
-				new ReferenceChoiceSet<SpellProgressionInfo>(refs);
-		ChoiceSet<SpellProgressionInfo> cs =
-				new ChoiceSet<SpellProgressionInfo>("ADD", rcs);
-		PCGraphGrantsEdge edge =
-				context.getGraphContext().grant(getTokenName(), obj, cs);
+		ChooseActionContainer container = new ChooseActionContainer("ADD");
+		container.addActor(new GrantActor<PCTemplate>());
+		AssociatedPrereqObject edge =
+				context.getGraphContext().grant(getTokenName(), obj, container);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
-		GrantFactory<SpellProgressionInfo> gf =
-				new GrantFactory<SpellProgressionInfo>(edge);
-		gf.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(1));
-		context.getGraphContext().grant(getTokenName(), obj, gf);
+		edge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(1));
+		ReferenceChoiceSet<SpellProgressionInfo> rcs =
+				new ReferenceChoiceSet<SpellProgressionInfo>(refs);
+		ChoiceSet<SpellProgressionInfo> cs =
+				new ChoiceSet<SpellProgressionInfo>("ADD", rcs);
+		edge.setAssociation(AssociationKey.CHOICE, cs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<ChoiceSet> changes =
+		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChoiceSet.class);
-		if (changes == null)
+					obj, ChooseActionContainer.class);
+		if (grantChanges == null)
 		{
 			return null;
 		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
+				grantChanges.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
@@ -200,33 +201,38 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 		List<String> addStrings = new ArrayList<String>();
 		for (LSTWriteable lstw : mtl.getKeySet())
 		{
-			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
-			if (SPELL_PROG_CLASS.equals(cs.getChoiceClass()))
+			ChooseActionContainer container = (ChooseActionContainer) lstw;
+			if (!"ADD".equals(container.getName()))
 			{
-				List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
-				if (assocList.size() != 1)
+				context.addWriteMessage("Unexpected CHOOSE container found: "
+					+ container.getName());
+				continue;
+			}
+			List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
+			for (AssociatedPrereqObject assoc : assocList)
+			{
+				ChoiceSet<?> cs = assoc.getAssociation(AssociationKey.CHOICE);
+				if (SPELL_PROG_CLASS.equals(cs.getChoiceClass()))
 				{
-					context
-						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
-					return null;
+					Formula f =
+							assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+					if (f == null)
+					{
+						context.addWriteMessage("Unable to find "
+							+ getTokenName() + " Count");
+						return null;
+					}
+					String fString = f.toString();
+					StringBuilder sb = new StringBuilder();
+					if (!"1".equals(fString))
+					{
+						sb.append(fString).append(Constants.PIPE);
+					}
+					sb.append(cs.getLSTformat());
+					addStrings.add(sb.toString());
+
+					// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
 				}
-				AssociatedPrereqObject assoc = assocList.get(0);
-				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
-				if (f == null)
-				{
-					// Error
-					return null;
-				}
-				String fString = f.toString();
-				if ("1".equals(fString))
-				{
-					addStrings.add(cs.getLSTformat());
-				}
-				else
-				{
-					addStrings.add(fString + "|" + cs.getLSTformat());
-				}
-				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);

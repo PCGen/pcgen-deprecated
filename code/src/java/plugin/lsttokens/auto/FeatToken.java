@@ -34,14 +34,13 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.QualifiedObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -145,7 +144,7 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 			{
 				CDOMCategorizedSingleRef<Ability> ability =
 						context.ref.getCDOMReference(ABILITY_CLASS, ac, feat);
-				PCGraphGrantsEdge edge =
+				AssociatedPrereqObject edge =
 						context.getGraphContext().grant(getTokenName(), obj,
 							ability);
 				edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
@@ -156,7 +155,7 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<Ability> changes =
+		AssociatedChanges<Ability> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, ABILITY_CLASS);
 		if (changes == null)

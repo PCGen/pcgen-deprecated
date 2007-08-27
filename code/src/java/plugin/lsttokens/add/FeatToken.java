@@ -18,7 +18,6 @@
 package plugin.lsttokens.add;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -29,16 +28,17 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.factory.GrantFactory;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.Ability;
+import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
@@ -167,115 +167,98 @@ public class FeatToken extends AbstractToken implements AddLstToken
 			return false;
 		}
 
-		ReferenceChoiceSet<Ability> rcs = new ReferenceChoiceSet<Ability>(refs);
-		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("ADD", rcs);
-		PCGraphGrantsEdge edge =
-				context.getGraphContext().grant(getTokenName(), obj, cs);
+		ChooseActionContainer container = new ChooseActionContainer("ADD");
+		container.addActor(new GrantActor<PCTemplate>());
+		AssociatedPrereqObject edge =
+				context.getGraphContext().grant(getTokenName(), obj, container);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
-		GrantFactory<Ability> gf = new GrantFactory<Ability>(edge);
-		/*
-		 * FUTURE Technically, this Category item should not be in the
-		 * GrantFactory, as it really belogs as something that can be extracted
-		 * from the ChoiceSet...
-		 */
-		gf
-			.setAssociation(AssociationKey.ABILITY_CATEGORY,
-				AbilityCategory.FEAT);
-		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
-		context.getGraphContext().grant(getTokenName(), obj, gf);
+		edge.setAssociation(AssociationKey.ABILITY_CATEGORY,
+			AbilityCategory.FEAT);
+		edge
+			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
+		ReferenceChoiceSet<Ability> rcs = new ReferenceChoiceSet<Ability>(refs);
+		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("ADD", rcs);
+		edge.setAssociation(AssociationKey.CHOICE, cs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
-		GraphChanges<ChoiceSet> choiceChanges =
+		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChoiceSet.class);
-		if (choiceChanges == null)
+					obj, ChooseActionContainer.class);
+		if (grantChanges == null)
 		{
 			return null;
 		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				choiceChanges.getAddedAssociations();
+				grantChanges.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		GraphChanges<GrantFactory> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, GrantFactory.class);
-		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
-		if (grantAdded == null || grantAdded.isEmpty())
-		{
-			// Zero indicates no Token present
-			return null;
-		}
 		List<String> addStrings = new ArrayList<String>();
 		for (LSTWriteable lstw : mtl.getKeySet())
 		{
-			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
-			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
+			ChooseActionContainer container = (ChooseActionContainer) lstw;
+			if (!"ADD".equals(container.getName()))
 			{
-				AbilityNature nat = null;
-				AbilityCategory cat = null;
-				for (LSTWriteable gw : grantAdded)
+				context.addWriteMessage("Unexpected CHOOSE container found: "
+					+ container.getName());
+				continue;
+			}
+			List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
+			for (AssociatedPrereqObject assoc : assocList)
+			{
+				ChoiceSet<?> cs = assoc.getAssociation(AssociationKey.CHOICE);
+				if (ABILITY_CLASS.equals(cs.getChoiceClass()))
 				{
-					GrantFactory<?> gf = (GrantFactory<?>) gw;
-					if (gf.usesChoiceSet(cs))
+					AbilityNature nat =
+							assoc.getAssociation(AssociationKey.ABILITY_NATURE);
+					if (nat == null)
 					{
-						cat =
-								gf
-									.getAssociation(AssociationKey.ABILITY_CATEGORY);
-						nat = gf.getAssociation(AssociationKey.ABILITY_NATURE);
-						break;
+						context
+							.addWriteMessage("Unable to find Nature for GrantFactory");
+						return null;
 					}
-				}
-				if (nat == null)
-				{
-					context
-						.addWriteMessage("Unable to find Nature for GrantFactory");
-					return null;
-				}
-				if (cat == null)
-				{
-					context
-						.addWriteMessage("Unable to find Category for GrantFactory");
-					return null;
-				}
-				if (!AbilityCategory.FEAT.equals(cat)
-					|| !AbilityNature.NORMAL.equals(nat))
-				{
-					// will be done with VFEAT or ABILITY
-					continue;
-				}
-				List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
-				if (assocList.size() != 1)
-				{
-					context
-						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
-					return null;
-				}
-				AssociatedPrereqObject assoc = assocList.get(0);
-				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
-				if (f == null)
-				{
-					context.addWriteMessage("Unable to find Choice Count");
-					return null;
-				}
-				String fString = f.toString();
-				StringBuilder sb = new StringBuilder();
-				if (!"1".equals(fString))
-				{
-					sb.append(fString).append(Constants.PIPE);
-				}
-				sb.append(cs.getLSTformat());
-				addStrings.add(sb.toString());
+					AbilityCategory cat =
+							assoc
+								.getAssociation(AssociationKey.ABILITY_CATEGORY);
+					if (cat == null)
+					{
+						context
+							.addWriteMessage("Unable to find Category for GrantFactory");
+						return null;
+					}
+					if (!AbilityCategory.FEAT.equals(cat)
+						|| !AbilityNature.NORMAL.equals(nat))
+					{
+						// can't handle those here!
+						continue;
+					}
+					Formula f =
+							assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+					if (f == null)
+					{
+						context.addWriteMessage("Unable to find "
+							+ getTokenName() + " Count");
+						return null;
+					}
+					String fString = f.toString();
+					StringBuilder sb = new StringBuilder();
+					if (!"1".equals(fString))
+					{
+						sb.append(fString).append(Constants.PIPE);
+					}
+					sb.append(cs.getLSTformat());
+					addStrings.add(sb.toString());
 
-				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+					// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+				}
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
