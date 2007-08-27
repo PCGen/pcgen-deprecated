@@ -59,7 +59,34 @@ public class MoveLst extends AbstractToken implements GlobalLstToken
 		{
 			return false;
 		}
-		Movement cm = Movement.getOldMovementFrom(value);
+		StringTokenizer moves = new StringTokenizer(value, Constants.COMMA);
+		Movement cm;
+
+		if (moves.countTokens() == 1)
+		{
+			cm = new Movement(1);
+			String mod = moves.nextToken();
+			validateMove(value, mod);
+			cm.assignMovement(0, "Walk", mod);
+		}
+		else
+		{
+			cm = new Movement(moves.countTokens() / 2);
+
+			int x = 0;
+			while (moves.countTokens() > 1)
+			{
+				String type = moves.nextToken();
+				String mod = moves.nextToken();
+				validateMove(value, mod);
+				cm.assignMovement(x++, type, mod);
+			}
+			if (moves.countTokens() != 0)
+			{
+				Logging.errorPrint("Badly formed MOVE token "
+					+ "(extra value at end of list): " + value);
+			}
+		}
 		cm.setMoveRatesFlag(0);
 		obj.setMovement(cm, anInt);
 		return true;
@@ -132,5 +159,22 @@ public class MoveLst extends AbstractToken implements GlobalLstToken
 		}
 		return new String[]{ReferenceUtilities.joinLstFormat(added,
 			Constants.COMMA)};
+	}
+
+	private void validateMove(String value, String mod)
+	{
+		try
+		{
+			if (Integer.parseInt(mod) < 0)
+			{
+				Logging.errorPrint("Invalid movement (cannot be negative): "
+					+ mod + " in MOVE: " + value);
+			}
+		}
+		catch (NumberFormatException nfe)
+		{
+			Logging.errorPrint("Invalid movement (must be an integer >= 0): "
+				+ mod + " in MOVE: " + value);
+		}
 	}
 }

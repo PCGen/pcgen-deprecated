@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 (C) Thomas Parker <thpr@users.sourceforge.net>
+* Copyright 2007 (C) Thomas Parker <thpr@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,46 +18,42 @@
 package plugin.lsttokens.choose;
 
 import pcgen.core.PObject;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class SpellListToken extends AbstractToken implements ChooseLstToken
+public class SAListToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
-		if (value == null)
+		if (value.indexOf('|') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments in " + po.getDisplayName()
-				+ " at " + po.getDefaultSourceString());
-			return false;
-		}
-		if (value.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value + " in "
-				+ po.getDisplayName() + " at " + po.getDefaultSourceString());
+				+ " arguments may not contain | : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value + " in "
-				+ po.getDisplayName() + " at " + po.getDefaultSourceString());
+				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (hasIllegalSeparator('|', value))
-		{
-			return false;
-		}
-		if (!value.equals("Y") && !value.equals("N") && !value.equals("1")
-			&& !value.equals("0"))
+		if (value.charAt(0) == ',')
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " argument was not Y or N in " + po.getDisplayName() + " at "
-				+ po.getDefaultSourceString());
+				+ " arguments may not start with , : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == ',')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not end with , : " + value);
+			return false;
+		}
+		if (value.indexOf(",,") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments uses double separator ,, : " + value);
 			return false;
 		}
 		StringBuilder sb = new StringBuilder();
@@ -70,9 +66,8 @@ public class SpellListToken extends AbstractToken implements ChooseLstToken
 		return true;
 	}
 
-	@Override
 	public String getTokenName()
 	{
-		return "SPELLLIST";
+		return "SALIST";
 	}
 }

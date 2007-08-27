@@ -22,11 +22,15 @@
  */
 package plugin.lsttokens;
 
+import java.util.StringTokenizer;
+
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -42,7 +46,22 @@ public class MovecloneLst implements GlobalLstToken
 
 	public boolean parse(PObject obj, String value, int anInt)
 	{
-		Movement cm = Movement.getOldMovementFrom(value);
+		StringTokenizer moves = new StringTokenizer(value, Constants.COMMA);
+		Movement cm;
+
+		if (moves.countTokens() == 3)
+		{
+			cm = new Movement(2);
+			cm.assignMovement(0, moves.nextToken(), "0");
+			cm.assignMovement(1, moves.nextToken(), moves.nextToken());
+		}
+		else
+		{
+			Logging.errorPrint("Invalid Version of MOVECLONE detected: "
+				+ value + "\n  MOVECLONE now has 3 arguments: "
+				+ "SourceMove,DestinationMove,Modifier");
+			return false;
+		}
 		cm.setMoveRatesFlag(2);
 		obj.setMovement(cm, anInt);
 		return true;
@@ -50,8 +69,24 @@ public class MovecloneLst implements GlobalLstToken
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		Movement cm = Movement.getMovementFrom(value);
-		cm.setMoveRatesFlag(2);
+		StringTokenizer moves = new StringTokenizer(value, Constants.COMMA);
+		Movement cm;
+
+		if (moves.countTokens() == 3)
+		{
+			cm = new Movement(2);
+			cm.assignMovement(0, moves.nextToken(), "0");
+			cm.assignMovement(1, moves.nextToken(), moves.nextToken());
+			cm.setMoveRatesFlag(2);
+		}
+		else
+		{
+			Logging.errorPrint("Invalid Version of MOVECLONE detected: "
+				+ value + "\n  MOVECLONE now has 3 arguments: "
+				+ "SourceMove,DestinationMove,Modifier");
+			return false;
+		}
+		
 		context.getGraphContext().grant(getTokenName(), obj, cm);
 		return true;
 	}
