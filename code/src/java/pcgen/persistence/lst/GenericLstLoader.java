@@ -26,28 +26,15 @@ public abstract class GenericLstLoader<T extends PObject> extends
 
 		if (token == null)
 		{
-			if (!processCompatible(context, pobj, key, value, source))
+			if (processCompatible(context, pobj, key, value, source))
 			{
-				Logging.clearParseMessages();
-				try
-				{
-					if (!PObjectLoader.parseTag(context, pobj, key, value))
-					{
-						Logging.errorPrint("Illegal "
-							+ getLoadClass().getName() + " Token '" + key
-							+ "' for " + pobj.getDisplayName() + " value: "
-							+ value + " in " + source.getURI() + " of "
-							+ source.getCampaign() + ".");
-					}
-				}
-				catch (PersistenceLayerException e)
-				{
-					Logging
-						.errorPrint("Error parsing " + getLoadClass().getName()
-							+ " Token '" + key + "' for "
-							+ pobj.getDisplayName() + " in " + source.getURI()
-							+ " of " + source.getCampaign() + ".");
-				}
+				context.commit();
+			}
+			else
+			{
+				context.decommit();
+				Logging.markParseMessages();
+				parseGlobal(context, pobj, key, value, source);
 			}
 		}
 		else
@@ -55,31 +42,68 @@ public abstract class GenericLstLoader<T extends PObject> extends
 			LstUtils.deprecationCheck(token, pobj, value);
 			try
 			{
-				if (!token.parse(context, pobj, value))
+				if (token.parse(context, pobj, value))
 				{
+					context.commit();
+				}
+				else
+				{
+					context.decommit();
 					Logging.markParseMessages();
 					if (processCompatible(context, pobj, key, value, source))
 					{
+						context.commit();
 						Logging.clearParseMessages();
 					}
 					else
 					{
-						Logging.rewindParseMessages();
-						Logging.replayParsedMessages();
-						Logging.errorPrint("Error parsing token " + key
-							+ " in " + getLoadClass().getName() + " "
-							+ pobj.getDisplayName() + ':' + source.getURI()
-							+ ':' + value + "\"");
+						context.decommit();
+						parseGlobal(context, pobj, key, value, source);
 					}
 				}
 			}
 			catch (PersistenceLayerException e)
 			{
+				context.decommit();
+				Logging.rewindParseMessages();
+				Logging.replayParsedMessages();
 				Logging.errorPrint("Error parsing " + getLoadClass().getName()
 					+ " Token '" + key + "' for " + pobj.getDisplayName()
 					+ " in " + source.getURI() + " of " + source.getCampaign()
 					+ ".");
 			}
+		}
+	}
+
+	private void parseGlobal(LoadContext context, T pobj, String key,
+		String value, CampaignSourceEntry source)
+	{
+		try
+		{
+			if (PObjectLoader.parseTag(context, pobj, key, value))
+			{
+				context.commit();
+				Logging.clearParseMessages();
+			}
+			else
+			{
+				context.decommit();
+				Logging.rewindParseMessages();
+				Logging.replayParsedMessages();
+				Logging.errorPrint("Illegal " + getLoadClass().getName()
+					+ " Token '" + key + "' for " + pobj.getDisplayName()
+					+ " value: " + value + " in " + source.getURI() + " of "
+					+ source.getCampaign() + ".");
+			}
+		}
+		catch (PersistenceLayerException e)
+		{
+			context.decommit();
+			Logging.rewindParseMessages();
+			Logging.replayParsedMessages();
+			Logging.errorPrint("Error parsing " + getLoadClass().getName()
+				+ " Token '" + key + "' for " + pobj.getDisplayName() + " in "
+				+ source.getURI() + " of " + source.getCampaign() + ".");
 		}
 	}
 

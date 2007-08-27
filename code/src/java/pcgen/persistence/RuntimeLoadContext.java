@@ -4,38 +4,14 @@ import pcgen.cdom.graph.PCGenGraph;
 
 public class RuntimeLoadContext extends LoadContext
 {
-	private final GraphContext graph;
-
-	private final ListContext list;
-
-	private final ObjectContext obj;
-
 	private final String contextType;
 
 	public RuntimeLoadContext(PCGenGraph pgg)
 	{
-		graph = new RuntimeGraphContext(pgg);
-		obj = new RuntimeObjectContext();
-		list = new RuntimeListContext();
+		super(new GraphContext(new ConsolidatedGraphCommitStrategy(pgg)),
+			new ListContext(new ConsolidatedListCommitStrategy()),
+			new ObjectContext(new ConsolidatedObjectCommitStrategy()));
 		contextType = "Runtime";
-	}
-
-	@Override
-	public GraphContext getGraphContext()
-	{
-		return graph;
-	}
-
-	@Override
-	public ObjectContext getObjectContext()
-	{
-		return obj;
-	}
-
-	@Override
-	public ListContext getListContext()
-	{
-		return list;
 	}
 
 	/*

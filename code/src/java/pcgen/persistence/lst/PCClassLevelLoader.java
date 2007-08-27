@@ -48,9 +48,14 @@ public class PCClassLevelLoader
 
 			if (levelToken == null)
 			{
-				if (!processLevelCompatible(context, pcclass, key, value,
+				if (processLevelCompatible(context, pcclass, key, value,
 					source, level))
 				{
+					context.commit();
+				}
+				else
+				{
+					context.decommit();
 					PCClassLoader.processUniversalToken(context, pcclass
 						.getClassLevel(level), key, value, source, univtoken);
 				}
@@ -58,16 +63,23 @@ public class PCClassLevelLoader
 			else
 			{
 				LstUtils.deprecationCheck(levelToken, pcclass, value);
-				if (!levelToken.parse(context, pcclass, value, level))
+				if (levelToken.parse(context, pcclass, value, level))
 				{
+					context.commit();
+				}
+				else
+				{
+					context.decommit();
 					Logging.markParseMessages();
 					if (processLevelCompatible(context, pcclass, key, value,
 						source, level))
 					{
+						context.commit();
 						Logging.clearParseMessages();
 					}
 					else
 					{
+						context.decommit();
 						Logging.rewindParseMessages();
 						Logging.replayParsedMessages();
 						Logging.errorPrint("Error parsing token " + key
@@ -119,6 +131,7 @@ public class PCClassLevelLoader
 						{
 							return true;
 						}
+						context.decommit();
 					}
 					tertiarySet.clear();
 				}

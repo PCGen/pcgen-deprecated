@@ -392,13 +392,13 @@ public class CategorizedReferenceContext
 		boolean returnGood = true;
 		for (Class cl : referenced.getKeySet())
 		{
-			System.err.println(cl);
+			//System.err.println(cl);
 			for (Category cat : referenced.getSecondaryKeySet(cl))
 			{
-				System.err.println(cat);
+				//System.err.println(cat);
 				for (String s : referenced.getTertiaryKeySet(cl, cat))
 				{
-					System.err.println(s);
+					//System.err.println(s);
 					if (!active.containsKey(cl, cat, s))
 					{
 						Logging.errorPrint("Unconstructed Reference: "

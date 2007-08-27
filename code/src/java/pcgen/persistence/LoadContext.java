@@ -28,15 +28,24 @@ import pcgen.core.SizeAdjustment;
 public abstract class LoadContext
 {
 
+	public final GraphContext graph;
+
+	public final ListContext list;
+
+	public final ObjectContext obj;
+
 	public final ReferenceContext ref;
 
 	public final GameMode gameMode;
 
-	public LoadContext()
+	public LoadContext(GraphContext gc, ListContext lc, ObjectContext oc)
 	{
 		ref = new ReferenceContext();
 		// TODO FIXME This is a hack
 		gameMode = SettingsHandler.getGame();
+		graph = gc;
+		list = lc;
+		obj = oc;
 	}
 
 	public <T extends PrereqObject> CDOMGroupRef<T> groupChildNodesOfClass(
@@ -124,9 +133,32 @@ public abstract class LoadContext
 		getGraphContext().setLine(i);
 	}
 
-	public abstract GraphContext getGraphContext();
+	public GraphContext getGraphContext()
+	{
+		return graph;
+	}
 
-	public abstract ObjectContext getObjectContext();
+	public ObjectContext getObjectContext()
+	{
+		return obj;
+	}
 
-	public abstract ListContext getListContext();
+	public ListContext getListContext()
+	{
+		return list;
+	}
+
+	public void commit()
+	{
+		getGraphContext().commit();
+		getListContext().commit();
+		getObjectContext().commit();
+	}
+
+	public void decommit()
+	{
+		getGraphContext().decommit();
+		getListContext().decommit();
+		getObjectContext().decommit();
+	}
 }

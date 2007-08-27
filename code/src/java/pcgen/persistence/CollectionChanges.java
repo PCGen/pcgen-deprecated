@@ -2,8 +2,6 @@ package pcgen.persistence;
 
 import java.util.Collection;
 
-import pcgen.cdom.base.AssociatedPrereqObject;
-
 public class CollectionChanges<T> implements Changes<T>
 {
 	private Collection<T> positive;
@@ -46,15 +44,5 @@ public class CollectionChanges<T> implements Changes<T>
 	public boolean hasRemovedItems()
 	{
 		return negative != null && !negative.isEmpty();
-	}
-
-	public AssociatedPrereqObject getAddedAssociation(T added)
-	{
-		return null;
-	}
-
-	public AssociatedPrereqObject getRemovedAssociation(T removed)
-	{
-		return null;
 	}
 }

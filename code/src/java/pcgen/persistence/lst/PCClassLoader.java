@@ -667,13 +667,23 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 	{
 		if (univtoken == null)
 		{
-			if (!processUniversalCompatible(context, po, key, value, source))
+			if (processUniversalCompatible(context, po, key, value, source))
 			{
+				context.commit();
+			}
+			else
+			{
+				context.decommit();
 				Logging.clearParseMessages();
 				try
 				{
-					if (!PObjectLoader.parseTag(context, po, key, value))
+					if (PObjectLoader.parseTag(context, po, key, value))
 					{
+						context.commit();
+					}
+					else
+					{
+						context.decommit();
 						Logging.errorPrint("Illegal PCClass Token '" + key
 							+ "' for " + po.getDisplayName() + " in "
 							+ source.getURI() + " of " + source.getCampaign()
@@ -682,6 +692,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				}
 				catch (PersistenceLayerException e)
 				{
+					context.decommit();
 					Logging
 						.errorPrint("Error parsing PCClass Token '" + key
 							+ "' for " + po.getDisplayName() + " in "
@@ -695,15 +706,22 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			LstUtils.deprecationCheck(univtoken, po, value);
 			try
 			{
-				if (!univtoken.parse(context, po, value))
+				if (univtoken.parse(context, po, value))
 				{
+					context.commit();
+				}
+				else
+				{
+					context.decommit();
 					if (processUniversalCompatible(context, po, key, value,
 						source))
 					{
+						context.commit();
 						Logging.clearParseMessages();
 					}
 					else
 					{
+						context.decommit();
 						Logging.rewindParseMessages();
 						Logging.replayParsedMessages();
 						Logging.errorPrint("Error parsing token " + key
@@ -714,6 +732,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			}
 			catch (PersistenceLayerException e)
 			{
+				context.decommit();
 				Logging.errorPrint("Error parsing PCClass Token '" + key
 					+ "' for " + po.getDisplayName() + " in " + source.getURI()
 					+ " of " + source.getCampaign() + ".");
@@ -765,6 +784,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 								+ source.getURI() + " of "
 								+ source.getCampaign() + ".");
 						}
+						context.decommit();
 					}
 					tertiarySet.clear();
 				}
@@ -781,15 +801,22 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		LstUtils.deprecationCheck(classtoken, pcclass, value);
 		try
 		{
-			if (!classtoken.parse(context, pcclass, value))
+			if (classtoken.parse(context, pcclass, value))
 			{
+				context.commit();
+			}
+			else
+			{
+				context.decommit();
 				Logging.markParseMessages();
 				if (processClassCompatible(context, pcclass, key, value, source))
 				{
+					context.commit();
 					Logging.clearParseMessages();
 				}
 				else
 				{
+					context.decommit();
 					Logging.rewindParseMessages();
 					Logging.replayParsedMessages();
 					Logging.errorPrint("Error parsing token " + key
@@ -800,6 +827,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		}
 		catch (PersistenceLayerException e)
 		{
+			context.decommit();
 			Logging.errorPrint("Error parsing " + getLoadClass().getName()
 				+ " Token '" + key + "' for " + pcclass.getDisplayName()
 				+ " in " + source.getURI() + " of " + source.getCampaign()
@@ -846,6 +874,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 							{
 								return true;
 							}
+							context.decommit();
 						}
 						catch (PersistenceLayerException e)
 						{

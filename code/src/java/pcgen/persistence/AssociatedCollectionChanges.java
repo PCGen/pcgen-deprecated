@@ -1,18 +1,21 @@
 package pcgen.persistence;
 
 import java.util.Collection;
-import java.util.Map;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 
-public class AssociatedCollectionChanges<T> implements Changes<T>
+public class AssociatedCollectionChanges<T> implements AssociatedChanges<T>
 {
-	private Map<T, AssociatedPrereqObject> positive;
-	private Map<T, AssociatedPrereqObject> negative;
+	private MapToList<LSTWriteable, AssociatedPrereqObject> positive;
+	private MapToList<LSTWriteable, AssociatedPrereqObject> negative;
 	private boolean clear;
 
-	public AssociatedCollectionChanges(Map<T, AssociatedPrereqObject> added,
-		Map<T, AssociatedPrereqObject> removed, boolean globallyCleared)
+	public AssociatedCollectionChanges(
+		MapToList<LSTWriteable, AssociatedPrereqObject> added,
+		MapToList<LSTWriteable, AssociatedPrereqObject> removed,
+		boolean globallyCleared)
 	{
 		positive = added;
 		negative = removed;
@@ -29,9 +32,9 @@ public class AssociatedCollectionChanges<T> implements Changes<T>
 		return !clear && !hasAddedItems() && !hasRemovedItems();
 	}
 
-	public Collection<T> getAdded()
+	public Collection<LSTWriteable> getAdded()
 	{
-		return positive.keySet();
+		return positive.getKeySet();
 	}
 
 	public boolean hasAddedItems()
@@ -39,9 +42,9 @@ public class AssociatedCollectionChanges<T> implements Changes<T>
 		return positive != null && !positive.isEmpty();
 	}
 
-	public Collection<T> getRemoved()
+	public Collection<LSTWriteable> getRemoved()
 	{
-		return negative.keySet();
+		return negative.getKeySet();
 	}
 
 	public boolean hasRemovedItems()
@@ -49,13 +52,13 @@ public class AssociatedCollectionChanges<T> implements Changes<T>
 		return negative != null && !negative.isEmpty();
 	}
 
-	public AssociatedPrereqObject getAddedAssociation(T added)
+	public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations()
 	{
-		return positive.get(added);
+		return positive;
 	}
 
-	public AssociatedPrereqObject getRemovedAssociation(T removed)
+	public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations()
 	{
-		return negative.get(removed);
+		return negative;
 	}
 }

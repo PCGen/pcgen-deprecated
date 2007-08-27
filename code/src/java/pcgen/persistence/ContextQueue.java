@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pcgen.base.lang.Command;
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 
 public class ContextQueue
 {
@@ -31,7 +32,7 @@ public class ContextQueue
 		}
 	}
 
-	public PCGraphGrantsEdge grant(String sourceToken, PrereqObject obj,
+	public AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
 		PrereqObject pro)
 	{
 		return graph.grant(sourceToken, obj, pro);

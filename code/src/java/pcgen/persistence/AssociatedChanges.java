@@ -6,7 +6,7 @@ import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.LSTWriteable;
 
-public interface GraphChanges<T>
+public interface AssociatedChanges<T>
 {
 	public boolean hasRemovedItems();
 

@@ -4,11 +4,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.MapToList;
+import pcgen.base.util.TreeMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
@@ -18,7 +18,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
-public class RuntimeListContext implements ListContext
+public class ConsolidatedListCommitStrategy implements ListCommitStrategy
 {
 	private URI sourceURI;
 
@@ -47,9 +47,9 @@ public class RuntimeListContext implements ListContext
 	private final DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject> masterList =
 			new DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject>();
 
-	public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(
-		String tokenName, CDOMObject owner,
-		CDOMReference<? extends CDOMList<T>> list, LSTWriteable allowed)
+	public AssociatedPrereqObject addToMasterList(String tokenName,
+		CDOMObject owner, CDOMReference<? extends CDOMList<?>> list,
+		LSTWriteable allowed)
 	{
 		SimpleAssociatedObject a = new SimpleAssociatedObject();
 		a.setAssociation(AssociationKey.OWNER, owner);
@@ -58,16 +58,11 @@ public class RuntimeListContext implements ListContext
 		return a;
 	}
 
-	public boolean hasMasterLists()
-	{
-		return !masterList.isEmpty();
-	}
-
 	public Collection<CDOMReference> getMasterLists(
 		Class<? extends CDOMList<?>> cl)
 	{
 		ArrayList<CDOMReference> list = new ArrayList<CDOMReference>();
-		for (CDOMReference ref : masterList.getKeySet())
+		for (CDOMReference<? extends CDOMList<?>> ref : masterList.getKeySet())
 		{
 			if (cl.equals(ref.getReferenceClass()))
 			{
@@ -77,13 +72,17 @@ public class RuntimeListContext implements ListContext
 		return list;
 	}
 
-	public <T extends CDOMObject> Changes<LSTWriteable> getChangesInMasterList(
-		String tokenName, CDOMObject owner,
-		CDOMReference<? extends CDOMList<T>> swl)
+	public void clearAllMasterLists(String tokenName, CDOMObject owner)
+	{
+		// TODO Auto-generated method stub
+	}
+
+	public AssociatedChanges<LSTWriteable> getChangesInMasterList(String tokenName,
+		CDOMObject owner, CDOMReference<? extends CDOMList<?>> swl)
 	{
 		Set<LSTWriteable> added = masterList.getSecondaryKeySet(swl);
-		Map<LSTWriteable, AssociatedPrereqObject> owned =
-				new TreeMap<LSTWriteable, AssociatedPrereqObject>(
+		MapToList<LSTWriteable, AssociatedPrereqObject> owned =
+				new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
 					TokenUtilities.WRITEABLE_SORTER);
 		for (LSTWriteable lw : added)
 		{
@@ -92,7 +91,7 @@ public class RuntimeListContext implements ListContext
 			{
 				if (owner.equals(assoc.getAssociation(AssociationKey.OWNER)))
 				{
-					owned.put(lw, assoc);
+					owned.addToListFor(lw, assoc);
 					break;
 				}
 			}
@@ -104,23 +103,9 @@ public class RuntimeListContext implements ListContext
 		return new AssociatedCollectionChanges<LSTWriteable>(owned, null, false);
 	}
 
-	public <T extends CDOMObject> void clearMasterList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<T>> list)
+	public boolean hasMasterLists()
 	{
-		for (LSTWriteable lw : masterList.getSecondaryKeySet(list))
-		{
-			List<AssociatedPrereqObject> assocList =
-					masterList.getListFor(list, lw);
-			for (AssociatedPrereqObject assoc : assocList)
-			{
-				if (owner.equals(assoc.getAssociation(AssociationKey.OWNER))
-					&& tokenName.equals(assoc
-						.getAssociation(AssociationKey.TOKEN)))
-				{
-					masterList.removeFromListFor(list, lw, assoc);
-				}
-			}
-		}
+		return !masterList.isEmpty();
 	}
 
 	public <T extends CDOMObject> AssociatedPrereqObject addToList(
@@ -131,6 +116,21 @@ public class RuntimeListContext implements ListContext
 		a.setAssociation(AssociationKey.TOKEN, tokenName);
 		owner.putToList(list, allowed, a);
 		return a;
+	}
+
+	public <T extends CDOMObject> void removeFromList(String tokenName,
+		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl,
+		CDOMReference<T> ref)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	public void removeAllFromList(String tokenName, CDOMObject owner,
+		CDOMReference<? extends CDOMList<?>> swl)
+	{
+		// TODO Auto-generated method stub
+
 	}
 
 	public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getChangedLists(
@@ -149,22 +149,7 @@ public class RuntimeListContext implements ListContext
 		return list;
 	}
 
-	public <T extends CDOMObject> void removeAllFromList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public <T extends CDOMObject> void removeFromList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl,
-		CDOMReference<T> ref)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public <T extends CDOMObject> Changes<CDOMReference<T>> getChangesInList(
+	public <T extends CDOMObject> AssociatedChanges<CDOMReference<T>> getChangesInList(
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl)
 	{
