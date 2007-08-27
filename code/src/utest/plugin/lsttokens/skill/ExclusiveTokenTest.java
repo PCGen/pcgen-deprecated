@@ -61,7 +61,7 @@ public class ExclusiveTokenTest extends AbstractTokenTestCase<Skill>
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.EXCLUSIVE));
 		internalTestInvalidInputString(Boolean.TRUE);
 		assertTrue(primaryGraph.isEmpty());
@@ -71,29 +71,29 @@ public class ExclusiveTokenTest extends AbstractTokenTestCase<Skill>
 		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.EXCLUSIVE));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.EXCLUSIVE));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.EXCLUSIVE));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.EXCLUSIVE));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.EXCLUSIVE));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.EXCLUSIVE));
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.EXCLUSIVE));
-		//We're nice enough to be case insensitive here...
-		assertTrue(token.parse(primaryContext, primaryProf, "YeS"));
+		// We're nice enough to be case insensitive here...
+		assertTrue(parse("YeS"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.EXCLUSIVE));
-		assertTrue(token.parse(primaryContext, primaryProf, "Yes"));
+		assertTrue(parse("Yes"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.EXCLUSIVE));
-		assertTrue(token.parse(primaryContext, primaryProf, "No"));
+		assertTrue(parse("No"));
 		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.EXCLUSIVE));
 	}
 

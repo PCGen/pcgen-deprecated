@@ -149,14 +149,24 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 
-	public boolean parse(String s) throws PersistenceLayerException
+	public boolean parse(String str) throws PersistenceLayerException
 	{
-		return getToken().parse(primaryContext, primaryProf, s);
+		boolean b = getToken().parse(primaryContext, primaryProf, str);
+		if (b)
+		{
+			primaryContext.commit();
+		}
+		return b;
 	}
 
-	public boolean parseSecondary(String s) throws PersistenceLayerException
+	public boolean parseSecondary(String str) throws PersistenceLayerException
 	{
-		return getToken().parse(secondaryContext, secondaryProf, s);
+		boolean b = getToken().parse(secondaryContext, secondaryProf, str);
+		if (b)
+		{
+			secondaryContext.commit();
+		}
+		return b;
 	}
 
 	protected String getTokenName()

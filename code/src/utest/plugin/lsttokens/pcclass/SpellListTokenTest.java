@@ -208,7 +208,7 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 		construct(primaryContext, "TestWP3");
 		construct(secondaryContext, "TestWP3");
 		assertTrue(parse("1|TestWP1,TestWP2"));
-		assertTrue(parse("1|TestWP1,TestWP2"));
+		assertTrue(parseSecondary("1|TestWP1,TestWP2"));
 		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 		assertFalse(parse("1|TestWP3,ALL"));
 		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);

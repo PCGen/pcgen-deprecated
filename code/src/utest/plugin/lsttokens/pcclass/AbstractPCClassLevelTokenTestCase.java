@@ -176,7 +176,7 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		boolean b = getToken().parse(primaryContext, primaryProf, str, level);
 		if (b)
 		{
-			// primaryContext.commit();
+			primaryContext.commit();
 		}
 		return b;
 	}
@@ -188,7 +188,7 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 				getToken().parse(secondaryContext, secondaryProf, str, level);
 		if (b)
 		{
-			// secondaryContext.commit();
+			secondaryContext.commit();
 		}
 		return b;
 	}

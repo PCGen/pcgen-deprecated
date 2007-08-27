@@ -27,7 +27,8 @@ import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class CostdoubleTokenTest extends AbstractTokenTestCase<EquipmentModifier>
+public class CostdoubleTokenTest extends
+		AbstractTokenTestCase<EquipmentModifier>
 {
 
 	static CostdoubleToken token = new CostdoubleToken();
@@ -61,7 +62,7 @@ public class CostdoubleTokenTest extends AbstractTokenTestCase<EquipmentModifier
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
 		internalTestInvalidInputString(Boolean.TRUE);
 		assertTrue(primaryGraph.isEmpty());
@@ -71,29 +72,29 @@ public class CostdoubleTokenTest extends AbstractTokenTestCase<EquipmentModifier
 		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		//We're nice enough to be case insensitive here...
-		assertTrue(token.parse(primaryContext, primaryProf, "YeS"));
+		// We're nice enough to be case insensitive here...
+		assertTrue(parse("YeS"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertTrue(token.parse(primaryContext, primaryProf, "Yes"));
+		assertTrue(parse("Yes"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertTrue(token.parse(primaryContext, primaryProf, "No"));
+		assertTrue(parse("No"));
 		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.COST_DOUBLE));
 	}
 

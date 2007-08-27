@@ -112,6 +112,8 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		secondaryProf.put(ObjectKey.SOURCE_URI, testCampaign.getURI());
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 
+		assertNotNull(str);
+		assertNotNull(unparsed);
 		assertEquals(str.length, unparsed.length);
 
 		for (int i = 0; i < str.length; i++)
@@ -171,7 +173,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		boolean b = getToken().parse(primaryContext, primaryProf, str);
 		if (b)
 		{
-			// primaryContext.commit();
+			primaryContext.commit();
 		}
 		return b;
 	}
@@ -181,7 +183,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		boolean b = getToken().parse(secondaryContext, secondaryProf, str);
 		if (b)
 		{
-			// secondaryContext.commit();
+			secondaryContext.commit();
 		}
 		return b;
 	}

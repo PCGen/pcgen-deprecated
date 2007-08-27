@@ -61,7 +61,7 @@ public class MultTokenTest extends AbstractTokenTestCase<Ability>
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertTrue(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
 		internalTestInvalidInputString(Boolean.TRUE);
 		assertTrue(primaryGraph.isEmpty());
@@ -71,38 +71,38 @@ public class MultTokenTest extends AbstractTokenTestCase<Ability>
 		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.MULTIPLE_ALLOWED));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.MULTIPLE_ALLOWED));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.MULTIPLE_ALLOWED));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.MULTIPLE_ALLOWED));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.MULTIPLE_ALLOWED));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertTrue(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertFalse(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
 		// We're nice enough to be case insensitive here...
-		assertTrue(token.parse(primaryContext, primaryProf, "YeS"));
+		assertTrue(parse("YeS"));
 		assertTrue(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
-		assertTrue(token.parse(primaryContext, primaryProf, "Yes"));
+		assertTrue(parse("Yes"));
 		assertTrue(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
-		assertTrue(token.parse(primaryContext, primaryProf, "No"));
+		assertTrue(parse("No"));
 		assertFalse(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
 		// And we also allow single characters
-		assertTrue(token.parse(primaryContext, primaryProf, "Y"));
+		assertTrue(parse("Y"));
 		assertTrue(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
-		assertTrue(token.parse(primaryContext, primaryProf, "N"));
+		assertTrue(parse("N"));
 		assertFalse(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
-		assertTrue(token.parse(primaryContext, primaryProf, "y"));
+		assertTrue(parse("y"));
 		assertTrue(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
-		assertTrue(token.parse(primaryContext, primaryProf, "n"));
+		assertTrue(parse("n"));
 		assertFalse(primaryProf.get(ObjectKey.MULTIPLE_ALLOWED).booleanValue());
 	}
 

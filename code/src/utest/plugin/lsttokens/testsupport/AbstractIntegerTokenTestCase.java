@@ -129,7 +129,7 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 	public void testOutputOne() throws PersistenceLayerException
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
-		primaryContext.getObjectContext().put(primaryProf, getIntegerKey(), 1);
+		primaryProf.put(getIntegerKey(), 1);
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 		if (isPositiveAllowed())
 		{
@@ -147,7 +147,7 @@ public abstract class AbstractIntegerTokenTestCase<T extends PObject> extends
 	public void testOutputZero() throws PersistenceLayerException
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
-		primaryContext.getObjectContext().put(primaryProf, getIntegerKey(), 0);
+		primaryProf.put(getIntegerKey(), 0);
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 		if (isZeroAllowed())
 		{

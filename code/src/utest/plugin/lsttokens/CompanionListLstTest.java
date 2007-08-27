@@ -282,11 +282,13 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
-	public void testRoundRobinTwoFA() throws PersistenceLayerException
+	public void testRoundRobinThreeFA() throws PersistenceLayerException
 	{
+		construct(Race.class, "Bear");
 		construct(Race.class, "Lion");
 		construct(Race.class, "Tiger");
-		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-4",
+		runRoundRobin("Familiar|Bear|FOLLOWERADJUSTMENT:-6",
+			"Familiar|Lion|FOLLOWERADJUSTMENT:-4",
 			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
 	}
 
@@ -313,6 +315,24 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 		construct(Race.class, "Lion");
 		construct(Race.class, "Tiger");
 		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-5",
+			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
+	}
+
+	@Test
+	public void testRoundRobinDupePre() throws PersistenceLayerException
+	{
+		construct(Race.class, "Tiger");
+		runRoundRobin(
+			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRECLASS:1,Cleric=1",
+			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
+	}
+
+	@Test
+	public void testRoundRobinDupePreDiffFA() throws PersistenceLayerException
+	{
+		construct(Race.class, "Tiger");
+		runRoundRobin(
+			"Familiar|Tiger|FOLLOWERADJUSTMENT:-3|PRECLASS:1,Cleric=1",
 			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
 	}
 }

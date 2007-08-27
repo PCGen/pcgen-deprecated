@@ -62,7 +62,7 @@ public class ACheckTokenTest extends AbstractTokenTestCase<Skill>
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(SkillArmorCheck.YES, primaryProf
 			.get(ObjectKey.ARMOR_CHECK));
 		internalTestInvalidInputString(SkillArmorCheck.YES);
@@ -73,38 +73,38 @@ public class ACheckTokenTest extends AbstractTokenTestCase<Skill>
 		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.ARMOR_CHECK));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.ARMOR_CHECK));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.ARMOR_CHECK));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.ARMOR_CHECK));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.ARMOR_CHECK));
-		//Note case sensitivity
-		assertFalse(token.parse(primaryContext, primaryProf, "Yes"));
+		// Note case sensitivity
+		assertFalse(parse("Yes"));
 		assertEquals(val, primaryProf.get(ObjectKey.ARMOR_CHECK));
-		assertFalse(token.parse(primaryContext, primaryProf, "No"));
+		assertFalse(parse("No"));
 		assertEquals(val, primaryProf.get(ObjectKey.ARMOR_CHECK));
-		assertFalse(token.parse(primaryContext, primaryProf, "Double"));
+		assertFalse(parse("Double"));
 		assertEquals(val, primaryProf.get(ObjectKey.ARMOR_CHECK));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(SkillArmorCheck.YES, primaryProf
 			.get(ObjectKey.ARMOR_CHECK));
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertEquals(SkillArmorCheck.NO, primaryProf.get(ObjectKey.ARMOR_CHECK));
-		assertTrue(token.parse(primaryContext, primaryProf, "PROFICIENT"));
+		assertTrue(parse("PROFICIENT"));
 		assertEquals(SkillArmorCheck.PROFICIENT, primaryProf
 			.get(ObjectKey.ARMOR_CHECK));
-		assertTrue(token.parse(primaryContext, primaryProf, "DOUBLE"));
+		assertTrue(parse("DOUBLE"));
 		assertEquals(SkillArmorCheck.DOUBLE, primaryProf
 			.get(ObjectKey.ARMOR_CHECK));
-		assertTrue(token.parse(primaryContext, primaryProf, "WEIGHT"));
+		assertTrue(parse("WEIGHT"));
 		assertEquals(SkillArmorCheck.WEIGHT, primaryProf
 			.get(ObjectKey.ARMOR_CHECK));
 	}

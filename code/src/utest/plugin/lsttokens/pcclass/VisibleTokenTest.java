@@ -80,7 +80,7 @@ public class VisibleTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertEquals(Visibility.NO, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.NO);
 		assertTrue(primaryGraph.isEmpty());
@@ -90,32 +90,32 @@ public class VisibleTokenTest extends AbstractTokenTestCase<PCClass>
 		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "Always"));
+		assertFalse(parse("Always"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
 		// Note case sensitivity
-		assertFalse(token.parse(primaryContext, primaryProf, "Yes"));
+		assertFalse(parse("Yes"));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		// assertTrue(token.parse(primaryContext, primaryProf, "DISPLAY"));
+		// assertTrue(parse("DISPLAY"));
 		// assertEquals(Visibility.DISPLAY,
 		// primaryProf.get(ObjectKey.VISIBILITY));
-		// assertTrue(token.parse(primaryContext, primaryProf, "EXPORT"));
+		// assertTrue(parse("EXPORT"));
 		// assertEquals(Visibility.EXPORT,
 		// primaryProf.get(ObjectKey.VISIBILITY));
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Visibility.YES, primaryProf.get(ObjectKey.VISIBILITY));
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertEquals(Visibility.NO, primaryProf.get(ObjectKey.VISIBILITY));
 	}
 

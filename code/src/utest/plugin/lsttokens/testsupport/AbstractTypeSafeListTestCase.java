@@ -39,6 +39,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputSimple() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");
 		List<?> coll;
 		assertTrue(parse("Rheinhessen"));
 		coll = primaryProf.getListFor(getListKey());
@@ -50,6 +51,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputNonEnglish() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Niederösterreich");
 		List<?> coll;
 		assertTrue(parse("Niederösterreich"));
 		coll = primaryProf.getListFor(getListKey());
@@ -61,6 +63,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputSpace() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Finger Lakes");
 		List<?> coll;
 		assertTrue(parse("Finger Lakes"));
 		coll = primaryProf.getListFor(getListKey());
@@ -72,6 +75,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputHyphen() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Languedoc-Roussillon");
 		List<?> coll;
 		assertTrue(parse("Languedoc-Roussillon"));
 		coll = primaryProf.getListFor(getListKey());
@@ -83,6 +87,7 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputY() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Yarra Valley");
 		List<?> coll;
 		assertTrue(parse("Yarra Valley"));
 		coll = primaryProf.getListFor(getListKey());
@@ -94,6 +99,8 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputList() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Niederösterreich");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Finger Lakes");
 		List<?> coll;
 		assertTrue(parse("Niederösterreich" + getJoinCharacter()
 			+ "Finger Lakes"));
@@ -107,6 +114,10 @@ public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
 	@Test
 	public void testValidInputMultList() throws PersistenceLayerException
 	{
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Niederösterreich");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Finger Lakes");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Languedoc-Roussillon");
+		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");
 		List<?> coll;
 		assertTrue(parse("Niederösterreich" + getJoinCharacter()
 			+ "Finger Lakes"));

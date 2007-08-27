@@ -80,7 +80,7 @@ public class IsMonsterTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.IS_MONSTER));
 		internalTestInvalidInputString(Boolean.TRUE);
 	}
@@ -89,29 +89,29 @@ public class IsMonsterTokenTest extends AbstractTokenTestCase<PCClass>
 		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertTrue(token.parse(primaryContext, primaryProf, "NO"));
+		assertTrue(parse("NO"));
 		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.IS_MONSTER));
 		// We're nice enough to be case insensitive here...
-		assertTrue(token.parse(primaryContext, primaryProf, "YeS"));
+		assertTrue(parse("YeS"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertTrue(token.parse(primaryContext, primaryProf, "Yes"));
+		assertTrue(parse("Yes"));
 		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertTrue(token.parse(primaryContext, primaryProf, "No"));
+		assertTrue(parse("No"));
 		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.IS_MONSTER));
 	}
 

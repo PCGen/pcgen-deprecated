@@ -158,6 +158,16 @@ public class AddDomainsTokenTest extends
 	}
 
 	@Test
+	public void testRoundRobinDupeTwoPrereqs() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1[PRERACE:1,Dwarf].TestWP1[PRERACE:1,Human]");
+	}
+
+	@Test
 	public void testRoundRobinThreeWithPre() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");

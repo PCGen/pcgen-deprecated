@@ -191,4 +191,23 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 		runRoundRobin("TestWP1,TestWP2|PRECLASS:1,Fighter=1|PRELEVEL:5");
 	}
 
+	@Test
+	public void testRoundRobinDupeTwoPrereqs() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1",
+			"TestWP1|PRECLASS:1,Wizard=1");
+	}
+
+	@Test
+	public void testRoundRobinTwoPrereqs() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1",
+			"TestWP2|PRECLASS:1,Wizard=1");
+	}
 }

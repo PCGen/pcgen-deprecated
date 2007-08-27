@@ -28,7 +28,8 @@ import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class FormatcatTokenTest extends AbstractTokenTestCase<EquipmentModifier>
+public class FormatcatTokenTest extends
+		AbstractTokenTestCase<EquipmentModifier>
 {
 
 	static FormatcatToken token = new FormatcatToken();
@@ -62,7 +63,7 @@ public class FormatcatTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "FRONT"));
+		assertTrue(parse("FRONT"));
 		assertEquals(EqModFormatCat.FRONT, primaryProf.get(ObjectKey.FORMAT));
 		internalTestInvalidInputString(EqModFormatCat.FRONT);
 		assertTrue(primaryGraph.isEmpty());
@@ -72,28 +73,28 @@ public class FormatcatTokenTest extends AbstractTokenTestCase<EquipmentModifier>
 		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.FORMAT));
-		assertFalse(token.parse(primaryContext, primaryProf, "Always"));
+		assertFalse(parse("Always"));
 		assertEquals(val, primaryProf.get(ObjectKey.FORMAT));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.FORMAT));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.FORMAT));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.FORMAT));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.FORMAT));
-		//Note case sensitivity
-		assertFalse(token.parse(primaryContext, primaryProf, "Middle"));
+		// Note case sensitivity
+		assertFalse(parse("Middle"));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "FRONT"));
+		assertTrue(parse("FRONT"));
 		assertEquals(EqModFormatCat.FRONT, primaryProf.get(ObjectKey.FORMAT));
-		assertTrue(token.parse(primaryContext, primaryProf, "MIDDLE"));
+		assertTrue(parse("MIDDLE"));
 		assertEquals(EqModFormatCat.MIDDLE, primaryProf.get(ObjectKey.FORMAT));
-		assertTrue(token.parse(primaryContext, primaryProf, "PARENS"));
+		assertTrue(parse("PARENS"));
 		assertEquals(EqModFormatCat.PARENS, primaryProf.get(ObjectKey.FORMAT));
 	}
 

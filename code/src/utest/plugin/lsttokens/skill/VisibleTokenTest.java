@@ -71,15 +71,16 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Skill>
 	@Test
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "EXPORT"));
+		assertTrue(parse("EXPORT"));
 		assertEquals(Visibility.EXPORT, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.EXPORT);
 	}
 
 	@Test
-	public void testInvalidInputStringSetDisplay() throws PersistenceLayerException
+	public void testInvalidInputStringSetDisplay()
+		throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "DISPLAY"));
+		assertTrue(parse("DISPLAY"));
 		assertEquals(Visibility.DISPLAY, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.DISPLAY);
 	}
@@ -88,38 +89,38 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Skill>
 		throws PersistenceLayerException
 	{
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "Always"));
+		assertFalse(parse("Always"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "String"));
+		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE=TestType"));
+		assertFalse(parse("TYPE=TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "TYPE.TestType"));
+		assertFalse(parse("TYPE.TestType"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "ALL"));
+		assertFalse(parse("ALL"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
 		// Must be EXPORT|READONLY
-		assertFalse(token.parse(primaryContext, primaryProf, "DISPLAY|"));
+		assertFalse(parse("DISPLAY|"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "DISPLAY|FLUFF"));
+		assertFalse(parse("DISPLAY|FLUFF"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
 		// Note case sensitivity
-		assertFalse(token.parse(primaryContext, primaryProf, "Display"));
+		assertFalse(parse("Display"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "DISPLAY|ReadOnly"));
+		assertFalse(parse("DISPLAY|ReadOnly"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
-		assertFalse(token.parse(primaryContext, primaryProf, "EXPORT|READONLY"));
+		assertFalse(parse("EXPORT|READONLY"));
 		assertEquals(val, primaryProf.get(ObjectKey.VISIBILITY));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		assertTrue(token.parse(primaryContext, primaryProf, "DISPLAY"));
+		assertTrue(parse("DISPLAY"));
 		assertEquals(Visibility.DISPLAY, primaryProf.get(ObjectKey.VISIBILITY));
-		assertTrue(token.parse(primaryContext, primaryProf, "EXPORT"));
+		assertTrue(parse("EXPORT"));
 		assertEquals(Visibility.EXPORT, primaryProf.get(ObjectKey.VISIBILITY));
-		assertTrue(token.parse(primaryContext, primaryProf, "YES"));
+		assertTrue(parse("YES"));
 		assertEquals(Visibility.YES, primaryProf.get(ObjectKey.VISIBILITY));
 	}
 
@@ -142,7 +143,8 @@ public class VisibleTokenTest extends AbstractTokenTestCase<Skill>
 	}
 
 	@Test
-	public void testRoundRobinDisplayReadOnly() throws PersistenceLayerException
+	public void testRoundRobinDisplayReadOnly()
+		throws PersistenceLayerException
 	{
 		runRoundRobin("DISPLAY|READONLY");
 	}

@@ -529,6 +529,18 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testDomainRoundRobinDupePre() throws PersistenceLayerException
+	{
+		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
+			"Cleric");
+		runRoundRobin("DOMAIN|Cleric=1|Fireball|PRERACE:1,Human",
+			"DOMAIN|Cleric=1|Fireball|PRERACE:1,Dwarf");
+	}
+
+	@Test
 	public void testDomainRoundRobinTwoPre() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
