@@ -26,7 +26,8 @@ import java.util.Map;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
@@ -69,8 +70,8 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	/** A map of Lists for the object */
 	private final ListKeyMapToList listChar = new ListKeyMapToList();
 
-	private final DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject> cdomListMods =
-			new DoubleKeyMap<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject>();
+	private final DoubleKeyMapToList<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject> cdomListMods =
+			new DoubleKeyMapToList<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject>();
 
 	private Boolean namePI = null;
 
@@ -105,6 +106,11 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		return integerChar.remove(arg0);
 	}
 
+	public final Set<IntegerKey> getIntegerKeys()
+	{
+		return new HashSet<IntegerKey>(integerChar.keySet());
+	}
+
 	public final boolean containsKey(StringKey arg0)
 	{
 		return stringChar.containsKey(arg0);
@@ -125,6 +131,11 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		return stringChar.remove(arg0);
 	}
 
+	public final Set<StringKey> getStringKeys()
+	{
+		return new HashSet<StringKey>(stringChar.keySet());
+	}
+
 	public final boolean containsKey(FormulaKey arg0)
 	{
 		return formulaChar.containsKey(arg0);
@@ -143,6 +154,11 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	public final Formula remove(FormulaKey arg0)
 	{
 		return formulaChar.remove(arg0);
+	}
+
+	public final Set<FormulaKey> getFormulaKeys()
+	{
+		return new HashSet<FormulaKey>(formulaChar.keySet());
 	}
 
 	public final boolean containsKey(VariableKey arg0)
@@ -188,6 +204,11 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	public final <OT> OT remove(ObjectKey<OT> arg0)
 	{
 		return arg0.cast(objectChar.remove(arg0));
+	}
+
+	public final Set<ObjectKey<?>> getObjectKeys()
+	{
+		return new HashSet<ObjectKey<?>>(objectChar.keySet());
 	}
 
 	public final boolean containsListFor(ListKey<?> key)
@@ -239,6 +260,11 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	public final <T> boolean removeFromListFor(ListKey<T> key, T obj)
 	{
 		return listChar.removeFromListFor(key, obj);
+	}
+	
+	public final Set<ListKey<?>> getListKeys()
+	{
+		return listChar.getKeySet();
 	}
 
 	public final Boolean getDescPIObject()
@@ -352,22 +378,23 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		{
 			System.err.println("CDOM Inequality ListMods");
 			System.err.println(cdomListMods + " " + cdo.cdomListMods);
+			System.err.println(cdomListMods.getKeySet() + " "
+				+ cdo.cdomListMods.getKeySet());
 			return false;
 		}
 		return true;
 	}
 
 	// TODO Generic Type Safety rather than CDOMObject
-	public <T extends CDOMObject> AssociatedPrereqObject putToList(
-		CDOMReference list, CDOMReference<T> granted,
-		AssociatedPrereqObject associations)
+	public <T extends CDOMObject> void putToList(CDOMReference list,
+		CDOMReference<T> granted, AssociatedPrereqObject associations)
 	{
-		return cdomListMods.put(list, granted, associations);
+		cdomListMods.addToListFor(list, granted, associations);
 	}
 
 	public boolean hasListMods(CDOMReference list)
 	{
-		return cdomListMods.containsKey(list);
+		return cdomListMods.containsListFor(list);
 	}
 
 	public <BT extends CDOMObject> Collection<CDOMReference<BT>> getListMods(
@@ -382,10 +409,10 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		return set;
 	}
 
-	public AssociatedPrereqObject getListAssociation(CDOMReference list,
-		CDOMReference key)
+	public Collection<AssociatedPrereqObject> getListAssociations(
+		CDOMReference list, CDOMReference key)
 	{
-		return cdomListMods.get(list, key);
+		return cdomListMods.getListFor(list, key);
 	}
 
 	public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getModifiedLists()
@@ -413,4 +440,21 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		}
 		return tcl;
 	}
+
+	private ChooseActionContainer chooseContainer = null;
+
+	public boolean hasChooseContainer()
+	{
+		return chooseContainer == null;
+	}
+
+	public ChooseActionContainer getChooseContainer()
+	{
+		if (chooseContainer == null)
+		{
+			chooseContainer = new ChooseActionContainer("CHOOSE");
+		}
+		return chooseContainer;
+	}
+
 }

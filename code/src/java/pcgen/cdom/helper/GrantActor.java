@@ -1,23 +1,13 @@
-package pcgen.cdom.factory;
+package pcgen.cdom.helper;
 
-import pcgen.cdom.base.CDOMEdgeReference;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.core.PlayerCharacter;
 
-public class GrantFactory<T extends PrereqObject> extends AbstractFactory<T>
+public class GrantActor<T extends PrereqObject> extends SimpleAssociatedObject
+		implements LSTWriteable, ChooseActor
 {
-	public GrantFactory(PCGraphGrantsEdge edge)
-	{
-		super(edge);
-	}
-
-	public GrantFactory(CDOMEdgeReference ref)
-	{
-		super(ref);
-	}
-
-	@Override
 	public void execute(PlayerCharacter pc)
 	{
 		/*
@@ -32,17 +22,20 @@ public class GrantFactory<T extends PrereqObject> extends AbstractFactory<T>
 		 */
 	}
 
+	public String getLSTformat()
+	{
+		return null;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return -22;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o == this)
-		{
-			return true;
-		}
-		if (o instanceof GrantFactory)
-		{
-			return equalsAbstractFactory((AbstractFactory<?>) o);
-		}
-		return false;
+		return o instanceof GrantActor;
 	}
 }

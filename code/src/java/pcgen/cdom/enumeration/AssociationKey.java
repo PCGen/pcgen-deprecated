@@ -32,6 +32,7 @@ import pcgen.base.formula.Formula;
 import pcgen.base.io.FileLocation;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.ChoiceSet;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
@@ -124,6 +125,9 @@ public final class AssociationKey<T>
 
 	public static final AssociationKey<FileLocation> FILE_LOCATION =
 		new AssociationKey<FileLocation>();
+
+	public static final AssociationKey<ChoiceSet<?>> CHOICE =
+			new AssociationKey<ChoiceSet<?>>();
 
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 

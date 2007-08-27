@@ -66,4 +66,35 @@ public class Capacity
 		sb.append(UNLIMITED.equals(limit) ? "UNLIMITED" : limit);
 		return sb.toString();
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return type == null ? 0 : type.hashCode() ^ limit.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof Capacity)
+		{
+			Capacity other = (Capacity) o;
+			if (type == null)
+			{
+				if (other.type != null)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (!type.equals(other.type))
+				{
+					return false;
+				}
+			}
+			return limit.equals(other.limit);
+		}
+		return false;
+	}
 }

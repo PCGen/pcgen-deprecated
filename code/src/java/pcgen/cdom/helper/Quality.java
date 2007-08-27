@@ -22,4 +22,20 @@ public class Quality
 		return value;
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return quality.hashCode() ^ value.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof Quality)
+		{
+			Quality other = (Quality) o;
+			return quality.equals(other.quality) && value.equals(other.value);
+		}
+		return false;
+	}
 }

@@ -1,31 +1,22 @@
-package pcgen.cdom.factory;
+package pcgen.cdom.helper;
 
-import pcgen.cdom.base.CDOMEdgeReference;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.PlayerCharacter;
 
-public class AllowFactory<T extends CDOMObject> extends AbstractFactory<T>
+public class AllowActor<T extends CDOMObject> extends ConcretePrereqObject
+		implements LSTWriteable, ChooseActor
 {
 
 	private final CDOMList<T> list;
 
-	public AllowFactory(PCGraphGrantsEdge edge,
-		CDOMList<T> cdomList)
+	public AllowActor(CDOMList<T> cdomList)
 	{
-		super(edge);
 		list = cdomList;
 	}
 
-	public AllowFactory(CDOMEdgeReference ref,
-		CDOMList<T> cdomList)
-	{
-		super(ref);
-		list = cdomList;
-	}
-
-	@Override
 	public void execute(PlayerCharacter pc)
 	{
 		/*
@@ -40,17 +31,20 @@ public class AllowFactory<T extends CDOMObject> extends AbstractFactory<T>
 		 */
 	}
 
+	public String getLSTformat()
+	{
+		return null;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return -26;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o == this)
-		{
-			return true;
-		}
-		if (o instanceof AllowFactory)
-		{
-			return equalsAbstractFactory((AbstractFactory<?>) o);
-		}
-		return false;
+		return o instanceof AllowActor;
 	}
 }

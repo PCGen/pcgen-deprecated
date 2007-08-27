@@ -91,7 +91,7 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 	 */
 	public void addAllPrerequisites(final Collection<Prerequisite> prereqs)
 	{
-		if (prereqs == null)
+		if (prereqs == null || prereqs.isEmpty())
 		{
 			return;
 		}
@@ -107,7 +107,7 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 
 	public void addAllPrerequisites(Prerequisite... prereqs)
 	{
-		if (prereqs == null)
+		if (prereqs == null || prereqs.length == 0)
 		{
 			return;
 		}

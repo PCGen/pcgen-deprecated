@@ -23,6 +23,7 @@
 package pcgen.cdom.util;
 
 import java.util.List;
+import java.util.Set;
 
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.enumeration.ListKey;
@@ -152,6 +153,11 @@ public class ListKeyMapToList
 	public <T> boolean containsInList(ListKey<T> key, T value)
 	{
 		return map.containsInList(key, value);
+	}
+
+	public Set<ListKey<?>> getKeySet()
+	{
+		return map.getKeySet();
 	}
 
 	@Override
