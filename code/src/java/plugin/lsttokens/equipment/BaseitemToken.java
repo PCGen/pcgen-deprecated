@@ -25,15 +25,17 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Equipment;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
 
 /**
  * Deals with BASEITEM token
  */
-public class BaseitemToken implements EquipmentLstToken
+public class BaseitemToken extends AbstractToken implements EquipmentLstToken
 {
 	private static final Class<Equipment> EQUIPMENT_CLASS = Equipment.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "BASEITEM";
@@ -47,6 +49,10 @@ public class BaseitemToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
 		context.getObjectContext().put(eq, ObjectKey.BASE_ITEM,
 			context.ref.getCDOMReference(EQUIPMENT_CLASS, value));
 		return true;

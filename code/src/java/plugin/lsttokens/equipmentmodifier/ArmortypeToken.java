@@ -32,7 +32,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.modifier.ChangeArmorType;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
 import pcgen.util.Logging;
@@ -94,7 +94,7 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		GraphChanges<ChangeArmorType> changes =
+		AssociatedChanges<ChangeArmorType> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					mod, ChangeArmorType.class);
 		if (changes == null)

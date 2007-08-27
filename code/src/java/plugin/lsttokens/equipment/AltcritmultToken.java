@@ -93,16 +93,14 @@ public class AltcritmultToken implements EquipmentLstToken
 				+ "or the special value '-' (representing no value)");
 			return false;
 		}
-		EquipmentHead primHead =
-				context.getGraphContext().getEquipmentHead(eq, 2);
-		context.getObjectContext().put(primHead, IntegerKey.CRIT_MULT, cm);
+		EquipmentHead altHead = eq.getEquipmentHead(2);
+		context.getObjectContext().put(altHead, IntegerKey.CRIT_MULT, cm);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EquipmentHead head =
-				context.getGraphContext().getEquipmentHeadReference(eq, 2);
+		EquipmentHead head = eq.getEquipmentHeadReference(2);
 		if (head == null)
 		{
 			return null;

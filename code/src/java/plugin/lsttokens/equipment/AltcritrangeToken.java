@@ -55,8 +55,7 @@ public class AltcritrangeToken implements EquipmentLstToken
 				Logging.errorPrint(getTokenName() + " cannot be < 0");
 				return false;
 			}
-			context.getObjectContext().put(
-				context.getGraphContext().getEquipmentHead(eq, 2),
+			context.getObjectContext().put(eq.getEquipmentHead(2),
 				IntegerKey.CRIT_RANGE, cr);
 			return true;
 		}
@@ -70,8 +69,7 @@ public class AltcritrangeToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EquipmentHead head =
-				context.getGraphContext().getEquipmentHeadReference(eq, 2);
+		EquipmentHead head = eq.getEquipmentHeadReference(2);
 		if (head == null)
 		{
 			return null;

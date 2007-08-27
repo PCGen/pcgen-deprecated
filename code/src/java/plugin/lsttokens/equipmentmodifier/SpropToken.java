@@ -32,7 +32,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SpecialProperty;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
@@ -173,7 +173,7 @@ public class SpropToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		GraphChanges<SpecialProperty> changes =
+		AssociatedChanges<SpecialProperty> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					mod, SpecialProperty.class);
 		if (changes == null)

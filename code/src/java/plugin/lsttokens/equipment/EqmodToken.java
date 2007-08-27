@@ -37,11 +37,10 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
@@ -157,11 +156,10 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 				}
 			}
 		}
-		EquipmentHead primHead =
-				context.getGraphContext().getEquipmentHead(eq, 1);
+		EquipmentHead primHead = eq.getEquipmentHead(1);
 		for (CDOMReference<EquipmentModifier> eqMod : mods)
 		{
-			PCGraphGrantsEdge edge =
+			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), primHead,
 						eqMod);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(eqMod))
@@ -175,14 +173,13 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EquipmentHead head =
-				context.getGraphContext().getEquipmentHeadReference(eq, 1);
+		EquipmentHead head = eq.getEquipmentHeadReference(1);
 		if (head == null)
 		{
 			return null;
 		}
 
-		GraphChanges<EquipmentModifier> changes =
+		AssociatedChanges<EquipmentModifier> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					head, EQUIPMENT_MODIFIER_CLASS);
 		if (changes == null)

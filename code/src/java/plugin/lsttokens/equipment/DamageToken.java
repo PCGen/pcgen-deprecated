@@ -47,15 +47,14 @@ public class DamageToken implements EquipmentLstToken
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
 		context.getObjectContext().put(
-			context.getGraphContext().getEquipmentHead(eq, 1),
+			eq.getEquipmentHead(1),
 			StringKey.DAMAGE, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EquipmentHead head =
-				context.getGraphContext().getEquipmentHeadReference(eq, 1);
+		EquipmentHead head = eq.getEquipmentHeadReference(1);
 		if (head == null)
 		{
 			return null;

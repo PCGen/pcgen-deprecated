@@ -22,25 +22,27 @@
 package plugin.lsttokens.deity;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
 import pcgen.core.DomainList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -127,6 +129,9 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 				new ArrayList<AssociatedPrereqObject>();
 
 		boolean first = true;
+		boolean foundAll = false;
+		boolean foundOther = false;
+
 		while (commaTok.hasMoreTokens())
 		{
 			String tokString = commaTok.nextToken();
@@ -180,6 +185,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 						context.ref.getCDOMAllReference(DOMAIN_CLASS);
 				proList.add(context.getListContext().addToList(getTokenName(),
 					deity, dl, ref));
+				foundAll = true;
 			}
 			else
 			{
@@ -187,10 +193,18 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 						context.ref.getCDOMReference(DOMAIN_CLASS, tokString);
 				proList.add(context.getListContext().addToList(getTokenName(),
 					deity, dl, ref));
+				foundOther = true;
 			}
 			first = false;
 		}
 
+		if (foundAll && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+				+ ": Contains ALL and a specific reference: " + value);
+			return false;
+		}
+		
 		while (pipeTok.hasMoreTokens())
 		{
 			String tokString = pipeTok.nextToken();
@@ -214,10 +228,10 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 	{
 		CDOMReference<DomainList> dl =
 				context.ref.getCDOMReference(DomainList.class, "*Starting");
-		Changes<CDOMReference<Domain>> changes =
+		AssociatedChanges<CDOMReference<Domain>> changes =
 				context.getListContext().getChangesInList(getTokenName(),
 					deity, dl);
-		if (changes == null || changes.isEmpty())
+		if (changes == null)
 		{
 			// Legal if no Language was present in the race
 			return null;
@@ -228,24 +242,30 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 				.addWriteMessage(getTokenName() + " does not support .CLEAR");
 			return null;
 		}
-		HashMapToList<List<Prerequisite>, CDOMReference<Domain>> map =
-				new HashMapToList<List<Prerequisite>, CDOMReference<Domain>>();
-		if (changes.hasAddedItems())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl == null || mtl.isEmpty())
 		{
-			for (CDOMReference<Domain> ref : changes.getAdded())
+			// Zero indicates no Token
+			// TODO Error message - unexpected?
+			return null;
+		}
+		MapToList<Set<Prerequisite>, LSTWriteable> m =
+				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+		for (LSTWriteable ab : mtl.getKeySet())
+		{
+			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 			{
-				AssociatedPrereqObject assoc = changes.getAddedAssociation(ref);
-				List<Prerequisite> prereqs = assoc.getPrerequisiteList();
-				map.addToListFor(prereqs, ref);
+				m.addToListFor(new HashSet<Prerequisite>(assoc
+					.getPrerequisiteList()), ab);
 			}
 		}
 		Set<String> set = new TreeSet<String>();
-		for (List<Prerequisite> prereqs : map.getKeySet())
+		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			Set<CDOMReference<Domain>> domainSet =
-					new TreeSet<CDOMReference<Domain>>(
-						TokenUtilities.REFERENCE_SORTER);
-			domainSet.addAll(map.getListFor(prereqs));
+			Set<LSTWriteable> domainSet =
+					new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
+			domainSet.addAll(m.getListFor(prereqs));
 			StringBuilder sb =
 					new StringBuilder(ReferenceUtilities.joinLstFormat(
 						domainSet, Constants.COMMA));

@@ -56,8 +56,7 @@ public class CritrangeToken implements EquipmentLstToken
 					+ " cannot be < 0");
 				return false;
 			}
-			context.getObjectContext().put(
-				context.getGraphContext().getEquipmentHead(eq, 1),
+			context.getObjectContext().put(eq.getEquipmentHead(1),
 				IntegerKey.CRIT_RANGE, cr);
 			return true;
 		}
@@ -72,8 +71,7 @@ public class CritrangeToken implements EquipmentLstToken
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EquipmentHead head =
-				context.getGraphContext().getEquipmentHeadReference(eq, 1);
+		EquipmentHead head = eq.getEquipmentHeadReference(1);
 		if (head == null)
 		{
 			return null;

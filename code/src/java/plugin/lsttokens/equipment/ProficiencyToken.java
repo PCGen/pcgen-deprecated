@@ -26,14 +26,16 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Equipment;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
 
 /**
  * Deals with PROFICIENCY token
  */
-public class ProficiencyToken implements EquipmentLstToken
+public class ProficiencyToken extends AbstractToken implements EquipmentLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "PROFICIENCY";
@@ -47,6 +49,10 @@ public class ProficiencyToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
 		/*
 		 * BUG TODO This is a problem - it is not necessarily a WEAPON
 		 * proficiency - could be Shield or Armor... :P

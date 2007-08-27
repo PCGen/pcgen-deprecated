@@ -46,16 +46,14 @@ public class AltdamageToken implements EquipmentLstToken
 
 	public boolean parse(LoadContext context, Equipment eq, String value)
 	{
-		context.getObjectContext().put(
-			context.getGraphContext().getEquipmentHead(eq, 2),
+		context.getObjectContext().put(eq.getEquipmentHead(2),
 			StringKey.DAMAGE, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		EquipmentHead head =
-				context.getGraphContext().getEquipmentHeadReference(eq, 2);
+		EquipmentHead head = eq.getEquipmentHeadReference(2);
 		if (head == null)
 		{
 			return null;
