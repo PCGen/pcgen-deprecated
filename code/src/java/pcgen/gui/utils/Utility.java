@@ -26,8 +26,10 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
@@ -305,7 +307,7 @@ public final class Utility
 		// encapsulated to accomodate this with a hack.
 		// TODO: remove the hack, once Java fixed this.
 		// final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		final Dimension screenSize = getScreenSize(Toolkit.getDefaultToolkit());
+		final Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
 
 		final Dimension dialogSize = dialog.getSize();
 
@@ -319,8 +321,8 @@ public final class Utility
 			dialogSize.width = screenSize.width;
 		}
 
-		dialog.setLocation((screenSize.width - dialogSize.width) / 2,
-			(screenSize.height - dialogSize.height) / 2);
+		dialog.setLocation(screenSize.x + (screenSize.width - dialogSize.width) / 2,
+				screenSize.y + (screenSize.height - dialogSize.height) / 2);
 	}
 
 	/**
@@ -335,8 +337,8 @@ public final class Utility
 		// of Java 5  (it returns double the screen size under xinerama), this method is
 		// encapsulated to accomodate this with a hack.
 		// TODO: remove the hack, once Java fixed this.
-		// final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		final Dimension screenSize = getScreenSize(Toolkit.getDefaultToolkit());
+        // final Dimension screenSize = getScreenSize(Toolkit.getDefaultToolkit());
+		final Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
 
 		if (isPopup)
 		{
@@ -355,8 +357,8 @@ public final class Utility
 			frameSize.width = screenSize.width;
 		}
 
-		frame.setLocation((screenSize.width - frameSize.width) / 2,
-			(screenSize.height - frameSize.height) / 2);
+		frame.setLocation(screenSize.x + (screenSize.width - frameSize.width) / 2,
+			screenSize.y + (screenSize.height - frameSize.height) / 2);
 	}
 
 	/**

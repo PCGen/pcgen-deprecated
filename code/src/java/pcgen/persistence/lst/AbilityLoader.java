@@ -143,8 +143,10 @@ public class AbilityLoader extends GenericLstLoader<Ability>
 		}
 		else
 		{
-			abilityCatName = Constants.ALL_CATEGORIES;
-			abilityKey = aKey;
+			Logging.errorPrint("Attempt to Modify/Copy/Forget an Ability ("
+				+ aKey + ") without a CATEGORY=\n"
+				+ "  Proper format is CATEGORY=cat|abilityKey");
+			return null;
 		}
 		return Globals.getAbilityKeyed(abilityCatName, abilityKey);
 	}

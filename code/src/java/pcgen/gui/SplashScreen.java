@@ -72,7 +72,7 @@ final class SplashScreen extends JWindow
 		Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
 //		Dimension screen = Utility.getScreenSize(getToolkit());
 		pack();
-		setLocation((screen.width - getSize().width) / 2, (screen.height - getSize().height) / 2);
+		setLocation(screen.x + (screen.width - getSize().width) / 2, screen.y + (screen.height - getSize().height) / 2);
 		setVisible(true);
 	}
 }
