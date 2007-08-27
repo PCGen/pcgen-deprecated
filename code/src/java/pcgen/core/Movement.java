@@ -105,7 +105,7 @@ public class Movement extends ConcretePrereqObject
 	 * @param i
 	 *            The length of the movement arrays to be assigned.
 	 */
-	private Movement(int i)
+	public Movement(int i)
 	{
 		if (i < 0)
 		{
@@ -317,6 +317,7 @@ public class Movement extends ConcretePrereqObject
 	 * 
 	 * @return String
 	 */
+	@Override
 	public String toString()
 	{
 		final StringBuffer movelabel = new StringBuffer();
@@ -419,239 +420,82 @@ public class Movement extends ConcretePrereqObject
 				"Null initialization String illegal");
 		}
 		final StringTokenizer moves = new StringTokenizer(moveparse, ",");
-		String tok;
 		Movement cm;
 
 		if (moves.countTokens() == 1)
 		{
-			tok = moves.nextToken();
-
 			cm = new Movement(1);
-			if ((tok.length() > 0)
-				&& ((tok.charAt(0) == '*') || (tok.charAt(0) == '/')))
-			{
-				cm.movements[0] = Double.valueOf(0.0);
-				cm.movement = Double.valueOf(0.0);
-				try
-				{
-					double multValue = Double.parseDouble(tok.substring(1));
-					if (multValue <= 0)
-					{
-						Logging.errorPrint("Illegal movement multiplier: "
-							+ multValue + " in movement string " + tok);
-					}
-					cm.movementMult[0] = Double.valueOf(multValue);
-					cm.movementMultOp[0] = tok.substring(0, 1);
-				}
-				catch (NumberFormatException e)
-				{
-					Logging.errorPrint("Badly formed MOVE token: " + tok);
-					cm.movementMult[0] = Double.valueOf(0.0);
-					cm.movementMultOp[0] = "";
-				}
-			}
-			else if (tok.length() > 0)
-			{
-				try
-				{
-					cm.movement = new Double(tok);
-					cm.movements[0] = cm.movement;
-				}
-				catch (NumberFormatException e)
-				{
-					Logging.errorPrint("Badly formed movement string: " + tok);
-					cm.movements[0] = Double.valueOf(0.0);
-				}
-
-				cm.movementMult[0] = Double.valueOf(0.0);
-				cm.movementMultOp[0] = "";
-			}
-
-			cm.movementTypes[0] = "Walk";
+			cm.assignMovement(0, "Walk", moves.nextToken());
 		}
 		else
 		{
 			cm = new Movement(moves.countTokens() / 2);
 
 			int x = 0;
-
 			while (moves.countTokens() > 1)
 			{
-				cm.movementTypes[x] = moves.nextToken(); // e.g. "Walk"
-				cm.movementMult[x] = Double.valueOf(0.0);
-				cm.movementMultOp[x] = "";
-
-				tok = moves.nextToken();
-
-				if ((tok.length() > 0)
-					&& ((tok.charAt(0) == '*') || (tok.charAt(0) == '/')))
-				{
-					cm.movements[x] = Double.valueOf(0.0);
-					try
-					{
-						double multValue = Double.parseDouble(tok.substring(1));
-						if (multValue <= 0)
-						{
-							Logging.errorPrint("Illegal movement multiplier: "
-								+ multValue + " in movement string " + tok);
-						}
-						cm.movementMult[x] = Double.valueOf(multValue);
-						cm.movementMultOp[x] = tok.substring(0, 1);
-					}
-					catch (NumberFormatException e)
-					{
-						Logging.errorPrint("Badly formed MOVE token: " + tok);
-						cm.movementMult[x] = Double.valueOf(0.0);
-						cm.movementMultOp[x] = "";
-					}
-				}
-				else if (tok.length() > 0)
-				{
-					cm.movementMult[x] = Double.valueOf(0.0);
-					cm.movementMultOp[x] = "";
-
-					try
-					{
-						cm.movements[x] = new Double(tok);
-					}
-					catch (NumberFormatException e)
-					{
-						Logging.errorPrint("Badly formed MOVE token: " + tok);
-						cm.movements[x] = Double.valueOf(0.0);
-					}
-
-					if ("Walk".equals(cm.movementTypes[x]))
-					{
-						cm.movement = cm.movements[x];
-					}
-				}
-
-				x++;
+				cm.assignMovement(x++, moves.nextToken(), moves.nextToken());
 			}
 			if (moves.countTokens() != 0)
 			{
 				Logging.errorPrint("Badly formed MOVE token "
-					+ "(extra value at end of list): " + moveparse);
+						+ "(extra value at end of list): " + moveparse);
 			}
 		}
 		return cm;
 	}
 
-	/**
-	 * Returns a ConcreteMovement object initialized from the given string. This
-	 * string can be any legal string for the MOVE, MOVEA, or MOVECLONE tags.
-	 * The object which calls getMovementFrom MUST subsequently assign the move
-	 * rates flag of the returned ConcreteMovement in order for the
-	 * ConcreteMovement to function properly. (The default move rates flag is
-	 * zero, so assignment in that case is not necessary)
-	 * 
-	 * @param moveparse
-	 *            The String from which a new ConcreteMovement should be
-	 *            initialized
-	 * @return A new ConcreteMovement initialized from the given String.
-	 */
-	public static Movement getMovementFrom(final String moveparse)
+	public void assignMovement(int x, String type, String mod)
 	{
-		if (moveparse == null)
-		{
-			throw new IllegalArgumentException(
-				"Null initialization String illegal");
-		}
-		if (moveparse.length() == 0)
-		{
-			throw new IllegalArgumentException(
-				"Empty initialization String illegal");
-		}
-		if (moveparse.charAt(0) == ',')
-		{
-			throw new IllegalArgumentException(
-				"Movement arguments may not start with ,| : " + moveparse);
-		}
-		if (moveparse.charAt(moveparse.length() - 1) == ',')
-		{
-			throw new IllegalArgumentException(
-				"Movement arguments may not end with , : " + moveparse);
-		}
-		if (moveparse.indexOf(",,") != -1)
-		{
-			throw new IllegalArgumentException(
-				"Movement arguments uses double separator ,, : " + moveparse);
-		}
-		final StringTokenizer moves = new StringTokenizer(moveparse, ",");
-		Movement cm;
+		movementTypes[x] = type; // e.g. "Walk"
+		movementMult[x] = Double.valueOf(0.0);
+		movementMultOp[x] = "";
 
-		int tokenCount = moves.countTokens();
-		if (tokenCount % 2 != 0)
+		if ((mod.length() > 0)
+			&& ((mod.charAt(0) == '*') || (mod.charAt(0) == '/')))
 		{
-			throw new IllegalArgumentException(
-				"String must value count that is a multiple of 2: " + moveparse);
-		}
-		cm = new Movement(tokenCount / 2);
-
-		int x = 0;
-
-		while (moves.hasMoreTokens())
-		{
-			cm.movementTypes[x] = moves.nextToken(); // e.g. "Walk"
-			cm.movementMult[x] = Double.valueOf(0.0);
-			cm.movementMultOp[x] = "";
-
-			String tok = moves.nextToken();
-
-			if ((tok.length() > 0)
-				&& ((tok.charAt(0) == '*') || (tok.charAt(0) == '/')))
+			movements[x] = Double.valueOf(0.0);
+			try
 			{
-				cm.movements[x] = Double.valueOf(0.0);
-				try
+				double multValue = Double.parseDouble(mod.substring(1));
+				if (multValue <= 0)
 				{
-					double multValue = Double.parseDouble(tok.substring(1));
-					if (multValue <= 0)
-					{
-						Logging.errorPrint("Illegal movement multiplier: "
-							+ multValue + " in movement string " + tok);
-						return null;
-					}
-					cm.movementMult[x] = Double.valueOf(multValue);
-					cm.movementMultOp[x] = tok.substring(0, 1);
+					Logging.errorPrint("Illegal movement multiplier: "
+						+ multValue + " in movement string " + mod);
 				}
-				catch (NumberFormatException e)
-				{
-					Logging.errorPrint("Badly formed MOVE token: " + tok);
-					return null;
-				}
+				movementMult[x] = Double.valueOf(multValue);
+				movementMultOp[x] = mod.substring(0, 1);
 			}
-			else if (tok.length() > 0)
+			catch (NumberFormatException e)
 			{
-				cm.movementMult[x] = Double.valueOf(0.0);
-				cm.movementMultOp[x] = "";
-
-				try
-				{
-					cm.movements[x] = new Double(tok);
-				}
-				catch (NumberFormatException e)
-				{
-					Logging.errorPrint("Badly formed MOVE token: " + tok);
-					return null;
-				}
-
-				if ("Walk".equals(cm.movementTypes[x]))
-				{
-					cm.movement = cm.movements[x];
-				}
+				Logging.errorPrint("Badly formed MOVE token: " + mod);
+				movementMult[x] = Double.valueOf(0.0);
+				movementMultOp[x] = "";
 			}
-			else
+		}
+		else if (mod.length() > 0)
+		{
+			movementMult[x] = Double.valueOf(0.0);
+			movementMultOp[x] = "";
+
+			try
 			{
-				Logging.errorPrint("Encounted Empty Movement Type in "
-					+ moveparse);
-				return null;
+				movements[x] = new Double(mod);
+			}
+			catch (NumberFormatException e)
+			{
+				Logging.errorPrint("Badly formed MOVE token: " + mod);
+				movements[x] = Double.valueOf(0.0);
 			}
 
-			x++;
+			if ("Walk".equals(movementTypes[x]))
+			{
+				movement = movements[x];
+			}
 		}
-		return cm;
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if (!(o instanceof Movement))
@@ -703,6 +547,7 @@ public class Movement extends ConcretePrereqObject
 		return true;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return (moveRatesFlag + movements.length << 2)

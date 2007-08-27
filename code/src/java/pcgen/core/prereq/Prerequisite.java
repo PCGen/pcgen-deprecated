@@ -546,4 +546,17 @@ public class Prerequisite implements Cloneable
 			&& operand.equals(other.operand)
 			&& (categoryName == null || categoryName.equals(other.categoryName));
 	}
+
+	boolean deprecated = false;
+	
+	public void setDeprecated()
+	{
+		deprecated = true;
+	}
+	
+	public boolean isDeprecated()
+	{
+		return deprecated;
+	}
+
 }

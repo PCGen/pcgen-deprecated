@@ -74,6 +74,8 @@ public final class Equipment extends PObject implements Serializable,
 {
 	private static final long serialVersionUID = 1;
 
+	private static final int UNLIMITED_CAPACITY = -1;
+	
 	private static final String EQMOD_WEIGHT = "_WEIGHTADD";
 
 	private static final String EQMOD_DAMAGE = "_DAMAGE";
@@ -2776,7 +2778,9 @@ public final class Equipment extends PObject implements Serializable,
 		}
 		catch (NumberFormatException ignore)
 		{
-			Logging.debugPrint("Invalid Weight in Equipment: " + aString);
+			Logging.errorPrint("Invalid Weight in Equipment: " + aString
+				+ " item was " + getDisplayName() + " from "
+				+ getDefaultSourceString());
 		}
 	}
 
@@ -7612,7 +7616,6 @@ public final class Equipment extends PObject implements Serializable,
 	 */
 	public void setContainer(final PlayerCharacter aPC, final String aString)
 	{
-		// -1 means unlimited
 		boolean limited = true;
 		Float aFloat = Float.valueOf(0);
 		d_acceptsChildren = true;
@@ -7649,22 +7652,31 @@ public final class Equipment extends PObject implements Serializable,
 			try
 			{
 				containerWeightCapacity = new Float(bString);
-			}
-			catch (NumberFormatException ex)
-			{
-				Logging.errorPrint("Error in CONTAINS line: " + aString);
-				containerWeightCapacity = Float.valueOf(-1);
+				if (containerWeightCapacity < 0)
+				{
+					Logging.errorPrint(getKeyName()
+						+ " Weight Capacity must be >= 0: " + bString
+						+ "\n  use 'UNLIM' (not -1) for unlimited Capacity");
+				}
+			} catch (NumberFormatException ex) {
+				if (!"UNLIM".equals(bString))
+				{
+					Logging.errorPrint("Error in CONTAINS line: " + aString
+						+ "\n" + "  " + bString
+						+ " was not a number or 'UNLIM'");
+				}
+				containerWeightCapacity = Float.valueOf(UNLIMITED_CAPACITY);
 			}
 		}
 		else
 		{
-			containerWeightCapacity = Float.valueOf(-1);
+			containerWeightCapacity = Float.valueOf(UNLIMITED_CAPACITY);
 		}
 
 		if (!aTok.hasMoreTokens())
 		{
 			limited = false;
-			setAcceptsType("Any", Float.valueOf(-1));
+			setAcceptsType("Any", Float.valueOf(UNLIMITED_CAPACITY));
 		}
 
 		String itemType;
@@ -7678,19 +7690,33 @@ public final class Equipment extends PObject implements Serializable,
 
 			if (typeTok.hasMoreTokens())
 			{
-				itemNumber = new Float(typeTok.nextToken());
-
-				if (limited)
+				String itemCount = typeTok.nextToken();
+				if ("UNLIM".equals(itemCount))
 				{
-					aFloat =
-							new Float(aFloat.floatValue()
+					limited = false;
+					itemNumber = Float.valueOf(UNLIMITED_CAPACITY);
+				}
+				else
+				{
+					itemNumber = new Float(itemCount);
+
+					if (itemNumber < 0)
+					{
+						Logging.errorPrint(getKeyName() + " Item Count for "
+							+ itemType + " must be > 0: " + itemCount
+							+ "\n  use 'UNLIM' (not -1) for unlimited Count");
+					}
+					
+					if (limited) {
+						aFloat = new Float(aFloat.floatValue()
 								+ itemNumber.floatValue());
+					}
 				}
 			}
 			else
 			{
 				limited = false;
-				itemNumber = Float.valueOf(-1);
+				itemNumber = Float.valueOf(UNLIMITED_CAPACITY);
 			}
 
 			if (!"Any".equals(itemType) && !"Total".equals(itemType))
@@ -7707,7 +7733,7 @@ public final class Equipment extends PObject implements Serializable,
 		{
 			if (!limited)
 			{
-				aFloat = Float.valueOf(-1);
+				aFloat = Float.valueOf(UNLIMITED_CAPACITY);
 			}
 
 			setAcceptsType("Total", aFloat);
