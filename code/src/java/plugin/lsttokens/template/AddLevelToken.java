@@ -32,7 +32,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelCommandFactory;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
@@ -107,7 +107,7 @@ public class AddLevelToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		GraphChanges<LevelCommandFactory> changes =
+		AssociatedChanges<LevelCommandFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, LevelCommandFactory.class);
 		if (changes == null)

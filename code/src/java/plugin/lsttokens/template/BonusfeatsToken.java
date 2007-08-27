@@ -21,8 +21,6 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,16 +30,16 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.factory.GrantFactory;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.Ability;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCTemplateLstToken;
@@ -103,83 +101,86 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			return false;
 		}
 
+		ChooseActionContainer container =
+				new ChooseActionContainer(getTokenName());
+		container.addActor(new GrantActor<PCTemplate>());
+		AssociatedPrereqObject edge =
+				context.getGraphContext().grant(getTokenName(), template,
+					container);
+		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+			.getFormulaFor(featCount));
+		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+			.getFormulaFor(featCount));
+		edge.setAssociation(AssociationKey.ABILITY_CATEGORY,
+			AbilityCategory.FEAT);
+		edge
+			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
 		CDOMGroupRef<Ability> ref =
 				context.ref.getCDOMAllReference(ABILITY_CLASS,
 					AbilityCategory.FEAT);
 		ReferenceChoiceSet<Ability> rcs =
 				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
-		PCGraphGrantsEdge edge =
-				context.getGraphContext().grant(getTokenName(), template, cs);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(featCount));
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(featCount));
-		GrantFactory<Ability> gf = new GrantFactory<Ability>(edge);
-		/*
-		 * FUTURE Technically, this Category item should not be in the
-		 * GrantFactory, as it really belogs as something that can be extracted
-		 * from the ChoiceSet...
-		 */
-		gf
-			.setAssociation(AssociationKey.ABILITY_CATEGORY,
-				AbilityCategory.FEAT);
-		gf.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
-		context.getGraphContext().grant(getTokenName(), template, gf);
+		edge.setAssociation(AssociationKey.CHOICE, cs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCTemplate template)
 	{
-		GraphChanges<ChoiceSet> choiceChanges =
+		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
-					template, ChoiceSet.class);
-		if (choiceChanges == null)
+					template, ChooseActionContainer.class);
+		if (grantChanges == null)
 		{
 			return null;
 		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				choiceChanges.getAddedAssociations();
+				grantChanges.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		GraphChanges<GrantFactory> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					template, GrantFactory.class);
-		Collection<LSTWriteable> grantAdded = grantChanges.getAdded();
-		if (grantAdded == null || grantAdded.isEmpty())
-		{
-			// Zero indicates no Token present
-			return null;
-		}
-		List<String> addStrings = new ArrayList<String>();
+		String returnString = null;
 		for (LSTWriteable lstw : mtl.getKeySet())
 		{
-			ChoiceSet<?> cs = (ChoiceSet<?>) lstw;
+			ChooseActionContainer container = (ChooseActionContainer) lstw;
+			if (getTokenName().equals(container.getName()))
+			{
+				if (returnString != null)
+				{
+					context.addWriteMessage("Found two CHOOSE containers for: "
+						+ container.getName());
+					continue;
+				}
+			}
+			else
+			{
+				context.addWriteMessage("Unexpected CHOOSE container found: "
+					+ container.getName());
+				continue;
+			}
+			List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
+			if (assocList.size() != 1)
+			{
+				context
+					.addWriteMessage("Only one Association to a CHOOSE can be made per object");
+				return null;
+			}
+			AssociatedPrereqObject assoc = assocList.get(0);
+			ChoiceSet<?> cs = assoc.getAssociation(AssociationKey.CHOICE);
 			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
 			{
-				AbilityNature nat = null;
-				AbilityCategory cat = null;
-				for (LSTWriteable gw : grantAdded)
-				{
-					GrantFactory<?> gf = (GrantFactory<?>) gw;
-					if (gf.usesChoiceSet(cs))
-					{
-						cat =
-								gf
-									.getAssociation(AssociationKey.ABILITY_CATEGORY);
-						nat = gf.getAssociation(AssociationKey.ABILITY_NATURE);
-						break;
-					}
-				}
+				AbilityNature nat =
+						assoc.getAssociation(AssociationKey.ABILITY_NATURE);
 				if (nat == null)
 				{
 					context
 						.addWriteMessage("Unable to find Nature for GrantFactory");
 					return null;
 				}
+				AbilityCategory cat =
+						assoc.getAssociation(AssociationKey.ABILITY_CATEGORY);
 				if (cat == null)
 				{
 					context
@@ -192,14 +193,6 @@ public class BonusfeatsToken implements PCTemplateLstToken
 					// can't handle those here!
 					continue;
 				}
-				List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
-				if (assocList.size() != 1)
-				{
-					context
-						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
-					return null;
-				}
-				AssociatedPrereqObject assoc = assocList.get(0);
 				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
@@ -207,11 +200,11 @@ public class BonusfeatsToken implements PCTemplateLstToken
 						+ " Count");
 					return null;
 				}
-				addStrings.add(f.toString());
+				returnString = f.toString();
 
 				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
 			}
 		}
-		return addStrings.toArray(new String[addStrings.size()]);
+		return new String[]{returnString};
 	}
 }

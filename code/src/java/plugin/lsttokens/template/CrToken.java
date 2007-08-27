@@ -26,7 +26,7 @@ import java.util.Collection;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChallengeRating;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
@@ -73,7 +73,7 @@ public class CrToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		GraphChanges<ChallengeRating> changes =
+		AssociatedChanges<ChallengeRating> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, ChallengeRating.class);
 		if (changes == null)

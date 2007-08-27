@@ -40,7 +40,7 @@ import pcgen.cdom.modifier.HitDieLock;
 import pcgen.cdom.modifier.HitDieStep;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
@@ -287,7 +287,7 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		GraphChanges<HitDieCommandFactory> changes =
+		AssociatedChanges<HitDieCommandFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, HitDieCommandFactory.class);
 		if (changes == null)

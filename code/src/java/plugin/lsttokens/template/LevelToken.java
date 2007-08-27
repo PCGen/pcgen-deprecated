@@ -32,7 +32,7 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteOperator;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -204,7 +204,7 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		GraphChanges<PCTemplate> changes =
+		AssociatedChanges<PCTemplate> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, PCTemplate.class);
 		if (changes == null)

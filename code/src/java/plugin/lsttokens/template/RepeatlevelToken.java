@@ -38,7 +38,7 @@ import pcgen.cdom.inst.Aggregator;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteOperator;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -381,7 +381,7 @@ public class RepeatlevelToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		GraphChanges<Aggregator> changes =
+		AssociatedChanges<Aggregator> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, AGGREGATOR_CLASS);
 		if (changes == null)
@@ -403,104 +403,104 @@ public class RepeatlevelToken extends AbstractToken implements
 			sb.append(maxLevel).append(Constants.COLON);
 			sb.append(iLevel).append(Constants.COLON);
 			String prefix = sb.toString();
-			Set<PCGraphEdge> subEdgeList =
-					context.getGraphContext().getChildLinksFromToken(
-						getTokenName(), agg);
-			if (subEdgeList == null || subEdgeList.isEmpty())
-			{
-				context.addWriteMessage("Aggregator for " + getTokenName()
-					+ " had no children");
-				return null;
-			}
-
-			Set<String> set = new TreeSet<String>();
-
-			for (PCGraphEdge edge : subEdgeList)
-			{
-				List<PrereqObject> sinkNodes = edge.getSinkNodes();
-				if (sinkNodes == null || sinkNodes.size() != 1)
-				{
-					context.addWriteMessage("Edge derived from "
-						+ getTokenName() + " must have only one sink");
-					return null;
-				}
-				PrereqObject child = sinkNodes.get(0);
-				if (!PCTemplate.class.isInstance(child))
-				{
-					context.addWriteMessage("Child from " + getTokenName()
-						+ " must be a PCTemplate");
-					return null;
-				}
-				PCTemplate pctChild = PCTemplate.class.cast(child);
-				if (pctChild.getPrerequisiteCount() != 1)
-				{
-					context
-						.addWriteMessage("Only one Prerequisiste allowed on "
-							+ getTokenName() + " child PCTemplate");
-					return null;
-				}
-				Prerequisite prereq = pctChild.getPrerequisiteList().get(0);
-				String kind = prereq.getKind();
-				if (kind.equalsIgnoreCase("LEVEL"))
-				{
-					if (!PrerequisiteOperator.GTEQ.equals(prereq.getOperator()))
-					{
-						context.addWriteMessage("Invalid Operator built on "
-							+ getTokenName() + " derived edge");
-						return null;
-					}
-				}
-				else
-				{
-					// if (!kind.equalsIgnoreCase("LEVEL"))
-					context.addWriteMessage("Prerequisiste on "
-						+ getTokenName() + " derived edge must be LEVEL");
-					return null;
-				}
-				if (!PrerequisiteOperator.GTEQ.equals(prereq.getOperator()))
-				{
-					context.addWriteMessage("Invalid Operator built on "
-						+ getTokenName() + " derived edge");
-					return null;
-				}
-
-				for (LstToken token : TokenStore.inst().getTokenMap(
-					PCTemplateLstToken.class).values())
-				{
-					StringBuilder sb2 = new StringBuilder();
-					sb2.append(token.getTokenName()).append(':');
-					String[] s =
-							((PCTemplateLstToken) token).unparse(context,
-								pctChild);
-					if (s != null)
-					{
-						for (String aString : s)
-						{
-							set.add(sb2.toString() + aString);
-						}
-					}
-				}
-				for (LstToken token : TokenStore.inst().getTokenMap(
-					GlobalLstToken.class).values())
-				{
-					StringBuilder sb2 = new StringBuilder();
-					sb2.append(token.getTokenName()).append(':');
-					String[] s =
-							((GlobalLstToken) token).unparse(context, pctChild);
-					if (s != null)
-					{
-						for (String aString : s)
-						{
-							set.add(sb2.toString() + aString);
-						}
-					}
-				}
-			}
-
-			for (String s : set)
-			{
-				list.add(prefix + s);
-			}
+//			Set<PCGraphEdge> subEdgeList =
+//					context.getGraphContext().getChildLinksFromToken(
+//						getTokenName(), agg);
+//			if (subEdgeList == null || subEdgeList.isEmpty())
+//			{
+//				context.addWriteMessage("Aggregator for " + getTokenName()
+//					+ " had no children");
+//				return null;
+//			}
+//
+//			Set<String> set = new TreeSet<String>();
+//
+//			for (PCGraphEdge edge : subEdgeList)
+//			{
+//				List<PrereqObject> sinkNodes = edge.getSinkNodes();
+//				if (sinkNodes == null || sinkNodes.size() != 1)
+//				{
+//					context.addWriteMessage("Edge derived from "
+//						+ getTokenName() + " must have only one sink");
+//					return null;
+//				}
+//				PrereqObject child = sinkNodes.get(0);
+//				if (!PCTemplate.class.isInstance(child))
+//				{
+//					context.addWriteMessage("Child from " + getTokenName()
+//						+ " must be a PCTemplate");
+//					return null;
+//				}
+//				PCTemplate pctChild = PCTemplate.class.cast(child);
+//				if (pctChild.getPrerequisiteCount() != 1)
+//				{
+//					context
+//						.addWriteMessage("Only one Prerequisiste allowed on "
+//							+ getTokenName() + " child PCTemplate");
+//					return null;
+//				}
+//				Prerequisite prereq = pctChild.getPrerequisiteList().get(0);
+//				String kind = prereq.getKind();
+//				if (kind.equalsIgnoreCase("LEVEL"))
+//				{
+//					if (!PrerequisiteOperator.GTEQ.equals(prereq.getOperator()))
+//					{
+//						context.addWriteMessage("Invalid Operator built on "
+//							+ getTokenName() + " derived edge");
+//						return null;
+//					}
+//				}
+//				else
+//				{
+//					// if (!kind.equalsIgnoreCase("LEVEL"))
+//					context.addWriteMessage("Prerequisiste on "
+//						+ getTokenName() + " derived edge must be LEVEL");
+//					return null;
+//				}
+//				if (!PrerequisiteOperator.GTEQ.equals(prereq.getOperator()))
+//				{
+//					context.addWriteMessage("Invalid Operator built on "
+//						+ getTokenName() + " derived edge");
+//					return null;
+//				}
+//
+//				for (LstToken token : TokenStore.inst().getTokenMap(
+//					PCTemplateLstToken.class).values())
+//				{
+//					StringBuilder sb2 = new StringBuilder();
+//					sb2.append(token.getTokenName()).append(':');
+//					String[] s =
+//							((PCTemplateLstToken) token).unparse(context,
+//								pctChild);
+//					if (s != null)
+//					{
+//						for (String aString : s)
+//						{
+//							set.add(sb2.toString() + aString);
+//						}
+//					}
+//				}
+//				for (LstToken token : TokenStore.inst().getTokenMap(
+//					GlobalLstToken.class).values())
+//				{
+//					StringBuilder sb2 = new StringBuilder();
+//					sb2.append(token.getTokenName()).append(':');
+//					String[] s =
+//							((GlobalLstToken) token).unparse(context, pctChild);
+//					if (s != null)
+//					{
+//						for (String aString : s)
+//						{
+//							set.add(sb2.toString() + aString);
+//						}
+//					}
+//				}
+//			}
+//
+//			for (String s : set)
+//			{
+//				list.add(prefix + s);
+//			}
 		}
 		return list.toArray(new String[list.size()]);
 	}

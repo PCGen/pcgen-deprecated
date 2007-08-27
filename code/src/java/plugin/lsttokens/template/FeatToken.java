@@ -39,11 +39,10 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Ability;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
@@ -91,15 +90,15 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 			return false;
 		}
 
-		ArrayList<PCGraphGrantsEdge> edgeList =
-				new ArrayList<PCGraphGrantsEdge>();
+		ArrayList<AssociatedPrereqObject> edgeList =
+				new ArrayList<AssociatedPrereqObject>();
 
 		while (true)
 		{
 			CDOMCategorizedSingleRef<Ability> ability =
 					context.ref.getCDOMReference(ABILITY_CLASS,
 						AbilityCategory.FEAT, token);
-			PCGraphGrantsEdge edge =
+			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), obj,
 						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
@@ -127,9 +126,9 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 					+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
-			for (PCGraphGrantsEdge edge : edgeList)
+			for (AssociatedPrereqObject edge : edgeList)
 			{
-				edge.addPreReq(prereq);
+				edge.addPrerequisite(prereq);
 			}
 			if (!tok.hasMoreTokens())
 			{
@@ -143,7 +142,7 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		GraphChanges<Ability> changes =
+		AssociatedChanges<Ability> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, ABILITY_CLASS);
 		if (changes == null)

@@ -27,6 +27,7 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
@@ -37,7 +38,7 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.core.ClassSkillList;
 import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SkillLstToken;
@@ -149,10 +150,10 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		for (CDOMReference<ClassSkillList> swl : context.getListContext()
 			.getMasterLists(SKILLLIST_CLASS))
 		{
-			Changes<LSTWriteable> changes =
+			AssociatedChanges<LSTWriteable> changes =
 					context.getListContext().getChangesInMasterList(
 						getTokenName(), skill, swl);
-			if (changes == null || changes.isEmpty())
+			if (changes == null)
 			{
 				// Legal if no CLASSES was present in the Skill
 				continue;
@@ -172,9 +173,10 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 			}
 			if (changes.hasAddedItems())
 			{
-				for (LSTWriteable added : changes.getAdded())
+				MapToList<LSTWriteable, AssociatedPrereqObject> map =
+						changes.getAddedAssociations();
+				for (LSTWriteable added : map.getKeySet())
 				{
-
 					if (!skill.getLSTformat().equals(added.getLSTformat()))
 					{
 						context.addWriteMessage("Skill " + getTokenName()
@@ -182,50 +184,51 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 							+ "(must only allow itself)");
 						return null;
 					}
-					AssociatedPrereqObject assoc =
-							changes.getAddedAssociation(added);
-					SkillCost sc =
-							assoc.getAssociation(AssociationKey.SKILL_COST);
-					if (sc == null)
+					for (AssociatedPrereqObject assoc : map.getListFor(added))
 					{
-						context.addWriteMessage("Allowed Skill in "
-							+ skill.getKey() + " had no SkillCost");
-						return null;
-					}
-					if (!sc.equals(SkillCost.CLASS))
-					{
-						context.addWriteMessage("Allowed Skill "
-							+ skill.getKey() + " built by " + getTokenName()
-							+ "had invalid SkillCost: " + sc
-							+ ". Must be CLASS skills if defined by "
-							+ getTokenName());
-						return null;
-					}
-					if (swl.equals(allRef))
-					{
-						usesAll = true;
-						if (assoc.hasPrerequisites())
+						SkillCost sc =
+								assoc.getAssociation(AssociationKey.SKILL_COST);
+						if (sc == null)
 						{
-							negated = true;
-							List<Prerequisite> prereqs =
-									assoc.getPrerequisiteList();
-							for (Prerequisite p : prereqs)
+							context.addWriteMessage("Allowed Skill in "
+								+ skill.getKey() + " had no SkillCost");
+							return null;
+						}
+						if (!sc.equals(SkillCost.CLASS))
+						{
+							context.addWriteMessage("Allowed Skill "
+								+ skill.getKey() + " built by "
+								+ getTokenName() + "had invalid SkillCost: "
+								+ sc + ". Must be CLASS skills if defined by "
+								+ getTokenName());
+							return null;
+						}
+						if (swl.equals(allRef))
+						{
+							usesAll = true;
+							if (assoc.hasPrerequisites())
 							{
-								// Mimic getting a Reference back from the
-								// Prereq
-								set.add(context.ref.getCDOMReference(
-									SKILLLIST_CLASS, p.getKey()));
+								negated = true;
+								List<Prerequisite> prereqs =
+										assoc.getPrerequisiteList();
+								for (Prerequisite p : prereqs)
+								{
+									// Mimic getting a Reference back from the
+									// Prereq
+									set.add(context.ref.getCDOMReference(
+										SKILLLIST_CLASS, p.getKey()));
+								}
+							}
+							else
+							{
+								set.add(swl); // "ALL"
 							}
 						}
 						else
 						{
-							set.add(swl); // "ALL"
+							usesIndividual = true;
+							set.add(swl);
 						}
-					}
-					else
-					{
-						usesIndividual = true;
-						set.add(swl);
 					}
 				}
 			}

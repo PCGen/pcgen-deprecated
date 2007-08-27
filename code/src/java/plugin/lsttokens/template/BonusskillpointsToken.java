@@ -26,7 +26,7 @@ import java.util.Collection;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ClassSkillPointFactory;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
@@ -81,7 +81,7 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		GraphChanges<ClassSkillPointFactory> changes =
+		AssociatedChanges<ClassSkillPointFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, ClassSkillPointFactory.class);
 		if (changes == null)

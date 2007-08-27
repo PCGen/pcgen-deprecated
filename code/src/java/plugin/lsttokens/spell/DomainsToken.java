@@ -23,13 +23,13 @@ package plugin.lsttokens.spell;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -38,7 +38,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.core.DomainSpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -96,16 +96,7 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 	{
 		if (Constants.LST_DOT_CLEARALL.equals(value))
 		{
-			Collection<CDOMReference> masterLists =
-					context.getListContext().getMasterLists(SPELLLIST_CLASS);
-			if (masterLists != null)
-			{
-				for (CDOMReference list : masterLists)
-				{
-					context.getListContext().clearMasterList(getTokenName(),
-						spell, list);
-				}
-			}
+			context.getListContext().clearAllMasterLists(getTokenName(), spell);
 			return true;
 		}
 
@@ -246,10 +237,10 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 		for (CDOMReference<DomainSpellList> swl : context.getListContext()
 			.getMasterLists(SPELLLIST_CLASS))
 		{
-			Changes<LSTWriteable> changes =
+			AssociatedChanges<LSTWriteable> changes =
 					context.getListContext().getChangesInMasterList(
 						getTokenName(), spell, swl);
-			if (changes == null || changes.isEmpty())
+			if (changes == null)
 			{
 				// Legal if no DOMAINS was present in the Spell
 				continue;
@@ -266,7 +257,9 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 			}
 			if (changes.hasAddedItems())
 			{
-				for (LSTWriteable added : changes.getAdded())
+				MapToList<LSTWriteable, AssociatedPrereqObject> map =
+						changes.getAddedAssociations();
+				for (LSTWriteable added : map.getKeySet())
 				{
 					if (!spell.getLSTformat().equals(added.getLSTformat()))
 					{
@@ -275,41 +268,45 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 							+ "(must only allow itself)");
 						return null;
 					}
-					AssociatedPrereqObject assoc =
-							changes.getAddedAssociation(added);
-					List<Prerequisite> prereqs = assoc.getPrerequisiteList();
-					Prerequisite prereq;
-					if (prereqs == null || prereqs.size() == 0)
+					for (AssociatedPrereqObject assoc : map.getListFor(added))
 					{
-						prereq = null;
+						List<Prerequisite> prereqs =
+								assoc.getPrerequisiteList();
+						Prerequisite prereq;
+						if (prereqs == null || prereqs.size() == 0)
+						{
+							prereq = null;
+						}
+						else if (prereqs.size() == 1)
+						{
+							prereq = prereqs.get(0);
+						}
+						else
+						{
+							context.addWriteMessage("Incoming Edge to "
+								+ spell.getKey() + " had more than one "
+								+ "Prerequisite: " + prereqs.size());
+							return null;
+						}
+						Integer level =
+								assoc
+									.getAssociation(AssociationKey.SPELL_LEVEL);
+						if (level == null)
+						{
+							context.addWriteMessage("Incoming Allows Edge to "
+								+ spell.getKey()
+								+ " had no Spell Level defined");
+							return null;
+						}
+						if (level.intValue() < 0)
+						{
+							context.addWriteMessage("Incoming Allows Edge to "
+								+ spell.getKey() + " had invalid Level: "
+								+ level + ". Must be >= 0.");
+							return null;
+						}
+						dkmtl.addToListFor(prereq, level, swl);
 					}
-					else if (prereqs.size() == 1)
-					{
-						prereq = prereqs.get(0);
-					}
-					else
-					{
-						context.addWriteMessage("Incoming Edge to "
-							+ spell.getKey() + " had more than one "
-							+ "Prerequisite: " + prereqs.size());
-						return null;
-					}
-					Integer level =
-							assoc.getAssociation(AssociationKey.SPELL_LEVEL);
-					if (level == null)
-					{
-						context.addWriteMessage("Incoming Allows Edge to "
-							+ spell.getKey() + " had no Spell Level defined");
-						return null;
-					}
-					if (level.intValue() < 0)
-					{
-						context.addWriteMessage("Incoming Allows Edge to "
-							+ spell.getKey() + " had invalid Level: " + level
-							+ ". Must be >= 0.");
-						return null;
-					}
-					dkmtl.addToListFor(prereq, level, swl);
 				}
 			}
 		}

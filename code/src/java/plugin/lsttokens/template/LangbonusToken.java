@@ -31,7 +31,7 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.Language;
 import pcgen.core.LanguageList;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
@@ -161,10 +161,10 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 	{
 		CDOMReference<LanguageList> swl =
 				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
-		Changes<CDOMReference<Language>> changes =
+		AssociatedChanges<CDOMReference<Language>> changes =
 				context.getListContext().getChangesInList(getTokenName(), pct,
 					swl);
-		if (changes == null || changes.isEmpty())
+		if (changes == null)
 		{
 			// Legal if no Language was present in the race
 			return null;
@@ -194,10 +194,7 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken
 		}
 		if (list.isEmpty())
 		{
-			// Zero indicates no add or global clear, which is an error
-			context.addWriteMessage(getTokenName()
-				+ " was expecting non-empty changes to include "
-				+ "added items or global clear");
+			// Zero indicates no add or global clear
 			return null;
 		}
 		return list.toArray(new String[list.size()]);
