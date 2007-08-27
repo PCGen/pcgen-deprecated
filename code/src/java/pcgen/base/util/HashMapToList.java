@@ -59,6 +59,11 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 	// new core
 	protected final Map<K, List<V>> mapToList = new HashMap<K, List<V>>();
 
+	/*
+	 * TODO This can be consolidated with TreeMapToList into an
+	 * AbstractMapToList, which has the mapToList inside IT, and takes it in the
+	 * protected constructor - all the rest of the code is shared...
+	 */
 	/**
 	 * Creates a new HashMapToList
 	 */

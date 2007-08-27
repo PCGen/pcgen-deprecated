@@ -389,4 +389,18 @@ public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 		HashMapToList<K2, V> localMap = mtmtl.get(key1);
 		return localMap == null ? 0 : localMap.sizeOfListFor(key2);
 	}
+
+
+	@Override
+	public int hashCode()
+	{
+		return mtmtl.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return o instanceof DoubleKeyMapToList
+			&& mtmtl.equals(((DoubleKeyMapToList<?, ?, ?>) o).mtmtl);
+	}
 }
