@@ -80,7 +80,7 @@ public class VisionLstLoaderTest extends AbstractTokenLoaderTestCase{
 
 	public void testEditorContextMultipleSources() throws PersistenceLayerException
 	{
-		context = new EditorLoadContext(new PCGenGraph());
+		context = new EditorLoadContext();
 		URI sourceURI = sourceCampaign.getURI();
 		URI modURI = modCampaign.getURI();
 		context.setSourceURI(sourceURI);

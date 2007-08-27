@@ -71,8 +71,8 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		TokenRegistration.register(getToken());
 		primaryGraph = new PCGenGraph();
 		secondaryGraph = new PCGenGraph();
-		primaryContext = new EditorLoadContext(primaryGraph);
-		secondaryContext = new EditorLoadContext(secondaryGraph);
+		primaryContext = new EditorLoadContext();
+		secondaryContext = new EditorLoadContext();
 		primaryProf =
 				primaryContext.ref.constructCDOMObject(getCDOMClass(),
 					"TestObj");

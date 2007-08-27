@@ -134,21 +134,21 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase
 	public void testClearTestArrayInEditorContext() 
 		throws PersistenceLayerException
 	{
-		context = new EditorLoadContext(new PCGenGraph());
+		context = new EditorLoadContext();
 		runClearAllTest(getTestArray());
 	}
 	
 	public void testPreClearTestArrayInEditorContext() 
 		throws PersistenceLayerException
 	{
-		context = new EditorLoadContext(new PCGenGraph());
+		context = new EditorLoadContext();
 		runPreClearAllTest(getTestArray());
 	}
 	
 	public void testDotClearTestArrayInEditorContext() 
 		throws PersistenceLayerException, URISyntaxException
 	{
-		context = new EditorLoadContext(new PCGenGraph());
+		context = new EditorLoadContext();
 		runClearAllIndexesTest(getTestArray());
 	}
 
@@ -168,6 +168,7 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase
 		assertTrue("Couldn't parse" + getToken().getTokenName() + " in "
 			+ context.getContextType() + " Context.", getToken().parse(context,
 			prof, tok));
+		context.commit();
 	}
 
 	protected void testUnparse(LoadContext context, String... str)
