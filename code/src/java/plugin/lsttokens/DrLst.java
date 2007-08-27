@@ -36,7 +36,7 @@ import pcgen.core.DamageReduction;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -180,7 +180,7 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<DamageReduction> changes =
+		AssociatedChanges<DamageReduction> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, DR_CLASS);
 		if (changes == null)

@@ -28,12 +28,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.core.Campaign;
 import pcgen.core.ClassSpellList;
@@ -41,7 +43,7 @@ import pcgen.core.DomainSpellList;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -351,12 +353,12 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedDomainLists =
 				context.getListContext().getChangedLists(obj,
 					DomainSpellList.class);
-		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<Spell>> domainMap =
+		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> domainMap =
 				getMap(context, obj, changedDomainLists);
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedClassLists =
 				context.getListContext().getChangedLists(obj,
 					ClassSpellList.class);
-		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<Spell>> classMap =
+		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> classMap =
 				getMap(context, obj, changedDomainLists);
 
 		// StringBuilder sb = new StringBuilder();
@@ -412,19 +414,19 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		return null;
 	}
 
-	private TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<Spell>> getMap(
+	private TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> getMap(
 		LoadContext context, CDOMObject obj,
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists)
 	{
-		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<Spell>> map =
-				new TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<Spell>>();
+		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> map =
+				new TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable>();
 
 		for (CDOMReference listRef : changedLists)
 		{
-			Changes changes =
+			AssociatedChanges changes =
 					context.getListContext().getChangesInList(getTokenName(),
 						obj, listRef);
-			if (changes == null || changes.isEmpty())
+			if (changes == null)
 			{
 				// Legal if no SPELLLEVEL was present
 				continue;
@@ -435,17 +437,22 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 					+ " does not support .CLEAR");
 				return null;
 			}
-			if (changes.hasAddedItems())
+			MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+					changes.getAddedAssociations();
+			if (mtl == null || mtl.isEmpty())
 			{
-				Collection<CDOMReference<Spell>> addedCollection =
-						changes.getAdded();
-				for (CDOMReference<Spell> added : addedCollection)
+				// Zero indicates no Token
+				// TODO Error message - unexpected?
+				return null;
+			}
+			for (LSTWriteable added : mtl.getKeySet())
+			{
+				for (AssociatedPrereqObject assoc : mtl.getListFor(added))
 				{
-					AssociatedPrereqObject se =
-							changes.getAddedAssociation(added);
-					Integer lvl = se.getAssociation(AssociationKey.SPELL_LEVEL);
+					Integer lvl =
+							assoc.getAssociation(AssociationKey.SPELL_LEVEL);
 					String prereqString =
-							getPrerequisiteString(context, se
+							getPrerequisiteString(context, assoc
 								.getPrerequisiteList());
 					map.addToListFor(prereqString, lvl, listRef, added);
 				}

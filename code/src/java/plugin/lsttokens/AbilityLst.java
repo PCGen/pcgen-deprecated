@@ -41,7 +41,6 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
@@ -49,7 +48,7 @@ import pcgen.core.PObject;
 import pcgen.core.QualifiedObject;
 import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -267,7 +266,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 			CDOMCategorizedSingleRef<Ability> ability =
 					context.ref.getCDOMReference(ABILITY_CLASS, ac, tok
 						.nextToken());
-			PCGraphGrantsEdge edge =
+			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), obj,
 						ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
@@ -277,7 +276,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<Ability> changes =
+		AssociatedChanges<Ability> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, ABILITY_CLASS);
 		if (changes == null)

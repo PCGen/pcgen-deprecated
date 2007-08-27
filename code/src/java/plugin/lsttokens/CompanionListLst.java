@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -45,7 +46,7 @@ import pcgen.core.FollowerOption;
 import pcgen.core.PObject;
 import pcgen.core.Race;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -388,15 +389,15 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists =
 				context.getListContext().getChangedLists(obj,
 					CompanionList.class);
-		TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CompanionList>, Integer, LSTWriteable> m =
-				new TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CompanionList>, Integer, LSTWriteable>();
+		TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable> m =
+				new TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable>();
 
-		for (CDOMReference ref : changedLists)
+		for (CDOMReference<CDOMList<? extends CDOMObject>> ref : changedLists)
 		{
-			Changes changes =
+			AssociatedChanges changes =
 					context.getListContext().getChangesInList(getTokenName(),
 						obj, ref);
-			if (changes == null || changes.isEmpty())
+			if (changes == null)
 			{
 				// Legal if no COMPANIONLIST was present
 				continue;
@@ -407,18 +408,23 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 					+ " does not support .CLEAR");
 				return null;
 			}
-			if (changes.hasAddedItems())
+			MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+					changes.getAddedAssociations();
+			if (mtl == null || mtl.isEmpty())
 			{
-				Collection<CDOMReference<Race>> addedCollection =
-						changes.getAdded();
-				for (CDOMReference<Race> added : addedCollection)
+				// Zero indicates no Token
+				// TODO Error message - unexpected?
+				return null;
+			}
+			for (LSTWriteable added : mtl.getKeySet())
+			{
+				for (AssociatedPrereqObject assoc : mtl.getListFor(added))
 				{
-					AssociatedPrereqObject se =
-							changes.getAddedAssociation(added);
 					Set<Prerequisite> prereqs =
-							new HashSet<Prerequisite>(se.getPrerequisiteList());
+							new HashSet<Prerequisite>(assoc
+								.getPrerequisiteList());
 					Integer fa =
-							se
+							assoc
 								.getAssociation(AssociationKey.FOLLOWER_ADJUSTMENT);
 					m.addToListFor(prereqs, ref, fa, added);
 				}
@@ -440,7 +446,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 				prereqString = getPrerequisiteString(context, prereqs);
 			}
 
-			for (CDOMReference<CompanionList> cl : m
+			for (CDOMReference<CDOMList<? extends CDOMObject>> cl : m
 				.getSecondaryKeySet(prereqs))
 			{
 				for (Integer fa : m.getTertiaryKeySet(prereqs, cl))

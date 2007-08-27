@@ -71,15 +71,21 @@ public class UdamLst implements GlobalLstToken
 					+ " requires 9 comma separated values");
 				return false;
 			}
-			if (context.getObjectContext().containsListFor(obj, ListKey.UDAM))
-			{
-				Logging.errorPrint(obj.getDisplayName() + " already has "
-					+ getTokenName() + " set.");
-				Logging.errorPrint("  It will be redefined, "
-					+ "but you should be using " + getTokenName() + ":.CLEAR");
-				context.getObjectContext().removeList(obj, ListKey.UDAM);
-			}
+			/*
+			 * TODO UDAM is very strange - implicitly each additional UDAM token
+			 * is for an additional level - this only impacts Classes and Class
+			 * Levels... VERY bad design and needs to be fixed in 5.14
+			 */
 
+			// if (context.getObjectContext().containsListFor(obj,
+			// ListKey.UDAM))
+			// {
+			// Logging.errorPrint(obj.getDisplayName() + " already has "
+			// + getTokenName() + " set.");
+			// Logging.errorPrint(" It will be redefined, "
+			// + "but you should be using " + getTokenName() + ":.CLEAR");
+			// context.getObjectContext().removeList(obj, ListKey.UDAM);
+			// }
 			while (tok.hasMoreTokens())
 			{
 				context.getObjectContext().addToList(obj, ListKey.UDAM,

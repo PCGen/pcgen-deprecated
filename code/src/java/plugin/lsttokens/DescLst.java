@@ -34,7 +34,7 @@ import pcgen.core.Description;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.io.EntityEncoder;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -229,7 +229,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<Description> changes =
+		AssociatedChanges<Description> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, Description.class);
 		if (changes == null)

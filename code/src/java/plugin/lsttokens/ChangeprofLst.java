@@ -40,7 +40,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.modifier.ChangeProf;
 import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -189,7 +189,7 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<ChangeProf> changes =
+		AssociatedChanges<ChangeProf> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, ChangeProf.class);
 		if (changes == null)

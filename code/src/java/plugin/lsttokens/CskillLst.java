@@ -23,10 +23,11 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
@@ -39,7 +40,7 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -173,10 +174,10 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 	{
 		CDOMGroupRef<ClassSkillList> listRef =
 				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
-		Changes<LSTWriteable> changes =
+		AssociatedChanges<LSTWriteable> changes =
 				context.getListContext().getChangesInMasterList(getTokenName(),
 					obj, listRef);
-		if (changes == null || changes.isEmpty())
+		if (changes == null)
 		{
 			// Legal if no CSKILL was present
 			return null;
@@ -201,22 +202,25 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 		}
 		if (changes.hasAddedItems())
 		{
-			Collection<LSTWriteable> addedList = changes.getAdded();
-			for (LSTWriteable added : addedList)
+			MapToList<LSTWriteable, AssociatedPrereqObject> map =
+					changes.getAddedAssociations();
+			Set<LSTWriteable> addedSet = map.getKeySet();
+			for (LSTWriteable added : addedSet)
 			{
-				AssociatedPrereqObject assoc =
-						changes.getAddedAssociation(added);
-				if (!SkillCost.CLASS.equals(assoc
-					.getAssociation(AssociationKey.SKILL_COST)))
+				for (AssociatedPrereqObject assoc : map.getListFor(added))
 				{
-					context
-						.addWriteMessage("Skill Cost must be CLASS for Token "
-							+ getTokenName());
-					return null;
+					if (!SkillCost.CLASS.equals(assoc
+						.getAssociation(AssociationKey.SKILL_COST)))
+					{
+						context
+							.addWriteMessage("Skill Cost must be CLASS for Token "
+								+ getTokenName());
+						return null;
+					}
 				}
 			}
-			list.add(ReferenceUtilities
-				.joinLstFormat(addedList, Constants.PIPE));
+			list
+				.add(ReferenceUtilities.joinLstFormat(addedSet, Constants.PIPE));
 		}
 		return list.toArray(new String[list.size()]);
 	}

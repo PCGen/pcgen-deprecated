@@ -41,13 +41,12 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.core.Campaign;
 import pcgen.core.PCSpell;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -348,7 +347,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 	{
 		for (CDOMReference<Spell> spell : dkm.getKeySet())
 		{
-			PCGraphGrantsEdge edge =
+			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), obj, spell);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(spell))
 			{
@@ -366,7 +365,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<Spell> changes =
+		AssociatedChanges<Spell> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, Spell.class);
 		if (changes == null)

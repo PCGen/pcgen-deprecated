@@ -33,7 +33,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.Vision;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.util.Logging;
@@ -202,7 +202,7 @@ public class VisionLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<Vision> changes =
+		AssociatedChanges<Vision> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, VISION_CLASS);
 		if (changes == null)

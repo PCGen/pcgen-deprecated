@@ -34,7 +34,7 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SpellResistance;
 import pcgen.core.PObject;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 
@@ -84,7 +84,7 @@ public class SrLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<SpellResistance> changes =
+		AssociatedChanges<SpellResistance> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, SpellResistance.class);
 		if (changes == null)

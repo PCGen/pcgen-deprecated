@@ -36,7 +36,7 @@ import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.core.SpecialAbility;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -302,7 +302,7 @@ public class SaLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<SpecialAbility> changes =
+		AssociatedChanges<SpecialAbility> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, SA_CLASS);
 		if (changes == null)

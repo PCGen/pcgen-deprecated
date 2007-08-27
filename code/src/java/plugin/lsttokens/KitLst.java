@@ -22,12 +22,12 @@
  */
 package plugin.lsttokens;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
@@ -102,7 +102,7 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 			return false;
 		}
 		ChoiceSet<?> choiceSet = new ChoiceSet("KIT", chooser);
-		PCGraphGrantsEdge edge =
+		AssociatedPrereqObject edge =
 				context.getGraphContext().grant(getTokenName(), obj, choiceSet);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));

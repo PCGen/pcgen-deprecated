@@ -31,7 +31,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.Language;
 import pcgen.core.PObject;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -84,6 +84,9 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 			{
 				if (!firstToken)
 				{
+					Logging.errorPrint("Non-sensical situation was "
+						+ "encountered while parsing " + getTokenName()
+						+ ": When used, .CLEAR must be the first argument");
 					return false;
 				}
 				context.getGraphContext().removeAll(getTokenName(), obj);
@@ -111,7 +114,7 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 				}
 				context.getGraphContext().grant(getTokenName(), obj, ref);
 			}
-			firstToken = true;
+			firstToken = false;
 		}
 		if (foundAny && foundOther)
 		{
@@ -124,7 +127,7 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<Language> changes =
+		AssociatedChanges<Language> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, LANGUAGE_CLASS);
 		if (changes == null)

@@ -27,18 +27,18 @@ import java.util.Collection;
 import java.util.List;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.utils.CoreUtility;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLoader;
@@ -231,7 +231,7 @@ public class ChooseLst implements GlobalLstToken
 				count == null ? FormulaFactory.getFormulaFor(1)
 					: FormulaFactory.getFormulaFor(count);
 		ChoiceSet<?> choiceSet = new ChoiceSet(Constants.CHOOSE, chooser);
-		PCGraphGrantsEdge edge =
+		AssociatedPrereqObject edge =
 				context.getGraphContext().grant(getTokenName(), obj, choiceSet);
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
@@ -249,7 +249,7 @@ public class ChooseLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<ChoiceSet> changes =
+		AssociatedChanges<ChoiceSet> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, ChoiceSet.class);
 		if (changes == null)

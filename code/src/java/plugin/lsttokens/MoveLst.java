@@ -34,7 +34,7 @@ import pcgen.cdom.content.SimpleMovement;
 import pcgen.core.Equipment;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -117,7 +117,7 @@ public class MoveLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		GraphChanges<SimpleMovement> changes =
+		AssociatedChanges<SimpleMovement> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, SimpleMovement.class);
 		if (changes == null)

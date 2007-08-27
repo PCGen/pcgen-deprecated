@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
@@ -35,17 +36,16 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.factory.GrantFactory;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ListChoiceSet;
 import pcgen.core.Campaign;
 import pcgen.core.PCTemplate;
 import pcgen.core.PCTemplateChooseList;
 import pcgen.core.PObject;
-import pcgen.persistence.Changes;
-import pcgen.persistence.GraphChanges;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -90,27 +90,29 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 						.substring(Constants.LST_CHOOSE.length()));
 			if (returnval)
 			{
-				ListChoiceSet<PCTemplate> rcs =
-						new ListChoiceSet<PCTemplate>(tcl);
-				ChoiceSet<PCTemplate> cs =
-						new ChoiceSet<PCTemplate>("ADD", rcs);
-				PCGraphGrantsEdge edge =
-						context.getGraphContext()
-							.grant(getTokenName(), cdo, cs);
+				ChooseActionContainer container =
+						new ChooseActionContainer(getTokenName());
+				container.addActor(new GrantActor<PCTemplate>());
+				AssociatedPrereqObject edge =
+						context.getGraphContext().grant(getTokenName(), cdo,
+							container);
 				edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 					.getFormulaFor(1));
 				edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT,
 					FormulaFactory.getFormulaFor(1));
-				GrantFactory<PCTemplate> gf =
-						new GrantFactory<PCTemplate>(edge);
-				context.getGraphContext().grant(getTokenName(), cdo, gf);
+				ListChoiceSet<PCTemplate> rcs =
+						new ListChoiceSet<PCTemplate>(tcl);
+				ChoiceSet<PCTemplate> cs =
+						new ChoiceSet<PCTemplate>("ADD", rcs);
+				edge.setAssociation(AssociationKey.CHOICE, cs);
 			}
 			return returnval;
 		}
 		else if (value.startsWith(Constants.LST_ADDCHOICE))
 		{
-			CDOMReference<PCTemplateChooseList> ref =
-					context.ref.getCDOMAllReference(PCTEMPLATECHOOSELIST_CLASS);
+			PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
+			CDOMSingleRef<PCTemplateChooseList> ref =
+					context.ref.getCDOMDirectReference(tcl);
 			return parseChoose(context, cdo, ref, value
 				.substring(Constants.LST_ADDCHOICE.length()));
 		}
@@ -157,7 +159,7 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject cdo)
 	{
-		GraphChanges<PCTemplate> changes =
+		AssociatedChanges<PCTemplate> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					cdo, PCTEMPLATE_CLASS);
 
@@ -167,10 +169,10 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 		CDOMReference<PCTemplateChooseList> allRef =
 				context.ref.getCDOMAllReference(PCTEMPLATECHOOSELIST_CLASS);
 
-		Changes<CDOMReference<PCTemplate>> tctChanges =
+		AssociatedChanges<CDOMReference<PCTemplate>> tctChanges =
 				context.getListContext().getChangesInList(getTokenName(), cdo,
 					ref);
-		Changes<CDOMReference<PCTemplate>> allChanges =
+		AssociatedChanges<CDOMReference<PCTemplate>> allChanges =
 				context.getListContext().getChangesInList(getTokenName(), cdo,
 					allRef);
 
