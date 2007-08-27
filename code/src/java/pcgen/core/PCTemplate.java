@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.core.levelability.LevelAbility;
 import pcgen.core.prereq.PrereqHandler;
@@ -2115,7 +2116,7 @@ public final class PCTemplate extends PObject implements HasCost
 	{
 		// TODO Need to add ObjectKey set from CDOMObject in order to ensure HD:
 		// and LEVEL: work correctly
-		return super.equals(o) && o instanceof PrereqObject
+		return o == this || super.equals(o) && o instanceof PrereqObject
 			&& equalsPrereqObject((PrereqObject) o);
 	}
 }
