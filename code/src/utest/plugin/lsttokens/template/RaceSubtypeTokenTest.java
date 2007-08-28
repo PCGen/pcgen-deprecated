@@ -213,15 +213,15 @@ public class RaceSubtypeTokenTest extends
 	@Test
 	public void testMixRoundRobinThree() throws PersistenceLayerException
 	{
-		runRoundRobin("TestWP1" + getJoinCharacter() + "TestWP2"
-			+ getJoinCharacter() + ".REMOVE.TestWP3");
+		runRoundRobin(".REMOVE.TestWP3" + getJoinCharacter() + "TestWP1"
+			+ getJoinCharacter() + "TestWP2");
 	}
 
 	@Test
 	public void testMixRoundRobinWithSpace() throws PersistenceLayerException
 	{
-		runRoundRobin("Languedoc-Roussillon" + getJoinCharacter()
-			+ ".REMOVE.Finger Lakes");
+		runRoundRobin(".REMOVE.Finger Lakes" + getJoinCharacter()
+			+ "Languedoc-Roussillon");
 	}
 
 	@Override
