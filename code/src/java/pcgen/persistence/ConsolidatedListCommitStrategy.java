@@ -58,27 +58,60 @@ public class ConsolidatedListCommitStrategy implements ListCommitStrategy
 		return a;
 	}
 
-	public Collection<CDOMReference> getMasterLists(
-		Class<? extends CDOMList<?>> cl)
+	public Changes<CDOMReference> getMasterListChanges(String tokenName,
+		CDOMObject owner, Class<? extends CDOMList<?>> cl)
 	{
 		ArrayList<CDOMReference> list = new ArrayList<CDOMReference>();
-		for (CDOMReference<? extends CDOMList<?>> ref : masterList.getKeySet())
+		LIST: for (CDOMReference<? extends CDOMList<?>> ref : masterList
+			.getKeySet())
 		{
-			if (cl.equals(ref.getReferenceClass()))
+			if (!cl.equals(ref.getReferenceClass()))
 			{
-				list.add(ref);
+				continue;
+			}
+			for (LSTWriteable allowed : masterList.getSecondaryKeySet(ref))
+			{
+				for (AssociatedPrereqObject assoc : masterList.getListFor(ref,
+					allowed))
+				{
+					if (owner
+						.equals(assoc.getAssociation(AssociationKey.OWNER))
+						&& tokenName.equals(assoc
+							.getAssociation(AssociationKey.TOKEN)))
+					{
+						list.add(ref);
+						continue LIST;
+					}
+				}
 			}
 		}
-		return list;
+		return new CollectionChanges<CDOMReference>(list, null, false);
 	}
 
 	public void clearAllMasterLists(String tokenName, CDOMObject owner)
 	{
-		// TODO Auto-generated method stub
+		for (CDOMReference<? extends CDOMList<?>> ref : masterList.getKeySet())
+		{
+			for (LSTWriteable allowed : masterList.getSecondaryKeySet(ref))
+			{
+				for (AssociatedPrereqObject assoc : masterList.getListFor(ref,
+					allowed))
+				{
+					if (owner
+						.equals(assoc.getAssociation(AssociationKey.OWNER))
+						&& tokenName.equals(assoc
+							.getAssociation(AssociationKey.TOKEN)))
+					{
+						masterList.removeFromListFor(ref, allowed, assoc);
+					}
+				}
+			}
+		}
 	}
 
-	public AssociatedChanges<LSTWriteable> getChangesInMasterList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<?>> swl)
+	public AssociatedChanges<LSTWriteable> getChangesInMasterList(
+		String tokenName, CDOMObject owner,
+		CDOMReference<? extends CDOMList<?>> swl)
 	{
 		Set<LSTWriteable> added = masterList.getSecondaryKeySet(swl);
 		MapToList<LSTWriteable, AssociatedPrereqObject> owned =

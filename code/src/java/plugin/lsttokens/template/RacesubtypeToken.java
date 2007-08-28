@@ -103,18 +103,6 @@ public class RacesubtypeToken extends AbstractToken implements
 		}
 		StringBuilder sb = new StringBuilder();
 		boolean needPipe = false;
-		if (added != null)
-		{
-			for (RaceSubType rst : added)
-			{
-				if (needPipe)
-				{
-					sb.append(Constants.PIPE);
-				}
-				sb.append(rst);
-				needPipe = true;
-			}
-		}
 		if (removed != null)
 		{
 			for (RaceSubType rst : removed)
@@ -124,6 +112,18 @@ public class RacesubtypeToken extends AbstractToken implements
 					sb.append(Constants.PIPE);
 				}
 				sb.append(".REMOVE.").append(rst);
+				needPipe = true;
+			}
+		}
+		if (added != null)
+		{
+			for (RaceSubType rst : added)
+			{
+				if (needPipe)
+				{
+					sb.append(Constants.PIPE);
+				}
+				sb.append(rst);
 				needPipe = true;
 			}
 		}

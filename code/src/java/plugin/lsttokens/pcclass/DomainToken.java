@@ -194,52 +194,65 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
-		if (mtl == null || mtl.isEmpty())
+		List<String> list = new ArrayList<String>();
+		if (changes.includesGlobalClear())
 		{
-			// Zero indicates no Token
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		if (changes.hasRemovedItems())
+		{
+			context.addWriteMessage(getTokenName()
+				+ " does not support .CLEAR.");
 			return null;
 		}
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		List<String> list = new ArrayList<String>();
-		for (LSTWriteable ab : mtl.getKeySet())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl != null && !mtl.isEmpty())
 		{
-			List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
-			if (assocList.size() != 1)
+			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+			for (LSTWriteable ab : mtl.getKeySet())
 			{
-				context
-					.addWriteMessage("Only one Association to a CHOOSE can be made per object");
-				return null;
-			}
-			AssociatedPrereqObject assoc = assocList.get(0);
-			StringBuilder sb = new StringBuilder();
-			sb.append(ab.getLSTformat());
-			if (assoc.hasPrerequisites())
-			{
-				List<Prerequisite> prereqs = assoc.getPrerequisiteList();
-				if (prereqs.size() > 1)
+				List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
+				if (assocList.size() != 1)
 				{
-					context.addWriteMessage("Incoming Edge to " + po.getKey()
-						+ " had more than one " + "Prerequisite: "
-						+ prereqs.size());
+					context
+						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
 					return null;
 				}
-				sb.append('[');
-				StringWriter swriter = new StringWriter();
-				try
+				AssociatedPrereqObject assoc = assocList.get(0);
+				StringBuilder sb = new StringBuilder();
+				sb.append(ab.getLSTformat());
+				if (assoc.hasPrerequisites())
 				{
-					prereqWriter.write(swriter, prereqs.get(0));
+					List<Prerequisite> prereqs = assoc.getPrerequisiteList();
+					if (prereqs.size() > 1)
+					{
+						context.addWriteMessage("Incoming Edge to "
+							+ po.getKey() + " had more than one "
+							+ "Prerequisite: " + prereqs.size());
+						return null;
+					}
+					sb.append('[');
+					StringWriter swriter = new StringWriter();
+					try
+					{
+						prereqWriter.write(swriter, prereqs.get(0));
+					}
+					catch (PersistenceLayerException e)
+					{
+						context.addWriteMessage("Error writing Prerequisite: "
+							+ e);
+						return null;
+					}
+					sb.append(swriter.toString());
+					sb.append(']');
 				}
-				catch (PersistenceLayerException e)
-				{
-					context.addWriteMessage("Error writing Prerequisite: " + e);
-					return null;
-				}
-				sb.append(swriter.toString());
-				sb.append(']');
+				list.add(sb.toString());
 			}
-			list.add(sb.toString());
+		}
+		if (list.isEmpty())
+		{
+			return null;
 		}
 		return new String[]{StringUtil.join(list, Constants.PIPE)};
 	}

@@ -16,13 +16,14 @@ public interface ListCommitStrategy
 		CDOMObject owner, CDOMReference<? extends CDOMList<?>> list,
 		LSTWriteable allowed);
 
-	public Collection<CDOMReference> getMasterLists(
-		Class<? extends CDOMList<?>> cl);
+	public Changes<CDOMReference> getMasterListChanges(
+		String tokenName, CDOMObject owner, Class<? extends CDOMList<?>> cl);
 
 	public boolean hasMasterLists();
 
-	public AssociatedChanges<LSTWriteable> getChangesInMasterList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<?>> swl);
+	public AssociatedChanges<LSTWriteable> getChangesInMasterList(
+		String tokenName, CDOMObject owner,
+		CDOMReference<? extends CDOMList<?>> swl);
 
 	public <T extends CDOMObject> AssociatedPrereqObject addToList(
 		String tokenName, CDOMObject owner,

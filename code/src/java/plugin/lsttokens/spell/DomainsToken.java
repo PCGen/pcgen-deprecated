@@ -39,6 +39,7 @@ import pcgen.core.DomainSpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.AssociatedChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -234,26 +235,34 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<DomainSpellList>> dkmtl =
 				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<DomainSpellList>>();
 		List<String> list = new ArrayList<String>();
-		for (CDOMReference<DomainSpellList> swl : context.getListContext()
-			.getMasterLists(SPELLLIST_CLASS))
+		Changes<CDOMReference> masterChanges =
+				context.getListContext().getMasterListChanges(getTokenName(),
+					spell, SPELLLIST_CLASS);
+		if (masterChanges.includesGlobalClear())
+		{
+			list.add(Constants.LST_DOT_CLEARALL);
+		}
+		if (masterChanges.hasRemovedItems())
+		{
+			context.addWriteMessage(getTokenName()
+				+ " does not support .CLEAR.");
+			return null;
+		}
+		for (CDOMReference<DomainSpellList> swl : masterChanges.getAdded())
 		{
 			AssociatedChanges<LSTWriteable> changes =
 					context.getListContext().getChangesInMasterList(
 						getTokenName(), spell, swl);
 			if (changes == null)
 			{
-				// Legal if no DOMAINS was present in the Spell
+				// Legal if no CLASSES was present in the Spell
 				continue;
 			}
-			if (changes.hasRemovedItems())
+			if (changes.hasRemovedItems() || changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
 					+ " does not support .CLEAR.");
 				return null;
-			}
-			if (changes.includesGlobalClear())
-			{
-				list.add(Constants.LST_DOT_CLEARALL);
 			}
 			if (changes.hasAddedItems())
 			{

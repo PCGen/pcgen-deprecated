@@ -174,6 +174,13 @@ public class ListContext
 				}
 			}
 		}
+		for (String token : edits.masterAllClear.getKeySet())
+		{
+			for (OwnerURI ou : edits.masterAllClear.getListFor(token))
+			{
+				commit.clearAllMasterLists(token, ou.owner);
+			}
+		}
 		decommit();
 	}
 
@@ -195,16 +202,17 @@ public class ListContext
 		return commit.getChangesInList(tokenName, owner, swl);
 	}
 
-	public AssociatedChanges<LSTWriteable> getChangesInMasterList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<?>> swl)
+	public AssociatedChanges<LSTWriteable> getChangesInMasterList(
+		String tokenName, CDOMObject owner,
+		CDOMReference<? extends CDOMList<?>> swl)
 	{
 		return commit.getChangesInMasterList(tokenName, owner, swl);
 	}
 
-	public Collection<CDOMReference> getMasterLists(
-		Class<? extends CDOMList<?>> cl)
+	public Changes<CDOMReference> getMasterListChanges(String tokenName,
+		CDOMObject owner, Class<? extends CDOMList<?>> cl)
 	{
-		return commit.getMasterLists(cl);
+		return commit.getMasterListChanges(tokenName, owner, cl);
 	}
 
 	public boolean hasMasterLists()
@@ -288,6 +296,9 @@ public class ListContext
 		private HashMapToList<CDOMReference<? extends CDOMList<?>>, OwnerURI> masterClearSet =
 				new HashMapToList<CDOMReference<? extends CDOMList<?>>, OwnerURI>();
 
+		private HashMapToList<String, OwnerURI> masterAllClear =
+				new HashMapToList<String, OwnerURI>();
+
 		public AssociatedPrereqObject addToMasterList(String tokenName,
 			CDOMObject owner, CDOMReference<? extends CDOMList<?>> list,
 			LSTWriteable allowed)
@@ -300,23 +311,39 @@ public class ListContext
 			return a;
 		}
 
-		public Collection<CDOMReference> getMasterLists(
-			Class<? extends CDOMList<?>> cl)
+		public Changes<CDOMReference> getMasterListChanges(String tokenName,
+			CDOMObject owner, Class<? extends CDOMList<?>> cl)
 		{
+			OwnerURI lo = new OwnerURI(extractURI, owner);
 			ArrayList<CDOMReference> list = new ArrayList<CDOMReference>();
 			Set<CDOMReference<? extends CDOMList<?>>> set =
 					positiveMasterMap.getKeySet();
 			if (set != null)
 			{
-				for (CDOMReference<? extends CDOMList<?>> ref : set)
+				LIST: for (CDOMReference<? extends CDOMList<?>> ref : set)
 				{
-					if (cl.equals(ref.getReferenceClass()))
+					if (!cl.equals(ref.getReferenceClass()))
 					{
-						list.add(ref);
+						continue;
+					}
+					for (LSTWriteable allowed : positiveMasterMap
+						.getTertiaryKeySet(ref, lo))
+					{
+						AssociatedPrereqObject assoc =
+								positiveMasterMap.get(ref, lo, allowed);
+						if (owner.equals(assoc
+							.getAssociation(AssociationKey.OWNER))
+							&& tokenName.equals(assoc
+								.getAssociation(AssociationKey.TOKEN)))
+						{
+							list.add(ref);
+							continue LIST;
+						}
 					}
 				}
 			}
-			return list;
+			return new CollectionChanges<CDOMReference>(list, null,
+				masterAllClear.containsInList(tokenName, lo));
 		}
 
 		public AssociatedChanges<LSTWriteable> getChangesInMasterList(
@@ -340,13 +367,13 @@ public class ListContext
 		public <T extends CDOMObject> void clearMasterList(String tokenName,
 			CDOMObject owner, CDOMReference<? extends CDOMList<T>> list)
 		{
-			masterClearSet.addToListFor(list, new OwnerURI(extractURI, owner));
+			masterClearSet.addToListFor(list, new OwnerURI(sourceURI, owner));
 		}
 
 		public void clearAllMasterLists(String tokenName, CDOMObject owner)
 		{
-			// TODO Auto-generated method stub
-
+			masterAllClear.addToListFor(tokenName, new OwnerURI(sourceURI,
+				owner));
 		}
 
 		private DoubleKeyMap<URI, CDOMObject, CDOMObject> positiveMap =
@@ -432,11 +459,13 @@ public class ListContext
 
 		public boolean hasMasterLists()
 		{
-			return !positiveMasterMap.isEmpty() && masterClearSet.isEmpty();
+			return !positiveMasterMap.isEmpty() && !masterClearSet.isEmpty()
+				&& !masterAllClear.isEmpty();
 		}
 
 		public void decommit()
 		{
+			masterAllClear.clear();
 			masterClearSet.clear();
 			positiveMasterMap.clear();
 			positiveMap.clear();

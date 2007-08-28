@@ -23,6 +23,7 @@ package plugin.lsttokens.deity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -192,7 +193,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 				+ ": Contains ALL and a specific reference: " + value);
 			return false;
 		}
-		
+
 		while (pipeTok.hasMoreTokens())
 		{
 			String tokString = pipeTok.nextToken();
@@ -224,46 +225,61 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			// Legal if no Language was present in the race
 			return null;
 		}
-		if (changes.hasRemovedItems() || changes.includesGlobalClear())
+		List<String> list = new ArrayList<String>();
+		if (changes.includesGlobalClear())
 		{
-			context
-				.addWriteMessage(getTokenName() + " does not support .CLEAR");
-			return null;
+			if (changes.hasRemovedItems())
+			{
+				context.addWriteMessage("Non-sensical relationship in "
+					+ getTokenName()
+					+ ": global .CLEAR and local .CLEAR. performed");
+				return null;
+			}
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		else if (changes.hasRemovedItems())
+		{
+			list.add(Constants.LST_DOT_CLEAR_DOT
+				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+					",.CLEAR."));
 		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
 				changes.getAddedAssociations();
-		if (mtl == null || mtl.isEmpty())
+		if (mtl != null && !mtl.isEmpty())
 		{
-			// Zero indicates no Token
-			// TODO Error message - unexpected?
+			MapToList<Set<Prerequisite>, LSTWriteable> m =
+					new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+			for (LSTWriteable ab : mtl.getKeySet())
+			{
+				for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
+				{
+					m.addToListFor(new HashSet<Prerequisite>(assoc
+						.getPrerequisiteList()), ab);
+				}
+			}
+			Set<String> set = new TreeSet<String>();
+			for (Set<Prerequisite> prereqs : m.getKeySet())
+			{
+				Set<LSTWriteable> domainSet =
+						new TreeSet<LSTWriteable>(
+							TokenUtilities.WRITEABLE_SORTER);
+				domainSet.addAll(m.getListFor(prereqs));
+				StringBuilder sb =
+						new StringBuilder(ReferenceUtilities.joinLstFormat(
+							domainSet, Constants.COMMA));
+				if (prereqs != null && !prereqs.isEmpty())
+				{
+					sb.append(Constants.PIPE);
+					sb.append(getPrerequisiteString(context, prereqs));
+				}
+				set.add(sb.toString());
+			}
+			list.addAll(set);
+		}
+		if (list.isEmpty())
+		{
 			return null;
 		}
-		MapToList<Set<Prerequisite>, LSTWriteable> m =
-				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : mtl.getKeySet())
-		{
-			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
-			{
-				m.addToListFor(new HashSet<Prerequisite>(assoc
-					.getPrerequisiteList()), ab);
-			}
-		}
-		Set<String> set = new TreeSet<String>();
-		for (Set<Prerequisite> prereqs : m.getKeySet())
-		{
-			Set<LSTWriteable> domainSet =
-					new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
-			domainSet.addAll(m.getListFor(prereqs));
-			StringBuilder sb =
-					new StringBuilder(ReferenceUtilities.joinLstFormat(
-						domainSet, Constants.COMMA));
-			if (prereqs != null && !prereqs.isEmpty())
-			{
-				sb.append(Constants.PIPE);
-				sb.append(getPrerequisiteString(context, prereqs));
-			}
-			set.add(sb.toString());
-		}
-		return set.toArray(new String[set.size()]);
+		return list.toArray(new String[list.size()]);
 	}
 }

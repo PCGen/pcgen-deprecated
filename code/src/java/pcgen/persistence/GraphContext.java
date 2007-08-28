@@ -304,12 +304,6 @@ public class GraphContext
 					}
 					for (AssociatedPrereqObject assoc : assocs)
 					{
-						Boolean irrel =
-								assoc.getAssociation(AssociationKey.IRRELEVANT);
-						if (irrel != null && irrel.booleanValue())
-						{
-							continue;
-						}
 						if (extractURI != null)
 						{
 							if (!extractURI.equals(assoc
@@ -348,12 +342,6 @@ public class GraphContext
 					}
 					for (AssociatedPrereqObject assoc : assocs)
 					{
-						Boolean irrel =
-								assoc.getAssociation(AssociationKey.IRRELEVANT);
-						if (irrel != null && irrel.booleanValue())
-						{
-							continue;
-						}
 						if (extractURI != null)
 						{
 							if (!extractURI.equals(assoc
@@ -404,12 +392,6 @@ public class GraphContext
 					}
 					for (AssociatedPrereqObject assoc : assocs)
 					{
-						Boolean irrel =
-								assoc.getAssociation(AssociationKey.IRRELEVANT);
-						if (irrel != null && irrel.booleanValue())
-						{
-							continue;
-						}
 						if (extractURI != null)
 						{
 							if (!extractURI.equals(assoc

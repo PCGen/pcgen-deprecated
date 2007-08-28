@@ -39,6 +39,7 @@ import pcgen.core.ClassSkillList;
 import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.AssociatedChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SkillLstToken;
@@ -147,28 +148,34 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		boolean usesAll = false;
 		boolean usesIndividual = false;
 		boolean negated = false;
-		for (CDOMReference<ClassSkillList> swl : context.getListContext()
-			.getMasterLists(SKILLLIST_CLASS))
+		Changes<CDOMReference> masterChanges =
+				context.getListContext().getMasterListChanges(getTokenName(),
+					skill, SKILLLIST_CLASS);
+		if (masterChanges.includesGlobalClear())
+		{
+			context
+				.addWriteMessage(getTokenName() + " does not support .CLEAR");
+		}
+		if (masterChanges.hasRemovedItems())
+		{
+			context.addWriteMessage(getTokenName()
+				+ " does not support .CLEAR.");
+			return null;
+		}
+		for (CDOMReference<ClassSkillList> swl : masterChanges.getAdded())
 		{
 			AssociatedChanges<LSTWriteable> changes =
 					context.getListContext().getChangesInMasterList(
 						getTokenName(), skill, swl);
 			if (changes == null)
 			{
-				// Legal if no CLASSES was present in the Skill
+				// Legal if no CLASSES was present in the Spell
 				continue;
 			}
-			// List<String> list = new ArrayList<String>();
-			if (changes.hasRemovedItems())
+			if (changes.hasRemovedItems() || changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
 					+ " does not support .CLEAR.");
-				return null;
-			}
-			if (changes.includesGlobalClear())
-			{
-				context.addWriteMessage(getTokenName()
-					+ " does not support .CLEAR");
 				return null;
 			}
 			if (changes.hasAddedItems())

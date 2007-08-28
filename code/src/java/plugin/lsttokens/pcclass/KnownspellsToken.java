@@ -268,12 +268,17 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		{
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		List<String> list = new ArrayList<String>();
+		if (changes.includesGlobalClear())
 		{
-			// Zero indicates no Token present
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		if (changes.hasRemovedItems())
+		{
+			context.addWriteMessage(getTokenName() + " does not support .CLEAR.");
 			return null;
 		}
+		Collection<LSTWriteable> added = changes.getAdded();
 		Map<CDOMReference<?>, Integer> map =
 				new TreeMap<CDOMReference<?>, Integer>(
 					TokenUtilities.REFERENCE_SORTER);
@@ -284,7 +289,6 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 			Integer i = ksi.getSpellLevel();
 			map.put(ref, i);
 		}
-		List<String> list = new ArrayList<String>();
 		for (Entry<CDOMReference<?>, Integer> me : map.entrySet())
 		{
 			StringBuilder sb = new StringBuilder();
@@ -307,7 +311,10 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 			}
 			list.add(sb.toString());
 		}
-
+		if (list.isEmpty())
+		{
+			return null;
+		}
 		return new String[]{StringUtil.join(list, Constants.PIPE)};
 	}
 }

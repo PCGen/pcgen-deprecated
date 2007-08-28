@@ -39,6 +39,7 @@ import pcgen.core.ClassSpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.AssociatedChanges;
+import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -234,8 +235,20 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>> dkmtl =
 				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>>();
 		List<String> list = new ArrayList<String>();
-		for (CDOMReference<ClassSpellList> swl : context.getListContext()
-			.getMasterLists(SPELLLIST_CLASS))
+		Changes<CDOMReference> masterChanges =
+				context.getListContext().getMasterListChanges(getTokenName(),
+					spell, SPELLLIST_CLASS);
+		if (masterChanges.includesGlobalClear())
+		{
+			list.add(Constants.LST_DOT_CLEARALL);
+		}
+		if (masterChanges.hasRemovedItems())
+		{
+			context.addWriteMessage(getTokenName()
+				+ " does not support .CLEAR.");
+			return null;
+		}
+		for (CDOMReference<ClassSpellList> swl : masterChanges.getAdded())
 		{
 			AssociatedChanges<LSTWriteable> changes =
 					context.getListContext().getChangesInMasterList(
@@ -245,15 +258,11 @@ public class ClassesToken extends AbstractToken implements SpellLstToken
 				// Legal if no CLASSES was present in the Spell
 				continue;
 			}
-			if (changes.hasRemovedItems())
+			if (changes.hasRemovedItems() || changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
 					+ " does not support .CLEAR.");
 				return null;
-			}
-			if (changes.includesGlobalClear())
-			{
-				list.add(Constants.LST_DOT_CLEARALL);
 			}
 			if (changes.hasAddedItems())
 			{
