@@ -19,6 +19,7 @@ package plugin.lsttokens.testsupport;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
@@ -114,6 +115,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 
 		assertNotNull(str);
 		assertNotNull(unparsed);
+		System.err.println(Arrays.asList(unparsed));
 		assertEquals(str.length, unparsed.length);
 
 		for (int i = 0; i < str.length; i++)

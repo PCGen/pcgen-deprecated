@@ -105,5 +105,6 @@ public enum StringKey {
 	 RATE_OF_FIRE ,
 	 SOURCE_TOKEN,
 	 DAMAGE,
-	 MODIFIED_NAME;
+	 MODIFIED_NAME, 
+	 TOKEN;
 }

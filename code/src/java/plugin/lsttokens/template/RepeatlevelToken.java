@@ -21,23 +21,26 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.inst.Aggregator;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.LstUtils;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.persistence.lst.PObjectLoader;
@@ -51,7 +54,7 @@ public class RepeatlevelToken extends AbstractToken implements
 		PCTemplateLstToken
 {
 
-	private static final Class<Aggregator> AGGREGATOR_CLASS = Aggregator.class;
+	private static final Class<PCTemplate> PCTEMPLATE_CLASS = PCTemplate.class;
 
 	@Override
 	public String getTokenName()
@@ -314,13 +317,19 @@ public class RepeatlevelToken extends AbstractToken implements
 			return false;
 		}
 
-		Aggregator agg = new Aggregator(template, template, getTokenName());
-		agg.put(IntegerKey.CONSECUTIVE, Integer.valueOf(consecutive));
-		agg.put(IntegerKey.MAX_LEVEL, Integer.valueOf(maxLevel));
-		agg.put(IntegerKey.LEVEL_INCREMENT, Integer.valueOf(lvlIncrement));
-		agg.put(IntegerKey.START_LEVEL, Integer.valueOf(iLevel));
+		String pseudoName =
+				new StringBuilder(consecutive).append(':').append(maxLevel)
+					.append(':').append(lvlIncrement).append(':')
+					.append(iLevel).toString();
+		PCTemplate consolidator = template.getPseudoTemplate(pseudoName);
+		consolidator.put(IntegerKey.CONSECUTIVE, Integer.valueOf(consecutive));
+		consolidator.put(IntegerKey.MAX_LEVEL, Integer.valueOf(maxLevel));
+		consolidator.put(IntegerKey.LEVEL_INCREMENT, Integer
+			.valueOf(lvlIncrement));
+		consolidator.put(IntegerKey.START_LEVEL, Integer.valueOf(iLevel));
+		consolidator.put(StringKey.TOKEN, getTokenName());
 
-		context.getGraphContext().grant(getTokenName(), template, agg);
+		context.getGraphContext().grant(getTokenName(), template, consolidator);
 
 		for (int count = consecutive; iLevel <= maxLevel; iLevel +=
 				lvlIncrement)
@@ -332,11 +341,11 @@ public class RepeatlevelToken extends AbstractToken implements
 						getPrerequisiteString(context, Collections
 							.singletonList(prereq));
 				PCTemplate derivative =
-						template.getPseudoTemplate(standardizedPrereq);
-				derivative.put(ObjectKey.PSEUDO_PARENT, agg);
+						consolidator.getPseudoTemplate(standardizedPrereq);
+				derivative.put(ObjectKey.PSEUDO_PARENT, consolidator);
 				derivative.addPrerequisite(prereq);
-				context.getGraphContext()
-					.grant(getTokenName(), agg, derivative);
+				context.getGraphContext().grant(getTokenName(), consolidator,
+					derivative);
 				PCTemplateLstToken token =
 						TokenStore.inst().getToken(PCTemplateLstToken.class,
 							typeStr);
@@ -379,18 +388,22 @@ public class RepeatlevelToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		AssociatedChanges<Aggregator> changes =
+		AssociatedChanges<PCTemplate> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pct, AGGREGATOR_CLASS);
+					pct, PCTEMPLATE_CLASS);
 		if (changes == null)
 		{
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		List<String> list = new ArrayList<String>(added.size());
-		for (LSTWriteable lstw : added)
+		Set<String> list = new TreeSet<String>();
+		for (LSTWriteable lstw : new HashSet<LSTWriteable>(added))
 		{
-			Aggregator agg = AGGREGATOR_CLASS.cast(lstw);
+			PCTemplate agg = PCTEMPLATE_CLASS.cast(lstw);
+			if (!getTokenName().equals(agg.get(StringKey.TOKEN)))
+			{
+				continue;
+			}
 			StringBuilder sb = new StringBuilder();
 			Integer consecutive = agg.get(IntegerKey.CONSECUTIVE);
 			Integer maxLevel = agg.get(IntegerKey.MAX_LEVEL);
@@ -401,105 +414,61 @@ public class RepeatlevelToken extends AbstractToken implements
 			sb.append(maxLevel).append(Constants.COLON);
 			sb.append(iLevel).append(Constants.COLON);
 			String prefix = sb.toString();
-			// Set<PCGraphEdge> subEdgeList =
-			// context.getGraphContext().getChildLinksFromToken(
-			// getTokenName(), agg);
-			// if (subEdgeList == null || subEdgeList.isEmpty())
-			// {
-			// context.addWriteMessage("Aggregator for " + getTokenName()
-			// + " had no children");
-			// return null;
-			// }
-			//
-			// Set<String> set = new TreeSet<String>();
-			//
-			// for (PCGraphEdge edge : subEdgeList)
-			// {
-			// List<PrereqObject> sinkNodes = edge.getSinkNodes();
-			// if (sinkNodes == null || sinkNodes.size() != 1)
-			// {
-			// context.addWriteMessage("Edge derived from "
-			// + getTokenName() + " must have only one sink");
-			// return null;
-			// }
-			// PrereqObject child = sinkNodes.get(0);
-			// if (!PCTemplate.class.isInstance(child))
-			// {
-			// context.addWriteMessage("Child from " + getTokenName()
-			// + " must be a PCTemplate");
-			// return null;
-			// }
-			// PCTemplate pctChild = PCTemplate.class.cast(child);
-			// if (pctChild.getPrerequisiteCount() != 1)
-			// {
-			// context
-			// .addWriteMessage("Only one Prerequisiste allowed on "
-			// + getTokenName() + " child PCTemplate");
-			// return null;
-			// }
-			// Prerequisite prereq = pctChild.getPrerequisiteList().get(0);
-			// String kind = prereq.getKind();
-			// if (kind.equalsIgnoreCase("LEVEL"))
-			// {
-			// if (!PrerequisiteOperator.GTEQ.equals(prereq.getOperator()))
-			// {
-			// context.addWriteMessage("Invalid Operator built on "
-			// + getTokenName() + " derived edge");
-			// return null;
-			// }
-			// }
-			// else
-			// {
-			// // if (!kind.equalsIgnoreCase("LEVEL"))
-			// context.addWriteMessage("Prerequisiste on "
-			// + getTokenName() + " derived edge must be LEVEL");
-			// return null;
-			// }
-			// if (!PrerequisiteOperator.GTEQ.equals(prereq.getOperator()))
-			// {
-			// context.addWriteMessage("Invalid Operator built on "
-			// + getTokenName() + " derived edge");
-			// return null;
-			// }
-			//
-			// for (LstToken token : TokenStore.inst().getTokenMap(
-			// PCTemplateLstToken.class).values())
-			// {
-			// StringBuilder sb2 = new StringBuilder();
-			// sb2.append(token.getTokenName()).append(':');
-			// String[] s =
-			// ((PCTemplateLstToken) token).unparse(context,
-			// pctChild);
-			// if (s != null)
-			// {
-			// for (String aString : s)
-			// {
-			// set.add(sb2.toString() + aString);
-			// }
-			// }
-			// }
-			// for (LstToken token : TokenStore.inst().getTokenMap(
-			// GlobalLstToken.class).values())
-			// {
-			// StringBuilder sb2 = new StringBuilder();
-			// sb2.append(token.getTokenName()).append(':');
-			// String[] s =
-			// ((GlobalLstToken) token).unparse(context, pctChild);
-			// if (s != null)
-			// {
-			// for (String aString : s)
-			// {
-			// set.add(sb2.toString() + aString);
-			// }
-			// }
-			// }
-			// }
-			//
-			// for (String s : set)
-			// {
-			// list.add(prefix + s);
-			// }
+			AssociatedChanges<PCTemplate> subchanges =
+					context.getGraphContext().getChangesFromToken(
+						getTokenName(), agg, PCTEMPLATE_CLASS);
+			Collection<LSTWriteable> perAddCollection = subchanges.getAdded();
+			if (perAddCollection == null || perAddCollection.isEmpty())
+			{
+				context.addWriteMessage("Invalid Consolidator built in "
+					+ getTokenName() + ": had no subTemplates");
+				return null;
+			}
+			LSTWriteable next = perAddCollection.iterator().next();
+			Set<String> set = subUnparse(prefix, context, (PCTemplate) next);
+			list.addAll(set);
+		}
+		if (list.isEmpty())
+		{
+			return null;
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	private Set<String> subUnparse(String prefix, LoadContext context,
+		PCTemplate agg)
+	{
+		Set<String> set = new TreeSet<String>();
+		for (LstToken token : TokenStore.inst().getTokenMap(
+			PCTemplateLstToken.class).values())
+		{
+			String[] s = ((PCTemplateLstToken) token).unparse(context, agg);
+			if (s != null)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.append(prefix).append(token.getTokenName()).append(':');
+				String fullPrefix = sb.toString();
+				for (String aString : s)
+				{
+					set.add(fullPrefix + aString);
+				}
+			}
+		}
+		for (LstToken token : TokenStore.inst().getTokenMap(
+			GlobalLstToken.class).values())
+		{
+			String[] s = ((GlobalLstToken) token).unparse(context, agg);
+			if (s != null)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.append(prefix).append(token.getTokenName()).append(':');
+				String fullPrefix = sb.toString();
+				for (String aString : s)
+				{
+					set.add(fullPrefix + aString);
+				}
+			}
+		}
+		return set;
 	}
 }
