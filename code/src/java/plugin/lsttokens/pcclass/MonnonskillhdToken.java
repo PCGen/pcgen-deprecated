@@ -41,6 +41,8 @@ import pcgen.persistence.lst.BonusLoader;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
+import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.util.Logging;
 
 /**
  * Class deals with MONNONSKILLHD Token
@@ -68,9 +70,16 @@ public class MonnonskillhdToken extends AbstractToken implements
 			return false;
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		String bonusString = st.nextToken();
+		if (PreParserFactory.isPreReqString(bonusString))
+		{
+			Logging.errorPrint(getTokenName()
+				+ " cannot be only a Prerequisite");
+			return false;
+		}
 		BonusObj bonus =
 				BonusLoader.getBonus(context, pcc, "MONNONSKILLHD", "NUMBER",
-					st.nextToken());
+					bonusString);
 		AssociatedPrereqObject assoc =
 				context.getGraphContext().grant(getTokenName(), pcc, bonus);
 		assoc.addPrerequisite(getPrerequisite("PRELEVELMAX:1"));

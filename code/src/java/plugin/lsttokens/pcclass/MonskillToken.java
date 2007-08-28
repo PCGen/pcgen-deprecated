@@ -41,6 +41,8 @@ import pcgen.persistence.lst.BonusLoader;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
+import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.util.Logging;
 
 /**
  * Class deals with MONSKILL Token
@@ -69,15 +71,22 @@ public class MonskillToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		String bonusString = st.nextToken();
+		if (PreParserFactory.isPreReqString(bonusString))
+		{
+			Logging.errorPrint(getTokenName()
+				+ " cannot be only a Prerequisite");
+			return false;
+		}
 		BonusObj bonus =
-				BonusLoader.getBonus(context, pcc, "MONSKILLPTS", "NUMBER", st
-					.nextToken());
+				BonusLoader.getBonus(context, pcc, "MONSKILLPTS", "NUMBER",
+					bonusString);
 		bonus.addPrerequisite(getPrerequisite("PRELEVELMAX:1"));
 		AssociatedPrereqObject assoc =
 				context.getGraphContext().grant(getTokenName(), pcc, bonus);
 		while (st.hasMoreTokens())
 		{
-			assoc.addPrerequisite(getPrerequisite(st.nextToken()));
+			assoc.addPrerequisite(getPrerequisite(bonusString));
 		}
 		return true;
 	}

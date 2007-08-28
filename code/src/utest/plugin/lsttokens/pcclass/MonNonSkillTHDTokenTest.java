@@ -84,6 +84,13 @@ public class MonNonSkillTHDTokenTest extends AbstractTokenTestCase<PCClass>
 	}
 
 	@Test
+	public void testRoundRobinOnlyPre() throws PersistenceLayerException
+	{
+		assertFalse(parse("PRERACE:1,Human"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
 		runRoundRobin("VARIABLE1");
