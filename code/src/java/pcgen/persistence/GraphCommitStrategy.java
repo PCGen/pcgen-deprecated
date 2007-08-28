@@ -18,13 +18,11 @@
 package pcgen.persistence;
 
 import java.net.URI;
-import java.util.Set;
 
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.graph.PCGraphEdge;
 
 public interface GraphCommitStrategy
 {
@@ -35,13 +33,6 @@ public interface GraphCommitStrategy
 
 	public void setLine(int line);
 	
-	/*
-	 * TODO This is only used for Aggregator unparse in RepeatLevel - change Agg
-	 * cleanup method?
-	 */
-	public Set<PCGraphEdge> getChildLinksFromToken(String tokenName,
-		CDOMObject obj);
-
 	public AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
 		PrereqObject pro);
 

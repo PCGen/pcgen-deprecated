@@ -35,7 +35,6 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
@@ -251,16 +250,6 @@ public class GraphContext
 				}
 			}
 			globalRemoveSet.addToListFor(tokenName, obj, sourceURI);
-		}
-
-		/*
-		 * TODO This is basically only used for Aggregator cleanup - change Agg
-		 * cleanup method?
-		 */
-		public Set<PCGraphEdge> getChildLinksFromToken(String tokenName,
-			CDOMObject obj)
-		{
-			return null;
 		}
 
 		public <T extends PrereqObject & LSTWriteable> AssociatedChanges<T> getChangesFromToken(

@@ -3,7 +3,6 @@ package pcgen.persistence;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.io.FileLocationFactory;
@@ -125,13 +124,6 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 		String tokenName, CDOMObject pct, Class<T> name)
 	{
 		return new GraphChangesFacade<T>(tokenName, pct, name);
-	}
-
-	public Set<PCGraphEdge> getChildLinksFromToken(String tokenName,
-		CDOMObject obj)
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	private class GraphChangesFacade<T extends PrereqObject & LSTWriteable>
