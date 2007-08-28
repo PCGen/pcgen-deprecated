@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.Constants;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;
@@ -46,7 +47,7 @@ import pcgen.util.Delta;
  *
  * @author  Greg Bingleman <byngl@hotmail.com>
  **/
-public abstract class BonusObj extends ConcretePrereqObject implements Serializable, Cloneable
+public abstract class BonusObj extends ConcretePrereqObject implements Serializable, Cloneable, LSTWriteable
 {
 	private List<Object>    bonusInfo       = new ArrayList<Object>();
 	private Map<String, String>     dependMap  = new HashMap<String, String>();
@@ -442,6 +443,11 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 	 * @return the value
 	 */
 	public String getValue()
+	{
+		return bonusValue.toString();
+	}
+	
+	public String getLSTformat()
 	{
 		return bonusValue.toString();
 	}

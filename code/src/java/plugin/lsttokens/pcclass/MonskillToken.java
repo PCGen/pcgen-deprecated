@@ -25,11 +25,12 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.PCClass;
 import pcgen.core.bonus.BonusObj;
-import pcgen.persistence.Changes;
+import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.BonusLoader;
@@ -66,41 +67,32 @@ public class MonskillToken extends AbstractToken implements PCClassLstToken,
 		BonusObj bonus =
 				BonusLoader.getBonus(context, pcc, "MONSKILLPTS", "NUMBER", st
 					.nextToken());
-		bonus.addPreReq(getPrerequisite("PRELEVELMAX:1"));
-		bonus.setCreatorObject(pcc);
+		AssociatedPrereqObject assoc =
+				context.getGraphContext().grant(getTokenName(), pcc, bonus);
+		assoc.addPrerequisite(getPrerequisite("PRELEVELMAX:1"));
 		while (st.hasMoreTokens())
 		{
-			bonus.addPreReq(getPrerequisite(st.nextToken()));
+			assoc.addPrerequisite(getPrerequisite(st.nextToken()));
 		}
-		context.getObjectContext().addToList(pcc, ListKey.BONUSES, bonus);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		Changes<BonusObj> changes =
-				context.getObjectContext().getListChanges(pcc, ListKey.BONUSES);
-		if (changes == null || changes.isEmpty())
+		AssociatedChanges<BonusObj> changes =
+				context.getGraphContext().getChangesFromToken(getTokenName(),
+					pcc, BonusObj.class);
+		if (changes == null)
 		{
 			return null;
 		}
 		Set<String> set = new TreeSet<String>();
-		for (BonusObj b : changes.getAdded())
+		for (LSTWriteable b : changes.getAdded())
 		{
-			if (!pcc.equals(b.getCreatorObject()))
-			{
-				continue;
-			}
-			if (!"MONSKILLPTS".equals(b.getBonusName()))
-			{
-				context.addWriteMessage(getTokenName()
-					+ " must create BONUS of type MONSKILLPTS");
-				return null;
-			}
-			// TODO Validate NUMBER
-			// TODO Validate PRExxx
-			String value = b.getValue();
-			set.add(value);
+			// TODO Validate MONSKILLPTS?
+			// TODO Validate NUMBER?
+			// TODO Validate PRExxx?
+			set.add(b.getLSTformat());
 		}
 		if (set.isEmpty())
 		{
