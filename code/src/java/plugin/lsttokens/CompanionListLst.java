@@ -392,7 +392,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 		TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable> m =
 				new TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable>();
 
-		for (CDOMReference<CDOMList<? extends CDOMObject>> ref : changedLists)
+		for (CDOMReference ref : changedLists)
 		{
 			AssociatedChanges changes =
 					context.getListContext().getChangesInList(getTokenName(),
