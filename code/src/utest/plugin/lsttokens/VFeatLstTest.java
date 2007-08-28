@@ -17,6 +17,9 @@
  */
 package plugin.lsttokens;
 
+import java.net.URISyntaxException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.AbilityCategory;
@@ -28,9 +31,25 @@ import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.testsupport.AbstractGlobalListTokenTestCase;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreClassParser;
+import plugin.pretokens.parser.PreLevelParser;
+import plugin.pretokens.writer.PreClassWriter;
+import plugin.pretokens.writer.PreLevelWriter;
 
 public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 {
+
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		TokenRegistration.register(new PreLevelParser());
+		TokenRegistration.register(new PreClassParser());
+		TokenRegistration.register(new PreLevelWriter());
+		TokenRegistration.register(new PreClassWriter());
+	}
 
 	@Override
 	public char getJoinCharacter()
@@ -96,38 +115,134 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
 	}
 
-
 	@Test
-	public void testRoundRobinDupe() throws PersistenceLayerException {
+	public void testRoundRobinDupe() throws PersistenceLayerException
+	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		runRoundRobin("TestWP1|TestWP1");
 	}
 
 	@Test
-	public void testRoundRobinDupeOnePrereq() throws PersistenceLayerException {
+	public void testRoundRobinDupeOnePrereq() throws PersistenceLayerException
+	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
-		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human");
+		runRoundRobin("TestWP1|TestWP1|PRELEVEL:5");
 	}
 
 	@Test
 	public void testRoundRobinDupeDiffPrereqs()
-			throws PersistenceLayerException {
+		throws PersistenceLayerException
+	{
 		System.err.println("=");
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
-		runRoundRobin("TestWP1", "TestWP1|PRERACE:1,Human");
+		runRoundRobin("TestWP1", "TestWP1|PRELEVEL:5");
 	}
 
 	@Test
 	public void testRoundRobinDupeTwoDiffPrereqs()
-			throws PersistenceLayerException {
+		throws PersistenceLayerException
+	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP2");
-		runRoundRobin("TestWP1|TestWP1|PRERACE:1,Human",
-				"TestWP2|TestWP2|PRERACE:1,Elf");
+		runRoundRobin("TestWP1|TestWP1|PRELEVEL:5",
+			"TestWP2|TestWP2|PRECLASS:1,Fighter=1");
+	}
+
+	@Test
+	public void testInvalidOnlyPre() throws PersistenceLayerException
+	{
+		assertFalse(parse("!PRELEVEL:3"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidEmbeddedNotPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(parse("TestWP1|!PRELEVEL:3|TestWP2"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidBadPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(parse("TestWP1,TestWP2|PREFOO:3"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidNotBadPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(parse("TestWP1,TestWP2|!PREFOO:3"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidEmbeddedPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(parse("TestWP1|PRELEVEL:4|TestWP2"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testRoundRobinPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|TestWP2|PRELEVEL:5");
+	}
+
+	@Test
+	public void testRoundRobinNotPre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|TestWP2|!PRELEVEL:5");
+	}
+
+	@Test
+	public void testRoundRobinDoublePre() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|TestWP2|PRECLASS:1,Fighter=1|PRELEVEL:5");
+	}
+
+	@Test
+	public void testRoundRobinDupeTwoPrereqs() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP1");
+		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1",
+			"TestWP1|PRECLASS:1,Wizard=1");
+	}
+
+	@Test
+	public void testRoundRobinTwoPrereqs() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1|PRECLASS:1,Fighter=1",
+			"TestWP2|PRECLASS:1,Wizard=1");
 	}
 }

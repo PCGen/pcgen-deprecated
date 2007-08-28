@@ -100,6 +100,14 @@ public class MoveLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidInputNaNMovement()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("Normal,Foo"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
 		runRoundRobin("Walk,30");

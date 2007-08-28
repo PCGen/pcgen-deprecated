@@ -60,6 +60,27 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidNotANature() throws PersistenceLayerException
+	{
+		assertFalse(parse("Mutation|NotANature|,TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidNotaCategory() throws PersistenceLayerException
+	{
+		assertFalse(parse("NotaCategory|NORMAL|,TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidNoAbility() throws PersistenceLayerException
+	{
+		assertFalse(parse("NotaCategory|NORMAL"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidCategoryOnly() throws PersistenceLayerException
 	{
 		assertFalse(parse("FEAT"));

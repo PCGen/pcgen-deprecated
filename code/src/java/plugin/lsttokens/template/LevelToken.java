@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.lang.UnreachableError;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -156,9 +157,9 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 		Prerequisite prereq = getPrerequisite("PRELEVEL:" + levelStr);
 		if (prereq == null)
 		{
-			Logging.errorPrint("  result of an error reading level range in "
-				+ getTokenName() + ": " + value);
-			return false;
+			throw new UnreachableError(
+				"(Internal Error) result of an error reading level range in "
+					+ getTokenName() + ": " + value);
 		}
 
 		if (!tok.hasMoreTokens())

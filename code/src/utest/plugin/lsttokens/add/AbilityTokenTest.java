@@ -208,6 +208,22 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidNotANature() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse(getSubTokenString() + "|1|Mutation|NotANature|,TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidNotaCategory() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse(getSubTokenString() + "|1|NotaCategory|NORMAL|,TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidZeroCount() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");

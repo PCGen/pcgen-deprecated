@@ -95,9 +95,15 @@ public class BonusSpellStatTokenTest extends AbstractTokenTestCase<PCClass>
 	}
 
 	@Test
-	public void testRoundRobinDisplay() throws PersistenceLayerException
+	public void testRoundRobinStr() throws PersistenceLayerException
 	{
 		runRoundRobin("STR");
+	}
+
+	@Test
+	public void testRoundRobinNone() throws PersistenceLayerException
+	{
+		runRoundRobin("NONE");
 	}
 
 }

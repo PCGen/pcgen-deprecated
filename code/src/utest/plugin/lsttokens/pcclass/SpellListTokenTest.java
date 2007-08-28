@@ -69,6 +69,29 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 	}
 
 	@Test
+	public void testInvalidNoObject() throws PersistenceLayerException
+	{
+		assertFalse(parse("1|"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidTwoPipe() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("1|2|TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidDoublePipe() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("1||TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidInputNaN() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
@@ -96,11 +119,11 @@ public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
 	}
 
 	@Test
-	public void testInvalidInputCountNaN() throws PersistenceLayerException
+	public void testInvalidInputDoublePipe() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertFalse(parse("x|TestWP1|TestWP2"));
+		assertFalse(parse("2|TestWP1|TestWP2"));
 		assertNoSideEffects();
 	}
 

@@ -76,6 +76,37 @@ public class SkillListTokenTest extends AbstractTokenTestCase<PCClass>
 	}
 
 	@Test
+	public void testInvalidNoObject() throws PersistenceLayerException
+	{
+		assertFalse(parse("1|"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidNoCount() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("|TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidTwoPipe() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("1|2|TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidDoublePipe() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("1||TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidInputType() throws PersistenceLayerException
 	{
 		try

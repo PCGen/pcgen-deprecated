@@ -242,6 +242,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 						return false;
 					}
 				}
+				firstToken = false;
 			}
 			if (sp == null)
 			{

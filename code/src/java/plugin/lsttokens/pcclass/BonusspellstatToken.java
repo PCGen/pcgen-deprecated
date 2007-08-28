@@ -77,13 +77,36 @@ public class BonusspellstatToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
+		Boolean bss =
+				context.getObjectContext().getObject(pcc,
+					ObjectKey.HAS_BONUS_SPELL_STAT);
 		PCStat pcs =
 				context.getObjectContext().getObject(pcc,
 					ObjectKey.BONUS_SPELL_STAT);
-		if (pcs == null)
+		if (bss == null)
 		{
+			if (pcs != null)
+			{
+				context
+					.addWriteMessage(getTokenName()
+						+ " expected HAS_BONUS_SPELL_STAT to exist if BONUS_SPELL_STAT was defined");
+			}
 			return null;
 		}
-		return new String[]{pcs.getKeyName()};
+		if (bss.booleanValue())
+		{
+			if (pcs == null)
+			{
+				context
+					.addWriteMessage(getTokenName()
+						+ " expected BONUS_SPELL_STAT to exist since HAS_BONUS_SPELL_STAT was false");
+				return null;
+			}
+			return new String[]{pcs.getKeyName()};
+		}
+		else
+		{
+			return new String[]{"NONE"};
+		}
 	}
 }

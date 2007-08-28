@@ -220,6 +220,13 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	}
 
 	@Test
+	public void testNegativeWeightCapacity() throws PersistenceLayerException
+	{
+		assertFalse(token.parse(primaryContext, primaryProf, "-5|Any=4"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidCapacityTypeTrailingPipe()
 		throws PersistenceLayerException
 	{
@@ -469,9 +476,13 @@ public class ContainsTokenTest extends AbstractTokenTestCase<Equipment>
 	}
 
 	@Test
-	public void testRoundRobinTypeComplexWeightUnlimited()
+	public void testRoundRobinTypeMultipleWeightUnlimited()
 		throws PersistenceLayerException
 	{
 		this.runRoundRobin("UNLIM|Total=10|Paper=10|Scroll=10");
 	}
+	
+	// CONSIDER Optional Input methods
+	// this.runRoundRobin("UNLIM|Total=10|Paper=10|Scroll=UNLIM");
+	// this.runRoundRobin("UNLIM|Paper=10|Scroll=UNLIM");
 }
