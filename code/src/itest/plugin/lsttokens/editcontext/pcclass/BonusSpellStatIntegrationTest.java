@@ -98,4 +98,34 @@ public class BonusSpellStatIntegrationTest extends
 		completeRoundRobin(tc);
 	}
 
+	@Test
+	public void testRoundRobinNoneOne() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "STR");
+		commit(modCampaign, tc, "NONE");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinNoneNoSet() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		emptyCommit(testCampaign, tc);
+		commit(modCampaign, tc, "NONE");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinNoneNoReset() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "NONE");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
 }

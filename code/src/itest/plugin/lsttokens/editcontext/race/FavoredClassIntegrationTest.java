@@ -95,4 +95,9 @@ public class FavoredClassIntegrationTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
 }

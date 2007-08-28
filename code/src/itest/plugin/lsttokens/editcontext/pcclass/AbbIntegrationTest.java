@@ -57,4 +57,10 @@ public class AbbIntegrationTest extends
 	{
 		return token;
 	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
 }

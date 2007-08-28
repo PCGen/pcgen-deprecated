@@ -79,13 +79,13 @@ public class MonCCSkillIntegrationTest extends
 	@Override
 	public boolean isClearDotLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isClearLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -94,4 +94,9 @@ public class MonCCSkillIntegrationTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
 }

@@ -96,4 +96,34 @@ public class SpellStatIntegrationTest extends AbstractIntegrationTestCase<PCClas
 		emptyCommit(modCampaign, tc);
 		completeRoundRobin(tc);
 	}
+
+	@Test
+	public void testRoundRobinOneSpell() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "STR");
+		commit(modCampaign, tc, "SPELL");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinSpellNoSet() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		emptyCommit(testCampaign, tc);
+		commit(modCampaign, tc, "SPELL");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinSpellNoReset() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "SPELL");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
 }

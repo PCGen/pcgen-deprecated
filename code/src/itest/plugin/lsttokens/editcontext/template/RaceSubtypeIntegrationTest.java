@@ -17,12 +17,16 @@
  */
 package plugin.lsttokens.editcontext.template;
 
+import org.junit.Test;
+
 import pcgen.cdom.enumeration.RaceSubType;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.editcontext.testsupport.AbstractTypeSafeListIntegrationTestCase;
+import plugin.lsttokens.editcontext.testsupport.TestContext;
 import plugin.lsttokens.template.RacesubtypeToken;
 
 public class RaceSubtypeIntegrationTest extends
@@ -78,5 +82,70 @@ public class RaceSubtypeIntegrationTest extends
 	public boolean isClearLegal()
 	{
 		return false;
+	}
+	
+	@Test
+	public void testValidRemoveInputSimple() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, ".REMOVE.Rheinhessen");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testValidRemoveInputSpace() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, ".REMOVE.Finger Lakes");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testValidRemoveInputHyphen() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, ".REMOVE.Languedoc-Roussillon");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testValidRemoveInputList() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, ".REMOVE.Niederösterreich" + getJoinCharacter()
+			+ ".REMOVE.Finger Lakes");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testValidInputMultRemoveList() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, ".REMOVE.Niederösterreich" + getJoinCharacter()
+			+ ".REMOVE.Finger Lakes");
+		commit(modCampaign, tc, ".REMOVE.Languedoc-Roussillon" + getJoinCharacter()
+			+ ".REMOVE.Rheinhessen");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testMixRoundRobinThree() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, ".REMOVE.Finger Lakes" + getJoinCharacter()
+			+ "Niederösterreich");
+		commit(modCampaign, tc, ".REMOVE.Niederösterreich" + getJoinCharacter()
+			+ "Finger Lakes");
+		completeRoundRobin(tc);
 	}
 }

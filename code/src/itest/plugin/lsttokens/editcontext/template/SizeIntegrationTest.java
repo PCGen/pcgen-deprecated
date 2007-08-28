@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import pcgen.cdom.mode.Size;
 import pcgen.core.PCTemplate;
+import pcgen.core.SizeAdjustment;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
@@ -63,8 +64,14 @@ public class SizeIntegrationTest extends
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
-		Size.constructConstant("S", 0);
-		Size.constructConstant("M", 1);
+		SizeAdjustment ps = primaryContext.ref.constructCDOMObject(SizeAdjustment.class, "S");
+		ps.setAbbreviation("S");
+		SizeAdjustment pm = primaryContext.ref.constructCDOMObject(SizeAdjustment.class, "M");
+		pm.setAbbreviation("M");
+		SizeAdjustment ss = secondaryContext.ref.constructCDOMObject(SizeAdjustment.class, "S");
+		ss.setAbbreviation("S");
+		SizeAdjustment sm = secondaryContext.ref.constructCDOMObject(SizeAdjustment.class, "M");
+		sm.setAbbreviation("M");
 	}
 
 	@Override

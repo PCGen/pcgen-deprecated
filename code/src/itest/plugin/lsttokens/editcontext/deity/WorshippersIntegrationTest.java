@@ -48,4 +48,10 @@ public class WorshippersIntegrationTest extends
 	{
 		return token;
 	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
 }

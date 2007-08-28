@@ -94,4 +94,9 @@ public class DeityWeapIntegrationTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
 }

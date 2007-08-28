@@ -48,4 +48,10 @@ public class AppearanceIntegrationTest extends
 	{
 		return token;
 	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return false;
+	}
 }

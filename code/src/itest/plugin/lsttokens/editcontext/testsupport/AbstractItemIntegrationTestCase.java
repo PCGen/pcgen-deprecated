@@ -44,8 +44,6 @@ public abstract class AbstractItemIntegrationTestCase<T extends PObject, TC exte
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "TestWP1");
 		commit(modCampaign, tc, "TestWP2");
-		System.err.println(primaryGraph.getNodeList());
-		System.err.println(primaryGraph.getEdgeList());
 		completeRoundRobin(tc);
 	}
 
@@ -58,8 +56,6 @@ public abstract class AbstractItemIntegrationTestCase<T extends PObject, TC exte
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "TestWP1");
 		commit(modCampaign, tc, "TestWP1");
-		System.err.println(primaryGraph.getNodeList());
-		System.err.println(primaryGraph.getEdgeList());
 		completeRoundRobin(tc);
 	}
 

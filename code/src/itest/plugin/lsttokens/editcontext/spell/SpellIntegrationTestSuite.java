@@ -27,12 +27,12 @@ import junit.framework.TestSuite;
 	ClassesIntegrationTest.class, CompsIntegrationTest.class,
 	CostIntegrationTest.class, CtIntegrationTest.class,
 	DescriptorIntegrationTest.class, DomainsIntegrationTest.class,
-	DurationIntegrationTest.class, PPCostIntegrationTest.class,
-	RangeIntegrationTest.class, SaveInfoIntegrationTest.class,
-	SchoolIntegrationTest.class, SpellResIntegrationTest.class,
-	StatIntegrationTest.class, SubschoolIntegrationTest.class,
-	TargetAreaIntegrationTest.class, VariantsIntegrationTest.class,
-	XPCostIntegrationTest.class})
+	DurationIntegrationTest.class, ItemIntegrationTest.class,
+	PPCostIntegrationTest.class, RangeIntegrationTest.class,
+	SaveInfoIntegrationTest.class, SchoolIntegrationTest.class,
+	SpellResIntegrationTest.class, StatIntegrationTest.class,
+	SubschoolIntegrationTest.class, TargetAreaIntegrationTest.class,
+	VariantsIntegrationTest.class, XPCostIntegrationTest.class})
 public class SpellIntegrationTestSuite extends TestSuite
 {
 	// No contents, see annotations

@@ -17,11 +17,15 @@
  */
 package plugin.lsttokens.editcontext.equipment;
 
+import org.junit.Test;
+
 import pcgen.core.Equipment;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.EquipmentLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
+import plugin.lsttokens.editcontext.testsupport.TestContext;
 
 public abstract class AbstractEqModIntegrationTestCase extends
 		AbstractListIntegrationTestCase<Equipment, EquipmentModifier>
@@ -76,4 +80,35 @@ public abstract class AbstractEqModIntegrationTestCase extends
 	{
 		return false;
 	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
+
+	@Test
+	public void testRoundRobinMods() throws PersistenceLayerException
+	{
+		construct(primaryContext, "EQMOD2");
+		construct(secondaryContext, "EQMOD2");
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "EQMOD2|9500");
+		commit(modCampaign, tc, "EQMOD2|COST[9500]");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinModsTwo() throws PersistenceLayerException
+	{
+		construct(primaryContext, "EQMOD2");
+		construct(secondaryContext, "EQMOD2");
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "EQMOD2|COST[9500]PLUS[+1]");
+		commit(modCampaign, tc, "EQMOD2|COST[9500]");
+		completeRoundRobin(tc);
+	}
+
 }

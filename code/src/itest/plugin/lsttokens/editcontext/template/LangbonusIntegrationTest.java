@@ -111,4 +111,10 @@ public class LangbonusIntegrationTest extends
 	{
 		return false;
 	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
 }

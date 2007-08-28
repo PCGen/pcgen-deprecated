@@ -85,7 +85,7 @@ public class LangbonusIntegrationTest extends
 	@Override
 	public char getJoinCharacter()
 	{
-		return '|';
+		return ',';
 	}
 
 	@Test
@@ -97,13 +97,13 @@ public class LangbonusIntegrationTest extends
 	@Override
 	public boolean isClearDotLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isClearLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -112,4 +112,9 @@ public class LangbonusIntegrationTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
 }

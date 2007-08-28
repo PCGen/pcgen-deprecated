@@ -136,4 +136,61 @@ public class DomainsIntegrationTest extends AbstractIntegrationTestCase<Spell>
 		emptyCommit(modCampaign, tc);
 		completeRoundRobin(tc);
 	}
+
+	@Test
+	public void testRoundRobinAll() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "ALL=2");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinAllClear() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "ALL=2");
+		commit(modCampaign, tc, ".CLEARALL");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinAllSupplement() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		secondaryContext.ref.constructCDOMObject(DomainSpellList.class, "Fire");
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "ALL=2");
+		commit(modCampaign, tc, "Fire=1");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinClearEmtpy() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, ".CLEARALL");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinEmptyClear() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		emptyCommit(testCampaign, tc);
+		commit(modCampaign, tc, ".CLEARALL");
+		completeRoundRobin(tc);
+	}
+
 }

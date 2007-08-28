@@ -76,11 +76,15 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	{
 		verifyCleanStart();
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
-		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+		primaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Sorcerer");
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Sorcerer");
-		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(ClassSpellList.class,
+			"Sorcerer");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Cleric");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Wizard=4");
 		commit(modCampaign, tc, "Sorcerer=3|Cleric=4");
@@ -92,7 +96,8 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	{
 		verifyCleanStart();
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Wizard");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Wizard=4[PRERACE:1,Human]");
 		commit(modCampaign, tc, "Wizard=4");
@@ -104,7 +109,8 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	{
 		verifyCleanStart();
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Wizard");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Wizard=4");
 		commit(modCampaign, tc, "Wizard=4[PRERACE:1,Human]");
@@ -115,8 +121,10 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	public void testRoundRobinNoSet() throws PersistenceLayerException
 	{
 		verifyCleanStart();
-		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Sorcerer");
-		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+		primaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+		secondaryContext.ref.constructCDOMObject(ClassSpellList.class,
+			"Sorcerer");
 		TestContext tc = new TestContext();
 		emptyCommit(testCampaign, tc);
 		commit(modCampaign, tc, "Sorcerer=3");
@@ -128,12 +136,70 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	{
 		verifyCleanStart();
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
-		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Sorcerer");
-		secondaryContext.ref.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+		secondaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Wizard");
+		primaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+		secondaryContext.ref.constructCDOMObject(ClassSpellList.class,
+			"Sorcerer");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Sorcerer,Wizard=2");
 		emptyCommit(modCampaign, tc);
 		completeRoundRobin(tc);
 	}
+
+	@Test
+	public void testRoundRobinAll() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "ALL=2");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinAllClear() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "ALL=2");
+		commit(modCampaign, tc, ".CLEARALL");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinAllSupplement() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		primaryContext.ref
+			.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+		secondaryContext.ref.constructCDOMObject(ClassSpellList.class,
+			"Sorcerer");
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "ALL=2");
+		commit(modCampaign, tc, "Sorcerer=1");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinClearEmtpy() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, ".CLEARALL");
+		emptyCommit(modCampaign, tc);
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinEmptyClear() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		emptyCommit(testCampaign, tc);
+		commit(modCampaign, tc, ".CLEARALL");
+		completeRoundRobin(tc);
+	}
+
 }

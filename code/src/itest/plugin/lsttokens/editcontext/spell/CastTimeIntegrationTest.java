@@ -48,4 +48,10 @@ public class CastTimeIntegrationTest extends
 	{
 		return token;
 	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
 }

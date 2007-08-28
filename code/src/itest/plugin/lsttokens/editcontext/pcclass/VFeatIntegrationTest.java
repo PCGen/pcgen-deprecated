@@ -103,7 +103,7 @@ public class VFeatIntegrationTest extends
 	@Override
 	public boolean isPrereqLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -111,5 +111,11 @@ public class VFeatIntegrationTest extends
 	{
 		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
 		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
+	}
+
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
 	}
 }

@@ -103,4 +103,9 @@ public class DeityIntegrationTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
 }

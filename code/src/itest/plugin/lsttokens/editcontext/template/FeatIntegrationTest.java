@@ -103,4 +103,9 @@ public class FeatIntegrationTest extends
 		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return false;
+	}
 }

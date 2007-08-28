@@ -9,6 +9,8 @@ public abstract class AbstractStringIntegrationTestCase<T extends PObject>
 		extends AbstractIntegrationTestCase<T>
 {
 
+	public abstract boolean isClearLegal();
+	
 	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
@@ -27,6 +29,19 @@ public abstract class AbstractStringIntegrationTestCase<T extends PObject>
 		commit(testCampaign, tc, "Finger Lakes");
 		commit(modCampaign, tc, "Finger Lakes");
 		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinDotClear() throws PersistenceLayerException
+	{
+		if (isClearLegal())
+		{
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "Finger Lakes");
+			commit(modCampaign, tc, ".CLEAR");
+			completeRoundRobin(tc);
+		}
 	}
 
 	@Test

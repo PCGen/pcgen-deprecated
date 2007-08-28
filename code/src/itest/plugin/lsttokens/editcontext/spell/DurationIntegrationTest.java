@@ -48,4 +48,10 @@ public class DurationIntegrationTest extends
 	{
 		return token;
 	}
+
+	@Override
+	public boolean isClearLegal()
+	{
+		return true;
+	}
 }

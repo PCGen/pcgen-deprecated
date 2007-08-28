@@ -113,4 +113,10 @@ public class WeaponbonusIntegrationTest extends
 		return false;
 	}
 
+	@Override
+	public boolean isAllLegal()
+	{
+		return true;
+	}
+
 }

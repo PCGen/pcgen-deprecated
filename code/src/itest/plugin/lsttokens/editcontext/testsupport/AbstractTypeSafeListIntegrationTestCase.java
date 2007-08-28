@@ -168,8 +168,6 @@ public abstract class AbstractTypeSafeListIntegrationTestCase<T extends PObject>
 			TestContext tc = new TestContext();
 			commit(testCampaign, tc, "TestWP1" + getJoinCharacter() + "TestWP2");
 			commit(modCampaign, tc, ".CLEAR.TestWP1");
-			System.err.println("@" + primaryGraph.getNodeList());
-			System.err.println("@" + primaryGraph.getEdgeList());
 			completeRoundRobin(tc);
 		}
 	}
@@ -190,8 +188,6 @@ public abstract class AbstractTypeSafeListIntegrationTestCase<T extends PObject>
 			TestContext tc = new TestContext();
 			commit(testCampaign, tc, "TestWP1" + getJoinCharacter() + "TestWP2");
 			commit(modCampaign, tc, ".CLEAR.TestWP3");
-			System.err.println("@" + primaryGraph.getNodeList());
-			System.err.println("@" + primaryGraph.getEdgeList());
 			completeRoundRobin(tc);
 		}
 	}

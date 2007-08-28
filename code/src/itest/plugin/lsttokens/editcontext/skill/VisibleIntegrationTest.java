@@ -73,6 +73,26 @@ public class VisibleIntegrationTest extends AbstractIntegrationTestCase<Skill>
 	}
 
 	@Test
+	public void testRoundRobinDisplay() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "DISPLAY|READONLY");
+		commit(modCampaign, tc, "DISPLAY");
+		completeRoundRobin(tc);
+	}
+
+	@Test
+	public void testRoundRobinDisplayToo() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "DISPLAY");
+		commit(modCampaign, tc, "DISPLAY|READONLY");
+		completeRoundRobin(tc);
+	}
+
+	@Test
 	public void testRoundRobinNoReset() throws PersistenceLayerException
 	{
 		verifyCleanStart();

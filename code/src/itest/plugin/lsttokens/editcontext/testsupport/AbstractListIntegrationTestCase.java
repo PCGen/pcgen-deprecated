@@ -37,6 +37,8 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 
 	public abstract Class<TC> getTargetClass();
 
+	public abstract boolean isAllLegal();
+
 	public abstract boolean isTypeLegal();
 
 	public abstract boolean isPrereqLegal();
@@ -86,8 +88,6 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "TestWP1");
 		commit(modCampaign, tc, "TestWP1");
-		System.err.println(primaryGraph.getNodeList());
-		System.err.println(primaryGraph.getEdgeList());
 		completeRoundRobin(tc);
 	}
 
@@ -102,6 +102,21 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 			TestContext tc = new TestContext();
 			commit(testCampaign, tc, "TestWP1");
 			commit(modCampaign, tc, "TYPE=TestType");
+			completeRoundRobin(tc);
+		}
+	}
+
+	@Test
+	public void testRoundRobinAddAll() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP1");
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "TestWP1");
+			commit(modCampaign, tc, "ALL");
 			completeRoundRobin(tc);
 		}
 	}
@@ -152,6 +167,21 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 	}
 
 	@Test
+	public void testRoundRobinStartAll() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP2");
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "ALL");
+			commit(modCampaign, tc, "TestWP2");
+			completeRoundRobin(tc);
+		}
+	}
+
+	@Test
 	public void testRoundRobinDotClear() throws PersistenceLayerException
 	{
 		if (isClearLegal())
@@ -184,7 +214,42 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 	}
 
 	@Test
+	public void testRoundRobinDotClearDotType() throws PersistenceLayerException
+	{
+		if (isClearDotLegal() && isTypeLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP2");
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "TestWP1" + getJoinCharacter()
+				+ "TYPE=TestType");
+			commit(modCampaign, tc, ".CLEAR.TYPE=TestType");
+			completeRoundRobin(tc);
+		}
+	}
+
+	@Test
 	public void testRoundRobinDotClearDotAll() throws PersistenceLayerException
+	{
+		if (isClearDotLegal() && isAllLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP2");
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "ALL");
+			commit(modCampaign, tc, ".CLEAR.ALL");
+			completeRoundRobin(tc);
+		}
+	}
+
+	@Test
+	public void testRoundRobinDotClearDotComplete() throws PersistenceLayerException
 	{
 		if (isClearDotLegal())
 		{
