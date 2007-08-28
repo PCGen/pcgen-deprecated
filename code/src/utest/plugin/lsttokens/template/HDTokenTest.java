@@ -34,6 +34,7 @@ import plugin.lsttokens.SrLst;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreHDParser;
+import plugin.pretokens.writer.PreHDWriter;
 
 public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 {
@@ -47,6 +48,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public static final void ltClassSetUp() throws PersistenceLayerException
 	{
 		TokenRegistration.register(new PreHDParser());
+		TokenRegistration.register(new PreHDWriter());
 		TokenRegistration.register(new CrToken());
 		TokenRegistration.register(new DrLst());
 		TokenRegistration.register(new SrLst());
@@ -84,264 +86,264 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 		return token;
 	}
 
-//	@Test
-//	public void testInvalidInputHDonly() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputPipe() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+|SR|3"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputOneColon() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:SR|2"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptyHD() throws PersistenceLayerException
-//	{
-//		assertFalse(parse(":DR:3/+1"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptySubtype() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("4+::3/+1"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptyDR() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:DR:"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptyDRNoColon()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:DR"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputNoSlashDR() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:DR:1"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputTwoSlashDR() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:DR:1/3/+4"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptySR() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:SR:"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptySA() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:SA:"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptyCR() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:CR:"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptySRNoColon()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:SR"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptySANoColon()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:SA"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputEmptyCRNoColon()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:CR"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputNoAbbrs() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("3+:C:3"));
-//		assertFalse(parse("3+:D:1/+2"));
-//		assertFalse(parse("3+:CRA:3"));
-//		assertFalse(parse("3+:DRA:1/+2"));
-//		assertFalse(parse("3+:SAA:Special"));
-//		assertFalse(parse("3+:SRA:1"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputBadClear() throws PersistenceLayerException
-//	{
-//		assertFalse(parse(".CLEARSTUFF"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputNoSpecificClear()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse(".CLEAR.3+:CR:3"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputBadHDRangePlus()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("+3:SA:Special Abil"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputBadHDRangeMult()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("*3:SA:Special Abil"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputBadHDRangeTwoDash()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("1--3:SA:Special Abil"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputBadHDRangeEndDash()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("4-:SA:Special Abil"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidInputBadHDRangeUpTo()
-//		throws PersistenceLayerException
-//	{
-//		assertFalse(parse("-4:SA:Special Abil"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testInvalidBadTemplateToken() throws PersistenceLayerException
-//	{
-//		assertFalse(parse("5:CR:-3"));
-//		assertNoSideEffects();
-//	}
-//
-//	@Test
-//	public void testRoundRobinRangeDR() throws PersistenceLayerException
-//	{
-//		runRoundRobin("2-5:DR:1/+3");
-//	}
-//
-//	@Test
-//	public void testRoundRobinRangeSRNumber() throws PersistenceLayerException
-//	{
-//		runRoundRobin("3-5:SR:25");
-//	}
-//
-//	@Test
-//	public void testRoundRobinRangeSRFormula() throws PersistenceLayerException
-//	{
-//		runRoundRobin("3-6:SR:Formula");
-//	}
-//
-//	@Test
-//	public void testRoundRobinRangeSA() throws PersistenceLayerException
-//	{
-//		runRoundRobin("5-7:SA:Special Ability, Man!");
-//	}
-//
-//	@Test
-//	public void testRoundRobinRangeCRNumber() throws PersistenceLayerException
-//	{
-//		runRoundRobin("4-11:CR:3");
-//	}
-//
-//	@Test
-//	public void testRoundRobinRangeCRFormula() throws PersistenceLayerException
-//	{
-//		runRoundRobin("4-9:CR:Formula");
-//	}
-//
-//	@Test
-//	public void testRoundRobinMinimumDR() throws PersistenceLayerException
-//	{
-//		runRoundRobin("2+:DR:1/+3");
-//	}
-//
-//	@Test
-//	public void testRoundRobinMinimumSRNumber()
-//		throws PersistenceLayerException
-//	{
-//		runRoundRobin("3+:SR:25");
-//	}
-//
-//	@Test
-//	public void testRoundRobinMinimumSRFormula()
-//		throws PersistenceLayerException
-//	{
-//		runRoundRobin("3+:SR:Formula");
-//	}
-//
-//	@Test
-//	public void testRoundRobinMinimumSA() throws PersistenceLayerException
-//	{
-//		runRoundRobin("5+:SA:Special Ability, Man!");
-//	}
-//
-//	@Test
-//	public void testRoundRobinMinimumCRNumber()
-//		throws PersistenceLayerException
-//	{
-//		runRoundRobin("4+:CR:3");
-//	}
-//
-//	@Test
-//	public void testRoundRobinMinimumCRFormula()
-//		throws PersistenceLayerException
-//	{
-//		runRoundRobin("4+:CR:Formula");
-//	}
+	@Test
+	public void testInvalidInputHDonly() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputPipe() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+|SR|3"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputOneColon() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:SR|2"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptyHD() throws PersistenceLayerException
+	{
+		assertFalse(parse(":DR:3/+1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptySubtype() throws PersistenceLayerException
+	{
+		assertFalse(parse("4+::3/+1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptyDR() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:DR:"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptyDRNoColon()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:DR"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputNoSlashDR() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:DR:1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputTwoSlashDR() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:DR:1/3/+4"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptySR() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:SR:"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptySA() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:SA:"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptyCR() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:CR:"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptySRNoColon()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:SR"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptySANoColon()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:SA"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputEmptyCRNoColon()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:CR"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputNoAbbrs() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:C:3"));
+		assertFalse(parse("3+:D:1/+2"));
+		assertFalse(parse("3+:CRA:3"));
+		assertFalse(parse("3+:DRA:1/+2"));
+		assertFalse(parse("3+:SAA:Special"));
+		assertFalse(parse("3+:SRA:1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputBadClear() throws PersistenceLayerException
+	{
+		assertFalse(parse(".CLEARSTUFF"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputNoSpecificClear()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse(".CLEAR.3+:CR:3"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputBadHDRangePlus()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("+3:SA:Special Abil"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputBadHDRangeMult()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("*3:SA:Special Abil"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputBadHDRangeTwoDash()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("1--3:SA:Special Abil"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputBadHDRangeEndDash()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("4-:SA:Special Abil"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputBadHDRangeUpTo()
+		throws PersistenceLayerException
+	{
+		assertFalse(parse("-4:SA:Special Abil"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidBadTemplateToken() throws PersistenceLayerException
+	{
+		assertFalse(parse("5:CR:-3"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testRoundRobinRangeDR() throws PersistenceLayerException
+	{
+		runRoundRobin("2-5:DR:1/+3");
+	}
+
+	@Test
+	public void testRoundRobinRangeSRNumber() throws PersistenceLayerException
+	{
+		runRoundRobin("3-5:SR:25");
+	}
+
+	@Test
+	public void testRoundRobinRangeSRFormula() throws PersistenceLayerException
+	{
+		runRoundRobin("3-6:SR:Formula");
+	}
+
+	@Test
+	public void testRoundRobinRangeSA() throws PersistenceLayerException
+	{
+		runRoundRobin("5-7:SA:Special Ability, Man!");
+	}
+
+	@Test
+	public void testRoundRobinRangeCRNumber() throws PersistenceLayerException
+	{
+		runRoundRobin("4-11:CR:3");
+	}
+
+	@Test
+	public void testRoundRobinRangeCRFormula() throws PersistenceLayerException
+	{
+		runRoundRobin("4-9:CR:Formula");
+	}
+
+	@Test
+	public void testRoundRobinMinimumDR() throws PersistenceLayerException
+	{
+		runRoundRobin("2+:DR:1/+3");
+	}
+
+	@Test
+	public void testRoundRobinMinimumSRNumber()
+		throws PersistenceLayerException
+	{
+		runRoundRobin("3+:SR:25");
+	}
+
+	@Test
+	public void testRoundRobinMinimumSRFormula()
+		throws PersistenceLayerException
+	{
+		runRoundRobin("3+:SR:Formula");
+	}
+
+	@Test
+	public void testRoundRobinMinimumSA() throws PersistenceLayerException
+	{
+		runRoundRobin("5+:SA:Special Ability, Man!");
+	}
+
+	@Test
+	public void testRoundRobinMinimumCRNumber()
+		throws PersistenceLayerException
+	{
+		runRoundRobin("4+:CR:3");
+	}
+
+	@Test
+	public void testRoundRobinMinimumCRFormula()
+		throws PersistenceLayerException
+	{
+		runRoundRobin("4+:CR:Formula");
+	}
 
 	@Test
 	public void testRoundRobinMultiple() throws PersistenceLayerException
@@ -349,10 +351,10 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 		runRoundRobin("4+:CR:MultFormula", "5+:SA:Special Ability, Man!");
 	}
 
-//	@Test
-//	public void testRoundRobinMultipleSame() throws PersistenceLayerException
-//	{
-//		runRoundRobin("4+:CR:Formula", "4+:SA:Special Ability, Man!");
-//	}
+	@Test
+	public void testRoundRobinMultipleSame() throws PersistenceLayerException
+	{
+		runRoundRobin("4+:CR:Formula", "4+:SA:Special Ability, Man!");
+	}
 
 }

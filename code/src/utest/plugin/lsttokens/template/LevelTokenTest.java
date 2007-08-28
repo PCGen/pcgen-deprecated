@@ -34,6 +34,7 @@ import plugin.lsttokens.SrLst;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreLevelParser;
+import plugin.pretokens.writer.PreLevelWriter;
 
 public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 {
@@ -47,6 +48,7 @@ public class LevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public static final void ltClassSetUp() throws PersistenceLayerException
 	{
 		TokenRegistration.register(new PreLevelParser());
+		TokenRegistration.register(new PreLevelWriter());
 		TokenRegistration.register(new CrToken());
 		TokenRegistration.register(new DrLst());
 		TokenRegistration.register(new SrLst());

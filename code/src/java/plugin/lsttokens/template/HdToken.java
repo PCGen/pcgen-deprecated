@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.template;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -136,7 +137,10 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 			return false;
 		}
 		String argument = tok.nextToken();
-		PCTemplate derivative = template.getPseudoTemplate();
+		String standardizedPrereq =
+				getPrerequisiteString(context, Collections
+					.singletonList(prereq));
+		PCTemplate derivative = template.getPseudoTemplate(standardizedPrereq);
 		derivative.put(ObjectKey.PSEUDO_PARENT, template);
 		derivative.addPrerequisite(prereq);
 		context.getGraphContext().grant(getTokenName(), template, derivative);

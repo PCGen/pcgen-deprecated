@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.DoubleKeyMap;
-import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.core.levelability.LevelAbility;
 import pcgen.core.prereq.PrereqHandler;
@@ -2106,9 +2105,11 @@ public final class PCTemplate extends PObject implements HasCost
 		return Collections.unmodifiableList(levelMods);
 	}
 
-	public PCTemplate getPseudoTemplate()
+	public PCTemplate getPseudoTemplate(String name)
 	{
-		return new PCTemplate();
+		PCTemplate pt = new PCTemplate();
+		pt.setName(name);
+		return pt;
 	}
 	
 	@Override
