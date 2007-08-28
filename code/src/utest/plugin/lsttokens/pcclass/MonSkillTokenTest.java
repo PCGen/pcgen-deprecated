@@ -28,6 +28,9 @@ import pcgen.persistence.lst.LstLoader;
 import plugin.bonustokens.MonSkillPts;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.PCClassLoaderFacade;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreRaceParser;
+import plugin.pretokens.writer.PreRaceWriter;
 
 public class MonSkillTokenTest extends AbstractTokenTestCase<PCClass>
 {
@@ -35,12 +38,17 @@ public class MonSkillTokenTest extends AbstractTokenTestCase<PCClass>
 	static MonskillToken token = new MonskillToken();
 	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
 
+	PreRaceParser prerace = new PreRaceParser();
+	PreRaceWriter preracewriter = new PreRaceWriter();
+
 	@Override
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
 		prefix = "CLASS:";
 		addBonus("MONSKILLPTS", MonSkillPts.class);
+		TokenRegistration.register(prerace);
+		TokenRegistration.register(preracewriter);
 	}
 
 	@Override
@@ -92,4 +100,29 @@ public class MonSkillTokenTest extends AbstractTokenTestCase<PCClass>
 	{
 		runRoundRobin("3+CL(\"FIGHTER\")");
 	}
+
+	@Test
+	public void testRoundRobinPre() throws PersistenceLayerException
+	{
+		runRoundRobin("VARIABLE1|PRERACE:1,Human");
+	}
+
+	@Test
+	public void testRoundRobinDupePre() throws PersistenceLayerException
+	{
+		runRoundRobin("VARIABLE1", "VARIABLE1|PRERACE:1,Human");
+	}
+
+	@Test
+	public void testRoundRobinDiffPre() throws PersistenceLayerException
+	{
+		runRoundRobin("VARIABLE1|PRERACE:1,Dwarf", "VARIABLE1|PRERACE:1,Human");
+	}
+
+	@Test
+	public void testRoundRobinDiffSamePre() throws PersistenceLayerException
+	{
+		runRoundRobin("VARIABLE1|PRERACE:1,Human", "VARIABLE2|PRERACE:1,Human");
+	}
+
 }

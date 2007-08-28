@@ -21,21 +21,26 @@
  */
 package plugin.lsttokens.pcclass;
 
+import java.io.StringWriter;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.PCClass;
 import pcgen.core.bonus.BonusObj;
+import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.BonusLoader;
 import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 
 /**
  * Class deals with MONNONSKILLHD Token
@@ -85,13 +90,44 @@ public class MonnonskillhdToken extends AbstractToken implements
 		{
 			return null;
 		}
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		Set<String> set = new TreeSet<String>();
-		for (LSTWriteable b : changes.getAdded())
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+				changes.getAddedAssociations();
+		if (mtl != null && !mtl.isEmpty())
 		{
-			// TODO Validate MONNONSKILLHD?
-			// TODO Validate NUMBER?
-			// TODO Validate PRExxx?
-			set.add(b.getLSTformat());
+			for (LSTWriteable ab : mtl.getKeySet())
+			{
+				// TODO Validate MONNONSKILLHD?
+				// TODO Validate NUMBER?
+				// TODO Validate PRExxx?
+				for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
+				{
+					StringBuilder sb = new StringBuilder();
+					sb.append(ab.getLSTformat());
+					if (assoc.hasPrerequisites())
+					{
+						for (Prerequisite prereq : assoc.getPrerequisiteList())
+						{
+							sb.append(Constants.PIPE);
+							StringWriter swriter = new StringWriter();
+							try
+							{
+								prereqWriter.write(swriter, prereq);
+							}
+							catch (PersistenceLayerException e)
+							{
+								context
+									.addWriteMessage("Error writing Prerequisite: "
+										+ e);
+								return null;
+							}
+							sb.append(swriter.toString());
+						}
+					}
+					set.add(sb.toString());
+				}
+			}
 		}
 		if (set.isEmpty())
 		{
