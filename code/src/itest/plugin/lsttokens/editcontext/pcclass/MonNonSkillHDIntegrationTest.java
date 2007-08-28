@@ -23,6 +23,7 @@ import pcgen.core.PCClass;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
+import plugin.bonustokens.MonNonSkillHD;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegerIntegrationTestCase;
 import plugin.lsttokens.pcclass.MonnonskillhdToken;
 
@@ -38,6 +39,7 @@ public class MonNonSkillHDIntegrationTest extends
 	{
 		super.setUp();
 		prefix = "CLASS:";
+		addBonus("MONNONSKILLHD", MonNonSkillHD.class);
 	}
 
 	@Override

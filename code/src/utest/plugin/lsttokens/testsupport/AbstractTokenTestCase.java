@@ -19,7 +19,6 @@ package plugin.lsttokens.testsupport;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 
 import junit.framework.TestCase;
 
@@ -30,6 +29,8 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
+import pcgen.core.bonus.Bonus;
+import pcgen.core.bonus.BonusObj;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.RuntimeLoadContext;
@@ -96,6 +97,21 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 	{
 		TokenStore.inst().addToTokenMap(tok);
 	}
+	
+	public static void addBonus(String name, Class<? extends BonusObj> clazz) {
+		try
+		{
+			Bonus.addBonusClass(clazz, name);
+		}
+		catch (InstantiationException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
@@ -115,7 +131,6 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 
 		assertNotNull(str);
 		assertNotNull(unparsed);
-		System.err.println(Arrays.asList(unparsed));
 		assertEquals(str.length, unparsed.length);
 
 		for (int i = 0; i < str.length; i++)

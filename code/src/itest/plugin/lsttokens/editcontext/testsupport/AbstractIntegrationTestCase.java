@@ -19,7 +19,6 @@ package plugin.lsttokens.editcontext.testsupport;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -30,6 +29,8 @@ import org.junit.BeforeClass;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
+import pcgen.core.bonus.Bonus;
+import pcgen.core.bonus.BonusObj;
 import pcgen.persistence.EditorLoadContext;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -99,6 +100,21 @@ public abstract class AbstractIntegrationTestCase<T extends PObject> extends
 	public static void addToken(LstToken tok)
 	{
 		TokenStore.inst().addToTokenMap(tok);
+	}
+
+	public static void addBonus(String name, Class<? extends BonusObj> clazz) {
+		try
+		{
+			Bonus.addBonusClass(clazz, name);
+		}
+		catch (InstantiationException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	protected void verifyCleanStart()

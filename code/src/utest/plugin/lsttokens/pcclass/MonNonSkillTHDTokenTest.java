@@ -21,16 +21,15 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.core.PCClass;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
-import plugin.lsttokens.testsupport.AbstractFormulaTokenTestCase;
+import plugin.bonustokens.MonNonSkillHD;
+import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
-public class MonNonSkillTHDTokenTest extends
-		AbstractFormulaTokenTestCase<PCClass>
+public class MonNonSkillTHDTokenTest extends AbstractTokenTestCase<PCClass>
 {
 
 	static MonnonskillhdToken token = new MonnonskillhdToken();
@@ -41,6 +40,7 @@ public class MonNonSkillTHDTokenTest extends
 	{
 		super.setUp();
 		prefix = "CLASS:";
+		addBonus("MONNONSKILLHD", MonNonSkillHD.class);
 	}
 
 	@Override
@@ -61,15 +61,35 @@ public class MonNonSkillTHDTokenTest extends
 		return token;
 	}
 
-	@Override
-	public FormulaKey getFormulaKey()
+	@Test
+	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		return FormulaKey.MONSTER_NON_SKILL_HD;
+		try
+		{
+			assertFalse(parse(""));
+		}
+		catch (IllegalArgumentException e)
+		{
+			// This is Okay too :)
+		}
+		assertNoSideEffects();
 	}
 
 	@Test
-	public void dummyTest()
+	public void testRoundRobinBase() throws PersistenceLayerException
 	{
-		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		runRoundRobin("VARIABLE1");
+	}
+
+	@Test
+	public void testRoundRobinNumber() throws PersistenceLayerException
+	{
+		runRoundRobin("3");
+	}
+
+	@Test
+	public void testRoundRobinFormula() throws PersistenceLayerException
+	{
+		runRoundRobin("3+CL(\"FIGHTER\")");
 	}
 }
