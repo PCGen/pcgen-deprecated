@@ -68,12 +68,6 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
 
-		if (!pipeTok.hasMoreTokens())
-		{
-			// Differs from 5.12
-			return false;
-		}
-
 		/*
 		 * TODO I believe this needs to clear the List and if it already
 		 * contains something, then should it provide an informational message?

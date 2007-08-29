@@ -88,11 +88,6 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 	public SpecialProperty subParse(LoadContext context, Equipment eq,
 		String value)
 	{
-		if (isEmpty(value) || hasIllegalSeparator('|', value))
-		{
-			return null;
-		}
-
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		String firstToken = tok.nextToken();

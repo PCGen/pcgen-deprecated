@@ -22,7 +22,9 @@
  */
 package plugin.lsttokens;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -99,6 +101,7 @@ public class SourcedateLst implements GlobalLstToken, SourceLstToken
 		{
 			return null;
 		}
-		return new String[]{date.toString()};
+		DateFormat df = new SimpleDateFormat("yyyy-MM"); //$NON-NLS-1$
+		return new String[]{df.format(date)};
 	}
 }

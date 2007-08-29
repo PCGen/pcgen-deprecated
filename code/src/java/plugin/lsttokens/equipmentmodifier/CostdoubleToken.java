@@ -73,20 +73,29 @@ public class CostdoubleToken implements EquipmentModifierLstToken
 		String value)
 	{
 		Boolean set;
-		if (value.equalsIgnoreCase("NO"))
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
 		{
-			set = Boolean.FALSE;
-		}
-		else if (value.equalsIgnoreCase("YES"))
-		{
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+					+ getTokenName() + ": " + value);
+				return false;
+			}
 			set = Boolean.TRUE;
 		}
 		else
 		{
-			Logging.errorPrint("Did not understand " + getTokenName()
-				+ " value: " + value);
-			Logging.errorPrint("Must be YES or NO");
-			return false;
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = Boolean.FALSE;
 		}
 		context.getObjectContext().put(mod, ObjectKey.COST_DOUBLE, set);
 		return true;

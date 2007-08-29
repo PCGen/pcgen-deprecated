@@ -18,7 +18,10 @@
 package plugin.lsttokens.auto;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -32,6 +35,7 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.EquipmentNature;
+import pcgen.cdom.helper.ChooseActor;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.core.ArmorProf;
 import pcgen.core.Equipment;
@@ -122,6 +126,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 				ChooseActionContainer container = obj.getChooseContainer();
 				GrantActor<ArmorProf> actor = new GrantActor<ArmorProf>();
 				container.addActor(actor);
+				actor.setAssociation(AssociationKey.TOKEN, getTokenName());
 				apo = actor;
 			}
 			else
@@ -151,16 +156,43 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 
 	public String[] unparse(LoadContext context, PObject obj)
 	{
+		List<String> list = new ArrayList<String>();
+		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
+
+		ChooseActionContainer container = obj.getChooseContainer();
+		Collection<ChooseActor> actors = container.getActors();
+		for (ChooseActor actor : actors)
+		{
+			if (actor instanceof GrantActor)
+			{
+				GrantActor<?> ga = GrantActor.class.cast(actor);
+				if (!getTokenName().equals(
+					ga.getAssociation(AssociationKey.TOKEN)))
+				{
+					continue;
+				}
+				StringBuilder sb = new StringBuilder();
+				sb.append("%LIST");
+				List<Prerequisite> prereqList = ga.getPrerequisiteList();
+				if (prereqList != null && !prereqList.isEmpty())
+				{
+					String prereqs = getPrerequisiteString(context, prereqList);
+					sb.append('[').append(prereqs).append(']');
+				}
+				list.add(sb.toString());
+			}
+		}
+
 		AssociatedChanges<Equipment> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, EQUIPMENT_CLASS);
-		if (changes == null)
+		if (list.isEmpty() && changes == null)
 		{
 			return null;
 		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
 				changes.getAddedAssociations();
-		if (mtl == null || mtl.isEmpty())
+		if (list.isEmpty() && (mtl == null || mtl.isEmpty()))
 		{
 			// Zero indicates no Token
 			return null;
@@ -175,10 +207,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 					.getPrerequisiteList()), lstw);
 			}
 		}
-		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-
-		String[] array = new String[m.size()];
-		int index = 0;
+		
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			StringBuilder sb = new StringBuilder();
@@ -207,8 +236,8 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 				}
 				sb.append('[').append(swriter.toString()).append(']');
 			}
-			array[index++] = sb.toString();
+			list.add(sb.toString());
 		}
-		return array;
+		return list.toArray(new String[list.size()]);
 	}
 }

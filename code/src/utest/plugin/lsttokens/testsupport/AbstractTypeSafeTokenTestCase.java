@@ -111,6 +111,13 @@ public abstract class AbstractTypeSafeTokenTestCase<T extends PObject> extends
 	}
 
 	@Test
+	public void testInvalidEmptyInput() throws PersistenceLayerException
+	{
+		assertFalse(parse(""));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
 		if (requiresPreconstruction())

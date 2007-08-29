@@ -25,14 +25,16 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.RaceType;
 import pcgen.core.Race;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
 
 /**
  * Class deals with RACETYPE Token
  */
-public class RacetypeToken implements RaceLstToken
+public class RacetypeToken extends AbstractToken implements RaceLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "RACETYPE";
@@ -46,6 +48,10 @@ public class RacetypeToken implements RaceLstToken
 
 	public boolean parse(LoadContext context, Race race, String value)
 	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
 		context.getObjectContext().put(race, ObjectKey.RACETYPE,
 			RaceType.getConstant(value));
 		return true;

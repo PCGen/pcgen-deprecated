@@ -71,23 +71,32 @@ public class RemovableToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
-		Boolean remove;
-		if (value.equalsIgnoreCase("NO"))
+		Boolean set;
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
 		{
-			remove = Boolean.FALSE;
-		}
-		else if (value.equalsIgnoreCase("YES"))
-		{
-			remove = Boolean.TRUE;
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+					+ getTokenName() + ": " + value);
+				return false;
+			}
+			set = Boolean.TRUE;
 		}
 		else
 		{
-			Logging.errorPrint("Did not understand " + getTokenName()
-				+ " value: " + value);
-			Logging.errorPrint("Must be YES or NO");
-			return false;
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = Boolean.FALSE;
 		}
-		context.getObjectContext().put(template, ObjectKey.REMOVABLE, remove);
+		context.getObjectContext().put(template, ObjectKey.REMOVABLE, set);
 		return true;
 	}
 

@@ -25,15 +25,17 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SubRace;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SUBRACE Token
  */
-public class SubraceToken implements PCTemplateLstToken
+public class SubraceToken extends AbstractToken implements PCTemplateLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "SUBRACE";
@@ -64,6 +66,10 @@ public class SubraceToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
 		context.getObjectContext().put(template, ObjectKey.SUBRACE,
 			SubRace.getConstant(value));
 		return true;

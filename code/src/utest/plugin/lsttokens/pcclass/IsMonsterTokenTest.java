@@ -23,15 +23,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.ClassSkillList;
 import pcgen.core.PCClass;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractYesNoTokenTestCase;
 import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
-public class IsMonsterTokenTest extends AbstractTokenTestCase<PCClass>
+public class IsMonsterTokenTest extends AbstractYesNoTokenTestCase<PCClass>
 {
 
 	static IsmonsterToken token = new IsmonsterToken();
@@ -42,13 +41,6 @@ public class IsMonsterTokenTest extends AbstractTokenTestCase<PCClass>
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
-		/*
-		 * FIXME This construction of *Starting should be unnecessary
-		 */
-		primaryContext.ref
-			.constructCDOMObject(ClassSkillList.class, "*Monster");
-		secondaryContext.ref.constructCDOMObject(ClassSkillList.class,
-			"*Monster");
 		prefix = "CLASS:";
 	}
 
@@ -70,60 +62,15 @@ public class IsMonsterTokenTest extends AbstractTokenTestCase<PCClass>
 		return token;
 	}
 
-	@Test
-	public void testInvalidInputString() throws PersistenceLayerException
+	@Override
+	public ObjectKey<Boolean> getObjectKey()
 	{
-		internalTestInvalidInputString(null);
-		assertNoSideEffects();
+		return ObjectKey.IS_MONSTER;
 	}
 
 	@Test
-	public void testInvalidInputStringSet() throws PersistenceLayerException
+	public void dummyTest()
 	{
-		assertTrue(parse("YES"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.IS_MONSTER));
-		internalTestInvalidInputString(Boolean.TRUE);
-	}
-
-	public void internalTestInvalidInputString(Object val)
-		throws PersistenceLayerException
-	{
-		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertFalse(parse("String"));
-		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertFalse(parse("TYPE=TestType"));
-		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertFalse(parse("TYPE.TestType"));
-		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertFalse(parse("ALL"));
-		assertEquals(val, primaryProf.get(ObjectKey.IS_MONSTER));
-	}
-
-	@Test
-	public void testValidInputs() throws PersistenceLayerException
-	{
-		assertTrue(parse("YES"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertTrue(parse("NO"));
-		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.IS_MONSTER));
-		// We're nice enough to be case insensitive here...
-		assertTrue(parse("YeS"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertTrue(parse("Yes"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.IS_MONSTER));
-		assertTrue(parse("No"));
-		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.IS_MONSTER));
-	}
-
-	@Test
-	public void testRoundRobinDisplay() throws PersistenceLayerException
-	{
-		runRoundRobin("YES");
-	}
-
-	@Test
-	public void testRoundRobinExport() throws PersistenceLayerException
-	{
-		runRoundRobin("NO");
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

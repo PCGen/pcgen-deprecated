@@ -79,4 +79,10 @@ public class ShieldProfTokenTest extends AbstractAutoTokenTestCase
 	{
 		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
+
+	@Override
+	protected boolean isListLegal()
+	{
+		return true;
+	}
 }

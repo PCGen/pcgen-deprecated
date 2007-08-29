@@ -72,6 +72,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 	/**
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "NATURALATTACKS"; //$NON-NLS-1$

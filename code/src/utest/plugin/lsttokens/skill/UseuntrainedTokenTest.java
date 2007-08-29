@@ -21,13 +21,12 @@ import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Skill;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.SkillLoader;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractYesNoTokenTestCase;
 
-public class UseuntrainedTokenTest extends AbstractTokenTestCase<Skill>
+public class UseuntrainedTokenTest extends AbstractYesNoTokenTestCase<Skill>
 {
 
 	static UseuntrainedToken token = new UseuntrainedToken();
@@ -51,61 +50,16 @@ public class UseuntrainedTokenTest extends AbstractTokenTestCase<Skill>
 		return token;
 	}
 
-	@Test
-	public void testInvalidInputString() throws PersistenceLayerException
+	@Override
+	public ObjectKey<Boolean> getObjectKey()
 	{
-		internalTestInvalidInputString(null);
-		assertNoSideEffects();
+		return ObjectKey.USE_UNTRAINED;
 	}
 
 	@Test
-	public void testInvalidInputStringSet() throws PersistenceLayerException
+	public void dummyTest()
 	{
-		assertTrue(parse("YES"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		internalTestInvalidInputString(Boolean.TRUE);
-		assertTrue(primaryGraph.isEmpty());
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 
-	public void internalTestInvalidInputString(Object val)
-		throws PersistenceLayerException
-	{
-		assertEquals(val, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		assertFalse(parse("String"));
-		assertEquals(val, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		assertFalse(parse("TYPE=TestType"));
-		assertEquals(val, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		assertFalse(parse("TYPE.TestType"));
-		assertEquals(val, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		assertFalse(parse("ALL"));
-		assertEquals(val, primaryProf.get(ObjectKey.USE_UNTRAINED));
-	}
-
-	@Test
-	public void testValidInputs() throws PersistenceLayerException
-	{
-		assertTrue(parse("YES"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		assertTrue(parse("NO"));
-		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		//We're nice enough to be case insensitive here...
-		assertTrue(parse("YeS"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		assertTrue(parse("Yes"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.USE_UNTRAINED));
-		assertTrue(parse("No"));
-		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.USE_UNTRAINED));
-	}
-
-	@Test
-	public void testRoundRobinDisplay() throws PersistenceLayerException
-	{
-		runRoundRobin("YES");
-	}
-
-	@Test
-	public void testRoundRobinExport() throws PersistenceLayerException
-	{
-		runRoundRobin("NO");
-	}
 }

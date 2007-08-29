@@ -66,13 +66,19 @@ public class ArmorProfTokenTest extends AbstractAutoTokenTestCase
 	{
 		return true;
 	}
-	
+
 	@Override
 	protected boolean isPrereqLegal()
 	{
 		return true;
 	}
-	
+
+	@Override
+	protected boolean isListLegal()
+	{
+		return true;
+	}
+
 	@Test
 	public void dummyTest()
 	{

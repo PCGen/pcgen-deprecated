@@ -67,6 +67,8 @@ public abstract class AbstractAutoTokenTestCase extends
 	protected abstract boolean isTypeLegal();
 
 	protected abstract boolean isPrereqLegal();
+	
+	protected abstract boolean isListLegal();
 
 	private char getJoinCharacter()
 	{
@@ -349,6 +351,15 @@ public abstract class AbstractAutoTokenTestCase extends
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin(getSubTokenString() + "|TestWP1");
+	}
+
+	@Test
+	public void testRoundRobinList() throws PersistenceLayerException
+	{
+		if (isListLegal())
+		{
+			runRoundRobin(getSubTokenString() + "|%LIST");
+		}
 	}
 
 	@Test

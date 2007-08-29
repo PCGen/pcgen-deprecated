@@ -48,21 +48,29 @@ public class AssigntoallToken implements EquipmentModifierLstToken
 		String value)
 	{
 		Boolean set;
-		if (value.equalsIgnoreCase("NO"))
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
 		{
-			set = Boolean.FALSE;
-		}
-		else if (value.equalsIgnoreCase("YES"))
-		{
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+					+ getTokenName() + ": " + value);
+				return false;
+			}
 			set = Boolean.TRUE;
 		}
 		else
 		{
-			Logging
-				.addParseMessage(Logging.LST_ERROR, "Did not understand "
-					+ getTokenName() + " value: " + value
-					+ "\n  Must be YES or NO");
-			return false;
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = Boolean.FALSE;
 		}
 		context.getObjectContext().put(mod, ObjectKey.ASSIGN_TO_ALL, set);
 		return true;

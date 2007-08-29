@@ -233,6 +233,13 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidFirstArgBad() throws PersistenceLayerException
+	{
+		assertFalse(parse("FEAT|Cleric=1|Fireball"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testRoundRobinJustSpell() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");

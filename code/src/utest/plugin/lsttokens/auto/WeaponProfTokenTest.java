@@ -20,7 +20,9 @@ package plugin.lsttokens.auto;
 import org.junit.Test;
 
 import pcgen.core.PCTemplate;
+import pcgen.core.PObject;
 import pcgen.core.WeaponProf;
+import pcgen.persistence.lst.LstLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 
@@ -78,5 +80,11 @@ public class WeaponProfTokenTest extends AbstractAutoTokenTestCase
 	public void dummyTest()
 	{
 		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+	}
+
+	@Override
+	protected boolean isListLegal()
+	{
+		return true;
 	}
 }

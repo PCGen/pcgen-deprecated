@@ -71,24 +71,32 @@ public class UseuntrainedToken implements SkillLstToken
 
 	public boolean parse(LoadContext context, Skill skill, String value)
 	{
-		Boolean untrained;
-		if (value.equalsIgnoreCase("NO"))
+		Boolean set;
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
 		{
-			untrained = Boolean.FALSE;
-		}
-		else if (value.equalsIgnoreCase("YES"))
-		{
-			untrained = Boolean.TRUE;
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+					+ getTokenName() + ": " + value);
+				return false;
+			}
+			set = Boolean.TRUE;
 		}
 		else
 		{
-			Logging.errorPrint("Did not understand " + getTokenName()
-				+ " value: " + value);
-			Logging.errorPrint("Must be YES or NO");
-			return false;
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+						+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = Boolean.FALSE;
 		}
-		context.getObjectContext().put(skill, ObjectKey.USE_UNTRAINED,
-			untrained);
+		context.getObjectContext().put(skill, ObjectKey.USE_UNTRAINED, set);
 		return true;
 	}
 

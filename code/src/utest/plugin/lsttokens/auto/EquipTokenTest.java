@@ -74,6 +74,12 @@ public class EquipTokenTest extends AbstractAutoTokenTestCase
 		return true;
 	}
 
+	@Override
+	protected boolean isListLegal()
+	{
+		return true;
+	}
+
 	@Test
 	public void testRoundRobinDupe() throws PersistenceLayerException
 	{

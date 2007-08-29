@@ -25,15 +25,17 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Region;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with REGION Token
  */
-public class RegionToken implements PCTemplateLstToken
+public class RegionToken extends AbstractToken implements PCTemplateLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "REGION";
@@ -66,6 +68,10 @@ public class RegionToken implements PCTemplateLstToken
 
 	public boolean parse(LoadContext context, PCTemplate template, String value)
 	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
 		context.getObjectContext().put(template, ObjectKey.REGION,
 			Region.getConstant(value));
 		return true;

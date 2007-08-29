@@ -53,6 +53,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 		TokenRegistration.register(new DrLst());
 		TokenRegistration.register(new SrLst());
 		TokenRegistration.register(new SaLst());
+		TokenRegistration.register(new LegsToken());
 		classSetUpFired = true;
 	}
 
@@ -147,6 +148,13 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputTwoSlashDR() throws PersistenceLayerException
 	{
 		assertFalse(parse("3+:DR:1/3/+4"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputNegativeLegs() throws PersistenceLayerException
+	{
+		assertFalse(parse("3+:LEGS:-4"));
 		assertNoSideEffects();
 	}
 

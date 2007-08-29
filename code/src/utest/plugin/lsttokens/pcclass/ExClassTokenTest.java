@@ -60,6 +60,13 @@ public class ExClassTokenTest extends AbstractTokenTestCase<PCClass>
 	}
 
 	@Test
+	public void testInvalidEmpty() throws PersistenceLayerException
+	{
+		assertFalse(parse(""));
+		assertNoSideEffects();
+	}
+	
+	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(getCDOMClass(), "Rheinhessen");

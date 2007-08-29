@@ -21,14 +21,13 @@ import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.EquipmentModifierLoader;
 import pcgen.persistence.lst.LstObjectFileLoader;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractYesNoTokenTestCase;
 
 public class CostdoubleTokenTest extends
-		AbstractTokenTestCase<EquipmentModifier>
+		AbstractYesNoTokenTestCase<EquipmentModifier>
 {
 
 	static CostdoubleToken token = new CostdoubleToken();
@@ -52,61 +51,15 @@ public class CostdoubleTokenTest extends
 		return token;
 	}
 
-	@Test
-	public void testInvalidInputString() throws PersistenceLayerException
+	@Override
+	public ObjectKey<Boolean> getObjectKey()
 	{
-		internalTestInvalidInputString(null);
-		assertNoSideEffects();
+		return ObjectKey.COST_DOUBLE;
 	}
 
 	@Test
-	public void testInvalidInputStringSet() throws PersistenceLayerException
+	public void dummyTest()
 	{
-		assertTrue(parse("YES"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		internalTestInvalidInputString(Boolean.TRUE);
-		assertTrue(primaryGraph.isEmpty());
-	}
-
-	public void internalTestInvalidInputString(Object val)
-		throws PersistenceLayerException
-	{
-		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertFalse(parse("String"));
-		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertFalse(parse("TYPE=TestType"));
-		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertFalse(parse("TYPE.TestType"));
-		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertFalse(parse("ALL"));
-		assertEquals(val, primaryProf.get(ObjectKey.COST_DOUBLE));
-	}
-
-	@Test
-	public void testValidInputs() throws PersistenceLayerException
-	{
-		assertTrue(parse("YES"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertTrue(parse("NO"));
-		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		// We're nice enough to be case insensitive here...
-		assertTrue(parse("YeS"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertTrue(parse("Yes"));
-		assertEquals(Boolean.TRUE, primaryProf.get(ObjectKey.COST_DOUBLE));
-		assertTrue(parse("No"));
-		assertEquals(Boolean.FALSE, primaryProf.get(ObjectKey.COST_DOUBLE));
-	}
-
-	@Test
-	public void testRoundRobinDisplay() throws PersistenceLayerException
-	{
-		runRoundRobin("YES");
-	}
-
-	@Test
-	public void testRoundRobinExport() throws PersistenceLayerException
-	{
-		runRoundRobin("NO");
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

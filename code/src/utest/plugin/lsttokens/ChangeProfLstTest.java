@@ -191,8 +191,8 @@ public class ChangeProfLstTest extends AbstractGlobalTokenTestCase
 	{
 		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
 		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Pipe");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Pipe");
+		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Nail");
+		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Nail");
 		runRoundRobin("Hammer,TYPE.Heavy,TYPE.Medium=Martial|Nail,TYPE.Crazy,TYPE.Disposable=Exotic");
 	}
 }

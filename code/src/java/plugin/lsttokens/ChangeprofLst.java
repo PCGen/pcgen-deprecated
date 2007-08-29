@@ -229,7 +229,16 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 					sb.append(Constants.COMMA);
 				}
 				needComma = true;
-				sb.append(source.getLSTformat());
+				String sourceLst = source.getLSTformat();
+				if (sourceLst.startsWith("TYPE="))
+				{
+					sb.append("TYPE.");
+					sb.append(sourceLst.substring(5));
+				}
+				else
+				{
+					sb.append(sourceLst);
+				}
 			}
 			sb.append(Constants.EQUALS).append(result.getPrimitiveFormat());
 			returnSet.add(sb.toString());

@@ -76,7 +76,7 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidNoAbility() throws PersistenceLayerException
 	{
-		assertFalse(parse("NotaCategory|NORMAL"));
+		assertFalse(parse("FEAT|NORMAL"));
 		assertNoSideEffects();
 	}
 

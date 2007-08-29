@@ -74,6 +74,13 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 
 		int pipeLoc = value.indexOf(Constants.PIPE);
 
+		if (pipeLoc == -1)
+		{
+			Logging.errorPrint(getTokenName()
+				+ " did not have a |, syntax is count|kit[|kit]*");
+			return false;
+		}
+
 		int count;
 		try
 		{

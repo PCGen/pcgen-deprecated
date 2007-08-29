@@ -28,7 +28,7 @@ import junit.framework.TestSuite;
 	DefineLstTest.class, DescispiLstTest.class, DescLstTest.class,
 	DrLstTest.class, FollowersLstTest.class, KeyLstTest.class,
 	KitLstTest.class, LangAutoLstTest.class, MoveLstTest.class,
-	NameispiLstTest.class, NaturalAttacksLstTest.class,
+	MoveCloneLstTest.class, NameispiLstTest.class, NaturalAttacksLstTest.class,
 	OutputNameLstTest.class, QualifyTokenTest.class, RegionLstTest.class,
 	SaLstTest.class, SourceDateLstTest.class, SourceLongLstTest.class,
 	SourcePageLstTest.class, SourceShortLstTest.class, SourceWebLstTest.class,

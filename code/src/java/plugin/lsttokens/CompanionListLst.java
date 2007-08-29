@@ -324,7 +324,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			{
 				Logging
 					.errorPrint(getTokenName()
-						+ ": Unknown argument (was expecting FOLLOWERALIGN: or PRExxx): "
+						+ ": Unknown argument (was expecting FOLLOWERADJUSTMENT: or PRExxx): "
 						+ optArg);
 				return false;
 			}
