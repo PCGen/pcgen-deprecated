@@ -29,6 +29,8 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
+import pcgen.core.bonus.Bonus;
+import pcgen.core.bonus.BonusObj;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.RuntimeLoadContext;
@@ -85,6 +87,21 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 	public static void addToken(LstToken tok)
 	{
 		TokenStore.inst().addToTokenMap(tok);
+	}
+
+	public static void addBonus(String name, Class<? extends BonusObj> clazz) {
+		try
+		{
+			Bonus.addBonusClass(clazz, name);
+		}
+		catch (InstantiationException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	private String prefix = "";

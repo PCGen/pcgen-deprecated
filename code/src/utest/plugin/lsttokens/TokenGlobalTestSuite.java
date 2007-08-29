@@ -28,13 +28,14 @@ import junit.framework.TestSuite;
 	DefineLstTest.class, DescispiLstTest.class, DescLstTest.class,
 	DrLstTest.class, FollowersLstTest.class, KeyLstTest.class,
 	KitLstTest.class, LangAutoLstTest.class, MoveLstTest.class,
-	NameispiLstTest.class, OutputNameLstTest.class, QualifyTokenTest.class,
-	RegionLstTest.class, SaLstTest.class, SourceDateLstTest.class,
-	SourceLongLstTest.class, SourcePageLstTest.class, SourceShortLstTest.class,
-	SourceWebLstTest.class, SpellLevelLstTest.class, SpellsLstTest.class,
-	SrLstTest.class, TempdescLstTest.class, TemplateLstTest.class,
-	TypeLstTest.class, UdamLstTest.class, UmultLstTest.class,
-	UnencumberedmoveLstTest.class, VFeatLstTest.class, VisionLstTest.class})
+	NameispiLstTest.class, NaturalAttacksLstTest.class,
+	OutputNameLstTest.class, QualifyTokenTest.class, RegionLstTest.class,
+	SaLstTest.class, SourceDateLstTest.class, SourceLongLstTest.class,
+	SourcePageLstTest.class, SourceShortLstTest.class, SourceWebLstTest.class,
+	SpellLevelLstTest.class, SpellsLstTest.class, SrLstTest.class,
+	TempdescLstTest.class, TemplateLstTest.class, TypeLstTest.class,
+	UdamLstTest.class, UmultLstTest.class, UnencumberedmoveLstTest.class,
+	VFeatLstTest.class, VisionLstTest.class})
 public class TokenGlobalTestSuite extends TestSuite
 {
 	// No contents, see annotations

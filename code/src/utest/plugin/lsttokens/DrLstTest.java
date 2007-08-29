@@ -146,6 +146,12 @@ public class DrLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testRoundRobinComplexAnd() throws PersistenceLayerException
+	{
+		runRoundRobin("10/Holy and Silver");
+	}
+
+	@Test
 	public void testRoundRobinMultiple() throws PersistenceLayerException
 	{
 		runRoundRobin("10/+1", "5/+2");
