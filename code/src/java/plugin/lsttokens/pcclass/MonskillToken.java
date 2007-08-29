@@ -86,7 +86,7 @@ public class MonskillToken extends AbstractToken implements PCClassLstToken,
 				context.getGraphContext().grant(getTokenName(), pcc, bonus);
 		while (st.hasMoreTokens())
 		{
-			assoc.addPrerequisite(getPrerequisite(bonusString));
+			assoc.addPrerequisite(getPrerequisite(st.nextToken()));
 		}
 		return true;
 	}
