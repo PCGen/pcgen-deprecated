@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMapToList;
@@ -36,6 +38,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.core.Campaign;
 import pcgen.core.ClassSpellList;
@@ -321,7 +324,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 						+ getTokenName());
 				return false;
 			}
-			slList.add(context.ref.getCDOMTypeReference(tagType, classString));
+			slList.add(context.ref.getCDOMReference(tagType, classString));
 		}
 
 		if (hasIllegalSeparator(',', spellString))
@@ -350,68 +353,62 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
+		Set<String> set = new TreeSet<String>();
+
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedDomainLists =
 				context.getListContext().getChangedLists(obj,
 					DomainSpellList.class);
 		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> domainMap =
 				getMap(context, obj, changedDomainLists);
+		for (String prereqs : domainMap.getKeySet())
+		{
+			set.add(processUnparse("DOMAIN", domainMap, prereqs).toString());
+		}
+
 		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedClassLists =
 				context.getListContext().getChangedLists(obj,
 					ClassSpellList.class);
 		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> classMap =
-				getMap(context, obj, changedDomainLists);
+				getMap(context, obj, changedClassLists);
+		for (String prereqs : classMap.getKeySet())
+		{
+			set.add(processUnparse("CLASS", classMap, prereqs).toString());
+		}
 
-		// StringBuilder sb = new StringBuilder();
-		// SortedSet<LSTWriteable> spSet =
-		// new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
-		// for (String type : m.getKeySet())
-		// {
-		// for (String prereqs : m.getSecondaryKeySet(type))
-		// {
-		// sb.setLength(0);
-		// for (CDOMReference<CDOMList<? extends CDOMObject>> sl : m
-		// .getTertiaryKeySet(type, prereqs))
-		// {
-		// for (Integer lvl : m.getQuaternaryKeySet(type, prereqs, sl))
-		// {
-		// }
-		// spSet.clear();
-		// }
-		// }
-		// }
-		//
-		// for (String type : new TreeSet<String>(hml.getKeySet()))
-		// {
-		// for (Integer lvl : new TreeSet<Integer>(hml
-		// .getSecondaryKeySet(type)))
-		// {
-		// sb.setLength(0);
-		// spSet.clear();
-		// spSet.addAll(hml.getListFor(type, lvl));
-		//
-		// sb.append(ReferenceUtilities.joinLstFormat(slSet,
-		// Constants.COMMA));
-		// sb.append('=').append(lvl).append(Constants.PIPE);
-		// sb.append(ReferenceUtilities.joinLstFormat(spSet,
-		// Constants.COMMA));
-		// m.addToListFor(type, new HashSet<Prerequisite>(agg
-		// .getPrerequisiteList()), sb.toString());
-		// }
-		// }
-		// Set<String> list = new TreeSet<String>();
-		// for (String type : m.getKeySet())
-		// {
-		// for (Set<Prerequisite> prereqs : m.getSecondaryKeySet(type))
-		// {
-		// StringBuilder sb = new StringBuilder();
-		// Set<String> set =
-		// new TreeSet<String>(m.getListFor(type, prereqs));
-		// sb.append(StringUtil.join(set, Constants.PIPE));
-		// list.add(type + "|" + sb.toString());
-		// }
-		// }
-		// return list.toArray(new String[list.size()]);
-		return null;
+		if (set.isEmpty())
+		{
+			return null;
+		}
+		return set.toArray(new String[set.size()]);
+	}
+
+	private StringBuilder processUnparse(
+		String type,
+		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> domainMap,
+		String prereqs)
+	{
+		StringBuilder sb = new StringBuilder(type);
+		Set<Integer> levels = domainMap.getSecondaryKeySet(prereqs);
+		for (Integer level : new TreeSet<Integer>(levels))
+		{
+			for (CDOMReference<CDOMList<? extends CDOMObject>> list : domainMap
+				.getTertiaryKeySet(prereqs, level))
+			{
+				sb.append(Constants.PIPE);
+				sb.append(list.getLSTformat());
+				sb.append(Constants.EQUALS);
+				sb.append(level);
+				sb.append(Constants.PIPE);
+				sb.append(ReferenceUtilities.joinLstFormat(domainMap
+					.getListFor(prereqs, level, list), Constants.COMMA));
+			}
+		}
+		if (prereqs != null)
+		{
+			sb.append(Constants.PIPE);
+			sb.append(prereqs);
+		}
+		return sb;
 	}
 
 	private TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> getMap(
