@@ -199,14 +199,6 @@ public class NaturalAttacksLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
-	public void testInvalidSameName() throws PersistenceLayerException
-	{
-		assertFalse(parse("Bite,Weapon.Natural.Melee.Piercing.Slashing,*1,1d10|"
-			+ "Bite,Weapon.Natural.Melee.Piercing.Slashing,*2,1d4"));
-		assertNoSideEffects();
-	}
-
-	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
 		runRoundRobin("Claw,Weapon.Natural.Melee.Piercing.Slashing,2,1d4");
@@ -229,4 +221,13 @@ public class NaturalAttacksLstTest extends AbstractGlobalTokenTestCase
 	{
 		runRoundRobin("Bite,Weapon.Natural.Melee.Piercing.Slashing,*1,1d10|Claw,Weapon.Natural.Melee.Piercing.Slashing,*2,1d4");
 	}
+
+	@Test
+	public void testRoundRobinSameName() throws PersistenceLayerException
+	{
+		runRoundRobin("Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,1d3|"
+			+ "Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing.Slashing,*1,1d4|"
+			+ "Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*1,1d3");
+	}
+
 }

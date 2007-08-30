@@ -413,9 +413,12 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		 * referred to, but this means that duplicates are never being detected
 		 * and resolved... this needs to have a KEY defined, to keep it
 		 * unique... hopefully this is good enough :)
+		 * 
+		 * CONSIDER This really isn't that great, because it's String dependent,
+		 * and may not remove identical items... it certainly works, but is ugly
 		 */
 		anEquip.setKeyName(obj.getClass().getSimpleName() + ","
-			+ obj.getKeyName() + "," + attackName);
+			+ obj.getKeyName() + "," + wpn);
 		/*
 		 * Perhaps the construction above should be through context just to
 		 * guarantee uniqueness of the key?? - that's too paranoid
