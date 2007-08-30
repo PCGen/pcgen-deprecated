@@ -201,4 +201,11 @@ public class AbilityLoader extends GenericLstLoader<Ability>
 	{
 		return AbilityLstToken.class;
 	}
+	
+	@Override
+	protected Ability getMatchingObject(PObject aKey)
+	{
+		return Globals.getAbilityKeyed(((Ability) aKey).getCategory(), aKey
+			.getKeyName());
+	}
 }

@@ -2,6 +2,7 @@ package plugin.lsttokens;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -12,14 +13,15 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CategorizedCDOMReference;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.core.Ability;
-import pcgen.core.Constants;
+import pcgen.core.AbilityCategory;
 import pcgen.core.PObject;
+import pcgen.core.QualifiedObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
@@ -41,7 +43,13 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 
 	public boolean parse(PObject obj, String value, int anInt)
 	{
-		obj.addVirtualFeats(FeatParser.parseVirtualFeatList(value));
+		List<QualifiedObject<String>> vfeatList =
+				FeatParser.parseVirtualFeatListToQualObj(value);
+		for (final QualifiedObject<String> ability : vfeatList)
+		{
+			obj.addAbility(AbilityCategory.FEAT, Ability.Nature.VIRTUAL,
+				ability);
+		}
 		return true;
 	}
 
@@ -70,7 +78,7 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 		{
 			CDOMCategorizedSingleRef<Ability> ability =
 					context.ref.getCDOMReference(ABILITY_CLASS,
-						AbilityCategory.FEAT, token);
+						pcgen.cdom.enumeration.AbilityCategory.FEAT, token);
 			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), obj,
 						ability);
@@ -143,7 +151,7 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken
 						+ getTokenName() + " must be of NORMAL AbilityNature");
 					return null;
 				}
-				if (!AbilityCategory.FEAT
+				if (!pcgen.cdom.enumeration.AbilityCategory.FEAT
 					.equals(((CategorizedCDOMReference<Ability>) ab)
 						.getCDOMCategory()))
 				{

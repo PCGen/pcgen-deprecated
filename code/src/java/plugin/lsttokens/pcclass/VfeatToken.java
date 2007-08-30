@@ -23,6 +23,7 @@ package plugin.lsttokens.pcclass;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -36,18 +37,21 @@ import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.core.Ability;
+import pcgen.core.AbilityCategory;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
+import pcgen.core.QualifiedObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.PCClassUniversalLstToken;
+import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.utils.FeatParser;
 import pcgen.util.Logging;
 
@@ -67,6 +71,28 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 
 	public boolean parse(PCClass pcclass, String value, int level)
 	{
+		List<QualifiedObject<String>> vfeatList =
+				FeatParser.parseVirtualFeatListToQualObj(value);
+		for (final QualifiedObject<String> ability : vfeatList)
+		{
+			String preLevelString = "";
+			try
+			{
+				PreParserFactory factory = PreParserFactory.getInstance();
+				preLevelString =
+						"PRECLASS:1," + pcclass.getKeyName() + "=" + level; //$NON-NLS-1$ //$NON-NLS-2$
+				Prerequisite r = factory.parse(preLevelString);
+				ability.addPrerequisite(r);
+			}
+			catch (PersistenceLayerException notUsed)
+			{
+				Logging.errorPrint("Failed to create level prereq for VFEAT "
+					+ value + ". Prereq was " + preLevelString + ".", notUsed);
+				return false;
+			}
+			pcclass.addAbility(AbilityCategory.FEAT, Ability.Nature.VIRTUAL,
+				ability);
+		}
 		pcclass.addVirtualFeats(level, FeatParser.parseVirtualFeatList(value));
 		return true;
 	}
@@ -101,7 +127,7 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 		{
 			CDOMCategorizedSingleRef<Ability> ability =
 					context.ref.getCDOMReference(ABILITY_CLASS,
-						AbilityCategory.FEAT, token);
+						pcgen.cdom.enumeration.AbilityCategory.FEAT, token);
 			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), obj,
 						ability);
@@ -174,7 +200,7 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 						+ getTokenName() + " must be of VIRTUAL AbilityNature");
 					return null;
 				}
-				if (!AbilityCategory.FEAT
+				if (!pcgen.cdom.enumeration.AbilityCategory.FEAT
 					.equals(((CategorizedCDOMReference<Ability>) ab)
 						.getCDOMCategory()))
 				{

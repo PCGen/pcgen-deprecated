@@ -34,6 +34,7 @@ import pcgen.core.Ability;
 import pcgen.core.Campaign;
 import pcgen.core.Constants;
 import pcgen.core.Globals;
+import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.util.Logging;
@@ -149,4 +150,11 @@ public final class FeatLoader extends AbilityLoader
 		super.parseLine(context, target, lstLine, source);
 		context.ref.reassociateReference(AbilityCategory.FEAT, target);
 	}
+	
+	@Override
+	protected Ability getMatchingObject(PObject aKey)
+	{
+		return getObjectKeyed(aKey.getKeyName());
+	}
+	
 }

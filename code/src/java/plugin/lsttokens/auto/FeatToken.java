@@ -61,6 +61,8 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 	public boolean parse(PObject target, String value, int level)
 	{
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		
+		tok.nextToken(); // Throw away FEAT
 
 		ArrayList<Prerequisite> preReqs = new ArrayList<Prerequisite>();
 		if (level > -9)
