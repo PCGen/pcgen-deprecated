@@ -11152,12 +11152,18 @@ BEGIN {
         # Do this check no matter what - valid any time
         if ( $filetype eq "RACE"
            && not ( exists $line_ref->{'RACETYPE'} )
-           && not ( exists $line_ref->{'TYPE'} )
-        ) { ewarn (WARNING,
-              qq{Race entry missing both TYPE and RACETYPE.},
+           && not ( exists $line_ref->{'TYPE'}  )
+        ) { 
+            # .MOD / .FORGET don't need RACETYPE or TYPE'
+            my $race_name = $line_ref->{'000RaceName'}[0];
+          if ($race_name =~ /.FORGET$|.MOD$/) {
+          } else
+          {	ewarn (WARNING,
+              qq{Race entry missing both TYPE and RACETYPE. "$line_ref->{'000RaceName'}[0]"},
                   $file_for_error,
                   $line_for_error
                 );
+          }
         };
 
         if (   $conversion_enable{'RACE:TYPE to RACETYPE'}
@@ -14560,9 +14566,13 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.39 -- -- NOT YET RELEASED
 
+[ 1784583 ] .MOD .FORGET races don't need RACETYPE or TYPE
+
 [ 1718370 ] SHOWINMENU tag missing for PCC files
 
 [ 1722300 ] ABILITY tag in different locations
+
+[ 1722847 ] AUTO:WEAPONPROF in equipment.lst
 
 =head2 v1.38 -- 2007.04.26
 
