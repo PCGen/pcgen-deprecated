@@ -11159,7 +11159,7 @@ BEGIN {
           if ($race_name =~ /.FORGET$|.MOD$/) {
           } else
           {	ewarn (WARNING,
-              qq{Race entry missing both TYPE and RACETYPE. "$line_ref->{'000RaceName'}[0]"},
+              qq{Race entry missing both TYPE and RACETYPE.},
                   $file_for_error,
                   $line_for_error
                 );
