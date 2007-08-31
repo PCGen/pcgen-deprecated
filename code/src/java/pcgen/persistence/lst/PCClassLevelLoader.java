@@ -49,7 +49,7 @@ public class PCClassLevelLoader
 			if (levelToken == null)
 			{
 				if (processLevelCompatible(context, pcclass, key, value,
-					source, level))
+					level))
 				{
 					context.commit();
 				}
@@ -72,7 +72,7 @@ public class PCClassLevelLoader
 					context.decommit();
 					Logging.markParseMessages();
 					if (processLevelCompatible(context, pcclass, key, value,
-						source, level))
+						level))
 					{
 						context.commit();
 						Logging.clearParseMessages();
@@ -96,8 +96,7 @@ public class PCClassLevelLoader
 			new ReverseIntegerComparator();
 
 	private static boolean processLevelCompatible(LoadContext context,
-		PCClass pcclass, String key, String value, CampaignSourceEntry source,
-		int level)
+		PCClass pcclass, String key, String value, int level)
 	{
 		Collection<PCClassLevelLstCompatibilityToken> tokens =
 				TokenStore.inst().getCompatibilityToken(

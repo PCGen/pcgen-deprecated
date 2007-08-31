@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.util.MapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -291,17 +289,16 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new GrantActor<PCTemplate>());
-		AssociatedPrereqObject edge =
-				context.getGraphContext().grant(getTokenName(), obj, container);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+		context.getGraphContext().grant(getTokenName(), obj, container);
+		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
-		edge.setAssociation(AssociationKey.ABILITY_CATEGORY, ac);
-		edge.setAssociation(AssociationKey.ABILITY_NATURE, nat);
+		container.setAssociation(AssociationKey.ABILITY_CATEGORY, ac);
+		container.setAssociation(AssociationKey.ABILITY_NATURE, nat);
 		ReferenceChoiceSet<Ability> rcs = new ReferenceChoiceSet<Ability>(refs);
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("ADD", rcs);
-		edge.setAssociation(AssociationKey.CHOICE, cs);
+		container.setChoiceSet(cs);
 		return true;
 	}
 
@@ -314,15 +311,13 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				grantChanges.getAddedAssociations();
-		if (mtl == null || mtl.isEmpty())
+		if (!grantChanges.hasAddedItems())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : mtl.getKeySet())
+		for (LSTWriteable lstw : grantChanges.getAdded())
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!"ADD".equals(container.getName()))
@@ -331,50 +326,46 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 					+ container.getName());
 				continue;
 			}
-			List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
-			for (AssociatedPrereqObject assoc : assocList)
+			ChoiceSet<?> cs = container.getChoiceSet();
+			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
 			{
-				ChoiceSet<?> cs = assoc.getAssociation(AssociationKey.CHOICE);
-				if (ABILITY_CLASS.equals(cs.getChoiceClass()))
+				AbilityNature nat =
+						container.getAssociation(AssociationKey.ABILITY_NATURE);
+				if (nat == null)
 				{
-					AbilityNature nat =
-							assoc.getAssociation(AssociationKey.ABILITY_NATURE);
-					if (nat == null)
-					{
-						context
-							.addWriteMessage("Unable to find Nature for GrantFactory");
-						return null;
-					}
-					AbilityCategory cat =
-							assoc
-								.getAssociation(AssociationKey.ABILITY_CATEGORY);
-					if (cat == null)
-					{
-						context
-							.addWriteMessage("Unable to find Category for GrantFactory");
-						return null;
-					}
-					Formula f =
-							assoc.getAssociation(AssociationKey.CHOICE_COUNT);
-					if (f == null)
-					{
-						context.addWriteMessage("Unable to find "
-							+ getTokenName() + " Count");
-						return null;
-					}
-					String fString = f.toString();
-					StringBuilder sb = new StringBuilder();
-					if (!"1".equals(fString))
-					{
-						sb.append(fString).append(Constants.PIPE);
-					}
-					sb.append(cat).append(Constants.PIPE);
-					sb.append(nat).append(Constants.PIPE);
-					sb.append(cs.getLSTformat());
-					addStrings.add(sb.toString());
-
-					// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+					context
+						.addWriteMessage("Unable to find Nature for GrantFactory");
+					return null;
 				}
+				AbilityCategory cat =
+						container
+							.getAssociation(AssociationKey.ABILITY_CATEGORY);
+				if (cat == null)
+				{
+					context
+						.addWriteMessage("Unable to find Category for GrantFactory");
+					return null;
+				}
+				Formula f =
+						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
+				{
+					context.addWriteMessage("Unable to find " + getTokenName()
+						+ " Count");
+					return null;
+				}
+				String fString = f.toString();
+				StringBuilder sb = new StringBuilder();
+				if (!"1".equals(fString))
+				{
+					sb.append(fString).append(Constants.PIPE);
+				}
+				sb.append(cat).append(Constants.PIPE);
+				sb.append(nat).append(Constants.PIPE);
+				sb.append(cs.getLSTformat());
+				addStrings.add(sb.toString());
+
+				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);

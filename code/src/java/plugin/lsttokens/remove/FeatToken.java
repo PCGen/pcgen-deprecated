@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.util.MapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -157,8 +155,7 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 			else if ("CHOICE".equalsIgnoreCase(token))
 			{
 				PrimitiveChoiceSet chooser =
-						ChooseLoader.parseToken(
-							context, obj, "FEAT", "PC");
+						ChooseLoader.parseToken(context, obj, "FEAT", "PC");
 				if (chooser == null)
 				{
 					Logging.errorPrint("Internal Error: REMOVE:"
@@ -212,18 +209,17 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 
 		ChooseActionContainer container = new ChooseActionContainer("REMOVE");
 		container.addActor(new RemoveActor());
-		AssociatedPrereqObject edge =
-				context.getGraphContext().grant(getTokenName(), obj, container);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+		context.getGraphContext().grant(getTokenName(), obj, container);
+		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
-		edge.setAssociation(AssociationKey.ABILITY_CATEGORY,
+		container.setAssociation(AssociationKey.ABILITY_CATEGORY,
 			AbilityCategory.FEAT);
-		edge
-			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
+		container.setAssociation(AssociationKey.ABILITY_NATURE,
+			AbilityNature.NORMAL);
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("REMOVE", pcs);
-		edge.setAssociation(AssociationKey.CHOICE, cs);
+		container.setChoiceSet(cs);
 		return true;
 	}
 
@@ -234,18 +230,15 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 					obj, ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
-			System.err.println(1);
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				grantChanges.getAddedAssociations();
-		if (mtl == null || mtl.isEmpty())
+		if (!grantChanges.hasAddedItems())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> removeStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : mtl.getKeySet())
+		for (LSTWriteable lstw : grantChanges.getAdded())
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!"REMOVE".equals(container.getName()))
@@ -254,19 +247,11 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 					+ container.getName());
 				continue;
 			}
-			List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
-			if (assocList.size() != 1)
-			{
-				context
-					.addWriteMessage("Only one Association to a CHOOSE can be made per object");
-				return null;
-			}
-			AssociatedPrereqObject assoc = assocList.get(0);
-			ChoiceSet<?> cs = assoc.getAssociation(AssociationKey.CHOICE);
+			ChoiceSet<?> cs = container.getChoiceSet();
 			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
 			{
 				AbilityNature nat =
-						assoc.getAssociation(AssociationKey.ABILITY_NATURE);
+						container.getAssociation(AssociationKey.ABILITY_NATURE);
 				if (nat == null)
 				{
 					context
@@ -274,7 +259,8 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 					return null;
 				}
 				AbilityCategory cat =
-						assoc.getAssociation(AssociationKey.ABILITY_CATEGORY);
+						container
+							.getAssociation(AssociationKey.ABILITY_CATEGORY);
 				if (cat == null)
 				{
 					context
@@ -287,7 +273,8 @@ public class FeatToken extends AbstractToken implements RemoveLstToken
 					// can't handle those here!
 					continue;
 				}
-				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f =
+						container.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
 					context.addWriteMessage("Unable to find " + getTokenName()

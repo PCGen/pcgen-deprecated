@@ -92,7 +92,11 @@ public class StatToken extends AbstractToken implements ChooseLstToken,
 	{
 		String newValue = null;
 		// null means no args - use all stats - legal
-		if (value != null)
+		if (value == null)
+		{
+			newValue = "ALL";
+		}
+		else
 		{
 			if (value.indexOf('[') != -1)
 			{

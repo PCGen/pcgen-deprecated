@@ -19,12 +19,21 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.core.Race;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class RaceToken implements ChooseLstToken
+public class RaceToken extends AbstractToken implements ChooseLstToken,
+		ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -47,22 +56,8 @@ public class RaceToken implements ChooseLstToken
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (value.charAt(0) == '|')
+		if (hasIllegalSeparator('|', value))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
-			return false;
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
-			return false;
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
@@ -88,8 +83,30 @@ public class RaceToken implements ChooseLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "RACE";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		return ChooseLoader.parseToken(context, Race.class, value);
 	}
 }

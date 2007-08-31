@@ -19,12 +19,21 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.core.spell.Spell;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class EqBuilderSpellToken implements ChooseLstToken
+public class EqBuilderSpellToken implements ChooseLstToken,
+		ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -118,5 +127,67 @@ public class EqBuilderSpellToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "EQBUILDER.SPELL";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		if (value == null)
+		{
+			return ChooseLoader.parseToken(context, Spell.class, "ALL");
+		}
+		else
+		{
+			StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+
+			Type spellType = Type.getConstant(st.nextToken());
+			boolean anyType =
+					spellType.equals(Type.getConstant("ANY"))
+						|| spellType.equals(Type.getConstant("ANY"));
+
+			Integer minimumLevel;
+			Integer maxLevel;
+			// List<String> subTypeList = new ArrayList<String>();
+			while (st.hasMoreTokens())
+			{
+				String aString = st.nextToken();
+
+				try
+				{
+					minimumLevel = Integer.parseInt(aString);
+
+					break;
+				}
+				catch (NumberFormatException nfe)
+				{
+					// TODO Need to implement other stuff :P
+					return null;
+					// subTypeList.add(aString);
+				}
+			}
+
+			if (st.hasMoreTokens())
+			{
+				maxLevel = Integer.parseInt(st.nextToken());
+			}
+
+			// TODO a temporary hack
+			return ChooseLoader.parseToken(context, Spell.class, "ALL");
+		}
 	}
 }

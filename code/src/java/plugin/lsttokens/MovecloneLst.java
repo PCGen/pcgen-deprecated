@@ -70,7 +70,7 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 		}
 		else
 		{
-			Logging.errorPrint("Invalid Version of MOVECLONE detected: "
+			Logging.deprecationPrint("Invalid Version of MOVECLONE detected: "
 				+ value + "\n  MOVECLONE now has 3 arguments: "
 				+ "SourceMove,DestinationMove,Modifier");
 			return false;
@@ -90,9 +90,10 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 
 		if (moves.countTokens() != 3)
 		{
-			Logging.errorPrint("Invalid Version of MOVECLONE detected: "
-				+ value + "\n  MOVECLONE now has 3 arguments: "
-				+ "SourceMove,DestinationMove,Modifier");
+			Logging.addParseMessage(Logging.LST_ERROR,
+				"Invalid Version of MOVECLONE detected: " + value
+					+ "\n  MOVECLONE has 3 arguments: "
+					+ "SourceMove,DestinationMove,Modifier");
 			return false;
 		}
 
@@ -106,7 +107,7 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 			int denom = Integer.parseInt(formulaString.substring(1));
 			if (denom <= 0)
 			{
-				Logging.errorPrint(getTokenName()
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 					+ " was expecting a Positive Integer "
 					+ "for dividing Movement, was : "
 					+ formulaString.substring(1));
@@ -119,7 +120,7 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 			int mult = Integer.parseInt(formulaString.substring(1));
 			if (mult <= 0)
 			{
-				Logging.errorPrint(getTokenName()
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 					+ " was expecting a Positive "
 					+ "Integer for multiplying Movement, was : "
 					+ formulaString.substring(1));
@@ -132,7 +133,7 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 			int add = Integer.parseInt(formulaString.substring(1));
 			if (add <= 0)
 			{
-				Logging.errorPrint(getTokenName()
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 					+ " was expecting a Positive "
 					+ "Integer for adding Movement, was : "
 					+ formulaString.substring(1));
@@ -145,7 +146,7 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 			int sub = Integer.parseInt(formulaString);
 			if (sub == 0)
 			{
-				Logging.errorPrint(getTokenName()
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 					+ " was expecting a non-zero "
 					+ "Integer for Movement modifier, was : " + formulaString);
 				return false;
@@ -154,7 +155,7 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 			{
 				form = new SubtractingFormula(-sub);
 			}
-			else 
+			else
 			{
 				form = new AddingFormula(sub);
 			}

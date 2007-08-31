@@ -525,8 +525,8 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP3");
-		runRoundRobin(getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP3",
-			getSubTokenString() + "|Mutation|AUTOMATIC|TestWP1,TestWP2");
+		runRoundRobin(getSubTokenString() + "|Mutation|NORMAL|TestWP1,TestWP2",
+			getSubTokenString() + "|Mutation|AUTOMATIC|TestWP1,TestWP3");
 	}
 
 }

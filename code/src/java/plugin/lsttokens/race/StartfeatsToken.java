@@ -22,11 +22,8 @@
 package plugin.lsttokens.race;
 
 import java.util.Collections;
-import java.util.List;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.util.MapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
@@ -117,24 +114,22 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		ChooseActionContainer container =
 				new ChooseActionContainer(getTokenName());
 		container.addActor(new GrantActor<PCTemplate>());
-		AssociatedPrereqObject edge =
-				context.getGraphContext()
-					.grant(getTokenName(), race, container);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+		context.getGraphContext().grant(getTokenName(), race, container);
+		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(featCount));
-		edge.setAssociation(AssociationKey.ABILITY_CATEGORY,
+		container.setAssociation(AssociationKey.ABILITY_CATEGORY,
 			AbilityCategory.FEAT);
-		edge
-			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
+		container.setAssociation(AssociationKey.ABILITY_NATURE,
+			AbilityNature.NORMAL);
 		CDOMGroupRef<Ability> ref =
 				context.ref.getCDOMAllReference(ABILITY_CLASS,
 					AbilityCategory.FEAT);
 		ReferenceChoiceSet<Ability> rcs =
 				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
 		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
-		edge.setAssociation(AssociationKey.CHOICE, cs);
+		container.setChoiceSet(cs);
 
 		/*
 		 * This prereq exists solely to prevent the ability to select Feats
@@ -145,7 +140,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		 */
 		Prerequisite prereq =
 				getPrerequisite("PREMULT:1,[PRELEVEL:1],[PREHD:1+]");
-		edge.addPrerequisite(prereq);
+		container.addPrerequisite(prereq);
 		return true;
 	}
 
@@ -158,15 +153,13 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				grantChanges.getAddedAssociations();
-		if (mtl == null || mtl.isEmpty())
+		if (!grantChanges.hasAddedItems())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		String returnString = null;
-		for (LSTWriteable lstw : mtl.getKeySet())
+		for (LSTWriteable lstw : grantChanges.getAdded())
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (getTokenName().equals(container.getName()))
@@ -184,19 +177,11 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 					+ container.getName());
 				continue;
 			}
-			List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
-			if (assocList.size() != 1)
-			{
-				context
-					.addWriteMessage("Only one Association to a CHOOSE can be made per object");
-				return null;
-			}
-			AssociatedPrereqObject assoc = assocList.get(0);
-			ChoiceSet<?> cs = assoc.getAssociation(AssociationKey.CHOICE);
+			ChoiceSet<?> cs = container.getChoiceSet();
 			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
 			{
 				AbilityNature nat =
-						assoc.getAssociation(AssociationKey.ABILITY_NATURE);
+						container.getAssociation(AssociationKey.ABILITY_NATURE);
 				if (nat == null)
 				{
 					context
@@ -204,7 +189,8 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 					return null;
 				}
 				AbilityCategory cat =
-						assoc.getAssociation(AssociationKey.ABILITY_CATEGORY);
+						container
+							.getAssociation(AssociationKey.ABILITY_CATEGORY);
 				if (cat == null)
 				{
 					context
@@ -217,7 +203,8 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 					// can't handle those here!
 					continue;
 				}
-				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f =
+						container.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
 					context.addWriteMessage("Unable to find " + getTokenName()

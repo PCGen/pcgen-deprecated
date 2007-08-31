@@ -17,13 +17,21 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
+import pcgen.core.Skill;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
 public class NonClassSkillListToken extends AbstractToken implements
-		ChooseLstToken
+		ChooseLstToken, ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -65,5 +73,56 @@ public class NonClassSkillListToken extends AbstractToken implements
 	public String getTokenName()
 	{
 		return "NONCLASSSKILLLIST";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		if (value == null)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " requires additional arguments");
+			return null;
+		}
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return null;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return null;
+		}
+		if (hasIllegalSeparator('|', value))
+		{
+			return null;
+		}
+		if (Constants.LST_LIST.equals(value))
+		{
+			return ChooseLoader.parseToken(context, Skill.class, "CROSSCLASS");
+		}
+		else
+		{
+			return ChooseLoader.parseToken(context, Skill.class, "CROSSCLASS["
+				+ value + ']');
+		}
 	}
 }

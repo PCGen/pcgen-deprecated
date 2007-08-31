@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.util.MapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -165,16 +163,15 @@ public class SkillToken extends AbstractToken implements AddLstToken
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new GrantActor<PCTemplate>());
-		AssociatedPrereqObject edge =
-				context.getGraphContext().grant(getTokenName(), obj, container);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+		context.getGraphContext().grant(getTokenName(), obj, container);
+		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
-		edge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(1));
+		container.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(1));
 		ReferenceChoiceSet<Skill> rcs = new ReferenceChoiceSet<Skill>(refs);
 		ChoiceSet<Skill> cs = new ChoiceSet<Skill>("ADD", rcs);
-		edge.setAssociation(AssociationKey.CHOICE, cs);
+		container.setChoiceSet(cs);
 		return true;
 	}
 
@@ -187,15 +184,13 @@ public class SkillToken extends AbstractToken implements AddLstToken
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				grantChanges.getAddedAssociations();
-		if (mtl == null || mtl.isEmpty())
+		if (!grantChanges.hasAddedItems())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : mtl.getKeySet())
+		for (LSTWriteable lstw : grantChanges.getAdded())
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!"ADD".equals(container.getName()))
@@ -204,31 +199,27 @@ public class SkillToken extends AbstractToken implements AddLstToken
 					+ container.getName());
 				continue;
 			}
-			List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
-			for (AssociatedPrereqObject assoc : assocList)
+			ChoiceSet<?> cs = container.getChoiceSet();
+			if (SKILL_CLASS.equals(cs.getChoiceClass()))
 			{
-				ChoiceSet<?> cs = assoc.getAssociation(AssociationKey.CHOICE);
-				if (SKILL_CLASS.equals(cs.getChoiceClass()))
+				Formula f =
+						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
 				{
-					Formula f =
-							assoc.getAssociation(AssociationKey.CHOICE_COUNT);
-					if (f == null)
-					{
-						context.addWriteMessage("Unable to find "
-							+ getTokenName() + " Count");
-						return null;
-					}
-					String fString = f.toString();
-					StringBuilder sb = new StringBuilder();
-					if (!"1".equals(fString))
-					{
-						sb.append(fString).append(Constants.PIPE);
-					}
-					sb.append(cs.getLSTformat());
-					addStrings.add(sb.toString());
-
-					// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+					context.addWriteMessage("Unable to find " + getTokenName()
+						+ " Count");
+					return null;
 				}
+				String fString = f.toString();
+				StringBuilder sb = new StringBuilder();
+				if (!"1".equals(fString))
+				{
+					sb.append(fString).append(Constants.PIPE);
+				}
+				sb.append(cs.getLSTformat());
+				addStrings.add(sb.toString());
+
+				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);

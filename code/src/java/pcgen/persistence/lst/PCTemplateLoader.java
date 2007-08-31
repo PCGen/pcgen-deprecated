@@ -108,7 +108,7 @@ public final class PCTemplateLoader extends GenericLstLoader<PCTemplate>
 			}
 			else
 			{
-				Logging.errorPrint("Unknown tag '" + colString + "' in "
+				Logging.deprecationPrint("Unknown tag '" + colString + "' in "
 					+ source.toString());
 			}
 		}

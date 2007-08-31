@@ -23,10 +23,10 @@
 package plugin.lstcompatibility.global;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
@@ -226,6 +226,7 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 		{
 			return false;
 		}
+
 		Formula maxFormula =
 				maxCount == null ? FormulaFactory
 					.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
@@ -234,10 +235,10 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 				count == null ? FormulaFactory.getFormulaFor(1)
 					: FormulaFactory.getFormulaFor(count);
 		ChoiceSet<?> cs = new ChoiceSet("Choose", chooser);
-		AssociatedPrereqObject edge =
-				context.getGraphContext().grant(getTokenName(), obj, cs);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
+		ChooseActionContainer container = obj.getChooseContainer();
+		container.setChoiceSet(cs);
+		container.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
+		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		return true;
 	}
 

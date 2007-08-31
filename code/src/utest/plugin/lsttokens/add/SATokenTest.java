@@ -152,8 +152,9 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoAdds() throws PersistenceLayerException
 	{
-		this.runRoundRobin(getSubTokenString() + "|Slot Name|Item,Item Two",
-			getSubTokenString() + "|Slot Too|Item Too,Item Two");
+		//Order seems backwards, but it sorts by list contents, not name
+		this.runRoundRobin(getSubTokenString() + "|Slot Too|Item Too,Item Two",
+			getSubTokenString() + "|Slot Name|Item,Item Two");
 	}
 
 	@Test

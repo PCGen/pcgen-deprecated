@@ -59,7 +59,7 @@ public class CostTokenTest extends AbstractBigDecimalTokenTestCase<Equipment>
 	@Override
 	public boolean isNegativeAllowed()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

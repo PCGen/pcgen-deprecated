@@ -51,12 +51,15 @@ public class CostToken implements EquipmentLstToken
 		try
 		{
 			BigDecimal cost = new BigDecimal(value);
-			if (cost.compareTo(BigDecimal.ZERO) < 0)
-			{
-				Logging.errorPrint(getTokenName()
-					+ " must be a positive number: " + value);
-				return false;
-			}
+			// CONSIDER This apparently is not a requirement, since some items
+			// in the RSRD have negative COST?
+			//
+			// if (cost.compareTo(BigDecimal.ZERO) < 0)
+			// {
+			// Logging.errorPrint(getTokenName()
+			// + " must be a positive number: " + value);
+			// return false;
+			// }
 			context.getObjectContext().put(eq, ObjectKey.COST, cost);
 			return true;
 		}

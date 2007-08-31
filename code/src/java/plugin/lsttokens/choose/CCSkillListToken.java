@@ -17,7 +17,10 @@
  */
 package plugin.lsttokens.choose;
 
+import java.util.StringTokenizer;
+
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
@@ -80,6 +83,10 @@ public class CCSkillListToken extends AbstractToken implements ChooseLstToken,
 		String newValue = "CROSSCLASS";
 		if (value != null)
 		{
+			if (Constants.LST_LIST.equals(value))
+			{
+				return ChooseLoader.parseToken(context, Skill.class, newValue);
+			}
 			if (value.indexOf('|') != -1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
@@ -96,7 +103,22 @@ public class CCSkillListToken extends AbstractToken implements ChooseLstToken,
 			{
 				return null;
 			}
-			newValue += "[" + value + "]";
+			StringBuilder sb = new StringBuilder();
+			sb.append(newValue);
+			sb.append('[');
+			StringTokenizer st = new StringTokenizer(value, Constants.COMMA);
+			boolean needPipe = false;
+			while (st.hasMoreTokens())
+			{
+				if (needPipe)
+				{
+					sb.append(Constants.PIPE);
+				}
+				needPipe = true;
+				sb.append(st.nextToken());
+			}
+			sb.append(']');
+			newValue = sb.toString();
 		}
 		return ChooseLoader.parseToken(context, Skill.class, newValue);
 	}

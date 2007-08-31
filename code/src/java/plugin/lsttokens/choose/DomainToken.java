@@ -63,7 +63,7 @@ public class DomainToken extends AbstractToken implements ChooseLstToken,
 			return false;
 		}
 
-		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		StringTokenizer st = new StringTokenizer(value, Constants.COMMA);
 		while (st.hasMoreTokens())
 		{
 			String tokString = st.nextToken();
@@ -134,7 +134,7 @@ public class DomainToken extends AbstractToken implements ChooseLstToken,
 		}
 
 		List<String> argList = new ArrayList<String>();
-		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		StringTokenizer st = new StringTokenizer(value, Constants.COMMA);
 		while (st.hasMoreTokens())
 		{
 			String tokString = st.nextToken();

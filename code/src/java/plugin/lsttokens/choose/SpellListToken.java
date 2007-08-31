@@ -25,6 +25,10 @@ import pcgen.util.Logging;
 public class SpellListToken extends AbstractToken implements ChooseLstToken
 {
 
+	/*
+	 * Compatibility is in plugin.lstcompatibility.global
+	 */
+
 	public boolean parse(PObject po, String prefix, String value)
 	{
 		if (value == null)

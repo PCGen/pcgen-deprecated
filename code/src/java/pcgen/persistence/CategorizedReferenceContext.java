@@ -17,11 +17,11 @@
  */
 package pcgen.persistence;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import pcgen.base.lang.CaseInsensitiveString;
 import pcgen.base.util.TripleKeyMap;
 import pcgen.base.util.TripleKeyMapToInstanceList;
 import pcgen.cdom.base.CDOMCategorizedSingleRef;
@@ -39,35 +39,37 @@ import pcgen.util.PropertyFactory;
 public class CategorizedReferenceContext
 {
 
-	private TripleKeyMapToInstanceList<Class, Category, String, CategorizedCDOMObject> duplicates =
-			new TripleKeyMapToInstanceList<Class, Category, String, CategorizedCDOMObject>();
+	private TripleKeyMapToInstanceList<Class, Category, CaseInsensitiveString, CategorizedCDOMObject> duplicates =
+			new TripleKeyMapToInstanceList<Class, Category, CaseInsensitiveString, CategorizedCDOMObject>();
 
-	private TripleKeyMap<Class, Category, String, CategorizedCDOMObject> active =
-			new TripleKeyMap<Class, Category, String, CategorizedCDOMObject>();
+	private TripleKeyMap<Class, Category, CaseInsensitiveString, CategorizedCDOMObject> active =
+			new TripleKeyMap<Class, Category, CaseInsensitiveString, CategorizedCDOMObject>();
 
-	private TripleKeyMap<Class, Category, String, CDOMCategorizedSingleRef> referenced =
-			new TripleKeyMap<Class, Category, String, CDOMCategorizedSingleRef>();
+	private TripleKeyMap<Class, Category, CaseInsensitiveString, CDOMCategorizedSingleRef> referenced =
+			new TripleKeyMap<Class, Category, CaseInsensitiveString, CDOMCategorizedSingleRef>();
 
 	public <T extends CategorizedCDOMObject<T>> void registerWithKey(
 		Class<T> cl, Category<T> cat, T obj, String key)
 	{
-		if (active.containsKey(cl, cat, key))
+		CaseInsensitiveString cis = new CaseInsensitiveString(key);
+		if (active.containsKey(cl, cat, cis))
 		{
-			duplicates.addToListFor(cl, cat, key, obj);
+			duplicates.addToListFor(cl, cat, cis, obj);
 		}
 		else
 		{
-			active.put(cl, cat, key, obj);
+			active.put(cl, cat, cis, obj);
 		}
 	}
 
 	public <T extends PObject & CategorizedCDOMObject<T>> T silentlyGetConstructedCDOMObject(
 		Class<T> c, Category<T> cat, String val)
 	{
-		CategorizedCDOMObject po = active.get(c, cat, val);
+		CaseInsensitiveString cis = new CaseInsensitiveString(val);
+		CategorizedCDOMObject<?> po = active.get(c, cat, cis);
 		if (po != null)
 		{
-			if (duplicates.containsListFor(c, cat, val))
+			if (duplicates.containsListFor(c, cat, cis))
 			{
 				Logging.errorPrint("Reference to Constructed "
 					+ c.getSimpleName() + " " + val + " is ambiguous");
@@ -126,33 +128,34 @@ public class CategorizedReferenceContext
 		String value, T obj)
 	{
 		String oldKey = obj.getKeyName();
-		if (oldKey.equals(value))
+		if (oldKey.equalsIgnoreCase(value))
 		{
 			Logging.errorPrint("Worthless Key change encountered: "
 				+ obj.getDisplayName() + " " + oldKey);
 		}
+		CaseInsensitiveString cis = new CaseInsensitiveString(oldKey);
 		Class<T> cl = (Class<T>) obj.getClass();
 		Category<T> cat = obj.getCDOMCategory();
-		if (active.get(cl, cat, oldKey).equals(obj))
+		if (active.get(cl, cat, cis).equals(obj))
 		{
 			List<CategorizedCDOMObject> list =
-					duplicates.getListFor(cl, cat, oldKey);
+					duplicates.getListFor(cl, cat, cis);
 			if (list == null)
 			{
 				// No replacement
-				active.remove(cl, cat, oldKey);
+				active.remove(cl, cat, cis);
 			}
 			else
 			{
 				CategorizedCDOMObject newActive =
-						duplicates.getItemFor(cl, cat, oldKey, 0);
-				duplicates.removeFromListFor(cl, cat, oldKey, newActive);
-				active.put(cl, cat, oldKey, newActive);
+						duplicates.getItemFor(cl, cat, cis, 0);
+				duplicates.removeFromListFor(cl, cat, cis, newActive);
+				active.put(cl, cat, cis, newActive);
 			}
 		}
 		else
 		{
-			duplicates.removeFromListFor(cl, cat, oldKey, obj);
+			duplicates.removeFromListFor(cl, cat, cis, obj);
 		}
 		obj.setKeyName(value);
 		registerWithKey(cl, cat, obj, value);
@@ -170,26 +173,27 @@ public class CategorizedReferenceContext
 		}
 		Class<T> cl = (Class<T>) obj.getClass();
 		String key = obj.getKeyName();
-		if (active.get(cl, oldCat, key).equals(obj))
+		CaseInsensitiveString cis = new CaseInsensitiveString(key);
+		if (active.get(cl, oldCat, cis).equals(obj))
 		{
 			List<CategorizedCDOMObject> list =
-					duplicates.getListFor(cl, oldCat, key);
+					duplicates.getListFor(cl, oldCat, cis);
 			if (list == null)
 			{
 				// No replacement
-				active.remove(cl, oldCat, key);
+				active.remove(cl, oldCat, cis);
 			}
 			else
 			{
 				CategorizedCDOMObject newActive =
-						duplicates.getItemFor(cl, oldCat, key, 0);
-				duplicates.removeFromListFor(cl, oldCat, key, newActive);
-				active.put(cl, oldCat, key, newActive);
+						duplicates.getItemFor(cl, oldCat, cis, 0);
+				duplicates.removeFromListFor(cl, oldCat, cis, newActive);
+				active.put(cl, oldCat, cis, newActive);
 			}
 		}
 		else
 		{
-			duplicates.removeFromListFor(cl, oldCat, key, obj);
+			duplicates.removeFromListFor(cl, oldCat, cis, obj);
 		}
 		obj.setCDOMCategory(cat);
 		registerWithKey(cl, cat, obj, key);
@@ -198,8 +202,9 @@ public class CategorizedReferenceContext
 	public <T extends PObject & CategorizedCDOMObject<T>> void forgetCDOMObjectKeyed(
 		Class<T> cl, Category<T> cat, String forgetKey)
 	{
-		active.remove(cl, cat, forgetKey);
-		duplicates.removeListFor(cl, cat, forgetKey);
+		CaseInsensitiveString cis = new CaseInsensitiveString(forgetKey);
+		active.remove(cl, cat, cis);
+		duplicates.removeListFor(cl, cat, cis);
 	}
 
 	public <T extends PObject & CategorizedCDOMObject<T>> Set<T> getConstructedCDOMObjects(
@@ -212,7 +217,7 @@ public class CategorizedReferenceContext
 	public <T extends PObject & CategorizedCDOMObject<T>> boolean containsConstructedCDOMObject(
 		Class<T> name, Category<T> cat, String key)
 	{
-		return active.containsKey(name, cat, key);
+		return active.containsKey(name, cat, new CaseInsensitiveString(key));
 	}
 
 	public <T extends CategorizedCDOMObject<T>> T cloneConstructedCDOMObject(
@@ -304,11 +309,12 @@ public class CategorizedReferenceContext
 			}
 		}
 
-		CDOMCategorizedSingleRef<T> ref = referenced.get(c, cat, val);
+		CaseInsensitiveString cis = new CaseInsensitiveString(val);
+		CDOMCategorizedSingleRef<T> ref = referenced.get(c, cat, cis);
 		if (ref == null)
 		{
 			ref = new CDOMCategorizedSingleRef<T>(c, cat, val);
-			referenced.put(c, cat, val, ref);
+			referenced.put(c, cat, cis, ref);
 		}
 		return ref;
 	}
@@ -320,7 +326,8 @@ public class CategorizedReferenceContext
 		{
 			for (Category key2 : duplicates.getSecondaryKeySet(key1))
 			{
-				for (String second : duplicates.getTertiaryKeySet(key1, key2))
+				for (CaseInsensitiveString second : duplicates
+					.getTertiaryKeySet(key1, key2))
 				{
 					if (SettingsHandler.isAllowOverride())
 					{
@@ -372,10 +379,11 @@ public class CategorizedReferenceContext
 		{
 			for (Category cat : active.getSecondaryKeySet(key1))
 			{
-				for (String s : active.getTertiaryKeySet(key1, cat))
+				for (CaseInsensitiveString s : active.getTertiaryKeySet(key1,
+					cat))
 				{
 					String keyName = active.get(key1, cat, s).getKeyName();
-					if (!keyName.equals(s))
+					if (!keyName.equals(s.toString()))
 					{
 						Logging.errorPrint("Magical Key Change: " + s + " to "
 							+ keyName);
@@ -392,13 +400,14 @@ public class CategorizedReferenceContext
 		boolean returnGood = true;
 		for (Class cl : referenced.getKeySet())
 		{
-			//System.err.println(cl);
+			// System.err.println(cl);
 			for (Category cat : referenced.getSecondaryKeySet(cl))
 			{
-				//System.err.println(cat);
-				for (String s : referenced.getTertiaryKeySet(cl, cat))
+				// System.err.println(cat);
+				for (CaseInsensitiveString s : referenced.getTertiaryKeySet(cl,
+					cat))
 				{
-					//System.err.println(s);
+					// System.err.println(s);
 					if (!active.containsKey(cl, cat, s))
 					{
 						Logging.errorPrint("Unconstructed Reference: "

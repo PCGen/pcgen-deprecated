@@ -17,11 +17,19 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.core.PCClass;
 import pcgen.core.PObject;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class SpellClassesToken implements ChooseLstToken
+public class SpellClassesToken implements ChooseLstToken,
+		ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -45,5 +53,27 @@ public class SpellClassesToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SPELLCLASSES";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		return ChooseLoader.parseToken(context, PCClass.class,
+			"PC[SPELLCASTER]");
 	}
 }

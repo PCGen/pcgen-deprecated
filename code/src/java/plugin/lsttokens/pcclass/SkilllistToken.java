@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.base.util.MapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -106,14 +104,14 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 		int pipeLoc = value.indexOf('|');
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint(getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 				+ " may not have only one pipe separated argument: " + value);
 			return false;
 		}
 		if (pipeLoc != value.lastIndexOf('|'))
 		{
-			Logging.errorPrint(getTokenName() + " may have only one pipe: "
-				+ value);
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				+ " may have only one pipe: " + value);
 			return false;
 		}
 
@@ -128,15 +126,15 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 			count = Integer.parseInt(value.substring(0, pipeLoc));
 			if (count <= 0)
 			{
-				Logging.errorPrint("Number in " + getTokenName()
-					+ " must be greater than zero: " + value);
+				Logging.addParseMessage(Logging.LST_ERROR, "Number in "
+					+ getTokenName() + " must be greater than zero: " + value);
 				return false;
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
-			Logging.errorPrint("Invalid Number in " + getTokenName() + ": "
-				+ value);
+			Logging.addParseMessage(Logging.LST_ERROR, "Invalid Number in "
+				+ getTokenName() + ": " + value);
 			return false;
 		}
 
@@ -166,25 +164,25 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 
 		if (foundAny && foundOther)
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+			Logging.addParseMessage(Logging.LST_ERROR, "Non-sensical "
+				+ getTokenName() + ": Contains ANY and a specific reference: "
+				+ value);
 			return false;
 		}
 
 		ChooseActionContainer container =
 				new ChooseActionContainer(getTokenName());
 		container.addActor(new GrantActor<PCTemplate>());
-		AssociatedPrereqObject edge =
-				context.getGraphContext().grant(getTokenName(), pcc, container);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+		context.getGraphContext().grant(getTokenName(), pcc, container);
+		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
 		ReferenceChoiceSet<ClassSkillList> rcs =
 				new ReferenceChoiceSet<ClassSkillList>(refs);
 		ChoiceSet<ClassSkillList> cs =
 				new ChoiceSet<ClassSkillList>(getTokenName(), rcs);
-		edge.setAssociation(AssociationKey.CHOICE, cs);
+		container.setChoiceSet(cs);
 		return true;
 	}
 
@@ -197,15 +195,13 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				grantChanges.getAddedAssociations();
-		if (mtl == null || mtl.isEmpty())
+		if (!grantChanges.hasAddedItems())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : mtl.getKeySet())
+		for (LSTWriteable lstw : grantChanges.getAdded())
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!getTokenName().equals(container.getName()))
@@ -214,18 +210,11 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 					+ container.getName());
 				continue;
 			}
-			List<AssociatedPrereqObject> assocList = mtl.getListFor(lstw);
-			if (assocList.size() != 1)
-			{
-				context
-					.addWriteMessage("Only one Association to a CHOOSE can be made per object");
-				return null;
-			}
-			AssociatedPrereqObject assoc = assocList.get(0);
-			ChoiceSet<?> cs = assoc.getAssociation(AssociationKey.CHOICE);
+			ChoiceSet<?> cs = container.getChoiceSet();
 			if (SKILLLIST_CLASS.equals(cs.getChoiceClass()))
 			{
-				Formula f = assoc.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f =
+						container.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
 					context.addWriteMessage("Unable to find " + getTokenName()

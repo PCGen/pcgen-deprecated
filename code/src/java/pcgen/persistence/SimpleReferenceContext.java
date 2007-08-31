@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import pcgen.base.lang.CaseInsensitiveString;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToInstanceList;
 import pcgen.base.util.HashMapToList;
@@ -36,24 +37,23 @@ import pcgen.core.PCStat;
 import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
 import pcgen.core.SizeAdjustment;
-import pcgen.core.SystemCollections;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
 public class SimpleReferenceContext
 {
 
-	private DoubleKeyMapToInstanceList<Class, String, PObject> duplicates =
-			new DoubleKeyMapToInstanceList<Class, String, PObject>();
+	private DoubleKeyMapToInstanceList<Class, CaseInsensitiveString, PObject> duplicates =
+			new DoubleKeyMapToInstanceList<Class, CaseInsensitiveString, PObject>();
 
-	private DoubleKeyMap<Class, String, PObject> active =
-			new DoubleKeyMap<Class, String, PObject>();
+	private DoubleKeyMap<Class, CaseInsensitiveString, PObject> active =
+			new DoubleKeyMap<Class, CaseInsensitiveString, PObject>();
 
-	private HashMapToList<Class, String> deferred =
-			new HashMapToList<Class, String>();
+	private HashMapToList<Class, CaseInsensitiveString> deferred =
+			new HashMapToList<Class, CaseInsensitiveString>();
 
-	private DoubleKeyMap<Class, String, CDOMSimpleSingleRef> referenced =
-			new DoubleKeyMap<Class, String, CDOMSimpleSingleRef>();
+	private DoubleKeyMap<Class, CaseInsensitiveString, CDOMSimpleSingleRef> referenced =
+			new DoubleKeyMap<Class, CaseInsensitiveString, CDOMSimpleSingleRef>();
 
 	private DoubleKeyMap<CDOMObject, Class, CDOMAddressedSingleRef> addressed =
 			new DoubleKeyMap<CDOMObject, Class, CDOMAddressedSingleRef>();
@@ -69,35 +69,39 @@ public class SimpleReferenceContext
 		List<PCStat> statList = game.getUnmodifiableStatList();
 		for (PCStat stat : statList)
 		{
-			active.put(PCStat.class, stat.getAbb(), stat);
+			active.put(PCStat.class, new CaseInsensitiveString(stat.getAbb()),
+				stat);
 		}
 		for (int i = 0; i < game.getSizeAdjustmentListSize(); i++)
 		{
 			SizeAdjustment sa = game.getSizeAdjustmentAtIndex(i);
-			active.put(SizeAdjustment.class, sa.getAbbreviation(), sa);
+			active.put(SizeAdjustment.class, new CaseInsensitiveString(sa
+				.getAbbreviation()), sa);
 		}
 	}
 
 	public <T extends PObject> void registerWithKey(Class<T> cl, T obj,
 		String key)
 	{
-		if (active.containsKey(cl, key))
+		CaseInsensitiveString cik = new CaseInsensitiveString(key);
+		if (active.containsKey(cl, cik))
 		{
-			duplicates.addToListFor(cl, key, obj);
+			duplicates.addToListFor(cl, cik, obj);
 		}
 		else
 		{
-			active.put(cl, key, obj);
+			active.put(cl, cik, obj);
 		}
 	}
 
 	public <T extends PObject> T silentlyGetConstructedCDOMObject(Class<T> c,
 		String val)
 	{
-		PObject po = active.get(c, val);
+		CaseInsensitiveString civ = new CaseInsensitiveString(val);
+		PObject po = active.get(c, civ);
 		if (po != null)
 		{
-			if (duplicates.containsListFor(c, val))
+			if (duplicates.containsListFor(c, civ))
 			{
 				Logging.errorPrint("Reference to Constructed "
 					+ c.getSimpleName() + " " + val + " is ambiguous");
@@ -157,35 +161,36 @@ public class SimpleReferenceContext
 	public <T extends PObject> void reassociateReference(String value, T obj)
 	{
 		String oldKey = obj.getKeyName();
-		if (oldKey.equals(value))
+		if (oldKey.equalsIgnoreCase(value))
 		{
 			Logging.errorPrint("Worthless Key change encountered: "
 				+ obj.getDisplayName() + " " + oldKey);
 		}
 		Class<T> cl = (Class<T>) obj.getClass();
-		PObject act = active.get(cl, oldKey);
+		CaseInsensitiveString ocik = new CaseInsensitiveString(oldKey);
+		PObject act = active.get(cl, ocik);
 		if (act == null)
 		{
 			throw new InternalError("Did not find " + obj + " under " + oldKey);
 		}
 		if (act.equals(obj))
 		{
-			List<PObject> list = duplicates.getListFor(cl, oldKey);
+			List<PObject> list = duplicates.getListFor(cl, ocik);
 			if (list == null)
 			{
 				// No replacement
-				active.remove(cl, oldKey);
+				active.remove(cl, ocik);
 			}
 			else
 			{
-				PObject newActive = duplicates.getItemFor(cl, oldKey, 0);
-				duplicates.removeFromListFor(cl, oldKey, newActive);
-				active.put(cl, oldKey, newActive);
+				PObject newActive = duplicates.getItemFor(cl, ocik, 0);
+				duplicates.removeFromListFor(cl, ocik, newActive);
+				active.put(cl, ocik, newActive);
 			}
 		}
 		else
 		{
-			duplicates.removeFromListFor(cl, oldKey, obj);
+			duplicates.removeFromListFor(cl, ocik, obj);
 		}
 		obj.setKeyName(value);
 		registerWithKey(cl, obj, value);
@@ -194,8 +199,9 @@ public class SimpleReferenceContext
 	public <T extends PObject> void forgetCDOMObjectKeyed(Class<T> cl,
 		String forgetKey)
 	{
-		active.remove(cl, forgetKey);
-		duplicates.removeListFor(cl, forgetKey);
+		CaseInsensitiveString cis = new CaseInsensitiveString(forgetKey);
+		active.remove(cl, cis);
+		duplicates.removeListFor(cl, cis);
 	}
 
 	public <T extends PObject> Set<T> getConstructedCDOMObjects(Class<T> name)
@@ -206,7 +212,7 @@ public class SimpleReferenceContext
 	public <T extends PObject> boolean containsConstructedCDOMObject(
 		Class<T> name, String key)
 	{
-		return active.containsKey(name, key);
+		return active.containsKey(name, new CaseInsensitiveString(key));
 	}
 
 	public <T extends PObject> T cloneConstructedCDOMObject(Class<T> cl, T obj,
@@ -295,11 +301,12 @@ public class SimpleReferenceContext
 			}
 		}
 
-		CDOMSimpleSingleRef<T> ref = referenced.get(c, val);
+		CaseInsensitiveString cis = new CaseInsensitiveString(val);
+		CDOMSimpleSingleRef<T> ref = referenced.get(c, cis);
 		if (ref == null)
 		{
 			ref = new CDOMSimpleSingleRef<T>(c, val);
-			referenced.put(c, val, ref);
+			referenced.put(c, cis, ref);
 		}
 		return ref;
 	}
@@ -309,7 +316,8 @@ public class SimpleReferenceContext
 		boolean returnGood = true;
 		for (Class key1 : duplicates.getKeySet())
 		{
-			for (String second : duplicates.getSecondaryKeySet(key1))
+			for (CaseInsensitiveString second : duplicates
+				.getSecondaryKeySet(key1))
 			{
 				if (SettingsHandler.isAllowOverride())
 				{
@@ -351,10 +359,10 @@ public class SimpleReferenceContext
 		}
 		for (Class key1 : active.getKeySet())
 		{
-			for (String second : active.getSecondaryKeySet(key1))
+			for (CaseInsensitiveString second : active.getSecondaryKeySet(key1))
 			{
 				String keyName = active.get(key1, second).getKeyName();
-				if (!keyName.equals(second))
+				if (!keyName.equalsIgnoreCase(second.toString()))
 				{
 					Logging.errorPrint("Magical Key Change: " + second + " to "
 						+ keyName);
@@ -370,10 +378,11 @@ public class SimpleReferenceContext
 		boolean returnGood = true;
 		for (Class cl : referenced.getKeySet())
 		{
-			for (String s : referenced.getSecondaryKeySet(cl))
+			for (CaseInsensitiveString s : referenced.getSecondaryKeySet(cl))
 			{
 				if (!active.containsKey(cl, s)
-					&& !deferred.containsInList(cl, s) && !s.startsWith("*"))
+					&& !deferred.containsInList(cl, s)
+					&& !s.toString().startsWith("*"))
 				{
 					Logging.errorPrint("Unconstructed Reference: "
 						+ cl.getSimpleName() + " " + s);
@@ -391,7 +400,7 @@ public class SimpleReferenceContext
 		 * TODO FIXME Need to ensure that items that are built here are tagged
 		 * as manufactured, so that they are not written out to LST files
 		 */
-		deferred.addToListFor(cl, value);
+		deferred.addToListFor(cl, new CaseInsensitiveString(value));
 	}
 
 	public void clear()

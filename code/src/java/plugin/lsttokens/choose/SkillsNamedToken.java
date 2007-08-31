@@ -19,13 +19,21 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
+import pcgen.core.Skill;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseCompatibilityToken;
+import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class SkillsNamedToken extends AbstractToken implements ChooseLstToken
+public class SkillsNamedToken extends AbstractToken implements ChooseLstToken,
+		ChooseCompatibilityToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -80,5 +88,40 @@ public class SkillsNamedToken extends AbstractToken implements ChooseLstToken
 	public String getTokenName()
 	{
 		return "SKILLSNAMED";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
+		String value) throws PersistenceLayerException
+	{
+		int lastPipe = value.lastIndexOf('|');
+		if (lastPipe != -1)
+		{
+			try
+			{
+				Integer.parseInt(value.substring(lastPipe + 1));
+				return ChooseLoader.parseToken(context, Skill.class, value
+					.substring(0, lastPipe));
+			}
+			catch (NumberFormatException nfe)
+			{
+				// OK
+			}
+		}
+		return ChooseLoader.parseToken(context, Skill.class, value);
 	}
 }
