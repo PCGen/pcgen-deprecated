@@ -27,12 +27,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.PlayerCharacter;
 
-public class CompoundOrChoiceSet<T extends PrereqObject> implements
-		PrimitiveChoiceSet<T>
+public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
 
 	private final Set<PrimitiveChoiceSet<T>> set =
