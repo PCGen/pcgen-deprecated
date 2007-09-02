@@ -17,7 +17,9 @@
  */
 package pcgen.persistence;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -199,6 +201,15 @@ public class ReferenceContext
 		return categorized.getConstructedCDOMObjects(c, cat);
 	}
 
+	public Set<CDOMObject> getAllConstructedObjects()
+	{
+		Set<CDOMObject> set = new HashSet<CDOMObject>();
+		set.addAll(simple.getAllConstructedCDOMObjects());
+		Collection otherSet = categorized.getAllConstructedCDOMObjects();
+		set.addAll(otherSet);
+		return set;
+	}
+
 	public <T extends PObject> boolean containsConstructedCDOMObject(
 		Class<T> c, String s)
 	{
@@ -216,18 +227,23 @@ public class ReferenceContext
 		for (PCClass pcc : classes)
 		{
 			simple.constructCDOMObject(ClassSkillList.class, pcc.getKeyName());
-			//TODO Need to limit which are built to only spellcasters...
+			// TODO Need to limit which are built to only spellcasters...
 			simple.constructCDOMObject(ClassSpellList.class, pcc.getKeyName());
-			simple.constructCDOMObject(SpellProgressionInfo.class, pcc.getKeyName());
+			simple.constructCDOMObject(SpellProgressionInfo.class, pcc
+				.getKeyName());
 			List<SubClass> subclasses = pcc.getSubClassList();
 			if (subclasses != null)
 			{
 				for (SubClass subcl : subclasses)
 				{
-					simple.constructCDOMObject(ClassSkillList.class, subcl.getKeyName());
-					//TODO Need to limit which are built to only spellcasters...
-					simple.constructCDOMObject(ClassSpellList.class, subcl.getKeyName());
-					simple.constructCDOMObject(SpellProgressionInfo.class, subcl.getKeyName());
+					simple.constructCDOMObject(ClassSkillList.class, subcl
+						.getKeyName());
+					// TODO Need to limit which are built to only
+					// spellcasters...
+					simple.constructCDOMObject(ClassSpellList.class, subcl
+						.getKeyName());
+					simple.constructCDOMObject(SpellProgressionInfo.class,
+						subcl.getKeyName());
 				}
 			}
 		}

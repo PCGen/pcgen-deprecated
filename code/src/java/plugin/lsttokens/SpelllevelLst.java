@@ -306,17 +306,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		while (clTok.hasMoreTokens())
 		{
 			String classString = clTok.nextToken();
-			if (classString.startsWith("SPELLCASTER."))
-			{
-				/*
-				 * TODO Deprecate the use of SPELLCASTER? No need for it, since
-				 * the function isn't any different.
-				 * 
-				 * Actually, I think it IS necessary still - thpr 1/8/07 It is,
-				 * since this is actually a TYPE
-				 */
-				classString = classString.substring(12);
-			}
+			CDOMReference<CL> ref;
 			if (classString.length() == 0)
 			{
 				Logging
@@ -324,7 +314,20 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 						+ getTokenName());
 				return false;
 			}
-			slList.add(context.ref.getCDOMReference(tagType, classString));
+			else if (classString.startsWith("SPELLCASTER."))
+			{
+				/*
+				 * This is actually a TYPE
+				 */
+				ref =
+						context.ref.getCDOMTypeReference(tagType, classString
+							.substring(12));
+			}
+			else
+			{
+				ref = context.ref.getCDOMReference(tagType, classString);
+			}
+			slList.add(ref);
 		}
 
 		if (hasIllegalSeparator(',', spellString))

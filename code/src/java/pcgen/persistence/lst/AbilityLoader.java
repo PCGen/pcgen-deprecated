@@ -110,7 +110,7 @@ public class AbilityLoader extends GenericLstLoader<Ability>
 			}
 			else
 			{
-				Logging.errorPrintLocalised("Errors.AbilityLoader.UnknownTag", //$NON-NLS-1$
+				Logging.debugPrintLocalised("Errors.AbilityLoader.UnknownTag", //$NON-NLS-1$
 					colString, source.getURI());
 			}
 		}

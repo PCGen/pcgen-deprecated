@@ -138,6 +138,11 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 			}
 			else
 			{
+				if (token.equals("Arcane") || token.equals("Divine")
+					|| token.equals("Psionic"))
+				{
+					token = "TYPE=" + token;
+				}
 				foundOther = true;
 				ref =
 						TokenUtilities.getTypeOrPrimitive(context,

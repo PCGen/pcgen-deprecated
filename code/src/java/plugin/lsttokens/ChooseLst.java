@@ -34,6 +34,7 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
@@ -221,6 +222,8 @@ public class ChooseLst implements GlobalLstToken
 				ChooseLoader.parseToken(context, obj, key, val);
 		if (chooser == null)
 		{
+			//Yes, direct access, not through the context!!
+			obj.put(StringKey.CHOOSE_BACKUP, value);
 			return false;
 		}
 		Formula maxFormula =

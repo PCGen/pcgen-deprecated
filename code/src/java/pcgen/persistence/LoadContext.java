@@ -20,7 +20,10 @@ package pcgen.persistence;
 import java.net.URI;
 
 import pcgen.cdom.base.CDOMGroupRef;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.content.ChooseActionContainer;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.GameMode;
 import pcgen.core.SettingsHandler;
 import pcgen.core.SizeAdjustment;
@@ -160,5 +163,26 @@ public abstract class LoadContext
 		getGraphContext().decommit();
 		getListContext().decommit();
 		getObjectContext().decommit();
+	}
+
+	public void resolve()
+	{
+		for (CDOMObject cdo : ref.getAllConstructedObjects())
+		{
+			String cs = cdo.get(StringKey.CHOOSE_BACKUP);
+			if (cs == null)
+			{
+				// Nothing to do (didn't have a CHOOSE that broke)
+				continue;
+			}
+			ChooseActionContainer container = cdo.getChooseContainer();
+			if (container.getChoiceSet() != null)
+			{
+				// Indicates a CHOOSE token worked (except mod cases in runtime)
+				continue;
+			}
+			System.err.println(container.getActors());
+			System.err.println("@" + cs);
+		}
 	}
 }

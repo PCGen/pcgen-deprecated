@@ -106,5 +106,6 @@ public enum StringKey {
 	 SOURCE_TOKEN,
 	 DAMAGE,
 	 MODIFIED_NAME, 
-	 TOKEN;
+	 TOKEN,
+	 CHOOSE_BACKUP;
 }

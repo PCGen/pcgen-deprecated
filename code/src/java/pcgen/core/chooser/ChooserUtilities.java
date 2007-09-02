@@ -360,6 +360,15 @@ public class ChooserUtilities
 		mapconstructed = true;
 	}
 
+	public static boolean is514ChoiceSubtoken(String s)
+	{
+		if (!mapconstructed)
+		{
+			constructMap();
+		}
+		return classLookup.containsKey(s);
+	}
+	
 	/**
 	 * Make a ChoiceManager Object for the chooser appropriate for
 	 * aPObject.getChoiceString();

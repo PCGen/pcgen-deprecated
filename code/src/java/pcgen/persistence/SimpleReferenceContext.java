@@ -17,7 +17,9 @@
  */
 package pcgen.persistence;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +33,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.core.Ability;
+import pcgen.core.ClassSpellList;
 import pcgen.core.GameMode;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
@@ -443,5 +446,15 @@ public class SimpleReferenceContext
 			addressed.put(obj, name, addr);
 		}
 		return addr;
+	}
+
+	public Collection<CDOMObject> getAllConstructedCDOMObjects()
+	{
+		Set<CDOMObject> set = new HashSet<CDOMObject>();
+		for (Class<?> cl : active.getKeySet())
+		{
+			set.addAll(active.values(cl));
+		}
+		return set;
 	}
 }

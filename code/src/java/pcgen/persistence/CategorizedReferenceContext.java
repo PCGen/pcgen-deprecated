@@ -17,7 +17,9 @@
  */
 package pcgen.persistence;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -447,5 +449,18 @@ public class CategorizedReferenceContext
 				return c;
 			}
 		};
+	}
+
+	public Collection<CategorizedCDOMObject> getAllConstructedCDOMObjects()
+	{
+		Set<CategorizedCDOMObject> set = new HashSet<CategorizedCDOMObject>();
+		for (Class<?> cl : active.getKeySet())
+		{
+			for (Category<?> cat : active.getSecondaryKeySet(cl))
+			{
+				set.addAll(active.values(cl, cat));
+			}
+		}
+		return set;
 	}
 }
