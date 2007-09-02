@@ -94,7 +94,7 @@ public class HitdiceadvancementToken extends AbstractToken implements
 
 		context.getObjectContext()
 			.removeList(race, ListKey.HITDICE_ADVANCEMENT);
-		int last = 1;
+		int last = 0;
 		while (commaTok.hasMoreTokens())
 		{
 			String tok = commaTok.nextToken();

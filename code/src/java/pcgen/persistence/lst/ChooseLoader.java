@@ -36,6 +36,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.CompoundAndFilter;
 import pcgen.cdom.helper.CompoundOrChoiceSet;
 import pcgen.cdom.helper.NegatingFilter;
+import pcgen.cdom.helper.PatternMatchFilter;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.RetainingChooser;
@@ -318,6 +319,10 @@ public final class ChooseLoader
 			{
 				return new NegatingFilter<T>(TokenUtilities.getTypeReference(
 					context, cl, key.substring(6)));
+			}
+			else if (key.indexOf('%') != -1)
+			{
+				return new PatternMatchFilter<T>(cl, key);
 			}
 			else
 			{

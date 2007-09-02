@@ -116,13 +116,7 @@ public class Moveclone512Lst_Zero extends AbstractToken implements
 		else
 		{
 			int sub = Integer.parseInt(formulaString);
-			if (sub == 0)
-			{
-				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ " was expecting a non-zero "
-					+ "Integer for Movement modifier, was : " + formulaString);
-				return false;
-			}
+			// Zero is legal here, it just copies
 			if (sub < 0)
 			{
 				form = new SubtractingFormula(-sub);

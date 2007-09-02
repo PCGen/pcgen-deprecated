@@ -30,6 +30,7 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.core.EquipmentModifier;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseCDOMLstToken;
@@ -48,6 +49,10 @@ public class Choose514Lst_NameMinMax implements GlobalLstCompatibilityToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException
 	{
+		if (!(obj instanceof EquipmentModifier))
+		{
+			return false;
+		}
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{

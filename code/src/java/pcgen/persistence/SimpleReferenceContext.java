@@ -33,7 +33,6 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.core.Ability;
-import pcgen.core.ClassSpellList;
 import pcgen.core.GameMode;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
