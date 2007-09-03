@@ -27,12 +27,12 @@ import java.util.Collection;
 import java.util.List;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.helper.ChoiceSet;
@@ -222,10 +222,11 @@ public class ChooseLst implements GlobalLstToken
 				ChooseLoader.parseToken(context, obj, key, val);
 		if (chooser == null)
 		{
-			//Yes, direct access, not through the context!!
+			// Yes, direct access, not through the context!!
 			obj.put(StringKey.CHOOSE_BACKUP, value);
 			return false;
 		}
+		ChooseActionContainer cac = obj.getChooseContainer();
 		Formula maxFormula =
 				maxCount == null ? FormulaFactory
 					.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
@@ -234,19 +235,9 @@ public class ChooseLst implements GlobalLstToken
 				count == null ? FormulaFactory.getFormulaFor(1)
 					: FormulaFactory.getFormulaFor(count);
 		ChoiceSet<?> choiceSet = new ChoiceSet(Constants.CHOOSE, chooser);
-		AssociatedPrereqObject edge =
-				context.getGraphContext().grant(getTokenName(), obj, choiceSet);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
-		/*
-		 * TODO There is a problem here because there is an association source
-		 * issue - how does one determine which object of a MULT:YES item was
-		 * the source of a particular choice? Alternately, if this is placed on
-		 * the incoming edge to this object, then there is a problem with a
-		 * MULT:NO item and preserving the choices if the first source edge
-		 * (which would have the associations) is removed (and avoiding a
-		 * validation based contract)
-		 */
+		cac.setChoiceSet(choiceSet);
+		cac.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
+		cac.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		return true;
 	}
 
