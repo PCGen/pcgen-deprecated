@@ -232,4 +232,10 @@ public class KnownspellsTokenTest extends
 		return true;
 	}
 
+	@Override
+	public String getClearString()
+	{
+		return ".CLEARALL";
+	}
+
 }

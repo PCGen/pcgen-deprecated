@@ -36,6 +36,20 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 
 	public abstract char getJoinCharacter();
 
+	protected void construct(LoadContext loadContext, String one)
+	{
+		loadContext.ref.constructCDOMObject(getTargetClass(), one);
+	}
+
+	public abstract boolean isClearLegal();
+
+	public abstract boolean isClearDotLegal();
+	
+	public String getClearString()
+	{
+		return ".CLEAR";
+	}
+
 	@Test
 	public void testArchitecture()
 	{
@@ -343,9 +357,9 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		}
 		if (isClearLegal())
 		{
-			assertTrue(parse(".CLEAR"));
+			assertTrue(parse(getClearString()));
 			assertTrue(primaryContext.ref.validate());
-			assertTrue(parse(".CLEAR" + getJoinCharacter() + "TestWP1"));
+			assertTrue(parse(getClearString() + getJoinCharacter() + "TestWP1"));
 			assertTrue(primaryContext.ref.validate());
 		}
 	}
@@ -450,15 +464,6 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		}
 	}
 
-	protected void construct(LoadContext loadContext, String one)
-	{
-		loadContext.ref.constructCDOMObject(getTargetClass(), one);
-	}
-
-	public abstract boolean isClearLegal();
-
-	public abstract boolean isClearDotLegal();
-
 	@Test
 	public void testInputInvalidClear() throws PersistenceLayerException
 	{
@@ -466,7 +471,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 		{
 			construct(primaryContext, "TestWP1");
 			construct(primaryContext, "TestWP2");
-			assertFalse(parse("TestWP1" + getJoinCharacter() + ".CLEAR")
+			assertFalse(parse("TestWP1" + getJoinCharacter() + getClearString())
 				&& primaryContext.ref.validate());
 			assertNoSideEffects();
 		}
@@ -607,7 +612,7 @@ public abstract class AbstractListTokenTestCase<T extends PObject, TC extends PO
 			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
 				+ "TestWP2"));
 			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-			assertFalse(parse(".CLEAR" + getJoinCharacter() + "TestWP3"
+			assertFalse(parse(getClearString() + getJoinCharacter() + "TestWP3"
 				+ getJoinCharacter() + "ALL"));
 			assertEquals("Bad Clear had Side Effects", primaryGraph,
 				secondaryGraph);
