@@ -163,13 +163,13 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		while (pipeTok.hasMoreTokens())
 		{
 			String totalFilter = pipeTok.nextToken();
-			if (Constants.LST_DOT_CLEAR.equals(totalFilter))
+			if (Constants.LST_DOT_CLEARALL.equals(totalFilter))
 			{
 				if (!firstToken)
 				{
 					Logging.errorPrint("Non-sensical situation was "
 						+ "encountered while parsing " + getTokenName()
-						+ ": When used, .CLEAR must be the first argument");
+						+ ": When used, .CLEARALL must be the first argument");
 					return false;
 				}
 				context.getGraphContext().removeAll(getTokenName(), po);
@@ -271,11 +271,12 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{
-			list.add(Constants.LST_DOT_CLEAR);
+			list.add(Constants.LST_DOT_CLEARALL);
 		}
 		if (changes.hasRemovedItems())
 		{
-			context.addWriteMessage(getTokenName() + " does not support .CLEAR.");
+			context.addWriteMessage(getTokenName()
+				+ " does not support .CLEAR.");
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
