@@ -53,13 +53,14 @@ public final class AddLoader
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("ADD requires a SubToken");
+			Logging.addParseMessage(Logging.LST_ERROR,
+				"ADD requires a SubToken");
 			return false;
 		}
 		String key = value.substring(0, pipeLoc);
 		if (".CLEAR".equals(key))
 		{
-			//TODO Need to perform .CLEAR
+			// TODO Need to perform .CLEAR
 		}
 
 		AddLstToken token = (AddLstToken) tokenMap.get(key);
@@ -69,14 +70,16 @@ public final class AddLoader
 			LstUtils.deprecationCheck(token, obj, value);
 			if (!token.parse(context, obj, value.substring(pipeLoc + 1)))
 			{
-				Logging.errorPrint("Error parsing ADD in "
-					+ obj.getDisplayName() + ':' + value);
+				Logging.addParseMessage(Logging.LST_ERROR,
+					"Error parsing ADD in " + obj.getDisplayName() + ':'
+						+ value);
 				return false;
 			}
 		}
 		else
 		{
-			Logging.errorPrint("Illegal ADD info '" + value + "'");
+			Logging.addParseMessage(Logging.LST_ERROR, "Illegal ADD info '"
+				+ value + "'");
 			return false;
 		}
 		return true;
