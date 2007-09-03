@@ -27,6 +27,7 @@ import pcgen.base.lang.CaseInsensitiveString;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToInstanceList;
 import pcgen.base.util.HashMapToList;
+import pcgen.cdom.base.AbbreviatedObject;
 import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -363,7 +364,16 @@ public class SimpleReferenceContext
 		{
 			for (CaseInsensitiveString second : active.getSecondaryKeySet(key1))
 			{
-				String keyName = active.get(key1, second).getKeyName();
+				PObject activeObj = active.get(key1, second);
+				String keyName;
+				if (activeObj instanceof AbbreviatedObject)
+				{
+					keyName = ((AbbreviatedObject) activeObj).getAbbreviation();
+				}
+				else
+				{
+					keyName = activeObj.getKeyName();
+				}
 				if (!keyName.equalsIgnoreCase(second.toString()))
 				{
 					Logging.errorPrint("Magical Key Change: " + second + " to "
