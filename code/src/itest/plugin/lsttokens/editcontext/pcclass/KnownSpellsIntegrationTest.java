@@ -28,7 +28,6 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstLoader;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
-import plugin.lsttokens.editcontext.testsupport.TestContext;
 import plugin.lsttokens.pcclass.KnownspellsToken;
 
 public class KnownSpellsIntegrationTest extends
@@ -100,6 +99,12 @@ public class KnownSpellsIntegrationTest extends
 	}
 
 	@Override
+	public boolean isClearAll()
+	{
+		return true;
+	}
+
+	@Override
 	public boolean isPrereqLegal()
 	{
 		return false;
@@ -111,45 +116,45 @@ public class KnownSpellsIntegrationTest extends
 		return false;
 	}
 
-//	@Test
-//	public void testRoundRobinLevelAddType() throws PersistenceLayerException
-//	{
-//		if (isTypeLegal())
-//		{
-//			verifyCleanStart();
-//			TestContext tc = new TestContext();
-//			commit(testCampaign, tc, "LEVEL=2");
-//			commit(modCampaign, tc, "TYPE=TestType");
-//			completeRoundRobin(tc);
-//		}
-//	}
-//
-//	@Test
-//	public void testRoundRobinLevelStartType() throws PersistenceLayerException
-//	{
-//		if (isTypeLegal())
-//		{
-//			verifyCleanStart();
-//			TestContext tc = new TestContext();
-//			commit(testCampaign, tc, "TYPE=TestAltType.TestThirdType.TestType");
-//			commit(modCampaign, tc, "LEVEL=5");
-//			completeRoundRobin(tc);
-//		}
-//	}
-//
-//	@Test
-//	public void testRoundRobinLevelDotClear() throws PersistenceLayerException
-//	{
-//		if (isClearLegal())
-//		{
-//			verifyCleanStart();
-//			TestContext tc = new TestContext();
-//			commit(testCampaign, tc, "LEVEL=1");
-//			commit(modCampaign, tc, ".CLEAR");
-//			completeRoundRobin(tc);
-//		}
-//	}
-
+	// @Test
+	// public void testRoundRobinLevelAddType() throws PersistenceLayerException
+	// {
+	// if (isTypeLegal())
+	// {
+	// verifyCleanStart();
+	// TestContext tc = new TestContext();
+	// commit(testCampaign, tc, "LEVEL=2");
+	// commit(modCampaign, tc, "TYPE=TestType");
+	// completeRoundRobin(tc);
+	// }
+	// }
+	//
+	// @Test
+	// public void testRoundRobinLevelStartType() throws
+	// PersistenceLayerException
+	// {
+	// if (isTypeLegal())
+	// {
+	// verifyCleanStart();
+	// TestContext tc = new TestContext();
+	// commit(testCampaign, tc, "TYPE=TestAltType.TestThirdType.TestType");
+	// commit(modCampaign, tc, "LEVEL=5");
+	// completeRoundRobin(tc);
+	// }
+	// }
+	//
+	// @Test
+	// public void testRoundRobinLevelDotClear() throws
+	// PersistenceLayerException
+	// {
+	// if (isClearLegal())
+	// {
+	// verifyCleanStart();
+	// TestContext tc = new TestContext();
+	// commit(testCampaign, tc, "LEVEL=1");
+	// commit(modCampaign, tc, ".CLEAR");
+	// completeRoundRobin(tc);
+	// }
+	// }
 
 }
-

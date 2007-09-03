@@ -45,6 +45,16 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 
 	public abstract boolean isClearLegal();
 
+	public String getClearString()
+	{
+		return isClearAll() ? ".CLEARALL" : ".CLEAR";
+	}
+	
+	public boolean isClearAll()
+	{
+		return false;
+	}
+
 	public abstract boolean isClearDotLegal();
 
 	public abstract char getJoinCharacter();
@@ -191,7 +201,7 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 			verifyCleanStart();
 			TestContext tc = new TestContext();
 			commit(testCampaign, tc, "TestWP2");
-			commit(modCampaign, tc, ".CLEAR");
+			commit(modCampaign, tc, getClearString());
 			completeRoundRobin(tc);
 		}
 	}
@@ -214,7 +224,8 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 	}
 
 	@Test
-	public void testRoundRobinDotClearDotType() throws PersistenceLayerException
+	public void testRoundRobinDotClearDotType()
+		throws PersistenceLayerException
 	{
 		if (isClearDotLegal() && isTypeLegal())
 		{
@@ -249,7 +260,8 @@ public abstract class AbstractListIntegrationTestCase<T extends PObject, TC exte
 	}
 
 	@Test
-	public void testRoundRobinDotClearDotComplete() throws PersistenceLayerException
+	public void testRoundRobinDotClearDotComplete()
+		throws PersistenceLayerException
 	{
 		if (isClearDotLegal())
 		{
