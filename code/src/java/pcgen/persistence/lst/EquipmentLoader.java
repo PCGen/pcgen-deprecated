@@ -104,7 +104,7 @@ public final class EquipmentLoader extends GenericLstLoader<Equipment>
 			}
 			else
 			{
-				Logging.errorPrint("Illegal Equipment info "
+				Logging.debugPrint("Illegal Equipment info "
 					+ source.toString() + ":" + " \"" + colString + "\"");
 			}
 		}

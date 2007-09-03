@@ -7654,7 +7654,7 @@ public final class Equipment extends PObject implements Serializable,
 				containerWeightCapacity = new Float(bString);
 				if (containerWeightCapacity < 0)
 				{
-					Logging.errorPrint(getKeyName()
+					Logging.debugPrint(getKeyName()
 						+ " Weight Capacity must be >= 0: " + bString
 						+ "\n  use 'UNLIM' (not -1) for unlimited Capacity");
 				}
@@ -7702,7 +7702,7 @@ public final class Equipment extends PObject implements Serializable,
 
 					if (itemNumber < 0)
 					{
-						Logging.errorPrint(getKeyName() + " Item Count for "
+						Logging.debugPrint(getKeyName() + " Item Count for "
 							+ itemType + " must be > 0: " + itemCount
 							+ "\n  use 'UNLIM' (not -1) for unlimited Count");
 					}
