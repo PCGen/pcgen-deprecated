@@ -508,11 +508,11 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 			obj.setName(firstToken);
 			obj.setSourceCampaign(sourceEntry.getCampaign());
 			obj.setSourceURI(sourceEntry.getURI());
+			String rest = sepLoc == -1 ? "" : line.substring(sepLoc + 1).trim();
 			// first column is the name; after that are LST tags
-			String restOfLine = line.substring(sepLoc).trim();
 			try
 			{
-				parseLine(obj, restOfLine, sourceEntry);
+				parseLine(obj, rest, sourceEntry);
 			}
 			catch (PersistenceLayerException ple)
 			{
