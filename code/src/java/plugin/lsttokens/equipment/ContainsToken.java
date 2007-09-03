@@ -137,8 +137,8 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			}
 			catch (NumberFormatException ex)
 			{
-				Logging
-					.errorPrint("Weight Capacity must be 'UNLIM or a number > 0: "
+				Logging.addParseMessage(Logging.LST_ERROR,
+					"Weight Capacity must be 'UNLIM or a number > 0: "
 						+ weightCapacity);
 				return false;
 			}
@@ -190,9 +190,10 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 					}
 					catch (NumberFormatException ex)
 					{
-						Logging.errorPrint("Item Number for " + itemType
-							+ " must be 'UNLIM' or a number > 0: "
-							+ itemNumString);
+						Logging.addParseMessage(Logging.LST_ERROR,
+							"Item Number for " + itemType
+								+ " must be 'UNLIM' or a number > 0: "
+								+ itemNumString);
 						return false;
 					}
 					if (BigDecimal.ZERO.compareTo(itemNumber) >= 0)
