@@ -1,7 +1,6 @@
 package plugin.lstcompatibility.global;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
@@ -52,7 +51,7 @@ public class Choose512Lst_NoType extends AbstractToken implements
 		if (cdo instanceof EquipmentModifier)
 		{
 			return false;
-			//CONSIDER TODO return parseEqMod(context, cdo, value);
+			// CONSIDER TODO return parseEqMod(context, cdo, value);
 		}
 		if (cdo instanceof Equipment)
 		{
@@ -118,7 +117,14 @@ public class Choose512Lst_NoType extends AbstractToken implements
 		list.add(token);
 		if (rest != null)
 		{
-			list.addAll(Arrays.asList(rest.split("\\|")));
+			for (String s : rest.split("\\|"))
+			{
+				if (ChooserUtilities.is514ChoiceSubtoken(s))
+				{
+					return false;
+				}
+				list.add(s);
+			}
 		}
 
 		CollectionChoiceSet<String> ccs = new CollectionChoiceSet<String>(list);

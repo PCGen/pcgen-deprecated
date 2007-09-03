@@ -4734,6 +4734,62 @@ jar-all-plugins - Generate the plugin jar files
 
 	<target name="jar-compatibility-global-plugins" depends="makeplugindirs" description="Build (Link) Global Lst Compatibility Token plugin jar files">
 		<!-- Global Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-ADD-5-12-CLASSSKILLS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Add512Lst_Classskills.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-ADD-5-12-EQUIP.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Add512Lst_Equip.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-ADD-5-12-FEAT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Add512Lst_Feat.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-ADD-5-12-LANGUAGE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Add512Lst_Language.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-ADD-5-12-SKILL.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Add512Lst_Skill.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-ADD-5-12-SPELLCASTER.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Add512Lst_SpellCaster.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-ADD-5-12-VFEAT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Add512Lst_VFeat.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-ADD-5-12-WEAPONBONUS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Add512Lst_WeaponBonus.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-BONUS-5-14-DefMonChecks.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4766,6 +4822,13 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/global/Bonus514Lst_DefMonStat.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-CHOOSE-5-12-EQBUILDER.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Choose512Lst_EqBuilder.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -4861,10 +4924,10 @@ jar-all-plugins - Generate the plugin jar files
 
 	<target name="jar-compatibility-equipment-plugins" depends="makeplugindirs" description="Build (Link) Equipment Lst Compatibility Token plugin jar files">
 		<!-- Equipment Lst tokens-->
-		<jar jarfile="${lstplugins.dir}/EquipmentCompatibilityToken-CONTAINS-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<jar jarfile="${lstplugins.dir}/EquipmentCompatibilityToken-ALTCRITICAL-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
-					<include name="plugin/lstcompatibility/equipment/Contains512Token.class" />
+					<include name="plugin/lstcompatibility/equipment/Altcritical512Token.class" />
 				</patternset>
 			</fileset>
 		</jar>
