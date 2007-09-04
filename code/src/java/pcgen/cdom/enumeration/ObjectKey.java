@@ -49,6 +49,7 @@ import pcgen.core.SizeAdjustment;
 import pcgen.core.SpellProhibitor;
 import pcgen.core.WeaponProf;
 import pcgen.util.enumeration.DefaultTriState;
+import pcgen.util.enumeration.Load;
 import pcgen.util.enumeration.Visibility;
 
 /**
@@ -81,7 +82,7 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Load> UNENCUMBERED_LOAD = new ObjectKey<Load>();
 
-	public static final ObjectKey<ArmorType> UNENCUMBERED_ARMOR = new ObjectKey<ArmorType>();
+	public static final ObjectKey<Load> UNENCUMBERED_ARMOR = new ObjectKey<Load>();
 
 	public static final ObjectKey<Boolean> SPELLBOOK = new ObjectKey<Boolean>();
 

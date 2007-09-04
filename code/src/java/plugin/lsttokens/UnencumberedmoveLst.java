@@ -25,7 +25,6 @@ package plugin.lsttokens;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.enumeration.ArmorType;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
@@ -105,60 +104,117 @@ public class UnencumberedmoveLst extends AbstractToken implements
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
-		boolean setLoad = false;
-		boolean setArmor = false;
+		boolean hasArmor = false;
+		boolean hasMove = false;
+
+		Load loadMove = Load.LIGHT;
+		Load loadArmor = Load.LIGHT;
 
 		while (tok.hasMoreTokens())
 		{
-			String tokString = tok.nextToken();
-			try
+			String loadString = tok.nextToken();
+			if (loadString.equalsIgnoreCase("MediumLoad"))
 			{
-				pcgen.cdom.enumeration.Load load =
-						pcgen.cdom.enumeration.Load.valueOf(tokString);
-				if (setLoad)
+				if (!validateOnlyMove(hasMove))
 				{
-					Logging.errorPrint("Encountered Second Load value in "
-						+ getTokenName() + " this is not valid.");
 					return false;
 				}
-				context.getObjectContext().put(obj,
-					ObjectKey.UNENCUMBERED_LOAD, load);
-				setLoad = true;
+				loadMove = Load.MEDIUM;
+				hasMove = true;
 			}
-			catch (IllegalArgumentException e)
+			else if (loadString.equalsIgnoreCase("HeavyLoad"))
 			{
-				// TODO FIXME This is an Armor Type... :/
-				try
+				if (!validateOnlyMove(hasMove))
 				{
-					ArmorType at = ArmorType.valueOf(tokString);
-					if (setArmor)
-					{
-						Logging.errorPrint("Encountered Second Armor Type in "
-							+ getTokenName() + " this is not valid.");
-						return false;
-					}
-					context.getObjectContext().put(obj,
-						ObjectKey.UNENCUMBERED_ARMOR, at);
-					setArmor = true;
-				}
-				catch (IllegalArgumentException e2)
-				{
-					Logging.errorPrint("Misunderstood text in "
-						+ getTokenName() + ": " + tokString
-						+ " is not a Load or ArmorType");
 					return false;
 				}
+				loadMove = Load.HEAVY;
+				hasMove = true;
+			}
+			else if (loadString.equalsIgnoreCase("Overload"))
+			{
+				if (!validateOnlyMove(hasMove))
+				{
+					return false;
+				}
+				loadMove = Load.OVERLOAD;
+				hasMove = true;
+			}
+			else if (loadString.equalsIgnoreCase("MediumArmor"))
+			{
+				if (!validateOnlyArmor(hasArmor))
+				{
+					return false;
+				}
+				loadArmor = Load.MEDIUM;
+				hasArmor = true;
+			}
+			else if (loadString.equalsIgnoreCase("HeavyArmor"))
+			{
+				if (!validateOnlyArmor(hasArmor))
+				{
+					return false;
+				}
+				loadArmor = Load.OVERLOAD;
+				hasArmor = true;
+			}
+			else if (loadString.equalsIgnoreCase("LightLoad"))
+			{
+				if (!validateOnlyMove(hasMove))
+				{
+					return false;
+				}
+				// do nothing, but accept values as valid
+			}
+			else if (loadString.equalsIgnoreCase("LightArmor"))
+			{
+				if (!validateOnlyMove(hasMove))
+				{
+					return false;
+				}
+				// do nothing, but accept values as valid
+			}
+			else
+			{
+				ShowMessageDelegate.showMessageDialog("Invalid value of \""
+					+ loadString + "\" for UNENCUMBEREDMOVE in \""
+					+ obj.getDisplayName() + "\".", "PCGen", MessageType.ERROR);
+				return false;
 			}
 		}
+		context.getObjectContext().put(obj, ObjectKey.UNENCUMBERED_LOAD,
+			loadMove);
+		context.getObjectContext().put(obj, ObjectKey.UNENCUMBERED_ARMOR,
+			loadArmor);
 		return true;
+	}
+
+	private boolean validateOnlyArmor(boolean hasArmor)
+	{
+		if (hasArmor)
+		{
+			Logging.errorPrint("Encountered Second Armor Load Type in "
+				+ getTokenName() + " this is not valid.");
+		}
+		return !hasArmor;
+	}
+
+	private boolean validateOnlyMove(boolean hasMove)
+	{
+		if (hasMove)
+		{
+			Logging.errorPrint("Encountered Second Move Load Type in "
+				+ getTokenName() + " this is not valid.");
+		}
+		return !hasMove;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		pcgen.cdom.enumeration.Load load =
+		Load load =
 				context.getObjectContext().getObject(obj,
 					ObjectKey.UNENCUMBERED_LOAD);
-		ArmorType at =
+		Load at =
 				context.getObjectContext().getObject(obj,
 					ObjectKey.UNENCUMBERED_ARMOR);
 		if (load == null && at == null)
@@ -166,17 +222,59 @@ public class UnencumberedmoveLst extends AbstractToken implements
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
+		boolean needsLight = false;
 		if (load != null)
 		{
-			sb.append(load);
+			if (Load.OVERLOAD.equals(load))
+			{
+				sb.append("Overload");
+			}
+			else if (Load.HEAVY.equals(load))
+			{
+				sb.append("HeavyLoad");
+			}
+			else if (Load.MEDIUM.equals(load))
+			{
+				sb.append("MediumLoad");
+			}
+			else if (Load.LIGHT.equals(load))
+			{
+				needsLight = true;
+			}
+			else
+			{
+				context.addWriteMessage(getTokenName()
+					+ " encountered unknown Movement Load: " + load);
+				return null;
+			}
 		}
-		if (at != null)
+		if (at == null || Load.LIGHT.equals(at))
+		{
+			if (needsLight)
+			{
+				sb.append("LightLoad");
+			}
+		}
+		else
 		{
 			if (sb.length() != 0)
 			{
 				sb.append(Constants.PIPE);
 			}
-			sb.append(at);
+			if (Load.OVERLOAD.equals(at))
+			{
+				sb.append("HeavyArmor");
+			}
+			else if (Load.MEDIUM.equals(at))
+			{
+				sb.append("MediumArmor");
+			}
+			else
+			{
+				context.addWriteMessage(getTokenName()
+					+ " encountered invalid Armor Load: " + load);
+				return null;
+			}
 		}
 		return new String[]{sb.toString()};
 	}
