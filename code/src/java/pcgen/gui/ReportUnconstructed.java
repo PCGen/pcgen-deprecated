@@ -3,7 +3,10 @@ package pcgen.gui;
 import gmgen.pluginmgr.PluginLoader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 
 import pcgen.core.Campaign;
 import pcgen.core.Constants;
@@ -78,8 +81,20 @@ public class ReportUnconstructed
 			pManager.initialize();
 			ArrayList<Campaign> arrayList = new ArrayList<Campaign>();
 
+			boolean first = true;
+
 			for (String fn : args)
 			{
+				if (first)
+				{
+					if (fn.startsWith("-outfile="))
+					{
+						FileHandler ch = new FileHandler(fn.substring(9));
+						Logger.getLogger("pcgen").addHandler(ch);
+						Logger.getLogger("plugin").addHandler(ch);
+						continue;
+					}
+				}
 				Campaign c =
 						Globals.getCampaignByURI(new File(fn).toURI(), true);
 				if (c == null)
@@ -90,6 +105,7 @@ public class ReportUnconstructed
 				{
 					arrayList.add(c);
 				}
+				first = false;
 			}
 			pManager.loadCampaigns(arrayList);
 		}
@@ -97,6 +113,16 @@ public class ReportUnconstructed
 		{
 			ShowMessageDelegate.showMessageDialog(e.getMessage(),
 				Constants.s_APPNAME, MessageType.WARNING);
+		}
+		catch (SecurityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		// ArrayList arrayList = new ArrayList();
