@@ -20,6 +20,7 @@
       <item> AUTO </item>
       <item> BASEITEM </item>
       <item> BASEQTY </item>
+      <item> BENEFIT </item>
       <item> BONUS </item>
       <item> CAST </item>
       <item> CASTAS </item>
@@ -196,6 +197,7 @@
       <item> INCLUDE </item>
       <item> INFOTEXT </item>
       <item> ISLICENSED </item>
+      <item> ISMATURE </item>
       <item> ISOGL </item>
       <item> KIT </item>
       <item> LANGUAGE </item>
