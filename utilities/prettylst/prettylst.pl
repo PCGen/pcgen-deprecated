@@ -1722,6 +1722,7 @@ my %master_order = (
         'BONUS:WEAPONPROF:*',
         'BONUS:WIELDCATEGORY:*',
         'FOLLOWERS',
+        'CHANGEPROF',
         'COMPANIONLIST:*',
         'CSKILL:.CLEAR',
         'CSKILL',
@@ -2467,6 +2468,7 @@ my %master_order = (
         'BONUS:WEAPON:*',
         'BONUS:WEAPONPROF:*',
         'BONUS:WIELDCATEGORY:*',
+        'CHANGEPROF',
         'FOLLOWERS',
         'COMPANIONLIST:*',
         'CSKILL:.CLEAR',
@@ -2766,6 +2768,7 @@ my %master_order = (
         'MONCCSKILL',
         'AUTO:ARMORPROF',
         'AUTO:EQUIP',
+        'ADD:EQUIP',
         'AUTO:FEAT',
         'AUTO:SHIELDPROF',
         'AUTO:WEAPONPROF:*',
@@ -2908,6 +2911,7 @@ my %master_order = (
         @PRE_Tags,
         'DESCISPI',
         'DESC',
+        'DEFINE',
         'BONUS:CASTERLEVEL:*',
         'BONUS:CHECKS',
         'BONUS:COMBAT:*',
@@ -2918,6 +2922,7 @@ my %master_order = (
         'BONUS:MOVEADD',
         'BONUS:MOVEMULT',
         'BONUS:POSTMOVEADD',
+        'BONUS:RANGEMULT',
         'BONUS:SIZEMOD',
         'BONUS:SKILL:*',
         'BONUS:STAT:*',
@@ -14565,6 +14570,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1786966 ] Global tags throwign false warnings
 
 [ 1784583 ] .MOD .FORGET races don't need RACETYPE or TYPE
 
