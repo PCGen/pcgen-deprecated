@@ -8625,7 +8625,7 @@ sub validate_pre_tag {
         #PREDEITY:YES
         #PREDEITY:N
         #PREDEITY:NO
-        #PREDEITY:<deity name>,<deity name>,etc.
+        #PREDEITY:1,<deity name>,<deity name>,etc.
         if ( $tag_value !~ / \A (?: Y(?:ES)? | N[O]? ) \z /xms ) {
             #We ignore the single yes or no
             push @xcheck_to_process,
@@ -8634,7 +8634,9 @@ sub validate_pre_tag {
                     $tag_name,
                     $file_for_error,
                     $line_for_error,
-                    (split /[,]/, $tag_value),
+		  # Pull off the first number.
+		  # [ 1776500 ] PREDEITY needs updated
+		  (split /[,]/, $tag_value)[1,-1],
                  ];
         }
     }
@@ -14570,6 +14572,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+		  
+[ 1776500 ] PREDEITY needs updated
 
 [ 1786966 ] Global tags throwign false warnings
 
