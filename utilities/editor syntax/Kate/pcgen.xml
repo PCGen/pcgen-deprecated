@@ -500,7 +500,7 @@
         <keyword attribute="Tags" context="#stay" String="pre-tags" />
 	<keyword attribute="Sub-Tags" context="#stay" String="subtags" />
 	<Int attribute="Decimal" context="#stay" />
-	<RegExpr attribute="Comment" context="#stay" String="#.*$" />
+	<RegExpr attribute="Comment" context="#stay" String="^#.*$" />
       </context>
     </contexts>
     <itemDatas>
