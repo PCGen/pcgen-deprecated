@@ -331,7 +331,7 @@ public final class PCLevelInfo implements Cloneable
 	}
 
 	@Override
-	public Object clone()
+	public PCLevelInfo clone()
 	{
 		PCLevelInfo clone = new PCLevelInfo(aPC, classKeyName);
 		for (Iterator<Ability> i = objects.iterator(); i.hasNext(); )

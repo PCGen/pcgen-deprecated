@@ -33,7 +33,6 @@ import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.chooser.ChooserUtilities;
 import pcgen.core.levelability.LevelAbility;
 import pcgen.core.prereq.PrereqHandler;
-import pcgen.core.utils.ListKey;
 import pcgen.core.utils.MessageType;
 import pcgen.core.utils.ShowMessageDelegate;
 import pcgen.util.Logging;
@@ -191,19 +190,15 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 		boolean wrote = false;
 		for ( final Description desc : theBenefits )
 		{
-			if ( wrote )
-			{
-				buf.append(Constants.COMMA);
-			}
 			final String str = desc.getDescription(aPC);
 			if ( str.length() > 0 )
 			{
+				if ( wrote )
+				{
+					buf.append(Constants.COMMA);
+				}
 				buf.append(str);
 				wrote = true;
-			}
-			else
-			{
-				wrote = false;
 			}
 		}
 		return buf.toString();
@@ -559,7 +554,7 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 
 		if (getOutputName().equalsIgnoreCase("[BASE]"))
 		{
-			return getOutputName();
+			return getDisplayName();
 		}
 		if ((getAssociatedCount() > 0)
 				&& !getKeyName().startsWith("Armor Proficiency")
@@ -599,56 +594,6 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 		}
 
 		return aStrBuf.toString();
-	}
-
-	@Override
-	protected List<SpecialAbility> addSpecialAbilitiesToList(final List<SpecialAbility> aList, final PlayerCharacter aPC)
-	{
-		final List<SpecialAbility> specialAbilityList = getListFor(ListKey.SPECIAL_ABILITY);
-
-		if (specialAbilityList != null)
-		{
-			final StringBuffer sb = new StringBuffer();
-
-			for (SpecialAbility sa : specialAbilityList)
-			{
-				final String key = sa.getKeyName();
-				final int idx = key.indexOf("%CHOICE");
-
-				if (idx >= 0)
-				{
-					sb.setLength(0);
-					sb.append(key.substring(0, idx));
-
-					if (getAssociatedCount() != 0)
-					{
-						for (int i = 0; i < getAssociatedCount(); ++i)
-						{
-							if (i != 0)
-							{
-								sb.append(" ,");
-							}
-
-							sb.append(getAssociated(i));
-						}
-					}
-					else
-					{
-						sb.append("<undefined>");
-					}
-
-					sb.append(key.substring(idx + 7));
-					sa = new SpecialAbility(
-							sb.toString(),
-							sa.getSASource(),
-							sa.getSADesc());
-				}
-
-				aList.add(sa);
-			}
-		}
-
-		return aList;
 	}
 
 	boolean canBeSelectedBy(final PlayerCharacter pc)
@@ -1045,16 +990,6 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 	 */
 	public boolean isSameBaseAbility(Ability that) {
 		return AbilityUtilities.areSameAbility(this, that);
-	}
-
-	/**
-     * This method returns an empty String 
-     * @return empty String
-	 */
-    public String getDisplayNameWithChoices()
-	{
-		StringBuffer buf = new StringBuffer();
-		return buf.toString();
 	}
 
     private Category<Ability> cat;

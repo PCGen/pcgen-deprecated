@@ -173,6 +173,9 @@ public final class GameMode implements Comparable<Object>
 
 	private List<AbilityCategory> theAbilityCategories = new ArrayList<AbilityCategory>(5);
 
+	private String thePreviewDir;
+	private String theDefaultPreviewSheet;
+	
 	/**
 	 * Creates a new instance of GameMode.
 	 *
@@ -182,6 +185,8 @@ public final class GameMode implements Comparable<Object>
 	{
 		name = modeName;
 		folderName = modeName;
+		thePreviewDir = modeName;
+		theDefaultPreviewSheet = "preview.html"; //$NON-NLS-1$
 
 		for (Tab aTab : Tab.values())
 		{
@@ -3190,6 +3195,54 @@ public final class GameMode implements Comparable<Object>
 			theAbilityCategories.add(0, AbilityCategory.FEAT);
 		}
 		return Collections.unmodifiableCollection(theAbilityCategories);
+	}
+	
+	/**
+	 * Returns a <tt>Collection</tt> of <tt>AbilityCategory</tt> objects 
+	 * defined by this game mode that match the display location.
+	 * 
+	 * @param displayLoc The display location to filter for.
+	 * @return A <tt>Collection</tt> of <tt>AbilityCategory</tt> objects.
+	 */
+	public Collection<AbilityCategory> getAllAbilityCatsForDisplayLoc(String displayLoc)
+	{
+		if (displayLoc == null)
+		{
+			return Collections.emptyList();
+		}
+		List<AbilityCategory> catList = new ArrayList<AbilityCategory>();
+		if ( !theAbilityCategories.contains(AbilityCategory.FEAT) )
+		{
+			theAbilityCategories.add(0, AbilityCategory.FEAT);
+		}
+		for (AbilityCategory cat : theAbilityCategories)
+		{
+			if (displayLoc.equals(cat.getDisplayLocation()))
+			{
+				catList.add(cat);
+			}
+		}
+		return Collections.unmodifiableCollection(catList);
+	}
+
+	public void setPreviewDir(final String aDir)
+	{
+		thePreviewDir = aDir;
+	}
+	
+	public String getPreviewDir()
+	{
+		return thePreviewDir;
+	}
+	
+	public void setDefaultPreviewSheet(final String aSheet)
+	{
+		theDefaultPreviewSheet = aSheet;
+	}
+	
+	public String getDefaultPreviewSheet()
+	{
+		return theDefaultPreviewSheet;
 	}
 }
 

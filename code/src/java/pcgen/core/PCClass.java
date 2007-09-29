@@ -46,6 +46,7 @@ import pcgen.core.spell.Spell;
 import pcgen.core.utils.ChoiceList;
 import pcgen.core.utils.CoreUtility;
 import pcgen.core.utils.ListKey;
+import pcgen.core.utils.MapKey;
 import pcgen.core.utils.MessageType;
 import pcgen.core.utils.ShowMessageDelegate;
 import pcgen.persistence.PersistenceLayerException;
@@ -2800,52 +2801,50 @@ public class PCClass extends PObject {
 					final StringTokenizer aTok    = new StringTokenizer(aString, "|", false);
 					final int startLevel = Integer.parseInt(aTok.nextToken());
 					final int rangeLevel = Integer.parseInt(aTok.nextToken());
-					      int divisor    = 1;
+					       int divisor    = 1;
 					      
-					
-					if (aPC.getRace().getMonsterClass(aPC,false) != null &&
-							aPC.getRace().getMonsterClass(aPC,false).equalsIgnoreCase(this.getKeyName()))
+					if (SettingsHandler.isMonsterDefault())
 					{
-						int monLev = aPC.getRace().getMonsterClassLevels(aPC, false);
+						if (aPC.getRace().getMonsterClass(aPC,false) != null &&
+								aPC.getRace().getMonsterClass(aPC,false).equalsIgnoreCase(this.getKeyName()))
+						{
+							int monLev = aPC.getRace().getMonsterClassLevels(aPC, false);
 
-						Integer mLevPerFeat = getLevelsPerFeat();
-						divisor = (mLevPerFeat != null && mLevPerFeat >= 1) ? mLevPerFeat : rangeLevel;
-						formula = new StringBuffer("max(0,floor((CL-");
-						formula.append(monLev);
-						formula.append(")/");
-						formula.append(divisor);
-						formula.append("))");
+							Integer mLevPerFeat = getLevelsPerFeat();
+							divisor = (mLevPerFeat != null && mLevPerFeat >= 1) ? mLevPerFeat : rangeLevel;
+							formula = new StringBuffer("max(0,floor((CL-");
+							formula.append(monLev);
+							formula.append(")/");
+							formula.append(divisor);
+							formula.append("))");
 
-						StringBuffer aBuf = new StringBuffer("0|FEAT|MONSTERPOOL|");
-						aBuf.append(formula);
-						BonusObj bon = Bonus.newBonus(aBuf.toString());
-						bon.setCreatorObject(this);
-						Prerequisite prereq = factory.parse("PREDEFAULTMONSTER:Y");
-						bon.addPreReq(prereq);
-						addBonusList(bon);
+							StringBuffer aBuf = new StringBuffer("0|FEAT|MONSTERPOOL|");
+							aBuf.append(formula);
+							BonusObj bon = Bonus.newBonus(aBuf.toString());
+							bon.setCreatorObject(this);
+							addBonusList(bon);
+						}
+						else
+						{
+							divisor = rangeLevel;
+							formula = new StringBuffer("CL/");
+							formula.append(divisor);
 
+							StringBuffer aBuf = new StringBuffer("0|FEAT|MONSTERPOOL|");
+							aBuf.append(formula);
+							BonusObj bon = Bonus.newBonus(aBuf.toString());
+							bon.setCreatorObject(this);
+							addBonusList(bon);
+						}
 					}
 					else
 					{
-						divisor = rangeLevel;
-						formula = new StringBuffer("CL/");
-						formula.append(divisor);
-
-						StringBuffer aBuf = new StringBuffer("0|FEAT|MONSTERPOOL|");
-						aBuf.append(formula);
+						StringBuffer aBuf = new StringBuffer("0|FEAT|PCPOOL|CL/");
+						aBuf.append(rangeLevel);
 						BonusObj bon = Bonus.newBonus(aBuf.toString());
 						bon.setCreatorObject(this);
-						Prerequisite prereq = factory.parse("PREDEFAULTMONSTER:Y");
-						bon.addPreReq(prereq);
 						addBonusList(bon);
 					}
-					StringBuffer aBuf = new StringBuffer("0|FEAT|PCPOOL|CL/");
-					aBuf.append(rangeLevel);
-					BonusObj bon = Bonus.newBonus(aBuf.toString());
-					bon.setCreatorObject(this);
-					Prerequisite prereq = factory.parse("PREDEFAULTMONSTER:N");
-					bon.addPreReq(prereq);
-					addBonusList(bon);
 				}
 
 				catch (PersistenceLayerException e)
@@ -3499,6 +3498,16 @@ public class PCClass extends PObject {
 				pccTxt.append(lineSep).append(lev).append("\tSA:").append(
 						sa.toString());
 			}
+		}
+		
+		List<SpecialAbility> saList = new ArrayList<SpecialAbility>();
+		addSABToList(saList, null);
+		for (SpecialAbility sa : saList)
+		{
+			final String src = sa.getSASource();
+			final String lev = src.substring(src.lastIndexOf('|') + 1);
+			pccTxt.append(lineSep).append(lev).append("\tSAB:").append(
+					sa.toString());
 		}
 
 		if (addDomains != null)
@@ -4488,7 +4497,7 @@ public class PCClass extends PObject {
 	 * can only load the appropriate SpecialAbilitys into the PCClassLevels that
 	 * a PlayerCharacter has.
 	 */
-	protected List<SpecialAbility> addSpecialAbilitiesToList(
+	public List<SpecialAbility> addSpecialAbilitiesToList(
 			final List<SpecialAbility> aList, final PlayerCharacter aPC) {
 		final List<SpecialAbility> specialAbilityList = getListFor(ListKey.SPECIAL_ABILITY);
 
@@ -5310,6 +5319,21 @@ public class PCClass extends PObject {
 				}
 			}
 		}
+		
+		for (int lev : mapChar.getSecondaryKeySet(MapKey.SAB))
+		{
+			for (SpecialAbility sa : mapChar.getListFor(MapKey.SAB, lev))
+			{
+				if (sa.getSASource().length() != 0)
+				{
+					mapChar.removeFromListFor(MapKey.SAB, lev, sa);
+					sa = new SpecialAbility(sa.getKeyName(), sa.getSASource(),
+							sa.getSADesc());
+					sa.setQualificationClass(oldClass, newClass);
+					addSAB(sa, lev);
+				}
+			}
+		}
 
 		//
 		// Go through the variable list (DEFINE) and adjust the class to the new
@@ -5414,23 +5438,6 @@ public class PCClass extends PObject {
 
 		if (aPC != null) {
 			int total = aPC.getTotalLevels();
-			final List<SpecialAbility> specialAbilityList = getListFor(ListKey.SPECIAL_ABILITY);
-
-			if ((specialAbilityList != null) && !specialAbilityList.isEmpty()) {
-				// remove any choice or SPECIALS: related special abilities the
-				// PC no longer qualifies for
-				for (int i = specialAbilityList.size() - 1; i >= 0; --i) {
-					final SpecialAbility sa = specialAbilityList.get(i);
-
-					if (sa.getSASource().startsWith("PCCLASS|")
-							&& !sa.pcQualifiesFor(aPC))
-					// if (sa.getSource().startsWith("PCCLASS|") &&
-					// !sa.pcQualifiesFor(aPC))
-					{
-						specialAbilityList.remove(sa);
-					}
-				}
-			}
 
 			int spMod = 0;
 			final PCLevelInfo pcl = aPC.getLevelInfoFor(keyName, level);
@@ -6380,7 +6387,10 @@ public class PCClass extends PObject {
 		{
 			for (String key : s)
 			{
-				addAutoArray(key, otherClass.getAuto(key));
+				for (String value : otherClass.getAuto(key))
+				{
+					addAutoArray(key, value);
+				}
 			}
 		}
 
@@ -6408,9 +6418,18 @@ public class PCClass extends PObject {
 			setRegionString(otherClass.getRegionString());
 		}
 
-		final List<SpecialAbility> specialAbilityList = getSafeListFor(ListKey.SPECIAL_ABILITY);
-		specialAbilityList.addAll(otherClass
-				.getSafeListFor(ListKey.SPECIAL_ABILITY));
+		for (SpecialAbility sa : otherClass.getSafeListFor(ListKey.SPECIAL_ABILITY))
+		{
+			addSpecialAbilityToList(sa);
+		}
+
+		for (int lev : otherClass.mapChar.getSecondaryKeySet(MapKey.SAB))
+		{
+			for (SpecialAbility sa : otherClass.mapChar.getListFor(MapKey.SAB, lev))
+			{
+				addSAB(sa, lev);
+			}
+		}
 
 		if (!otherClass.getDRList().isEmpty()) {
 			for (DamageReduction dr : otherClass.getDRList()) {

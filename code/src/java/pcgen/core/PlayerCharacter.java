@@ -3061,9 +3061,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		List<SpecialAbility> aList =
 				new ArrayList<SpecialAbility>(specialAbilityList);
 
-		final int atl = getTotalLevels();
-		final int thd = totalHitDice();
-
 		// Try all possible POBjects
 		for (PObject aPObj : getPObjectList())
 		{
@@ -3073,22 +3070,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 
 			List<SpecialAbility> al = new ArrayList<SpecialAbility>();
-			if (aPObj instanceof PCTemplate)
-			{
-				final PCTemplate bTemplate =
-						Globals.getTemplateKeyed(aPObj.getKeyName());
-
-				if (bTemplate == null)
-				{
-					continue;
-				}
-
-				al = bTemplate.addSpecialAbilitiesToList(al, atl, thd);
-			}
-			else
-			{
-				al = aPObj.addSpecialAbilitiesToList(al, this);
-			}
+			al = aPObj.addSpecialAbilitiesToList(al, this);
 			ArrayList<SpecialAbility> masterList =
 					new ArrayList<SpecialAbility>(al);
 			for (SpecialAbility sa : masterList)
@@ -3124,6 +3106,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				}
 			}
 			aList.addAll(al);
+			aPObj.addSABToList(aList, this);
 		}
 
 		Collections.sort(aList);
@@ -7785,7 +7768,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			for (Equipment eq : weapons)
 			{
-				addEquipToTarget(eSet, null, "", eq, null);
+				EquipSet es = addEquipToTarget(eSet, null, "", eq, null);
+				if (es == null)
+				{
+					addEquipToTarget(eSet, null, Constants.S_CARRIED, eq, null);
+				}
 			}
 		}
 		setDirty(true);
@@ -11401,23 +11388,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			addFreeLanguage(aLang);
 		}
-	}
-
-	boolean hasSpecialAbility(final SpecialAbility sa)
-	{
-		final String saKey = sa.getKeyName();
-		final String saDesc = sa.getSADesc();
-
-		for (SpecialAbility saFromList : getSpecialAbilityList())
-		{
-			if (saFromList.getKeyName().equalsIgnoreCase(saKey)
-				&& saFromList.getSADesc().equalsIgnoreCase(saDesc))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	boolean removeFavoredClass(final String aString)
@@ -16656,9 +16626,13 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	public BigDecimal getTotalAbilityPool(final AbilityCategory aCategory)
 	{
-		Float basePool =
-				this.getVariableValue(aCategory.getPoolFormula(), getClass()
-					.toString());
+		if (aCategory == AbilityCategory.FEAT)
+		{
+			BigDecimal spent = getAbilityPoolSpent(aCategory);
+			return spent.add(new BigDecimal(getFeats()));
+		}
+		Float basePool = this.getVariableValue(aCategory.getPoolFormula(),
+			getClass().toString());
 		if (!aCategory.allowFractionalPool())
 		{
 			basePool = new Float(basePool.intValue());
@@ -16772,10 +16746,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			// hidden feats so the number
 			// displayed matches this number
 			//
-			// if (aFeat.getVisibility() == Visibility.HIDDEN)
-			// {
-			// continue;
-			// }
+			if (aFeat.getVisibility() == Visibility.NO
+				|| aFeat.getVisibility() == Visibility.EXPORT)
+			{
+				continue;
+			}
 			final int subfeatCount = aFeat.getAssociatedCount();
 
 			if (subfeatCount > 1)

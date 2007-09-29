@@ -461,12 +461,17 @@ public class DamageReduction extends ConcretePrereqObject implements
 	 * @param inList List
 	 * @return List of separated DRs
 	 */
-	private static List<DamageReduction> parseAndList(final List<DamageReduction> inList)
+	private static List<DamageReduction> parseAndList(final PlayerCharacter aPC, final List<DamageReduction> inList)
 	{
 		ArrayList<DamageReduction> ret = new ArrayList<DamageReduction>();
 		for (Iterator<DamageReduction> i = inList.iterator(); i.hasNext(); )
 		{
 			DamageReduction dr = i.next();
+			dr.setPC(aPC);
+			if (!dr.qualifies(aPC))
+			{
+				continue;
+			}
 			final String bypass = dr.getBypass().replaceAll(" AND ", " and ");
 			String[] splits = bypass.split(" and ");
 			if (splits.length == 1)
@@ -638,7 +643,7 @@ public class DamageReduction extends ConcretePrereqObject implements
 	{
 		List<DamageReduction> inList = new ArrayList<DamageReduction>(drList);
 		List<DamageReduction> orList = parseOrList(aPC, inList);
-		List<DamageReduction> andList = parseAndList(inList);
+		List<DamageReduction> andList = parseAndList(aPC, inList);
 
 		List<DamageReduction> resultList = processList(andList, orList);
 

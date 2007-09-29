@@ -683,7 +683,7 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 		//
 		if (bEmpty)
 		{
-			sb.append(getTypeOfBonus());
+			sb.append(String.valueOf(getCreatorObject()));
 		}
 		sb.append(']');
 

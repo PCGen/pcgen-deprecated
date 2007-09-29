@@ -196,6 +196,10 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 
 		if (this.qualifies(aPC))
 		{
+			if (theOwner instanceof Ability)
+			{
+				theOwner = aPC.getAbilityMatching((Ability) theOwner);
+			}
 			for (final String comp : theComponents)
 			{
 				if (comp.startsWith(VAR_MARKER))
@@ -233,7 +237,14 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 							{
 								if (i > 0)
 								{
-									buf.append(Constants.COMMA);
+									if (theOwner.getAssociatedCount(true) != 2)
+									{
+										buf.append(Constants.COMMA + ' ');
+									}
+									if (i == theOwner.getAssociatedCount(true) - 1)
+									{
+										buf.append(" and ");
+									}
 								}
 								buf.append(theOwner.getAssociated(i, true));
 							}
