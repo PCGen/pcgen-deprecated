@@ -13,6 +13,7 @@
 		Eddy Anthony - eddybaATmindspringDOTcom
 		Andrew McDougall - thoronDASHtirDASHgwaithATlycosDOTcom
 		Terry FitzSimons - fitzsimonsATmintelDOTnet
+		Eric C. Smith - mareduddATblackrootDOTorg
 
 		Description:
 		Provides information on the use of PCGen Other Global Tags.
@@ -59,31 +60,6 @@
 
 <hr>
 
-	<p class="new">*** New 5.4</p>
-	<p class="indent0"><strong><a name="AUTOEQUIP">Tag Name:</a></strong> AUTO:EQUIP|x|x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Text (&lt;Equipment Name&gt;)</p>
-		<p class="indent1"><strong>What it does:</strong></p>
-		<ul class="indent2">
-			<li>This is a | (pipe) delimited list of equipment that is granted to the character for free.</li>
-			<li>The equipment added is marked on the GUI just as AUTO:FEATs are (yellow) and can't be removed.</li>
-			<li>The equipment must be added to the Equipment Set just as any other Equipment the PC has to come out on the OS.</li>
-			<li>AUTO tags now allows the use of one PRE tag but the syntax is slightly different, you must enclose the PRExxx statement with brackets [ ].</li>
-			<li>Only one PRE is allowed, but it can be a PREMULT statement.</li>
-			<li>CAUTION: Some trouble has been found when attempting to add two of the same item.</li>
-			<li>CAUTION: You should not use items which have math operators (such as + and -) in their names.</li>
-			<li>AUTO:EQUIP won't take (%)LIST or (%)CHOICE for substitution. See futureequipment_equipmods_gadgets.lst.</li>
-		</ul>
-		<p class="indent1"><strong>Examples:</strong></p>
-		<p class="indent2"><code>AUTO:EQUIP|Flurry of Blows[PRECLASS:1,Monk=1]</code></p>
-		<p class="indent3">The item &quot;Flurry of Blows&quot; is granted as a free equipment item if the
-		character has a level of Monk.</p>
-		<p class="indent2"><code>AUTO:EQUIP|Flurry of Blows[PREMULT:2,[PRESTAT:1,DEX=15],[PRECLASS:1,Monk=1]]</code></p>
-		<p class="indent3">The item &quot;Flurry of Blows&quot; is granted as a free equipment item if the
-		character has a level of Monk and a DEX score of 15 or better.</p>
-		<p></p>
-
-<hr>
-
 		<p class="new">*** Updated 5.7.7</p>
 		<p class="indent0"><strong><a name="AUTOARMORPROF">Tag Name:</a></strong> AUTO:ARMORPROF|x|x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Text (&lt;Armor Name&gt;)</p>
@@ -109,6 +85,49 @@
 		<p class="indent2"><code>AUTO:ARMORPROF|TYPE=Light|TYPE=Medium</code></p>
 		<p class="indent3">Light and Medium Armor is given as a free armor proficiency.</p>
 	<p></p>
+
+<hr>
+
+	<p class="new">*** New 5.4</p>
+	<p class="indent0"><strong><a name="AUTOEQUIP">Tag Name:</a></strong> AUTO:EQUIP|x|x</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text (&lt;Equipment Name&gt;)</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<ul class="indent2">
+			<li>This is a | (pipe) delimited list of equipment that is granted to the character for free.</li>
+			<li>The equipment added is marked on the GUI just as AUTO:FEATs are (yellow) and can't be removed.</li>
+			<li>The equipment must be added to the Equipment Set just as any other Equipment the PC has to come out on the OS.</li>
+			<li>AUTO tags now allows the use of one PRE tag but the syntax is slightly different, you must enclose the PRExxx statement with brackets [ ].</li>
+			<li>Only one PRE is allowed, but it can be a PREMULT statement.</li>
+			<li>CAUTION: Some trouble has been found when attempting to add two of the same item.</li>
+			<li>CAUTION: You should not use items which have math operators (such as + and -) in their names.</li>
+			<li>AUTO:EQUIP won't take (%)LIST or (%)CHOICE for substitution. See futureequipment_equipmods_gadgets.lst.</li>
+		</ul>
+		<p class="indent1"><strong>Examples:</strong></p>
+		<p class="indent2"><code>AUTO:EQUIP|Flurry of Blows[PRECLASS:1,Monk=1]</code></p>
+		<p class="indent3">The item &quot;Flurry of Blows&quot; is granted as a free equipment item if the
+		character has a level of Monk.</p>
+		<p class="indent2"><code>AUTO:EQUIP|Flurry of Blows[PREMULT:2,[PRESTAT:1,DEX=15],[PRECLASS:1,Monk=1]]</code></p>
+		<p class="indent3">The item &quot;Flurry of Blows&quot; is granted as a free equipment item if the
+		character has a level of Monk and a DEX score of 15 or better.</p>
+		<p></p>
+
+<hr>
+
+	<p class="new">*** New 5.13.0 - Replaces FEATAUTO:x|x</p>
+	<p class="indent0"><strong><a name="AUTOFEAT">Tag Name:</a></strong> AUTO:FEAT|x|x</p>
+		<p class="indent1"><strong>Variables Used (x):</strong> Text (&lt;Feat Name&gt;)</p>
+		<p class="indent1"><strong>What it does:</strong></p>
+		<ul class="indent2">
+			<li>This is a pipe-delimited (|) list of feats that are granted to the character as automatic feats.</li>
+			<li>The entire feat, including subchoices, must be specified within the tag. (i.e. 'Exotic Weapon Proficiency (Sword (Two-Bladed)).</li>
+			<li>.CLEAR may be used with this tag as part of a .MOD operation and may not be used during class progression. (i.e. There is no cross-level interaction.)</li>
+		</ul>
+		<p class="indent1"><strong>Examples:</strong></p>
+		<p class="indent2"><code>AUTO:FEAT|Dodge</code></p>
+		<p class="indent3">The feat &quot;Dodge&quot; is granted as an automatic feat.</p>
+		<p class="indent2"><code>AUTO:FEAT|.CLEAR.Dodge|Alertness</code></p>
+		<p class="indent3">The feat &quot;Dodge&quot; is cleared and the feat &quot;Alertness&quot; is granted as an automatic feat.</p>
+		<p></p>
 
 <hr>
 
@@ -197,39 +216,38 @@
   			it grants the class skills only to the class it is actually in. When used in
   			a domains.lst, it grants the class skills only to the classes that grant the
   			domain. When used anywhere else it grants the class skills to all classes the character possesses.</p>
-		<p class="indent1"><strong>Examples:</strong></p>
-		<p class="indent2"><code>CSKILL:Listen|Spot</code></p>
-		<p class="indent3">The &quot;Listen&quot; and &quot;Spot&quot; skills are made class skills.</p>
-		<p class="indent2"><code>CSKILL:Search|TYPE.Knowledge</code></p>
-		<p class="indent3">The &quot;Search&quot; and &quot;Knowledge&quot; type skills are made class skills.</p>
-		<p class="indent2"><code>CSKILL:ALL</code></p>
-		<p class="indent3">All skills are made class skills.</p>
-		<p class="indent2"><code>CLASS:Sorcerer.MOD &lt;tab&gt; CSKILL:.CLEAR.Scry &lt;tab&gt; CSKILL:Drive|TYPE.Knowledge|Perform</code></p>
-		<p class="indent3">Modifies the Class Sorcerer, droping the class skill Scry and adding Drive, Perform and all TYPE.Knowledge skills.</p>
-		<p class="indent2"><code>CLASS:Blackguard.MOD &lt;tab&gt; STARTSKILLPTS:2 &lt;tab&gt; CSKILL:.CLEAR|Handle Animal|Ride &lt;tab&gt; CSKILL:Concentration|TYPE.Craft|Diplomacy|Heal|Intimidate|Knowledge (Religion)|TYPE.Profession|Climb|Jump|Listen|Spot|Swim|Pilot &lt;tab&gt; CCSKILL:Handle Animal|Ride</code></p>
-		<p class="indent3">Modified Class that changes all of these Tags from their starting values.</p>
-		<p></p>
+	<p class="indent1"><strong>Examples:</strong></p>
+	<p class="indent2"><code>CSKILL:Listen|Spot</code></p>
+	<p class="indent3">The &quot;Listen&quot; and &quot;Spot&quot; skills are made class skills.</p>
+	<p class="indent2"><code>CSKILL:Search|TYPE.Knowledge</code></p>
+	<p class="indent3">The &quot;Search&quot; and &quot;Knowledge&quot; type skills are made class skills.</p>
+	<p class="indent2"><code>CSKILL:ALL</code></p>
+	<p class="indent3">All skills are made class skills.</p>
+	<p class="indent2"><code>CLASS:Sorcerer.MOD &lt;tab&gt; CSKILL:.CLEAR.Scry &lt;tab&gt; CSKILL:Drive|TYPE.Knowledge|Perform</code></p>
+	<p class="indent3">Modifies the Class Sorcerer, droping the class skill Scry and adding Drive, Perform and all TYPE.Knowledge skills.</p>
+	<p class="indent2"><code>CLASS:Blackguard.MOD &lt;tab&gt; STARTSKILLPTS:2 &lt;tab&gt; CSKILL:.CLEAR|Handle Animal|Ride &lt;tab&gt; CSKILL:Concentration|TYPE.Craft|Diplomacy|Heal|Intimidate|Knowledge (Religion)|TYPE.Profession|Climb|Jump|Listen|Spot|Swim|Pilot &lt;tab&gt; CCSKILL:Handle Animal|Ride</code></p>
+	<p class="indent3">Modified Class that changes all of these Tags from their starting values.</p>
+	<p></p>
 
 <hr>
 
-		<p class="indent0"><strong><a name="CCSKILL">Tag Name:</a></strong> CCSKILL:x|x</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Text (&lt;Skill Name&gt;)</p>
-		<p class="indent1"><strong>Variables Used (x):</strong> Text (Type.&lt;Skill Type&gt;)</p>
-		<p class="indent1"><strong>What it does:</strong></p>
-		<p class="indent2">Grants the listed exclusive skills as cross class skills.</p>
-		<p class="indent1"><strong>Examples:</strong></p>
-		<p class="indent2"><code>CCSKILL:Listen|Spot</code></p>
-		<p class="indent3">The &quot;Listen&quot; and &quot;Spot&quot; skills are made cross class skills.</p>
-		<p class="indent2"><code>CCSKILL:Search|TYPE.Knowledge</code></p>
-		<p class="indent3">The &quot;Search&quot; and &quot;Knowledge&quot; type skills are made cross class skills.</p>
-		<p class="indent2"><code>CLASS:Blackguard.MOD &lt;tab&gt; STARTSKILLPTS:2 &lt;tab&gt; CSKILL:.CLEAR|Handle Animal|Ride &lt;tab&gt; CSKILL:Concentration|TYPE.Craft|Diplomacy|Heal|Intimidate|Knowledge (Religion)|TYPE.Profession|Climb|Jump|Listen|Spot|Swim|Pilot &lt;tab&gt; CCSKILL:Handle Animal|Ride</code></p>
-		<p class="indent3">Modified Class that changes all of these Tags from their starting values..</p>
-		<p></p>
+	<p class="indent0"><strong><a name="CCSKILL">Tag Name:</a></strong> CCSKILL:x|x</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> Text (&lt;Skill Name&gt;)</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> Text (Type.&lt;Skill Type&gt;)</p>
+	<p class="indent1"><strong>What it does:</strong></p>
+	<p class="indent2">Grants the listed exclusive skills as cross class skills.</p>
+	<p class="indent1"><strong>Examples:</strong></p>
+	<p class="indent2"><code>CCSKILL:Listen|Spot</code></p>
+	<p class="indent3">The &quot;Listen&quot; and &quot;Spot&quot; skills are made cross class skills.</p>
+	<p class="indent2"><code>CCSKILL:Search|TYPE.Knowledge</code></p>
+	<p class="indent3">The &quot;Search&quot; and &quot;Knowledge&quot; type skills are made cross class skills.</p>
+	<p class="indent2"><code>CLASS:Blackguard.MOD &lt;tab&gt; STARTSKILLPTS:2 &lt;tab&gt; CSKILL:.CLEAR|Handle Animal|Ride &lt;tab&gt; CSKILL:Concentration|TYPE.Craft|Diplomacy|Heal|Intimidate|Knowledge (Religion)|TYPE.Profession|Climb|Jump|Listen|Spot|Swim|Pilot &lt;tab&gt; CCSKILL:Handle Animal|Ride</code></p>
+	<p class="indent3">Modified Class that changes all of these Tags from their starting values..</p>
+	<p></p>
 <hr>
 
 	<p class="new">*** New 5.3.13</p>
-	<p class="indent0"><strong>
-<a name="CHANGEPROF">Tag Name:</a></strong> CHANGEPROF:x,x=y|x,x=y</p>
+	<p class="indent0"><strong><a name="CHANGEPROF">Tag Name:</a></strong> CHANGEPROF:x,x=y|x,x=y</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (Name of weapon)</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> TYPE.Text (weapon type)</p>
 	<p class="indent1"><strong>Variables Used (y):</strong> Text (Category of Proficiency to change to)</p>
@@ -308,77 +326,74 @@
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (feat description)</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (spell description)</p>
 	<p class="indent1"><strong>What it does:</strong></p>
-	<blockquote>
-		<p><strong>Ability File:</strong> Provides the flavor text of the ability from the source material.<br>
-		<strong>Deity File:</strong> Provides a quick description of the deity.<br>
-		<strong>Domain File:</strong> Provides a simple explanation of the domains granted powers.<br>
-		<strong>Equipment File:</strong> Provides a brief description of the item.<br>
-		<strong>Feat File:</strong> Provides the flavor text of the feat from the source material.<br>
-		<strong>Spell File:</strong> Provides a one line description of what the spell does.<br>
-		Multiple DESC tags are now supported.<br>
-		DESC tags now take PRExxx tags.<br>
-		All qualifying DESC tags will be concatonated for output separated by commas (,).<br>
-		<code>DESC:.CLEAR</code> will clear all DESC tags.<br><br>
-		<code>DESC:.CLEAR.(regular expression match)</code> will clear specific instances.<br>
-		DESC tags now take variable substitution.<br></p>
-		<blockquote>
-			<p>Within the text a % followed by a number will substitute the #th variable from the 
+	<ul class="indent1">
+		<li>The DESC tags provides a description appropriate for the object it is attached to, i.e. ability, deity, domain, equipment, feat, or spell.</li>
+		<li>PRExxx tags can be used with the DESC tag.</li>
+		<li>Multiple DESC tags per line are allowed with all qualifying DESC tags being concatonated for output and separated by commas (,).</li>
+		<li><code>.CLEAR</code> will clear all DESC tags.</li>
+		<li><code>.CLEAR.(regular expression match)</code> will clear specific instances.</li>
+		<li>DESC tags now take variable substitution.<br></li>
+		<ul>
+			<li>Within the text a % followed by a number will substitute the #th variable from the 
 				variable list associated with the DESC. For example, %1 will substitute the first 
-				variable into that position in the DESC<br>
-			Variables are specified after the descriptive text and are pipe (|) separated.<br>
-			The special parameter %% will insert an actual % character into the text.<br>
-			If the parameter needs to be next to a number the parameter number should be surrounded 
-				in curly brackets { }. For example, %{1000}gp.</p>
-		</blockquote>
-		<p>The following special variables are allowed within the variable list:</p>
-		<blockquote>
-			<p><code>%NAME</code> - The name of the object this DESC tag is in.<br>
-			<code>%CHOICE</code> - Will replace the first associated choice in the object.<br>
-			<code>%LIST</code> - Will substitute all choices comma separated into that parameter.</p>
-		</blockquote>
-		<p>Formulas can be parsed and the results replaced in the output by enclosing the variables and 
-			formulas within parentheses.</p>
-			<blockquote>
-				<p><a href="#CASTERLEVEL">CASTERLEVEL</a>, a variable specifically designed for
-				this purpose, is commonly used though other variables can be used as well.<br>
-				Because anything within parentheses is assumed to be a formula to be parsed,
-				text containing parentheses must substitute brackets [ ] in place of parentheses.<br>
-				Java has a Regular Expression library built in that is very similar to Perl
+				variable into that position in the DESC</li>
+			<li>Variables are specified after the descriptive text and are pipe-delimited (|).</li>
+			<li>The special parameter %% will insert an actual % character into the text.</li>
+			<li>If the parameter needs to be next to a number the parameter number should be surrounded 
+				in curly brackets { }. For example, %{1000}gp.</li>
+		</ul>
+		<li>The following special variables are allowed within the variable list:</li>
+		<ul>
+			<li><code>%NAME</code> - The name of the object this DESC tag is in.</li>
+			<li><code>%FEAT</code> - Will substitute the descriptions of feats within the object that match the associated preqrequisites.</li>
+			<li><code>%CHOICE</code> - Will replace the first associated choice in the object.</li>
+			<li><code>%LIST</code> - Will substitute all choices comma separated into that parameter.</li>
+		</ul>
+		<li>Formulas can be parsed and the results replaced in the output by enclosing the variables and 
+			formulas within parentheses.</li>
+		<ul>
+			<li><a href="#CASTERLEVEL">CASTERLEVEL</a>, a variable specifically designed for
+				this purpose, is commonly used though other variables can be used as well.</li>
+			<li>Because anything within parentheses is assumed to be a formula to be parsed,
+				text containing parentheses must substitute brackets [ ] in place of parentheses.</li>
+			<li>Java has a Regular Expression library built in that is very similar to Perl
 				regular expressions. Basically it allows for pattern matching in strings. You can
 				create fairly powerful match structures using things like character groups "[a-zA-Z]"
 				match any alphabetic character or groupings "(bat|super)man" match batman or superman
 				and many many more. So, for example, you could do a CLEARALL by doing DESC:.CLEAR..*,
 				or clear all exceptional abilities by doing DESC:.CLEAR.\(Ex\), or clear everything
-				that's non-numeric with <code>DESC:.CLEAR.[A-Za-z]</code>.<br>
-			</blockquote>
-		</blockquote>
-		<p class="indent1"><strong>Example:</strong></p>
-		<p class="indent2"><code>DESC:This domain grants the turn code monkey speech into english</code></p>
-		<p class="indent3">The domain description.</p>
-		<p class="indent2"><code>DESC:This is a description of the item.</code></p>
-		<p class="indent3">Adds a description for the equipment.</p>
-		<p class="indent2"><code>DESC:This is sample text for the example purposes</code></p>
-		<p class="indent3">Adds feat description.</p>
-		<p class="indent2"><code>DESC:Kick Butt (level 3)|PRELEVEL:3</code></p>
-		<p class="indent3">Adds feat description only if the PC is level 3 or higher.</p>
-		<p class="indent2"><code>DESC:Assembly ~ 1 table|PREVAREQ:AssemblyTables,1
+				that's non-numeric with <code>DESC:.CLEAR.[A-Za-z]</code>.</li>
+		</ul>
+	</ul>
+	<p class="indent1"><strong>Example:</strong></p>
+	<p class="indent2"><code>DESC:This domain grants the turn code monkey speech into english</code></p>
+	<p class="indent3">The domain description.</p>
+	<p class="indent2"><code>DESC:This is a description of the item.</code></p>
+	<p class="indent3">Adds a description for the equipment.</p>
+	<p class="indent2"><code>DESC:This is sample text for the example purposes</code></p>
+	<p class="indent3">Adds feat description.</p>
+	<p class="indent2"><code>DESC:Kick Butt (level 3)|PRELEVEL:3</code></p>
+	<p class="indent3">Adds feat description only if the PC is level 3 or higher.</p>
+	<p class="indent2"><code>DESC:Assembly ~ 1 table|PREVAREQ:AssemblyTables,1
 			<br>DESC:Assembly ~ %1 tables|AssemblyTables|PREVARGTEQ:AssemblyTables,2</code></p>
-		<p class="indent3">Adds a feat description which is dependent upon the value of the variable AssemblyTables.</p>
-		<p class="indent2"><code>DESC:You get a +2 bonus on all %1 saving throws|%CHOICE</code></p>
-		<p class="indent3">Adds feat description and replaces %1 with the first choice made.</p>
-		<p class="indent2"><code>DESC:You get a +3 bonus on all checks involving %1|%LIST.</code></p>
-		<p class="indent3">Adds feat description replaces %LIST with all choices made. </p>
-		<p class="indent2"><code>DESC:%3 Sneak Attacks per day for +%1d%2 damage|SneakAttack|SneakAttackDie|SneakAttackTimes</code></p>
-		<p class="indent3">Adds feat description substituting the variables from the positions specified.</p>
-		<p class="indent2"><code>Advanced Combat Martial Arts.MOD &lt;tab&gt; DESC:.CLEAR &lt;tab&gt; DESC:When the character scores a critical hit on an opponent with an unarmed strike, the character deals triple damage</code></p>
-		<p class="indent3">Changes the feat description, substituting the specified.</p>
-		<p class="indent2"><code>DESC:Toasts the monsters with fire</code></p>
-		<p class="indent3">What the spell does.</p>
-		<p class="indent2"><code>DESC:Target is prone for (CASTERLEVEL) rounds.</code></p>
-		<p class="indent3">If the value of CASTERLEVEL is equal to 3 then this would output: "Target is prone for 3 rounds.".</p>
-		<p class="indent2"><code>Maximize Power.MOD &lt;tab&gt; DESC:.CLEAR &lt;tab&gt; DESC:You can manifest powers to maximum effect.</code></p>
-		<p class="indent3">Replaces the standard spell DESC with the attached.".</p>
-		<p></p>
+	<p class="indent3">Adds a feat description which is dependent upon the value of the variable AssemblyTables.</p>
+	<p class="indent2"><code>DESC:You get a +2 bonus on all %1 saving throws|%CHOICE</code></p>
+	<p class="indent3">Adds feat description and replaces %1 with the first choice made.</p>
+	<p class="indent2"><code>DESC:Bardic Music %1/day (%2)|BardicMusicTimes|%FEAT=TYPE.BardicMusic</code></p>
+	<p class="indent3">The variable &quot;BardicMusicTimes&quot; is substituted for &quot;%1&quot; and the text from the &quot;DESC&quot; tag in a FEAT with type &quot;BardicMusic&quot; is substituted for &quot;%2&quot;.</p>
+	<p class="indent2"><code>DESC:You get a +3 bonus on all checks involving %1|%LIST.</code></p>
+	<p class="indent3">Adds feat description replaces %LIST with all choices made. </p>
+	<p class="indent2"><code>DESC:%3 Sneak Attacks per day for +%1d%2 damage|SneakAttack|SneakAttackDie|SneakAttackTimes</code></p>
+	<p class="indent3">Adds feat description substituting the variables from the positions specified.</p>
+	<p class="indent2"><code>Advanced Combat Martial Arts.MOD &lt;tab&gt; DESC:.CLEAR &lt;tab&gt; DESC:When the character scores a critical hit on an opponent with an unarmed strike, the character deals triple damage</code></p>
+	<p class="indent3">Changes the feat description, substituting the specified.</p>
+	<p class="indent2"><code>DESC:Toasts the monsters with fire</code></p>
+	<p class="indent3">What the spell does.</p>
+	<p class="indent2"><code>DESC:Target is prone for (CASTERLEVEL) rounds.</code></p>
+	<p class="indent3">If the value of CASTERLEVEL is equal to 3 then this would output: "Target is prone for 3 rounds.".</p>
+	<p class="indent2"><code>Maximize Power.MOD &lt;tab&gt; DESC:.CLEAR &lt;tab&gt; DESC:You can manifest powers to maximum effect.</code></p>
+	<p class="indent3">Replaces the standard spell DESC with the attached.</p>
+	<p></p>
 
 <hr>
 
@@ -480,27 +495,21 @@
 
 <hr>
 
-	<p class="indent0"><strong><a name="MOVECLONE">Tag Name:</a></strong> MOVECLONE:w,x,y,z</p>
-	<p class="indent1"><strong>Variables Used (w):</strong> Text (Movement Mode)</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> Number (Correction to 1st Mode Movement Rate per
-		round)</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Text (2nd Movement Mode)</p>
-	<p class="indent1"><strong>Variables Used (z):</strong> Mathematical (Calculation for 2nd Mode Movement
-		Rate per round)</p>
+	<p class="indent0"><strong><a name="MOVECLONE">Tag Name:</a></strong> MOVECLONE:x,y,z</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> Text (1st movement mode)</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> Text (2nd movement mode)</p>
+	<p class="indent1"><strong>Variables Used (z):</strong> Formula (Calculation for 2nd mode movement rate)</p>
 	<p class="indent1"><strong>What it does:</strong> </p>
 	<ul class="indent2">
 		<li>Creates a new type of movement based on another type.</li>
-		<li>&quot;z&quot; is applied to the original movement rate, then it is copied to the new movement
-			type and the second modifier is applied. </li>
+		<li>&quot;z&quot; is applied to the original movement rate, then it is copied to the new movement type.</li>
 		<li>If no symbol is in the mathematical expression then addition is assumed</li>
 	</ul>
 	<p class="indent1"><strong>Examples:</strong></p>
-	<p class="indent2"><code>MOVECLONE:Walk,0,Fly,*2</code></p>
-	<p class="indent3">Do nothing to &quot;Walk&quot;, create the &quot;Fly&quot; movement type and set it
-		equal to &quot;Walk&quot; multiplied by 2.</p>
-	<p class="indent2"><code>MOVECLONE:Walk,10,Tunnel,/3</code></p>
-	<p class="indent3">Add 10 to &quot;Walk&quot;, create &quot;Tunnel&quot; movement type and set it equal
-		to 1/3 of the new &quot;Walk&quot; movement rate.</p>
+	<p class="indent2"><code>MOVECLONE:Walk,Fly,*2</code></p>
+	<p class="indent3">Create the &quot;Fly&quot; movement type and set it equal to &quot;Walk&quot; multiplied by 2.</p>
+	<p class="indent2"><code>MOVECLONE:Walk,Tunnel,/3</code></p>
+	<p class="indent3">Create &quot;Tunnel&quot; movement type and set it equal to 1/3 of the &quot;Walk&quot; movement rate.</p>
 	<p></p>
 
 <hr>
@@ -693,9 +702,9 @@
 		<li>The SA will NOT be displayed if the last variable or formula equals 0.</li>
 		<li><code>SA:.CLEAR</code> will only clear a previous SA in the same object (class, template,
 			etc.). It will not clear them across objects.</li>
-		<li><code>SA:.CLEAR.Text to be removed</code> will only clear a SA that has that exact text in the
-			same object (class, template, etc.). It will not clear them across objects. The CLEAR and Replace
-			TAGs should be at the end of the line, so the new and old tags are not</li>
+		<li><code>SA:.CLEAR.Text to be removed</code> must include the exact text of the SA to be removed but 
+			only the exact text up to the first &quot;(&quot;. The CLEAR and Replace tags should be at the end 
+			of the line, so the new and old tags are not</li>
 		<li>SA tags can be qualified with <a href="globalfilesprexxx.html">PRExxx</a> tags.
 			SA tags qualified with PRExxx tags will not display unless the character meets the
 			prerequisites.</li>
@@ -978,39 +987,20 @@
 
 <hr>
 
-	<p class="new">*** New 5.11.4</p>
-	<p class="indent0"><strong><a name="TEMPLATECHANGE">Tag Name:</a></strong> (TEMPLATENAME).MOD or .COPY or .CLEAR</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> Text (.MOD or .COPY or .CLEAR)</p>
-	<p class="indent1"><strong>What it does:</strong></p>
-	<ul class="indent2">
-		<li>Allows for changes to the defined Template in the Template file.</li>
-	</ul>
-	<p class="indent1"><strong>Example:</strong></p>
-	<p class="indent2"><code>Dream of the Dawn A.COPY=Dream of Stormfells</code></p>
-	<p class="indent3">Copy the Template possesses the &quot;Dream of the Dawn A&quot; identifyer to &quot;Dream of Stormfells &quot; in all aspects.</p>
-	<p class="indent2"><code>Heroic Path (Fellhunter).MOD &lt;tab&gt; LEVEL:1:FEAT:Sense the Dead	LEVEL:2:FEAT:Touch of the Living	LEVEL:4:FEAT:Unseen to Undead	LEVEL:6:FEAT:Disrupting Attack	LEVEL:20:SA:Grave Severance (Su)</code></p>
-	<p class="indent3">Adds these feats to the ones in the template.</p>
-	<p class="indent2"><code>Animal Man (Bear).MOD &lt;tab&gt; PRE:.CLEAR</code></p>
-	<p class="indent3">Modifies the Template &quot;Animal Man (Bear)&quot; by getting rid of all PRE: tags.</p>
-	<p class="indent2"><code>Familiar within arms reach.FORGET</code></p>
-	<p class="indent3">Forget the Template &quot; Familiar within arms reach &quot;.</p>
-	<p></p>
-
-<hr>
-
 	<p class="indent0"><strong><a name="TEMPLATEADDCHOICE">Tag Name:</a></strong> TEMPLATE:ADDCHOICE:x|x</p>
-	<p class="indent1"><strong>Variables Used:</strong> ADDCHOICE</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> Text (template name)</p>
 	<p class="indent1"><strong>What it does:</strong></p>
-	<p class="indent2">This is a | (pipe) delimited  list of template choices that are added to the list
-		presented by the original TEMPLATE tag found in other lst files.</p>
+	<p class="indent2">This is a pipe-delimited list of template choices that are added to the list
+		presented by the original TEMPLATE:CHOOSE tag found in a race.lst or template.lst file.</p>
 	<p class="indent1"><strong>Example:</strong></p>
-	<p class="indent2"><code>TEMPLATE:ADDCHOICE:Celestial|Outsider</code></p>
-	<p class="indent3">The PC receives the &quot;Celestial&quot; and &quot;Outsider&quot; templates.</p>
+	<p class="indent2"><code>&lt;template&gt; &lt;tab&gt; TEMPLATE:CHOOSE:Celestial|Outsider</code></p>
+	<p class="indent2"><code>&lt;template&gt;.MOD &lt;tab&gt; TEMPLATE:ADDCHOICE:Fiendish</code></p>
+	<p class="indent3">The &quot;Fiendish&quot; template is added to the  &quot;Celestial&quot; and  &quot;Outsider&quot; templates as possible choices presented by the pre-existing <code>TEMPLATE:CHOOSE</code> tag.</p>
 	<p></p>
 
 <hr>
 
-	<p class="new">*** Deprecated 5.11.11 - Remove 6.0 - Use <a href="#TEMPLATECHANGE">(TEMPLATENAME).MOD or .COPY or .CLEAR</a> tag instead.)</p>
+	<p class="new">*** Deprecated 5.11.11 - Remove 6.0 - Use <a href="#MOD">.MOD</a> or <a href="#COPY">.COPY</a> or <a href="#CLEAR">.CLEAR</a> tags instead.)</p>
 	<p class="indent0"><strong><a name="TEMPLATEREMOVE">Tag Name:</a></strong> TEMPLATE:x.REMOVE</p>
 	<p></p>
 
@@ -1130,7 +1120,7 @@
 	<h2>The .MOD Tag</h2>
 	<p>Warning: This section is nowhere near complete and will be expanded on as time progresses.</p>
 	<p></p>
-	<p class="new">*** Updated 5.11.11 - 5.12 RC3</p>
+	<p class="new">*** Updated 5.11.11 - 5.13</p>
 	<p class="indent0"><strong><a name="MOD">Tag Name:</a></strong> &lt;name&gt;.MOD</p>
 	<p class="indent1"><strong>Variables Used: </strong>Text, First field of the item to be modified</p>
 	<p class="indent1"><strong>What it does:</strong></p>
@@ -1139,12 +1129,15 @@
 		<li>Please note that the name must match EXACTLY (case sensitive, and the classes need the beginning
 			CLASS: tag, see examples).</li>
 		<li>If you want to .MOD the name, you need to include the NAME: designator (see examples).</li>
+		<li>If you want to .MOD an eqmod, you use the KEY but not the KEY: designator (see examples).</li> 
 		<li>Any tags that are listed are added to the list of tags already in the object.</li>
 		<li>If only one tag is allowed (such as HD for classes, or COST in equipment) the new tag will
-			replace the tag in the original entry. If more than one tag is allowed (most notably BONUS
-			statements), then the new tag will be added to the other tags in the object.</li>
-		<li>Since names in abilities are not unique within different categories, a new syntax specifically
-			for the .MOD of abilities has been added.</li>
+			replace the tag in the original entry.</li>
+		<li>If more than one tag is allowed (most notably BONUS statements), then the new tag will be added 
+			to the other tags in the object.</li>
+		<li>When .MODing an object to remove or replace a numerical BONUS, you must duplicate the original 
+			BONUS with the number or formula used for the numerical bonus multiplied by &quot;-1&quot;.</li>
+		<li>When .MODing abilities you reference the ability by its CATEGORY, i.e. CATEGORY=&lt;category&gt;, and its KEY.(see example below.)</li>
 		<li>The order of operations is: native line, copy, mod, forget. This is also controlled by the
 			.pcc RANK tag. Given: 1.MOD 1.FORGET 2.COPY 2.Blank 2.MOD 3.MOD. The order of processing is:
 			2. Blank 2.COPY 1.MOD 2.MOD 3.MOD 1.FORGET </li>
@@ -1160,9 +1153,12 @@
 	<p class="indent3">Renames the Acid Arrow spell to My Acid Arrow(in a spells.lst file)</p>
 	<p class="indent2"><code>Resistance.MOD &lt;tab&gt; BONUS:CHECKS|Fortitude,Reflex,Will|1|TYPE=Resistance|PREAPPLY:ANYPC</code></p>
 	<p class="indent3">Adds a Saving Throw Temporary bonus function to the Resistance spell</p>
+	<p class="indent2"><code>CLASS:Arcane Archer.MOD &lt;tab&gt; BONUS:CHECKS|BASE.Will|-1*(CL/3) &lt;tab&gt; BONUS:CHECKS|BASE.Will|CL/2+2</code></p>
+	<p class="indent3">Modifies the Arcane Archer by first removing the original &quot;Will&quot; bonus and then adding the new bonus.</p>
 	<p class="indent2"><code>Skill Focus.MOD</code></p>
 	<p class="indent3">Modifies the Skill Focus feat (in feat.lst)</p>
-	<p></p>
+	<p class="indent2"><code>BOWSTR.MOD</code></p>
+	<p class="indent3">Modifies the &quot;BOWSTR&quot; eqmod (in eqmod.lst)</p>
 	<p class="indent2"><code>CATEGORY=(foo)|(key).MOD</code></p>
 	<p class="indent3">The new syntax to be used to .MOD an ability.</p>
 	<p></p>
@@ -1172,7 +1168,7 @@
 	<h2>The .COPY Tag</h2>
 	<p></p>
 
-	<p class="new">*** Updated 5.12 RC3</p>
+	<p class="new">*** Updated 5.13</p>
 	<p class="indent0"><strong><a name="COPY">Tag Name:</a></strong> &lt;name&gt;.COPY=&lt;new name&gt;</p>
 	<p class="indent1"><strong>Variables Used: </strong>Text, First field of the item to be copied</p>
 	<p class="indent1"><strong>What it does:</strong></p>
@@ -1190,8 +1186,10 @@
 			and other special abilities.</li>
 		<li>Any tags that are listed are added to the list of tags already in the object.</li>
 		<li>If only one tag is allowed (such as HD for classes, or COST in equipment) the new tag will
-			replace the tag in the original entry. If more than one tag is allowed (most notably BONUS
-			statements), then the new tag will be added to the other tags in the object.</li>
+			replace the tag in the original entry.</li>
+		<li>If more than one tag is allowed (most notably BONUS statements), then the new tag will be added 
+			to the other tags in the object.</li>
+		<li>When .COPYing abilities you reference the ability by its CATEGORY, i.e. CATEGORY=&lt;category&gt;, and its KEY.(see example below.)</li>
 		<li>The order of operations is: native line, copy, mod, forget. This is also controlled by the
 			.pcc RANK tag. Given: 1.MOD 1.FORGET 2.COPY 2.Blank 2.MOD 3.MOD. The order of processing is:
 			2. Blank 2.COPY 1.MOD 2.MOD 3.MOD 1.FORGET </li>
@@ -1205,6 +1203,8 @@
 	<p class="indent3">Creates a new class called the Woodsman based on the Ranger class. (in class.lst, see warning above)</p>
 	<p class="indent2"><code>Skill Focus.COPY=Heighten Knowledge</code></p>
 	<p class="indent3">Creates a new feat called Heighten Knowledge based on the Skill Focus feat. (in feat.lst)</p>
+	<p class="indent2"><code>CATEGORY=(foo)|(key).COPY</code></p>
+	<p class="indent3">The new syntax to be used to .COPY an ability.</p>
 	<p></p>
 
 <hr>
@@ -1265,20 +1265,19 @@
 
 	<h2>The .FORGET Tag</h2>
 	<p></p>
-	<p class="new">*** Updated 5.12 RC3</p>
+	<p class="new">*** Updated 5.13</p>
 	<p class="indent0"><strong><a name="FORGET">Tag Name:</a></strong> &lt;name&gt;.FORGET</p>
 	<p class="indent1"><strong>Variables Used:</strong> Text, First field of the item to be removed</p>
 	<p class="indent1"><strong>What it does:</strong> </p>
-	<p class="indent2"> This is a variation of .MOD.</p>
-	<p class="indent2">Unlike .MOD, this tag has no other tags following it. .FORGET completely removes a
-		class from a listing. Since this is done last, you can not .FORGET the Ranger class, then load up your
-		own modified Ranger class.</p>
-		<ul>
-			<li>The order of operations is: native line, copy, mod, forget. This is also controlled by the
+	<ul class="indent2">
+		<li>.FORGET completely removes a LST object from the loaded dataset.</li>
+		<li>.FORGET is ALWAYS done last so you can not .FORGET a LST object and then load a modified version.</li>
+		<li>This tag has no other tags following it.</li>
+		<li>When .FORGETing abilities you reference the ability by its CATEGORY, i.e. CATEGORY=&lt;category&gt;, and its KEY.(see example below.)</li>
+		<li>The order of operations is: native line, copy, mod, forget. This is also controlled by the
 			.pcc RANK tag. Given: 1.MOD 1.FORGET 2.COPY 2.Blank 2.MOD 3.MOD. The order of processing is:
 			2. Blank 2.COPY 1.MOD 2.MOD 3.MOD 1.FORGET </li>
-		</ul>
-	<p class="indent2"> .FORGET is ALWAYS done last. Use either .MOD or Ranger (New class).</p>
+	</ul>
 	<p class="indent1"><strong>Examples:</strong></p>
 	<p class="indent2"><code>Human.FORGET</code></p>
 	<p class="indent3">Removes the Human race (in a race.lst file)</p>
@@ -1288,6 +1287,8 @@
 	<p class="indent3">Removes the Ranger class (in class.lst)</p>
 	<p class="indent2"><code>Skill Focus.FORGET</code></p>
 	<p class="indent3">Removes the Skill Focus feat (in feat.lst)</p>
+	<p class="indent2"><code>CATEGORY=(foo)|(key).FORGET</code></p>
+	<p class="indent3">The new syntax to be used to .FORGET an ability.</p>
 	<p></p>
 
 <hr>

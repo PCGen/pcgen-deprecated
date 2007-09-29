@@ -39,7 +39,7 @@
 		 and the <a href="#TagList">Tag List</a>.</p>
 <hr>
 	<h2><a name="ClassBuilding">Class Building 101</a></h2>
-	
+
 	<p>Classes have three types of elements. These consist of the Class and Class Level Lines, the
 		Sub-Class and Sub-Class Level Lines, and the Subsitution Class and Substitution Level Lines.</p>
     	<h3>Class and Class Level Lines</h3>
@@ -179,7 +179,7 @@
 
 <hr>
 
-	<p class="new">*** Deprecated 5.11.11 - Remove 6.0 - Use <a href="CLASSSKILLS|">BONUS:CLASSSKILLS|</a> tag
+	<p class="new">*** Deprecated 5.11.11 - Remove 6.0 - Use <a href="CLASSSKILLS|">ADD:CLASSSKILLS|</a> tag
 		instead.</p>
 	<p class="indent0"><strong><a name="CLASSSKILLS(">Tag Name:</a></strong> ADD:CLASSSKILLS(y,y)z</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> CLASSSKILLS</p>
@@ -221,42 +221,36 @@
 
 	<p class="new">*** New 5.11.11</p>
 	<p class="indent0"><strong><a name="CLASSSKILLS|">Tag Name:</a></strong> ADD:CLASSSKILLS|[x|]y,y</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> (The optional count, defaults to 1)</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Text (Skill names)</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> TYPE.SkillType (Skill type)</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> number (Number of selections made, defaults to 1)</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> text (Skill name)</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> TYPE=text (Skill type)</p>
 	<p class="indent1"><strong>Variables Used (y):</strong> ANY</p>
 	<p class="indent1"><strong>Variables Used (y):</strong> CROSSCLASSSKILLS</p>
 	<p class="indent1"><strong>Variables Used (y):</strong> EXCLUSIVE</p>
 	<p class="indent1"><strong>Variables Used (y):</strong> NONEXCLUSIVE</p>
 	<p class="indent1"><strong>Variables Used (y):</strong> TRAINED</p>
 	<p class="indent1"><strong>Variables Used (y):</strong> UNTRAINED</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> AUTORANK=&lt;Free Ranks&gt;</p>
-	<p class="indent1"><strong>Variables Used (z):</strong> Number, Variable or Formula (Number of choices 		granted)</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> AUTORANK=&lt;number&gt; (Number of free ranks granted)</p>
 	<p class="indent1"><strong>What it does:</strong></p>
 	<ul class="indent2">
-		<li>The optional count has a pipe [x|] that is not needed, unless the count is used.</li>
-		<li>This will add a number of selections of skills of the chosen type.</li>
+		<li>This will add a number of skills of the chosen type to the characters list of classs skills.</li>
 		<li>The number leading denotes how many choices are granted.</li>
-		<li>Use AUTORANK to assign free ranks to any skills chosen.</li>
-		<li>Valid TYPE's are: ANY, UNTRAINED, TRAINED, EXCLUSIVE, NONEXCLUSIVE, CROSSCLASSSKILLS,
-			and &lt;skilltype&gt; (i.e. the type of skill not the word &quot;skilltype&quot;.)</li>
-		<li>AUTORANK=&lt;x&gt; is a special thing for ADD:CLASSSKILLS(). It puts &lt;x&gt;
-			number of free ranks into that skill. (as if there was
-			a BONUS:SKILLRANK|&lt;SkillName&gt;|&lt;x&gt; tag for that skill).</li>
+		<li>The optional count has a pipe [x|] that is not needed, unless the count is used.</li>
+		<li>Use AUTORANK to assign free ranks to any skills chosen as if there was
+			a BONUS:SKILLRANK|&lt;SkillName&gt;|&lt;number&gt; tag for that skill.</li>
 	</ul>
 	<p class="indent1"><strong>Examples:</strong></p>
 	<p class="indent2"><code>ADD:CLASSSKILLS|2|Bluff,Listen,Move Silently</code></p>
-	<p class="indent3">Add any two of &quot;Bluff&quot;, &quot;Listen&quot; or &quot;Move Silently&quot;.</p>
-	<p class="indent2"><code>ADD:CLASSSKILLS|2|Wilderness Lore,TYPE=Knowledge,AUTORANK=1,Bluff,Move Silently,
-		Listen</code></p>
-	<p class="indent3">Add any two of &quot;Wilderness Lore&quot;, &quot;Knowledge&quot; type skills,
-		&quot;Bluff&quot;, &quot;Move Silently&quot; or &quot;Listen&quot;.</p>
+	<p class="indent3">Add any two of &quot;Bluff&quot;, &quot;Listen&quot; or &quot;Move Silently&quot; to the characters list of class skills.</p>
+	<p class="indent2"><code>ADD:CLASSSKILLS|2|TYPE=Knowledge</code></p>
+	<p class="indent3">Add any two &quot;Knowledge&quot; type skills selected to the characters list of class skills.</p>
 	<p class="indent2"><code>ADD:CLASSSKILLS|NONEXCLUSIVE,AUTORANK=2</code></p>
 	<p class="indent3">This would give the character two bonus ranks to the  &quot;nonexclusive&quot;
 		type skill selected.</p>
-	<p class="indent2"><code>ADD:CLASSSKILLS|2|TYPE=Knowledge</code></p>
-	<p class="indent3">This would give the char two bonus ranks to the TYPE of &quot;Knowledge&quot;
-		type skill selected.</p>
+	<p class="indent2"><code>ADD:CLASSSKILLS|2|Wilderness Lore,TYPE=Knowledge,AUTORANK=1,Bluff,Move Silently,
+		Listen</code></p>
+	<p class="indent3">Add any two of &quot;Wilderness Lore&quot;, &quot;Knowledge&quot; type skills,
+		&quot;Bluff&quot;, &quot;Move Silently&quot; or &quot;Listen&quot; and grants 1 bonus rank each.</p>
 	<p class="indent1"><strong>Where it is used:</strong></p>
 	<p class="indent2">Class Lines.</p>
 	<p></p>
@@ -280,7 +274,7 @@
 	<p></p>
 
 <hr>
-	
+
 	<p class="indent0"><strong><a name="CLASS">Tag Name:</a></strong> CLASS:x</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text</p>
 	<p class="indent1"><strong>What it does:</strong></p>
@@ -347,9 +341,14 @@
 	<p class="indent1"><strong>Variables Used (x):</strong> Number</p>
 	<p class="indent1"><strong>What it does:</strong></p>
 	<p class="indent2">This is how many skill points a character gains per level.</p>
+	<p class="indent2">Formulas can be used as well.</p>
 	<p class="indent1"><strong>Example:</strong></p>
 	<p class="indent2"><code>STARTSKILLPTS:4</code></p>
 	<p class="indent3">Class gets 4 skill points per level, before any modifiers.</p>
+	<p class="indent2"><code>STARTSKILLPTS:4+INT</code></p>
+	<p class="indent3">Class gets 4 skill points per level plus the INT Bonus points, before any modifiers.</p>
+	<p class="indent2"><code>STARTSKILLPTS:4/CHA</code></p>
+	<p class="indent3">Class gets 4 skill points per level divided by the CHA Bonus points, before any modifiers.</p>
 	<p class="indent2"><code>CLASS:Blackguard.MOD &lt;tab&gt; STARTSKILLPTS:2 &lt;tab&gt; CSKILL:.CLEAR|Handle 		Animal|Ride &lt;tab&gt; CSKILL:Concentration|TYPE.Craft|Diplomacy|Heal|Intimidate|Knowledge (Religion)		|TYPE.Profession|Climb|Jump|Listen|Spot|Swim|Pilot &lt;tab&gt; CCSKILL:Handle Animal|Ride</code></p>
 	<p class="indent3">Modified Class that changes all of these Tags from their starting values..</p>
 	<p class="indent1"><strong>Where it is used:</strong></p>
@@ -938,7 +937,7 @@
 	<p></p>
 
 <hr>
-	
+
 	<p class="indent0"><strong><a name="SUBCLASS">Tag Name:</a></strong> SUBCLASS:x</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (name of subclass or specialty)</p>
 	<p class="indent1"><strong>What it does:</strong></p>
@@ -1070,6 +1069,7 @@
 
 <hr>
 
+	<p class="new"> <span class="deprecated">(Deprecated, use <a href="../globalfilestagpages/globalfilesother.html#AUTOFEAT">AUTO:FEAT</a> tag instead. FEATAUTO to be removed in 6.0)</span></p>
 	<p class="indent0"><strong><a name="FEATAUTO">Tag Name:</a></strong> FEATAUTO:x|x</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (Feat Names)</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> .CLEAR.Text (Feat Names)</p>
@@ -1082,7 +1082,7 @@
 	<p class="indent1"><strong>Examples:</strong></p>
 	<p class="indent2"><code>FEATAUTO:Simple Weapon Proficiency</code></p>
 	<p class="indent3">The class automatically receives the &quot;Simple Weapon Proficiency&quot; feat.</p>
-	<p class="indent2"><code>FEATATUO:Alertness|Blind Fighting</code></p>
+	<p class="indent2"><code>FEATAUTO:Alertness|Blind Fighting</code></p>
 	<p class="indent3">The class automatically receives the &quot;Alertness&quot; and &quot;Blind
 		Fighting&quot; feats.</p>
 	<p class="indent2"><code>CLASS:Ranger.MOD  ADD:FEAT(Track,Shadow (TT))</code></p>
@@ -1409,7 +1409,7 @@
 	<p></p>
 
 <hr>
-	
+
 	<p class="new">*** New 5.7.9</p>
 	<p class="indent0"><strong><a name="MONNONSKILLHD">Tag Name:</a></strong> MONNONSKILLHD:x</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Number (Number of hit dice)</p>
@@ -1471,7 +1471,7 @@
        	src="../../images/system/valid-html401.png"
        	alt="Valid HTML 4.01 Strict" height="31" width="88"></a>
 	</p>
-	
+
 </body>
 
 </html>
