@@ -1,0 +1,346 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text-html; charset=utf-8" />
+<title>|NAME| - |PLAYERNAME| (|POOL.COST| Points) in Statblock Format</title>
+<!--
+	This format is designed to provide detailed information on bonuses 
+	and other objects for the purpose of troubleshooting characters
+
+$Revision$
+$Author: eddyanthony $
+$Date$
+
+-->
+<style type="text/css">
+	body  { font-family:arial; font-size:10pt; text-align:left; color:black; background:white; font-weight:normal; margin: 0px; padding: 5px; }
+	.header { display:block; font-size:7pt; text-align:center; }
+</style>
+</head>
+<body>
+<!--
+<span class="header">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</span>
+-->
+<b>|NAME|</b><br>
+|GENDER| |RACE|; 
+|ALIGNMENT| |SIZELONG| 
+|IIF(RACETYPE:None)|
+|TYPE|
+|ELSE|
+|RACETYPE|
+|ENDIF|
+|IIF(VAR.IF(var("COUNT[RACESUBTYPES]")==0;1;0):1)|
+
+|ELSE|
+ (
+|FOR,%subtype,0,COUNT[RACESUBTYPES]-2,1,1|
+|RACESUBTYPE.%subtype|, 
+|ENDFOR|
+|FOR,%subtype,COUNT[RACESUBTYPES]-1,COUNT[RACESUBTYPES]-1,1,1|
+|RACESUBTYPE.%subtype|
+|ENDFOR|
+)
+|ENDIF|
+<br>
+
+<hr />
+
+<b>Initiative</b> |INITIATIVEMOD| = |STAT.1.MOD.SIGN|[STAT] |INITIATIVEBONUS.SIGN|[MISC]<br>
+
+<b>Armor Class</b> |AC.Total| = |AC.Base.SIGN|[BASE]
+|IIF(AC.Size:0)|
+|ELSE|
+|AC.Size.SIGN|[SIZE] 
+|ENDIF|
+|IIF(AC.Ability:0)|
+|ELSE|
+|AC.Ability.SIGN|[STAT] 
+|ENDIF|
+|IIF(AC.NaturalArmor:0)|
+|ELSE|
+|AC.NaturalArmor.SIGN|[NATURAL] 
+|ENDIF|
+|IIF(AC.Misc:0)|
+|ELSE|
+|AC.Misc.SIGN|[MISC]
+|ENDIF|
+|IIF(AC.Armor:0)|
+|ELSE|
+|AC.Armor.SIGN| |EQ.IS.ARMOR.0.NAME|, 
+|ENDIF|
+|IIF(AC.Shield:0)|
+|ELSE|
+|AC.Shield.SIGN| 
+|IIF(EQ.IS.SHIELD.0.TYPE:HEAVY)|
+[Heavy Shield] 
+|ELSE|
+|ENDIF|
+|IIF(EQ.IS.SHIELD.0.TYPE:LIGHT)|
+[Light Shield] 
+|ELSE|
+|ENDIF|
+|IIF(EQ.IS.SHIELD.0.TYPE:BUCKLER)|
+[Buckler] 
+|ELSE|
+|ENDIF|
+|IIF(EQ.IS.SHIELD.0.TYPE:TOWER)|
+[Tower Shield] 
+|ELSE|
+|ENDIF|
+|ENDIF|
+<br>
+
+<p><hr />
+<b>Ability Scores</b></p>
+
+<blockquote>
+|FOR,%stat,0,COUNT[STATS]-1,1,1|
+<b>|TEXT.SENTENCE.STAT.%stat.NAME| |STAT.%stat|</b> (|STAT.%stat.MOD|) = 
+|STAT.%stat.BASE.SIGN-(STAT.%stat.LEVEL.(VAR.TL)-STAT.%stat.LEVEL.1)|[USER] 		<!-- Report User Values -->
+														<!-- Report MISC Bonuses -->
+|STAT.%stat.LEVEL.1.NOPOST.NOEQUIP.NOTEMP-(STAT.%stat.BASE-(STAT.%stat.LEVEL.(VAR.TL)-STAT.%stat.LEVEL.1)).SIGN|[MISC] 
+|IIF(STAT.%stat.LEVEL.TL-STAT.%stat.LEVEL.TL.NOEQUIP==0)|					<!-- Report Equipment Bonuses -->
+|ELSE|
+|STAT.%stat.LEVEL.TL-STAT.%stat.LEVEL.TL.NOEQUIP.SIGN|[GEAR] 
+|ENDIF|
+|IIF(STAT.%stat.LEVEL.TL-STAT.%stat.LEVEL.TL.NOTEMP==0)|					<!-- Report Temporary Bonuses -->
+|ELSE|
+|STAT.%stat.LEVEL.TL-STAT.%stat.LEVEL.TL.NOTEMP.SIGN|[TEMP] 
+|ENDIF|
+|FOR,%bumps,1,VAR.TL,1,1|										<!-- Report Level adjustment bumps -->
+|IIF(var("(STAT.%stat.LEVEL.%bumps)-(STAT.%stat.LEVEL.(%bumps-1))")==0)|
+|ELSE|
+|(STAT.%stat.LEVEL.%bumps)-(STAT.%stat.LEVEL.(%bumps-1)).INTVAL.SIGN|[level |%bumps.INTVAL|] 
+|ENDIF|
+|ENDFOR|
+<br>
+|ENDFOR|
+</blockquote>
+
+<p><hr />
+<b>Saving Throws</b></p>
+
+<blockquote>
+<b>Fortitude</b>: |CHECK.FORTITUDE.TOTAL| = 
+|CHECK.FORTITUDE.BASE|[BASE] 
+|IIF(var("CHECK.FORTITUDE.STATMOD")==0)|
+|ELSE|
+|CHECK.FORTITUDE.STATMOD|[CON] 
+|ENDIF|
+|IIF(var("CHECK.FORTITUDE.MAGIC")==0)|
+|ELSE|
+|CHECK.FORTITUDE.MAGIC|[MAGIC] 
+|ENDIF|
+|IIF(var("CHECK.FORTITUDE.EPIC")==0)|
+|ELSE|
+|CHECK.FORTITUDE.EPIC|[EPIC] 
+|ENDIF|
+|IIF(var("CHECK.FORTITUDE.MISC.NOMAGIC.NOSTAT")==0)|
+|ELSE|
+|CHECK.FORTITUDE.MISC.NOMAGIC.NOSTAT|[MISC]
+|ENDIF|
+<br>
+<b>Reflex</b>: |CHECK.REFLEX.TOTAL| = 
+|CHECK.REFLEX.BASE|[BASE] 
+|IIF(var("CHECK.REFLEX.STATMOD")==0)|
+|ELSE|
+|CHECK.REFLEX.STATMOD|[DEX] 
+|ENDIF|
+|IIF(var("CHECK.REFLEX.MAGIC")==0)|
+|ELSE|
+|CHECK.REFLEX.MAGIC|[MAGIC] 
+|ENDIF|
+|IIF(var("CHECK.REFLEX.EPIC")==0)|
+|ELSE|
+|CHECK.REFLEX.EPIC|[EPIC] 
+|ENDIF|
+|IIF(var("CHECK.REFLEX.MISC.NOMAGIC.NOSTAT")==0)|
+|ELSE|
+|CHECK.REFLEX.MISC.NOMAGIC.NOSTAT|[MISC]
+|ENDIF|
+<br>
+<b>Will</b>: |CHECK.2.TOTAL| = 
+|CHECK.2.BASE|[BASE] 
+|IIF(var("CHECK.2.STATMOD")==0)|
+|ELSE|
+|CHECK.2.STATMOD|[WIS] 
+|ENDIF|
+|IIF(var("CHECK.2.MAGIC")==0)|
+|ELSE|
+|CHECK.2.MAGIC|[MAGIC] 
+|ENDIF|
+|IIF(var("CHECK.2.EPIC")==0)|
+|ELSE|
+|CHECK.2.EPIC|[EPIC] 
+|ENDIF|
+|IIF(var("CHECK.2.MISC.NOMAGIC.NOSTAT")==0)|
+|ELSE|
+|CHECK.2.MISC.NOMAGIC.NOSTAT|[MISC]
+|ENDIF|
+<br>
+</blockquote>
+
+<p><hr />
+<b>Attacks</b></p>
+
+|FOR,%weap,0,COUNT[EQTYPE.Weapon]-1,1,0|
+<b>|WEAPON.%weap.NAME.NOSTAR| </b>
+|OIF(WEAPON.%weap.ISTYPE.Ranged,<i>Ranged; </i>,<i>Melee; </i>)|
+Number of Attacks: |WEAPON.%weap.NUMATTACKS|; 
+Crit: |WEAPON.%weap.CRIT|; 
+Crit Multiplier: x|WEAPON.%weap.MULT|; 
+|IIF(WEAPON.%weap.ISTYPE.Ranged)|
+Range Increment: |WEAPON.%weap.RANGE|
+|ELSE|
+Reach: |WEAPON.%weap.REACH| ft.
+|ENDIF|
+<blockquote>
+|IIF(WEAPON.%weap.ISTYPE.Ranged)|
+To Hit: |WEAPON.%weap.BASEHIT.0| = |ATTACK.RANGED.BASE|[BAB] 
+|IIF(ATTACK.RANGED.STAT:0)|
+|ELSE|
+|ATTACK.RANGED.STAT|[STAT] 
+|ENDIF|
+|ATTACK.RANGED.SIZE|[SIZE] 
+|IIF(var("STRLEN[WEAPON.%weap.FEATHIT]")==0)|
+|ELSE|
+|WEAPON.%weap.FEATHIT|[FEAT] 
+|ENDIF|
+|IIF(WEAPON.%weap.MAGICHIT:0)|
+|ELSE|
+|WEAPON.%weap.MAGICHIT|[MAGIC] 
+|ENDIF|
+|IIF(WEAPON.%weap.MISC:0)|
+|ELSE|
+|WEAPON.%weap.MISC|[MISC] 
+|ENDIF|
+|ELSE|
+To Hit: 
+|IIF(WEAPON.%weap.BASEHIT:N/A)|
+<b>|WEAPON.%weap.THHIT.0|</b>
+|ELSE|
+<b>|WEAPON.%weap.BASEHIT.0|</b>
+|ENDIF|
+ = |ATTACK.MELEE.BASE|[BAB] 
+|IIF(ATTACK.MELEE.STAT:0)|
+|ELSE|
+|ATTACK.MELEE.STAT|[STAT] 
+|ENDIF|
+|ATTACK.MELEE.SIZE|[SIZE] 
+|IIF(var("STRLEN[WEAPON.%weap.FEATHIT]")==0)|
+|ELSE|
+|WEAPON.%weap.FEATHIT|[FEAT] 
+|ENDIF|
+|IIF(WEAPON.%weap.MAGICHIT:0)|
+|ELSE|
+|WEAPON.%weap.MAGICHIT|[MAGIC] 
+|ENDIF|
+|IIF(WEAPON.%weap.MISC:0)|
+|ELSE|
+|WEAPON.%weap.MISC|[MISC] 
+|ENDIF|
+|ENDIF|
+|IIF(WEAPON.%weap.ISTYPE.Ranged)|
+<br>Damage: <b>|WEAPON.%weap.RANGELIST.0.DAMAGE|</b>; 
+|ELSE|
+<br>Damage: <b>|WEAPON.%weap.DAMAGE|</b>
+|ENDIF|
+</blockquote>
+<br>
+|ENDFOR|
+
+<p><hr />
+<b>Skills</b></p>
+
+<blockquote>
+|FOR,%skill,0,COUNT[SKILLS]-1,1,0|
+|IIF(VAR.IF(var("SKILL.%skill.RANK")==0;1;0):1)|
+|IIF(VAR.IF(var("SKILL.%skill.TOTAL")==0;1;0):1)|
+|ELSE|
+<font color="#999999"><b>|SKILL.%skill|</b> |SKILL.%skill.TOTAL.INTVAL.SIGN| = |SKILL.%skill.EXPLAIN_LONG| </font><br>
+|ENDIF|
+|ELSE|
+<b>|SKILL.%skill|</b> |SKILL.%skill.TOTAL.INTVAL.SIGN| = |SKILL.%skill.RANK.INTVAL.SIGN|[RANK] |SKILL.%skill.EXPLAIN_LONG| <br>
+|ENDIF|
+|ENDFOR|
+</blockquote>
+
+<b>Skill Points</b></p>
+<blockquote>
+|FOR,%points,0,COUNT[CLASSES]-1,1,0|
+|MANUALWHITESPACE| |CLASS.%points.LEVEL| |TEXT.NUMSUFFIX.CLASS.%points.LEVEL| |ENDMANUALWHITESPACE| level |CLASS.%points|: <b>|SKILLPOINTS.TOTAL.%points|</b>
+|IIF(SKILLPOINTS.UNUSED.%points!=0)|
+<font color="#FF0000"> Unspent: |SKILLPOINTS.UNUSED.%points|</font>
+|ENDIF|
+<br>
+|ENDFOR|
+</blockquote>
+
+<hr />
+
+|IIF(var("COUNT[FEATS.VISIBLE]")==0)|
+|ELSE|
+<b>Feats</b></p>
+|ENDIF|
+<blockquote>
+|FOR,%feat,0,COUNT[FEATS.VISIBLE]-1,1,0|
+<b>|FEAT.VISIBLE.%feat|</b> [<i>|FEAT.VISIBLE.%feat.SOURCE|</i>]<br>
+|ENDFOR|
+</blockquote>
+
+|IIF(var("COUNT[FEATSAUTO.VISIBLE]")==0)|
+|ELSE|
+<b>Feats (Automatic)</b></p>
+|ENDIF|
+<blockquote>
+|FOR,%feat,0,COUNT[FEATSAUTO.VISIBLE]-1,1,0|
+<b>|FEATAUTO.VISIBLE.%feat|</b> [<i>|FEATAUTO.VISIBLE.%feat.SOURCE|</i>]<br>
+|ENDFOR|
+</blockquote>
+
+|IIF(var("COUNT[VFEATS.VISIBLE]")==0)|
+|ELSE|
+<b>Feats (Virtual)</b></p>
+|ENDIF|
+<blockquote>
+|FOR,%feat,0,COUNT[VFEATS.VISIBLE]-1,1,0|
+<b>|VFEAT.VISIBLE.%feat|</b> [<i>|VFEAT.VISIBLE.%feat.SOURCE|</i>]<br>
+|ENDFOR|
+</blockquote>
+
+<hr />
+
+
+|IIF(var("COUNT[FEATS.HIDDEN]")==0)|
+|ELSE|
+<b>Feats (Hidden)</b></p>
+|ENDIF|
+<blockquote>
+|FOR,%feat,0,COUNT[FEATS.HIDDEN]-1,1,0|
+<b>|FEAT.HIDDEN.%feat|</b> [<i>|FEAT.HIDDEN.%feat.SOURCE|</i>]<br>
+|ENDFOR|
+</blockquote>
+
+|IIF(var("COUNT[FEATSAUTO.HIDDEN]")==0)|
+|ELSE|
+<b>Feats (Hidden Automatic)</b></p>
+|ENDIF|
+<blockquote>
+|FOR,%feat,0,COUNT[FEATSAUTO.HIDDEN]-1,1,0|
+<b>|FEATAUTO.HIDDEN.%feat|</b> [<i>|FEATAUTO.HIDDEN.%feat.SOURCE|</i>]<br>
+|ENDFOR|
+</blockquote>
+
+|IIF(var("COUNT[VFEATS.HIDDEN]")==0)|
+|ELSE|
+<b>Feats (Hidden Virtual)</b></p>
+|ENDIF|
+<blockquote>
+|FOR,%feat,0,COUNT[VFEATS.HIDDEN]-1,1,0|
+<b>|VFEAT.HIDDEN.%feat|</b> [<i>|VFEAT.HIDDEN.%feat.SOURCE|</i>]<br>
+|ENDFOR|
+</blockquote>
+
+<hr />
+
+</body>
+</html>
