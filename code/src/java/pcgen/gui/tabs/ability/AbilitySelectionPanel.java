@@ -28,6 +28,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -69,7 +70,7 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 		IFilterableView, IAbilityListFilter
 {
 	private PlayerCharacter thePC;
-	private AbilityCategory theCategory;
+	private List<AbilityCategory> theCategoryList;
 
 	/** The model that represents the list of abilities to choose from */
 	protected AbilityModel theModel;
@@ -99,9 +100,8 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 
 	/**
 	 * The manner in which to display the tree.
-	 * TODO - Yuck.  Why is this in GuiConstants?
 	 */
-	private ViewMode theViewMode = ViewMode.PREREQTREE;
+	ViewMode theViewMode = ViewMode.PREREQTREE;
 
 	/** 
 	 * This is a temporary used to store the current value of the view mode
@@ -124,7 +124,8 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 		final AbilityCategory aCategory)
 	{
 		thePC = aPC;
-		theCategory = aCategory;
+		theCategoryList = new ArrayList<AbilityCategory>();
+		theCategoryList.add(aCategory);
 
 		theOptionsRoot += aCategory.getKeyName();
 
@@ -133,6 +134,36 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 					.getPCGenOption(
 						getFullOptionKey() + ".viewmode", getDefaultViewMode().ordinal()); //$NON-NLS-1$
 		theViewMode = ViewMode.values()[vm];
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				initComponents();
+			}
+		});
+	}
+
+	/**
+	 * Construct and build a new panel to display a list of abilities.
+	 * 
+	 * @param aPC
+	 * @param aCategory
+	 */
+	public AbilitySelectionPanel(final PlayerCharacter aPC,
+		final List<AbilityCategory> aCategoryList)
+	{
+		thePC = aPC;
+		theCategoryList = aCategoryList;
+
+		theOptionsRoot += aCategoryList.get(0).getDisplayLocation();
+
+		final int vm =
+				SettingsHandler
+					.getPCGenOption(
+						getFullOptionKey() + ".viewmode", getDefaultViewMode().ordinal()); //$NON-NLS-1$
+		theViewMode =
+				(vm >= 0 && vm < ViewMode.values().length)
+					? ViewMode.values()[vm] : getDefaultViewMode();
 		SwingUtilities.invokeLater(new Runnable()
 		{
 			public void run()
@@ -164,12 +195,21 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 
 	/**
 	 * Return the <tt>AbilityCategory</tt> these abilities come from.
-	 * 
+	 * @TODO Convert this to react to current category
 	 * @return The Ability category
 	 */
 	public AbilityCategory getCategory()
 	{
-		return theCategory;
+		return  theCategoryList.get(0);
+	}
+
+	/**
+	 * Return the <tt>AbilityCategories</tt> that are being displayed.
+	 * @return The List of ability categories
+	 */
+	public List<AbilityCategory> getCategoryList()
+	{
+		return  Collections.unmodifiableList(theCategoryList);
 	}
 
 	/**
@@ -179,7 +219,7 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 	 * 
 	 * @return A <tt>List</tt> of <tt>Ability</tt> objects.
 	 */
-	protected abstract List<Ability> getAbilityList();
+	protected abstract Map<AbilityCategory,List<Ability>> getAbilityList();
 
 	/**
 	 * Return a String key to use when saving state and options.
@@ -189,6 +229,16 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 	 * @return A String to use as a base key.
 	 */
 	protected abstract String getOptionKey();
+
+	/**
+	 * Return an indicator of whether to split the ability list by 
+	 * category or not..
+	 * 
+	 * <p>This method is abstract and must be overridden by subclasses.
+	 * 
+	 * @return true if a category split should be used. 
+	 */
+	protected abstract boolean getSplitByCategory();
 
 	/**
 	 * Initializes the GUI components.
@@ -202,8 +252,8 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 	protected void initComponents()
 	{
 		theModel =
-				new AbilityModel(thePC, getAbilityList(), theCategory,
-					theViewMode, getFullOptionKey());
+				new AbilityModel(thePC, getAbilityList(), theCategoryList,
+					theViewMode, getFullOptionKey(), getSplitByCategory());
 
 		theModel.setAbilityFilter(this);
 
@@ -503,12 +553,14 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 	{
 		if (theTable != null)
 		{
-			theModel.setAbilityList(getAbilityList());
+			List<String> pathList = theTable.getExpandedPaths();
+			theModel.setAbilityList(getAbilityList(), thePC);
 			if (theSorter != null)
 			{
 				theSorter.sortNodeOnColumn();
 			}
 			theTable.updateUI();
+			theTable.expandPathList(pathList);
 		}
 	}
 
@@ -543,8 +595,22 @@ public abstract class AbilitySelectionPanel extends JPanel implements
 		return true;
 	}
 
-	private String getFullOptionKey()
+	String getFullOptionKey()
 	{
 		return theOptionsRoot + "." + getOptionKey(); //$NON-NLS-1$
+	}
+	
+	/**
+	 * Set a new category to be displayed. 
+	 * @param aCategory The ability category
+	 */
+	public void setCategory(final AbilityCategory aCategory)
+	{
+		theCategoryList = new ArrayList<AbilityCategory>();
+		theCategoryList.add(aCategory);
+		if (theModel != null)
+		{
+			theModel.setCurrentAbilityCategory(aCategory);
+		}
 	}
 }

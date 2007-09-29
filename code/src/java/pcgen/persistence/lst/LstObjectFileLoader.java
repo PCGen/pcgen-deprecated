@@ -650,7 +650,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 			String message = PropertyFactory.getFormattedString(
 				"Errors.LstFileLoader.ModObjectNotFound", //$NON-NLS-1$
 				entry.getSource().getURI(), entry.getLineNumber(), key);
-			Logging.errorPrint(message);
+			Logging.log(Logging.LST_ERROR, message);
 			setChanged();
 			notifyObservers(new Exception(message));
 			return;

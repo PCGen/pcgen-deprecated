@@ -27,11 +27,14 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.table.TableColumn;
 
 import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
@@ -313,12 +316,44 @@ public class AvailableAbilityPanel extends AbilitySelectionPanel
 	}
 
 	/**
+	 * This method is overridden so that we can display the  
+	 * name of the ability category being displayed in the 
+	 * table header.
+	 *  
+	 * @see pcgen.gui.tabs.ability.AbilitySelectionPanel#update()
+	 */
+	@Override
+	public void update()
+	{
+		if (theTable != null)
+		{
+			int nameColIndex = theTable.convertColumnIndexToView(0);
+			if (nameColIndex < 0)
+			{
+				nameColIndex = 0;
+			}
+			TableColumn nameCol =
+					theTable.getColumnModel().getColumn(nameColIndex);
+			//String curVal = nameCol.getHeaderValue().toString();
+			String txt = getCategory().getDisplayName();
+			if (txt.startsWith("in_"))
+			{
+				txt = PropertyFactory.getFormattedString(txt);
+			}
+			nameCol.setHeaderValue(txt);
+		}
+		super.update();
+	}
+
+	/**
 	 * @see pcgen.gui.tabs.ability.AbilitySelectionPanel#getAbilityList()
 	 */
 	@Override
-	protected List<Ability> getAbilityList()
+	protected Map<AbilityCategory,List<Ability>> getAbilityList()
 	{
-		return Globals.getAbilityList(getCategory());
+		Map<AbilityCategory,List<Ability>> abilities = new HashMap<AbilityCategory,List<Ability>>();
+		abilities.put(getCategory(), Globals.getAbilityList(getCategory()));
+		return abilities;
 	}
 
 	/**
@@ -354,5 +389,14 @@ public class AvailableAbilityPanel extends AbilitySelectionPanel
 		{
 			setAddEnabled(false);
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see pcgen.gui.tabs.ability.AbilitySelectionPanel#getSplitByCategory()
+	 */
+	@Override
+	protected boolean getSplitByCategory()
+	{
+		return false;
 	}
 }

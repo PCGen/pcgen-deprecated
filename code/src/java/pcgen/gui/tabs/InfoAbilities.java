@@ -24,6 +24,8 @@
 package pcgen.gui.tabs;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import pcgen.core.AbilityCategory;
 import pcgen.core.PlayerCharacter;
@@ -51,13 +53,19 @@ public class InfoAbilities extends TabContainer
 	{
 		super(aPC);
 
+		Map<String, AbilityCategory> acTabs = new HashMap<String, AbilityCategory>();
+		
 		final Collection<AbilityCategory> cats =
 				SettingsHandler.getGame().getAllAbilityCategories();
 		for (AbilityCategory cat : cats)
 		{
 			if (cat.isVisible())
 			{
-				addSubTab(new InfoAbility(aPC, cat));
+				if (acTabs.get(cat.getDisplayLocation()) == null)
+				{
+					acTabs.put(cat.getDisplayLocation(), cat);
+					addSubTab(new InfoAbility(aPC, cat));
+				}
 			}
 		}
 	}

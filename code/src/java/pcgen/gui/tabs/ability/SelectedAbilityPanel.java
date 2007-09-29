@@ -29,7 +29,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -40,6 +42,7 @@ import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.SettingsHandler;
 import pcgen.gui.tabs.components.FilterPanel;
 import pcgen.gui.tabs.components.RemoveItemPanel;
 import pcgen.gui.utils.ClickHandler;
@@ -79,9 +82,9 @@ public class SelectedAbilityPanel extends AbilitySelectionPanel
 	 * @see pcgen.gui.tabs.ability.AbilitySelectionPanel
 	 */
 	public SelectedAbilityPanel(final PlayerCharacter aPC,
-		final AbilityCategory aCategory)
+		final List<AbilityCategory> aCategoryList)
 	{
-		super(aPC, aCategory);
+		super(aPC, aCategoryList);
 
 		setLayout(new BorderLayout());
 
@@ -163,7 +166,7 @@ public class SelectedAbilityPanel extends AbilitySelectionPanel
 	 * @see pcgen.gui.tabs.ability.AbilitySelectionPanel#getAbilityList()
 	 */
 	@Override
-	protected List<Ability> getAbilityList()
+	protected Map<AbilityCategory,List<Ability>> getAbilityList()
 	{
 		return buildPCAbilityList();
 	}
@@ -184,6 +187,19 @@ public class SelectedAbilityPanel extends AbilitySelectionPanel
 	public ViewMode getDefaultViewMode()
 	{
 		return ViewMode.NAMEONLY;
+	}
+
+	/**
+	 * @see pcgen.gui.tabs.IFilterableView#getViewChoices()
+	 */
+	public List<String> getViewChoices()
+	{
+		final List<String> viewChoices = new ArrayList<String>(4);
+		viewChoices.add(PropertyFactory.getString("in_catTypeName")); //$NON-NLS-1$
+		viewChoices.add(PropertyFactory.getString("in_catNameLabel")); //$NON-NLS-1$
+		viewChoices.add(PropertyFactory.getString("in_catPreReqTree")); //$NON-NLS-1$
+		viewChoices.add(PropertyFactory.getString("in_catSourceName")); //$NON-NLS-1$
+		return viewChoices;
 	}
 
 	/**
@@ -216,50 +232,24 @@ public class SelectedAbilityPanel extends AbilitySelectionPanel
 	 * 
 	 * @return A list of the current PCs feats.
 	 */
-	private List<Ability> buildPCAbilityList()
+	private Map<AbilityCategory,List<Ability>> buildPCAbilityList()
 	{
-		final List<Ability> abilityList =
-				getPC().getAggregateAbilityList(getCategory());
-		final List<Ability> returnValue =
-				new ArrayList<Ability>(abilityList.size());
-
-		for (final Ability ability : abilityList)
+		final List<AbilityCategory> catList = getCategoryList();
+		final Map<AbilityCategory, List<Ability>> abilityList =
+				new HashMap<AbilityCategory, List<Ability>>();
+		for (AbilityCategory abilityCategory : catList)
 		{
-			if (ability.isMultiples())
-			{
-				final String abilityKey = ability.getKeyName();
-
-				Ability pcAbility =
-						getPC().getRealAbilityKeyed(getCategory(), abilityKey);
-				if (pcAbility != null)
-				{
-					returnValue.add(pcAbility);
-				}
-
-				pcAbility =
-						getPC().getAutomaticAbilityKeyed(getCategory(),
-							abilityKey);
-				if (pcAbility != null)
-				{
-					returnValue.add(pcAbility);
-				}
-
-				pcAbility =
-						getPC().getVirtualAbilityKeyed(getCategory(),
-							abilityKey);
-				if (pcAbility != null)
-				{
-					returnValue.add(pcAbility);
-				}
-			}
-			else
-			{
-				returnValue.add(ability);
-			}
+			abilityList.put(abilityCategory, getPC().getAggregateAbilityList(
+				abilityCategory));
 		}
 
-		// Need to sort the list.
-		return Globals.sortPObjectListByName(returnValue);
+		// Need to sort each list.
+		for (AbilityCategory abilityCategory : catList)
+		{
+			Globals.sortPObjectListByName(abilityList.get(abilityCategory));
+		}
+
+		return abilityList;
 	}
 
 	private void setRemoveEnabled(final boolean enabled)
@@ -372,4 +362,14 @@ public class SelectedAbilityPanel extends AbilitySelectionPanel
 			setRemoveEnabled(false);
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see pcgen.gui.tabs.ability.AbilitySelectionPanel#getSplitByCategory()
+	 */
+	@Override
+	protected boolean getSplitByCategory()
+	{
+		return true;
+	}
+	
 }
