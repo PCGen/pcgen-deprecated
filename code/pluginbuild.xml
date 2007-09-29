@@ -2737,13 +2737,6 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-		<jar jarfile="${lstplugins.dir}/ChooseToken-EQBUILDER.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
-			<fileset dir="${build.classes.dir}">
-				<patternset>
-					<include name="plugin/lsttokens/choose/EqBuilderToken.class" />
-				</patternset>
-			</fileset>
-		</jar>
 		<jar jarfile="${lstplugins.dir}/ChooseToken-EQBUILDER.SPELL.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -2912,14 +2905,13 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
-		<!--		<jar jarfile="${lstplugins.dir}/ChooseToken-STRING.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+		<jar jarfile="${lstplugins.dir}/ChooseToken-STRING.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/choose/StringToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
--->
 		<jar jarfile="${lstplugins.dir}/ChooseToken-USERINPUT.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -5653,6 +5645,20 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
+		<jar jarfile="${systemlstplugins.dir}/GameModeLstToken-PREVIEWDIR.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lsttokens/gamemode/PreviewDirToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${systemlstplugins.dir}/GameModeLstToken-PREVIEWSHEET.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lsttokens/gamemode/PreviewSheetToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${systemlstplugins.dir}/GameModeLstToken-RANGEPENALTY.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -6021,6 +6027,13 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lsttokens/gamemode/abilitycategory/CategoryToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${systemlstplugins.dir}/GameMode-AbilityCategory-DISPLAYLOCATION.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lsttokens/gamemode/abilitycategory/DisplayLocationToken.class" />
 				</patternset>
 			</fileset>
 		</jar>

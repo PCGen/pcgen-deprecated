@@ -1280,7 +1280,7 @@ BIO
 		<!-- Visible standard feats (not including the auto feats) -->
 		<feat>
 			<name>Psicrystal Affinity</name>
-			<description>See Text,You have created a psicrystal.</description>
+			<description>See Text, You have created a psicrystal.</description>
 			<type>PSIONIC</type>
 			<associated></associated>
 			<count>0</count>
@@ -1290,7 +1290,7 @@ BIO
 		</feat>
 		<feat>
 			<name>Psicrystal Containment</name>
-			<description>See Text,Your psicrystal has advanced enough that it can hold a psionic focus that you store within it.</description>
+			<description>See Text, Your psicrystal has advanced enough that it can hold a psionic focus that you store within it.</description>
 			<type>PSIONIC</type>
 			<associated></associated>
 			<count>0</count>
@@ -1300,7 +1300,7 @@ BIO
 		</feat>
 		<feat>
 			<name>Speed of Thought</name>
-			<description>See Text,The energy of your mind energizes the alacrity of your body.</description>
+			<description>See Text, The energy of your mind energizes the alacrity of your body.</description>
 			<type>PSIONIC</type>
 			<associated></associated>
 			<count>0</count>
@@ -1310,7 +1310,7 @@ BIO
 		</feat>
 		<feat>
 			<name>Twin Power</name>
-			<description>See Text,You can manifest a power simultaneously with another power just like it.</description>
+			<description>See Text, You can manifest a power simultaneously with another power just like it.</description>
 			<type>METAPSIONIC</type>
 			<associated></associated>
 			<count>0</count>
@@ -1434,7 +1434,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel></sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersA-C.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersA-C.rtf</source>
 							<sourcepage>PsionicPowersA-C.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1462,7 +1462,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Psi1, Wil1</sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersD-F.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersD-F.rtf</source>
 							<sourcepage>PsionicPowersD-F.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1490,7 +1490,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Psi1, Wil1</sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersG-P.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersG-P.rtf</source>
 							<sourcepage>PsionicPowersG-P.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1518,7 +1518,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel></sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersG-P.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersG-P.rtf</source>
 							<sourcepage>PsionicPowersG-P.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1546,7 +1546,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Psi1, Psy1, Wil1</sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersQ-W.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersQ-W.rtf</source>
 							<sourcepage>PsionicPowersQ-W.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1576,7 +1576,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel></sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersA-C.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersA-C.rtf</source>
 							<sourcepage>PsionicPowersA-C.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1604,7 +1604,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Psi2, Psy2, Wil2</sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersA-C.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersA-C.rtf</source>
 							<sourcepage>PsionicPowersA-C.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1632,7 +1632,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Psi2, Wil2</sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersD-F.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersD-F.rtf</source>
 							<sourcepage>PsionicPowersD-F.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1660,7 +1660,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel></sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersQ-W.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersQ-W.rtf</source>
 							<sourcepage>PsionicPowersQ-W.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1690,7 +1690,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel></sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersA-C.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersA-C.rtf</source>
 							<sourcepage>PsionicPowersA-C.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>
@@ -1718,7 +1718,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Psy3</sourcelevel>
-							<source>Wizards of the Coast - Revised (v.3.5) System Reference Document, PsionicPowersD-F.rtf</source>
+							<source>Revised (v.3.5) System Reference Document, PsionicPowersD-F.rtf</source>
 							<sourcepage>PsionicPowersD-F.rtf</sourcepage>
 							<sourceshort>RSRD</sourceshort>
 						</source>

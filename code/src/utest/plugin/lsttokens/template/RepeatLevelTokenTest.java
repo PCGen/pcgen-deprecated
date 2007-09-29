@@ -29,7 +29,7 @@ import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.DrLst;
-import plugin.lsttokens.SaLst;
+import plugin.lsttokens.SabLst;
 import plugin.lsttokens.SrLst;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
@@ -51,7 +51,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 		TokenRegistration.register(new CrToken());
 		TokenRegistration.register(new DrLst());
 		TokenRegistration.register(new SrLst());
-		TokenRegistration.register(new SaLst());
+		TokenRegistration.register(new SabLst());
 		classSetUpFired = true;
 	}
 
@@ -109,35 +109,35 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testInvalidEmptyStartLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|20::SA:Stuff"));
+		assertFalse(parse("1|2|20::SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadStartLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|20:StartLevel:SA:Stuff"));
+		assertFalse(parse("1|2|20:StartLevel:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadIncrementLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("IncrLevel|2|20:5:SA:Stuff"));
+		assertFalse(parse("IncrLevel|2|20:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadSkipLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|SkipLevel|20:5:SA:Stuff"));
+		assertFalse(parse("1|SkipLevel|20:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidBadMaxLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|MaxLevel:5:SA:Stuff"));
+		assertFalse(parse("1|2|MaxLevel:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
@@ -145,7 +145,7 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidNegativeStartLevel()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|20:-4:SA:Stuff"));
+		assertFalse(parse("1|2|20:-4:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
@@ -153,21 +153,21 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidNegativeIncrementLevel()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("-1|2|20:5:SA:Stuff"));
+		assertFalse(parse("-1|2|20:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNegativeSkipLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|-2|20:5:SA:Stuff"));
+		assertFalse(parse("1|-2|20:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidEmptyMaxLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|:5:SA:Stuff"));
+		assertFalse(parse("1|2|:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
@@ -181,56 +181,56 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testInvalidNegativeMaxLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|-5:5:SA:Stuff"));
+		assertFalse(parse("1|2|-5:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTooManyColons() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|20:4:5:SA:Stuff"));
+		assertFalse(parse("1|2|20:4:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidTooManyBars() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|20|40:5:SA:Stuff"));
+		assertFalse(parse("1|2|20|40:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoMaxLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2:5:SA:Stuff"));
+		assertFalse(parse("1|2:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoFirstToken() throws PersistenceLayerException
 	{
-		assertFalse(parse(":5:SA:Stuff"));
+		assertFalse(parse(":5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSkipLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("1||20:5:SA:Stuff"));
+		assertFalse(parse("1||20:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoIncrementLevel() throws PersistenceLayerException
 	{
-		assertFalse(parse("|3|20:5:SA:Stuff"));
+		assertFalse(parse("|3|20:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSubcommandArgs() throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|20:5:SA:"));
+		assertFalse(parse("1|2|20:5:SAB:"));
 		assertNoSideEffects();
 	}
 
@@ -238,21 +238,21 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidStartGreaterThanEnd()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("1|2|20:50:SA:Stuff"));
+		assertFalse(parse("1|2|20:50:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoIncrement() throws PersistenceLayerException
 	{
-		assertFalse(parse("10|2|20:15:SA:Stuff"));
+		assertFalse(parse("10|2|20:15:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testInvalidNoSkipUse() throws PersistenceLayerException
 	{
-		assertFalse(parse("5|4|20:5:SA:Stuff"));
+		assertFalse(parse("5|4|20:5:SAB:Stuff"));
 		assertNoSideEffects();
 	}
 
@@ -267,41 +267,41 @@ public class RepeatLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testRoundRobinZeroConsecutive()
 		throws PersistenceLayerException
 	{
-		runRoundRobin("5|0|10:5:SA:Sample Spec Abil");
+		runRoundRobin("5|0|10:5:SAB:Sample Spec Abil");
 	}
 
 	@Test
 	public void testRoundRobinNoIncrementBorderCase()
 		throws PersistenceLayerException
 	{
-		runRoundRobin("5|1|10:5:SA:Sample Spec Abil");
+		runRoundRobin("5|1|10:5:SAB:Sample Spec Abil");
 	}
 
 	@Test
 	public void testRoundRobinNoSkipBorderCase()
 		throws PersistenceLayerException
 	{
-		runRoundRobin("5|3|20:5:SA:Sample Spec Abil");
+		runRoundRobin("5|3|20:5:SAB:Sample Spec Abil");
 	}
 
 	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
-		runRoundRobin("1|2|20:5:SA:Sample Spec Abil");
+		runRoundRobin("1|2|20:5:SAB:Sample Spec Abil");
 	}
 
 	@Test
 	public void testRoundRobinComplex() throws PersistenceLayerException
 	{
-		runRoundRobin("1|2|20:5:SA:Sample Spec Abil",
-			"2|4|20:5:SA:Sample Spec Abil");
+		runRoundRobin("1|2|20:5:SAB:Sample Spec Abil",
+			"2|4|20:5:SAB:Sample Spec Abil");
 	}
 
 	@Test
 	public void testRoundRobinMultipleSame() throws PersistenceLayerException
 	{
 		runRoundRobin("1|2|20:5:CR:Formula",
-			"1|2|20:5:SA:Special Ability, Man!");
+			"1|2|20:5:SAB:Special Ability, Man!");
 	}
 
 }

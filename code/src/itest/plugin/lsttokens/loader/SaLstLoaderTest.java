@@ -26,7 +26,7 @@ import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
-import plugin.lsttokens.SaLst;
+import plugin.lsttokens.SabLst;
 import plugin.lsttokens.loader.testsupport.AbstractTokenLoaderTestCase;
 
 /**
@@ -36,7 +36,7 @@ import plugin.lsttokens.loader.testsupport.AbstractTokenLoaderTestCase;
  * @version $Revision$
  */
 public class SaLstLoaderTest extends AbstractTokenLoaderTestCase{
-	static GlobalLstToken token = new SaLst();
+	static GlobalLstToken token = new SabLst();
 	static PCTemplateLoader loader = new PCTemplateLoader();
 	
 	@Override

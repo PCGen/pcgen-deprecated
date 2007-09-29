@@ -34,9 +34,9 @@ import plugin.pretokens.parser.PreRaceParser;
 import plugin.pretokens.writer.PreClassWriter;
 import plugin.pretokens.writer.PreRaceWriter;
 
-public class SaLstTest extends AbstractGlobalTokenTestCase
+public class SabLstTest extends AbstractGlobalTokenTestCase
 {
-	static GlobalLstToken token = new SaLst();
+	static GlobalLstToken token = new SabLst();
 	static PCTemplateLoader loader = new PCTemplateLoader();
 
 	@Override

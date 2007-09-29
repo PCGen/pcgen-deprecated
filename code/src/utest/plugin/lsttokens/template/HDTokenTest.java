@@ -29,7 +29,7 @@ import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
 import plugin.lsttokens.DrLst;
-import plugin.lsttokens.SaLst;
+import plugin.lsttokens.SabLst;
 import plugin.lsttokens.SrLst;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
@@ -52,7 +52,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 		TokenRegistration.register(new CrToken());
 		TokenRegistration.register(new DrLst());
 		TokenRegistration.register(new SrLst());
-		TokenRegistration.register(new SaLst());
+		TokenRegistration.register(new SabLst());
 		TokenRegistration.register(new LegsToken());
 		classSetUpFired = true;
 	}
@@ -168,7 +168,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testInvalidInputEmptySA() throws PersistenceLayerException
 	{
-		assertFalse(parse("3+:SA:"));
+		assertFalse(parse("3+:SAB:"));
 		assertNoSideEffects();
 	}
 
@@ -191,7 +191,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputEmptySANoColon()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("3+:SA"));
+		assertFalse(parse("3+:SAB"));
 		assertNoSideEffects();
 	}
 
@@ -210,7 +210,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 		assertFalse(parse("3+:D:1/+2"));
 		assertFalse(parse("3+:CRA:3"));
 		assertFalse(parse("3+:DRA:1/+2"));
-		assertFalse(parse("3+:SAA:Special"));
+		assertFalse(parse("3+:SABA:Special"));
 		assertFalse(parse("3+:SRA:1"));
 		assertNoSideEffects();
 	}
@@ -234,7 +234,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputBadHDRangePlus()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("+3:SA:Special Abil"));
+		assertFalse(parse("+3:SAB:Special Abil"));
 		assertNoSideEffects();
 	}
 
@@ -242,7 +242,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputBadHDRangeMult()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("*3:SA:Special Abil"));
+		assertFalse(parse("*3:SAB:Special Abil"));
 		assertNoSideEffects();
 	}
 
@@ -250,7 +250,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputBadHDRangeTwoDash()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("1--3:SA:Special Abil"));
+		assertFalse(parse("1--3:SAB:Special Abil"));
 		assertNoSideEffects();
 	}
 
@@ -258,7 +258,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputBadHDRangeEndDash()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("4-:SA:Special Abil"));
+		assertFalse(parse("4-:SAB:Special Abil"));
 		assertNoSideEffects();
 	}
 
@@ -266,7 +266,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	public void testInvalidInputBadHDRangeUpTo()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("-4:SA:Special Abil"));
+		assertFalse(parse("-4:SAB:Special Abil"));
 		assertNoSideEffects();
 	}
 
@@ -298,7 +298,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinRangeSA() throws PersistenceLayerException
 	{
-		runRoundRobin("5-7:SA:Special Ability, Man!");
+		runRoundRobin("5-7:SAB:Special Ability, Man!");
 	}
 
 	@Test
@@ -336,7 +336,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinMinimumSA() throws PersistenceLayerException
 	{
-		runRoundRobin("5+:SA:Special Ability, Man!");
+		runRoundRobin("5+:SAB:Special Ability, Man!");
 	}
 
 	@Test
@@ -356,13 +356,13 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinMultiple() throws PersistenceLayerException
 	{
-		runRoundRobin("4+:CR:MultFormula", "5+:SA:Special Ability, Man!");
+		runRoundRobin("4+:CR:MultFormula", "5+:SAB:Special Ability, Man!");
 	}
 
 	@Test
 	public void testRoundRobinMultipleSame() throws PersistenceLayerException
 	{
-		runRoundRobin("4+:CR:Formula", "4+:SA:Special Ability, Man!");
+		runRoundRobin("4+:CR:Formula", "4+:SAB:Special Ability, Man!");
 	}
 
 }

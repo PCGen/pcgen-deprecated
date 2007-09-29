@@ -30,7 +30,7 @@ import junit.framework.TestSuite;
 	KitLstTest.class, LangAutoLstTest.class, MoveLstTest.class,
 	MoveCloneLstTest.class, NameispiLstTest.class, NaturalAttacksLstTest.class,
 	OutputNameLstTest.class, QualifyTokenTest.class, RegionLstTest.class,
-	SaLstTest.class, SourceDateLstTest.class, SourceLongLstTest.class,
+	SabLstTest.class, SourceDateLstTest.class, SourceLongLstTest.class,
 	SourcePageLstTest.class, SourceShortLstTest.class, SourceWebLstTest.class,
 	SpellLevelLstTest.class, SpellsLstTest.class, SrLstTest.class,
 	TempdescLstTest.class, TemplateLstTest.class, TypeLstTest.class,
