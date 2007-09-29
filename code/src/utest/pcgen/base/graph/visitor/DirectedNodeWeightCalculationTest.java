@@ -38,7 +38,8 @@ public class DirectedNodeWeightCalculationTest extends TestCase
 
 	DirectionalGraph g = new DirectionalListMapGraph();
 
-	TestDirectionalHyperEdge edge1, edge2, edge3, edge4, edge5, edge6, edge7;
+	TestDirectionalHyperEdge edge1, edge2, edge3, edge4, edge5, edge6, edge7,
+			edge8;
 
 	Integer node1, node2, node3, node4, node5, node6, node7, node8, node9,
 			nodea, nodeb, nodec;
@@ -81,6 +82,7 @@ public class DirectedNodeWeightCalculationTest extends TestCase
 		edge5 = new TestDirectionalHyperEdge(node6, new Integer[]{});
 		edge6 = new TestDirectionalHyperEdge(node4, new Integer[]{node6});
 		edge7 = new TestDirectionalHyperEdge(node6, new Integer[]{node6});
+		edge8 = new TestDirectionalHyperEdge(node8, new Integer[]{node6});
 		dedge1 = new TestDirectionalEdge(node1, node2);
 		dedge2 = new TestDirectionalEdge(node4, node5);
 		dedge3 = new TestDirectionalEdge(node1, node3);
@@ -170,7 +172,7 @@ public class DirectedNodeWeightCalculationTest extends TestCase
 		}
 	}
 
-	public void testNullNodes()
+	public void testNullNode()
 	{
 		try
 		{
@@ -183,17 +185,107 @@ public class DirectedNodeWeightCalculationTest extends TestCase
 		}
 	}
 
-	public void testMissingNodes()
+	public void testNullEdge()
+	{
+		try
+		{
+			d.calculateEdgeWeight(null);
+			fail();
+		}
+		catch (IllegalArgumentException e)
+		{
+			// OK
+		}
+	}
+
+	public void testOneNodeCall()
+	{
+		d.calculateNodeWeight(node3);
+		try
+		{
+			d.calculateNodeWeight(node1);
+			fail();
+		}
+		catch (UnsupportedOperationException e)
+		{
+			//OK
+		}
+		try
+		{
+			d.calculateEdgeWeight(dedge3);
+			fail();
+		}
+		catch (UnsupportedOperationException e)
+		{
+			//OK
+		}
+	}
+
+	public void testClear()
+	{
+		d.calculateNodeWeight(node3);
+		try
+		{
+			d.calculateNodeWeight(node1);
+			fail();
+		}
+		catch (UnsupportedOperationException e)
+		{
+			//OK
+		}
+		d.clear();
+		d.calculateEdgeWeight(dedge3);
+	}
+
+	public void testOneEdgeCall()
+	{
+		d.calculateEdgeWeight(dedge6);
+		try
+		{
+			d.calculateNodeWeight(node1);
+			fail();
+		}
+		catch (UnsupportedOperationException e)
+		{
+			//OK
+		}
+		try
+		{
+			d.calculateEdgeWeight(dedge3);
+			fail();
+		}
+		catch (UnsupportedOperationException e)
+		{
+			//OK
+		}
+	}
+
+	public void testMissingNode()
 	{
 		assertEquals(-1, d.calculateNodeWeight(node8));
 	}
 
-	public void testSimpleDistance()
+	public void testMissingEdge()
+	{
+		assertEquals(-1, d.calculateEdgeWeight(edge8));
+	}
+
+	public void testSimpleEdgeDistance()
+	{
+		assertEquals(1, d.calculateEdgeWeight(dedge3));
+	}
+
+	public void testComplexEdgeDistance()
+	{
+		assertEquals(3, d.calculateEdgeWeight(dedge6));
+	}
+
+	public void testSimpleNodeDistance()
 	{
 		assertEquals(1, d.calculateNodeWeight(node1));
 	}
 
-	public void testComplexDistance()
+	public void testComplexNodeDistance()
 	{
 		assertEquals(3, d.calculateNodeWeight(node3));
 	}

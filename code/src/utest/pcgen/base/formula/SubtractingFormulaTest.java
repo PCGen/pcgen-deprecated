@@ -15,6 +15,22 @@ public class SubtractingFormulaTest extends TestCase
 		testBrokenCalls(f);
 	}
 
+	public void testEquality()
+	{
+		SubtractingFormula f1 = new SubtractingFormula(1);
+		SubtractingFormula f2 = new SubtractingFormula(1);
+		SubtractingFormula f3 = new SubtractingFormula(2);
+		SubtractingFormula f4 = new SubtractingFormula(-1);
+		assertTrue(f1 != f2);
+		assertEquals(f1.hashCode(), f2.hashCode());
+		assertEquals(f1, f2);
+		assertFalse(f1.equals(null));
+		assertFalse(f1.hashCode() == f3.hashCode());
+		assertFalse(f1.equals(f3));
+		assertFalse(f1.hashCode() == f4.hashCode());
+		assertFalse(f1.equals(f4));
+	}
+
 	public void testPositive()
 	{
 		SubtractingFormula f = new SubtractingFormula(3);

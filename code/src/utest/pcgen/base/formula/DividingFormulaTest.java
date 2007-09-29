@@ -13,6 +13,22 @@ public class DividingFormulaTest extends TestCase
 		testBrokenCalls(f);
 	}
 
+	public void testEquality()
+	{
+		DividingFormula f1 = new DividingFormula(1);
+		DividingFormula f2 = new DividingFormula(1);
+		DividingFormula f3 = new DividingFormula(2);
+		DividingFormula f4 = new DividingFormula(-1);
+		assertTrue(f1 != f2);
+		assertEquals(f1.hashCode(), f2.hashCode());
+		assertEquals(f1, f2);
+		assertFalse(f1.equals(null));
+		assertFalse(f1.hashCode() == f3.hashCode());
+		assertFalse(f1.equals(f3));
+		assertFalse(f1.hashCode() == f4.hashCode());
+		assertFalse(f1.equals(f4));
+	}
+
 	public void testPositive()
 	{
 		DividingFormula f = new DividingFormula(3);

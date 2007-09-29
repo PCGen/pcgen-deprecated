@@ -34,6 +34,7 @@ public class DoubleKeyMapTest extends TestCase
 	private static final char CONST_A = 'A';
 	DoubleKeyMap<Integer, Double, Character> dkm;
 
+	@Override
 	@Before
 	public void setUp()
 	{
@@ -57,12 +58,39 @@ public class DoubleKeyMapTest extends TestCase
 	{
 		assertNull(dkm.get(Integer.valueOf(1), Double.valueOf(0)));
 		populate();
-		assertEquals(Character.valueOf('A'), dkm.get(Integer.valueOf(1), Double.valueOf(1)));
-		assertEquals(Character.valueOf('B'), dkm.get(Integer.valueOf(1), Double.valueOf(2)));
-		assertEquals(Character.valueOf('C'), dkm.get(Integer.valueOf(1), Double.valueOf(3)));
+		assertEquals(Character.valueOf('A'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('B'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(2)));
+		assertEquals(Character.valueOf('C'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(3)));
 		assertNull(dkm.get(Integer.valueOf(1), Double.valueOf(0)));
-		assertEquals(Character.valueOf('D'), dkm.get(Integer.valueOf(2), Double.valueOf(1)));
-		assertEquals(Character.valueOf('E'), dkm.get(Integer.valueOf(2), Double.valueOf(2)));
+		assertEquals(Character.valueOf('D'), dkm.get(Integer.valueOf(2), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('E'), dkm.get(Integer.valueOf(2), Double
+			.valueOf(2)));
+		assertEquals(Character.valueOf('F'), dkm.get(null, Double.valueOf(3)));
+		assertEquals(Character.valueOf('G'), dkm.get(Integer.valueOf(3), null));
+		assertNull(dkm.get(Integer.valueOf(2), Double.valueOf(3)));
+		assertNull(dkm.get(Integer.valueOf(4), Double.valueOf(0)));
+		assertNull(dkm.get(Integer.valueOf(1), null));
+		assertNull(dkm.get(null, Double.valueOf(1)));
+	}
+
+	@Test
+	public void testRemoveAll()
+	{
+		assertNull(dkm.get(Integer.valueOf(1), Double.valueOf(0)));
+		populate();
+		dkm.removeAll(Integer.valueOf(1));
+		assertNull(dkm.get(Integer.valueOf(1), Double.valueOf(1)));
+		assertNull(dkm.get(Integer.valueOf(1), Double.valueOf(2)));
+		assertNull(dkm.get(Integer.valueOf(1), Double.valueOf(3)));
+		assertNull(dkm.get(Integer.valueOf(1), Double.valueOf(0)));
+		assertEquals(Character.valueOf('D'), dkm.get(Integer.valueOf(2), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('E'), dkm.get(Integer.valueOf(2), Double
+			.valueOf(2)));
 		assertEquals(Character.valueOf('F'), dkm.get(null, Double.valueOf(3)));
 		assertEquals(Character.valueOf('G'), dkm.get(Integer.valueOf(3), null));
 		assertNull(dkm.get(Integer.valueOf(2), Double.valueOf(3)));
@@ -98,18 +126,23 @@ public class DoubleKeyMapTest extends TestCase
 	{
 		assertNull(dkm.remove(Integer.valueOf(1), Double.valueOf(1)));
 		populate();
-		assertEquals(Character.valueOf('A'), dkm.remove(Integer.valueOf(1), Double.valueOf(1)));
+		assertEquals(Character.valueOf('A'), dkm.remove(Integer.valueOf(1),
+			Double.valueOf(1)));
 		assertFalse(dkm.containsKey(Integer.valueOf(1), Double.valueOf(1)));
 		assertNull(dkm.remove(Integer.valueOf(1), Double.valueOf(1)));
-		assertEquals(Character.valueOf('F'), dkm.remove(null, Double.valueOf(3)));
+		assertEquals(Character.valueOf('F'), dkm
+			.remove(null, Double.valueOf(3)));
 		assertFalse(dkm.containsKey(null, Double.valueOf(3)));
 		assertNull(dkm.remove(null, Double.valueOf(3)));
-		assertEquals(Character.valueOf('G'), dkm.remove(Integer.valueOf(3), null));
+		assertEquals(Character.valueOf('G'), dkm.remove(Integer.valueOf(3),
+			null));
 		assertFalse(dkm.containsKey(Integer.valueOf(3), null));
 		assertNull(dkm.remove(Integer.valueOf(3), null));
-		assertEquals(Character.valueOf('B'), dkm.remove(Integer.valueOf(1), Double.valueOf(2)));
+		assertEquals(Character.valueOf('B'), dkm.remove(Integer.valueOf(1),
+			Double.valueOf(2)));
 		assertTrue(dkm.containsKey(Integer.valueOf(1)));
-		assertEquals(Character.valueOf('C'), dkm.remove(Integer.valueOf(1), Double.valueOf(3)));
+		assertEquals(Character.valueOf('C'), dkm.remove(Integer.valueOf(1),
+			Double.valueOf(3)));
 		assertFalse(dkm.containsKey(Integer.valueOf(1)));
 	}
 
@@ -271,5 +304,197 @@ public class DoubleKeyMapTest extends TestCase
 		assertFalse(dkm.containsKey(Integer.valueOf(5), Double.valueOf(6)));
 		assertFalse(dkm.removeValue(Integer.valueOf(5), null));
 		assertFalse(dkm.containsKey(Integer.valueOf(5), Double.valueOf(6)));
+	}
+
+	@Test
+	public void testDKMconstructorOneClear()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2;
+		dkm2 = new DoubleKeyMap<Integer, Double, Character>(dkm);
+		// Ensure 1 clear is innocent
+		dkm.clear();
+		assertFalse(dkm2.isEmpty());
+		assertEquals(Character.valueOf('A'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(1)));
+		assertEquals(Character.valueOf('B'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(2)));
+	}
+
+	@Test
+	public void testDKMconstructorTwoClear()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2;
+		dkm2 = new DoubleKeyMap<Integer, Double, Character>(dkm);
+		// Ensure 2 clear is innocent
+		dkm2.clear();
+		assertFalse(dkm.isEmpty());
+		assertEquals(Character.valueOf('A'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('B'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(2)));
+	}
+
+	@Test
+	public void testDKMconstructorOneChange()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2;
+		dkm2 = new DoubleKeyMap<Integer, Double, Character>(dkm);
+		// Ensure 1 change is innocent
+		dkm.put(Integer.valueOf(1), Double.valueOf(1), 'Z');
+		assertEquals(Character.valueOf('Z'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('A'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(1)));
+	}
+
+	@Test
+	public void testDKMconstructorTwoChange()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2;
+		dkm2 = new DoubleKeyMap<Integer, Double, Character>(dkm);
+		// Ensure 2 change is innocent
+		dkm2.put(Integer.valueOf(1), Double.valueOf(1), 'Z');
+		assertEquals(Character.valueOf('A'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('Z'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(1)));
+	}
+
+	@Test
+	public void testDKMconstructorOneRemoveAll()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2;
+		dkm2 = new DoubleKeyMap<Integer, Double, Character>(dkm);
+		// Ensure 1 remove is innocent
+		dkm.removeAll(Integer.valueOf(1));
+		assertEquals(null, dkm.get(Integer.valueOf(1), Double.valueOf(1)));
+		assertEquals(Character.valueOf('A'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(1)));
+	}
+
+	@Test
+	public void testDKMconstructorTwoRemoveAll()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2;
+		dkm2 = new DoubleKeyMap<Integer, Double, Character>(dkm);
+		// Ensure 2 remove is innocent
+		dkm2.removeAll(Integer.valueOf(1));
+		assertEquals(null, dkm2.get(Integer.valueOf(1), Double.valueOf(1)));
+		assertEquals(Character.valueOf('A'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+	}
+
+	@Test
+	public void testDKMputAllOneClear()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2 =
+				new DoubleKeyMap<Integer, Double, Character>();
+		dkm2.putAll(dkm);
+		// Ensure 1 clear is innocent
+		dkm.clear();
+		assertFalse(dkm2.isEmpty());
+		assertEquals(Character.valueOf('A'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(1)));
+		assertEquals(Character.valueOf('B'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(2)));
+	}
+
+	@Test
+	public void testDKMputAllTwoClear()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2 =
+				new DoubleKeyMap<Integer, Double, Character>();
+		dkm2.putAll(dkm);
+		// Ensure 2 clear is innocent
+		dkm2.clear();
+		assertFalse(dkm.isEmpty());
+		assertEquals(Character.valueOf('A'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('B'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(2)));
+	}
+
+	@Test
+	public void testDKMputAllOneChange()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2 =
+				new DoubleKeyMap<Integer, Double, Character>();
+		dkm2.putAll(dkm);
+		// Ensure 1 change is innocent
+		dkm.put(Integer.valueOf(1), Double.valueOf(1), 'Z');
+		assertEquals(Character.valueOf('Z'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('A'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(1)));
+	}
+
+	@Test
+	public void testDKMputAllTwoChange()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2 =
+				new DoubleKeyMap<Integer, Double, Character>();
+		dkm2.putAll(dkm);
+		// Ensure 2 change is innocent
+		dkm2.put(Integer.valueOf(1), Double.valueOf(1), 'Z');
+		assertEquals(Character.valueOf('A'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+		assertEquals(Character.valueOf('Z'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(1)));
+	}
+
+	@Test
+	public void testDKMputAllOneRemoveAll()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2 =
+				new DoubleKeyMap<Integer, Double, Character>();
+		dkm2.putAll(dkm);
+		// Ensure 1 remove is innocent
+		dkm.removeAll(Integer.valueOf(1));
+		assertEquals(null, dkm.get(Integer.valueOf(1), Double.valueOf(1)));
+		assertEquals(Character.valueOf('A'), dkm2.get(Integer.valueOf(1),
+			Double.valueOf(1)));
+	}
+
+	@Test
+	public void testDKMputAllTwoRemoveAll()
+	{
+		populate();
+		DoubleKeyMap<Integer, Double, Character> dkm2 =
+				new DoubleKeyMap<Integer, Double, Character>();
+		dkm2.putAll(dkm);
+		// Ensure 2 remove is innocent
+		dkm2.removeAll(Integer.valueOf(1));
+		assertEquals(null, dkm2.get(Integer.valueOf(1), Double.valueOf(1)));
+		assertEquals(Character.valueOf('A'), dkm.get(Integer.valueOf(1), Double
+			.valueOf(1)));
+	}
+
+	@Test
+	public void testPutAllNull()
+	{
+		try
+		{
+			dkm.putAll(null);
+			fail();
+		}
+		catch (NullPointerException e)
+		{
+			// OK
+		}
+		catch (IllegalArgumentException e)
+		{
+			// OK
+		}
 	}
 }

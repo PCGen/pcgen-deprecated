@@ -13,6 +13,22 @@ public class MultiplyingFormulaTest extends TestCase
 		testBrokenCalls(f);
 	}
 
+	public void testEquality()
+	{
+		MultiplyingFormula f1 = new MultiplyingFormula(1);
+		MultiplyingFormula f2 = new MultiplyingFormula(1);
+		MultiplyingFormula f3 = new MultiplyingFormula(2);
+		MultiplyingFormula f4 = new MultiplyingFormula(-1);
+		assertTrue(f1 != f2);
+		assertEquals(f1.hashCode(), f2.hashCode());
+		assertEquals(f1, f2);
+		assertFalse(f1.equals(null));
+		assertFalse(f1.hashCode() == f3.hashCode());
+		assertFalse(f1.equals(f3));
+		assertFalse(f1.hashCode() == f4.hashCode());
+		assertFalse(f1.equals(f4));
+	}
+
 	public void testPositive()
 	{
 		MultiplyingFormula f = new MultiplyingFormula(3);

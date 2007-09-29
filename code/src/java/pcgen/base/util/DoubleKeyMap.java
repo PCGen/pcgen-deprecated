@@ -86,6 +86,7 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	 */
 	public DoubleKeyMap(final DoubleKeyMap<K1, K2, V> otherMap)
 	{
+		this();
 		putAll(otherMap);
 	}
 

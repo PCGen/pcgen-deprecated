@@ -13,6 +13,22 @@ public class AddingFormulaTest extends TestCase
 		testBrokenCalls(f);
 	}
 
+	public void testEquality()
+	{
+		AddingFormula f1 = new AddingFormula(1);
+		AddingFormula f2 = new AddingFormula(1);
+		AddingFormula f3 = new AddingFormula(2);
+		AddingFormula f4 = new AddingFormula(-1);
+		assertTrue(f1 != f2);
+		assertEquals(f1.hashCode(), f2.hashCode());
+		assertEquals(f1, f2);
+		assertFalse(f1.equals(null));
+		assertFalse(f1.hashCode() == f3.hashCode());
+		assertFalse(f1.equals(f3));
+		assertFalse(f1.hashCode() == f4.hashCode());
+		assertFalse(f1.equals(f4));
+	}
+
 	public void testPositive()
 	{
 		AddingFormula f = new AddingFormula(3);
