@@ -17,33 +17,64 @@
  */
 package plugin.lsttokens.choose;
 
+import pcgen.core.EquipmentModifier;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.util.Logging;
 
-public class EqBuilderToken implements ChooseLstToken
+public class StringToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
-		if (value != null)
+		if (po instanceof EquipmentModifier)
 		{
-			Logging.deprecationPrint("CHOOSE:" + getTokenName()
-				+ " will ignore arguments: " + value);
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " may not be used in EquipmentModifier");
+			return false;
 		}
-		// No args - legal
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain , : " + value);
+			return false;
+		}
+		if (value.indexOf('[') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not contain [] : " + value);
+			return false;
+		}
+		if (value.charAt(0) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not start with | : " + value);
+			return false;
+		}
+		if (value.charAt(value.length() - 1) == '|')
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
+		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{
 			sb.append(prefix).append('|');
 		}
-		sb.append(getTokenName());
+		sb.append(value);
 		po.setChoiceString(sb.toString());
 		return true;
 	}
 
 	public String getTokenName()
 	{
-		return "EQBUILDER";
+		return "STRING";
 	}
 }

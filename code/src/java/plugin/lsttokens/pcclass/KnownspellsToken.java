@@ -71,11 +71,18 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 
 			if (".CLEAR".equals(value))
 			{
+				Logging.errorPrint(getTokenName()
+					+ " uses deprecated syntax.  "
+					+ "Use .CLEARALL (not .CLEAR) to clear the values");
+				return true;
+			}
+			else if (".CLEARALL".equals(value))
+			{
 				return true;
 			}
 
 			String rest;
-			if (value.startsWith(".CLEAR|"))
+			if (value.startsWith(".CLEARALL|"))
 			{
 				rest = value.substring(7);
 			}
@@ -83,7 +90,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 			{
 				Logging.errorPrint("Invalid KNOWNSPELLS Syntax using .CLEAR");
 				Logging
-					.errorPrint("Please separate .CLEAR from the rest of the token with a |");
+					.errorPrint("Please separate .CLEARALL from the rest of the token with a |");
 				rest = value.substring(6);
 			}
 			pipeTok = new StringTokenizer(rest, Constants.PIPE);

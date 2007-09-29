@@ -93,7 +93,6 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 			pcclass.addAbility(AbilityCategory.FEAT, Ability.Nature.VIRTUAL,
 				ability);
 		}
-		pcclass.addVirtualFeats(level, FeatParser.parseVirtualFeatList(value));
 		return true;
 	}
 

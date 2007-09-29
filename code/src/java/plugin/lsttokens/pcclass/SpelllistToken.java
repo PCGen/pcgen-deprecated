@@ -36,6 +36,7 @@ import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.ClassSpellList;
+import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.AssociatedChanges;
@@ -83,7 +84,30 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 
 		while (aTok.hasMoreTokens())
 		{
-			spellChoices.add(aTok.nextToken());
+			String className = aTok.nextToken();
+			if (Globals.getDomainKeyed(className) != null)
+			{
+				Logging.deprecationPrint(getTokenName()
+					+ " now requires a DOMAIN. prefix "
+					+ "when used with a DOMAIN rather than a Class");
+			}
+			if (className.startsWith("DOMAIN."))
+			{
+				String domainName = className.substring(7);
+				if (Globals.getDomainKeyed(domainName) != null)
+				{
+					Logging.errorPrint(getTokenName()
+						+ " could not find Domain: " + domainName);
+					return false;
+				}
+				// This is safe in 5.x since the class & domain names can't
+				// conflict
+				spellChoices.add(domainName);
+			}
+			else
+			{
+				spellChoices.add(className);
+			}
 		}
 
 		// Protection against a "" value parameter
