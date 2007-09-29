@@ -26,8 +26,9 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+
 import pcgen.cdom.graph.PCGenGraph;
-import pcgen.core.PCTemplate;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.SpecialAbility;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -35,8 +36,6 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.util.PropertyFactory;
-
-import java.util.List;
 
 /**
  * @author wardc
@@ -71,27 +70,6 @@ public class PreSpecialAbilityTester extends AbstractPrerequisiteTest implements
 			if (sa.getKeyName().toUpperCase().startsWith(aString))
 			{
 				runningTotal++;
-			}
-		}
-
-		//
-		// Now check any templates
-		//
-		for (PCTemplate aTempl : character.getTemplateList())
-		{
-			final List<SpecialAbility> saList =
-					aTempl.getSpecialAbilityList(character.getTotalLevels(),
-						character.totalHitDice());
-
-			if (saList != null)
-			{
-				for (SpecialAbility sa : saList)
-				{
-					if (sa.getKeyName().toUpperCase().startsWith(aString))
-					{
-						runningTotal++;
-					}
-				}
 			}
 		}
 

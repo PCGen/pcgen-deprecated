@@ -79,6 +79,8 @@ public class NameGenPanel extends JPanel
 	private JSeparator jSeparator4;
 	private JTextField name;
 	private VariableHashMap allVars = new VariableHashMap();
+	
+	private Rule lastRule = null;
 
 	/** Creates new form NameGenPanel */
 	public NameGenPanel()
@@ -104,18 +106,18 @@ public class NameGenPanel extends JPanel
 	{
 		try
 		{
+			Rule rule = null;
+			
 			if (chkStructure.isSelected())
 			{
 				RuleSet rs = (RuleSet) cbCatalog.getSelectedItem();
-				Rule rule = rs.getRule();
-				ArrayList<DataValue> aName = rule.getData();
-				setNameText(aName);
-				setMeaningText(aName);
-				setPronounciationText(aName);
-
-				return rule;
+				rule = rs.getRule();
 			}
-			Rule rule = (Rule) cbStructure.getSelectedItem();
+			else
+			{
+				rule = (Rule) cbStructure.getSelectedItem();
+			}
+			
 			ArrayList<DataValue> aName = rule.getData();
 			setNameText(aName);
 			setMeaningText(aName);
@@ -227,10 +229,26 @@ public class NameGenPanel extends JPanel
 			NameButton nb = (NameButton) evt.getSource();
 			DataElement element = nb.getDataElement();
 			element.getData();
+			
+			Rule rule = this.lastRule;
+			
+			if( rule == null)
+			{
+				if (chkStructure.isSelected())
+				{
+					RuleSet rs = (RuleSet) cbCatalog.getSelectedItem();
+					rule = rs.getLastRule();
+				}
+				else
+				{
+					rule = (Rule) cbStructure.getSelectedItem();
+				}
+				
+				this.lastRule = rule;
+			}
 
-			RuleSet rs = (RuleSet) cbCatalog.getSelectedItem();
-			Rule rule = rs.getLastRule();
 			ArrayList<DataValue> aName = rule.getLastData();
+			
 			setNameText(aName);
 			setMeaningText(aName);
 			setPronounciationText(aName);
@@ -244,14 +262,22 @@ public class NameGenPanel extends JPanel
 	private void cbCatalogActionPerformed(ActionEvent evt)
 	{ //GEN-FIRST:event_cbCatalogActionPerformed
 		loadStructureDD();
+		this.clearButtons();
 	}
-
 	//GEN-LAST:event_cbCatalogActionPerformed
+
+	private void cbStructureActionPerformed(ActionEvent evt)
+	{ //GEN-FIRST:event_cbStructureActionPerformed
+		this.clearButtons();
+	}
+	//GEN-LAST:event_cbStructureActionPerformed
 
 	private void cbCategoryActionPerformed(ActionEvent evt)
 	{ //GEN-FIRST:event_cbCategoryActionPerformed
+		this.loadGenderDD();
 		loadCatalogDD();
 		loadStructureDD();
+		this.clearButtons();
 	}
 
 	//GEN-LAST:event_cbCategoryActionPerformed
@@ -260,6 +286,7 @@ public class NameGenPanel extends JPanel
 	{ //GEN-FIRST:event_cbSexActionPerformed
 		loadCatalogDD();
 		loadStructureDD();
+		this.clearButtons();
 	}
 
 	//GEN-LAST:event_cbSexActionPerformed
@@ -314,8 +341,8 @@ public class NameGenPanel extends JPanel
 
 		try
 		{
-			Rule rule = generate();
-			displayButtons(rule);
+			this.lastRule = generate();
+			displayButtons(this.lastRule);
 		}
 		catch (Exception e)
 		{
@@ -461,6 +488,13 @@ public class NameGenPanel extends JPanel
 		jPanel12.add(jLabel6);
 
 		cbStructure.setEnabled(false);
+		cbStructure.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				cbStructureActionPerformed(evt);
+			}
+		});
 		jPanel12.add(cbStructure);
 
 		chkStructure.setSelected(true);
@@ -558,7 +592,7 @@ public class NameGenPanel extends JPanel
 			String sexKey = (String) cbSex.getSelectedItem();
 			RuleSet oldRS = (RuleSet) cbCatalog.getSelectedItem();
 			String catalogKey = "";
-
+			
 			if (oldRS != null)
 			{
 				catalogKey = oldRS.getTitle();
@@ -596,12 +630,77 @@ public class NameGenPanel extends JPanel
 			DefaultComboBoxModel catalogModel =
 					new DefaultComboBoxModel(catalogs);
 			cbCatalog.setModel(catalogModel);
-			cbCatalog.setSelectedIndex(oldSelected);
 		}
 		catch (Exception e)
 		{
 			Logging.errorPrint(e.getMessage(), e);
 		}
+	}
+	
+	//	Get a list of all the gender categories in the category map
+	private Vector<String> getGenderCategoryNames()
+	{
+		Vector<String> genders = new java.util.Vector<String>();
+		Set<String> keySet = categories.keySet();
+		Iterator<String> itr = keySet.iterator();
+
+		//	Loop through the keys in the categories
+		while (itr.hasNext())
+		{
+			String key = itr.next();
+
+			//	if the key starts with "Sex" then save it
+			if (key.startsWith("Sex:"))
+			{
+				genders.add(key.substring(5));
+			}
+		}
+		
+		//	Return all the found gender types
+		return genders;
+	}
+	
+	//	Load the gender drop dowd
+	private void loadGenderDD()
+	{
+		Vector<String> genders = getGenderCategoryNames();
+		Vector<String> selectable = new Vector<String>();
+		
+		//	Get the selected category name
+		String category = (String) cbCategory.getSelectedItem();
+		
+		//	Get the set of rules for selected category
+		List<RuleSet> categoryRules = categories.get(category);
+		
+		//	we need to determine if the selected category is supported by the 
+		//	available genders
+		//	loop through the available genders
+		for( int i = 0; i < genders.size(); ++i )
+		{
+			String gender = genders.get(i);
+			
+			//	Get the list of rules for the current gender
+			List<RuleSet> genderRules = categories.get("Sex: " + gender);
+			
+			//	now loop through all the rules from the selected category
+			for( int j = 0; j < categoryRules.size(); ++j )
+			{
+				//	if the category rule is in the list of gender rules
+				//	add the current gender to the selectable gender list
+				//	we can stop processing the list once we find a match
+				if( genderRules.contains(categoryRules.get(j)))
+				{
+					selectable.add(gender);
+					break;
+				}
+			}
+		}
+		
+		//	Sort the genders
+		Collections.sort(selectable);
+		
+		//	Create a new model for the combobox and set it
+		cbSex.setModel(new DefaultComboBoxModel(selectable));
 	}
 
 	private void loadCategory(Element category, RuleSet rs)
@@ -661,10 +760,10 @@ public class NameGenPanel extends JPanel
 		}
 	}
 
-	private void loadDropdowns()
+	//	Get a list of category names from the categories map
+	private Vector<String> getCategoryNames()
 	{
 		Vector<String> cats = new java.util.Vector<String>();
-		Vector<String> sexes = new java.util.Vector<String>();
 		Set<String> keySet = categories.keySet();
 		Iterator<String> itr = keySet.iterator();
 
@@ -672,25 +771,30 @@ public class NameGenPanel extends JPanel
 		{
 			String key = itr.next();
 
+			//	Ignore any category that starts with this
 			if (key.startsWith("Sex:"))
 			{
-				sexes.add(key.substring(5));
+				continue;
 			}
-			else
-			{
-				cats.add(key);
-			}
+
+			cats.add(key);
 		}
 
+		//	Sor the selected categories before returning it
 		Collections.sort(cats);
-		Collections.sort(sexes);
-
-		DefaultComboBoxModel catModel = new DefaultComboBoxModel(cats);
-		DefaultComboBoxModel sexModel = new DefaultComboBoxModel(sexes);
-		cbCategory.setModel(catModel);
-		cbSex.setModel(sexModel);
-
-		loadCatalogDD();
+		
+		return cats;
+	}
+	
+	private void loadDropdowns()
+	{
+		//	This method now just loads the category dropdown from the list of 
+		//	category names
+		Vector<String> cats = this.getCategoryNames();
+		cbCategory.setModel(new DefaultComboBoxModel(cats));
+		
+		this.loadGenderDD();
+		this.loadCatalogDD();
 	}
 
 	private void loadFromDocument(Document nameSet)
