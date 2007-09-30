@@ -33,7 +33,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.prereq.Prerequisite;
@@ -1655,5 +1657,68 @@ public final class EquipmentModifier extends PObject implements Comparable<Objec
 		}
 
 		return getKeyName().compareTo(o.toString());
+	}
+	
+	private EqModChooseActionContainer chooseContainer = null;
+
+	@Override
+	public boolean hasChooseContainer()
+	{
+		return chooseContainer == null;
+	}
+
+	@Override
+	public EqModChooseActionContainer getChooseContainer()
+	{
+		if (chooseContainer == null)
+		{
+			chooseContainer = new EqModChooseActionContainer("CHOOSE");
+		}
+		return chooseContainer;
+	}
+
+	public class EqModChooseActionContainer extends ChooseActionContainer
+	{
+
+		private ChoiceSet<?> secondChoiceSet;
+
+		public EqModChooseActionContainer(String nm)
+		{
+			super(nm);
+		}
+
+		public ChoiceSet<?> getSecondChoiceSet()
+		{
+			return secondChoiceSet;
+		}
+
+		public void setSecondChoiceSet(ChoiceSet<?> secondChoiceSet)
+		{
+			this.secondChoiceSet = secondChoiceSet;
+		}
+
+		@Override
+		public boolean equals(Object o)
+		{
+			if (o instanceof EqModChooseActionContainer && super.equals(o))
+			{
+				EqModChooseActionContainer other = (EqModChooseActionContainer) o;
+				if (secondChoiceSet == null)
+				{
+					if (other.secondChoiceSet != null)
+					{
+						return false;
+					}
+				}
+				else if (!secondChoiceSet.equals(other.secondChoiceSet))
+				{
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		
 	}
 }
