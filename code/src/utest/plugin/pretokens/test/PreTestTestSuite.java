@@ -45,7 +45,7 @@ import junit.framework.TestSuite;
 	PreSubClassTesterTest.class, PreTemplateTesterTest.class,
 	PreTextTesterTest.class, PreTypeTesterTest.class,
 	PreVisionTesterTest.class, PreWeaponProfTesterTest.class,
-	PreWieldTesterTest.class,})
+	PreWieldTesterTest.class})
 public class PreTestTestSuite extends TestSuite
 {
 	// No content, see annotations
