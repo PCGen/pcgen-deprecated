@@ -2890,6 +2890,7 @@ my %master_order = (
         'CLASSES',
         'DOMAINS',
         'STAT:*',
+        'PPCOST',
         'SCHOOL:.CLEAR',
         'SCHOOL',
         'SUBSCHOOL',
@@ -3880,6 +3881,7 @@ my %tagheader = (
         'NUMPAGES'              => 'Number of Pages',                     # [ 1450980 ] New Spellbook tags
         'OUTPUTNAME'            => 'Output Name',
         'PAGEUSAGE'             => 'Page Usage',                          # [ 1450980 ] New Spellbook tags
+        'PPCOST'                => 'Power Points'                         # [ 1814797 ] PPCOST needs to added as valid tag in SPELLS
         'PRE:.CLEAR'            => 'Clear Prereq.',
         'PREABILITY'            => 'Required Ability',
         '!PREABILITY'           => 'Restricted Ability',
@@ -14574,6 +14576,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head2 v1.39 -- -- NOT YET RELEASED
 		  
 [ 1776500 ] PREDEITY needs updated
+
+[ 1814797 ] PPCOST needs to added as valid tag in SPELLS
 
 [ 1786966 ] Global tags throwign false warnings
 
