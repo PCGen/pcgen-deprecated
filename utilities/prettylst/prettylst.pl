@@ -2778,7 +2778,7 @@ my %master_order = (
         'LEGS',
         'HANDS',
         'BONUS:WEAPONPROF:*',
-        'NATURALATTACKS',
+        'NATURALATTACKS:*',
         'SA:.CLEAR',
         'SA:*',
         'DEFINE:*',
@@ -3305,7 +3305,7 @@ my %master_order = (
         'SPELLLEVEL:CLASS:*',
         'ADD:SPELLCASTER',
         'HANDS',
-        'NATURALATTACKS',
+        'NATURALATTACKS:*',
         'TEMPDESC',
     ],
 
