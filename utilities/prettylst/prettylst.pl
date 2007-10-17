@@ -559,7 +559,7 @@ my @valid_system_var_names      = qw(
     VEHICLETOPMPH           VEHICLEWOUNDPOINTS          Wealth
     CR                      CL                          ECL
     SynergyBonus            NoTypeProficiencies         NormalMount
-                                                        NormalFollower
+    CHOICE                                              NormalFollower
 
     Action                      ActionLVL                   ArmorQui
     ClassDefense                DamageThreshold             DenseMuscle
@@ -1643,6 +1643,8 @@ my %master_order = (
         @QUALIFY_Tags,
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'DEFINE:*',
         'SPELL:*',
         'SPELLS:*',
@@ -1889,6 +1891,8 @@ my %master_order = (
         'DEITY',
         'SA:.CLEAR:*',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'BONUS:ABILITYPOOL:*',
         'BONUS:VAR:*',
         'BONUS:CASTERLEVEL:*',
@@ -1989,6 +1993,8 @@ my %master_order = (
         'AUTO:ARMORPROF',
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'ADD:LANGUAGE',
         'DEFINE:*',
         'BONUS:ABILITYPOOL:*',
@@ -2102,6 +2108,8 @@ my %master_order = (
         'VFEAT:*',
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
     ],
 
     'DOMAIN' => [
@@ -2130,6 +2138,8 @@ my %master_order = (
         'AUTO:WEAPONPROF:*',
         'FEATAUTO',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'DEFINE:*',
         'BONUS:ABILITYPOOL:*',
         'BONUS:CASTERLEVEL:*',
@@ -2283,6 +2293,8 @@ my %master_order = (
         'SPROP:*',
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'CSKILL:.CLEAR',
         'CSKILL',
         'RATEOFFIRE',
@@ -2365,6 +2377,8 @@ my %master_order = (
         'FUMBLERANGE',
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'ARMORTYPE:*',
         'CHOOSE',
         'ASSIGNTOALL',
@@ -2389,6 +2403,8 @@ my %master_order = (
         @QUALIFY_Tags,
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'DEFINE:*',
         'SPELL:*',
         'SPELLS:*',
@@ -2638,6 +2654,9 @@ my %master_order = (
         'BONUS:UDAM:*',
         'VFEAT:*',
         'SA',
+        'SAB:.CLEAR',
+        'SAB:*',
+
     ],
 
     'PCC' => [
@@ -2781,6 +2800,8 @@ my %master_order = (
         'NATURALATTACKS:*',
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'DEFINE:*',
         'HITDICE',
         'SR',
@@ -2872,6 +2893,8 @@ my %master_order = (
         'BONUS:WIELDCATEGORY:*',
         'REQ',
         'SA',
+        'SAB:.CLEAR',
+        'SAB:*',
         'TEMPDESC',
     ],
 
@@ -3026,6 +3049,8 @@ my %master_order = (
         'DOMAIN',
         'SA:.CLEAR:*',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'BONUS:ABILITYPOOL:*',
         'BONUS:VAR:*',
         'BONUS:CASTERLEVEL:*',
@@ -3114,6 +3139,8 @@ my %master_order = (
         'DOMAIN',
         'SA:.CLEAR:*',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'BONUS:ABILITYPOOL:*',
         'BONUS:VAR:*',
         'BONUS:CASTERLEVEL:*',
@@ -3206,6 +3233,8 @@ my %master_order = (
         @SOURCE_Tags,
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
         'DEFINE:*',
         'LEVEL:*',
         @PRE_Tags,
@@ -3365,6 +3394,8 @@ my %master_order = (
         'BONUS:WIELDCATEGORY:*',
         'SA:.CLEAR',
         'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
     ],
 );
 
@@ -4001,6 +4032,8 @@ my %tagheader = (
         'REP'                   => 'Reputation',
         'SA'                    => 'Special Ability',
         'SA:.CLEAR'             => 'Clear SAs',
+        'SAB:.CLEAR'            => 'Clear Special ABility',
+        'SAB'                   => 'Special ABility',
         'SAVEINFO'              => 'Save Info',
         'SCHOOL:.CLEAR'         => 'Clear School',
         'SCHOOL'                => 'School',
@@ -14574,7 +14607,9 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
-		  
+
+[ 1805245 ] NATURALATTACKS allowed more than once in RACE
+
 [ 1776500 ] PREDEITY needs updated
 
 [ 1814797 ] PPCOST needs to added as valid tag in SPELLS
