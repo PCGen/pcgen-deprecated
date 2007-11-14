@@ -7,12 +7,8 @@ require_once('include/header.php.inc');
     <div id="content" class="content">
 
         <h1>Official Sponsor</h1>
-        Recently PCGen has opened up its community effort to sponsorship, we'd like to acknowledge the 
-		following sponsor who help us keep PCGen going for the role-playing community at large!<br />
-		<br />
-        <p align="center">
-			<a href="http://www.silvenpublishing.com"><img src="images/silven_logo_small.gif" /></a>
-	    </p>
+        <p>PCGen is currently looking for sponsors to help keep PCGen going for the role-playing 
+        community at large!</p>
 
         <h1>Friends of PCGen</h1>
 		PCGen has always had many supporters and there are a couple we'd like to thank for 
