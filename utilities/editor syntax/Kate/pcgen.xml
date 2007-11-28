@@ -4,6 +4,8 @@
   <highlighting>
     <list name="tags">
       <item> ABB </item>
+      <item> ABILITY </item>
+      <item> ABILITYCATEGORY </item>
       <item> ACCHECK </item>
       <item> ACHECK </item>
       <item> ADD </item>
@@ -25,6 +27,7 @@
       <item> CAST </item>
       <item> CASTAS </item>
       <item> CASTTIME </item>
+      <item> CATEGORY </item>
       <item> CCSKILL </item>
       <item> CSKILL </item>
       <item> CHANGEPROF </item>
@@ -46,9 +49,12 @@
       <item> DESC </item>
       <item> DESCISPI </item>
       <item> DESCRIPTOR </item>
+      <item> DISPLAYLOCATION </item>
       <item> DOMAINS </item>
       <item> DURATION </item>
       <item> DR </item>
+      <item> EDITABLE </item>
+      <item> EDITPOOL </item>
       <item> EFFECTS </item>
       <item> EFFECTTYPE </item>
       <item> EQMOD </item>
@@ -63,6 +69,7 @@
       <item> FEATAUTO </item>
       <item> FOLLOWER </item>
       <item> FOLLOWERALIGN </item>
+      <item> FRACTIONALPOOL </item>
       <item> GEAR </item>
       <item> GENDERLOCK </item>
       <item> HANDS </item>
@@ -106,7 +113,9 @@
       <item> NATURALATTACKS </item>
       <item> OUTPUTNAME </item>
       <item> PANTHEON </item>
+      <item> PLURAL </item>
       <item> PLUS </item>
+      <item> POOL </item>
       <item> PROF </item>
       <item> PROFICIENCY </item>
       <item> PROHIBITSPELL </item>
@@ -121,6 +130,7 @@
       <item> REMOVABLE </item>
       <item> REPLACES </item>
       <item> SA </item>
+      <item> SAB </item>
       <item> SAVEINFO </item>
       <item> SAVES </item>
       <item> SIZE </item>
@@ -180,7 +190,8 @@
       <item> XTRASKILLPTSPERLVL </item>
     </list>
     <list name="pcc-tags">
-      <item> BIOSET </item>
+      <item> ABILITY </item>
+      <item> ABILITYCATEGORY </item>
       <item> BOOKTYPE </item>
       <item> CAMPAIGN </item>
       <item> CLASS </item>
@@ -194,6 +205,7 @@
       <item> FEAT </item>
       <item> GAMEMODE </item>
       <item> GENRE </item>
+      <item> HIDETYPE </item>
       <item> INCLUDE </item>
       <item> INFOTEXT </item>
       <item> ISLICENSED </item>
@@ -509,7 +521,7 @@
       <itemData name="PCCTags" defStyleNum="dsKeyword" />
       <itemData name="Sub-Tags" defStyleNum="dsDataType" />
       <itemData name="Decimal" defStyleNum="dsDecVal" />
-      <itemData name="Comment" defStyleNum="dsComment" /> 
+      <itemData name="Comment" defStyleNum="dsComment" />
     </itemDatas>
     <comments>
       <comment name="singleLine" start="#" />
