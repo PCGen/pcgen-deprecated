@@ -13,6 +13,7 @@
 <string>ABILITIES</string>
 <string>ABILITY</string>
 <string>ABILITYCATEGORY</string>
+<string>ABILITYPOOL</string>
 <string>AC</string>
 <string>ACABBREV</string>
 <string>ACCHECK</string>
@@ -110,6 +111,7 @@
 <string>CHAMIN3</string>
 <string>CHAMIN4</string>
 <string>CHAMIN5</string>
+<string>CHANGEPROF</string>
 <string>CHARACTERASSET</string>
 <string>CHARACTERBIO</string>
 <string>CHARACTERCOMP</string>
@@ -204,6 +206,7 @@
 <string>DEXMIN5</string>
 <string>DEXSCORE</string>
 <string>DISPLAYORDER</string>
+<string>DISPLAYLOCATION</string>
 <string>DISPLAYVARIABLE1NAME</string>
 <string>DISPLAYVARIABLE1TEXT</string>
 <string>DISPLAYVARIABLE2NAME</string>
@@ -543,6 +546,8 @@
 <string>PREVARLT</string>
 <string>PREVARLTEQ</string>
 <string>PREVARNEQ</string>
+<string>PREVIEWDIR</string>
+<string>PREVIEWSHEET</string>
 <string>PREWEAPONPROF</string>
 <string>PRIMARY</string>
 <string>PROF</string>
@@ -574,6 +579,7 @@
 <string>RANGEPENALTY</string>
 <string>RANK</string>
 <string>RANKS</string>
+<string>RATEOFFIRE</string>
 <string>REACH</string>
 <string>REACHMULT</string>
 <string>Reflex</string>
@@ -592,6 +598,7 @@
 <string>ROLLMETHOD</string>
 <string>ROOT</string>
 <string>SA</string>
+<string>SAB</string>
 <string>SAVEINFO</string>
 <string>SAVES</string>
 <string>SCHOOL</string>
@@ -628,6 +635,7 @@
 <string>SKINTONE</string>
 <string>SLOTS</string>
 <string>SOURCE</string>
+<string>SOURCEDATE</string>
 <string>SOURCELONG</string>
 <string>SOURCEPAGE</string>
 <string>SOURCESHORT</string>
@@ -669,6 +677,7 @@
 <string>STATNAME</string>
 <string>STATRANGE</string>
 <string>STR</string>
+<string>STRING</string>
 <string>STRMAX0</string>
 <string>STRMAXDEX</string>
 <string>STRMIN0</string>
@@ -715,6 +724,7 @@
 <string>UMULT</string>
 <string>UNITSET</string>
 <string>UP</string>
+<string>UNENCUMBEREDMOVE</string>
 <string>USEMASTERSKILL</string>
 <string>USEUNTRAINED</string>
 <string>VALIDFORDEITY</string>
