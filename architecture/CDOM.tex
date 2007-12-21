@@ -1,0 +1,3686 @@
+\documentclass[12pt,letterpaper]{article}
+
+\usepackage{graphicx,wrapfig,colordvi,color,citesort,times,array,subfigure,floatflt,makeidx,framed,boxedminipage,url,hyperref}
+
+\graphicspath{{images/}}
+\definecolor{UglyBrown}{rgb}{0.7,0.4,0.1} 
+\newcommand{\newtext}[1]{\textcolor{UglyBrown}{#1}}
+
+\newcommand{\contributors}{
+Thomas Parker\\
+Devon Jones\\
+James Dempsey\\
+Aaron Divinsky\\
+Tir Gwaith (Andrew McDougall)\\
+Frank Kliewe\\
+Eddy Anthony\\
+Thomas Clegg\\
+Paul W. King\\
+Paul Grosse\\
+Terry FitzSimons\\
+Chris Chandler\\
+Martijn Verburg\\
+}
+\newcommand{\lastupdate}{June 29, 2007}
+\newcommand{\versionEOS}{0.51}
+\newcommand{\lastversionEOS}{0.4}
+
+\makeindex
+
+\hoffset=-0.6in
+\voffset=-0.6in
+\textwidth=6.5in
+\textheight=9.0in
+\parindent=0.25in
+\parskip=1.0ex
+
+\newcommand{\version}{\versionEOS{} }
+\newcommand{\lastversion}{\lastversionEOS{} }
+
+\definecolor{Red}{rgb}{1,0,0} 
+\definecolor{Blue}{rgb}{0,0,1} 
+\definecolor{Black}{rgb}{0,0,0} 
+\newcommand{\redtext}[1]{\textcolor{Red}{#1}}
+\newcommand{\revisedtext}[1]{\textcolor{Blue}{#1}}
+
+\newcommand{\newtextPointZeroTwo}[1]{#1}
+\newcommand{\revisedtextPointZeroTwo}[1]{#1}
+
+\newcommand{\newtextPointZeroThree}[1]{#1}
+\newcommand{\revisedtextPointZeroThree}[1]{#1}
+
+\newcommand{\newtextPointZeroFour}[1]{#1}
+\newcommand{\revisedtextPointZeroFour}[1]{#1}
+\newcommand{\deletedTextPointZeroFour}[1]{}
+
+\newcommand{\newtextPointZeroFive}[1]{#1}
+\newcommand{\revisedtextPointZeroFive}[1]{#1}
+\newcommand{\deletedTextPointZeroFive}[1]{}
+
+\newcommand{\newtextPointTwo}[1]{#1}
+\newcommand{\revisedtextPointTwo}[1]{#1}
+\newcommand{\deletedTextPointTwo}[1]{}
+
+\newcommand{\newtextPointThree}[1]{#1}
+\newcommand{\revisedtextPointThree}[1]{#1}
+\newcommand{\deletedTextPointThree}[1]{}
+
+\newcommand{\newtextPointFour}[1]{#1}
+\newcommand{\revisedtextPointFour}[1]{#1}
+\newcommand{\deletedTextPointFour}[1]{}
+
+\newcommand{\newtextPointFive}[1]{\newtext{#1}}
+\newcommand{\revisedtextPointFive}[1]{\revisedtext{#1}}
+\newcommand{\deletedTextPointFive}[1]{}
+
+\newcommand{\textem}[1]{\emph{#1}}
+\newcommand{\ix}[1]{#1\index{#1}}
+\newcommand{\tool}[1]{\textbf{\ix{#1}}}
+
+\newcommand{\rejected}[1]{}
+
+\newcommand{\nsection}[1]{\newpage \section{#1}}
+\newcommand{\lsection}[1]{\section{#1}\label{#1}}
+\newcommand{\lnsection}[1]{\nsection{#1}\label{#1}}
+\newcommand{\lsubsection}[1]{\subsection{#1}\label{#1}}
+\newcommand{\lnsubsection}[1]{\newpage\subsection{#1}\label{#1}}
+\newcommand{\lsubsubsection}[1]{\subsubsection{#1}\label{#1}}
+\newcommand{\lisection}[1]{\section{#1}\label{#1}\index{#1}}
+\newcommand{\lisubsection}[1]{\subsection{#1}\label{#1}\index{#1}}
+\newcommand{\lisubsubsection}[1]{\subsubsection{#1}\label{#1}\index{#1}}
+
+\newcommand{\sidebar}[5]{
+\noindent
+\definecolor{shadecolor}{#2}{#3}
+\begin{minipage}{\textwidth}
+\setlength{\parskip}{-11pt}
+\begin{shaded}\textbf{#1: #4}\end{shaded}
+\begin{boxedminipage}{\textwidth}
+#5
+\end{boxedminipage}
+\end{minipage}
+}
+
+\newcommand{\authors}{Members of the PCGen Development Team and Community (see contributors)}
+
+\newcommand{\csidebar}[6]{
+\noindent
+\definecolor{shadecolor}{#2}{#3}
+\begin{minipage}{\textwidth}
+\setlength{\parskip}{-11pt}
+\begin{shaded}\textbf{\textcolor{#6}{#1: #4}}\end{shaded}
+\begin{boxedminipage}{\textwidth}
+#5
+\end{boxedminipage}
+\end{minipage}
+}
+
+\newcommand{\sbdevon}[2]{\sidebar{Devon's Thoughts}{gray}{0.9}{#1}{#2}}
+\newcommand{\sbjames}[2]{\sidebar{James' Thoughts}{gray}{0.9}{#1}{#2}}
+\newcommand{\sbtom}[2]{\sidebar{Tom's Thoughts}{gray}{0.9}{#1}{#2}}
+
+\newcommand{\sbnote}[2]{\sidebar{Note}{gray}{0.9}{#1}{#2}}
+\newcommand{\sbwhatis}[2]{\sidebar{What Is}{gray}{0.8}{#1}{#2}}
+\newcommand{\sbeffect}[2]{\sidebar{Effect}{gray}{0.8}{#1}{#2}}
+\newcommand{\sbexception}[2]{\sidebar{Exception}{gray}{0.7}{#1}{#2}}
+\newcommand{\sbwarning}[2]{\csidebar{Warning}{gray}{0.3}{#1}{#2}{white}}
+\newcommand{\sbold}[2]{\csidebar{Original Proposal}{gray}{0.3}{#1}{#2}{white}}
+
+\newcommand{\vbar}{\hspace{0.2mm}\rule{0.2mm}{3mm}\hspace{0.2mm}}
+
+\newcommand{\openfig}{\begin{figure}[hbt]}
+\newcommand{\closefig}[1]{\vspace*{-0.15in}\caption{#1}\end{figure}}
+
+\newcommand{\openffig}[2]{\begin{floatingfigure}[#1]{#2}}
+\newcommand{\closeffig}[1]{\caption{#1}\end{floatingfigure}}
+\newcommand{\nocapcloseffig}{\end{floatingfigure}}
+
+\newcommand{\mapffig}[4]{\openffig{#1}{#2}\includegraphics[scale=0.675]{#3}\closeffig{#4}}
+\newcommand{\mapffigl}[3]{\mapffig{l}{#1}{#2}{#3}}
+\newcommand{\mapffigr}[3]{\mapffig{r}{#1}{#2}{#3}}
+
+%\newcommand{\mapfig}[2]{\openfig\centerline{\includegraphics[scale=0.675]{#1}}\closefig{#2}}
+%\newcommand{\subf}[3]{\subfigure[#1]{#2\includegraphics[scale=0.675]{#3}}}
+%\newcommand{\maptwofig}[7]{\openfig\begin{center}\mbox{\subf{#1}{#2}{#3}\hspace{0.25in}\subf{#4}{#5}{#6}}\end{center}\caption{#7}\end{figure}}
+%\newcommand{\mapfigl}[3]{\mapfig{#2}{#3}}%\mapfig{l}{#1}{#2}{#3}}
+%\newcommand{\mapfigr}[3]{\mapfig{#2}{#3}}%\mapfig{r}{#1}{#2}{#3}}
+%\newcommand{\mapscalefig}[5]{\openffig{#1}{#2}\includegraphics[#3]{#4}\nocapcloseffig}
+
+\newcommand{\mapscalefig}[3]{\openfig\centerline{\includegraphics[#1]{#2}}\closefig{#3}}
+\newcommand{\mapfig}[2]{\openfig\centerline{\includegraphics[scale=0.675]{#1}}\closefig{#2}}
+\newcommand{\subf}[3]{\subfigure[#1]{#2\includegraphics[scale=0.675]{#3}}}
+\newcommand{\maptwofig}[7]{\openfig\begin{center}\mbox{\subf{#1}{#2}{#3}\hspace{0.25in}\subf{#4}{#5}{#6}}\end{center}\caption{#7}\end{figure}}
+
+\renewcommand{\baselinestretch}{1.0}
+\hyphenpenalty=9999
+\exhyphenpenalty=9999
+\pagestyle{empty}
+\sloppy
+%\thispagestyle{empty}
+
+
+%============================================================================
+
+\begin{document}
+
+\begin{center}
+
+\vspace*{2.5in}
+{ \Huge PCGen 6.0 (``CDOM'') Architecture }
+
+{ \huge Draft Proposal \versionEOS }
+
+{ \large \authors }
+
+\lastupdate
+
+\end{center}
+
+\vspace*{3in}
+
+\noindent Portions \copyright  2006, 2007 Individually by \authors.
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike License.
+To view a copy of this license, visit \url{http://creativecommons.org/licenses/by-nc-sa/2.5/}
+or send a letter to Creative Commons, 543 Howard Street, 5th Floor,
+San Francisco, California, 94105, USA.
+
+Sun, Sun Microsystems, and Java, are trademarks or registered trademarks
+of Sun Microsystems, Inc. in the United States and other countries.
+All other trademarks mentioned are the property of their respective owners.
+
+\newpage
+\pagestyle{plain}
+\setcounter{page}{1}
+\pagenumbering{roman}
+\tableofcontents
+
+\listoffigures
+
+\lnsection{PCGen Background}
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+Over the course of the last few years, there has been a pending discussion of reworking
+the core of the PCGen code base.  Today, PCGen is moving toward a release of version 5.12.
+The current plan \revisedtextPointFour{to release version 5.12, followed by a release 5.14 
+(used to do final cleanup before CDOM), which will then be followed by release 6.0.}
+\deletedTextPointFour{to release version 6.0 as the next production release after 5.12.}
+In order to prepare for a move to Character Document Object Model (``CDOM''), some
+significant refactoring of the core code base has been suggested or is in process. 
+It would be beneficial to avoid making changes in the refactoring that would 
+negatively impact a transition to CDOM.  Thus, the plan for version 6.0 requires
+defining the architecture in sufficient detail to make appropriate decisions about
+changes to the core objects.
+
+This document is an attempt to flesh out some specific architectural details of CDOM 
+in order to assist in driving CDOM to implementation in the 5.13 \revisedtextPointFour{and 5.15}
+alpha cycle\revisedtextPointFour{s} (in preparation for PCGen 6.0).
+
+\lsection{Contributors}
+
+\newtextPointZeroThree{
+Contributors to this document, either directly or by feedback and comments:\\
+\contributors
+}
+
+\lsection{Background of the PCGen code base}
+
+Currently, the PCGen code base contains seven major packages (or package groups)
+that combine to form PCGen. 
+These packages are:
+\begin{itemize}
+\item pcgen.core.*
+\item pcgen.gui.*
+\item pcgen.io.*
+\item pcgen.persistence.*\index{Persistence}
+\item pcgen.util.*
+\item plugin.*\index{plugins}
+\item gmgen.*
+\end{itemize}
+
+The PCGen code base is, by some standards, a large code base.  
+\revisedtextPointZeroFive{The production code is composed of
+1691 Class files (with more than 3,000 Classes counting inner Classes).  
+The largest Class being upwards of 10,000 lines (including comments).  
+PCGen also has more than 100,000 of executable lines of code.
+}
+This is clearly a significant code base, and is not easily modified.
+
+Currently, the PCGen core components generally extend one Class, called PObject.  This Class
+provides base functionality that is supposed to be common to the Classes used to build a
+Player Character.  Each PObject is aware of the PObjects that it contains, and maintains
+those associations in (often typesafe) lists.  This CDOM proposal would replace these
+lists with a ``tree-like'' architecture where the `contains' association would be implicit
+within the tree structure.  This would lighten the memory footprint (and complexity) of
+PObject and its subclasses.
+
+\lsection{Conventions in this Document}
+
+\newtextPointZeroTwo{
+The following conventions are used throughout this document, and should be respected when
+editing this proposal.
+}
+
+\newtextPointZeroTwo{
+Significant information that is new to a specific version of this document is highlighted in
+\newtext{Ugly Brown}. Information that has been revised
+due to feedback is highlighted in \revisedtext{Blue}.  
+This eases identification of changes from a previous revision. 
+Spelling corrections and small wording clarifications are not highlighted.
+\revisedtext{Currently highlighted are changes from \lastversion to \versionEOS .}
+}
+
+\newtextPointZeroTwo{
+Please note: At times, color will not be maintained over a page break, so that if the page
+breaks in the middle of a colored paragraph, the last part of the text will
+incorrectly be printed in black.
+\newtextPointZeroFive{There is also a bug that can accidentally start a new page in color,
+when the start of the paragraph was black.  The moral is: be wary of color changes over page
+breaks.\footnote{\ldots and don't use a Windows \LaTeX{} client if you're using colors :/}
+}}
+
+\newtextPointZeroTwo{
+Packages, Classes, method calls, and the null value are shown in a \texttt{typewriter} font.
+}
+
+\newtextPointThree{
+Occasionally, but not in code examples, method will be followed by a
+null parameter list () even if there actually
+parameters in the Java method call. This is for reading ease of this document and should
+not be taken as a literal interpretation of the code.
+}
+
+\redtext{
+***PLEASE NOTE***: If you are providing feedback on this document, it is built in \LaTeX, and 
+therefore, it may undergo automatic section renumbering as text is added.  Therefore, please
+make sure - at a minimum - to include the document revision and section number
+that you are commenting on.  It is extremelly helpful for you to include the
+section title along with the section number and document revision, as the section
+numbers do not appear in the raw document, while the section titles do.
+}
+
+\lnsection{Scope of this Document}
+
+\newtextPointZeroTwo{
+This document is intended to provide an architecture for CDOM, not an entire architecture definition 
+for PCGen.  In order to be explicit about the scope of the changes proposed here the following
+observations are made:
+\begin{itemize}
+\item This proposal makes no suggestions about the structure, layout, or design of the 
+PCGen \ix{GUI}, \revisedtextPointZeroThree{with the exception that:
+\item This proposal will provide an interface which the \ix{GUI} should use to interface to the 
+PCGen core (the CDOM), to display the current state of the PC
+\item This proposal will provide an interface which \ix{output} processing and character \ix{save}
+operations should be programmed against
+}
+\item This proposal will not change the scope of ownership or design of the \texttt{\ix{GMBus}}
+producer/consumer interface
+\item The only \ix{plugins} within the scope of this proposal are those within
+\texttt{plugin.lsttokens.*}
+\item The \ix{Prerequisite} architecture is out of the scope of this proposal.  The Prerequisite
+Classes should remain as unchanged as possible (with some potential package name changes)
+\item The \ix{export} system for output sheets is out of the scope of this proposal (except for required
+incidental changes to support changes to the core)
+\item The \ix{export} system for exporting back into an \ix{LST file} (from the editors) IS within
+the scope of this proposal.
+\item \revisedtextPointZeroFour{The \ix{loader} system and hierarchy is partially in
+the scope of this proposal.}  Some
+changes will be driven by changes to the tags and core, but the primary architecture
+of the \ix{loader} system will remain unchanged.  \newtextPointZeroFour{However, there may
+be some significant advantages to additional Loaders/Tokens\index{token} to handle complex Tokens
+(ADD and CHOOSE), as well as some significant reduction
+in the number of Classes required to perform the import of Tokens. 
+These potential changes do not alter the general structure of the
+\ix{loader} system, but refine the architecture to better handle the file structures in the
+CDOM environment.}
+\end{itemize}
+}
+
+\lnsection{Code Assumptions}
+
+The following are proposed assumptions about the future PCGen CDOM code.  In some cases
+(such as avoiding tangles) these are so-called `best practices' for coding, while in others,
+they represent a subjective architectural decision that may have alternatives.  I hope this
+is understood, but in early revisions of this document, all of these assumptions should be
+considered open for discussion and alteration.  (Also note these are intended to be beyond
+the coding guidelines presented on the PCGen Wiki--most of those are micro-guidelines
+related to formatting, syntax, et. al.)
+
+\lsubsection{Minimize Code Tangles}
+
+Currently, the PCGen code base has a large presence of tangles.  These are circular references between
+Classes.  This causes two significant issues.  First, tangles between objects often lead to changes
+impacting other Classes, resulting in larger changes than would be necessary in a system without tangles. 
+Second, tangles are a bane to good unit {testing}.  If Classes are in a tangle, they cannot be isolated. 
+Performing independent \ix{unit test}s on the Classes is impossible.  In addition, tangles prevent quick
+incremental compiles, because the dependency tree for a given Class can rapidly become very large. 
+The largest tangle of Classes in PCGen is nearly 400 Classes, so a significant portion of the code
+is intertwined in this fashion.
+
+The PCGen CDOM architecture will attempt to minimize the number of code
+tangles in order to facilitate Class independence and \ix{unit test}ing.  Stated another way,
+the PCGen code base will work to become a directed acyclic graph.  
+
+For information on why this is important, you can read the following
+document:\footnote{Actually much of the series is interesting -– Tom Parker 11/18/06}
+\url{http://www.objectmentor.com/resources/articles/granularity.pdf}
+
+Note the use of a directed acyclic graph could be enforced using software.  For example,
+\ix{SonarJ} is available free of charge (in 30 day doses) to open source
+programmers.\footnote{I have no association with the company that produces SonarJ, I just
+found it when I was looking for something to help enforce this behavior.  I have a
+30-day open source programmer license and am starting to use it with PCGen –- Tom Parker 11/18/06}
+
+\revisedtextPointZeroThree{
+Nothing in minimizing code tangles should be taken as altering the publisher/subscriber
+interface that exists in \texttt{\ix{GMBus}} (and is used to connect the \ix{GUI} to the core).  While this
+is a tangle today, I don't think a pub/sub should naturally produce a
+tangle.
+}
+
+\sbeffect{File Movement}{The
+PCGen code base will need to be significantly restructured (some of it
+simply moving files) in order to make the packages into a directed acyclic graph. 
+\revisedtextPointZeroFive{
+If done properly, SVN will preserve the history of the Classes despite
+having packages renamed or Classes renamed.
+Due to concurrent file splitting/refactoring, this may
+muck up much of the ability to trace backwards changes in the code base. 
+}
+However, if done concurrently with CDOM, it's probably moot how much damage is done
+to history tracing, since so much code will undergo a severe overhaul.  A proposal
+for the new package structure is available in section \ref{Proposed Packages},
+Proposed Packages.}
+
+\sbexception{Listener/Event Combinations}{When
+there is a Listener/Event combination, the cost of breaking a
+tangle (a single use \texttt{Interface}) is considered
+wasteful of memory and generally confusing.
+Listener/Event tangles that contain two and ONLY two Classes are permitted.}
+
+\lsubsection{Maintain Loose Association}
+
+\revisedtextPointZeroFive{
+The \ix{GUI} is currently too tightly coupled with the core and vice versa. 
+One example of this can be found in the process of levelling up
+(from the Summary tab and the Classes tab).
+}
+The PCGen \ix{GUI} should be loosely associated with the core PCGen package(s).
+
+\sbeffect{Event Model}{\revisedtextPointZeroFive{A model to
+communicate changes from the PCGen core to the
+PCGen \ix{GUI} must be developed.  This may be events that are handled in a Producer/Consumer
+model (the current working proposal) or by some other means.  In general, the association 
+between the core and the \ix{GUI} must be a loose association and except for the actual values 
+stored in the view of the \ix{GUI} (such as inside a \texttt{JTextField}), there should not
+be an extra copy of the information from PlayerCharacter stored within the \ix{GUI}.
+I don't know if this model will break the skins, because I haven't looked at how those work.
+}}
+
+\lsubsection{Contracts are prohibited}
+
+\index{contract}
+In no case, should the code, \textem{or a programmer},
+be required to know that taking a specific action also requires another action to take
+place.
+
+\sbeffect{Reciprocal Awareness is a Challenge}{A ``tree'' or ``tree-like''
+structure where there is reciprocal awareness by both
+the parent and child is prohibited.  While it is possible to hide these contracts in a
+wrapper object, doing so in a way that hides the interface for each sub-step while not
+violating Assumption \ref{Minimize Code Tangles} is postulated
+as being very difficult.  Note: The use of
+parent-child only or child-parent only awareness is recognized to be a performance problem
+(of forcing frequent linear-time `tree' searches), so an external Class must be aware of
+all associations in order to guarantee good performance.}
+
+\sbexception{Clone}{Proper maintenance of \texttt{\ix{clone}()} is a reasonable task.}
+
+\sbeffect{Class Extension must be carefully considered}{When a subclass overrides a
+significant percentage of (especially all) methods in a concrete non-Adapter Class, it
+can easily introduce bugs if the base Class has a method added.  (As a note of
+clarification, Adapter Classes provide only empty implementations).  This is an
+appropriate location for an Interface.}
+
+\lsubsection{Implement Early Error Checking}
+
+Error checking should take place as early as is programmatically possible.
+
+\sbeffect{Check Errors in Tags}{All error checking should take
+place in the Tags/Tokens,\index{token} and those should
+load known-good (and \ix{type safe}) information into the PObjects.}
+
+\sbeffect{PObjects must catch AND report illegal loads}{The set
+methods of the PObjects should throw
+\texttt{IllegalArgumentException} if
+invalid information is provided (such as a \texttt{null})}
+
+\sbeffect{PersistenceLayerException is for the \ix{Persistence}
+Layer}{\newtextPointZeroFour{The PersistenceLayerException
+should be reserved for the \ix{Persistence} Layer, and not used
+within the core code of PCGen.}
+}
+
+\lsubsection{Minimize Error Suppression and Gating}
+
+Because of Assumption \ref{Implement Early Error Checking},
+frequent testing of \texttt{null} should be prevented
+(unless \texttt{null} is
+explicitly legal due to lazy instantiation or as an identifier).
+
+\noindent\textbf{Corollary} If you think code is unreachable, don't return a \texttt{null}
+or \texttt{``''} or just say \texttt{//Can't get here}. 
+Put a \texttt{throw \ix{UnreachableError}(``If we got here, the factory
+failed to produce a singleton per key'')} (for example), because if the code really
+DID get there, we have a serious bug that should be addressed.
+
+\sbeffect{Fixing NullPointerExceptions}{If a dereference throws a
+\texttt{NullPointerException}, then the bug fix is
+NOT to gate the call with a \texttt{null} check to suppress the error.  NPEs usually
+indicate bugs.  The solution is to go back, determine what loaded a
+\texttt{null} into the core, and prevent the NPE by preventing a bad
+load (but be careful about 
+just gating it there, as well, unless the \texttt{null} really is legal\ldots
+if not, throw an \texttt{Exception} or do a \texttt{Logging.errorPrint} and return
+\texttt{false} if you're in the Tags).}
+
+\sbeffect{Catching Exceptions}{Never catch \texttt{Exception},
+\texttt{RuntimeException} or \texttt{Throwable}.  
+This should be enforced with \ix{PMD}, \ix{FindBugs}, or a similar tool.}
+
+\lsubsection{Type safety is good}
+
+\index{type safe}
+\index{enumeration}
+\newtextPointZeroTwo{
+Type safety provides a number of advantages.  First, it can minimize the 
+number of problems produced in the code due to misinterpretation of what
+a String object actually contains.  Second, equality can be tested 
+by \texttt{Object.equals()}, which simply tests \texttt{a == b}.  This is
+a very fast operation (one method call and one instance equality).
+}
+
+\revisedtextPointZeroFive{
+\index{type safe}Type Safe Enumerations should be used for Attack Types, Regions, Spell Schools,
+Types of Vision, and soooooo many other things (these will be either Java 1.4
+or Java 1.5 style) rather than Strings.  This is also not completely limited to 
+true typesafe \ix{enumeration}s, as Tom also believes we should be storing \ix{Formula}
+in a type-safe fashion, so that they are less likely to be confused with 
+general Strings (although this is a VERY minor detail in the grand scheme).
+Note also that these Type Safe Enumerations cannot all be Java 1.5 style Enums,
+as some of them will require on-the-fly addition of items during \ix{LST file} import
+(e.g. AbilityCategory).}
+
+\newtextPointZeroTwo{
+Type Safety\index{type safe} also can provide additional
+performance advantages.  Acquiring
+a type safe reference from a String (which is what is required 
+during \ix{LST file} import) does not provide savings over direct String comparison
+(and actually provides a very slight loss in the cost of additional 
+method calls).  However, when a \ix{type safe} reference is required from core
+code, that \ix{type safe} reference can be preconstruced and referenced 
+directly.  This trades a Map lookup (slowish) for a direct reference
+(fast). \newtextPointZeroFour{
+It may also reduce the String constant pool memory overhead of a program.
+} Also, when using a \ix{type safe} constant as a key to a Map, the
+internal map structure can be optimized.\footnote{This performance
+boost is demonstrated by the \texttt{EnumMap} Class in Java 1.5}
+The use of a \ix{type safe}-aware Map can guarantee O(1) performance 
+for a \texttt{get()} from the Map.\footnote{A \ix{type safe} map can
+be constructed to guarantee no collisions will occur in the
+key mapping method that is used}
+}
+
+\lsubsection{Avoid side effects}
+Side effects are confusing, and should be avoided.  For
+example, if a get is performed, it should perform a GET.  It should not
+trigger other events, including the setting of additional variables. 
+Classes should also respect their Interface or super class and implement
+that interface without side effects.  A \texttt{FileFilter},
+for example, should
+simply return true or false, it should NOT process the data that is
+received as parameters.  No offense meant to the original programmer,
+but this method:
+
+\noindent\texttt{private void loadPCCFilesInDirectory(String aDirectory) \\
+\{ \\
+\hspace*{0.25in}new File(aDirectory).list(pccFileFilter); \\
+\} \\
+}
+
+\ldots{}looks like it could (and should) be deleted, but the \texttt{pccFileFilter} is
+performing side effects.
+
+\lsubsubsection{Avoid validation based change}
+
+\newtextPointFour{
+One architectural issue that can arise is the use of a validation step to perform
+cleanup (or changes) in a data structure.  While this is often a noble effort to 
+ensure that undesired states are not created, some effort should be made to avoid
+relying on the cleanup performed during validation.  (This is a specialized form
+of avoiding side effects)
+}
+
+\newtextPointFour{
+Stated another way, the code should not change make the first part of a change to a 
+PC (such as removing an Ability) and subsequently call a ``validate'' method in order
+to perform any changes to the player character from that removal.  The removal should 
+either be atomic (preferred), or the removal operation should be predictable,
+understandable and bounded (if the removal operation requires a full data model traverse 
+to perform the effective equivalent of a global validation, it is still violating 
+this code recommendation).
+}
+
+\lsubsection{Internationalization}
+
+\revisedtextPointZeroTwo{
+One of the existing challenges in the PCGen code base is that it was not developed
+for use in multiple languages, generally it is not `Internationalized'.  Part of
+the conversion to a CDOM environment will provide the opportunity to ensure that
+the core components of PCGen are properly internationalized.  It will be a 
+prerequisite for code that is checked into both the library (\texttt{pcgen.base}) 
+and the new core (\texttt{pcgen.cdom}) to be internationalized.  This is
+recognized that it may directly effect enumerations, and how they are 
+constructed.
+}
+
+\sbtom{Enumerations and Internationalization}{\newtextPointThree{It is noted
+that it is possible to use enumerations in an internationalized environment; 
+this may require the addition of a \texttt{.getDisplayName()} method to the 
+enumeration (to fetch how it should be displayed), but there is not a 
+fundamental issue with Java 1.5 enumerations and Internationalization.
+}}
+
+\lnsection{Additional Coding Recommendations}
+
+The following are additional, non-architectural coding recommendations for
+PCGen 6.0:
+
+\lsubsection{Write Simple Code!}
+
+\revisedtextPointZeroThree{
+Any coder can make a complicated piece of code that appears to be really clever.
+It takes a higher degree of expertise to make that code simple.  Highly complex
+methods, generally defined by cyclomatic complexity - those methods with
+many (10+) decision points (if, else, for, while, etc) - should probably be
+split into multiple methods \textem{regardless of whether any of those functions
+are called from more then one point.}  In general, every method should
+be easy to understand sans comments (not to say that there shouldn't be
+comments), otherwise it's probably not simple enough.
+}
+
+\lsubsection{Ease Code Reuse}
+Reuse of code should be clear and straightforward.  This can be facilitated
+by straightforward package use.
+
+\revisedtextPointZeroFive{
+Passing in control mechanisms as parameters (i.e. booleans that control an if statement)
+are a sign that you have a candidate for refactoring into a couple of methods. It won't
+always be possible to split the method up, but it can be a useful exercise to try anyway.
+Two (or three) simpler methods are generally better than one complex one.
+}
+
+\newtextPointZeroFour{
+In order to show some code that demonstrates a boolean control structure that should
+be refactored to be two methods, the following example is condensed from
+a real method in \texttt{LstSystemLoader}:\\
+\texttt{
+\noindent private PObject methodOne(boolean fi, \ldots) \{ \\
+\indent if (fi) \{ \\
+\indent ~~\ldots \\
+\indent ~~return \ldots \\
+\indent \} \\
+\noindent \ldots \\
+\noindent \} \\
+}
+}
+
+\revisedtextPointZeroThree{
+Some of this is about testability and \index{unit test} unit tests
+as much as it is about reusability - e.g. if
+one can write tests using Integers as the graph nodes, it's a heck of a lot
+easier to write tests, to perform tests and to debug failing tests than
+if the programmer is forced to use PObjects in simple tests.
+}
+
+\sbeffect{Extract General Code}{General code –- that which does not have a strong association
+with PCGen -– should be placed into a \ix{library} of sorts, away from the main
+PCGen code.  This should generally be organized in the same sub-packages
+as the main Java packages (\texttt{*.lang}, \texttt{*.util},
+\texttt{*.io}, etc.) based on what Class
+in the main package they are overriding or supporting.  
+\revisedtextPointZeroFive{
+For example, DoubleKeyMap belongs in a \texttt{base.util} package,
+much of CoreUtilities should be split into StringUtil, DoubleUtil, etc. Classes
+and placed into a \texttt{base.lang} package,
+the graph code should be present in a \texttt{base.graph} package,
+EntityEncoder should be in a \texttt{base.language} package.
+}}
+
+\lsubsection{Beware long if/then/else, especially with instanceof}
+Significant testing of \texttt{instanceof} or significant casting
+is an indication of code in need of review.  Double Dispatch should be
+used in instances where one might otherwise use \texttt{instanceof}
+testing.\footnote{If you don't know what Double Dispatch is, Wikipedia is
+a good starting point: \url{http://en.wikipedia.org/wiki/Double_dispatch}
+\ldots Note that we are also implementing Double Dispatch in getCheckList of
+the ProhibitedSpellType enum if you would like to look at an example.  The Double Dispatch in that case 
+is one dispatch to the ProhibitedSpellType, and the second dispatch to the appropriate
+method of Spell.  Double Dispatch in this case is used to avoid a if-then test of the
+ProhibitedSpellType to determine the proper Spell method to fetch the appropriate List.}
+
+\noindent\textbf{Corollary} Large if then else constructs that make more than 4 or 5
+string comparison during \ix{LST file} import probably also need review. 
+\revisedtextPointZeroFive{Almost every case of a really long (6+) if-else if
+chain should be culled from the codebase sooner rather than later.  
+}
+
+\noindent\textbf{Corollary} Large switch statements, too.
+
+\lsubsection{Enforce Consistent Object and Interface behavior}
+\texttt{.equals()}, \texttt{.hashCode()} and \texttt{.compareTo()} should act as
+appropriate for the entire object, not a subset of its contents.  For example,
+\texttt{.equals()} should not solely test on \texttt{.getName()} being equal,
+but rather the entire contents of the Object being equal.
+
+\noindent\textbf{Corollary} Realistically, none of those methods should be required in
+CDOM objects, since \texttt{.\ix{clone}()} will only be used when an object's name is
+changed (see Assumption \ref{Minimize PObject Cloning} below)
+
+\sbeffect{.equals presence}{\revisedtextPointFour{While one might desire the
+implementation of \texttt{.equals()}, \texttt{.hashCode()}
+and \texttt{.compareTo()} to be avoided in the CDOM code base,
+there is still good reason to implement it.  The comparison of two
+graphs (used in testing) is most easily done by a \texttt{.equals()}
+on the graph.  Thus, implementation of \texttt{.equals()} and 
+\texttt{.hashCode()} will still be done in the CDOM code base, but 
+it will a true, deep equality, not a key-based equality as it exists
+in the 5.10 code base.}}
+
+\lsubsection{Semantic use should be clear}
+We are not currently clear on
+reference vs. value semantic Classes and that should be cleaned up as much
+as possible.  \revisedtextPointZeroFive{Each
+Class (preferably in a fashion consistent with other 
+Classes in the package) should be choosing whether to be reference or
+value semantic and sticking to that definition.}
+
+\newtextPointZeroTwo{
+For those not familiar with the terms, a Reference-Semantic Class is one that
+takes in references to Objects (such as a List) and maintains an actual reference
+to the List.  A good example of this is a \texttt{HashMap}.  The following is valid code; 
+the asserts will pass as being correct. \\
+\texttt{
+\noindent List list = new ArrayList(); \\
+\noindent list.add(Integer.valueOf(9)); \\
+\noindent map.put(key, list); \\
+\noindent list.add(Integer.valueOf(10)); \\
+\noindent assert map.get(key).size() == 2; \\
+\noindent List list2 = map.get(key); \\
+\noindent list2.add(Integer.valueOf(11)); \\
+\noindent assert list.size() == 3; \\
+\noindent assert list == list2; \\
+}
+}
+
+\newtextPointZeroTwo{
+A Value-Semantic Class is one that
+takes in references to Objects (such as a List) and does NOT
+maintain an actual reference to the Object (though it may maintain references 
+to the objects contained within a Collection). 
+A good example of this is \texttt{HashMapToList}.  The following is valid code; 
+the asserts will pass as being correct.  \\
+\texttt{
+\noindent HashMapToList hml = new HashMapToList(); \\
+\noindent List list = new ArrayList(); \\
+\noindent list.add(Integer.valueOf(9)); \\
+\noindent hml.addAllToListFor(key, list); \\
+\noindent list.add(Integer.valueOf(10)); \\
+\noindent assert map.getListFor(key).size() == 1; \\
+\noindent List list2 = map.getListFor(key); \\
+\noindent list2.add(Integer.valueOf(11)); \\
+\noindent assert list.size() == 2; // 9 and 10 [not 11] \\
+\noindent assert list != list2; \\
+}
+}
+
+\newtextPointZeroTwo{
+Note how the list stored 
+within the \texttt{HashMapToList} is protected from any change to Lists that
+were passed in or returned.
+}
+
+\revisedtextPointZeroThree{
+This is not an issue of what choices we have to make generally,
+as much as making each Class self-consistent and documented.
+}
+
+\revisedtextPointZeroThree{
+\texttt{HashMapToList}, for example, should not spend 90\% of its code protecting
+it's internal structure and then have one item expose it.  For example,
+\ix{PrereqObject}'s setPreReq and
+setPrereqList both take what is essentially a value-semantic
+object and expose the internal structure (Hey world, I use a List!)
+(\texttt{setPreReq}) or make it reference semantic (Hey world, write my
+private variable!) (\texttt{setPrereqList}).  A JavaDoc warning is not sufficient\ldots
+Those methods should be refactored away for semantic consistency.
+}
+
+\revisedtextPointZeroThree{
+Note value-semantic is a requirement if one expects an object or
+interface to be immutable.  For consistency, one should not expose ANY
+internal structure.
+}
+
+\lsubsection{Safe Construction}
+
+\newtextPointZeroTwo{
+\revisedtextPointZeroFive{
+Calling a non-final method from a \ix{constructor} allows modification
+of an object by a sub-class in a way that can significantly alter
+the operation of the Class to the point of altering the original
+intent of the Class. Thus, calling
+non-final methods from a constructor should be prohibited.  
+}}
+
+\lsubsection{Avoid exposing this from constructor}
+
+\newtextPointZeroTwo{
+Another design style that should be avoided is exposing a reference to the object
+being constructed (`\texttt{this}') from within the \ix{constructor}
+(e.g. this can accidentally be done by
+registering an object as a listener while it is being constructed). This should
+be prohibited.
+}
+
+\lnsection{Key Concepts}
+
+\lsubsection{PObjects}
+
+\newtextPointThree{
+Classes, Races, Languages, and other characteristics and attributes of a
+PlayerCharacter are stored within PCGen as objects.  Typically, these objects are generally
+referred to as PObjects, as they extend the generic PObject Class.
+}
+
+\newtextPointThree{
+Generally, this is a benefit, as common code can be contained within the PObject and
+is thus widely reused within the various data objects.  PObject as a class is not ideal, and
+some changes will be made, but the general concept of a universal parent for the data
+objects will remain in a CDOM environment.
+}
+
+\lsubsection{Tags and Tokens}
+
+\newtextPointThree{
+Data that defines a Class, Race, Language, and other characteristics and attributes of a
+PlayerCharacter are stored in LST files. These LST files are parsed to import the information
+from those LST files into objects within the PCGen program.  Generally, the contents of PObjects
+constructed during LST file import are defined by Tags within the LST file, such as the Language
+Common in the Language LST file from SRD 3.0:\\
+\texttt{Common	TYPE:Spoken}
+}
+
+\newtextPointThree{
+The Java Classes that define the legal tags are loaded as plugins to PCGen.  These persistence
+Tokens are non-abstract Classes that implement the LstToken interface. A special map of persistence
+Tokens is generated when PCGen launches.  This `special map' is effectively a Map with two keys
+(or a Map to a Map for those who want to know the technical structure in the code). The first key
+is the Interface implemented by the Token. This identifies which file types the Token is capable
+of processing. The second key is the String version of the Token (as it will be found in an LST
+file).  This String version is the exact String that will appear in an LST file before the first 
+colon `:' in an LST file.  With those two keys, the actual object which can parse the String from
+the LST file into the internal representation in PCGen can be resolved.
+}
+
+\newtextPointFour{
+Note that Prerequisites are actually an exception to the tag lookup system shown above.  The
+PRExxx tokens are handled in a separate lookup, which operates in a similar fashion to the token
+lookup described above.
+}
+
+\newtextPointThree{
+By keeping each Token in an individual class, this keeps the Token Classes very simple,
+which makes them easy to test, modify, and understand (as they are effectively atomic to the
+processing of a specific token).  One goal of CDOM is to ensure that all of the parsing of LST
+files is done within the Tokens and not in the core of PCGen.  This makes adding new tags to
+the LST files to be reasonably painless (though changes to the core or export system will also
+be required to add required functionality).
+}
+
+\newtextPointFour{
+Note one requirement in token construction is that they must be order independent.  This impacts
+a number of interdependent tokens (such as FOLLOWERS and COMPANIONLIST), which means those items
+must defer some processing (or dereferencing) until runtime.  Order independence should be considered
+an architectural requirement for token construction.
+}
+
+\newtextPointThree{
+Note that this document is NOT careful about using the terms Tag and Token properly.  They are 
+often interchanged, and while it could be argued that it makes the document unclear, the 
+distinction is so subtle that maintaining two terms is probably just as bad of a transgression.
+}
+
+\newtextPointThree{
+Generally, it should be recognized that there are five types of tokens.}
+\newtextPointFour{
+These token types are listed in the order of increasing complexity, and therefore, they are 
+listed in the preferred order for development of new features (preferred is first).  In other
+words, when implementing a new feature, if it can be done with an Association Token or as a
+List Modification Token, the Association Token implementation is preferred.
+}
+
+\lsubsubsection{Primary Information Tokens}
+
+\newtextPointThree{
+First, informational tokens in an LST file provide direct and simple information about
+the object stored in the LST file.  These characteristics may be as simple as integer values
+(such as a cost), strings (such as a Display Name), typesafe values (such as Region), or other 
+values.
+}
+
+\lsubsubsection{Association Tokens}
+
+\newtextPointThree{
+Association tokens in an LST file create an association of some form (generally allows, contains, 
+or grants) between the object stored in the LST file and another primary object (defined in the
+same LST file or another LST file).  There may be additional information (such as Prerequisistes 
+or casting cost) that are part of the association between the parent and child object.
+Tokens that produce this effect include FEAT, SPELLS, and CLASSES.  (Note the explicit use of classes 
+indicates that the association that is formed could be an association that defines the current
+object as either the parent (in the case of FEAT) or as the child (in the case of CLASSES).
+}
+
+\lsubsubsection{List Modification Tokens}
+
+\newtextPointFive{
+List modifications tokens are those items which can modify a List of
+CDOMObjects to add to the contents of a list.  The most obvious of these
+are the SPELLLEVEL:CLASS and SPELLLEVEL:DOMAIN Tokens, which (surprise)
+modify SpellLists.
+}
+
+\deletedTextPointFive{
+\revisedtextPointThree{
+There are some tokens that grant an association between two other objects.  These third 
+party tokens are more challenging to implement and require more complex handling in any
+data structure.  An example of this token is MONCSKILL,
+\revisedtextPointFive{in which a Race (effectively the 3rd party)
+adds a class skill (the 2nd party) to a Class (the 1st party)}.
+}
+}
+
+\lsubsubsection{Replacement Tokens}
+
+\newtextPointFour{
+Some tokens change a Type, Hit Die, Weapon Proficiency, or other characteristic of an object.
+These tokens must be handled differently than a Primary Information Token, and a Modifer is
+placed into the PlayerCharacter when these tokens are encountered.  One example of a Replacement 
+Token \revisedtextPointFive{is the HITDIE token for Templates (which changes the Hit Die
+of class levels for the PC)}
+}
+
+\lsubsubsection{Factory Tokens}
+
+\newtextPointFour{
+At this point, no Factory tokens may be required, but the concept is highlighted in order to
+help people avoid the use of the Factory construct.  Factory tokens are tokens where the effect 
+cannot be predicted when the token is created; thus, the processing of the token needs to be 
+deferred until the object containing the factory token is added to a Player Character.  The 
+token most likely to require a Factory is the ADDLEVEL token from the Race LST file.  Since the
+levels to be added cannot be predicted from the token, it is likely that the exact processing
+must be deferred until the Race is added to a Player Character.
+}
+
+\lsubsection{Prerequisites}
+
+\newtextPointThree{
+Another important concept in PCGen is the Prerequisite.  These are limitations placed onto PObjects
+in order to constrain the ability of a PlayerCharacter to use the PObject (e.g. to limit selection of a Feat
+to a minimum Character Level).  There are a few key concepts that should be recognized when dealing
+with Prerequisites:
+\begin{itemize}
+\item Prerequisite resolution must take place when a query for information is desired (Testing a
+Prerequisite is not a static calculation, due to temporary changes that may take place with a PlayerCharacter)
+\item Objects may not have a Prerequisite individually, but only in a certain context (A Feat may
+have a certain Prerequisite only when it is granted by a specific PCClass)
+\end{itemize}
+}
+
+\newtextPointThree{
+Prerequisties are requirements for something to be active on a PlayerCharacter.  For example, the Dodge
+Feat (from SRD) would have \texttt{PRESTAT:1,DEX=13} This Prerequiste means two things: 1) a PC must have a
+Dex of 13 at the level-up event to select Dodge as a Feat and 2) The PC must have an active Dex of 13
+(think temporary changes from items, curses and the like) to be able to use the benefits of the Feat.  Thus,
+a critical concept: Prerequisites are not all static, and cannot all be resolved before Objects are
+placed in the PlayerCharacter.
+}
+
+\newtextPointFour{
+Prerequisite resolution must take place when an object is added to a PlayerCharacter.  The result of this
+order of operations (processing when added to a Player Character, and not when a query for information 
+contained within the Player Character is performed) means that the Player Character will likely need to 
+maintain both a complete graph (indicating everything the PC may be eligible for) and an active graph
+(indicating the items the PC actually met the Prerequisites for, and thus indicating items the PC was
+granted).
+}
+
+\sbtom{Prerequisite Order of Operations}{This needs to be heavily tested.  This assumption of Prerequisite
+testing on adding to the PC is dangerous, given the current state of the code (it may be true, but the
+`business rules' of Prerequisiste testing are really in the code.}
+
+\newtextPointThree{
+Also, Objects may not have a Prerequisite individually, but only in a certain context.  Rogues,
+for example, are granted certain Weapon Proficiencies. Some of these are dependent on the Size
+of the Rogue (from SRD 3.0's hidden feats):\\
+\texttt{AUTO:WEAPONPROF|Club|Crossbow (Heavy)|\ldots|[PRESIZEGTEQ:M]}\\
+These are only given to a Rogue that is at least size Medium.  This should not restrict anyone
+who receives those Weapon Proficiencies, since this is not a characteristic of the Weapon
+Proficiency but a characteristic of the Class (literally granted by a hidden feat if you go
+looking through the LST files).  Therefore (Prerequisite key concept \#2): Prerequisites can also
+be a part of associations between objects.
+}
+
+\lsubsection{Relationships}
+
+\lsubsubsection{Grants Relationship}
+
+\newtextPointFour{
+An object (meaning a PObject, such as a Class, Ability, or Race) can `grant' another object.  This 
+relationship indicates that the benefits of the granted object are received by the Player Character 
+when the granting object is added to the Player Character.  For example, the Bard class, at first level,
+grants the Ability ``Bardic Countersong''.
+}
+
+\lsubsubsection{Allows Relationship}
+
+\newtextPointFour{
+An object (meaning a PObject, such as a Class, Ability, or Race) can `allow' another object to be
+granted, but not directly grant that object.  This relationship indicates that the benefits of the
+allowed object are NOT received by the Player Character when the allowing object is added to the
+Player Character; however, access to select the allowed object is granted by this relationship.
+For example, the Dwarf race allows access to the Language ``Giant'' as a starting Language.
+}
+
+\lsubsubsection{Contains Relationship}
+
+\newtextPointFour{
+An object (meaning a PObject, such as a Class, Ability, or Race) can `contain' another object.  This
+indicates that the benefits of the allowed object are NOT received by the Player Character when the
+allowing object is added to the Player Character.  This relationship solely indicates ownership; it 
+does not convey any capabilities.  The best example of this relationship is that of a pocket (which
+may contain other objects, but does not grant any capabilities of those objects).
+}
+
+\lnsection{Proposed PCGen Object Architecture (``CDOM'') Characteristics}
+
+First, it is appropriate to make some additional CDOM specific assumptions
+in order to guide the discussion of the architecture of CDOM.  Therefore:
+
+\lsubsection{Minimize PObject Cloning}
+Observation: Currently the PCGen code base is forced to frequently \ix{clone}
+PObjects in order to use those objects within a PlayerCharacter.
+
+Cloning a PObject should only be required when a .COPY tag
+is struck in the \ix{LST file}s.  A PObject should never require cloning in order
+to use it in a Player Character.
+
+\lsubsection{PObject should be light-weight}
+Observation: Even with Assumption \ref{Minimize PObject Cloning} above,
+there will still be a significant number
+of PObjects present in memory at any one time.
+
+An information-light PObject should be very lightweight in
+memory (a Language should fit in \textless 256 bytes; ideally
+\textless 128) 
+
+\lsubsection{Minimize Level Awareness}
+Observation: Too many Classes in the PCGen code base today are level-aware. 
+
+Level should be implicit in the character structure and handled as an
+exception, not passed to objects that should otherwise be level ignorant.  Said another
+way, only PlayerCharacter and a PCClassLevel factory (may be PCClass) should be level
+aware.  PObject, SpellSupport, Tags, and ALL other Classes should be level ignorant.
+
+\revisedtextPointZeroFive{
+As a noted use case, there are objects granted by Templates which are granted at
+a specific level.  If a Skill is granted at level 4, the Skill Class is level-ignorant.
+The Skill Class, however, has Prerequisites, and there will (of course) be a 
+\ix{Prerequisite} that is level-aware.  This design statement (minimizing level awareness)
+is primarily aimed at removing level awareness from:
+\begin{itemize}
+\item LevelAbility* (actually these are entirely eliminated by this proposal)
+\item Tokens that have Level passed in (PCClass Tokens)\index{token}
+\item PObject
+\item SpellSupport
+\end{itemize}
+}
+
+\lsubsection{Completely remove token knowledge from core}
+
+Observation: Today, \ix{token} knowledge is contained with the core Classes in two ways: 
+First, while progress has been made to eliminate it, some token input processing takes
+place in the core.  Second, token \ix{output} processing is always handled in the core of
+PCGen 5.10.*, as the tokens are \ix{output} in the various \texttt{getPCCText()} methods.
+
+Output should be implicit in the tokens, and the interfaces of the Tokens expanded to 
+require both a \texttt{parse()} and an \texttt{unparse()} method.  This completely 
+extracts token processing from the core, and ensures that the parsing and unparsing are
+present in the same Class.
+
+This facilitates easy \ix{unit test}ing (a parse/unparse cycle should 
+not change the information).  This is also aligned with Assumption
+\ref{Contracts are prohibited}, which prohibits update knowledge (\ix{contract}s).
+The complexity of 
+\texttt{getPCCText()} can easily result in a PObject that is no longer properly unparsed
+when new variables are added to PCGen.  Note that new variables may be added simply by
+adding a new \ix{token} \index{plugins}plugin, and the core PObject need not be modified.
+
+\newtextPointZeroFour{
+To facilitate the \texttt{unparse()} operation, each reference in the master data imported 
+from the \ix{LST file}s will contain the Token\index{token} name that drove creation of the reference. This allows
+appropriate ``unparsing'' to occur on a large scale (such as \ix{output}ting the entire \ix{LST file}
+structure) in an automated fashion without great complexity.
+}
+
+\newtextPointFour{
+Note that the support of .CLEAR in a parse/unparse cycle requires additional information beyond
+the resulting value of a Token.  This drives complexity penalty that is undesirable for the runtime
+environment. Therefore, the internal data structure used by the LST editors will be different 
+(just slightly more complicated) than the internal data structure used by the runtime environment.
+}
+
+\sbtom{On Tokens}{\newtextPointThree{I believe this also means we want to have the tokens somehow specify how 
+they should be edited (in an LST editor).  There are some tradeoffs here.  I would prefer to 
+keep the Tokens generally GUI-unaware, so that requires either a non-UI response (something that
+might be VERY hard for the complex tokens) or a separate Plugin that has the ability to 
+specify how the Token is edited.  This allows for advanced features in the Editor plugin, 
+it allows the implementor of new non-PCGen tokens to ignore the editor (but the editor
+can still include the token through a default editing style) and it generally removes the plugin 
+information from the core (since if the tokens are not in the core, then the ability to edit them
+should also not be in the core).
+}}
+
+\lnsection{Proposed PCGen Object Architecture (``CDOM'') Benefits}
+
+\lsubsection{Code Clarity}
+
+\newtextPointZeroFive{
+Since the new code introduced will be cleaner than the existing code, a significant number
+of warnings that exist from tools like \ix{PMD}, \ix{FindBugs}, and many others will not exist.
+This will help to highlight actual problems that may exist in the PCGen code.
+}
+
+\newtextPointZeroFive{
+Enforcing the package relationships will make code modification much easier, since any
+given change will impact fewer Java Classes.  Code stability (~35\% in PCGen 5.8.* and about
+60\% in the current 5.11.* alphas) should increase dramatically\ldots target 90\%.
+}
+
+\lsubsection{Improved Test Coverage and Capability}
+
+\newtextPointZeroFive{
+Eliminating tangles in Class dependency will improve the ability to write true \ix{unit test}s
+(which are tests that work on a single Class).  This means it will be possible to catch 
+smaller errors due to incorrect modifications of the PCGen code base.  The existing ``unit 
+tests'' may remain as \ix{unit test}s (e.g. the Prerequisite tests).
+}
+
+\newtextPointZeroFive{
+Note the existing regression tests (e.g. the pcgen.gui.* tests) will break in the new structure
+because .pcg file import will not trigger creation in the same way in a CDOM environment.  
+Therefore, a new regression test series (and perhaps a facade to assist in the transition) will
+be required.
+}
+
+\newtextPointZeroFive{
+Clarity in our architectural goals and standards should allow us to generate a series of tests:
+\begin{description}
+\item[architecture tests] Did someone violate any architectural rules, such as: using ``test'' 
+in a non-test method or Class name, accessing the PCGen core from the library code, or accessing
+a plugin directly from the core.
+\item[\ix{unit test}s] Testing one Class at a time.
+\item[integration tests] Test multiple Classes together.
+\item[regression tests] Develop a suite of defined full-processing runs that create and output
+characters.
+\item[performance tests] That check how long it takes to perform certain operations (may be as 
+simple as tracking the time taken to perform the regression tests).
+\end{description}
+}
+
+\newtextPointZeroFive{
+Better organization will also
+allow \ix{GUI}s to be tested and a ``qualification routine'' could be created to ensure that
+any GUI that is built is prepared to respond to the events that PCGen sends and receives.
+}
+
+\lsubsection{Ease of Changes}
+
+\newtextPointZeroFive{
+It should be possible in PCGen 6.0 to add entire functionality through a new Token without 
+modifying the core.  Creation of an LST import Token\index{token} and an \ix{export} token 
+should be sufficient to add simple function.
+}
+
+\newtextPointZeroFive{
+This may actually lead to requests for a Token manual, in order to define how to write tokens
+for other systems that the base PCGen may not ship with.
+}
+
+\lsubsection{Increased Flexibility}
+
+\newtextPointZeroFive{
+While this has not been directly discussed elsewhere in this document, the increased 
+flexibility (by eliminating a significant number of special cases that currently exist 
+in the PCGen code base) will allow PCGen to more easily support non-d20 systems.
+}
+
+\lsubsection{Fewer Classes}
+
+\newtextPointZeroFive{
+This architecture should result in fewer Classes in PCGen.  If it does
+not, it will be a result of significantly smaller Classes than the PCGen 5.11.* series contains.
+}
+
+\lsubsection{Performance}
+
+\newtextPointZeroFive{
+This architecture should lead to better performance.  If nothing else, it will make solving 
+performance issues much easier, as the acyclic nature of the package structure will make it 
+far easier to determine the culprit in any performance issue.
+}
+
+\lsubsection{Undo/Redo}
+
+\newtextPointZeroFive{
+PCGen in a CDOM environment will acquire Undo/Redo capability.
+}
+
+\lsubsection{Campaign Source Validation}
+
+\newtextPointThree{
+Since all references will be resolved at load time, this will ensure that:
+\begin{itemize}
+\item All objects in a given namespace possess a unique KEY, regardless
+of the source file
+\item All object which references other objects in their tags are referencing
+an object that was actually constructed and loaded
+\end{itemize}
+}
+
+\newtextPointFour{
+Different levels of warnings and errors on source load will be required.  The challenge 
+is that a \texttt{!PRECLASS:1,Fighter} shouldn't produce the same level of input warnings as
+\texttt{FEAT:Dodge} if the Fighter Class and the Dodge feat are not loaded, respectively.  The
+reason for this is that the PRECLASS may simply be gating on an item not present in the current
+load (which isn't a problem, since it's an inverted Prerequisiste; thus the Prerequisite should
+always pass).  The FEAT token is granting the Dodge Feat, however, so if the Dodge Feat is not 
+loaded, that should produce a more significant error message.
+}
+
+\lnsection{Summary of the architecture proposal}
+
+\lsubsection{Exploring Alternatives}
+
+\newtextPointFour{
+Evaluating the architectural goals leads to a constraint on the structures that
+can be used for the PCGen data model.  The current core uses a (slightly complicated)
+list model (each PObject contains a List of the PObjects it grants or allows).  This
+is undesirable for a few reasons.
+}
+
+\newtextPointFour{
+First, a model based on lists requires validation-based change.  Given that this concept
+is only marginally understandable without an example, here
+is an example of validation-based change.  Assume the following:
+\begin{itemize}
+\item Ability A1 grants Ability AMultNo
+\item Ability A2 grants Ability AMultNo
+\item Ability AMultNo may only be granted once
+\item Ability AMultNo grants 2 skill points to the PlayerCharacter
+\item PlayerCharacter MyPC has both Ability A1 and Ability A2 (chosen in that order)
+\end{itemize}
+}
+
+\newtextPointFour{
+One possibility would be to have A2 NOT contain AMultNo (since it already exists in A1)
+when placed into MyPC.  This would require that the list model is constructed so that
+the PObjects themselves are not aware of the relationships (otherwise, the PObjects would
+require cloning as they are placed into a PlayerCharacter, and we are back to the PCGen
+5.x core).  This is possible, but there are still problems with this model.  If
+A1 is subsequently removed (due to a PC change or due to a REMOVE: Token), then the
+validation of the PlayerCharacter must realize that the Ability A2 should then grant
+AMultNo.  Thus, the validation that is performed on MyPC must alter the internal data
+model if A2 does not contain AMultNo in the given example.
+}
+
+\newtextPointFour{
+Another possibility would be to suppress the expression of AMultNo from Ability A2.  
+This does little to simplify the situation if A1 is subsequently removed.  The
+validation of the PlayerCharacter must still realize that the Ability A2 should grant
+AMultNo (and thus the validation must reactivate the Ability).  While there may be a 
+solution to that problem that does not require validation-based change, it is not an 
+ideal solution.
+}
+
+\newtextPointFour{
+Another point to make about list models is the required time to search the model.  For 
+an Ability (Feat) that has associations (such as Simple Weapon Proficiency), a full
+depth search of the list would be required to extract all of the places where Simple
+Weapon Proficiency was referenced to ensure that all assocaitions are evaluated.  
+Determining skill levels is equally difficult, requiring a full list traverse to find
+all of the references to the given skill.  The underlying issue with this data model 
+is that an object can be stored in more than one location in the PlayerCharacter.  Thus,
+the entire PlayerCharacter must be searched each time an association must be evaluated.  
+That search must also be complex enough to resolve situations where an object can only
+be granted one time (MULT:No), to ensure integrity.  With all of these challenges,
+the list model is postulated (without proof) as being a problem for performance and clarity.
+}
+
+\lsubsection{CDOM is a Graph}
+
+\newtextPointFour{
+Given the discussion of alternatives (above), it should be recognized that the}
+\deletedTextPointFour{The} association between PObjects is not a pure tree.  
+There can be multiple associations to a given PObject.  For example, a Template 
+and a piece of Equipment could grant a particular Skill.
+
+It is therefore proposed that the internal memory structure of CDOM be a mathematical graph. 
+For a detailed explanation of graph theory, Wikipedia is a good start.\footnote{see:
+\url{http://en.wikipedia.org/wiki/Graph_theory}}
+
+\mapfig{graphsample.png}{\label{Fig: Graph Sample}Sample Player Character Graph}
+
+At a high level, graphs generally contain nodes (sometimes referred to as vertices) and edges.
+The edges provide connections between the nodes.  In CDOM, the PObjects will be nodes. 
+Each PObject will contain the static information that is associated with that particular
+PObject.  Dynamic information may be stored within another PObject (node) or within an edge,
+if that information is a result of the association of two PObjects (there are some ``use cases''
+in Section \ref{PlayerCharacter cases and architecture refinement of the PCGen CDOM}
+to flesh out some implementation details of CDOM).  
+\newtextPointZeroFive{You can see a sample of a 
+Player Character PCGenGraph in Figure \ref{Fig: Graph Sample}.  This sample has been pruned to
+show the general characteristics of the PCGenGraph while making the view manageable.}
+
+Each Node will be a derivative of a \ix{PrereqObject} (this should not be limited
+to PObjects).  This is done because wasting the entire PObject overhead
+on a simple object (such as SpellResistance) is bad, especially given the quantity of content
+to be attached to the PObjects.
+
+Each Node will be completely ignorant about what it is connected to.  
+\newtextPointZeroFive{This means that when a PCClass 
+grants a Feat (such as the Cleric PCClass from RSRD granting Aura of Good
+[shown in Figure \ref{Fig: Graph Sample}]), the only association between PCClass and Aura of Good is
+the edge within the Graph.  PCClass does not maintain a reference to ANY other PObject.}\footnote{Actually,
+PCClass is probably a bad example here, since it will likely maintain references to PCClassLevel objects.}
+
+\newtextPointZeroFive{
+In the case of the PCClassLevel to PCClass relationship (and hopefully only in that limited case),
+there will be required associations between Nodes that will require a parent Node to
+be removed from the Graph if a Child is removed.\footnote{This is really non-sensical in what PCGen
+would really allow to take place, but the point is to consider `theoretical' actions on the Graph
+and how PCGen should resolve them to avoid an inconsistent state}. This association will involve a
+special edge (depicted as an edge with three lines in Figure \ref{Fig: Graph Sample}) that 
+will trigger the removal of the parent if the child is removed (but not the opposite, since removal
+of PCClassLevel (Cleric, 2) should not trigger the removal of PCClass (Cleric)).
+}
+
+Each edge will contain a reference to the source Node and sink Node to which it is connected.  
+\newtextPointZeroFive{The edge may also contain additional information about the association between
+the two PObjects.  This assocation could be as simple as a prerequisite associated with the acquisition
+of the child PObject (also displayed by Aura of Good, shown in Figure \ref{Fig: Graph Sample}).  It may
+also be a SubSelection made in a Feat, Hit Points for a Hit Die object, or cost for an Equipment Modifier.
+Certain Edges will provide the ability to have a `weight' so that an object which provides 
+multiple levels of a Skill can avoid multiple edges connecting the same PObjects (multiple identical edges
+would clutter the graph).
+}
+
+A master PCGenGraph object stores the list of Nodes and Edges in the Graph, and can be queried to 
+\texttt{getAdjacentEdgesToNode(Node n)}.  These associations will likely be cached in our Graph
+implementation.
+
+\sbeffect{Recursive Subroutine calls not possible}{Contrary
+to prior discussions on the PCGen-dev mailing list, 
+one side effect of the Nodes being ignorant of what they are 
+connected to is that querying the PCGenGraph cannot be done as a recursive subroutine call.
+Such a query for information will have to be done through a graph traversal.}
+
+When \ix{LST file}s are imported, a master PCGenGraph will be created.  This graph will not have
+a defined root node, but will be a series of nodes with the connections defined by the \ix{LST file}.
+Each connection between the PObjects in the PCGenGraph will be a directional edge (The
+``Winged'' Template gives the character ``Movement: Fly (30')'').  Mathematically, it is therefore
+a Directed Graph.
+
+\newtextPointThree{
+Previous versions of this documented specified that the PCGenGraph would remain acyclic.  This is
+not possible with the proposal in the current form.  There are at least one good case that cause cycles:
+Synergy bonuses.
+}
+
+\deletedTextPointThree{
+In order to prevent problems (and actually catch problems in \ix{LST file}s), it is recommended
+that the PCGenGraph also be an acyclic graph.  It is possible that cycles are necessary, but
+those could result in infinite loops in the code.  Without a very specific use case that
+justifies cycles, they can and should be highlighted as an error during \ix{LST file} import. 
+Therefore, the PCGenGraph is a Directed Acyclic Graph.
+}
+
+\revisedtextPointZeroFive{
+\index{bonus}Bonuses to Skills will be one area where we must consider the value of putting the edges
+in the graph vs. simply storing as a number and requiring a Skill query and then a bonus
+query to actually get the active Skill level.  The fact that Epic modifications to Jump
+and Tumble are formulae imply to me that we must leave them that way,
+as they are effectively impossible to decompose into discrete edges.  Thus, these items
+do not pose a cycle risk in the Graph.
+}
+
+A PlayerCharacter will also contain a PCGenGraph (though an independent instance from the
+master PCGenGraph, it will be the same Class).  This graph is composed of the objects that have
+been given to or selected by the Player Character.  When a PObject is added to a PlayerCharacter,
+the added PObject is referenced in the master PCGenGraph.  The added PObject and its entire 
+sub-graph are then grafted into the PlayerCharacter PCGenGraph.
+
+Each object (such as a Template) will then reference the additional capabilities that are
+provided to the PlayerCharacter.  The PCGenGraph can be queried for the capabilities the PC.
+
+In order to facilitate \ix{unit test}ing and minimize memory usage, every PObject will be ignorant of
+all other PObjects.  ALL associations will be made in the PCGenGraph.  The PCGenGraph is
+capable of providing:
+\begin{itemize}
+\item A full list of all PObjects contained within the PlayerCharacter
+\item Connections (edges) associated with any given PObject (contained within the PCGenGraph)
+\item How a particular PObject came to be associated with the PlayerCharacter. (e.g. Chose Combat
+Reflexes as a feat at third level and Weapon Focus (Dagger) as a first
+level fighter bonus feat.)
+\end{itemize}
+
+\newtextPointFive{
+It should be noted that there are specific situations that force the PCGenGraph to be an identity-based
+Graph (at least for the edges).  Consider one example: If ADD:FEAT|2|ANY were to be used, then the 
+PlayerCharacter could select the same Feat twice (if the Feat was MULT:YES).  Since the management of
+edge weights in this situation would be significant (there are other cases where the edge weights can 
+be based on a formula, not an Integer), this is best accomplished with two equal, but identity-independent 
+edges. (meaning a.equals(b), but a != b)
+}
+
+\newtextPointFive{
+If edges are not based on identity, then one must find data
+that will make the two semi-identical edges unique (but
+deterministically unique, so two graphs can still be compared with
+.equals).  I believe this would include storing the Source line number,
+source column number, and edge request count for the given token in
+order to make it deterministic and unique.
+}
+
+\newtextPointFive{
+The reason so much information is requried is that the source line number required to distinguish:\\
+\texttt{CustomDomain1 <tab> FEAT:Bar\\
+CustomDomain1.MOD <tab> FEAT:Foo\\
+CustomDomain1.MOD <tab> FEAT:Foo\\
+}
+...while the Source column number required to distinguish:\\
+\texttt{CustomDomain1 <tab> FEAT:Bar <tab> FEAT:Foo <tab> FEAT:Foo\\}
+... and the edge request count required to distinguish:
+\texttt{CustomDomain1 <tab> FEAT:Bar <tab> FEAT:Foo, Foo\\}
+Thus it is far easier to simply avoid the issue by making equal edges allowed as long as those edges
+have a unique identity (a != b).
+}
+
+\lsubsection{Theoretical information is contained in Lists}
+
+\newtextPointFive{
+Early revisions of this document suggested that there were multiple edge types that would be
+present in the Graph.  That is not currently part of the proposal.  There are a number of reasons 
+why ``allowed'' information is not to be stored in the Graph:\\
+\begin{itemize}
+\item Managing context (for items like Class Skills) would require extremely complicated
+edge behavior if it was stored in the graph.
+\item Graph traversals are far more complicated when the edges have more than one meaning
+\end{itemize}
+}
+
+\newtextPointFive{
+When an object initializes a list (such as the CLASSES: token in Spell
+LST files), they will write to a master list.  When an object modifies
+a list, a modification of the list will be stored in the owning object.  This
+modification may include associations (such as the spell level,
+prerequisites, etc.).  These list definitions and list modifications are
+much like variables, in how the tokens DEFINE:Var|value (the definition) and
+BONUS:VAR|Var|bonus\_{}val (the modification) operate in PCGen 5.x.
+}
+
+\newtextPointFive{
+Generally, lists works the same way the variables would.  If a character
+doesn't have a DEFINE that defines a variable, then a BONUS to that
+variable will have no effect.  Lists will work the same way.  This is a
+bit more complicated than Variables/Bonuses (due to the processing time
+and memory waste I point out in the Fighter/Spell List example above),
+but the principle is the same.
+}
+
+\newtextPointFive{
+When a character is *actually granted a list* (meaning a List object
+appears in the active graph of the PC), a new (empty) List of the
+specified type is created for the PC.
+The new list is initialized with any data in the master list.
+After the ``active object resolution'' process is complete, the list will
+be modified to include any objects added to the list by any active
+objects in the PC.  
+}
+
+\newtextPointFive{
+In order to avoid a traverse of the entire graph to grab the contents of
+a list (that would be slow and annoying), there will be a method of
+consolidating the modifications within a PC.  When an
+object granting modifications to a list is added to the active
+object graph of the PC, there will be *no effect* on the PC.  This is to
+avoid pollution of the List contents of the PC with numerous SpellLists
+or other items which are modified by objects possessed by the PC.  (e.g.
+If a character is a Fighter and a Template adds a Spell to Arcane
+Spellcasters, we don't want to put the Arcane SpellList into the PC -
+wastes processing time and memory)
+}
+
+\newtextPointFive{
+The resolution process operates something like:
+Addition of Spell List ``Wizard'' Mod 1\\
+\indent No effect on PC\\
+\indent ``Active Object Resolution'' takes place due to new objects\\
+Addition of Spell List ``Wizard'' Definition (PC is now a Wizard)\\
+\indent ``Active Object Resolution'' takes place due to new objects\\
+\indent Creates PC Spell List ``Wizard'' from base list and applies Mod 1\\
+Addition of Spell List ``Wizard'' Mod 2\\
+\indent ``Active Object Resolution'' takes place due to new objects\\
+\indent (Re-)Creates PC Spell List ``Wizard'' from base list\\
+\indent Applies Mod 1 and Mod 2\\
+}
+
+\newtextPointFive{
+It is realized that some lists will not be explicitly initialized by any
+dataset; nor will they ever be ``added'' to the PC.  These lists will have
+keys that start with *, and they will be internal lists to PCGen.  No
+initialization will take place, and any object which modifies one of
+these lists will trigger an automatic addition of the list to the PC
+(the list does not need to be ``granted'').  One example of this is the
+*Starting LanguageList, which will be added to by the LANGBONUS token.
+}
+
+\newtextPointFive{
+It will have to be legal for a List to contain another List (e.g. the
+``Aberration'' SkillList [implicitly created by the existence of the
+``Aberration'' Class] will contain the ``*Monster'' SkillList [which is the
+list added to by the MONCSKILL and MONCCSKILL tokens] due to the
+presence of TYPE:Monster in the ``Aberration'' Class)
+}
+
+\newtextPointFive{
+As a ``bonus'' to this, the graph is actually simpler than in any of the
+ideas I presented in the older third party token discussion.  Since there is
+no longer an ``allows'' edge (all the theoretical information has been
+transferred into lists), the traverses will be faster and the traverse
+classes will contain less code.  There is also no risk of accidentally
+writing the granted contents of theoretical
+information into a persistent copy of the PC... and no indirect
+references or code workarounds to avoid the problem
+}
+
+\newtextPointFive{
+While the Class Skill and Domain/Class Spell Lists will leverage the List system, one
+should note that a Class Spell List is distinct from a Spell List.  This is 
+required for a number of reasons.  First, it is best in order to avoid namespace
+sharing between Classes and Domains (it is now possible to have a Domain and a Class with 
+the same name).  This also allows list type safety, which simplifies a few Tokens and 
+reduces the chance for error.
+}
+
+\lsubsection{Keys may not be part of a PObject}
+
+\newtextPointThree{
+Having the Key be independent of the PObject referenced by the Key may be a required part 
+of the CDOM Architecture.  (This may also require a bit more thinking to understand what 
+breaks and will need to be changed)
+}
+
+\newtextPointThree{
+Consider the case today, where a Key is an integral component of the PObject.  If one wants
+to determine which PObject of a given type is referenced by a given Key, a call to a global
+list of objects is made (most of these are stored in \texttt{Globals}) and the entire list
+of objects is iterated over to extract the object with the appropriate key.  Simply stated,
+this does not scale.  A large number of loaded objects will cause these queries to expend 
+significant effort in what should be a simple lookup.
+}
+
+\newtextPointThree{
+Simply converting Globals to using a HashMap (from Key to PObject) seems like a reasonable
+solution, but introduces a dangerous contract: Every change of a Key must be registered 
+back to the Global index, because the key is stored both in the PObject and used as a Key
+in the Global list.
+}
+
+\newtextPointThree{
+Simple solution: Make the global list the only place that has the key, and the PObject no 
+longer knows its own key.  The only way to change the key is to register a key change
+with the Global List.  This has a number of side effects.  The main problem will
+be the transition, as the current PObjects often use their key to determine equality.
+}
+
+\newtextPointThree{
+Another challenge will be in items that allow wildcards (e.g. PRETEMPLATE).   This is 
+simply an implementation detail, as the system should be able to do some form of wildcard
+match against the keys.  (There are multiple solutions to this, it does not need to 
+be resolved here)
+}
+
+\newtextPointThree{
+Bonuses that are self referencing ($<$this$>$) may require that BONUSes are stored as 
+native objects in the graph rather than information.  On the other hand, it will be
+impossible to destroy all indirect references (indicating the Weapon Proficiency of a piece
+of Equipment is a good example of a place where an indirect reference will be held), so
+the references will have to be `taught' the resolved object.  Thus, this also has 
+multiple solutions and is an implementation detail that does not need to be resolved here
+(although it is recognized as an issue to ensure it is properly handled).
+}
+
+\lsubsection{Classes in a CDOM PCGen}
+
+\newtextPointZeroFive{
+There are a number of new Class Groups present in this architecture:
+}
+
+\noindent\newtextPointZeroFive{The Graph Classes \textem{(and Interfaces)} include:
+\begin{description}
+\item[Graph Core Elements] include \textem{Graph, GraphEdge, GraphChangeListener, DirectionalGraph,}
+GraphChangeSupport, DefaultGraphEdge, ListMapGraph, NodeChangeEvent, EdgeChangeEvent, and others.
+\item[Graph Edits] extend UndoableEdit and include InsertGraphNode, DeleteGraphNode,
+InsertGraphEdge, and DeleteGraphEdge.
+\item[Graph Commands] include DeleteEdgeCommand, DeleteNodeCommand, ReplaceNodeCommand,
+PruneUnconnectedToNodeCommand, and other commands used to modify a Graph.  All Commands return
+an UndoableEdit capable of `undoing' the change made to the Graph.
+\item[Graph Visitors] include BreadthFirstTraverseAlgorithm, DepthFirstTraverseAlgorithm,
+NodeDistanceCalculation, DijsktrasAlgorithm, and directed derivatives of the traverse algorithms.
+These are the Classes used to traverse the Graph, and will thus be widely used to extract
+information from a PlayerCharacter.
+\end{description}
+}
+
+\noindent\newtextPointZeroFive{The other \ix{library} Classes include:
+\begin{description}
+\item[Static Utility Classes] such as StringUtil, Delta, BigDecimalHelper, and EntityEncoder
+\item[Instance Utility Classes] such as DoubleKeyMap, ListSet, MapCollection, and WeightedList
+\item[Universal Classes] such as UnreachableError
+\end{description}
+}
+
+\noindent\newtextPointZeroFive{The CDOM Classes include:
+\begin{description}
+\item[CDOM Graph Components] such as PCGraphGrantsEdge and PCGenGraph.
+\item[CDOM Core Objects] including \ix{PrereqObject} and the generic ``CDOMObject'' parent of the
+CDOM Instance Objects.
+\item[CDOM Instance Objects] such as PCClass, PCTemplate, Skill, Spell, and many others.  These may be
+any node within the PCGenGraph.
+\item[CDOM Content] objects that are contained within a PCGenGraph, but are not primary
+CDOM Objects.  These elements will NOT contain outgoing edges in the PCGenGraph (they are
+only leaf nodes of the PCGenGraph).  This includes
+items such as DamageReduction, SpecialAbility, Movement, and HitDie.
+\item[CDOM Enumerations] \index{enumeration}
+such as AbilityCategory, AlignmentType, IntegerKey, SpellType, and Visibility.
+Some of these enumerations (e.g. Visibility) will be fixed and be Java 1.5 enumerations.  Others
+must be flexible with \ix{LST file} input, and thus must be expandable Java 1.4 \ix{type safe} \ix{enumeration}s
+(e.g. AbilityCategory).  These Enumerations are (generally) used as keys to access data stored within
+the PObjects.
+\item[CDOM Helpers] are ``complex'' support Classes contained within a
+CDOM Object such as SpellSupport, Source, SpellFilter and BonusSupport.
+\end{description}
+}
+
+\lsubsection{General Use of CDOM Classes within the PCGenGraph}
+
+\newtextPointZeroFive{
+The CDOM Classes within PCGen will be loaded into the master PCGenGraph during the \ix{LST file} import.  
+Generally, any `primary' object that has an \ix{LST file} (e.g. Skill, PCClass, Spell), will have
+an associated PObject loaded into the PCGenGraph.  
+}
+
+\newtextPointZeroFive{
+Any references by that object to other 
+PObjects (such as granting a Skill from a Template) will result in a Containing Edge being added 
+to the master PCGenGraph.  If theoretical information is added (such as granting a
+particular Spell), then a Granting Edge is added to the master PCGenGraph.
+}
+
+\newtextPointZeroFive{
+A PObject may also grant other characteristics that are not PObjects.  These content objects 
+(e.g. DamageReduction, SpecialAbility) may not 
+be a parent in the PCGenGraph to other content or PObjects.  It is possible
+for more than one PObject to grant identical content objects.  All content objects implement
+\ix{PrereqObject} and may contain \ix{Prerequisite}s.
+}
+
+\newtextPointZeroFive{
+\ix{Prerequisite}s can be contained within a PObject, content or an edge.  If a Prerequisite is 
+contained within a PObject or content, then the contained Prerequisite(s) must be passed
+in order for the PlayerCharacter to have access to the PObject or content.\footnote{``Passed''
+in this use includes overrides from QUALIFY and other methods that may be developed to
+avoid Prerequisite tests}  If a Prerequisite is contained within an edge, then the Prerequisite
+within that edge must be passed in order for the PlayerCharacter to have access to the child 
+PObject or content (through that edge - it is possible for the PC to have access to the child 
+PObject or content through a different edge if that alternate edge has no Prerequisites or if
+the alternate edge Prerequisite(s) are passed).
+}
+
+\newtextPointZeroFive{
+Similar to how PObject operates today, specific characteristics of a PObject will be stored 
+directly within the PObject.  This includes many of the characteristics that are stored today 
+using the IntegerKey, StringKey, and related *Key \ix{enumeration}s.
+}
+
+While the master PCGenGraph is being built, a \ix{LoadContext} object will
+be passed in to each tag.  This LoadContext will be capable of:
+\begin{itemize}
+\item Grafting new objects with proper associations into the PCGenGraph
+\item Removing objects and their associations from the PCGenGraph
+\item Generating typesafe keys and storing those in a master list
+\end{itemize}
+Effectively the vast majority of static Class references can be eliminated from PCGen, which
+would allow two independent Campaigns to be loaded at any given time.
+
+\lsubsection{CDOM Lists}
+
+\newtextPointFour{
+There are numerous objects that are gathered into lists within PCGen.  It is beneficial to
+standardize these lists in order to simplify processing and comprehension of the CDOM
+data structure.  These lists may be Skill Lists, Spell Lists, Template lists, Ability Lists,
+or lists of other PObjects.
+}
+
+\newtextPointFour{
+These lists may contain objects bestowed as an `allows' relationship (such as Skill Lists that indicate 
+whether skills are CLASS or CROSS-CLASS skills) or a `contains' relationship (such as Equipment Lists that
+indicate what is carried by the Player Character).
+}
+
+\newtextPointFive{
+Items can be conditionally added to Lists, in that they are added only if a Player Character 
+passes certain prerequisites.
+}
+
+\lsubsection{Structure of a Player Character}
+
+\newtextPointFour{
+Due to the order of operations for Prerequisites (see Section \ref{Prerequisites}),
+the Player Character will contain two object graphs.  The first graph is the complete graph of
+the objects the character could be eligible for.  The
+second graph is the graph containing only the active objects for the player character 
+(items where the PC met the prerequisites and any equipped items).  Checks for presence
+in a PlayerCharacter will generally be made against the active graph.  No check needs to be
+performed in that case against any Prerequisites (because those issues were resolved as items 
+were copied from the complete character graph to the active graph).
+}
+
+\lsubsection{Extracting Information from the Graph}
+
+\newtextPointZeroFive{Extracting information from the Graph requires a number of steps. 
+First, a query can be performed to determine if the given object (such as the Skill ``Tumble'')
+is contained within the PlayerCharacter PCGenGraph.  If it is not contained within the PC graph,
+then the PlayerCharacter does not directly have the Skill.  Checking for BONUSes\index{bonus} may still be
+required.  
+}
+
+\revisedtextPointFour{
+If the Skill is contained within the PC's active object graph, then the paths back to the 
+`root' of the PlayerCharacter must be tested.  
+Consider that there may be multiple paths, because the Skill might be granted by multiple things 
+(by a Class, by a Template, by an Ability).  Therefore edge weight must also be considered 
+if the tested object has ranks (like Skills) or can be taken multiple times (some Feats).
+In the case of a skill, the combined weight of the edges leading back to the root
+indicates the rank of the Skill.
+}
+
+\newtextPointThree{
+This test may sound complicated... but that's okay, because graph theory is actually
+heavily researched and well understood.  We just need to model our problem as something
+that has already been solved.  So, really, we can address this as a ``can we get there
+from here'' problem, with the source being the PC root and the Skill being the
+destination.\footnote{Remember the graph is `directed' with the source of an edge being
+what granted the PObject attached as the sink of the edge, thus ``PCClassLevel(Cleric,1)''
+grants Feat ``Turn or Rebuke Undead'' by having an edge from the PCClassLevel to the Feat).}
+}
+
+\newtextPointThree{
+In order to test whether two items are connected in a graph, we can use Dijkstra's
+Algorithm.\footnote{See: \url{http://en.wikipedia.org/wiki/Dijkstra's_algorithm}}
+Define the edge length as 1 if all the \ix{Prerequisite}s pass and the Node length as 1
+if all those \ix{Prerequisite}s pass.  Neither can be traversed if any \ix{Prerequisite}
+contained in the respective node or edge fails.  Only traverse edges from source to sink.
+Thus, we have a rather simple test to determine if a PC has a given skill.  We can run
+Dijkstra's algorithm with the appropriate edge and node traversal rules.  If the length
+is non-infinite, the PlayerCharacter has the given Skill.  The traversal can concurrently
+calculate (and multiply out) the weight of the traversed edges, providing the final Skill
+level.
+}
+
+\newtextPointThree{
+Actually, from a performance perspective, this may be a bad way to do it, since the
+PCGenGraph is high fanout (a PCClass will grant a lot of stuff, but an Ability will only be
+granted by a few things).  Therefore, one could actually perform Dijkstra's algorithm
+backwards, and use the Skill as the source and only traverse edges from Sink to Source.
+The situation is not \textem{quite} that simple, however, so it is likely that PCGen will
+use a top-down calculation or a bottom-up calculation depending on the type of information
+being extracted from the PC's PCGenGraph.
+}
+
+\newtextPointZeroFive{At this time, even non-qualified objects will be placed into the 
+PlayerCharacter's PCGenGraph.  This is done to avoid pre-mature optimization.  It is possible
+that the PC graph containing numerous objects that the PC is not qualified for will be a 
+significant negative impact on performance.  If that is the case, there are potential solutions
+to that problem that are not presented in this revision of the architecture.
+}
+
+\lsubsection{Altering Extracted Information}
+
+\newtextPointThree{
+There are at least a few situations where the extracted information will need to be
+subsequently modified.  Two of those are addressed here.
+}
+
+\lsubsubsection{Modification and Overrides}
+
+\newtextPointThree{
+This includes Hit Die Locking, Movement Modifiers, and controlling
+for a Preferred Class of a Race.  Each of these can be done by using the concept of 
+a Modifier.  A Modifier is a form of CDOM Content that can be placed into the PCGenGraph and
+subsequently granted to a PlayerCharacter by a PObject.  These Modifiers will take in an
+object of a given type and return another object of that type:\\
+\texttt{public T applyModifier(T obj);}\\
+Thus, this is a general format for Modification that can perform a set, addition, subtraction,
+or various other modifications to a given object type.
+}
+
+\lsubsubsection{Bonuses}
+
+\newtextPointThree{
+Hopefully, these are relatively self-explanatory, but it is possible for many items
+to provide a bonus to a particular Skill or other mathematical value within the 
+PlayerCharacter.  These BONUS objects will have to be independently acquried from 
+the PlayerCharacter's PCGenGraph, tested for validity, and applied if appropriate.
+}
+
+\lsubsection{New LST Import Cycle Summary}
+\index{LST file}\newtextPointZeroFive{\begin{description}
+\item[Import Game Mode Files] is done to import the Game Mode files contained within 
+the System directory.  This is only necessary if the Game Mode file required for the 
+Campaign to be loaded is not already present in memory.
+\item[Import LSTs] is done to import the \ix{LST file}s for the Campaign to be loaded.  This 
+is done in a fashion that is very similar to the process in the 5.11 series.  However, 
+instead of creating objects and registering them with a Global Class, a \ix{LoadContext} is 
+passed to each of the Token\index{token} \index{plugins}plugin Classes, and all operations
+are done through the \ix{LoadContext}.  The \ix{LoadContext} manages the building of the
+master PCGenGraph that is defined by the contents of the \ix{LST file}s. In this way, more
+than one Campaign can be loaded without conflicting in memory. \newtextPointThree{No 
+information is destroyed in this step.  Objects which are .MODed will be maintained
+within the master PCGenGraph at this stage, as it may be important to resolve the
+original source of the information (in order to properly save it back to the
+appropriate LST file).  Objets which are MODed, or forgotten or otherwise modified
+in that sense will be marked as invalid, but left in the graph.  
+It is therefore possible that this early stage will store 
+items into an uncached graph. This will improve import speed and later steps can 
+construct a cached graph when it is necessary (such as during Prune for Replaced).}
+\newtextPointTwo{
+\item[Build derivative objects] such as SubClasses is performed in order to ensure
+that the entire original object has been constructed before information is derived from
+that object (and anything added or removed).
+\item[Resolve References] This is the `second pass' of construction, which will
+resolve any CDOMReference objects in the graph to ensure that the references in the
+master PCGenGraph are actually to real PObjects and not to placeholder objects.  This
+may implicitly perform the next step.
+}
+\item[Build TYPE and ALL/ANY associations] is done to ensure that any references made
+by the \ix{LST file}s to Types (such as Skills that are TYPE=Craft) are built within the 
+master PCGenGraph.  Using this method, only one centralized reference needs to be 
+stored (to the Type or All reference).  These references must be an Allows reference, it 
+must not be a contains reference (due to how MONCSKILL will work).
+\newtextPointThree{
+\item[Prune for Replaced] is performed to remove any references that were replaced.
+This eliminates original objects that were .MODed in an LST file.
+This step is not performed if the imported LST files will be edited. (Alternately, 
+if the editors must stay integrated, then the unpruned graph should probably be 
+maintained in memory).
+}
+\item[Check for invalid references] is performed following \ix{LST file} import.  An equivalent
+operation is not performed in the 5.11.* series.  Since all objects are created or 
+referenced through the \ix{LoadContext}, this check will ensure that any object that was
+referenced in the \ix{LST file}s (such as a Skill granted by a Template) was actually created.
+It will be illegal (and will cause an error) to reference an item that is not defined in
+the appropriate \ix{LST file}.\footnote{There may be exceptions, such as for Natural Attack
+Weapon Proficiencies, which are generated automatically}
+\item[Validate Master PCGenGraph] is performed following other actions, in order to ensure that
+all of the associated constraints on a Graph are enforced.  For example, there are constraints on
+Weapons (a Type of Equipment) which require each Weapon to be either Type Melee or Ranged.
+\end{description}
+}
+
+\lnsection{Code Structure}
+
+\lsubsection{Basis of the PCGen Token System Architecture}
+
+\lsubsubsection{Background}
+
+\newtextPointFour{
+The tokens are a significant investment due to the complexity of parsing LST files.  In
+order to reuse this investment across both the LST editor and the runtime PCGen, the tokens
+need to be independent of the structure stored internally to the program.  There are 
+also other considerations in the token design:
+\begin{itemize}
+\item A Token unparse method should have limited awareness of .MOD
+situations, thus the arguments should only include *one* PObject (not a
+PObject copy before and after a .MOD)
+\item It would be preferable to avoid implementing clone() (or some equivalent)
+in CDOM objects.  This includes for handling .MOD driven changes. (see Section \ref{Minimize PObject Cloning})
+\item A token should be as simple as possible
+\item A broken token (returns false) should never apply itself
+(*especially* partial application) to the graph.  This is to protect the
+system from ambiguous, unexplained or undesirable states.
+\item Code should be as straightforward as possible.
+\item To avoid duplication, the tokens should be reusable
+across the runtime program and the PCGen LST file editors.
+\end{itemize}
+}
+
+\lsubsubsection{Alternative Considerations for Token Architecture}
+
+\newtextPointFour{
+A static token (e.g. ``Damage'' in Equipment LST files) is subject to
+replacement.  In three files: \\
+\texttt{
+\noindent Sling	Damage:1d4 \\
+\noindent Sling.MOD	Damage:1d4+2 \\
+\noindent Sling.MOD	Damage:1d4 \\
+}
+}
+
+\newtextPointFour{
+This could be set in a very simple way: \\
+\texttt{
+\noindent parse(LoadContext context, Equipment eq, String value) \\
+}
+calls \\
+\texttt{
+\noindent eq.set(StringKey.DAMAGE, value); \\
+}
+...very simple, straightforward, and understandable.
+}
+
+\newtextPointFour{
+Unfortunately, this doesn't work for the ``editor mode''.  If source files
+1 and 3 are loaded (but not 2), then the editor still needs to be aware
+that source 3 set the Damage.  If it fails to recognize it was set (to
+an identical value, in this case), the editor would (incorrectly) not write out
+a .MOD in source three (thus 'accidentally' modifying the source).  This
+then introduces an error if source 3 is loaded in production with
+sources 1 and 2... (because source 2's .MOD would be the only .MOD that
+occurs).  As the Data Monkeys would point out, this is a major data
+integrity failure.
+}
+
+\newtextPointFour{
+Conclusion: the editor cannot use deltas between two CDOM objects
+(before and after each .MOD) to track what a source did.  This means
+.clone() or some equivalent is really useless to handle the situation.
+}
+
+\newtextPointFour{
+Alternative A: Store each item with the source it came from, e.g.
+put(StringKey.DAMAGE, sourceURI, damageStr)
+}
+
+\newtextPointFour{
+Alternative B: Instead of cloning, just pass an empty object into a
+token when it was called as part of a .MOD and then merge the
+lists/arrays after the import process is complete.
+}
+
+\newtextPointFour{
+\begin{description}
+\item[Problem 1 with A] Puts tremendous complexity into the CDOM object,
+forcing it to track the source of every object\ldots worthless overhead in
+production.
+\item[Problem 1 with B] Non-direct tokens like LANGBONUS become very
+complicated, as there will be multiple objects for a given Key that
+must later be consolidated, which means the graph edges will also have
+to be consolidated to the master object.  This also drives a complex
+search when .CLEAR. is used in a non-direct token, meaning the solution
+seems simple for direct tokens, but adds huge complexity for non-direct
+tokens.
+\item[Problem 2 with A and B] Doesn't help with .CLEAR, because it would have
+to track removal as well.  Therefore the CDOM Object would have to have
+a positive and a negative list for every item.  I believe this is an
+unreasonable burden on the CDOM object (too much unused stuff in a
+production environment - half the object!)
+\item[Problem 3 with A and B] Resolving .CLEAR from a series of .CLEAR.
+entries difficult.  Given: \\
+\texttt{
+\noindent Thing	LANGBONUS:English,French \\
+\noindent Thing.MOD	LANGBONUS:.CLEAR.English,.CLEAR.French \\
+}
+Thing.MOD effectively performs a .CLEAR, but one should not alter the
+intent, because if source 1 later changes to: \\
+\texttt{
+\noindent Thing	LANGBONUS:English,French,German \\
+}
+Then Thing should retain German\ldots so not only is a positive and
+negative list required, but some form of identifier to indicate a CLEAR
+was (or wasn't) a global .CLEAR
+\end{description}
+}
+
+\lsubsubsection{Token Architecture Overview}
+
+\newtextPointFour{
+Instead of writing directly into any given CDOM object, the Token will
+tell the context what is desired.  Interestingly (and accidentally, I
+might add), this also abstracts the Tokens from the specific
+implementation of the CDOMObject.  e.g. \\
+\texttt{
+\noindent parse(LoadContext context, Equipment eq, String value) \\
+}
+calls\\
+\texttt{
+\noindent context.obj.set(equip, StringKey.DAMAGE, damageStr); \\
+}
+}
+
+\newtextPointFour{
+In an editor environment, this can then be queued up in a Command to
+ensure that each source is fully restorable, while in a load for
+production environment, the set can be directly applied to the object.
+}
+
+\newtextPointFour{
+Depending on the type of token, the process for using the Load Context 
+to define the relationships will differ.  The following sections describe
+how each of the token types will interact with the Load Context and the 
+form of the resulting structure in the CDOM Graph.
+}
+
+\sbnote{Source URI}{Note
+that the sourceURI does not necessarily need to be sent into the
+token, as the context can be made aware of it and use it behind the
+scenes, if necessary (only in an editor environment).
+}
+
+\lsubsubsection{Primary Information Token Architecture}
+
+\newtextPointFour{
+For a description of Primary Information Tokens, see Section 
+\ref{Primary Information Tokens}.
+}
+
+\newtextPointFour{
+Primary Information Tokens are generally ``atomic'' in nature, in 
+that they are storing relatively simple information directly into the
+CDOM Object.  Due to this simplicity, calls to the set* methods
+of the Load Context must not be made if the token intends to return
+false (to indicate a failed parse).
+}
+
+\newtextPointFour{
+For each type of characteristic that can be set in a CDOM Object (String,
+Integer, Object, List, etc.), an associated set* or add* method exists 
+in the LoadContext.  A Primary Information Token should \emph{never} call
+a method on CDOM Object.
+}
+
+\newtextPointFour{
+Primary Information Tokens store information directly into the CDOM 
+Object; therefore, they do not impact the CDOM Graph.
+}
+
+\lsubsubsection{Association Token Architecture}
+
+\newtextPointFour{
+For a description of Association Tokens, see Section \ref{Association Tokens}.
+}
+
+\newtextPointFour{
+Association Tokens create a relationship between two objects.  Due to potential
+complexity in parsing an Association Token for the multiple relationships that 
+may exist, calls to the grant() or allow() methods of LoadContext are queued 
+for later processing.  The requested associations are built if and only if
+the Token returns true.  This allows the token to focus on the relationships
+that would be built, rather than queuing data in order to avoid building any
+relationships before the token is known to be valid.
+}
+
+\newtextPointFour{
+When one object grants another object, the relationship stored in the CDOM Graph
+will be a direct relationship between the objects.\footnote{This relationship may not be created
+at the time the token is executed, but any references used in a grant relationship
+will be resolved to the actual object as part of the LST load process.  See Section 
+\ref{New LST Import Cycle Summary}}  An example of this is the VFEAT Token:\\
+\texttt{\noindent Law <tab> VFEAT:Aura of Law}\\
+The resulting CDOM Graph structure for this VFEAT Token (taken from the RSRD Basics Deity
+LST file) is shown in Figure \ref{Fig: VFeat}
+}
+
+\mapscalefig{scale=0.4}{vfeat.png}{\label{Fig: VFeat}Classes, Relationship and Object contents created
+from the use of VFEAT}
+
+\deletedTextPointFive{\newtextPointFour{
+When one object allows another object, the relationship stored in the CDOM Graph
+must be an indirect relationship between the objects.  The LoadContext will enforce the
+requirement that the target of an allows relationship is a CDOMReference, not a 
+concrete CDOMObject or PrereqObject.  An example of this is the CSKILL Token, when used 
+outside of the Class LST file:\\
+\texttt{\noindent Travel <tab> CSKILL:Wilderness Lore}\\
+The resulting CDOM Graph structure for this CSKILL Token (taken from the RSRD Basics Deity
+LST file) is shown in Figure \ref{Fig: CSkill}
+}}
+
+\deletedTextPointFive{
+\mapscalefig{scale=0.4}{cskill.png}{\label{Fig: CSkill}Classes, Relationship and Object contents created
+from the use of CSKILL (outside of the Class LST file)}
+}
+
+\deletedTextPointFive{\newtextPointFour{
+The relationship for allows must be indirect and use a CDOMReference in order to control the size
+of the Player Character CDOM Graph.  If the allowed object was directly referenced in the PC's CDOM Graph,
+then any objects the allowed object grants would also appear in the Graph.  Such a design would produce
+additional complexity in resolving the active (granted) objects in the Graph as well as causing 
+unnecessary ``theoretical'' information to be written out to a persistent form of the CDOM Graph (the 
+save file for a Player Character).
+}}
+
+\deletedTextPointFive{\newtextPointFour{
+The additional performance cost of performing a reference resolution at runtime is negligible.
+}}
+
+\lsubsubsection{List Modification Token Architecture}
+
+\newtextPointFour{
+For a description of List Modification Tokens, see Section \ref{List Modification Tokens}.
+}
+
+\newtextPointFive{
+When one object allows another object, the relationship is stored in a List.  These Lists
+are managed separately from the CDOM Graph, but are also resolved, so that Prerequisites can
+be used to limit additions to a List.
+}
+
+\deletedTextPointFive{\newtextPointFour{
+Third Party Tokens create a relationship between three objects.  Due to the
+complexity in parsing a Third Party Token for the multiple relationships that exist,
+calls to the grantThirdParty() or allowThirdParty() methods of LoadContext are queued 
+for later processing.  The requested associations are built if and only if
+the Token returns true.  This allows the token to focus on the relationships
+that would be built, rather than queuing data in order to avoid building any
+relationships before the token is known to be valid.
+}}
+
+\deletedTextPointFive{\newtextPointFour{
+As with the basic grant relationship, when one object grants another object, the
+relationship stored in the CDOM Graph will be a direct relationship between the granting
+object and the granted object.\footnote{Again, this relationship may not be created
+at the time the token is executed, but any references used in a grant relationship
+will be resolved to the actual object as part of the LST load process.  See Section 
+\ref{New LST Import Cycle Summary}}  A contains relationship is also maintained to 
+the object which is granting the relationship.  An example of this is the LANGBONUS Token:\\
+\texttt{\noindent Halfling <tab> LANGBONUS:Dwarven}\\
+The resulting CDOM Graph structure for this LANGBONUS Token (taken from the RSRD Basics Race
+LST file) is shown in Figure \ref{Fig: LangBonus}
+}}
+
+\deletedTextPointFive{
+\mapscalefig{scale=0.4}{langbonus.png}{\label{Fig: LangBonus}Classes, Relationship and Object
+contents created from the use of LANGBONUS}
+}
+
+\lsubsubsection{Replacement Token Architecture}
+
+\newtextPointFour{
+For a description of Replacement Tokens, see Section \ref{Replacement Tokens}.
+}
+
+\newtextPointFour{
+At this time, an exmaple is not provided.
+}
+
+\lsubsubsection{Factory Token Architecture}
+
+\newtextPointFour{
+For a description of Factory Tokens, see Section \ref{Factory Tokens}.
+}
+
+\newtextPointFour{
+At this time, Factory Tokens are not well defined.
+}
+
+\lnsection{Transition from PCGen 5.12}
+
+\lsubsection{Prerequisites for Transition}
+
+\newtextPointZeroFive{
+In order to perform some of the operations that are proposed in this document, 
+certain changes must be complete in the 5.11.* cycle in order to make
+a clean transition possible
+\begin{itemize}
+\item Fix: PRERACETYPE is not a standard PRE tag, needs to follow the standards
+( \url{http://tech.groups.yahoo.com/group/pcgen_experimental/message/6281} )
+\item Fix: ADD and CHOOSE should be modified to require a sub-token
+(e.g. ADD:$<$subtoken$>$\vbar$<$stuff$>$)
+( \url{http://tech.groups.yahoo.com/group/pcgen_experimental/message/6683} )
+\item Eliminate CHOOSE:LANGAUTO: special case in Race Loader
+\end{itemize}
+}
+
+\lsubsection{Required Steps in Transition}
+
+\newtextPointZeroFive{
+There is no reason for the conversion to CDOM to be a major cut-over.  Here is the general
+list of steps to incrementally convert to a full CDOM environment:
+\begin{itemize}
+\item Establish Library Classes (including Graph Classes)
+\item Convert Plugins to load the current structure and the PCGenGraph structure
+\item Convert Plugins to have an unparse method
+\item Convert the PlayerCharacter reader/writer to support both the current core
+and the CDOM structure
+\item Convert each query of the core (export token, GUI field, etc.) individually
+to use the PlayerCharacter PCGenGraph rather than the existing PObject-based core.
+(start with pulling languages possessed and
+available from the Graph and remove it from the old core - then move on
+to Spells or Skills)
+\item Convert the LST editor to be a PCC/LST editor, using the CDOM Graph structure and
+the token unparse() method
+\item Create a new PlayerCharacter reader/writer that is completely based on the
+CDOM structure (.xpcg).
+\end{itemize}
+}
+
+\lsubsection{Transition Detailed Steps (Not Complete)}
+
+\lsubsubsection{Reserved for 5.13.*}
+
+\newtextPointTwo{
+\begin{itemize}
+\item Place base library classes in SVN (done in CDOM branch)
+\item Place graph library classes in SVN (done in CDOM branch)
+\item Place CDOM classes in SVN (done in CDOM branch)
+\item Convert other PrereqObject references to ConcretePrereqObject (done in CDOM branch)
+\item Inline ConcretePrereqObject facade methods (done in CDOM branch)
+\item Delete Deprecated Tokens (important, since those will not be supported) (done in CDOM branch)
+\item Convert PObject to extend CDOMObject (done in CDOM branch)
+\item Alter GlobalLstToken to add LoadContext as first Arg (done in CDOM branch)
+   (Use Change Method Signature in Eclipse!)
+\item Duplicate LstObjectFileLoader's parseLine and add LoadContext as first Arg
+   (Or add ParseToken if Loaders have been Generalized)
+   (Use Change Method Signature in Eclipse!)
+\item Alter GlobalLstToken to require a method without a level (for future use)
+\item Make Movement a PrereqObject
+\item Alter Loaders to properly handle a LoadContext
+\item Add Graph/LoadContext-based function to Global Tokens
+   (Requires some mods to Content objects like Vision, DamageReduction)
+\item Convert Token interfaces and tokens to add graph-based functionality
+\item Start the hard work of copying graph components into the PC and
+extracting information from the graph :)
+\end{itemize}
+}
+
+\lsubsubsection{Reserved for 5.15.*}
+
+\newtextPointTwo{
+\begin{itemize}
+\item Generalize Loaders so that they are not repeating work and code
+\item Move ModeTokens to plugin.modetokens.*
+\item Move SponsorTokens to plugin.sponsortokens.*
+\item Move LstToken Interfaces to pcgen.persistence.lst.token
+\item Make PCClassLoader no longer extend LstObjectFileLoader and remove PCClass specific function
+from LstObjectFileLoader
+\end{itemize}
+}
+
+\lsubsubsection{Specific Fix for PCClassLevel}
+
+\newtextPointTwo{
+\begin{itemize}
+\item  Need to handle in a special way the level-based processing of PCClass
+\item  Need to handle in a special processing of SubClass and SubstitutionClass
+\end{itemize}
+}
+
+\lsubsubsection{Clean Up}
+
+\newtextPointTwo{
+\begin{itemize}
+\item Remove Level awareness from All Tokens (especially Global Tokens)
+\item Convert util.enumeration refernces to cdom.enumeration
+\end{itemize}
+}
+ 
+\lnsection{PlayerCharacter cases and architecture refinement of the PCGen CDOM}
+
+While the high level explanation above provides a general explanation of how information will
+be stored after it is imported into PCGen and when added to a PlayerCharacter, there are some
+specific cases that should be addressed in order to clarify how they fit into the proposed
+CDOM model.
+
+\lsubsection{Choices}
+	
+Example: TEMPLATE:CHOOSE: tag
+
+This requires that a ChooseList object be inserted into the PCGenGraph.  ChooseList will be a
+separate object (derived from \ix{PrereqObject}).  A Choose without a
+selection can be highlighted to the user as an unselected option on the PlayerCharacter. 
+Reselection also becomes easy, as the ChoiceList will still be `aware' of the legal choices.
+
+\newtextPointThree{
+All Choices will be hung off of a ChoiceList object, which enforces the
+rules for what it can be connected to (the ChoiceList will know it does
+Skill objects, and the allowed skills are X, Y, and all of Type Z).
+Therefore, any choice could be retroactively changed.
+}
+
+\sbeffect{Operation of Reselecting}{\newtextPointThree{Reselection
+capability means that there will need to be some ability to highlight
+when a character has violated the rules without stopping the user
+action. (If you swap out a Feat that was a Prereq for a later Feat, you
+don't want to prevent the action - that makes changes too complex
+because it forces things in a reverse order - but you must flag the PC
+as violating the rules... so put up a red exclamation point or something)
+}}
+
+\sbeffect{Object Association}{\newtextPointThree{This may not be clear
+from other locations in this document, so there will be a requirement for the 
+GUI to provide a view for PCs that can allow object associations - especially
+choices - to be understood (what came from where) as
+well as to be changed, either by dragging them to another location (to
+fix a prereq violation) or by replacement.
+}}
+
+\newtextPointZeroFour{
+The major problem with CHOOSE tags throughout the PCGen system is their format inconsistency. 
+In order to properly parse these in the \ix{LST file} import system, it is proposed that the format of
+ALL of the CHOOSE \index{token}Tokens be changed in 5.12 (for removal of the old format before 6.0).  This
+`new' format for the CHOOSE Tokens will be: CHOOSE:$<$CHOOSETYPE$>$\vbar$<$STUFF$>$  I would propose that
+the CHOOSE Token actually drives a separate \ix{LST file} \index{loader}Loader
+to pass in the CHOOSETYPE as the Token
+Key and the STUFF as the value.  This actually separates the different CHOOSE values into 
+separate Tokens, as I think this will be valuable for readibility, as well as controlling
+the size of the ChooseLstToken (which would otherwise become a HUGE IF statement with tons 
+of different permutations for how to parse the tokens). 
+}
+
+\newtextPointZeroFour{
+As a side note (while I'm discussing the \index{loader}Loaders), I think it's valuable to have ADD operate
+in the same fashion (of a separate SUBLOADER).  This allows more flexibility, while controlling
+Class size.
+}
+
+\newtextPointZeroFour{
+In addition, Template's HD this could easily share \index{token}subtokens with LEVEL and REPEATLEVEL,
+so this requires a little bit of thinking.  Generally, since those three
+Tokens share a bunch of analysis code (and their targets are similar), it would really be nice
+to be eliminate that duplicate code, this might be doable with another \ix{loader}???
+}
+
+\newtextPointZeroFour{
+I am unsure whether this separate \index{loader}Loader philosophy works well for
+\index{bonus}BONUSes... haven't spent as much time on those.
+}
+
+\lsubsection{Clearing tags with .CLEAR}
+
+Since many of the tags with the \ix{LST file}s can be cleared or otherwise have objects removed
+under certain circumstances, the entire PCGenGraph must somehow be available to any tag during
+LST load.  This is done through the \ix{LoadContext}.
+
+\newtextPointZeroFour{
+Note also that each \index{token}token will be limited to clearing only those objects placed into the master
+PCGenGraph by that token (this can be done as the source Token for each PObject reference was 
+stored).\footnote{This will not be a strict enforcement, as it is postulated that a draconian 
+enforcement of this is impractical and degrades the ability to deprecate objects and allow
+updated operation.  This is probably better phrased as a default behavior rather than a limitation,
+but suffice it to say, violating this assumption should only be done with a very good cause.}
+}
+
+\lsubsection{Association based prerequisites}
+
+\revisedtextPointZeroFive{
+Example: TEMPLATE:Foo$<$tab$>$DOMAIN:Sun[PREDEITY:SunGod]
+}
+
+\revisedtextPointZeroFive{
+Many objects only grant a character other objects under specific
+circumstances. These are generally represented by having PREREQs on the
+granted object. The example above means that the Template Foo will grant
+the character the Sun Domain, but only if they have the Deity SunGod.
+As this impacts the Template, but should not alter the Domain,} this
+situation requires the restriction be kept separate of the ``contained''
+PObject (since the child PObject is not being restricted in all cases, and must not be \ix{clone}d
+[Assumption \ref{Minimize PObject Cloning}]).  Since this \ix{Prerequisite} is part of the association,
+placing it in the graph
+edge is a good mental model.  Therefore, each PCGenGraphEdge will be able to contain Prerequisites
+in order to prevent `traversal' of the graph to PObjects that are prohibited by their 
+(association) Prerequisites.
+
+\lsubsection{Group References}
+
+\revisedtextPointZeroFive{
+Example: CSKILL:TYPE=Craft
+}
+
+Some of the tags within PCGen allow for all objects of a given type to be referenced all at once. 
+It would be preferable to resolve the type only once (during \ix{LST file} import) and not every time the
+given information needs to be processed.  Therefore, the \ix{LoadContext} is also capable of returning
+a reference to a TYPE:\\
+\revisedtextPointZeroFive{
+\noindent\texttt{//Type is ``Craft'' in token example above\\}
+\noindent\texttt{String type = tok.nextToken(); \\}
+\noindent\texttt{craftskilltype = context.getTypeRef(SKILL\_{}CLASS, type);\\}
+}
+
+After this reference is returned, and at the completion of the \ix{LST file} import, the \ix{LoadContext} can
+go back into the master PCGenGraph and build edges connecting this master Type reference to all
+of the objects in the master PCGenGraph of the given Class that are of the appropriate type. 
+References to ``ALL'' or ``ANY'' can be resolved in similar fashion through
+\ix{LoadContext}'s \texttt{getAllRef} method.
+
+\lsubsection{Object Addition on Other Object Insertion}
+
+Example: Template's REPEATLEVEL tag
+
+\revisedtextPointZeroThree{
+This type of tag may force the pre-building of PCLevel objects.  This may cause a bit of memory
+usage in cases where those Classes are not used, but is recognized as a reasonable trade-off to
+simplify code in the first pass of CDOM.  A more complicated structure is possible if performance
+becomes an issue due to memory use or excessive prerequisite testing driven by this (and similar) 
+Tags.
+}
+
+\newtextPointThree{
+This token is also complicated and therefore interacts with editors.  It would be beneficial 
+with a tag of this complexity to be able to `recompress' the information back down to a
+REPEATLEVEL Token in the case where the master PCGenGraph is written out to LST files.  
+Therefore, this token will use an Aggregator node in the PCGenGraph in order to store
+the information in the REPEATLEVEL to allow it to be recompressed into one Token.
+}
+
+\lsubsection{Temporary Unqualified objects}
+
+In some cases, a PlayerCharacter will make a choice (of a Feat, for example) that may have
+\ix{Prerequisite}s that the PlayerCharacter later becomes ineligible for.   
+\revisedtextPointZeroFour{
+Currently, no special 
+processing is required for this case, as the PlayerCharacter graph will contain other objects the
+PC is ineligible for, and a graph traverse will be performed on each query of the PC.
+}
+
+\lsubsection{Equipment / Character Association}
+
+\revisedtextPointTwo{
+In order to be able to compose complex equipment, as well as ensure that containers are 
+properly handled,\footnote{The threads discussing the background of this issue
+(entering at a random point) are available here:
+\url{http://tech.groups.yahoo.com/group/pcgen_experimental/message/5627}
+\url{http://tech.groups.yahoo.com/group/pcgen_experimental/message/5227}
+} there are multiple associations that are required for equipment.  
+}
+
+\revisedtextPointFive{
+First, in order to ensure that equipment that is carried by a PC is not considered to be
+equipped by that PC, there will be a separate Equipment List identifying what Equipment the PC carries.
+(This allows the PC to possess equipment, but not actually have that equipment impact the Player Character's attributes.)
+Second, once equipped, any equipment should impact the PC.  At that point, the Equipment is placed
+into the PlayerCharacter Graph (it is granted to the PC).
+}
+
+\revisedtextPointTwo{
+A complex piece of Equipment could have EQSLOTs, which would allow for other equipment
+types to be contained within the Equipment.  (The PlayerCharacter Sockets are defined by 
+the Game Mode, in the Equipment Slots file).  Anything placed into an Equipment Slot is 
+considered ``equipped'' by the Player Character, or an active component of a larger object
+if the parent object is also equipment.
+}
+
+\revisedtextPointTwo{
+A piece of equipment could be modified to have further EQSLOTs by adding an EqMod that provides
+additional slots (This means that for pre-defined construction, Equipment directly contains EQSLOTs 
+which directly contain other equipment, while later add-ons such as the Modern multi-weapon stuff
+would be Equipment that contains an EqMod that contains an EqSlot that contains more Equipment).
+}
+
+\revisedtextPointTwo{
+EQSLOTs can be restricted, which would only allow certain types of equipment (or exactly
+certain equipment) to fit into an EqSlot.  This could also be done with EqMods, but given the
+distinction between EqSlots and and EqMods made here, I do not believe that is necessary at this
+point.
+}
+
+\revisedtextPointTwo{
+Pockets also provide a challenge.  I believe there should be an EQHOLDs Token that provides this
+capability (this may also mean an EqHolder object). (A Player Character is
+effectively granted EQHOLDS:ANY\vbar Infinity, since it's really weight that limits the PC).  
+This allows Equipment to hold other equipment (e.g. pockets, patches, etc.)
+without having that equipment activated when the parent equipment is equipped by a Player Character.
+}
+
+\lsubsection{Equipment / Alternate Heads}
+
+\newtextPointZeroFour{
+One challenge with Equipment is there exists the possibility of having a two-headed weapon
+(such as a double axe).  This provides a challenge, considering that Equipment Modifiers are 
+independent CDOM objects and therefore neither the Equipment nor the Equipment Modifier (EqMod)
+is aware of the other.
+}
+
+\newtextPointZeroFour{
+The actual problem lies in the fact that an EqMod applied to a piece of Equipment only impacts
+one of the two heads (there is an EQMOD \index{token}token and an ALTEQMOD token).  CDOM cannot blindly 
+attach both to the Equipment as the parent, or any ability to resolve the actual `owner' of
+the EQMOD is lost.
+}
+
+\newtextPointZeroFour{
+It is therefore proposed that every Equipment object will receive an EquipmentHead object
+attached to it that is defined as the Primary head (I suggest we number these, on the off
+chance that we actually come up with something that needs more than two).  If any of the ALT*
+Tokens\index{token} are encountered, then the object will have a secondary head attached to the 
+Equipment. The ALT* tokens are: ALTCRITRANGE, ALTDAMAGE, ALTEQMOD, ALTTYPE.  Information from
+these tags (and their non-ALT* equivalents) will always be placed into the EquipmentHead, not
+the Equipment itself.
+}
+
+\newtextPointZeroFour{
+As a result of this, some function must be provided in the \ix{LoadContext} to extract information
+back out of the PCGenGraph (e.g. \texttt{getChildrenOfNode(PObject, Class)}).  This will 
+allow the Heads to be extracted back from the Graph to get the PObject to add the information
+to, as well as given the Token\index{token} the ability to test whether an alternate head exists (and if not,
+to add it to the master PCGenGraph).
+}
+
+\lsubsection{Associations}
+
+\newtextPointZeroFour{
+\revisedtextPointZeroFive{
+When associations are made that are related to a specific reference to a PrereqObject (this may be
+hit points, a subcategory of a Feat, or cost of an Equipment Modifier), that information
+will be stored as an attribute of the edge serving as a source to that \ix{PrereqObject}.}
+Therefore, an EQMOD, for example, of 
+\makebox{MAGIC\_{}COST\vbar{}9500} has the 9500 stored in the edge that 
+connects the EqMod to the EquipmentHead to which the EqMod was applied.
+}
+
+\lsubsection{Skill Levels}
+
+\newtextPointZeroFour{
+The level of a Skill will be defined by the number and weight of the edges connected to the Skill
+within the PlayerCharacter's PCGenGraph.
+}
+
+\newtextPointZeroFour{
+For example, if a PC has a Hide Skill of 4, and Hide is a Class Skill, there will be 4 incoming
+(source) edges connected to the Hide Skill.  If two of the edges are classified as cross-class 
+edges (because the PC is multi-classed), then the Skill value will be 3. 
+}
+
+\newtextPointZeroFour{
+It is possible that the edges connected 
+to Skills in this fashion will be categorized as class edges, cross class edges and exclusive edges.
+In this way, the weight of each of these can be altered independently of the associations within 
+the PCGenGraph.  \revisedtextPointZeroFive{However,
+altering the associated cost of class/cross-class/exclusive Skills introduces
+an unresolved complexity, due to issues with order of operations (if a template added at level 2, does it
+impact Skills taken at level 1)}.\footnote{The unresolved 
+case was originally highlighted
+here: \url{http://tech.groups.yahoo.com/group/pcgen_experimental/message/6305}}
+}
+
+\lsubsection{Stackable and Multi-Selection Feats}
+
+\newtextPointZeroFour{
+Stackable Feats will operate similar to Skill Levels, in that the number of connections to the Feat
+indicates the number of times the feat is available (and thus applied).  Note that each path will 
+have to be checked back to the PlayerCharacter root to ensure that all intervening \ix{Prerequisite}s 
+are actually met.
+}
+
+\newtextPointZeroFour{
+Multi-Selection Feats (those that can be selected multiple times with different associations) will
+operate in a similar fashion, but the incoming edges will define the association.
+}
+
+\lsubsection{Hit Die}
+
+\revisedtextPointZeroFour {
+Given the existence of the HitDieLock items, and the desire to use the
+association holding of an Edge, it would seem valuable to have HitDie 
+and HitDieLock deserve primary treatment (e.g. a PrereqObject that appears in the
+master PCGenGraph) equal to other content (like DR, SR, etc.).  The assocation will contain
+the number of hit points assigned by the Hit Die.
+}
+
+\newtextPointZeroFour {
+Since the Hit Die is a static object that will be present in the master PCGenGraph, there
+will need to be a mechanism for determining when an edge requires an association to be made
+before it is imported into the PlayerCharacter PCGenGraph.  This model of having an edge that
+requires an association will also be available for those PObjects which have other associations
+(e.g. Weapon Focus).
+}
+
+\lsubsection{Object Addition on Self Insertion}
+
+Example: Template's ADDLEVEL tag
+
+Some PObjects trigger the addition of advanced characteristics when that given PObject is added
+to a Player Character.  An example of this is Template's ADDLEVEL tag.  This triggers adding
+character levels of a certain PCClass.  This will be a factory object.  The factory will be placed
+in (or perhaps connected to?) the Template, and triggered when the Template is added to the
+Player Character.
+
+This factory is seen as preferable to pre-building PCLevel objects and adding the appropriate
+PCClassLevel objects with Prerequisite edges based on the given Template.  That would highly
+confuse the master PCGenGraph, require significant coding to ensure it was correct, and also
+negatively impact performance of any character that does not contain the Template that drove
+that edge insertion.
+\newtextPointZeroFour{
+Actually, it's pretty much impossible to create a static link to the PCLevels
+because the Template must
+not assume it knows the existing level of the PC.
+}
+
+\deletedTextPointZeroFour{
+\revisedtextPointZeroThree{
+I'm actually not 100\% sure about this any more; I'm still struggling with the
+PCClassLevel thing (section \ref{Avoiding a Contract with PCLevel and PCClassLevel})
+and that will reflect on this (given that it originated from an ADDLEVEL tag). 
+That's not to say there were not other potential reasons for a Factory, that will require
+further investigation\ldots
+}
+}
+
+\revisedtextPointZeroThree{
+\deletedTextPointZeroFour{If this does happen, then it}
+\newtextPointZeroFour{This Factory} must fetch the instance \revisedtextPointZeroFive{of the
+added object} from the master PCGenGraph, as the instance MUST exist there
+\revisedtextPointZeroFive{(referencing an object which is not defined in the \ix{LST file}s
+is always an error).}
+}
+
+\newtextPointZeroFour{
+Generally, the desire to make the references from a template to a PCClassLevels be static
+is a problem.  While ideal to make the master PCGenGraph entirely static, the template
+cannot assume it knows the PCLevel, so Feats or other items that are assigned based on
+the PCLevel would never be properly applied without a factory and deferred instantiation.
+}
+
+\lsubsection{Saving Characters}
+
+\index{save}
+\revisedtextPointZeroThree{
+We should be able to save all the data that
+was used to construct a character out with said character so that it should be easy to ensure in
+the future that said PC can always be faithfully reloaded.  This probably has other consequences,
+such as the potential need to allow full separate graphs to be loaded at the same time, even where
+there are name conflicts.  The general case is that you should be able to load a character, and
+have it reflect the most up to date data loaded, but you should also be able to load the character
+to a last known working graph.  This would assist both the programmers, and the lst monkies.
+}
+
+\newtextPointZeroFour{
+Actually, I assume here that ``all the data used to construct a character'' is not the entire
+campaign but only what the PC selected?  If this is only what the PC selected, then we should look
+at simply serializing the Player Character PCGenGraph out in XML.
+}
+
+\lsubsection{Avoiding a Contract with PCLevel and PCClassLevel}
+
+It could be noted in previous use cases that I am referring to both a PCLevel and a PCClassLevel. 
+These are associated (in that they should be added or removed together from a PlayerCharacter),
+yet also independent objects.  \newtextPointZeroTwo{However, this is not
+definite, as there are multiple methods of handling levels.}
+
+\deletedTextPointZeroFour{
+One proposal would make link from the PlayerCharacter
+to the PCLevel and PCClassLevel be a 1 source (the PCRoot), 2 sink (PCLevel and PCClassLevel)
+edge.  By the same logic discussed in the detailed evaluation of
+Case \ref{Object Addition on Other Object Insertion}, this will mean that
+removal of the edge or either node will result in both the PCClass and PCClassLevel being
+removed at the same time.  Replacing a PCClassLevel with a different PCClass' Level could be performed
+by using the edge replacement method discussed in case \ref{Slots}.
+}
+
+\newtextPointZeroTwo {
+One challenge in fully separating the PCClassLevel from PCClass 
+is the difficulty in handling Spell casting ability (CAST, KNOWN, etc.).  The problem is that some
+magical items, feats, or other characteristics of a PlayerCharacter are capable of providing
+a \ix{bonus} to the Effective Caster Level.  The challenge is that if a PCClassLevel is only aware 
+of the Spell characteristics for that Level, it will need to query another object for the 
+information for the alternate level.  This effective shifting of caster level removes some of
+the incentive for separating (at least) the Spell casting information related to PCClassLevel 
+from the PCClass.
+}
+
+\deletedTextPointZeroFour{
+\newtextPointZeroTwo {
+One solution to this would be for the SpellProgression to be duplicated 
+through each of the PCClassLevel objects, and have the PlayerCharacter only query the 
+highest level PCClassLevel object for any Spell characteristics.
+}}
+
+\deletedTextPointZeroFour{
+\newtextPointZeroTwo {
+Another possibility would be to skip creating a PCClassLevel object at all.  One could
+make level implicit in the graph by having multiple 
+edges connecting to a PCClass.  
+\newtextPointZeroFour {
+This makes PCClass share `value' characteristics with Skills and Feats, which helps
+to minimize the special casing of PCClass and keeps similar mental models in place.
+}
+The number of connections (note the edges would also be connected
+to a PCLevel object) would indicate the level in that particular PCClass.  This would make 
+determining the level a matter of edge counting, rather than searching the PCClassLevel objects
+and finding the highest PCClassLevel.  It is postulated that ascertaining the level for a particular
+PCClass is approximately equivalent in speed to comparing all of the PCClassLevel objects to
+determine the highest level for a given PCClass.
+}
+}
+
+\newtextPointZeroFour{
+It seems the SpellProgressionLevel must be an independent PObject since there are items associated
+with it (memorization slots, etc.).
+This could introduce some additional complexity that would have to be carefully managed: If a \ix{bonus} 
+SpellProgressionLevel is provided by a non-Class, that bonus SpellProgressionLevel must be monitored
+in order to make sure that an additional Level of a PCClass which grants a subsequent SpellProgressionLevel 
+actually becomes the grantor of the next SpellProgressionLevel in sequence after those assigned by
+other PCClassLevels.  (If a 2nd Level Cleric has a bonus Cleric SpellProgressionLevel (3), then when 
+the character achives 3rd Level, the Cleric SpellProgressionLevel (3) should be moved in the PCGenGraph
+to be attached to PCClassLevel Cleric (3) and the bonus should be `given' Cleric SpellProgressionLevel (4)).
+}
+
+\newtextPointZeroFour{
+In order to avoid moving objects in the PCGenGraph, I would propose 
+an ``artificial focus'' for the SpellProgressionLevels, in that they are 
+summarized for a PlayerCharacter.  In this idea, a PCClassLevel links to a SpellProgressionLevelGroup, and
+that `parent' then creates a child SpellProgressionLevel for each object which
+attaches to the SpellProgressionLevel in the 
+PCGenGraph.  (same number of PCGenGraph edges in and out).
+This then avoids any reassignment (this is preferred, since it avoids complexity), and
+universalizes how SpellProgressionLevels are assigned.  It also would allow additional SpellProgressionLevels to be `saved'
+(but be inactive) in case the \ix{bonus} SpellProgressionLevels are provided by equipment which becomes inoperative
+or is not currently equipped by the PlayerCharacter.
+}
+
+\revisedtextPointZeroFour{
+This design would also break out the level dependent items into a PCClassLevel while leaving the
+class-based items in the PCClass.  Both could be added to the PCGenGraph.  Thus, when a Player
+Character achived a level, it would have a PCLevel object granting certain slots... and also grants
+a PCClassLevel object, which grants certain slots, as well as a PCClass (and possibly a SpellProgressionLevel).
+In this way, the PCClassLevel can be reselected, if a character is changed, and done 
+with minimal pain.
+}
+
+\revisedtextPointZeroFour{
+Bonuses\index{bonus} are tricky.  One can view them as \textbf{either} a series of +1s that are given at
+certain levels, or as a \ix{Formula}.  The series of +1s are more naturally homed with a PCClassLevel,
+wherease a \ix{Formula} is more naturally homed with the PCClass.
+}
+
+\revisedtextPointZeroFour{
+There is a \ix{contract} risk in this \deletedTextPointZeroFour{last} case:
+It is possible in a pure Graph to remove the PCClass
+or the PCClassLevel without removing the PCLevel - thus leaving the PCGenGraph in an indeterminate
+state.  There are a number of ways around this:
+\begin{itemize}
+\item There could be a ``heavy edge'' that automatically deletes the parent edge if the child node
+is deleted (the parent is PCClassLevel in the case of the edge linking to PCClass).  This still may 
+leave a light form of contract to properly insert these types of edges in the system whenever 
+such inconsistent states could be generated.  I believe this is reasonable.
+\item There could be ``subgraphs'' inserted into the PCGenGraph that constitute together multiple
+objects.  This gets very difficult to separate out objects that may be contained within more than 
+one subgraph (such as the PCClass object) and thus is subject to significant additional complexity.
+This is not a preferred option.
+\end{itemize}
+}
+
+\revisedtextPointZeroFour{
+Somewhere in this is a tradeoff between a \ix{contract} risk and complexity.  While an elegant solution 
+would be nice, that may not be possible.  The best tradeoff in terms of implementation complexity is
+probably to refrain from complex edges (those with multiple sinks - that proposal is not visible in this
+document revision) and to have a form of contract on the 
+developers to know when certain items are strongly associated and must be removed together.
+}
+
+\newtextPointZeroFour{
+As an additional note, this discussion implicitly
+makes the point that there may be items which require validation in the
+PCGenGraph, and we may want a system that is capable of automatically validating any given Player
+Character Graph.
+}
+
+\lsubsection{Slots}
+
+When a character advances to a certain level, they receive specific Skills, Feats, or other items. 
+\deletedTextPointZeroFour{
+\newtextPointZeroFour{One option is that} a slot is an edge that DOES NOT possess a Sink. 
+In this way, slots are easily identified as
+unfilled, can be stored within the master PCGenGraph (if they are not manufactured by factories
+of the form in cases \ref{Object Addition on Self Insertion} and
+\ref{Object Addition on Other Object Insertion}).  When the slot is filled, 
+the edge can be replaced by another
+edge that connects to the given PObject.  Replacement is significant, as replacement (vs.
+modification in place) of existing edges would require reconstruction of all edges as PObjects
+are copied from the master PCGenGraph to the PlayerCharacter PCGenGraph.  Each edge, as defined
+by the Interface, will be required to be capable of building a replacement edge of the same type. 
+For speed and memory, we will likely be storing concrete edges of different types (one optimized
+type for the simple 1 source 1 sink edge, one hyperedge); thus the replacement requirement vs.
+an assumption of using a specific Class and new.
+}
+
+\newtextPointZeroFour{
+Slots should be stand-alone \ix{PrereqObject}s (similar to
+ChoiceLists), that simply know what type of object they are allowed to ``acquire'' as a child.
+This avoids the weird situation of having edges that are not one source and one sink, thus
+making the graphs cleaner.
+}
+
+\revisedtextPointZeroThree{
+\deletedTextPointZeroFour{
+These slots could be attached to BOTH the PCLevel and the PCClassLevel object connected to the
+PlayerCharacter.  This is required in order to associate them to the PCLevel (from which they
+are received) and the PCClassLevel (which constrains what is a Class Skill and what is not). 
+\revisedtextPointZeroFour{
+However, making this multiple-association significantly complicates the PCGenGraph, by creating
+edges with more than one source or sink.  }
+}
+\revisedtextPointZeroFour{
+In order to avoid multiple-association of the Slot, we should try to 
+find a model that allows slots to be stored in the PCGenGraph and still be properly 
+associated back to the PObject(s) that constrain Class Skills, cross-Class Skills and exclusive 
+Skills.  It is desired to have as little association intelligence in the code as possible. 
+(Skills should not be treated as some major exception to processing the Player Character).
+This is possible given the capabilities that must surround PRECONTEXT (theoretical edges would
+only be traversed if an ancestor of the theoretical edge was part of the current context).
+}
+}
+
+\lsubsection{Supporting Choices}
+
+\revisedtextPointTwo{
+One feature that is not currently supported in PCGen that is
+needed is the ability to reference a particular choice from within LST code.  For example, Kits
+require the ability to select the value of choices (like Favored Enemy).  This is difficult
+(actually I think impossible) to achieve in the current architecture.
+}
+
+\revisedtextPointTwo{
+Looking at the example of Favored Enemy, we find that is present for a Ranger in the SRD.
+This is granted as an Automatic Feat (or an Automatic Ability if you want to get techincal 
+about the code).  Looking at the CHOOSE in the Favored Enemy I feat, it will have to be
+changed to a 5.12 compatible CHOOSE\footnote{see
+\url{http://tech.groups.yahoo.com/group/pcgen_experimental/message/6683}}.  Thus it will appear as:\\
+\texttt{CHOOSE:NUMCHOICES|1|STRING|Aberration|...}\\
+This will then create a ChoiceList of type String attached to the Feat.
+This ChoiceList is available in the Graph, and could be extracted, if a syntax was developed.
+One proposal for setting a CHOOSE would be something of the form:\\
+\texttt{SETCHOOSE:ABILITY|CATEGORY|Favored Enemy I|Foo}\\
+The ``ABILITY\vbar CATEGORY\vbar Favored Enemy I'' gives enough information to uniquely identify
+the object in either the master PCGenGraph or the PC PCGenGraph.  The last argument is
+the choice that would be made.
+}
+
+\revisedtextPointTwo{
+Note that an implied requirement here, based on validating inputs, would be that
+the SET would have to be calling a real object and setting a valid value.
+}
+
+\lsubsection{Reference Resolution after Construction}
+
+\newtextPointTwo{
+This section replaces ``Reference Before Construction'' from version 0.1 of this document
+}
+
+It will likely be difficult to impossible to create a situation where we can definitively assign
+the \ix{LST file}s into a directed acyclic graph in order to always load objects before they are
+referenced.
+
+\newtextPointTwo{
+However, a ``reference before construction'' (RBC) system is very difficult to maintain without
+negatively impacting the internal data structure of PCGen.  Consider that a Feat may grant
+another Feat that exists later in an LST file.  This forward reference is possible in a RBC system,
+IF AND ONLY IF all object names are Keys.  Given the existing structure of PCGen, this is not
+a reasonable limitation.  The specific challenge exists in the following sequence:
+\begin{itemize}
+\item Discover a reference to Feat Foo, ask for a copy of Foo (a Feat Foo is returned)
+\item Discover the construction of Feat Bar, ask for Bar to be constructed.  Bar has not yet
+been referenced, therefore a new Feat is returned.
+\item Strike the KEY Token of Feat Bar, realizing that the key is actually Foo.
+\end{itemize}
+The problem in an RBC system is that there are now TWO Feat objects that must be reconciled. 
+This could be done by making the Foo copy actually delegate to the real Foo object (constructed as
+Bar), but this makes the data model ugly.
+}
+
+\newtextPointTwo{
+This therefore requires a two-pass load system.  However, two passes on the LST files are not 
+necessary, and are actually considered to be detrimental to performance and code clarity.  Consider 
+in a slightly different context a Case similar to that above:
+\begin{itemize}
+\item In the discover pass, discover the construction of Feat Bar, with KEY Foo.  Feat keyed Foo
+is constructed and given the Name Bar.
+\item In the discover pass, discover the construction of Feat Bar, with KEY BarKey.  Feat keyed
+BarKey is constructed and given the Name Bar.
+\item In the populate pass, strike an object with the name Bar.  One must then perform a LOOKAHEAD
+to discover the KEY tag to discover which of the Feat objects with the name Bar is being constructed.
+However, consider the possibility that the KEY token is actually on a .MOD line.  This then 
+requires that the lookahead understand .COPY and .MOD.  This is unreasonably complex.
+\end{itemize}
+}
+
+\newtextPointTwo{
+The actual proposal is a resolved reference system.
+\begin{itemize}
+\item In the construction pass, discover the construction of Feat Bar, with KEY Foo.  Feat keyed Foo
+is constructed and given the Name Bar.  All other tokens are processed at this time.  Any references 
+(such as granting class skills through CSKILL) are deferred by placing a CDOMReference into the 
+master PCGenGraph.
+\item In the discover pass, discover the construction of Feat Bar, with KEY BarKey.  Feat keyed
+BarKey is constructed and given the Name Bar.  \ldots
+\item In the reference resolution pass, replace all CDOMReference objects in the master PCGenGraph
+with the actual objects.  This means that only one pass on the LST files is required.
+\end{itemize}
+There may be some slight complexity in cases where the references are not direct edges within
+the Graph.  Therefore, the CDOMReference objects must still allow resolution during PC use
+of the Graph (ChoiceLists come to mind here).
+}
+
+The reference and construction system operates as follows:
+A PObject can be referenced at any time by asking a \ix{LoadContext} for a reference to the object:
+
+\noindent\texttt{wpref = context.getRef(WEAPONPROF\_{}CLASS, tok.nextToken());}
+
+\noindent During the actual construction of the object, a construction method is called:
+
+\noindent\texttt{wpref = context.construct(WEAPONPROF\_{}CLASS, tok.nextToken());}
+
+By managing construction and references it is possible to reference before construction, ensure
+that all referenced objects are eventually constructed, and (for any given name) each object is
+only constructed once.
+At the end of each import cycle, the PObject Classes will be checked to ensure that each reference 
+requested during \ix{LST file} import was actually constructed.  If not, then an error will be generated.
+
+Side effect: This architecture follows Tom's preference to have a concrete Class and a read only
+Interface to that Class.  This allows a single-pass load and makes object construction very
+straightforward, preventing an intermediate factory from queuing up all of the known information
+and then regurgitating that information into an object all at once in a \ix{constructor}.
+
+\lsubsection{SubClass and SubstitutionClass}
+
+\newtextPointTwo{
+SubClass and SubstitutionClasses will be independent PObjects within the master PCGenGraph and
+will likely need to be constructed from a Factory.  The reason for this is that the SubClass and
+SubstitutionClass are copies of a PCClass, but they must be allowed to both add and remove
+items from the PCClass (if this were solely an addition problem, then they could grant the 
+PCClass, but that is not the case).
+}
+
+\newtextPointTwo{
+Therefore, a derivative object construction pass will be required in order to properly construct
+SubClass and SubstitutionClass.  This derivative object construction pass must take place after 
+all .MODs, etc., but before any reference resolution takes place.
+}
+
+\newtextPointTwo{
+Knowledge of the existance of derivative objects must rest with the code that allows objects
+to be granted out of the master PCGenGraph into a PlayerCharacter.  Therefore, the code to 
+add a level needs to be aware that the PCClass object will have \texttt{getSubClassList()}
+and similar methods to resolve the actual object to be placed into the PlayerCharacter Graph.
+}
+
+\newtextPointTwo{
+It is recognized that this resolution must also take into account the (il)legality of taking
+a given PCClass at level one when a SubClass was previously taken (you cannot attempt to take
+a second SubClass).
+}
+
+\lsubsection{Player Character Active Object Resolution}
+
+\newtextPointZeroFour{
+The challenge lies in how a PlayerCharacter is stored.  Since an entire subgraph is grafted
+into the PC's PCGenGraph, it includes objects that the PC is not qualified for.  This means that
+a graph traverse must be done at various points to determine if the character is eligible for 
+the items present in the PC's PCGenGraph.  This traversal is non-trivial because it is a 
+conditional traverse.
+}
+
+\newtextPointZeroFour{
+If the traversal is done as a top-down (``determine all active nodes'') check, then the 
+Prerequisite objects as defined today will fail.  The problem lies in the fact that a graph
+traverse is reliant on Prerequisite testing.  If the Prerequisite tests also require
+traversal of the graph (which they do, since presence of a PObject in the PC's PCGenGraph
+does not mean the character actually has the PObject), then there exists the possibility of 
+an infinite loop.  Such an infinite loop is not hard to produce - A Template that grants a Skill 
+which is a also present in a \ix{Prerequisite} of the Template will cause this to occur (In other words,
+it is common enough that it must be considered).
+}
+
+\newtextPointZeroFour{
+There are two ways around this: One, make \ix{Prerequisite}s aware of graph traversal (effectively tag
+those objects which are known to have been visited and don't visit them twice).  This is considered
+to be ugly, because it is providing awareness of the Graph traversal into objects which should
+be blissfully unaware of any such activity.\footnote{There are thread safety issues here too, but
+that is a future consideration}
+}
+
+\newtextPointZeroFour{
+Second, \newtextPointTwo{and the proposed solution,}
+\ix{Prerequisite}s could be rebuilt to test a PCGenGraph rather than the PlayerCharacter.
+In this way, an active PObject SubGraph could be built and the Prerequisite system could be asked
+to test against that SubGraph.  This allows a graph traversal to occur in a way that deterministically
+traverses the entire graph, and resolves which objects are available and which are not.
+}
+
+\newtextPointZeroFour{
+If a bottom-up traversal is performed, there is still risk of an infinite loop.  It is postulated 
+that the same infinite loop would be produced by the same Template mentioned above.  This would 
+also require the \ix{Prerequisite} system be traverse-aware, or that the \ix{Prerequisite} system be rebuilt.
+}
+
+\lsubsubsection{Active Status of Negative Prerequisites}
+
+\newtextPointThree{
+There is a very specific case in MSRD that highlights a situation that must be carefully
+considered in active object resolution in a PlayerCharacter: Negative Prerequisites.
+}
+
+\newtextPointThree{
+Consider the example in MSRD occupations that either makes a skill a class skill for all
+classes of the character, or adds the +1 bonus to the skill if it's already a class skill.
+Each Occupation calls a number of hidden feats for skills. If the skill is a class skill
+of the base class, then you get a +1 competency bonus to it. If it isn't, it becomes a
+class skill. It's something of the form: Ability A awards Ability B (which has
+PRECSKILL:1,Foo) or Ability C (which has !PRECSKILL:1,Foo).
+}
+
+\newtextPointThree{
+Note specifically the !PRECSKILL.  When active object resolution is performed, every
+Prerequisite can be evaluated as either true, false, or unresolved.  Any positive 
+Prerequisite (e.g. PRECLASS:1,Fighter) may be proven true when viewing a subset of a PC,
+but it cannot be proven false until the character is fully resolved.  The opposite is
+true of a negative Prerequisite.  However, it is critical to distinguish the two
+unresolved cases.  While an unresolved Positive Prerequisite should result in the 
+connected objects being ignored, an unresolved negative Prerequisite should 
+result in the connected objects being included in the PC.  Therefore, the activation
+of these otherwise unresolved negative prerequisites must be performed and the order
+of activation carefully considered.
+}
+
+\newtextPointThree{
+Note also another consequence of this: It is possible to create an object hierarchy
+that would cause an infinite loop to an active object resolution system that is
+not acutely aware of such a possibility.  This should not be insurmountable, but
+requires careful implementation of the active object resolution system.
+}
+
+\lsubsection{XP Penalty}
+
+\deletedTextPointThree{\newtextPointZeroTwo {
+XP Penalties are interesting.  One opinion would be to have the XP Penalty a 
+function of the GameMode and to teach the system to properly calculate the XP
+Penalty for any given level increase.
+}}
+
+\revisedtextPointThree{
+XP Penalty will be made a content object (like SR, DR), attached to the master
+PCGenGraph as with any other object.  Any object that wishes to modify an XP
+Penalty can create an XPPenalty Modifier to return the appropriate XPPenalty
+to be associated with the parent object of the original XPPenalty.  This
+penalty could be zero (as in the case of a Preferred Class), or it could be 
+some other value (I can't say I know a d20-like system that does this, but 
+it's possible!).
+}
+
+\deletedTextPointThree{\newtextPointZeroFour{
+Actually, there is a much cleaner way to do this: A FavoredClass can be stored
+as a primary object in the graph.  It acts as an XPPenalty Suppressor\ldots
+It can be queried first, ``hidden'' behind a PRECONTEXT
+for the appropriate PCClass, and then the PCGenGraph can
+be walked to extract all of the XPPenalty Objects which are not children of the
+FavoredClass.
+}}
+
+\deletedTextPointThree{\newtextPointZeroFour{
+While that may not be entirely clear, also think what could be done to allow
+a PObject to suppress the ``Exclusive'' trait of a Skill.  This ``other object 
+suppression'' seems to be a behavior used more than once, and that type of
+behavior should be standardized in some fashion.
+}}
+
+
+\lsubsection{Movement and Hit Die Locking}
+
+\newtextPointThree{
+Given the concept of a Modifier, as discussed above for XP Penalties, 
+Modifiers for Movement and Hit Die Locking also become possible (and understandable). 
+As a Modifier can be given all of the available objects, this allows the Modifier concept to 
+do all of the forms of addition and replacement that are required of Movement.
+Hit Die Locking becomes possible with a few different types of Modifiers (one for stepping,
+one for locking, etc.).
+}
+
+\sbeffect{Modifier Order of Operations}{\newtextPointThree{I think this may actually
+require some sort of ranking of Modifiers, so that multiply could occur before add,
+and that type of thing for Movement.  Not rocket science, by any means, just required
+to properly replicate the movement capabilities of PCGen 5.11.*.  There are more
+challenging issues for Hit Die Locking, which are dealt with in Section
+\ref{Hit Die Locking Interaction}.
+}}
+
+\lsubsection{Retroactive Tokens}
+
+\newtextPointThree{
+It is recognized that there are order of operations issues with certain tokens (such 
+as hit die locking).  These issues must be resolved so that a CDOM environment can
+properly calculate PC characteristics.  Therefore, any token that should be
+applied retroactively must be prefixed with \texttt{RETRO:YES:} (or \texttt{RETRO:NO:} 
+to suppress retroactive application of a token that is retroactive by default.  
+}
+
+\newtextPointThree{
+At this time, only tokens related to skills, skill points, and hit dice are
+recognized as being potentially retroactive.\footnote{also
+see: \url{http://tech.groups.yahoo.com/group/pcgen_experimental/message/7055}
+}
+}
+
+\lsubsection{Unrelated Information}
+
+\newtextPointZeroFour{
+This is a `relative' of the Order of Operations issue.
+We need to define how we will handle unrelated information - e.g. if a Race awards a
+Class Skill through CSKILL. \revisedtextPointThree{In this case, all classes are allowed to use
+the awarded skill as a Class Skill}.
+}
+
+\newtextPointThree{
+CSKILL and CCSKILL should be global when granted from outside a class. This is used in
+the Starting Occupation hidden feats in Modern.  In order to clarify how CSKILL will be 
+used and awarded by CDOM, it would be beneficial to have new tokens for class
+and cross class skills in Classes.
+}
+
+\newtextPointThree{
+This new token will ensure that CSKILL and CCSKILL are global when used in any file except
+a Class LST file, so even if an Ability is granted by a Class and has
+a CSKILL Token, it impacts ALL classes for that PC in the future
+}
+
+\newtextPointThree{
+We introduce:\\
+\texttt{CLASSSKILL:<classname>|<skillname>|<skillname>|PRExxx}\\
+\texttt{CROSSCLASSSKILL:<classname>|<skillname>|<skillname>|PRExxx}\\
+...with a few hardcoded words to replace <classname>:
+\begin{itemize}
+\item CURRENT for use on Class / class level lines to mean the given class only.
+\item DOMAIN or DOMAINGRANTED for use in domains.lst so that a class(es)
+that grants the domain gets the cskill.
+\end{itemize}
+If we do that, we could turn CSKILL to behave the same way everywhere
+(always awards to all classes).
+}
+
+\lsubsection{Removal of PObjects}
+
+Example: Template's REMOVE:
+
+In some cases, it is necessary to evaluate existing associations in the PCGenGraph.  This
+will require some form of active pruning of the PlayerCharacter PCGenGraph.  The challenge
+is in how to STORE the need for that pruning (since the list is dynamic)
+
+\newtextPointThree{
+Generally, this is difficult to do without introducing a lot of complexity.  The solution
+must consider a number of cases.  The following examples cover attribute locking (this 
+was a discussion on \_experimental), but in general, the cases also apply to Template removal.
+Given: Template A locks STR, Template B clears the
+lock on STR, Template C also locks STR.  Here are the cases we need to consider:
+\begin{itemize}
+\item Add A, Add B, Remove B (restores A)
+\item Add A, Add B, Remove A, Remove B (must not restore the lock from A
+- the removal can't hide the lock from being removed if its parent is
+removed)
+\item Add A, Add C, Add B (B unlocks A)
+\item Add A, Add C, Add B, Remove A (B guarantees unlock of C)
+\item Add B, Add C (result depends on retroactivity of the lock in C)
+\item Add A, Add B, Add C (result depends on retroactivity of the lock in C)
+\item Add A, Add B, Add C, Remove A (result depends on retroactivity of
+the LOCK in C)
+\item Add A, Add B, Add C, Remove object that granted A (result depends on
+retroactivity of the LOCK in C)
+\item Add A, Add B, lose B due to Prerequisite change (restores A)
+\end{itemize}
+}
+
+\newtextPointThree{
+There are also some cases unique to abilities, such as: Take Multiple:NO Feat A,
+Remove A, Choose A, then delete the removal.  This requires the second feat
+selection of Feat A to be a rules violation.  This should not be automatically 
+cleaned up (guessing which feat slot to empty) as there is an interaction with 
+retroactivity that requires user intervention.
+}
+
+\newtextPointThree{
+The proposed solution here is a removal object slot.  This removal object identifies
+the source and sink (the sink being the removed object), and keeps the connecting edge.
+This removal object will need to monitor the graph to ensure it remains active, as well 
+as to ensure that the grantor of the removed object is not eliminated from the graph.
+}
+
+\lsubsection{Hit Die Locking Interaction}
+
+\newtextPointZeroFour{
+Currently, in the PCGen 5.11.* series, Hit Die Locking is broken.  This is related
+to the order of operations and what to do in indeterminate cases.
+}
+
+\newtextPointZeroFour{
+As an example of the problem, assume for a Moment that a Class receives a D10 Hit Die.
+}
+
+\newtextPointZeroFour{
+If we apply a Race that provides a ``Hit Die Lock'' of \%/2 (effectively
+dividing the Hit Die by two), then we end up with a D5.  This alone is
+not a problem, although this Hit Die size is not defined in the Global 
+Hit Die List (which is hardcoded :( ).
+}
+
+\newtextPointZeroFour{
+However, if a Template then applies \%up1 (which is supposed to step up
+one die size), we will end up with a D12.  If we used \%Hup1, we'd end up
+with D1000.  I highly doubt this is the intent, but what should we be
+doing to catch these situations where Hit Die Locking may cause
+unexpected behavior?
+}
+
+\newtextPointZeroFour{
+It is not quite possible to do this today in RSD35, but only because
+making an Animated Object (Tiny) that is also Half Dragon is prohibited
+by Alignment.  Therefore, while theoretical in the PCGen \ix{LST file}s,
+it might be possible elsewhere and we should consider how it's handled
+(in my opinion).
+}
+
+\newtextPointZeroFour{
+As another case, the issue of how Templates are applied (and the fact
+that they may be order dependent with regard to Hit Die Locking) should
+also be considered.
+}
+
+\newtextPointZeroFour{
+This last point cannot necessarily be resolved simply by stating what order
+items were added to the character, as two conflicting templates may be 
+added by the same PCClassLevel.  Therefore, some more advanced system 
+(preferably NOT based on the order of the \ix{LST file}) needs to be adopted.
+}
+
+\revisedtextPointThree{
+Directly conflicting Hit Die Locks will be prevented, since the PCGenGraph 
+will not store an order of operations.  It will be legal to have a retroactive
+Hit Die Lock applied at 2nd level and another at 4th level.  However, it will 
+be illegal to have two incompatible retroactive hit die locks both applied at
+4th level.
+}
+
+\lsubsection{Multiple Awarded objects and pools}
+
+\newtextPointThree{
+While PCGen 6.0 will move away from one large pool for skills, feats, and other
+such objects, it is not possible to completely eliminate pools for these types
+of objects.  These are required because it could be possible to have a Feat
+which grants two skills.  The Feat cannot simply have a slot for two skills
+attached to the Feat: If the Feat is taken a second time, the slot must
+expand to four skills.  Therefore, the concept of Slots must be slightly 
+expanded to include dynamic Slots (though I would note these are localized
+pools, not a global pool).}
+
+\lsubsection{Order of Operations}
+
+\newtextPointZeroThree{
+The order of operations and how Skills, Feats, and other slot based items
+are associated with PObjects in the PlayerCharacter PCGenGraph needs to
+be resolved.
+}
+
+\newtextPointZeroThree{
+We don't want PCGen as a piece of software to be as constraining as the rules;
+otherwise, you 
+could never efficiently add more than one level at a time. Therefore,
+since Skill and feat slots cannot be saved form one level to another, any
+unused slots that are not deployed before leveling up must NOT be impacted
+by anything gained at a subsequent level. This will
+require a deep association and prerequisite-based search of what the PC was
+when the slot was awarded, not what the PC currently is.
+\deletedTextPointThree{
+\newtextPointZeroFour{
+This is heavily dependent on getting the structure of theoretical information
+in the PCGenGraphs resolved... given PRECONTEXT, the order of operations can
+be reasonably enforced.
+}}
+}
+
+\newtextPointZeroFour{
+The main challenge is what to
+do with Templates that are added after Level 1.  Associating them with the 
+active PCLevel makes PCLevel `special' (which is perhaps what we want to do),
+but also ensures that it will not impact items retroactively.  
+\newtextPointThree{
+At this point, I think this is the easiest solution, although in the future
+a better solution may be developed.
+}
+}
+
+\deletedTextPointThree{
+One alternative
+to making PCLevel special is for the PlayerCharacter to maintain an ordered list 
+of the immediate children of the Player Character root... and when adding slots
+in one of the branches, to suppress all branches that were added to the 
+character after the branch with the slot being filled.
+}
+
+\deletedTextPointThree{
+\newtextPointZeroFour{
+With this last item (of an order dependent list) the question is: How is a 
+\ix{contract} avoided (since duplicate information is being stored) and how
+is that information serialized and restored when a PC is \index{save}saved?
+(especially since items are ordered)
+}
+}
+
+\lsubsection{Followers and Companions}
+
+\newtextPointThree{
+This requires either a new form of edge or a new content object.  This is not
+terribly complicated to store.  Processing may require special processing
+by the classes that extract information from the PC's PCGenGraph.
+}
+
+\newtextPointZeroFour{
+As a random tangent, however, should we assign each PC a unique-ish identifier 
+to be stored in the file that would allow the system to detect changes on the disk 
+(file in one location was overwritten by another character??).  This level of 
+integrity, while perhaps a bit overkill may be necessary to help debug PC 
+differences if, as suggested in section \ref{Saving Characters}, the entire
+graph of objects representing the PlayerCharacter is written out.  (I assume here
+that the companions are not serialized into the PlayerCharacter, as that would get
+really ugly)}
+
+\lsubsection{Connection Restrictions}
+
+\newtextPointThree{
+Example: ITEM: in Spell LST
+}
+
+\newtextPointThree{
+The ITEM Token (as well as a lot of the container/composition proposal information
+from equipment) creates source or sink limitations on certain objects.  Therefore,
+each object will be capable of defining source or sink restrictions to define the
+other objects to which it can be connected.
+}
+
+\newtextPointThree{
+As a side effect of this proposal, in order to eliminate an order of operations issue,
+it is proposed that the primary type of a piece of equipment (Potion, Scroll, Wand, etc.)
+be converted to a Category.  In this way, it cannot be modified by an 
+EquipmentModifier (using ITYPE).  If it was possible to modify a piece of equipment 
+with an ITYPE to modify its primary type, then there is an order of operations 
+resolution that would have to take place on Spell addition to an object and 
+Equipment Modifiers.\footnote{This is possible, but there is an issue of how often
+we want to run certain code and the impact of that.  I think it's best to only check
+source and sink restrictions at connection time, and not repeatedly check every
+restriction after every object addition.  Such repeated checking becomes exponential
+in time, which is ugly}
+}
+
+\lsubsection{Overrides}
+
+\newtextPointZeroFour{
+There are at least two tags (CHANGEPROF and ARMORTYPE) that override some operating information
+in the PObjects to modify behavior.  This override behavior should probably be generalized. 
+}
+
+\newtextPointThree{
+There are two ways to handle this.  First, would be the use of the Modifier model, but to have
+the modifiers capable of modifying before tests occur.  I'm not terribly fond of it, but it
+may work well.
+}
+
+\newtextPointThree{
+The other option here is to have these object act as context-dependent Equipment Modifiers. 
+Thus, there would be a Type Modifier attached to an Activator, much like the old ``third party 
+token'' system.  This would
+then be conditionally applied to the Equipment.  This solution would likely require some form
+of order for modifiers (though that thought of `order' may also be applicable elsewhere), in 
+case a real EqMod Type Modifier was already present on the Equipment.
+}
+
+\lsection{Deferred as non-critical}
+
+\newtextPointTwo{
+It is recognized that some changes are nice, but can (and should) be held outside the scope
+of the CDOM change.  To attempt to control the scope of the
+plans to make sure we only do what is highly beneficial (for efficiency)
+or absolutely required, this section is a placeholder for deferred ideas.
+}
+
+\lsubsection{Code sharing in Tokens}
+
+\index{token}
+\newtextPointZeroTwo {
+Currently, the Token system doesn't share much common code between similar (or identical) 
+tokens.  Some attempt is made at doing this by placing tokens into the GlobalLSTToken 
+interface, and then gating out certain types.\footnote{By
+the way, Tom feels this is a bad practice,
+\revisedtextPointZeroFour{
+the tokens should not be performing instanceof tests - it should be clear from their interface
+which PObjects they serve if it is truly not a Global Token.}}
+There are some tokens (such as WeaponBonus)
+that appear in multiple \ix{LST file} types.  It would be beneficial to share processing between
+those Tokens WITHOUT placing the decoding logic into the core.
+\revisedtextPointZeroFour{It would also be nice to have a method of not even duplicating 
+the Tokens to guarantee zero risk of overloading of the same name in more than one file
+(thus limiting the risk of those overloads having different processing of the token).
+The trick in making tokens universal is that some things
+just shouldn't be legal everywhere, and errors should not be silently consumed.
+(A PCClass, for example, shouldn't be able
+to define a Face... but the Face should be universally processed between
+Race, Template, etc.)
+}
+}
+
+\newtextPointZeroTwo {
+Perhaps this means there needs to be another Interface that causes a direct
+import of a Java Class into the current runtime (by using the default ClassLoader)
+so that other Classes can directly reference it (rather than the only-indirect 
+to an instantiation method for current \index{token}tokens).
+\revisedtextPointZeroFour{
+Better yet, it would be nice to have a token interface that allows extension by other tokens.
+}
+}
+
+\newtextPointZeroFour{
+Another alternative here is to have a \index{token}Token system that specifically defines what Classes it 
+can impact.  For example:\\
+\texttt{\noindent public interface PToken<T extends PObject> extends LstToken \{\\
+\indent public boolean parse(\ix{LoadContext} lc, T cdomObj, String s);\\
+\indent public List<Class<T>> getHandledClass();\\
+\noindent \}}\\
+}
+
+\newtextPointZeroFour{
+This allows two benefits, without significant added complexity to the \index{token}Token system.  First, 
+allowing tokens to extend other tokens would not be required, as identical tokens in different
+PObjects could be handled simply by the getHandledClass method.  Also, since these `generic' 
+Tokens can be stored in the TokenStore by the actual PObject that they modify (rather than
+by the LstToken interface that they implement), this would allow for a `GenericLoader' to be
+created, which would significantly cut down the number of Classes required to implement the 
+loading system (PCClass would still require special handling, due to the nature of PCClassLevels,
+and Kits would require special handling due to the nature of their layout, but the rest of the
+basic PObjects could be handled by the GenericLoader).
+}
+
+\newtextPointZeroFour{
+\noindent Since this gets a little confusing for single vs. multiple PObject Tokens, here is a single 
+PObject \index{token}token: \\
+\texttt{\noindent public interface SkillSomethingToken extends PToken<Skill> \{ \\
+\indent public boolean parse(\ix{LoadContext} lc, Skill aSkill, String s) \{ \\
+\indent ~~return true; \\
+\indent \} \\
+\indent public List<Class<T>> getHandledClass() \{ \\
+\indent ~~return Collections.singletonList(Skill.class); \\
+\indent \} \\
+\noindent \} } \\
+}
+
+\newtextPointZeroFour{
+\noindent Here is a multiple PObject \index{token}token: \\
+\texttt{\noindent public interface SPropToken extends PToken<PObject> \{ \\
+\indent public boolean parse(\ix{LoadContext} lc, T cdomObj, String s) \{ \\
+\indent ~~return true; \\
+\indent \} \\
+\indent public List<Class<T>> getHandledClass() \{ \\
+\indent ~~List<Class<T>> list = new ArrayList<Class<T>>(); \\
+\indent ~~list.add(Equipment.class); \\
+\indent ~~list.add(EquipmentModifier.class); \\
+\indent ~~return list; \\
+\indent \} \\
+\noindent \} } \\
+}
+
+\newtextPointZeroFour{
+The direct import would still be valuable.  For example, it would be
+beneficial to have processing for CHOOSE or ADD to be sent out to a SubLoader\index{loader} for 
+processing.  However, placing the SubLoader back into the Core doesn't seem appropriate.
+That SubLoader should be able to be placed into the \index{plugins}\texttt{plugin.*}
+directories and somehow tagged
+so that it can be directly referenced by the \index{token}Tokens.  This is perhaps best done in the
+Manifest File for the particular Plugins(?).  This functionality would then provide
+the ability to create complex tokens without having access to the core of PCGen.
+}
+
+\newtextPointTwo{
+Actually, what I would really like to see here is the ability to have a Manifest file
+drive load of the classes.  I think the ChooseLoader and AddLoader (as well as many of the 
+Kit*Loaders, etc.) be placed out in the \texttt{plugin.*} directory structure and not require
+any code in the core to do complex tokens.
+}
+
+\lsubsection{PRExxx Token consistency and support}
+
+\newtextPointTwo{
+This encompasses things like the recent CSKILL doesn't
+support prereqs discussion. There is also significant inconsistency between 
+different tokens.  Currently you can define the
+prereq using TAG:name\vbar PREREQ or TAG:name[PREREQ] or not at all,
+depending on the tag.
+} 
+ 
+\rejected{
+
+\lsection{Rejected Proposals}
+
+\lsubsection{Unpassed Prerequisites}
+
+Replaced in preference of directly importing all objects into the PC Graph and doing a complete
+Graph search when information is required.
+
+As already noted, there are PObjects that possess \ix{Prerequisite}s and where the associations to
+other PObjects contain \ix{Prerequisite}s in the connecting edges.  In order to increase the speed
+of processing for a `static' PlayerCharacter it is proposed that only objects which the
+PlayerCharacter qualifies for are placed into the PlayerCharacter's PCGenGraph.  This allows
+for very efficient processing (grab what is in the PlayerCharacter's PCGenGraph and GO\ldots no
+\ix{Prerequisite} testing is required).  When a Prerequisite for an additional object is not fulfilled,
+a PrerequisiteLink (a form of hyperedge with one source and no sink) can be placed into the
+PlayerCharacter's PCGenGraph.  These links can then be tested when a PlayerCharacter is updated,
+and if they are subsequently passed, the PrerequisiteLink can contain enough information to
+import the appropriate nodes and edges from the master PCGenGraph into the PlayerCharacter's
+PCGenGraph.
+
+\lsubsection{Factories for Insertion}
+
+Replaced by Object Addition on Other Object Insertion (section
+\ref{Object Addition on Other Object Insertion}).
+
+\revisedtextPointZeroThree{
+This is a similar, but slightly different case than \ref{Object Addition on Self Insertion}.
+While that was based on the object
+being inserted into a PlayerCharacter, Case \ref{Object Addition on Other Object Insertion} 
+requires that objects within the PlayerCharacter
+be queried or notified of changes to the PlayerCharacter.  (push vs. pull to be determined). 
+This is required because those objects may wish to add additional objects to the PlayerCharacter
+if a given PCLevel is reached, for example.
+}
+
+\revisedtextPointZeroThree{
+Case \ref{Object Addition on Other Object Insertion} brings
+up a very interesting point.  Assume that a Template (e.g. ``Winged'') adds a Feat
+(e.g. ``Elite Jump'') to a PlayerCharacter when that PC achieves character level 9.  This could
+be added to the PlayerCharacter when the Template is added, or even just statically linked to
+the Template with the addition of a \ix{Prerequisite} on the edge based on the PCLevel.  However,
+I believe it is superior to actually represent this association between the PCLevel, the Template
+and the Feat in the PCGenGraph.  Therefore, I would use the Factory method from use cases
+\ref{Object Addition on Self Insertion} and \ref{Object Addition on Other Object Insertion},
+and propose that edges within the PCGenGraph are not limited to only having a single source and a
+single sink.  It should be possible for an edge to have more than one source.  Thus, the Feat
+would actually be sourced from BOTH the PCLevel(9) and Template.  This gives a visual connection
+that the Feat is a function of BOTH the Template and the PCLevel(9).  Given the rules of how
+such a hyperedge would be removed from the graph (it is removed if any single source or sink
+was removed), the Feat would be lost if either the Template or PCLevel was lost by the
+PlayerCharacter.
+}
+
+\lsection{Temporary Unqualified Objects with Optimized PC}
+
+\revisedtextPointZeroFour{
+In some cases, a PlayerCharacter will make a choice (of a Feat, for example) that may have
+prerequisites that the PlayerCharacter later becomes ineligible for.  Because this choice
+information is unique to the PlayerCharacter, the example of a PrerequisiteLink from Case
+\ref{Unpassed Prerequisites} (above)
+is insufficient to maintain the choice that the PlayerCharacter has made. 
+Therefore, an alternative method of storing that choice (perhaps by allowing the
+PrerequisiteLink to contain a small PCGenGraph) while keeping it out of the PlayerCharacter's
+PCGenGraph is required.
+}
+
+}
+
+\lnsection{Packages}
+
+\lsubsection{Proposed Packages}
+
+\noindent\texttt{pcgen.base.*}
+
+These are the \ix{library} components of pcgen.  These Classes and methods are ignorant of PCGen
+and CDOM, and only refer to the core java.* Classes provided in the JDK (though exceptions
+for some critical jars we import can be discussed, I don't think any are sufficiently general
+enough for the interface to them to be treated as a library element)
+
+These Classes, as library elements, should be strictly enforced to be 
+\revisedtextPointTwo{internationalized,} 100\% documented with
+useful comments, their semantic behavior, and have 100\% \ix{unit test} code coverage. *With the
+understanding that Emma's \ix{unit test} code coverage will never reach 100\% if you ever use
+`Something.class' (due to how it explodes to multiple statements in the code) and we should
+never have to test to get to an UnreachableError (see the Corollary 
+to \ref{Minimize Error Suppression and Gating}).
+
+\noindent\texttt{pcgen.base.graph.*}
+
+Specifically, this contains the graph components that make up the framework of CDOM. 
+Nothing in here is PCGen aware, so it is entirely composed of Generic Classes that make
+up a graph.  Same \revisedtextPointTwo{internationalized,} 100\% doc, semantic, and testing
+rules apply here.
+
+\noindent\texttt{pcgen.cdom.*}
+
+More detail below, but note that these Classes are only permitted to reference each other
+and the libraries (java.*, javax.*, pcbase.*, the jars we import) 
+
+\noindent\texttt{pcgen.cdom.base}
+
+Base Classes used to build a CDOM environment (these are constants, and the non-Generic
+version of the pcbase.graph.* Classes).  This package might be merged with pcgen.cdom.core,
+depending on the final size and relationships of the Classes.
+
+\noindent\texttt{pcgen.cdom.content}
+
+Content composed of a separate object that may be associated with a PObject (such as
+DamageReduction)\ldots will appear independently in the PCGenGraph.
+
+\noindent\texttt{pcgen.cdom.core}
+
+The core parts of CDOM, specifically the abstract objects that are the super Classes 
+(PrereqObject, PObject or its successor)
+
+\noindent\texttt{pcgen.cdom.enumeration}
+
+\index{enumeration}
+This package contains \ix{type safe} enumerations used in CDOM.  Will be a mix of Java 1.4
+and 1.5 typesafe enumerations (some are dynamically expandable)
+
+\noindent\texttt{pcgen.cdom.helper}
+
+Helper Classes to the PObjects (e.g. SpellSupport)
+
+\noindent\texttt{pcgen.cdom.inst}
+
+The actual primary elements of CDOM (PCClass, Language, Skill)
+
+\noindent\texttt{pcgen.cdom.prereq}
+
+Some core interfaces for \ix{Prerequisite}s.
+
+\noindent\texttt{pcgen.gui.*}
+
+(The \ix{GUI} has not yet been properly evaluated)
+
+\noindent\texttt{pcgen.io.*}
+
+Generally unchanged, with some items moved into \texttt{pcbase.*}
+
+\noindent\texttt{pcgen.persistence.*}
+
+\index{Persistence}
+More detail below, but the Classes are able to reference each other as well as anything
+\texttt{pcgen.cdom.*} Classes may reference.
+
+\noindent\texttt{pcgen.persistence.loader}
+
+The \ix{loader}s\ldots
+
+\noindent\texttt{pcgen.persistence.prereq}
+
+The \ix{Prerequisite} Classes.
+
+\noindent\texttt{pcgen.persistence.token}
+
+\index{token}Support Classes for the Tokens, specifically the Interfaces that the tokens implement
+(PCClassLstToken)
+
+\noindent\texttt{pcgen.persistence.util}
+
+Utility Classes for the persistence system.
+
+\noindent\texttt{pcgen.util}
+
+Much may move to \texttt{pcbase.*}, though some will remain.
+
+\noindent\texttt{pcgen.plugin.*}
+
+\index{plugins}Moved from plugin.*, but generally unchanged, although I
+would advise that the \texttt{lsttoken.gamemode.*} and
+\texttt{lsttokens.statsandchecks.*}
+\newtextPointZeroTwo {
+(and those related to the GameMode)
+get moved into \texttt{plugin.modetokens.*}
+}
+in order to clarify
+that they are the gamemode lsts, not the data lsts.
+\newtextPointZeroTwo {
+Similarly, the sponsor plugin should be moved into plugin.sponsor; it should
+not be part of \texttt{plugin.lsttokens.*} or \texttt{plugin.modetokens.*}
+}
+ 
+\noindent\texttt{gmgen.*}
+
+Need some evaluation here.  Much of this can remain, but there are core references out
+to gmgen, and gmgen should be a parallel to \texttt{plugin.*} not a core set of Classes. 
+Some of this should be moved back into core.
+
+\lnsubsection{Package Relationships}
+
+\mapfig{packages.png}{\label{Fig: Package Relationships}PCGen CDOM Package Relationships\index{export}\index{GUI}}
+
+Figure \ref{Fig: Package Relationships} shows the relationships between the packages (as proposed).
+Items may only call to packages below them - no calling up the stack.  The \ix{GUI} is considered a form
+of export, for purposes of this Figure.
+
+\newpage
+\printindex
+
+\end{document}
+
