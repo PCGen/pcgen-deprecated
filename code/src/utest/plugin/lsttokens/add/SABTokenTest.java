@@ -32,7 +32,7 @@ import plugin.lsttokens.AddLst;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 
-public class SATokenTest extends AbstractGlobalTokenTestCase
+public class SABTokenTest extends AbstractGlobalTokenTestCase
 {
 
 	@Override
@@ -65,7 +65,7 @@ public class SATokenTest extends AbstractGlobalTokenTestCase
 		return token;
 	}
 
-	private static AddLstToken aToken = new SAToken();
+	private static AddLstToken aToken = new SABToken();
 
 	public String getSubTokenString()
 	{
