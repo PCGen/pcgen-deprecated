@@ -34,7 +34,7 @@ public class ClassToken extends AbstractToken implements ChooseCDOMLstToken
 	@Override
 	public String getTokenName()
 	{
-		return "DOMAIN";
+		return "CLASS";
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,

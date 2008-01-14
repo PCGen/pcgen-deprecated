@@ -34,7 +34,7 @@ public class RaceToken extends AbstractToken implements ChooseCDOMLstToken
 	@Override
 	public String getTokenName()
 	{
-		return "DOMAIN";
+		return "RACE";
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,

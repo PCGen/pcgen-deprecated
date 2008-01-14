@@ -35,7 +35,7 @@ public class ShieldProfToken extends AbstractToken implements
 	@Override
 	public String getTokenName()
 	{
-		return "DOMAIN";
+		return "SHIELDPROF";
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,

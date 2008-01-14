@@ -34,7 +34,7 @@ public class EquipmentToken extends AbstractToken implements ChooseCDOMLstToken
 	@Override
 	public String getTokenName()
 	{
-		return "DOMAIN";
+		return "EQUIPMENT";
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,

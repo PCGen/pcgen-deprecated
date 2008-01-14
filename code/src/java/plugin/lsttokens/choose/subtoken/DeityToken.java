@@ -34,7 +34,7 @@ public class DeityToken extends AbstractToken implements ChooseCDOMLstToken
 	@Override
 	public String getTokenName()
 	{
-		return "DOMAIN";
+		return "DEITY";
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,

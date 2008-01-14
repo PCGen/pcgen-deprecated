@@ -35,7 +35,7 @@ public class EqModToken extends AbstractToken implements ChooseCDOMLstToken
 	@Override
 	public String getTokenName()
 	{
-		return "DOMAIN";
+		return "EQMOD";
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
