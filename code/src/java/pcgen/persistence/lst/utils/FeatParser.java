@@ -28,17 +28,20 @@
  */
 package pcgen.persistence.lst.utils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.PrereqObject;
 import pcgen.core.Ability;
 import pcgen.core.AbilityUtilities;
-import pcgen.core.EquipmentUtilities;
 import pcgen.core.Globals;
 import pcgen.core.QualifiedObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
-
-import java.util.*;
 
 /**
  * Parses Feats
@@ -51,38 +54,38 @@ public class FeatParser
 	 * Feat1|Feat2|PRExx:abx
 	 * or
 	 * Feat1|Feat2|PREMULT:[PRExxx:abc],[PRExxx:xyz]
-	 * @param aString
+	 * 
+	 * @param aString The string to be parsed
 	 * @return List of Feats
 	 */
-	public static List<Ability> parseVirtualFeatList(String aString)
+	public static List<Ability> parseVirtualFeatList(final String aString)
 	{
 		String preString = "";
-		List<Ability> aList = new ArrayList<Ability>();
+		final List<Ability> aList = new ArrayList<Ability>();
 
-		StringTokenizer aTok = new StringTokenizer(aString, "|");
+		final StringTokenizer aTok = new StringTokenizer(aString, "|");
 
 		while (aTok.hasMoreTokens())
 		{
-			String aPart = aTok.nextToken();
+			final String tok = aTok.nextToken();
 
-			if (aPart.length() <= 0)
+			if (tok.length() <= 0)
 			{
 				continue;
 			}
 
-			if (PreParserFactory.isPreReqString(aPart))
+			if (PreParserFactory.isPreReqString(tok))
 			{
 				// We have a PRExxx tag!
-				preString = aPart;
+				preString = tok;
 			}
 			else
 			{
-				ArrayList<String> choices = new ArrayList<String>();
-				String abilityName =
-						EquipmentUtilities.getUndecoratedName(aPart, choices);
-				Ability anAbility =
-						AbilityUtilities.getAbilityFromList(aList, "FEAT",
-							abilityName, Ability.Nature.ANY);
+				final Collection<String> choices = new ArrayList<String>();
+				final String abilityName =
+						AbilityUtilities.getUndecoratedName(tok, choices);
+				Ability anAbility = AbilityUtilities.getAbilityFromList(
+						aList, "FEAT", abilityName, Ability.Nature.ANY);
 
 				if (anAbility == null)
 				{
@@ -97,7 +100,7 @@ public class FeatParser
 
 				if (anAbility != null)
 				{
-					for (String choice : choices)
+					for (final String choice : choices)
 					{
 						anAbility.addAssociated(choice);
 					}
@@ -109,13 +112,13 @@ public class FeatParser
 
 		if ((preString.length() > 0) && !aList.isEmpty())
 		{
-			for (Ability ability : aList)
+			for (final PrereqObject prO : aList)
 			{
 				try
 				{
-					PreParserFactory factory = PreParserFactory.getInstance();
-					Prerequisite prereq = factory.parse(preString);
-					ability.addPreReq(prereq);
+					final PreParserFactory factory = PreParserFactory.getInstance();
+					final Prerequisite prereq = factory.parse(preString);
+					prO.addPrerequisite(prereq);
 				}
 				catch (PersistenceLayerException ple)
 				{
@@ -132,48 +135,49 @@ public class FeatParser
 	 * Feat1|Feat2|PRExx:abx
 	 * or
 	 * Feat1|Feat2|PREMULT:[PRExxx:abc],[PRExxx:xyz]
-	 * @param aString
+	 * 
+	 * @param aString The string to parse
 	 * @return List of Feat names and their prereqs
 	 */
-	public static List<QualifiedObject<String>> parseVirtualFeatListToQualObj(String aString)
+	public static List<QualifiedObject<String>> parseVirtualFeatListToQualObj(
+			final String aString)
 	{
 		String preString = "";
-		final List<String> abilityList = new ArrayList<String>();
+		final Collection<String> abilityList = new ArrayList<String>();
 
-		StringTokenizer aTok = new StringTokenizer(aString, "|");
+		final StringTokenizer aTok = new StringTokenizer(aString, "|");
 
 		while (aTok.hasMoreTokens())
 		{
-			String aPart = aTok.nextToken();
+			final String tok = aTok.nextToken();
 
-			if (aPart.length() <= 0)
+			if (tok.length() <= 0)
 			{
 				continue;
 			}
 
-			if (PreParserFactory.isPreReqString(aPart))
+			if (PreParserFactory.isPreReqString(tok))
 			{
 				// We have a PRExxx tag!
-				preString = aPart;
+				preString = tok;
 			}
 			else
 			{
-				abilityList.add(aPart);
+				abilityList.add(tok);
 			}
 		}
 
-		List<QualifiedObject<String>> aList =
+		final List<QualifiedObject<String>> aList =
 				new ArrayList<QualifiedObject<String>>();
-		for (String ability : abilityList)
+		for (final String ability : abilityList)
 		{
 			try
 			{
-				List<Prerequisite> prereqList =
-					new ArrayList<Prerequisite>();
+				final List<Prerequisite> prereqList = new ArrayList<Prerequisite>();
 				if (preString.length() > 0)
 				{
-					PreParserFactory factory = PreParserFactory.getInstance();
-					Prerequisite prereq = factory.parse(preString);
+					final PreParserFactory factory = PreParserFactory.getInstance();
+					final Prerequisite prereq = factory.parse(preString);
 					prereqList.add(prereq);
 				}
 				aList.add(new QualifiedObject<String>(ability, prereqList));
@@ -186,5 +190,4 @@ public class FeatParser
 
 		return aList;
 	}
-
 }

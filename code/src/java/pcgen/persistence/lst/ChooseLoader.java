@@ -40,6 +40,7 @@ import pcgen.cdom.helper.PatternMatchFilter;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.RetainingChooser;
+import pcgen.core.EquipmentModifier;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -53,6 +54,42 @@ public final class ChooseLoader
 		// Utility Class, no construction needed
 	}
 
+	public static boolean isEqModChooseToken(String key)
+	{
+		return TokenStore.inst().getTokenMap(EqModChooseLstToken.class)
+				.get(key) != null;
+				//|| isGlobalChooseToken(key);
+	}
+	
+	public static boolean isGlobalChooseToken(String key)
+	{
+		return TokenStore.inst().getTokenMap(ChooseLstToken.class).get(key) != null;
+	}
+
+	public static boolean parseEqModToken(EquipmentModifier mod, String prefix,
+			String key, String value)
+	{
+		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
+				EqModChooseLstToken.class);
+		EqModChooseLstToken token = (EqModChooseLstToken) tokenMap.get(key);
+		if (token != null)
+		{
+			LstUtils.deprecationCheck(token, mod, value);
+			if (!token.parse(mod, prefix, value))
+			{
+				Logging.deprecationPrint("Error parsing CHOOSE: " + key + ":"
+						+ value + " in " + mod.getDisplayName() + " of "
+						+ mod.getSourceURI());
+				return false;
+			}
+			return true;
+		}
+		//in case global use is needed:
+		//parseToken(mod, prefix, key, value, -9);
+		//Always have to return true to maintain old format as ok, but deprecated
+		return true;
+	}
+	
 	/**
 	 * This method is static so it can be used by the ADD Token.
 	 * 
@@ -72,8 +109,9 @@ public final class ChooseLoader
 			LstUtils.deprecationCheck(token, target, value);
 			if (!token.parse(target, prefix, value))
 			{
-				Logging.deprecationPrint("Error parsing CHOOSE: " + key + ":"
-					+ value);
+				Logging.deprecationPrint("Error parsing CHOOSE: " + key + "|"
+					+ value + " in " + target.getDisplayName() + " of "
+					+ target.getSourceURI());
 				return false;
 			}
 			return true;
@@ -81,7 +119,8 @@ public final class ChooseLoader
 		else
 		{
 			Logging.deprecationPrint("Error parsing CHOOSE, invalid SubToken: "
-				+ key);
+				+ key + " in " + target.getDisplayName() + " of "
+				+ target.getSourceURI());
 			return false;
 		}
 	}
@@ -390,6 +429,13 @@ public final class ChooseLoader
 				secondarySet.clear();
 			}
 		}
+		return null;
+	}
+
+	public static PrimitiveChoiceSet<?> parseEqModToken(LoadContext context,
+			EquipmentModifier mod, String key, String val)
+	{
+		// FIXME Need to implement this!!
 		return null;
 	}
 }

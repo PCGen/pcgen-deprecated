@@ -43,6 +43,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.graph.PCGenGraph;
@@ -56,7 +57,10 @@ import pcgen.core.EquipmentList;
 import pcgen.core.GameMode;
 import pcgen.core.Globals;
 import pcgen.core.LevelInfo;
+import pcgen.core.PCClass;
+import pcgen.core.PCTemplate;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.Race;
 import pcgen.core.SettingsHandler;
 import pcgen.core.SourceEntry;
 import pcgen.core.SystemCollections;
@@ -116,6 +120,7 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 				}
 			};
 
+	private AbilityCategoryLoader abilityCategoryLoader = new AbilityCategoryLoader();
 	private BioSetLoader bioLoader = new BioSetLoader();
 	private CampaignLoader campaignLoader = new CampaignLoader();
 	private final CampaignSourceEntry globalCampaign;
@@ -191,6 +196,8 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 			new ArrayList<CampaignSourceEntry>();
 	private final List<CampaignSourceEntry> equipmodFileList =
 			new ArrayList<CampaignSourceEntry>();
+	private final List<CampaignSourceEntry> abilityCategoryFileList =
+		new ArrayList<CampaignSourceEntry>();
 	private final List<CampaignSourceEntry> abilityFileList =
 			new ArrayList<CampaignSourceEntry>();
 	private final List<CampaignSourceEntry> featFileList =
@@ -213,7 +220,11 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 	private final List<CampaignSourceEntry> templateFileList =
 			new ArrayList<CampaignSourceEntry>();
 	private final List<CampaignSourceEntry> weaponProfFileList =
-			new ArrayList<CampaignSourceEntry>();
+		new ArrayList<CampaignSourceEntry>();
+	private final List<CampaignSourceEntry> armorProfFileList =
+		new ArrayList<CampaignSourceEntry>();
+	private final List<CampaignSourceEntry> shieldProfFileList =
+		new ArrayList<CampaignSourceEntry>();
 	private LocationLoader locationLoader = new LocationLoader();
 	private final Set<URI> loadedFiles = new HashSet<URI>();
 	private PCClassLoader classLoader = new PCClassLoader();
@@ -239,6 +250,8 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 	private StringBuffer matureCampaigns = new StringBuffer();
 	private TraitLoader traitLoader = new TraitLoader();
 	private WeaponProfLoader wProfLoader = new WeaponProfLoader();
+	private ArmorProfLoader aProfLoader = new ArmorProfLoader();
+	private ShieldProfLoader sProfLoader = new ShieldProfLoader();
 	private boolean customItemsLoaded = false;
 	private boolean showD20 = false;
 	private boolean showLicensed = true;
@@ -255,6 +268,7 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 	public LstSystemLoader()
 	{
 		//featLoader.addObserver(this);
+		abilityCategoryLoader.addObserver(this);
 		bioLoader.addObserver(this);
 		campaignLoader.addObserver(this);
 		companionModLoader.addObserver(this);
@@ -280,6 +294,8 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 		templateLoader.addObserver(this);
 		traitLoader.addObserver(this);
 		wProfLoader.addObserver(this);
+		aProfLoader.addObserver(this);
+		sProfLoader.addObserver(this);
 		try {
 			globalCampaign =
 				new CampaignSourceEntry(new Campaign(),
@@ -296,7 +312,8 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 		chosenCampaignSourcefiles.addAll(l);
 		SettingsHandler.getOptions().setProperty(
 			"pcgen.files.chosenCampaignSourcefiles",
-			CoreUtility.join(chosenCampaignSourcefiles, ','));
+			CoreUtility.join(chosenCampaignSourcefiles, ", "));
+//		CoreUtility.join(chosenCampaignSourcefiles, ','));
 	}
 
 	public List<URI> getChosenCampaignSourcefiles()
@@ -438,8 +455,13 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 
 			// Load using the new LstFileLoaders
 
+			// load ability categories first as they used to only be at the game mode
+			abilityCategoryLoader.loadLstFiles(context, abilityCategoryFileList);
+
 			// load weapon profs first
 			wProfLoader.loadLstFiles(context, weaponProfFileList);
+			aProfLoader.loadLstFiles(context, armorProfFileList);
+			sProfLoader.loadLstFiles(context, shieldProfFileList);
 
 			// load skills before classes to handle class skills
 			skillLoader.loadLstFiles(context, skillFileList);
@@ -489,6 +511,7 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 
 			// Verify weapons are melee or ranged
 			verifyWeaponsMeleeOrRanged();
+			verifyFavClassSyntax();
 
 			//  Auto-gen additional equipment
 			if (!SettingsHandler.wantToLoadMasterworkAndMagic())
@@ -522,6 +545,7 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 	private int countTotalFilesToLoad()
 	{
 		int count = bioSetFileList.size();
+		count += abilityCategoryFileList.size();
 		count += classFileList.size();
 		count += classSkillFileList.size();
 		count += classSpellFileList.size();
@@ -539,6 +563,8 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 		count += spellFileList.size();
 		count += templateFileList.size();
 		count += weaponProfFileList.size();
+		count += armorProfFileList.size();
+		count += shieldProfFileList.size();
 
 		return count;
 	}
@@ -784,7 +810,8 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 			chosenCampaignSourcefiles.add(sourceFile);
 			SettingsHandler.getOptions().setProperty(
 				"pcgen.files.chosenCampaignSourcefiles",
-				CoreUtility.join(chosenCampaignSourcefiles, ','));
+				CoreUtility.join(chosenCampaignSourcefiles, ", "));
+//			CoreUtility.join(chosenCampaignSourcefiles, ','));
 		}
 
 		// Update whether licenses need shown
@@ -822,11 +849,14 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 		classFileList.addAll(aCamp.getClassFiles());
 		companionmodFileList.addAll(aCamp.getCompanionModFiles());
 		skillFileList.addAll(aCamp.getSkillFiles());
+		abilityCategoryFileList.addAll(aCamp.getAbilityCategoryFiles());
 		abilityFileList.addAll(aCamp.getAbilityFiles());
 		featFileList.addAll(aCamp.getFeatFiles());
 		deityFileList.addAll(aCamp.getDeityFiles());
 		domainFileList.addAll(aCamp.getDomainFiles());
 		weaponProfFileList.addAll(aCamp.getWeaponProfFiles());
+		armorProfFileList.addAll(aCamp.getArmorProfFiles());
+		shieldProfFileList.addAll(aCamp.getShieldProfFiles());
 		equipmentFileList.addAll(aCamp.getEquipFiles());
 		classSkillFileList.addAll(aCamp.getClassSkillFiles());
 		classSpellFileList.addAll(aCamp.getClassSpellFiles());
@@ -1007,6 +1037,14 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 
 			GameModeLoader.parseMiscGameInfoLine(gameMode, aLine, uri, i + 1);
 		}
+		int[] dieSizes = gameMode.getDieSizes();
+		if (dieSizes == null || dieSizes.length == 0)
+		{
+			final int[]  defaultDieSizes       = new int[]{ 1, 2, 3, 4, 6, 8, 10, 12, 20, 100, 1000 };
+			gameMode.setDieSizes(defaultDieSizes);
+			Logging.log(Logging.LST_ERROR, "GameMode (" + gameMode.getName() + ") : MiscInfo.lst did not contain any valid DIESIZES. " 
+				+ "Using the system default DIESIZES.");
+		}
 		return gameMode;
 	}
 
@@ -1136,8 +1174,7 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 					false);
 
 				// Load pointbuymethods.lst
-				loadGameModeLstFile(pointBuyLoader, gmName, gameFile,
-					"pointbuymethods.lst", false);
+				loadPointBuyFile(gameFile, gmName);
 
 				// Load sizeAdjustment.lst
 				loadGameModeLstFile(sizeLoader, gmName, gameFile,
@@ -1150,6 +1187,38 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 		}
 
 		SystemCollections.sortGameModeList();
+	}
+
+	/**
+	 * Load the purchase mode/point buy definitions from either the new 
+	 * location under the custom sources folder, or in the old location
+	 * with the game mode.
+	 *   
+	 * @param gameFile The location of the game mode directory.
+	 * @param gmName The name of the game mode being loaded.
+	 */
+	private void loadPointBuyFile(String gameFile, String gmName)
+	{
+		File pointBuyFile =
+				new File(CustomData.customPurchaseModeFilePath(true, gmName));
+		boolean useGameModeFile = true;
+		if (pointBuyFile.exists())
+		{
+			try
+			{
+				pointBuyLoader.loadLstFile(pointBuyFile.toURI(), gmName);
+				useGameModeFile = false;
+			}
+			catch (PersistenceLayerException e)
+			{
+				// Ignore - its OK if the file cannot be loaded
+			}
+		}
+		if (useGameModeFile)
+		{
+			loadGameModeLstFile(pointBuyLoader, gmName, gameFile,
+				"pointbuymethods.lst", false);
+		}
 	}
 
 	/**
@@ -1211,11 +1280,14 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 		classFileList.removeAll(lstExcludeFiles);
 		companionmodFileList.removeAll(lstExcludeFiles);
 		skillFileList.removeAll(lstExcludeFiles);
+		abilityCategoryFileList.removeAll(lstExcludeFiles);
 		abilityFileList.removeAll(lstExcludeFiles);
 		featFileList.removeAll(lstExcludeFiles);
 		deityFileList.removeAll(lstExcludeFiles);
 		domainFileList.removeAll(lstExcludeFiles);
 		weaponProfFileList.removeAll(lstExcludeFiles);
+		armorProfFileList.removeAll(lstExcludeFiles);
+		shieldProfFileList.removeAll(lstExcludeFiles);
 		equipmentFileList.removeAll(lstExcludeFiles);
 		classSkillFileList.removeAll(lstExcludeFiles);
 		classSpellFileList.removeAll(lstExcludeFiles);
@@ -1239,12 +1311,15 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 		classFileList.clear();
 		companionmodFileList.clear();
 		skillFileList.clear();
+		abilityCategoryFileList.clear();
 		abilityFileList.clear();
 		featFileList.clear();
 		deityFileList.clear();
 		domainFileList.clear();
 		templateFileList.clear();
 		weaponProfFileList.clear();
+		armorProfFileList.clear();
+		shieldProfFileList.clear();
 		equipmentFileList.clear();
 		classSkillFileList.clear();
 		classSpellFileList.clear();
@@ -1375,9 +1450,91 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 		}
 	}
 
+	private void verifyFavClassSyntax() throws PersistenceLayerException
+	{
+		for (Race r : Globals.getAllRaces()) {
+			validateFavClassString(r.getKeyName(), "RACE", "FAVCLASS", r.getFavoredClass());
+		}
+		for (PCTemplate t : Globals.getTemplateList())
+		{
+			validateFavClassString(t.getKeyName(), "TEMPLATE", "FAVOREDCLASS", t.getFavoredClass());
+		}
+	}
+
+	private void validateFavClassString(String key, String type, String tag, String fav)
+			throws PersistenceLayerException
+	{
+		String favored = fav;
+		if (fav.startsWith("CHOOSE:"))
+		{
+			favored = fav.substring(7);
+		}
+		
+		if (favored.equalsIgnoreCase("ANY"))
+		{
+			return;
+		}
+
+		final StringTokenizer tok = new StringTokenizer(favored, "|");
+		while (tok.hasMoreTokens())
+		{
+			String cl = tok.nextToken();
+			int dotLoc = cl.indexOf(".");
+			if (dotLoc == -1)
+			{
+				// Base Class
+				PCClass pcclass = Globals.getClassKeyed(cl);
+				if (pcclass == null)
+				{
+					Logging.deprecationPrint("Class entry in " + tag
+							+ " token in " + type + " " + key + ": " + cl
+							+ " likely references a SubClass.  Should use "
+							+ tag + ":PARENT.SUBCLASS syntax");
+				}
+			}
+			else
+			{
+				String parent = cl.substring(0, dotLoc);
+				PCClass pcclass = Globals.getClassKeyed(parent);
+				if (pcclass == null)
+				{
+					Logging.errorPrint("Invalid Class entry in " + tag
+							+ " token in " + type + " " + key + ": " + cl
+							+ " ... " + parent + " does not exist as a Class");
+				}
+				String subclass = cl.substring(dotLoc + 1);
+				if (parent.equals(subclass))
+				{
+					/*
+					 * TODO 1849571 requires a change here
+					 * 
+					 * Today this is totally legal, so the case drops through.
+					 * Once 1849571 is implemented, this if case should check to
+					 * see if ALLOWBASECLASS is set to YES. If set to NO, an
+					 * error (shown below) should be reported, because the
+					 * FAV(ORED)CLASS token is attempting to reference an
+					 * invalid class
+					 */
+					/*
+					Logging.errorPrint("Invalid Class entry in " + tag
+							+ " token in " + type + " " + key + ": " + cl
+							+ " ... Base class is prohibited in " + parent);
+					 */
+				}
+				else if (pcclass.getSubClassKeyed(subclass) == null)
+				{
+					Logging.errorPrint("Invalid Class entry in " + tag
+							+ " token in " + type + " " + key + ": " + cl
+							+ " ... " + subclass
+							+ " does not exist as a SubClass of " + parent);
+				}
+			}
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
 	 */
 	public void update(Observable o, Object arg)

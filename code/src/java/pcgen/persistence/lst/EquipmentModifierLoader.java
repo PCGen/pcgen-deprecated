@@ -98,7 +98,7 @@ public final class EquipmentModifierLoader extends
 					LstUtils.deprecationCheck(token, eqMod, value);
 					if (!token.parse(eqMod, value))
 					{
-						Logging.errorPrint("Error parsing ability "
+						Logging.errorPrint("Error parsing EqMod "
 							+ eqMod.getDisplayName() + ':' + source.getURI()
 							+ ':' + colString + "\"");
 					}
@@ -126,7 +126,7 @@ public final class EquipmentModifierLoader extends
 	}
 
 	/**
-	 * This method adds the default available equipment modififiers to the
+	 * This method adds the default available equipment modifiers to the
 	 * Globals.
 	 * 
 	 * @throws PersistenceLayerException
@@ -154,7 +154,7 @@ public final class EquipmentModifierLoader extends
 		anObj.setSourceCampaign(source.getCampaign());
 		anObj.setSourceURI(source.getURI());
 		aLine =
-				"KEY:ADDTYPE\tTYPE:ALL\tCOST:0\tNAMEOPT:NONAME\tSOURCELONG:PCGen Internal\tCHOOSE:COUNT=ALL|desired TYPE(s)|TYPE=EQTYPES";
+				"KEY:ADDTYPE\tTYPE:ALL\tCOST:0\tNAMEOPT:NONAME\tSOURCELONG:PCGen Internal\tCHOOSE:EQBUILDER.EQTYPE|COUNT=ALL|TITLE=desired TYPE(s)";
 		parseLine(anObj, aLine, source);
 
 		//
@@ -165,14 +165,14 @@ public final class EquipmentModifierLoader extends
 		anObj.setName(Constants.s_INTERNAL_EQMOD_WEAPON);
 		anObj.setSourceCampaign(source.getCampaign());
 		anObj.setSourceURI(source.getURI());
-		aLine = "TYPE:Weapon\tVISIBLE:No\tCHOOSE:DUMMY\tNAMEOPT:NONAME";
+		aLine = "TYPE:Weapon\tVISIBLE:No\tCHOOSE:NOCHOICE\tNAMEOPT:NONAME";
 		parseLine(anObj, aLine, source);
 
 		anObj = new EquipmentModifier();
 		anObj.setName(Constants.s_INTERNAL_EQMOD_ARMOR);
 		anObj.setSourceCampaign(source.getCampaign());
 		anObj.setSourceURI(source.getURI());
-		aLine = "TYPE:Armor\tVISIBLE:No\tCHOOSE:DUMMY\tNAMEOPT:NONAME";
+		aLine = "TYPE:Armor\tVISIBLE:No\tCHOOSE:NOCHOICE\tNAMEOPT:NONAME";
 		parseLine(anObj, aLine, source);
 	}
 

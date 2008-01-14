@@ -131,6 +131,7 @@ public class TokenStore
 		tokenTypeList.add(SponsorLstToken.class);
 
 		// subtokens
+		tokenTypeList.add(EqModChooseLstToken.class);
 		tokenTypeList.add(ChooseLstToken.class);
 		tokenTypeList.add(ChooseCDOMLstToken.class);
 		tokenTypeList.add(AutoLstToken.class);
@@ -147,6 +148,9 @@ public class TokenStore
 		tokenCompatibilityList.add(PCClassLevelLstCompatibilityToken.class);
 		tokenCompatibilityList.add(PCClassUniversalLstCompatibilityToken.class);
 		tokenCompatibilityList.add(RaceLstCompatibilityToken.class);
+
+		//install.lst
+		tokenTypeList.add(InstallLstToken.class);
 	}
 
 	/**

@@ -29,13 +29,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.ReverseIntegerComparator;
 import pcgen.base.util.TripleKeyMap;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.core.Campaign;
 import pcgen.core.PObject;
-import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
@@ -92,7 +93,10 @@ public final class PObjectLoader
 	 * @return boolean true if the tag is parsed; else false.
 	 * @throws PersistenceLayerException
 	 */
-	public static boolean parseTagLevel(PObject obj, String aTag, int anInt)
+	public static boolean parseTagLevel(
+			final PObject obj, 
+			final String aTag, 
+			final int anInt)
 		throws PersistenceLayerException
 	{
 		if ((obj == null) || (aTag.length() < 1))
@@ -102,19 +106,20 @@ public final class PObjectLoader
 
 		obj.setNewItem(false);
 
-		aTag.charAt(0);
+		// This line seems to be useless ... nuance 28/10/2007
+//		aTag.charAt(0);
 
-		boolean result = false;
-		int colonIdx = aTag.indexOf(':');
+		final int colonIdx = aTag.indexOf(':');
 		if (colonIdx < 0)
 		{
 			return false;
 		}
-		String key = aTag.substring(0, colonIdx);
-		String value = aTag.substring(colonIdx + 1);
-		Map<String, LstToken> tokenMap =
+		final String key   = aTag.substring(0, colonIdx);
+		final String value = aTag.substring(colonIdx + 1);
+		final Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(GlobalLstToken.class);
-		LstToken token = tokenMap.get(key);
+		final LstToken token = tokenMap.get(key);
+		boolean result = false;
 		if (token != null)
 		{
 			LstUtils.deprecationCheck(token, obj, value);
@@ -128,27 +133,25 @@ public final class PObjectLoader
 				// blank intentionally
 			}
 			else if (PreParserFactory.isPreReqString(aTag)
-				|| aTag.startsWith("RESTRICT:"))
+			         || aTag.startsWith("RESTRICT:"))
 			{
-				if (aTag.equalsIgnoreCase("PRE:.CLEAR"))
+				if ("PRE:.CLEAR".equalsIgnoreCase(aTag))
 				{
 					obj.clearPreReq();
 				}
 				else
 				{
-					aTag =
-							CoreUtility.replaceAll(aTag, "<this>", obj
-								.getKeyName());
+					final String tag =
+							aTag.replaceAll(Pattern.quote("<this>"), obj.getKeyName());
 					try
 					{
-						PreParserFactory factory =
-								PreParserFactory.getInstance();
-						obj.addPreReq(factory.parse(aTag), anInt);
+						final PreParserFactory factory = PreParserFactory.getInstance();
+						obj.addPreReq(factory.parse(tag), anInt);
 					}
 					catch (PersistenceLayerException ple)
 					{
 						throw new PersistenceLayerException(
-							"Unable to parse a prerequisite: "
+								"Unable to parse a prerequisite: "
 								+ ple.getMessage());
 					}
 				}
@@ -219,7 +222,7 @@ public final class PObjectLoader
 				else
 				{
 					value =
-							CoreUtility.replaceAll(value, "<this>", wp
+							StringUtil.replaceAll(value, "<this>", wp
 								.getKeyName());
 					try
 					{
