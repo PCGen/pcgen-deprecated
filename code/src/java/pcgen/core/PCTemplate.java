@@ -42,6 +42,7 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 import pcgen.util.chooser.ChooserFactory;
 import pcgen.util.chooser.ChooserInterface;
@@ -318,6 +319,11 @@ public final class PCTemplate extends PObject implements HasCost
 		else if ("Neuter".equalsIgnoreCase(genderString))
 		{
 			gender = PropertyFactory.getString("in_genderNeuter");
+		}
+		else
+		{
+			Logging.errorPrint("Unsure what to do with GENDERLOCK: "
+					+ genderString + " should be FEMALE, MALE, or NEUTER");
 		}
 	}
 

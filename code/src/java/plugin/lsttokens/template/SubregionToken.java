@@ -57,6 +57,12 @@ public class SubregionToken extends AbstractToken implements PCTemplateLstToken
 					+ getTokenName());
 				Logging
 					.deprecationPrint("Abbreviations will fail after PCGen 5.14");
+				Logging
+						.deprecationPrint("If your "
+								+ getTokenName()
+								+ " starts with a 'Y' then please ignore this message, "
+								+ "it is alerting those taking advantage of an "
+								+ "abbreviation system that is being removed from PCGen");
 			}
 		}
 		template.setSubRegion(subregion);
