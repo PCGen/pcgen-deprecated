@@ -19,11 +19,11 @@ package plugin.lstcompatibility.global;
 
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.core.Constants;
 import pcgen.core.Kit;
 import pcgen.core.Race;
-import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstCompatibilityToken;
@@ -44,7 +44,7 @@ public class Bonus514Lst_DefMonChecks extends AbstractToken implements
 		{
 			return false;
 		}
-		value = CoreUtility.replaceAll(value, "<this>", obj.getKeyName());
+		value = StringUtil.replaceAll(value, "<this>", obj.getKeyName());
 		StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
 		if (!aTok.nextToken().equalsIgnoreCase("CHECKS"))
 		{
