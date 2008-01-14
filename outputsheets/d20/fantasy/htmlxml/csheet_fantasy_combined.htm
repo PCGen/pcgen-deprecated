@@ -53,6 +53,8 @@ Revisions: Chuck Pint 12/04/04 Fixed minor HTML warnings, Undead turning (again!
 
 Revisions: Eddy Anthony 1/16/06 Converted Will check to reference array number instead of name in preperation to converting the data to use "Will" as the check name
 
+Revisions: Tir-Gwaith 25/10/07 Converted Barbarian away from purely 3.0, reference defined VARs in all instances.  Still needs more work.
+
 $Revision$
 $Author$
 $Date$
@@ -302,7 +304,7 @@ var HP = new HPObject( |HP| );
 // AC object
 var AC = new ACObject(|AC.Flatfooted|,|AC.Touch|,|AC.Total|,|AC.Base|,|AC.Armor|,|AC.Shield|,|AC.Ability|,|AC.Size|,|AC.NaturalArmor|,|AC.Misc|);
 // List of skills forbidden to a raging Barb
-var SkillsRedList = new Array("Alchemy","Appraise","Craft","Decipher Script","Diplomacy","Disable Device","Disguise","Escape Artist","Forgery","Gather Information","Handle Animal","Heal","Hide","Innuendo","Intuit Direction","Knowledge","Move Silently","Open Lock","Perform","Pick Pocket","Profession","Read Lips","Scry","Search","Sense Motive","Spellcraft","Tumble","Use Magic Device");
+var SkillsRedList = new Array("Alchemy","Appraise","Craft","Decipher Script","Diplomacy","Disable Device","Disguise","Escape Artist","Forgery","Gather Information","Handle Animal","Heal","Hide","Innuendo","Intuit Direction","Knowledge","Move Silently","Open Lock","Perform","Pick Pocket","Profession","Read Lips","Scry","Search","Sense Motive","Sleight of Hand","Spellcraft","Tumble","Use Magic Device");
 // List of the supported states a char can be in.
 StateArr[0] = new CharState( "Rage", BarbMods, BarbMods );
 StateArr[1] = new CharState( "DefFighting", DefensiveCombatMods, DefensiveCombatMods );
@@ -1087,15 +1089,9 @@ function HPPrint()
 function RagePrint()
 {
 |%VAR.RageTimes.GTEQ.1|
-     var strMod = 4;
-     var conMod = 4;
-     var willMod = 2;
-     if ( BarbLvl >= 15 )
-     {
-        strMod = 6;
-        conMod = 6;
-        willMod = 3;
-     }
+     var strMod = |VAR.RageStrBonus|;
+     var conMod = |VAR.RageConBonus|;
+     var willMod = |VAR.RageMorale|;
 	tempHTML = '<br /><table width="100%" cellspacing="0" cellpadding="2"><tr><td class="c9wB" colspan="2">BARBARIAN RAGE<\/td><\/tr>';
 	tempHTML = tempHTML+'<tr><td colspan="2" class="l9s">The Barbarian temporarily gains '+modPlusMinus(strMod)+' to Strength, '+modPlusMinus(conMod)+' to Constitution, and a '+modPlusMinus(willMod)+' morale bonus on Will saves, but suffers a -2 penalty to AC.  ';
 	// Do it this way since we want to show the same length regardless of current rage state
@@ -1104,11 +1100,11 @@ function RagePrint()
 	   tempHTML = tempHTML+(3+AbArr[CONindex].tempmodifier)+' rounds.  ';
 	else
 	   tempHTML = tempHTML+(3+AbArr[CONindex].tempmodifier+conMod/2)+' rounds.  ';
-	if ( BarbLvl < 20 )
+	if ( |VAR.BarbarianRageLVL| < 20 )
 		tempHTML = tempHTML+'At the end of the rage, the barbarian is fatigued (-2 to Strength, -2 to Dexterity, can&rsquo;t charge or run) for the duration of that encounter.  ';
 	else
 		tempHTML = tempHTML+'A 20th level Barbarian is NOT fatigued after leaving a rage.  ';
-	tempHTML = tempHTML+'The barbarian can only fly into a rage once per encounter, and only |VAR.BarbRageTimesLVL.INTVAL| times per day (determined by level). Entering a rage takes no time itself, but the barbarian can only do it during his action.<\/td><\/tr><\/table>';
+	tempHTML = tempHTML+'The barbarian can only fly into a rage once per encounter, and only |VAR.RageTimes.INTVAL| times per day (determined by level). Entering a rage takes no time itself, but the barbarian can only do it during his action.<\/td><\/tr><\/table>';
 	document.getElementById('RageDiv').innerHTML = tempHTML;
 |%|
 }
@@ -2388,20 +2384,12 @@ function BarbMods( newRageState )
   // Figure out what we have to do to "back out" old rage state
   if ( this.internalState == "Raging" )  // Raging
   {
-     strMod = -4;
-     conMod = -4;
-     strModMod = -2;
-     conModMod = -2;
-     acMod = +2;
-     willMod = -2;
-     if ( BarbLvl >= 15 )
-     {
-        strMod = -6;
-        conMod = -6;
-        strModMod = -3;
-        conModMod = -3;
-        willMod = -3;
-     }
+     strMod = -|VAR.RageStrBonus|;
+     conMod = -|VAR.RageConBonus|;
+     strModMod = -(|VAR.RageStrBonus|/2);
+     conModMod = -(|VAR.RageConBonus|/2);
+     acMod = +|VAR.RageACPenalty|;
+     willMod = -|VAR.RageMorale|;
   }
   else if ( this.internalState == "Fatigued" && BarbLvl<20 )  // Fatigued
   {
@@ -2420,24 +2408,12 @@ function BarbMods( newRageState )
      RageStatus = nRageStatus;
 	 this.internalState = nRageStatus;
 //	 StatusBgColor = "LIGHTPINK";
-     if ( BarbLvl >= 15 )
-     {
-        strMod = strMod+6;
-        conMod = conMod+6;
-        strModMod = strModMod+3;
-        conModMod = conModMod+3;
-        acMod = acMod-2;
-        willMod = willMod+3;
-     }
-     else
-     {
-		 strMod = strMod+4;
-		 conMod = conMod+4;
-		 strModMod = strModMod+2;
-		 conModMod = conModMod+2;
-		 acMod = acMod-2;
-		 willMod = willMod+2;
-     }
+        strMod = strMod+|VAR.RageStrBonus|;
+        conMod = conMod+|VAR.RageConBonus|;
+        strModMod = strModMod+(|VAR.RageStrBonus|/2);
+        conModMod = conModMod+(|VAR.RageConBonus|/2);
+        acMod = acMod-|VAR.RageACPenalty|;
+        willMod = willMod+|VAR.RageMorale|;
   }
   else if ( nRageStatus == "Fatigued" && BarbLvl<20 )  // Fatigued
   {
@@ -2489,16 +2465,17 @@ function BarbMods( newRageState )
 // ********************************************
 function OneTimeBbnLevelParse()
 {
-  BarbLvl = 0;
-  var lvlStr = "|CLASSLIST|";
-  var clses = lvlStr.split(" ");
-  for (i=0; i < clses.length; i++)
-  {
-     if ( clses[i].substr(0,9) == "Barbarian" )
-     {
-        BarbLvl = clses[i].substr(9,clses[i].length-9);
-     }
-  }
+//  BarbLvl = 0;
+//  var lvlStr = "|CLASSLIST|";
+//  var clses = lvlStr.split(" ");
+//  for (i=0; i < clses.length; i++)
+//  {
+//     if ( clses[i].substr(0,9) == "Barbarian" )
+//     {
+//        BarbLvl = clses[i].substr(9,clses[i].length-9);
+//     }
+//  }
+  BarbLvl= |VAR.BarbRageTimesLVL.INTVAL|;
   RageStatus = "";
 };
 // ********************************************
@@ -2934,6 +2911,27 @@ function RemoveStat (attribute) {
 <!-- END TEMPLATE table -->
 |%|
 <!-- Start of special abilities table (still inside the SkillsCompact Table) -->
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialAttack")>0)|
+				<table width="100%" cellspacing="0" cellpadding="2">
+				<tr>
+					<td class="c9wB">SPECIAL ATTACKS</td>
+				</tr>
+				<tr>
+					<td width="100%" class="l7s">|ABILITYLIST.Special Ability.TYPE=SpecialAttack|</td>
+				</tr>
+				</table>
+|ENDIF|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialQuality")>0)|
+				<table width="100%" cellspacing="0" cellpadding="2">
+				<tr>
+					<td class="c9wB">SPECIAL QUALITIES</td>
+				</tr>
+				<tr>
+					<td width="100%" class="l7s">|ABILITYLIST.Special Ability.TYPE=SpecialQuality|</td>
+				</tr>
+				</table>
+|ENDIF|
+|%COUNT[SA]|
 				<table width="100%" cellspacing="0" cellpadding="2">
 				<tr>
 					<td class="c9wB">SPECIAL ABILITIES</td>
@@ -2942,6 +2940,7 @@ function RemoveStat (attribute) {
 					<td width="100%" class="l7s">|SPECIALLIST|</td>
 				</tr>
 				</table>
+|%|
 <!-- End of Special Abilities table (still inside the SkillsCompact Table) -->
 <!-- Start of feats table (still inside the SkillsCompact Table) -->
 				<table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -2962,7 +2961,7 @@ function RemoveStat (attribute) {
 					<td width="100%" class="t7s">|LANGUAGES|<br /></td>
 				</tr>
 				</table>
-<!-- End of special abilities table (still inside the SkillsCompact Table) -->
+<!-- End of languages table (still inside the SkillsCompact Table) -->
 <!-- Start of psion abilities table (still inside the SkillsCompact Table) -->
 |%VAR.TOTALPOWERPOINTS.GTEQ.1|
 				<table width="100%" border="0" cellpadding="2" cellspacing="0">
@@ -3524,8 +3523,28 @@ function RemoveStat (attribute) {
 |%|
 <!-- END MISC Companions table -->
 
-
-<!-- TEMPLATE table -->
+<!-- START Special Abilities Table -->
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialAttack")>0)|
+		<table width="100%" cellspacing="0" cellpadding="2">
+		<tr>
+			<td class="c9wB">SPECIAL ATTACKS</td>
+		</tr>
+		<tr>
+			<td class="lt8s" width="100%">|ABILITYLIST.Special Ability.TYPE=SpecialAttack|</td>
+		</tr>
+		</table>
+|ENDIF|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialQuality")>0)|
+		<table width="100%" cellspacing="0" cellpadding="2">
+		<tr>
+			<td class="c9wB">SPECIAL QUALITIES</td>
+		</tr>
+		<tr>
+			<td class="lt8s" width="100%">|ABILITYLIST.Special Ability.TYPE=SpecialQuality|</td>
+		</tr>
+		</table>
+|ENDIF|
+|%COUNT[SA]|
 		<table width="100%" cellspacing="0" cellpadding="2">
 		<tr>
 			<td class="c9wB">SPECIAL ABILITIES</td>
@@ -3534,6 +3553,9 @@ function RemoveStat (attribute) {
 			<td class="lt8s" width="100%">|SPECIALLIST|</td>
 		</tr>
 		</table>
+|%|
+<!-- END Special Abilities Table -->
+<!-- TEMPLATE table -->
 |%TEMPLATE.0|
 		<table width="100%" cellspacing="0" cellpadding="3">
 		<tr>
@@ -3778,40 +3800,10 @@ function RemoveStat (attribute) {
      <td class="lt8sB" width="40%">NAME</td>
      <td class="lt8sB" width="60%">DESCRIPTION</td>
     </tr>
-|FOR,%feat,0,COUNT[FEATS.VISIBLE]-1,1,0|
+|FOR,%feat,0,COUNT[FEATSALL.VISIBLE]-1,1,0|
 |OIF(EVEN:%feat,<tr bgcolor="#DDDDDD">,<tr bgcolor="white">)|
-     <td valign="top" class="font8">|FEAT.VISIBLE.%feat|</td>
-     <td valign="top" align="left" class="font8">|FEAT.VISIBLE.%feat.DESC|</td>
-    </tr>
-|ENDFOR|
-|FOR,%feat,0,COUNT[FEATSAUTO.VISIBLE]-1,1,0|
-|OIF(EVEN:%feat,<tr bgcolor="#DDDDDD">,<tr bgcolor="white">)|
-     <td valign="top" class="font8">|FEATAUTO.VISIBLE.%feat|</td>
-     <td valign="top" align="left" class="font8">|FEATAUTO.VISIBLE.%feat.DESC|</td>
-    </tr>
-|ENDFOR|
-|FOR,%feat,0,COUNT[VFEATS.VISIBLE]-1,1,0|
-|OIF(EVEN:%feat,<tr bgcolor="#DDDDDD">,<tr bgcolor="white">)|
-     <td valign="top" class="font8">|VFEAT.VISIBLE.%feat|</td>
-     <td valign="top" align="left" class="font8">|VFEAT.VISIBLE.%feat.DESC|</td>
-    </tr>
-|ENDFOR|
-|FOR,%feat,0,COUNT[FEATS.HIDDEN]-1,1,0|
-|OIF(EVEN:%feat,<tr bgcolor="#DDDDDD">,<tr bgcolor="white">)|
-     <td valign="top" class="font8">|FEAT.HIDDEN.%feat|</td>
-     <td valign="top" align="left" class="font8">|FEAT.HIDDEN.%feat.DESC|</td>
-    </tr>
-|ENDFOR|
-|FOR,%feat,0,COUNT[FEATSAUTO.HIDDEN]-1,1,0|
-|OIF(EVEN:%feat,<tr bgcolor="#DDDDDD">,<tr bgcolor="white">)|
-     <td valign="top" class="font8">|FEATAUTO.HIDDEN.%feat|</td>
-     <td valign="top" align="left" class="font8">|FEATAUTO.HIDDEN.%feat.DESC|</td>
-    </tr>
-|ENDFOR|
-|FOR,%feat,0,COUNT[VFEATS.HIDDEN]-1,1,0|
-|OIF(EVEN:%feat,<tr bgcolor="#DDDDDD">,<tr bgcolor="white">)|
-     <td valign="top" class="font8">|VFEAT.HIDDEN.%feat|</td>
-     <td valign="top" align="left" class="font8">|VFEAT.HIDDEN.%feat.DESC|</td>
+     <td valign="top" class="l8s">|FEATALL.VISIBLE.%feat|</td>
+     <td valign="top" align="left" class="l8s">|FEATALL.VISIBLE.%feat.DESC|</td>
     </tr>
 |ENDFOR|
    </table>

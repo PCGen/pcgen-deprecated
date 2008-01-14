@@ -58,7 +58,11 @@ Base Atk |ATTACK.MELEE|; Grp|ATTACK.GRAPPLE.TOTAL|;
 
 Atk:
 |FOR,%weap,0,COUNT[EQTYPE.WEAPON]-1,1,0|
+|IIF(WEAPON.%weap.BASEHIT:N/A)|
+|WEAPON.%weap.THHIT.0|
+|ELSE|
 |WEAPON.%weap.BASEHIT.0|
+|ENDIF|
 |IIF(WEAPON.%weap.CATEGORY:Melee)|
 Melee
 |ENDIF|
@@ -75,7 +79,11 @@ Ranged
 ;
 Full Atk:
 |FOR,%weap,0,COUNT[EQTYPE.WEAPON]-1,1,0|
+|IIF(WEAPON.%weap.BASEHIT:N/A)|
+|WEAPON.%weap.THHIT|
+|ELSE|
 |WEAPON.%weap.BASEHIT|
+|ENDIF|
 |IIF(WEAPON.%weap.CATEGORY:Melee)|
 Melee
 |ENDIF|
@@ -90,7 +98,24 @@ Ranged
 ) or
 |ENDFOR|
 ;
-SA 
+SA: 
+|IIF(count("ABILITIES";"CATEGORY=Special Ability")>0)|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Special Ability")-1,1,0| 
+|IIF(ABILITYALL.Special Ability.%specialAbilities.TYPE:Extraordinary)|
+|ABILITYALL.Special Ability.%specialAbilities| (Ex), 
+|ELSE|
+|IIF(ABILITYALL.Special Ability.%specialAbilities.TYPE:Supernatural)|
+|ABILITYALL.Special Ability.%specialAbilities| (Su), 
+|ELSE|
+|IIF(ABILITYALL.Special Ability.%specialAbilities.TYPE:SpellLike)|
+|ABILITYALL.Special Ability.%specialAbilities| (Sp), 
+|ELSE|
+|ABILITYALL.Special Ability.%specialAbilities|, 
+|ENDIF|
+|ENDIF|
+|ENDIF|
+|ENDFOR|
+|ENDIF|
 |FOR,%DRtest,STRLEN[DR],STRLEN[DR],1,0|
 |IIF(%DRtest:0)|
 |ELSE|

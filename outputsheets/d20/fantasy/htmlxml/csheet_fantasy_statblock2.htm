@@ -66,12 +66,37 @@ Init |INITIATIVEMOD|
 |AC.Total| (flatfooted |AC.Flatfooted|, touch
 |AC.Touch|), 
 |FOR,%weap,0,COUNT[EQTYPE.WEAPON]-2,1,1|
+|IIF(WEAPON.%weap.BASEHIT:N/A)|
+|WEAPON.%weap.NAME| |WEAPON.%weap.THHIT| |WEAPON.%weap.TYPE| (|WEAPON.%weap.THDAMAGE| |WEAPON.%weap.CRIT|/x|WEAPON.%weap.MULT| |WEAPON.%weap.HAND| |WEAPON.%weap.SIZE| |WEAPON.%weap.SPROP| |WEAPON.%weap.NOTE|) or 
+|ELSE|
 |WEAPON.%weap.NAME| |WEAPON.%weap.BASEHIT| |WEAPON.%weap.RANGE|/|WEAPON.%weap.TYPE| (|WEAPON.%weap.DAMAGE| |WEAPON.%weap.CRIT|/x|WEAPON.%weap.MULT| |WEAPON.%weap.HAND| |WEAPON.%weap.SIZE| |WEAPON.%weap.SPROP| |WEAPON.%weap.NOTE|) or 
+|ENDIF|
 |ENDFOR|
 |FOR,%weap,COUNT[EQTYPE.WEAPON]-1,COUNT[EQTYPE.WEAPON]-1,1,1|
+|IIF(WEAPON.%weap.BASEHIT:N/A)|
+|WEAPON.%weap.NAME| |WEAPON.%weap.THHIT| |WEAPON.%weap.TYPE| (|WEAPON.%weap.THDAMAGE| |WEAPON.%weap.CRIT|/x|WEAPON.%weap.MULT| |WEAPON.%weap.HAND| |WEAPON.%weap.SIZE| |WEAPON.%weap.SPROP| |WEAPON.%weap.NOTE|); 
+|ELSE|
 |WEAPON.%weap.NAME| |WEAPON.%weap.BASEHIT| |WEAPON.%weap.RANGE|/|WEAPON.%weap.TYPE| (|WEAPON.%weap.DAMAGE| |WEAPON.%weap.CRIT|/x|WEAPON.%weap.MULT| |WEAPON.%weap.HAND| |WEAPON.%weap.SIZE| |WEAPON.%weap.SPROP| |WEAPON.%weap.NOTE|); 
+|ENDIF|
 |ENDFOR|
 SA: 
+|IIF(count("ABILITIES";"CATEGORY=Special Ability")>0)|
+|FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Special Ability")-1,1,0| 
+|IIF(ABILITYALL.Special Ability.%specialAbilities.TYPE:Extraordinary)|
+|ABILITYALL.Special Ability.%specialAbilities| (Ex), 
+|ELSE|
+|IIF(ABILITYALL.Special Ability.%specialAbilities.TYPE:Supernatural)|
+|ABILITYALL.Special Ability.%specialAbilities| (Su), 
+|ELSE|
+|IIF(ABILITYALL.Special Ability.%specialAbilities.TYPE:SpellLike)|
+|ABILITYALL.Special Ability.%specialAbilities| (Sp), 
+|ELSE|
+|ABILITYALL.Special Ability.%specialAbilities|, 
+|ENDIF|
+|ENDIF|
+|ENDIF|
+|ENDFOR|
+|ENDIF|
 |FOR,%DRtest,STRLEN[DR],STRLEN[DR],1,0|
 |IIF(%DRtest:0)|
 |ELSE|
@@ -141,7 +166,7 @@ Will
 |FOR,%spellbook,2,COUNT[SPELLBOOKS]-1,1,0|
 |IIF(SPELLBOOK.%spellbook.NUMPAGES:0)|
 <i>|SPELLBOOKNAME.%spellbook|: </i>
-|FOR,%class,COUNT[SPELLRACE],COUNT[SPELLRACE]+COUNT[CLASSES]-2,1,1|
+|FOR,%class,COUNT[SPELLRACE],COUNT[SPELLRACE]+COUNT[CLASSES]-1,1,1|
 |IIF(SPELLLISTMEMORIZE.%class:false)|
 |ELSE|
 |SPELLLISTCLASS.%class| (CL |SPELLLISTCLASS.%class.LEVEL|): 
