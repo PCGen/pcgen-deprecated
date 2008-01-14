@@ -59,6 +59,7 @@ import pcgen.core.Race;
 import pcgen.core.SettingsHandler;
 import pcgen.core.Skill;
 import pcgen.core.SpecialAbility;
+import pcgen.core.SubClass;
 import pcgen.core.SubstitutionClass;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
@@ -70,6 +71,7 @@ import pcgen.core.character.SpellInfo;
 import pcgen.core.levelability.LevelAbility;
 import pcgen.core.pclevelinfo.PCLevelInfo;
 import pcgen.core.spell.Spell;
+import pcgen.core.utils.CoreUtility;
 import pcgen.core.utils.ListKey;
 import pcgen.gui.GuiConstants;
 import pcgen.io.parsers.CharacterDomainParser;
@@ -1782,8 +1784,27 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 
 			if (TAG_SUBCLASS.equals(tag))
 			{
-				aPCClass
-					.setSubClassKey(EntityEncoder.decode(element.getText()));
+				String subClassKey = EntityEncoder.decode(element.getText());
+				if ((subClassKey.length() > 0) && !subClassKey.equals(Constants.s_NONE))
+				{
+					SubClass sc = aPCClass.getSubClassKeyed(subClassKey);
+					if (sc == null)
+					{
+						if (subClassKey.equals(aPCClass.getKeyName()))
+						{
+							subClassKey = Constants.s_NONE;
+						}
+						else
+						{
+							final String msg =
+									PropertyFactory.getFormattedString(
+										"Warnings.PCGenParser.InvalidSubclass", //$NON-NLS-1$
+										element.getText());
+							warnings.add(msg);
+						}
+					}
+				}
+				aPCClass.setSubClassKey(subClassKey);
 			}
 
 			if (TAG_LEVEL.equals(tag))
@@ -5241,15 +5262,7 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 	 */
 	protected int compareVersionTo(int inVer[])
 	{
-		if (inVer[0] != pcgenVersion[0])
-		{
-			return new Integer(pcgenVersion[0]).compareTo(inVer[0]);
-		}
-		if (inVer[1] != pcgenVersion[1])
-		{
-			return new Integer(pcgenVersion[1]).compareTo(inVer[1]);
-		}
-		return new Integer(pcgenVersion[2]).compareTo(inVer[2]);
+		return CoreUtility.compareVersions(pcgenVersion, inVer);
 	}
 
 	/**

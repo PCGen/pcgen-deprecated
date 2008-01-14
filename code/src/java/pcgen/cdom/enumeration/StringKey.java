@@ -107,5 +107,7 @@ public enum StringKey {
 	 DAMAGE,
 	 MODIFIED_NAME, 
 	 TOKEN,
-	 CHOOSE_BACKUP;
+	 CHOOSE_BACKUP, 
+	 MINVER,
+	 MINDEVVER;
 }
