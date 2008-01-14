@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
@@ -933,7 +934,7 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 	public void expandToken(final String token, final String tokenValue)
 	{
 		final String value = getValue();
-		setValue( CoreUtility.replaceAll(value, token, tokenValue));
+		setValue(value.replaceAll(Pattern.quote(token), tokenValue));
 
 		if ( hasPreReqs() )
 		{
@@ -1239,7 +1240,9 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 					for (int i = 0; i < anObj.getAssociatedCount(); ++i)
 					{
 						final StringBuffer ab = new StringBuffer();
-						final String tName = CoreUtility.replaceFirst(name, VALUE_TOKEN_REPLACEMENT, anObj.getAssociated(i));
+						final String tName =
+								name.replaceFirst(Pattern.quote(VALUE_TOKEN_REPLACEMENT),
+								                  anObj.getAssociated(i));
 						ab.append(tName).append('.');
 						ab.append(info);
 
@@ -1256,7 +1259,9 @@ public abstract class BonusObj extends ConcretePrereqObject implements Serializa
 					for (int i = 0; i < anObj.getAssociatedCount(true); ++i)
 					{
 						final StringBuffer ab = new StringBuffer();
-						final String tName = CoreUtility.replaceFirst(info, VALUE_TOKEN_REPLACEMENT, anObj.getAssociated(i, true));
+						final String tName = 
+								info.replaceFirst(Pattern.quote(VALUE_TOKEN_REPLACEMENT),
+								                  anObj.getAssociated(i, true));
 						ab.append(getTypeOfBonus()).append('.');
 						ab.append(tName);
 

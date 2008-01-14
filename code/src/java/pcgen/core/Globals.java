@@ -25,30 +25,6 @@
  */
 package pcgen.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import javax.swing.JFrame;
-
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.character.CompanionMod;
 import pcgen.core.character.EquipSlot;
@@ -59,13 +35,21 @@ import pcgen.persistence.PersistenceManager;
 import pcgen.util.InputFactory;
 import pcgen.util.InputInterface;
 import pcgen.util.Logging;
+import pcgen.util.PropertyFactory;
 import pcgen.util.chooser.ChooserFactory;
 import pcgen.util.chooser.ChooserInterface;
 import pcgen.util.enumeration.Load;
 import pcgen.util.enumeration.Tab;
 import pcgen.util.enumeration.Visibility;
 import pcgen.util.enumeration.VisionType;
-import pcgen.util.PropertyFactory;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.text.Collator;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * This is like the top level model container. However,
@@ -100,8 +84,7 @@ public final class Globals
 	private static final String defaultPath    = System.getProperty("user.dir"); //$NON-NLS-1$
 	private static final String defaultPcgPath = getDefaultPath() + File.separator + "characters"; //$NON-NLS-1$
 	private static final String backupPcgPath = Constants.EMPTY_STRING;
-	private static final int[]  dieSizes       = new int[]{ 1, 2, 3, 4, 6, 8, 10, 12, 20, 100, 1000 };
-
+	
 	/** These are for the Internationalization project. */
 	private static String     language        = "en"; //$NON-NLS-1$
 	private static String     country         = "US"; //$NON-NLS-1$
@@ -145,6 +128,8 @@ public final class Globals
 
 	/** Weapon proficiency Data storage */
 	private static final PObjectDataStore<WeaponProf> weaponProfs = new PObjectDataStore<WeaponProf>("WeaponProf");
+	private static final PObjectDataStore<ArmorProf> armorProfs = new PObjectDataStore<ArmorProf>("ArmorProf");
+	private static final PObjectDataStore<ShieldProf> shieldProfs = new PObjectDataStore<ShieldProf>("ShieldProf");
 
 	/** this is used by the random selection tools */
 	private static final Random random = new Random(System.currentTimeMillis());
@@ -968,7 +953,16 @@ public final class Globals
 	 */
 	public static Iterator<Categorisable> getAbilityKeyIterator (String aCategory)
 	{
-		return abilityStore.getKeyIterator(aCategory);
+		String catKey = aCategory;
+		if (!aCategory.equals("ALL"))
+		{
+			AbilityCategory cat = AbilityUtilities.getAbilityCategory(aCategory);
+			if (cat != null)
+			{
+				catKey = cat.getAbilityCategory();
+			}
+		}
+		return abilityStore.getKeyIterator(catKey);
 	}
 
 	/**
@@ -980,7 +974,16 @@ public final class Globals
 	 */
 	public static Iterator<? extends Categorisable> getAbilityNameIterator (String aCategory)
 	{
-		return abilityStore.getNameIterator(aCategory);
+		String catKey = aCategory;
+		if (!aCategory.equals("ALL"))
+		{
+			AbilityCategory cat = AbilityUtilities.getAbilityCategory(aCategory);
+			if (cat != null)
+			{
+				catKey = cat.getAbilityCategory();
+			}
+		}
+		return abilityStore.getNameIterator(catKey);
 	}
 
 	/**
@@ -1028,7 +1031,16 @@ public final class Globals
 	 */
 	public static List<? extends Categorisable> getUnmodifiableAbilityList(String aCategory)
 	{
-		return abilityStore.getUnmodifiableList(aCategory);
+		String catKey = aCategory;
+		if (!aCategory.equals("ALL"))
+		{
+			AbilityCategory cat = AbilityUtilities.getAbilityCategory(aCategory);
+			if (cat != null)
+			{
+				catKey = cat.getAbilityCategory();
+			}
+		}
+		return abilityStore.getUnmodifiableList(catKey);
 	}
 
 	/**
@@ -2019,6 +2031,28 @@ public final class Globals
 	}
 
 	/**
+	 * Searches for an exact key match.
+	 *
+	 * @param aKey
+	 * @return an exact match or null
+	 */
+	public static ArmorProf getArmorProfKeyed(final String aKey)
+	{
+		return armorProfs.getKeyed(aKey);
+	}
+
+	/**
+	 * Searches for an exact key match.
+	 *
+	 * @param aKey
+	 * @return an exact match or null
+	 */
+	public static ShieldProf getShieldProfKeyed(final String aKey)
+	{
+		return shieldProfs.getKeyed(aKey);
+	}
+
+	/**
 	 * Get weapon prof names
 	 * @param delim
 	 * @param addArrayMarkers
@@ -2187,6 +2221,24 @@ public final class Globals
 	public static void addWeaponProf(final WeaponProf wp)
 	{
 		weaponProfs.add(wp);
+	}
+
+	/**
+	 * Add a armor proficiency
+	 * @param wp
+	 */
+	public static void addArmorProf(final ArmorProf wp)
+	{
+		armorProfs.add(wp);
+	}
+
+	/**
+	 * Add a shield proficiency
+	 * @param wp
+	 */
+	public static void addShieldProf(final ShieldProf wp)
+	{
+		shieldProfs.add(wp);
 	}
 
 	/**
@@ -2412,6 +2464,7 @@ public final class Globals
 		createEmptyRace();
 		Equipment.clearEquipmentTypes();
 		PersistenceManager.getInstance().emptyLists();
+		SettingsHandler.getGame().clearLstAbilityCategories();
 	}
 
 	/**
@@ -2542,14 +2595,20 @@ public final class Globals
 	 * @param mult
 	 * @return Float
 	 */
-	public static Float maxLoadForLoadScore(final int loadScore, final PlayerCharacter aPC, Float mult)
+	public static Float maxLoadForLoadScore(
+			final int loadScore,
+			final PlayerCharacter aPC,
+			final Float mult)
 	{
-		Float loadValue = SystemCollections.getLoadInfo().getLoadScoreValue(loadScore);
+		final Float loadValue = SystemCollections.getLoadInfo().getLoadScoreValue(loadScore);
 		String formula = SystemCollections.getLoadInfo().getLoadModifierFormula();
 		if (formula.length() != 0)
 		{
-			formula = CoreUtility.replaceAll(formula, "$$SCORE$$", new Float(loadValue.doubleValue() * mult.doubleValue() * getLoadMultForSize(aPC)).toString());
-			return new Float(aPC.getVariableValue(formula, "").intValue());
+			formula = formula.replaceAll(Pattern.quote("$$SCORE$$"),
+			                             Double.toString(loadValue.doubleValue() * 
+			                                             mult.doubleValue() * 
+			                                             getLoadMultForSize(aPC)));
+			return (float) aPC.getVariableValue(formula, "").intValue();
 		}
 		return new Float(loadValue.doubleValue() * mult.doubleValue() * getLoadMultForSize(aPC));
 	}
@@ -2561,6 +2620,24 @@ public final class Globals
 	public static void removeWeaponProfKeyed(final String aKey)
 	{
 		weaponProfs.removeNamed(aKey);
+	}
+
+	/**
+	 * Remove a armor prof by key
+	 * @param aKey
+	 */
+	public static void removeArmorProfKeyed(final String aKey)
+	{
+		armorProfs.removeNamed(aKey);
+	}
+
+	/**
+	 * Remove a shield prof by key
+	 * @param aKey
+	 */
+	public static void removeShieldProfKeyed(final String aKey)
+	{
+		shieldProfs.removeNamed(aKey);
 	}
 
 	/**
@@ -2923,11 +3000,7 @@ public final class Globals
 		return expandRelativePath(defaultPcgPath);
 	}
 
-	static int[] getDieSizes()
-	{
-		return dieSizes;
-	}
-
+	
 	/**
 	 * returns the location of the "filepaths.ini" file
 	 * which could be one of several locations
@@ -3234,7 +3307,8 @@ public final class Globals
 					String formula = SystemCollections.getLoadInfo().getLoadMoveFormula(load.toString());
 					if (formula.length() != 0)
 					{
-						formula = CoreUtility.replaceAll(formula, "$$MOVE$$", new Float(Math.floor(unencumberedMove)).toString());
+						formula = formula.replaceAll(Pattern.quote("$$MOVE$$"),
+						                             Double.toString(Math.floor(unencumberedMove)));
 						return aPC.getVariableValue(formula, "").doubleValue();
 					}
 				}
@@ -3618,8 +3692,31 @@ public final class Globals
 	{
 		return raceMap.remove(aKey.toLowerCase()) != null;
 	}
+	/**
+	 * Get's current gamemodes DieSizes
+	 * @return dieSizes array
+	 */
+	public static int[] getDieSizes()
+	{
+		return SettingsHandler.getGame().getDieSizes();
+	}
+	/**
+	 * Get's current gamemodes MinDieSize
+	 * @return minDieSize
+	 */
+	public static int getMaxDieSize()
+	{
+		return SettingsHandler.getGame().getMaxDieSize();
+	}
+	/**
+	 * Get's current gamemodes MaxDieSize
+	 * @return minDieSize
+	 */
+	public static int getMinDieSize()
+	{
+		return SettingsHandler.getGame().getMinDieSize();
+	}	
 	
-
 	private static PCGenGraph masterGraph;
 	
 	public static void setMasterGraph(PCGenGraph master) {

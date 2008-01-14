@@ -22,11 +22,6 @@
  */
 package pcgen.core;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.levelability.LevelAbility;
@@ -41,6 +36,12 @@ import pcgen.util.chooser.ChooserFactory;
 import pcgen.util.chooser.ChooserInterface;
 import pcgen.util.enumeration.Load;
 import pcgen.util.enumeration.Visibility;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 /**
  * <code>Skill</code>.
@@ -235,7 +236,7 @@ public final class Skill extends PObject
 			return true;
 		}
 
-		for (Ability aFeat : aPC.aggregateFeatList())
+		for (Ability aFeat : aPC.getFullAbilitySet())
 		{
 			if (aFeat.hasCSkill(keyName))
 			{
@@ -1171,11 +1172,12 @@ public final class Skill extends PObject
 		String aString = Globals.getGameModeRankModFormula();
 		if (aString.length() != 0)
 		{
-			aString = CoreUtility.replaceAll(aString, "$$RANK$$", getTotalRank(aPC).toString());
+			aString = aString.replaceAll(Pattern.quote("$$RANK$$"),
+			                             getTotalRank(aPC).toString());
 			bonus += aPC.getVariableValue(aString, "").intValue();
 		}
 
-		return Integer.valueOf(bonus);
+		return bonus;
 	}
 
 	/**
@@ -1429,7 +1431,7 @@ public final class Skill extends PObject
 			}
 		}
 
-		for ( Ability feat : aPC.aggregateFeatList() )
+		for ( Ability feat : aPC.getFullAbilitySet() )
 		{
 			if (feat.hasCcSkill(keyName))
 			{
@@ -1476,6 +1478,26 @@ public final class Skill extends PObject
 		for ( PCTemplate template : aPC.getTemplateList() )
 		{
 			if (template.hasCcSkill(keyName))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if this skill is cross class for any of the list of classes.
+	 * 
+	 * @param aList List of classes to be checked
+	 * @param aPC The character we are checking for.
+	 * @return true if it is a cross-class skill for any of the classes.
+	 */
+	boolean isCrossClassSkill(final List<PCClass> aList, final PlayerCharacter aPC)
+	{
+		for ( PCClass pcClass : aList )
+		{
+			if (isCrossClassSkill(pcClass, aPC))
 			{
 				return true;
 			}
@@ -1692,7 +1714,8 @@ public final class Skill extends PObject
 		String aString = Globals.getGameModeRankModFormula();
 		if (aString.length() != 0)
 		{
-			aString = CoreUtility.replaceAll(aString, "$$RANK$$", getTotalRank(aPC).toString());
+			aString = aString.replaceAll(Pattern.quote("$$RANK$$"), 
+			                             getTotalRank(aPC).toString());
 			bonus = aPC.getVariableValue(aString, "").intValue();
 			appendBonusDesc(bonusDetails, bonus, "RANKS");
 		}

@@ -47,7 +47,7 @@ import pcgen.persistence.lst.CampaignSourceEntry;
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  * @version $Revision$
  */
-public final class Campaign extends PObject
+public class Campaign extends PObject
 {
 	private Map<String, String> publisherMap = new HashMap<String, String>();
 	private Properties options = new Properties();
@@ -67,6 +67,7 @@ public final class Campaign extends PObject
 		listChar.initializeListFor(ListKey.LICENSE);
 		listChar.initializeListFor(ListKey.LINE);
 		listChar.initializeListFor(ListKey.SECTION_15);
+		listChar.initializeListFor(ListKey.FILE_ABILITY_CATEGORY);
 		listChar.initializeListFor(ListKey.FILE_BIO_SET);
 		listChar.initializeListFor(ListKey.FILE_CLASS);
 		listChar.initializeListFor(ListKey.FILE_CLASS_SKILL);
@@ -89,6 +90,8 @@ public final class Campaign extends PObject
 		listChar.initializeListFor(ListKey.FILE_SPELL);
 		listChar.initializeListFor(ListKey.FILE_TEMPLATE);
 		listChar.initializeListFor(ListKey.FILE_WEAPON_PROF);
+		listChar.initializeListFor(ListKey.FILE_ARMOR_PROF);
+		listChar.initializeListFor(ListKey.FILE_SHIELD_PROF);
 	}
 
 	/**
@@ -98,6 +101,15 @@ public final class Campaign extends PObject
 	public void addAllAbilityFiles(final List<CampaignSourceEntry> files)
 	{
 		listChar.addAllToListFor(ListKey.FILE_ABILITY, files);
+	}
+
+	/**
+	 * Add a list of ability category files to the campaign
+	 * @param files
+	 */
+	public void addAllAbilityCategoryFiles(final List<CampaignSourceEntry> files)
+	{
+		listChar.addAllToListFor(ListKey.FILE_ABILITY_CATEGORY, files);
 	}
 
 	/**
@@ -296,6 +308,15 @@ public final class Campaign extends PObject
 	public void addAbilityFile(final CampaignSourceEntry file)
 	{
 		listChar.addToListFor(ListKey.FILE_ABILITY, file);
+	}
+
+	/**
+	 * Add an ability category file to the campaign
+	 * @param file
+	 */
+	public void addAbilityCategoryFile(final CampaignSourceEntry file)
+	{
+		listChar.addToListFor(ListKey.FILE_ABILITY_CATEGORY, file);
 	}
 
 	/**
@@ -548,6 +569,24 @@ public final class Campaign extends PObject
 	 *
 	 * @param file
 	 */
+	public void addArmorProfFile(final CampaignSourceEntry file)
+	{
+		listChar.addToListFor(ListKey.FILE_ARMOR_PROF, file);
+	}
+
+	/**
+	 *
+	 * @param file
+	 */
+	public void addShieldProfFile(final CampaignSourceEntry file)
+	{
+		listChar.addToListFor(ListKey.FILE_SHIELD_PROF, file);
+	}
+
+	/**
+	 *
+	 * @param file
+	 */
 	public void addWeaponProfFile(final CampaignSourceEntry file)
 	{
 		listChar.addToListFor(ListKey.FILE_WEAPON_PROF, file);
@@ -560,6 +599,15 @@ public final class Campaign extends PObject
 	public List<CampaignSourceEntry> getAbilityFiles()
 	{
 		return getListFor(ListKey.FILE_ABILITY);
+	}
+
+	/**
+	 * Returns the abilityCategoryFileList.
+	 * @return List
+	 */
+	public List<CampaignSourceEntry> getAbilityCategoryFiles()
+	{
+		return getListFor(ListKey.FILE_ABILITY_CATEGORY);
 	}
 
 	/**
@@ -938,6 +986,24 @@ public final class Campaign extends PObject
 	public List<CampaignSourceEntry> getTemplateFiles()
 	{
 		return getListFor(ListKey.FILE_TEMPLATE);
+	}
+
+	/**
+	 * Returns the armorProfFileList.
+	 * @return List
+	 */
+	public List<CampaignSourceEntry> getArmorProfFiles()
+	{
+		return getListFor(ListKey.FILE_ARMOR_PROF);
+	}
+
+	/**
+	 * Returns the shieldProfFileList.
+	 * @return List
+	 */
+	public List<CampaignSourceEntry> getShieldProfFiles()
+	{
+		return getListFor(ListKey.FILE_SHIELD_PROF);
 	}
 
 	/**

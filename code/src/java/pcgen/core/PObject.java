@@ -880,7 +880,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 
 	/**
 	 * Add the item to the associated list for this object
-	 * @param aString
+	 * @param aString the string to add to the associated list
 	 */
 	public final void addAssociated(final String aString)
 	{
@@ -1860,14 +1860,17 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 
 	public void addSABToList(List<SpecialAbility> saList, PlayerCharacter pc)
 	{
-		List<SpecialAbility> sabs = mapChar.getListFor(MapKey.SAB, -9);
-		if (sabs != null)
+		for (Integer lvl : mapChar.getSecondaryKeySet(MapKey.SAB))
 		{
-			for (SpecialAbility sa : sabs)
+			List<SpecialAbility> sabs = mapChar.getListFor(MapKey.SAB, lvl);
+			if (sabs != null)
 			{
-				if (pc == null || sa.qualifies(pc))
+				for (SpecialAbility sa : sabs)
 				{
-					saList.add(sa);
+					if (pc == null || sa.qualifies(pc))
+					{
+						saList.add(sa);
+					}
 				}
 			}
 		}
@@ -3004,9 +3007,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 		{
 			levAbility.setOwner(this);
 
-			if (
-				!(this instanceof PCClass) ||
-				((levAbility.level() == aLevel) && levAbility.canProcess()))
+			if ((levAbility.level() == aLevel) && levAbility.canProcess())
 			{
 				boolean canProcess = true;
 
@@ -3145,6 +3146,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 		}
 		else
 		{
+			addAddsForLevel(-9, aPC, null);
 			addAddsForLevel(0, aPC, null);
 		}
 
@@ -3315,12 +3317,19 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 			String tok = aTok.nextToken();
 
 			if ((tok.startsWith("TYPE=") || tok.startsWith("TYPE."))
-				&& tag.startsWith("WEAPON") && expandWeaponTypes)
-			{
-				List<String> xList = processWeaponAutoTags(aPC, tok);
+					&& tag.startsWith("WEAPON") && expandWeaponTypes)
+				{
+					List<String> xList = processWeaponAutoTags(aPC, tok.substring(5));
 
-				aList.addAll(xList);
-			}
+					aList.addAll(xList);
+				}
+			else if ((tok.startsWith("WEAPONTYPE=") || tok.startsWith("WEAPONTYPE."))
+					&& tag.startsWith("WEAPON") && expandWeaponTypes)
+				{
+					List<String> xList = processWeaponAutoTags(aPC, tok.substring(11));
+
+					aList.addAll(xList);
+				}
 			else if ((tok.startsWith("TYPE=") || tok.startsWith("TYPE."))
 				&& tag.startsWith("ARMOR"))
 			{
@@ -3390,7 +3399,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 	 */
 	private List<String> processWeaponAutoTags(final PlayerCharacter aPC, String tok)
 	{
-		final StringTokenizer bTok = new StringTokenizer(tok.substring(5), ".");
+		final StringTokenizer bTok = new StringTokenizer(tok, ".");
 		List<String> xList = null;
 
 		while (bTok.hasMoreTokens())

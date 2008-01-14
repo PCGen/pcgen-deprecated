@@ -22,16 +22,12 @@
  */
 package pcgen.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import pcgen.core.prereq.PrereqHandler;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+
+import java.util.*;
 
 /**
  * This tiny little class replaces a simple string representation of an Ability.
@@ -45,10 +41,10 @@ import pcgen.persistence.lst.prereq.PreParserFactory;
 public class AbilityInfo implements Comparable<Object>, Categorisable
 {
 	protected String keyName;
-	protected String category;
+    protected String category;
 	private Ability realThing;
 	private List<Prerequisite> prereqList;
-	private ArrayList<String> decorations;
+	private List<String> decorations;
 	protected char delim = '<';
 
 	private static final String split1 = "[<>\\|]";
@@ -62,7 +58,7 @@ public class AbilityInfo implements Comparable<Object>, Categorisable
 	 * @param key
 	 *            the Key of the Ability
 	 */
-	public AbilityInfo(String category, String key)
+	public AbilityInfo(final String category, final String key)
 	{
 		super();
 
@@ -99,8 +95,7 @@ public class AbilityInfo implements Comparable<Object>, Categorisable
 			{
 				// get the decorations, throw away the name (because we already
 				// have it in keyname)
-				EquipmentUtilities
-					.getUndecoratedName(this.keyName, decorations);
+				AbilityUtilities.getUndecoratedName(this.keyName, decorations);
 			}
 		}
 
@@ -114,7 +109,7 @@ public class AbilityInfo implements Comparable<Object>, Categorisable
 	 */
 	public Iterator<String> getChoicesIterator()
 	{
-		List<String> returnList;
+		final List<String> returnList;
 		if (getAbility() != null)
 		{
 			returnList = decorations;
@@ -164,11 +159,11 @@ public class AbilityInfo implements Comparable<Object>, Categorisable
 	 * Extract the key and any prerequisites that this Ability has, store them
 	 * in the object's fields
 	 * 
-	 * @param unparsed
+	 * @param unparsed the name of the Ability with any prereqs
 	 */
-	protected void extractPrereqs(String unparsed)
+	protected void extractPrereqs(final String unparsed)
 	{
-		int start = unparsed.indexOf(delim);
+		final int start = unparsed.indexOf(delim);
 
 		if ((start < 0))
 		{
@@ -182,9 +177,8 @@ public class AbilityInfo implements Comparable<Object>, Categorisable
 				prereqList = new ArrayList<Prerequisite>();
 			}
 
-			List<String> tokens = Arrays.asList(unparsed
-				.split(delim == '<' ? split1 : split2));
-			Iterator<String> tokIt = tokens.iterator();
+			final List<String> tokens = Arrays.asList(unparsed.split(delim == '<' ? split1 : split2));
+			final Iterator<String> tokIt = tokens.iterator();
 
 			// extract and assign the choice from the unparsed string
 			this.keyName = tokIt.next();
@@ -218,15 +212,10 @@ public class AbilityInfo implements Comparable<Object>, Categorisable
 	 * 
 	 * @return whether the PC qualifies
 	 */
-	public boolean qualifies(PlayerCharacter pc)
+	public boolean qualifies(final PlayerCharacter pc)
 	{
-		if (prereqList == null)
-		{
-			return true;
-		}
-
-		return PrereqHandler.passesAll(prereqList, pc, this.getAbility());
-	}
+        return prereqList == null || PrereqHandler.passesAll(prereqList, pc, this.getAbility());
+    }
 
 	/**
 	 * Compares this AbilityInfo Object with an Object passed in. The object
@@ -238,26 +227,24 @@ public class AbilityInfo implements Comparable<Object>, Categorisable
 	 * @return the result of the compare, negative integer if this should sort
 	 *         before
 	 */
-	public int compareTo(Object obj)
+	public int compareTo(final Object obj)
 	{
-		String otherCat = this.category;
 
-		try
+        try
 		{
-			otherCat = ((AbilityInfo) obj).getCategory();
+            final String otherCat = ((Categorisable) obj).getCategory();
 
-			if (otherCat.compareTo(this.category) != 0)
+            if (otherCat.compareTo(this.category) != 0)
 			{
 				return otherCat.compareTo(this.getCategory());
 			}
-			return ((AbilityInfo) obj).getKeyName()
-				.compareTo(this.getKeyName());
+			return ((Categorisable) obj).getKeyName().compareTo(this.getKeyName());
 		}
 		catch (ClassCastException e)
 		{
 			try
 			{
-				Ability ab = (Ability) obj;
+				final Ability ab = (Ability) obj;
 
 				return this.getAbility().compareTo(ab);
 			}

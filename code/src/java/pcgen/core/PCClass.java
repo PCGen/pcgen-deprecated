@@ -25,6 +25,7 @@ package pcgen.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1694,9 +1695,15 @@ public class PCClass extends PObject {
 	 * getDisplayName()?  What additional value does this provide by being
 	 * a separate method?? - thpr 11/6/06
 	 */
-	public String getDisplayClassName() {
-		if ((subClassKey.length() > 0) && !subClassKey.equals(Constants.s_NONE)) {
-			return getSubClassKeyed(subClassKey).getDisplayName();
+	public String getDisplayClassName()
+	{
+		if ((subClassKey.length() > 0) && !subClassKey.equals(Constants.s_NONE))
+		{
+			SubClass sc = getSubClassKeyed(subClassKey);
+			if (sc != null)
+			{
+				return sc.getDisplayName();
+			}
 		}
 
 		return getDisplayName();
@@ -1863,7 +1870,24 @@ public class PCClass extends PObject {
 	 */
 	private int calcHitDieLock(String dieLock, final int currDie) {
 		final int[] dieSizes = Globals.getDieSizes();
+		final int maxDie	= Globals.getMaxDieSize();
+		final int minDie	= Globals.getMinDieSize();
 		int diedivide;
+		
+		int minIndex = 0;
+		int maxIndex = 0;
+		
+		for (int i = 0; i < dieSizes.length; i++)
+		{
+			if (dieSizes[i] == minDie )
+			{
+				minIndex = i;
+			}
+			else if (dieSizes[i] == maxDie )
+			{
+				maxIndex = i;
+			}
+		}
 
 		StringTokenizer tok = new StringTokenizer(dieLock, Constants.PIPE);
 		dieLock = tok.nextToken();
@@ -1880,7 +1904,7 @@ public class PCClass extends PObject {
 				}
 			} else if (prereq.startsWith("CLASS=")) {
 				if (!getKeyName().equals(
-						prereq.substring(prereq.indexOf("="), prereq.length()))) {
+						prereq.substring(prereq.indexOf("=")+1, prereq.length()))) {
 					return currDie;
 				}
 			}
@@ -1909,63 +1933,90 @@ public class PCClass extends PObject {
 		} else if (dieLock.startsWith("%up")) {
 			diedivide = Integer.parseInt(dieLock.substring(3));
 
-			// lock in valid values.
-			if (diedivide > 4) {
-				diedivide = 4;
+			if (diedivide < 0) 
+			{
+				return currDie;
 			}
-
-			if (diedivide < 0) {
-				diedivide = 0;
-			}
-
-			for (int i = 3; i <= (7 - diedivide); ++i) {
-				if (currDie == dieSizes[i]) {
-					return dieSizes[i + diedivide];
+			
+			for (int i = 0; i <= dieSizes.length; ++i) 
+			{
+				if (currDie == dieSizes[i]) 
+				{
+					if ((i + diedivide) > maxIndex)
+					{
+						return maxDie;
+					}
+					else 
+					{
+						return dieSizes[i + diedivide]; 
+					}
 				}
 			}
-
-			diedivide = dieSizes[7]; // If they went too high, they get maxed
-										// out.
 		} else if (dieLock.startsWith("%Hup")) {
 			diedivide = Integer.parseInt(dieLock.substring(4));
 
-			for (int i = 0; i < ((dieSizes.length) - diedivide); ++i) {
-				if (currDie == dieSizes[i]) {
-					return dieSizes[i + diedivide];
+			if (diedivide < 0) 
+			{
+				return currDie;
+			}
+			
+			for (int i = 0; i <= dieSizes.length; ++i) 
+			{
+				if (currDie == dieSizes[i]) 
+				{
+					if ((i+ diedivide) > dieSizes.length-1)
+					{
+						return dieSizes[dieSizes.length-1]; 
+					}
+					else 
+					{
+						return dieSizes[i + diedivide]; 
+					}
 				}
 			}
 
-			diedivide = dieSizes[dieSizes.length]; // If they went too high,
-													// they get maxed out.
 		} else if (dieLock.startsWith("%down")) {
 			diedivide = Integer.parseInt(dieLock.substring(5));
-
-			// lock in valid values.
-			if (diedivide > 4) {
-				diedivide = 4;
+			
+			if (diedivide < 0) 
+			{
+				return currDie;
 			}
-
-			if (diedivide < 0) {
-				diedivide = 0;
-			}
-
-			for (int i = (3 + diedivide); i <= 7; ++i) {
-				if (currDie == dieSizes[i]) {
-					return dieSizes[i - diedivide];
+			
+			for (int i = 0; i <= dieSizes.length; ++i) 
+			{
+				if (currDie == dieSizes[i]) 
+				{
+					if ((i - diedivide) < minIndex)
+					{
+						return minDie; 
+					}
+					else 
+					{
+						return dieSizes[i - diedivide]; 
+					}
 				}
 			}
-
-			diedivide = dieSizes[3]; // Minimum valid if too low.
 		} else if (dieLock.startsWith("%Hdown")) {
-			diedivide = Integer.parseInt(dieLock.substring(5));
-
-			for (int i = diedivide; i < dieSizes.length; ++i) {
-				if (currDie == dieSizes[i]) {
-					return dieSizes[i - diedivide];
+			diedivide = Integer.parseInt(dieLock.substring(6));
+			if (diedivide < 0) {
+				return currDie;
+			}
+			
+			for (int i = 0; i <= dieSizes.length; ++i) 
+			{
+				if (currDie == dieSizes[i]) 
+				{
+					if ((i - diedivide) < 0)
+					{
+						return dieSizes[0];
+					}
+					else 
+					{
+						return dieSizes[i - diedivide]; 
+					}
 				}
 			}
-
-			diedivide = dieSizes[0]; // floor them if they're too low.
 		} else {
 			diedivide = Integer.parseInt(dieLock);
 		}
@@ -4236,7 +4287,7 @@ public class PCClass extends PObject {
 	 * selected substitutionClass, if any, is structured into the PCClassLevel
 	 * during the construction of the PCClassLevel
 	 */
-	public List getSubstitutionClassList() {
+	public List<SubstitutionClass> getSubstitutionClassList() {
 		return substitutionClassList;
 	}
 
@@ -4869,13 +4920,7 @@ public class PCClass extends PObject {
 	}
 
 	/**
-	 * Adds a level of this class to the current Global PC.
-	 * 
-	 * This method is deeply evil. This instance of the PCClass has been
-	 * assigned to a PlayerCharacter, but the only way we can get from this
-	 * class back to the PlayerCharacter is to get the current global character
-	 * and hope that the caller is only calling this method on a PCClass
-	 * embedded within the current global PC.
+	 * Adds a level of this class to the character.
 	 * 
 	 * TODO: Split the PlayerCharacter code out of PCClass (i.e. the level
 	 * property). Then have a joining class assigned to PlayerCharacter that
@@ -4893,9 +4938,9 @@ public class PCClass extends PObject {
 	 *            questions.
 	 * @param aPC
 	 *            The character we are adding the level to.
-	 * @param isLoading
-	 *            True if the character is being loaded and prereqs for the
-	 *            level should be ignored.
+	 * @param ignorePrereqs
+	 *            True if prereqs for the level should be ignored. Used in 
+	 *            situations such as when the character is being loaded.
 	 * @return true or false
 	 */
 	/*
@@ -4906,7 +4951,7 @@ public class PCClass extends PObject {
 	 */
 	boolean addLevel(final PCLevelInfo pcLevelInfo, final boolean argLevelMax,
 			final boolean bSilent, final PlayerCharacter aPC,
-			final boolean isLoading) {
+			final boolean ignorePrereqs) {
 
 		// Check to see if we can add a level of this class to the
 		// current character
@@ -4914,7 +4959,7 @@ public class PCClass extends PObject {
 		boolean levelMax = argLevelMax;
 
 		level += 1;
-		if (!isLoading) {
+		if (!ignorePrereqs) {
 			// When loading a character, classes are added before feats, so
 			// this test would always fail on loading if feats are required
 			boolean doReturn = false;
@@ -4980,12 +5025,13 @@ public class PCClass extends PObject {
 		aPC.setAutomaticAbilitiesStable(null, false);
 //		aPC.setAutomaticFeatsStable(false);
 		doPlusLevelMods(newLevel, aPC, pcLevelInfo);
+		aPC.addAddsFromAllObjForLevel();
 
 		// Don't roll the hit points if the gui is not being used.
 		// This is so GMGen can add classes to a person without pcgen flipping
 		// out
 		if (Globals.getUseGUI()) {
-			rollHP(aPC, level, aPC.getTotalLevels() == 1);
+			rollHP(aPC, level, (SettingsHandler.isHPMaxAtFirstClassLevel() ? aPC.totalNonMonsterLevels() : aPC.getTotalLevels()) == 1);
 		}
 
 		if (!aPC.isImporting()) {
@@ -5999,7 +6045,7 @@ public class PCClass extends PObject {
 	 */
 	private void buildSubstitutionClassChoiceList(final List<PCClass> choiceList,
 			final int level, final PlayerCharacter aPC) {
-
+		
 		for (SubstitutionClass sc : substitutionClassList) {
 			if (!PrereqHandler.passesAll(sc.getPreReqList(), aPC, this)) {
 				continue;
@@ -6010,6 +6056,8 @@ public class PCClass extends PObject {
 
 			choiceList.add(sc);
 		}
+		Collections.sort(choiceList); 	// sort the SubstitutionClass's 
+		choiceList.add(0,this); 		// THEN add the base class as the first choice
 	}
 
 	/**
@@ -6164,6 +6212,33 @@ public class PCClass extends PObject {
 			choiceList.add(columnList);
 		}
 		
+		Collections.sort(choiceList, new Comparator<List> () 
+			{
+				public int compare(List o1, List o2)
+				{
+					try
+					{
+						PCClass class1 = ((List<PCClass>) o1).get(0);
+						PCClass class2 = ((List<PCClass>) o2).get(0);
+						return class1.compareTo(class2);
+					}
+					catch (RuntimeException e)
+					{
+						return 0; 
+					}
+				}
+			}
+		);
+		
+		// add base class to the chooser at the TOP
+		final List<Object> columnList2 = new ArrayList<Object>(3);
+		columnList2.add(this);
+		columnList2.add("0");
+		columnList2.add("");
+		choiceList.add(0,columnList2);
+		
+		
+		
 		/*
 		 * REFACTOR This makes an assumption that SubClasses are ONLY Schools, which may
 		 * not be a fabulous assumption
@@ -6187,16 +6262,26 @@ public class PCClass extends PObject {
 			c.setVisible(true);
 		}
 
-		List<List<SubClass>> selectedList = c.getSelectedList();
-
-		if (!selectedList.isEmpty()) {
+		List<List<PCClass>> selectedList = c.getSelectedList(); 
+		if (selectedList.size() == 0)
+		{
+			return;
+		}
+		List<PCClass> selectedRow = selectedList.get(0);
+		if (selectedRow.size() == 0)
+		{
+			return;
+		}
+		PCClass subselected = selectedRow.get(0);
+		
+		if (!selectedList.isEmpty() && subselected instanceof SubClass) {
 			clearProhibitedSchools();
 			/*
 			 * CONSIDER What happens to this reset during PCClass/PCClassLevel split
 			 */
 			specialtyList = null;
-
-			SubClass sc = selectedList.get(0).get(0);
+			
+			SubClass sc = (SubClass) subselected;
 			choiceList = new ArrayList<List>();
 			
 			for (SubClass sub : subClassList) {
@@ -6247,7 +6332,7 @@ public class PCClass extends PObject {
 				c1.setVisible(true);
 				selectedList = c1.getSelectedList();
 
-				for (Iterator<List<SubClass>> i = selectedList.iterator(); i
+				for (Iterator<List<PCClass>> i = selectedList.iterator(); i
 						.hasNext();) {
 					final List columns = i.next();
 					sc = (SubClass) columns.get(0);
@@ -6272,14 +6357,17 @@ public class PCClass extends PObject {
 
 		List<PCClass> choiceList = new ArrayList<PCClass>();
 		buildSubstitutionClassChoiceList(choiceList, level, aPC);
-		if (choiceList.size() == 0) {
-			return;
+		if (choiceList.size() <= 1) {
+			return;			// This means the there are no classes for which
+							// the pc meets the prerequisitions and thus the 
+							// base class is chosen.
 		}
 
 		final ChooserInterface c = ChooserFactory.getChooserInstance();
 		c.setTitle("Substitution Levels");
 		c.setMessageText("Choose one of the listed substitution levels " +
-                         "or press Close to take the standard class level.");
+                         "or the base class(top entry).  "
+						+"Pressing Close will take the standard class level.");
 		c.setPool(1);
 		c.setPoolFlag(false);
 
@@ -6288,15 +6376,29 @@ public class PCClass extends PObject {
 
 		c.setVisible(true);
 
-		List<SubstitutionClass> selectedList = c.getSelectedList();
-
-		if (!selectedList.isEmpty()) {
-			SubstitutionClass sc = selectedList.get(0);
+		List<PCClass> selectedList = c.getSelectedList();
+		PCClass selected =selectedList.get(0);	
+		
+		if ((!selectedList.isEmpty()) && selected instanceof SubstitutionClass) 
+		{
+			SubstitutionClass sc = (SubstitutionClass)selected;
 			setSubstitutionClassKey(sc.getKeyName(), aLevel);
 			sc.applyLevelArrayModsToLevel(this, aLevel);
 			return;
 		}
-		setSubstitutionClassKey(null, aLevel);
+		else 
+		{
+			/*	
+			 *  the original code has the below line..
+			 *	however, it appears to not be needed.
+			 *	I say this because if the original buildSubstitutionClassChoiceList
+			 *	method returned an empty list, it returned right away without
+			 *	calling this method.
+			*/
+			setSubstitutionClassKey(null, aLevel);
+			return;
+		}
+		
 	}
 
 	/*

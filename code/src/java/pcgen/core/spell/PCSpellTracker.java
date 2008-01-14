@@ -27,8 +27,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.core.Ability;
 import pcgen.core.CharacterDomain;
 import pcgen.core.Domain;
 import pcgen.core.PObject;
@@ -94,8 +96,9 @@ public class PCSpellTracker {
 			buildSpellInfoMap(spellInfoMap, key1, key2, e);
 		}
 
-		if (!pc.aggregateFeatList().isEmpty()) {
-			e = pc.aggregateFeatList().iterator();
+		Set<Ability> abilitySet = pc.getFullAbilitySet();
+		if (!abilitySet.isEmpty()) {
+			e = abilitySet.iterator();
 			buildSpellInfoMap(spellInfoMap, key1, key2, e);
 		}
 
@@ -206,8 +209,9 @@ public class PCSpellTracker {
 			buildSpellLevelMap(levelMatch, e);
 		}
 
-		if (!pc.aggregateFeatList().isEmpty()) {
-			e = pc.aggregateFeatList().iterator();
+		Set<Ability> abilitySet = pc.getFullAbilitySet();
+		if (!abilitySet.isEmpty()) {
+			e = abilitySet.iterator();
 			buildSpellLevelMap(levelMatch, e);
 		}
 

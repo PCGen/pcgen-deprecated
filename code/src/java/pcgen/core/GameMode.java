@@ -172,9 +172,13 @@ public final class GameMode implements Comparable<Object>
 	private boolean [] skillTabColumnVisible = { true, true, true, true, true, true, true };				// Skill, Modifier, Ranks, Total, Cost, Source, Order
 
 	private List<AbilityCategory> theAbilityCategories = new ArrayList<AbilityCategory>(5);
+	private List<AbilityCategory> theLstAbilityCategories = new ArrayList<AbilityCategory>();
 
 	private String thePreviewDir;
 	private String theDefaultPreviewSheet;
+	private int [] dieSizes;
+	private int maxDieSize = 12;
+	private int minDieSize = 4;
 	
 	/**
 	 * Creates a new instance of GameMode.
@@ -3147,6 +3151,27 @@ public final class GameMode implements Comparable<Object>
 	{
 		theAbilityCategories.add(aCategory);
 	}
+
+	/**
+	 * Adds an <tt>AbilityCategory</tt> definition to the game mode.
+	 * 
+	 * @param aCategory The <tt>AbilityCategory</tt> to add.
+	 */
+	public void addLstAbilityCategory(final AbilityCategory aCategory)
+	{
+		theLstAbilityCategories.add(aCategory);
+	}
+
+	/**
+	 * Clears all LST sourced <tt>AbilityCategory</tt> definitions from the 
+	 * game mode. Used when unloading the data.
+	 * 
+	 * @param aCategory The <tt>AbilityCategory</tt> to add.
+	 */
+	public void clearLstAbilityCategories()
+	{
+		theLstAbilityCategories.clear();
+	}
 	
 	/**
 	 * Gets the <tt>AbilityCategory</tt> for the given key.
@@ -3194,7 +3219,10 @@ public final class GameMode implements Comparable<Object>
 		{
 			theAbilityCategories.add(0, AbilityCategory.FEAT);
 		}
-		return Collections.unmodifiableCollection(theAbilityCategories);
+		List<AbilityCategory> allCats = new ArrayList<AbilityCategory>();
+		allCats.addAll(theAbilityCategories);
+		allCats.addAll(theLstAbilityCategories);
+		return Collections.unmodifiableCollection(allCats);
 	}
 	
 	/**
@@ -3211,13 +3239,35 @@ public final class GameMode implements Comparable<Object>
 			return Collections.emptyList();
 		}
 		List<AbilityCategory> catList = new ArrayList<AbilityCategory>();
-		if ( !theAbilityCategories.contains(AbilityCategory.FEAT) )
-		{
-			theAbilityCategories.add(0, AbilityCategory.FEAT);
-		}
-		for (AbilityCategory cat : theAbilityCategories)
+		for (AbilityCategory cat : getAllAbilityCategories())
 		{
 			if (displayLoc.equals(cat.getDisplayLocation()))
+			{
+				catList.add(cat);
+			}
+		}
+		return Collections.unmodifiableCollection(catList);
+	}
+
+	
+	/**
+	 * Returns a <tt>Collection</tt> of <tt>AbilityCategory</tt> objects 
+	 * defined by this game mode that match the category key.
+	 * 
+	 * @param key The category key to filter for.
+	 * @return A <tt>Collection</tt> of <tt>AbilityCategory</tt> objects.
+	 */
+	public Collection<AbilityCategory> getAllAbilityCatsForKey(String key)
+	{
+		if (key == null)
+		{
+			return Collections.emptyList();
+		}
+		List<AbilityCategory> catList = new ArrayList<AbilityCategory>();
+		for (AbilityCategory cat : getAllAbilityCategories())
+		{
+			if (key.equals(cat.getKeyName())
+				|| key.equals(cat.getAbilityCategory()))
 			{
 				catList.add(cat);
 			}
@@ -3243,6 +3293,120 @@ public final class GameMode implements Comparable<Object>
 	public String getDefaultPreviewSheet()
 	{
 		return theDefaultPreviewSheet;
+	}
+	/**
+	 * Parses the DIESIZE tag's values to create 
+	 * the dieSizes array
+	 * 
+	 * @param value
+	 */
+	public void setDieSizes(final String value)
+	{
+		final StringTokenizer aTok = new StringTokenizer(value, ",", false);
+		List<Integer> list = new ArrayList<Integer>();
+		while (aTok.hasMoreTokens())
+		{
+			String aString = aTok.nextToken();
+			// in case there is training\leading whitespace after the comma split
+			aString = aString.trim(); 
+			String minValue;
+			String maxValue;
+			
+			try
+			{
+			if (aString.contains("MIN="))
+				{
+					String[] t = aString.split("MIN=");
+					minValue = t[1];
+					int die = Integer.parseInt(minValue);
+					setMinDieSize(die);
+					list.add(die);
+				}
+				else if (aString.contains("MAX="))
+				{
+					String[] t = aString.split("MAX=");
+					maxValue = t[1];
+					int die = Integer.parseInt(maxValue);
+					setMaxDieSize(die);
+					list.add(die);
+				}
+				else 
+				{
+					int die = Integer.parseInt(aString);
+					list.add(die);
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				Logging.errorPrint("Invalid integer value for DIESIZES: " + aString + ".  Original value: DIESIZES:"+ value);
+			}
+			
+		}
+		if (list.size() == 0)
+		{
+			return;
+		}
+		
+		int[] dieSizes = new int[list.size()];
+		
+		for (int i = 0; i < list.size(); i++)
+		{
+			dieSizes[i] = list.get(i);
+		}
+		list = null;
+		this.setDieSizes(dieSizes);
+	}
+	
+	/**
+	 * Get's current gamemodes MaxDieSize
+	 * @return maxDieSize
+	 */
+	public int getMaxDieSize()
+	{
+		return maxDieSize;
+	}	
+	/**
+	 * Sets's current gamemodes MaxDieSize
+	 * @param dice 
+	 */	
+	public void setMaxDieSize(final int dice)
+	{
+		maxDieSize = dice;
+	}
+	
+	/**
+	 * Get's current gamemodes MinDieSize
+	 * @return minDieSize
+	 */
+	public int getMinDieSize()
+	{
+		return minDieSize;
+	}
+	/**
+	 * Sets's current gamemodes MinDieSize
+	 * @param dice 
+	 */
+	public void setMinDieSize(final int dice)
+	{
+		minDieSize = dice;
+	}
+		
+
+	/**
+	 * Get's current gamemodes DieSizes
+	 * @return dieSizes array
+	 */
+	public int[] getDieSizes()
+	{
+		return dieSizes;
+	}
+	/**
+	 * Set's DieSizes available for the gamemode
+	 * @param die The parsed integer diesizes
+	 */
+	public void setDieSizes(int[] die)
+	{
+		this.dieSizes = die;
 	}
 }
 

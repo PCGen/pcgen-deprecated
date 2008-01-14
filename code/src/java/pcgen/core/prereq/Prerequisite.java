@@ -21,11 +21,11 @@
  */
 package pcgen.core.prereq;
 
+import pcgen.util.PropertyFactory;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import pcgen.core.utils.CoreUtility;
-import pcgen.util.PropertyFactory;
+import java.util.regex.Pattern;
 
 /**
  * @author frugal@purplewombat.co.uk
@@ -347,8 +347,8 @@ public class Prerequisite implements Cloneable
 	 */
 	public void expandToken(final String token, final String tokenValue)
 	{
-		key = CoreUtility.replaceAll(key, token, tokenValue);
-		operand = CoreUtility.replaceAll(operand, token, tokenValue);
+		key     = key.replaceAll(Pattern.quote(token), tokenValue);
+		operand = operand.replaceAll(Pattern.quote(token), tokenValue);
 
 		if (prerequisites != null)
 		{

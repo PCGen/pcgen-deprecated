@@ -29,7 +29,6 @@ package pcgen.core;
  */
 public final class ArmorProf extends PObject implements Comparable<Object>
 {
-
 	/**
 	 * Compares keyName only
 	 *
