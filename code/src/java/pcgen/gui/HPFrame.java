@@ -20,18 +20,18 @@
  */
 package pcgen.gui;
 
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
 import pcgen.gui.utils.IconUtilitities;
 import pcgen.gui.utils.Utility;
 import pcgen.util.PropertyFactory;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
 
 /**
  * Popup frame with export options
@@ -48,9 +48,8 @@ final class HPFrame extends JFrame
 		super();
 		setTitle(myGetTitle());
 
+		IconUtilitities.maybeSetIcon(this, IconUtilitities.RESOURCE_APP_ICON);
 		Toolkit kit = Toolkit.getDefaultToolkit();
-		Image img = kit.getImage(getClass().getResource(IconUtilitities.RESOURCE_URL + "PcgenIcon.gif"));
-		this.setIconImage(img);
 
 		// since the Toolkit.getScreenSize() method is broken in the Linux implementation
 		// of Java 5  (it returns double the screen size under xinerama), this method is

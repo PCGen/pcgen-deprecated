@@ -601,7 +601,7 @@ public class pcGenGUI
 					aFrame.dispose();
 				}
 			});
-		IconUtilitities.maybeSetIcon(aFrame, "PcgenIcon.gif");
+		IconUtilitities.maybeSetIcon(aFrame, IconUtilitities.RESOURCE_APP_ICON);
 
 		final JEditorPane a = new JEditorPane("text/html", text);
 		a.setEditable(false);
@@ -618,6 +618,11 @@ public class pcGenGUI
 
 	public static void showSponsors()
 	{
+		if (Globals.getSponsors().size() <= 1)
+		{
+			return;
+		}
+
 		String title = "PCGen's sponsors";
 
 		final JFrame aFrame = new JFrame(title);
@@ -641,7 +646,7 @@ public class pcGenGUI
 					aFrame.dispose();
 				}
 			});
-		IconUtilitities.maybeSetIcon(aFrame, "PcgenIcon.gif");
+		IconUtilitities.maybeSetIcon(aFrame, IconUtilitities.RESOURCE_APP_ICON);
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("<html>");
@@ -690,7 +695,7 @@ public class pcGenGUI
 		if (imgIcon != null)
 		{
 			final JFrame aFrame = new JFrame("D20 Required Information");
-			IconUtilitities.maybeSetIcon(aFrame, "PcgenIcon.gif");
+			IconUtilitities.maybeSetIcon(aFrame, IconUtilitities.RESOURCE_APP_ICON);
 
 			final JPanel jPanel1 = new JPanel();
 			final JPanel jPanel2 = new JPanel();

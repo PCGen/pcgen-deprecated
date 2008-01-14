@@ -29,9 +29,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -44,6 +42,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -98,6 +97,7 @@ import pcgen.gui.filter.FilterAdapterPanel;
 import pcgen.gui.filter.FilterConstants;
 import pcgen.gui.filter.FilterFactory;
 import pcgen.gui.utils.FormattedCellEditor;
+import pcgen.gui.utils.IconUtilitities;
 import pcgen.gui.utils.JComboBoxEx;
 import pcgen.gui.utils.JLabelPane;
 import pcgen.gui.utils.JTableEx;
@@ -516,7 +516,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		{
 			this.pc = pc;
 			serial = pc.getSerial();
-			forceRefresh();
+			forceRefresh(true);
 		}
 	}
 
@@ -609,7 +609,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		if (pc.getSerial() > serial)
 		{
 			serial = pc.getSerial();
-			forceRefresh();
+			forceRefresh(false);
 		}
 
 		//
@@ -629,12 +629,24 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see pcgen.gui.CharacterInfoTab#forceRefresh()
+	 */
 	public void forceRefresh()
+	{
+		forceRefresh(true);
+	}
+	
+	/**
+	 * Force a refresh of the tab.
+	 * @param newPC Is the refresh because we changed character?
+	 */
+	public void forceRefresh(boolean newPC)
 	{
 		if (readyForRefresh)
 		{
 			needsUpdate = true;
-			updateCharacterInfo();
+			updateCharacterInfo(newPC);
 			infoSpecialAbilities.setPc(pc);
 		}
 		else
@@ -923,14 +935,22 @@ public final class InfoSummary extends FilterAdapterPanel implements
 
 			if (aRace.getFavoredClass().length() != 0)
 			{
-				final String favClassKey = aRace.getFavoredClass();
-				String favClassName =
-						PropertyFactory.getString("in_sumVarious"); //$NON-NLS-1$
-				PCClass favClass = Globals.getClassKeyed(favClassKey);
-				if (favClass != null)
+				StringBuffer favClassSet = new StringBuffer();
+				String fav = aRace.getFavoredClass();
+				StringTokenizer tok = new StringTokenizer(fav, Constants.PIPE);
+				while (tok.hasMoreTokens())
 				{
-					favClassName = favClass.getDisplayName();
+					if (favClassSet.length() != 0)
+					{
+						favClassSet.append(", ");
+					}
+					favClassSet.append(tok.nextToken());
 				}
+
+				String favClassName = favClassSet.length() == 0 ? 
+					PropertyFactory.getString("in_sumVarious"): //$NON-NLS-1$
+						favClassSet.toString();
+				
 				b
 					.append(" &nbsp;<b>").append(PropertyFactory.getString("in_sumFavoredClass")).append("</b>").append(favClassName); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
@@ -1276,7 +1296,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 			TabUtils.selectClothes(pc);
 		}
 
-		forceRefresh();
+		forceRefresh(false);
 	}
 
 	/**
@@ -1435,7 +1455,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		}
 
 		pc.setAlignment(newAlignment, false, true);
-		forceRefresh();
+		forceRefresh(false);
 		enableRaceControls(newAlignment != SettingsHandler.getGame()
 			.getIndexOfAlignment(Constants.s_NONE));
 		PCGen_Frame1.getCharacterPane().refreshToDosAsync();
@@ -2046,16 +2066,8 @@ public final class InfoSummary extends FilterAdapterPanel implements
 			});
 			cPanel.add(closeButton);
 			abilitiesFrame.getContentPane().add(cPanel, BorderLayout.SOUTH);
-
-			ClassLoader loader = getClass().getClassLoader();
-			Toolkit kit = Toolkit.getDefaultToolkit();
-
-			// according to the API, the following should *ALWAYS* use '/'
-			Image img =
-					kit.getImage(loader
-						.getResource("pcgen/gui/resource/PcgenIcon.gif")); //$NON-NLS-1$
-			loader = null;
-			abilitiesFrame.setIconImage(img);
+			IconUtilitities.maybeSetIcon(abilitiesFrame,
+				IconUtilitities.RESOURCE_APP_ICON);
 		}
 
 		// Layout the stats pane
@@ -2131,8 +2143,9 @@ public final class InfoSummary extends FilterAdapterPanel implements
 
 	/**
 	 * This method refreshes the display and everything shown in it.
+	 * @param newPC Is the refresh because we changed character?
 	 */
-	private synchronized void refreshDisplay()
+	private synchronized void refreshDisplay(boolean newPC)
 	{
 		if (pc == null)
 		{
@@ -2198,54 +2211,57 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		labelClass.setForeground(Color.black);
 
 		//
-		// select the last class levelled
+		// if we have switched pcs, select the last class levelled
 		//
-		if ((pc.getTotalLevels() == 0)) // new PC?
+		if (newPC)
 		{
-			classComboBox.setSelectedItem(null);
-		}
-		else if (pc.getLevelInfoSize() != 0)
-		{
-			final Object lastSelection = classComboBox.getSelectedItem();
-
-			for (int idx = pc.getLevelInfoSize() - 1; idx >= 0; --idx)
+			if ((pc.getTotalLevels() == 0)) // new PC?
 			{
-				final PCClass pcClass =
-						pc.getClassKeyed(pc.getLevelInfoClassKeyName(idx));
-
-				if (pcClass != null)
+				classComboBox.setSelectedItem(null);
+			}
+			else if (pc.getLevelInfoSize() != 0)
+			{
+				final Object lastSelection = classComboBox.getSelectedItem();
+				
+	
+				for (int idx = pc.getLevelInfoSize() - 1; idx >= 0; --idx)
 				{
-					classComboBox.setSelectedItem(Globals.getClassKeyed(pcClass
-						.getKeyName()));
-
-					if (classComboBox.getSelectedIndex() >= 0)
+					final PCClass pcClass =
+							pc.getClassKeyed(pc.getLevelInfoClassKeyName(idx));
+	
+					if (pcClass != null)
 					{
-						break;
+						classComboBox.setSelectedItem(Globals.getClassKeyed(pcClass
+							.getKeyName()));
+	
+						if (classComboBox.getSelectedIndex() >= 0)
+						{
+							break;
+						}
 					}
 				}
+	
+				//
+				// If couldn't find a selection, then default back to the previous choice
+				//
+				if ((classComboBox.getSelectedIndex() < 0)
+					&& (lastSelection != null))
+				{
+					classComboBox.setSelectedItem(lastSelection);
+				}
 			}
-
-			//
-			// If couldn't find a selection, then default back to the previous choice
-			//
-			if ((classComboBox.getSelectedIndex() < 0)
-				&& (lastSelection != null))
+			else if (pc.getRace().getMonsterClass(pc, false) != null)
 			{
-				classComboBox.setSelectedItem(lastSelection);
+				String monsterClass = pc.getRace().getMonsterClass(pc, false);
+				classComboBox.setSelectedItem(Globals.getClassKeyed(monsterClass));
+			}
+			else
+			{
+				ShowMessageDelegate.showMessageDialog(PropertyFactory
+					.getString("in_sumClassKindErrMsg"), Constants.s_APPNAME, //$NON-NLS-1$
+					MessageType.ERROR);
 			}
 		}
-		else if (pc.getRace().getMonsterClass(pc, false) != null)
-		{
-			String monsterClass = pc.getRace().getMonsterClass(pc, false);
-			classComboBox.setSelectedItem(Globals.getClassKeyed(monsterClass));
-		}
-		else
-		{
-			ShowMessageDelegate.showMessageDialog(PropertyFactory
-				.getString("in_sumClassKindErrMsg"), Constants.s_APPNAME, //$NON-NLS-1$
-				MessageType.ERROR);
-		}
-
 		final PCClass pcSelectedClass =
 				(PCClass) classComboBox.getSelectedItem();
 
@@ -2587,8 +2603,9 @@ public final class InfoSummary extends FilterAdapterPanel implements
 	/**
 	 * This method updates the local reference to the currently selected
 	 * character and updates the displayed information.
+	 * @param newPC Is the refresh because we changed character?
 	 */
-	private void updateCharacterInfo()
+	private void updateCharacterInfo(boolean newPC)
 	{
 		lblMonsterlHD.setVisible(SettingsHandler.hideMonsterClasses());
 		txtMonsterlHD.setVisible(SettingsHandler.hideMonsterClasses());
@@ -2629,7 +2646,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		levelText.setValue(1);
 		needsUpdate = false;
 
-		refreshDisplay();
+		refreshDisplay(newPC);
 	}
 
 	private void updateHD()
@@ -2886,7 +2903,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 
 				showPointPool();
 				updateHP();
-				refreshDisplay();
+				refreshDisplay(false);
 			}
 		}
 	}

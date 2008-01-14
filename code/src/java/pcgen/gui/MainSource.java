@@ -133,6 +133,7 @@ public class MainSource extends FilterAdapterPanel
 	private static final int VIEW_PUBLISH = 1;
 	private static final int VIEW_PUBSET = 2;
 	private static final int VIEW_PUBFMTSET = 3;
+	//private static final int VIEW_RANK = 4;
 	private static int viewMode = VIEW_PUBFMTSET; // keep track of what view mode we're in for Available
 	private static int viewSelectMode = VIEW_PRODUCT; // keep track of what view mode we're in for Selected. defaults to "Name"
 
@@ -142,6 +143,7 @@ public class MainSource extends FilterAdapterPanel
 	private static PObjectNode typePubRoot;
 	private static PObjectNode typePubSetRoot;
 	private static PObjectNode typePubFmtSetRoot;
+	//private static PObjectNode rankRoot;
 	private final JLabel avaLabel = new JLabel( /*"Available"*/
 		);
 	private final JLabel selLabel = new JLabel( /*"Selected"*/
@@ -366,58 +368,20 @@ public class MainSource extends FilterAdapterPanel
 				final String web = aCamp.getSourceEntry().getSourceBook().getWebsite();
 				websiteButton.setEnabled(web != null);
 
-				StringBuffer sb = new StringBuffer();
-				sb.append("<b>")
-					.append(aCamp.getDisplayName())
-					.append("</b><br>");
-				sb.append("<html>");
-				if(aCamp.getCoverFiles().size() > 0) {
-					CampaignSourceEntry image = aCamp.getCoverFiles().get(0);
-					sb.append("<img src='")
-						.append(image.getURI())
-						.append("'><br>");
-				}
-				sb.append("<b>TYPE</b>: ")
-					.append(aCamp.getType());
-				sb.append("&nbsp; <b>RANK</b>: ")
-					.append(aCamp.getRank());
-				sb.append("&nbsp; <b>GAME MODE</b>: ")
-					.append(aCamp.getGameModeString());
+				// Test of new format
+//				sb = new StringBuffer("<b>Behemoth3 - Masters and Minions - Horde Book 1: A Swarm of Stirges</b><br>\r\n"); 
+//				sb.append("<b>DESCRIPTION:</b> Textual Description, may be multiple lines  <br>");
+//				sb.append("<b>WEBSITE:</b> <a href=\"http://pcgen.sourceforge.net\" >Behemoth3 - Masters and Minions</a><br>");
+//				sb.append("<b>TYPE:</b> BEHEMOTH3.MASTERS AND MINIONS  <b>RANK:</b> 6  <b>GAME MODE:</b> 35e  <b>SOURCE:</b> A Swarm of Stirges<br>\r\n");
+//				sb.append("<b>PURCHASE:</b> <a href=\"http://pcgen.sourceforge.net\" >Buy this book from Amazon.com</a><br>");
+//				sb.append("<b>SURVEY:</b> <a href=\"http://pcgen.sourceforge.net\" >Tell us about your use of this dataset</a><br>");
+//
+//				sb.append("<b>COPYRIGHT:</b><br>\r\n");
+//				sb.append("Open Game License v. 1.0 Copyright 2000, Wizards of the Coast, Inc.<br>\r\n"); 
+//				sb.append("System Reference Document Copyright 2000-2003, Wizards of the Coast, Inc.; Authors Jonathan Tweet, Monte Cook, Skip Williams, Rich Baker, Andy Collins, David Noonan, Rich Redman, Bruce R. Cordell, John D. Rateliff, Thomas Reid, James Wyatt, based on original material by E. Gary Gygax and Dave Arneson.<br>\r\n"); 
+//				sb.append("Masters and Minions Horde Book 1: A Swarm of Stirges Copyright (c) 2004, Behemoth3, Inc.; Author Tavis Allison. PCGen dataset conversion for Masters and Minions Horde Book 1: A Swarm of Stirges Copyright 2004-2005, PCGen Data team (Including, but not limited to Eddy Anthony, Andrew McDougall (Tir Gwaith)) ");
 
-				String bString = aCamp.getDefaultSourceString();
-
-				if (bString.length() > 0)
-				{
-					sb.append("&nbsp; <b>SOURCE</b>: ")
-						.append(bString);
-				}
-
-				boolean infoDisplayed = false;
-				bString = aCamp.getInfoText();
-
-				if (bString.length() > 0)
-				{
-					sb.append("<p><b>INFORMATION</b>:<br>")
-						.append(bString)
-						.append("</p>");
-					infoDisplayed = true;
-				}
-
-				bString = aCamp.getSection15String();
-
-				if (bString.length() != 0)
-				{
-					if (!infoDisplayed)
-					{
-						sb.append("<br");
-					}
-
-					sb.append("<b>COPYRIGHT</b>:<br>")
-						.append(bString);
-				}
-
-				sb.append("</html>");
-				infoLabel.setText(sb.toString());
+				infoLabel.setText(buildInfoLabel(aCamp));
 			}
 			else //must just be a branch node
 			{
@@ -448,6 +412,72 @@ public class MainSource extends FilterAdapterPanel
 				infoLabel.setText(sb.toString());
 			}
 		}
+	}
+
+	/**
+	 * Create the html text content for the information label for a campaign
+	 * @param aCamp The campaign.
+	 */
+	static String buildInfoLabel(final Campaign aCamp)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append("<html><b>")
+			.append(aCamp.getDisplayName())
+			.append("</b><br>");
+		if(aCamp.getCoverFiles().size() > 0) {
+			CampaignSourceEntry image = aCamp.getCoverFiles().get(0);
+			sb.append("<img src='")
+				.append(image.getURI())
+				.append("'><br>");
+		}
+		if (aCamp.getType().length() > 0)
+		{
+			sb.append("<b>TYPE</b>: ")
+				.append(aCamp.getType())
+				.append("&nbsp; ");
+		}
+		sb.append("<b>RANK</b>: ")
+			.append(aCamp.getRank());
+		if (aCamp.getGameModeString().length() > 0)
+		{
+			sb.append("&nbsp; <b>GAME MODE</b>: ")
+				.append(aCamp.getGameModeString());
+		}
+
+		String bString = aCamp.getDefaultSourceString();
+
+		if (bString.length() > 0)
+		{
+			sb.append("&nbsp; <b>SOURCE</b>: ")
+				.append(bString);
+		}
+
+		boolean infoDisplayed = false;
+		bString = aCamp.getInfoText();
+
+		if (bString.length() > 0)
+		{
+			sb.append("<p><b>INFORMATION</b>:<br>")
+				.append(bString)
+				.append("</p>");
+			infoDisplayed = true;
+		}
+
+		bString = aCamp.getSection15String();
+
+		if (bString.length() != 0)
+		{
+			if (!infoDisplayed)
+			{
+				sb.append("<br");
+			}
+
+			sb.append("<b>COPYRIGHT</b>:<br>")
+				.append(bString);
+		}
+
+		sb.append("</html>");
+		return sb.toString();
 	}
 
 	private void setLoadedColMaxWidth()
@@ -790,6 +820,7 @@ public class MainSource extends FilterAdapterPanel
 		viewComboBox.addItem("Company");
 		viewComboBox.addItem("Company/Setting");
 		viewComboBox.addItem("Comp/Fmt/Setting"); //abbr. here so that all GUI elements will fit when started at default window size
+		//viewComboBox.addItem("Rank");
 		Utility.setDescription(viewComboBox, "You can change how the Sources in the Tables are listed.");
 		viewMode = SettingsHandler.getPCGenOption("pcgen.options.sourceTab.availableListMode", VIEW_PUBFMTSET);
 		viewComboBox.setSelectedIndex(viewMode); // must be done before createModels call
@@ -1078,6 +1109,12 @@ public class MainSource extends FilterAdapterPanel
 
 				updateModels();
 				showSourcesLoaded(oldStatus);
+
+				if (Globals.getRootFrame() != null)
+				{
+					PCGen_Frame1.getInst().refreshCharInfoTabs();
+				}
+
 			}
 
 		};
@@ -1143,8 +1180,10 @@ public class MainSource extends FilterAdapterPanel
 		typePubRoot = new PObjectNode();
 		typePubSetRoot = new PObjectNode();
 		typePubFmtSetRoot = new PObjectNode();
+		//rankRoot = new PObjectNode();
 
 		Set<String> aList = new TreeSet<String>(); //TYPE list
+		//Set<Integer> rankList = new TreeSet<Integer>(); //RANK list
 
 		for (Campaign aCamp : Globals.getCampaignList())
 		{
@@ -1154,6 +1193,7 @@ public class MainSource extends FilterAdapterPanel
 				{
 					aList.add(aCamp.getMyType(0)); //TYPE[0] = Publisher
 				}
+				//rankList.add(aCamp.getRank());
 			}
 		}
 
@@ -1164,6 +1204,20 @@ public class MainSource extends FilterAdapterPanel
 		PObjectNode[] p1 = new PObjectNode[size];
 		PObjectNode[] p2 = new PObjectNode[size];
 		PObjectNode[] p3 = new PObjectNode[size];
+//		PObjectNode[] pRank = new PObjectNode[rankList.size()+1];
+//		int arrayIdx = 0;
+//		for (Integer rank : rankList)
+//		{
+//			PObjectNode pon = new PObjectNode();
+//			pon.setItem(rank.toString());
+//			pon.setParent(rankRoot);
+//			pRank[arrayIdx++] = pon;
+//		}
+//		PObjectNode opon = new PObjectNode();
+//		opon.setItem("Other");
+//		opon.setParent(rankRoot);
+//		pRank[arrayIdx++] = opon;
+//		rankRoot.setChildren(pRank);
 
 		int arrayIdx = 0;
 		for (String s : aList)
@@ -1909,6 +1963,46 @@ public class MainSource extends FilterAdapterPanel
 					}
 
 					break;
+
+//				case VIEW_RANK: // by Rank/Product Name
+//					setRoot((PObjectNode) MainSource.rankRoot.clone());
+//
+//					for (Campaign aCamp : campList)
+//					{
+//						PObjectNode rootAsPObjectNode = (PObjectNode) super.getRoot();
+////						final Campaign aCamp = (Campaign) fI.next();
+//
+//						// filter out campaigns here
+//						if (!shouldDisplayThis(aCamp, aPC) || !aCamp.isGameMode(allowedModes))
+//						{
+//							continue;
+//						}
+//
+//						//don't display selected campaigns in the available table
+//						if (available && selectedCampaigns.contains(aCamp))
+//						{
+//							continue;
+//						}
+//
+//						boolean added = false;
+//
+//						for (int i = 0; i < rootAsPObjectNode.getChildCount(); ++i)
+//						{
+//							//if we've matched Publisher, or we've reached the last node ("Other") then add it here
+//							if (String.valueOf(aCamp.getRank()).equals(rootAsPObjectNode.getChild(i).getItem().toString())
+//								|| (!added && (i == (rootAsPObjectNode.getChildCount() - 1))))
+//							{
+//								PObjectNode aFN = new PObjectNode();
+//								aFN.setParent(rootAsPObjectNode.getChild(i));
+//								aFN.setItem(aCamp);
+//								PrereqHandler.passesAll(aCamp.getPreReqList(), aPC, aCamp );
+//								rootAsPObjectNode.getChild(i).addChild(aFN);
+//								added = true;
+//							}
+//						}
+//					}
+//
+//					break;
 
 				default:
 					Logging.errorPrint("In MainSource.CampaignlModel.resetModel the mode " + mode + " is not handled.");

@@ -129,8 +129,8 @@ public class AbilityModel extends AbstractTreeTableModel implements
 	 * 
 	 * @param aPC The PlayerCharacter this model is for.
 	 * @param aMap The lists of <tt>Ability</tt> objects by category to manage
-	 * @param aCategory The <tt>AbilityCategory</tt> this list comes from.
-	 * @param viewMode
+	 * @param aCategoryList The list of <tt>AbilityCategories</tt> the list comes from
+	 * @param viewMode The style of view to be used.
 	 * @param anOptionRoot The key to store options under.
 	 * @param splitByCategory Should the list be split by category
 	 */
@@ -375,7 +375,8 @@ public class AbilityModel extends AbstractTreeTableModel implements
 			case TYPE:
 				if (ability != null)
 				{
-					retVal = CoreUtility.join(ability.getTypeList(true), '.');
+					retVal = CoreUtility.join(ability.getTypeList(true), ". ");
+//					retVal = CoreUtility.join(ability.getTypeList(true), '.');
 				}
 				break;
 			case COST:
@@ -863,6 +864,19 @@ public class AbilityModel extends AbstractTreeTableModel implements
 	public void setCurrentAbilityCategory(AbilityCategory newCat)
 	{
 		currAbilityCat = newCat;
+		typeRoot = null;
+		sourceRoot = null;
+	}
+
+	/**
+	 * Set a new list of ability categories. Used in cases such as a game 
+	 * mode or data change. 
+	 * @param newCatList The new 
+	 */
+	public void setAbilityCategories(List<AbilityCategory> newCatList)
+	{
+		theCategoryList = newCatList;
+		currAbilityCat = theCategoryList.get(0);
 		typeRoot = null;
 		sourceRoot = null;
 	}
