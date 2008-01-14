@@ -1,20 +1,20 @@
-# CVS $Revision$ $Author$ -- Tue Nov  9 19:52:32 2004 -- reformated by prettylst.pl v1.34 (build 422)
+# CVS $Revision$ $Author$ -- Sun Oct 21 20:35:11 2007 -- reformated by prettylst.pl v1.38 (build 4387)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 # Author: Andargor (andargor@yahoo.com)
 
 ###Block: Ghost Abilities
-# Feat Name			Type			Visible	Special Ability
-Corrupting Gaze		TYPE:GhostAbility	VISIBLE:NO	SA:Corrupting Gaze (Su) DC%|GhostAbilityDC
-Corrupting Touch		TYPE:GhostAbility	VISIBLE:NO	SA:Corrupting Touch (Su) DC%|GhostAbilityDC
-Draining Touch		TYPE:GhostAbility	VISIBLE:NO	SA:Draining Touch (Su) DC%|GhostAbilityDC
-Frightful Moan		TYPE:GhostAbility	VISIBLE:NO	SA:Frightful Moan (Su) DC%|GhostAbilityDC
-Horrific Appearance	TYPE:GhostAbility	VISIBLE:NO	SA:Horrific Appearance (Su) DC%|GhostAbilityDC
-Malevolence			TYPE:GhostAbility	VISIBLE:NO	SA:Malevolence (Su) DC%|15+max(CHA,0)|PRETEMPLATE:Ghost
-Telekinesis			TYPE:GhostAbility	VISIBLE:NO	SA:Telekinesis (Su) DC%|GhostAbilityDC
+# Feat Name			Type			Visible	Special ABility
+Corrupting Gaze		TYPE:GhostAbility	VISIBLE:NO	SAB:Corrupting Gaze (Su) DC%|GhostAbilityDC
+Corrupting Touch		TYPE:GhostAbility	VISIBLE:NO	SAB:Corrupting Touch (Su) DC%|GhostAbilityDC
+Draining Touch		TYPE:GhostAbility	VISIBLE:NO	SAB:Draining Touch (Su) DC%|GhostAbilityDC
+Frightful Moan		TYPE:GhostAbility	VISIBLE:NO	SAB:Frightful Moan (Su) DC%|GhostAbilityDC
+Horrific Appearance	TYPE:GhostAbility	VISIBLE:NO	SAB:Horrific Appearance (Su) DC%|GhostAbilityDC
+Malevolence			TYPE:GhostAbility	VISIBLE:NO	SAB:Malevolence (Su) DC%|15+max(CHA,0)|PRETEMPLATE:Ghost
+Telekinesis			TYPE:GhostAbility	VISIBLE:NO	SAB:Telekinesis (Su) DC%|GhostAbilityDC
 
 ###Block: Half Dragon Abilities
-# Feat Name		Type				Visible	PRESIZEGT	Special Ability	MOVECLONE
-Half Dragon Wings	TYPE:HalfDragonWings	VISIBLE:NO	PRESIZEGT:M	SA:Wings (Ex)	MOVECLONE:Walk,Fly,*2
+# Feat Name		Type				Visible	PRESIZEGT	Special ABility	MOVECLONE
+Half Dragon Wings	TYPE:HalfDragonWings	VISIBLE:NO	PRESIZEGT:M	SAB:Wings (Ex)	MOVECLONE:Walk,Fly,*2
 
 ###Block: Used for Half Dragon and Half Fiend
 # Feat Name				Type					Visible	Required Size	Natural Attacks

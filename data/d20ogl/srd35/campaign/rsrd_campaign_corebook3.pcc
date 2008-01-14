@@ -16,6 +16,9 @@ COPYRIGHT:PCGen dataset conversion for the System Reference Document Copyright 2
 
 INFOTEXT:This is a subset of the RSRD containing rules generally found in Core Books I, II and III, this should not be loaded with any other RSRD sets.
 
+# Do not remove the EXTRAFILE comment.
+#EXTRAFILE:@/d20ogl/srd35/OGL.txt
+
 # Basics
 CLASS:@/d20ogl/srd35/basics/rsrd_classes_base.lst
 CLASS:@/d20ogl/srd35/basics/rsrd_classes_monsters.lst
@@ -41,6 +44,7 @@ FEAT:@/d20ogl/srd35/basics/rsrd_feats_hidden.lst
 FEAT:@/d20ogl/srd35/basics/rsrd_feats_hidden2.lst
 FEAT:@/d20ogl/srd35/basics/rsrd_feats_monster.lst
 FEAT:@/d20ogl/srd35/basics/rsrd_feats.lst
+ABILITY:@/d20ogl/srd35/basics/rsrd_abilities_class.lst
 
 KIT:@/d20ogl/srd35/basics/rsrd_kits_races__animals.lst
 KIT:@/d20ogl/srd35/basics/rsrd_kits_races__base.lst
@@ -64,11 +68,12 @@ WEAPONPROF:@/d20ogl/srd35/basics/rsrd_weaponprofs.lst
 #Hiding Starting Outfits
 HIDETYPE:EQUIP|Starting
 #Hiding specific tool types that are used in BONUSes
-HIDETYPE:EQUIP|ArmorsmithingTools|BowmakingTools|BlacksmithingTools|CarpentryTools|LeatherworkingTools|PaintingTools|PotteryTools|SculptingTools|ShipmakingTools|StonemasonryTools|TrapmakingTools|WeaponsmithingTools|WoodworkingTools
+HIDETYPE:EQUIP|ArmorsmithingTools|BowmakingTools|BlacksmithingTools|CarpentryTools|LeatherworkingTools|PaintingTools|PotteryTools|SculptingTools|ShipmakingTools|StonemasonryTools|TrapmakingTools|WeaponsmithingTools|WoodworkingTools|LightSource
 
 
 # Advanced
 CLASS:@/d20ogl/srd35/advanced/rsrd_classes_prestige.lst
+ABILITY:@/d20ogl/srd35/advanced/rsrd_abilities_class_prestige.lst
 
 EQUIPMENT:@/d20ogl/srd35/advanced/rsrd_equip_armorshields_specific.lst
 EQUIPMENT:@/d20ogl/srd35/advanced/rsrd_equip_potions.lst
