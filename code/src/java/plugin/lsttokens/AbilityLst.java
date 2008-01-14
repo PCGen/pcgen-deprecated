@@ -145,7 +145,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 				try
 				{
 					PreParserFactory factory = PreParserFactory.getInstance();
-					String preLevelString = "PRELEVEL:" + anInt; //$NON-NLS-1$
+					String preLevelString = "PRELEVEL:MIN=" + anInt; //$NON-NLS-1$
 					if (anObj instanceof PCClass)
 					{
 						// Classes handle this differently

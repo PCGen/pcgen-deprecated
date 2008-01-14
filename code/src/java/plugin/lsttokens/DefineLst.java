@@ -54,7 +54,30 @@ public class DefineLst implements GlobalLstToken
 		try
 		{
 			String varName = tok.nextToken();
-			String defineFormula = tok.nextToken();
+			String defineFormula;
+			if (varName.startsWith("UNLOCK."))
+			{
+				if (tok.hasMoreTokens())
+				{
+					Logging
+						.log(Logging.LST_ERROR,
+							"Cannot provide a value with DEFINE:UNLOCK. : "
+								+ value);
+					return false;
+				}
+				defineFormula = "";
+			}
+			else if (!tok.hasMoreTokens())
+			{
+				Logging.log(Logging.LST_ERROR,
+					"Non UNLOCK DEFINE missing value. Fomrat should be DEFINE:var|value : "
+						+ value);
+				return false;
+			}
+			else
+			{
+				defineFormula = tok.nextToken();
+			}
 			obj.addVariable(anInt, varName, defineFormula);
 		}
 		catch (Exception e)

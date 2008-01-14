@@ -90,7 +90,7 @@ public class HdToken extends AbstractToken implements PCTemplateLstToken
 		else
 		{
 			String tagValue =
-					value.substring(hdStr.length() + 1) + "|PREHD:" + hdStr;
+					value.substring(hdStr.length() + 1) + "|PREHD:" + hdStr; 
 			try
 			{
 				return PObjectLoader.parseTag(template, tagValue);

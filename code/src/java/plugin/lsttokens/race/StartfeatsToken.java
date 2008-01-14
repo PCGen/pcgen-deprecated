@@ -72,7 +72,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 			final PreParserFactory factory = PreParserFactory.getInstance();
 			final StringBuffer buf = new StringBuffer();
 
-			buf.append("PREMULT:1,[PREHD:1+],[PRELEVEL:1]");
+			buf.append("PREMULT:1,[PREHD:MIN=1],[PRELEVEL:MIN=1]");
 
 			final Prerequisite prereq = factory.parse(buf.toString());
 			bon.addPreReq(prereq);

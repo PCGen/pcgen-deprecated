@@ -23,7 +23,9 @@
 package plugin.lsttokens;
 
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.Constants;
@@ -31,7 +33,6 @@ import pcgen.core.PObject;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.bonus.BonusObj.StackType;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.BonusLoader;
@@ -57,31 +58,26 @@ public class BonusLst extends AbstractToken implements GlobalLstToken
 	}
 
 	/**
-	 * Parse BONUS token
+	 * Parse BONUS token and use it to add a bonus to a PObject
 	 * 
-	 * @param obj
-	 * @param value
-	 * @param anInt
-	 * @return true or false
+	 * @param obj the object to make the bonus a part of
+	 * @param value the text of the bonus 
+	 * @param anInt the level to add the bonus at 
+	 * @return true if the bonus added to the PObject is non null or false otherwise
 	 */
-	public boolean parse(PObject obj, String value, int anInt)
+	public boolean parse(final PObject obj,
+	                     final String value, 
+	                     final int anInt)
 	{
-		boolean result = false;
-		value = CoreUtility.replaceAll(value, "<this>", obj.getKeyName());
-		if (anInt > -9)
-		{
-			result = obj.addBonusList(anInt + "|" + value);
-		}
-		else
-		{
-			result = obj.addBonusList(value);
-		}
-		return result;
+		final String v = value.replaceAll(Pattern.quote("<this>"), obj.getKeyName());
+		return (anInt > -9) ?
+		       obj.addBonusList(anInt + "|" + v) :
+		       obj.addBonusList(v);
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		value = CoreUtility.replaceAll(value, "<this>", obj.getKeyName());
+		value = StringUtil.replaceAll(value, "<this>", obj.getKeyName());
 		StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
 		String bonusName = aTok.nextToken().toUpperCase();
 		String bonusInfo = aTok.nextToken().toUpperCase();

@@ -37,6 +37,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.core.EquipmentModifier;
 import pcgen.core.PObject;
 import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.AssociatedChanges;
@@ -60,6 +61,10 @@ public class ChooseLst implements GlobalLstToken
 
 	public boolean parse(PObject obj, String value, int anInt)
 	{
+		if (obj instanceof EquipmentModifier)
+		{
+			return false;
+		}
 		if (!value.startsWith("CHOOSE:LANGAUTO"))
 		{
 			String key;

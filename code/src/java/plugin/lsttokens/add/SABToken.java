@@ -36,29 +36,25 @@ import pcgen.core.PObject;
 import pcgen.core.SpecialAbility;
 import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.util.Logging;
 
-public class SAToken extends AbstractToken implements AddLstToken
+public class SABToken extends AbstractToken implements AddLstToken
 {
 
 	private static final Class<SpecialAbility> SPECABILITY_CLASS =
-			SpecialAbility.class;
+		SpecialAbility.class;
 
 	public boolean parse(PObject target, String value, int level)
 	{
-		if (value.length() == 0)
-		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
-			return false;
-		}
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			Logging.deprecationPrint("Lack of a SUBTOKEN for ADD:SA "
-				+ "is prohibited in new syntax.");
-			Logging.deprecationPrint("Please use ADD:SA|name|[count|]X,X");
+			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SAB "
+				+ "is prohibited.");
+			Logging.errorPrint("Please use ADD:SAB|name|[count|]X,X");
 			return false;
 		}
 		String subToken = value.substring(0, pipeLoc);
@@ -79,27 +75,27 @@ public class SAToken extends AbstractToken implements AddLstToken
 		return true;
 	}
 
-	@Override
 	public String getTokenName()
 	{
-		return "SA";
+		return "SAB";
 	}
 
 	public boolean parse(LoadContext context, PObject obj, String value)
+			throws PersistenceLayerException
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SA "
+			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SAB "
 				+ "is prohibited.");
-			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
+			Logging.errorPrint("Please use ADD:SAB|name|[count|]X,X");
 			return false;
 		}
 		String name = value.substring(0, pipeLoc);
 		if (name.length() == 0)
 		{
-			Logging.errorPrint("Empty name for ADD:SA " + "is prohibited.");
-			Logging.errorPrint("Please use ADD:SA|name|[count|]X,X");
+			Logging.errorPrint("Empty name for ADD:SAB " + "is prohibited.");
+			Logging.errorPrint("Please use ADD:SAB|name|[count|]X,X");
 			return false;
 		}
 		String rest = value.substring(pipeLoc + 1);
