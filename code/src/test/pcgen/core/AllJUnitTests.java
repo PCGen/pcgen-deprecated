@@ -24,6 +24,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import pcgen.core.levelability.LevelAbilityTest;
+import pcgen.core.utils.CoreUtilityTest;
 import pcgen.persistence.lst.FeatTest;
 
 //import pcgen.core.LevelAbilityTest;
@@ -74,7 +75,7 @@ public class AllJUnitTests extends TestCase
 		suite.addTest(new TestSuite(PObjectTest.class));
 		suite.addTest(new TestSuite(PObjectUtilitiesTest.class));
 		suite.addTest(new TestSuite(PrereqHandlerTest.class));
-		suite.addTest(new TestSuite(UtilityTest.class));
+		suite.addTest(new TestSuite(CoreUtilityTest.class));
 
 		// core.bonus
 		suite.addTest(new TestSuite(pcgen.core.bonus.BonusTest.class));

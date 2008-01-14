@@ -145,8 +145,15 @@ public class PrerequisiteWriterTest extends TestCase
 		"PRELANG:2,Dwarven,Elven,Halfling",												"PREMULT:2,[PRELANG:1,Dwarven],[PRELANG:1,Elven],[PRELANG:1,Halfling]",
 		"PRELANG:3,ANY",																"PRELANG:3,ANY",
 		"PRELEGSGTEQ:4",																"PRELEGSGTEQ:4",
-		"PRELEVEL:5",																	"PRELEVEL:5",
+		"PRELEVEL:MIN=5",																"PRELEVEL:MIN=5",
+		"PRELEVEL:MAX=5",																"PRELEVEL:MAX=5",
+		"PRELEVEL:MIN=4,MAX=5",															"PRELEVEL:MIN=4,MAX=5",
 		"PRELEVELMAX:10",																"PRELEVELMAX:10",
+		
+		"PREPCLEVEL:MIN=5",																"PREPCLEVEL:MIN=5",
+		"PREPCLEVEL:MAX=5",																"PREPCLEVEL:MAX=5",
+		"PREPCLEVEL:MIN=4,MAX=5",														"PREPCLEVEL:MIN=4,MAX=5",
+				
 		"PREMOVE:Walk=30,Fly=20",														"PREMULT:1,[PREMOVE:1,Walk=30],[PREMOVE:1,Fly=20]",
 		"PREMOVE:Swim=10",																"PREMOVE:1,Swim=10",
 		"PREMULT:1,[PRERACE:Gnome],[PRECLASS:1,Cleric=1]",								"PREMULT:1,[PRERACE:Gnome],[PRECLASS:1,Cleric=1]",
@@ -207,8 +214,8 @@ public class PrerequisiteWriterTest extends TestCase
 		"PREARMORTYPE:1,TYPE.Exotic",													"PREARMORTYPE:1,TYPE.Exotic",
 		"PREARMORTYPE:1,Leather%",														"PREARMORTYPE:1,Leather%",
 		"PREARMORTYPE:1,LIST",															"PREARMORTYPE:1,LIST",
-		"PREHD:3+",																		"PREHD:3+",
-		"PREHD:3-12",																	"PREHD:3-12",
+		"PREHD:MIN=3",																	"PREHD:MIN=3",
+		"PREHD:MIN=3,MAX=12",															"PREHD:MIN=3,MAX=12",
 		"PREHP:12",																		"PREHP:12",
 		"PREPOINTBUYMETHOD:Standard",													"PREPOINTBUYMETHOD:Standard",
 		"PREPOINTBUYMETHOD:Standard,High-powered",										"PREPOINTBUYMETHOD:Standard,High-powered",
@@ -280,7 +287,15 @@ public class PrerequisiteWriterTest extends TestCase
 		"!PREDEITY:Y",																	"!PREDEITY:1,Y",
 		"!PREITEM:1,Sword (Long)",														"!PREITEM:1,Sword (Long)",
 		"!PRELEVELMAX:10",																"!PRELEVELMAX:10",
-		"!PRELEVEL:5",																	"!PRELEVEL:5",
+		"!PRELEVEL:4",																	"!PRELEVEL:MIN=4",		// New syntax...
+		"!PRELEVEL:MIN=4",																"!PRELEVEL:MIN=4",
+		"!PRELEVEL:MAX=4",																"!PRELEVEL:MAX=4",
+		"!PRELEVEL:MIN=4,MAX=6",														"!PRELEVEL:MIN=4,MAX=6",
+
+		"!PREPCLEVEL:MIN=4",															"!PREPCLEVEL:MIN=4",
+		"!PREPCLEVEL:MAX=4",															"!PREPCLEVEL:MAX=4",
+		"!PREPCLEVEL:MIN=4,MAX=6",														"!PREPCLEVEL:MIN=4,MAX=6",
+	
 		"!PREREGION:Slithe",															"!PREREGION:Slithe",
 		"!PRERULE:SYS_WTPSK",															"!PRERULE:1,SYS_WTPSK",
 		"!PRESHIELDPROF:1,Buckler",														"!PRESHIELDPROF:1,Buckler",
@@ -312,8 +327,8 @@ public class PrerequisiteWriterTest extends TestCase
 		"!PRESPELLSCHOOLSUB:Creation,3,2",												"!PRESPELLSCHOOLSUB:3,Creation=2",
 		"!PRESPELLSCHOOL:Necromancy,3,2",												"!PRESPELLSCHOOL:3,Necromancy=2",
 		"!PRESPELLTYPE:Arcane,4,5",														"!PRESPELLTYPE:4,Arcane=5",
-		"!PREHD:3+",																	"!PREHD:3+",
-		"!PREHD:3-12",																	"!PREHD:3-12",
+		"PREHD:MIN=3",																	"PREHD:MIN=3",
+		"PREHD:MIN=3,MAX=12",															"PREHD:MIN=3,MAX=12",
 		"!PRECLASS:1,SPELLCASTER=2",													"!PRECLASS:1,SPELLCASTER=2",
 		"!PREAPPLY:ANYPC",																"!PREAPPLY:ANYPC",
 		"!PRESPELLTYPE:4,Arcane=5,Divine=2",											"!PRESPELLTYPE:4,Arcane=5,Divine=2",
@@ -409,7 +424,12 @@ public class PrerequisiteWriterTest extends TestCase
 		"PRESPELLDESCRIPTOR:4,Mind-Affecting",											"",		// missing '='
 		"PRESPELLDESCRIPTOR:4",															"",		// missing tokens
 		"PREHD:3-12+3",																	"",		// too many tokens
-		"PREHD:should_be_numeric",														"",		// too many tokens
+		"PREHD:should_be_numeric",														"",		// should me numeric
+		"PREHD:MIN=x",																	"",		// bad int value
+		"PREHD:MAX=23asdc",																"",		// bad int value
+		"PREHD:MIN=3,MAX=asdf",															"",		// one bad int value
+		
+		
 		"PREVARGT:SneakAttack,Rage,4",													"",		// invalid # of tokens
 		"PRESTAT:1,S=18",																"",		// need 3 character attribute
 		"PRESTAT:1,STR",																"",		// missing '='
