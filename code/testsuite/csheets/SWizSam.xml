@@ -40,7 +40,7 @@ BIO
 			<alignment></alignment>
 			<description>None</description>
 			<domainlist>Air, Animal, Chaos, Death, Destruction, Earth, Evil, Fire, Good, Healing, Knowledge, Law, Luck, Magic, Plant, Protection, Strength, Sun, Travel, Trickery, War, Water</domainlist>
-			<favoredweapon></favoredweapon>
+			<favoredweapon>ANY</favoredweapon>
 			<followeralignment></followeralignment>
 			<holyitem>None</holyitem>
 			<pantheonlist></pantheonlist>
@@ -1004,7 +1004,7 @@ BIO
 		<feat>
 			<name>Scribe Scroll</name>
 			<description>The character can create a scroll of any spell that the character knows.</description>
-			<type>ITEMCREATION</type>
+			<type>ITEMCREATION.WIZARD</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>

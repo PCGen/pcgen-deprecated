@@ -1032,7 +1032,7 @@ BIO
 		<race></race>
 		<class>
 			<class>Monk</class>
-			<ability>Flurry of Blows, Still Mind, Slow Fall (50 ft.), Purity of Body, Leap of the Clouds, Wholeness of Body (Su) 16 hp/day</ability>
+			<ability>Flurry of Blows, Leap of the Clouds, Purity of Body, Slow Fall (50 ft.), Still Mind, Wholeness of Body (Su) 16 hp/day</ability>
 		</class>
 	</special_abilities>
 	<!--
@@ -1076,7 +1076,7 @@ BIO
 		<feat>
 			<name>Maximize Spell</name>
 			<description>All variable, numeric effects of a maximized spell are maximized.</description>
-			<type>METAMAGIC</type>
+			<type>METAMAGIC.WIZARD</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>F</auto>
