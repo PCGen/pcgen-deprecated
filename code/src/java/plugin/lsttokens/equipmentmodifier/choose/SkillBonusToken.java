@@ -19,12 +19,18 @@ package plugin.lsttokens.equipmentmodifier.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
 import pcgen.util.Logging;
 
-public class SkillBonusToken implements EqModChooseLstToken
+public class SkillBonusToken extends AbstractToken implements
+		EqModChooseLstToken, EqModChooseCompatibilityToken
 {
 
 	public String getTokenName()
@@ -37,38 +43,40 @@ public class SkillBonusToken implements EqModChooseLstToken
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
+					+ " arguments may not start with | : " + value);
 			return false;
 		}
 		if (value.charAt(value.length() - 1) == '|')
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
+					+ " arguments may not end with | : " + value);
 			return false;
 		}
 		if (value.indexOf("||") != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
+					+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " must have two or more | delimited arguments : " + value);
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
 			return false;
 		}
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -80,25 +88,25 @@ public class SkillBonusToken implements EqModChooseLstToken
 			if (tokString.startsWith("MIN="))
 			{
 				min = Integer.valueOf(tokString.substring(4));
-				//OK
+				// OK
 			}
 			else if (tokString.startsWith("MAX="))
 			{
 				max = Integer.valueOf(tokString.substring(4));
-				//OK
+				// OK
 			}
 			else if (tokString.startsWith("TITLE="))
 			{
-				//OK
+				// OK
 			}
 			else if (tokString.startsWith("INCREMENT="))
 			{
-				//OK
+				// OK
 				Integer.parseInt(tokString.substring(4));
 			}
 			else
 			{
-				//Assume it's a primitive skill??
+				// Assume it's a primitive skill??
 			}
 		}
 		if (max == null)
@@ -137,4 +145,28 @@ public class SkillBonusToken implements EqModChooseLstToken
 		mod.setChoiceString(sb.toString());
 		return true;
 	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context,
+			EquipmentModifier mod, String value)
+			throws PersistenceLayerException
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

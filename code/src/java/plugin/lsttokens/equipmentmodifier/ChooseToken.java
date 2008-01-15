@@ -183,6 +183,24 @@ public class ChooseToken implements EquipmentModifierLstToken
 			}
 			pipeLoc = rest.indexOf(Constants.PIPE);
 		}
+		String title = null;
+		if (rest != null)
+		{
+			int titleLoc = rest.indexOf("|TITLE=");
+			if (titleLoc != -1)
+			{
+				if (rest.substring(titleLoc + 1).indexOf(Constants.PIPE) != -1)
+				{
+					Logging.errorPrint("CHOOSE: in EqMod must END with TITLE= . "
+							+ "No additional arguments allowed after the title.  "
+							+ "Offending value: " + value);
+					return false;
+				}
+				title = rest.substring(titleLoc + 7);
+				rest = rest.substring(0, titleLoc);
+				pipeLoc = rest.indexOf(Constants.PIPE);
+			}
+		}
 		String key;
 		String val;
 		if (pipeLoc == -1)
@@ -213,6 +231,10 @@ public class ChooseToken implements EquipmentModifierLstToken
 		cac.setChoiceSet(choiceSet);
 		cac.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		cac.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
+		if (title != null)
+		{
+			cac.setAssociation(AssociationKey.CHOICE_TITLE, title);
+		}
 		return true;
 	}
 

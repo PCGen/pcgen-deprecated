@@ -68,19 +68,13 @@ public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
 		}
 
 		int nextPipeLoc = value.indexOf(Constants.PIPE, pipeLoc + 1);
-		if (nextPipeLoc == -1)
-		{
-			Logging.errorPrint(getTokenName() + " had only two arguments. "
-				+ "Must have three arguments, MIN=, MAX= and TITLE=: " + value);
-			return null;
-		}
-		if (nextPipeLoc != value.lastIndexOf(Constants.PIPE))
+		if (nextPipeLoc != -1)
 		{
 			Logging.errorPrint(getTokenName() + " had too many arguments. "
-				+ "Must have three arguments, MIN=, MAX= and TITLE=: " + value);
+					+ "Must have two arguments, MIN=, MAX= : " + value);
 			return null;
 		}
-		String maxString = value.substring(pipeLoc + 1, nextPipeLoc);
+		String maxString = value.substring(pipeLoc + 1);
 		if (!maxString.startsWith("MAX="))
 		{
 			Logging.errorPrint(getTokenName()
@@ -104,20 +98,6 @@ public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
 			Logging.errorPrint(getTokenName() + " MAX must be > MIN");
 			return null;
 		}
-
-		String titleString = value.substring(nextPipeLoc + 1);
-		if (!titleString.startsWith("TITLE="))
-		{
-			Logging.errorPrint(getTokenName()
-				+ " third argument must start with TITLE=");
-			return null;
-		}
-		String title = titleString.substring(6);
-		if (title == null)
-		{
-			Logging.errorPrint(getTokenName() + " TITLE cannot be empty");
-			return null;
-		}
-		return new NumberChoiceSet(min, max, title);
+		return new NumberChoiceSet(min, max);
 	}
 }

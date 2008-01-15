@@ -129,6 +129,9 @@ public final class AssociationKey<T>
 	public static final AssociationKey<ChoiceSet<?>> CHOICE =
 			new AssociationKey<ChoiceSet<?>>();
 
+	public static final AssociationKey<String> CHOICE_TITLE = 
+		new AssociationKey<String>();
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey()

@@ -23,8 +23,10 @@ package plugin.lsttokens.equipment;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.core.ArmorProf;
 import pcgen.core.Constants;
 import pcgen.core.Equipment;
+import pcgen.core.ShieldProf;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
@@ -34,7 +36,8 @@ import pcgen.util.Logging;
 /**
  * Deals with PROFICIENCY token
  */
-public class ProficiencyToken extends AbstractToken implements EquipmentLstToken
+public class ProficiencyToken extends AbstractToken implements
+		EquipmentLstToken
 {
 
 	@Override
@@ -100,24 +103,99 @@ public class ProficiencyToken extends AbstractToken implements EquipmentLstToken
 		{
 			return false;
 		}
-		/*
-		 * BUG TODO This is a problem - it is not necessarily a WEAPON
-		 * proficiency - could be Shield or Armor... :P
-		 */
-		CDOMSimpleSingleRef<WeaponProf> wp =
-				context.ref.getCDOMReference(WeaponProf.class, value);
-		context.getObjectContext().put(eq, ObjectKey.WEAPON_PROF, wp);
+		int pipeLoc = value.indexOf(Constants.PIPE);
+		if (pipeLoc == -1)
+		{
+			Logging.errorPrint("Equipment Token PROFICIENCY syntax "
+					+ "without a Subtoken is invalid: " + value);
+			return false;
+		}
+		if (pipeLoc != value.lastIndexOf(Constants.PIPE))
+		{
+			Logging.errorPrint(getTokenName() + " expecting only one '|', "
+					+ "format is: SubToken|ProfName value was: " + value);
+			return false;
+		}
+		String subtoken = value.substring(0, pipeLoc);
+		String prof = value.substring(pipeLoc + 1);
+		if (prof == null || prof.length() == 0)
+		{
+			Logging.errorPrint("PROFICIENCY cannot have "
+					+ "empty second argument: " + value);
+			return false;
+		}
+		if (subtoken.equals("WEAPON"))
+		{
+			CDOMSimpleSingleRef<WeaponProf> wp = context.ref.getCDOMReference(
+					WeaponProf.class, prof);
+			context.getObjectContext().put(eq, ObjectKey.WEAPON_PROF, wp);
+		}
+		else if (subtoken.equals("ARMOR"))
+		{
+			CDOMSimpleSingleRef<ArmorProf> wp = context.ref.getCDOMReference(
+					ArmorProf.class, prof);
+			context.getObjectContext().put(eq, ObjectKey.ARMOR_PROF, wp);
+		}
+		else if (subtoken.equals("SHIELD"))
+		{
+			CDOMSimpleSingleRef<ShieldProf> wp = context.ref.getCDOMReference(
+					ShieldProf.class, prof);
+			context.getObjectContext().put(eq, ObjectKey.SHIELD_PROF, wp);
+		}
+		else
+		{
+			Logging.errorPrint("Unknown Subtoken for PROFICIENCY: " + subtoken);
+			Logging.errorPrint("  Subtoken must be "
+					+ "WEAPON, ARMOR or SHIELD");
+			return false;
+		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, Equipment eq)
 	{
-		CDOMSimpleSingleRef<WeaponProf> wp =
-				context.getObjectContext().getObject(eq, ObjectKey.WEAPON_PROF);
+		CDOMSimpleSingleRef<WeaponProf> wp = context.getObjectContext()
+				.getObject(eq, ObjectKey.WEAPON_PROF);
+		CDOMSimpleSingleRef<ShieldProf> sp = context.getObjectContext()
+				.getObject(eq, ObjectKey.SHIELD_PROF);
+		CDOMSimpleSingleRef<ArmorProf> ap = context.getObjectContext()
+				.getObject(eq, ObjectKey.ARMOR_PROF);
 		if (wp == null)
 		{
+			if (sp == null)
+			{
+				if (ap == null)
+				{
+					return null;
+				}
+				return new String[] { "ARMOR|" + ap.getLSTformat() };
+			}
+			else
+			{
+				if (ap == null)
+				{
+					return new String[] { "SHIELD|" + sp.getLSTformat() };
+				}
+				context.addWriteMessage("Equipment may not have both "
+						+ "ARMOR and SHIELD Proficiencies");
+				return null;
+			}
+		}
+		if (sp == null)
+		{
+			if (ap == null)
+			{
+				return new String[] { "WEAPON|" + wp.getLSTformat() };
+			}
+			context.addWriteMessage("Equipment may not have both "
+					+ "ARMOR and WEAPON Proficiencies");
 			return null;
 		}
-		return new String[]{wp.getLSTformat()};
+		else
+		{
+			context.addWriteMessage("Equipment may not have both "
+					+ "WEAPON and SHIELD Proficiencies");
+			return null;
+		}
 	}
 }

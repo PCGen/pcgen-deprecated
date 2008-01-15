@@ -140,6 +140,7 @@ public class TokenStore
 
 		// compatibility
 		tokenCompatibilityList.add(ChooseCompatibilityToken.class);
+		tokenCompatibilityList.add(EqModChooseCompatibilityToken.class);
 		tokenCompatibilityList.add(GlobalLstCompatibilityToken.class);
 		tokenCompatibilityList.add(EquipmentLstCompatibilityToken.class);
 		tokenCompatibilityList

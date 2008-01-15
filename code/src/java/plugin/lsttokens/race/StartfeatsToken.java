@@ -139,7 +139,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken
 		 * monkeys on one of the lists in early 2007 - Tom Parker Mar/28/2007
 		 */
 		Prerequisite prereq =
-				getPrerequisite("PREMULT:1,[PRELEVEL:1],[PREHD:1+]");
+				getPrerequisite("PREMULT:1,[PREHD:MIN=1],[PRELEVEL:MIN=1]");
 		container.addPrerequisite(prereq);
 		return true;
 	}

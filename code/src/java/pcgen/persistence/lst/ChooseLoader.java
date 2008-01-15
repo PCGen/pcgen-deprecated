@@ -58,9 +58,9 @@ public final class ChooseLoader
 	{
 		return TokenStore.inst().getTokenMap(EqModChooseLstToken.class)
 				.get(key) != null;
-				//|| isGlobalChooseToken(key);
+		// || isGlobalChooseToken(key);
 	}
-	
+
 	public static boolean isGlobalChooseToken(String key)
 	{
 		return TokenStore.inst().getTokenMap(ChooseLstToken.class).get(key) != null;
@@ -84,12 +84,13 @@ public final class ChooseLoader
 			}
 			return true;
 		}
-		//in case global use is needed:
-		//parseToken(mod, prefix, key, value, -9);
-		//Always have to return true to maintain old format as ok, but deprecated
+		// in case global use is needed:
+		// parseToken(mod, prefix, key, value, -9);
+		// Always have to return true to maintain old format as ok, but
+		// deprecated
 		return true;
 	}
-	
+
 	/**
 	 * This method is static so it can be used by the ADD Token.
 	 * 
@@ -99,10 +100,10 @@ public final class ChooseLoader
 	 * @throws PersistenceLayerException
 	 */
 	public static boolean parseToken(PObject target, String prefix, String key,
-		String value, int level)
+			String value, int level)
 	{
-		Map<String, LstToken> tokenMap =
-				TokenStore.inst().getTokenMap(ChooseLstToken.class);
+		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
+				ChooseLstToken.class);
 		ChooseLstToken token = (ChooseLstToken) tokenMap.get(key);
 		if (token != null)
 		{
@@ -110,8 +111,8 @@ public final class ChooseLoader
 			if (!token.parse(target, prefix, value))
 			{
 				Logging.deprecationPrint("Error parsing CHOOSE: " + key + "|"
-					+ value + " in " + target.getDisplayName() + " of "
-					+ target.getSourceURI());
+						+ value + " in " + target.getDisplayName() + " of "
+						+ target.getSourceURI());
 				return false;
 			}
 			return true;
@@ -119,18 +120,18 @@ public final class ChooseLoader
 		else
 		{
 			Logging.deprecationPrint("Error parsing CHOOSE, invalid SubToken: "
-				+ key + " in " + target.getDisplayName() + " of "
-				+ target.getSourceURI());
+					+ key + " in " + target.getDisplayName() + " of "
+					+ target.getSourceURI());
 			return false;
 		}
 	}
 
 	public static PrimitiveChoiceSet<?> parseToken(LoadContext context,
-		CDOMObject obj, String key, String value)
-		throws PersistenceLayerException
+			CDOMObject obj, String key, String value)
+			throws PersistenceLayerException
 	{
-		Map<String, LstToken> tokenMap =
-				TokenStore.inst().getTokenMap(ChooseCDOMLstToken.class);
+		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
+				ChooseCDOMLstToken.class);
 		ChooseCDOMLstToken token = (ChooseCDOMLstToken) tokenMap.get(key);
 
 		PrimitiveChoiceSet<?> chooser;
@@ -140,7 +141,7 @@ public final class ChooseLoader
 			if (chooser == null)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, "Illegal CHOOSE:"
-					+ key + " ... '" + value + "'");
+						+ key + " ... '" + value + "'");
 				return null;
 			}
 		}
@@ -154,8 +155,9 @@ public final class ChooseLoader
 				if (chooser == null)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"Error parsing CHOOSE:" + key + " in "
-							+ obj.getDisplayName() + ": \"" + value + "\"");
+							"Error parsing CHOOSE:" + key + " in "
+									+ obj.getDisplayName() + ": \"" + value
+									+ "\"");
 					return null;
 				}
 			}
@@ -164,28 +166,26 @@ public final class ChooseLoader
 	}
 
 	public static <T extends PObject> PrimitiveChoiceSet<T> parseToken(
-		LoadContext context, Class<T> poClass, String value)
+			LoadContext context, Class<T> poClass, String value)
 	{
 		// PC[TYPE=x|<primitive1>|<primitive2>|<primitive3>]|QUALIFIED[!TYPE=y,TYPE=z|<primitive4>]
 		if (value.charAt(0) == '|')
 		{
 			Logging.addParseMessage(Logging.LST_ERROR,
-				"CHOOSE arguments may not start with | : " + value);
+					"CHOOSE arguments may not start with | : " + value);
 		}
 		if (value.charAt(value.length() - 1) == '|')
 		{
 			Logging.addParseMessage(Logging.LST_ERROR,
-				"CHOOSE arguments may not end with | : " + value);
+					"CHOOSE arguments may not end with | : " + value);
 		}
 		if (value.indexOf("||") != -1)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR,
-				"CHOOSE arguments uses double separator || : " + value);
+					"CHOOSE arguments uses double separator || : " + value);
 		}
-		List<PrimitiveChoiceFilter<T>> pcfList =
-				new ArrayList<PrimitiveChoiceFilter<T>>();
-		List<PrimitiveChoiceSet<T>> pcsList =
-				new ArrayList<PrimitiveChoiceSet<T>>();
+		List<PrimitiveChoiceFilter<T>> pcfList = new ArrayList<PrimitiveChoiceFilter<T>>();
+		List<PrimitiveChoiceSet<T>> pcsList = new ArrayList<PrimitiveChoiceSet<T>>();
 
 		StringBuilder remainingValue = new StringBuilder(value);
 		while (remainingValue.length() > 0)
@@ -196,13 +196,12 @@ public final class ChooseLoader
 			{
 				// Could be a primitive or a Qualifier...
 				String key = remainingValue.toString();
-				PrimitiveChoiceSet<T> qual =
-						getQualifier(context, poClass, key, null);
+				PrimitiveChoiceSet<T> qual = getQualifier(context, poClass,
+						key, null);
 				if (qual == null)
 				{
-					PrimitiveChoiceFilter<T> pcf =
-							ChooseLoader.getPrimitiveChoiceFilter(context,
-								poClass, key);
+					PrimitiveChoiceFilter<T> pcf = ChooseLoader
+							.getPrimitiveChoiceFilter(context, poClass, key);
 					pcfList.add(pcf);
 				}
 				else
@@ -212,17 +211,16 @@ public final class ChooseLoader
 				remainingValue.setLength(0);
 			}
 			else if (openBracketLoc == -1 || pipeLoc > 0
-				&& pipeLoc < openBracketLoc)
+					&& pipeLoc < openBracketLoc)
 			{
 				// Still could be a primitive or a Qualifier...
 				String key = remainingValue.substring(0, pipeLoc);
-				PrimitiveChoiceSet<T> qual =
-						getQualifier(context, poClass, key, null);
+				PrimitiveChoiceSet<T> qual = getQualifier(context, poClass,
+						key, null);
 				if (qual == null)
 				{
-					PrimitiveChoiceFilter<T> pcf =
-							ChooseLoader.getPrimitiveChoiceFilter(context,
-								poClass, key);
+					PrimitiveChoiceFilter<T> pcf = ChooseLoader
+							.getPrimitiveChoiceFilter(context, poClass, key);
 					pcfList.add(pcf);
 				}
 				else
@@ -241,9 +239,8 @@ public final class ChooseLoader
 					throw new IllegalStateException();
 				}
 				String key = remainingValue.substring(0, openBracketLoc);
-				String args =
-						remainingValue.substring(openBracketLoc + 1,
-							remainingValue.length() - 1);
+				String args = remainingValue.substring(openBracketLoc + 1,
+						remainingValue.length() - 1);
 				if (closeBracketLoc == remainingValue.length() - 1)
 				{
 					remainingValue.setLength(0);
@@ -257,8 +254,8 @@ public final class ChooseLoader
 				{
 					remainingValue.delete(0, closeBracketLoc + 1);
 				}
-				PrimitiveChoiceSet<T> qual =
-						getQualifier(context, poClass, key, args);
+				PrimitiveChoiceSet<T> qual = getQualifier(context, poClass,
+						key, args);
 				if (qual == null)
 				{
 					// TODO Error bracketed item must be a qualifier
@@ -289,14 +286,14 @@ public final class ChooseLoader
 	}
 
 	public static <T extends PObject> PrimitiveChoiceSet<T> getQualifier(
-		LoadContext context, Class<T> cl, String key, String value)
+			LoadContext context, Class<T> cl, String key, String value)
 	{
 		TokenStore ts = TokenStore.inst();
 		ChooseLstQualifierToken<T> qual = ts.getChooseQualifier(cl, key);
 		if (qual == null)
 		{
-			ChooseLstGlobalQualifierToken<T> potoken =
-					ts.getGlobalChooseQualifier(key);
+			ChooseLstGlobalQualifierToken<T> potoken = ts
+					.getGlobalChooseQualifier(key);
 			if (potoken == null)
 			{
 				return null;
@@ -312,15 +309,14 @@ public final class ChooseLoader
 	}
 
 	public static <T extends PObject> PrimitiveChoiceFilter<T> getPrimitiveChoiceFilter(
-		LoadContext context, Class<T> cl, String key)
+			LoadContext context, Class<T> cl, String key)
 	{
 		if (key.indexOf(',') == -1)
 		{
 			return getAtomicChoiceFilter(context, cl, key);
 		}
 		StringTokenizer st = new StringTokenizer(key, ",");
-		List<PrimitiveChoiceFilter<T>> filterList =
-				new ArrayList<PrimitiveChoiceFilter<T>>();
+		List<PrimitiveChoiceFilter<T>> filterList = new ArrayList<PrimitiveChoiceFilter<T>>();
 		while (st.hasMoreTokens())
 		{
 			filterList.add(getAtomicChoiceFilter(context, cl, st.nextToken()));
@@ -329,7 +325,7 @@ public final class ChooseLoader
 	}
 
 	public static <T extends PObject> PrimitiveChoiceFilter<T> getAtomicChoiceFilter(
-		LoadContext context, Class<T> cl, String key)
+			LoadContext context, Class<T> cl, String key)
 	{
 		int equalLoc = key.indexOf('=');
 		String tokKey;
@@ -348,16 +344,16 @@ public final class ChooseLoader
 		if (prim == null)
 		{
 			if (key.startsWith(Constants.LST_TYPE_OLD)
-				|| key.startsWith(Constants.LST_TYPE))
+					|| key.startsWith(Constants.LST_TYPE))
 			{
 				return TokenUtilities.getTypeReference(context, cl, key
-					.substring(5));
+						.substring(5));
 			}
 			else if (key.startsWith(Constants.LST_NOT_TYPE_OLD)
-				|| key.startsWith(Constants.LST_NOT_TYPE))
+					|| key.startsWith(Constants.LST_NOT_TYPE))
 			{
 				return new NegatingFilter<T>(TokenUtilities.getTypeReference(
-					context, cl, key.substring(6)));
+						context, cl, key.substring(6)));
 			}
 			else if (key.indexOf('%') != -1)
 			{
@@ -375,24 +371,21 @@ public final class ChooseLoader
 		return prim;
 	}
 
-	private static final ReverseIntegerComparator REVERSE =
-			new ReverseIntegerComparator();
+	private static final ReverseIntegerComparator REVERSE = new ReverseIntegerComparator();
 
 	private static PrimitiveChoiceSet<?> processCompatible(LoadContext context,
-		CDOMObject pobj, String key, String value)
+			CDOMObject pobj, String key, String value)
 	{
-		Collection<ChooseCompatibilityToken> tokens =
-				TokenStore.inst().getCompatibilityToken(
-					ChooseCompatibilityToken.class, key);
+		Collection<ChooseCompatibilityToken> tokens = TokenStore.inst()
+				.getCompatibilityToken(ChooseCompatibilityToken.class, key);
 		if (tokens != null && !tokens.isEmpty())
 		{
-			TripleKeyMap<Integer, Integer, Integer, ChooseCompatibilityToken> tkm =
-					new TripleKeyMap<Integer, Integer, Integer, ChooseCompatibilityToken>();
+			TripleKeyMap<Integer, Integer, Integer, ChooseCompatibilityToken> tkm = new TripleKeyMap<Integer, Integer, Integer, ChooseCompatibilityToken>();
 			for (ChooseCompatibilityToken tok : tokens)
 			{
 				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
-					.valueOf(tok.compatibilitySubLevel()), Integer.valueOf(tok
-					.compatibilityPriority()), tok);
+						.valueOf(tok.compatibilitySubLevel()), Integer
+						.valueOf(tok.compatibilityPriority()), tok);
 			}
 			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
 			primarySet.addAll(tkm.getKeySet());
@@ -406,12 +399,12 @@ public final class ChooseLoader
 					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
 					for (Integer priority : tertiarySet)
 					{
-						ChooseCompatibilityToken tok =
-								tkm.get(level, subLevel, priority);
+						ChooseCompatibilityToken tok = tkm.get(level, subLevel,
+								priority);
 						try
 						{
-							PrimitiveChoiceSet<?> parse =
-									tok.parse(context, pobj, value);
+							PrimitiveChoiceSet<?> parse = tok.parse(context,
+									pobj, value);
 							if (parse != null)
 							{
 								return parse;
@@ -420,8 +413,8 @@ public final class ChooseLoader
 						catch (PersistenceLayerException e)
 						{
 							Logging.addParseMessage(Logging.LST_ERROR,
-								"Error parsing CHOOSE Token '" + key + "' for "
-									+ pobj.getDisplayName());
+									"Error parsing CHOOSE Token '" + key
+											+ "' for " + pobj.getDisplayName());
 						}
 					}
 					tertiarySet.clear();
@@ -433,9 +426,99 @@ public final class ChooseLoader
 	}
 
 	public static PrimitiveChoiceSet<?> parseEqModToken(LoadContext context,
-			EquipmentModifier mod, String key, String val)
+			EquipmentModifier mod, String key, String value)
+			throws PersistenceLayerException
 	{
-		// FIXME Need to implement this!!
+		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
+				ChooseCDOMLstToken.class);
+		ChooseCDOMLstToken token = (ChooseCDOMLstToken) tokenMap.get(key);
+
+		PrimitiveChoiceSet<?> chooser;
+		/*
+		 * TODO For now, don't process the globals - too hard with CHOOSE:NUMBER
+		 */
+//		if (token == null)
+//		{
+			chooser = processEqModCompatible(context, mod, key, value);
+			if (chooser == null)
+			{
+				Logging.addParseMessage(Logging.LST_ERROR, "Illegal CHOOSE:"
+						+ key + " ... '" + value + "'");
+				return null;
+			}
+//		}
+//		else
+//		{
+//			LstUtils.deprecationCheck(token, mod, value);
+//			chooser = token.parse(context, mod, value);
+//			if (chooser == null)
+//			{
+//				chooser = processEqModCompatible(context, mod, key, value);
+//				if (chooser == null)
+//				{
+//					Logging.addParseMessage(Logging.LST_ERROR,
+//							"Error parsing CHOOSE:" + key + " in "
+//									+ mod.getDisplayName() + ": \"" + value
+//									+ "\"");
+//					return null;
+//				}
+//			}
+//		}
+		return chooser;
+	}
+
+	private static PrimitiveChoiceSet<?> processEqModCompatible(
+			LoadContext context, EquipmentModifier pobj, String key,
+			String value)
+	{
+		Collection<EqModChooseCompatibilityToken> tokens = TokenStore
+				.inst()
+				.getCompatibilityToken(EqModChooseCompatibilityToken.class, key);
+		if (tokens != null && !tokens.isEmpty())
+		{
+			TripleKeyMap<Integer, Integer, Integer, EqModChooseCompatibilityToken> tkm = new TripleKeyMap<Integer, Integer, Integer, EqModChooseCompatibilityToken>();
+			for (EqModChooseCompatibilityToken tok : tokens)
+			{
+				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
+						.valueOf(tok.compatibilitySubLevel()), Integer
+						.valueOf(tok.compatibilityPriority()), tok);
+			}
+			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
+			primarySet.addAll(tkm.getKeySet());
+			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
+			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
+			for (Integer level : primarySet)
+			{
+				secondarySet.addAll(tkm.getSecondaryKeySet(level));
+				for (Integer subLevel : secondarySet)
+				{
+					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
+					for (Integer priority : tertiarySet)
+					{
+						EqModChooseCompatibilityToken tok = tkm.get(level,
+								subLevel, priority);
+						try
+						{
+							PrimitiveChoiceSet<?> parse = tok.parse(context,
+									pobj, value);
+							if (parse != null)
+							{
+								return parse;
+							}
+						}
+						catch (PersistenceLayerException e)
+						{
+							Logging.addParseMessage(Logging.LST_ERROR,
+									"Error parsing CHOOSE Token '" + key
+											+ "' for " + pobj.getDisplayName());
+						}
+					}
+					tertiarySet.clear();
+				}
+				secondarySet.clear();
+			}
+		}
 		return null;
 	}
+
 }

@@ -155,6 +155,10 @@ public class ChooseLst implements GlobalLstToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 		throws PersistenceLayerException
 	{
+		if (obj instanceof EquipmentModifier)
+		{
+			return false;
+		}
 		String token = null;
 		String rest = value;
 		String count = null;
@@ -223,6 +227,27 @@ public class ChooseLst implements GlobalLstToken
 			key = token;
 			val = rest;
 		}
+		if (val != null)
+		{
+			int titleLoc = val.indexOf("|TITLE=");
+			String title = null;
+			if (titleLoc != -1)
+			{
+				if (val.substring(titleLoc + 1).indexOf(Constants.PIPE) != -1)
+				{
+					Logging.errorPrint("CHOOSE: If TITLE= is used, must END with TITLE= . "
+							+ "No additional arguments allowed after the title.  "
+							+ "Offending value: " + value);
+					return false;
+				}
+				title = val.substring(titleLoc + 7);
+				val = val.substring(0, titleLoc);
+			}
+		}
+		
+		/*
+		 * TODO Need to process the title!!!
+		 */
 		PrimitiveChoiceSet<?> chooser =
 				ChooseLoader.parseToken(context, obj, key, val);
 		if (chooser == null)

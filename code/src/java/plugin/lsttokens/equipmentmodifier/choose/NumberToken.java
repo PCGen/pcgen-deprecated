@@ -19,12 +19,19 @@ package plugin.lsttokens.equipmentmodifier.choose;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.helper.NumberChoiceSet;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
 import pcgen.util.Logging;
 
-public class NumberToken implements EqModChooseLstToken
+public class NumberToken extends AbstractToken implements EqModChooseLstToken,
+		EqModChooseCompatibilityToken
 {
 
 	public String getTokenName()
@@ -37,38 +44,40 @@ public class NumberToken implements EqModChooseLstToken
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
+					+ " arguments may not start with | : " + value);
 			return false;
 		}
 		if (value.charAt(value.length() - 1) == '|')
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
+					+ " arguments may not end with | : " + value);
 			return false;
 		}
 		if (value.indexOf("||") != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
+					+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " must have two or more | delimited arguments : " + value);
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
 			return false;
 		}
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -80,33 +89,33 @@ public class NumberToken implements EqModChooseLstToken
 			if (tokString.startsWith("MIN="))
 			{
 				min = Integer.valueOf(tokString.substring(4));
-				//OK
+				// OK
 			}
 			else if (tokString.startsWith("MAX="))
 			{
 				max = Integer.valueOf(tokString.substring(4));
-				//OK
+				// OK
 			}
 			else if (tokString.startsWith("TITLE="))
 			{
-				//OK
+				// OK
 			}
 			else if (tokString.startsWith("INCREMENT="))
 			{
-				//OK
+				// OK
 				Integer.parseInt(tokString.substring(4));
 			}
 			else if (tokString.startsWith("NOSIGN"))
 			{
-				//OK
+				// OK
 			}
 			else if (tokString.startsWith("SKIPZERO"))
 			{
-				//OK
+				// OK
 			}
 			else if (tokString.startsWith("MULTIPLE"))
 			{
-				//OK
+				// OK
 			}
 			else
 			{
@@ -148,5 +157,165 @@ public class NumberToken implements EqModChooseLstToken
 		sb.append(getTokenName()).append('|').append(value);
 		mod.setChoiceString(sb.toString());
 		return true;
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context,
+			EquipmentModifier mod, String value)
+			throws PersistenceLayerException
+	{
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return null;
+		}
+		int pipeLoc = value.indexOf("|");
+		if (pipeLoc == -1)
+		{
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
+			return null;
+		}
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		Integer min = null;
+		Integer max = null;
+		Integer increment = null;
+		boolean noSign = false;
+		boolean skipZero = false;
+		boolean multiple = false;
+		while (tok.hasMoreTokens())
+		{
+			String tokString = tok.nextToken();
+			if (tokString.startsWith("MIN="))
+			{
+				if (min != null)
+				{
+					Logging.errorPrint("Cannot specify MIN= twice in CHOOSE: "
+							+ value);
+					return null;
+				}
+				min = Integer.valueOf(tokString.substring(4));
+			}
+			else if (tokString.startsWith("MAX="))
+			{
+				if (max != null)
+				{
+					Logging.errorPrint("Cannot specify MAX= twice in CHOOSE: "
+							+ value);
+					return null;
+				}
+				max = Integer.valueOf(tokString.substring(4));
+			}
+			else if (tokString.startsWith("INCREMENT="))
+			{
+				if (increment != null)
+				{
+					Logging
+							.errorPrint("Cannot specify INCREMENT= twice in CHOOSE: "
+									+ value);
+					return null;
+				}
+				increment = Integer.parseInt(tokString.substring(4));
+			}
+			else if (tokString.startsWith("NOSIGN"))
+			{
+				if (noSign)
+				{
+					Logging
+							.errorPrint("Cannot specify NOSIGN twice in CHOOSE: "
+									+ value);
+					return null;
+				}
+				noSign = true;
+			}
+			else if (tokString.startsWith("SKIPZERO"))
+			{
+				if (skipZero)
+				{
+					Logging
+							.errorPrint("Cannot specify SKIPZERO twice in CHOOSE: "
+									+ value);
+					return null;
+				}
+				skipZero = true;
+			}
+			else if (tokString.startsWith("MULTIPLE"))
+			{
+				if (multiple)
+				{
+					Logging
+							.errorPrint("Cannot specify MULTIPLE twice in CHOOSE: "
+									+ value);
+					return null;
+				}
+				multiple = true;
+			}
+			else
+			{
+				/*
+				 * TODO this doesn't work today :(
+				 */
+				Integer.parseInt(tokString);
+				return null;
+			}
+		}
+		if (max == null)
+		{
+			if (min != null)
+			{
+				Logging
+						.errorPrint("Cannot have MIN=n without MAX=m in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+		}
+		else
+		{
+			if (min == null)
+			{
+				Logging
+						.errorPrint("Cannot have MAX=n without MIN=m in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+			if (max < min)
+			{
+				Logging
+						.errorPrint("Cannot have MAX= less than MIN= in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+		}
+		NumberChoiceSet cs = new NumberChoiceSet(min, max);
+		cs.setShowSign(!noSign);
+		cs.setShowZero(!skipZero);
+		cs.setMultiple(multiple);
+		if (increment != null)
+		{
+			if (increment.intValue() < 1)
+			{
+				Logging
+						.errorPrint("Increment in CHOOSE must be >= 1: "
+								+ value);
+				return null;
+			}
+			cs.setIncrement(increment.intValue());
+		}
+		return cs;
 	}
 }

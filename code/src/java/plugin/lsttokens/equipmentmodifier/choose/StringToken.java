@@ -17,11 +17,23 @@
  */
 package plugin.lsttokens.equipmentmodifier.choose;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.helper.CollectionChoiceSet;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.EquipmentModifier;
+import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
 import pcgen.util.Logging;
 
-public class StringToken implements EqModChooseLstToken
+public class StringToken extends AbstractToken implements EqModChooseLstToken,
+		EqModChooseCompatibilityToken
 {
 
 	public boolean parse(EquipmentModifier po, String prefix, String value)
@@ -29,31 +41,31 @@ public class StringToken implements EqModChooseLstToken
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (value.charAt(0) == '|')
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not start with | : " + value);
+					+ " arguments may not start with | : " + value);
 			return false;
 		}
 		if (value.charAt(value.length() - 1) == '|')
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not end with | : " + value);
+					+ " arguments may not end with | : " + value);
 			return false;
 		}
 		if (value.indexOf("||") != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments uses double separator || : " + value);
+					+ " arguments uses double separator || : " + value);
 			return false;
 		}
 		StringBuilder sb = new StringBuilder();
@@ -69,5 +81,43 @@ public class StringToken implements EqModChooseLstToken
 	public String getTokenName()
 	{
 		return "STRING";
+	}
+
+	public int compatibilityLevel()
+	{
+		return 5;
+	}
+
+	public int compatibilityPriority()
+	{
+		return 0;
+	}
+
+	public int compatibilitySubLevel()
+	{
+		return 14;
+	}
+
+	public PrimitiveChoiceSet<?> parse(LoadContext context,
+			EquipmentModifier mod, String value)
+			throws PersistenceLayerException
+	{
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return null;
+		}
+		if (value.indexOf(',') != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+					+ " arguments may not contain , : " + value);
+			return null;
+		}
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		List<String> list = new ArrayList<String>();
+		while (st.hasMoreTokens())
+		{
+			list.add(st.nextToken());
+		}
+		return new CollectionChoiceSet<String>(list);
 	}
 }
