@@ -70,7 +70,7 @@ public class NoChoiceToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?> parse(LoadContext context,
+	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
 			EquipmentModifier mod, String value)
 			throws PersistenceLayerException
 	{
@@ -78,6 +78,6 @@ public class NoChoiceToken extends AbstractToken implements
 		{
 			return null;
 		}
-		return new NoChoiceSet();
+		return new PrimitiveChoiceSet<?>[] { new NoChoiceSet() };
 	}
 }

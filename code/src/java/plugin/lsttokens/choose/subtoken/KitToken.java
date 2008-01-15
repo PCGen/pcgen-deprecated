@@ -14,28 +14,33 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
- * Current Ver: $Revision: 2494 $
- * Last Editor: $Author: thpr $
- * Last Edited: $Date: 2007-03-12 23:59:32 -0400 (Mon, 12 Mar 2007) $
- *
  */
-package pcgen.persistence.lst;
+package plugin.lsttokens.choose.subtoken;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.EquipmentModifier;
+import pcgen.core.Kit;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.persistence.lst.AbstractToken;
+import pcgen.persistence.lst.ChooseCDOMLstToken;
+import pcgen.persistence.lst.ChooseLoader;
 
-public interface EqModChooseCompatibilityToken extends LstToken
+public class KitToken extends AbstractToken implements ChooseCDOMLstToken
 {
-	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
-			EquipmentModifier mod, String value)
-			throws PersistenceLayerException;
 
-	public int compatibilityLevel();
+	private static final Class<Kit> KIT_CLASS = Kit.class;
 
-	public int compatibilitySubLevel();
+	@Override
+	public String getTokenName()
+	{
+		return "KIT";
+	}
 
-	public int compatibilityPriority();
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
+			String value) throws PersistenceLayerException
+	{
+		return ChooseLoader.parseToken(context, KIT_CLASS, value);
+	}
+
 }

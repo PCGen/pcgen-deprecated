@@ -17,21 +17,29 @@
  */
 package plugin.lsttokens.equipmentmodifier.choose;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.helper.CollectionChoiceSet;
+import pcgen.cdom.helper.NumberChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
+import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
+import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 public class SkillBonusToken extends AbstractToken implements
 		EqModChooseLstToken, EqModChooseCompatibilityToken
 {
+
+	private static final Class<Skill> SKILL_CLASS = Skill.class;
 
 	public String getTokenName()
 	{
@@ -161,12 +169,96 @@ public class SkillBonusToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?> parse(LoadContext context,
+	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
 			EquipmentModifier mod, String value)
 			throws PersistenceLayerException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return null;
+		}
+		int pipeLoc = value.indexOf("|");
+		if (pipeLoc == -1)
+		{
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
+			return null;
+		}
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		Integer min = null;
+		Integer max = null;
+		ArrayList<CDOMReference<Skill>> skillList = new ArrayList<CDOMReference<Skill>>();
+		while (tok.hasMoreTokens())
+		{
+			String tokString = tok.nextToken();
+			if (tokString.startsWith("MIN="))
+			{
+				if (min != null)
+				{
+					Logging.errorPrint("Cannot specify MIN= twice in CHOOSE: "
+							+ value);
+					return null;
+				}
+				min = Integer.valueOf(tokString.substring(4));
+			}
+			else if (tokString.startsWith("MAX="))
+			{
+				if (max != null)
+				{
+					Logging.errorPrint("Cannot specify MAX= twice in CHOOSE: "
+							+ value);
+					return null;
+				}
+				max = Integer.valueOf(tokString.substring(4));
+			}
+			else
+			{
+				CDOMReference<Skill> ref = TokenUtilities.getTypeOrPrimitive(
+						context, SKILL_CLASS, tokString);
+				if (ref == null)
+				{
+					return null;
+				}
+				skillList.add(ref);
+			}
+		}
+		if (max == null)
+		{
+			if (min != null)
+			{
+				Logging
+						.errorPrint("Cannot have MIN=n without MAX=m in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+		}
+		else
+		{
+			if (min == null)
+			{
+				Logging
+						.errorPrint("Cannot have MAX=n without MIN=m in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+			if (max < min)
+			{
+				Logging
+						.errorPrint("Cannot have MAX= less than MIN= in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+		}
+		if (skillList.isEmpty())
+		{
+			skillList.add(context.ref.getCDOMAllReference(SKILL_CLASS));
+		}
+		skillList.trimToSize();
+		return new PrimitiveChoiceSet<?>[] {
+				new CollectionChoiceSet<CDOMReference<Skill>>(skillList),
+				new NumberChoiceSet(min, max) };
 	}
 
 }

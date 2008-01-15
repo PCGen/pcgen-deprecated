@@ -17,9 +17,12 @@
  */
 package plugin.lsttokens.equipmentmodifier.choose;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.helper.CollectionChoiceSet;
+import pcgen.cdom.helper.NumberChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
@@ -35,6 +38,8 @@ import pcgen.util.Logging;
 public class StatBonusToken extends AbstractToken implements
 		EqModChooseLstToken, EqModChooseCompatibilityToken
 {
+
+	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
 
 	public String getTokenName()
 	{
@@ -179,12 +184,97 @@ public class StatBonusToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?> parse(LoadContext context,
+	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
 			EquipmentModifier mod, String value)
 			throws PersistenceLayerException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return null;
+		}
+		int pipeLoc = value.indexOf("|");
+		if (pipeLoc == -1)
+		{
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
+			return null;
+		}
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		Integer min = null;
+		Integer max = null;
+		ArrayList<PCStat> statList = new ArrayList<PCStat>();
+		while (tok.hasMoreTokens())
+		{
+			String tokString = tok.nextToken();
+			if (tokString.startsWith("MIN="))
+			{
+				if (min != null)
+				{
+					Logging.errorPrint("Cannot specify MIN= twice in CHOOSE: "
+							+ value);
+					return null;
+				}
+				min = Integer.valueOf(tokString.substring(4));
+			}
+			else if (tokString.startsWith("MAX="))
+			{
+				if (max != null)
+				{
+					Logging.errorPrint("Cannot specify MAX= twice in CHOOSE: "
+							+ value);
+					return null;
+				}
+				max = Integer.valueOf(tokString.substring(4));
+			}
+			else
+			{
+				PCStat ref = context.ref.getConstructedCDOMObject(PCSTAT_CLASS,
+						tokString);
+				if (ref == null)
+				{
+					return null;
+				}
+				statList.add(ref);
+			}
+		}
+		if (max == null)
+		{
+			if (min != null)
+			{
+				Logging
+						.errorPrint("Cannot have MIN=n without MAX=m in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+		}
+		else
+		{
+			if (min == null)
+			{
+				Logging
+						.errorPrint("Cannot have MAX=n without MIN=m in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+			if (max < min)
+			{
+				Logging
+						.errorPrint("Cannot have MAX= less than MIN= in CHOOSE:NUMBER: "
+								+ value);
+				return null;
+			}
+		}
+		if (statList.isEmpty())
+		{
+			statList
+					.addAll(context.ref.getConstructedCDOMObjects(PCSTAT_CLASS));
+		}
+		statList.trimToSize();
+		return new PrimitiveChoiceSet<?>[] {
+				new CollectionChoiceSet<PCStat>(statList),
+				new NumberChoiceSet(min, max) };
 	}
 
 }

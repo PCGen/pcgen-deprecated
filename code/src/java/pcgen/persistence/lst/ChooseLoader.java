@@ -425,7 +425,7 @@ public final class ChooseLoader
 		return null;
 	}
 
-	public static PrimitiveChoiceSet<?> parseEqModToken(LoadContext context,
+	public static PrimitiveChoiceSet<?>[] parseEqModToken(LoadContext context,
 			EquipmentModifier mod, String key, String value)
 			throws PersistenceLayerException
 	{
@@ -433,7 +433,7 @@ public final class ChooseLoader
 				ChooseCDOMLstToken.class);
 		ChooseCDOMLstToken token = (ChooseCDOMLstToken) tokenMap.get(key);
 
-		PrimitiveChoiceSet<?> chooser;
+		PrimitiveChoiceSet<?>[] chooser;
 		/*
 		 * TODO For now, don't process the globals - too hard with CHOOSE:NUMBER
 		 */
@@ -467,7 +467,7 @@ public final class ChooseLoader
 		return chooser;
 	}
 
-	private static PrimitiveChoiceSet<?> processEqModCompatible(
+	private static PrimitiveChoiceSet<?>[] processEqModCompatible(
 			LoadContext context, EquipmentModifier pobj, String key,
 			String value)
 	{
@@ -499,7 +499,7 @@ public final class ChooseLoader
 								subLevel, priority);
 						try
 						{
-							PrimitiveChoiceSet<?> parse = tok.parse(context,
+							PrimitiveChoiceSet<?>[] parse = tok.parse(context,
 									pobj, value);
 							if (parse != null)
 							{

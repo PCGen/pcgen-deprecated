@@ -35,10 +35,14 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
+import pcgen.cdom.helper.SpellReferenceChoiceSet;
+import pcgen.core.CDOMListObject;
 import pcgen.core.ClassSpellList;
+import pcgen.core.DomainSpellList;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
+import pcgen.core.spell.Spell;
 import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
@@ -54,6 +58,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 {
 
 	private static Class<ClassSpellList> SPELLLIST_CLASS = ClassSpellList.class;
+	private static Class<DomainSpellList> DOMAINSPELLLIST_CLASS = DomainSpellList.class;
 
 	@Override
 	public String getTokenName()
@@ -75,7 +80,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			catch (NumberFormatException e)
 			{
 				Logging.errorPrint("Import error: Expected first value of "
-					+ "SPELLLIST token with a | to be a number");
+						+ "SPELLLIST token with a | to be a number");
 				return false;
 			}
 		}
@@ -88,8 +93,8 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			if (Globals.getDomainKeyed(className) != null)
 			{
 				Logging.deprecationPrint(getTokenName()
-					+ " now requires a DOMAIN. prefix "
-					+ "when used with a DOMAIN rather than a Class");
+						+ " now requires a DOMAIN. prefix "
+						+ "when used with a DOMAIN rather than a Class");
 			}
 			if (className.startsWith("DOMAIN."))
 			{
@@ -97,7 +102,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 				if (Globals.getDomainKeyed(domainName) == null)
 				{
 					Logging.errorPrint(getTokenName()
-						+ " could not find Domain: " + domainName);
+							+ " could not find Domain: " + domainName);
 					return false;
 				}
 				// This is safe in 5.x since the class & domain names can't
@@ -128,13 +133,14 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 		if (pipeLoc == -1)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ " may not have only one pipe separated argument: " + value);
+					+ " may not have only one pipe separated argument: "
+					+ value);
 			return false;
 		}
 		if (pipeLoc != value.lastIndexOf('|'))
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ " may have only one pipe: " + value);
+					+ " may have only one pipe: " + value);
 			return false;
 		}
 
@@ -150,31 +156,37 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			if (count <= 0)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, "Number in "
-					+ getTokenName() + " must be greater than zero: " + value);
+						+ getTokenName() + " must be greater than zero: "
+						+ value);
 				return false;
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, "Invalid Number in "
-				+ getTokenName() + ": " + value);
+					+ getTokenName() + ": " + value);
 			return false;
 		}
 
 		StringTokenizer tok = new StringTokenizer(rest, Constants.COMMA);
-		List<CDOMReference<ClassSpellList>> refs =
-				new ArrayList<CDOMReference<ClassSpellList>>();
+		List<CDOMReference<?>> refs = new ArrayList<CDOMReference<?>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
 
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<ClassSpellList> ref;
+			CDOMReference<?> ref;
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
 				ref = context.ref.getCDOMAllReference(SPELLLIST_CLASS);
+			}
+			else if (token.startsWith("DOMAIN."))
+			{
+				foundOther = true;
+				ref = context.ref.getCDOMReference(DOMAINSPELLLIST_CLASS, token
+						.substring(7));
 			}
 			else
 			{
@@ -187,32 +199,40 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 		if (foundAny && foundOther)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, "Non-sensical "
-				+ getTokenName() + ": Contains ANY and a specific reference: "
-				+ value);
+					+ getTokenName()
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 
-		ChooseActionContainer container =
-				new ChooseActionContainer(getTokenName());
+		ChooseActionContainer container = new ChooseActionContainer(
+				getTokenName());
 		container.addActor(new GrantActor<PCTemplate>());
 		context.getGraphContext().grant(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
-		ReferenceChoiceSet<ClassSpellList> rcs =
-				new ReferenceChoiceSet<ClassSpellList>(refs);
-		ChoiceSet<ClassSpellList> cs =
-				new ChoiceSet<ClassSpellList>(getTokenName(), rcs);
+				.getFormulaFor(Integer.MAX_VALUE));
+
+		/*
+		 * TODO This is a pretty ugly situation, but is required in the current
+		 * design. Real question is how to make it so that a CHOOSER can choose
+		 * between two related things without a huge set of contortion... Since
+		 * on the back end of this, the Chooser will probably have issues
+		 * knowing what to do.
+		 */
+		ReferenceChoiceSet<? extends CDOMListObject<Spell>> rcs = new SpellReferenceChoiceSet(
+				refs);
+		ChoiceSet<? extends CDOMListObject<Spell>> cs = new ChoiceSet(
+				getTokenName(), rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, PCClass pcc)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pcc, ChooseActionContainer.class);
+		AssociatedChanges<ChooseActionContainer> grantChanges = context
+				.getGraphContext().getChangesFromToken(getTokenName(), pcc,
+						ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
 			return null;
@@ -229,18 +249,18 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			if (!getTokenName().equals(container.getName()))
 			{
 				context.addWriteMessage("Unexpected CHOOSE container found: "
-					+ container.getName());
+						+ container.getName());
 				continue;
 			}
 			ChoiceSet<?> cs = container.getChoiceSet();
 			if (SPELLLIST_CLASS.equals(cs.getChoiceClass()))
 			{
-				Formula f =
-						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f = container
+						.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
 					context.addWriteMessage("Unable to find " + getTokenName()
-						+ " Count");
+							+ " Count");
 					return null;
 				}
 				addStrings.add(f.toString() + "|" + cs.getLSTformat());

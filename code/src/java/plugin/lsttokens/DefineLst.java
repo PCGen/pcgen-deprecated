@@ -31,6 +31,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.VariableKey;
+import pcgen.core.PCStat;
 import pcgen.core.PObject;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
@@ -42,6 +43,8 @@ import pcgen.util.Logging;
  */
 public class DefineLst implements GlobalLstToken
 {
+
+	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
 
 	public String getTokenName()
 	{
@@ -59,10 +62,9 @@ public class DefineLst implements GlobalLstToken
 			{
 				if (tok.hasMoreTokens())
 				{
-					Logging
-						.log(Logging.LST_ERROR,
+					Logging.log(Logging.LST_ERROR,
 							"Cannot provide a value with DEFINE:UNLOCK. : "
-								+ value);
+									+ value);
 					return false;
 				}
 				defineFormula = "";
@@ -70,8 +72,8 @@ public class DefineLst implements GlobalLstToken
 			else if (!tok.hasMoreTokens())
 			{
 				Logging.log(Logging.LST_ERROR,
-					"Non UNLOCK DEFINE missing value. Fomrat should be DEFINE:var|value : "
-						+ value);
+						"Non UNLOCK DEFINE missing value. Fomrat should be DEFINE:var|value : "
+								+ value);
 				return false;
 			}
 			else
@@ -90,31 +92,66 @@ public class DefineLst implements GlobalLstToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		int barLoc = value.indexOf('|');
-		if (barLoc == -1 || barLoc != value.lastIndexOf('|'))
+		if (barLoc != value.lastIndexOf('|'))
 		{
-			Logging.errorPrint(getTokenName()
-				+ " must be of Format: varName|varFormula");
+			Logging
+					.errorPrint(getTokenName()
+							+ " must be of Format: varName|varFormula or LOCK.<stat>|value or UNLOCK.<stat>");
 			return false;
+		}
+		if (barLoc == -1)
+		{
+			if (value.startsWith("UNLOCK."))
+			{
+				PCStat stat = context.ref.getConstructedCDOMObject(
+						PCSTAT_CLASS, value.substring(7));
+				/*
+				 * TODO Unlock the stat here
+				 */
+				return true;
+			}
+			else
+			{
+				Logging
+						.errorPrint(getTokenName()
+								+ " must be of Format: varName|varFormula or LOCK.<stat>|value or UNLOCK.<stat>");
+				return false;
+			}
+		}
+		else
+		{
+			
 		}
 		String var = value.substring(0, barLoc);
 		if (var.length() == 0)
 		{
 			Logging.errorPrint("Empty Variable Name found in " + getTokenName()
-				+ ": " + value);
+					+ ": " + value);
 			return false;
 		}
 		try
 		{
-			Formula f =
-					FormulaFactory.getFormulaFor(value.substring(barLoc + 1));
-			context.getObjectContext()
-				.put(obj, VariableKey.getConstant(var), f);
+			Formula f = FormulaFactory.getFormulaFor(value
+					.substring(barLoc + 1));
+			if (value.startsWith("LOCK."))
+			{
+				PCStat stat = context.ref.getConstructedCDOMObject(
+						PCSTAT_CLASS, value.substring(5, barLoc));
+				/*
+				 * TODO Lock the stat here
+				 */
+			}
+			else
+			{
+				context.getObjectContext().put(obj,
+						VariableKey.getConstant(var), f);
+			}
 			return true;
 		}
 		catch (IllegalArgumentException e)
 		{
 			Logging.errorPrint("Illegal Formula found in " + getTokenName()
-				+ ": " + value);
+					+ ": " + value);
 			return false;
 		}
 	}
@@ -130,7 +167,7 @@ public class DefineLst implements GlobalLstToken
 		for (VariableKey key : keys)
 		{
 			set.add(key.toString() + Constants.PIPE
-				+ context.getObjectContext().getVariable(obj, key));
+					+ context.getObjectContext().getVariable(obj, key));
 		}
 		return set.toArray(new String[set.size()]);
 	}

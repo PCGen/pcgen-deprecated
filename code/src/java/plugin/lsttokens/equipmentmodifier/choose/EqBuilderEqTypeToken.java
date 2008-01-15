@@ -149,7 +149,7 @@ public class EqBuilderEqTypeToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?> parse(LoadContext context,
+	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
 			EquipmentModifier mod, String value)
 			throws PersistenceLayerException
 	{

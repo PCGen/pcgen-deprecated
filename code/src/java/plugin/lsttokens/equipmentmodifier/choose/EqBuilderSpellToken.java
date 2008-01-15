@@ -17,11 +17,17 @@
  */
 package plugin.lsttokens.equipmentmodifier.choose;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.helper.SpellLevelLimit;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
+import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
@@ -32,6 +38,8 @@ import pcgen.util.Logging;
 public class EqBuilderSpellToken extends AbstractToken implements
 		EqModChooseLstToken, EqModChooseCompatibilityToken
 {
+
+	private final Class<Spell> SPELL_CLASS = Spell.class;
 
 	public boolean parse(EquipmentModifier po, String prefix, String value)
 	{
@@ -143,12 +151,54 @@ public class EqBuilderSpellToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?> parse(LoadContext context,
+	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
 			EquipmentModifier mod, String value)
 			throws PersistenceLayerException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<SpellLevelLimit> sllList = new ArrayList<SpellLevelLimit>();
+
+		if (value == null)
+		{
+			CDOMReference<Spell> allRef = context.ref
+					.getCDOMAllReference(Spell.class);
+			sllList.add(new SpellLevelLimit(allRef, 0, Integer.MAX_VALUE));
+		}
+		else
+		{
+			if (value.length() == 0 || hasIllegalSeparator('|', value))
+			{
+				return null;
+			}
+			StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+			while (st.hasMoreTokens())
+			{
+				String type = st.nextToken();
+				if (!st.hasMoreTokens())
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+							+ " was expecting a minimum and maximum "
+							+ "level to follow spell type: " + type);
+					return null;
+				}
+				String minLevel = st.nextToken();
+				int min = Integer.parseInt(minLevel);
+				if (!st.hasMoreTokens())
+				{
+					Logging.errorPrint("Invalid " + getTokenName()
+							+ " was expecting a maximum "
+							+ "level to follow minimum " + minLevel
+							+ " for spell type: " + type);
+					return null;
+				}
+				String maxLevel = st.nextToken();
+				int max = Integer.parseInt(maxLevel);
+				CDOMReference<Spell> ref = context.ref.getCDOMTypeReference(
+						SPELL_CLASS, type);
+				sllList.add(new SpellLevelLimit(ref, min, max));
+			}
+		}
+		return new PrimitiveChoiceSet<?>[] { new CollectionChoiceSet<SpellLevelLimit>(
+				sllList) };
 	}
 
 }

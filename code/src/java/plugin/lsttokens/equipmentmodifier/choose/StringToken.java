@@ -98,7 +98,7 @@ public class StringToken extends AbstractToken implements EqModChooseLstToken,
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?> parse(LoadContext context,
+	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
 			EquipmentModifier mod, String value)
 			throws PersistenceLayerException
 	{
@@ -118,6 +118,7 @@ public class StringToken extends AbstractToken implements EqModChooseLstToken,
 		{
 			list.add(st.nextToken());
 		}
-		return new CollectionChoiceSet<String>(list);
+		return new PrimitiveChoiceSet<?>[] { new CollectionChoiceSet<String>(
+				list) };
 	}
 }

@@ -33,9 +33,13 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
+import pcgen.cdom.helper.SpellReferenceChoiceSet;
+import pcgen.core.CDOMListObject;
 import pcgen.core.ClassSpellList;
+import pcgen.core.DomainSpellList;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
+import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassClassLstCompatibilityToken;
@@ -50,6 +54,7 @@ public class Spelllist514Token extends AbstractToken implements
 {
 
 	private static Class<ClassSpellList> SPELLLIST_CLASS = ClassSpellList.class;
+	private static Class<DomainSpellList> DOMAINSPELLLIST_CLASS = DomainSpellList.class;
 
 	@Override
 	public String getTokenName()
@@ -88,21 +93,25 @@ public class Spelllist514Token extends AbstractToken implements
 				+ value);
 			return false;
 		}
-
-		List<CDOMReference<ClassSpellList>> refs =
-				new ArrayList<CDOMReference<ClassSpellList>>();
-
+		
+		List<CDOMReference<?>> refs = new ArrayList<CDOMReference<?>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
 
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<ClassSpellList> ref;
+			CDOMReference<?> ref;
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
 				ref = context.ref.getCDOMAllReference(SPELLLIST_CLASS);
+			}
+			else if (token.startsWith("DOMAIN."))
+			{
+				foundOther = true;
+				ref = context.ref.getCDOMReference(DOMAINSPELLLIST_CLASS, token
+						.substring(7));
 			}
 			else
 			{
@@ -114,23 +123,32 @@ public class Spelllist514Token extends AbstractToken implements
 
 		if (foundAny && foundOther)
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+			Logging.addParseMessage(Logging.LST_ERROR, "Non-sensical "
+					+ getTokenName()
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 
-		ChooseActionContainer container =
-				new ChooseActionContainer(getTokenName());
+		ChooseActionContainer container = new ChooseActionContainer(
+				getTokenName());
 		container.addActor(new GrantActor<PCTemplate>());
 		context.getGraphContext().grant(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
-		ReferenceChoiceSet<ClassSpellList> rcs =
-				new ReferenceChoiceSet<ClassSpellList>(refs);
-		ChoiceSet<ClassSpellList> cs =
-				new ChoiceSet<ClassSpellList>(getTokenName(), rcs);
+				.getFormulaFor(Integer.MAX_VALUE));
+
+		/*
+		 * TODO This is a pretty ugly situation, but is required in the current
+		 * design. Real question is how to make it so that a CHOOSER can choose
+		 * between two related things without a huge set of contortion... Since
+		 * on the back end of this, the Chooser will probably have issues
+		 * knowing what to do.
+		 */
+		ReferenceChoiceSet<? extends CDOMListObject<Spell>> rcs = new SpellReferenceChoiceSet(
+				refs);
+		ChoiceSet<? extends CDOMListObject<Spell>> cs = new ChoiceSet(
+				getTokenName(), rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}

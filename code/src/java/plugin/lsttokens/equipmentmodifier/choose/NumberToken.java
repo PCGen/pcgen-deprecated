@@ -174,7 +174,7 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?> parse(LoadContext context,
+	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
 			EquipmentModifier mod, String value)
 			throws PersistenceLayerException
 	{
@@ -316,6 +316,6 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 			}
 			cs.setIncrement(increment.intValue());
 		}
-		return cs;
+		return new PrimitiveChoiceSet<?>[] { cs };
 	}
 }

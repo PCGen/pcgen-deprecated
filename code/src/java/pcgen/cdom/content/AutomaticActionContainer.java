@@ -11,7 +11,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.ChooseActor;
 
-public class ChooseActionContainer extends ConcretePrereqObject implements
+public class AutomaticActionContainer extends ConcretePrereqObject implements
 		LSTWriteable, ActionContainer
 {
 
@@ -23,7 +23,7 @@ public class ChooseActionContainer extends ConcretePrereqObject implements
 
 	private ChoiceSet<?> choiceSet;
 
-	public ChooseActionContainer(String nm)
+	public AutomaticActionContainer(String nm)
 	{
 		if (nm == null)
 		{
@@ -59,9 +59,9 @@ public class ChooseActionContainer extends ConcretePrereqObject implements
 		{
 			return false;
 		}
-		if (o instanceof ChooseActionContainer)
+		if (o instanceof AutomaticActionContainer)
 		{
-			ChooseActionContainer other = (ChooseActionContainer) o;
+			AutomaticActionContainer other = (AutomaticActionContainer) o;
 			if (choiceSet == null)
 			{
 				if (other.choiceSet != null)

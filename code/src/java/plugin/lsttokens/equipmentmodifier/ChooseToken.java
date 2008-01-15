@@ -13,12 +13,12 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.EquipmentModifier;
+import pcgen.core.EquipmentModifier.EqModChooseActionContainer;
 import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.AssociatedChanges;
 import pcgen.persistence.LoadContext;
@@ -213,22 +213,35 @@ public class ChooseToken implements EquipmentModifierLstToken
 			key = token;
 			val = rest;
 		}
-		PrimitiveChoiceSet<?> chooser = ChooseLoader.parseEqModToken(context,
+		PrimitiveChoiceSet<?>[] chooser = ChooseLoader.parseEqModToken(context,
 				mod, key, val);
-		if (chooser == null)
+		if (chooser == null || chooser.length == 0)
 		{
 			// Yes, direct access, not through the context!!
 			mod.put(StringKey.CHOOSE_BACKUP, value);
 			return false;
 		}
-		ChooseActionContainer cac = mod.getChooseContainer();
+		if (chooser.length > 2)
+		{
+			Logging
+					.errorPrint("Internal Error: CHOOSE parser returned more than 2 CHOOSERs for: "
+							+ value);
+			return false;
+		}
+		EqModChooseActionContainer cac = mod.getChooseContainer();
 		Formula maxFormula = maxCount == null ? FormulaFactory
 				.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
 				.getFormulaFor(maxCount);
 		Formula countFormula = count == null ? FormulaFactory.getFormulaFor(1)
 				: FormulaFactory.getFormulaFor(count);
-		ChoiceSet<?> choiceSet = new ChoiceSet(Constants.CHOOSE, chooser);
+		ChoiceSet<?> choiceSet = new ChoiceSet(Constants.CHOOSE, chooser[0]);
 		cac.setChoiceSet(choiceSet);
+		if (chooser.length > 1)
+		{
+			ChoiceSet<?> secondChoiceSet = new ChoiceSet(Constants.CHOOSE,
+					chooser[1]);
+			cac.setSecondChoiceSet(secondChoiceSet);
+		}
 		cac.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		cac.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		if (title != null)

@@ -114,7 +114,7 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
+			.getFormulaFor(count));
 		return true;
 	}
 
