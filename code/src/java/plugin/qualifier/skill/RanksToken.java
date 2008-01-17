@@ -17,17 +17,12 @@
  */
 package plugin.qualifier.skill;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-import pcgen.cdom.base.AssociatedObject;
-import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
-import pcgen.cdom.lists.PCGenLists;
-import pcgen.core.ClassSkillList;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
@@ -35,14 +30,16 @@ import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
-public class ClassToken implements ChooseLstQualifierToken<Skill>
+public class RanksToken implements ChooseLstQualifierToken<Skill>
 {
 
 	private PrimitiveChoiceFilter<Skill> pcs = null;
+	
+	private int ranks;
 
 	public String getTokenName()
 	{
-		return "CLASS";
+		return "RANKS";
 	}
 
 	public Class<Skill> getChoiceClass()
@@ -63,11 +60,22 @@ public class ClassToken implements ChooseLstQualifierToken<Skill>
 
 	public boolean initialize(LoadContext context, Class<Skill> cl, String condition, String value)
 	{
-		if (condition != null)
+		if (condition == null)
 		{
-			Logging.addParseMessage(Level.SEVERE, "Cannot make "
-					+ getTokenName()
-					+ " into a conditional Qualifier, remove =");
+			Logging.addParseMessage(Level.SEVERE, getTokenName()
+					+ " Must be a conditional Qualifier, e.g. "
+					+ getTokenName() + "=10");
+			return false;
+		}
+		try
+		{
+			ranks = Integer.parseInt(condition);
+		}
+		catch (NumberFormatException e)
+		{
+			Logging.addParseMessage(Level.SEVERE, getTokenName()
+					+ " Must be a numerical conditional Qualifier, e.g. "
+					+ getTokenName() + "=10 ... Offending value: " + condition);
 			return false;
 		}
 		if (value != null)
@@ -80,24 +88,18 @@ public class ClassToken implements ChooseLstQualifierToken<Skill>
 
 	public Set<Skill> getSet(PlayerCharacter pc)
 	{
-		Set<Skill> skillSet = new HashSet<Skill>();
-		PCGenLists activeLists = pc.getActiveLists();
-		Set<ClassSkillList> lists = activeLists.getLists(ClassSkillList.class);
-		SkillCost classCost = SkillCost.CLASS;
-		if (lists != null)
+		Set<Skill> skillSet =
+				new HashSet<Skill>(pc.getContext().ref
+					.getConstructedCDOMObjects(Skill.class));
+		List<Skill> skillList =
+				pc.getActiveGraph().getGrantedNodeList(Skill.class);
+		if (skillList != null)
 		{
-			for (ClassSkillList csl : lists)
+			for (Skill sk : skillList)
 			{
-				Collection<Skill> contents = activeLists.getListContents(csl);
-				for (Skill sk : contents)
+				if (pc.getTotalWeight(sk) >= ranks)
 				{
-					AssociatedObject assoc =
-							activeLists.getListAssociation(csl, sk);
-					if (classCost.equals(assoc
-						.getAssociation(AssociationKey.SKILL_COST)))
-					{
-						skillSet.add(sk);
-					}
+					skillSet.add(sk);
 				}
 			}
 		}

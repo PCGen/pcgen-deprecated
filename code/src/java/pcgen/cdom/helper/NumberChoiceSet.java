@@ -27,6 +27,9 @@ public class NumberChoiceSet implements PrimitiveChoiceSet<Integer>
 
 	public Set<Integer> getSet(PlayerCharacter pc)
 	{
+		/*
+		 * TODO Need to resolve Numbers
+		 */
 		return null;
 	}
 

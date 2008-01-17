@@ -289,6 +289,13 @@ public final class ChooseLoader
 			LoadContext context, Class<T> cl, String key, String value)
 	{
 		TokenStore ts = TokenStore.inst();
+		int equalLoc = key.indexOf('=');
+		String condition = null;
+		if (equalLoc != -1)
+		{
+			condition = key.substring(equalLoc + 1);
+			key = key.substring(0, equalLoc);
+		}
 		ChooseLstQualifierToken<T> qual = ts.getChooseQualifier(cl, key);
 		if (qual == null)
 		{
@@ -298,12 +305,12 @@ public final class ChooseLoader
 			{
 				return null;
 			}
-			potoken.initialize(context, cl, value);
+			potoken.initialize(context, cl, condition, value);
 			return potoken;
 		}
 		else
 		{
-			qual.initialize(context, cl, value);
+			qual.initialize(context, cl, condition, value);
 			return qual;
 		}
 	}

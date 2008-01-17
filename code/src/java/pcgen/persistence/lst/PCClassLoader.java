@@ -97,15 +97,17 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				return null;
 			}
 		}
-		try
+		int colonLoc = firstToken.indexOf(":");
+		if (colonLoc == -1)
 		{
 			int lvl = Integer.parseInt(firstToken);
 			PCClassLevelLoader.parseLine(context, target, restOfLine, source,
-				lvl);
+					lvl);
 		}
-		catch (NumberFormatException nfe)
+		else
 		{
-			if (firstToken.startsWith("SUBCLASS:"))
+			String firstArg = firstToken.substring(0, colonLoc);
+			if (firstArg.equals("SUBCLASS"))
 			{
 				if (lstLine.indexOf("\t") == -1)
 				{
@@ -126,13 +128,13 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				}
 				parseSubClassLine(context, sc, restOfLine, source);
 			}
-			else if (firstToken.startsWith("SUBCLASSLEVEL:"))
+			else if (firstArg.equals("SUBCLASSLEVEL"))
 			{
 
 				// FIXME
 				// SubClassLoader.parseLine(context, sc, restOfLine, source);
 			}
-			else if (firstToken.startsWith("SUBSTITUTIONCLASS:"))
+			else if (firstArg.equals("SUBSTITUTIONCLASS"))
 			{
 				if (lstLine.indexOf("\t") == -1)
 				{
@@ -154,13 +156,13 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				}
 				parseClassLine(context, sc, restOfLine, source);
 			}
-			else if (firstToken.startsWith("SUBSTITUTIONCLASSLEVEL:"))
+			else if (firstArg.equals("SUBSTITUTIONCLASSLEVEL"))
 			{
 				// FIXME
 				// SubstitutionClassLoader.parseLine(context, sc, restOfLine,
 				// source);
 			}
-			else if (firstToken.startsWith("CLASS:"))
+			else if (firstArg.equals("CLASS"))
 			{
 				PCClass thisTarget =
 						context.ref.silentlyGetConstructedCDOMObject(
@@ -178,9 +180,26 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			}
 			else
 			{
-				Logging.errorPrint("Not sure what to do with: " + lstLine);
+				try
+				{
+					int lvl = Integer.parseInt(firstArg);
+					String rest = firstToken.substring(colonLoc + 1);
+					if (!rest.startsWith("REPEATLEVEL:"))
+					{
+						Logging.errorPrint("Invalid REPEATLEVEL syntax found: " + firstToken);
+						return target;
+					}
+					parseRepeatClassLevel(context, restOfLine, source, target,
+							lvl, rest.substring(12));
+				}
+				catch (NumberFormatException nfe)
+				{
+					Logging.errorPrint("Not sure what to do with: " + lstLine);
+				}
 			}
 		}
+		
+		
 		return target;
 	}
 
@@ -252,6 +271,117 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		}
 	}
 
+	private void parseRepeatClassLevel(LoadContext context, String lstLine,
+			CampaignSourceEntry source, PCClass pcClass, int iLevel,
+			String colString)
+	{
+		//
+		// REPEAT:<level increment>|<consecutive>|<max level>
+		//
+		StringTokenizer repeatToken = new StringTokenizer(colString, "|");
+		int lvlIncrement = 1000; // an arbitrarily large number...
+		try
+		{
+			lvlIncrement = Integer.parseInt(repeatToken.nextToken());
+		}
+		catch (NumberFormatException nfe)
+		{
+			Logging.errorPrint("Non-Numeric Level Increment info '"
+					+ colString + "' in " + source.getURI(), nfe);
+			return;
+		}
+		Integer consecutive = 0;
+		Integer maxLevel = null;
+		if (repeatToken.hasMoreTokens())
+		{
+			String token = repeatToken.nextToken();
+			boolean consumed = false;
+			if (token.startsWith("SKIP="))
+			{
+				try
+				{
+					consecutive = Integer.parseInt(token.substring(5));
+				}
+				catch (NumberFormatException nfe)
+				{
+					Logging.errorPrint("Non-Numeric Consecutive Level info '"
+							+ colString + "' in " + source.getURI(), nfe);
+					return;
+				}
+				if (repeatToken.hasMoreTokens())
+				{
+					token = repeatToken.nextToken();
+				}
+				else
+				{
+					consumed = true;
+				}
+			}
+			/*
+			 * Note this is intentionally NOT else if
+			 */
+			if (token.startsWith("MAX="))
+			{
+				String maxString = token.substring(4);
+				try
+				{
+					maxLevel = Integer.parseInt(maxString);
+				}
+				catch (NumberFormatException nfe)
+				{
+					Logging.errorPrint("Non-Numeric Max Level info MAX='"
+							+ maxLevel + "' in " + source.getURI(), nfe);
+					return;
+				}
+				consumed = true;
+			}
+			if (!consumed)
+			{
+				Logging.errorPrint("Did not understand REPEATLEVEL flag: "
+						+ token + " in " + source.getURI());
+				return;
+			}
+			if (repeatToken.hasMoreTokens())
+			{
+				Logging.errorPrint("Did not understand REPEATLEVEL "
+						+ "extra token: " + repeatToken.nextToken() + " in "
+						+ source.getURI());
+				return;
+			}
+		}
+		if (maxLevel == null)
+		{
+			if (pcClass.hasMaxLevel())
+			{
+				maxLevel = pcClass.getMaxLevel();
+			}
+			else
+			{
+				maxLevel = 100; // an arbitrarily large number...
+			}
+		}
+		int count = consecutive;
+		for (int lvl = iLevel; lvl <= maxLevel; lvl += lvlIncrement)
+		{
+			if ((consecutive == 0) || (count != 0))
+			{
+				PCClassLevelLoader.parseLine(context, pcClass, lstLine, source,
+						lvl);
+			}
+			if (consecutive != 0)
+			{
+				if (count == 0)
+				{
+					count = consecutive;
+				}
+				else
+				{
+					--count;
+				}
+			}
+		}
+	}
+	
 	/**
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
 	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)

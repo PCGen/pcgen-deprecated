@@ -17,8 +17,11 @@
  */
 package plugin.lsttokens.equipmentmodifier.choose;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.NumberChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.Constants;
@@ -83,6 +86,7 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		Integer min = null;
 		Integer max = null;
+		
 		while (tok.hasMoreTokens())
 		{
 			String tokString = tok.nextToken();
@@ -195,6 +199,7 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 		Integer min = null;
 		Integer max = null;
 		Integer increment = null;
+		List<Integer> intList = new ArrayList<Integer>();
 		boolean noSign = false;
 		boolean skipZero = false;
 		boolean multiple = false;
@@ -267,16 +272,17 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 			}
 			else
 			{
-				/*
-				 * TODO this doesn't work today :(
-				 */
-				Integer.parseInt(tokString);
-				return null;
+				intList.add(Integer.valueOf(tokString));
 			}
 		}
+		PrimitiveChoiceSet<Integer> cs;
 		if (max == null)
 		{
-			if (min != null)
+			if (min == null)
+			{
+				cs = new CollectionChoiceSet<Integer>(intList);
+			}
+			else
 			{
 				Logging
 						.errorPrint("Cannot have MIN=n without MAX=m in CHOOSE:NUMBER: "
@@ -300,21 +306,29 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 								+ value);
 				return null;
 			}
-		}
-		NumberChoiceSet cs = new NumberChoiceSet(min, max);
-		cs.setShowSign(!noSign);
-		cs.setShowZero(!skipZero);
-		cs.setMultiple(multiple);
-		if (increment != null)
-		{
-			if (increment.intValue() < 1)
+			if (!intList.isEmpty())
 			{
 				Logging
-						.errorPrint("Increment in CHOOSE must be >= 1: "
+						.errorPrint("Cannot specify individual values and MIN=/MAX= "
 								+ value);
 				return null;
 			}
-			cs.setIncrement(increment.intValue());
+			NumberChoiceSet ncs = new NumberChoiceSet(min, max);
+			ncs.setShowSign(!noSign);
+			ncs.setShowZero(!skipZero);
+			ncs.setMultiple(multiple);
+			if (increment != null)
+			{
+				if (increment.intValue() < 1)
+				{
+					Logging
+							.errorPrint("Increment in CHOOSE must be >= 1: "
+									+ value);
+					return null;
+				}
+				ncs.setIncrement(increment.intValue());
+			}
+			cs = ncs;
 		}
 		return new PrimitiveChoiceSet<?>[] { cs };
 	}

@@ -17,9 +17,11 @@
  */
 package plugin.lsttokens.choose.subtoken;
 
+import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.helper.NumberChoiceSet;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.helper.FormulaChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
@@ -55,16 +57,16 @@ public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
 				+ " first argument must start with MIN=: " + minString);
 			return null;
 		}
-		int min;
+		Formula min;
+		Integer minInt = null;
 		try
 		{
-			min = Integer.parseInt(minString.substring(4));
+			minInt = Integer.valueOf(minString.substring(4));
+			min = FormulaFactory.getFormulaFor(minInt);
 		}
 		catch (NumberFormatException nfe)
 		{
-			Logging.errorPrint(getTokenName()
-				+ " MIN must be an integer >= 0: " + minString);
-			return null;
+			min = FormulaFactory.getFormulaFor(minString.substring(4));
 		}
 
 		int nextPipeLoc = value.indexOf(Constants.PIPE, pipeLoc + 1);
@@ -81,23 +83,27 @@ public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
 				+ " second argument must start with MAX=: " + maxString);
 			return null;
 		}
-		int max;
+
+		Formula max;
+		Integer maxInt = null;
 		try
 		{
-			max = Integer.parseInt(maxString.substring(4));
+			maxInt = Integer.valueOf(maxString.substring(4));
+			max = FormulaFactory.getFormulaFor(maxInt);
 		}
 		catch (NumberFormatException nfe)
 		{
-			Logging.errorPrint(getTokenName()
-				+ " MAX must be an integer >= 0: " + maxString);
-			return null;
+			max = FormulaFactory.getFormulaFor(maxString.substring(4));
 		}
 
-		if (max <= min)
+		if (minInt != null && maxInt != null)
 		{
-			Logging.errorPrint(getTokenName() + " MAX must be > MIN");
-			return null;
+			if (minInt.intValue() >= maxInt.intValue())
+			{
+				Logging.errorPrint(getTokenName() + " MAX must be > MIN");
+				return null;
+			}
 		}
-		return new NumberChoiceSet(min, max);
+		return new FormulaChoiceSet(min, max);
 	}
 }

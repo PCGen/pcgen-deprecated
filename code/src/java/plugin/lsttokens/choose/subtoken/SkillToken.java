@@ -40,7 +40,6 @@ public class SkillToken extends AbstractToken implements ChooseCDOMLstToken
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
 		String value) throws PersistenceLayerException
 	{
-		//TODO Need to deal with =
 		return ChooseLoader.parseToken(context, SKILL_CLASS, value);
 	}
 

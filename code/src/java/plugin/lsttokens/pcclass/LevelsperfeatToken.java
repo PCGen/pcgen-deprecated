@@ -58,9 +58,9 @@ public class LevelsperfeatToken implements PCClassLstToken,
 		try
 		{
 			Integer in = Integer.valueOf(value);
-			if (in.intValue() <= 0)
+			if (in.intValue() < 0)
 			{
-				Logging.errorPrint(getTokenName() + " must be an integer > 0");
+				Logging.errorPrint(getTokenName() + " must be an integer >= 0");
 				return false;
 			}
 			context.getObjectContext().put(pcc, IntegerKey.LEVELS_PER_FEAT, in);

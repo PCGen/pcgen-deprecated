@@ -19,6 +19,7 @@ package plugin.qualifier.pobject;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.core.PObject;
@@ -26,6 +27,7 @@ import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstGlobalQualifierToken;
+import pcgen.util.Logging;
 
 public class AllToken<T extends PObject> implements
 		ChooseLstGlobalQualifierToken<T>
@@ -40,8 +42,15 @@ public class AllToken<T extends PObject> implements
 		return "ALL";
 	}
 
-	public boolean initialize(LoadContext context, Class<T> cl, String value)
+	public boolean initialize(LoadContext context, Class<T> cl, String condition, String value)
 	{
+		if (condition != null)
+		{
+			Logging.addParseMessage(Level.SEVERE, "Cannot make "
+					+ getTokenName()
+					+ " into a conditional Qualifier, remove =");
+			return false;
+		}
 		if (cl == null)
 		{
 			throw new IllegalArgumentException();

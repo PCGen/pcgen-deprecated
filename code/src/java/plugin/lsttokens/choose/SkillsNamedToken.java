@@ -108,20 +108,6 @@ public class SkillsNamedToken extends AbstractToken implements ChooseLstToken,
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
 		String value) throws PersistenceLayerException
 	{
-		int lastPipe = value.lastIndexOf('|');
-		if (lastPipe != -1)
-		{
-			try
-			{
-				Integer.parseInt(value.substring(lastPipe + 1));
-				return ChooseLoader.parseToken(context, Skill.class, value
-					.substring(0, lastPipe));
-			}
-			catch (NumberFormatException nfe)
-			{
-				// OK
-			}
-		}
 		return ChooseLoader.parseToken(context, Skill.class, value);
 	}
 }

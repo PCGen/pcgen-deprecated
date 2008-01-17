@@ -20,6 +20,7 @@ package plugin.qualifier.pobject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.core.PObject;
@@ -27,6 +28,7 @@ import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstGlobalQualifierToken;
+import pcgen.util.Logging;
 
 public class UniqueToken<T extends PObject> implements
 		ChooseLstGlobalQualifierToken<T>
@@ -41,8 +43,15 @@ public class UniqueToken<T extends PObject> implements
 		return "UNIQUE";
 	}
 
-	public boolean initialize(LoadContext context, Class<T> cl, String value)
+	public boolean initialize(LoadContext context, Class<T> cl, String condition, String value)
 	{
+		if (condition != null)
+		{
+			Logging.addParseMessage(Level.SEVERE, "Cannot make "
+					+ getTokenName()
+					+ " into a conditional Qualifier, remove =");
+			return false;
+		}
 		if (cl == null)
 		{
 			throw new IllegalArgumentException();

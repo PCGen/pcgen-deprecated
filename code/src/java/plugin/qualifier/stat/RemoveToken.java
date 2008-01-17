@@ -19,6 +19,7 @@ package plugin.qualifier.stat;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.core.PCStat;
@@ -26,6 +27,7 @@ import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstQualifierToken;
+import pcgen.util.Logging;
 
 public class RemoveToken implements ChooseLstQualifierToken<PCStat>
 {
@@ -69,8 +71,15 @@ public class RemoveToken implements ChooseLstQualifierToken<PCStat>
 		return sb.toString();
 	}
 
-	public boolean initialize(LoadContext context, Class<PCStat> cl, String value)
+	public boolean initialize(LoadContext context, Class<PCStat> cl, String condition, String value)
 	{
+		if (condition != null)
+		{
+			Logging.addParseMessage(Level.SEVERE, "Cannot make "
+					+ getTokenName()
+					+ " into a conditional Qualifier, remove =");
+			return false;
+		}
 		if (value != null)
 		{
 			pcs = ChooseLoader.getPrimitiveChoiceFilter(context, cl, value);

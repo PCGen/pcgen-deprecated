@@ -20,6 +20,7 @@ package plugin.qualifier.weaponprof;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.ListKey;
@@ -30,6 +31,7 @@ import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstQualifierToken;
+import pcgen.util.Logging;
 
 public class DeityWeaponToken implements ChooseLstQualifierToken<WeaponProf>
 {
@@ -81,8 +83,15 @@ public class DeityWeaponToken implements ChooseLstQualifierToken<WeaponProf>
 	}
 
 	public boolean initialize(LoadContext context, Class<WeaponProf> cl,
-		String value)
+		String condition, String value)
 	{
+		if (condition != null)
+		{
+			Logging.addParseMessage(Level.SEVERE, "Cannot make "
+					+ getTokenName()
+					+ " into a conditional Qualifier, remove =");
+			return false;
+		}
 		if (value != null)
 		{
 			pcs = ChooseLoader.getPrimitiveChoiceFilter(context, cl, value);

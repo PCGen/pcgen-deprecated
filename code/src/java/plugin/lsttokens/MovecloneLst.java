@@ -131,10 +131,10 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 		else if (formulaString.startsWith("+"))
 		{
 			int add = Integer.parseInt(formulaString.substring(1));
-			if (add <= 0)
+			if (add < 0)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ " was expecting a Positive "
+					+ " was expecting a Non-Negative "
 					+ "Integer for adding Movement, was : "
 					+ formulaString.substring(1));
 				return false;
@@ -144,13 +144,6 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 		else
 		{
 			int sub = Integer.parseInt(formulaString);
-			if (sub == 0)
-			{
-				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ " was expecting a non-zero "
-					+ "Integer for Movement modifier, was : " + formulaString);
-				return false;
-			}
 			if (sub < 0)
 			{
 				form = new SubtractingFormula(-sub);

@@ -19,6 +19,7 @@ package plugin.qualifier.armorprof;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.ListKey;
@@ -31,6 +32,7 @@ import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstQualifierToken;
+import pcgen.util.Logging;
 
 public class EquipmentToken implements ChooseLstQualifierToken<ArmorProf>
 {
@@ -86,8 +88,15 @@ public class EquipmentToken implements ChooseLstQualifierToken<ArmorProf>
 	}
 
 	public boolean initialize(LoadContext context, Class<ArmorProf> cl,
-		String value)
+		String condition, String value)
 	{
+		if (condition != null)
+		{
+			Logging.addParseMessage(Level.SEVERE, "Cannot make "
+					+ getTokenName()
+					+ " into a conditional Qualifier, remove =");
+			return false;
+		}
 		if (value != null)
 		{
 			pcs =

@@ -32,6 +32,7 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.AllowActor;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.ReferenceChoiceSet;
+import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.ClassSkillList;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
@@ -88,10 +89,10 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 
 	public boolean parse(LoadContext context, PObject obj, String value)
 	{
-		if (!(obj instanceof PCClass))
+		if (!(obj instanceof PCClass || obj instanceof PCClassLevel))
 		{
 			Logging.errorPrint("ADD:" + getTokenName()
-				+ " is only supported in Class lines");
+				+ " is only supported in Class files");
 			return false;
 		}
 		if (value.length() == 0)
@@ -176,6 +177,9 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 			return false;
 		}
 
+		/*
+		 * FIXME The assumption that this is a PCClass is WRONG
+		 */
 		ClassSkillList csl = ((PCClass) obj).getCDOMClassSkillList();
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new AllowActor<Skill>(csl));

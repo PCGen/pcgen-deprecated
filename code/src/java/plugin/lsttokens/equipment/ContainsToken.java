@@ -127,10 +127,10 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 				weightCap =
 						BigDecimalHelper.trimBigDecimal(new BigDecimal(
 							weightCapacity));
-				if (BigDecimal.ZERO.compareTo(weightCap) >= 0)
+				if (BigDecimal.ZERO.compareTo(weightCap) > 0)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"Weight Capacity must be > 0: " + weightCapacity
+						"Weight Capacity must be >= 0: " + weightCapacity
 							+ "\n  Use 'UNLIM' (not -1) for unlimited Count");
 					return false;
 				}
@@ -138,7 +138,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 			catch (NumberFormatException ex)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR,
-					"Weight Capacity must be 'UNLIM or a number > 0: "
+					"Weight Capacity must be 'UNLIM or a number >= 0: "
 						+ weightCapacity);
 				return false;
 			}
