@@ -150,11 +150,11 @@ public class PreLevelParser extends AbstractPrerequisiteParser implements
 	        throws PersistenceLayerException
 	{
 
-//		Logging.deprecationPrint("Deprecated use of PRELEVEL found: ");
-//		Logging
-//		        .deprecationPrint("The PRELEVEL:x syntax is no longer supported. "
-//		                + "The new format is  'MIN=x', 'MAX=y', or 'MIN=x,MAX=y' where x and y are integers. "
-//		                + "Passed formala was: " + formula);
+		Logging.deprecationPrint("Deprecated use of PRELEVEL found: ");
+		Logging
+		        .deprecationPrint("The PRELEVEL:x syntax is no longer supported. "
+		                + "The new format is  'MIN=x', 'MAX=y', or 'MIN=x,MAX=y' where x and y are integers. "
+		                + "Passed formala was: " + formula);
 
 		try
 		{
