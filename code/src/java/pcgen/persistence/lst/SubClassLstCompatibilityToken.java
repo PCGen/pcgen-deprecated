@@ -22,18 +22,11 @@
  */
 package pcgen.persistence.lst;
 
-import pcgen.core.PCClass;
+import pcgen.core.SubClass;
 import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 
-public interface PCClassLevelLstCompatibilityToken extends LstToken
+public interface SubClassLstCompatibilityToken extends
+		CDOMCompatibilityToken<SubClass>
 {
-	public boolean parse(LoadContext context, PCClass pcc, String value,
-		int level) throws PersistenceLayerException;
-
-	public int compatibilityLevel();
-
-	public int compatibilitySubLevel();
-
-	public int compatibilityPriority();
+	public boolean parse(LoadContext context, SubClass pcc, String value);
 }

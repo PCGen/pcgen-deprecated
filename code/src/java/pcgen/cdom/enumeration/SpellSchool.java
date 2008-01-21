@@ -124,6 +124,19 @@ public final class SpellSchool implements TypeSafeConstant
 	}
 
 	/**
+	 * Returns true if a constant for the given String exists (the search for
+	 * the constant is case insensitive).
+	 * 
+	 * @param s
+	 *            The name of the constant to be checked
+	 * @return True if there is a Constant with the given Key; false otherwise
+	 */
+	public static boolean containsConstantNamed(String s)
+	{
+		return typeMap != null && typeMap.containsKey(s);
+	}
+
+	/**
 	 * Returns a Collection of all of the Constants in this Class.
 	 * 
 	 * This collection maintains a reference to the Constants in this Class, so

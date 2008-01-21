@@ -166,7 +166,7 @@ public class SimpleReferenceContext
 		String oldKey = obj.getKeyName();
 		if (oldKey.equalsIgnoreCase(value))
 		{
-			Logging.errorPrint("Worthless Key change encountered: "
+			Logging.debugPrint("Worthless Key change encountered: "
 				+ obj.getDisplayName() + " " + oldKey);
 		}
 		Class<T> cl = (Class<T>) obj.getClass();

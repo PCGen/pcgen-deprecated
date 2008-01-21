@@ -8,6 +8,7 @@ import pcgen.base.util.ReverseIntegerComparator;
 import pcgen.base.util.TripleKeyMap;
 import pcgen.core.PCClass;
 import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
@@ -75,7 +76,6 @@ public class PCClassLevelLoader
 						level))
 					{
 						context.commit();
-						Logging.clearParseMessages();
 					}
 					else
 					{
@@ -87,6 +87,7 @@ public class PCClassLevelLoader
 							+ " level " + level + ' ' + source.getURI()
 							+ ": \"" + value + "\"");
 					}
+					Logging.clearParseMessages();
 				}
 			}
 		}
@@ -126,11 +127,24 @@ public class PCClassLevelLoader
 					{
 						PCClassLevelLstCompatibilityToken tok =
 								tkm.get(compatLevel, subLevel, priority);
-						if (tok.parse(context, pcclass, value, level))
+						try
 						{
-							return true;
+							if (tok.parse(context, pcclass, value, level))
+							{
+								return true;
+							}
+							context.decommit();
 						}
-						context.decommit();
+						catch (PersistenceLayerException e)
+						{
+							context.decommit();
+							Logging.rewindParseMessages();
+							Logging.replayParsedMessages();
+							Logging.errorPrint("Error parsing PCCLASS Token '"
+									+ key + "' for " + pcclass.getDisplayName()
+									+ " in " + context.graph.getSourceURI()
+									+ ": " + value);
+						}
 					}
 					tertiarySet.clear();
 				}

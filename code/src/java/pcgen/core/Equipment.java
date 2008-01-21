@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7694,7 +7695,7 @@ public final class Equipment extends PObject implements Serializable,
 				containerWeightCapacity = new Float(bString);
 				if (containerWeightCapacity < 0)
 				{
-					Logging.deprecationPrint(getKeyName()
+					Logging.addParseMessage(Level.INFO, getKeyName()
 						+ " Weight Capacity must be >= 0: " + bString
 						+ "\n  use 'UNLIM' (not -1) for unlimited Capacity");
 				}
@@ -7742,7 +7743,7 @@ public final class Equipment extends PObject implements Serializable,
 
 					if (itemNumber < 0)
 					{
-						Logging.debugPrint(getKeyName() + " Item Count for "
+						Logging.addParseMessage(Level.INFO, getKeyName() + " Item Count for "
 							+ itemType + " must be > 0: " + itemCount
 							+ "\n  use 'UNLIM' (not -1) for unlimited Count");
 					}

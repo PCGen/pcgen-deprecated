@@ -96,7 +96,7 @@ public final class SubClassLoader
 				LstUtils.deprecationCheck(token, subclass, value);
 				if (!token.parse(subclass, value))
 				{
-					Logging.errorPrint("Error parsing ability "
+					Logging.errorPrint("Error parsing subclass "
 						+ subclass.getDisplayName() + ':' + source.getURI()
 						+ ':' + colString + "\"");
 				}

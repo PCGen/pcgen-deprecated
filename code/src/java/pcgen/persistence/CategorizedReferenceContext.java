@@ -132,7 +132,7 @@ public class CategorizedReferenceContext
 		String oldKey = obj.getKeyName();
 		if (oldKey.equalsIgnoreCase(value))
 		{
-			Logging.errorPrint("Worthless Key change encountered: "
+			Logging.debugPrint("Worthless Key change encountered: "
 				+ obj.getDisplayName() + " " + oldKey);
 		}
 		CaseInsensitiveString cis = new CaseInsensitiveString(oldKey);

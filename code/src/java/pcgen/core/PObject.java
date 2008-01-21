@@ -1490,6 +1490,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 			fireNameChanged(displayName, aString);
 			displayName = aString;
 			this.setKeyName(aString);
+			super.setName(aString);
 		}
 	}
 

@@ -44,19 +44,19 @@ public class WeaponProfsToken extends AbstractToken implements ChooseLstToken,
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -71,7 +71,7 @@ public class WeaponProfsToken extends AbstractToken implements ChooseLstToken,
 			if (equalsLoc == tokString.length() - 1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments must have value after = : " + tokString);
+						+ " arguments must have value after = : " + tokString);
 				Logging.errorPrint("  entire token was: " + value);
 				return false;
 			}
@@ -108,10 +108,9 @@ public class WeaponProfsToken extends AbstractToken implements ChooseLstToken,
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
-		List<PrimitiveChoiceSet<WeaponProf>> pcsList =
-				new ArrayList<PrimitiveChoiceSet<WeaponProf>>();
+		List<PrimitiveChoiceSet<WeaponProf>> pcsList = new ArrayList<PrimitiveChoiceSet<WeaponProf>>();
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
 		while (st.hasMoreTokens())
 		{
@@ -119,22 +118,22 @@ public class WeaponProfsToken extends AbstractToken implements ChooseLstToken,
 			if (Constants.LST_LIST.equals(tokString))
 			{
 				pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
-					"PC"));
+						"PC"));
 			}
 			else if ("DEITYWEAPON".equals(tokString))
 			{
 				pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
-					"DEITYWEAPON"));
+						"DEITYWEAPON"));
 			}
-			// else if (tokString.startsWith("ADD."))
-			// {
-			// pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
-			// tokString));
-			// }
+			else if (tokString.startsWith("ADD."))
+			{
+				pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
+						tokString.substring(4)));
+			}
 			else
 			{
 				pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
-					"PC[" + tokString + "]"));
+						"PC[" + tokString + "]"));
 			}
 		}
 		// while (choicesIt.hasNext())
@@ -396,21 +395,6 @@ public class WeaponProfsToken extends AbstractToken implements ChooseLstToken,
 		// availableList.remove(wp);
 		// setIter = availableList.iterator();
 		// }
-		// }
-		// }
-		// }
-		// else
-		// {
-		// String profKey = aString;
-		// if ("ADD.".regionMatches(true, 0, aString, 0, 4))
-		// {
-		// profKey = aString.substring(4);
-		// }
-		// final WeaponProf wp = Globals.getWeaponProfKeyed(profKey);
-		// if (wp != null && aPc.hasWeaponProf(wp)
-		// && !availableList.contains(wp))
-		// {
-		// availableList.add(wp);
 		// }
 		// }
 		// }

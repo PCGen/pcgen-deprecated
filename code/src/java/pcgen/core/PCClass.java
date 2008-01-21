@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.cdom.base.ClassSkillListContainer;
 import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
@@ -69,7 +70,7 @@ import pcgen.util.enumeration.VisionType;
  * 
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  */
-public class PCClass extends PObject {
+public class PCClass extends PObject implements ClassSkillListContainer {
 	public static final Integer NO_LEVEL_LIMIT = Integer.valueOf(-1);
 
 	/*

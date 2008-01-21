@@ -53,11 +53,19 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 		if ("SPELL".equalsIgnoreCase(value))
 		{
 			context.getObjectContext().put(pcc, ObjectKey.USE_SPELL_SPELL_STAT,
-				Boolean.FALSE);
+				Boolean.TRUE);
 			return true;
 		}
 		context.getObjectContext().put(pcc, ObjectKey.USE_SPELL_SPELL_STAT,
-			Boolean.TRUE);
+				Boolean.FALSE);
+		if ("OTHER".equalsIgnoreCase(value))
+		{
+			context.getObjectContext().put(pcc, ObjectKey.CASTER_WITHOUT_SPELL_STAT,
+				Boolean.TRUE);
+			return true;
+		}
+		context.getObjectContext().put(pcc, ObjectKey.CASTER_WITHOUT_SPELL_STAT,
+				Boolean.FALSE);
 		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
@@ -74,32 +82,66 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 		PCStat pcs =
 				context.getObjectContext().getObject(pcc, ObjectKey.SPELL_STAT);
 		Boolean useStat =
-				context.getObjectContext().getObject(pcc,
-					ObjectKey.USE_SPELL_SPELL_STAT);
+			context.getObjectContext().getObject(pcc,
+				ObjectKey.USE_SPELL_SPELL_STAT);
+		Boolean otherCaster =
+			context.getObjectContext().getObject(pcc,
+				ObjectKey.CASTER_WITHOUT_SPELL_STAT);
 		if (useStat == null)
 		{
 			if (pcs != null)
 			{
-				context
-					.addWriteMessage(getTokenName()
+				context.addWriteMessage(getTokenName()
 						+ " expected USE_SPELL_SPELL_STAT to exist if SPELL_STAT was defined");
+			}
+			if (otherCaster != null)
+			{
+				context.addWriteMessage(getTokenName()
+						+ " expected USE_SPELL_SPELL_STAT to exist if CASTER_WITHOUT_SPELL_STAT was defined");
 			}
 			return null;
 		}
 		if (useStat.booleanValue())
 		{
-			if (pcs == null)
+			if (pcs != null)
 			{
-				context
-					.addWriteMessage(getTokenName()
-						+ " expected SPELL_STAT to exist since  USE_SPELL_SPELL_STAT was false");
+				context.addWriteMessage(getTokenName()
+						+ " did not expect SPELL_STAT to exist since USE_SPELL_SPELL_STAT was true");
 				return null;
 			}
-			return new String[]{pcs.getKeyName()};
+			if (otherCaster != null)
+			{
+				context.addWriteMessage(getTokenName()
+						+ " did not expect CASTER_WITHOUT_SPELL_STAT to exist since USE_SPELL_SPELL_STAT was true");
+				return null;
+			}
+			return new String[]{"SPELL"};
+		}
+		if (otherCaster == null)
+		{
+			context.addWriteMessage(getTokenName()
+				+ " expected CASTER_WITHOUT_SPELL_STAT to exist if USE_SPELL_SPELL_STAT was false");
+			return null;
+		}
+		else if (otherCaster.booleanValue())
+		{
+			if (pcs != null)
+			{
+				context.addWriteMessage(getTokenName()
+						+ " did not expect SPELL_STAT to exist since CASTER_WITHOUT_SPELL_STAT was true");
+				return null;
+			}
+			return new String[]{"OTHER"};
+		}
+		else if (pcs == null)
+		{
+			context.addWriteMessage(getTokenName()
+					+ " expected SPELL_STAT to exist since USE_SPELL_SPELL_STAT and CASTER_WITHOUT_SPELL_STAT were false");
+			return null;
 		}
 		else
 		{
-			return new String[]{"SPELL"};
+			return new String[]{pcs.getKeyName()};
 		}
 	}
 }

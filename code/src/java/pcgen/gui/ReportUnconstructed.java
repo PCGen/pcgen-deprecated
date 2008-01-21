@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import pcgen.core.Campaign;
@@ -92,6 +93,12 @@ public class ReportUnconstructed
 						FileHandler ch = new FileHandler(fn.substring(9));
 						Logger.getLogger("pcgen").addHandler(ch);
 						Logger.getLogger("plugin").addHandler(ch);
+						continue;
+					}
+					if (fn.equalsIgnoreCase("-warning"))
+					{
+						Logger.getLogger("pcgen").setLevel(Level.WARNING);
+						Logger.getLogger("plugin").setLevel(Level.WARNING);
 						continue;
 					}
 				}

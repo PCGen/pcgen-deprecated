@@ -21,21 +21,25 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.Collection;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CategorizedCDOMReference;
+import pcgen.cdom.base.Category;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.SubClassCategory;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
+import pcgen.core.SubClass;
 import pcgen.persistence.Changes;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
 import pcgen.util.Logging;
 
 /**
@@ -45,6 +49,7 @@ public class FavoredclassToken extends AbstractToken implements
 		PCTemplateLstToken
 {
 	public static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
+	public static final Class<SubClass> SUBCLASS_CLASS = SubClass.class;
 
 	@Override
 	public String getTokenName()
@@ -79,7 +84,7 @@ public class FavoredclassToken extends AbstractToken implements
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<PCClass> ref;
+			CDOMReference<? extends PCClass> ref;
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
@@ -88,14 +93,20 @@ public class FavoredclassToken extends AbstractToken implements
 			else
 			{
 				foundOther = true;
-				ref =
-						TokenUtilities.getTypeOrPrimitive(context,
-							PCCLASS_CLASS, token);
-				if (ref == null)
+				int dotLoc = token.indexOf('.');
+				if (dotLoc == -1)
 				{
-					Logging.errorPrint("  ...error encountered in "
-						+ getTokenName());
-					return false;
+					//Primitive
+					ref = context.ref.getCDOMReference(PCCLASS_CLASS, token);
+				}
+				else
+				{
+					//SubClass
+					String parent = token.substring(0, dotLoc);
+					String subclass = token.substring(dotLoc + 1);
+					SubClassCategory scc = SubClassCategory.getConstant(parent);
+					ref = context.ref.getCDOMReference(SUBCLASS_CLASS, scc,
+							subclass);
 				}
 			}
 			context.getObjectContext().addToList(cdo, ListKey.FAVORED_CLASS,
@@ -112,21 +123,28 @@ public class FavoredclassToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, PCTemplate pct)
 	{
-		Changes<CDOMReference<PCClass>> changes =
+		Changes<CDOMReference<? extends PCClass>> changes =
 				context.getObjectContext().getListChanges(pct,
 					ListKey.FAVORED_CLASS);
 		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
-		Collection<CDOMReference<PCClass>> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		SortedSet<String> set = new TreeSet<String>();
+		for (CDOMReference<? extends PCClass> ref : changes.getAdded())
 		{
-			context.addWriteMessage(getTokenName()
-				+ " was expecting non-empty changes to include added items");
-			return null;
+			Class<? extends PCClass> refClass = ref.getReferenceClass();
+			if (SUBCLASS_CLASS.equals(refClass))
+			{
+				Category<SubClass> parent = ((CategorizedCDOMReference<SubClass>) ref)
+						.getCDOMCategory();
+				set.add(parent.toString() + "." + ref.getLSTformat());
+			}
+			else 
+			{
+				set.add(ref.getLSTformat());
+			}
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(added,
-			Constants.COMMA)};
+		return new String[] { StringUtil.join(set, Constants.COMMA) };
 	}
 }

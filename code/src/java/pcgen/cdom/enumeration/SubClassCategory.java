@@ -22,19 +22,21 @@ import java.util.Collections;
 
 import pcgen.base.enumeration.TypeSafeConstant;
 import pcgen.base.util.CaseInsensitiveMap;
+import pcgen.cdom.base.Category;
+import pcgen.core.SubClass;
 
 /**
  * @author Tom Parker (thpr [at] yahoo.com)
  * 
  * This Class is a Type Safe Constant.
  */
-public final class SpellDescriptor implements TypeSafeConstant
+public final class SubClassCategory implements TypeSafeConstant, Category<SubClass>
 {
 
 	/**
 	 * This Map contains the mappings from Strings to the Type Safe Constant
 	 */
-	private static CaseInsensitiveMap<SpellDescriptor> typeMap;
+	private static CaseInsensitiveMap<SubClassCategory> typeMap;
 
 	/**
 	 * This is used to provide a unique ordinal to each constant in this class
@@ -50,8 +52,10 @@ public final class SpellDescriptor implements TypeSafeConstant
 	 * The ordinal of this Constant
 	 */
 	private final transient int ordinal;
+	
+	private boolean defined = false;
 
-	private SpellDescriptor(String name)
+	private SubClassCategory(String name)
 	{
 		ordinal = ordinalCount++;
 		fieldName = name;
@@ -76,6 +80,16 @@ public final class SpellDescriptor implements TypeSafeConstant
 		return ordinal;
 	}
 
+	public void define()
+	{
+		defined = true;
+	}
+	
+	public boolean isDefined()
+	{
+		return defined;
+	}
+
 	/**
 	 * Returns the constant for the given String (the search for the constant is
 	 * case insensitive). If the constant does not already exist, a new Constant
@@ -85,17 +99,26 @@ public final class SpellDescriptor implements TypeSafeConstant
 	 *            The name of the constant to be returned
 	 * @return The Constant for the given name
 	 */
-	public static SpellDescriptor getConstant(String s)
+	public static SubClassCategory getConstant(String s)
 	{
 		if (typeMap == null)
 		{
-			typeMap = new CaseInsensitiveMap<SpellDescriptor>();
+			typeMap = new CaseInsensitiveMap<SubClassCategory>();
 		}
-		SpellDescriptor o = typeMap.get(s);
+		String lookup = s.replace('_', ' ');
+		SubClassCategory o = typeMap.get(lookup);
 		if (o == null)
 		{
-			o = new SpellDescriptor(s);
-			typeMap.put(s, o);
+			/*
+			 * TODO FIXME Should .,| or other stuff be banned here? (probably)
+			 */
+			if (s.length() == 0)
+			{
+				throw new IllegalArgumentException(
+					"Type Name cannot be zero length");
+			}
+			o = new SubClassCategory(lookup);
+			typeMap.put(lookup, o);
 		}
 		return o;
 	}
@@ -109,31 +132,18 @@ public final class SpellDescriptor implements TypeSafeConstant
 	 *            The name of the constant to be returned
 	 * @return The Constant for the given name
 	 */
-	public static SpellDescriptor valueOf(String s)
+	public static SubClassCategory valueOf(String s)
 	{
 		if (typeMap == null)
 		{
-			typeMap = new CaseInsensitiveMap<SpellDescriptor>();
+			typeMap = new CaseInsensitiveMap<SubClassCategory>();
 		}
-		SpellDescriptor o = typeMap.get(s);
+		SubClassCategory o = typeMap.get(s);
 		if (o == null)
 		{
 			throw new IllegalArgumentException(s);
 		}
 		return o;
-	}
-
-	/**
-	 * Returns true if a constant for the given String exists (the search for
-	 * the constant is case insensitive).
-	 * 
-	 * @param s
-	 *            The name of the constant to be checked
-	 * @return True if there is a Constant with the given Key; false otherwise
-	 */
-	public static boolean containsConstantNamed(String s)
-	{
-		return typeMap != null && typeMap.containsKey(s);
 	}
 
 	/**
@@ -145,7 +155,7 @@ public final class SpellDescriptor implements TypeSafeConstant
 	 * 
 	 * @return a Collection of all of the Constants in this Class.
 	 */
-	public static Collection<SpellDescriptor> getAllConstants()
+	public static Collection<SubClassCategory> getAllConstants()
 	{
 		if (typeMap == null)
 		{

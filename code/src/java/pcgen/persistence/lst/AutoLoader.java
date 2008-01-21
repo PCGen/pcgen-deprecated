@@ -80,14 +80,16 @@ public final class AutoLoader
 			LstUtils.deprecationCheck(token, obj, value);
 			if (!token.parse(context, obj, value))
 			{
-				Logging.errorPrint("Error parsing AUTO:" + key + "|" + value);
+				Logging.addParseMessage(Logging.LST_ERROR,
+						"Error parsing AUTO:" + key + "|" + value);
 				return false;
 			}
 			return true;
 		}
 		else
 		{
-			Logging.errorPrint("Error parsing AUTO, invalid SubToken: " + key);
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Error parsing AUTO, invalid SubToken: " + key);
 			return false;
 		}
 	}

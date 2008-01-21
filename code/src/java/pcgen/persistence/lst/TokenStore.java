@@ -22,6 +22,7 @@ public class TokenStore
 	private final List<Class<? extends LstToken>> tokenTypeList;
 	private DoubleKeyMapToList<Class<? extends LstToken>, String, LstToken> tokenCompatibilityMap;
 	private final List<Class<? extends LstToken>> tokenCompatibilityList;
+	private final List<DeferredToken<? extends PObject>> deferredTokens;
 
 	private TokenStore()
 	{
@@ -31,6 +32,7 @@ public class TokenStore
 		tokenCompatibilityMap =
 				new DoubleKeyMapToList<Class<? extends LstToken>, String, LstToken>();
 		tokenCompatibilityList = new ArrayList<Class<? extends LstToken>>();
+		deferredTokens = new ArrayList<DeferredToken<? extends PObject>>();
 		populateTokenTypeList();
 	}
 
@@ -147,6 +149,7 @@ public class TokenStore
 			.add(EquipmentModifierLstCompatibilityToken.class);
 		tokenCompatibilityList.add(PCClassClassLstCompatibilityToken.class);
 		tokenCompatibilityList.add(PCClassLevelLstCompatibilityToken.class);
+		tokenCompatibilityList.add(SubClassLstCompatibilityToken.class);
 		tokenCompatibilityList.add(PCClassUniversalLstCompatibilityToken.class);
 		tokenCompatibilityList.add(RaceLstCompatibilityToken.class);
 
@@ -162,6 +165,10 @@ public class TokenStore
 	public void addToTokenMap(LstToken newToken)
 	{
 		Class<? extends LstToken> newTokClass = newToken.getClass();
+		if (newToken instanceof DeferredToken)
+		{
+			deferredTokens.add((DeferredToken) newToken);
+		}
 		for (Class<? extends LstToken> tokClass : tokenTypeList)
 		{
 			if (tokClass.isAssignableFrom(newTokClass))
@@ -337,5 +344,10 @@ public class TokenStore
 			throw new UnreachableError("new Instance on " + clgqtc
 				+ " should not fail due to access", e);
 		}
+	}
+
+	public List<DeferredToken<? extends PObject>> getDeferredTokens()
+	{
+		return new ArrayList<DeferredToken<? extends PObject>>(deferredTokens);
 	}
 }

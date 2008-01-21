@@ -17,9 +17,11 @@
  */
 package pcgen.cdom.inst;
 
+import pcgen.cdom.base.ClassSkillListContainer;
+import pcgen.core.ClassSkillList;
 import pcgen.core.PObject;
 
-public final class PCClassLevel extends PObject
+public final class PCClassLevel extends PObject implements ClassSkillListContainer
 {
 
 	/*
@@ -27,11 +29,11 @@ public final class PCClassLevel extends PObject
 	 * 
 	 * Otherwise there is a circular dependence of this object and PCClass.
 	 */
-	private final Object classSource;
+	private final ClassSkillListContainer classSource;
 
 	private final int classLevel;
 
-	public PCClassLevel(Object source, int lvl)
+	public PCClassLevel(ClassSkillListContainer source, int lvl)
 	{
 		classSource = source;
 		classLevel = lvl;
@@ -45,6 +47,11 @@ public final class PCClassLevel extends PObject
 	public int getClassLevel()
 	{
 		return classLevel;
+	}
+
+	public ClassSkillList getCDOMClassSkillList()
+	{
+		return classSource.getCDOMClassSkillList();
 	}
 
 	// No additional Functionality :)

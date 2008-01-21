@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.ClassSkillListContainer;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
@@ -32,7 +33,6 @@ import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.AllowActor;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.ClassSkillList;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
@@ -89,7 +89,7 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 
 	public boolean parse(LoadContext context, PObject obj, String value)
 	{
-		if (!(obj instanceof PCClass || obj instanceof PCClassLevel))
+		if (!ClassSkillListContainer.class.isAssignableFrom(obj.getClass()))
 		{
 			Logging.errorPrint("ADD:" + getTokenName()
 				+ " is only supported in Class files");
@@ -177,10 +177,7 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 			return false;
 		}
 
-		/*
-		 * FIXME The assumption that this is a PCClass is WRONG
-		 */
-		ClassSkillList csl = ((PCClass) obj).getCDOMClassSkillList();
+		ClassSkillList csl = ((ClassSkillListContainer) obj).getCDOMClassSkillList();
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new AllowActor<Skill>(csl));
 		context.getGraphContext().grant(getTokenName(), obj, container);

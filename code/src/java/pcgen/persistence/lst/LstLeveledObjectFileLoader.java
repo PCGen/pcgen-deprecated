@@ -361,7 +361,7 @@ public abstract class LstLeveledObjectFileLoader<T extends PObject> extends
 		while (fileLines.hasMoreTokens())
 		{
 			++currentLineNumber;
-			final String line = fileLines.nextToken().trim();
+			final String line = preprocessLine(fileLines.nextToken().trim());
 			if ((line.length() == 0)
 				|| (line.charAt(0) == LstFileLoader.LINE_COMMENT_CHAR))
 			{
@@ -473,6 +473,11 @@ public abstract class LstLeveledObjectFileLoader<T extends PObject> extends
 		{
 			modEntryList.add(classModLines);
 		}
+	}
+
+	protected String preprocessLine(String line)
+	{
+		return line;
 	}
 
 	protected abstract T parseLine(LoadContext context, T reference,

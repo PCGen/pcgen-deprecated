@@ -3079,6 +3079,13 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
+		<jar jarfile="${lstplugins.dir}/ClassLstToken-KEY.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lsttokens/pcclass/KeyToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/ClassLstToken-KNOWNSPELLSFROMSPECIALTY.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4834,7 +4841,7 @@ jar-all-plugins - Generate the plugin jar files
 
 	</target>
 
-	<target name="jar-compatibility-plugins" depends="jar-compatibility-global-plugins,jar-compatibility-choose-plugins,jar-compatibility-equipment-plugins,jar-compatibility-equipmentmodifier-plugins,jar-compatibility-pcclass-plugins,jar-compatibility-race-plugins" description="Build (Link) Lst Compatibility Token plugin jar files">
+	<target name="jar-compatibility-plugins" depends="jar-compatibility-global-plugins,jar-compatibility-choose-plugins,jar-compatibility-equipment-plugins,jar-compatibility-equipmentmodifier-plugins,jar-compatibility-pcclass-plugins,jar-compatibility-race-plugins,jar-compatibility-subclass-plugins" description="Build (Link) Lst Compatibility Token plugin jar files">
 	</target>
 
 	<target name="jar-compatibility-global-plugins" depends="makeplugindirs" description="Build (Link) Global Lst Compatibility Token plugin jar files">
@@ -4895,6 +4902,20 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-AUTO-5-12-ARMORPROF.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Auto512Lst_ArmorProf.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-AUTO-5-12-SHIELDPROF.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Auto512Lst_ShieldProf.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-BONUS-5-14-DefMonChecks.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -4927,6 +4948,13 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/global/Bonus514Lst_DefMonStat.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-CHOOSE-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Choose512Lst.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -4993,6 +5021,13 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>		
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-CHOOSE-5-14-UserInput.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/Choose514Lst_UserInput.class" />
+				</patternset>
+			</fileset>
+		</jar>		
 		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-CHOOSE-5-14-WEAPONPROF-BRACKETS.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -5004,6 +5039,13 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/global/Moveclone512Lst_Zero.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/GlobalCompatibilityToken-SA-5-14.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/global/SA514Lst.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -5036,10 +5078,24 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
+		<jar jarfile="${lstplugins.dir}/EquipmentCompatibilityToken-CONTAINS-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/equipment/Contains512Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/EquipmentCompatibilityToken-CRITRANGE-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/equipment/CritRange512Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/EquipmentCompatibilityToken-PROFICIENCY-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/equipment/Proficiency512Token.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -5065,6 +5121,27 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/equipmentmodifier/Assigntoall514Token.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/EquipmentModifierCompatibilityToken-CHOOSENUMBER-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/equipmentmodifier/Choose512Lst_Number.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/EquipmentModifierCompatibilityToken-CHOOSESKILL-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/equipmentmodifier/Choose512Lst_Skill.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/EquipmentModifierCompatibilityToken-CHOOSESTAT-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/equipmentmodifier/Choose512Lst_Stat.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -5334,6 +5411,17 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/lstcompatibility/race/MFeat512Lst_DefMon.class" />
+				</patternset>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar-compatibility-subclass-plugins" depends="makeplugindirs" description="Build (Link) Race Lst Compatibility Token plugin jar files">
+		<!-- SubClass Lst tokens-->
+		<jar jarfile="${lstplugins.dir}/SubClassCompatibilityToken-CHOICE-5-12.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/lstcompatibility/subclass/Choice512Token.class" />
 				</patternset>
 			</fileset>
 		</jar>

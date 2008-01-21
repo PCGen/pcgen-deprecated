@@ -97,9 +97,11 @@ public final class PCTemplateLoader extends GenericLstLoader<PCTemplate>
 				LstUtils.deprecationCheck(token, template, value);
 				if (!token.parse(template, value))
 				{
-					Logging.errorPrint("Error parsing template "
-						+ template.getDisplayName() + ':' + source.toString()
-						+ ':' + colString + "\"");
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Error parsing template "
+									+ template.getDisplayName() + ':'
+									+ source.toString() + ':' + colString
+									+ "\"");
 				}
 			}
 			else if (PObjectLoader.parseTag(template, colString))
@@ -108,8 +110,8 @@ public final class PCTemplateLoader extends GenericLstLoader<PCTemplate>
 			}
 			else
 			{
-				Logging.deprecationPrint("Unknown tag '" + colString + "' in "
-					+ source.toString());
+				Logging.addParseMessage(Logging.LST_ERROR, "Unknown tag '"
+						+ colString + "' in " + source.toString());
 			}
 		}
 

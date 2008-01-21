@@ -25,8 +25,11 @@ import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.GameMode;
+import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
 import pcgen.core.SizeAdjustment;
+import pcgen.persistence.lst.DeferredToken;
+import pcgen.persistence.lst.TokenStore;
 
 public abstract class LoadContext
 {
@@ -165,8 +168,17 @@ public abstract class LoadContext
 		getObjectContext().decommit();
 	}
 
-	public void resolve()
+	public void resolveReferences()
 	{
+		
+	}
+
+	public void resolveDeferredTokens()
+	{
+		for (DeferredToken<? extends PObject> token : TokenStore.inst().getDeferredTokens())
+		{
+			processRes(token);
+		}
 		for (CDOMObject cdo : ref.getAllConstructedObjects())
 		{
 			String cs = cdo.get(StringKey.CHOOSE_BACKUP);
@@ -183,6 +195,15 @@ public abstract class LoadContext
 			}
 //			System.err.println(container.getActors());
 //			System.err.println("@" + cs);
+		}
+	}
+
+	private <T extends PObject> void processRes(DeferredToken<T> token)
+	{
+		Class<T> cl = token.getObjectClass();
+		for (T po : ref.getConstructedCDOMObjects(cl))
+		{
+			token.process(this, po);
 		}
 	}
 }

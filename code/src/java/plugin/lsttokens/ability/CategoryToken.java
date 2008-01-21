@@ -50,7 +50,7 @@ public class CategoryToken implements AbilityLstToken
 		try
 		{
 			AbilityCategory ac = AbilityCategory.valueOf(value);
-			context.getObjectContext().put(ability, ObjectKey.CATEGORY, ac);
+			context.ref.reassociateReference(ac, ability);
 			return true;
 		}
 		catch (IllegalArgumentException iae)
@@ -63,6 +63,10 @@ public class CategoryToken implements AbilityLstToken
 
 	public String[] unparse(LoadContext context, Ability ability)
 	{
+		/*
+		 * TODO How does this work with editor vs. real object and using
+		 * reassociateReference??
+		 */
 		AbilityCategory ac =
 				context.getObjectContext().getObject(ability,
 					ObjectKey.CATEGORY);

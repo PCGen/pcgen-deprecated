@@ -35,8 +35,8 @@ public class SchoolsToken implements ChooseLstToken, ChooseCompatibilityToken
 	{
 		if (value != null)
 		{
-			Logging.deprecationPrint("CHOOSE:" + getTokenName()
-				+ " will ignore arguments: " + value);
+			Logging.addParseMessage(Logging.LST_WARNING, "CHOOSE:"
+					+ getTokenName() + " will ignore arguments: " + value);
 		}
 		// No args - legal
 		StringBuilder sb = new StringBuilder();

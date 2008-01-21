@@ -78,32 +78,20 @@ public abstract class GenericLstLoader<T extends PObject> extends
 	private void parseGlobal(LoadContext context, T pobj, String key,
 		String value, CampaignSourceEntry source)
 	{
-		try
+		if (PObjectLoader.parseTag(context, pobj, key, value))
 		{
-			if (PObjectLoader.parseTag(context, pobj, key, value))
-			{
-				context.commit();
-				Logging.clearParseMessages();
-			}
-			else
-			{
-				context.decommit();
-				Logging.rewindParseMessages();
-				Logging.replayParsedMessages();
-				Logging.errorPrint("Illegal " + getLoadClass().getName()
-					+ " Token '" + key + "' for " + pobj.getDisplayName()
-					+ " value: " + value + " in " + source.getURI() + " of "
-					+ source.getCampaign() + ".");
-			}
+			context.commit();
+			Logging.clearParseMessages();
 		}
-		catch (PersistenceLayerException e)
+		else
 		{
 			context.decommit();
 			Logging.rewindParseMessages();
 			Logging.replayParsedMessages();
-			Logging.errorPrint("Error parsing " + getLoadClass().getName()
-				+ " Token '" + key + "' for " + pobj.getDisplayName() + " in "
-				+ source.getURI() + " of " + source.getCampaign() + ".");
+			Logging.errorPrint("Illegal " + getLoadClass().getName()
+				+ " Token '" + key + "' for " + pobj.getDisplayName()
+				+ " value: " + value + " in " + source.getURI() + " of "
+				+ source.getCampaign() + ".");
 		}
 	}
 

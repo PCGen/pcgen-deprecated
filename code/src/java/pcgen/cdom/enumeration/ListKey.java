@@ -97,8 +97,8 @@ public final class ListKey<T>
 	public static final ListKey<Integer> HITDICE_ADVANCEMENT =
 			new ListKey<Integer>();
 
-	public static final ListKey<CDOMReference<PCClass>> FAVORED_CLASS =
-			new ListKey<CDOMReference<PCClass>>();
+	public static final ListKey<CDOMReference<? extends PCClass>> FAVORED_CLASS =
+			new ListKey<CDOMReference<? extends PCClass>>();
 
 	public static final ListKey<Quality> QUALITY = new ListKey<Quality>();
 

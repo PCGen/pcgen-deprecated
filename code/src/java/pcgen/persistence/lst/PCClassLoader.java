@@ -30,6 +30,7 @@ import java.util.TreeSet;
 
 import pcgen.base.util.ReverseIntegerComparator;
 import pcgen.base.util.TripleKeyMap;
+import pcgen.cdom.enumeration.SubClassCategory;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
@@ -116,14 +117,18 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 						+ " (e.g. COST is a required Tag in a SUBCLASS)");
 				}
 				String subClassKey = firstToken.substring(9);
-				// TODO FIXME Should this really be through LoadContext??
-				SubClass sc = target.getSubClassKeyed(subClassKey);
+				SubClassCategory scc = SubClassCategory.getConstant(target.getKey());
+				SubClass sc = context.ref.silentlyGetConstructedCDOMObject(
+						SubClass.class, scc, subClassKey);
 				if (sc == null)
 				{
-					sc = new SubClass();
+					sc = context.ref.constructCDOMObject(SubClass.class,
+							subClassKey);
 					sc.setSourceCampaign(source.getCampaign());
 					sc.setSourceURI(source.getURI());
 					sc.setName(subClassKey);
+					context.ref.reassociateReference(scc, sc);
+					// TODO Is this necessary to add to the class?
 					target.addSubClass(sc);
 				}
 				parseSubClassLine(context, sc, restOfLine, source);
@@ -230,15 +235,39 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			SubClassLstToken subclasstoken =
 					TokenStore.inst().getToken(SubClassLstToken.class, key);
 
-			if (subclasstoken != null)
+			if (subclasstoken == null)
+			{
+				if (processSubClassCompatible(context, sc, key, value, source))
+				{
+					context.commit();
+					Logging.clearParseMessages();
+					continue;
+				}
+				context.decommit();
+			}
+			else
 			{
 				LstUtils.deprecationCheck(subclasstoken, sc, value);
 				if (subclasstoken.parse(context, sc, value))
 				{
+					context.commit();
+					Logging.clearParseMessages();
 					continue;
 				}
+				else
+				{
+					context.decommit();
+					if (processSubClassCompatible(context, sc, key, value,
+							source))
+					{
+						context.commit();
+						Logging.clearParseMessages();
+						continue;
+					}
+					context.decommit();
+				}
 			}
-
+			
 			parseToken(context, sc, key, value, source);
 		}
 	}
@@ -858,30 +887,20 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			else
 			{
 				context.decommit();
-				Logging.clearParseMessages();
-				try
+				if (PObjectLoader.parseTag(context, po, key, value))
 				{
-					if (PObjectLoader.parseTag(context, po, key, value))
-					{
-						context.commit();
-					}
-					else
-					{
-						context.decommit();
-						Logging.errorPrint("Illegal PCClass Token '" + key
-							+ "' for " + po.getDisplayName() + " in "
-							+ source.getURI() + " of " + source.getCampaign()
-							+ ".");
-					}
+					context.commit();
+					Logging.clearParseMessages();
 				}
-				catch (PersistenceLayerException e)
+				else
 				{
 					context.decommit();
-					Logging
-						.errorPrint("Error parsing PCClass Token '" + key
+					Logging.rewindParseMessages();
+					Logging.replayParsedMessages();
+					Logging.errorPrint("Illegal PCClass Token '" + key
 							+ "' for " + po.getDisplayName() + " in "
-							+ source.getURI() + " of " + source.getCampaign()
-							+ ".");
+							+ source.getURI() + " of "
+							+ source.getCampaign() + ".");
 				}
 			}
 		}
@@ -1023,20 +1042,20 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			new ReverseIntegerComparator();
 
 	private boolean processClassCompatible(LoadContext context,
-		PCClass pcclass, String key, String value, CampaignSourceEntry source)
+			PCClass pcclass, String key, String value,
+			CampaignSourceEntry source)
 	{
-		Collection<? extends CDOMCompatibilityToken<PCClass>> tokens =
-				TokenStore.inst().getCompatibilityToken(
-					PCClassClassLstCompatibilityToken.class, key);
+		Collection<? extends CDOMCompatibilityToken<PCClass>> tokens = TokenStore
+				.inst().getCompatibilityToken(
+						PCClassClassLstCompatibilityToken.class, key);
 		if (tokens != null && !tokens.isEmpty())
 		{
-			TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PCClass>> tkm =
-					new TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PCClass>>();
+			TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PCClass>> tkm = new TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PCClass>>();
 			for (CDOMCompatibilityToken<PCClass> tok : tokens)
 			{
 				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
-					.valueOf(tok.compatibilitySubLevel()), Integer.valueOf(tok
-					.compatibilityPriority()), tok);
+						.valueOf(tok.compatibilitySubLevel()), Integer
+						.valueOf(tok.compatibilityPriority()), tok);
 			}
 			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
 			primarySet.addAll(tkm.getKeySet());
@@ -1050,8 +1069,8 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
 					for (Integer priority : tertiarySet)
 					{
-						CDOMCompatibilityToken<PCClass> tok =
-								tkm.get(level, subLevel, priority);
+						CDOMCompatibilityToken<PCClass> tok = tkm.get(level,
+								subLevel, priority);
 						try
 						{
 							if (tok.parse(context, pcclass, value))
@@ -1063,10 +1082,10 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 						catch (PersistenceLayerException e)
 						{
 							Logging.errorPrint("Error parsing "
-								+ getLoadClass().getName() + " Token '" + key
-								+ "' for " + pcclass.getDisplayName() + " in "
-								+ source.getURI() + " of "
-								+ source.getCampaign() + ".");
+									+ getLoadClass().getName() + " Token '"
+									+ key + "' for " + pcclass.getDisplayName()
+									+ " in " + source.getURI() + " of "
+									+ source.getCampaign() + ".");
 						}
 					}
 					tertiarySet.clear();
@@ -1077,6 +1096,61 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		return false;
 	}
 
+	private boolean processSubClassCompatible(LoadContext context,
+			SubClass subclass, String key, String value,
+			CampaignSourceEntry source)
+	{
+		Collection<? extends CDOMCompatibilityToken<SubClass>> tokens = TokenStore
+				.inst().getCompatibilityToken(
+						SubClassLstCompatibilityToken.class, key);
+		if (tokens != null && !tokens.isEmpty())
+		{
+			TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<SubClass>> tkm = new TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<SubClass>>();
+			for (CDOMCompatibilityToken<SubClass> tok : tokens)
+			{
+				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
+						.valueOf(tok.compatibilitySubLevel()), Integer
+						.valueOf(tok.compatibilityPriority()), tok);
+			}
+			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
+			primarySet.addAll(tkm.getKeySet());
+			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
+			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
+			for (Integer level : primarySet)
+			{
+				secondarySet.addAll(tkm.getSecondaryKeySet(level));
+				for (Integer subLevel : secondarySet)
+				{
+					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
+					for (Integer priority : tertiarySet)
+					{
+						CDOMCompatibilityToken<SubClass> tok = tkm.get(level,
+								subLevel, priority);
+						try
+						{
+							if (tok.parse(context, subclass, value))
+							{
+								return true;
+							}
+							context.decommit();
+						}
+						catch (PersistenceLayerException e)
+						{
+							Logging.errorPrint("Error parsing "
+									+ getLoadClass().getName() + " Token '"
+									+ key + "' for " + subclass.getDisplayName()
+									+ " in " + source.getURI() + " of "
+									+ source.getCampaign() + ".");
+						}
+					}
+					tertiarySet.clear();
+				}
+				secondarySet.clear();
+			}
+		}
+		return false;
+	}
+	
 	/*
 	 * FIXME parseToken should only be used for PCClass - what about
 	 * PCClassLevel?
@@ -1085,5 +1159,42 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 	public Class<PCClass> getLoadClass()
 	{
 		return PCClass.class;
+	}
+
+	@Override
+	protected String preprocessLine(String line)
+	{
+		int repeatLoc = line.indexOf("\tREPEATLEVEL:");
+		if (repeatLoc == -1)
+		{
+			return line;
+		}
+		int firstTabLoc = line.indexOf("\t");
+		String level = line.substring(0, firstTabLoc);
+		String before = line.substring(firstTabLoc, repeatLoc);
+		int tabLoc = line.indexOf("\t", repeatLoc + 13);
+		String after = line.substring(tabLoc);
+		String repeat = line.substring(repeatLoc + 13, tabLoc);
+		StringTokenizer st = new StringTokenizer(repeat, ":");
+		if (st.countTokens() > 3)
+		{
+			Logging.errorPrint("Unable to process old REPEATLEVEL: syntax on line: " + line);
+			return line;
+		}
+		StringBuilder newLine = new StringBuilder();
+		newLine.append(level);
+		newLine.append(":REPEATLEVEL:");
+		newLine.append(st.nextToken());
+		if (st.hasMoreTokens())
+		{
+			newLine.append("|SKIP=").append(st.nextToken());
+		}
+		if (st.hasMoreTokens())
+		{
+			newLine.append("|MAX=").append(st.nextToken());
+		}
+		newLine.append(before);
+		newLine.append(after);
+		return newLine.toString();
 	}
 }

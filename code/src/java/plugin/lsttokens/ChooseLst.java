@@ -95,18 +95,17 @@ public class ChooseLst implements GlobalLstToken
 				{
 					if (count != null)
 					{
-						Logging
-							.errorPrint("Cannot use COUNT more than once in CHOOSE: "
-								+ value);
+						Logging.addParseMessage(Logging.LST_ERROR,
+								"Cannot use COUNT more than once in CHOOSE: "
+										+ value);
 						return false;
 					}
 					prefixList.add(key);
 					count = key.substring(6);
 					if (count == null)
 					{
-						Logging
-							.errorPrint("COUNT in CHOOSE must be a formula: "
-								+ value);
+						Logging.addParseMessage(Logging.LST_ERROR,
+								"COUNT in CHOOSE must be a formula: " + value);
 						return false;
 					}
 				}
@@ -114,18 +113,18 @@ public class ChooseLst implements GlobalLstToken
 				{
 					if (maxCount != null)
 					{
-						Logging
-							.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
-								+ value);
+						Logging.addParseMessage(Logging.LST_ERROR,
+								"Cannot use NUMCHOICES more than once in CHOOSE: "
+										+ value);
 						return false;
 					}
 					prefixList.add(key);
 					maxCount = key.substring(11);
 					if (maxCount == null || maxCount.length() == 0)
 					{
-						Logging
-							.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
-								+ value);
+						Logging.addParseMessage(Logging.LST_ERROR,
+								"NUMCHOICES in CHOOSE must be a formula: "
+										+ value);
 						return false;
 					}
 				}
@@ -172,16 +171,16 @@ public class ChooseLst implements GlobalLstToken
 			{
 				if (count != null)
 				{
-					Logging
-						.errorPrint("Cannot use COUNT more than once in CHOOSE: "
-							+ value);
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Cannot use COUNT more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				count = token.substring(6);
 				if (count == null)
 				{
-					Logging.errorPrint("COUNT in CHOOSE must be a formula: "
-						+ value);
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"COUNT in CHOOSE must be a formula: " + value);
 					return false;
 				}
 			}
@@ -189,17 +188,16 @@ public class ChooseLst implements GlobalLstToken
 			{
 				if (maxCount != null)
 				{
-					Logging
-						.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
-							+ value);
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Cannot use NUMCHOICES more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				maxCount = token.substring(11);
 				if (maxCount == null || maxCount.length() == 0)
 				{
-					Logging
-						.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
-							+ value);
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"NUMCHOICES in CHOOSE must be a formula: " + value);
 					return false;
 				}
 			}
@@ -235,7 +233,8 @@ public class ChooseLst implements GlobalLstToken
 			{
 				if (val.substring(titleLoc + 1).indexOf(Constants.PIPE) != -1)
 				{
-					Logging.errorPrint("CHOOSE: If TITLE= is used, must END with TITLE= . "
+					Logging.addParseMessage(Logging.LST_ERROR,
+						"CHOOSE: If TITLE= is used, must END with TITLE= . "
 							+ "No additional arguments allowed after the title.  "
 							+ "Offending value: " + value);
 					return false;

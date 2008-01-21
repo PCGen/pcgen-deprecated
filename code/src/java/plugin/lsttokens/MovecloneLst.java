@@ -70,9 +70,10 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 		}
 		else
 		{
-			Logging.deprecationPrint("Invalid Version of MOVECLONE detected: "
-				+ value + "\n  MOVECLONE now has 3 arguments: "
-				+ "SourceMove,DestinationMove,Modifier");
+			Logging.addParseMessage(Logging.LST_WARNING,
+					"Invalid Version of MOVECLONE detected: " + value
+							+ "\n  MOVECLONE now has 3 arguments: "
+							+ "SourceMove,DestinationMove,Modifier");
 			return false;
 		}
 		cm.setMoveRatesFlag(2);

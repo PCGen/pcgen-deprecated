@@ -19,5 +19,5 @@ package pcgen.cdom.enumeration;
 
 public enum EqWield
 {
-	Light, OneHanded, TwoHanded;
+	Unarmed, Light, OneHanded, TwoHanded;
 }

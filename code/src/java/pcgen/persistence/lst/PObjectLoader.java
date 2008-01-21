@@ -166,7 +166,7 @@ public final class PObjectLoader
 	}
 
 	public static boolean parseTag(LoadContext context, PObject wp, String key,
-		String value) throws PersistenceLayerException
+		String value)
 	{
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(GlobalLstToken.class);
@@ -232,14 +232,30 @@ public final class PObjectLoader
 					}
 					catch (PersistenceLayerException ple)
 					{
-						throw new PersistenceLayerException(
-							"Unable to parse a prerequisite: "
+						context.decommit();
+						Logging.rewindParseMessages();
+						Logging.replayParsedMessages();
+						Logging.errorPrint("Unable to parse a prerequisite: "
 								+ ple.getMessage());
 					}
 				}
 				return true;
 			}
-			return false;
+			if (processCompatible(context, wp, key, value))
+			{
+				context.commit();
+				Logging.clearParseMessages();
+				return true;
+			}
+			else
+			{
+				context.decommit();
+				Logging.rewindParseMessages();
+				Logging.replayParsedMessages();
+				Logging.errorPrint("Error parsing token " + key + " in "
+					+ wp.getClass().getName() + " " + wp.getDisplayName());
+				return false;
+			}
 		}
 	}
 
@@ -248,7 +264,6 @@ public final class PObjectLoader
 
 	private static boolean processCompatible(LoadContext context,
 		CDOMObject po, String key, String value)
-		throws PersistenceLayerException
 	{
 		Collection<GlobalLstCompatibilityToken> tokens =
 				TokenStore.inst().getCompatibilityToken(

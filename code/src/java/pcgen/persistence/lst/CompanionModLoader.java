@@ -112,8 +112,9 @@ public class CompanionModLoader extends LstLineFileLoader {
 			} else if (PObjectLoader.parseTag(cmpMod, colString)) {
 				continue;
 			} else {
-				Logging.errorPrint("Unrecognized Token in CompanionMod: "
-						+ sourceURI + ":" + " \"" + colString + "\"");
+				Logging.addParseMessage(Logging.LST_ERROR,
+						"Unrecognized Token in CompanionMod: " + sourceURI
+								+ ":" + " \"" + colString + "\"");
 			}
 		}
 

@@ -158,10 +158,11 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 									"EQUIPMENT", aProf.substring(5));
 					pcsList.add(pcs);
 				}
-				else if (aProf.startsWith("TYPE="))
+				else if (aProf.startsWith("TYPE=") || aProf.startsWith("TYPE."))
 				{
-					Logging.errorPrint(aProf + " is prohibited in AUTO:"
-							+ getTokenName() + ". Do you mean ARMORTYPE=?");
+					Logging.addParseMessage(Logging.LST_ERROR, aProf
+							+ " is prohibited in AUTO:" + getTokenName()
+							+ ". Do you mean ARMORTYPE=?");
 					return false;
 				}
 				else
@@ -182,7 +183,8 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 
 		if (foundAny && foundOther)
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, "Non-sensical "
+					+ getTokenName()
 					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}

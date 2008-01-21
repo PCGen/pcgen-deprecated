@@ -151,13 +151,14 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 					foundOther = true;
 					PrimitiveChoiceSet<ShieldProf> pcs = ChooseLoader
 							.getQualifier(context, SHIELDPROF_CLASS,
-									"EQUIPMENT", aProf.substring(5));
+									"EQUIPMENT", aProf.substring(6));
 					pcsList.add(pcs);
 				}
-				else if (aProf.startsWith("TYPE="))
+				else if (aProf.startsWith("TYPE=") || aProf.startsWith("TYPE."))
 				{
-					Logging.errorPrint(aProf + " is prohibited in AUTO:"
-							+ getTokenName() + ". Do you mean SHIELDTYPE=?");
+					Logging.addParseMessage(Logging.LST_ERROR, aProf
+							+ " is prohibited in AUTO:" + getTokenName()
+							+ ". Do you mean SHIELDTYPE=?");
 					return false;
 				}
 				else
@@ -178,7 +179,8 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 
 		if (foundAny && foundOther)
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
+			Logging.addParseMessage(Logging.LST_ERROR, "Non-sensical "
+					+ getTokenName()
 					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}

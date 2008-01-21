@@ -51,9 +51,10 @@ public class ProficiencyToken extends AbstractToken implements
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			Logging.deprecationPrint("Equipment Token PROFICIENCY syntax "
-					+ "without a Subtoken is deprecated: " + value);
-			Logging.deprecationPrint("Please use: "
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Equipment Token PROFICIENCY syntax "
+							+ "without a Subtoken is deprecated: " + value);
+			Logging.addParseMessage(Logging.LST_ERROR, "Please use: "
 					+ "PROFICIENCY:<subtoken>|<prof>");
 			eq.setProfName(value);
 		}
@@ -63,14 +64,15 @@ public class ProficiencyToken extends AbstractToken implements
 			String prof = value.substring(pipeLoc + 1);
 			if (prof == null || prof.length() == 0)
 			{
-				Logging.errorPrint("PROFICIENCY cannot have "
-						+ "empty second argument: " + value);
+				Logging.addParseMessage(Logging.LST_ERROR,
+						"PROFICIENCY cannot have " + "empty second argument: "
+								+ value);
 				return false;
 			}
 			if (prof.indexOf(Constants.PIPE) != -1)
 			{
-				Logging.errorPrint("PROFICIENCY cannot have two | characters: "
-						+ value);
+				Logging.addParseMessage(Logging.LST_ERROR,
+						"PROFICIENCY cannot have two | characters: " + value);
 				return false;
 			}
 			if (subtoken.equals("WEAPON"))
@@ -87,10 +89,10 @@ public class ProficiencyToken extends AbstractToken implements
 			}
 			else
 			{
-				Logging.errorPrint("Unknown Subtoken for PROFICIENCY: "
-						+ subtoken);
-				Logging.errorPrint("  Subtoken must be "
-						+ "WEAPON, ARMOR or SHIELD");
+				Logging.addParseMessage(Logging.LST_ERROR,
+						"Unknown Subtoken for PROFICIENCY: " + subtoken);
+				Logging.addParseMessage(Logging.LST_ERROR,
+						"  Subtoken must be " + "WEAPON, ARMOR or SHIELD");
 				return false;
 			}
 		}
@@ -106,13 +108,15 @@ public class ProficiencyToken extends AbstractToken implements
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("Equipment Token PROFICIENCY syntax "
-					+ "without a Subtoken is invalid: " + value);
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Equipment Token PROFICIENCY syntax "
+							+ "without a Subtoken is invalid: " + value);
 			return false;
 		}
 		if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 		{
-			Logging.errorPrint(getTokenName() + " expecting only one '|', "
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " expecting only one '|', "
 					+ "format is: SubToken|ProfName value was: " + value);
 			return false;
 		}
@@ -120,8 +124,9 @@ public class ProficiencyToken extends AbstractToken implements
 		String prof = value.substring(pipeLoc + 1);
 		if (prof == null || prof.length() == 0)
 		{
-			Logging.errorPrint("PROFICIENCY cannot have "
-					+ "empty second argument: " + value);
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"PROFICIENCY cannot have " + "empty second argument: "
+							+ value);
 			return false;
 		}
 		if (subtoken.equals("WEAPON"))
@@ -144,8 +149,9 @@ public class ProficiencyToken extends AbstractToken implements
 		}
 		else
 		{
-			Logging.errorPrint("Unknown Subtoken for PROFICIENCY: " + subtoken);
-			Logging.errorPrint("  Subtoken must be "
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Unknown Subtoken for PROFICIENCY: " + subtoken);
+			Logging.addParseMessage(Logging.LST_ERROR, "  Subtoken must be "
 					+ "WEAPON, ARMOR or SHIELD");
 			return false;
 		}

@@ -25,21 +25,22 @@ public class ChoiceToken implements SubClassLstToken
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint(getTokenName() + " uses a deprecated format: "
-				+ value + "\n  "
-				+ "New format must be type|value, e.g. SCHOOL|Abjuration");
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " uses a deprecated format: " + value + "\n  "
+					+ "New format must be type|value, e.g. SCHOOL|Abjuration");
 			subclass.setChoice(value);
 			return true;
 		}
 		if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 		{
-			Logging.errorPrint(getTokenName() + " has invalid arguments: "
-				+ value + "\n  cannot have two | characters");
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " has invalid arguments: " + value
+					+ "\n  cannot have two | characters");
 			return false;
 		}
 		String type = value.substring(0, pipeLoc);
 		if ("SCHOOL".equals(type) || "SUBSCHOOL".equals(type)
-			|| "DESCRIPTOR".equals(type))
+				|| "DESCRIPTOR".equals(type))
 		{
 			// Unfortunately, in 5.14, we have no way of validating that the
 			// input
@@ -47,8 +48,8 @@ public class ChoiceToken implements SubClassLstToken
 			subclass.setChoice(value.substring(pipeLoc + 1));
 			return true;
 		}
-		Logging
-			.errorPrint(getTokenName() + " did not understand type: " + type);
+		Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				+ " did not understand type: " + type);
 		return false;
 	}
 
@@ -57,36 +58,37 @@ public class ChoiceToken implements SubClassLstToken
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint(getTokenName() + " invalid: " + value
-				+ "\n  Must be type|value, e.g. SCHOOL|Abjuration");
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " invalid: " + value
+					+ "\n  Must be type|value, e.g. SCHOOL|Abjuration");
 			return false;
 		}
 		if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 		{
-			Logging.errorPrint(getTokenName() + " has invalid arguments: "
-				+ value + "\n  cannot have two | characters");
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " has invalid arguments: " + value
+					+ "\n  cannot have two | characters");
 			return false;
 		}
 		String type = value.substring(0, pipeLoc);
 		if ("SCHOOL".equals(type) || "SUBSCHOOL".equals(type)
-			|| "DESCRIPTOR".equals(type))
+				|| "DESCRIPTOR".equals(type))
 		{
-			SpellProhibitor<?> sp =
-					getSpellProhib(ProhibitedSpellType.getReference(type),
-						value.substring(pipeLoc + 1));
+			SpellProhibitor<?> sp = getSpellProhib(ProhibitedSpellType
+					.getReference(type), value.substring(pipeLoc + 1));
 			context.getObjectContext().put(sc, ObjectKey.SELETED_SPELLS, sp);
 			return true;
 		}
 		else
 		{
-			Logging.errorPrint(getTokenName() + " did not understand type: "
-				+ type);
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " did not understand type: " + type);
 			return false;
 		}
 	}
 
 	private <T> SpellProhibitor<T> getSpellProhib(ProhibitedSpellType<T> pst,
-		String arg)
+			String arg)
 	{
 		SpellProhibitor<T> spSchool = new SpellProhibitor<T>();
 		spSchool.setType(pst);

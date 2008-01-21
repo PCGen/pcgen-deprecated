@@ -64,8 +64,8 @@ public class ChooseToken implements EquipmentModifierLstToken
 			{
 				if (count != null)
 				{
-					Logging
-							.errorPrint("Cannot use COUNT more than once in CHOOSE: "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Cannot use COUNT more than once in CHOOSE: "
 									+ value);
 					return false;
 				}
@@ -73,7 +73,8 @@ public class ChooseToken implements EquipmentModifierLstToken
 				count = key.substring(6);
 				if (count == null)
 				{
-					Logging.errorPrint("COUNT in CHOOSE must be a formula: "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"COUNT in CHOOSE must be a formula: "
 							+ value);
 					return false;
 				}
@@ -83,8 +84,8 @@ public class ChooseToken implements EquipmentModifierLstToken
 			{
 				if (maxCount != null)
 				{
-					Logging
-							.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Cannot use NUMCHOICES more than once in CHOOSE: "
 									+ value);
 					return false;
 				}
@@ -92,8 +93,8 @@ public class ChooseToken implements EquipmentModifierLstToken
 				maxCount = key.substring(11);
 				if (maxCount == null || maxCount.length() == 0)
 				{
-					Logging
-							.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"NUMCHOICES in CHOOSE must be a formula: "
 									+ value);
 					return false;
 				}
@@ -112,18 +113,19 @@ public class ChooseToken implements EquipmentModifierLstToken
 				return true;
 			}
 		}
-		Logging
-				.deprecationPrint("CHOOSE: in EqMod with Title as first argument is deprecated");
-		Logging
-				.deprecationPrint("  Please use CHOOSE:<subtoken>|<args>|TITLE=<title>");
-		Logging.deprecationPrint("  Offending CHOOSE was: " + value);
+		Logging.addParseMessage(Logging.LST_WARNING,
+				"CHOOSE: in EqMod with Title as first argument is deprecated");
+		Logging.addParseMessage(Logging.LST_WARNING,
+				"  Please use CHOOSE:<subtoken>|<args>|TITLE=<title>");
+		Logging.addParseMessage(Logging.LST_WARNING,
+				"  Offending CHOOSE was: " + value);
 		if (value.indexOf("TITLE=") != -1)
 		{
-			Logging
-					.errorPrint("Unexpected Condition: Deprecated Syntax EqMod with Chooser Type and TITLE= "
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Unexpected Condition: Deprecated Syntax EqMod with Chooser Type and TITLE= "
 							+ value);
-			Logging
-					.errorPrint("Please check error messages above for syntax errors or contact the PCGen team on the PCGenListFileHelp Yahoo Group for support");
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Please check error messages above for syntax errors or contact the PCGen team on the PCGenListFileHelp Yahoo Group for support");
 			return false;
 		}
 		mod.setChoiceString(value);
@@ -146,15 +148,16 @@ public class ChooseToken implements EquipmentModifierLstToken
 			{
 				if (count != null)
 				{
-					Logging
-							.errorPrint("Cannot use COUNT more than once in CHOOSE: "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Cannot use COUNT more than once in CHOOSE: "
 									+ value);
 					return false;
 				}
 				count = token.substring(6);
 				if (count == null)
 				{
-					Logging.errorPrint("COUNT in CHOOSE must be a formula: "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"COUNT in CHOOSE must be a formula: "
 							+ value);
 					return false;
 				}
@@ -163,16 +166,16 @@ public class ChooseToken implements EquipmentModifierLstToken
 			{
 				if (maxCount != null)
 				{
-					Logging
-							.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Cannot use NUMCHOICES more than once in CHOOSE: "
 									+ value);
 					return false;
 				}
 				maxCount = token.substring(11);
 				if (maxCount == null || maxCount.length() == 0)
 				{
-					Logging
-							.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"NUMCHOICES in CHOOSE must be a formula: "
 									+ value);
 					return false;
 				}
@@ -191,7 +194,8 @@ public class ChooseToken implements EquipmentModifierLstToken
 			{
 				if (rest.substring(titleLoc + 1).indexOf(Constants.PIPE) != -1)
 				{
-					Logging.errorPrint("CHOOSE: in EqMod must END with TITLE= . "
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"CHOOSE: in EqMod must END with TITLE= . "
 							+ "No additional arguments allowed after the title.  "
 							+ "Offending value: " + value);
 					return false;
@@ -223,8 +227,8 @@ public class ChooseToken implements EquipmentModifierLstToken
 		}
 		if (chooser.length > 2)
 		{
-			Logging
-					.errorPrint("Internal Error: CHOOSE parser returned more than 2 CHOOSERs for: "
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Internal Error: CHOOSE parser returned more than 2 CHOOSERs for: "
 							+ value);
 			return false;
 		}

@@ -182,6 +182,8 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<SpellProhibitor<?>> SELETED_SPELLS = new ObjectKey<SpellProhibitor<?>>();
 
+	public static final ObjectKey<Boolean> CASTER_WITHOUT_SPELL_STAT = new ObjectKey<Boolean>();
+
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 
 	private ObjectKey() {

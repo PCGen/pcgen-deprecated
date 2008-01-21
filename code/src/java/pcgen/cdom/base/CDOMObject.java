@@ -299,9 +299,12 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 
 	public String getKey()
 	{
-		// TODO This is going to have to be special cased, because the key could
-		// be the key or the name :/
-		return null;
+		String returnKey = this.get(StringKey.KEY_NAME);
+		if (returnKey == null)
+		{
+			returnKey = this.get(StringKey.NAME);
+		}
+		return returnKey;
 	}
 
 	public String getKeyName()

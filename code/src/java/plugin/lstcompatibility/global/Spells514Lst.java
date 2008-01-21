@@ -234,11 +234,11 @@ public class Spells514Lst extends AbstractToken implements
 
 	public int compatibilityPriority()
 	{
-		return 14;
+		return 0;
 	}
 
 	public int compatibilitySubLevel()
 	{
-		return 0;
+		return 14;
 	}
 }

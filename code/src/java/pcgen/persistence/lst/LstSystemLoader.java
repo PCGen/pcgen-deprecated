@@ -523,8 +523,9 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 			showLicensesIfNeeded();
 			showSponsorsIfNeeded();
 			
+			context.resolveDeferredTokens();
 			context.ref.buildDerivedObjects();
-			context.resolve();
+			context.resolveReferences();
 			context.ref.validate();
 		}
 		catch (Throwable thr)
