@@ -214,7 +214,14 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidEmptySPELLCASTER() throws PersistenceLayerException
 	{
-		assertFalse(parse("CLASS|SPELLCASTER.=1|Fireball"));
+		try
+		{
+			assertFalse(parse("CLASS|SPELLCASTER.=1|Fireball"));
+		}
+		catch (IllegalArgumentException e)
+		{
+			//This is okay too ;)
+		}
 		assertNoSideEffects();
 	}
 
@@ -418,7 +425,14 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidDomainEmptySPELLCASTER()
 		throws PersistenceLayerException
 	{
-		assertFalse(parse("DOMAIN|SPELLCASTER.=1|Fireball"));
+		try
+		{
+			assertFalse(parse("DOMAIN|SPELLCASTER.=1|Fireball"));
+		}
+		catch (IllegalArgumentException e)
+		{
+			//This is okay too ;)
+		}
 		assertNoSideEffects();
 	}
 

@@ -179,10 +179,15 @@ public class MoveCloneLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
-	public void testInvalidInputZeroMovement() throws PersistenceLayerException
+	public void testValidZero() throws PersistenceLayerException
 	{
-		assertFalse(parse("Walk,Fly,0"));
-		assertNoSideEffects();
+		assertTrue(parse("Walk,Fly,0"));
+	}
+
+	@Test
+	public void testValidPlusZero() throws PersistenceLayerException
+	{
+		assertTrue(parse("Walk,Fly,+0"));
 	}
 
 	@Test

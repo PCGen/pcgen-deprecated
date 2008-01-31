@@ -467,15 +467,13 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 
 		// sage_sam 02 Dec 2002 for Bug #586332
 		// allow hands to be required to equip natural weapons
-		int handsRequired = 0;
-
 		if (commaTok.hasMoreTokens())
 		{
 			final String hString = commaTok.nextToken();
-
 			try
 			{
-				handsRequired = Integer.parseInt(hString);
+				objContext.put(equipHead, IntegerKey.SLOTS, Integer
+						.valueOf(Integer.parseInt(hString)));
 			}
 			catch (NumberFormatException exc)
 			{
@@ -484,8 +482,6 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 				return null;
 			}
 		}
-		objContext.put(equipHead, IntegerKey.SLOTS, Integer
-			.valueOf(handsRequired));
 
 		objContext.put(anEquip, ObjectKey.WEIGHT, BigDecimal.ZERO);
 
@@ -614,10 +610,17 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 			if (damage == null)
 			{
 				context.addWriteMessage(getTokenName()
-					+ " expected an Damage on EquipmentHead");
+					+ " expected a Damage on EquipmentHead");
 				return null;
 			}
 			sb.append(damage);
+			
+			Integer hands = objcontext.getInteger(head, IntegerKey.SLOTS);
+			if (hands != null)
+			{
+				sb.append(',').append(hands);
+			}
+
 			first = false;
 		}
 		return new String[]{sb.toString()};

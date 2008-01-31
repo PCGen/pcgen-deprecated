@@ -128,7 +128,7 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
-		runRoundRobin("TestWP1|TestWP1|PRELEVEL:5");
+		runRoundRobin("TestWP1|TestWP1|PRELEVEL:MIN=5");
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		System.err.println("=");
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
-		runRoundRobin("TestWP1", "TestWP1|PRELEVEL:5");
+		runRoundRobin("TestWP1", "TestWP1|PRELEVEL:MIN=5");
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		construct(secondaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP2");
-		runRoundRobin("TestWP1|TestWP1|PRELEVEL:5",
+		runRoundRobin("TestWP1|TestWP1|PRELEVEL:MIN=5",
 			"TestWP2|TestWP2|PRECLASS:1,Fighter=1");
 	}
 
@@ -203,7 +203,7 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
-		runRoundRobin("TestWP1|TestWP2|PRELEVEL:5");
+		runRoundRobin("TestWP1|TestWP2|PRELEVEL:MIN=5");
 	}
 
 	@Test
@@ -213,7 +213,7 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
-		runRoundRobin("TestWP1|TestWP2|!PRELEVEL:5");
+		runRoundRobin("TestWP1|TestWP2|!PRELEVEL:MIN=5");
 	}
 
 	@Test
@@ -223,7 +223,7 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
-		runRoundRobin("TestWP1|TestWP2|PRECLASS:1,Fighter=1|PRELEVEL:5");
+		runRoundRobin("TestWP1|TestWP2|PRECLASS:1,Fighter=1|PRELEVEL:MIN=5");
 	}
 
 	@Test

@@ -187,7 +187,7 @@ public class NaturalAttacksLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidDoublePipe() throws PersistenceLayerException
 	{
 		assertFalse(parse("Claw,Weapon.Natural.Melee.Piercing.Slashing,2,1d4||"
-			+ "Bite,Weapon.Natural.Melee.Piercing.Slashing,1,1d6"));
+				+ "Bite,Weapon.Natural.Melee.Piercing.Slashing,1,1d6"));
 		assertNoSideEffects();
 	}
 
@@ -207,7 +207,7 @@ public class NaturalAttacksLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinHands() throws PersistenceLayerException
 	{
-		runRoundRobin("Claw,Weapon.Natural.Melee.Piercing.Slashing,2,1d4, 1");
+		runRoundRobin("Claw,Weapon.Natural.Melee.Piercing.Slashing,2,1d4,1");
 	}
 
 	@Test
@@ -225,9 +225,9 @@ public class NaturalAttacksLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinSameName() throws PersistenceLayerException
 	{
-		runRoundRobin("Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,1d3|"
-			+ "Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing.Slashing,*1,1d4|"
-			+ "Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*1,1d3");
+		runRoundRobin("Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing.Slashing,*1,1d4|"
+				+ "Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*1,1d3|"
+				+ "Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,1d3");
 	}
 
 }
