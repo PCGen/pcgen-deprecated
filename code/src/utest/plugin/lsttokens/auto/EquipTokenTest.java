@@ -118,4 +118,10 @@ public class EquipTokenTest extends AbstractAutoTokenTestCase
 			getSubTokenString() + "|TestWP1|TestWP1[PRERACE:1,Human]",
 			getSubTokenString() + "|TestWP2|TestWP2[PRERACE:1,Elf]");
 	}
+
+	@Override
+	protected boolean isTypeDotLegal()
+	{
+		return true;
+	}
 }

@@ -25,16 +25,18 @@ package pcgen.cdom.helper;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.core.PlayerCharacter;
+import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
 
-	private final Set<PrimitiveChoiceSet<T>> set =
-			new HashSet<PrimitiveChoiceSet<T>>();
+	private final Set<PrimitiveChoiceSet<T>> set = new TreeSet<PrimitiveChoiceSet<T>>(
+			TokenUtilities.WRITEABLE_SORTER);
 
 	public CompoundOrChoiceSet(Collection<PrimitiveChoiceSet<T>> coll)
 	{
@@ -63,5 +65,16 @@ public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
 	public Class<T> getChoiceClass()
 	{
 		return set == null ? null : set.iterator().next().getChoiceClass();
+	}
+
+	public int hashCode()
+	{
+		return set.hashCode();
+	}
+
+	public boolean equals(Object o)
+	{
+		return (o instanceof CompoundOrChoiceSet)
+				&& ((CompoundOrChoiceSet<?>) o).set.equals(set);
 	}
 }

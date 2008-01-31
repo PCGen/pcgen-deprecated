@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
@@ -32,7 +33,6 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.content.AutomaticActionContainer;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -156,6 +156,10 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 					PrimitiveChoiceSet<ArmorProf> pcs = ChooseLoader
 							.getQualifier(context, ARMORPROF_CLASS,
 									"EQUIPMENT", aProf.substring(5));
+					if (pcs == null)
+					{
+						return false;
+					}
 					pcsList.add(pcs);
 				}
 				else if (aProf.startsWith("TYPE=") || aProf.startsWith("TYPE."))
@@ -170,10 +174,6 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 					foundOther = true;
 					CDOMReference<ArmorProf> ref = context.ref
 							.getCDOMReference(ARMORPROF_CLASS, aProf);
-					if (ref == null)
-					{
-						return false;
-					}
 					AssociatedPrereqObject edge = context.getGraphContext()
 							.grant(getTokenName(), obj, ref);
 					applyList.add(edge);
@@ -189,25 +189,29 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			return false;
 		}
 
-		PrimitiveChoiceSet<ArmorProf> pcs;
-		if (pcsList.size() == 1)
+		if (!pcsList.isEmpty())
 		{
-			pcs = pcsList.get(0);
-		}
-		else
-		{
-			pcs = new CompoundOrChoiceSet<ArmorProf>(pcsList);
-		}
+			PrimitiveChoiceSet<ArmorProf> pcs;
+			if (pcsList.size() == 1)
+			{
+				pcs = pcsList.get(0);
+			}
+			else
+			{
+				pcs = new CompoundOrChoiceSet<ArmorProf>(pcsList);
+			}
 
-		ChoiceSet<ArmorProf> cs = new ChoiceSet<ArmorProf>("AUTO:ARMORPROF",
-				pcs);
-		AutomaticActionContainer aac = new AutomaticActionContainer(
-				"AUTO:ARMORPROF");
-		aac.setChoiceSet(cs);
-		aac.addActor(new GrantActor<ArmorProf>());
-		AssociatedPrereqObject edge = context.getGraphContext().grant(
-				getTokenName(), obj, aac);
-		applyList.add(edge);
+			ChoiceSet<ArmorProf> cs = new ChoiceSet<ArmorProf>(
+					"AUTO:ARMORPROF", pcs);
+			AutomaticActionContainer aac = new AutomaticActionContainer(
+					"AUTO:ARMORPROF");
+			aac.setChoiceSet(cs);
+			aac.addActor(new GrantActor<ArmorProf>());
+			AssociatedPrereqObject edge = context.getGraphContext().grant(
+					getTokenName(), obj, aac);
+			applyList.add(edge);
+
+		}
 
 		if (prereq != null)
 		{
@@ -251,36 +255,76 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 
 		AssociatedChanges<ArmorProf> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, ARMORPROF_CLASS);
-		if (list.isEmpty() && changes == null)
+		AssociatedChanges<AutomaticActionContainer> typechanges = context
+				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+						AutomaticActionContainer.class);
+		if (list.isEmpty() && changes == null && typechanges == null)
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
-				.getAddedAssociations();
-		if (list.isEmpty() && (mtl == null || mtl.isEmpty()))
+		HashMapToList<Set<Prerequisite>, String> m = new HashMapToList<Set<Prerequisite>, String>();
+		if (changes != null)
 		{
-			// Zero indicates no Token
-			return null;
-		}
-		HashMapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : mtl.getKeySet())
-		{
-			List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
-			if (assocList.size() != 1)
+			MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+					.getAddedAssociations();
+			if (mtl != null && !mtl.isEmpty())
 			{
-				context
-						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
-				return null;
+				// Zero indicates no Content, others processed here
+				for (LSTWriteable ab : mtl.getKeySet())
+				{
+					List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
+					if (assocList.size() != 1)
+					{
+						context
+								.addWriteMessage("Only one Association to AUTO can be made per object");
+						return null;
+					}
+					AssociatedPrereqObject assoc = assocList.get(0);
+					m.addToListFor(new HashSet<Prerequisite>(assoc
+							.getPrerequisiteList()), ab.getLSTformat());
+				}
 			}
-			AssociatedPrereqObject assoc = assocList.get(0);
-			m.addToListFor(new HashSet<Prerequisite>(assoc
-					.getPrerequisiteList()), ab);
 		}
-
+		if (typechanges != null)
+		{
+			MapToList<LSTWriteable, AssociatedPrereqObject> mtl = typechanges
+					.getAddedAssociations();
+			if (mtl != null && !mtl.isEmpty())
+			{
+				// Zero indicates no Content, others processed here
+				for (LSTWriteable ab : mtl.getKeySet())
+				{
+					List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
+					if (assocList.size() != 1)
+					{
+						context
+								.addWriteMessage("Only one Association to AUTO can be made per object");
+						return null;
+					}
+					AssociatedPrereqObject assoc = assocList.get(0);
+					String lstFormat = ab.getLSTformat();
+					if (lstFormat.startsWith("EQUIPMENT[")
+							&& lstFormat.endsWith("]"))
+					{
+						String temp = lstFormat.substring(10, lstFormat
+								.length() - 1);
+						m.addToListFor(new HashSet<Prerequisite>(assoc
+								.getPrerequisiteList()), "ARMOR"
+								+ StringUtil.replaceAll(temp, "]|EQUIPMENT[",
+										"|ARMOR"));
+					}
+					else
+					{
+						context.addWriteMessage("Unexpected CHOICE in AUTO: "
+								+ lstFormat);
+						return null;
+					}
+				}
+			}
+		}
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			String ab = ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-					Constants.PIPE);
+			String ab = StringUtil.join(m.getListFor(prereqs), Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				if (prereqs.size() > 1)
@@ -306,6 +350,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			}
 			list.add(ab);
 		}
+
 		return list.toArray(new String[list.size()]);
 	}
 }

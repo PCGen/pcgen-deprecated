@@ -518,7 +518,7 @@ public class JARClassLoader extends ClassLoader
 	{
 		if (!Modifier.isInterface(modifiers) && !Modifier.isAbstract(modifiers) && QualifierToken.class.isAssignableFrom(clazz))
 		{
-			QualifierToken pl = (QualifierToken) clazz.newInstance();
+			QualifierToken<?> pl = (QualifierToken<?>) clazz.newInstance();
 			TokenStore.inst().addToQualifierMap(pl);
 		}
 	}

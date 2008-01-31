@@ -61,8 +61,16 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(parse("TestWP1,TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		boolean ret = parse("TestWP1,TestWP2");
+		if (ret)
+		{
+			assertFalse(primaryContext.ref.validate());
+		}
+		else
+		{
+			assertNull(primaryProf.get(getObjectKey()));
+			assertNoSideEffects();
+		}
 	}
 
 	@Test
@@ -70,8 +78,16 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(parse("TestWP1|TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		boolean ret = parse("TestWP1|TestWP2");
+		if (ret)
+		{
+			assertFalse(primaryContext.ref.validate());
+		}
+		else
+		{
+			assertNull(primaryProf.get(getObjectKey()));
+			assertNoSideEffects();
+		}
 	}
 
 	@Test
@@ -79,8 +95,16 @@ public abstract class AbstractItemTokenTestCase<T extends PObject, TC extends PO
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(parse("TestWP1.TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		boolean ret = parse("TestWP1.TestWP2");
+		if (ret)
+		{
+			assertFalse(primaryContext.ref.validate());
+		}
+		else
+		{
+			assertNull(primaryProf.get(getObjectKey()));
+			assertNoSideEffects();
+		}
 	}
 
 	// FIXME These are invalid due to RC being overly protective at the moment

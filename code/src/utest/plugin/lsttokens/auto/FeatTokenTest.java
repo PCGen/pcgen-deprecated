@@ -135,4 +135,10 @@ public class FeatTokenTest extends AbstractAutoTokenTestCase
 	// assertTrue(primaryContext.ref.validate());
 	// assertTrue(secondaryContext.ref.validate());
 	// }
+
+	@Override
+	protected boolean isTypeDotLegal()
+	{
+		return true;
+	}
 }

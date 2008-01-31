@@ -17,18 +17,32 @@
  */
 package plugin.lsttokens.auto;
 
+import java.net.URISyntaxException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.PCTemplate;
 import pcgen.core.ShieldProf;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.qualifier.shieldprof.EquipmentToken;
 
 public class ShieldProfTokenTest extends AbstractAutoTokenTestCase
 {
 
 	private static final ShieldProfToken SHIELD_PROF_TOKEN =
 			new ShieldProfToken();
+
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		TokenRegistration.register(new EquipmentToken());
+	}
 
 	@Override
 	protected ShieldProfToken getSubToken()
@@ -84,5 +98,17 @@ public class ShieldProfTokenTest extends AbstractAutoTokenTestCase
 	protected boolean isListLegal()
 	{
 		return true;
+	}
+
+	@Override
+	protected String getTypePrefix()
+	{
+		return "SHIELD";
+	}
+
+	@Override
+	protected boolean isTypeDotLegal()
+	{
+		return false;
 	}
 }

@@ -174,19 +174,19 @@ public abstract class AbstractTextPropertyTokenTestCase<T extends PObject>
 	@Test
 	public void testRoundRobinPre() throws PersistenceLayerException
 	{
-		runRoundRobin("Rheinhessen|VarOne|VarTwo|PRELEVEL:5");
+		runRoundRobin("Rheinhessen|VarOne|VarTwo|PRELEVEL:MIN=5");
 	}
 
 	@Test
 	public void testRoundRobinNotPre() throws PersistenceLayerException
 	{
-		runRoundRobin("Rheinhessen|VarOne|VarTwo|!PRELEVEL:5");
+		runRoundRobin("Rheinhessen|VarOne|VarTwo|!PRELEVEL:MIN=5");
 	}
 
 	@Test
 	public void testRoundRobinDoublePre() throws PersistenceLayerException
 	{
-		runRoundRobin("Rheinhessen|VarOne|VarTwo|PRECLASS:1,Fighter=1|PRELEVEL:5");
+		runRoundRobin("Rheinhessen|VarOne|VarTwo|PRECLASS:1,Fighter=1|PRELEVEL:MIN=5");
 	}
 
 }

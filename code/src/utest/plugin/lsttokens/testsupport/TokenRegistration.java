@@ -23,6 +23,8 @@ import java.util.Set;
 
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.LstToken;
+import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.persistence.lst.QualifierToken;
 import pcgen.persistence.lst.TokenStore;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriterFactory;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriterInterface;
@@ -52,8 +54,17 @@ public class TokenRegistration
 	{
 		if (!tokenSet.contains(token))
 		{
-			TokenStore.inst().addToTokenMap(token);
+			TokenStore ts = TokenStore.inst();
+			ts.addToTokenMap(token);
 			tokenSet.add(token);
+			if (token instanceof QualifierToken)
+			{
+				ts.addToQualifierMap((QualifierToken<?>) token);
+			}
+			if (token instanceof PrimitiveToken)
+			{
+				ts.addToPrimitiveMap((PrimitiveToken<?>) token);
+			}
 		}
 	}
 

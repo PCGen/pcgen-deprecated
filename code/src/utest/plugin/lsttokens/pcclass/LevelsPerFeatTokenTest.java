@@ -76,7 +76,7 @@ public class LevelsPerFeatTokenTest extends
 	@Override
 	public boolean isZeroAllowed()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

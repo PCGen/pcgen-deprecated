@@ -60,7 +60,7 @@ public class FavoredClassTokenTest extends
 	@Override
 	public boolean isTypeLegal()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

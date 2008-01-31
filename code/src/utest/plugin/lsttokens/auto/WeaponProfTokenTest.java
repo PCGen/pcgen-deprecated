@@ -87,4 +87,10 @@ public class WeaponProfTokenTest extends AbstractAutoTokenTestCase
 	{
 		return true;
 	}
+
+	@Override
+	protected boolean isTypeDotLegal()
+	{
+		return true;
+	}
 }

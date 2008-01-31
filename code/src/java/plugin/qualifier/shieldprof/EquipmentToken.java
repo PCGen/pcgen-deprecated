@@ -36,7 +36,6 @@ import pcgen.util.Logging;
 
 public class EquipmentToken implements ChooseLstQualifierToken<ShieldProf>
 {
-
 	private static Type SHIELD_TYPE = Type.getConstant("SHIELD");
 
 	private PrimitiveChoiceFilter<Equipment> pcs = null;
@@ -106,5 +105,24 @@ public class EquipmentToken implements ChooseLstQualifierToken<ShieldProf>
 			return pcs != null;
 		}
 		return true;
+	}
+
+	public int hashCode()
+	{
+		return pcs == null ? 0 : pcs.hashCode();
+	}
+	
+	public boolean equals(Object o)
+	{
+		if (o instanceof EquipmentToken)
+		{
+			EquipmentToken other = (EquipmentToken) o;
+			if (pcs == null)
+			{
+				return other.pcs == null;
+			}
+			return pcs.equals(other.pcs);
+		}
+		return false;
 	}
 }

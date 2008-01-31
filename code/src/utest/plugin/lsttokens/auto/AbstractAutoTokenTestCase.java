@@ -66,8 +66,15 @@ public abstract class AbstractAutoTokenTestCase extends
 
 	protected abstract boolean isTypeLegal();
 
+	protected abstract boolean isTypeDotLegal();
+
+	protected String getTypePrefix()
+	{
+		return "";
+	}
+
 	protected abstract boolean isPrereqLegal();
-	
+
 	protected abstract boolean isListLegal();
 
 	private char getJoinCharacter()
@@ -117,40 +124,44 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|TYPE="));
+			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE="));
 			assertNoSideEffects();
 		}
 	}
 
 	@Test
 	public void testInvalidInputTypeUnterminated()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|TYPE=One."));
+			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE=One."));
 			assertNoSideEffects();
 		}
 	}
 
 	@Test
 	public void testInvalidInputTypeDoubleSeparator()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|TYPE=One..Two"));
+			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE=One..Two"));
 			assertNoSideEffects();
 		}
 	}
 
 	@Test
 	public void testInvalidInputTypeFalseStart()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|TYPE=.One"));
+			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE=.One"));
 			assertNoSideEffects();
 		}
 	}
@@ -185,7 +196,7 @@ public abstract class AbstractAutoTokenTestCase extends
 	// if (isTypeLegal() && isAnyLegal())
 	// {
 	// assertFalse(parse(
-	// getSubTokenString() + "|ANY|TYPE=TestType"));
+	// getSubTokenString() + "|ANY|" + getTypePrefix() + "TYPE=TestType"));
 	// assertTrue(primaryGraph.isEmpty());
 	// }
 	// }
@@ -196,7 +207,7 @@ public abstract class AbstractAutoTokenTestCase extends
 	// if (isTypeLegal() && isAnyLegal())
 	// {
 	// assertFalse(parse(
-	// getSubTokenString() + "|TYPE=TestType|ANY"));
+	// getSubTokenString() + "|" + getTypePrefix() + "TYPE=TestType|ANY"));
 	// assertTrue(primaryGraph.isEmpty());
 	// }
 	// }
@@ -206,7 +217,7 @@ public abstract class AbstractAutoTokenTestCase extends
 	// public void testInvalidInputCheckType() throws PersistenceLayerException
 	// {
 	// assertTrue(token.parse(primaryContext, primaryProf, getSubTokenString()
-	// + "|TYPE=TestType"));
+	// + "|" + getTypePrefix() + "TYPE=TestType"));
 	// assertFalse(primaryContext.ref.validate());
 	// }
 
@@ -223,7 +234,7 @@ public abstract class AbstractAutoTokenTestCase extends
 
 	@Test
 	public void testInvalidUnterminatedPrereq()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isPrereqLegal())
 		{
@@ -269,7 +280,7 @@ public abstract class AbstractAutoTokenTestCase extends
 
 	@Test
 	public void testInvalidInputCheckTypeEqualLength()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isTypeLegal())
 		{
@@ -277,15 +288,15 @@ public abstract class AbstractAutoTokenTestCase extends
 			// doesn't
 			// consume the |
 			construct(primaryContext, "TestWP1");
-			assertTrue(parse(getSubTokenString()
-				+ "|TestWP1|TYPE=TestType|TestWP2"));
+			assertTrue(parse(getSubTokenString() + "|TestWP1|"
+					+ getTypePrefix() + "TYPE=TestType|TestWP2"));
 			assertFalse(primaryContext.ref.validate());
 		}
 	}
 
 	@Test
 	public void testInvalidInputCheckTypeDotLength()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isTypeLegal())
 		{
@@ -293,8 +304,8 @@ public abstract class AbstractAutoTokenTestCase extends
 			// doesn't
 			// consume the |
 			construct(primaryContext, "TestWP1");
-			assertTrue(parse(getSubTokenString()
-				+ "|TestWP1|TYPE.TestType.OtherTestType|TestWP2"));
+			assertTrue(parse(getSubTokenString() + "|TestWP1|"
+					+ getTypePrefix() + "TYPE.TestType.OtherTestType|TestWP2"));
 			assertFalse(primaryContext.ref.validate());
 		}
 	}
@@ -309,7 +320,7 @@ public abstract class AbstractAutoTokenTestCase extends
 			construct(primaryContext, "TestWP2");
 			construct(secondaryContext, "TestWP2");
 			assertFalse(parse(getSubTokenString()
-				+ "|TestWP1[PRERACE:1,Human]|TestWP2"));
+					+ "|TestWP1[PRERACE:1,Human]|TestWP2"));
 			assertNoSideEffects();
 		}
 	}
@@ -325,15 +336,20 @@ public abstract class AbstractAutoTokenTestCase extends
 		assertTrue(primaryContext.ref.validate());
 		if (isTypeLegal())
 		{
-			assertTrue(parse(getSubTokenString() + "|TYPE=TestType"));
+			assertTrue(parse(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE=TestType"));
 			assertTrue(primaryContext.ref.validate());
-			assertTrue(parse(getSubTokenString() + "|TYPE.TestType"));
+			if (isTypeDotLegal())
+			{
+				assertTrue(parse(getSubTokenString() + "|" + getTypePrefix()
+						+ "TYPE.TestType"));
+				assertTrue(primaryContext.ref.validate());
+			}
+			assertTrue(parse(getSubTokenString() + "|TestWP1|TestWP2|"
+					+ getTypePrefix() + "TYPE=TestType"));
 			assertTrue(primaryContext.ref.validate());
-			assertTrue(parse(getSubTokenString()
-				+ "|TestWP1|TestWP2|TYPE=TestType"));
-			assertTrue(primaryContext.ref.validate());
-			assertTrue(parse(getSubTokenString()
-				+ "|TestWP1|TestWP2|TYPE=TestType.OtherTestType"));
+			assertTrue(parse(getSubTokenString() + "|TestWP1|TestWP2|"
+					+ getTypePrefix() + "TYPE=TestType.OtherTestType"));
 			assertTrue(primaryContext.ref.validate());
 		}
 		if (isAllLegal())
@@ -396,8 +412,9 @@ public abstract class AbstractAutoTokenTestCase extends
 			construct(primaryContext, "TestWP2");
 			construct(secondaryContext, "TestWP1");
 			construct(secondaryContext, "TestWP2");
-			runRoundRobin(getSubTokenString()
-				+ "|TestWP1|TestWP2|TYPE=OtherTestType|TYPE=TestType");
+			runRoundRobin(getSubTokenString() + "|TestWP1|TestWP2|"
+					+ getTypePrefix() + "TYPE=OtherTestType|" + getTypePrefix()
+					+ "TYPE=TestType");
 		}
 	}
 
@@ -406,7 +423,8 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		if (isTypeLegal())
 		{
-			runRoundRobin(getSubTokenString() + "|TYPE=TestType");
+			runRoundRobin(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE=TestType");
 		}
 	}
 
@@ -415,20 +433,9 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		if (isTypeLegal())
 		{
-			runRoundRobin(getSubTokenString()
-				+ "|TYPE=TestAltType.TestThirdType.TestType");
+			runRoundRobin(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE=TestAltType.TestThirdType.TestType");
 		}
-	}
-
-	protected void construct(LoadContext loadContext, String one)
-	{
-		loadContext.ref.constructCDOMObject(getSubTokenType(), one);
-	}
-
-	@Override
-	public GlobalLstToken getToken()
-	{
-		return token;
 	}
 
 	@Test
@@ -466,7 +473,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		{
 			construct(primaryContext, "TestWP1");
 			assertFalse(parse(getSubTokenString() + "|ALL" + getJoinCharacter()
-				+ "TestWP1"));
+					+ "TestWP1"));
 			assertNoSideEffects();
 		}
 	}
@@ -478,7 +485,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		{
 			construct(primaryContext, "TestWP1");
 			assertFalse(parse(getSubTokenString() + "|TestWP1"
-				+ getJoinCharacter() + "ALL"));
+					+ getJoinCharacter() + "ALL"));
 			assertNoSideEffects();
 		}
 	}
@@ -489,7 +496,7 @@ public abstract class AbstractAutoTokenTestCase extends
 		if (isTypeLegal() && isAllLegal())
 		{
 			assertFalse(parse(getSubTokenString() + "|ALL" + getJoinCharacter()
-				+ "TYPE=TestType"));
+					+ "" + getTypePrefix() + "TYPE=TestType"));
 			assertNoSideEffects();
 		}
 	}
@@ -499,15 +506,15 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		if (isTypeLegal() && isAllLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|TYPE=TestType"
-				+ getJoinCharacter() + "ALL"));
+			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE=TestType" + getJoinCharacter() + "ALL"));
 			assertNoSideEffects();
 		}
 	}
 
 	@Test
 	public void testInputInvalidAddsAllNoSideEffect()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isAllLegal())
 		{
@@ -518,15 +525,26 @@ public abstract class AbstractAutoTokenTestCase extends
 			construct(primaryContext, "TestWP3");
 			construct(secondaryContext, "TestWP3");
 			assertTrue(parse(getSubTokenString() + "|TestWP1"
-				+ getJoinCharacter() + "TestWP2"));
+					+ getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary(getSubTokenString() + "|TestWP1"
-				+ getJoinCharacter() + "TestWP2"));
+					+ getJoinCharacter() + "TestWP2"));
 			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse(getSubTokenString() + "|TestWP3"
-				+ getJoinCharacter() + "ALL"));
+					+ getJoinCharacter() + "ALL"));
 			assertEquals("Bad Add had Side Effects", primaryGraph,
-				secondaryGraph);
+					secondaryGraph);
 		}
+	}
+
+	protected void construct(LoadContext loadContext, String one)
+	{
+		loadContext.ref.constructCDOMObject(getSubTokenType(), one);
+	}
+
+	@Override
+	public GlobalLstToken getToken()
+	{
+		return token;
 	}
 
 }

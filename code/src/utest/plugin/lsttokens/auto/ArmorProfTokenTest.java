@@ -17,17 +17,31 @@
  */
 package plugin.lsttokens.auto;
 
+import java.net.URISyntaxException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.core.ArmorProf;
 import pcgen.core.PCTemplate;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.LstObjectFileLoader;
 import pcgen.persistence.lst.PCTemplateLoader;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.qualifier.armorprof.EquipmentToken;
 
 public class ArmorProfTokenTest extends AbstractAutoTokenTestCase
 {
 
 	private static final ArmorProfToken ARMOR_PROF_TOKEN = new ArmorProfToken();
+
+	@Override
+	@Before
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		TokenRegistration.register(new EquipmentToken());
+	}
 
 	@Override
 	protected ArmorProfToken getSubToken()
@@ -83,5 +97,17 @@ public class ArmorProfTokenTest extends AbstractAutoTokenTestCase
 	public void dummyTest()
 	{
 		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+	}
+
+	@Override
+	protected String getTypePrefix()
+	{
+		return "ARMOR";
+	}
+
+	@Override
+	protected boolean isTypeDotLegal()
+	{
+		return false;
 	}
 }

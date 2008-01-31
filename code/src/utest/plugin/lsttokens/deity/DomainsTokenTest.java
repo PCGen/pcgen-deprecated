@@ -168,7 +168,7 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
-		runRoundRobin("TestWP1,TestWP2|PRELEVEL:5");
+		runRoundRobin("TestWP1,TestWP2|PRELEVEL:MIN=5");
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
-		runRoundRobin("TestWP1,TestWP2|!PRELEVEL:5");
+		runRoundRobin("TestWP1,TestWP2|!PRELEVEL:MIN=5");
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
-		runRoundRobin("TestWP1,TestWP2|PRECLASS:1,Fighter=1|PRELEVEL:5");
+		runRoundRobin("TestWP1,TestWP2|PRECLASS:1,Fighter=1|PRELEVEL:MIN=5");
 	}
 
 	@Test

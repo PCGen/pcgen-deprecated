@@ -82,7 +82,7 @@ public class AutomaticActionContainer extends ConcretePrereqObject implements
 	public String getLSTformat()
 	{
 		//TODO need to ensure this is consistent with equals :P
-		return name + (choiceSet == null ? "" : choiceSet.getLSTformat());
+		return choiceSet == null ? "" : choiceSet.getLSTformat();
 	}
 
 	public String getName()

@@ -84,9 +84,9 @@ public class LevelsperfeatToken implements PCClassLstToken,
 		{
 			return null;
 		}
-		if (lpf.intValue() <= 0)
+		if (lpf.intValue() < 0)
 		{
-			context.addWriteMessage(getTokenName() + " must be an integer > 0");
+			context.addWriteMessage(getTokenName() + " must be an integer >= 0");
 			return null;
 		}
 		return new String[]{lpf.toString()};

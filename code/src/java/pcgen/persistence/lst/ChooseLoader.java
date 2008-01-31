@@ -310,7 +310,10 @@ public final class ChooseLoader
 		}
 		else
 		{
-			qual.initialize(context, cl, condition, value);
+			if (!qual.initialize(context, cl, condition, value))
+			{
+				return null;
+			}
 			return qual;
 		}
 	}
@@ -444,33 +447,33 @@ public final class ChooseLoader
 		/*
 		 * TODO For now, don't process the globals - too hard with CHOOSE:NUMBER
 		 */
-//		if (token == null)
-//		{
-			chooser = processEqModCompatible(context, mod, key, value);
-			if (chooser == null)
-			{
-				Logging.addParseMessage(Logging.LST_ERROR, "Illegal CHOOSE:"
-						+ key + " ... '" + value + "'");
-				return null;
-			}
-//		}
-//		else
-//		{
-//			LstUtils.deprecationCheck(token, mod, value);
-//			chooser = token.parse(context, mod, value);
-//			if (chooser == null)
-//			{
-//				chooser = processEqModCompatible(context, mod, key, value);
-//				if (chooser == null)
-//				{
-//					Logging.addParseMessage(Logging.LST_ERROR,
-//							"Error parsing CHOOSE:" + key + " in "
-//									+ mod.getDisplayName() + ": \"" + value
-//									+ "\"");
-//					return null;
-//				}
-//			}
-//		}
+		// if (token == null)
+		// {
+		chooser = processEqModCompatible(context, mod, key, value);
+		if (chooser == null)
+		{
+			Logging.addParseMessage(Logging.LST_ERROR, "Illegal CHOOSE:" + key
+					+ " ... '" + value + "'");
+			return null;
+		}
+		// }
+		// else
+		// {
+		// LstUtils.deprecationCheck(token, mod, value);
+		// chooser = token.parse(context, mod, value);
+		// if (chooser == null)
+		// {
+		// chooser = processEqModCompatible(context, mod, key, value);
+		// if (chooser == null)
+		// {
+		// Logging.addParseMessage(Logging.LST_ERROR,
+		// "Error parsing CHOOSE:" + key + " in "
+		// + mod.getDisplayName() + ": \"" + value
+		// + "\"");
+		// return null;
+		// }
+		// }
+		// }
 		return chooser;
 	}
 
