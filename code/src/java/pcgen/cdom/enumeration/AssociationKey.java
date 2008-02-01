@@ -26,6 +26,7 @@ package pcgen.cdom.enumeration;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 import pcgen.base.formula.Formula;
@@ -131,6 +132,12 @@ public final class AssociationKey<T>
 
 	public static final AssociationKey<String> CHOICE_TITLE = 
 		new AssociationKey<String>();
+
+	public static final AssociationKey<Integer> NUMBER_CARRIED = 
+		new AssociationKey<Integer>();
+
+	public static final AssociationKey<List<AssociationKey<?>>> LOCK = 
+		new AssociationKey<List<AssociationKey<?>>>();
 
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 

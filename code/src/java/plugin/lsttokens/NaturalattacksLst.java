@@ -25,17 +25,17 @@ package plugin.lsttokens;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -325,7 +325,6 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		// with "better" ones
 
 		ObjectContext objContext = context.getObjectContext();
-		Set<String> keys = new HashSet<String>();
 
 		while (attackTok.hasMoreTokens())
 		{
@@ -344,14 +343,6 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 				return false;
 			}
 
-			if (!keys.add(anEquip.getKeyName()))
-			{
-				Logging.errorPrint(getTokenName()
-					+ " encountered two natural weapons with the same name: "
-					+ anEquip.getKeyName() + "\n  entire value was: " + value);
-				return false;
-			}
-
 			if (count == 1)
 			{
 				objContext.put(anEquip, StringKey.MODIFIED_NAME,
@@ -367,7 +358,15 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 				.put(anEquip, IntegerKey.OUTPUT_INDEX, Integer.valueOf(0));
 			objContext.put(anEquip, IntegerKey.OUTPUT_SUBINDEX, Integer
 				.valueOf(count));
-			context.getGraphContext().grant(getTokenName(), obj, anEquip);
+			AssociatedPrereqObject apo = context.getGraphContext().grant(
+					getTokenName(), obj, anEquip);
+			
+			apo.setAssociation(AssociationKey.QUANTITY, Integer.valueOf(1));
+			apo.setAssociation(AssociationKey.NUMBER_CARRIED, Integer.valueOf(1));
+			List<AssociationKey<?>> lockedItems = new ArrayList<AssociationKey<?>>();
+			lockedItems.add(AssociationKey.QUANTITY);
+			lockedItems.add(AssociationKey.NUMBER_CARRIED);
+			apo.setAssociation(AssociationKey.LOCK, lockedItems);
 
 			count++;
 		}
@@ -493,16 +492,6 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 
 		objContext.put(equipHead, IntegerKey.CRIT_RANGE, Integer.valueOf(1));
 		objContext.put(equipHead, IntegerKey.CRIT_MULT, Integer.valueOf(2));
-
-		// TODO FIXME these values need to be locked (how precisely is this
-		// done?)
-		// I think Quantity and number carried are actually PCGenGraph locks,
-		// not
-		// inherent to the Equipment itself...
-
-		// TODO uncomment
-		// anEquip.setQty(new Float(1));
-		// anEquip.setNumberCarried(new Float(1));
 
 		graphContext.grant(Constants.VT_EQ_HEAD, anEquip, equipHead);
 		graphContext.grant(getTokenName(), anEquip, size);

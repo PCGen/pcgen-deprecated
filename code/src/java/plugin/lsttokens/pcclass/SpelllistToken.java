@@ -213,13 +213,6 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 				.getFormulaFor(Integer.MAX_VALUE));
 
-		/*
-		 * TODO This is a pretty ugly situation, but is required in the current
-		 * design. Real question is how to make it so that a CHOOSER can choose
-		 * between two related things without a huge set of contortion... Since
-		 * on the back end of this, the Chooser will probably have issues
-		 * knowing what to do.
-		 */
 		ReferenceChoiceSet<? extends CDOMListObject<Spell>> rcs = new SpellReferenceChoiceSet(
 				refs);
 		ChoiceSet<? extends CDOMListObject<Spell>> cs = new ChoiceSet(
