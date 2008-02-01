@@ -51,15 +51,6 @@ public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
 		setName = name;
 	}
 
-	/*
-	 * TODO can this be improved to uniquify this a BIT more? Otherwise a LOT of
-	 * ChoiceSets will share hashCodes :(
-	 */
-	public int chooserHashCode()
-	{
-		return setName.hashCode();
-	}
-
 	public String getLSTformat()
 	{
 		return pcs.getLSTformat();

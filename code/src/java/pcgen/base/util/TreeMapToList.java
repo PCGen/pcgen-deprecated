@@ -63,9 +63,7 @@ public class TreeMapToList<K, V> implements MapToList<K, V>
 	/**
 	 * The actual map containing the map of objects to Lists
 	 */
-	// TODO FIXME only protected due to .equals ugliness in core, change back w/
-	// new core
-	protected final Map<K, List<V>> mapToList;
+	private final Map<K, List<V>> mapToList;
 	
 	private final Comparator<K> comparator;
 

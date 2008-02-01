@@ -44,8 +44,6 @@ import pcgen.util.enumeration.VisionType;
 public class Vision514Lst implements GlobalLstCompatibilityToken
 {
 
-	private static final Class<Vision> VISION_CLASS = Vision.class;
-
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		StringTokenizer aTok = new StringTokenizer(value, Constants.PIPE);
@@ -84,8 +82,6 @@ public class Vision514Lst implements GlobalLstCompatibilityToken
 			{
 				try
 				{
-					// TODO Need to defer unlink until prove that there are no
-					// errors
 					Vision vis = getVision(visionString.substring(7));
 					context.getGraphContext().remove(getTokenName(), obj, vis);
 				}

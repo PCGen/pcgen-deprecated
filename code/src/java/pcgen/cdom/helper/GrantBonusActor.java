@@ -19,9 +19,8 @@ public class GrantBonusActor extends SimpleAssociatedObject implements
 	{
 		/*
 		 * TODO From the Association of the Choice Object (needs to be passed in
-		 * to this method??), this should Grant the association (such as a
-		 * WeaponProf) to the masterReference object (Such as an Ability like
-		 * Weapon Focus)
+		 * to this method??), this should Grant additional "weight" to the
+		 * masterReference object (an effective spell casting level)
 		 */
 		/*
 		 * TODO Make sure that the assocations in assoc are placed into the
@@ -44,6 +43,6 @@ public class GrantBonusActor extends SimpleAssociatedObject implements
 	public boolean equals(Object o)
 	{
 		return o instanceof GrantBonusActor
-			&& bonus.equals(((GrantBonusActor) o).bonus);
+				&& bonus.equals(((GrantBonusActor) o).bonus);
 	}
 }

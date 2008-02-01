@@ -199,10 +199,6 @@ public final class TokenUtilities
 			String[] types = subStr.split("\\.");
 			for (String type : types)
 			{
-				/*
-				 * TODO May be faster to just look for .. in the input string -
-				 * make sure to do this in the uncategorized version too.
-				 */
 				if (type.length() == 0)
 				{
 					Logging
