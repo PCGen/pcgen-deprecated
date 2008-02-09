@@ -24,6 +24,7 @@ import pcgen.core.Constants;
 import pcgen.util.PropertyFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -45,13 +46,13 @@ final class FilterParser
 	private static final char CHAR_TOKEN_ENDGROUP = ')';
 	private static final char TOKEN_STARTFILTER = '[';
 	private static final String TOKEN_ENDFILTER = "]";
-	private List[] filterList;
+	private Collection<PObjectFilter>[] filterList;
 
 	/**
 	 * Constructor
 	 * @param filterList
 	 */
-	FilterParser(List[] filterList)
+	FilterParser(Collection<PObjectFilter>[] filterList)
 	{
 		this.filterList = filterList;
 	}
@@ -507,22 +508,17 @@ final class FilterParser
 	private PObjectFilter retrieveFilter(String filterName)
 		throws FilterParseException
 	{
-		PObjectFilter filter;
-
-		for (int i = 0; i < filterList.length; i++)
+		for(Collection<PObjectFilter> filters : filterList)
 		{
-			for (Iterator it = filterList[i].iterator(); it.hasNext();)
-			{
-				filter = (PObjectFilter) it.next();
-
-				if (filterName.equals(TOKEN_STARTFILTER + filter.getCategory() + PObjectFilter.SEPARATOR
+		    for(PObjectFilter filter : filters)
+		    {
+			if (filterName.equals(TOKEN_STARTFILTER + filter.getCategory() + PObjectFilter.SEPARATOR
 				        + filter.getName() + TOKEN_ENDFILTER))
 				{
 					return filter;
 				}
-			}
+		    }
 		}
-
 		throw new FilterParseException(PropertyFactory.getFormattedString("in_notFindFil",filterName));
 	}
 }

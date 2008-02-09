@@ -23,7 +23,6 @@ package pcgen.gui.filter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -122,9 +121,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all class filters
 	 * @param fap
 	 */
-	public static void registerAllClassFilters(FilterAdapterPanel fap)
+	public static void registerAllClassFilters(Sifter fap)
 	{
-		if (classFilters.size() == 0)
+		if (classFilters.isEmpty())
 		{
 			classFilters.add(FilterFactory.createQualifyFilter());
 
@@ -155,9 +154,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all of the deity filters
 	 * @param fap
 	 */
-	public static void registerAllDeityFilters(FilterAdapterPanel fap)
+	public static void registerAllDeityFilters(Sifter fap)
 	{
-		if (deityFilters.size() == 0)
+		if (deityFilters.isEmpty())
 		{
 			deityFilters.add(FilterFactory.createQualifyFilter());
 			deityFilters.add(FilterFactory.createPCAlignmentFilter());
@@ -196,9 +195,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all of the equipment filters
 	 * @param fap
 	 */
-	public static void registerAllEquipmentFilters(FilterAdapterPanel fap)
+	public static void registerAllEquipmentFilters(Sifter fap)
 	{
-		if (equipmentFilters.size() == 0)
+		if (equipmentFilters.isEmpty())
 		{
 			equipmentFilters.add(FilterFactory.createQualifyFilter());
 
@@ -231,9 +230,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all feat filters
 	 * @param fap
 	 */
-	public static void registerAllFeatFilters(FilterAdapterPanel fap)
+	public static void registerAllFeatFilters(Sifter fap)
 	{
-		if (featFilters.size() == 0)
+		if (featFilters.isEmpty())
 		{
 			featFilters.add(FilterFactory.createQualifyFilter());
 			featFilters.add(FilterFactory.createAutomaticFeatFilter());
@@ -251,9 +250,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all pre req alignment filters
 	 * @param fap
 	 */
-	public static void registerAllPrereqAlignmentFilters(FilterAdapterPanel fap)
+	public static void registerAllPrereqAlignmentFilters(Sifter fap)
 	{
-		if (prereqAlignmentFilters.size() == 0)
+		if (prereqAlignmentFilters.isEmpty())
 		{
 			// TODO - Check if Alignments should be used.
 			final int numAlign = SettingsHandler.getGame().getUnmodifiableAlignmentList().size();
@@ -277,9 +276,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all race filters
 	 * @param fap
 	 */
-	public static void registerAllRaceFilters(FilterAdapterPanel fap)
+	public static void registerAllRaceFilters(Sifter fap)
 	{
-		if (raceFilters.size() == 0)
+		if (raceFilters.isEmpty())
 		{
 			raceFilters.add(FilterFactory.createQualifyFilter());
 
@@ -329,9 +328,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all size filters
 	 * @param fap
 	 */
-	public static void registerAllSizeFilters(FilterAdapterPanel fap)
+	public static void registerAllSizeFilters(Sifter fap)
 	{
-		if (sizeFilters.size() == 0)
+		if (sizeFilters.isEmpty())
 		{
 			for (int i = 0; i < SettingsHandler.getGame().getSizeAdjustmentListSize(); i++)
 			{
@@ -349,9 +348,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all skill filters
 	 * @param fap
 	 */
-	public static void registerAllSkillFilters(FilterAdapterPanel fap)
+	public static void registerAllSkillFilters(Sifter fap)
 	{
-		if (skillFilters.size() == 0)
+		if (skillFilters.isEmpty())
 		{
 			skillFilters.add(FilterFactory.createUntrainedSkillFilter());
 			skillFilters.add(FilterFactory.createRankFilter(0.0d));
@@ -373,9 +372,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all source filters
 	 * @param fap
 	 */
-	public static void registerAllSourceFilters(FilterAdapterPanel fap)
+	public static void registerAllSourceFilters(Sifter fap)
 	{
-		if (sourceFilters.size() == 0)
+		if (sourceFilters.isEmpty())
 		{
 			for ( final String source : PersistenceManager.getInstance().getSources() )
 			{
@@ -412,9 +411,9 @@ public final class FilterFactory implements FilterConstants
 	 * Register all spell filters
 	 * @param fap
 	 */
-	public static void registerAllSpellFilters(FilterAdapterPanel fap)
+	public static void registerAllSpellFilters(Sifter fap)
 	{
-		if (spellFilters.size() == 0)
+		if (spellFilters.isEmpty())
 		{
 			spellFilters.add(FilterFactory.createComponentFilter(Spell.Component.VERBAL.toString()));
 			spellFilters.add(FilterFactory.createComponentFilter(Spell.Component.SOMATIC.toString()));
@@ -473,36 +472,33 @@ public final class FilterFactory implements FilterConstants
 	 *
 	 * @return true, if the settings could be restored, false otherwise
 	 */
-	public static boolean restoreFilterSettings(Filterable filterable)
+	public static boolean restoreFilterSettings(Sifter sifter)
 	{
-		/*
-		 * bug fix #523167
-		 */
-		filterable.getAvailableFilters().clear();
-		filterable.getSelectedFilters().clear();
-		filterable.getRemovedFilters().clear();
-
+		
 		/*
 		 * initialize standard filters
 		 */
-		filterable.initializeFilters();
+		sifter.initializeFilters();
 
-		String name = filterable.getName();
+		String name = sifter.getName();
 
 		if (name == null)
 		{
 			return false;
 		}
-
+		FilterMode mode = null;
 		try
 		{
-			filterable.setFilterMode(Integer.parseInt(SettingsHandler.retrieveFilterSettings(name + '.' + MODE_SETTING)));
+			mode = FilterMode.valueOf(SettingsHandler.retrieveFilterSettings(name + '.' + MODE_SETTING));
 		}
-		catch (NumberFormatException ex)
+		catch (IllegalArgumentException ex)
 		{
-			filterable.setFilterMode(FilterConstants.MATCH_ALL);
+			mode = FilterMode.MATCH_ALL;
 		}
-
+		finally
+		{
+			sifter.setSelectedFilterMode(mode);
+		}
 		filterSettings.clear();
 
 		final List<String[]> customAvailable = preprocessFilterList(AVAILABLE_SETTING,
@@ -515,44 +511,32 @@ public final class FilterFactory implements FilterConstants
 		/*
 		 * move the filters to the appropriate list
 		 */
-		for (final Iterator<PObjectFilter> it = filterable.getAvailableFilters().iterator(); it.hasNext();)
+		HashSet<PObjectFilter> selectedFilters = new HashSet<PObjectFilter>();
+		for (PObjectFilter filter : sifter.getAvailableFilters())
 		{
-			final PObjectFilter filter = it.next();
-			final String listType = filterSettings.get(filter.toString());
-
-			// TODO - Change filterable to not give out references to the lists
-			if ((listType == null) || (AVAILABLE_SETTING.equals(listType)))
+			if (SELECTED_SETTING.equals(filterSettings.get(filter.toString())))
 			{
-				// this is our default case
-				// do nothing - leave the filter in the available list
-			}
-			else if (SELECTED_SETTING.equals(listType))
-			{
-				it.remove();
-				filterable.getSelectedFilters().add(filter);
-			}
-			else if (REMOVED_SETTING.equals(listType))
-			{
-				it.remove();
-				filterable.getRemovedFilters().add(filter);
+				selectedFilters.add(filter);
 			}
 		}
 
 		/*
 		 * restore the custom filters
 		 */
-		FilterParser fp = new FilterParser(new List[]
+		HashSet<PObjectFilter> availableFilters = new HashSet<PObjectFilter>();
+		FilterParser fp = new FilterParser(new Set[]
 				{
-					filterable.getAvailableFilters(), filterable.getSelectedFilters(), filterable.getRemovedFilters()
+					sifter.getAvailableFilters(), sifter.getSelectedFilters()
 				});
 
-		parseCustomFilterList(fp, filterable.getAvailableFilters(), customAvailable);
-		parseCustomFilterList(fp, filterable.getSelectedFilters(), customSelected);
-		parseCustomFilterList(fp, filterable.getRemovedFilters(), customRemoved);
+		parseCustomFilterList(fp, availableFilters, customAvailable);
+		parseCustomFilterList(fp, selectedFilters, customSelected);
+		for(PObjectFilter filter : availableFilters)
+		    sifter.registerFilter(filter);
+		
+		sifter.setSelectedFilters(selectedFilters);
 
-		filterable.refreshFiltering();
-
-		return (filterable.getAvailableFilters().size() + filterable.getSelectedFilters().size()) > 0;
+		return (sifter.getAvailableFilters().size() + sifter.getSelectedFilters().size()) > 0;
 	}
 
 	/*
@@ -828,7 +812,7 @@ public final class FilterFactory implements FilterConstants
 	 * @param filterList          the list in which to store the filter
 	 * @param filterDefinitions   a list with all the difining strings of the filters to recreate
 	 */
-	private static void parseCustomFilterList(FilterParser parser, List<PObjectFilter> filterList, List<String[]> filterDefinitions)
+	private static void parseCustomFilterList(FilterParser parser, Set<PObjectFilter> filterList, List<String[]> filterDefinitions)
 	{
 		for ( final String[] filterData : filterDefinitions )
 		{
@@ -1324,7 +1308,7 @@ final class PantheonFilter extends AbstractPObjectFilter
 		{
 			final Deity aDeity = (Deity) pObject;
 
-			if (pantheon.equals(ALL) && (aDeity.getPantheonList().size() == 0))
+			if (pantheon.equals(ALL) && (aDeity.getPantheonList().isEmpty()))
 			{
 				return true;
 			}
