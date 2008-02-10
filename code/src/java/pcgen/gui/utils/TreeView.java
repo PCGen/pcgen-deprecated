@@ -21,6 +21,8 @@
 package pcgen.gui.utils;
 
 import java.util.Collection;
+import java.util.List;
+import javax.swing.tree.TreePath;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 import pcgen.gui.filter.Filter;
@@ -32,8 +34,7 @@ import pcgen.gui.filter.Filter;
 public interface TreeView<E extends PObject>
 {
 
-    public String getDisplayedName();
+    public String getViewName();
 
-    public PObjectNode buildTree(Filter filter, PlayerCharacter pc, Collection<E> objs);
-
+    public List<TreePath> getTreePaths(E pobj);
 }

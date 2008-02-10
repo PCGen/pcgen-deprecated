@@ -20,12 +20,19 @@
  */
 package pcgen.gui.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import javax.swing.tree.TreePath;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
+import pcgen.core.Equipment;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
@@ -64,27 +71,27 @@ public final class TreeViewFactory
 	    this.name = PropertyFactory.getString(key);
 	}
 
-	public String getDisplayedName()
+	public String getViewName()
 	{
 	    return name;
 	}
 
-	public PObjectNode buildTree(Filter filter, PlayerCharacter pc, Collection<Race> objs)
+	public List<TreePath> getTreePaths(Race pobj)
 	{
 	    switch (this)
 	    {
 		case NAME:
-		    return buildNameView(filter, pc, objs);
+		    return getNamePaths(pobj);
 		case RACETYPE_NAME:
-		    return buildRaceTypeView(filter, pc, objs);
+		    return getRaceTypePaths(pobj);
 		case RACETYPE_SUBTYPE_NAME:
-		    return buildRaceTypeSubTypeView(filter, pc, objs);
+		    return getRaceTypeSubTypePaths(pobj);
 		case TYPE_NAME:
-		    return buildTypeView(filter, pc, objs);
+		    return getTypePaths(pobj);
 		case ALL_TYPES:
-		    return buildAllRaceTypesView(filter, pc, objs);
+		    return getAllTypePaths(pobj);
 		case SOURCE_NAME:
-		    return buildSourceView(filter, pc, objs);
+		    return getSourcePaths(pobj);
 		default:
 		    throw new InternalError();
 	    }
@@ -105,21 +112,21 @@ public final class TreeViewFactory
 	    this.name = PropertyFactory.getString(key);
 	}
 
-	public String getDisplayedName()
+	public String getViewName()
 	{
 	    return name;
 	}
 
-	public PObjectNode buildTree(Filter filter, PlayerCharacter pc, Collection<PCTemplate> objs)
+	public List<TreePath> getTreePaths(PCTemplate pobj)
 	{
 	    switch (this)
 	    {
 		case NAME:
-		    return buildNameView(filter, pc, objs);
+		    return getNamePaths(pobj);
 		case TYPE_NAME:
-		    return buildTypeView(filter, pc, objs);
+		    return getTypePaths(pobj);
 		case SOURCE_NAME:
-		    return buildSourceView(filter, pc, objs);
+		    return getSourcePaths(pobj);
 		default:
 		    throw new InternalError();
 	    }
@@ -134,29 +141,32 @@ public final class TreeViewFactory
 	TYPE_NAME("in_typeName"),
 	SOURCE_NAME("in_sourceName");
 	private String name;
+
 	private ClassView(String key)
 	{
 	    this.name = PropertyFactory.getString(key);
 	}
-	public String getDisplayedName()
+
+	public String getViewName()
 	{
 	    return name;
 	}
 
-	public PObjectNode buildTree(Filter filter, PlayerCharacter pc, Collection<PCClass> objs)
+	public List<TreePath> getTreePaths(PCClass pobj)
 	{
 	    switch (this)
 	    {
 		case NAME:
-		    return buildNameView(filter, pc, objs);
+		    return getNamePaths(pobj);
 		case TYPE_NAME:
-		    return buildTypeView(filter, pc, objs);
+		    return getTypePaths(pobj);
 		case SOURCE_NAME:
-		    return buildSourceView(filter, pc, objs);
+		    return getSourcePaths(pobj);
 		default:
 		    throw new InternalError();
 	    }
 	}
+
     }
 
     public static enum SkillsView implements TreeView<Skill>
@@ -169,28 +179,37 @@ public final class TreeViewFactory
 	COST_NAME("in_iskCost_Name"),
 	NAME("in_iskName");
 	private String name;
+
 	private SkillsView(String key)
 	{
 	    this.name = PropertyFactory.getString(key);
 	}
-	public String getDisplayedName()
+
+	public String getViewName()
 	{
 	    return name;
 	}
 
-	public PObjectNode buildTree(Filter filter, PlayerCharacter pc, Collection<Skill> objs)
+	public List<TreePath> getTreePaths(Skill pobj)
 	{
 	    switch (this)
 	    {
-		case NAME:
-		    return buildNameView(filter, pc, objs);
+		case STAT_TYPE_NAME:
+		    return getKeyStatSubTypePaths(pobj);
+		case STAT_NAME:
+		    return getKeyStatPaths(pobj);
 		case TYPE_NAME:
-		    return buildTypeView(filter, pc, objs);
-		// TODO implement the rest
+		    return getSubTypePaths(pobj);
+		case COST_TYPE_NAME:
+		case COST_NAME:
+		//pobj.
+		case NAME:
+		    return getNamePaths(pobj);
 		default:
 		    throw new InternalError();
 	    }
 	}
+
     }
 
     public static enum FeatsView
@@ -202,14 +221,31 @@ public final class TreeViewFactory
 	SOURCE_NAME
     }
 
-    public static enum InventoryView
+    public static enum InventoryView implements TreeView<Equipment>
     {
 
-	TYPE_SUBTYPE_NAME,
-	TYPE_NAME,
-	NAME,
-	ALL_TYPES,
-	SOURCE_NAME
+	TYPE_SUBTYPE_NAME("in_typeSubtypeName"),
+	TYPE_NAME("in_typeName"),
+	NAME("in_nameLabel"),
+	ALL_TYPES("in_allTypes"),
+	SOURCE_NAME("in_sourceName");
+	private String name;
+
+	private InventoryView(String key)
+	{
+	    this.name = PropertyFactory.getString(key);
+	}
+
+	public String getViewName()
+	{
+	    return name;
+	}
+
+	public List<TreePath> getTreePaths(Equipment pobj)
+	{
+	    throw new UnsupportedOperationException("Not supported yet.");
+	}
+
     }
 
     public static enum EquipingView
@@ -229,36 +265,37 @@ public final class TreeViewFactory
 	DOMAIN_NAME("in_domainName"),
 	PANTHEON_NAME("in_pantheonName"),
 	SOURCE_NAME("in_sourceName");
-	
 	private String name;
+
 	private DomainView(String key)
 	{
 	    this.name = PropertyFactory.getString(key);
 	}
 
-	public String getDisplayedName()
+	public String getViewName()
 	{
 	    return name;
 	}
 
-	public PObjectNode buildTree(Filter filter, PlayerCharacter pc, Collection<Deity> objs)
+	public List<TreePath> getTreePaths(Deity pobj)
 	{
-	    switch(this)
+	    switch (this)
 	    {
 		case NAME:
-		    return buildNameView(filter, pc, objs);
+		    return getNamePaths(pobj);
 		case ALIGNMENT_NAME:
-		    return buildAlignmentView(filter, pc, objs);
+		    return getAlignmentPaths(pobj);
 		case DOMAIN_NAME:
-		    return buildDomainView(filter, pc, objs);
+		    return getDomainPaths(pobj);
 		case PANTHEON_NAME:
-		    return buildPantheonView(filter, pc, objs);
+		    return getPantheonPaths(pobj);
 		case SOURCE_NAME:
-		    return buildSourceView(filter, pc, objs);
+		    return getSourcePaths(pobj);
 		default:
 		    throw new InternalError();
 	    }
 	}
+
     }
 
     public static enum SpellsView
@@ -274,299 +311,191 @@ public final class TreeViewFactory
 	NOTHING
     }
 
-    public static PObjectNode buildAlignmentView(Filter filter, PlayerCharacter pc, Collection<Deity> pobjects)
+    private static List<TreePath> getAlignmentPaths(Deity pobj)
     {
-	return buildView(filter, pc, pobjects, new AlignmentViewBuilder());
-    }
-
-    public static PObjectNode buildDomainView(Filter filter, PlayerCharacter pc, Collection<Deity> pobjects)
-    {
-	return buildView(filter, pc, pobjects, new DomainViewBuilder());
-    }
-
-    public static PObjectNode buildPantheonView(Filter filter, PlayerCharacter pc, Collection<Deity> pobjects)
-    {
-	return buildView(filter, pc, pobjects, new PantheonViewBuilder());
-    }
-
-    public static PObjectNode buildNameView(Filter filter, PlayerCharacter pc, Collection<? extends PObject> pobjects)
-    {
-	return buildView(filter, pc, pobjects, new NameViewBuilder());
-    }
-
-    public static PObjectNode buildAllRaceTypesView(Filter filter, PlayerCharacter pc)
-    {
-	return buildAllRaceTypesView(filter, pc, Globals.getAllRaces());
-    }
-
-    public static PObjectNode buildAllRaceTypesView(Filter filter, PlayerCharacter pc, Collection<Race> races)
-    {
-	return buildView(filter, pc, races, new AllRaceTypesViewBuilder());
-    }
-
-    public static PObjectNode buildRaceTypeView(Filter filter, PlayerCharacter pc)
-    {
-	return buildRaceTypeView(filter, pc, Globals.getAllRaces());
-    }
-
-    public static PObjectNode buildRaceTypeView(Filter filter, PlayerCharacter pc, Collection<Race> races)
-    {
-	return buildView(filter, pc, races, new RaceTypeViewBuilder());
-    }
-
-    public static PObjectNode buildRaceTypeSubTypeView(Filter filter, PlayerCharacter pc)
-    {
-	return buildRaceTypeSubTypeView(filter, pc, Globals.getAllRaces());
-    }
-
-    public static PObjectNode buildRaceTypeSubTypeView(Filter filter, PlayerCharacter pc, Collection<Race> races)
-    {
-	return buildView(filter, pc, races, new RaceTypeSubTypeViewBuilder());
-    }
-
-    public static PObjectNode buildTypeView(Filter filter, PlayerCharacter pc, Collection<? extends PObject> pobjects)
-    {
-	return buildView(filter, pc, pobjects, new TypeViewBuilder());
-    }
-
-    public static PObjectNode buildSourceView(Filter filter, PlayerCharacter pc, Collection<? extends PObject> pobjects)
-    {
-	return buildView(filter, pc, pobjects, new SourceViewBuilder());
-    }
-
-    private static <T extends PObject> PObjectNode buildView(Filter filter, PlayerCharacter pc, Collection<? extends T> pobjects, TreeViewBuilder<T> builder)
-    {
-	PObjectNode root = new PObjectNode();
-	for (final T pobj : pobjects)
+	String align = pobj.getAlignment();
+	if (align != null && align.length() > 0)
 	{
-	    if (filter.accept(pc, pobj))
+	    return Collections.singletonList(new TreePath(new Object[]{align, pobj}));
+	}
+
+	return Collections.emptyList();
+    }
+
+    private static List<TreePath> getDomainPaths(Deity deity)
+    {
+	List<TreePath> paths = new ArrayList<TreePath>(2);
+	for (QualifiedObject<Domain> qualDomain : deity.getDomainList())
+	{
+	    String domain = qualDomain.getObject(null).getKeyName();
+	    if (domain != null && domain.length() > 0)
 	    {
-		builder.buildBranch(root, pobj);
+		paths.add(new TreePath(new Object[]{domain, deity}));
 	    }
+
+	}
+	return paths;
+    }
+
+    private static List<TreePath> getPantheonPaths(Deity deity)
+    {
+	List<TreePath> paths = new ArrayList<TreePath>(2);
+	for (String pantheon : deity.getPantheonList())
+	{
+	    if (pantheon != null && pantheon.length() > 0)
+	    {
+		paths.add(new TreePath(new Object[]{pantheon, deity}));
+	    }
+
+	}
+	return paths;
+    }
+
+    private static List<TreePath> getAllTypePaths(Race race)
+    {
+	List<TreePath> paths = new ArrayList<TreePath>(getRaceTypePaths(race));
+	for (String type : race.getTypeList(true))
+	{
+	    paths.add(new TreePath(new Object[]{type, race}));
+	}
+
+	return paths;
+    }
+
+    private static List<TreePath> getRaceTypePaths(Race race)
+    {
+	return Collections.singletonList(new TreePath(
+					 new Object[]{race.getRaceType(), race}));
+    }
+
+    private static List<TreePath> getRaceTypeSubTypePaths(Race race)
+    {
+	String type = race.getRaceType();
+	List<String> raceSubTypes = race.getRacialSubTypes();
+	if (raceSubTypes.isEmpty())
+	{
+	    return Collections.singletonList(new TreePath(
+					     new Object[]{type, race}));
+	}
+	else
+	{
+	    List<TreePath> paths = new ArrayList<TreePath>(raceSubTypes.size());
+	    for (String subtype : raceSubTypes)
+	    {
+		paths.add(new TreePath(new Object[]{type, subtype, race}));
+	    }
+
+	    return paths;
+	}
+
+    }
+
+    private static List<TreePath> getKeyStatSubTypePaths(Skill skill)
+    {
+	String keystat = skill.getMyType(0);
+	if (!Globals.isSkillTypeHidden(keystat))
+	{
+	    List<TreePath> paths = new ArrayList<TreePath>();
+	    for (String subtype : skill.getSubtypes())
+	    {
+		if (!Globals.isSkillTypeHidden(subtype))
+		{
+		    paths.add(new TreePath(new Object[]{keystat, subtype, skill}));
+		}
+
+	    }
+	    return paths;
+	}
+
+	return Collections.emptyList();
+    }
+
+    private static List<TreePath> getKeyStatPaths(Skill skill)
+    {
+	String keystat = skill.getMyType(0);
+	if (!Globals.isSkillTypeHidden(keystat))
+	{
+	    return Collections.singletonList(new TreePath(
+					     new Object[]{keystat, skill}));
+	}
+
+	return Collections.emptyList();
+    }
+
+    private static List<TreePath> getSubTypePaths(Skill skill)
+    {
+	List<TreePath> paths = new ArrayList<TreePath>();
+	for (String subtype : skill.getSubtypes())
+	{
+	    if (!Globals.isSkillTypeHidden(subtype))
+	    {
+		paths.add(new TreePath(new Object[]{subtype, skill}));
+	    }
+
+	}
+	return paths;
+    }
+
+    private static List<TreePath> getNamePaths(PObject obj)
+    {
+	return Collections.singletonList(new TreePath(obj));
+    }
+
+    private static List<TreePath> getTypePaths(PObject obj)
+    {
+	return Collections.singletonList(new TreePath(
+					 new Object[]{obj.getType(), obj}));
+    }
+
+    private static List<TreePath> getSourcePaths(PObject obj)
+    {
+	String source = obj.getSourceEntry().getSourceBook().getLongName();
+	if (source != null && source.length() > 0)
+	{
+	    return Collections.singletonList(new TreePath(
+					     new Object[]{source, obj}));
+	}
+
+	return Collections.emptyList();
+    }
+
+    public static <T extends PObject> PObjectNode buildView(
+	    TreeView<T> view, Filter filter, PlayerCharacter pc, 
+	    Collection<T> objs, Comparator<TreePath> comparator)
+    {
+	Queue<TreePath> pathqueue = new PriorityQueue<TreePath>(objs.size(), comparator);
+	for (T obj : objs)
+	{
+	    if (filter.accept(pc, obj))
+	    {
+		for (TreePath path : view.getTreePaths(obj))
+		{
+		    pathqueue.add(path);
+		}
+	    }
+	}
+	PObjectNode root = new PObjectNode();
+	Map<TreePath, PObjectNode> nodeMap = new HashMap<TreePath, PObjectNode>(pathqueue.size());
+	while (!pathqueue.isEmpty())
+	{
+	    PObjectNode last = null;
+	    for (TreePath path = pathqueue.poll(); path != null; path = path.getParentPath())
+	    {
+		PObjectNode node = nodeMap.get(path);
+		if (node == null)
+		{
+		    node = new PObjectNode(path.getLastPathComponent());
+		    nodeMap.put(path, node);
+		}
+		if (last != null)
+		{
+		    node.addChild(last);
+		}
+		last = node;
+	    }
+	    root.addChild(last);
 	}
 	return root;
     }
 
-    private interface TreeViewBuilder<E extends PObject>
-    {
-
-	public void buildBranch(PObjectNode root, E element);
-
-    }
-
-    private static abstract class AbstractViewBuilder<E extends PObject> implements TreeViewBuilder<E>
-    {
-
-	protected final Map<String, PObjectNode> nodeMap = new HashMap<String, PObjectNode>();
-
-	public void buildBranch(PObjectNode root, E element)
-	{
-	    final String key = getKey(element);
-	    if (accept(key))
-	    {
-		PObjectNode node = nodeMap.get(key);
-		if (node == null)
-		{
-		    node = new PObjectNode(key);
-		    nodeMap.put(key, node);
-		    root.addChild(node);
-		}
-		node.addChild(new PObjectNode(element));
-	    }
-	}
-
-	public abstract String getKey(E element);
-
-	public boolean accept(String key)
-	{
-	    return true;
-	}
-
-    }
-
-    private static class NameViewBuilder implements TreeViewBuilder
-    {
-
-	public void buildBranch(PObjectNode root, PObject element)
-	{
-	    root.addChild(new PObjectNode(element));
-	}
-
-    }
-
-    private static class SourceViewBuilder extends AbstractViewBuilder<PObject>
-    {
-
-	public String getKey(PObject element)
-	{
-	    return element.getSourceEntry().getSourceBook().getLongName();
-	}
-
-	@Override
-	public boolean accept(String key)
-	{
-	    return key != null && key.length() > 0;
-	}
-
-    }
-
-    private static class TypeViewBuilder extends AbstractViewBuilder<PObject>
-    {
-
-	@Override
-	public String getKey(PObject element)
-	{
-	    return element.getType();
-	}
-
-    }
-
-    private static class AlignmentViewBuilder extends AbstractViewBuilder<Deity>
-    {
-
-	@Override
-	public String getKey(Deity deity)
-	{
-	    return deity.getAlignment();
-	}
-
-	@Override
-	public boolean accept(String align)
-	{
-	    return align != null && align.length() > 0;
-	}
-
-    }
-
-    private static class RaceTypeViewBuilder extends AbstractViewBuilder<Race>
-    {
-
-	@Override
-	public String getKey(Race element)
-	{
-	    return element.getRaceType();
-	}
-
-    }
-
-    private static class AllRaceTypesViewBuilder extends AbstractViewBuilder<Race>
-    {
-
-	@Override
-	public void buildBranch(PObjectNode root, Race race)
-	{
-	    super.buildBranch(root, race);
-	    for (String type : race.getTypeList(true))
-	    {
-		PObjectNode typeNode = nodeMap.get(type);
-		if (typeNode == null)
-		{
-		    typeNode = new PObjectNode(type);
-		    nodeMap.put(type, typeNode);
-		    root.addChild(typeNode);
-		}
-		typeNode.addChild(new PObjectNode(race));
-	    }
-	}
-
-	@Override
-	public String getKey(Race race)
-	{
-	    return race.getRaceType();
-	}
-
-    }
-
-    private static class RaceTypeSubTypeViewBuilder implements TreeViewBuilder<Race>
-    {
-
-	private final Map<String, PObjectNode> nodeMap = new HashMap<String, PObjectNode>();
-
-	public void buildBranch(PObjectNode root, Race race)
-	{
-	    String type = race.getRaceType();
-	    PObjectNode typeNode = nodeMap.get(type);
-	    if (typeNode == null)
-	    {
-		typeNode = new PObjectNode(type);
-		nodeMap.put(type, typeNode);
-		root.addChild(typeNode);
-	    }
-	    List<String> raceSubTypes = race.getRacialSubTypes();
-	    if (raceSubTypes.size() > 0)
-	    {
-		for (String subtype : raceSubTypes)
-		{
-		    String key = type + ":" + subtype;
-		    PObjectNode subtypeNode = nodeMap.get(key);
-		    if (subtypeNode == null)
-		    {
-			subtypeNode = new PObjectNode(subtype);
-			nodeMap.put(key, subtypeNode);
-			typeNode.addChild(subtypeNode);
-		    }
-		    subtypeNode.addChild(new PObjectNode(race));
-		}
-	    }
-	    else
-	    {
-		typeNode.addChild(new PObjectNode(race));
-	    }
-	}
-
-    }
-
-    private static class DomainViewBuilder implements TreeViewBuilder<Deity>
-    {
-
-	private Map<String, PObjectNode> nodeMap = new HashMap<String, PObjectNode>();
-
-	public void buildBranch(PObjectNode root, Deity deity)
-	{
-	    if (!deity.getKeyName().equalsIgnoreCase("NONE"))
-	    {
-		for (QualifiedObject<Domain> qualDomain : deity.getDomainList())
-		{
-		    String domain = qualDomain.getObject(null).getKeyName();
-		    if (domain != null && domain.length() > 0)
-		    {
-			PObjectNode node = nodeMap.get(domain);
-			if (node == null)
-			{
-			    node = new PObjectNode(domain);
-			    nodeMap.put(domain, node);
-			    root.addChild(node);
-			}
-			node.addChild(new PObjectNode(deity));
-		    }
-		}
-	    }
-	}
-
-    }
-
-    private static class PantheonViewBuilder implements TreeViewBuilder<Deity>
-    {
-
-	private Map<String, PObjectNode> nodeMap = new HashMap<String, PObjectNode>();
-
-	public void buildBranch(PObjectNode root, Deity deity)
-	{
-	    for (String pantheon : deity.getPantheonList())
-	    {
-		if (pantheon != null && pantheon.length() > 0)
-		{
-		    PObjectNode node = nodeMap.get(pantheon);
-		    if (node == null)
-		    {
-			node = new PObjectNode(pantheon);
-			nodeMap.put(pantheon, node);
-			root.addChild(node);
-		    }
-		    node.addChild(new PObjectNode(deity));
-		}
-	    }
-	}
-
-    }
 }
