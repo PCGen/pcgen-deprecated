@@ -6,6 +6,15 @@ You must have Perl on your machine or you will need to install it.
 
 Default installation is C:\ on a windows computer
 
+I recommend Active State Perl which can be found:
+http://aspn.activestate.com/ASPN/Downloads/ActivePerl/
+
+5.8 or higher is fine.
+
+After Installation you will need to load the Perl Package Manager (PPM) either in the start menu or using the RUN command.
+
+You will need to install the "Readonly" module. After that is installed you're set to go.
+
 --
 To get Prettylst version 4387 to work you have to download a second file 'Ewarn.pm' [Included in the prettylst folder] and place it in your \Perl\lib directory.
 "Ewarn.pm must be placed in your PERL\lib directory"
