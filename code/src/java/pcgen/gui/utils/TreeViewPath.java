@@ -1,5 +1,5 @@
 /*
- * TreeView.java
+ * TreeViewPath.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,21 +16,52 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 8, 2008, 8:29:38 PM
+ * Created on Feb 10, 2008, 5:29:12 PM
  */
+
 package pcgen.gui.utils;
 
-import java.util.List;
+import javax.swing.tree.TreePath;
 import pcgen.core.PObject;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public interface TreeView<E extends PObject>
+public class TreeViewPath<E extends PObject> extends TreePath
 {
-
-    public String getViewName();
-
-    public List<TreeViewPath<E>> getPaths(E pobj);
+    
+    /**
+     * This saves the trouble of saying:<br>
+     * new TreePath(new Object[]{string1, string2, pobj})<br>
+     * instead you can now say:<br>
+     * new TreeViewPath(pobj, string1, string2)
+     * @param obj the last element in the list
+     * @param path the string path leading to the last element
+     */
+    public TreeViewPath(E pobj, String... path)
+    {
+	super(new TreePath(path), pobj);
+    }
+    
+    public TreeViewPath(E pobj)
+    {
+	super(pobj);
+    }
+    
+    public TreeViewPath(E... pobjs)
+    {
+	super(pobjs, pobjs.length);
+    }
+    
+    public TreeViewPath(Object[] path, E pobj)
+    {
+	super(new TreePath(path), pobj);
+    }
+    
+    @Override
+    public E getLastPathComponent()
+    {
+	return (E) super.getLastPathComponent();
+    }
 }

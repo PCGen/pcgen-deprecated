@@ -23,7 +23,6 @@ package pcgen.gui.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,17 +31,13 @@ import java.util.Queue;
 import javax.swing.tree.TreePath;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
-import pcgen.core.Equipment;
 import pcgen.core.Globals;
-import pcgen.core.PCClass;
-import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.QualifiedObject;
 import pcgen.core.Race;
 import pcgen.core.Skill;
 import pcgen.gui.filter.Filter;
-import pcgen.util.PropertyFactory;
 
 /**
  *
@@ -55,352 +50,92 @@ public final class TreeViewFactory
     {
     }
 
-    public static enum RaceView implements TreeView<Race>
-    {
-
-	NAME("in_nameLabel"),
-	RACETYPE_NAME("in_racetypeName"),
-	RACETYPE_SUBTYPE_NAME("in_racetypeSubtypeName"),
-	TYPE_NAME("in_typeName"),
-	ALL_TYPES("in_allTypes"),
-	SOURCE_NAME("in_sourceName");
-	private String name;
-
-	private RaceView(String key)
-	{
-	    this.name = PropertyFactory.getString(key);
-	}
-
-	public String getViewName()
-	{
-	    return name;
-	}
-
-	public List<TreePath> getTreePaths(Race pobj)
-	{
-	    switch (this)
-	    {
-		case NAME:
-		    return getNamePaths(pobj);
-		case RACETYPE_NAME:
-		    return getRaceTypePaths(pobj);
-		case RACETYPE_SUBTYPE_NAME:
-		    return getRaceTypeSubTypePaths(pobj);
-		case TYPE_NAME:
-		    return getTypePaths(pobj);
-		case ALL_TYPES:
-		    return getAllTypePaths(pobj);
-		case SOURCE_NAME:
-		    return getSourcePaths(pobj);
-		default:
-		    throw new InternalError();
-	    }
-	}
-
-    }
-
-    public static enum TemplateView implements TreeView<PCTemplate>
-    {
-
-	NAME("in_nameLabel"),
-	TYPE_NAME("in_typeName"),
-	SOURCE_NAME("in_sourceName");
-	private String name;
-
-	private TemplateView(String key)
-	{
-	    this.name = PropertyFactory.getString(key);
-	}
-
-	public String getViewName()
-	{
-	    return name;
-	}
-
-	public List<TreePath> getTreePaths(PCTemplate pobj)
-	{
-	    switch (this)
-	    {
-		case NAME:
-		    return getNamePaths(pobj);
-		case TYPE_NAME:
-		    return getTypePaths(pobj);
-		case SOURCE_NAME:
-		    return getSourcePaths(pobj);
-		default:
-		    throw new InternalError();
-	    }
-	}
-
-    }
-
-    public static enum ClassView implements TreeView<PCClass>
-    {
-
-	NAME("in_nameLabel"),
-	TYPE_NAME("in_typeName"),
-	SOURCE_NAME("in_sourceName");
-	private String name;
-
-	private ClassView(String key)
-	{
-	    this.name = PropertyFactory.getString(key);
-	}
-
-	public String getViewName()
-	{
-	    return name;
-	}
-
-	public List<TreePath> getTreePaths(PCClass pobj)
-	{
-	    switch (this)
-	    {
-		case NAME:
-		    return getNamePaths(pobj);
-		case TYPE_NAME:
-		    return getTypePaths(pobj);
-		case SOURCE_NAME:
-		    return getSourcePaths(pobj);
-		default:
-		    throw new InternalError();
-	    }
-	}
-
-    }
-
-    public static enum SkillsView implements TreeView<Skill>
-    {
-
-	STAT_TYPE_NAME("in_iskKeyStat_SubType_Name"),
-	STAT_NAME("in_iskKeyStat_Name"),
-	TYPE_NAME("in_iskSubType_Name"),
-	COST_TYPE_NAME("in_iskCost_SubType_Name"),
-	COST_NAME("in_iskCost_Name"),
-	NAME("in_iskName");
-	private String name;
-
-	private SkillsView(String key)
-	{
-	    this.name = PropertyFactory.getString(key);
-	}
-
-	public String getViewName()
-	{
-	    return name;
-	}
-
-	public List<TreePath> getTreePaths(Skill pobj)
-	{
-	    switch (this)
-	    {
-		case STAT_TYPE_NAME:
-		    return getKeyStatSubTypePaths(pobj);
-		case STAT_NAME:
-		    return getKeyStatPaths(pobj);
-		case TYPE_NAME:
-		    return getSubTypePaths(pobj);
-		case COST_TYPE_NAME:
-		case COST_NAME:
-		//pobj.
-		case NAME:
-		    return getNamePaths(pobj);
-		default:
-		    throw new InternalError();
-	    }
-	}
-
-    }
-
-    public static enum FeatsView
-    {
-
-	TYPE_NAME,
-	NAMEONLY,
-	PREREQTREE,
-	SOURCE_NAME
-    }
-
-    public static enum InventoryView implements TreeView<Equipment>
-    {
-
-	TYPE_SUBTYPE_NAME("in_typeSubtypeName"),
-	TYPE_NAME("in_typeName"),
-	NAME("in_nameLabel"),
-	ALL_TYPES("in_allTypes"),
-	SOURCE_NAME("in_sourceName");
-	private String name;
-
-	private InventoryView(String key)
-	{
-	    this.name = PropertyFactory.getString(key);
-	}
-
-	public String getViewName()
-	{
-	    return name;
-	}
-
-	public List<TreePath> getTreePaths(Equipment pobj)
-	{
-	    throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-    }
-
-    public static enum EquipingView
-    {
-
-	NAME,
-	LOCATION_NAME,
-	EQUIPPED,
-	TYPE_NAME
-    }
-
-    public static enum DomainView implements TreeView<Deity>
-    {
-
-	NAME("in_nameLabel"),
-	ALIGNMENT_NAME("in_alignmentName"),
-	DOMAIN_NAME("in_domainName"),
-	PANTHEON_NAME("in_pantheonName"),
-	SOURCE_NAME("in_sourceName");
-	private String name;
-
-	private DomainView(String key)
-	{
-	    this.name = PropertyFactory.getString(key);
-	}
-
-	public String getViewName()
-	{
-	    return name;
-	}
-
-	public List<TreePath> getTreePaths(Deity pobj)
-	{
-	    switch (this)
-	    {
-		case NAME:
-		    return getNamePaths(pobj);
-		case ALIGNMENT_NAME:
-		    return getAlignmentPaths(pobj);
-		case DOMAIN_NAME:
-		    return getDomainPaths(pobj);
-		case PANTHEON_NAME:
-		    return getPantheonPaths(pobj);
-		case SOURCE_NAME:
-		    return getSourcePaths(pobj);
-		default:
-		    throw new InternalError();
-	    }
-	}
-
-    }
-
-    public static enum SpellsView
-    {
-
-	CLASS,
-	LEVEL,
-	DESCRIPTOR,
-	RANGE,
-	DURATION,
-	TYPE,
-	SCHOOL,
-	NOTHING
-    }
-
-    private static List<TreePath> getAlignmentPaths(Deity pobj)
+    public static List<TreeViewPath<Deity>> getAlignmentPaths(Deity pobj)
     {
 	String align = pobj.getAlignment();
 	if (align != null && align.length() > 0)
 	{
-	    return Collections.singletonList(new TreePath(new Object[]{align, pobj}));
+	    return Collections.singletonList(new TreeViewPath<Deity>(pobj, align));
 	}
 
 	return Collections.emptyList();
     }
 
-    private static List<TreePath> getDomainPaths(Deity deity)
+    public static List<TreeViewPath<Deity>> getDomainPaths(Deity deity)
     {
-	List<TreePath> paths = new ArrayList<TreePath>(2);
+	List<TreeViewPath<Deity>> paths = new ArrayList<TreeViewPath<Deity>>(2);
 	for (QualifiedObject<Domain> qualDomain : deity.getDomainList())
 	{
 	    String domain = qualDomain.getObject(null).getKeyName();
 	    if (domain != null && domain.length() > 0)
 	    {
-		paths.add(new TreePath(new Object[]{domain, deity}));
+		paths.add(new TreeViewPath<Deity>(deity, domain));
 	    }
 
 	}
 	return paths;
     }
 
-    private static List<TreePath> getPantheonPaths(Deity deity)
+    public static List<TreeViewPath<Deity>> getPantheonPaths(Deity deity)
     {
-	List<TreePath> paths = new ArrayList<TreePath>(2);
+	List<TreeViewPath<Deity>> paths = new ArrayList<TreeViewPath<Deity>>(2);
 	for (String pantheon : deity.getPantheonList())
 	{
 	    if (pantheon != null && pantheon.length() > 0)
 	    {
-		paths.add(new TreePath(new Object[]{pantheon, deity}));
+		paths.add(new TreeViewPath<Deity>(deity, pantheon));
 	    }
 
 	}
 	return paths;
     }
 
-    private static List<TreePath> getAllTypePaths(Race race)
+    public static List<TreeViewPath<Race>> getAllTypePaths(Race race)
     {
-	List<TreePath> paths = new ArrayList<TreePath>(getRaceTypePaths(race));
+	List<TreeViewPath<Race>> paths = new ArrayList<TreeViewPath<Race>>(getRaceTypePaths(race));
 	for (String type : race.getTypeList(true))
 	{
-	    paths.add(new TreePath(new Object[]{type, race}));
+	    paths.add(new TreeViewPath<Race>(race, type));
 	}
-
 	return paths;
     }
 
-    private static List<TreePath> getRaceTypePaths(Race race)
+    public static List<TreeViewPath<Race>> getRaceTypePaths(Race race)
     {
-	return Collections.singletonList(new TreePath(
-					 new Object[]{race.getRaceType(), race}));
+	return Collections.singletonList(new TreeViewPath<Race>(race, race.getRaceType()));
     }
 
-    private static List<TreePath> getRaceTypeSubTypePaths(Race race)
+    public static List<TreeViewPath<Race>> getRaceTypeSubTypePaths(Race race)
     {
 	String type = race.getRaceType();
 	List<String> raceSubTypes = race.getRacialSubTypes();
 	if (raceSubTypes.isEmpty())
 	{
-	    return Collections.singletonList(new TreePath(
-					     new Object[]{type, race}));
+	    return Collections.singletonList(new TreeViewPath<Race>(race, type));
 	}
 	else
 	{
-	    List<TreePath> paths = new ArrayList<TreePath>(raceSubTypes.size());
+	    List<TreeViewPath<Race>> paths = new ArrayList<TreeViewPath<Race>>(raceSubTypes.size());
 	    for (String subtype : raceSubTypes)
 	    {
-		paths.add(new TreePath(new Object[]{type, subtype, race}));
+		paths.add(new TreeViewPath<Race>(race, type, subtype));
 	    }
-
 	    return paths;
 	}
 
     }
 
-    private static List<TreePath> getKeyStatSubTypePaths(Skill skill)
+    public static List<TreeViewPath<Skill>> getKeyStatSubTypePaths(Skill skill)
     {
 	String keystat = skill.getMyType(0);
 	if (!Globals.isSkillTypeHidden(keystat))
 	{
-	    List<TreePath> paths = new ArrayList<TreePath>();
+	    List<TreeViewPath<Skill>> paths = new ArrayList<TreeViewPath<Skill>>();
 	    for (String subtype : skill.getSubtypes())
 	    {
 		if (!Globals.isSkillTypeHidden(subtype))
 		{
-		    paths.add(new TreePath(new Object[]{keystat, subtype, skill}));
+		    paths.add(new TreeViewPath<Skill>(skill, keystat, subtype));
 		}
 
 	    }
@@ -410,67 +145,64 @@ public final class TreeViewFactory
 	return Collections.emptyList();
     }
 
-    private static List<TreePath> getKeyStatPaths(Skill skill)
+    public static List<TreeViewPath<Skill>> getKeyStatPaths(Skill skill)
     {
 	String keystat = skill.getMyType(0);
 	if (!Globals.isSkillTypeHidden(keystat))
 	{
-	    return Collections.singletonList(new TreePath(
-					     new Object[]{keystat, skill}));
+	    return Collections.singletonList(new TreeViewPath<Skill>(skill, keystat));
 	}
 
 	return Collections.emptyList();
     }
 
-    private static List<TreePath> getSubTypePaths(Skill skill)
+    public static List<TreeViewPath<Skill>> getSubTypePaths(Skill skill)
     {
-	List<TreePath> paths = new ArrayList<TreePath>();
+	List<TreeViewPath<Skill>> paths = new ArrayList<TreeViewPath<Skill>>();
 	for (String subtype : skill.getSubtypes())
 	{
 	    if (!Globals.isSkillTypeHidden(subtype))
 	    {
-		paths.add(new TreePath(new Object[]{subtype, skill}));
+		paths.add(new TreeViewPath<Skill>(skill, subtype));
 	    }
 
 	}
 	return paths;
     }
 
-    private static List<TreePath> getNamePaths(PObject obj)
+    public static <T extends PObject> List<TreeViewPath<T>> getNamePaths(T obj)
     {
-	return Collections.singletonList(new TreePath(obj));
+	return Collections.singletonList(new TreeViewPath<T>(obj));
     }
 
-    private static List<TreePath> getTypePaths(PObject obj)
+    public static <T extends PObject> List<TreeViewPath<T>> getTypePaths(T obj)
     {
-	return Collections.singletonList(new TreePath(
-					 new Object[]{obj.getType(), obj}));
+	return Collections.singletonList(new TreeViewPath<T>(obj, obj.getType()));
     }
 
-    private static List<TreePath> getSourcePaths(PObject obj)
+    public static <T extends PObject> List<TreeViewPath<T>> getSourcePaths(T obj)
     {
 	String source = obj.getSourceEntry().getSourceBook().getLongName();
 	if (source != null && source.length() > 0)
 	{
-	    return Collections.singletonList(new TreePath(
-					     new Object[]{source, obj}));
+	    return Collections.singletonList(new TreeViewPath<T>(obj, source));
 	}
 
 	return Collections.emptyList();
     }
 
     public static <T extends PObject> PObjectNode buildView(
-	    TreeView<T> view, Filter filter, PlayerCharacter pc, 
-	    Collection<T> objs, Comparator<TreePath> comparator)
+	    TreeView<T> view, Filter filter, PlayerCharacter pc,
+	    Collection<T> objs, TreeViewPathComparator<T> comparator)
     {
-	Queue<TreePath> pathqueue = new PriorityQueue<TreePath>(objs.size(), comparator);
+	Queue<TreeViewPath<T>> pathqueue = new PriorityQueue<TreeViewPath<T>>(objs.size(), comparator);
 	for (T obj : objs)
 	{
 	    if (filter.accept(pc, obj))
 	    {
-		for (TreePath path : view.getTreePaths(obj))
+		for (TreeViewPath<T> path : view.getPaths(obj))
 		{
-		    pathqueue.add(path);
+		    pathqueue.offer(path);
 		}
 	    }
 	}
