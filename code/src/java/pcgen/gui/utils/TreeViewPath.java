@@ -18,19 +18,17 @@
  * 
  * Created on Feb 10, 2008, 5:29:12 PM
  */
-
 package pcgen.gui.utils;
 
 import javax.swing.tree.TreePath;
-import pcgen.core.PObject;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class TreeViewPath<E extends PObject> extends TreePath
+public class TreeViewPath<E> extends TreePath
 {
-    
+
     /**
      * This saves the trouble of saying:<br>
      * new TreePath(new Object[]{string1, string2, pobj})<br>
@@ -39,29 +37,35 @@ public class TreeViewPath<E extends PObject> extends TreePath
      * @param obj the last element in the list
      * @param path the string path leading to the last element
      */
+    public TreeViewPath(E pobj, String path)
+    {
+	super(new TreePath(path), pobj);
+    }
+
     public TreeViewPath(E pobj, String... path)
     {
 	super(new TreePath(path), pobj);
     }
-    
+
     public TreeViewPath(E pobj)
     {
 	super(pobj);
     }
-    
+
     public TreeViewPath(E... pobjs)
     {
 	super(pobjs, pobjs.length);
     }
-    
+
     public TreeViewPath(Object[] path, E pobj)
     {
 	super(new TreePath(path), pobj);
     }
-    
+
     @Override
     public E getLastPathComponent()
     {
 	return (E) super.getLastPathComponent();
     }
+
 }

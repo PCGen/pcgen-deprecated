@@ -27,7 +27,7 @@ import pcgen.core.PObject;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public interface TreeView<E extends PObject>
+public interface TreeView<E>
 {
 
     public String getViewName();

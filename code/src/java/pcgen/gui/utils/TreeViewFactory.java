@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import javax.swing.tree.TreePath;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
@@ -195,7 +194,7 @@ public final class TreeViewFactory
 	    TreeView<T> view, Filter filter, PlayerCharacter pc,
 	    Collection<T> objs, TreeViewPathComparator<T> comparator)
     {
-	Queue<TreeViewPath<T>> pathqueue = new PriorityQueue<TreeViewPath<T>>(objs.size(), comparator);
+	PriorityQueue<TreeViewPath<T>> pathqueue = new PriorityQueue<TreeViewPath<T>>(objs.size(), comparator);
 	for (T obj : objs)
 	{
 	    if (filter.accept(pc, obj))
@@ -206,8 +205,26 @@ public final class TreeViewFactory
 		}
 	    }
 	}
+	return buildView(pathqueue);
+    }
+
+    public static <T> PObjectNode buildView(TreeView<T> view, Collection<T> objs, TreeViewPathComparator<T> comparator)
+    {
+	PriorityQueue<TreeViewPath<T>> pathqueue = new PriorityQueue<TreeViewPath<T>>(objs.size(), comparator);
+	for (T obj : objs)
+	{
+	    for (TreeViewPath<T> path : view.getPaths(obj))
+	    {
+		pathqueue.offer(path);
+	    }
+	}
+	return buildView(pathqueue);
+    }
+
+    private static <T> PObjectNode buildView(PriorityQueue<TreeViewPath<T>> pathqueue)
+    {
 	PObjectNode root = new PObjectNode();
-	Map<TreePath, PObjectNode> nodeMap = new HashMap<TreePath, PObjectNode>(pathqueue.size());
+	Map<TreePath, PObjectNode> nodeMap = new HashMap<TreePath, PObjectNode>(pathqueue.size() * 2);
 	while (!pathqueue.isEmpty())
 	{
 	    PObjectNode last = null;

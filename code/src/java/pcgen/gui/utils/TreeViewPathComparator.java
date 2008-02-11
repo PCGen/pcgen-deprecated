@@ -21,15 +21,15 @@
 package pcgen.gui.utils;
 
 import java.util.Comparator;
-import pcgen.core.PObject;
 import pcgen.util.StringComparator;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class TreeViewPathComparator<E extends PObject> implements Comparator<TreeViewPath<E>>
+public class TreeViewPathComparator<E> implements Comparator<TreeViewPath<E>>
 {
+
     private static final Comparator<Object> defaultcomparator = new StringComparator<Object>();
     private final Comparator<? super E> pobjectcomparator;
     private final Comparator<Object> objectcomparator;
@@ -38,7 +38,7 @@ public class TreeViewPathComparator<E extends PObject> implements Comparator<Tre
     {
 	this(defaultcomparator);
     }
-    
+
     public TreeViewPathComparator(Comparator<? super E> pobjectcomparator)
     {
 	this(pobjectcomparator, defaultcomparator);
@@ -65,7 +65,7 @@ public class TreeViewPathComparator<E extends PObject> implements Comparator<Tre
 	    }
 	    else
 	    {
-		comp = pobjectcomparator.compare((E)obj1, (E)obj2);
+		comp = pobjectcomparator.compare((E) obj1, (E) obj2);
 	    }
 	    if (comp != 0)
 	    {
