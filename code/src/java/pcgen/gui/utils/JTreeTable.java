@@ -154,33 +154,50 @@ public final class JTreeTable extends JTableEx implements KeyListener
 		return (getColumnClass(editingColumn) == TreeTableModel.class) ? (-1)
 			: editingRow;
 	}
-
-	/**
-	 * returns a (sorted) List of expanded Tree paths
-	 * @return expanded paths
-	 **/
-	public List<String> getExpandedPaths()
+	
+	public void collapseAll()
 	{
-		if (tree == null)
-		{
-			return null;
-		}
-
-		List<String> ret = new ArrayList<String>(tree.getRowCount());
-
-		for (int i = 0; i < tree.getRowCount(); i++)
-		{
-			if (tree.isExpanded(i))
-			{
-				ret.add(tree.getPathForRow(i).toString());
-			}
-		}
-
-		Collections.sort(ret, Collections.reverseOrder());
-
-		return ret;
+	    for(int i = tree.getRowCount()-1; i >= 0; i--)
+		tree.collapseRow(i);
 	}
-
+	
+	public void collapsePath(TreePath path)
+	{
+	    tree.collapsePath(path);
+	}
+	
+	public void collapseRow(int row)
+	{
+	    tree.collapseRow(row);
+	}
+	
+	public List<TreePath> getExpandedPaths()
+	{
+	    Object root = tree.getModel().getRoot();
+	    return Collections.list(tree.getExpandedDescendants(new TreePath(root)));
+	}
+	
+	public void expandAll()
+	{
+	    for(int i = tree.getRowCount()-1; i >= 0; i--)
+		tree.expandRow(i);
+	}
+	
+	public void expandPath(TreePath path)
+	{
+	    tree.expandPath(path);
+	}
+	
+	public void expandPaths(List<TreePath> paths)
+	{
+	    for(TreePath path : paths)
+		tree.expandPath(path);
+	}
+	
+	public void expandRow(int row)
+	{
+	    tree.expandRow(row);
+	}
 	/**
 	 * Overridden to pass the new rowHeight to the tree.
 	 * @param aRowHeight
@@ -203,44 +220,6 @@ public final class JTreeTable extends JTableEx implements KeyListener
 	public JTree getTree()
 	{
 		return tree;
-	}
-
-	/**
-	 * This function starts a recursive search of all PObjectNodes
-	 * of this JTreeTable, expanding all occurances of PObjects
-	 * with a given name
-	 * @param name
-	 **/
-	public void expandByPObjectName(String name)
-	{
-		expandByPObjectName((PObjectNode) this.getTree().getModel().getRoot(),
-			name);
-	}
-
-	/**
-	 * Expand a List of paths
-	 * @param aList
-	 **/
-	public void expandPathList(List<String> aList)
-	{
-		if (aList == null)
-		{
-			return;
-		}
-
-		for (String path : aList)
-		{
-			for (int iRow = 0; iRow < getRowCount(); iRow++)
-			{
-				TreePath iPath = tree.getPathForRow(iRow);
-
-				if ((iPath != null) && iPath.toString().equals(path))
-				{
-					tree.makeVisible(iPath);
-					tree.expandPath(iPath);
-				}
-			}
-		}
 	}
 
 	/**
@@ -414,19 +393,6 @@ public final class JTreeTable extends JTableEx implements KeyListener
 			aRect.x -= dx;
 			aRect.y -= dy;
 		}
-	}
-
-	/**
-	 * Search for a tree path
-	 * @param name
-	 * @param expand
-	 * @return tree path
-	 */
-	public TreePath search(String name, boolean expand)
-	{
-		final PObjectNode rootNode = (PObjectNode) tree.getModel().getRoot();
-
-		return search(rootNode, name, expand);
 	}
 
 	/**

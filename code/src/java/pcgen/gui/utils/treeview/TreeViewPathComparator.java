@@ -18,8 +18,9 @@
  * 
  * Created on Feb 10, 2008, 3:06:15 AM
  */
-package pcgen.gui.utils;
+package pcgen.gui.utils.treeview;
 
+import pcgen.gui.utils.treeview.TreeViewPath;
 import java.util.Comparator;
 import pcgen.util.StringComparator;
 

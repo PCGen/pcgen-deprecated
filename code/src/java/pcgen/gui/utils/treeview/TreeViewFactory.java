@@ -18,8 +18,9 @@
  * 
  * Created on January 24, 2008, 5:15 PM
  */
-package pcgen.gui.utils;
+package pcgen.gui.utils.treeview;
 
+import pcgen.gui.utils.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
