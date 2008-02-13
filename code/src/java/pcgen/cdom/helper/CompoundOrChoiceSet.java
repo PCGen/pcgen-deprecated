@@ -67,11 +67,13 @@ public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
 		return set == null ? null : set.iterator().next().getChoiceClass();
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return set.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		return (o instanceof CompoundOrChoiceSet)

@@ -358,20 +358,20 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 	{
 		Set<String> set = new TreeSet<String>();
 
-		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedDomainLists =
+		Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> changedDomainLists =
 				context.getListContext().getChangedLists(obj,
 					DomainSpellList.class);
-		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> domainMap =
+		TripleKeyMapToList<String, Integer, CDOMReference<? extends CDOMList<? extends CDOMObject>>, LSTWriteable> domainMap =
 				getMap(context, obj, changedDomainLists);
 		for (String prereqs : domainMap.getKeySet())
 		{
 			set.add(processUnparse("DOMAIN", domainMap, prereqs).toString());
 		}
 
-		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedClassLists =
+		Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> changedClassLists =
 				context.getListContext().getChangedLists(obj,
 					ClassSpellList.class);
-		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> classMap =
+		TripleKeyMapToList<String, Integer, CDOMReference<? extends CDOMList<? extends CDOMObject>>, LSTWriteable> classMap =
 				getMap(context, obj, changedClassLists);
 		for (String prereqs : classMap.getKeySet())
 		{
@@ -387,14 +387,14 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 
 	private StringBuilder processUnparse(
 		String type,
-		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> domainMap,
+		TripleKeyMapToList<String, Integer, CDOMReference<? extends CDOMList<? extends CDOMObject>>, LSTWriteable> domainMap,
 		String prereqs)
 	{
 		StringBuilder sb = new StringBuilder(type);
 		Set<Integer> levels = domainMap.getSecondaryKeySet(prereqs);
 		for (Integer level : new TreeSet<Integer>(levels))
 		{
-			for (CDOMReference<CDOMList<? extends CDOMObject>> list : domainMap
+			for (CDOMReference<? extends CDOMList<? extends CDOMObject>> list : domainMap
 				.getTertiaryKeySet(prereqs, level))
 			{
 				sb.append(Constants.PIPE);
@@ -414,12 +414,12 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		return sb;
 	}
 
-	private TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> getMap(
+	private TripleKeyMapToList<String, Integer, CDOMReference<? extends CDOMList<? extends CDOMObject>>, LSTWriteable> getMap(
 		LoadContext context, CDOMObject obj,
-		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists)
+		Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> changedLists)
 	{
-		TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable> map =
-				new TripleKeyMapToList<String, Integer, CDOMReference<CDOMList<? extends CDOMObject>>, LSTWriteable>();
+		TripleKeyMapToList<String, Integer, CDOMReference<? extends CDOMList<? extends CDOMObject>>, LSTWriteable> map =
+				new TripleKeyMapToList<String, Integer, CDOMReference<? extends CDOMList<? extends CDOMObject>>, LSTWriteable>();
 
 		for (CDOMReference listRef : changedLists)
 		{

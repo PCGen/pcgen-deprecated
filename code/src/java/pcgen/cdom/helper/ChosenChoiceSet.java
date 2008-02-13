@@ -85,7 +85,7 @@ public class ChosenChoiceSet<T> implements PrimitiveChoiceSet<T>
 			PrereqObject sink = edge.getNodeAt(1);
 			if (sink instanceof ChoiceSet)
 			{
-				ChoiceSet<?> cs = (ChoiceSet) sink;
+				ChoiceSet<?> cs = (ChoiceSet<?>) sink;
 				if (name.equals(cs.getName()))
 				{
 					AssociationListKey<T> listKey =

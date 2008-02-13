@@ -226,7 +226,7 @@ public final class ObjectKey<T> {
 				try {
 					Object o = fields[i].get(null);
 					if (o instanceof ObjectKey) {
-						map.put(fields[i].getName(), (ObjectKey) o);
+						map.put(fields[i].getName(), (ObjectKey<?>) o);
 					}
 				} catch (IllegalArgumentException e) {
 					throw new InternalError();

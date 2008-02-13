@@ -29,7 +29,7 @@ public interface ListCommitStrategy
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> list, CDOMReference<T> allowed);
 
-	public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getChangedLists(
+	public Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> getChangedLists(
 		CDOMObject owner, Class<? extends CDOMList<?>> cl);
 
 	public void removeAllFromList(String tokenName, CDOMObject owner,

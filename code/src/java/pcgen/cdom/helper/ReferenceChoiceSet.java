@@ -94,7 +94,7 @@ public class ReferenceChoiceSet<T extends PrereqObject> implements
 		}
 		if (o instanceof ReferenceChoiceSet)
 		{
-			ReferenceChoiceSet<?> other = (ReferenceChoiceSet) o;
+			ReferenceChoiceSet<?> other = (ReferenceChoiceSet<?>) o;
 			return set.equals(other.set);
 		}
 		return false;

@@ -70,8 +70,8 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	/** A map of Lists for the object */
 	private final ListKeyMapToList listChar = new ListKeyMapToList();
 
-	private final DoubleKeyMapToList<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject> cdomListMods =
-			new DoubleKeyMapToList<CDOMReference<CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject>();
+	private final DoubleKeyMapToList<CDOMReference<? extends CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject> cdomListMods =
+			new DoubleKeyMapToList<CDOMReference<? extends CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject>();
 
 	private Boolean namePI = null;
 
@@ -388,23 +388,22 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		return true;
 	}
 
-	// TODO Generic Type Safety rather than CDOMObject
-	public <T extends CDOMObject> void putToList(CDOMReference list,
+	public <T extends CDOMObject> void putToList(CDOMReference<? extends CDOMList<? extends CDOMObject>> list,
 		CDOMReference<T> granted, AssociatedPrereqObject associations)
 	{
 		cdomListMods.addToListFor(list, granted, associations);
 	}
 
-	public boolean hasListMods(CDOMReference list)
+	public boolean hasListMods(CDOMReference<? extends CDOMList<? extends CDOMObject>> list)
 	{
 		return cdomListMods.containsListFor(list);
 	}
 
+	// TODO Is there a way to get type safety here?  
 	public <BT extends CDOMObject> Collection<CDOMReference<BT>> getListMods(
 		CDOMReference<? extends CDOMList<BT>> list)
 	{
-		CDOMReference listref = list;
-		Set set = cdomListMods.getSecondaryKeySet(listref);
+		Set set = cdomListMods.getSecondaryKeySet(list);
 		if (set == null || set.isEmpty())
 		{
 			return null;
@@ -413,12 +412,12 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	}
 
 	public Collection<AssociatedPrereqObject> getListAssociations(
-		CDOMReference list, CDOMReference key)
+		CDOMReference<? extends CDOMList<? extends CDOMObject>> list, CDOMReference<?> key)
 	{
 		return cdomListMods.getListFor(list, key);
 	}
 
-	public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getModifiedLists()
+	public Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> getModifiedLists()
 	{
 		return cdomListMods.getKeySet();
 	}

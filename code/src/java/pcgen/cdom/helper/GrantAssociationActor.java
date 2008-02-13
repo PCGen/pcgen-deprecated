@@ -47,6 +47,6 @@ public class GrantAssociationActor<T extends PrereqObject> extends
 	{
 		return o instanceof GrantAssociationActor
 			&& masterReference
-				.equals(((GrantAssociationActor) o).masterReference);
+				.equals(((GrantAssociationActor<?>) o).masterReference);
 	}
 }

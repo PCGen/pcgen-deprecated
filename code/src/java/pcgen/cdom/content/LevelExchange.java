@@ -91,6 +91,7 @@ public class LevelExchange extends ConcretePrereqObject implements LSTWriteable
 		return minDonatingLevel;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return minDonatingLevel * 23 + maxDonatedLevels * 31

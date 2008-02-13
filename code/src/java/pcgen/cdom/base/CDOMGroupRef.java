@@ -29,6 +29,4 @@ public abstract class CDOMGroupRef<T extends PrereqObject> extends
 
 	@Override
 	public abstract boolean contains(T obj);
-
-	public abstract int getObjectCount();
 }

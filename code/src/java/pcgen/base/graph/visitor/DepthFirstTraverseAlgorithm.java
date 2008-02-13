@@ -38,7 +38,8 @@ import pcgen.base.util.IdentityHashSet;
  * already seen" method in order to avoid confusion from non-termination. This
  * may limit the size of the graph that can be traversed using this class.
  */
-public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>>
+public class DepthFirstTraverseAlgorithm<N, ET extends Edge<N>> implements
+		NodeTourist<N>, EdgeTourist<ET>
 {
 
 	/**

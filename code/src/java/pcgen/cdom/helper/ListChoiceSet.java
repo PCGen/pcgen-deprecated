@@ -81,7 +81,7 @@ public class ListChoiceSet<T extends CDOMObject> implements
 		}
 		if (o instanceof ListChoiceSet)
 		{
-			ListChoiceSet<?> other = (ListChoiceSet) o;
+			ListChoiceSet<?> other = (ListChoiceSet<?>) o;
 			return list.equals(other.list);
 		}
 		return false;

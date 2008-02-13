@@ -166,12 +166,12 @@ public class ConsolidatedListCommitStrategy implements ListCommitStrategy
 
 	}
 
-	public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getChangedLists(
+	public Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> getChangedLists(
 		CDOMObject owner, Class<? extends CDOMList<?>> cl)
 	{
-		ArrayList<CDOMReference<CDOMList<? extends CDOMObject>>> list =
-				new ArrayList<CDOMReference<CDOMList<? extends CDOMObject>>>();
-		for (CDOMReference<CDOMList<? extends CDOMObject>> ref : owner
+		ArrayList<CDOMReference<? extends CDOMList<? extends CDOMObject>>> list =
+				new ArrayList<CDOMReference<? extends CDOMList<? extends CDOMObject>>>();
+		for (CDOMReference<? extends CDOMList<? extends CDOMObject>> ref : owner
 			.getModifiedLists())
 		{
 			if (cl.equals(ref.getReferenceClass()))

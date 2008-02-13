@@ -386,11 +386,11 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Collection<CDOMReference<CDOMList<? extends CDOMObject>>> changedLists =
+		Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> changedLists =
 				context.getListContext().getChangedLists(obj,
 					CompanionList.class);
-		TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable> m =
-				new TripleKeyMapToList<Set<Prerequisite>, CDOMReference<CDOMList<? extends CDOMObject>>, Integer, LSTWriteable>();
+		TripleKeyMapToList<Set<Prerequisite>, CDOMReference<? extends CDOMList<? extends CDOMObject>>, Integer, LSTWriteable> m =
+				new TripleKeyMapToList<Set<Prerequisite>, CDOMReference<? extends CDOMList<? extends CDOMObject>>, Integer, LSTWriteable>();
 
 		for (CDOMReference ref : changedLists)
 		{
@@ -446,7 +446,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 				prereqString = getPrerequisiteString(context, prereqs);
 			}
 
-			for (CDOMReference<CDOMList<? extends CDOMObject>> cl : m
+			for (CDOMReference<? extends CDOMList<? extends CDOMObject>> cl : m
 				.getSecondaryKeySet(prereqs))
 			{
 				for (Integer fa : m.getTertiaryKeySet(prereqs, cl))

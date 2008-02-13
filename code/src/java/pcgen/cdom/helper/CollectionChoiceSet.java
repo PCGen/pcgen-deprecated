@@ -75,7 +75,7 @@ public class CollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
 		}
 		if (o instanceof CollectionChoiceSet)
 		{
-			CollectionChoiceSet<?> other = (CollectionChoiceSet) o;
+			CollectionChoiceSet<?> other = (CollectionChoiceSet<?>) o;
 			return c.equals(other.c);
 		}
 		return false;

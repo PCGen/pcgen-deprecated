@@ -19,6 +19,8 @@
  */
 package pcgen.base.graph.command;
 
+import java.util.Collection;
+
 import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoableEdit;
 
@@ -26,6 +28,8 @@ import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.graph.core.DirectionalGraph;
 import pcgen.base.graph.core.UnsupportedGraphOperationException;
 import pcgen.base.graph.visitor.DirectedDepthFirstTraverseAlgorithm;
+import pcgen.base.graph.visitor.EdgeTourist;
+import pcgen.base.graph.visitor.NodeTourist;
 import pcgen.base.lang.Command;
 
 /**
@@ -140,12 +144,22 @@ public class GraftFromNodeCommand<N, ET extends DirectionalEdge<N>> implements
 				new DirectedDepthFirstTraverseAlgorithm<N, ET>(sourceGraph);
 		dfta.traverseFromNode(node);
 		CompoundEdit edit = new CompoundEdit();
-		edit.addEdit(new InsertNodesCommand<N, ET>(name, destinationGraph, dfta
-			.getVisitedNodes()).execute());
-		edit.addEdit(new InsertEdgesCommand<N, ET>(name, destinationGraph, dfta
-			.getVisitedEdges()).execute());
+		edit.addEdit(new InsertNodesCommand<N, ET>(name, destinationGraph,
+				getNodes(dfta)).execute());
+		edit.addEdit(new InsertEdgesCommand<N, ET>(name, destinationGraph,
+				getEdges(dfta)).execute());
 		edit.end();
 		return edit;
+	}
+
+	public Collection<N> getNodes(NodeTourist<N> dfta)
+	{
+		return dfta.getVisitedNodes();
+	}
+
+	public Collection<ET> getEdges(EdgeTourist<ET> dfta)
+	{
+		return dfta.getVisitedEdges();
 	}
 
 	/**

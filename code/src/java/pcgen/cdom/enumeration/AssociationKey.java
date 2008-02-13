@@ -191,7 +191,7 @@ public final class AssociationKey<T>
 					Object o = fields[i].get(null);
 					if (o instanceof AssociationKey)
 					{
-						map.put(fields[i].getName(), (AssociationKey) o);
+						map.put(fields[i].getName(), (AssociationKey<?>) o);
 					}
 				}
 				catch (IllegalArgumentException e)

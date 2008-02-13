@@ -93,7 +93,7 @@ public final class AssociationListKey<T>
 					Object o = fields[i].get(null);
 					if (o instanceof AssociationListKey)
 					{
-						map.put(fields[i].getName(), (AssociationListKey) o);
+						map.put(fields[i].getName(), (AssociationListKey<?>) o);
 					}
 				}
 				catch (IllegalArgumentException e)

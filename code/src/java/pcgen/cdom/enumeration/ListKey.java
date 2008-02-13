@@ -138,7 +138,7 @@ public final class ListKey<T>
 					Object o = fields[i].get(null);
 					if (o instanceof ListKey)
 					{
-						map.put(fields[i].getName(), (ListKey) o);
+						map.put(fields[i].getName(), (ListKey<?>) o);
 					}
 				}
 				catch (IllegalArgumentException e)

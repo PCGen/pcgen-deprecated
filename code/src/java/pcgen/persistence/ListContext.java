@@ -153,7 +153,7 @@ public class ListContext
 			for (CDOMObject owner : edits.negativeMap.getSecondaryKeySet(uri))
 			{
 				CDOMObject neg = edits.negativeMap.get(uri, owner);
-				Collection<CDOMReference<CDOMList<? extends CDOMObject>>> modifiedLists =
+				Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> modifiedLists =
 						neg.getModifiedLists();
 				for (CDOMReference list : modifiedLists)
 				{
@@ -166,7 +166,7 @@ public class ListContext
 			for (CDOMObject owner : edits.positiveMap.getSecondaryKeySet(uri))
 			{
 				CDOMObject neg = edits.positiveMap.get(uri, owner);
-				Collection<CDOMReference<CDOMList<? extends CDOMObject>>> modifiedLists =
+				Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> modifiedLists =
 						neg.getModifiedLists();
 				for (CDOMReference list : modifiedLists)
 				{
@@ -189,7 +189,7 @@ public class ListContext
 		edits.decommit();
 	}
 
-	public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getChangedLists(
+	public Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> getChangedLists(
 		CDOMObject owner, Class<? extends CDOMList<?>> cl)
 	{
 		return commit.getChangedLists(owner, cl);
@@ -426,12 +426,12 @@ public class ListContext
 			getNegative(sourceURI, owner).putToList(list, ref, a);
 		}
 
-		public Collection<CDOMReference<CDOMList<? extends CDOMObject>>> getChangedLists(
+		public Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> getChangedLists(
 			CDOMObject owner, Class<? extends CDOMList<?>> cl)
 		{
-			ArrayList<CDOMReference<CDOMList<? extends CDOMObject>>> list =
-					new ArrayList<CDOMReference<CDOMList<? extends CDOMObject>>>();
-			for (CDOMReference<CDOMList<? extends CDOMObject>> ref : owner
+			ArrayList<CDOMReference<? extends CDOMList<? extends CDOMObject>>> list =
+					new ArrayList<CDOMReference<? extends CDOMList<? extends CDOMObject>>>();
+			for (CDOMReference<? extends CDOMList<? extends CDOMObject>> ref : owner
 				.getModifiedLists())
 			{
 				if (cl.equals(ref.getReferenceClass()))
