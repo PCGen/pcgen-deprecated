@@ -27,6 +27,12 @@ public class UserInputToken extends AbstractToken implements ChooseLstToken
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
+		if (prefix.indexOf("NUMCHOICES=") != -1)
+		{
+			Logging.errorPrint("Cannot use NUMCHOICES= with CHOOSE:USERINPUT, "
+				+ "as it has an integrated choice count");
+			return false;
+		}
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
@@ -51,9 +57,9 @@ public class UserInputToken extends AbstractToken implements ChooseLstToken
 		}
 		int pipeLoc = value.indexOf("|");
 		String title;
+		Integer firstarg = null;
 		if (pipeLoc == -1)
 		{
-			//Integer below (# entries) defaults to 1
 			title = value;
 		}
 		else
@@ -61,7 +67,7 @@ public class UserInputToken extends AbstractToken implements ChooseLstToken
 			String start = value.substring(0, pipeLoc);
 			try
 			{
-				Integer.parseInt(start);
+				firstarg = Integer.valueOf(start);
 			}
 			catch (NumberFormatException nfe)
 			{
@@ -71,25 +77,39 @@ public class UserInputToken extends AbstractToken implements ChooseLstToken
 			}
 			title = value.substring(pipeLoc + 1);
 		}
-		if (!title.startsWith("TITLE=\""))
+		if (!title.startsWith("TITLE="))
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " second argument must start with TITLE=\" : " + value);
+				+ " argument must start with TITLE= : " + value);
 			return false;
 		}
-		if (!title.endsWith("\""))
+		if (title.startsWith("TITLE=\""))
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " second argument must end with \" : " + value);
-			return false;
+			if (!title.endsWith("\""))
+			{
+				Logging.errorPrint("CHOOSE:" + getTokenName()
+						+ " argument which starts \" with must end with \" : "
+						+ value);
+				return false;
+			}
+		}
+		else
+		{
+			Logging.deprecationPrint("CHOOSE:" + getTokenName()
+					+ " argument TITLE= should use \" around the title : "
+					+ value);
 		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{
 			sb.append(prefix).append('|');
 		}
-		sb.append(getTokenName()).append('|').append(value);
+		sb.append(getTokenName()).append('|').append(title);
 		po.setChoiceString(sb.toString());
+		if (firstarg != null)
+		{
+			po.setSelect(firstarg.toString());
+		}
 		return true;
 	}
 

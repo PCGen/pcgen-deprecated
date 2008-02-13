@@ -61,6 +61,12 @@ public class EquipTypeToken extends AbstractToken implements ChooseLstToken,
 			return false;
 		}
 
+		if (value.indexOf(",") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " may not have multiple , delimited arguments: " + value);
+			return false;
+		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
 		{

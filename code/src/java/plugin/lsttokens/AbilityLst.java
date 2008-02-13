@@ -162,6 +162,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 			}
 			final List<String> abilityList = new ArrayList<String>();
 			boolean isPre = false;
+			boolean isFirst = true;
 			while (tok.hasMoreTokens())
 			{
 				final String key = tok.nextToken();
@@ -183,8 +184,47 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 							.errorPrint("  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
-					abilityList.add(key);
+					if (".CLEAR".equals(key))
+					{
+						if (isFirst)
+						{
+							for (QualifiedObject<String> ab : new ArrayList<QualifiedObject<String>>(
+									anObj.getRawAbilityObjects(category, nature)))
+							{
+								if (ab.getPrereqs().toString().equals(
+										preReqs.toString()))
+								{
+									anObj.removeAbility(category, nature, ab);
+								}
+							}
+						}
+						else
+						{
+							Logging.errorPrint("Invalid " + getTokenName()
+									+ ": .CLEAR non-sensical unless it appears first");
+							return false;
+						}
+					}
+					else if (key.startsWith(".CLEAR."))
+					{
+						String abil = key.substring(7);
+						for (QualifiedObject<String> ab : new ArrayList<QualifiedObject<String>>(
+								anObj.getRawAbilityObjects(category, nature)))
+						{
+							if (abil.equals(ab.getObject(null))
+									&& ab.getPrereqs().toString().equals(
+											preReqs.toString()))
+							{
+								anObj.removeAbility(category, nature, ab);
+							}
+						}
+					}
+					else
+					{
+						abilityList.add(key);
+					}
 				}
+				isFirst = false;
 			}
 			for (final String ability : abilityList)
 			{

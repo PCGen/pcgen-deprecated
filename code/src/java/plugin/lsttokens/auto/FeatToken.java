@@ -46,6 +46,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AutoLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.util.Logging;
 
 public class FeatToken extends AbstractToken implements AutoLstToken
 {
@@ -61,9 +62,6 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 	public boolean parse(PObject target, String value, int level)
 	{
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-		
-		tok.nextToken(); // Throw away FEAT
-
 		ArrayList<Prerequisite> preReqs = new ArrayList<Prerequisite>();
 		if (level > -9)
 		{
@@ -85,22 +83,50 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 				return false;
 			}
 		}
+		boolean first = true;
 		while (tok.hasMoreTokens())
 		{
 			String feat = tok.nextToken();
-			if (feat.startsWith(".CLEAR."))
+			if (feat.equals(".CLEAR"))
 			{
+				if (!first)
+				{
+					Logging.errorPrint("Non-sensical use of .CLEAR"
+							+ " in AUTO:FEAT, must appear first: " + value);
+					return false;
+				}
 				List<QualifiedObject<String>> ao =
-						target.getRawAbilityObjects(
-							pcgen.core.AbilityCategory.FEAT,
-							Ability.Nature.AUTOMATIC);
+					target.getRawAbilityObjects(pcgen.core.AbilityCategory.FEAT,
+						Ability.Nature.AUTOMATIC);
 				for (QualifiedObject<String> qo : ao)
 				{
 					if (qo instanceof QualifiedObject.AutoQualifiedObject)
 					{
+						target.removeAbility(pcgen.core.AbilityCategory.FEAT,
+								Ability.Nature.AUTOMATIC, qo);
+					}
+				}
+			}
+			else if (feat.startsWith(".CLEAR."))
+			{
+				List<QualifiedObject<String>> ao =
+						target.getRawAbilityObjects(pcgen.core.AbilityCategory.FEAT,
+							Ability.Nature.AUTOMATIC);
+				/*
+				 * Have to clone the list to avoid a ConcurrentModificationException
+				 */
+				for (QualifiedObject<String> qo : new ArrayList<QualifiedObject<String>>(ao))
+				{
+					if (qo instanceof QualifiedObject.AutoQualifiedObject)
+					{
 						String name = feat.substring(7);
+						/*
+						 * Note the .toString on the preReqs lists here -
+						 * painful, but necessary since the 5.x Prerequisite
+						 * doesn't implement .equals()
+						 */
 						if (name.equalsIgnoreCase(qo.getObject(null))
-							&& preReqs.equals(qo.getPrereqs()))
+							&& preReqs.toString().equals(qo.getPrereqs().toString()))
 						{
 							target.removeAbility(
 								pcgen.core.AbilityCategory.FEAT,
@@ -116,6 +142,7 @@ public class FeatToken extends AbstractToken implements AutoLstToken
 					new QualifiedObject.AutoQualifiedObject<String>(feat,
 						preReqs));
 			}
+			first = false;
 		}
 		return true;
 	}

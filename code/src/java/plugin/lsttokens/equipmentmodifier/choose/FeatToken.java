@@ -15,39 +15,26 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package plugin.lsttokens.choose;
+package plugin.lsttokens.equipmentmodifier.choose;
 
-import java.util.StringTokenizer;
-
-import pcgen.core.Ability;
-import pcgen.core.Constants;
-import pcgen.core.PObject;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.core.EquipmentModifier;
+import pcgen.persistence.lst.EqModChooseLstToken;
 import pcgen.util.Logging;
 
-public class SkillsNamedToCCSkillToken extends AbstractToken implements
-		ChooseLstToken
+public class FeatToken implements EqModChooseLstToken
 {
 
-	public boolean parse(PObject po, String prefix, String value)
+	public String getTokenName()
 	{
-		if (!(po instanceof Ability))
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " only works in Abilities");
-			return false;
-		}
+		return "FEAT";
+	}
+
+	public boolean parse(EquipmentModifier mod, String prefix, String value)
+	{
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
-			return false;
-		}
-		if (value.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " requires arguments");
 			return false;
 		}
 		if (value.indexOf('[') != -1)
@@ -56,23 +43,23 @@ public class SkillsNamedToCCSkillToken extends AbstractToken implements
 				+ " arguments may not contain [] : " + value);
 			return false;
 		}
-		if (hasIllegalSeparator('|', value))
+		if (value.charAt(0) == '|')
 		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not start with | : " + value);
 			return false;
 		}
-
-		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
-		while (st.hasMoreTokens())
+		if (value.charAt(value.length() - 1) == '|')
 		{
-			String tokString = st.nextToken();
-			int equalsLoc = tokString.indexOf("=");
-			if (equalsLoc == tokString.length() - 1)
-			{
-				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments must have value after = : " + tokString);
-				Logging.errorPrint("  entire token was: " + value);
-				return false;
-			}
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments may not end with | : " + value);
+			return false;
+		}
+		if (value.indexOf("||") != -1)
+		{
+			Logging.errorPrint("CHOOSE:" + getTokenName()
+				+ " arguments uses double separator || : " + value);
+			return false;
 		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
@@ -80,13 +67,7 @@ public class SkillsNamedToCCSkillToken extends AbstractToken implements
 			sb.append(prefix).append('|');
 		}
 		sb.append(getTokenName()).append('|').append(value);
-		po.setChoiceString(sb.toString());
+		mod.setChoiceString(sb.toString());
 		return true;
-	}
-
-	@Override
-	public String getTokenName()
-	{
-		return "SKILLSNAMEDTOCCSKILL";
 	}
 }

@@ -30,6 +30,12 @@ public class WeaponProfToken extends AbstractToken implements ChooseLstToken
 
 	public boolean parse(PObject po, String prefix, String value)
 	{
+		if (prefix.indexOf("NUMCHOICES=") != -1)
+		{
+			Logging.errorPrint("Cannot use NUMCHOICES= with CHOOSE:WEAPONPROF, "
+				+ "as it has an integrated choice count");
+			return false;
+		}
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
@@ -86,9 +92,10 @@ public class WeaponProfToken extends AbstractToken implements ChooseLstToken
 			return false;
 		}
 		String start = value.substring(0, pipeLoc);
+		int firstarg;
 		try
 		{
-			Integer.parseInt(start);
+			firstarg = Integer.parseInt(start);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -96,7 +103,8 @@ public class WeaponProfToken extends AbstractToken implements ChooseLstToken
 				+ " first argument must be an Integer : " + value);
 			return false;
 		}
-		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		String profs = value.substring(pipeLoc + 1);
+		StringTokenizer st = new StringTokenizer(profs, Constants.PIPE);
 		while (st.hasMoreTokens())
 		{
 			String tokString = st.nextToken();
@@ -110,12 +118,17 @@ public class WeaponProfToken extends AbstractToken implements ChooseLstToken
 			}
 		}
 		StringBuilder sb = new StringBuilder();
+		sb.append("NUMCHOICES=").append(firstarg).append('|');
 		if (prefix.length() > 0)
 		{
 			sb.append(prefix).append('|');
 		}
-		sb.append(getTokenName()).append('|').append(value).append(suffix);
+		sb.append(getTokenName()).append('|').append(profs).append(suffix);
 		po.setChoiceString(sb.toString());
+		po.setSelect(start);
+		/*
+		 * TODO Error catching here for SELECT/CHOOSE?
+		 */
 		return true;
 	}
 
