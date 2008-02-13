@@ -176,8 +176,8 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 		{
 			CDOMReference<? extends PObject> ref =
 					rm.getReference(st.nextToken());
-			obj.addToListFor(ListKey.QUALIFY, new Qualifier(rm.getCDOMClass(),
-				ref));
+			context.obj.addToList(obj, ListKey.QUALIFY, new Qualifier(rm
+					.getCDOMClass(), ref));
 		}
 
 		return true;
