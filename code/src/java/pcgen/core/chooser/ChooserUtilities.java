@@ -32,10 +32,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import pcgen.core.Ability;
+import pcgen.core.AbilityCategory;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.SettingsHandler;
 import pcgen.util.Logging;
 
 
@@ -68,7 +71,7 @@ public class ChooserUtilities
 
 		while (elements.hasMoreElements())
 		{
-			String aString = elements.nextElement();
+			String aString = elements.nextElement(); //Throw away count
 
 			while (
 				!aString.startsWith("CLASS=") &&
@@ -228,7 +231,8 @@ public class ChooserUtilities
 			final List            selectedList,
 			final boolean         process,
 			final PlayerCharacter aPC,
-			final boolean         addIt)
+			final boolean         addIt,
+			final AbilityCategory category)
 	{
 		availableList.clear();
 		selectedList.clear();
@@ -237,6 +241,22 @@ public class ChooserUtilities
 
 		if (aMan == null) {return false;}
 
+		if (aMan instanceof AbstractBasicChoiceManager && aPObject instanceof Ability)
+		{
+			Ability a = (Ability) aPObject;
+			pcgen.core.AbilityCategory cat;
+			if (category == null)
+			{
+				cat = SettingsHandler.getGame().getAbilityCategory(
+						a.getCategory());
+			}
+			else
+			{
+				cat = category;
+			}
+			AbstractBasicChoiceManager abcm = (AbstractBasicChoiceManager) aMan;
+			abcm.setController(abcm.new AbilityChooseController(a, category, aPC));
+		}
 		aMan.getChoices(aPC, availableList, selectedList);
 
 		if (!process) {return false;}
@@ -336,14 +356,13 @@ public class ChooserUtilities
 		classLookup.put("STAT",                 StatChoiceManager.class.getName());
 		classLookup.put("WEAPONFOCUS",          WeaponFocusChoiceManager.class.getName());
 		classLookup.put("WEAPONPROFS",          WeaponProfChoiceManager.class.getName());
-		classLookup.put("WEAPONPROFTYPE",       WeaponProfTypeChoiceManager.class.getName());
 
 		classLookup.put("ARMORPROF",            SimpleArmorProfChoiceManager.class.getName());
 		classLookup.put("FEAT",                 SimpleFeatChoiceManager.class.getName());
 		classLookup.put("SHIELDPROF",           SimpleShieldProfChoiceManager.class.getName());
-		//classLookup.put("SPELLLEVEL",           SimpleSpellLevelChoiceManager.class.getName());
 		classLookup.put("USERINPUT",            UserInputChoiceManager.class.getName());
 		classLookup.put("WEAPONPROF",           SimpleWeaponProfChoiceManager.class.getName());
+		classLookup.put("NOCHOICE",             NoChoiceChoiceManager.class.getName());
 
 		// The following three choosers can be deprecated in favor of CHOOSE:SKILLSNAMED|CLASS
 		// and CHOOSE:SKILLSNAMED|CROSSCLASS. Also the first two can never have worked because 
@@ -389,7 +408,7 @@ public class ChooserUtilities
 			constructMap();
 		}
 
-		final String choiceString;
+		String choiceString;
 		if(theChoices != null && theChoices.length() > 0)
 		{
 			choiceString = theChoices;
@@ -398,7 +417,6 @@ public class ChooserUtilities
 		{
 			choiceString = aPObject.getChoiceString();
 		}
-
 		if (choiceString == null || choiceString.length() == 0)
 		{
 			return null;
@@ -426,8 +444,8 @@ public class ChooserUtilities
 		if (type.startsWith("FEAT=") || type.startsWith("FEAT."))
 		{
 			type = "SINGLEFEAT";
+			choiceString = "SINGLEFEAT|" + choiceString.substring(5);
 		}
-
 		String className = classLookup.get(type);
 
 		if (className == null)
