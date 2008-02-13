@@ -320,29 +320,6 @@ final class EquipmentChoice
 	}
 
 	/**
-	 * Set the maximum number of choices that can be made using this EquipChoice Object
-	 * @param count a string that has the maximum number of choices available
-	 */
-	public void setMaxSelectFromString(String count)
-	{
-		if (count.substring(6).equalsIgnoreCase("ALL"))
-		{
-			this.setMaxSelect(Integer.MAX_VALUE);
-		}
-		else
-		{
-			try
-			{
-				this.setMaxSelect(Integer.parseInt(count.substring(6)));
-			}
-			catch (NumberFormatException e)
-			{
-				Logging.errorPrint("Bad COUNT= value: " + count);
-			}
-		}
-	}
-
-	/**
 	 * Add abilities of Category aCategory and Type typeString to the
 	 * available list of the Equipment Chooser equipChoice
 	 * @param typeString  the type of Ability to add to the chooser
@@ -538,7 +515,8 @@ final class EquipmentChoice
 		final Equipment       parent,
 		final int             available,
 		final int             numSelected,
-		final boolean         forEqBuilder)
+		final boolean         forEqBuilder,
+		PlayerCharacter       pc)
 	{
 		final StringTokenizer titleTok       = new StringTokenizer(choiceString, "|", false);
 		while (!forEqBuilder && titleTok.hasMoreTokens())
@@ -548,20 +526,31 @@ final class EquipmentChoice
 			{
 				this.setTitle(workingkind.substring(6));
 			}
-			else if (workingkind.startsWith("COUNT="))
-			{
-				this.setMaxSelectFromString(workingkind);
-			}
 		}
+
+		setMaxSelect(parent.getVariableValue(parent.getSelectCount(), "", pc)
+				.intValue());
 
 		String originalkind = null;
 		final StringTokenizer aTok       = new StringTokenizer(choiceString, "|", false);
 		boolean needStats = false;
 		boolean needSkills = false;
+		String category = null;
 
 		while (!forEqBuilder && aTok.hasMoreTokens())
 		{
 			String kind = aTok.nextToken();
+			if (category == null)
+			{
+				if (kind.equals("ABILITY"))
+				{
+					category = aTok.nextToken();
+				}
+				else
+				{
+					category = "FEAT";
+				}
+			}
 
 			this.adjustPool(available, numSelected);
 
@@ -578,29 +567,32 @@ final class EquipmentChoice
 				if (originalkind == null)
 				{
 					originalkind = kind;
-					if (originalkind.equals("STATBONUS"))
-					{
-						needStats = true;
-					}
-					else if (originalkind.equals("SKILLBONUS"))
-					{
-						needSkills = true;
-					}
-
+					needStats = originalkind.equals("STATBONUS");
+					needSkills = originalkind.equals("SKILLBONUS")
+							|| originalkind.equals("SKILL");
 				}
 				else if (kind.startsWith("TYPE=") || kind.startsWith("TYPE."))
 				{
-					if (originalkind.equals("SKILLBONUS"))
+					if (originalkind.equals("SKILLBONUS") || originalkind.equals("SKILL"))
+					{
+						//New Style
+						needSkills = false;
+						this.addChoicesByType(parent, available, numSelected, kind,
+								"SKILL", "");
+					}
+					else if (originalkind.equals("EQUIPMENT")
+							|| originalkind.equals("FEAT")
+							|| originalkind.equals("ABILITY"))
 					{
 						//New Style
 						this.addChoicesByType(parent, available, numSelected, kind,
-								"SKILL", "FEAT");
+								originalkind, category);
 					}
 					else
 					{
 						//Old Style
 						this.addChoicesByType(parent, available, numSelected, kind,
-								getTitle(), "FEAT");
+								getTitle(), category);
 					}
 				}
 				else if ("STAT".equals(kind))

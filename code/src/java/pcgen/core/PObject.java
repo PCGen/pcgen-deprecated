@@ -169,6 +169,8 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 	
 	private Set<String> types = new LinkedHashSet<String>();
 	
+	private String chooseSelectCount = "1";
+	
 	/* ************
 	 * Methods
 	 * ************/
@@ -1870,7 +1872,40 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 				{
 					if (pc == null || sa.qualifies(pc))
 					{
-						saList.add(sa);
+						final String key = sa.getKeyName();
+						final int idx = key.indexOf("%CHOICE");
+						
+						if (idx >= 0)
+						{
+							StringBuilder sb = new StringBuilder();
+							sb.append(key.substring(0, idx));
+
+							if (getAssociatedCount() != 0)
+							{
+								for (int i = 0; i < getAssociatedCount(); ++i)
+								{
+									if (i != 0)
+									{
+										sb.append(" ,");
+									}
+
+									sb.append(getAssociated(i));
+								}
+							}
+							else
+							{
+								sb.append("<undefined>");
+							}
+
+							sb.append(key.substring(idx + 7));
+							sa = new SpecialAbility(sb.toString(), sa
+									.getSASource(), sa.getSADesc());
+							saList.add(sa);
+						}
+						else
+						{
+							saList.add(sa);
+						}
 					}
 				}
 			}
@@ -1879,6 +1914,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 
 	/**
 	 * Get the type of PObject
+	 * 
 	 * @return the type of PObject
 	 */
 	public String getType()
@@ -2289,7 +2325,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 			chooser.setPoolFlag(true); // user is not required to make any changes
 			chooser.setAllowsDups(false); // only stackable feats can be duped
 			chooser.setVisible(false);
-			chooser.setPool(remCount);
+			chooser.setTotalChoicesAvail(remCount);
 
 			String title = "Select for removal";
 			chooser.setTitle(title);
@@ -3660,7 +3696,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 		{
 			final ChooserInterface c = ChooserFactory.getChooserInstance();
 			c.setTitle("Region Selection");
-			c.setPool(num);
+			c.setTotalChoicesAvail(num);
 			c.setPoolFlag(false);
 			c.setAvailableList(aList);
 			c.setVisible(true);
@@ -4033,7 +4069,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 			final List<Language> selectedList; // selected list of choices
 
 			final ChooserInterface c = ChooserFactory.getChooserInstance();
-			c.setPool(1);
+			c.setTotalChoicesAvail(1);
 			c.setPoolFlag(false);
 			c.setTitle("Pick a Language: ");
 
@@ -5124,6 +5160,16 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 
 	public void clearAdds() {
 		levelAbilityList.clear();
+	}
+
+	public void setSelect(String value)
+	{
+		chooseSelectCount = value;
+	}
+
+	public String getSelectCount()
+	{
+		return chooseSelectCount;
 	}
 
 //	public List<BonusObj> getActiveBonuses(final PlayerCharacter aPC, final String aBonusType, final String aBonusName)

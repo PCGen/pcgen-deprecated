@@ -1557,7 +1557,6 @@ public final class LstSystemLoader extends Observable implements SystemLoader,
 	{
 		Logging.errorPrint(message, e);
 		setChanged();
-		notifyObservers(new Exception(message + ": " + e.getMessage()));
 	}
 
 }

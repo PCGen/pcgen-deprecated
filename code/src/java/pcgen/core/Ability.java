@@ -612,7 +612,7 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 	 *
 	 * @return  true if the Ability was modified, false otherwise
 	 */
-	public boolean modChoices(final PlayerCharacter aPC, final boolean addIt)
+	public boolean modChoices(final PlayerCharacter aPC, final boolean addIt, final AbilityCategory category)
 	{
 		final List availableList = new ArrayList(); // available list of choices
 		final List selectedList  = new ArrayList(); // selected list of choices
@@ -622,7 +622,8 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 				selectedList,
 				true,
 				aPC,
-				addIt);
+				addIt,
+				category);
 	}
 
 	/**
@@ -646,7 +647,8 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 		final List            selectedList,
 		final boolean         process,
 		final PlayerCharacter aPC,
-		final boolean         addIt)
+		final boolean         addIt,
+		final AbilityCategory category)
 	{
 		return ChooserUtilities.modChoices(
 				this,
@@ -654,7 +656,8 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 				selectedList,
 				process,
 				aPC,
-				addIt);
+				addIt,
+				category);
 	}
 
 	/**
@@ -816,7 +819,7 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 					chooser.setPoolFlag(false); // user is not required to make any
 
 					// changes
-					chooser.setPool(1);
+					chooser.setTotalChoicesAvail(1);
 
 					chooser.setTitle("Select a "
 							+ SettingsHandler.getGame().getSingularTabName(Tab.ABILITIES)
@@ -865,7 +868,8 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 				selectedList,
 				false,
 				aPC,
-				true);
+				true,
+				SettingsHandler.getGame().getAbilityCategory(this.getCategory()));
 
 		final int currentSelections = selectedList.size();
 
@@ -880,7 +884,7 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 		final ChooserInterface chooser = ChooserFactory.getChooserInstance();
 		chooser.setPoolFlag(true); // user is required to use all available
 								   // pool points
-		chooser.setPool(0); // need to remove 1 to add another
+		chooser.setTotalChoicesAvail(selectedList.size()); // need to remove 1 to add another
 
 		chooser.setTitle("Modify selections for " + abilityName);
 		Globals.sortChooserLists(abilityList, selectedList);

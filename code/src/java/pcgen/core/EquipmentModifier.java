@@ -997,7 +997,7 @@ public final class EquipmentModifier extends PObject implements Comparable<Objec
 	 * @param bAdd being added
 	 * @return an integer where apparently (from how it's used) only 0 is significant
 	 */
-	int getChoice(final int pool, final Equipment parent, final boolean bAdd)
+	int getChoice(final int pool, final Equipment parent, final boolean bAdd, PlayerCharacter pc)
 	{
 		String choiceString = getChoiceString();
 
@@ -1025,15 +1025,16 @@ public final class EquipmentModifier extends PObject implements Comparable<Objec
 				parent,
 				bAdd,
 				forEqBuilder,
-				selectedList.size());
+				selectedList.size(),
+				pc);
 
-		if (!equipChoice.isBAdd())
+		if (equipChoice.isBAdd())
 		{
-			chooser.setPool(0);
+			chooser.setTotalChoicesAvail(selectedList.size() + equipChoice.getMaxSelect());
 		}
 		else
 		{
-			chooser.setPool(equipChoice.getPool());
+			chooser.setTotalChoicesAvail(selectedList.size());
 		}
 
 		chooser.setAllowsDups(equipChoice.isAllowDuplicates());
@@ -1090,7 +1091,7 @@ public final class EquipmentModifier extends PObject implements Comparable<Objec
 					chooser.setTitle("Select modifier (" + aString + ")");
 					chooser.setAvailableList(secondaryChoice);
 					chooser.setSelectedList(new ArrayList());
-					chooser.setPool(1);
+					chooser.setTotalChoicesAvail(1);
 					chooser.setVisible(true);
 
 					if (chooser.getSelectedList().size() == 0)
@@ -1125,7 +1126,8 @@ public final class EquipmentModifier extends PObject implements Comparable<Objec
 		final Equipment parent,
 		final boolean   bAdd,
 		final boolean   forEqBuilder,
-		final int       numSelected)
+		final int       numSelected,
+		PlayerCharacter pc)
 	{
 		final EquipmentChoice equipChoice  = new EquipmentChoice(bAdd, pool);
 		String                choiceString = getChoiceString();
@@ -1140,7 +1142,8 @@ public final class EquipmentModifier extends PObject implements Comparable<Objec
 			parent,
 			pool,
 			numSelected,
-			forEqBuilder);
+			forEqBuilder,
+			pc);
 
 		return equipChoice;
 	}

@@ -26,6 +26,7 @@ package pcgen.core;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,13 +37,14 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.core.CampaignURL.URLKind;
 import pcgen.core.utils.ListKey;
 import pcgen.core.utils.MessageType;
 import pcgen.core.utils.ShowMessageDelegate;
 import pcgen.persistence.lst.CampaignSourceEntry;
 
 /**
- * <code>Campaign</code>.
+ * <code>Campaign</code> is a source or campaign defined in a *.pcc file.
  *
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  * @version $Revision$
@@ -51,6 +53,7 @@ public class Campaign extends PObject
 {
 	private Map<String, String> publisherMap = new HashMap<String, String>();
 	private Properties options = new Properties();
+	private List<CampaignURL> urlList = new ArrayList<CampaignURL>();
 	private boolean isD20;
 	private boolean isLicensed;
 	private boolean isLoaded;
@@ -82,6 +85,7 @@ public class Campaign extends PObject
 		listChar.initializeListFor(ListKey.FILE_FEAT);
 		listChar.initializeListFor(ListKey.FILE_KIT);
 		listChar.initializeListFor(ListKey.FILE_LANGUAGE);
+		listChar.initializeListFor(ListKey.FILE_LOGO);
 		listChar.initializeListFor(ListKey.FILE_LST_EXCLUDE);
 		listChar.initializeListFor(ListKey.FILE_PCC);
 		listChar.initializeListFor(ListKey.FILE_RACE);
@@ -227,6 +231,15 @@ public class Campaign extends PObject
 	public void addAllLanguageFiles(final List<CampaignSourceEntry> files)
 	{
 		listChar.addAllToListFor(ListKey.FILE_LANGUAGE, files);
+	}
+
+	/**
+	 *
+	 * @param files
+	 */
+	public void addAllLogoFiles(final List<CampaignSourceEntry> files)
+	{
+		listChar.addAllToListFor(ListKey.FILE_LOGO, files);
 	}
 
 	/**
@@ -483,6 +496,16 @@ public class Campaign extends PObject
 		{
 			listChar.addToListFor(ListKey.LINE, line);
 		}
+	}
+
+	/**
+	 * Adds the logo file.
+	 * 
+	 * @param file the file
+	 */
+	public void addLogoFile(final CampaignSourceEntry file)
+	{
+		listChar.addToListFor(ListKey.FILE_LOGO, file);
 	}
 
 	/**
@@ -858,6 +881,16 @@ public class Campaign extends PObject
 	public List<CampaignSourceEntry> getLstExcludeFiles()
 	{
 		return getListFor(ListKey.FILE_LST_EXCLUDE);
+	}
+
+	/**
+	 * Gets the logo files.
+	 * 
+	 * @return the logo files
+	 */
+	public List<CampaignSourceEntry> getLogoFiles()
+	{
+		return getListFor(ListKey.FILE_LOGO);
 	}
 
 	/**
@@ -1383,5 +1416,40 @@ public class Campaign extends PObject
 		}
 
 		return newCampaign;
+	}
+
+	/**
+	 * Adds the url.
+	 * 
+	 * @param campUrl the url to be added
+	 */
+	public void addURL(CampaignURL campUrl)
+	{
+		urlList.add(campUrl);
+	}
+
+	/**
+	 * @return the urlList
+	 */
+	public List<CampaignURL> getUrlList()
+	{
+		return Collections.unmodifiableList(urlList);
+	}
+
+	/**
+	 * Returnr a list of urls of the specified kind.
+	 * @return the urlList
+	 */
+	public List<CampaignURL> getUrlListForKind(URLKind kind)
+	{
+		List<CampaignURL> kindList = new ArrayList<CampaignURL>();
+		for (CampaignURL url : urlList)
+		{
+			if (url.getUrlKind() == kind)
+			{
+				kindList.add(url);
+			}
+		}
+		return kindList;
 	}
 }

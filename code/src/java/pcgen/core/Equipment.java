@@ -3220,9 +3220,7 @@ public final class Equipment extends PObject implements Serializable,
 					aMod.setChoice(selectedChoice, equipChoice);
 					allRemoved = aMod.getAssociatedCount() == 0;
 				}
-			}
-			else if (aMod.getChoice(1, this, true) == 0)
-			{
+			} else if (aMod.getChoice(1, this, true, aPC) == 0) {
 				allRemoved = true;
 			}
 
@@ -4135,9 +4133,8 @@ public final class Equipment extends PObject implements Serializable,
 				// we don't have anything else to return
 				return this.getDisplayName();
 			}
-		}
-		catch (RuntimeException e)
-		{
+			return prof;
+		} catch (RuntimeException e) {
 			Logging.errorPrint("Problem with: " + this.getDisplayName(), e);
 		}
 		return profName;
@@ -4206,8 +4203,7 @@ public final class Equipment extends PObject implements Serializable,
 	 *            Description of the Parameter
 	 */
 	public void removeEqModifier(final EquipmentModifier eqMod,
-		final boolean bPrimary)
-	{
+			final boolean bPrimary, PlayerCharacter aPC) {
 		final List<EquipmentModifier> eqModList = getEqModifierList(bPrimary);
 		final EquipmentModifier aMod =
 				getEqModifierKeyed(eqMod.getKeyName(), bPrimary);
@@ -4220,8 +4216,7 @@ public final class Equipment extends PObject implements Serializable,
 		// Get a response from user (if one required)
 		// Remove the modifier if all associated choices are deleted
 		if ((aMod.getAssociatedCount() == 0)
-			|| (aMod.getChoice(0, this, false) == 0))
-		{
+				|| (aMod.getChoice(0, this, false, aPC) == 0)) {
 			eqModList.remove(aMod);
 			if (bPrimary)
 			{
@@ -4248,8 +4243,7 @@ public final class Equipment extends PObject implements Serializable,
 	 * @param bPrimary
 	 *            The feature to be removed from the EqModifiers attribute
 	 */
-	public void removeEqModifiers(final String aString, final boolean bPrimary)
-	{
+	public void removeEqModifiers(final String aString, final boolean bPrimary, PlayerCharacter aPC) {
 		final StringTokenizer aTok = new StringTokenizer(aString, ".");
 
 		while (aTok.hasMoreTokens())
@@ -4258,7 +4252,7 @@ public final class Equipment extends PObject implements Serializable,
 
 			if (!aEqModName.equalsIgnoreCase(Constants.s_NONE))
 			{
-				removeEqModifier(aEqModName, bPrimary);
+				removeEqModifier(aEqModName, bPrimary, aPC);
 			}
 		}
 	}
@@ -4686,13 +4680,7 @@ public final class Equipment extends PObject implements Serializable,
 		return super.equals(o);
 	}
 
-	/**
-	 * Description of the Method
-	 * 
-	 * @return Description of the Return Value
-	 */
-	String rawProfName()
-	{
+	public String rawProfName() {
 		if (isWeapon() && weaponProf != null)
 		{
 			return weaponProf;
@@ -5902,8 +5890,7 @@ public final class Equipment extends PObject implements Serializable,
 	 * @param bPrimary
 	 *            The feature to be removed from the EqModifier attribute
 	 */
-	private void removeEqModifier(final String aString, final boolean bPrimary)
-	{
+	private void removeEqModifier(final String aString, final boolean bPrimary, PlayerCharacter aPC) {
 		final StringTokenizer aTok = new StringTokenizer(aString, "|");
 		final String eqModKey = aTok.nextToken();
 		final EquipmentModifier eqMod = getEqModifierKeyed(eqModKey, bPrimary);
@@ -5933,7 +5920,7 @@ public final class Equipment extends PObject implements Serializable,
 
 		if (eqMod.getAssociatedCount() == 0)
 		{
-			removeEqModifier(eqMod, bPrimary);
+			removeEqModifier(eqMod, bPrimary, aPC);
 		}
 	}
 

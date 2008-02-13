@@ -440,7 +440,6 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 				sourceEntry.getURI(), ple.getMessage());
 			Logging.errorPrint(message);
 			setChanged();
-			notifyObservers(new Exception(message));
 			return;
 		}
 
@@ -577,7 +576,6 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 				baseKey);
 			Logging.errorPrint(message);
 			setChanged();
-			notifyObservers(new Exception(message));
 			return null;
 		}
 		Class<T> cl = (Class<T>) object.getClass();
@@ -652,7 +650,6 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 				entry.getSource().getURI(), entry.getLineNumber(), key);
 			Logging.log(Logging.LST_ERROR, message);
 			setChanged();
-			notifyObservers(new Exception(message));
 			return;
 		}
 
@@ -701,7 +698,6 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 					.getMessage());
 			Logging.errorPrint(message);
 			setChanged();
-			notifyObservers(new Exception(message));
 		}
 	}
 

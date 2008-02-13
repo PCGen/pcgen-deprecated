@@ -7819,7 +7819,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			//
 			if (aProf.startsWith("SHIELDTYPE=") || aProf.startsWith("SHIELDTYPE."))
 			{
-				armorProfList.add(0, aProf);
+				shieldProfList.add(0, aProf);
 			}
 			else if (aProf.startsWith("TYPE=") || aProf.startsWith("TYPE."))
 			{
@@ -14118,6 +14118,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	private boolean includeSkill(final Skill skill, final int level)
 	{
 		boolean UntrainedExclusiveClass = false;
+		boolean IsQualified = true;
 
 		if (skill.isUntrained() && skill.isExclusive())
 		{
@@ -14127,10 +14128,14 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				UntrainedExclusiveClass = true;
 			}
 		}
+		else if (skill.isUntrained())
+		{
+			IsQualified = PrereqHandler.passesAll((skill).getPreReqList(), this, skill);
+		}
 
 		return (level == 2) || skill.isRequired()
 			|| (skill.getTotalRank(this).floatValue() > 0)
-			|| ((level == 1) && skill.isUntrained() && !skill.isExclusive())
+			|| ((level == 1) && skill.isUntrained() && IsQualified && !skill.isExclusive())
 			|| ((level == 1) && UntrainedExclusiveClass);
 	}
 
@@ -16828,14 +16833,25 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				continue;
 			}
 			final int subfeatCount = aFeat.getAssociatedCount();
-
-			if (subfeatCount > 1)
+			double cost = aFeat.getCost(this);
+			int select = getVariableValue(aFeat.getSelectCount(), "")
+					.intValue();
+			double relativeCost = cost / select;
+			if (aFeat.getChoiceString() != null
+				&& aFeat.getChoiceString().length() > 0)
 			{
-				iCount += subfeatCount;
+				iCount += Math.ceil(subfeatCount * relativeCost);
 			}
 			else
 			{
-				iCount += aFeat.getCost(this);
+				if (!AbilityCategory.FEAT.allowFractionalPool())
+				{
+					iCount += (int) Math.ceil(relativeCost);
+				}
+				else
+				{
+					iCount += relativeCost;
+				}
 			}
 		}
 
@@ -16857,20 +16873,24 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			for (final Ability ability : abilities)
 			{
 				final int subfeatCount = ability.getAssociatedCount();
+				double cost = ability.getCost(this);
+				int select = getVariableValue(ability.getSelectCount(), "")
+						.intValue();
+				double relativeCost = cost / select;
 				if (ability.getChoiceString() != null
 					&& ability.getChoiceString().length() > 0)
 				{
-					spent += subfeatCount;
+					spent += Math.ceil(subfeatCount * relativeCost);
 				}
 				else
 				{
 					if (!aCategory.allowFractionalPool())
 					{
-						spent += (int) Math.ceil(ability.getCost(this));
+						spent += (int) Math.ceil(relativeCost);
 					}
 					else
 					{
-						spent += ability.getCost(this);
+						spent += relativeCost;
 					}
 				}
 			}

@@ -71,6 +71,8 @@ public final class FormulaKey implements TypeSafeConstant
 	public static final FormulaKey MONSTER_NON_SKILL_HD =
 			getConstant("MONSTER_NON_SKILL_HD");
 
+	public static final FormulaKey SELECT = getConstant("SELECT");;
+
 	/**
 	 * The name of this Constant
 	 */

@@ -297,7 +297,7 @@ public final class PrerequisiteUtilities
 		int runningTotal = 0;
 
 		aFeat.modChoices(availableList, selectedList, false,
-			character, true);
+			character, true, null);
 		availableList.clear();
 
 		if (subKeyIsType) // TYPE syntax

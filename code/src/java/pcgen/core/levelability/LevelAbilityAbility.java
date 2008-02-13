@@ -176,7 +176,7 @@ public class LevelAbilityAbility extends LevelAbility
 
 			chooser.setPoolFlag(true);
 
-			if (chooser.getPool() == Integer.MIN_VALUE)
+			if (chooser.pickAll())
 			{
 				processChoice(
 					choicesList,
@@ -405,7 +405,8 @@ public class LevelAbilityAbility extends LevelAbility
 				tempSelList,
 				false,
 				aPC,
-				true);
+				true,
+				null);
 			// Mod choices may have sent us back weaponprofs, abilities or strings, 
 			// so we have to do a conversion here
 			for (Iterator iter = tempAvailList.iterator(); iter.hasNext();)
@@ -678,7 +679,7 @@ public class LevelAbilityAbility extends LevelAbility
 					{
 						final double x = aPC.getRawFeats(false);
 						aPC.setFeats(1); // temporarily assume 1 choice
-						pcAbility.modChoices(aPC, true);
+						pcAbility.modChoices(aPC, true, abilityCat);
 						aPC.setFeats(x); // reset to original count
 					}
 
@@ -696,7 +697,7 @@ public class LevelAbilityAbility extends LevelAbility
 		{
 			// If automatically choosing all abilities in a list, then set the
 			// number allowed to the number available
-			if (numFeats == Integer.MIN_VALUE)
+			if (aArrayList.equals(selectedList))
 			{
 				numFeats = selectedList.size();
 			}
