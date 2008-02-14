@@ -54,6 +54,14 @@ public class TreeViewNode<E> implements TreeNode
 	this.item = item;
     }
 
+    public void setTreeViewPathComparator(TreeViewPathComparator<E> comparator)
+    {
+	
+    }
+    private boolean remap(TreeViewPathComparator<E> comparator)
+    {
+	
+    }
     public void createChild(TreeViewPath<E> path)
     {
 	if (path.getPathCount() < depth)

@@ -28,7 +28,7 @@ import javax.swing.tree.TreePath;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class TreeViewPath<E> extends TreePath
+public class TreeViewPath<E>
 {
 
     private final Object[] path;
@@ -86,7 +86,6 @@ public class TreeViewPath<E> extends TreePath
      * @return an array of Objects representing the TreePath
      * @see #TreePath(Object[])
      */
-    @Override
     public Object[] getPath()
     {
 	return path.clone();
@@ -97,7 +96,6 @@ public class TreeViewPath<E> extends TreePath
      *
      * @return an int giving a count of items the path
      */
-    @Override
     public int getPathCount()
     {
 	return length;
@@ -113,7 +111,6 @@ public class TreeViewPath<E> extends TreePath
      *         of the path
      * @see #TreePath(Object[])
      */
-    @Override
     public Object getPathComponent(int element)
     {
 	return path[element];
@@ -126,7 +123,6 @@ public class TreeViewPath<E> extends TreePath
      * @return the Object at the end of the path
      * @see #TreePath(Object[])
      */
-    @Override
     public E getLastPathComponent()
     {
 	return (E) path[length - 1];
@@ -176,7 +172,6 @@ public class TreeViewPath<E> extends TreePath
      * Returns a path containing all the elements of this object, except
      * the last path component.
      */
-    @Override
     public TreeViewPath getParentPath()
     {
 	return new TreeViewPath(path, length - 1);
