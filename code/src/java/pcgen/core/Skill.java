@@ -22,6 +22,7 @@
  */
 package pcgen.core;
 
+import java.util.AbstractCollection;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.levelability.LevelAbility;
@@ -38,6 +39,7 @@ import pcgen.util.enumeration.Load;
 import pcgen.util.enumeration.Visibility;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -571,6 +573,33 @@ public final class Skill extends PObject
 		return it;
 	}
 
+    public Collection<String> getSubtypes()
+    {
+	return new AbstractCollection<String>(){
+
+	    @Override
+	    public Iterator<String> iterator()
+	    {
+		final Iterator<String> it = getTypeList(false).iterator();
+
+		if (it.hasNext())
+		{
+			if (keyStat.length() != 0)
+			{
+				it.next(); // skip first entry, the keystat
+			}
+		}
+
+		return it;
+	    }
+
+	    @Override
+	    public int size()
+	    {
+		return getSubtypeCount();
+	    }
+	};
+    }
 	/**
 	 * Returns the total ranks of a skill
 	 *  rank + bonus ranks (racial, class, etc bonuses).

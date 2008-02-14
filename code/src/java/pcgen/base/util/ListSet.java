@@ -39,7 +39,7 @@ public class ListSet<T> extends AbstractSet<T> implements Set<T>
 	/**
 	 * The comparator, if any, for determining equality in this Set
 	 */
-	private Comparator<T> comparator = null;
+	private final Comparator<T> comparator;
 
 	/**
 	 * The List used to represent the members of this Set
@@ -51,8 +51,7 @@ public class ListSet<T> extends AbstractSet<T> implements Set<T>
 	 */
 	public ListSet()
 	{
-		super();
-		list = new ArrayList<T>();
+		this(null);
 	}
 
 	/**
@@ -67,8 +66,7 @@ public class ListSet<T> extends AbstractSet<T> implements Set<T>
 	 */
 	public ListSet(int size)
 	{
-		super();
-		list = new ArrayList<T>(size);
+		this(size, null);
 	}
 
 	/**
@@ -80,8 +78,7 @@ public class ListSet<T> extends AbstractSet<T> implements Set<T>
 	 */
 	public ListSet(Comparator<T> c)
 	{
-		this();
-		comparator = c;
+		this(10, c);
 	}
 
 	/**
@@ -99,7 +96,7 @@ public class ListSet<T> extends AbstractSet<T> implements Set<T>
 	 */
 	public ListSet(int size, Comparator<T> c)
 	{
-		this(size);
+		list = new ArrayList<T>(size);
 		comparator = c;
 	}
 
