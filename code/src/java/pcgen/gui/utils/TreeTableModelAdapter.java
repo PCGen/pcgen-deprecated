@@ -36,6 +36,7 @@ final class TreeTableModelAdapter extends AbstractTableModel
 {
 	private JTree tree;
 	private TreeTableModel treeTableModel;
+	private TreeModelListener modelListener;
 
 	/**
 	 * Constructor
@@ -68,7 +69,7 @@ final class TreeTableModelAdapter extends AbstractTableModel
 		 * not be guaranteed the tree will have finished processing
 		 * the event before us.
 		 **/
-		treeTableModel.addTreeModelListener(new TreeModelListener()
+		modelListener = new TreeModelListener()
 		{
 			public void treeNodesChanged(TreeModelEvent e)
 			{
@@ -89,16 +90,23 @@ final class TreeTableModelAdapter extends AbstractTableModel
 			{
 				fireTableStructureChanged();
 			}
-		});
+		};
+		treeTableModel.addTreeModelListener(modelListener);
 	}
 
+	public void setTreeTableModel(TreeTableModel model)
+	{
+	    treeTableModel.removeTreeModelListener(modelListener);
+	    treeTableModel = model;
+	    treeTableModel.addTreeModelListener(modelListener);
+	}
+	
 	@Override
 	public boolean isCellEditable(int row, int column)
 	{
 		return treeTableModel.isCellEditable(nodeForRow(row), column);
 	}
 
-	@Override
 	public Class<?> getColumnClass(int column)
 	{
 		return treeTableModel.getColumnClass(column);
@@ -110,7 +118,6 @@ final class TreeTableModelAdapter extends AbstractTableModel
 		return treeTableModel.getColumnCount();
 	}
 
-	@Override
 	public String getColumnName(int column)
 	{
 		return treeTableModel.getColumnName(column);
@@ -121,7 +128,6 @@ final class TreeTableModelAdapter extends AbstractTableModel
 		return tree.getRowCount();
 	}
 
-	@Override
 	public void setValueAt(Object value, int row, int column)
 	{
 		treeTableModel.setValueAt(value, nodeForRow(row), column);
@@ -139,6 +145,6 @@ final class TreeTableModelAdapter extends AbstractTableModel
 		{
 			return treePath.getLastPathComponent();
 		}
-		return "";
+		return null;
 	}
 }

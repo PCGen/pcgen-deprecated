@@ -45,6 +45,14 @@ public interface FilterConstants
 	int DEMO_MODE = -1;
 	/** DISABLED_MODE = -2 */
 	int DISABLED_MODE = -2;
+	/** MATCH_ALL = 0 */
+	int MATCH_ALL = 0;
+	/** MATCH_ALL_NEGATE = 1 */
+	int MATCH_ALL_NEGATE = 1;
+	/** MATCH_ANY = 2 */
+	int MATCH_ANY = 2;
+	/** MATCH_ANY_NEGATE = 3 */
+	int MATCH_ANY_NEGATE = 3;
 	/** MONSTER = 1 */
 	int MONSTER = 1;
 	/** MULTI_MULTI_MODE = 2 */

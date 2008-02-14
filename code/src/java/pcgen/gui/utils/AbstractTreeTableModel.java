@@ -29,11 +29,8 @@ public abstract class AbstractTreeTableModel implements TreeTableModel
 {
 	private final EventListenerList listenerList = new EventListenerList();
 	private Object root;
+	private String qFilter = null;
 
-	public AbstractTreeTableModel()
-	{
-	    this(null);
-	}
 	/**
 	 * Constructor
 	 * @param root
@@ -266,4 +263,37 @@ public abstract class AbstractTreeTableModel implements TreeTableModel
 	 *   public String getColumnName(Object node, int column)
 	 *   public Object getValueAt(Object node, int column)
 	 */
+
+	/**
+	 * Get the QuickFilter
+	 * @return QuickFilter
+	 */
+	public String getQFilter()
+	{
+		return qFilter;
+	}
+
+	/**
+	 * Set theQuickFilter
+	 * @param quickFilter
+	 */
+	public void setQFilter(String quickFilter)
+	{
+		if (quickFilter != null)
+		{
+			this.qFilter = quickFilter.toLowerCase();
+		}
+		else
+		{
+			this.qFilter = null;
+		}
+	}
+
+	/**
+	 * Clear the QuickFilter
+	 */
+	public void clearQFilter()
+	{
+		this.qFilter = null;
+	}
 }
