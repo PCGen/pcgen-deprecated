@@ -225,11 +225,11 @@ public final class TreeViewFactory
     private static <T> PObjectNode buildView(PriorityQueue<TreeViewPath<T>> pathqueue)
     {
 	PObjectNode root = new PObjectNode();
-	Map<TreePath, PObjectNode> nodeMap = new HashMap<TreePath, PObjectNode>(pathqueue.size() * 2);
+	Map<TreeViewPath<T>, PObjectNode> nodeMap = new HashMap<TreeViewPath<T>, PObjectNode>(pathqueue.size() * 2);
 	while (!pathqueue.isEmpty())
 	{
 	    PObjectNode last = null;
-	    for (TreePath path = pathqueue.poll(); path != null; path = path.getParentPath())
+	    for (TreeViewPath<T> path = pathqueue.poll(); path != null; path = path.getParentPath())
 	    {
 		PObjectNode node = nodeMap.get(path);
 		if (node == null)
