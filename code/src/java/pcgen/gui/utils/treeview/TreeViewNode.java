@@ -60,8 +60,9 @@ public class TreeViewNode<E> implements TreeNode
     }
     private boolean remap(TreeViewPathComparator<E> comparator)
     {
-	
+	return false;
     }
+    
     public void createChild(TreeViewPath<E> path)
     {
 	if (path.getPathCount() < depth)
