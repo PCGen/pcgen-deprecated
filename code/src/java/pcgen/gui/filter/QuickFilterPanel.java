@@ -72,7 +72,7 @@ public class QuickFilterPanel extends javax.swing.JPanel
     private void updateQueryFilter()
     {
 	String text = QueryField.getText();
-	if (text.isEmpty())
+	if (text.length() == 0)
 	{
 	    clearQueryFilter();
 	}
