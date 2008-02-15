@@ -33,6 +33,7 @@ my ($SCRIPTNAME) = ( $PROGRAM_NAME =~ m{ ( [^/\\]* ) \z }xms );
 my $VERSION_LONG = "$SCRIPTNAME version: $VERSION -- $VERSION_DATE";
 
 my $today = localtime;
+our $logging; 
 
 use Carp;
 use Getopt::Long;
@@ -44,6 +45,10 @@ use Data::Dumper   ();
 use File::Find     ();
 use File::Basename ();
 use Text::Balanced ();
+use lib '.'; 
+
+use Ewarn;
+
 
 #use Data::Dump qw(dump);
 
@@ -335,6 +340,7 @@ else {
 if ( $cl_options{nowarning} && $cl_options{warning_level} >= INFO ) {
     $cl_options{warning_level} = NOTICE;
 }
+$logging = Ewarn->new(warning_level=>$cl_options{warning_level});
 
 #####################################
 # Convertion options
@@ -4396,7 +4402,7 @@ if ($cl_options{input_path}) {
     }
     File::Find::find( \&mywanted, $cl_options{input_path} );
 
-    set_ewarn_header("================================================================\n"
+    $logging->set_ewarn_header("================================================================\n"
                    . "Messages generated while parsing the .PCC files\n"
                    . "----------------------------------------------------------------\n"
     );
@@ -4491,7 +4497,7 @@ if ($cl_options{input_path}) {
                             push @pcc_lines, q{#} . pop @pcc_lines;
                             $must_write = YES;
 
-                            ewarn( WARNING,
+                            $logging->ewarn( WARNING,
                                    qq{Commenting out "$pcc_lines[$#pcc_lines]"},
                                    $pcc_file_name,
                                    $INPUT_LINE_NUMBER
@@ -4510,7 +4516,7 @@ if ($cl_options{input_path}) {
                         push @pcc_lines, q{#} . pop @pcc_lines;
                         $must_write = YES;
 
-                        ewarn( WARNING,
+                        $logging->ewarn( WARNING,
                                qq{Commenting out "$pcc_lines[$#pcc_lines]"},
                                $pcc_file_name,
                                $INPUT_LINE_NUMBER
@@ -4543,7 +4549,7 @@ if ($cl_options{input_path}) {
                         if ( exists $source_tags{$path}{$tag}
                             && $path !~ /custom|altpcc/i )
                         {
-                            ewarn( NOTICE,
+                            $logging->ewarn( NOTICE,
                                    "$tag already found for $path",
                                    $pcc_file_name,
                                    $INPUT_LINE_NUMBER
@@ -4585,7 +4591,7 @@ if ($cl_options{input_path}) {
                         if ($valid_game_mode) {
                             for my $mode (@modes) {
                                 if ( !$valid_game_modes{$mode} ) {
-                                    ewarn( NOTICE,
+                                    $logging->ewarn( NOTICE,
                                            qq{Invalid GAMEMODE "$mode" in "$_"},
                                            $pcc_file_name,
                                            $INPUT_LINE_NUMBER
@@ -4614,7 +4620,7 @@ if ($cl_options{input_path}) {
 
                         # [ 707325 ] PCC: GAME is now GAMEMODE
                         $pcc_lines[-1] = "GAMEMODE:$value";
-                        ewarn( WARNING,
+                        $logging->ewarn( WARNING,
                                qq{Replacing "$tag:$value" by "GAMEMODE:$value"},
                                $pcc_file_name,
                                $INPUT_LINE_NUMBER
@@ -4631,7 +4637,7 @@ if ($cl_options{input_path}) {
                 }
             }
             elsif ( / <html> /xmsi ) {
-                ewarn( ERROR,
+                $logging->ewarn( ERROR,
                     "HTML file detected. Maybe you had a problem with your CSV checkout.\n",
                     $pcc_file_name
                 );
@@ -4646,7 +4652,7 @@ if ($cl_options{input_path}) {
           && $found_filetype{'CLASSSPELL'}
           && !$found_filetype{'SPELL'}
         ) {
-            ewarn(WARNING,
+            $logging->ewarn(WARNING,
                   'No SPELL file found, create one.',
                   $pcc_file_name
             );
@@ -4656,18 +4662,18 @@ if ($cl_options{input_path}) {
           && $found_filetype{'CLASSSKILL'}
           && !$found_filetype{'CLASS'}
         ) {
-            ewarn(WARNING,
+            $logging->ewarn(WARNING,
                   'No CLASS file found, create one.',
                   $pcc_file_name
             );
         }
 
         if ( !$BOOKTYPE_found && $LST_found ) {
-            ewarn( NOTICE, 'No BOOKTYPE tag found', $pcc_file_name );
+            $logging->ewarn( NOTICE, 'No BOOKTYPE tag found', $pcc_file_name );
         }
 
         if (!$GAMEMODE_found) {
-            ewarn( NOTICE, 'No GAMEMODE tag found', $pcc_file_name );
+            $logging->ewarn( NOTICE, 'No GAMEMODE tag found', $pcc_file_name );
         }
 
         if ( $GAMEMODE_found && $cl_options{exportlist} ) {
@@ -4703,16 +4709,16 @@ if ($cl_options{input_path}) {
 
     # Is there anything to parse?
     if ( !keys %files_to_parse ) {
-        ewarn( ERROR,
+        $logging->ewarn( ERROR,
             qq{Could not find any .lst file to parse.},
             $cl_options{input_path}
         );
-        ewarn( ERROR,
+        $logging->ewarn( ERROR,
             qq{Is your -inputpath parameter valid? ($cl_options{input_path})},
             $cl_options{input_path}
         );
         if ( $cl_options{gamemode} ) {
-            ewarn( ERROR,
+            $logging->ewarn( ERROR,
                 qq{Is your -gamemode parameter valid? ($cl_options{gamemode})},
                 $cl_options{input_path}
             );
@@ -4722,12 +4728,12 @@ if ($cl_options{input_path}) {
 
     # Missing .lst files must be printed
     if ( keys %filelist_missing ) {
-        set_ewarn_header("================================================================\n"
+        $logging->set_ewarn_header("================================================================\n"
                        . "List of files used in a .PCC that do not exist\n"
                        . "----------------------------------------------------------------\n"
         );
         for my $lstfile ( sort keys %filelist_missing ) {
-            ewarn( NOTICE,
+            $logging->ewarn( NOTICE,
                 "Can't find the file: $lstfile",
                 $filelist_missing{$lstfile}[0],
                 $filelist_missing{$lstfile}[1]
@@ -4737,7 +4743,7 @@ if ($cl_options{input_path}) {
 
     # If the gamemode filter is active, we do not report file not refered to.
     if ( keys %filelist_notpcc && !$cl_options{gamemode} ) {
-        set_ewarn_header("================================================================\n"
+        $logging->set_ewarn_header("================================================================\n"
                        . "List of files that are not referenced by any .PCC files\n"
                        . "----------------------------------------------------------------\n"
         );
@@ -4745,7 +4751,7 @@ if ($cl_options{input_path}) {
         for my $file ( sort keys %filelist_notpcc ) {
             $file =~ s/$cl_options{basepath}//i;
             $file =~ tr{/}{\\} if $^O eq "MSWin32";
-            ewarn( NOTICE,  "$file\n", "" );
+            $logging->ewarn( NOTICE,  "$file\n", "" );
         }
     }
 }
@@ -4753,7 +4759,7 @@ else {
     $files_to_parse{'STDIN'} = $cl_options{file_type};
 }
 
-set_ewarn_header("================================================================\n"
+$logging->set_ewarn_header("================================================================\n"
                . "Messages generated while parsing the .LST files\n"
                . "----------------------------------------------------------------\n"
 );
@@ -4839,20 +4845,20 @@ for my $file (@files_to_parse_sorted) {
 
         if ( $EVAL_ERROR ) {
             # There was an error in the eval
-            ewarn( ERROR, $EVAL_ERROR, $file );
+            $logging->ewarn( ERROR, $EVAL_ERROR, $file );
             next FILE_TO_PARSE;
         }
     }
 
     # If the file is empty, we skip it
     unless (@lines) {
-        ewarn( NOTICE,  "Empty file.", $file );
+        $logging->ewarn( NOTICE,  "Empty file.", $file );
         next FILE_TO_PARSE;
     }
 
     # Check to see if we deal with a HTML file
     if ( grep /<html>/i, @lines ) {
-        ewarn( ERROR, "HTML file detected. Maybe you had a problem with your CSV checkout.\n", $file );
+        $logging->ewarn( ERROR, "HTML file detected. Maybe you had a problem with your CSV checkout.\n", $file );
         next FILE_TO_PARSE;
     }
 
@@ -4877,7 +4883,7 @@ for my $file (@files_to_parse_sorted) {
     }
 
     if($numberofcf) {
-        ewarn( WARNING, "$numberofcf extra CF found and removed.", $file );
+        $logging->ewarn( WARNING, "$numberofcf extra CF found and removed.", $file );
     }
 
     if ( ref( $validfiletype{ $files_to_parse{$file} } ) eq "CODE" ) {
@@ -4976,7 +4982,7 @@ if ( $conversion_enable{'BIOSET:generate the new files'} ) {
 if ( $cl_options{output_path} && scalar(@modified_files) ) {
     $cl_options{output_path} =~ tr{/}{\\} if $^O eq "MSWin32";
 
-    set_ewarn_header("================================================================\n"
+    $logging->set_ewarn_header("================================================================\n"
                    . "List of files that were created in the directory\n"
                    . "$cl_options{output_path}\n"
                    . "----------------------------------------------------------------\n"
@@ -4985,7 +4991,7 @@ if ( $cl_options{output_path} && scalar(@modified_files) ) {
     for my $file (@modified_files) {
         $file =~ s{ $cl_options{input_path} }{}xmsi;
         $file =~ tr{/}{\\} if $^O eq "MSWin32";
-        ewarn( NOTICE, "$file\n", "" );
+        $logging->ewarn( NOTICE, "$file\n", "" );
     }
 
     print STDERR "================================================================\n";
@@ -5192,7 +5198,7 @@ if ( $cl_options{xcheck} ) {
     }
 
     # Print the report sorted by file name and line number.
-    set_ewarn_header("================================================================\n"
+    $logging->set_ewarn_header("================================================================\n"
                    . "Cross-reference problems found\n"
                    . "----------------------------------------------------------------\n"
     );
@@ -5205,7 +5211,7 @@ if ( $cl_options{xcheck} ) {
 	    
 	    # If it is an EQMOD Key missing, it is less severe
 	    my $message_level = $line_ref->[1] eq 'EQUIPMOD Key' ? INFO : NOTICE;
-	    ewarn( $message_level,  $message, $file, $line_ref->[0] );
+	    $logging->ewarn( $message_level,  $message, $file, $line_ref->[0] );
 	}
     }
 
@@ -5225,14 +5231,14 @@ if ( $cl_options{xcheck} ) {
     }
 
     # Print the type report sorted by file name and line number.
-    set_ewarn_header("================================================================\n"
+    $logging->set_ewarn_header("================================================================\n"
                    . "Type cross-reference problems found\n"
                    . "----------------------------------------------------------------\n"
     );
 
     for my $file ( sort keys %to_report ) {
         for my $line_ref ( sort { $a->[0] <=> $b->[0] } @{ $to_report{$file} } ) {
-            ewarn( NOTICE,
+            $logging->ewarn( NOTICE,
                 qq{No $line_ref->[1] type found for "$line_ref->[2]"},
                 $file,
                 $line_ref->[0]
@@ -5256,14 +5262,14 @@ if ( $cl_options{xcheck} ) {
     }
 
     # Print the category report sorted by file name and line number.
-    set_ewarn_header("================================================================\n"
+    $logging->set_ewarn_header("================================================================\n"
                    . "Category cross-reference problems found\n"
                    . "----------------------------------------------------------------\n"
     );
 
     for my $file ( sort keys %to_report ) {
         for my $line_ref ( sort { $a->[0] <=> $b->[0] } @{ $to_report{$file} } ) {
-            ewarn( NOTICE,
+            $logging->ewarn( NOTICE,
                 qq{No $line_ref->[1] category found for "$line_ref->[2]"},
                 $file,
                 $line_ref->[0]
@@ -5422,7 +5428,7 @@ sub FILETYPE_parse {
 
         # Did we find anything?
         if ( $index >= @{ $master_file_type{$file_type} } ) {
-            ewarn(WARNING,
+            $logging->ewarn(WARNING,
                   qq(Can\'t find the line type for "$new_line"),
                   $file_for_error,
                   $line_for_error
@@ -5446,7 +5452,7 @@ sub FILETYPE_parse {
             $last_main_line = $line_for_error - 1;
         }
         elsif ( $line_info->{Mode} == SUB ) {
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{SUB line "$curent_linetype" is not preceded by a MAIN line},
                 $file_for_error,
                 $line_for_error
@@ -5481,7 +5487,7 @@ sub FILETYPE_parse {
             #      $tokens[0] =~ s/^\s+//;
 
             # We remove the enclosing quotes if any
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Removing quotes around the '$tokens[0]' tag},
                 $file_for_error,
                 $line_for_error
@@ -5541,7 +5547,7 @@ sub FILETYPE_parse {
                                     }
                                 }
                                 else {
-                                    ewarn(WARNING,
+                                    $logging->ewarn(WARNING,
                                           qq(Cannot find the $curent_linetype name),
                                           $file_for_error,
                                           $line_for_error
@@ -5569,7 +5575,7 @@ sub FILETYPE_parse {
 
             if ($key) {
                 if ( exists $line_tokens{$key} && !exists $master_mult{$curent_linetype}{$key} ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{The tag "$key" should not be used more than once on the same $curent_linetype line.\n},
                         $file_for_error,
                         $line_for_error
@@ -5580,7 +5586,7 @@ sub FILETYPE_parse {
                     = exists $line_tokens{$key} ? [ @{ $line_tokens{$key} }, $token ] : [$token];
             }
             else {
-                ewarn( WARNING, "No tags in \"$token\"\n", $file_for_error, $line_for_error );
+                $logging->ewarn( WARNING, "No tags in \"$token\"\n", $file_for_error, $line_for_error );
                 $line_tokens{$token} = $token;
             }
         }
@@ -6403,7 +6409,7 @@ sub parse_tag {
     my $no_more_error = 0;    # Set to 1 if no more error must be displayed.
 
     # We remove the enclosing quotes if any
-    ewarn( WARNING, qq{Removing quotes around the '$tag_text' tag}, $file_for_error, $line_for_error)
+    $logging->ewarn( WARNING, qq{Removing quotes around the '$tag_text' tag}, $file_for_error, $line_for_error)
         if $tag_text =~ s/^"(.*)"$/$1/;
 
     # Is this a pragma?
@@ -6428,7 +6434,7 @@ sub parse_tag {
     if ( (!defined $value || $value eq q{})
          && $tag_text ne 'LICENSE:'
        ) {
-        ewarn(WARNING,
+        $logging->ewarn(WARNING,
               qq(The tag "$tag_text" is missing a value (or you forgot a : somewhere)),
               $file_for_error,
               $line_for_error
@@ -6468,7 +6474,7 @@ sub parse_tag {
 	foreach my $st (@spelltypes) {
 	    $value .= "$st=$num_levels";
 	}
-	ewarn( NOTICE,
+	$logging->ewarn( NOTICE,
 	       qq{Invalid standalone PRESPELLTYPE tag "$tag_text" found and converted in $linetype.},
 	       $file_for_error,
 	       $line_for_error
@@ -6482,7 +6488,7 @@ sub parse_tag {
 	&& $tag_text =~ /PRESPELLTYPE:([^\d]+),(\d+),(\d+)/)
     {
 	$value =~ s/PRESPELLTYPE:([^\d,]+),(\d+),(\d+)/PRESPELLTYPE:$2,$1=$3/g;
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid embedded PRESPELLTYPE tag "$tag_text" found and converted $linetype.},
                     $file_for_error,
                     $line_for_error
@@ -6494,7 +6500,7 @@ sub parse_tag {
     # Warn if there are arguments passed to CHOOSE:SCHOOLS
 
     if ($tag_text =~ '^CHOOSE:SCHOOLS\|') {
-        ewarn(WARNING,
+        $logging->ewarn(WARNING,
 	       qq{Invalid format in "$tag_text", CHOOSE:SCHOOLS does not support any additional arguments or the pipe separator.},
 	       $file_for_error,
 	       $line_for_error
@@ -6529,7 +6535,7 @@ sub parse_tag {
         }
         else {
             unless ( index( $tag_text, '#' ) == 0 ) {
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid ADD tag "$tag_text" found in $linetype.},
                     $file_for_error,
                     $line_for_error
@@ -6551,7 +6557,7 @@ sub parse_tag {
        	# No valid Qualify type found
 	   $count_tags{"Invalid"}{"Total"}{"$tag:$qualify_type"}++;
 	   $count_tags{"Invalid"}{$linetype}{"$tag:$qualify_type"}++;
-	   ewarn( NOTICE,
+	   $logging->ewarn( NOTICE,
 		  qq{Invalid QUALIFY:$qualify_type tag "$tag_text" found in $linetype.},
 		  $file_for_error,
 		  $line_for_error
@@ -6561,7 +6567,7 @@ sub parse_tag {
        else {
 	   $count_tags{"Invalid"}{"Total"}{"QUALIFY"}++;
 	   $count_tags{"Invalid"}{$linetype}{"QUALIFY"}++;
-	   ewarn( NOTICE,
+	   $logging->ewarn( NOTICE,
 		  qq{Invalid QUALIFY tag "$tag_text" found in $linetype},
 		  $file_for_error,
 		  $line_for_error
@@ -6584,7 +6590,7 @@ sub parse_tag {
             # No valid bonus type was found
             $count_tags{"Invalid"}{"Total"}{"$tag:$bonus_type"}++;
             $count_tags{"Invalid"}{$linetype}{"$tag:$bonus_type"}++;
-            ewarn( NOTICE,
+            $logging->ewarn( NOTICE,
                 qq{Invalid BONUS:$bonus_type tag "$tag_text" found in $linetype.},
                 $file_for_error,
                 $line_for_error
@@ -6594,7 +6600,7 @@ sub parse_tag {
         else {
             $count_tags{"Invalid"}{"Total"}{"BONUS"}++;
             $count_tags{"Invalid"}{$linetype}{"BONUS"}++;
-            ewarn( NOTICE,
+            $logging->ewarn( NOTICE,
                 qq{Invalid BONUS tag "$tag_text" found in $linetype},
                 $file_for_error,
                 $line_for_error
@@ -6624,7 +6630,7 @@ sub parse_tag {
             if ( $value =~ /^([^=:|]+)/ ) {
                 $count_tags{"Invalid"}{"Total"}{"$tag:$1"}++;
                 $count_tags{"Invalid"}{$linetype}{"$tag:$1"}++;
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid $tag:$1 tag "$tag_text" found in $linetype.},
                     $file_for_error,
                     $line_for_error
@@ -6633,7 +6639,7 @@ sub parse_tag {
             else {
                 $count_tags{"Invalid"}{"Total"}{"AUTO"}++;
                 $count_tags{"Invalid"}{$linetype}{"AUTO"}++;
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid AUTO tag "$tag_text" found in $linetype},
                     $file_for_error,
                     $line_for_error
@@ -6664,7 +6670,7 @@ sub parse_tag {
             if ( $value =~ /^([^=:|]+)/ ) {
                 $count_tags{"Invalid"}{"Total"}{"$tag:$1"}++;
                 $count_tags{"Invalid"}{$linetype}{"$tag:$1"}++;
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid SPELLLEVEL:$1 tag "$tag_text" found in $linetype.},
                     $file_for_error,
                     $line_for_error
@@ -6673,7 +6679,7 @@ sub parse_tag {
             else {
                 $count_tags{"Invalid"}{"Total"}{"SPELLLEVEL"}++;
                 $count_tags{"Invalid"}{$linetype}{"SPELLLEVEL"}++;
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid SPELLLEVEL tag "$tag_text" found in $linetype},
                     $file_for_error,
                     $line_for_error
@@ -6691,7 +6697,7 @@ sub parse_tag {
     #ewarn( DEBUG, qq{parse_tag:$tag_text}, $file_for_error, $line_for_error );
     if ( defined $value && $value =~ /^.CLEAR/i ) {
         if ( !exists $valid_tags{$linetype}{"$tag:.CLEAR"} ) {
-            ewarn( NOTICE,
+            $logging->ewarn( NOTICE,
                 qq{The tag "$tag:.CLEAR" from "$tag_text" is not in the $linetype tag list\n},
                 $file_for_error,
                 $line_for_error
@@ -6718,7 +6724,7 @@ sub parse_tag {
 	    }
 	}
 	if ($do_warn) {
-	    ewarn( NOTICE,
+	    $logging->ewarn( NOTICE,
 		   qq{The tag "$tag" from "$tag_text" is not in the $linetype tag list\n},
 		   $file_for_error,
 		   $line_for_error
@@ -6764,7 +6770,7 @@ sub parse_tag {
 
                 # Is it a valid alignment?
                 if (!exists $tag_fix_value{$tag}{$align}) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{Invalid value "$align" for tag "$real_tag"},
                         $file_for_error,
                         $line_for_error
@@ -6781,7 +6787,7 @@ sub parse_tag {
 
             # Is this a proper value for the tag?
             if ( !exists $tag_fix_value{$tag}{$newvalue} ) {
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid value "$value" for tag "$real_tag"},
                     $file_for_error,
                     $line_for_error
@@ -6794,7 +6800,7 @@ sub parse_tag {
 
         # Was the tag changed ?
         if ( $is_valid && $value ne $newvalue ) {
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Replaced "$real_tag:$value" by "$real_tag:$newvalue"},
                 $file_for_error,
                 $line_for_error
@@ -6816,7 +6822,7 @@ sub parse_tag {
     # If there is already a :  in the tag name, no need to add one more
     my $need_sep = index( $real_tag, ':' ) == -1 ? q{:} : q{};
 
-    ewarn ( DEBUG, qq{parse_tag: $tag_text}, $file_for_error, $line_for_error )
+    $logging->ewarn ( DEBUG, qq{parse_tag: $tag_text}, $file_for_error, $line_for_error )
         if $value eq q{};
 
     # We change the tag_text value from the caller
@@ -6913,21 +6919,21 @@ BEGIN {
 
         # Deprecated tags
         if ( $tag_name eq 'HITDICESIZE' ) {
-            ewarn( INFO,
+            $logging->ewarn( INFO,
                 qq{HITDICESIZE is deprecated, use HITDIE instead.},
                 $file_for_error,
                 $line_for_error
             );
         }
         elsif ( $tag_name eq 'SPELL' && $linetype ne 'PCC' ) {
-            ewarn( INFO,
+            $logging->ewarn( INFO,
                 qq{SPELL is deprecated, use SPELLS instead.},
                 $file_for_error,
                 $line_for_error
             );
         }
         elsif ( $tag_name eq 'WEAPONAUTO' ) {
-            ewarn( INFO,
+            $logging->ewarn( INFO,
                 qq{WEAPONAUTO is deprecated, use AUTO:WEAPONPROF instead.},
                 $file_for_error,
                 $line_for_error
@@ -6936,7 +6942,7 @@ BEGIN {
 	elsif ( $tag_name =~ /^ADD/
 		&& $tag_value =~ /^WEAPONBONUS/ ) 
 	{
-	    ewarn( INFO,
+	    $logging->ewarn( INFO,
 		   qq{ADD:WEAPONBONUS is deprecated, use BONUS instead.},
 		   $file_for_error,
 		   $line_for_error
@@ -6944,14 +6950,14 @@ BEGIN {
 	}
 	elsif ( $tag_name =~ /^ADD/
 		&& $tag_value =~ /^LIST/ ) {
-	    ewarn( INFO,
+	    $logging->ewarn( INFO,
 		   qq{ADD:LIST is deprecated, use BONUS instead.},
 		   $file_for_error,
 		   $line_for_error
 		   );	    
 	}
 	elsif ( $tag_name =~ /^FOLLOWERALIGN/) {
-	    ewarn( INFO,
+	    $logging->ewarn( INFO,
 		   qq{FOLLOWERALIGN is deprecated, use PREALIGN on Domain instead. Convert using Followeralign to fix this problem.},
 		   $file_for_error,
 		   $line_for_error
@@ -7013,7 +7019,7 @@ BEGIN {
 
                         # Is the check name valid
                         if ( !exists $valid_check_name{$clean_check_name} ) {
-                            ewarn( NOTICE,
+                            $logging->ewarn( NOTICE,
                                 qq{Invalid save check name "$clean_check_name" found in "$tag_name$tag_value"},
                                 $file_for_error,
                                 $line_for_error
@@ -7023,7 +7029,7 @@ BEGIN {
 
                     # Verify if there is a mix of BASE and non BASE
                     if ( $found_base && $found_non_base ) {
-                        ewarn( INFO,
+                        $logging->ewarn( INFO,
                             qq{Are you sure you want to mix BASE and non-BASE in "$tag_name$tag_value"},
                             $file_for_error,
                             $line_for_error
@@ -7059,7 +7065,7 @@ BEGIN {
                 if ( ( shift @list_of_param ) ne 'POOL' ) {
 
                     # For now, only POOL is valid here
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{Only POOL is valid as second paramater for BONUS:FEAT "$tag_name$tag_value"},
                         $file_for_error,
                         $line_for_error
@@ -7099,7 +7105,7 @@ BEGIN {
                         $type_present++;
                     }
                     else {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Invalid parameter "$param" found in "$tag_name$tag_value"},
                             $file_for_error,
                             $line_for_error
@@ -7108,7 +7114,7 @@ BEGIN {
                 }
 
                 if ( $type_present > 1 ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{There should be only one "TYPE=" in "$tag_name$tag_value"},
                         $file_for_error,
                         $line_for_error
@@ -7138,7 +7144,7 @@ BEGIN {
                             ];
                     }
                     else {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq(Missing "TYPE=" for "$type" in "$tag_name$tag_value"),
                             $file_for_error,
                             $line_for_error
@@ -7173,7 +7179,7 @@ BEGIN {
                 # We first check the slot types
                 for my $type ( split ',', $type_list ) {
                     unless ( exists $token_BONUS_SLOTS_types{$type} ) {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Invalid slot type "$type" in "$tag_name$tag_value"},
                             $file_for_error,
                             $line_for_error
@@ -7219,7 +7225,7 @@ BEGIN {
                         }
                     }
                     else {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Invalid variable name "$var_name" in "$tag_name$tag_value"},
                             $file_for_error,
                             $line_for_error
@@ -7254,7 +7260,7 @@ BEGIN {
                 # Validate the category to see if valid
                 for my $category ( split ',', $category_list ) {
                     if ( !exists $valid_WIELDCATEGORY{$category} ) {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Invalid category "$category" in "$tag_name$tag_value"},
                             $file_for_error,
                             $line_for_error
@@ -7309,7 +7315,7 @@ BEGIN {
                                     ];
 
                                 if ( $seen{$entity}++ ) {
-                                    ewarn( NOTICE,
+                                    $logging->ewarn( NOTICE,
                                         qq{"$entity" found more then once in $tag_name},
                                         $file_for_error,
                                         $line_for_error
@@ -7319,7 +7325,7 @@ BEGIN {
                         }
                     }
                     else {
-                        ewarn( WARNING,
+                        $logging->ewarn( WARNING,
                             qq{Missing "=level" after "$tag_name:$level"},
                             $file_for_error,
                             $line_for_error
@@ -7457,7 +7463,7 @@ BEGIN {
                      ];
             }
             else {
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid syntax: "$tag_name$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -7502,7 +7508,7 @@ BEGIN {
                      ];
             }
             else {
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid syntax: "$tag_name$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -7536,7 +7542,7 @@ BEGIN {
                             ];
                     }
                     else {
-                        ewarn(WARNING,
+                        $logging->ewarn(WARNING,
                               qq(Cannot find the key for "$_" in "$tag_name:$tag_value"),
                               $file_for_error,
                               $line_for_error
@@ -7606,7 +7612,7 @@ BEGIN {
                          ] if $formula;
                 }
                 else {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{Invalid systax: "$tag_name$tag_value"},
                         $file_for_error,
                         $line_for_error
@@ -7708,7 +7714,7 @@ BEGIN {
                     ];
             }
             else {
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid syntax for "$tag_name$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -7729,7 +7735,7 @@ BEGIN {
 
                 # $type should be a word and $value should be a number
                 if ( $type =~ /^\d+$/ ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{I was expecting a move type where I found "$type" in "$tag_name:$tag_value"},
                         $file_for_error,
                         $line_for_error
@@ -7743,7 +7749,7 @@ BEGIN {
                 }
 
                 unless ( $value =~ /^\d+$/ ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{I was expecting a number after "$type" and found "$value" in "$tag_name:$tag_value"},
                         $file_for_error,
                         $line_for_error
@@ -7832,7 +7838,7 @@ BEGIN {
                      ];
             }
             else {
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{Invalid syntax: "$tag_name$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -7913,7 +7919,7 @@ BEGIN {
                             # No DC present, the whole param is the spell name
                             push @spells, $param;
 
-                            ewarn(INFO,
+                            $logging->ewarn(INFO,
                                   qq(the DC value is missing for "$param" in "$tag_name:$tag_value"),
                                   $file_for_error,
                                   $line_for_error
@@ -7932,14 +7938,14 @@ BEGIN {
                 # Validate the number of TIMES and CASTERLEVEL parameters
                 if ( $nb_times != 1 ) {
                     if ($nb_times) {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{TIMES= should not be used more then once in "$tag_name:$tag_value"},
                             $file_for_error,
                             $line_for_error
                         );
                     }
                     else {
-                        ewarn( INFO,
+                        $logging->ewarn( INFO,
                             qq(the TIMES= parameter is missing in "$tag_name:$tag_value"),
                             $file_for_error,
                             $line_for_error
@@ -7949,14 +7955,14 @@ BEGIN {
 
                 if ( $nb_casterlevel != 1 ) {
                     if ($nb_casterlevel) {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{CASTERLEVEL= should not be used more then once in "$tag_name:$tag_value"},
                             $file_for_error,
                             $line_for_error
                         );
                     }
                     else {
-                        ewarn( INFO,
+                        $logging->ewarn( INFO,
                             qq(the CASTERLEVEL= parameter is missing in "$tag_name:$tag_value"),
                             $file_for_error,
                             $line_for_error
@@ -7995,7 +8001,7 @@ BEGIN {
                             push @spells, $param_id;
                         }
                         else {
-                            ewarn( NOTICE,
+                            $logging->ewarn( NOTICE,
                                 qq{Invalide SPELLS parameter: "$spell_or_param" found in "$tag_name:$tag_value"},
                                 $file_for_error,
                                 $line_for_error
@@ -8064,7 +8070,7 @@ BEGIN {
                                     ];
                             }
                             else {
-                                ewarn( NOTICE,
+                                $logging->ewarn( NOTICE,
                                     qq{Invalid syntax for "$class" in "$tag_name$tag_value"},
                                     $file_for_error,
                                     $line_for_error
@@ -8081,7 +8087,7 @@ BEGIN {
                                 ];
                         }
                         else {
-                            ewarn( NOTICE,
+                            $logging->ewarn( NOTICE,
                                 qq{Invalid class/spell list paring in "$tag_name$tag_value"},
                                 $file_for_error,
                                 $line_for_error
@@ -8091,7 +8097,7 @@ BEGIN {
                     }
                 }
                 else {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{No value found for "$tag_name"},
                         $file_for_error,
                         $line_for_error
@@ -8127,7 +8133,7 @@ BEGIN {
                                     ];
                             }
                             else {
-                                ewarn( NOTICE,
+                                $logging->ewarn( NOTICE,
                                     qq{Invalid syntax for "$domain" in "$tag_name$tag_value"},
                                     $file_for_error,
                                     $line_for_error
@@ -8144,7 +8150,7 @@ BEGIN {
                                 ];
                         }
                         else {
-                            ewarn( NOTICE,
+                            $logging->ewarn( NOTICE,
                                 qq{Invalid domain/spell list paring in "$tag_name$tag_value"},
                                 $file_for_error,
                                 $line_for_error
@@ -8154,7 +8160,7 @@ BEGIN {
                     }
                 }
                 else {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{No value found for "$tag_name"},
                         $file_for_error,
                         $line_for_error
@@ -8172,7 +8178,7 @@ BEGIN {
                     my ($stat) = ( $stat_expression =~ / \A ([A-Z]{3}) [=] \d+ \z /xms );
                     if ( !defined $stat ) {
                         # Syntax error
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Invalid syntax for "$stat_expression" in "$tag_name:$tag_value"},
                             $file_for_error,
                             $line_for_error
@@ -8183,7 +8189,7 @@ BEGIN {
 
                     if ( !exists $stat_count_for{$stat} ) {
                         # The stat is not part of the official list
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Invalid attribute name "$stat" in "$tag_name:$tag_value"},
                             $file_for_error,
                             $line_for_error
@@ -8197,7 +8203,7 @@ BEGIN {
                 # We check to see if some stat are repeated
                 for my $stat (@valid_system_stats) {
                     if ( $stat_count_for{$stat} > 1 ) {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Found $stat more then once in "$tag_name:$tag_value"},
                             $file_for_error,
                             $line_for_error
@@ -8337,7 +8343,7 @@ BEGIN {
 
                 # LOCK.xxx and BASE.xxx are not error (even if they are very ugly)
                 elsif ( $var_name !~ /(BASE|LOCK)\.(STR|DEX|CON|INT|WIS|CHA|DVR)/ ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{Invalid variable name "$var_name" in "$tag_name:$tag_value"},
                         $file_for_error,
                         $line_for_error
@@ -8345,7 +8351,7 @@ BEGIN {
                 }
             }
             else {
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{I was not able to find a proper variable name in "$tag_name:$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -8457,7 +8463,7 @@ BEGIN {
                 if ( scalar @parameters == 4 ) {
 
                     # Parameter 3 is a number
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{3rd parameter should be a number in "NATURALATTACKS:$entry"},
                         $file_for_error,
                         $line_for_error
@@ -8472,7 +8478,7 @@ BEGIN {
                         ];
                 }
                 else {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{Wrong number of parameter for "NATURALATTACKS:$entry"},
                         $file_for_error,
                         $line_for_error
@@ -8566,12 +8572,12 @@ sub validate_pre_tag {
         my $message = qq{Check for missing ":", no value for "$tag_name"};
         $message .= qq{ found in "$enclosing_tag"} if $enclosing_tag;
 
-        ewarn( WARNING, $message, $file_for_error, $line_for_error );
+        $logging->ewarn( WARNING, $message, $file_for_error, $line_for_error );
 
         return;
     }
 
-    ewarn( DEBUG,
+    $logging->ewarn( DEBUG,
         qq{validate_pre_tag: $tag_name; $tag_value; $enclosing_tag; $linetype;},
         $file_for_error,
         $line_for_error
@@ -8628,7 +8634,7 @@ sub validate_pre_tag {
         for my $item ( @items ) {
             if ( my ($check_name,$value) = ( $item =~ / \A ( \w+ ) = ( \d+ ) \z /xms ) ) {
                 if ( !exists $valid_check_name{$check_name} ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{Invalid save check name "$check_name" found in "$tag_name:$tag_value"},
                         $file_for_error,
                         $line_for_error
@@ -8636,7 +8642,7 @@ sub validate_pre_tag {
                 }
             }
             else {
-                ewarn( NOTICE,
+                $logging->ewarn( NOTICE,
                     qq{$pretag syntax error in "$item" found in "$tag_name:$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -8836,13 +8842,13 @@ sub validate_pre_tag {
                     my $message
                         = qq{Not a number after the = for "$move" in "$tag_name:$tag_value"};
                     $message .= qq{ found in "$enclosing_tag"} if $enclosing_tag;
-                    ewarn( NOTICE, $message, $file_for_error, $line_for_error );
+                    $logging->ewarn( NOTICE, $message, $file_for_error, $line_for_error );
                 }
             }
             else {
                 my $message = qq{Invalid "$move" in "$tag_name:$tag_value"};
                 $message .= qq{ found in "$enclosing_tag"} if $enclosing_tag;
-                ewarn( NOTICE, $message, $file_for_error, $line_for_error );
+                $logging->ewarn( NOTICE, $message, $file_for_error, $line_for_error );
             }
         }
     }
@@ -8887,7 +8893,7 @@ sub validate_pre_tag {
             else {
 
                 # No PRExxx tag found inside the PREMULT
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{No valid PRExxx tag found in "$inside" inside "PREMULT:$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -8924,7 +8930,7 @@ sub validate_pre_tag {
                 push @races_wild, $race_wild;
 
                 if ( $after_wild ne q{} ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                            qq{% used in wild card context should end the race name in "$race"},
                            $file_for_error,
                            $line_for_error
@@ -8954,7 +8960,7 @@ sub validate_pre_tag {
 			    }
 			}
 			if ($found == 0) {
-			    ewarn( INFO,
+			    $logging->ewarn( INFO,
 				   qq{Not able to validate "$race" in "PRERACE:$tag_value." This warning is order dependent. If the race is defined in a later file, this warning may not be accurate.},
 				   $file_for_error,
 				   $line_for_error
@@ -9045,7 +9051,7 @@ sub validate_pre_tag {
     # tags that are embeded since parse_tag already took care
     # of the PRExxx tags on the entry lines.
     elsif ( $enclosing_tag && !exists $PRE_Tags{$tag_name} ) {
-        ewarn( NOTICE,
+        $logging->ewarn( NOTICE,
             qq{Unknown PRExxx tag "$tag_name" found in "$enclosing_tag"},
             $file_for_error,
             $line_for_error
@@ -9256,7 +9262,7 @@ BEGIN {
                         while ( $valid_sub_entities{'FEAT'}{$feat_to_check} =~ /^FEAT=(.*)/ ) {
                             $feat_to_check = $1;
                             if ( !exists $valid_sub_entities{'FEAT'}{$feat_to_check} ) {
-                                ewarn( NOTICE,
+                                $logging->ewarn( NOTICE,
                                     qq{Cannot find the sub-entity for "$original_feat"},
                                     $file_for_error,
                                     $line_for_error
@@ -9319,7 +9325,7 @@ BEGIN {
                         while ( $valid_sub_entities{'ABILITY'}{$feat_to_check} =~ /^ABILITY=(.*)/ ) {
                             $feat_to_check = $1;
                             if ( !exists $valid_sub_entities{'ABILITY'}{$feat_to_check} ) {
-                                ewarn( NOTICE,
+                                $logging->ewarn( NOTICE,
                                     qq{Cannot find the sub-entity for "$original_feat"},
                                     $file_for_error,
                                     $line_for_error
@@ -9573,7 +9579,7 @@ BEGIN {
             }
         }
         else {
-            ewarn( ERROR,
+            $logging->ewarn( ERROR,
                 "Invalid Entry type for $tag_name (add_to_xcheck_tables): $entry_type",
                 $file_for_error,
                 $line_for_error
@@ -9619,7 +9625,7 @@ sub extract_var_name {
         if ( @values > 2 ) {
 
             # There should only be one = per variable
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Too many = in "$1" found in "$tag"},
                 $file_for_error,
                 $line_for_error
@@ -9654,7 +9660,7 @@ sub extract_var_name {
                  ];
         }
         else {
-            ewarn( NOTICE,
+            $logging->ewarn( NOTICE,
                 qq{Invalid variable "$values[0]" before the = in "$1" found in "$tag"},
                 $file_for_error,
                 $line_for_error
@@ -9783,7 +9789,7 @@ BEGIN {
                 ) {
                         # We "eat" the rest of the string and report an error
                         my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Jep syntax error near "$ident$bogus_text" found in "$tag"},
                             $file_for_error,
                             $line_for_error
@@ -9793,7 +9799,7 @@ BEGIN {
                 elsif ( $formula =~ / \G [(] /xmsgc ) {
                     # It's a function, is it valid?
                     if ( !$is_jep_function{$ident} ) {
-                        ewarn ( NOTICE,
+                        $logging->ewarn ( NOTICE,
                             qq{Not a valid Jep function: $ident() found in $tag},
                             $file_for_error,
                             $line_for_error
@@ -9833,7 +9839,7 @@ BEGIN {
                                  );
                         }
                         else {
-                            ewarn( NOTICE,
+                            $logging->ewarn( NOTICE,
                                 qq{Quote missing for the var() parameter in "$tag"},
                                 $file_for_error,
                                 $line_for_error
@@ -9867,7 +9873,7 @@ BEGIN {
 
                 if ( $operator eq '=' ) {
                     if ( $last_token_type eq 'ident' ) {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Forgot to use var()? Dubious use of Jep variable assignation near }
                                 . qq{"$last_token$operator" in "$tag"},
                             $file_for_error,
@@ -9875,7 +9881,7 @@ BEGIN {
                         );
                     }
                     else {
-                        ewarn( NOTICE,
+                        $logging->ewarn( NOTICE,
                             qq{Did you want the logical "=="? Dubious use of Jep variable assignation near }
                                 . qq{"$last_token$operator" in "$tag"},
                             $file_for_error,
@@ -9909,7 +9915,7 @@ BEGIN {
                 else {
                     # We "eat" the rest of the string and report an error
                     my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{Unbalance () in "$bogus_text" found in "$tag"},
                         $file_for_error,
                         $line_for_error
@@ -9937,7 +9943,7 @@ BEGIN {
                 else {
                     # We "eat" the rest of the string and report an error
                     my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{Unbalance quote in "$bogus_text" found in "$tag"},
                         $file_for_error,
                         $line_for_error
@@ -9949,7 +9955,7 @@ BEGIN {
                 if ( $is_param == NO ) {
                     # Commas are allowed only as parameter separator
                     my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-                    ewarn ( NOTICE,
+                    $logging->ewarn ( NOTICE,
                         qq{Jep syntax error found near "$separator$bogus_text" in "$tag"},
                         $file_for_error,
                         $line_for_error
@@ -9965,7 +9971,7 @@ BEGIN {
             else {
                 # If we are here, all is not well
                 my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-                ewarn ( NOTICE,
+                $logging->ewarn ( NOTICE,
                     qq{Jep syntax error found near "$bogus_text" in "$tag"},
                     $file_for_error,
                     $line_for_error
@@ -10013,7 +10019,7 @@ sub additionnal_tag_parsing {
 	 && $tag_name =~ /BONUS/ ) {	
 	if ($tag_value =~ /PREDEFAULTMONSTER:N/ ) {
 	    $_[1] =~ s/[|]PREDEFAULTMONSTER:N//;
-	    ewarn ( WARNING,
+	    $logging->ewarn ( WARNING,
 		    qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
 		    $file_for_error,
 		    $line_for_error
@@ -10032,7 +10038,7 @@ sub additionnal_tag_parsing {
 	     $_[1] =~ s/MARTIAL/TYPE.Martial/;
 	     $_[1] =~ s/EXOTIC/TYPE.Exotic/;
 	     $_[1] = "WEAPONPROF|$_[1]";
-	     ewarn ( WARNING,
+	     $logging->ewarn ( WARNING,
 		     qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
 		     $file_for_error,
 		     $line_for_error
@@ -10059,7 +10065,7 @@ sub additionnal_tag_parsing {
                 # We plug the new value in the calling parameter
                 $_[1] = join q{|}, @tag_params;
 
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name$tag_value" by "$_[0]$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10074,7 +10080,7 @@ sub additionnal_tag_parsing {
 
             # Yes, we change directly the calling parameter
             if ( $_[1] =~ s{ \b Willpower \b }{Will}xmsg ) {
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10111,7 +10117,7 @@ sub additionnal_tag_parsing {
         if ( $tag_name eq 'PRERACE' || $tag_name eq '!PRERACE' ) {
             if ( $tag_value !~ / \A \d+ [,], /xms ) {
                 $_[1] = '1,' . $_[1];
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10125,7 +10131,7 @@ sub additionnal_tag_parsing {
                 # There is no ',', we need to add one
                 $_[1] =~ s/ PRERACE: (?!\d) /PRERACE:1,/xmsg;
 
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name$tag_value" by "$_[0]$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10141,7 +10147,7 @@ sub additionnal_tag_parsing {
                 # There is no ',', we need to add one
                 $_[1] =~ s/ PRERACE: (?!\d) /PRERACE:1,/xmsg;
 
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10161,7 +10167,7 @@ sub additionnal_tag_parsing {
 
             if ( $tag_value ne $new_value ) {
                 $_[1] = $new_value;
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10184,7 +10190,7 @@ sub additionnal_tag_parsing {
                 }
             }
 
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Replacing "$tag_name$tag_value" by "$_[0]$_[1]"},
                 $file_for_error,
                 $line_for_error
@@ -10203,7 +10209,7 @@ sub additionnal_tag_parsing {
     ) {
         # We just change the tag name, the value remains the same.
         $_[0] = 'HITDIE';
-        ewarn( WARNING,
+        $logging->ewarn( WARNING,
             qq{Changing "$tag_name:$tag_value" to "$_[0]:$_[1]"},
             $file_for_error,
             $line_for_error
@@ -10221,7 +10227,7 @@ sub additionnal_tag_parsing {
             my $ponc = $tag_name =~ /:/ ? "" : ":";
 
             if ( $tag_value =~ /PREMULT/ ) {
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq(PREALIGN found in PREMULT, you will have to remove it yourself "$tag_name$ponc$tag_value"),
                     $file_for_error,
                     $line_for_error
@@ -10229,14 +10235,14 @@ sub additionnal_tag_parsing {
             }
             elsif ( $tag_name =~ /^BONUS/ || $tag_name eq 'SA' || $tag_name eq 'VFEAT' ) {
                 $_[1] = join( '|', grep { !/^(!?)PREALIGN/ } split '\|', $tag_value );
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name$ponc$tag_value" with "$_[0]$ponc$_[1]"},
                     $file_for_error,
                     $line_for_error
                 );
             }
             else {
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq(Found PREALIGN were I wasn't expecting it "$tag_name$ponc$tag_value"),
                     $file_for_error,
                     $line_for_error
@@ -10256,7 +10262,7 @@ sub additionnal_tag_parsing {
     ) {
         if ( $tag_value =~ /^(\d+$)/ ) {
             $_[1] = "Walk,$1";
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Changing "$tag_name:$tag_value" to "$_[0]:$_[1]"},
                 $file_for_error,
                 $line_for_error
@@ -10295,7 +10301,7 @@ sub additionnal_tag_parsing {
         && $linetype eq "RACE"
         && $tag_name eq "CSKILL"
     ) {
-        ewarn( WARNING,
+        $logging->ewarn( WARNING,
             qq{Found CSKILL in RACE file},
             $file_for_error,
             $line_for_error
@@ -10310,7 +10316,7 @@ sub additionnal_tag_parsing {
         && $tag_value eq "DnD"
     ) {
         $_[1] = "3e";
-        ewarn( WARNING,
+        $logging->ewarn( WARNING,
             qq{Changing "$tag_name:$tag_value" to "$_[0]:$_[1]"},
             $file_for_error,
             $line_for_error
@@ -10346,7 +10352,7 @@ sub additionnal_tag_parsing {
 
         #$_[1] =~ s/(DnD_v30e)\|(3e)/$2\|$1/;
         #$_[1] =~ s/(DnD_v35e)\|(35e)/$2\|$1/;
-        ewarn( WARNING,
+        $logging->ewarn( WARNING,
             qq{Changing "$tag_name:$tag_value" to "$_[0]:$_[1]"},
             $file_for_error,
             $line_for_error
@@ -10370,7 +10376,7 @@ sub additionnal_tag_parsing {
         # Is the BAB in uppercase ?
         if ( $1 ne 'BAB' ) {
             $_[1] =~ s/\|bab\|/\|BAB\|/i;
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Changing "$tag_name$tag_value" to "$_[0]$_[1]" (BAB must be in uppercase)},
                 $file_for_error,
                 $line_for_error
@@ -10402,7 +10408,7 @@ sub additionnal_tag_parsing {
 
                 # We add the TYPE= statement at the end
                 $_[1] .= '|TYPE=Base.REPLACE';
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Adding "|TYPE=Base.REPLACE" to "$tag_name$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -10415,14 +10421,14 @@ sub additionnal_tag_parsing {
 
                     # We add the .REPLACE part
                     $_[1] =~ s/\|TYPE=Base/\|TYPE=Base.REPLACE/;
-                    ewarn( WARNING,
+                    $logging->ewarn( WARNING,
                         qq{Adding ".REPLACE" to "$tag_name$tag_value"},
                         $file_for_error,
                         $line_for_error
                     );
                 }
                 elsif ( !$is_type_base ) {
-                    ewarn( INFO,
+                    $logging->ewarn( INFO,
                         qq{Verify the TYPE of "$tag_name$tag_value"},
                         $file_for_error,
                         $line_for_error
@@ -10434,7 +10440,7 @@ sub additionnal_tag_parsing {
 
             # If there is a BONUS:COMBAT elsewhere, we report it for manual
             # inspection.
-            ewarn(INFO, qq{Verify this tag "$tag_name$tag_value"}, $file_for_error, $line_for_error);
+            $logging->ewarn(INFO, qq{Verify this tag "$tag_name$tag_value"}, $file_for_error, $line_for_error);
         }
     }
 
@@ -10468,7 +10474,7 @@ sub additionnal_tag_parsing {
 
             if ( $new_value ne $tag_value ) {
                 $_[1] = $new_value;
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10485,7 +10491,7 @@ sub additionnal_tag_parsing {
         if ( $tag_name eq 'PRECLASS' || $tag_name eq '!PRECLASS' ) {
             unless ( $tag_value =~ /^\d+,/ ) {
                 $_[1] = '1,' . $_[1];
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10499,7 +10505,7 @@ sub additionnal_tag_parsing {
                 # There is no ',', we need to add one
                 $_[1] =~ s/PRECLASS:(?!\d)/PRECLASS:1,/g;
 
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name$tag_value" by "$_[0]$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10515,7 +10521,7 @@ sub additionnal_tag_parsing {
                 # There is no ',', we need to add one
                 $_[1] =~ s/PRECLASS:(?!\d)/PRECLASS:1,/g;
 
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10541,7 +10547,7 @@ sub additionnal_tag_parsing {
             $_[0] = "BONUS:MOVEADD";
         }
 
-        ewarn( WARNING,
+        $logging->ewarn( WARNING,
             qq{Replacing "$tag_name$tag_value" by "$_[0]$_[1]"},
             $file_for_error,
             $line_for_error
@@ -10561,7 +10567,7 @@ sub additionnal_tag_parsing {
     ) {
         unless ( $tag_value =~ /(\.ADD,|1,)/i ) {
             if ( $_[1] =~ tr{,}{|} ) {
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10581,7 +10587,7 @@ sub additionnal_tag_parsing {
 
             # There is no ',', we need to add one
             $_[1] = '1,' . $_[1];
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                 $file_for_error,
                 $line_for_error
@@ -10601,7 +10607,7 @@ sub additionnal_tag_parsing {
         $_[0] = 'BONUS:COMBAT';
         $_[1] = '|ATTACKS|' . $number_attacks;
 
-        ewarn( WARNING,
+        $logging->ewarn( WARNING,
             qq{Replacing "$tag_name:$tag_value" by "$_[0]$_[1]"},
             $file_for_error,
             $line_for_error
@@ -10623,7 +10629,7 @@ sub additionnal_tag_parsing {
     ) {
         for ( keys %srd_weapon_name_convertion_433 ) {
             if ( $_[1] =~ s/\Q$_\E/$srd_weapon_name_convertion_433{$_}/ig ) {
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
                     $file_for_error,
                     $line_for_error
@@ -10664,7 +10670,7 @@ sub validate_line {
 
         # We hunt for the bad comma.
         if($identifier =~ /,/) {
-            ewarn( NOTICE,
+            $logging->ewarn( NOTICE,
                 qq{"," (comma) should not be used in line identifier name: $identifier},
                 $file_for_error,
                 $line_for_error
@@ -10688,7 +10694,7 @@ sub validate_line {
             && $line_ref->{'TYPE'}[0] ne 'TYPE:Psionic.Attack Mode'
             && $line_ref->{'TYPE'}[0] ne 'TYPE:Psionic.Defense Mode' )
         {
-            ewarn(INFO,
+            $logging->ewarn(INFO,
                   qq(No CLASSES or DOMAINS tag found for SPELL "$line_ref->{'000SpellName'}[0]"),
                   $file_for_error,
                   $line_for_error
@@ -10703,7 +10709,7 @@ sub validate_line {
         # 2) if it has CHOOSE, it _has_ to have MULT:YES
         # 3) if it has STACK:YES, it _has_ to have MULT:YES (and CHOOSE)
         if ( !$line_ref->{'CATEGORY'} ) {
-           ewarn(WARNING,
+           $logging->ewarn(WARNING,
                  qq(The CATEGORY tag is required in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                  $file_for_error,
                  $line_for_error
@@ -10716,7 +10722,7 @@ sub validate_line {
         $hasSTACK  = 1 if exists $line_ref->{'STACK'} && $line_ref->{'STACK'}[0] =~ /^STACK:Y/i;
 
         if ( $hasMULT && !$hasCHOOSE ) {
-            ewarn(INFO,
+            $logging->ewarn(INFO,
                   qq(The CHOOSE tag is mandantory when MULT:YES is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                   $file_for_error,
                   $line_for_error
@@ -10725,7 +10731,7 @@ sub validate_line {
         elsif ( $hasCHOOSE && !$hasMULT && $line_ref->{'CHOOSE'}[0] !~ /CHOOSE:SPELLLEVEL/i ) {
 
             # The CHOOSE:SPELLLEVEL is exampted from this particular rule.
-            ewarn(INFO,
+            $logging->ewarn(INFO,
                   qq(The MULT:YES tag is mandatory when CHOOSE is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                   $file_for_error,
                   $line_for_error
@@ -10733,7 +10739,7 @@ sub validate_line {
         }
 
         if ( $hasSTACK && !$hasMULT ) {
-            ewarn(INFO,
+            $logging->ewarn(INFO,
                   qq(The MULT:YES tag is mandatory when STACK:YES is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
                   $file_for_error,
                   $line_for_error
@@ -10799,7 +10805,7 @@ sub validate_line {
 		# Good
 	    }
 	    else {
-		ewarn(INFO,
+		$logging->ewarn(INFO,
 		      qq(The CATEGORY tag must have the value of Feat when present on a FEAT. Remove or replace "$line_ref->{'CATEGORY'}[0]"),
 		      $file_for_error,
 		      $line_for_error
@@ -10818,7 +10824,7 @@ sub validate_line {
         $hasSTACK  = 1 if exists $line_ref->{'STACK'} && $line_ref->{'STACK'}[0] =~ /^STACK:Y/i;
 
         if ( $hasMULT && !$hasCHOOSE ) {
-            ewarn(INFO,
+            $logging->ewarn(INFO,
                   qq(The CHOOSE tag is mandatory when MULT:YES is present in FEAT "$line_ref->{'000FeatName'}[0]"),
                   $file_for_error,
                   $line_for_error
@@ -10827,7 +10833,7 @@ sub validate_line {
         elsif ( $hasCHOOSE && !$hasMULT && $line_ref->{'CHOOSE'}[0] !~ /CHOOSE:SPELLLEVEL/i ) {
 
             # The CHOOSE:SPELLLEVEL is exampted from this particular rule.
-            ewarn(INFO,
+            $logging->ewarn(INFO,
                   qq(The MULT:YES tag is mandatory when CHOOSE is present in FEAT "$line_ref->{'000FeatName'}[0]"),
                   $file_for_error,
                   $line_for_error
@@ -10835,7 +10841,7 @@ sub validate_line {
         }
 
         if ( $hasSTACK && !$hasMULT ) {
-            ewarn(INFO,
+            $logging->ewarn(INFO,
                   qq(The MULT:YES tag is mandatory when STACK:YES is present in FEAT "$line_ref->{'000FeatName'}[0]"),
                   $file_for_error,
                   $line_for_error
@@ -10905,7 +10911,7 @@ sub validate_line {
                 $valid_entities{"EQUIPMOD Key"}{$key}++;
             }
             else {
-                ewarn(WARNING,
+                $logging->ewarn(WARNING,
                       qq(Could not parse the KEY in "$line_ref->{'KEY'}[0]"),
                       $file_for_error,
                       $line_for_error
@@ -10918,7 +10924,7 @@ sub validate_line {
 	    if ($report_tag =~ /.FORGET$|.MOD$/) {
 	    }
 	    else {
-		ewarn(INFO,
+		$logging->ewarn(INFO,
 		      qq(No KEY tag found for "$report_tag"),
 		      $file_for_error,
 		      $line_for_error
@@ -10934,7 +10940,7 @@ sub validate_line {
         # we warn the user.
 
         if ( exists $line_ref->{'SPELLTYPE'} && !exists $line_ref->{'BONUS:CASTERLEVEL'} ) {
-            ewarn( INFO,
+            $logging->ewarn( INFO,
                 qq{Missing BONUS:CASTERLEVEL for "$line_ref->{$column_with_no_tag{'CLASS'}[0]}[0]"},
                 $file_for_error,
                 $line_for_error
@@ -10999,7 +11005,7 @@ BEGIN {
 	       #Nothing to see here, move along.
 	   }
 	   else {
-	       ewarn (WARNING,
+	       $logging->ewarn (WARNING,
 		      qq{You have a Spellbook defined without providing NUMPAGES or PAGEUSAGE. If you want a spellbook of finite capacity, consider adding these tags.},
 		      $file_for_error,
 		      $line_for_error
@@ -11010,7 +11016,7 @@ BEGIN {
 
 	   if (exists $line_ref->{'NUMPAGES'} )
 	   {
-	       ewarn (WARNING,
+	       $logging->ewarn (WARNING,
 		      qq{Invalid use of NUMPAGES tag in a non-spellbook. Remove this tag, or correct the TYPE.},
 		      $file_for_error,
 		      $line_for_error
@@ -11018,7 +11024,7 @@ BEGIN {
 	   }
 	   if  (exists $line_ref->{'PAGEUSAGE'}) 
 	   {
-	       ewarn (WARNING,
+	       $logging->ewarn (WARNING,
 		      qq{Invalid use of PAGEUSAGE tag in a non-spellbook. Remove this tag, or correct the TYPE.},
 		      $file_for_error,
 		      $line_for_error
@@ -11042,7 +11048,7 @@ BEGIN {
 		my $ttag = $$ary[$iCount];
 		if ($ttag =~ /PREDEFAULTMONSTER:Y/) {
 		    $$ary[$iCount] = "";
-		    ewarn (WARNING,
+		    $logging->ewarn (WARNING,
 			   qq{Removing "$ttag".},
 			   $file_for_error,
 			   $line_for_error
@@ -11067,14 +11073,14 @@ BEGIN {
       # Throw warning if both ALTCRITICAL and ALTCRITMULT are on the same line,
       #   then remove ALTCRITICAL.
       if ( exists $line_ref->{ALTCRITMULT} ) {
-          ewarn( WARNING, 
+          $logging->ewarn( WARNING, 
               qq{Removing ALTCRITICAL, ALTCRITMULT already present on same line.}, 
               $file_for_error, 
               $line_for_error 
           );
           delete $line_ref->{'ALTCRITICAL'};
       } else {
-          ewarn( WARNING,
+          $logging->ewarn( WARNING,
               qq{Change ALTCRITICAL for ALTCRITMULT in "$line_ref->{'ALTCRITICAL'}[0]"},
               $file_for_error,
               $line_for_error
@@ -11100,7 +11106,7 @@ BEGIN {
            && exists $line_ref->{'MFEAT'} 
        ) { if ( exists $line_ref->{'MONSTERCLASS'}
               ) { for my $tag ( @{ $line_ref->{'MFEAT'} } ) {
-                    ewarn (WARNING,
+                    $logging->ewarn (WARNING,
                       qq{Removing "$tag".},
                       $file_for_error,
                       $line_for_error
@@ -11122,7 +11128,7 @@ BEGIN {
            && exists $line_ref->{'HITDICE'} 
        ) { if ( exists $line_ref->{'MONSTERCLASS'}
               ) { for my $tag ( @{ $line_ref->{'HITDICE'} } ) {
-                    ewarn (WARNING,
+                    $logging->ewarn (WARNING,
                       qq{Removing "$tag".},
                       $file_for_error,
                       $line_for_error
@@ -11168,7 +11174,7 @@ BEGIN {
 		    $newprealign .= "$newalign";
                 }
 		else {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
 			   qq{Invalid value "$align" for tag "$line_ref->{'FOLLOWERALIGN'}[0]"},
 			   $file_for_error,
 			   $line_for_error
@@ -11184,7 +11190,7 @@ BEGIN {
 		    $line_ref->{'DOMAINS'}[$dom_count] .= "|PREALIGN:$newprealign";
 		    $dom_count++;
 		}
-		ewarn( NOTICE,
+		$logging->ewarn( NOTICE,
 		       qq{Adding PREALIGN to domain information and removing "$line_ref->{'FOLLOWERALIGN'}[0]"},
 		       $file_for_error,
 		       $line_for_error
@@ -11210,7 +11216,7 @@ BEGIN {
             my $race_name = $line_ref->{'000RaceName'}[0];
           if ($race_name =~ /.FORGET$|.MOD$/) {
           } else
-          {	ewarn (WARNING,
+          {	$logging->ewarn (WARNING,
               qq{Race entry missing both TYPE and RACETYPE.},
                   $file_for_error,
                   $line_for_error
@@ -11223,7 +11229,7 @@ BEGIN {
               || $filetype eq "TEMPLATE" )
            && not (exists $line_ref->{'RACETYPE'})
            && exists $line_ref->{'TYPE'}
-           ) { ewarn (WARNING,
+           ) { $logging->ewarn (WARNING,
                   qq{Changing TYPE for RACETYPE in "$line_ref->{'TYPE'}[0]".},
                   $file_for_error,
                   $line_for_error
@@ -11249,7 +11255,7 @@ BEGIN {
             for my $tag ( @{ $line_ref->{'SOURCELONG'} } ) {
                 if( $tag =~ / [|] /xms ) {
                     push @new_tags, split '\|', $tag;
-                    ewarn( WARNING,
+                    $logging->ewarn( WARNING,
                         qq{Spliting "$tag"},
                         $file_for_error,
                         $line_for_error
@@ -11295,7 +11301,7 @@ BEGIN {
                 # We classify each triple <spellname>|<nb per day>|<spellbook>
                 while (@elements) {
                     if ( +@elements < 3 ) {
-                        ewarn(WARNING,
+                        $logging->ewarn(WARNING,
                               qq(Wrong number of elements for "$tag_name:$tag_value"),
                               $file_for_error,
                               $line_for_error
@@ -11311,7 +11317,7 @@ BEGIN {
                     push @{ $spellbooks{$spellbook}{$times}{$pretags} }, $spellname;
                 }
 
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Removing "$tag_name:$tag_value"},
                     $file_for_error,
                     $line_for_error
@@ -11333,7 +11339,7 @@ BEGIN {
 
                         $spells .= "|$pretags" unless $pretags eq "NONE";
 
-                        ewarn( WARNING, qq{Adding   "$spells"}, $file_for_error, $line_for_error );
+                        $logging->ewarn( WARNING, qq{Adding   "$spells"}, $file_for_error, $line_for_error );
 
                         push @{ $line_ref->{'SPELLS'} }, $spells;
                     }
@@ -11350,7 +11356,7 @@ BEGIN {
             if ( exists $line_ref->{'PREALIGN'} ) {
                 my $number = +@{ $line_ref->{'PREALIGN'} };
                 delete $line_ref->{'PREALIGN'};
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Removing $number PREALIGN tags},
                     $file_for_error,
                     $line_for_error
@@ -11360,7 +11366,7 @@ BEGIN {
             if ( exists $line_ref->{'!PREALIGN'} ) {
                 my $number = +@{ $line_ref->{'!PREALIGN'} };
                 delete $line_ref->{'!PREALIGN'};
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{Removing $number !PREALIGN tags},
                     $file_for_error,
                     $line_for_error
@@ -11415,7 +11421,7 @@ BEGIN {
                                 unless ($AlreadyThere) {
                                     push @{ $line_ref->{'BONUS:WEAPONPROF'} },
                                         "BONUS:WEAPONPROF=$NatAttackName|DAMAGE|STR/2";
-                                    ewarn( WARNING,
+                                    $logging->ewarn( WARNING,
                                         qq{Added "$line_ref->{'BONUS:WEAPONPROF'}[0]"}
                                             . qq{ to go with "$line_ref->{'NATURALATTACKS'}[0]"},
                                         $file_for_error,
@@ -11426,7 +11432,7 @@ BEGIN {
                             else {
                                 $line_ref->{'BONUS:WEAPONPROF'}
                                     = ["BONUS:WEAPONPROF=$NatAttackName|DAMAGE|STR/2"];
-                                ewarn( WARNING,
+                                $logging->ewarn( WARNING,
                                     qq{Added "$line_ref->{'BONUS:WEAPONPROF'}[0]"}
                                         . qq{to go with "$line_ref->{'NATURALATTACKS'}[0]"},
                                     $file_for_error,
@@ -11435,7 +11441,7 @@ BEGIN {
                             }
                         }
                         elsif ( $IsMelee && $IsRanged ) {
-                            ewarn(WARNING,
+                            $logging->ewarn(WARNING,
                                 qq{This natural attack is both Melee and Ranged}
                                     . qq{"$line_ref->{'NATURALATTACKS'}[0]"},
                                 $file_for_error,
@@ -11456,7 +11462,7 @@ BEGIN {
             && $filetype eq "EQUIPMENT"
             && exists $line_ref->{'MOVE'} )
         {
-            ewarn( WARNING, qq{Removed MOVE tags}, $file_for_error, $line_for_error );
+            $logging->ewarn( WARNING, qq{Removed MOVE tags}, $file_for_error, $line_for_error );
             delete $line_ref->{'MOVE'};
         }
 
@@ -11491,7 +11497,7 @@ BEGIN {
                                 $skill_list
                                     = join( ',', sort( split ( ',', $skill_list ), 'Swim' ) );
                                 $skill = "BONUS:SKILL|$skill_list|8|TYPE=Racial";
-                                ewarn( WARNING,
+                                $logging->ewarn( WARNING,
                                     qq{Added Swim to "$skill"},
                                     $file_for_error,
                                     $line_for_error
@@ -11502,7 +11508,7 @@ BEGIN {
                                 $skill_list
                                     = join( ',', sort( split ( ',', $skill_list ), 'Climb' ) );
                                 $skill = "BONUS:SKILL|$skill_list|8|TYPE=Racial";
-                                ewarn( WARNING,
+                                $logging->ewarn( WARNING,
                                     qq{Added Climb to "$skill"},
                                     $file_for_error,
                                     $line_for_error
@@ -11510,7 +11516,7 @@ BEGIN {
                             }
 
                             if ( ( $need_climb || $need_swim ) && $skill_rank != 8 ) {
-                                ewarn( INFO,
+                                $logging->ewarn( INFO,
                                     qq{You\'ll have to deal with this one yourself "$skill"},
                                     $file_for_error,
                                     $line_for_error
@@ -11539,14 +11545,14 @@ BEGIN {
                                     if ($skill_rank) {
                                         $skillrank
                                             = "BONUS:SKILLRANK|Climb|$skill_rank|PREDEFAULTMONSTER:Y";
-                                        ewarn( WARNING,
+                                        $logging->ewarn( WARNING,
                                             qq{Lowering skill rank in "$skillrank"},
                                             $file_for_error,
                                             $line_for_error
                                         );
                                     }
                                     else {
-                                        ewarn( WARNING,
+                                        $logging->ewarn( WARNING,
                                             qq{Removing "$skillrank"},
                                             $file_for_error,
                                             $line_for_error
@@ -11556,7 +11562,7 @@ BEGIN {
                                     }
                                 }
                                 else {
-                                    ewarn( INFO,
+                                    $logging->ewarn( INFO,
                                         qq{You\'ll have to deal with this one yourself "$skillrank"},
                                         $file_for_error,
                                         $line_for_error
@@ -11570,14 +11576,14 @@ BEGIN {
                                     if ($skill_rank) {
                                         $skillrank
                                             = "BONUS:SKILLRANK|Swim|$skill_rank|PREDEFAULTMONSTER:Y";
-                                        ewarn( WARNING,
+                                        $logging->ewarn( WARNING,
                                             qq{Lowering skill rank in "$skillrank"},
                                             $file_for_error,
                                             $line_for_error
                                         );
                                     }
                                     else {
-                                        ewarn( WARNING,
+                                        $logging->ewarn( WARNING,
                                             qq{Removing "$skillrank"},
                                             $file_for_error,
                                             $line_for_error
@@ -11587,7 +11593,7 @@ BEGIN {
                                     }
                                 }
                                 else {
-                                    ewarn( INFO,
+                                    $logging->ewarn( INFO,
                                         qq{You\'ll have to deal with this one yourself "$skillrank"},
                                         $file_for_error,
                                         $line_for_error
@@ -11614,7 +11620,7 @@ BEGIN {
             && $filetype eq "WEAPONPROF"
             && exists $line_ref->{'SIZE'} )
         {
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Removing the SIZE tag in line "$line_ref->{$master_order{'WEAPONPROF'}[0]}[0]"},
                 $file_for_error,
                 $line_for_error
@@ -11646,7 +11652,7 @@ BEGIN {
                     $nbHands = $1;
                 }
                 else {
-                    ewarn(INFO,
+                    $logging->ewarn(INFO,
                           qq(Invalid value in tag "$line_ref->{'HANDS'}[0]"),
                           $file_for_error,
                           $line_for_error
@@ -11657,7 +11663,7 @@ BEGIN {
 
             if ( $needNoProfReq && $nbHands ) {
                 if ( exists $line_ref->{'AUTO:WEAPONPROF'} ) {
-                    ewarn( WARNING,
+                    $logging->ewarn( WARNING,
                         qq{Adding "TYPE=NoProfReq" to tag "$line_ref->{'AUTO:WEAPONPROF'}[0]"},
                         $file_for_error,
                         $line_for_error
@@ -11666,7 +11672,7 @@ BEGIN {
                 }
                 else {
                     $line_ref->{'AUTO:WEAPONPROF'} = ["AUTO:WEAPONPROF|TYPE=NoProfReq"];
-                    ewarn( WARNING,
+                    $logging->ewarn( WARNING,
                         qq{Creating new tag "AUTO:WEAPONPROF|TYPE=NoProfReq"},
                         $file_for_error,
                         $line_for_error
@@ -11688,7 +11694,7 @@ BEGIN {
             && exists $line_ref->{'MONSTERCLASS'}
             && !exists $line_ref->{'MONCSKILL'} )
         {
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Change CSKILL for MONSKILL in "$line_ref->{'CSKILL'}[0]"},
                 $file_for_error,
                 $line_for_error
@@ -11711,7 +11717,7 @@ BEGIN {
             && exists $line_ref->{'VISION'}
             && $line_ref->{'VISION'}[0] =~ /(\.ADD,|1,)(.*)/i )
         {
-            ewarn( WARNING,
+            $logging->ewarn( WARNING,
                 qq{Removing "$line_ref->{'VISION'}[0]"},
                 $file_for_error,
                 $line_for_error
@@ -11724,7 +11730,7 @@ BEGIN {
                 if ( $vision_bonus =~ /(\w+)\s*\((\d+)\'\)/ ) {
                     my ( $type, $bonus ) = ( $1, $2 );
                     push @{ $line_ref->{'BONUS:VISION'} }, "BONUS:VISION|$type|$bonus";
-                    ewarn( WARNING,
+                    $logging->ewarn( WARNING,
                         qq{Adding "BONUS:VISION|$type|$bonus"},
                         $file_for_error,
                         $line_for_error
@@ -11733,7 +11739,7 @@ BEGIN {
                     $coma = ',';
                 }
                 else {
-                    ewarn( ERROR,
+                    $logging->ewarn( ERROR,
                         qq(Do not know how to convert "VISION:.ADD,$vision_bonus"),
                         $file_for_error,
                         $line_for_error
@@ -11741,7 +11747,7 @@ BEGIN {
                 }
             }
 
-            ewarn( WARNING, qq{Adding "$newvision"}, $file_for_error, $line_for_error );
+            $logging->ewarn( WARNING, qq{Adding "$newvision"}, $file_for_error, $line_for_error );
 
             $line_ref->{'VISION'} = [$newvision];
         }
@@ -11767,19 +11773,19 @@ BEGIN {
                         || $1 eq 'Bracer' && $equipment_name =~ /bracers|bracelets/i )
                     {
                         $line_ref->{'SLOTS'} = ['SLOTS:2'];
-                        ewarn( WARNING,
+                        $logging->ewarn( WARNING,
                             qq{"SLOTS:2" added to "$equipment_name"},
                             $file_for_error,
                             $line_for_error
                         );
                     }
                     else {
-                        ewarn( ERROR, qq{"$equipment_name" is a $1}, $file_for_error, $line_for_error );
+                        $logging->ewarn( ERROR, qq{"$equipment_name" is a $1}, $file_for_error, $line_for_error );
                     }
                 }
             }
             else {
-                ewarn( WARNING,
+                $logging->ewarn( WARNING,
                     qq{$equipment_name has no TYPE.},
                     $file_for_error,
                     $line_for_error
@@ -11838,14 +11844,14 @@ BEGIN {
                         $line_ref->{'BASEITEM'} = ['BASEITEM:Wand']
                             unless exists $line_ref->{'BASEITEM'};
                         delete $line_ref->{'COST'} if exists $line_ref->{'COST'};
-                        ewarn( WARNING,
+                        $logging->ewarn( WARNING,
                             qq{$equip_name: removing "COST" and adding "$eqmod_tag"},
                             $file_for_error,
                             $line_for_error
                         );
                     }
                     else {
-                        ewarn( WARNING,
+                        $logging->ewarn( WARNING,
                             qq($equip_name: not enough information to add charges),
                             $file_for_error,
                             $line_for_error
@@ -11862,14 +11868,14 @@ BEGIN {
                             . "CASTERLEVEL[$caster_level]CHARGES[50]";
                         $line_ref->{'EQMOD'} = [$eqmod_tag];
                         delete $line_ref->{'COST'} if exists $line_ref->{'COST'};
-                        ewarn( WARNING,
+                        $logging->ewarn( WARNING,
                             qq{$equip_name: removing "COST" and adding "$eqmod_tag"},
                             $file_for_error,
                             $line_for_error
                         );
                     }
                     else {
-                        ewarn( WARNING,
+                        $logging->ewarn( WARNING,
                             qq{$equip_name: not enough information to add charges},
                             $file_for_error,
                             $line_for_error
@@ -11877,7 +11883,7 @@ BEGIN {
                     }
                 }
                 elsif ( $equip_name =~ /^Wand/ ) {
-                    ewarn( WARNING,
+                    $logging->ewarn( WARNING,
                         qq{$equip_name: not enough information to add charges},
                         $file_for_error,
                         $line_for_error
@@ -11906,17 +11912,17 @@ BEGIN {
             $race = $line_ref->{ $master_order{'RACE'}[0] }[0];
             if ( $line_ref->{'AGE'} ) {
                 $age = $line_ref->{'AGE'}[0];
-                ewarn( WARNING, qq{Removing "$line_ref->{'AGE'}[0]"}, $file_for_error, $line_for_error );
+                $logging->ewarn( WARNING, qq{Removing "$line_ref->{'AGE'}[0]"}, $file_for_error, $line_for_error );
                 delete $line_ref->{'AGE'};
             }
             if ( $line_ref->{'HEIGHT'} ) {
                 $height = $line_ref->{'HEIGHT'}[0];
-                ewarn( WARNING, qq{Removing "$line_ref->{'HEIGHT'}[0]"}, $file_for_error, $line_for_error );
+                $logging->ewarn( WARNING, qq{Removing "$line_ref->{'HEIGHT'}[0]"}, $file_for_error, $line_for_error );
                 delete $line_ref->{'HEIGHT'};
             }
             if ( $line_ref->{'WEIGHT'} ) {
                 $weight = $line_ref->{'WEIGHT'}[0];
-                ewarn( WARNING, qq{Removing "$line_ref->{'WEIGHT'}[0]"}, $file_for_error, $line_for_error );
+                $logging->ewarn( WARNING, qq{Removing "$line_ref->{'WEIGHT'}[0]"}, $file_for_error, $line_for_error );
                 delete $line_ref->{'WEIGHT'};
             }
 
@@ -11992,7 +11998,7 @@ BEGIN {
                 # We give this notice only if the curent file is under $cl_options{input_path}.
                 # If -basepath is used, there could be files loaded outside of the -inputpath
                 # without their PCC.
-                ewarn( NOTICE, "No PCC source information found", $file_for_error, $line_for_error );
+                $logging->ewarn( NOTICE, "No PCC source information found", $file_for_error, $line_for_error );
             }
         }
 
@@ -12359,7 +12365,7 @@ BEGIN {
 
                 my $dir = File::Basename::dirname($filename);
 
-                ewarn(WARNING,
+                $logging->ewarn(WARNING,
                       qq(Already found a CLASSSPELL file in $dir),
                       $filename
                 ) if exists $class_spell{$dir};
@@ -12390,7 +12396,7 @@ BEGIN {
                         }
                         else {
                             $curent_type = 2;
-                            ewarn(WARNING,
+                            $logging->ewarn(WARNING,
                                   qq(Don\'t know if "$curent_name" is a CLASS or a DOMAIN),
                                   $filename,
                                   $line_number
@@ -12436,7 +12442,7 @@ BEGIN {
                                 # We have classes
                                 # Is there already a CLASSES tag?
                                 if ( exists $_->{'CLASSES'} ) {
-                                    ewarn(WARNING,
+                                    $logging->ewarn(WARNING,
                                           qq(The is already a CLASSES tag for "$spellname"),
                                           $filename,
                                           $line_number
@@ -12454,7 +12460,7 @@ BEGIN {
                                     my $new_classes = 'CLASSES:' . join '|', @new_levels;
                                     $_->{'CLASSES'} = [$new_classes];
 
-                                    ewarn( WARNING,
+                                    $logging->ewarn( WARNING,
                                         qq{SPELL $spellname: adding "$new_classes"},
                                         $filename,
                                         $line_number
@@ -12467,7 +12473,7 @@ BEGIN {
                                 # We have domains
                                 # Is there already a CLASSES tag?
                                 if ( exists $_->{'DOMAINS'} ) {
-                                    ewarn( WARNING,
+                                    $logging->ewarn( WARNING,
                                         qq(The is already a DOMAINS tag for "$spellname"),
                                         $filename,
                                         $line_number
@@ -12485,7 +12491,7 @@ BEGIN {
                                     my $new_domains = 'DOMAINS:' . join '|', @new_levels;
                                     $_->{'DOMAINS'} = [$new_domains];
 
-                                    ewarn( WARNING,
+                                    $logging->ewarn( WARNING,
                                         qq{SPELL $spellname: adding "$new_domains"},
                                         $filename,
                                         $line_number
@@ -12524,7 +12530,7 @@ BEGIN {
                                 my $new_classes = 'CLASSES:' . join '|', @new_levels;
                                 $newline{'CLASSES'} = [$new_classes];
 
-                                ewarn( WARNING,
+                                $logging->ewarn( WARNING,
                                     qq{SPELL $spellname.MOD: adding "$new_classes"},
                                     $filename,
                                     $line_number
@@ -12546,7 +12552,7 @@ BEGIN {
                                 my $new_domains = 'DOMAINS:' . join '|', @new_levels;
                                 $newline{'DOMAINS'} = [$new_domains];
 
-                                ewarn(WARNING,
+                                $logging->ewarn(WARNING,
                                     qq{SPELL $spellname.MOD: adding "$new_domains"},
                                     $filename,
                                     $line_number
@@ -12754,7 +12760,7 @@ BEGIN {
                             if ( exists $new_spell_line{'ITEMCREATE'} ) {
 
                                 # ITEMCREATE is present, we do not convert but we warn.
-                                ewarn(WARNING,
+                                $logging->ewarn(WARNING,
                                       "Can't add BONUS:CASTERLEVEL for class \"$class\", "
                                         . "\"$new_spell_line{'ITEMCREATE'}[0]\" was found.",
                                       $filename
@@ -12766,7 +12772,7 @@ BEGIN {
                                 $class =~ s/^CLASS:(.*)/$1/;
                                 $new_spell_line{'BONUS:CASTERLEVEL'}
                                     = ["BONUS:CASTERLEVEL|$class|CL"];
-                                ewarn( WARNING,
+                                $logging->ewarn( WARNING,
                                     qq{Adding missing "BONUS:CASTERLEVEL|$class|CL"},
                                     $filename
                                 );
@@ -12891,7 +12897,7 @@ BEGIN {
                                 ];
                             delete $class_skill{$dir}{$class};
 
-                            ewarn( WARNING, qq{Adding line "CLASS:$class\tCSKILL:$newskills"}, $filename );
+                            $logging->ewarn( WARNING, qq{Adding line "CLASS:$class\tCSKILL:$newskills"}, $filename );
                         }
                     }
                     continue { $index++ }
@@ -12918,7 +12924,7 @@ BEGIN {
 
                             delete $class_skill{$dir}{$_};
 
-                            ewarn( WARNING, qq{Adding line "CLASS:$_.MOD\tCSKILL:$newskills"}, $filename );
+                            $logging->ewarn( WARNING, qq{Adding line "CLASS:$_.MOD\tCSKILL:$newskills"}, $filename );
                         }
                     }
                 }
@@ -13005,13 +13011,13 @@ sub check_clear_tag_order {
                     if ( $1 ne "" ) {
 
                         # Let's check if the value was found before
-                        ewarn( NOTICE,  qq{"$tag:$1" found before "$_"}, $file_for_error, $line_for_error )
+                        $logging->ewarn( NOTICE,  qq{"$tag:$1" found before "$_"}, $file_for_error, $line_for_error )
                             if exists $value_found{$1};
                     }
                     else {
 
                         # Let's check if any value was found before
-                        ewarn( NOTICE,  qq{"$tag" tag found before "$_"}, $file_for_error, $line_for_error )
+                        $logging->ewarn( NOTICE,  qq{"$tag" tag found before "$_"}, $file_for_error, $line_for_error )
                             if keys %value_found;
                     }
                 }
@@ -13021,7 +13027,7 @@ sub check_clear_tag_order {
                     $value_found{$1} = 1;
                 }
                 else {
-                    ewarn( ERROR,
+                    $logging->ewarn( ERROR,
                         "Didn't anticipate this tag: $_",
                         $file_for_error,
                         $line_for_error
@@ -13040,13 +13046,13 @@ sub check_clear_tag_order {
                     if ( $1 ne "" ) {
 
                         # Let's check if the value was found before
-                        ewarn( NOTICE, qq{"$tag:$1" found before "$_"}, $file_for_error, $line_for_error )
+                        $logging->ewarn( NOTICE, qq{"$tag:$1" found before "$_"}, $file_for_error, $line_for_error )
                             if exists $value_found{$1};
                     }
                     else {
 
                         # Let's check if any value was found before
-                        ewarn( NOTICE, qq{"$tag" tag found before "$_"}, $file_for_error, $line_for_error )
+                        $logging->ewarn( NOTICE, qq{"$tag" tag found before "$_"}, $file_for_error, $line_for_error )
                             if keys %value_found;
                     }
                 }
@@ -13056,7 +13062,7 @@ sub check_clear_tag_order {
                     $value_found{$1} = 1;
                 }
                 else {
-                    ewarn(ERROR,
+                    $logging->ewarn(ERROR,
                           "Didn't anticipate this tag: $_",
                           $file_for_error,
                           $line_for_error
@@ -13246,7 +13252,7 @@ sub embedded_coma_split {
         my @verified_check_names    = ();
 
         # Set the header for the error messages
-        set_ewarn_header( "================================================================\n"
+        $logging->set_ewarn_header( "================================================================\n"
                         . "Messages generated while parsing the system files\n"
                         . "----------------------------------------------------------------\n"
         );
@@ -13266,7 +13272,7 @@ sub embedded_coma_split {
 
         # Did we find anything (hopefuly yes)
         if ( scalar @system_files == 0 ) {
-            ewarn ( ERROR,
+            $logging->ewarn ( ERROR,
                 qq{No miscinfo.lst or statsandchecks.lst file were found in the system directory},
                 $cl_options{system_path}
             );
@@ -13286,7 +13292,7 @@ sub embedded_coma_split {
 
         # Anything left?
         if ( scalar @system_files == 0 ) {
-            ewarn ( ERROR,
+            $logging->ewarn ( ERROR,
                 qq{No miscinfo.lst or statsandchecks.lst file were found in the gameModes/$cl_options{gamemode}/ directory},
                 $cl_options{system_path}
             );
@@ -13321,7 +13327,7 @@ sub embedded_coma_split {
                                 push @verified_var_names, $var_name;
                             }
                             else {
-                                ewarn( ERROR,
+                                $logging->ewarn( ERROR,
                                     qq{Can't find the variable name in "$define_expression"},
                                     $system_file,
                                     $INPUT_LINE_NUMBER
@@ -13365,21 +13371,21 @@ sub embedded_coma_split {
 
         # Now we bitch if we are not happy
         if ( scalar @verified_stats == 0 ) {
-            ewarn( ERROR,
+            $logging->ewarn( ERROR,
                 q{Could not find any STATNAME: tag in the system files},
                 $original_system_file_path
             );
         }
 
         if ( scalar @valid_system_game_modes == 0 ) {
-            ewarn( ERROR,
+            $logging->ewarn( ERROR,
                 q{Could not find any ALLOWEDMODES: tag in the system files},
                 $original_system_file_path
             );
         }
 
         if ( scalar @valid_system_check_names == 0 ) {
-            ewarn( ERROR,
+            $logging->ewarn( ERROR,
                 q{Could not find any valid CHECKNAME: tag in the system files},
                 $original_system_file_path
             );
@@ -13455,137 +13461,10 @@ sub warn_deprecate {
         $message .= qq{ found in "$enclosing_tag"};
     }
 
-    ewarn( INFO, $message, $file_for_error, $line_for_error );
+    $logging->ewarn( INFO, $message, $file_for_error, $line_for_error );
 
 }
 
-###############################################################
-###############################################################
-###
-### Closure for ewarn, set_ewarn_filename and
-### set_ewarn_header functions.
-###
-
-BEGIN {
-
-    my $_file_name_previous = "";
-    my $_header             = "";
-    my $_is_first_error     = YES;
-    my $_is_first_line      = YES;
-
-    my %_warning_level_prefix = (
-        7   => "DBG",   # DEBUG
-        6   => "  -",   # INFO
-        5   => "   ",   # NOTICE
-        4   => "*=>",   # WARNING
-        3   => "***",   # ERROR
-    );
-
-    ###############################################################
-    # ewarn
-    # -----
-    #
-    # Enhanced warn. Generate a warning message with the filename an line number.
-    # if available.
-    #
-    # Possible levels:
-    #
-    #    DEBUG            Info message + debug message for the programmer
-    #    INFO             Everything including deprecations message
-    #    NOTICE           No deprecations (default)
-    #    WARNING          PCGEN will prabably not work properly
-    #    ERR              PCGEN will not work properly or the
-    #                     script is foobar
-    #
-    #    The messages level are define with use constant
-    #    commands at the beginning of the script.
-    #
-    # Parameter:
-    #
-    #   $warning_level    Warning level
-    #   $message          Message text
-    #   $file_name        Name of the file where the error is found
-    #   $line_number      Line number where the error is found (optionnal)
-
-    sub ewarn {
-        my ( $warning_level, $message, $file_name, $line_number ) = ( @_, undef );
-
-        # Verify if warning level should be displayed
-        return if ( $cl_options{warning_level} < $warning_level );
-
-        # Print the header if needed
-        if ($_is_first_error) {
-            warn $_header;
-            $_is_first_error = NO;
-            $_is_first_line  = NO;
-        }
-
-        # Windows and UNIX do not use the same charater in
-        # the directory path. If we are on a Windows machine
-        # we need to replace the / by a \.
-        $file_name =~ tr{/}{\\} if $^O eq "MSWin32";
-
-        # We make sure there is a new-line at the end of the message
-        $message .= "\n" unless $message =~ /\n$/;
-
-        # We display the file only if it is not the same are the last
-        # time ewarn was called
-        warn "$file_name\n" if $file_name ne $_file_name_previous;
-
-        # We display the line number if there is one (optional parameter)
-        if ( defined $line_number ) {
-            warn $_warning_level_prefix{$warning_level}
-                . "(Line $line_number): $message";
-        }
-        else {
-            warn $_warning_level_prefix{$warning_level}
-                . "$message";
-        }
-
-        # Remember the file name for next calls
-        $_file_name_previous = $file_name;
-    }
-
-    ###############################################################
-    # set_ewarn_filename
-    # -------------------
-    #
-    # Replace the curent $_file_name_previous with a specific value.
-
-    sub set_ewarn_filename {
-        $_file_name_previous = $_[0];
-    }
-
-    ###############################################################
-    # set_ewarn_header
-    # -----------------
-    #
-    # Set the header for the error message and reset the
-    # $_is_first_error to make the header display on the first
-    # ewarn call for this header.
-
-    sub set_ewarn_header {
-        $_is_first_error = YES;
-
-        $_header         = $_[0];
-
-        # There is a leas line feed unless we are at the very
-        # start of the log
-        $_header         = "\n" . $_header unless $_is_first_line;
-
-        # We blank the file name to make sure it will be printed
-        # with the first message after the header.
-        set_ewarn_filename('');
-    }
-
-}
-
-###
-### End of the ewarn, set_ewarn_filename and
-### set_ewarn_header closure.
-###
-###############################################################
-###############################################################
 
 
 ###############################################################
@@ -13661,7 +13540,7 @@ BEGIN {
             # Everything that is not blank must be kept
             if ($age) {
                 if ( exists $RecordedBiosetTags{$dir}{$race}{AGE} ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{BIOSET generation: There is already a AGE tag recorded}
                             . qq{ for a race named "$race" in this directory.},
                         $file_for_error,
@@ -13675,7 +13554,7 @@ BEGIN {
 
             if ($height) {
                 if ( exists $RecordedBiosetTags{$dir}{$race}{HEIGHT} ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{BIOSET generation: There is already a HEIGHT tag recorded}
                             . qq{ for a race named "$race" in this directory.},
                         $file_for_error,
@@ -13689,7 +13568,7 @@ BEGIN {
 
             if ($weight) {
                 if ( exists $RecordedBiosetTags{$dir}{$race}{WEIGHT} ) {
-                    ewarn( NOTICE,
+                    $logging->ewarn( NOTICE,
                         qq{BIOSET generation: There is already a WEIGHT tag recorded}
                             . qq{ for a race named "$race" in this directory.},
                         $file_for_error,
