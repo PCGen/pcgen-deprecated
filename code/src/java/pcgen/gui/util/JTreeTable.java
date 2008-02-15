@@ -16,7 +16,7 @@
  * Last Edited: $Date: 2008-02-13 17:03:32 -0800 (Wed, 13 Feb 2008) $
  *
  **/
-package pcgen.gui.proto.util;
+package pcgen.gui.util;
 
 import java.awt.Component;
 import java.awt.Container;

@@ -17,7 +17,7 @@
  * THIS SOFTWARE OR ITS DERIVATIVES.
  *
  */
-package pcgen.gui.proto.util;
+package pcgen.gui.util;
 
 import javax.swing.tree.TreeModel;
 

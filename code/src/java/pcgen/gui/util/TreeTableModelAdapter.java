@@ -11,7 +11,7 @@
  * it only in accordance with the terms of the license agreement
  * you entered into with Sun.
  */
-package pcgen.gui.proto.util;
+package pcgen.gui.util;
 
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;

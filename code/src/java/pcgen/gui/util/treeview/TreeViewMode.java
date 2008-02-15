@@ -1,5 +1,5 @@
 /*
- * JTreeViewTable.java
+ * TreeViewStringComparator.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,16 +16,32 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 14, 2008, 10:18:26 PM
+ * Created on Feb 13, 2008, 8:06:14 PM
  */
 
-package pcgen.gui.proto.util;
+package pcgen.gui.util.treeview;
+
+import java.util.Comparator;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class JTreeViewTable 
+public enum TreeViewMode implements Comparator<String>
 {
+ASCENDING,
+DESCENDING;
     
+    public int compare(String o1, String o2)
+    {
+	switch(this)
+	{
+	    case ASCENDING:
+		return o1.compareTo(o2);
+	    case DESCENDING:
+		return -o1.compareTo(o2);
+	    default:
+		return 0;
+	}
+    }
 }

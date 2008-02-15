@@ -1,5 +1,5 @@
 /*
- * JTreeViewTable.java
+ * TreeView.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,16 +16,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 14, 2008, 10:18:26 PM
+ * Created on Feb 8, 2008, 8:29:38 PM
  */
+package pcgen.gui.util.treeview;
 
-package pcgen.gui.proto.util;
+import java.util.List;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class JTreeViewTable 
+public interface TreeView<E>
 {
-    
+
+    public String getViewName();
+
+    public List<TreeViewPath<E>> getPaths(E pobj);
 }

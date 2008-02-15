@@ -6,7 +6,7 @@
 
 package pcgen.gui.proto.editor;
 
-import pcgen.gui.proto.util.JTreeTable;
+import pcgen.gui.util.JTreeTable;
 
 /**
  *
