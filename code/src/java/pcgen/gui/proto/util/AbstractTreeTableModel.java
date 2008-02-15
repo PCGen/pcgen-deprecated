@@ -46,10 +46,6 @@ public abstract class AbstractTreeTableModel implements TreeTableModel {
         return root;
     }
 
-    protected void setRoot(Object root)
-    {
-	this.root = root;
-    }
     public boolean isLeaf(Object node) {
         return getChildCount(node) == 0; 
     }

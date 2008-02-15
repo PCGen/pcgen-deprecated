@@ -21,7 +21,7 @@
 package pcgen.gui.proto.util.treeview;
 
 import java.util.Comparator;
-import pcgen.util.StringComparator;
+import pcgen.util.Comparators;
 
 /**
  *
@@ -30,13 +30,12 @@ import pcgen.util.StringComparator;
 final class TreeViewPathComparator<E> implements Comparator<TreeViewPath<E>>
 {
 
-    private static final Comparator<Object> defaultcomparator = new StringComparator<Object>();
-    private final Comparator<? super E> viewobjectcomparator;
-    private final Comparator<String> stringcomparator;
+    private final Comparator<? super E> comparator;
+    private final TreeViewMode treeViewMode;
 
     public TreeViewPathComparator()
     {
-	this(defaultcomparator);
+	this(Comparators.toStringComparator());
     }
 
     public TreeViewPathComparator(Comparator<? super E> pobjectcomparator)
@@ -44,19 +43,29 @@ final class TreeViewPathComparator<E> implements Comparator<TreeViewPath<E>>
 	this(pobjectcomparator, TreeViewMode.ASCENDING);
     }
 
-    public TreeViewPathComparator(Comparator<? super E> pobjectcomparator, Comparator<String> stringcomparator)
+    public TreeViewPathComparator(Comparator<? super E> pobjectcomparator, TreeViewMode stringcomparator)
     {
-	this.viewobjectcomparator = pobjectcomparator;
-	this.stringcomparator = stringcomparator;
+	this.comparator = pobjectcomparator;
+	this.treeViewMode = stringcomparator;
     }
 
+    public TreeViewMode getTreeViewMode()
+    {
+	return treeViewMode;
+    }
+    
+    public Comparator<? super E> getComparator()
+    {
+	return comparator;
+    }
+    
     public int compare(TreeViewPath o1, TreeViewPath o2)
     {
 	Object obj1 = o1.getLastPathComponent();
 	Object obj2 = o2.getLastPathComponent();
 	if (obj1 instanceof String && obj2 instanceof String)
 	{
-	    return stringcomparator.compare((String)obj1, (String)obj2);
+	    return treeViewMode.compare((String)obj1, (String)obj2);
 	}
 	else if(obj1 instanceof String)
 	{
@@ -68,7 +77,7 @@ final class TreeViewPathComparator<E> implements Comparator<TreeViewPath<E>>
 	}
 	else
 	{
-	    return viewobjectcomparator.compare((E) obj1, (E) obj2);
+	    return comparator.compare((E) obj1, (E) obj2);
 	}
     }
 

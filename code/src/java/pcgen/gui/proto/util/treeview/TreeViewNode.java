@@ -42,7 +42,7 @@ public class TreeViewNode<E> implements TreeNode
     private final Object item;
     private int depth;
 
-    public TreeViewNode(TreeViewPathComparator<E> comparator)
+    TreeViewNode(TreeViewPathComparator<E> comparator)
     {
 	this(0, comparator, null);
 	treepath = new TreePath(this);
@@ -56,7 +56,12 @@ public class TreeViewNode<E> implements TreeNode
 	this.item = item;
     }
 
-    public void setTreeViewPathComparator(TreeViewPathComparator<E> comparator)
+    TreeViewPathComparator<E> getTreeViewPathComparator()
+    {
+	return comparator;
+    }
+    
+    void setTreeViewPathComparator(TreeViewPathComparator<E> comparator)
     {
 	resetMap(comparator);
     }
@@ -76,7 +81,7 @@ public class TreeViewNode<E> implements TreeNode
 	}
     }
 
-    public void createChild(TreeViewPath<E> path)
+    void createChild(TreeViewPath<E> path)
     {
 	if (path.getPathCount() < depth)
 	{

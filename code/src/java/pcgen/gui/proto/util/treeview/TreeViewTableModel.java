@@ -21,11 +21,13 @@
 package pcgen.gui.proto.util.treeview;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import pcgen.gui.proto.util.AbstractTreeTableModel;
+import pcgen.util.Comparators;
 
 /**
  *
@@ -36,9 +38,11 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     private final DataView dataview;
     private final EnumSet<? extends TreeView<E>> treeviews;
-    private final List<String> headerNames;
+    private final List<String> headerNames;// TODO finish implementing headers
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     private final Map<TreeView<E>, TreeViewNode<E>> viewMap = new HashMap<TreeView<E>, TreeViewNode<E>>();
+    private Comparator<E> comparator = Comparators.toStringComparator();
+    private TreeViewMode mode = TreeViewMode.ASCENDING;
     private TreeView<E> selectedView;
 
     public TreeViewTableModel(EnumSet<? extends TreeView<E>> treeviews,
@@ -47,15 +51,65 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     {
 	this.treeviews = treeviews;
 	this.selectedView = selectedView;
-	headerNames = dataview.getDataNames();
+	this.headerNames = dataview.getDataNames();
 	this.dataview = dataview;
 	setData(data);
+	root = viewMap.get(selectedView);
+    }
+
+    public void setSelectedTreeView(TreeView<E> view)
+    {
+	this.selectedView = view;
+	TreeViewNode<E> node = viewMap.get(view);
+	if (node == null)
+	{
+	    throw new IllegalArgumentException("Attempting to use an unknown TreeView");
+	}
+	root = node;
+	TreeViewPathComparator<E> pathcomparator = node.getTreeViewPathComparator();
+	if (!pathcomparator.getTreeViewMode().equals(mode) || !pathcomparator.getComparator().equals(comparator))
+	{
+	    resetTreeViewPathComparator();
+	}
+	else
+	{
+	    super.fireTreeStructureChanged(root, node.getTreePath());
+	}
     }
 
     public void setData(Collection<E> data)
     {
 	populateDataMap(data);
 	populateViewMap(data);
+    }
+
+    public void setComparator(Comparator<E> comparator)
+    {
+	this.comparator = comparator;
+	resetTreeViewPathComparator();
+    }
+
+    private void resetTreeViewPathComparator()
+    {
+	setTreeViewPathComparator(getNewTreeViewPathComparator());
+    }
+
+    private TreeViewPathComparator getNewTreeViewPathComparator()
+    {
+	return new TreeViewPathComparator(comparator, mode);
+    }
+
+    private void setTreeViewPathComparator(TreeViewPathComparator comparator)
+    {
+	TreeViewNode rootNode = viewMap.get(selectedView);
+	rootNode.setTreeViewPathComparator(comparator);
+	super.fireTreeStructureChanged(root, rootNode.getTreePath());
+    }
+
+    public void setTreeViewMode(TreeViewMode mode)
+    {
+	this.mode = mode;
+	resetTreeViewPathComparator();
     }
 
     private void populateDataMap(Collection<E> data)
@@ -74,7 +128,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     {
 	for (TreeView<E> view : treeviews)
 	{
-	    viewMap.put(view, new TreeViewNode<E>(new TreeViewPathComparator<E>()));
+	    viewMap.put(view, new TreeViewNode<E>(getNewTreeViewPathComparator()));
 	}
     }
 
@@ -90,7 +144,13 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     public Object getValueAt(Object node, int column)
     {
-	return ((TreeViewNode<E>) node).getItem();//INCORRECT TODO:FIX
+	Object item = ((TreeViewNode<E>) node).getItem();
+	List<?> list = dataMap.get(item);
+	if (list == null)
+	{
+	    return null;
+	}
+	return list.get(column);
     }
 
     public Object getChild(Object parent, int index)
