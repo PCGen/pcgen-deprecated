@@ -31,4 +31,5 @@ public interface DataView<E>
 {
     List<String> getDataNames();
     List<?> getData(E obj);
+    List<Class<?>> getDataClasses();
 }

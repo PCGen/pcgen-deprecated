@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import pcgen.gui.proto.util.AbstractTreeTableModel;
+import pcgen.gui.proto.util.TreeTableModel;
 import pcgen.util.Comparators;
 
 /**
@@ -38,7 +39,8 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     private final DataView dataview;
     private final EnumSet<? extends TreeView<E>> treeviews;
-    private final List<String> headerNames;// TODO finish implementing headers
+    private final List<String> headerNames;
+    private final List<Class<?>> dataclasses;
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     private final Map<TreeView<E>, TreeViewNode<E>> viewMap = new HashMap<TreeView<E>, TreeViewNode<E>>();
     private Comparator<E> comparator = Comparators.toStringComparator();
@@ -46,13 +48,14 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     private TreeView<E> selectedView;
 
     public TreeViewTableModel(EnumSet<? extends TreeView<E>> treeviews,
-			       TreeView<E> selectedView, DataView<E> dataview,
+			       DataView<E> dataview,
 			       Collection<E> data)
     {
 	this.treeviews = treeviews;
-	this.selectedView = selectedView;
+	this.selectedView = treeviews.iterator().next();
 	this.headerNames = dataview.getDataNames();
 	this.dataview = dataview;
+	this.dataclasses = dataview.getDataClasses();
 	setData(data);
 	root = viewMap.get(selectedView);
     }
@@ -134,12 +137,30 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     public int getColumnCount()
     {
-	return headerNames.size();
+	return headerNames.size() + 1;
+    }
+
+    @Override
+    public Class<?> getColumnClass(int column)
+    {
+	switch (column)
+	{
+	    case 0:
+		return TreeTableModel.class;
+	    default:
+		return dataclasses.get(column - 1);
+	}
     }
 
     public String getColumnName(int column)
     {
-	return headerNames.get(column);
+	switch (column)
+	{
+	    case 0:
+		return selectedView.getViewName();
+	    default:
+		return headerNames.get(column - 1);
+	}
     }
 
     public Object getValueAt(Object node, int column)
@@ -150,7 +171,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 	{
 	    return null;
 	}
-	return list.get(column);
+	return list.get(column - 1);
     }
 
     public Object getChild(Object parent, int index)
