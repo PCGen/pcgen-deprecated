@@ -27,12 +27,12 @@ import pcgen.util.StringComparator;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class TreeViewPathComparator<E> implements Comparator<TreeViewPath<E>>
+final class TreeViewPathComparator<E> implements Comparator<TreeViewPath<E>>
 {
 
     private static final Comparator<Object> defaultcomparator = new StringComparator<Object>();
     private final Comparator<? super E> viewobjectcomparator;
-    private final Comparator<Object> objectcomparator;
+    private final Comparator<String> stringcomparator;
 
     public TreeViewPathComparator()
     {
@@ -41,13 +41,13 @@ public class TreeViewPathComparator<E> implements Comparator<TreeViewPath<E>>
 
     public TreeViewPathComparator(Comparator<? super E> pobjectcomparator)
     {
-	this(pobjectcomparator, defaultcomparator);
+	this(pobjectcomparator, TreeViewMode.ASCENDING);
     }
 
-    public TreeViewPathComparator(Comparator<? super E> pobjectcomparator, Comparator<Object> objectcomparator)
+    public TreeViewPathComparator(Comparator<? super E> pobjectcomparator, Comparator<String> stringcomparator)
     {
 	this.viewobjectcomparator = pobjectcomparator;
-	this.objectcomparator = objectcomparator;
+	this.stringcomparator = stringcomparator;
     }
 
     public int compare(TreeViewPath o1, TreeViewPath o2)
@@ -56,7 +56,7 @@ public class TreeViewPathComparator<E> implements Comparator<TreeViewPath<E>>
 	Object obj2 = o2.getLastPathComponent();
 	if (obj1 instanceof String && obj2 instanceof String)
 	{
-	    return objectcomparator.compare(obj1, obj2);
+	    return stringcomparator.compare((String)obj1, (String)obj2);
 	}
 	else if(obj1 instanceof String)
 	{

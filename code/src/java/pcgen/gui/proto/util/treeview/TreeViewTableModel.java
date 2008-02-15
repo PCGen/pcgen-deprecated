@@ -27,13 +27,11 @@ import java.util.List;
 import java.util.Map;
 import pcgen.gui.proto.util.AbstractTreeTableModel;
 
-
-
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class TreeTableViewModel<E> extends AbstractTreeTableModel
+public class TreeViewTableModel<E> extends AbstractTreeTableModel
 {
 
     private final DataView dataview;
@@ -41,10 +39,14 @@ public class TreeTableViewModel<E> extends AbstractTreeTableModel
     private final List<String> headerNames;
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     private final Map<TreeView<E>, TreeViewNode<E>> viewMap = new HashMap<TreeView<E>, TreeViewNode<E>>();
+    private TreeView<E> selectedView;
 
-    public TreeTableViewModel(EnumSet<? extends TreeView<E>> treeviews, DataView<E> dataview, Collection<E> data)
+    public TreeViewTableModel(EnumSet<? extends TreeView<E>> treeviews,
+			       TreeView<E> selectedView, DataView<E> dataview,
+			       Collection<E> data)
     {
 	this.treeviews = treeviews;
+	this.selectedView = selectedView;
 	headerNames = dataview.getDataNames();
 	this.dataview = dataview;
 	setData(data);
@@ -70,9 +72,9 @@ public class TreeTableViewModel<E> extends AbstractTreeTableModel
 
     private void populateViewMap(Collection<E> data)
     {
-	for(TreeView<E> view : treeviews)
+	for (TreeView<E> view : treeviews)
 	{
-	    //viewMap.put(view, new TreeViewNode<E> )
+	    viewMap.put(view, new TreeViewNode<E>(new TreeViewPathComparator<E>()));
 	}
     }
 
@@ -100,4 +102,5 @@ public class TreeTableViewModel<E> extends AbstractTreeTableModel
     {
 	return ((TreeViewNode<E>) parent).getChildCount();
     }
+
 }
