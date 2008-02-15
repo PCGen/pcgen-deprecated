@@ -12,6 +12,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
@@ -178,7 +179,7 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 			"PreClass.toHtml", prereq.getKey(), operator, level); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		// TODO given 5.12/5.14 changes, this just needs to be rewritten... thpr
@@ -197,7 +198,7 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 				Type type = pcClass.get(ObjectKey.SPELL_TYPE);
 				if (type != null)
 				{
-					int thisLevel = character.getCDOMLevel(pcClass);
+					int thisLevel = character.getLevel(pcClass);
 					if (prereq.isCountMultiples())
 					{
 						if (thisLevel >= preClass)
@@ -225,7 +226,7 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 					Type type = pcClass.get(ObjectKey.SPELL_TYPE);
 					if (reqType.equals(type))
 					{
-						int thisLevel = character.getCDOMLevel(pcClass);
+						int thisLevel = character.getLevel(pcClass);
 						if (prereq.isCountMultiples())
 						{
 							if (thisLevel >= preClass)
@@ -252,7 +253,7 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 					activeGraph.getGrantedNodeList(PCClass.class);
 			for (PCClass pcClass : classlist)
 			{
-				int thisLevel = character.getCDOMLevel(pcClass);
+				int thisLevel = character.getLevel(pcClass);
 				if (prereq.isCountMultiples())
 				{
 					if (thisLevel >= preClass)
@@ -271,7 +272,7 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 		{
 			PCClass pcClass =
 					activeGraph.getGrantedNode(PCClass.class, classString);
-			int thisLevel = character.getCDOMLevel(pcClass);
+			int thisLevel = character.getLevel(pcClass);
 			if (prereq.isCountMultiples())
 			{
 				if (thisLevel >= preClass)

@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.inst.EquipmentHead;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.character.WieldCategory;
 import pcgen.core.prereq.PrereqHandler;
@@ -7857,6 +7858,12 @@ public final class Equipment extends PObject implements Serializable,
 		{
 			return heads.get(index - 1);
 		}
+		return null;
+	}
+
+	public WieldCategory getEffectiveWieldCategory(CharacterDataStore character)
+	{
+		// TODO Auto-generated method stub
 		return null;
 	}
 

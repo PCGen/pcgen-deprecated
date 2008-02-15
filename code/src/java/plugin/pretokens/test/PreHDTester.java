@@ -26,6 +26,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -93,7 +94,7 @@ public class PreHDTester extends AbstractPrerequisiteTest implements
 		return foo;
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int runningTotal;

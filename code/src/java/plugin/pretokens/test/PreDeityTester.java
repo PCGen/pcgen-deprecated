@@ -12,6 +12,7 @@ import java.util.List;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Pantheon;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Deity;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -99,7 +100,7 @@ public class PreDeityTester extends AbstractPrerequisiteTest implements
 		return "DEITY"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int runningTotal = 0;

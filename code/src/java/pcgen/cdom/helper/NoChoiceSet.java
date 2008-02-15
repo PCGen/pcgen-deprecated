@@ -3,7 +3,7 @@ package pcgen.cdom.helper;
 import java.util.Collections;
 import java.util.Set;
 
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class NoChoiceSet implements PrimitiveChoiceSet<Integer>
 {
@@ -13,7 +13,7 @@ public class NoChoiceSet implements PrimitiveChoiceSet<Integer>
 		return Integer.class;
 	}
 
-	public Set<Integer> getSet(PlayerCharacter pc)
+	public Set<Integer> getSet(CharacterDataStore pc)
 	{
 		return Collections.emptySet();
 	}

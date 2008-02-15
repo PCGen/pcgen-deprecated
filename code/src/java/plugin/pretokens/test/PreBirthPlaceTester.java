@@ -26,6 +26,8 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.enumeration.StringKey;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -61,9 +63,10 @@ public class PreBirthPlaceTester extends AbstractPrerequisiteTest implements
 		return "BIRTHPLACE"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
-		if (character.getBirthplace().equalsIgnoreCase(prereq.getKey()))
+		String birthplace = character.get(StringKey.BIRTHPLACE);
+		if (birthplace != null && birthplace.equalsIgnoreCase(prereq.getKey()))
 		{
 			return countedTotal(prereq, 1);
 		}

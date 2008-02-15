@@ -32,7 +32,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.AssociationListKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class ChosenChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
@@ -75,7 +75,7 @@ public class ChosenChoiceSet<T> implements PrimitiveChoiceSet<T>
 		return choiceCl;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		PCGenGraph graph = pc.getActiveGraph();
 		List<PCGraphEdge> edges = graph.getOutwardEdgeList(baseObject);

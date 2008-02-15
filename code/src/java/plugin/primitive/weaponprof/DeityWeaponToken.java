@@ -6,6 +6,7 @@ import java.util.Set;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Deity;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.WeaponProf;
@@ -34,7 +35,7 @@ public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 		return WeaponProf.class;
 	}
 
-	public Set<WeaponProf> getSet(PlayerCharacter pc)
+	public Set<WeaponProf> getSet(CharacterDataStore pc)
 	{
 		List<Deity> deities =
 				pc.getActiveGraph().getGrantedNodeList(Deity.class);
@@ -63,7 +64,7 @@ public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 		return null;
 	}
 
-	public boolean allow(PlayerCharacter pc, WeaponProf obj)
+	public boolean allow(CharacterDataStore pc, WeaponProf obj)
 	{
 		List<Deity> deities =
 				pc.getActiveGraph().getGrantedNodeList(Deity.class);

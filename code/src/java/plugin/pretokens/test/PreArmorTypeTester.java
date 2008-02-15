@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.character.EquipmentSetFacade;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -147,7 +148,7 @@ public class PreArmorTypeTester extends AbstractPrerequisiteTest implements
 		return "ARMORTYPE"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		String desiredType = prereq.getKey();

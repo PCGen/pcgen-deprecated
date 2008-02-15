@@ -26,8 +26,12 @@
  */
 package plugin.pretokens.test;
 
+import java.util.List;
+import java.util.StringTokenizer;
+
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -36,9 +40,6 @@ import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.core.utils.CoreUtility;
 import pcgen.util.PropertyFactory;
-
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * @author wardc
@@ -142,7 +143,7 @@ public class PreItemTester extends AbstractPrerequisiteTest implements
 		return "ITEM"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		final int number;

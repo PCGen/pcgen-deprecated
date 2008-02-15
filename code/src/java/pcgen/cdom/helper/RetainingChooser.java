@@ -28,8 +28,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PObject;
-import pcgen.core.PlayerCharacter;
 
 public class RetainingChooser<T extends PObject> implements
 		PrimitiveChoiceSet<T>
@@ -69,7 +69,7 @@ public class RetainingChooser<T extends PObject> implements
 		retainingSet.addAll(coll);
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		Set<T> choices = new HashSet<T>();
 		if (retainingSet != null)

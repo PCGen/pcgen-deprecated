@@ -2,10 +2,10 @@ package plugin.primitive.domain;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
 import pcgen.core.DomainList;
-import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PrimitiveToken;
 
@@ -36,7 +36,7 @@ public class DeityToken implements PrimitiveToken<Domain>
 		return ref.getLSTformat();
 	}
 
-	public boolean allow(PlayerCharacter pc, Domain obj)
+	public boolean allow(CharacterDataStore pc, Domain obj)
 	{
 		for (CDOMReference<Domain> domainRef : ref.resolvesTo().getListMods(
 			list))

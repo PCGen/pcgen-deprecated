@@ -26,6 +26,7 @@
  */
 package pcgen.core.prereq;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.util.Logging;
@@ -117,7 +118,7 @@ public class PreMult  extends AbstractPrerequisiteTest implements PrerequisiteTe
 
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		int runningTotal=0;
 		final int targetNumber = Integer.parseInt( prereq.getOperand() );

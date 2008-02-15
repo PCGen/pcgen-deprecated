@@ -23,8 +23,8 @@ import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.lists.PCGenLists;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.ClassSkillList;
-import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
@@ -63,7 +63,7 @@ public class AllowedToken implements ChooseLstQualifierToken<Skill>
 		return true;
 	}
 
-	public Set<Skill> getSet(PlayerCharacter pc)
+	public Set<Skill> getSet(CharacterDataStore pc)
 	{
 		Set<Skill> skillSet = new HashSet<Skill>();
 		PCGenLists activeLists = pc.getActiveLists();

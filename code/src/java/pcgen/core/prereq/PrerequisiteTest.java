@@ -25,6 +25,7 @@
  */
 package pcgen.core.prereq;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 
@@ -38,5 +39,5 @@ public interface PrerequisiteTest {
 	public String toHtmlString(Prerequisite prereq);
 	public String kindHandled();
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException;
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException;
 }

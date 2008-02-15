@@ -31,7 +31,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class ReferenceChoiceSet<T extends PrereqObject> implements
@@ -69,7 +69,7 @@ public class ReferenceChoiceSet<T extends PrereqObject> implements
 		return set == null ? null : set.iterator().next().getReferenceClass();
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		Set<T> returnSet = new HashSet<T>();
 		for (CDOMReference<T> ref : set)

@@ -4,7 +4,7 @@ import java.util.Set;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSingleRef;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class ChooseChoiceSet<T extends CDOMObject> implements
 		PrimitiveChoiceSet<T>
@@ -26,7 +26,7 @@ public class ChooseChoiceSet<T extends CDOMObject> implements
 		return reference.getReferenceClass();
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		T obj = reference.resolvesTo();
 		// TODO Auto-generated method stub

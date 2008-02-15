@@ -24,6 +24,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -89,7 +90,7 @@ public class PreAgeSetTester extends AbstractPrerequisiteTest implements
 		return "AGESET"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		final int ageset = Globals.getBioSet().getPCAgeSet(character);

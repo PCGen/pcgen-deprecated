@@ -24,10 +24,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.StringKey;
-import pcgen.core.GameMode;
 import pcgen.core.PObject;
-import pcgen.core.SettingsHandler;
-import pcgen.core.SizeAdjustment;
 import pcgen.persistence.lst.DeferredToken;
 import pcgen.persistence.lst.TokenStore;
 
@@ -42,13 +39,9 @@ public abstract class LoadContext
 
 	public final ReferenceContext ref;
 
-	public final GameMode gameMode;
-
 	public LoadContext(GraphContext gc, ListContext lc, ObjectContext oc)
 	{
 		ref = new ReferenceContext();
-		// TODO FIXME This is a hack
-		gameMode = SettingsHandler.getGame();
 		graph = gc;
 		list = lc;
 		obj = oc;
@@ -64,11 +57,6 @@ public abstract class LoadContext
 		 */
 		// TODO FIXME
 		return null;
-	}
-
-	public GameMode getGameMode()
-	{
-		return gameMode;
 	}
 
 	private int writeMessageCount = 0;
@@ -89,18 +77,6 @@ public abstract class LoadContext
 	public ContextQueue getContextQueue()
 	{
 		return new ContextQueue(getGraphContext());
-	}
-
-	public SizeAdjustment getNextSize(SizeAdjustment size)
-	{
-		// TODO What if null (if this is last?)
-		return null;
-	}
-
-	public SizeAdjustment getPreviousSize(SizeAdjustment size)
-	{
-		// TODO What if null (if this is last?)
-		return null;
 	}
 
 	/**

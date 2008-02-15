@@ -2,7 +2,7 @@ package pcgen.cdom.helper;
 
 import java.util.Set;
 
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class NumberChoiceSet implements PrimitiveChoiceSet<Integer>
 {
@@ -25,7 +25,7 @@ public class NumberChoiceSet implements PrimitiveChoiceSet<Integer>
 		return Integer.class;
 	}
 
-	public Set<Integer> getSet(PlayerCharacter pc)
+	public Set<Integer> getSet(CharacterDataStore pc)
 	{
 		/*
 		 * TODO Need to resolve Numbers

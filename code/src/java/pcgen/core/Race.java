@@ -1247,7 +1247,7 @@ public final class Race extends PObject
 	/*
 	 * BEGIN CDOM CODE
 	 */
-	int sizesAdvancedCDOM(int currentHD)
+	public int sizesAdvancedCDOM(int currentHD)
 	{
 		List<Integer> list = getListFor(ListKey.HITDICE_ADVANCEMENT);
 		if (list != null)

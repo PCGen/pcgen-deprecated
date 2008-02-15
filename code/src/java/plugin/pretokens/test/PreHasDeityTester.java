@@ -29,6 +29,7 @@
 package plugin.pretokens.test;
 
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Deity;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -76,7 +77,7 @@ public class PreHasDeityTester extends AbstractPrerequisiteTest implements
 		return "HAS.DEITY"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		int runningTotal;
 		PCGenGraph activeGraph = character.getActiveGraph();

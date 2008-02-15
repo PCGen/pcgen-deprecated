@@ -29,7 +29,7 @@ import java.util.TreeSet;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 import pcgen.persistence.lst.utils.TokenUtilities;
 
 public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
@@ -47,7 +47,7 @@ public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
 		set.addAll(coll);
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		Set<T> returnSet = new HashSet<T>();
 		for (PrimitiveChoiceSet<T> cs : set)

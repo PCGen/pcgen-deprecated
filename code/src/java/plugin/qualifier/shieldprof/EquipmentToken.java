@@ -26,8 +26,8 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
-import pcgen.core.PlayerCharacter;
 import pcgen.core.ShieldProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
@@ -50,11 +50,10 @@ public class EquipmentToken implements ChooseLstQualifierToken<ShieldProf>
 		return ShieldProf.class;
 	}
 
-	public Set<ShieldProf> getSet(PlayerCharacter pc)
+	public Set<ShieldProf> getSet(CharacterDataStore pc)
 	{
 		Set<ShieldProf> profs = new HashSet<ShieldProf>();
-		Set<Equipment> equipment =
-				pc.getContext().ref.getConstructedCDOMObjects(Equipment.class);
+		Set<Equipment> equipment = pc.getRulesData().getAll(Equipment.class);
 		if (equipment != null)
 		{
 			for (Equipment e : equipment)

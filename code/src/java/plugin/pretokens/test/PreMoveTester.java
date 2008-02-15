@@ -28,6 +28,7 @@ package plugin.pretokens.test;
 
 import java.util.List;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Movement;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Race;
@@ -128,7 +129,7 @@ public class PreMoveTester extends AbstractPrerequisiteTest implements
 		return movements.get(0).getNumberOfMovementTypes() != 0;
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int moveAmount = 0;

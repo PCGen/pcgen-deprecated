@@ -2,8 +2,8 @@ package plugin.primitive.deity;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Pantheon;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Deity;
-import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PrimitiveToken;
 
@@ -32,7 +32,7 @@ public class PantheonToken implements PrimitiveToken<Deity>
 		return pantheon.toString();
 	}
 
-	public boolean allow(PlayerCharacter pc, Deity deity)
+	public boolean allow(CharacterDataStore pc, Deity deity)
 	{
 		return deity.containsInList(ListKey.PANTHEON, pantheon);
 	}

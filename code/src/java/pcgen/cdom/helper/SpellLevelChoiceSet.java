@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.SpellProgressionInfo;
 
 public class SpellLevelChoiceSet implements PrimitiveChoiceSet<String>
@@ -29,7 +29,7 @@ public class SpellLevelChoiceSet implements PrimitiveChoiceSet<String>
 		return String.class;
 	}
 
-	public Set<String> getSet(PlayerCharacter pc)
+	public Set<String> getSet(CharacterDataStore pc)
 	{
 		Set<String> set = new TreeSet<String>();
 

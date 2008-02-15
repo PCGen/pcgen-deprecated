@@ -25,8 +25,8 @@ import java.util.logging.Level;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Deity;
-import pcgen.core.PlayerCharacter;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
@@ -48,7 +48,7 @@ public class DeityWeaponToken implements ChooseLstQualifierToken<WeaponProf>
 		return WeaponProf.class;
 	}
 
-	public Set<WeaponProf> getSet(PlayerCharacter pc)
+	public Set<WeaponProf> getSet(CharacterDataStore pc)
 	{
 		Set<WeaponProf> set = new HashSet<WeaponProf>();
 		List<Deity> list = pc.getActiveGraph().getGrantedNodeList(Deity.class);

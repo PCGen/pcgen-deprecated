@@ -25,6 +25,7 @@
  */
 package pcgen.core;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.utils.ListKey;
@@ -972,5 +973,11 @@ public final class BioSet extends PObject
 		}
 
 		return ret;
+	}
+
+	public int getPCAgeSet(CharacterDataStore character)
+	{
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

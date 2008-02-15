@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.CharacterDomain;
 import pcgen.core.Globals;
 import pcgen.core.PCSpell;
@@ -126,7 +127,7 @@ public class PreSpellTester extends AbstractPrerequisiteTest implements
 		return PropertyFactory.getFormattedString("PreSpell.toHtml", args); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		int requiredNumber = 0;
 		try

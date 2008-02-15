@@ -1,7 +1,7 @@
 package pcgen.cdom.helper;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PObject;
-import pcgen.core.PlayerCharacter;
 
 public class PatternMatchFilter<T extends PObject> implements
 		PrimitiveChoiceFilter<T>
@@ -25,7 +25,7 @@ public class PatternMatchFilter<T extends PObject> implements
 		pattern = key.substring(0, key.length() - 1);
 	}
 
-	public boolean allow(PlayerCharacter pc, T obj)
+	public boolean allow(CharacterDataStore pc, T obj)
 	{
 		return obj.getKeyName().startsWith(pattern);
 	}

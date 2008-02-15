@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class CollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
@@ -55,7 +55,7 @@ public class CollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
 		return (Class<T>) (c.isEmpty() ? null : c.iterator().next().getClass());
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		return new HashSet<T>(c);
 	}

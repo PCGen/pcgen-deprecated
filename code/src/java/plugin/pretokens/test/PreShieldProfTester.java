@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.ShieldProf;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -99,7 +100,7 @@ public class PreShieldProfTester extends AbstractPrerequisiteTest implements
 		return "SHIELDPROF"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		final int numberRequired = Integer.parseInt(prereq.getOperand());

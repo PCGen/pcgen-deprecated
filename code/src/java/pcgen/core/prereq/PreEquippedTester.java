@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.character.EquipmentSetFacade;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.character.WieldCategory;
@@ -177,7 +178,7 @@ public abstract class PreEquippedTester extends AbstractPrerequisiteTest
 	 * @throws PrerequisiteException
 	 */
 	public int passesCDOMPreEquipHandleTokens(final Prerequisite prereq,
-		final PlayerCharacter character, final int equippedType)
+		final CharacterDataStore character, final int equippedType)
 		throws PrerequisiteException
 	{
 		EquipmentSetFacade set = character.getEquipped();

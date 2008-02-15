@@ -31,6 +31,7 @@ import java.util.List;
 import pcgen.base.formula.Resolver;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Race;
@@ -86,14 +87,13 @@ public class PreBaseSizeTester extends AbstractPrerequisiteTest implements
 		return "BASESIZE"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		int runningTotal = 0;
 		PCGenGraph activeGraph = character.getActiveGraph();
 		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
 		String sizeAbb = prereq.getOperand().toUpperCase();
-		SizeAdjustment requiredSize =
-				character.getContext().ref.getConstructedCDOMObject(
+		SizeAdjustment requiredSize = character.getRulesData().getObject(
 					SizeAdjustment.class, sizeAbb);
 		int reqSizeOrdinal = requiredSize.getOrdinal();
 

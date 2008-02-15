@@ -1,6 +1,6 @@
 package pcgen.cdom.helper;
 
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class NegatingFilter<T> implements PrimitiveChoiceFilter<T>
 {
@@ -16,7 +16,7 @@ public class NegatingFilter<T> implements PrimitiveChoiceFilter<T>
 		filter = f;
 	}
 
-	public boolean allow(PlayerCharacter pc, T obj)
+	public boolean allow(CharacterDataStore pc, T obj)
 	{
 		return !filter.allow(pc, obj);
 	}

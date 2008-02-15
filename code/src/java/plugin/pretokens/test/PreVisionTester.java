@@ -27,6 +27,7 @@
 package plugin.pretokens.test;
 
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Vision;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -83,7 +84,7 @@ public class PreVisionTester extends AbstractPrerequisiteTest implements
 		return "VISION"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		final int requiredRange = Integer.parseInt(prereq.getOperand());
 		int runningTotal = 0;

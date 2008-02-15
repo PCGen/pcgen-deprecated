@@ -41,6 +41,7 @@ import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.core.Alignment;
 import pcgen.core.ArmorProf;
+import pcgen.core.Deity;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
 import pcgen.core.PCStat;
@@ -183,6 +184,8 @@ public final class ObjectKey<T> {
 	public static final ObjectKey<SpellProhibitor<?>> SELETED_SPELLS = new ObjectKey<SpellProhibitor<?>>();
 
 	public static final ObjectKey<Boolean> CASTER_WITHOUT_SPELL_STAT = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<Deity> DEITY = new ObjectKey<Deity>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 

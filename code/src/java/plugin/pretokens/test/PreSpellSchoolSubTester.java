@@ -26,11 +26,16 @@
  */
 package plugin.pretokens.test;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SpellSubSchool;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -38,10 +43,6 @@ import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.core.spell.Spell;
 import pcgen.util.PropertyFactory;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author wardc
@@ -91,7 +92,7 @@ public class PreSpellSchoolSubTester extends AbstractPrerequisiteTest implements
 				prereq.getOperand(), prereq.getKey(), prereq.getSubKey()});
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		SpellSubSchool school = SpellSubSchool.getConstant(prereq.getKey());
 		int requiredLevel = Integer.parseInt(prereq.getSubKey());

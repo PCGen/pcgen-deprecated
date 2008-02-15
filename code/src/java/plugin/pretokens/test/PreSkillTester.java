@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -187,7 +188,7 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 		return foo;
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int requiredRanks = Integer.parseInt(prereq.getOperand());

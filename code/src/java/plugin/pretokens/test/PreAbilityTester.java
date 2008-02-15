@@ -32,6 +32,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
 import pcgen.core.Equipment;
@@ -150,7 +151,7 @@ public class PreAbilityTester extends AbstractPrerequisiteTest implements
 		return "ABILITY"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		boolean countMults = prereq.isCountMultiples();
@@ -265,7 +266,7 @@ public class PreAbilityTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	private int getWildcardCount(PlayerCharacter character, boolean countMults,
+	private int getWildcardCount(CharacterDataStore character, boolean countMults,
 		Ability a, String subKey)
 	{
 		int count = 0;
@@ -306,7 +307,7 @@ public class PreAbilityTester extends AbstractPrerequisiteTest implements
 		return count;
 	}
 
-	private int getAssociatedCountOfType(PlayerCharacter character,
+	private int getAssociatedCountOfType(CharacterDataStore character,
 		boolean countMults, Ability a, String subKey)
 	{
 		int runningTotal = 0;
@@ -332,7 +333,7 @@ public class PreAbilityTester extends AbstractPrerequisiteTest implements
 		return runningTotal;
 	}
 
-	private int getAbilityWeight(PlayerCharacter character, boolean countMults,
+	private int getAbilityWeight(CharacterDataStore character, boolean countMults,
 		Ability a)
 	{
 		int increment;

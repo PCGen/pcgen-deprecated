@@ -25,8 +25,8 @@ package pcgen.cdom.helper;
 import java.util.Set;
 
 import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PObject;
-import pcgen.core.PlayerCharacter;
 
 public class AnyChoiceSet<T extends PObject> implements PrimitiveChoiceSet<T>
 {
@@ -53,9 +53,9 @@ public class AnyChoiceSet<T extends PObject> implements PrimitiveChoiceSet<T>
 		choiceClass = cl;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
-		return pc.getContext().ref.getConstructedCDOMObjects(choiceClass);
+		return pc.getRulesData().getAll(choiceClass);
 	}
 
 	public String getLSTformat()

@@ -26,6 +26,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.PreEquippedTester;
@@ -60,7 +61,7 @@ public class PreEquipSecondaryTester extends PreEquippedTester implements
 		return "EQUIPSECONDARY"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		return passesCDOMPreEquipHandleTokens(prereq, character,

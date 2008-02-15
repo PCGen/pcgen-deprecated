@@ -25,11 +25,16 @@
  */
 package plugin.pretokens.test;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SpellDescriptor;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -37,10 +42,6 @@ import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.core.spell.Spell;
 import pcgen.util.PropertyFactory;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author blithwyn
@@ -90,7 +91,7 @@ public class PreSpellDescriptorTester extends AbstractPrerequisiteTest
 			"PreSpellDescriptor.toHtml", args); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		SpellDescriptor descr = SpellDescriptor.getConstant(prereq.getKey());
 		int requiredLevel = Integer.parseInt(prereq.getSubKey());

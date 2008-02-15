@@ -26,6 +26,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -134,7 +135,7 @@ public class PreTypeTester extends AbstractPrerequisiteTest implements
 				"PreType.toHtml", prereq.getOperator().toDisplayString(), prereq.getKey()); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		throw new UnsupportedOperationException("PRETYPE is not a PC Prereq");

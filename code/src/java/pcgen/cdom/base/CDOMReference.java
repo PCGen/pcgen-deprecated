@@ -20,7 +20,7 @@ package pcgen.cdom.base;
 import java.util.Collection;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public abstract class CDOMReference<T extends PrereqObject> extends
 		ConcretePrereqObject implements LSTWriteable, PrimitiveChoiceFilter<T>
@@ -51,7 +51,7 @@ public abstract class CDOMReference<T extends PrereqObject> extends
 
 	public abstract boolean contains(T obj);
 	
-	public boolean allow(PlayerCharacter pc, T obj)
+	public boolean allow(CharacterDataStore pc, T obj)
 	{
 		return contains(obj);
 	}

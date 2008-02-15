@@ -3,8 +3,8 @@ package plugin.primitive.spell;
 import java.util.List;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PCClass;
-import pcgen.core.PlayerCharacter;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PrimitiveToken;
@@ -46,7 +46,7 @@ public class SpellBookToken implements PrimitiveToken<Spell>
 		return requiresSpellBook ? "YES" : "NO";
 	}
 
-	public boolean allow(PlayerCharacter pc, Spell obj)
+	public boolean allow(CharacterDataStore pc, Spell obj)
 	{
 		List<PCClass> classList =
 				pc.getActiveGraph().getGrantedNodeList(PCClass.class);

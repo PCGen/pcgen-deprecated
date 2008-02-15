@@ -2,8 +2,8 @@ package plugin.primitive.equipment;
 
 import pcgen.cdom.enumeration.EqWield;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
-import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PrimitiveToken;
 
@@ -32,7 +32,7 @@ public class WieldToken implements PrimitiveToken<Equipment>
 		return wield.toString();
 	}
 
-	public boolean allow(PlayerCharacter pc, Equipment obj)
+	public boolean allow(CharacterDataStore pc, Equipment obj)
 	{
 		return wield.equals(obj.get(ObjectKey.WIELD));
 	}

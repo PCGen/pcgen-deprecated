@@ -6,7 +6,7 @@ import java.util.Set;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class CompoundOrFilter<T> implements PrimitiveChoiceFilter<T>
 {
@@ -39,7 +39,7 @@ public class CompoundOrFilter<T> implements PrimitiveChoiceFilter<T>
 		return refClass;
 	}
 
-	public boolean allow(PlayerCharacter pc, T obj)
+	public boolean allow(CharacterDataStore pc, T obj)
 	{
 		for (PrimitiveChoiceFilter<T> cs : set)
 		{

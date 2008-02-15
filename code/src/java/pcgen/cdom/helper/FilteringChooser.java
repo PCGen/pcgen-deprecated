@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import pcgen.cdom.base.PrereqObject;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class FilteringChooser<T extends PrereqObject> implements
 		PrimitiveChoiceSet<T>
@@ -53,7 +53,7 @@ public class FilteringChooser<T extends PrereqObject> implements
 		removingFilter = cf;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		Set<T> choices = new HashSet<T>(baseSet.getSet(pc));
 		for (Iterator<T> it = choices.iterator(); it.hasNext();)

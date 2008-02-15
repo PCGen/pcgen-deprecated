@@ -33,6 +33,7 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Deity;
 import pcgen.core.Domain;
 import pcgen.core.DomainList;
@@ -94,7 +95,7 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 				"PreDeityDomain.toHtml", prereq.getOperator().toDisplayString(), prereq.getKey()); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int requiredNumber = Integer.parseInt(prereq.getOperand());
@@ -103,25 +104,24 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 		List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
 		String requiredDomain = prereq.getKey();
 		boolean requiresAny = Constants.LST_ANY.equals(requiredDomain);
-		CDOMReference<DomainList> dl =
-				character.getContext().ref.getCDOMReference(DomainList.class,
-					"*Starting");
+		CDOMReference<DomainList> dl = character.getRulesData().getReference(
+				DomainList.class, "*Starting");
 		for (Deity d : list)
 		{
 			Collection<CDOMReference<Domain>> mods = d.getListMods(dl);
+			System.err.println(mods);
 			if (mods != null)
 			{
 				if (requiresAny)
 				{
 					for (CDOMReference<Domain> domain : mods)
 					{
+						System.err.println("!" + domain.getLSTformat());
 						String domainString = domain.getLSTformat();
 						if (Constants.LST_ALL.equals(domainString))
 						{
-							CDOMGroupRef<Domain> ref =
-									character.getContext().ref
-										.getCDOMAllReference(Domain.class);
-							runningTotal = ref.getObjectCount();
+							runningTotal = character.getRulesData().getAll(
+									Domain.class).size();
 							break;
 						}
 						else

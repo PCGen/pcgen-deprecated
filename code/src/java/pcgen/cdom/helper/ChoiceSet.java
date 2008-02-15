@@ -27,7 +27,7 @@ import java.util.Set;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
 		LSTWriteable
@@ -61,7 +61,7 @@ public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
 		return pcs.getChoiceClass();
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		return pcs.getSet(pc);
 	}

@@ -26,6 +26,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -151,7 +152,7 @@ public class PreApplyTester extends AbstractPrerequisiteTest implements
 				"PreApply.toHtml", prereq.getOperator().toString(), prereq.getOperand()); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		return 0;

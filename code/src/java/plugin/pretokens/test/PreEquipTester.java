@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.character.EquipmentSetFacade;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.character.WieldCategory;
@@ -165,7 +166,7 @@ public class PreEquipTester extends AbstractPrerequisiteTest implements
 		return "EQUIP"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int runningTotal = 0;

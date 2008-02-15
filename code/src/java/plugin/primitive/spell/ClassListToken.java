@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.ClassSpellList;
-import pcgen.core.PlayerCharacter;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PrimitiveToken;
@@ -30,7 +30,7 @@ public class ClassListToken implements PrimitiveToken<Spell>
 		return Spell.class;
 	}
 
-	public Set<Spell> getSet(PlayerCharacter pc)
+	public Set<Spell> getSet(CharacterDataStore pc)
 	{
 		return new HashSet<Spell>(pc.getActiveLists().getListContents(
 			ref.resolvesTo()));
@@ -41,7 +41,7 @@ public class ClassListToken implements PrimitiveToken<Spell>
 		return ref.getLSTformat();
 	}
 
-	public boolean allow(PlayerCharacter pc, Spell obj)
+	public boolean allow(CharacterDataStore pc, Spell obj)
 	{
 		return pc.getActiveLists().listContains(ref.resolvesTo(), obj);
 	}

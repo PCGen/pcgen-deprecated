@@ -30,6 +30,7 @@ import java.util.List;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Alignment;
 import pcgen.core.Deity;
 import pcgen.core.Equipment;
@@ -152,7 +153,7 @@ public class PreAlignTester extends AbstractPrerequisiteTest implements
 				"PreAlign.toHtml", prereq.getOperator().toDisplayString(), alignment); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int runningTotal = 0;
@@ -188,8 +189,7 @@ public class PreAlignTester extends AbstractPrerequisiteTest implements
 		}
 		else
 		{
-			Alignment requiredAlign =
-					character.getContext().ref.getConstructedCDOMObject(
+			Alignment requiredAlign = character.getRulesData().getObject(
 						Alignment.class, alignString);
 			if (requiredAlign.equals(pcAlign))
 			{

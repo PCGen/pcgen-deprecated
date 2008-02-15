@@ -31,8 +31,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.RaceSubType;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Constants;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Race;
@@ -146,7 +149,7 @@ public class PreRaceTester extends AbstractPrerequisiteTest implements
 		return "RACE"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		final int reqnumber = Integer.parseInt(prereq.getOperand());
 		final String requiredRace = prereq.getKey();
@@ -176,16 +179,16 @@ public class PreRaceTester extends AbstractPrerequisiteTest implements
 		}
 		else if (requiredRace.startsWith("RACETYPE=") || requiredRace.startsWith("RACETYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
 		{
-			return character.getRaceType().equalsIgnoreCase(
+			return character.get(ObjectKey.RACETYPE).toString().equalsIgnoreCase(
 				requiredRace.substring(9)) ? 1 : 0;
 		}
 		else if (requiredRace.startsWith("RACESUBTYPE=")
 			|| requiredRace.startsWith("RACESUBTYPE."))
 		{
 			final String reqType = requiredRace.substring(12);
-			for (String subType : character.getRacialSubTypes())
+			for (RaceSubType subType : character.getListFor(ListKey.RACESUBTYPE))
 			{
-				if (reqType.equalsIgnoreCase(subType))
+				if (reqType.equalsIgnoreCase(subType.toString()))
 				{
 					++runningTotal;
 				}

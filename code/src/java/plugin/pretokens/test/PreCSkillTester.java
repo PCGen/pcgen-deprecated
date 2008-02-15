@@ -31,6 +31,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.enumeration.Type;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.ClassSkillList;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
@@ -133,7 +134,7 @@ public class PreCSkillTester extends AbstractPrerequisiteTest implements
 		return foo;
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int reqnumber = Integer.parseInt(prereq.getOperand());
@@ -156,7 +157,7 @@ public class PreCSkillTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, runningTotal);
 	}
 
-	private int doStuff(PlayerCharacter character, String requiredSkillKey,
+	private int doStuff(CharacterDataStore character, String requiredSkillKey,
 		Set<ClassSkillList> lists)
 	{
 		boolean isType =

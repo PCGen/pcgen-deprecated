@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 import pcgen.base.lang.UnreachableError;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Constants;
 import pcgen.core.Equipment;
 import pcgen.core.PObject;
@@ -433,6 +434,24 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 	 * @return <tt>true</tt> if the PC passes all the prerequisites.
 	 */
 	public boolean qualifies(final PlayerCharacter aPC)
+	{
+		if (thePrereqs == null)
+		{
+			return true;
+		}
+
+		return PrereqHandler.passesAll(thePrereqs, aPC, null);
+	}
+
+	/**
+	 * Tests if the specified PlayerCharacter passes all the prerequisites.
+	 * 
+	 * @param aPC
+	 *            The <tt>PlayerCharacter</tt> to test.
+	 * 
+	 * @return <tt>true</tt> if the PC passes all the prerequisites.
+	 */
+	public boolean qualifies(final CharacterDataStore aPC)
 	{
 		if (thePrereqs == null)
 		{

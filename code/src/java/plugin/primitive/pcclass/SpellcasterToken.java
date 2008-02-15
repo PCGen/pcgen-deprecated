@@ -1,8 +1,8 @@
 package plugin.primitive.pcclass;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PCClass;
-import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PrimitiveToken;
 
@@ -33,7 +33,7 @@ public class SpellcasterToken implements PrimitiveToken<PCClass>
 		return getTokenName();
 	}
 
-	public boolean allow(PlayerCharacter pc, PCClass obj)
+	public boolean allow(CharacterDataStore pc, PCClass obj)
 	{
 		return obj.get(ObjectKey.USE_SPELL_SPELL_STAT) != null;
 	}

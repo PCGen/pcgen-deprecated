@@ -139,6 +139,9 @@ public final class AssociationKey<T>
 	public static final AssociationKey<List<AssociationKey<?>>> LOCK = 
 		new AssociationKey<List<AssociationKey<?>>>();
 
+	public static final AssociationKey<Boolean> REQUIRED = new AssociationKey<Boolean>();
+
+
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
 	private AssociationKey()

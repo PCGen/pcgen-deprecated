@@ -17,7 +17,7 @@
  */
 package pcgen.base.formula;
 
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -27,7 +27,7 @@ import pcgen.core.PlayerCharacter;
 public interface Formula
 {
 
-	int resolve(PlayerCharacter character, String source);
+	int resolve(CharacterDataStore character, String source);
 
 	/*
 	 * No implementation yet.  Eventually, the idea is to hide JEP

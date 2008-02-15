@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -166,7 +167,7 @@ public class PreSkillTotTester extends AbstractPrerequisiteTest implements
 		return foo;
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		// Compute the skill name from the Prerequisite

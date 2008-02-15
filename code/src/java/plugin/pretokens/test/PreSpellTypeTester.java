@@ -26,6 +26,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -104,7 +105,7 @@ public class PreSpellTypeTester extends AbstractPrerequisiteTest implements
 				prereq.getOperand(), prereq.getKey(), prereq.getSubKey()});
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		final String castingType = prereq.getKey();
 		int requiredLevel;

@@ -22,8 +22,8 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PCStat;
-import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstQualifierToken;
@@ -43,10 +43,9 @@ public class RemoveToken implements ChooseLstQualifierToken<PCStat>
 		return PCStat.class;
 	}
 
-	public Set<PCStat> getSet(PlayerCharacter pc)
+	public Set<PCStat> getSet(CharacterDataStore pc)
 	{
-		Set<PCStat> stats =
-				pc.getContext().ref.getConstructedCDOMObjects(PCStat.class);
+		Set<PCStat> stats = pc.getRulesData().getAll(PCStat.class);
 		if (stats != null && pcs != null)
 		{
 			for (Iterator<PCStat> it = stats.iterator(); it.hasNext();)

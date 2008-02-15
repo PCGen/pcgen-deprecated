@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.EquipmentList;
 import pcgen.core.PlayerCharacter;
@@ -155,7 +156,7 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 		return "WEAPONPROF"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character)
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character)
 		throws PrerequisiteException
 	{
 		int runningTotal = 0;
@@ -173,9 +174,9 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 
 		PCGenGraph activeGraph = character.getActiveGraph();
 		final String aString = prereq.getKey();
-		if ("DEITYWEAPON".equals(aString) && character.getDeity() != null) //$NON-NLS-1$
+		if ("DEITYWEAPON".equals(aString) && character.getCDOMDeity() != null) //$NON-NLS-1$
 		{
-			for (String weaponKey : CoreUtility.split(character.getDeity()
+			for (String weaponKey : CoreUtility.split(character.getCDOMDeity()
 				.getFavoredWeapon(), '|'))
 			{
 				if (activeGraph.containsGranted(WeaponProf.class, weaponKey))

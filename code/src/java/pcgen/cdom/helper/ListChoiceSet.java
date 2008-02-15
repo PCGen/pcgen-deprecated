@@ -27,7 +27,7 @@ import java.util.Set;
 
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 
 public class ListChoiceSet<T extends CDOMObject> implements
 		PrimitiveChoiceSet<T>
@@ -56,7 +56,7 @@ public class ListChoiceSet<T extends CDOMObject> implements
 		return list.getListClass();
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		/*
 		 * FUTURE This seems to be wrapping a Collection into a Set... can

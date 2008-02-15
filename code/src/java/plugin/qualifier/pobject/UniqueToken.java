@@ -23,8 +23,8 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PObject;
-import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstGlobalQualifierToken;
@@ -70,10 +70,9 @@ public class UniqueToken<T extends PObject> implements
 		return refClass;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
-		Set<T> objects =
-				pc.getContext().ref.getConstructedCDOMObjects(refClass);
+		Set<T> objects = pc.getRulesData().getAll(refClass);
 		Set<T> returnSet = new HashSet<T>();
 		if (objects != null)
 		{

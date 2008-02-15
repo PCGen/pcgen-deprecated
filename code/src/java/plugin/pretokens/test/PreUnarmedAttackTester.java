@@ -28,6 +28,7 @@ package plugin.pretokens.test;
 
 import java.util.StringTokenizer;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -101,7 +102,7 @@ public class PreUnarmedAttackTester extends AbstractPrerequisiteTest implements
 				"PreUnarmedAttack.toHtml", prereq.getOperator().toString(), prereq.getOperand()); //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		int requiredValue = Integer.parseInt(prereq.getOperand());
 		int att = character.getAttackCount(AttackType.UNARMED);

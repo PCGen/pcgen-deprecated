@@ -26,6 +26,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
@@ -129,7 +130,7 @@ public class PreRuleTester extends AbstractPrerequisiteTest implements
 			targetNumber));
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		int runningTotal = 0;
 		int targetNumber;
@@ -156,7 +157,7 @@ public class PreRuleTester extends AbstractPrerequisiteTest implements
 			final PrerequisiteTest test = factory.getTest(element.getKind());
 			if (test != null)
 			{
-				runningTotal += test.passes(element, character);
+				runningTotal += test.passesCDOM(element, character);
 			}
 		}
 		return countedTotal(prereq, prereq.getOperator().compare(runningTotal,

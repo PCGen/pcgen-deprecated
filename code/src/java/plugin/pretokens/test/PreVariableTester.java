@@ -28,6 +28,7 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -140,7 +141,7 @@ public class PreVariableTester extends AbstractPrerequisiteTest implements
 		return countedTotal(prereq, 1);
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		String src = prereq.getSubKey() != null ? prereq.getSubKey() : "";
 		float aVar =
@@ -164,7 +165,7 @@ public class PreVariableTester extends AbstractPrerequisiteTest implements
 			{
 				// all of the tests must pass, so just
 				// assign the value here, don't add
-				runningTotal = test.passes(element, character);
+				runningTotal = test.passesCDOM(element, character);
 				if (CoreUtility.doublesEqual(runningTotal, 0.0))
 				{
 					return 0;

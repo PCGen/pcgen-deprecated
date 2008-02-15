@@ -23,8 +23,8 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PObject;
-import pcgen.core.PlayerCharacter;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstGlobalQualifierToken;
@@ -70,7 +70,7 @@ public class PCToken<T extends PObject> implements
 		return refClass;
 	}
 
-	public Set<T> getSet(PlayerCharacter pc)
+	public Set<T> getSet(CharacterDataStore pc)
 	{
 		List<T> objects = pc.getActiveGraph().getGrantedNodeList(refClass);
 		Set<T> returnSet = new HashSet<T>();

@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import java.util.List;
 
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.SpecialAbility;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -85,7 +86,7 @@ public class PreSpecialAbilityTester extends AbstractPrerequisiteTest implements
 		return "SA"; //$NON-NLS-1$
 	}
 
-	public int passesCDOM(Prerequisite prereq, PlayerCharacter character) throws PrerequisiteException
+	public int passesCDOM(Prerequisite prereq, CharacterDataStore character) throws PrerequisiteException
 	{
 		int runningTotal = 0;
 

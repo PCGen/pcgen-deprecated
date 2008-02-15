@@ -246,20 +246,23 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 				continue;
 			}
 			ChoiceSet<?> cs = container.getChoiceSet();
-			if (SPELLLIST_CLASS.equals(cs.getChoiceClass()))
+			/*
+			 * TODO This is failing, because the choice class is just a generic
+			 * CDOMListObject - thus comment out for now
+			 */
+			// if (SPELLLIST_CLASS.isAssignableFrom(cs.getChoiceClass()))
+			// {
+			Formula f = container.getAssociation(AssociationKey.CHOICE_COUNT);
+			if (f == null)
 			{
-				Formula f = container
-						.getAssociation(AssociationKey.CHOICE_COUNT);
-				if (f == null)
-				{
-					context.addWriteMessage("Unable to find " + getTokenName()
-							+ " Count");
-					return null;
-				}
-				addStrings.add(f.toString() + "|" + cs.getLSTformat());
-
-				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+				context.addWriteMessage("Unable to find " + getTokenName()
+						+ " Count");
+				return null;
 			}
+			addStrings.add(f.toString() + "|" + cs.getLSTformat());
+
+			// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
+			// }
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
 	}

@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Skill;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.ChooseLoader;
@@ -73,11 +73,10 @@ public class NoRankToken implements ChooseLstQualifierToken<Skill>
 		return true;
 	}
 
-	public Set<Skill> getSet(PlayerCharacter pc)
+	public Set<Skill> getSet(CharacterDataStore pc)
 	{
-		Set<Skill> skillSet =
-				new HashSet<Skill>(pc.getContext().ref
-					.getConstructedCDOMObjects(Skill.class));
+		Set<Skill> skillSet = new HashSet<Skill>(pc.getRulesData().getAll(
+				Skill.class));
 		List<Skill> skillList =
 				pc.getActiveGraph().getGrantedNodeList(Skill.class);
 		if (skillList != null)
