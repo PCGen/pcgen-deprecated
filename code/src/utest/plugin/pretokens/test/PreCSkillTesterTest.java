@@ -23,26 +23,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.enumeration.Type;
-import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.ClassSkillList;
 import pcgen.core.Language;
 import pcgen.core.LanguageList;
 import pcgen.core.PObject;
-import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.RuntimeLoadContext;
 
 public class PreCSkillTesterTest extends TestCase
 {
@@ -52,17 +48,17 @@ public class PreCSkillTesterTest extends TestCase
 	AssociatedPrereqObject clAPO = new SimpleAssociatedObject();
 	AssociatedPrereqObject crAPO = new SimpleAssociatedObject();
 
-	PlayerCharacter pc;
-	LoadContext context = new RuntimeLoadContext(new PCGenGraph());
+	CharacterDataStore pc;
+	SimpleRulesDataStore rules;
 
 	@Override
 	@Before
 	public void setUp()
 	{
-		pc = new PlayerCharacter(false);
-		pc.setLoadContext(context);
-		context.ref.constructCDOMObject(ClassSkillList.class, "*Allowed");
-		context.ref.constructCDOMObject(LanguageList.class, "*Allowed");
+		rules = new SimpleRulesDataStore();
+		pc = new CharacterDataStore(rules);
+		rules.create(ClassSkillList.class, "*Allowed");
+		rules.create(LanguageList.class, "*Allowed");
 		make("Wild Mage");
 		make("Winged Mage");
 		make("Crossbow");
@@ -79,19 +75,12 @@ public class PreCSkillTesterTest extends TestCase
 
 	private void make(String string)
 	{
-		CDOMSimpleSingleRef<Skill> wildref =
-				context.ref.getCDOMReference(getCDOMClass(), string);
-		Skill wild = context.ref.constructCDOMObject(getCDOMClass(), string);
-		wildref.addResolution(wild);
+		rules.create(getCDOMClass(), string);
 	}
 
 	private void makeFalse(String string)
 	{
-		CDOMSimpleSingleRef<Language> wildref =
-				context.ref.getCDOMReference(getFalseClass(), string);
-		Language wild =
-				context.ref.constructCDOMObject(getFalseClass(), string);
-		wildref.addResolution(wild);
+		rules.create(getFalseClass(), string);
 	}
 
 	public Class<Skill> getCDOMClass()
@@ -183,24 +172,24 @@ public class PreCSkillTesterTest extends TestCase
 
 	public PObject grantCDOMObject(String s, AssociatedPrereqObject apo)
 	{
-		CDOMReference<Skill> ref =
-				context.ref.getCDOMReference(getCDOMClass(), s);
-		ClassSkillList list =
-				context.ref.getConstructedCDOMObject(ClassSkillList.class,
-					"*Allowed");
+		Skill sk = rules.getObject(getCDOMClass(), s);
+		CDOMSimpleSingleRef<Skill> ref = new CDOMSimpleSingleRef<Skill>(
+				getCDOMClass(), s);
+		ref.addResolution(sk);
+		ClassSkillList list = rules.getObject(ClassSkillList.class, "*Allowed");
 		pc.getActiveLists().addToList(list, ref, apo);
-		return context.ref.silentlyGetConstructedCDOMObject(getCDOMClass(), s);
+		return sk;
 	}
 
 	public PObject grantFalseObject(String s, AssociatedPrereqObject apo)
 	{
-		CDOMReference<Language> ref =
-				context.ref.getCDOMReference(getFalseClass(), s);
-		LanguageList list =
-				context.ref.getConstructedCDOMObject(LanguageList.class,
-					"*Allowed");
+		Language lan = rules.getObject(getFalseClass(), s);
+		CDOMSimpleSingleRef<Language> ref = new CDOMSimpleSingleRef<Language>(
+				getFalseClass(), s);
+		ref.addResolution(lan);
+		LanguageList list = rules.getObject(LanguageList.class, "*Allowed");
 		pc.getActiveLists().addToList(list, ref, apo);
-		return context.ref.silentlyGetConstructedCDOMObject(getFalseClass(), s);
+		return lan;
 	}
 
 	@Test

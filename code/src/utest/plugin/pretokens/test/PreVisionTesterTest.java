@@ -24,7 +24,7 @@ import org.junit.Test;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Vision;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -60,7 +60,7 @@ public class PreVisionTesterTest extends TestCase
 	@Test
 	public void testSimpleEqual() throws PrerequisiteException
 	{
-		PlayerCharacter pc = new PlayerCharacter(false);
+		CharacterDataStore pc = new CharacterDataStore(new SimpleRulesDataStore());
 		// PC Should start without
 		assertEquals(0, tester.passesCDOM(this.getSimplePrereq(), pc));
 		PCGenGraph graph = pc.getActiveGraph();
@@ -75,7 +75,7 @@ public class PreVisionTesterTest extends TestCase
 	@Test
 	public void testSimpleLess() throws PrerequisiteException
 	{
-		PlayerCharacter pc = new PlayerCharacter(false);
+		CharacterDataStore pc = new CharacterDataStore(new SimpleRulesDataStore());
 		// PC Should start without
 		assertEquals(0, tester.passesCDOM(this.getSimplePrereq(), pc));
 		PCGenGraph graph = pc.getActiveGraph();
@@ -92,7 +92,7 @@ public class PreVisionTesterTest extends TestCase
 	@Test
 	public void testSimpleGreater() throws PrerequisiteException
 	{
-		PlayerCharacter pc = new PlayerCharacter(false);
+		CharacterDataStore pc = new CharacterDataStore(new SimpleRulesDataStore());
 		// PC Should start without
 		assertEquals(0, tester.passesCDOM(this.getSimplePrereq(), pc));
 		PCGenGraph graph = pc.getActiveGraph();
@@ -109,7 +109,7 @@ public class PreVisionTesterTest extends TestCase
 	@Test
 	public void testTwoVisionEqual() throws PrerequisiteException
 	{
-		PlayerCharacter pc = new PlayerCharacter(false);
+		CharacterDataStore pc = new CharacterDataStore(new SimpleRulesDataStore());
 		// PC Should start without
 		assertEquals(0, tester.passesCDOM(this.getSimplePrereq(), pc));
 		PCGenGraph graph = pc.getActiveGraph();
@@ -127,7 +127,7 @@ public class PreVisionTesterTest extends TestCase
 	@Test
 	public void testVisionTwiceLess() throws PrerequisiteException
 	{
-		PlayerCharacter pc = new PlayerCharacter(false);
+		CharacterDataStore pc = new CharacterDataStore(new SimpleRulesDataStore());
 		// PC Should start without
 		assertEquals(0, tester.passesCDOM(this.getSimplePrereq(), pc));
 		PCGenGraph graph = pc.getActiveGraph();

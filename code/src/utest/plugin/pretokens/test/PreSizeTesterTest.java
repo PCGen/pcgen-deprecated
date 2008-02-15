@@ -38,11 +38,11 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		{
 			classSetUp();
 		}
-		context.ref.constructCDOMObject(SizeAdjustment.class, "T");
-		context.ref.constructCDOMObject(SizeAdjustment.class, "S");
-		context.ref.constructCDOMObject(SizeAdjustment.class, "M");
-		context.ref.constructCDOMObject(SizeAdjustment.class, "L");
-		context.ref.constructCDOMObject(SizeAdjustment.class, "H");
+		rules.create(SizeAdjustment.class, "T");
+		rules.create(SizeAdjustment.class, "S");
+		rules.create(SizeAdjustment.class, "M");
+		rules.create(SizeAdjustment.class, "L");
+		rules.create(SizeAdjustment.class, "H");
 	}
 
 	@Override
@@ -69,20 +69,17 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 
 	private FixedSizeResolver getSmallSize()
 	{
-		return new FixedSizeResolver(context.ref.getConstructedCDOMObject(
-			SizeAdjustment.class, "S"));
+		return new FixedSizeResolver(rules.getObject(SizeAdjustment.class, "S"));
 	}
 
 	private FixedSizeResolver getMediumSize()
 	{
-		return new FixedSizeResolver(context.ref.getConstructedCDOMObject(
-			SizeAdjustment.class, "M"));
+		return new FixedSizeResolver(rules.getObject(SizeAdjustment.class, "M"));
 	}
 
 	private FixedSizeResolver getLargeSize()
 	{
-		return new FixedSizeResolver(context.ref.getConstructedCDOMObject(
-			SizeAdjustment.class, "L"));
+		return new FixedSizeResolver(rules.getObject(SizeAdjustment.class, "L"));
 	}
 
 	public Prerequisite getMediumPrereq()

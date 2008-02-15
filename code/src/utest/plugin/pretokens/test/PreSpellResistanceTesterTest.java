@@ -27,8 +27,8 @@ import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.SpellResistance;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
-import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
@@ -39,13 +39,13 @@ public class PreSpellResistanceTesterTest extends TestCase
 
 	PreSpellResistanceTester tester = new PreSpellResistanceTester();
 
-	PlayerCharacter pc;
+	CharacterDataStore pc;
 
 	@Override
 	@Before
 	public void setUp()
 	{
-		pc = new PlayerCharacter(false);
+		pc = new CharacterDataStore(new SimpleRulesDataStore());
 	}
 
 	public String getKind()

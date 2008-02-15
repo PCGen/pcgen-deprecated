@@ -23,7 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.StringKey;
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
@@ -34,13 +34,13 @@ public class PreCityTesterTest extends TestCase
 
 	PreCityTester tester = new PreCityTester();
 
-	PlayerCharacter pc;
+	CharacterDataStore pc;
 
 	@Override
 	@Before
 	public void setUp()
 	{
-		pc = new PlayerCharacter(false);
+		pc = new CharacterDataStore(new SimpleRulesDataStore());
 	}
 
 	public String getKind()
@@ -81,7 +81,7 @@ public class PreCityTesterTest extends TestCase
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
-		pc.setStringFor(StringKey.RESIDENCE, "Australia");
+		pc.put(StringKey.RESIDENCE, "Australia");
 		assertEquals(1, getTest().passesCDOM(flpre, pc));
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 	}

@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PlayerCharacter;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 
@@ -31,7 +31,7 @@ public class PreTextTesterTest extends TestCase
 
 	Prerequisite p;
 	PreTextTester tester = new PreTextTester();
-	PlayerCharacter pc = new PlayerCharacter(false);
+	CharacterDataStore pc = new CharacterDataStore(new SimpleRulesDataStore());
 
 	@Override
 	@Before

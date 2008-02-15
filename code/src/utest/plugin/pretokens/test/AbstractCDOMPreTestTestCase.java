@@ -21,28 +21,33 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMList;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.character.CharacterDataStore;
 import pcgen.core.PObject;
-import pcgen.core.PlayerCharacter;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.RuntimeLoadContext;
 
 public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
 		TestCase
 {
 
-	PlayerCharacter pc;
-	LoadContext context = new RuntimeLoadContext(new PCGenGraph());
+	CharacterDataStore pc;
+	SimpleRulesDataStore rules;
 
 	@Override
 	@Before
 	public void setUp()
 	{
-		pc = new PlayerCharacter(false);
-		pc.setLoadContext(context);
+		rules = new SimpleRulesDataStore();
+		pc = new CharacterDataStore(rules);
 	}
 
 	public abstract Class<T> getCDOMClass();
@@ -108,4 +113,22 @@ public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
 		grantObject(object);
 		return object;
 	}
+
+	public <TT extends CDOMObject> AssociatedPrereqObject addToList(
+			String tokenName, CDOMObject owner,
+			CDOMReference<? extends CDOMList<TT>> list,
+			CDOMReference<TT> allowed)
+	{
+		SimpleAssociatedObject a = new SimpleAssociatedObject();
+		a.setAssociation(AssociationKey.TOKEN, tokenName);
+		owner.putToList(list, allowed, a);
+		return a;
+	}
+
+	public <TT extends CDOMObject> CDOMReference<TT> getReference(Class<TT> cl,
+			String name)
+	{
+		return new CDOMSimpleSingleRef<TT>(cl, name);
+	}
+
 }
