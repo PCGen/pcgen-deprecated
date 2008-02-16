@@ -202,7 +202,11 @@ public final class ChooseLoader
 				{
 					PrimitiveChoiceFilter<T> pcf = ChooseLoader
 							.getPrimitiveChoiceFilter(context, poClass, key);
-					pcfList.add(pcf);
+					// TODO Error if null
+					if (pcf != null)
+					{
+						pcfList.add(pcf);
+					}
 				}
 				else
 				{
@@ -337,18 +341,59 @@ public final class ChooseLoader
 	public static <T extends PObject> PrimitiveChoiceFilter<T> getAtomicChoiceFilter(
 			LoadContext context, Class<T> cl, String key)
 	{
+		int openBracketLoc = key.indexOf('[');
+		int closeBracketLoc = key.indexOf(']');
 		int equalLoc = key.indexOf('=');
 		String tokKey;
 		String tokValue;
-		if (equalLoc == -1)
+		String tokRestriction;
+		if (openBracketLoc == -1)
 		{
-			tokKey = key;
-			tokValue = null;
+			if (closeBracketLoc != -1)
+			{
+				Logging.errorPrint("Found error in Primitive Choice: " + key
+						+ " has a close bracket but no open bracket");
+				return null;
+			}
+			if (equalLoc == -1)
+			{
+				tokKey = key;
+				tokValue = null;
+			}
+			else
+			{
+				tokKey = key.substring(0, equalLoc);
+				tokValue = key.substring(equalLoc + 1);
+			}
+			tokRestriction = null;
 		}
 		else
 		{
-			tokKey = key.substring(0, equalLoc);
-			tokValue = key.substring(equalLoc + 1);
+			if (closeBracketLoc == -1)
+			{
+				Logging.errorPrint("Found error in Primitive Choice: " + key
+						+ " has an open bracket but no close bracket");
+				return null;
+			}
+			if (closeBracketLoc != key.length() - 1)
+			{
+				Logging.errorPrint("Found error in Primitive Choice: " + key
+						+ " had close bracket, but had characters "
+						+ "following the close bracket");
+				return null;
+			}
+			if (equalLoc == -1)
+			{
+				tokKey = key.substring(0, openBracketLoc);
+				tokValue = null;
+				tokRestriction = key.substring(openBracketLoc + 1, closeBracketLoc);
+			}
+			else
+			{
+				tokKey = key.substring(0, equalLoc);
+				tokValue = key.substring(equalLoc + 1, openBracketLoc);
+				tokRestriction = key.substring(openBracketLoc + 1, closeBracketLoc);
+			}
 		}
 		PrimitiveToken<T> prim = TokenStore.inst().getPrimitive(cl, tokKey);
 		if (prim == null)
@@ -376,7 +421,10 @@ public final class ChooseLoader
 		}
 		else
 		{
-			prim.initialize(context, tokValue);
+			if (!prim.initialize(context, tokValue, tokRestriction))
+			{
+				return null;
+			}
 		}
 		return prim;
 	}

@@ -13,9 +13,14 @@ public class AlignToken implements PrimitiveToken<Deity>
 
 	private CDOMSimpleSingleRef<Alignment> ref;
 
-	public void initialize(LoadContext context, String value)
+	public boolean initialize(LoadContext context, String value, String args)
 	{
+		if (args != null)
+		{
+			return false;
+		}
 		ref = context.ref.getCDOMReference(Alignment.class, value);
+		return true;
 	}
 
 	public String getTokenName()

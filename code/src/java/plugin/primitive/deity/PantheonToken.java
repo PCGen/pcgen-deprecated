@@ -12,9 +12,14 @@ public class PantheonToken implements PrimitiveToken<Deity>
 
 	private Pantheon pantheon;
 
-	public void initialize(LoadContext context, String value)
+	public boolean initialize(LoadContext context, String value, String args)
 	{
+		if (args != null)
+		{
+			return false;
+		}
 		pantheon = Pantheon.getConstant(value);
+		return true;
 	}
 
 	public String getTokenName()

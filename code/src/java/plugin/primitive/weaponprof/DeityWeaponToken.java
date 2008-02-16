@@ -8,7 +8,6 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Deity;
-import pcgen.core.PlayerCharacter;
 import pcgen.core.WeaponProf;
 import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PrimitiveToken;
@@ -16,13 +15,19 @@ import pcgen.persistence.lst.PrimitiveToken;
 public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 {
 
-	public void initialize(LoadContext context, String value)
+	public boolean initialize(LoadContext context, String value, String args)
 	{
+		if (args != null)
+		{
+			return false;
+		}
 		if (value != null)
 		{
-			throw new IllegalArgumentException(
-				"Deity Weapon Primitive does not allow a value");
+			return false;
+			// throw new IllegalArgumentException(
+			// "Deity Weapon Primitive does not allow a value");
 		}
+		return true;
 	}
 
 	public String getTokenName()
@@ -37,8 +42,8 @@ public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 
 	public Set<WeaponProf> getSet(CharacterDataStore pc)
 	{
-		List<Deity> deities =
-				pc.getActiveGraph().getGrantedNodeList(Deity.class);
+		List<Deity> deities = pc.getActiveGraph().getGrantedNodeList(
+				Deity.class);
 		Set<WeaponProf> wpSet = new HashSet<WeaponProf>();
 		if (deities == null)
 		{
@@ -46,8 +51,8 @@ public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 		}
 		for (Deity deity : deities)
 		{
-			List<CDOMSimpleSingleRef<WeaponProf>> weapons =
-					deity.getListFor(ListKey.DEITYWEAPON);
+			List<CDOMSimpleSingleRef<WeaponProf>> weapons = deity
+					.getListFor(ListKey.DEITYWEAPON);
 			if (weapons != null)
 			{
 				for (CDOMSimpleSingleRef<WeaponProf> wpRef : weapons)
@@ -66,16 +71,16 @@ public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 
 	public boolean allow(CharacterDataStore pc, WeaponProf obj)
 	{
-		List<Deity> deities =
-				pc.getActiveGraph().getGrantedNodeList(Deity.class);
+		List<Deity> deities = pc.getActiveGraph().getGrantedNodeList(
+				Deity.class);
 		if (deities == null)
 		{
 			return false;
 		}
 		for (Deity deity : deities)
 		{
-			List<CDOMSimpleSingleRef<WeaponProf>> weapons =
-					deity.getListFor(ListKey.DEITYWEAPON);
+			List<CDOMSimpleSingleRef<WeaponProf>> weapons = deity
+					.getListFor(ListKey.DEITYWEAPON);
 			if (weapons != null)
 			{
 				for (CDOMSimpleSingleRef<WeaponProf> wpRef : weapons)

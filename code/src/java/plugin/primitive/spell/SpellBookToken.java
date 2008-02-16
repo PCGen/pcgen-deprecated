@@ -14,8 +14,12 @@ public class SpellBookToken implements PrimitiveToken<Spell>
 
 	private boolean requiresSpellBook;
 
-	public void initialize(LoadContext context, String value)
+	public boolean initialize(LoadContext context, String value, String args)
 	{
+		if (args != null)
+		{
+			return false;
+		}
 		if (value.equals("YES"))
 		{
 			requiresSpellBook = true;
@@ -29,6 +33,7 @@ public class SpellBookToken implements PrimitiveToken<Spell>
 			throw new IllegalArgumentException(
 				"Did not understand SpellBook requrirement String: " + value);
 		}
+		return true;
 	}
 
 	public String getTokenName()

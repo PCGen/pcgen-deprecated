@@ -9,13 +9,18 @@ import pcgen.persistence.lst.PrimitiveToken;
 public class SpellcasterToken implements PrimitiveToken<PCClass>
 {
 
-	public void initialize(LoadContext context, String value)
+	public boolean initialize(LoadContext context, String value, String args)
 	{
+		if (args != null)
+		{
+			return false;
+		}
 		if (value != null)
 		{
 			throw new IllegalArgumentException("Value for primitive "
 				+ getTokenName() + "must be null");
 		}
+		return true;
 	}
 
 	public String getTokenName()

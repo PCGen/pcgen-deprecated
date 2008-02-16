@@ -12,9 +12,14 @@ public class WieldToken implements PrimitiveToken<Equipment>
 
 	private EqWield wield;
 
-	public void initialize(LoadContext context, String value)
+	public boolean initialize(LoadContext context, String value, String args)
 	{
+		if (args != null)
+		{
+			return false;
+		}
 		wield = EqWield.valueOf(value);
+		return true;
 	}
 
 	public String getTokenName()

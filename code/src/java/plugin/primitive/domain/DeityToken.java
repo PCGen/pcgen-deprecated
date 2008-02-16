@@ -15,10 +15,15 @@ public class DeityToken implements PrimitiveToken<Domain>
 	private CDOMSimpleSingleRef<Deity> ref;
 	private CDOMSimpleSingleRef<DomainList> list;
 
-	public void initialize(LoadContext context, String value)
+	public boolean initialize(LoadContext context, String value, String args)
 	{
+		if (args != null)
+		{
+			return false;
+		}
 		ref = context.ref.getCDOMReference(Deity.class, value);
 		list = context.ref.getCDOMReference(DomainList.class, "*Starting");
+		return true;
 	}
 
 	public String getTokenName()
