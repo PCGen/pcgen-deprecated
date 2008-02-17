@@ -3,22 +3,33 @@
  *
  * Created on February 14, 2008, 8:31 PM
  */
-
 package pcgen.gui.proto.editor;
 
-import pcgen.gui.util.JTreeTable;
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
  * @author  Connor Petty <mistercpp2000@gmail.com>
  */
 public class PlayerCharacterEditor extends javax.swing.JFrame {
-    
+
     /** Creates new form PlayerCharacterEditor */
     public PlayerCharacterEditor() {
-	initComponents();
+        initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -27,43 +38,113 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
-        );
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.setTableHeader(new JTreeViewTableHeader());
+        jScrollPane1.setViewportView(jTable1);
 
-        jTabbedPane1.addTab("tab1", jPanel1);
-
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-	java.awt.EventQueue.invokeLater(new Runnable() {
-	    public void run() {
-		new PlayerCharacterEditor().setVisible(true);
-	    }
-	});
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new PlayerCharacterEditor().setVisible(true);
+            }
+        });
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
-    
+    public class JTreeViewTableHeader extends JTableHeader {
+
+        public JTreeViewTableHeader()
+        {
+            super(jTable1.getColumnModel());
+        }
+        @Override
+        public TableCellRenderer createDefaultRenderer() {
+            return new SortingHeaderRenderer();
+        }
+
+        private class SortingHeaderRenderer extends JButton implements TableCellRenderer {
+
+            private ButtonModel emptyModel = new DefaultButtonModel();
+            private ButtonModel usedModel = new DefaultButtonModel();
+            private TableColumn usedcolumn = null;
+
+            private SortingHeaderRenderer() {
+                ButtonModelHandler handler = new ButtonModelHandler();
+                JTreeViewTableHeader.this.addMouseListener(handler);
+                JTreeViewTableHeader.this.addMouseMotionListener(handler);
+            }
+
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                
+                if (usedcolumn != null && usedcolumn.getHeaderValue() == value) {
+                    setModel(usedModel);
+                } else {
+                    setModel(emptyModel);
+                }
+                setText(value.toString());
+                return this;
+            }
+
+            private class ButtonModelHandler implements MouseListener, MouseMotionListener {
+
+                private TableColumn getColumn(MouseEvent e) {
+                    TableColumnModel model = JTreeViewTableHeader.this.getColumnModel();
+                    return model.getColumn(model.getColumnIndexAtX(e.getX()));
+                }
+
+                public void mouseClicked(MouseEvent e) {
+                    SortingHeaderRenderer.this.doClick();
+                }
+
+                public void mousePressed(MouseEvent e) {
+                    usedModel.setPressed(true);
+                    JTreeViewTableHeader.this.repaint();
+                }
+
+                public void mouseReleased(MouseEvent e) {
+                    usedModel.setPressed(false);
+                }
+
+                public void mouseEntered(MouseEvent e) {
+                    usedModel.setRollover(true);
+                }
+
+                public void mouseExited(MouseEvent e) {
+                    usedModel.setRollover(false);
+                }
+
+                public void mouseDragged(MouseEvent e) {
+                }
+
+                public void mouseMoved(MouseEvent e) {
+                    usedcolumn = getColumn(e);
+                }
+            }
+        }
+    }
 }
