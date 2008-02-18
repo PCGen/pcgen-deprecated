@@ -2,7 +2,7 @@
 
 # * Copyright
 
-# Copyright 2002 to 2006 by �ric Beaudoin <beaudoer@videotron.ca>.
+# Copyright 2002 to 2006 by ?ric Beaudoin <beaudoer@videotron.ca>.
 # Copyright 2006 to 2007 by Andrew McDougall <tir.gwaith@gmail.com>
 
 # All rights reserved.  You can redistribute and/or modify
@@ -33,7 +33,7 @@ my ($SCRIPTNAME) = ( $PROGRAM_NAME =~ m{ ( [^/\\]* ) \z }xms );
 my $VERSION_LONG = "$SCRIPTNAME version: $VERSION -- $VERSION_DATE";
 
 my $today = localtime;
-our $logging; 
+our $logging;
 
 use Carp;
 use Getopt::Long;
@@ -45,7 +45,7 @@ use Data::Dumper   ();
 use File::Find     ();
 use File::Basename ();
 use Text::Balanced ();
-use lib '.'; 
+use lib '.';
 
 
 
@@ -140,7 +140,7 @@ my %writefiletype = (
 );
 
 # The active conversions
-my %conversion_enable = 
+my %conversion_enable =
     (
      'Generate BONUS and PRExxx report'   => 0,
      # After PCGEN 2.7.3
@@ -171,7 +171,7 @@ my %conversion_enable =
      'ALL:Willpower to Will'              => 0,               #[ 1398237 ] ALL: Convert Willpower to Will
      'ALL:New SOURCExxx tag format'       => 1,               #[ 1444527 ] New SOURCE tag format
      'RACE:Remove MFEAT and HITDICE'      => 0,               #[ 1514765 ] Conversion to remove old defaultmonster tags
-     'EQUIP: ALTCRITICAL to ALTCRITMULT'  => 1,               
+     'EQUIP: ALTCRITICAL to ALTCRITMULT'  => 1,
 #[ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT'
      'Export lists'                       => 0,               # Export various lists of entities
      'SOURCE line replacement'            => 1,
@@ -353,7 +353,7 @@ elsif ( $cl_options{convert} eq 'Willpower' ) {
 }
 elsif ( $cl_options{convert} eq 'ASCII' ) {
     $conversion_enable{'ALL:Fix Common Extended ASCII'} =1; # [1324519 ] ASCII characters
-} 
+}
 elsif ( $cl_options{convert} eq 'Weaponauto' ) {
     $conversion_enable{'ALL:Weaponauto simple conversion'} = 1; # [ 1223873 ] WEAPONAUTO is no longer valid
 }
@@ -366,7 +366,7 @@ elsif ( $cl_options{convert} eq 'pcgen5120' ) {
     $conversion_enable{'ALL:PRESPELLTYPE Syntax'} = 1;
     $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
    # Commenting out for use in possible KIT conversion of old Default monster data.
-#    $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;  
+#    $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;
 
 }
     elsif ( $cl_options{convert} eq 'pcgen595' ) {
@@ -1637,7 +1637,7 @@ my @QUALIFY_Tags = (
 my %master_order = (
     'ABILITY' => [
         '000AbilityName',
-        'KEY',      
+        'KEY',
         'NAMEISPI',
         'OUTPUTNAME',
         'CATEGORY',
@@ -5198,13 +5198,13 @@ if ( $cl_options{xcheck} ) {
                    . "Cross-reference problems found\n"
                    . "----------------------------------------------------------------\n"
     );
-    
+
     # This will add a message for every message in to_report - which should be every message
     # that was added to to_report.
     for my $file ( sort keys %to_report ) {
         for my $line_ref ( sort { $a->[0] <=> $b->[0] } @{ $to_report{$file} } ) {
 	    my $message = qq{No $line_ref->[1] entry for "$line_ref->[2]"};
-	    
+
 	    # If it is an EQMOD Key missing, it is less severe
 	    my $message_level = $line_ref->[1] eq 'EQUIPMOD Key' ? INFO : NOTICE;
 	    $logging->ewarn( $message_level,  $message, $file, $line_ref->[0] );
@@ -5380,7 +5380,7 @@ sub FILETYPE_parse {
 	    $new_line =~ s/\x88/^/g;
 	    $new_line =~ s/\x8B/</g;
 	    $new_line =~ s/\x8C/Oe/g;
-	    $new_line =~ s/\x91/\'/g; 
+	    $new_line =~ s/\x91/\'/g;
 	    $new_line =~ s/\x92/\'/g;
 	    $new_line =~ s/\x93/\"/g;
 	    $new_line =~ s/\x94/\"/g;
@@ -5600,7 +5600,7 @@ sub FILETYPE_parse {
         # We manipulate the tags for the line here
 	# This function call will parse individual lines, which will
 	# in turn parse the tags within the lines.
-  
+
         additionnal_line_parsing(\%line_tokens,
                                  $curent_linetype,
                                  $file_for_error,
@@ -6328,8 +6328,8 @@ sub FILETYPE_parse {
 # In short, it's a pain.
 #
 # The above describes the pre 5.12 syntax
-# For 5.12, the syntax has changed. 
-# It is now: 
+# For 5.12, the syntax has changed.
+# It is now:
 # ADD:subtoken[|number]|blah
 #
 # This function return a list of three elements.
@@ -6365,7 +6365,7 @@ sub parse_ADD_tag {
         }
     }
 
-    # New format ADD tag. 
+    # New format ADD tag.
 #    if ($tag =~ /\s*ADD:([^\|]+)(\|[^\|]*)\|(.+)/) {
     if ($tag =~ /\s*ADD:([^\|]+)(\|\d+)?\|(.+)/) {
 
@@ -6445,9 +6445,9 @@ sub parse_tag {
 
     # [ 1387361 ] No KIT STARTPACK entry for \"KIT:xxx\"
     # STARTPACK lines in Kit files weren't getting added to $valid_entities.
-    # If they aren't added to valid_entities, since the verify flag is set, 
+    # If they aren't added to valid_entities, since the verify flag is set,
     # each Kit will
-    # cause a spurious error. I've added them to valid entities to prevent 
+    # cause a spurious error. I've added them to valid entities to prevent
     # that.
     if ($tag eq 'STARTPACK') {
 	$valid_entities{'KIT STARTPACK'}{"KIT:$value"}++;
@@ -6477,8 +6477,8 @@ sub parse_tag {
 	       );
     }
     # Continuing the fix - fix it anywhere. This is meant to address PRE tags
-    # that are on the end of other tags or in PREMULTS. 
-    # I'll leave out the pipe-delimited error here, since it's more likely 
+    # that are on the end of other tags or in PREMULTS.
+    # I'll leave out the pipe-delimited error here, since it's more likely
     # to end up with confusion when the tag isn't standalone.
     elsif ($conversion_enable{'ALL:PRESPELLTYPE Syntax'}
 	&& $tag_text =~ /PRESPELLTYPE:([^\d]+),(\d+),(\d+)/)
@@ -6506,7 +6506,7 @@ sub parse_tag {
 
     # Special cases like ADD:... and BONUS:...
     if ( $tag eq 'ADD' ) {
-        my ( $type, $addtag, $therest, $add_count ) 
+        my ( $type, $addtag, $therest, $add_count )
 	    = parse_ADD_tag( $tag_text );
             #   Return code 0 = no valid ADD tag found,
             #               1 = old format token ADD tag found,
@@ -6521,11 +6521,11 @@ sub parse_tag {
                 $value = "($therest)$add_count";
             }
 	    if ((($type == 1) || ($type == 2))
-		&& ($conversion_enable{'ALL:ADD Syntax Fix'}))  
+		&& ($conversion_enable{'ALL:ADD Syntax Fix'}))
 	    {
 		$tag = "ADD:";
 		$addtag =~ s/ADD://;
-		$value = 
+		$value =
 		    "$addtag|$add_count|$therest";
 	    }
         }
@@ -6571,7 +6571,7 @@ sub parse_tag {
 	   $no_more_error = 1;
        }
    }
-    
+
     if ( $tag eq 'BONUS' ) {
         my ($bonus_type) = ( $value =~ /^([^=:|]+)/ );
 
@@ -6907,8 +6907,8 @@ BEGIN {
         my ( $tag_name, $tag_value, $linetype, $file_for_error, $line_for_error ) = @_;
 	study $tag_value;
 
-	if ($tag_name eq 'STARTPACK') 
-	{	    
+	if ($tag_name eq 'STARTPACK')
+	{
 	    $valid_entities{'KIT STARTPACK'}{"KIT:$tag_value"}++;
 	    $valid_entities{'KIT'}{"KIT:$tag_value"}++;
 	}
@@ -6936,7 +6936,7 @@ BEGIN {
             );
         }
 	elsif ( $tag_name =~ /^ADD/
-		&& $tag_value =~ /^WEAPONBONUS/ ) 
+		&& $tag_value =~ /^WEAPONBONUS/ )
 	{
 	    $logging->ewarn( INFO,
 		   qq{ADD:WEAPONBONUS is deprecated, use BONUS instead.},
@@ -6950,14 +6950,14 @@ BEGIN {
 		   qq{ADD:LIST is deprecated, use BONUS instead.},
 		   $file_for_error,
 		   $line_for_error
-		   );	    
+		   );
 	}
 	elsif ( $tag_name =~ /^FOLLOWERALIGN/) {
 	    $logging->ewarn( INFO,
 		   qq{FOLLOWERALIGN is deprecated, use PREALIGN on Domain instead. Convert using Followeralign to fix this problem.},
 		   $file_for_error,
 		   $line_for_error
-		   );	    	    
+		   );
 	}
         elsif ( $tag_name =~ /^!?PRE/ ) {
 
@@ -8731,7 +8731,7 @@ sub validate_pre_tag {
         push @xcheck_to_process, [ 'FEAT', $tag_name, $file_for_error, $line_for_error, @feats ];
     }
     elsif ( $pretag eq 'PREABILITY' ) {
-	
+
 	# [ 1671407 ] xcheck PREABILITY tag
 	# Shamelessly copied from the above FEAT code.
         # PREABILITY:number,feat,feat,TYPE=type,CATEGORY=category
@@ -8946,8 +8946,8 @@ sub validate_pre_tag {
 		    }
 		    else {
 			my $found = 0;
-			
-			while (($found == 0) 
+
+			while (($found == 0)
 			       && ((my $check_race,my $val) = each(%{$valid_entities{'RACE'}})))
 			{
 			    if ( $check_race =~ m/^\Q$race_wild/) {
@@ -9294,7 +9294,7 @@ BEGIN {
         }
         elsif ( $entry_type eq 'ABILITY' ) {
 	    #[ 1671407 ] xcheck PREABILITY tag
-	    # Note - shamelessly cut/pasting from the FEAT code, as it's 
+	    # Note - shamelessly cut/pasting from the FEAT code, as it's
 	    # fairly similar.
             ABILITY:
             for my $feat (@list) {
@@ -10004,22 +10004,22 @@ BEGIN {
 
 sub additionnal_tag_parsing {
     my ( $tag_name, $tag_value, $linetype, $file_for_error, $line_for_error ) = @_;
-    
+
     ##################################################################
     # [ 1514765 ] Conversion to remove old defaultmonster tags
     # Gawaine42 (Richard Bowers)
     # Bonuses associated with a PREDEFAULTMONSTER:Y need to be removed
     # Bonuses associated with a PREDEFAULTMONSTER:N are retained without
     #       the PREDEFAULTMONSTER:N
-    if ( $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} 
-	 && $tag_name =~ /BONUS/ ) {	
+    if ( $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'}
+	 && $tag_name =~ /BONUS/ ) {
 	if ($tag_value =~ /PREDEFAULTMONSTER:N/ ) {
 	    $_[1] =~ s/[|]PREDEFAULTMONSTER:N//;
 	    $logging->ewarn ( WARNING,
 		    qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
 		    $file_for_error,
 		    $line_for_error
-		    );	    
+		    );
 	}
     }
 
@@ -10038,7 +10038,7 @@ sub additionnal_tag_parsing {
 		     qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
 		     $file_for_error,
 		     $line_for_error
-		     );	    
+		     );
 	 }
 
     ##################################################################
@@ -10805,7 +10805,7 @@ sub validate_line {
 		      qq(The CATEGORY tag must have the value of Feat when present on a FEAT. Remove or replace "$line_ref->{'CATEGORY'}[0]"),
 		      $file_for_error,
 		      $line_for_error
-		      );		
+		      );
 	    }
 	}
 
@@ -10987,14 +10987,14 @@ BEGIN {
     ##################################################################
     # [ 1596310 ] xcheck: TYPE:Spellbook for equip w/ NUMPAGES and PAGEUSAGE
     # Gawaine42 (Richard)
-    # Check to see if the TYPE contains Spellbook, if so, warn if 
-    # NUMUSES or PAGEUSAGE aren't there. 
+    # Check to see if the TYPE contains Spellbook, if so, warn if
+    # NUMUSES or PAGEUSAGE aren't there.
     # Then check to see if NUMPAGES or PAGEUSAGE are there, and if they
     # are there, but the TYPE doesn't contain Spellbook, warn.
 
     if ($filetype eq 'EQUIPMENT') {
-       if (exists $line_ref->{'TYPE'}	
-           && $line_ref->{'TYPE'}[0] =~ /Spellbook/) 
+       if (exists $line_ref->{'TYPE'}
+           && $line_ref->{'TYPE'}[0] =~ /Spellbook/)
        {
 	   if (exists $line_ref->{'NUMPAGES'}
 	       && exists $line_ref->{'PAGEUSAGE'}) {
@@ -11018,7 +11018,7 @@ BEGIN {
 		      $line_for_error
 		      );
 	   }
-	   if  (exists $line_ref->{'PAGEUSAGE'}) 
+	   if  (exists $line_ref->{'PAGEUSAGE'})
 	   {
 	       $logging->ewarn (WARNING,
 		      qq{Invalid use of PAGEUSAGE tag in a non-spellbook. Remove this tag, or correct the TYPE.},
@@ -11034,12 +11034,12 @@ BEGIN {
     # Gawaine42 (Richard Bowers)
     # Bonuses associated with a PREDEFAULTMONSTER:Y need to be removed
     # This should remove the whole tag.
-    if ($conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} 
+    if ($conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'}
 	 	&& $filetype eq "RACE"
 	) {
 	for my $key ( keys %$line_ref ) {
 	    my $ary = $line_ref->{$key};
-	    my $iCount = 0; 
+	    my $iCount = 0;
 	    foreach (@$ary) {
 		my $ttag = $$ary[$iCount];
 		if ($ttag =~ /PREDEFAULTMONSTER:Y/) {
@@ -11054,9 +11054,9 @@ BEGIN {
 	    }
 	}
     }
-        		
-        		
-	
+
+
+
     ##################################################################
     # [ 1615457 ] Replace ALTCRITICAL with ALTCRITMULT'
     #
@@ -11064,15 +11064,15 @@ BEGIN {
 
     if (   $conversion_enable{'EQUIP: ALTCRITICAL to ALTCRITMULT'}
         && $filetype eq "EQUIPMENT"
-        && exists $line_ref->{'ALTCRITICAL'} 
+        && exists $line_ref->{'ALTCRITICAL'}
     ) {
       # Throw warning if both ALTCRITICAL and ALTCRITMULT are on the same line,
       #   then remove ALTCRITICAL.
       if ( exists $line_ref->{ALTCRITMULT} ) {
-          $logging->ewarn( WARNING, 
-              qq{Removing ALTCRITICAL, ALTCRITMULT already present on same line.}, 
-              $file_for_error, 
-              $line_for_error 
+          $logging->ewarn( WARNING,
+              qq{Removing ALTCRITICAL, ALTCRITMULT already present on same line.},
+              $file_for_error,
+              $line_for_error
           );
           delete $line_ref->{'ALTCRITICAL'};
       } else {
@@ -11093,13 +11093,13 @@ BEGIN {
     ##################################################################
     # [ 1514765 ] Conversion to remove old defaultmonster tags
     #
-    # In RACE files, remove all MFEAT and HITDICE tags, but only if 
+    # In RACE files, remove all MFEAT and HITDICE tags, but only if
     # there is a MONSTERCLASS present.
 
     # We remove MFEAT or warn of missing MONSTERCLASS tag.
     if (   $conversion_enable{'RACE:Remove MFEAT and HITDICE'}
            && $filetype eq "RACE"
-           && exists $line_ref->{'MFEAT'} 
+           && exists $line_ref->{'MFEAT'}
        ) { if ( exists $line_ref->{'MONSTERCLASS'}
               ) { for my $tag ( @{ $line_ref->{'MFEAT'} } ) {
                     $logging->ewarn (WARNING,
@@ -11121,7 +11121,7 @@ BEGIN {
     # We remove HITDICE or warn of missing MONSTERCLASS tag.
     if (   $conversion_enable{'RACE:Remove MFEAT and HITDICE'}
            && $filetype eq "RACE"
-           && exists $line_ref->{'HITDICE'} 
+           && exists $line_ref->{'HITDICE'}
        ) { if ( exists $line_ref->{'MONSTERCLASS'}
               ) { for my $tag ( @{ $line_ref->{'HITDICE'} } ) {
                     $logging->ewarn (WARNING,
@@ -11139,12 +11139,12 @@ BEGIN {
                     );
                 }
          }
-	
+
 	#######################################################
 	## [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
 	## Gawaine42
 	## Note: Makes simplifying assumption that FOLLOWERALIGN
-	## will occur only once in a given line, although DOMAINS may 
+	## will occur only once in a given line, although DOMAINS may
 	## occur multiple times.
 	if (($conversion_enable{'DEITY:Followeralign conversion'})
 	    && $filetype eq "DEITY"
@@ -11154,7 +11154,7 @@ BEGIN {
 	    $followeralign =~ s/^FOLLOWERALIGN://;
 	    my $newprealign = "";
 	    my $aligncount = 0;
-	    
+
 	    for my $align (split //, $followeralign) {
                 # Is it a number?
                 my $number;
@@ -11181,8 +11181,8 @@ BEGIN {
 	    my $dom_count=0;
 
 	    if (exists $line_ref->{'DOMAINS'}) {
-		for my $line ($line_ref->{'DOMAINS'}) 
-		{	
+		for my $line ($line_ref->{'DOMAINS'})
+		{
 		    $line_ref->{'DOMAINS'}[$dom_count] .= "|PREALIGN:$newprealign";
 		    $dom_count++;
 		}
@@ -11191,11 +11191,11 @@ BEGIN {
 		       $file_for_error,
 		       $line_for_error
 		       );
-		
+
 		delete $line_ref->{'FOLLOWERALIGN'};
 	    }
 	}
-    
+
         ##################################################################
         # [ 1353255 ] TYPE to RACETYPE conversion
         #
@@ -11207,7 +11207,7 @@ BEGIN {
         if ( $filetype eq "RACE"
            && not ( exists $line_ref->{'RACETYPE'} )
            && not ( exists $line_ref->{'TYPE'}  )
-        ) { 
+        ) {
             # .MOD / .FORGET don't need RACETYPE or TYPE'
             my $race_name = $line_ref->{'000RaceName'}[0];
           if ($race_name =~ /.FORGET$|.MOD$/) {
@@ -12669,7 +12669,7 @@ BEGIN {
                         }
 
                         # Is it a PRExxx tag?
-                        elsif (/^\!?PRE/ 
+                        elsif (/^\!?PRE/
                             || /^DEITY/ ) {
                             $new_pre_line{$_} = delete $new_class_line{$_};
                         }
@@ -13890,9 +13890,9 @@ END_CSS
 ###############################################################
 ###############################################################
 ###
-### New Package for warnings.  Beginning to seperate out 
+### New Package for warnings.  Beginning to seperate out
 ### content into different concerns.
-### 
+###
 ###############################################################
 ###############################################################
 
@@ -13903,18 +13903,36 @@ use Carp;
 use constant NO  => 0;
 use constant YES => 1;
 
+use constant DEBUG   => 7;      # INFO message + debug message for the programmer
+use constant INFO    => 6;      # Everything including deprecations message (default)
+use constant NOTICE  => 5;      # No deprecations
+use constant WARNING => 4;      # PCGEN will prabably not work properly
+use constant ERROR   => 3;      # PCGEN will not work properly or the
+                               # script is foobar
+
 my $_file_name_previous = "";
 my $_header             = "";
 my $_is_first_error     = YES;
 my $_is_first_line      = YES;
 
-my %_warning_level_prefix = (
-       7   => "DBG",   # DEBUG
-       6   => "  -",   # INFO
-       5   => "   ",   # NOTICE
-       4   => "*=>",   # WARNING
-       3   => "***",   # ERROR
-);
+
+sub getWarning
+{
+	my $self = shift;
+	my $level = shift;
+	my %warning_level_prefix = (
+	       7   => "DBG",   # DEBUG
+	       6   => "  -",   # INFO
+	       5   => "   ",   # NOTICE
+	       4   => "*=>",   # WARNING
+	       3   => "***",   # ERROR
+	);
+
+	return $warning_level_prefix{$level};
+
+}
+
+
 sub new
 {
 
@@ -13961,12 +13979,12 @@ sub new
        # We display the line number if there is one (optional parameter)
        if ( defined $line_number )
        {
-           warn $_warning_level_prefix{$warning_level}
+           warn $self->getWarning($warning_level)
                . "(Line $line_number): $message";
        }
        else
        {
-           warn $_warning_level_prefix{$warning_level}
+           warn $self->getWarning($warning_level)
                . "$message";
        }
 
@@ -14166,7 +14184,7 @@ Here are the list of the valid convertions so far:
 
 =over 16
 
-Use to change a number of conversions for stable 5.12.0.  
+Use to change a number of conversions for stable 5.12.0.
 
 B<This has a small issue:> if ADD:blah| syntax items that contain ( ) in the elements, it will attempt to convert again.  This has only caused a few problems in the srds, but it is something to be aware of on homebrews.
 
@@ -14178,13 +14196,13 @@ B<This has a small issue:> if ADD:blah| syntax items that contain ( ) in the ele
 
 =item * [ 1678577 ] ADD: syntax no longer uses parens
 
-- Converts ADD:xxx(choice)y to ADD:xxx|y|choice. 
+- Converts ADD:xxx(choice)y to ADD:xxx|y|choice.
 
 <L<http://sourceforge.net/tracker/index.php?func=detail&aid=1678577&group_id=25576&atid=750093>>
 
 =item * [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
 
-- Changes the FOLLOWERALIGN tag to new DOMAINS tag imbedded PREALIGN tags.  
+- Changes the FOLLOWERALIGN tag to new DOMAINS tag imbedded PREALIGN tags.
 This can also be done on its own with conversion 'followeralign'.
 
 =item * [ 1353255 ] TYPE to RACETYPE conversion
@@ -14196,7 +14214,7 @@ Use to change the TYPE entry in race.lst to RACETYPE if no RACETYPE is present.
 
 =item * [ 1324519 ] ASCII characters
 
-- Converts a few known upper level characters to ASCII standard output 
+- Converts a few known upper level characters to ASCII standard output
 characters to prevent crashes and bad output when exporting from PCGen.
 
 <L<http://sourceforge.net/tracker/index.php?func=detail&aid=1324519&group_id=25576&atid=750093>>
@@ -14754,7 +14772,7 @@ Add PREREACH tag
 
 [ 1625250 ] New tag REACHMULT:x
 
-=head2 v1.35 
+=head2 v1.35
 
 [ 1593904 ] KIT lines can have any standard PRE tag
 
