@@ -21,6 +21,7 @@
 package pcgen.gui.proto.util;
 
 import java.util.Collection;
+import javax.swing.table.JTableHeader;
 import pcgen.gui.util.JTreeTable;
 import pcgen.gui.util.treeview.TreeViewModel;
 import pcgen.gui.util.treeview.TreeViewTableModel;
@@ -40,6 +41,13 @@ public class JTreeViewTable extends JTreeTable
     public JTreeViewTable(TreeViewTableModel model)
     {
         super(model);
+    }
+    
+
+    @Override
+    protected JTableHeader createDefaultTableHeader()
+    {
+        return new JTreeViewTableHeader(this);
     }
     
     public TreeViewTableModel getTreeViewTableModel()

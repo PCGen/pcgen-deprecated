@@ -46,11 +46,10 @@ import pcgen.util.Comparators;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class SortingHeaderRenderer extends JButton implements TableCellRenderer
+public class SortingHeaderRenderer extends JButton implements TableCellRenderer,
+                                                               SortingConstants
 {
 
-    private static final Icon ascendingIcon = null;//TODO: GET CORRECT ICON
-    private static final Icon descendingIcon = null;//TODO: GET CORRECT ICON
     private static final ButtonModel defaultModel = new DefaultButtonModel();
     private final ButtonModel usedModel = new DefaultButtonModel();
     private final JTreeViewTableHeader header;
@@ -73,6 +72,7 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer
                     public void mousePressed(MouseEvent e)
                     {
                         usedModel.setPressed(true);
+                        header.repaint();
                     }
 
                     public void mouseReleased(MouseEvent e)
@@ -114,17 +114,18 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer
                     public void actionPerformed(ActionEvent e)
                     {
                         TreeViewTableModel model = header.getTableModel();
-                        DataViewColumn datacolumn = model.getDataColumn(trackedColumn.getModelIndex());
-                        Comparator comparator = datacolumn.getComparator();
-                        Icon icon = ascendingIcon;
+                        Icon icon = null;
                         if (iconMap.containsKey(trackedColumn))
                         {
-                            icon = descendingIcon;
-                            comparator = Comparators.inverseComparator(comparator);
+                            icon = DESCENDING_ICON;
+                        }
+                        else
+                        {
+                            icon = ASCENDING_ICON;
                         }
                         iconMap = Collections.singletonMap(trackedColumn,
                                                            icon);
-                        model.setComparator(comparator);
+                        model.sortColumn(trackedColumn.getModelIndex());
                     }
 
                 });
@@ -137,7 +138,8 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer
                                                     boolean hasFocus, int row,
                                                     int column)
     {
-        if (trackedColumn != null && trackedColumn.getHeaderValue() == value)
+        if (trackedColumn != null && trackedColumn.getHeaderValue() == value &&
+                trackedColumn == header.getDraggedColumn())
         {
             setModel(usedModel);
         }

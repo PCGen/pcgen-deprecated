@@ -97,13 +97,15 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
                 ButtonModelHandler handler = new ButtonModelHandler();
                 JTreeViewTableHeader.this.addMouseListener(handler);
                 JTreeViewTableHeader.this.addMouseMotionListener(handler);
+                //this.setRolloverEnabled(true);
             }
 
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 
-                if (usedcolumn != null && usedcolumn.getHeaderValue() == value) {
+                if (usedcolumn != null && usedcolumn.getHeaderValue() == value &&
+                    usedcolumn == JTreeViewTableHeader.this.getDraggedColumn())
                     setModel(usedModel);
-                } else {
+                 else {
                     setModel(emptyModel);
                 }
                 setText(value.toString());

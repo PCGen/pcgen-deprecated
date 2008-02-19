@@ -44,10 +44,11 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
     private final Map<TreeView<E>, TreeViewNode<E>> viewMap = new HashMap<TreeView<E>, TreeViewNode<E>>();
     private Comparator<E> comparator = Comparators.toStringComparator();
     private TreeViewMode mode = TreeViewMode.ASCENDING;
+    private DataViewColumn sortedColumn = null;
     private TreeView<E> selectedView;
 
     public TreeViewTableModel(TreeViewModel<E> model,
-            Collection<E> data)
+                               Collection<E> data)
     {
         this.treeviews = model.getTreeViews();
         this.selectedView = treeviews.iterator().next();
@@ -55,6 +56,11 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         this.datacolumns = dataview.getDataColumns();
         setData(data);
         root = viewMap.get(selectedView);
+    }
+
+    public TreeView<E> getSelectedTreeView()
+    {
+        return selectedView;
     }
 
     public void setSelectedTreeView(TreeView<E> view)
@@ -67,7 +73,8 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
         root = node;
         TreeViewPathComparator<E> pathcomparator = node.getTreeViewPathComparator();
-        if (!pathcomparator.getTreeViewMode().equals(mode) || !pathcomparator.getComparator().equals(comparator))
+        if (!pathcomparator.getTreeViewMode().equals(mode) ||
+                !pathcomparator.getComparator().equals(comparator))
         {
             resetTreeViewPathComparator();
         }
@@ -77,13 +84,45 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
+    public void sortColumn(int column)
+    {
+        DataViewColumn<E> dataColumn = getDataColumn(column);
+        Comparator<E> comp = null;
+        if (dataColumn != null)
+        {
+            comp = dataColumn.getComparator();
+            if (dataColumn == sortedColumn)
+            {
+                comp = Comparators.inverseComparator(comparator);
+            }
+        }
+        else if (sortedColumn != null)
+        {
+            comp = Comparators.toStringComparator();
+        }
+        else
+        {
+            comp = Comparators.inverseComparator(comparator);
+        }
+        setComparator(comp);
+        sortedColumn = dataColumn;
+    }
+
+    public int getSortedColumn()
+    {
+        if(!datacolumns.contains(sortedColumn))
+            return 0;
+        
+        return datacolumns.indexOf(sortedColumn)+1;
+    }
+    
     public void setData(Collection<E> data)
     {
         populateDataMap(data);
         populateViewMap(data);
     }
 
-    public void setComparator(Comparator<E> comparator)
+    private void setComparator(Comparator<E> comparator)
     {
         this.comparator = comparator;
         resetTreeViewPathComparator();
@@ -106,9 +145,17 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         super.fireTreeStructureChanged(root, rootNode.getTreePath());
     }
 
-    public void setTreeViewMode(TreeViewMode mode)
+    public TreeViewMode getTreeViewMode()
     {
-        this.mode = mode;
+        return mode;
+    }
+
+    public void switchTreeViewMode()
+    {
+        if(mode == TreeViewMode.ASCENDING)
+            mode = TreeViewMode.DESCENDING;
+        else
+            mode = TreeViewMode.ASCENDING;
         resetTreeViewPathComparator();
     }
 
@@ -162,23 +209,23 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         switch (column)
         {
             case 0:
-                return selectedView.getViewName();
+                return null;
             default:
                 return getDataColumn(column).getName();
         }
     }
 
-    public DataViewColumn getDataColumn(int column)
+    private DataViewColumn getDataColumn(int column)
     {
-        switch(column)
+        switch (column)
         {
-             case 0:
-                 return null;
+            case 0:
+                return null;
             default:
-                return datacolumns.get(column-1);
+                return datacolumns.get(column - 1);
         }
     }
-    
+
     public Object getValueAt(Object node, int column)
     {
         Object item = ((TreeViewNode<E>) node).getItem();

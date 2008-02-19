@@ -44,128 +44,130 @@ public class TreeViewNode<E> implements TreeNode
 
     TreeViewNode(TreeViewPathComparator<E> comparator)
     {
-	this(0, comparator, null);
-	treepath = new TreePath(this);
+        this(0, comparator, null);
+        treepath = new TreePath(this);
     }
 
-    private TreeViewNode(int depth, TreeViewPathComparator comparator, Object item)
+    private TreeViewNode(int depth, TreeViewPathComparator comparator,
+                          Object item)
     {
-	this.pathMap = new TreeMap<TreeViewPath, TreeViewNode<E>>(comparator);
-	this.comparator = comparator;
-	this.depth = depth;
-	this.item = item;
+        this.pathMap = new TreeMap<TreeViewPath, TreeViewNode<E>>(comparator);
+        this.comparator = comparator;
+        this.depth = depth;
+        this.item = item;
     }
 
     TreeViewPathComparator<E> getTreeViewPathComparator()
     {
-	return comparator;
+        return comparator;
     }
-    
+
     void setTreeViewPathComparator(TreeViewPathComparator<E> comparator)
     {
-	resetMap(comparator);
+        resetMap(comparator);
     }
 
     private void resetMap(TreeViewPathComparator comparator)
     {
-	Map<TreeViewPath, TreeViewNode<E>> map = new TreeMap<TreeViewPath, TreeViewNode<E>>(comparator);
-	map.putAll(pathMap);
-	if (!map.equals(pathMap))
-	{
-	    pathMap = map;
-	}
-	for (TreeViewPath path : pathMap.keySet())
-	{
-	    TreeViewNode child = pathMap.get(path);
-	    child.resetMap(comparator);
-	}
+        Map<TreeViewPath, TreeViewNode<E>> map = new TreeMap<TreeViewPath, TreeViewNode<E>>(comparator);
+        map.putAll(pathMap);
+        if (!map.equals(pathMap))
+        {
+            pathMap = map;
+        }
+        for (TreeViewPath path : pathMap.keySet())
+        {
+            TreeViewNode child = pathMap.get(path);
+            child.resetMap(comparator);
+        }
     }
 
     void createChild(TreeViewPath<E> path)
     {
-	if (path.getPathCount() < depth)
-	{
-	    TreeViewPath key = path.getParentPath(depth);
-	    TreeViewNode<E> node = pathMap.get(key);
-	    if (node == null)
-	    {
-		node = new TreeViewNode(depth + 1, comparator, key.getLastPathComponent());
-		node.setParent(this);
-		pathMap.put(key, node);
-	    }
-	    node.createChild(path);
-	}
+        if (path.getPathCount() < depth)
+        {
+            TreeViewPath key = path.getParentPath(depth);
+            TreeViewNode<E> node = pathMap.get(key);
+            if (node == null)
+            {
+                node = new TreeViewNode(depth + 1, comparator,
+                                        key.getLastPathComponent());
+                node.setParent(this);
+                pathMap.put(key, node);
+            }
+            node.createChild(path);
+        }
     }
 
     public Object getItem()
     {
-	return item;
+        return item;
     }
 
     public TreeNode getChildAt(int childIndex)
     {
-	Iterator<TreeViewNode<E>> it = pathMap.values().iterator();
-	for (int i = 0; i < childIndex; i++)
-	{
-	    if (it.hasNext())
-	    {
-		it.next();
-	    }
-	    else
-	    {
-		throw new IndexOutOfBoundsException("childIndex: " + childIndex);
-	    }
-	}
-	return it.next();
+        Iterator<TreeViewNode<E>> it = pathMap.values().iterator();
+        for (int i = 0; i < childIndex; i++)
+        {
+            if (it.hasNext())
+            {
+                it.next();
+            }
+            else
+            {
+                throw new IndexOutOfBoundsException("childIndex: " + childIndex);
+            }
+        }
+        return it.next();
     }
 
     public int getChildCount()
     {
-	return pathMap.size();
+        return pathMap.size();
     }
 
     public TreePath getTreePath()
     {
-	return treepath;
+        return treepath;
     }
 
     public TreeViewNode<E> getParent()
     {
-	return parent;
+        return parent;
     }
 
     private void setParent(TreeViewNode<E> parent)
     {
-	this.parent = parent;
-	this.treepath = parent.getTreePath().pathByAddingChild(this);
+        this.parent = parent;
+        this.treepath = parent.getTreePath().pathByAddingChild(this);
     }
 
     public int getIndex(TreeNode node)
     {
-	Iterator<TreeViewNode<E>> it = pathMap.values().iterator();
-	for (int i = 0; it.hasNext(); i++)
-	{
-	    if (it.next().equals(node))
-	    {
-		return i;
-	    }
-	}
-	return -1;
+        Iterator<TreeViewNode<E>> it = pathMap.values().iterator();
+        for (int i = 0; it.hasNext(); i++)
+        {
+            if (it.next().equals(node))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public boolean getAllowsChildren()
     {
-	return true;
+        return true;
     }
 
     public boolean isLeaf()
     {
-	return pathMap.isEmpty();
+        return pathMap.isEmpty();
     }
 
     public Enumeration<TreeViewNode<E>> children()
     {
-	return Collections.enumeration(pathMap.values());
+        return Collections.enumeration(pathMap.values());
     }
 
 }

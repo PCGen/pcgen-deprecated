@@ -20,11 +20,11 @@
  */
 package pcgen.gui.proto.util;
 
+import java.awt.Component;
 import pcgen.gui.util.SortingHeaderRenderer;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import pcgen.gui.util.treeview.TreeViewModel;
 import pcgen.gui.util.treeview.TreeViewTableModel;
 
 /**
@@ -33,20 +33,48 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
  */
 public class JTreeViewTableHeader extends JTableHeader
 {
+
     private TreeViewTableModel tableModel;
+
     public JTreeViewTableHeader(JTreeViewTable table)
     {
         super(table.getColumnModel());
         tableModel = table.getTreeViewTableModel();
     }
+
     @Override
     public TableCellRenderer createDefaultRenderer()
     {
-        return new SortingHeaderRenderer(this);
+        return new CompoundHeaderRenderer();
     }
 
     public TreeViewTableModel getTableModel()
     {
         return tableModel;
+    }
+
+    private final class CompoundHeaderRenderer implements TableCellRenderer
+    {
+
+        private TreeViewHeaderRenderer treeRenderer = new TreeViewHeaderRenderer(JTreeViewTableHeader.this);
+        private SortingHeaderRenderer sortRenderer = new SortingHeaderRenderer(JTreeViewTableHeader.this);
+
+        public Component getTableCellRendererComponent(JTable table,
+                                                        Object value,
+                                                        boolean isSelected,
+                                                        boolean hasFocus,
+                                                        int row,
+                                                        int column)
+        {
+            if (value == null)
+            {
+                return treeRenderer;
+            }
+            else
+            {
+                return sortRenderer;
+            }
+        }
+
     }
 }
