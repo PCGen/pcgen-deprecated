@@ -54,7 +54,12 @@ public final class Comparators
      */
     public static <T> Comparator<T> inverseComparator(Comparator<T> comparator)
     {
+        if (comparator instanceof InverseComparator)
+        {
+            return ((InverseComparator) comparator).getComparator();
+        }
         return new InverseComparator<T>(comparator);
+
     }
 
     /**
@@ -129,6 +134,11 @@ public final class Comparators
         public InverseComparator(Comparator<E> comparator)
         {
             this.comparator = comparator;
+        }
+
+        public Comparator<E> getComparator()
+        {
+            return comparator;
         }
 
         public int compare(E o1, E o2)
