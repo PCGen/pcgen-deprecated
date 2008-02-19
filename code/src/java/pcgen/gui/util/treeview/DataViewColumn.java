@@ -1,5 +1,5 @@
 /*
- * JTreeViewTable.java
+ * DataViewColumn.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,39 +16,44 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 14, 2008, 10:18:26 PM
+ * Created on Feb 18, 2008, 3:39:57 PM
  */
-package pcgen.gui.proto.util;
+package pcgen.gui.util.treeview;
 
-import java.util.Collection;
-import pcgen.gui.util.JTreeTable;
-import pcgen.gui.util.treeview.TreeViewModel;
-import pcgen.gui.util.treeview.TreeViewTableModel;
+import java.util.Comparator;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class JTreeViewTable extends JTreeTable
+public class DataViewColumn<E>
 {
 
-    public <T> JTreeViewTable(TreeViewModel<T> model, Collection<T> collection)
+    private String name;
+    private Class<?> dataclass;
+    private Comparator<E> comparator;
+
+    public DataViewColumn(String name, Class<?> dataclass,
+                           Comparator<E> comparator)
     {
-        super(new TreeViewTableModel(model, collection));
+        this.name = name;
+        this.dataclass = dataclass;
+        this.comparator = comparator;
     }
 
-    public JTreeViewTable(TreeViewTableModel model)
+    public String getName()
     {
-        super(model);
+        return name;
     }
-    
-    public TreeViewTableModel getTreeViewTableModel()
+
+    public Class<?> getDataClass()
     {
-        return (TreeViewTableModel) super.getTreeTableModel();
+        return dataclass;
     }
-    
-    public void setTreeViewTableModel(TreeViewTableModel model)
+
+    public Comparator<E> getComparator()
     {
-        super.setTreeTableModel(model);
+        return comparator;
     }
+
 }

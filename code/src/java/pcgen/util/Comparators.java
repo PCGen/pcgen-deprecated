@@ -30,17 +30,31 @@ import java.util.Comparator;
 public final class Comparators
 {
 
-    private static final StringComparator tSC = new StringComparator();
+    private Comparators()
+    {
+    }
 
+    private static final StringComparator tSC = new StringComparator();
     private static final StringIgnoreCaseComparator tSICC = new StringIgnoreCaseComparator();
+
     public static <T> Comparator<T> toStringComparator()
     {
-	return tSC;
+        return tSC;
     }
-    
+
     public static <T> Comparator<T> toStringIgnoreCaseComparator()
     {
-	return tSICC;
+        return tSICC;
+    }
+
+    /**
+     * TODO: perhaps keep instance references to commonly used InverseComparators?
+     * @param comparator
+     * @return new InverseComparator instance
+     */
+    public static <T> Comparator<T> inverseComparator(Comparator<T> comparator)
+    {
+        return new InverseComparator<T>(comparator);
     }
 
     /**
@@ -51,22 +65,23 @@ public final class Comparators
      * @author <a href="mailto:binkley@alumni.rice.edu">B. K. Oxley (binkley)</a>
      * @version $Revision: 2112 $
      */
-    private static final class StringComparator<E> implements Comparator<E>, Serializable
+    private static final class StringComparator<E> implements Comparator<E>,
+                                                                 Serializable
     {
 
-	/** Constructs a <code>StringComparator</code>. */
-	public StringComparator()
-	{
-	// TODO: Exception needs to be handled
-	}
+        /** Constructs a <code>StringComparator</code>. */
+        public StringComparator()
+        {
+        // TODO: Exception needs to be handled
+        }
 
-	/** {@inheritDoc} */
-	public int compare(E o1, E o2)
-	{
-	    // Treat null as the empty string.
-	    return ((o1 == null) ? "" : o1.toString()).compareTo((o2 == null) ? ""
-								 : o2.toString());
-	}
+        /** {@inheritDoc} */
+        public int compare(E o1, E o2)
+        {
+            // Treat null as the empty string.
+            return ((o1 == null) ? "" : o1.toString()).compareTo((o2 == null) ? ""
+                                                                 : o2.toString());
+        }
 
     }
 
@@ -79,21 +94,47 @@ public final class Comparators
      * @author <a href="mailto:binkley@alumni.rice.edu">B. K. Oxley (binkley)</a>
      * @version $Revision: 2112 $
      */
-    private static final class StringIgnoreCaseComparator<E> implements Comparator<E>, Serializable
+    private static final class StringIgnoreCaseComparator<E> implements Comparator<E>,
+                                                                           Serializable
     {
 
-	/** Constructs a <code>StringIgnoreCaseComparator</code>. */
-	public StringIgnoreCaseComparator()
-	{
-	// TODO: Exception needs to be handled
-	}
+        /** Constructs a <code>StringIgnoreCaseComparator</code>. */
+        public StringIgnoreCaseComparator()
+        {
+        // TODO: Exception needs to be handled
+        }
 
-	/** {@inheritDoc} */
-	public int compare(E o1, E o2)
-	{
-	    // Treat null as the empty string.
-	    return ((o1 == null) ? "" : o1.toString()).compareToIgnoreCase((o2 == null) ? "" : o2.toString());
-	}
+        /** {@inheritDoc} */
+        public int compare(E o1, E o2)
+        {
+            // Treat null as the empty string.
+            return ((o1 == null) ? "" : o1.toString()).compareToIgnoreCase((o2 ==
+                                                                           null)
+                                                                           ? ""
+                                                                           : o2.toString());
+        }
+
+    }
+
+    /**
+     * 
+     * @param E
+     */
+    private static final class InverseComparator<E> implements Comparator<E>,
+                                                                  Serializable
+    {
+
+        private final Comparator<E> comparator;
+
+        public InverseComparator(Comparator<E> comparator)
+        {
+            this.comparator = comparator;
+        }
+
+        public int compare(E o1, E o2)
+        {
+            return -comparator.compare(o1, o2);
+        }
 
     }
 }

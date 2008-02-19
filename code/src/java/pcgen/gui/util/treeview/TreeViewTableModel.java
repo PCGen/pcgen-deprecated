@@ -34,13 +34,12 @@ import pcgen.util.Comparators;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class TreeViewTableModel<E> extends AbstractTreeTableModel
+public final class TreeViewTableModel<E> extends AbstractTreeTableModel
 {
 
     private final DataView dataview;
     private final EnumSet<? extends TreeView<E>> treeviews;
-    private final List<String> headerNames;
-    private final List<Class<?>> dataclasses;
+    private final List<DataViewColumn<E>> datacolumns;
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     private final Map<TreeView<E>, TreeViewNode<E>> viewMap = new HashMap<TreeView<E>, TreeViewNode<E>>();
     private Comparator<E> comparator = Comparators.toStringComparator();
@@ -53,8 +52,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         this.treeviews = model.getTreeViews();
         this.selectedView = treeviews.iterator().next();
         this.dataview = model.getDataView();
-        this.headerNames = dataview.getDataNames();
-        this.dataclasses = dataview.getDataClasses();
+        this.datacolumns = dataview.getDataColumns();
         setData(data);
         root = viewMap.get(selectedView);
     }
@@ -144,7 +142,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     public int getColumnCount()
     {
-        return headerNames.size() + 1;
+        return datacolumns.size() + 1;
     }
 
     @Override
@@ -155,7 +153,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
             case 0:
                 return TreeTableModel.class;
             default:
-                return dataclasses.get(column - 1);
+                return getDataColumn(column).getDataClass();
         }
     }
 
@@ -166,10 +164,21 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
             case 0:
                 return selectedView.getViewName();
             default:
-                return headerNames.get(column - 1);
+                return getDataColumn(column).getName();
         }
     }
 
+    public DataViewColumn getDataColumn(int column)
+    {
+        switch(column)
+        {
+             case 0:
+                 return null;
+            default:
+                return datacolumns.get(column-1);
+        }
+    }
+    
     public Object getValueAt(Object node, int column)
     {
         Object item = ((TreeViewNode<E>) node).getItem();

@@ -18,7 +18,6 @@
  * 
  * Created on Feb 14, 2008, 4:17:32 PM
  */
-
 package pcgen.gui.util.treeview;
 
 import java.util.List;
@@ -29,7 +28,9 @@ import java.util.List;
  */
 public interface DataView<E>
 {
-    List<String> getDataNames();
+
     List<?> getData(E obj);
-    List<Class<?>> getDataClasses();
+
+    List<DataViewColumn<E>> getDataColumns();
+
 }
