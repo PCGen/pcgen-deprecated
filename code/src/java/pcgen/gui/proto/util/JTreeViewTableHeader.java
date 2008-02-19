@@ -21,10 +21,14 @@
 package pcgen.gui.proto.util;
 
 import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import javax.swing.table.TableColumn;
 import pcgen.gui.util.SortingHeaderRenderer;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import pcgen.gui.util.treeview.TreeViewTableModel;
 
 /**
@@ -35,10 +39,12 @@ public class JTreeViewTableHeader extends JTableHeader
 {
 
     private TreeViewTableModel tableModel;
+    private TableColumn trackedColumn;
 
     public JTreeViewTableHeader(JTreeViewTable table)
     {
         super(table.getColumnModel());
+        addMouseMotionListener(new ColumnTracker());
         tableModel = table.getTreeViewTableModel();
     }
 
@@ -48,9 +54,30 @@ public class JTreeViewTableHeader extends JTableHeader
         return new CompoundHeaderRenderer();
     }
 
+    public TableColumn getTrackedColumn()
+    {
+        return trackedColumn;
+    }
+
     public TreeViewTableModel getTableModel()
     {
         return tableModel;
+    }
+
+    private final class ColumnTracker implements MouseMotionListener
+    {
+
+        public void mouseDragged(MouseEvent e)
+        {
+
+        }
+
+        public void mouseMoved(MouseEvent e)
+        {
+            TableColumnModel model = getColumnModel();
+            trackedColumn = model.getColumn(model.getColumnIndexAtX(e.getX()));
+        }
+
     }
 
     private final class CompoundHeaderRenderer implements TableCellRenderer
@@ -68,11 +95,17 @@ public class JTreeViewTableHeader extends JTableHeader
         {
             if (value == null)
             {
-                return treeRenderer;
+                return treeRenderer.getTableCellRendererComponent(table, value,
+                                                                  isSelected,
+                                                                  hasFocus, row,
+                                                                  column);
             }
             else
             {
-                return sortRenderer;
+                return sortRenderer.getTableCellRendererComponent(table, value,
+                                                                  isSelected,
+                                                                  hasFocus, row,
+                                                                  column);
             }
         }
 

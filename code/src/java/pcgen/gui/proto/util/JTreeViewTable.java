@@ -35,19 +35,13 @@ public class JTreeViewTable extends JTreeTable
 
     public <T> JTreeViewTable(TreeViewModel<T> model, Collection<T> collection)
     {
-        super(new TreeViewTableModel(model, collection));
+        this(new TreeViewTableModel(model, collection));
     }
 
     public JTreeViewTable(TreeViewTableModel model)
     {
         super(model);
-    }
-    
-
-    @Override
-    protected JTableHeader createDefaultTableHeader()
-    {
-        return new JTreeViewTableHeader(this);
+        setTableHeader(new JTreeViewTableHeader(this));
     }
     
     public TreeViewTableModel getTreeViewTableModel()

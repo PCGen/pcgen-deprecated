@@ -34,8 +34,10 @@ public final class Comparators
     {
     }
 
-    private static final StringComparator tSC = new StringComparator();
-    private static final StringIgnoreCaseComparator tSICC = new StringIgnoreCaseComparator();
+    private static final ToStringComparator tSC = new ToStringComparator();
+    private static final ToStringIgnoreCaseComparator tSICC = new ToStringIgnoreCaseComparator();
+    private static final IntegerComparator iC = new IntegerComparator();
+    private static final HashCodeComparator hCC = new HashCodeComparator();
 
     public static <T> Comparator<T> toStringComparator()
     {
@@ -62,6 +64,21 @@ public final class Comparators
 
     }
 
+    public static <T> Comparator<T> hashCodeComparator()
+    {
+        return hCC;
+    }
+
+    public static Comparator<Integer> integerComparator()
+    {
+        return iC;
+    }
+
+    public static Comparator<String> ignoreCaseStringComparator()
+    {
+        return String.CASE_INSENSITIVE_ORDER;
+    }
+
     /**
      * A <code>Comparator</code> to compare objects as
      * <code>String</code>s.  This is particularly useful for applications
@@ -70,12 +87,12 @@ public final class Comparators
      * @author <a href="mailto:binkley@alumni.rice.edu">B. K. Oxley (binkley)</a>
      * @version $Revision: 2112 $
      */
-    private static final class StringComparator<E> implements Comparator<E>,
-                                                                 Serializable
+    private static final class ToStringComparator<E> implements Comparator<E>,
+                                                                   Serializable
     {
 
         /** Constructs a <code>StringComparator</code>. */
-        public StringComparator()
+        public ToStringComparator()
         {
         // TODO: Exception needs to be handled
         }
@@ -99,12 +116,12 @@ public final class Comparators
      * @author <a href="mailto:binkley@alumni.rice.edu">B. K. Oxley (binkley)</a>
      * @version $Revision: 2112 $
      */
-    private static final class StringIgnoreCaseComparator<E> implements Comparator<E>,
-                                                                           Serializable
+    private static final class ToStringIgnoreCaseComparator<E> implements Comparator<E>,
+                                                                             Serializable
     {
 
         /** Constructs a <code>StringIgnoreCaseComparator</code>. */
-        public StringIgnoreCaseComparator()
+        public ToStringIgnoreCaseComparator()
         {
         // TODO: Exception needs to be handled
         }
@@ -117,6 +134,26 @@ public final class Comparators
                                                                            null)
                                                                            ? ""
                                                                            : o2.toString());
+        }
+
+    }
+
+    private static final class IntegerComparator implements Comparator<Integer>
+    {
+
+        public int compare(Integer o1, Integer o2)
+        {
+            return o1.compareTo(o2);
+        }
+
+    }
+
+    private static final class HashCodeComparator implements Comparator
+    {
+
+        public int compare(Object o1, Object o2)
+        {
+            return iC.compare(o1.hashCode(), o2.hashCode());
         }
 
     }

@@ -84,8 +84,9 @@ public class TreeViewNode<E> implements TreeNode
 
     void createChild(TreeViewPath<E> path)
     {
-        if (path.getPathCount() < depth)
+        if (path.getPathCount() > depth)
         {
+            
             TreeViewPath key = path.getParentPath(depth);
             TreeViewNode<E> node = pathMap.get(key);
             if (node == null)
@@ -168,6 +169,19 @@ public class TreeViewNode<E> implements TreeNode
     public Enumeration<TreeViewNode<E>> children()
     {
         return Collections.enumeration(pathMap.values());
+    }
+
+    @Override
+    public String toString()
+    {
+        if (item == null)
+        {
+            return super.toString();
+        }
+        else
+        {
+            return item.toString();
+        }
     }
 
 }

@@ -9,6 +9,10 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultButtonModel;
 import javax.swing.JButton;
@@ -18,6 +22,13 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import pcgen.gui.proto.util.JTreeViewTable;
+import pcgen.gui.util.treeview.DataView;
+import pcgen.gui.util.treeview.DataViewColumn;
+import pcgen.gui.util.treeview.TreeView;
+import pcgen.gui.util.treeview.TreeViewModel;
+import pcgen.gui.util.treeview.TreeViewPath;
+import pcgen.util.Comparators;
 
 /**
  *
@@ -39,22 +50,10 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new JTreeViewTable(new StringModel(), Arrays.asList(1, 5, 4, 3, 6, 4, 2, 6, 2, 7 , 5));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jTable1.setTableHeader(new JTreeViewTableHeader());
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -76,77 +75,68 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
-    public class JTreeViewTableHeader extends JTableHeader {
+    private class StringModel implements TreeViewModel<Integer>
+    {
 
-        public JTreeViewTableHeader()
+        public EnumSet<? extends TreeView<Integer>> getTreeViews()
         {
-            super(jTable1.getColumnModel());
-        }
-        @Override
-        public TableCellRenderer createDefaultRenderer() {
-            return new SortingHeaderRenderer();
+            return EnumSet.allOf(StringView.class);
         }
 
-        private class SortingHeaderRenderer extends JButton implements TableCellRenderer {
+        public DataView<Integer> getDataView()
+        {
+            return new IntegerData();
+        }
+        
+    }
+    private enum StringView implements TreeView<Integer>
+    {
+        ONE("one"),
+        TWO("two"),
+        THREE("three"),
+        FOUR("four"),
+        FIVE("five"),
+        SIX("six"),
+        SEVEN("seven"),
+        EIGHT("eight"),
+        NINE("nine"),
+        TEN("ten");
+        private final String name;
+        
+        private StringView(String name)
+        {
+            this.name = name;
+        }
+        public String getViewName()
+        {
+            return name;
+        }
 
-            private ButtonModel emptyModel = new DefaultButtonModel();
-            private ButtonModel usedModel = new DefaultButtonModel();
-            private TableColumn usedcolumn = null;
-
-            private SortingHeaderRenderer() {
-                ButtonModelHandler handler = new ButtonModelHandler();
-                JTreeViewTableHeader.this.addMouseListener(handler);
-                JTreeViewTableHeader.this.addMouseMotionListener(handler);
-                //this.setRolloverEnabled(true);
+        public List<TreeViewPath<Integer>> getPaths(Integer pobj)
+        {
+            switch(this)
+            {
+                case ONE:
+                    return Arrays.asList(new TreeViewPath<Integer>(pobj, pobj.toString()));
+                default:
+                    return Arrays.asList(new TreeViewPath<Integer>(pobj));
             }
+        }
+    }
+    private class IntegerData implements DataView<Integer>
+    {
 
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                
-                if (usedcolumn != null && usedcolumn.getHeaderValue() == value &&
-                    usedcolumn == JTreeViewTableHeader.this.getDraggedColumn())
-                    setModel(usedModel);
-                 else {
-                    setModel(emptyModel);
-                }
-                setText(value.toString());
-                return this;
-            }
+        public List<?> getData(Integer obj)
+        {
+            return Arrays.asList(Integer.numberOfTrailingZeros(obj), Integer.toHexString(obj));
+        }
 
-            private class ButtonModelHandler implements MouseListener, MouseMotionListener {
-
-                private TableColumn getColumn(MouseEvent e) {
-                    TableColumnModel model = JTreeViewTableHeader.this.getColumnModel();
-                    return model.getColumn(model.getColumnIndexAtX(e.getX()));
-                }
-
-                public void mouseClicked(MouseEvent e) {
-                    SortingHeaderRenderer.this.doClick();
-                }
-
-                public void mousePressed(MouseEvent e) {
-                    usedModel.setPressed(true);
-                    JTreeViewTableHeader.this.repaint();
-                }
-
-                public void mouseReleased(MouseEvent e) {
-                    usedModel.setPressed(false);
-                }
-
-                public void mouseEntered(MouseEvent e) {
-                    usedModel.setRollover(true);
-                }
-
-                public void mouseExited(MouseEvent e) {
-                    usedModel.setRollover(false);
-                }
-
-                public void mouseDragged(MouseEvent e) {
-                }
-
-                public void mouseMoved(MouseEvent e) {
-                    usedcolumn = getColumn(e);
-                }
-            }
+        public List<DataViewColumn<Integer>> getDataColumns()
+        {
+            Comparator<Integer> comp = Comparators.hashCodeComparator();
+            List<DataViewColumn<Integer>> list = Arrays.asList(new DataViewColumn<Integer>("Trailing Zeros", Integer.class, Comparators.integerComparator()),
+                    new DataViewColumn<Integer>("Hex String", String.class, comp));
+            return list;
         }
     }
 }

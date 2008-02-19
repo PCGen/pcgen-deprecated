@@ -234,7 +234,13 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         {
             return null;
         }
-        return list.get(column - 1);
+        switch(column)
+        {
+            case 0:
+                return item;
+            default:
+                return list.get(column-1);
+        }
     }
 
     public Object getChild(Object parent, int index)

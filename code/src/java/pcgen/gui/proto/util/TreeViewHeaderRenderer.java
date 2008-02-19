@@ -6,13 +6,21 @@
 package pcgen.gui.proto.util;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import pcgen.gui.util.SortingConstants;
 import pcgen.gui.util.treeview.TreeViewMode;
 import pcgen.gui.util.treeview.TreeViewTableModel;
@@ -25,8 +33,9 @@ public class TreeViewHeaderRenderer extends javax.swing.JPanel implements TableC
                                                                            SortingConstants
 {
 
+    private static final ButtonModel defaultModel = new DefaultButtonModel();
+    private final ButtonModel usedModel = new DefaultButtonModel();
     private final JTreeViewTableHeader header;
-    private ButtonModel usedModel = null;
 
     /** Creates new form TreeViewHeaderRenderer */
     public TreeViewHeaderRenderer(final JTreeViewTableHeader header)
@@ -39,37 +48,17 @@ public class TreeViewHeaderRenderer extends javax.swing.JPanel implements TableC
 
                     public void mouseClicked(MouseEvent e)
                     {
-                        SwingUtilities.convertMouseEvent(header, e, TreeViewHeaderRenderer.this);
-                        if (textSortButton.contains(e.getPoint()))
+                        TableColumn trackedColumn = header.getTrackedColumn();
+                        if (trackedColumn == header.getDraggedColumn())
                         {
-                            textSortButton.doClick();
-                        }
-                        else if (treeViewButton.contains(e.getPoint()))
-                        {
-                            treeViewButton.doClick();
-                        }
-                        else if (treeSortButton.contains(e.getPoint()))
-                        {
-                            treeSortButton.doClick();
+                            findPressedButton().doClick();
                         }
                     }
 
-                    public void mousePressed(MouseEvent e)
+                    public void mousePressed(MouseEvent evt)
                     {
-                        SwingUtilities.convertMouseEvent(header, e, TreeViewHeaderRenderer.this);
-                        if (textSortButton.contains(e.getPoint()))
-                        {
-                            usedModel = textSortButton.getModel();
-                        }
-                        else if (treeViewButton.contains(e.getPoint()))
-                        {
-                            usedModel = treeViewButton.getModel();
-                        }
-                        else if (treeSortButton.contains(e.getPoint()))
-                        {
-                            usedModel = treeSortButton.getModel();
-                        }
                         usedModel.setPressed(true);
+                        header.repaint();
                     }
 
                     public void mouseReleased(MouseEvent e)
@@ -87,6 +76,28 @@ public class TreeViewHeaderRenderer extends javax.swing.JPanel implements TableC
 
                 });
         initComponents();
+    }
+
+    private JButton findPressedButton()
+    {
+        Point p = header.getMousePosition();
+        Rectangle rect = header.getHeaderRect(header.columnAtPoint(p));
+        p.translate(-rect.x, -rect.y);
+        JButton button;
+        if (p.getX() < treeSortButton.getWidth())
+        {
+            button = treeSortButton;
+        }
+        else if (p.getX() < treeSortButton.getWidth() +
+                treeViewButton.getWidth())
+        {
+            button = treeViewButton;
+        }
+        else
+        {
+            button = textSortButton;
+        }
+        return button;
     }
 
     /** This method is called from within the constructor to
@@ -167,6 +178,18 @@ public class TreeViewHeaderRenderer extends javax.swing.JPanel implements TableC
         if (header.getTableModel().getSortedColumn() != 0)
         {
             textSortButton.setIcon(null);
+        }
+        TableColumn trackedColumn = header.getTrackedColumn();
+        if (trackedColumn != null && trackedColumn.getHeaderValue() == null && trackedColumn ==
+                header.getDraggedColumn())
+        {
+            findPressedButton().setModel(usedModel);
+        }
+        else
+        {
+            treeViewButton.setModel(defaultModel);
+            treeSortButton.setModel(defaultModel);
+            textSortButton.setModel(defaultModel);
         }
         treeViewButton.setText(header.getTableModel().getSelectedTreeView().getViewName());
         return this;

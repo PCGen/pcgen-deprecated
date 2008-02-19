@@ -54,7 +54,6 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer,
     private final ButtonModel usedModel = new DefaultButtonModel();
     private final JTreeViewTableHeader header;
     private Map<TableColumn, Icon> iconMap = Collections.emptyMap();
-    private TableColumn trackedColumn = null;
 
     public SortingHeaderRenderer(final JTreeViewTableHeader header)
     {
@@ -66,7 +65,11 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer,
 
                     public void mouseClicked(MouseEvent e)
                     {
-                        doClick();
+                        TableColumn trackedColumn = header.getTrackedColumn();
+                        if (trackedColumn.getHeaderValue() != null)
+                        {
+                            doClick();
+                        }
                     }
 
                     public void mousePressed(MouseEvent e)
@@ -91,22 +94,6 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer,
                     }
 
                 });
-        header.addMouseMotionListener(
-                new MouseMotionListener()
-                {
-
-                    public void mouseDragged(MouseEvent e)
-                    {
-
-                    }
-
-                    public void mouseMoved(MouseEvent e)
-                    {
-                        TableColumnModel model = header.getColumnModel();
-                        trackedColumn = model.getColumn(model.getColumnIndexAtX(e.getX()));
-                    }
-
-                });
         addActionListener(
                 new ActionListener()
                 {
@@ -114,6 +101,7 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer,
                     public void actionPerformed(ActionEvent e)
                     {
                         TreeViewTableModel model = header.getTableModel();
+                        TableColumn trackedColumn = header.getTrackedColumn();
                         Icon icon = null;
                         if (iconMap.containsKey(trackedColumn))
                         {
@@ -138,6 +126,7 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer,
                                                     boolean hasFocus, int row,
                                                     int column)
     {
+        TableColumn trackedColumn = header.getTrackedColumn();
         if (trackedColumn != null && trackedColumn.getHeaderValue() == value &&
                 trackedColumn == header.getDraggedColumn())
         {
