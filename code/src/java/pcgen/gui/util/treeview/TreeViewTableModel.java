@@ -22,15 +22,12 @@ package pcgen.gui.util.treeview;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import pcgen.gui.util.treetable.AbstractTreeTableModel;
 import pcgen.gui.util.treetable.DefaultSortableTreeTableNode;
 import pcgen.gui.util.treetable.TreeTableModel;
-import pcgen.util.Comparators;
 import pcgen.util.UnboundedArrayList;
 
 /**

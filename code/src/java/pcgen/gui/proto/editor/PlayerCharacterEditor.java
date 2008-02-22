@@ -75,53 +75,5 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
-    private class StringModel implements TreeViewModel<Integer>
-    {
-
-        public EnumSet<? extends TreeView<Integer>> getTreeViews()
-        {
-            return EnumSet.allOf(StringView.class);
-        }
-
-        public DataView<Integer> getDataView()
-        {
-            return null;
-        }
-        
-    }
-    private enum StringView implements TreeView<Integer>
-    {
-        ONE("one"),
-        TWO("two"),
-        THREE("three"),
-        FOUR("four"),
-        FIVE("five"),
-        SIX("six"),
-        SEVEN("seven"),
-        EIGHT("eight"),
-        NINE("nine"),
-        TEN("ten");
-        private final String name;
-        
-        private StringView(String name)
-        {
-            this.name = name;
-        }
-        public String getViewName()
-        {
-            return name;
-        }
-
-        public List<TreeViewPath<Integer>> getPaths(Integer pobj)
-        {
-            switch(this)
-            {
-                case ONE:
-                    return Arrays.asList(new TreeViewPath<Integer>(pobj, pobj.toString()));
-                default:
-                    return Arrays.asList(new TreeViewPath<Integer>(pobj));
-            }
-        }
-    }
     
 }

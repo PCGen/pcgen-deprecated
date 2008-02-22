@@ -6,13 +6,13 @@
 
 package pcgen.gui.util.treeview;
 
-import java.util.EnumSet;
+import java.util.List;
 
 /**
  *
  * @author Connor Petty
  */
 public interface TreeViewModel<E>{
-    EnumSet<? extends TreeView<E>> getTreeViews();
+    List<? extends TreeView<E>> getTreeViews();
     DataView<E> getDataView();
 }
