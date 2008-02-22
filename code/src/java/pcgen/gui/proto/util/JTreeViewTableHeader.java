@@ -20,6 +20,7 @@
  */
 package pcgen.gui.proto.util;
 
+import pcgen.gui.util.JTreeViewTable;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;

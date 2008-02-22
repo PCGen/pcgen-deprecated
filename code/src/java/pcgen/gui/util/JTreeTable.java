@@ -18,6 +18,7 @@
  **/
 package pcgen.gui.util;
 
+import pcgen.gui.util.treetable.TreeTableModel;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -95,6 +96,7 @@ public class JTreeTable extends JTable
 
         // Create the tree. It will be used as a renderer and editor.
         tree = new TreeTableCellRenderer(treeTableModel);
+        tree.setRootVisible(false);
         adapter = new TreeTableModelAdapter(treeTableModel, tree);
         // Install a tableModel representing the visible rows in tree.
 
@@ -130,11 +132,12 @@ public class JTreeTable extends JTable
         }
     }
 
+    @SuppressWarnings("unchecked")
     public TreeTableModel getTreeTableModel()
     {
         return (TreeTableModel) tree.getModel();
     }
-            
+
     public void setTreeTableModel(TreeTableModel model)
     {
         tree.setModel(model);
@@ -579,7 +582,6 @@ public class JTreeTable extends JTable
          * @param e
          * @return true if cell editable
          */
-        @Override
         public boolean isCellEditable(EventObject e)
         {
             if (e instanceof MouseEvent)

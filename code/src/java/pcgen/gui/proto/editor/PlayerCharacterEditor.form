@@ -34,9 +34,6 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JTable" name="jTable1">
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTreeViewTable(new StringModel(), Arrays.asList(1, 5, 4, 3, 6, 4, 2, 6, 2, 7 , 5))"/>
-          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

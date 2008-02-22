@@ -113,7 +113,7 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer,
                         }
                         iconMap = Collections.singletonMap(trackedColumn,
                                                            icon);
-                        model.sortColumn(trackedColumn.getModelIndex());
+                        //model.sortColumn(trackedColumn.getModelIndex());
                     }
 
                 });

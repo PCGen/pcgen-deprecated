@@ -13,6 +13,7 @@
  */
 package pcgen.gui.util;
 
+import pcgen.gui.util.treetable.TreeTableModel;
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -177,7 +178,7 @@ final class TreeTableModelAdapter extends AbstractTableModel
 	return treeTableModel.getValueAt(nodeForRow(row), column);
     }
 
-    private Object nodeForRow(int row)
+    public Object nodeForRow(int row)
     {
 	TreePath treePath = tree.getPathForRow(row);
 	if (treePath != null)

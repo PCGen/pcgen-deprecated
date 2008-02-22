@@ -29,6 +29,6 @@ import javax.swing.Icon;
  */
 public interface SortingConstants 
 {
-public static final Icon ASCENDING_ICON = null;//TODO: implement
-public static final Icon DESCENDING_ICON = null;//TODO: implement
+public static final Icon ASCENDING_ICON = IconUtilities.getImageIcon("Down16.gif");//TODO: implement
+public static final Icon DESCENDING_ICON = IconUtilities.getImageIcon("Up16.gif");//TODO: implement
 }

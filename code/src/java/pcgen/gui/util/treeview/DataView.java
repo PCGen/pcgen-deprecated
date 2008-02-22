@@ -31,6 +31,6 @@ public interface DataView<E>
 
     List<?> getData(E obj);
 
-    List<DataViewColumn<E>> getDataColumns();
+    List<DataViewColumn> getDataColumns();
 
 }

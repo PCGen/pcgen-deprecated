@@ -1,5 +1,5 @@
 /*
- * JTreeViewTable.java
+ * SortableTreeTableModel.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,41 +16,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 14, 2008, 10:18:26 PM
+ * Created on Feb 20, 2008, 8:17:05 PM
  */
-package pcgen.gui.proto.util;
 
-import java.util.Collection;
-import javax.swing.table.JTableHeader;
-import pcgen.gui.util.JTreeTable;
-import pcgen.gui.util.treeview.TreeViewModel;
-import pcgen.gui.util.treeview.TreeViewTableModel;
+package pcgen.gui.util.treetable;
+
+import pcgen.gui.util.SortableModel;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class JTreeViewTable extends JTreeTable
+public interface SortableTreeTableModel extends TreeTableModel, SortableModel
 {
-
-    public <T> JTreeViewTable(TreeViewModel<T> model, Collection<T> collection)
-    {
-        this(new TreeViewTableModel(model, collection));
-    }
-
-    public JTreeViewTable(TreeViewTableModel model)
-    {
-        super(model);
-        setTableHeader(new JTreeViewTableHeader(this));
-    }
     
-    public TreeViewTableModel getTreeViewTableModel()
-    {
-        return (TreeViewTableModel) super.getTreeTableModel();
-    }
-    
-    public void setTreeViewTableModel(TreeViewTableModel model)
-    {
-        super.setTreeTableModel(model);
-    }
 }

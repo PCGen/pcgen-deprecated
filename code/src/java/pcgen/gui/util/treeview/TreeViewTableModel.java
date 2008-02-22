@@ -20,15 +20,18 @@
  */
 package pcgen.gui.util.treeview;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import pcgen.gui.util.AbstractTreeTableModel;
-import pcgen.gui.util.TreeTableModel;
+import pcgen.gui.util.treetable.AbstractTreeTableModel;
+import pcgen.gui.util.treetable.DefaultSortableTreeTableNode;
+import pcgen.gui.util.treetable.TreeTableModel;
 import pcgen.util.Comparators;
+import pcgen.util.UnboundedArrayList;
 
 /**
  *
@@ -37,126 +40,37 @@ import pcgen.util.Comparators;
 public final class TreeViewTableModel<E> extends AbstractTreeTableModel
 {
 
-    private final DataView dataview;
-    private final EnumSet<? extends TreeView<E>> treeviews;
-    private final List<DataViewColumn<E>> datacolumns;
+    private final Map<TreeView<E>, TreeViewNode> viewMap = new HashMap<TreeView<E>, TreeViewNode>();
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
-    private final Map<TreeView<E>, TreeViewNode<E>> viewMap = new HashMap<TreeView<E>, TreeViewNode<E>>();
-    private Comparator<E> comparator = Comparators.toStringComparator();
-    private TreeViewMode mode = TreeViewMode.ASCENDING;
-    private DataViewColumn sortedColumn = null;
+    private final DataView dataview;
+    private final List<DataViewColumn> datacolumns;
     private TreeView<E> selectedView;
 
     public TreeViewTableModel(TreeViewModel<E> model,
                                Collection<E> data)
     {
-        this.treeviews = model.getTreeViews();
-        this.selectedView = treeviews.iterator().next();
+        super(null);
+
         this.dataview = model.getDataView();
         this.datacolumns = dataview.getDataColumns();
-        setData(data);
-        root = viewMap.get(selectedView);
+        populateViewMap(model.getTreeViews());
+        populateDataMap(data);
+        setSelectedTreeView(model.getTreeViews().iterator().next());
     }
 
-    public TreeView<E> getSelectedTreeView()
-    {
-        return selectedView;
-    }
-
-    public void setSelectedTreeView(TreeView<E> view)
-    {
-        this.selectedView = view;
-        TreeViewNode<E> node = viewMap.get(view);
-        if (node == null)
-        {
-            throw new IllegalArgumentException("Attempting to use an unknown TreeView");
-        }
-        root = node;
-        TreeViewPathComparator<E> pathcomparator = node.getTreeViewPathComparator();
-        if (!pathcomparator.getTreeViewMode().equals(mode) ||
-                !pathcomparator.getComparator().equals(comparator))
-        {
-            resetTreeViewPathComparator();
-        }
-        else
-        {
-            super.fireTreeStructureChanged(root, node.getTreePath());
-        }
-    }
-
-    public void sortColumn(int column)
-    {
-        DataViewColumn<E> dataColumn = getDataColumn(column);
-        Comparator<E> comp = null;
-        if (dataColumn != null)
-        {
-            comp = dataColumn.getComparator();
-            if (dataColumn == sortedColumn)
-            {
-                comp = Comparators.inverseComparator(comparator);
-            }
-        }
-        else if (sortedColumn != null)
-        {
-            comp = Comparators.toStringComparator();
-        }
-        else
-        {
-            comp = Comparators.inverseComparator(comparator);
-        }
-        setComparator(comp);
-        sortedColumn = dataColumn;
-    }
-
-    public int getSortedColumn()
-    {
-        if(!datacolumns.contains(sortedColumn))
-            return 0;
-        
-        return datacolumns.indexOf(sortedColumn)+1;
-    }
-    
     public void setData(Collection<E> data)
     {
         populateDataMap(data);
-        populateViewMap(data);
+        populateViewMap(viewMap.keySet());
+        setSelectedTreeView(selectedView);
     }
 
-    private void setComparator(Comparator<E> comparator)
+    private void populateViewMap(Collection<? extends TreeView<E>> treeviews)
     {
-        this.comparator = comparator;
-        resetTreeViewPathComparator();
-    }
-
-    private void resetTreeViewPathComparator()
-    {
-        setTreeViewPathComparator(getNewTreeViewPathComparator());
-    }
-
-    private TreeViewPathComparator getNewTreeViewPathComparator()
-    {
-        return new TreeViewPathComparator(comparator, mode);
-    }
-
-    private void setTreeViewPathComparator(TreeViewPathComparator comparator)
-    {
-        TreeViewNode rootNode = viewMap.get(selectedView);
-        rootNode.setTreeViewPathComparator(comparator);
-        super.fireTreeStructureChanged(root, rootNode.getTreePath());
-    }
-
-    public TreeViewMode getTreeViewMode()
-    {
-        return mode;
-    }
-
-    public void switchTreeViewMode()
-    {
-        if(mode == TreeViewMode.ASCENDING)
-            mode = TreeViewMode.DESCENDING;
-        else
-            mode = TreeViewMode.ASCENDING;
-        resetTreeViewPathComparator();
+        for (TreeView<E> view : treeviews)
+        {
+            viewMap.put(view, new TreeViewNode());
+        }
     }
 
     private void populateDataMap(Collection<E> data)
@@ -171,20 +85,30 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
-    private void populateViewMap(Collection<E> data)
+    public TreeView<E> getSelectedTreeView()
     {
-        for (TreeView<E> view : treeviews)
+        return selectedView;
+    }
+
+    public void setSelectedTreeView(TreeView<E> view)
+    {
+        this.selectedView = view;
+        TreeViewNode node = viewMap.get(view);
+        if (node == null)
         {
-            TreeViewNode<E> node = new TreeViewNode<E>(getNewTreeViewPathComparator());
-            for (E element : data)
+            throw new IllegalArgumentException("Attempting to use an unknown TreeView");
+        }
+        if (node.isLeaf())
+        {
+            for (E element : dataMap.keySet())
             {
-                for (TreeViewPath path : view.getPaths(element))
+                for (TreeViewPath<E> path : view.getPaths(element))
                 {
-                    node.createChild(path);
+                    node.createPath(path);
                 }
             }
-            viewMap.put(view, node);
         }
+        setRoot(node);
     }
 
     public int getColumnCount()
@@ -204,6 +128,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
+    @Override
     public String getColumnName(int column)
     {
         switch (column)
@@ -226,31 +151,58 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
-    public Object getValueAt(Object node, int column)
+    private class TreeViewNode extends DefaultSortableTreeTableNode
     {
-        Object item = ((TreeViewNode<E>) node).getItem();
-        List<?> list = dataMap.get(item);
-        if (list == null)
+
+        private final int level;
+
+        public TreeViewNode()
         {
-            return null;
+            this(0);
         }
-        switch(column)
+
+        private TreeViewNode(int level)
         {
-            case 0:
-                return item;
-            default:
-                return list.get(column-1);
+            this.level = level;
         }
-    }
 
-    public Object getChild(Object parent, int index)
-    {
-        return ((TreeViewNode<E>) parent).getChildAt(index);
-    }
+        @SuppressWarnings("unchecked")
+        public void createPath(TreeViewPath<E> path)
+        {
+            if (path.getPathCount() > level)
+            {
+                Object key = path.getPathComponent(level);
+                TreeViewNode node = null;
+                for (int i = 0; i < childData.size(); i++)
+                {
+                    if (getChildData(i).get(0).equals(key))
+                    {
+                        node = (TreeViewNode) children.get(i);
+                        break;
+                    }
+                }
+                if (node == null)
+                {
+                    node = new TreeViewNode(level + 1);
+                    ArrayList<Object> datalist = new UnboundedArrayList<Object>(1);
+                    datalist.add(key);
+                    List<?> data = dataMap.get(key);
+                    if (key != null)
+                    {
+                        datalist.add(data);
+                    }
+                    datalist.trimToSize();
+                    add(node, datalist);
+                }
+                node.createPath(path);
+            }
+        }
 
-    public int getChildCount(Object parent)
-    {
-        return ((TreeViewNode<E>) parent).getChildCount();
-    }
+        @Override
+        public int getLevel()
+        {
+            return level;
+        }
 
+    }
 }

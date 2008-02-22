@@ -22,7 +22,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import pcgen.gui.proto.util.JTreeViewTable;
+import pcgen.gui.util.JTreeViewTable;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
 import pcgen.gui.util.treeview.TreeView;
@@ -50,7 +50,7 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new JTreeViewTable(new StringModel(), Arrays.asList(1, 5, 4, 3, 6, 4, 2, 6, 2, 7 , 5));
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,7 +85,7 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
 
         public DataView<Integer> getDataView()
         {
-            return new IntegerData();
+            return null;
         }
         
     }
@@ -123,20 +123,5 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
             }
         }
     }
-    private class IntegerData implements DataView<Integer>
-    {
-
-        public List<?> getData(Integer obj)
-        {
-            return Arrays.asList(Integer.numberOfTrailingZeros(obj), Integer.toHexString(obj));
-        }
-
-        public List<DataViewColumn<Integer>> getDataColumns()
-        {
-            Comparator<Integer> comp = Comparators.hashCodeComparator();
-            List<DataViewColumn<Integer>> list = Arrays.asList(new DataViewColumn<Integer>("Trailing Zeros", Integer.class, Comparators.integerComparator()),
-                    new DataViewColumn<Integer>("Hex String", String.class, comp));
-            return list;
-        }
-    }
+    
 }
