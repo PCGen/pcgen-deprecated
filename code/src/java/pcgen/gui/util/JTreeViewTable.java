@@ -28,7 +28,7 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class JTreeViewTable extends JTreeTable
+public class JTreeViewTable extends JSortableTreeTable
 {
 
     public <T> JTreeViewTable(TreeViewModel<T> model, Collection<T> collection)
@@ -40,14 +40,15 @@ public class JTreeViewTable extends JTreeTable
     {
         super(model);
     }
-    
+
     public TreeViewTableModel getTreeViewTableModel()
     {
         return (TreeViewTableModel) super.getTreeTableModel();
     }
-    
+
     public void setTreeViewTableModel(TreeViewTableModel model)
     {
         super.setTreeTableModel(model);
     }
+
 }

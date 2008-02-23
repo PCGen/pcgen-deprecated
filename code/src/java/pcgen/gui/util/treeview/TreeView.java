@@ -32,4 +32,5 @@ public interface TreeView<E>
     public String getViewName();
 
     public List<TreeViewPath<E>> getPaths(E pobj);
+
 }

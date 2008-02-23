@@ -22,7 +22,6 @@ package pcgen.gui.util.treeview;
 
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.tree.TreePath;
 
 /**
  *
