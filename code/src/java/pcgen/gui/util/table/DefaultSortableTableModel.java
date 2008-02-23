@@ -155,22 +155,4 @@ public class DefaultSortableTableModel extends DefaultTableModel implements Sort
         Collections.sort(dataVector, comparator);
     }
 
-    public Comparator<?> getComparator(int column)
-    {
-        if (comparatorMap != null && comparatorMap.containsKey(column))
-        {
-            return comparatorMap.get(column);
-        }
-        return Comparators.toStringComparator();
-    }
-
-    public void setComparator(int column, Comparator<?> comparator)
-    {
-        if (comparatorMap == null)
-        {
-            comparatorMap = new HashMap<Integer, Comparator<?>>();
-        }
-        comparatorMap.put(column, comparator);
-    }
-
 }

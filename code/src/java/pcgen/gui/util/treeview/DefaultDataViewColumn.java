@@ -31,14 +31,11 @@ public class DefaultDataViewColumn implements DataViewColumn
 
     private String name;
     private Class<?> dataclass;
-    private Comparator<?> comparator;
 
-    public <T> DefaultDataViewColumn(String name, Class<T> dataclass,
-                           Comparator<? super T> comparator)
+    public <T> DefaultDataViewColumn(String name, Class<T> dataclass)
     {
         this.name = name;
         this.dataclass = dataclass;
-        this.comparator = comparator;
     }
 
     public String getName()
@@ -49,11 +46,6 @@ public class DefaultDataViewColumn implements DataViewColumn
     public Class<?> getDataClass()
     {
         return dataclass;
-    }
-
-    public Comparator<?> getComparator()
-    {
-        return comparator;
     }
 
 }

@@ -106,14 +106,5 @@ public class JSortableTreeTable extends JTreeTable
             }
         }
 
-        public Comparator<?> getComparator(int column)
-        {
-            if (treeTableModel != null)
-            {
-                return ((SortableTreeTableModel) treeTableModel).getComparator(column);
-            }
-            return Comparators.toStringComparator();
-        }
-
     }
 }

@@ -48,6 +48,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
     private final List<DataViewColumn> datacolumns;
     private TreeView<E> selectedView;
 
+    @SuppressWarnings("unchecked")
     public TreeViewTableModel(TreeViewModel<E> model,
                                Collection<E> data)
     {
@@ -75,6 +76,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void populateDataMap(Collection<E> data)
     {
         dataMap.entrySet().retainAll(data);
@@ -146,11 +148,6 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         viewMap.get(selectedView).sortChildren(comparator);
     }
 
-    public Comparator<?> getComparator(int column)
-    {
-        return getDataColumn(column).getComparator();
-    }
-
     private final class NameViewColumn implements DataViewColumn
     {
 
@@ -162,11 +159,6 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         public Class<?> getDataClass()
         {
             return TreeTableNode.class;
-        }
-
-        public Comparator<?> getComparator()
-        {
-            return Comparators.toStringComparator();
         }
 
     }
@@ -186,7 +178,6 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
             this.level = level;
         }
 
-        @SuppressWarnings("unchecked")
         public void createPath(TreeViewPath<E> path)
         {
             if (path.getPathCount() > level)

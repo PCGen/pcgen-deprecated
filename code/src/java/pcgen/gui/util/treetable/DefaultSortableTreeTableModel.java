@@ -71,9 +71,4 @@ public class DefaultSortableTreeTableModel extends DefaultTreeTableModel
         ((SortableTreeTableNode) getRoot()).sortChildren(comparator);
     }
 
-    public Comparator<?> getComparator(int column)
-    {
-        return Comparators.toStringComparator();
-    }
-
 }

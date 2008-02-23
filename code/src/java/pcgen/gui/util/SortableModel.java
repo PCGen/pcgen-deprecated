@@ -31,5 +31,5 @@ import java.util.List;
 public interface SortableModel 
 {
     void sortModel(Comparator<List<?>> comparator);
-    Comparator<?> getComparator(int column);
+    Class<?> getColumnClass(int column);
 }

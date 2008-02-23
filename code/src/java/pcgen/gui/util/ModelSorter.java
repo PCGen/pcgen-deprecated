@@ -25,7 +25,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import javax.swing.event.EventListenerList;
+import pcgen.util.Comparators;
 
 /**
  *
@@ -63,7 +65,7 @@ public class ModelSorter
 
     public void toggleSort(int column)
     {
-        List<SortingPriority> list = new ArrayList<SortingPriority>(getSortingPriority());
+        Vector<SortingPriority> list = new Vector<SortingPriority>(getSortingPriority());
         int index;
         for (index = list.size() - 1; index >= 0; index--)
         {
@@ -82,6 +84,7 @@ public class ModelSorter
             case -1:
                 list.add(0, new SortingPriority(column, SortMode.ASCENDING));
         }
+        list.setSize(2);
         setSortingPriority(list);
     }
 
@@ -127,7 +130,7 @@ public class ModelSorter
                     continue;
                 }
                 int column = priority.getColumn();
-                Comparator comparator = model.getComparator(column);
+                Comparator comparator = Comparators.getComparatorFor(model.getColumnClass(column));
                 int ret = comparator.compare(o1.get(column), o2.get(column));
                 if (priority.getMode() == SortMode.DESCENDING)
                 {

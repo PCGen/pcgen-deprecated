@@ -22,6 +22,7 @@ package pcgen.util;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  *
@@ -37,6 +38,8 @@ public final class Comparators
     private static final ToStringComparator tSC = new ToStringComparator();
     private static final ToStringIgnoreCaseComparator tSICC = new ToStringIgnoreCaseComparator();
     private static final IntegerComparator iC = new IntegerComparator();
+    private static final NumberComparator nC = new NumberComparator();
+    private static final DateComparator dC = new DateComparator();
     private static final HashCodeComparator hCC = new HashCodeComparator();
 
     public static <T> Comparator<T> toStringComparator()
@@ -74,9 +77,41 @@ public final class Comparators
         return iC;
     }
 
+    public static Comparator<Number> numberComparator()
+    {
+        return nC;
+    }
+
+    public static Comparator<Date> dateComparator()
+    {
+        return dC;
+    }
+
     public static Comparator<String> ignoreCaseStringComparator()
     {
         return String.CASE_INSENSITIVE_ORDER;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Comparator<? super T> getComparatorFor(Class<T> c)
+    {
+        if (c == Integer.class)
+        {
+            return (Comparator<? super T>) integerComparator();
+        }
+        else if (c.getSuperclass() == Number.class)
+        {
+            return (Comparator<? super T>) numberComparator();
+        }
+        else if (c == Date.class)
+        {
+            return (Comparator<? super T>) dateComparator();
+        }
+        else if (c == String.class)
+        {
+            return (Comparator<? super T>) ignoreCaseStringComparator();
+        }
+        return toStringComparator();
     }
 
     /**
@@ -144,6 +179,52 @@ public final class Comparators
         public int compare(Integer o1, Integer o2)
         {
             return o1.compareTo(o2);
+        }
+
+    }
+
+    private static final class NumberComparator implements Comparator<Number>
+    {
+
+        public int compare(Number o1, Number o2)
+        {
+            final double d1 = o1.doubleValue();
+            final double d2 = o2.doubleValue();
+
+            if (d1 < d2)
+            {
+                return -1;
+            }
+
+            if (d1 > d2)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
+    }
+
+    private static final class DateComparator implements Comparator<Date>
+    {
+
+        public int compare(Date o1, Date o2)
+        {
+            final long n1 = o1.getTime();
+            final long n2 = o2.getTime();
+
+            if (n1 < n2)
+            {
+                return -1;
+            }
+
+            if (n1 > n2)
+            {
+                return 1;
+            }
+
+            return 0;
         }
 
     }
