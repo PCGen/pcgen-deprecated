@@ -25,6 +25,11 @@ import javax.swing.tree.TreePath;
 public abstract class AbstractTreeTableModel extends DefaultTreeModel implements TreeTableModel
 {
 
+    protected AbstractTreeTableModel()
+    {
+        this(null);
+    }
+    
     public AbstractTreeTableModel(TreeTableNode root)
     {
         super(root);
@@ -36,7 +41,7 @@ public abstract class AbstractTreeTableModel extends DefaultTreeModel implements
     */
     public boolean isCellEditable(Object node, int column)
     {
-        return getColumnClass(column) == TreeTableModel.class;
+        return getColumnClass(column) == TreeTableNode.class;
     }
 
     public Class<?> getColumnClass(int column)

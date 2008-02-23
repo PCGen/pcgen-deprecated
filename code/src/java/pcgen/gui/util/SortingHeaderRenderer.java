@@ -34,11 +34,12 @@ import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import pcgen.gui.proto.util.JTreeViewTableHeader;
-import pcgen.gui.util.treeview.DataViewColumn;
+import pcgen.gui.proto.util.JSortableTableHeader;
+import pcgen.gui.util.treeview.DefaultDataViewColumn;
 import pcgen.gui.util.treeview.TreeViewTableModel;
 import pcgen.util.Comparators;
 
@@ -52,10 +53,10 @@ public class SortingHeaderRenderer extends JButton implements TableCellRenderer,
 
     private static final ButtonModel defaultModel = new DefaultButtonModel();
     private final ButtonModel usedModel = new DefaultButtonModel();
-    private final JTreeViewTableHeader header;
+    private final JSortableTableHeader header;
     private Map<TableColumn, Icon> iconMap = Collections.emptyMap();
 
-    public SortingHeaderRenderer(final JTreeViewTableHeader header)
+    public SortingHeaderRenderer(final JSortableTableHeader header)
     {
 
         this.header = header;

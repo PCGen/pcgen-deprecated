@@ -1,5 +1,5 @@
 /*
- * SortableModel.java
+ * DefaultDataViewColumn.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,20 +16,44 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 21, 2008, 8:37:49 PM
+ * Created on Feb 22, 2008, 2:45:05 PM
  */
-
-package pcgen.gui.util;
+package pcgen.gui.util.treeview;
 
 import java.util.Comparator;
-import java.util.List;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public interface SortableModel 
+public class DefaultDataViewColumn implements DataViewColumn
 {
-    void sortModel(Comparator<List<?>> comparator);
-    Comparator<?> getComparator(int column);
+
+    private String name;
+    private Class<?> dataclass;
+    private Comparator<?> comparator;
+
+    public <T> DefaultDataViewColumn(String name, Class<T> dataclass,
+                           Comparator<? super T> comparator)
+    {
+        this.name = name;
+        this.dataclass = dataclass;
+        this.comparator = comparator;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public Class<?> getDataClass()
+    {
+        return dataclass;
+    }
+
+    public Comparator<?> getComparator()
+    {
+        return comparator;
+    }
+
 }

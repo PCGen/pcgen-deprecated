@@ -1,5 +1,5 @@
 /*
- * JTreeViewTableHeader.java
+ * JSortableTableHeader.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -36,13 +36,13 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
  *
  * @author Connor Petty<mistercpp2000@gmail.com>
  */
-public class JTreeViewTableHeader extends JTableHeader
+public class JSortableTableHeader extends JTableHeader
 {
 
     private TreeViewTableModel tableModel;
     private TableColumn trackedColumn;
 
-    public JTreeViewTableHeader(JTreeViewTable table)
+    public JSortableTableHeader(JTreeViewTable table)
     {
         super(table.getColumnModel());
         addMouseMotionListener(new ColumnTracker());
@@ -52,7 +52,7 @@ public class JTreeViewTableHeader extends JTableHeader
     @Override
     public TableCellRenderer createDefaultRenderer()
     {
-        return new CompoundHeaderRenderer();
+        return new SortingHeaderRenderer(this);
     }
 
     public TableColumn getTrackedColumn()
@@ -77,37 +77,6 @@ public class JTreeViewTableHeader extends JTableHeader
         {
             TableColumnModel model = getColumnModel();
             trackedColumn = model.getColumn(model.getColumnIndexAtX(e.getX()));
-        }
-
-    }
-
-    private final class CompoundHeaderRenderer implements TableCellRenderer
-    {
-
-        private TreeViewHeaderRenderer treeRenderer = new TreeViewHeaderRenderer(JTreeViewTableHeader.this);
-        private SortingHeaderRenderer sortRenderer = new SortingHeaderRenderer(JTreeViewTableHeader.this);
-
-        public Component getTableCellRendererComponent(JTable table,
-                                                        Object value,
-                                                        boolean isSelected,
-                                                        boolean hasFocus,
-                                                        int row,
-                                                        int column)
-        {
-            if (value == null)
-            {
-                return treeRenderer.getTableCellRendererComponent(table, value,
-                                                                  isSelected,
-                                                                  hasFocus, row,
-                                                                  column);
-            }
-            else
-            {
-                return sortRenderer.getTableCellRendererComponent(table, value,
-                                                                  isSelected,
-                                                                  hasFocus, row,
-                                                                  column);
-            }
         }
 
     }

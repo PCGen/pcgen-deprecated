@@ -24,7 +24,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import pcgen.gui.util.JTreeViewTable;
 import pcgen.gui.util.treeview.DataView;
-import pcgen.gui.util.treeview.DataViewColumn;
+import pcgen.gui.util.treeview.DefaultDataViewColumn;
 import pcgen.gui.util.treeview.TreeView;
 import pcgen.gui.util.treeview.TreeViewModel;
 import pcgen.gui.util.treeview.TreeViewPath;

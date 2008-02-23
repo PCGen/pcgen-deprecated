@@ -22,12 +22,15 @@ package pcgen.gui.util.treeview;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import pcgen.gui.util.treetable.AbstractTreeTableModel;
 import pcgen.gui.util.treetable.DefaultSortableTreeTableNode;
-import pcgen.gui.util.treetable.TreeTableModel;
+import pcgen.gui.util.treetable.SortableTreeTableModel;
+import pcgen.gui.util.treetable.TreeTableNode;
+import pcgen.util.Comparators;
 import pcgen.util.UnboundedArrayList;
 
 /**
@@ -35,10 +38,12 @@ import pcgen.util.UnboundedArrayList;
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
 public final class TreeViewTableModel<E> extends AbstractTreeTableModel
+        implements SortableTreeTableModel
 {
 
     private final Map<TreeView<E>, TreeViewNode> viewMap = new HashMap<TreeView<E>, TreeViewNode>();
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
+    private final NameViewColumn namecolumn = new NameViewColumn();
     private final DataView dataview;
     private final List<DataViewColumn> datacolumns;
     private TreeView<E> selectedView;
@@ -52,7 +57,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         this.datacolumns = dataview.getDataColumns();
         populateViewMap(model.getTreeViews());
         populateDataMap(data);
-        setSelectedTreeView(model.getTreeViews().iterator().next());
+        setSelectedTreeView(model.getTreeViews().get(0));
     }
 
     public void setData(Collection<E> data)
@@ -116,25 +121,13 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
     @Override
     public Class<?> getColumnClass(int column)
     {
-        switch (column)
-        {
-            case 0:
-                return TreeTableModel.class;
-            default:
-                return getDataColumn(column).getDataClass();
-        }
+        return getDataColumn(column).getDataClass();
     }
 
     @Override
     public String getColumnName(int column)
     {
-        switch (column)
-        {
-            case 0:
-                return null;
-            default:
-                return getDataColumn(column).getName();
-        }
+        return getDataColumn(column).getName();
     }
 
     private DataViewColumn getDataColumn(int column)
@@ -142,13 +135,43 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         switch (column)
         {
             case 0:
-                return null;
+                return namecolumn;
             default:
                 return datacolumns.get(column - 1);
         }
     }
 
-    private class TreeViewNode extends DefaultSortableTreeTableNode
+    public void sortModel(Comparator<List<?>> comparator)
+    {
+        viewMap.get(selectedView).sortChildren(comparator);
+    }
+
+    public Comparator<?> getComparator(int column)
+    {
+        return getDataColumn(column).getComparator();
+    }
+
+    private final class NameViewColumn implements DataViewColumn
+    {
+
+        public String getName()
+        {
+            return selectedView.getViewName();
+        }
+
+        public Class<?> getDataClass()
+        {
+            return TreeTableNode.class;
+        }
+
+        public Comparator<?> getComparator()
+        {
+            return Comparators.toStringComparator();
+        }
+
+    }
+
+    private final class TreeViewNode extends DefaultSortableTreeTableNode
     {
 
         private final int level;

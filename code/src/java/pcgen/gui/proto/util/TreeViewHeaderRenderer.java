@@ -29,7 +29,7 @@ import pcgen.gui.util.SortingHeaderRenderer;
 public class TreeViewHeaderRenderer extends SortingHeaderRenderer
 {
 
-    public TreeViewHeaderRenderer(JTreeViewTableHeader header)
+    public TreeViewHeaderRenderer(JSortableTableHeader header)
     {
         super(header);
     }

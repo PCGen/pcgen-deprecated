@@ -37,7 +37,6 @@ public class ModelSorter
     private final EventListenerList listenerList = new EventListenerList();
     private final RowComparator rowComparator = new RowComparator();
     private List<? extends SortingPriority> columnkeys = null;
-    private Map<Integer, Comparator<?>> comparatorMap = null;
     private SortableModel model;
 
     public void addTableSorterListener(ModelSorterListener listener)
@@ -60,24 +59,6 @@ public class ModelSorter
     public void removeTableSorterListener(ModelSorterListener listener)
     {
         listenerList.remove(ModelSorterListener.class, listener);
-    }
-
-    public Comparator<?> getComparator(int column)
-    {
-        if (comparatorMap != null)
-        {
-            return comparatorMap.get(column);
-        }
-        return null;
-    }
-
-    public void setComparator(Comparator<?> comparator, int column)
-    {
-        if (comparatorMap == null)
-        {
-            comparatorMap = new HashMap<Integer, Comparator<?>>();
-        }
-        comparatorMap.put(column, comparator);
     }
 
     public void toggleSort(int column)
@@ -111,7 +92,7 @@ public class ModelSorter
 
     public void setSortingPriority(List<? extends SortingPriority> keys)
     {
-        this.columnkeys = new ArrayList(keys);
+        this.columnkeys = new ArrayList<SortingPriority>(keys);
         sort();
     }
 
@@ -134,6 +115,7 @@ public class ModelSorter
     private final class RowComparator implements Comparator<List<?>>
     {
 
+        @SuppressWarnings("unchecked")
         public int compare(List<?> o1,
                             List<?> o2)
         {
@@ -145,7 +127,7 @@ public class ModelSorter
                     continue;
                 }
                 int column = priority.getColumn();
-                Comparator comparator = getComparator(column);
+                Comparator comparator = model.getComparator(column);
                 int ret = comparator.compare(o1.get(column), o2.get(column));
                 if (priority.getMode() == SortMode.DESCENDING)
                 {

@@ -20,8 +20,11 @@
  */
 package pcgen.gui.util.treetable;
 
+import java.util.Collections;
+import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
+import pcgen.util.UnboundedArrayList;
 
 /**
  *
@@ -29,21 +32,62 @@ import javax.swing.tree.TreeNode;
  */
 public class DefaultTreeTableNode extends DefaultMutableTreeNode implements TreeTableNode
 {
-    private Object[] data;
 
-    public DefaultTreeTableNode(Object name, Object[] data)
+    private List<Object> data;
+
+    public DefaultTreeTableNode()
     {
-        super(name);
-        this.data = data;
+        this(Collections.emptyList());
+    }
+
+    public DefaultTreeTableNode(List<Object> data)
+    {
+        setValues(data);
+    }
+
+    public DefaultTreeTableNode(TreeNode node)
+    {
+        this();
+        if (node instanceof TreeTableNode)
+        {
+            TreeTableNode treeTableNode = (TreeTableNode) node;
+            setValues(treeTableNode.getValues());
+        }
+        for (int x = 0; x < node.getChildCount(); x++)
+        {
+            add(new DefaultTreeTableNode(node.getChildAt(x)));
+        }
     }
 
     public Object getValueAt(int column)
     {
-        return data[column];
+        return data.get(column);
     }
 
     public void setValueAt(Object value, int column)
     {
-        data[column] = value;
+        data.set(column, value);
     }
+
+    public List<Object> getValues()
+    {
+        return data;
+    }
+
+    private void setValues(List<Object> values)
+    {
+        this.data = new UnboundedArrayList<Object>(data);
+    }
+
+    @Override
+    public String toString()
+    {
+        Object name = data.get(0);
+        if (name != null)
+        {
+            return name.toString();
+        }
+        return super.toString();
+    }
+
 }

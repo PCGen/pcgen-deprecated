@@ -1,5 +1,5 @@
 /*
- * SortableModel.java
+ * SortableTableModel.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,20 +16,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 21, 2008, 8:37:49 PM
+ * Created on Feb 22, 2008, 3:26:34 PM
  */
 
-package pcgen.gui.util;
+package pcgen.gui.util.table;
 
-import java.util.Comparator;
-import java.util.List;
+import javax.swing.table.TableModel;
+import pcgen.gui.util.SortableModel;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public interface SortableModel 
+public interface SortableTableModel extends TableModel, SortableModel
 {
-    void sortModel(Comparator<List<?>> comparator);
-    Comparator<?> getComparator(int column);
+
 }

@@ -26,34 +26,13 @@ import java.util.Comparator;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class DataViewColumn
+public interface DataViewColumn
 {
 
-    private String name;
-    private Class<?> dataclass;
-    private Comparator<?> comparator;
+    public String getName();
 
-    public <T> DataViewColumn(String name, Class<T> dataclass,
-                           Comparator<T> comparator)
-    {
-        this.name = name;
-        this.dataclass = dataclass;
-        this.comparator = comparator;
-    }
+    public Class<?> getDataClass();
 
-    public String getName()
-    {
-        return name;
-    }
-
-    public Class<?> getDataClass()
-    {
-        return dataclass;
-    }
-
-    public Comparator<?> getComparator()
-    {
-        return comparator;
-    }
+    public Comparator<?> getComparator();
 
 }

@@ -20,6 +20,7 @@
  */
 package pcgen.gui.util.treetable;
 
+import java.util.List;
 import javax.swing.tree.MutableTreeNode;
 
 /**
@@ -28,6 +29,7 @@ import javax.swing.tree.MutableTreeNode;
  */
 public interface TreeTableNode extends MutableTreeNode
 {
+    public List<Object> getValues();
     public Object getValueAt(int column);
     public void setValueAt(Object value, int column);
 }

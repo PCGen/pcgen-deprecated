@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
+import pcgen.util.UnboundedArrayList;
 
 /**
  *
@@ -36,6 +38,34 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
 {
 
     protected Vector<List<Object>> childData = null;
+
+    public DefaultSortableTreeTableNode()
+    {
+        super();
+    }
+
+    public DefaultSortableTreeTableNode(TreeNode node)
+    {
+        for (int x = 0; x < node.getChildCount(); x++)
+        {
+            TreeNode treeNode = node.getChildAt(x);
+            DefaultSortableTreeTableNode child = new DefaultSortableTreeTableNode(treeNode);
+            if (treeNode instanceof TreeTableNode)
+            {
+                TreeTableNode treeTableNode = (TreeTableNode) treeNode;
+                List<Object> data = treeTableNode.getValues();
+                if (data != null)
+                {
+                    data = new UnboundedArrayList<Object>(data);
+                }
+                add(child, data);
+            }
+            else
+            {
+                add(child);
+            }
+        }
+    }
 
     @Override
     public void add(MutableTreeNode newChild)
@@ -87,7 +117,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
         return null;
     }
 
-    private List<Object> getData()
+    public List<Object> getValues()
     {
         DefaultSortableTreeTableNode parentNode = getSortableParent();
         if (parentNode != null)
@@ -108,7 +138,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
 
     public Object getValueAt(int column)
     {
-        List<Object> data = getData();
+        List<Object> data = getValues();
         if (data != null)
         {
             return data.get(column);
@@ -118,7 +148,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
 
     public void setValueAt(Object value, int column)
     {
-        List<Object> data = getData();
+        List<Object> data = getValues();
         if (data != null)
         {
             data.set(column, value);
@@ -172,7 +202,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
         public int compare(DefaultSortableTreeTableNode o1,
                             DefaultSortableTreeTableNode o2)
         {
-            return comparator.compare(o1.getData(), o2.getData());
+            return comparator.compare(o1.getValues(), o2.getValues());
         }
 
     }

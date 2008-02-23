@@ -39,13 +39,21 @@ import javax.swing.UIManager;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+import pcgen.gui.util.treetable.DefaultTreeTableModel;
+import pcgen.gui.util.treetable.TreeTableNode;
 
 /**
  * This example shows how to create a simple JTreeTable component,
@@ -97,7 +105,7 @@ public class JTreeTable extends JTable
         // Create the tree. It will be used as a renderer and editor.
         tree = new TreeTableCellRenderer(treeTableModel);
         tree.setRootVisible(false);
-        adapter = new TreeTableModelAdapter(treeTableModel, tree);
+        adapter = createDefaultTreeTableModelAdapter(treeTableModel, tree);
         // Install a tableModel representing the visible rows in tree.
 
         super.setModel(adapter);
@@ -109,8 +117,8 @@ public class JTreeTable extends JTable
         setSelectionModel(selectionWrapper.getListSelectionModel());
 
         // Install the tree editor renderer and editor.
-        setDefaultRenderer(TreeTableModel.class, tree);
-        setDefaultEditor(TreeTableModel.class, new TreeTableCellEditor());
+        setDefaultRenderer(TreeTableNode.class, tree);
+        setDefaultEditor(TreeTableNode.class, new TreeTableCellEditor());
 
         // No grid.
         setShowGrid(false);
@@ -132,6 +140,12 @@ public class JTreeTable extends JTable
         }
     }
 
+    protected TreeTableModelAdapter createDefaultTreeTableModelAdapter(TreeTableModel treeTableModel,
+                                                                        JTree tree)
+    {
+        return new TreeTableModelAdapter(treeTableModel, tree);
+    }
+
     @SuppressWarnings("unchecked")
     public TreeTableModel getTreeTableModel()
     {
@@ -142,6 +156,22 @@ public class JTreeTable extends JTable
     {
         tree.setModel(model);
         adapter.setTreeTableModel(model);
+    }
+
+    @Override
+    public void setModel(TableModel model)
+    {
+        if (model instanceof TreeTableModelAdapter)
+        {
+            adapter.setTreeTableModel(null);
+            adapter = (TreeTableModelAdapter) model;
+            adapter.setTreeTableModel((TreeTableModel)tree.getModel());
+            super.setModel(model);
+        }
+        else
+        {
+            setTreeTableModel(new DefaultTreeTableModel(model));
+        }
     }
 
     /**
@@ -155,7 +185,7 @@ public class JTreeTable extends JTable
     @Override
     public int getEditingRow()
     {
-        return (getColumnClass(editingColumn) == TreeTableModel.class) ? (-1)
+        return (getColumnClass(editingColumn) == TreeTableNode.class) ? (-1)
                 : editingRow;
     }
 
@@ -265,6 +295,175 @@ public class JTreeTable extends JTable
                 scrollRectToVisible(bounds);
             }
         }
+    }
+
+    /**
+     * This is a wrapper class takes a TreeTableModel and implements
+     * the table model interface. The implementation is trivial, with
+     * all of the event dispatching support provided by the superclass:
+     * the AbstractTableModel.
+     *
+     * @version 1.2 10/27/98
+     *
+     * @author Philip Milne
+     * @author Scott Violet
+     */
+    protected static class TreeTableModelAdapter extends AbstractTableModel
+    {
+
+        private JTree tree;
+        protected TreeTableModel treeTableModel;
+        private TreeModelListener modelListener;
+
+        /**
+         * Constructor
+         * @param treeTableModel
+         * @param tree
+         */
+        TreeTableModelAdapter(TreeTableModel treeTableModel, JTree tree)
+        {
+            this.tree = tree;
+            this.treeTableModel = treeTableModel;
+
+            tree.addTreeExpansionListener(new TreeExpansionListener()
+                                  {
+                                      // Don't use fireTableRowsInserted() here;
+                                      // the selection model would get updated twice.
+                                      public void treeExpanded(TreeExpansionEvent event)
+                                      {
+                                          fireTableDataChanged();
+                                      }
+
+                                      public void treeCollapsed(TreeExpansionEvent event)
+                                      {
+                                          fireTableDataChanged();
+                                      }
+
+                                  });
+
+            /**
+             * Install a TreeModelListener that can update the table when
+             * tree changes. We use delayedFireTableDataChanged as we can
+             * not be guaranteed the tree will have finished processing
+             * the event before us.
+             **/
+            modelListener = new TreeModelListener()
+            {
+
+                public void treeNodesChanged(TreeModelEvent e)
+                {
+                    fireTableDataChanged();
+                }
+
+                public void treeNodesInserted(TreeModelEvent e)
+                {
+                    fireTableDataChanged();
+                }
+
+                public void treeNodesRemoved(TreeModelEvent e)
+                {
+                    fireTableDataChanged();
+                }
+
+                public void treeStructureChanged(TreeModelEvent e)
+                {
+                    fireTableStructureChanged();
+                }
+
+            };
+            if (treeTableModel != null)
+            {
+                treeTableModel.addTreeModelListener(modelListener);
+            }
+        }
+
+        public void setTreeTableModel(TreeTableModel model)
+        {
+            if (treeTableModel != null)
+            {
+                treeTableModel.removeTreeModelListener(modelListener);
+            }
+            treeTableModel = model;
+            if (treeTableModel != null)
+            {
+                treeTableModel.addTreeModelListener(modelListener);
+            }
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int column)
+        {
+            if (treeTableModel == null)
+            {
+                return false;
+            }
+            return treeTableModel.isCellEditable(nodeForRow(row), column);
+        }
+
+        @Override
+        public Class<?> getColumnClass(int column)
+        {
+            if (treeTableModel == null)
+            {
+                return Object.class;
+            }
+            return treeTableModel.getColumnClass(column);
+        }
+
+        // Wrappers, implementing TableModel interface.
+        public int getColumnCount()
+        {
+            if (treeTableModel == null)
+            {
+                return 0;
+            }
+            return treeTableModel.getColumnCount();
+        }
+
+        @Override
+        public String getColumnName(int column)
+        {
+            if (treeTableModel == null)
+            {
+                return null;
+            }
+            return treeTableModel.getColumnName(column);
+        }
+
+        public int getRowCount()
+        {
+            return tree.getRowCount();
+        }
+
+        @Override
+        public void setValueAt(Object value, int row, int column)
+        {
+            if (treeTableModel == null)
+            {
+                return;
+            }
+            treeTableModel.setValueAt(value, nodeForRow(row), column);
+        }
+
+        public Object getValueAt(int row, int column)
+        {
+            if (treeTableModel == null)
+            {
+                return null;
+            }
+            return treeTableModel.getValueAt(nodeForRow(row), column);
+        }
+
+        private Object nodeForRow(int row)
+        {
+            TreePath treePath = tree.getPathForRow(row);
+            if (treePath != null)
+            {
+                return treePath.getLastPathComponent();
+            }
+            return null;
+        }
+
     }
 
     /**
@@ -588,7 +787,7 @@ public class JTreeTable extends JTable
             {
                 for (int counter = getColumnCount() - 1; counter >= 0; counter--)
                 {
-                    if (getColumnClass(counter) == TreeTableModel.class)
+                    if (getColumnClass(counter) == TreeTableNode.class)
                     {
                         MouseEvent me = (MouseEvent) e;
                         MouseEvent newME =
