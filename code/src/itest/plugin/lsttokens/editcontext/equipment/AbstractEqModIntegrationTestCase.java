@@ -19,36 +19,37 @@ package plugin.lsttokens.editcontext.equipment;
 
 import org.junit.Test;
 
-import pcgen.core.Equipment;
-import pcgen.core.EquipmentModifier;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
 import plugin.lsttokens.editcontext.testsupport.TestContext;
 
 public abstract class AbstractEqModIntegrationTestCase extends
-		AbstractListIntegrationTestCase<Equipment, EquipmentModifier>
+		AbstractListIntegrationTestCase<CDOMEquipment, CDOMEqMod>
 {
 
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<EquipmentModifier> getTargetClass()
+	public Class<CDOMEqMod> getTargetClass()
 	{
-		return EquipmentModifier.class;
+		return CDOMEqMod.class;
 	}
 
 	@Override

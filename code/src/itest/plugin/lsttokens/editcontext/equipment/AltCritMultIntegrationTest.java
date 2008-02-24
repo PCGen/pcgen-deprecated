@@ -17,8 +17,8 @@
  */
 package plugin.lsttokens.editcontext.equipment;
 
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.equipment.AltcritmultToken;
 
 public class AltCritMultIntegrationTest extends AbstractCritMultIntegrationTestCase
@@ -26,7 +26,7 @@ public class AltCritMultIntegrationTest extends AbstractCritMultIntegrationTestC
 	static AltcritmultToken token = new AltcritmultToken();
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}

@@ -20,34 +20,35 @@ package plugin.lsttokens.editcontext.equipment;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.Type;
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractTypeSafeListIntegrationTestCase;
 import plugin.lsttokens.equipment.AlttypeToken;
 
 public class AltTypeIntegrationTest extends
-		AbstractTypeSafeListIntegrationTestCase<Equipment>
+		AbstractTypeSafeListIntegrationTestCase<CDOMEquipment>
 {
 
 	static AlttypeToken token = new AlttypeToken();
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}

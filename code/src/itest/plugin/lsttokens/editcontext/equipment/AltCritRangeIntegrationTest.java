@@ -17,8 +17,8 @@
  */
 package plugin.lsttokens.editcontext.equipment;
 
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.equipment.AltcritrangeToken;
 
 public class AltCritRangeIntegrationTest extends AbstractCritRangeIntegrationTestCase
@@ -26,7 +26,7 @@ public class AltCritRangeIntegrationTest extends AbstractCritRangeIntegrationTes
 	static AltcritrangeToken token = new AltcritrangeToken();
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}

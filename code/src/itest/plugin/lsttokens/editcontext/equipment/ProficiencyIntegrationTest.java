@@ -17,41 +17,42 @@
  */
 package plugin.lsttokens.editcontext.equipment;
 
-import pcgen.core.Equipment;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractItemIntegrationTestCase;
 import plugin.lsttokens.equipment.ProficiencyToken;
 
 public class ProficiencyIntegrationTest extends
-		AbstractItemIntegrationTestCase<Equipment, WeaponProf>
+		AbstractItemIntegrationTestCase<CDOMEquipment, CDOMWeaponProf>
 {
 	static ProficiencyToken token = new ProficiencyToken();
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<WeaponProf> getTargetClass()
+	public Class<CDOMWeaponProf> getTargetClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 }

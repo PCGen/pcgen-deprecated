@@ -19,8 +19,8 @@ package plugin.lsttokens.editcontext.equipment;
 
 import org.junit.Test;
 
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.equipment.EqmodToken;
 
 public class EqmodIntegrationTest extends AbstractEqModIntegrationTestCase
@@ -29,7 +29,7 @@ public class EqmodIntegrationTest extends AbstractEqModIntegrationTestCase
 	static EqmodToken token = new EqmodToken();
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}

@@ -17,25 +17,26 @@
  */
 package plugin.lsttokens.editcontext.equipment;
 
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegerIntegrationTestCase;
 
 public abstract class AbstractCritRangeIntegrationTestCase extends
-		AbstractIntegerIntegrationTestCase<Equipment>
+		AbstractIntegerIntegrationTestCase<CDOMEquipment>
 {
 
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}

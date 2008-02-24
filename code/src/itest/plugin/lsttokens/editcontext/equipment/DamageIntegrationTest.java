@@ -17,8 +17,8 @@
  */
 package plugin.lsttokens.editcontext.equipment;
 
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.equipment.DamageToken;
 
 public class DamageIntegrationTest extends AbstractDamageIntegrationTestCase
@@ -27,7 +27,7 @@ public class DamageIntegrationTest extends AbstractDamageIntegrationTestCase
 	public static DamageToken token = new DamageToken();
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}
