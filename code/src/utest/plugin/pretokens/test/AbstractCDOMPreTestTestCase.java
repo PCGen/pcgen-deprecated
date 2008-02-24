@@ -33,9 +33,8 @@ import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PObject;
 
-public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
+public abstract class AbstractCDOMPreTestTestCase<T extends CDOMObject> extends
 		TestCase
 {
 
@@ -52,15 +51,15 @@ public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
 
 	public abstract Class<T> getCDOMClass();
 
-	public abstract Class<? extends PObject> getFalseClass();
+	public abstract Class<? extends CDOMObject> getFalseClass();
 
-	public <TT extends PObject> TT getObject(Class<TT> cl, String s)
+	public <TT extends CDOMObject> TT getObject(Class<TT> cl, String s)
 	{
 		TT obj;
 		try
 		{
 			obj = cl.newInstance();
-			obj.setKeyName(s);
+			obj.put(StringKey.KEY_NAME, s);
 			obj.put(StringKey.NAME, s);
 			return obj;
 		}
@@ -75,7 +74,7 @@ public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
 		return null;
 	}
 
-	public PObject getFalseObject(String s)
+	public CDOMObject getFalseObject(String s)
 	{
 		return getObject(getFalseClass(), s);
 	}
@@ -100,16 +99,16 @@ public abstract class AbstractCDOMPreTestTestCase<T extends PObject> extends
 		return edge;
 	}
 
-	public PObject grantCDOMObject(String s)
+	public CDOMObject grantCDOMObject(String s)
 	{
 		T object = getObject(s);
 		grantObject(object);
 		return object;
 	}
 
-	public PObject grantFalseObject(String s)
+	public CDOMObject grantFalseObject(String s)
 	{
-		PObject object = getFalseObject(s);
+		CDOMObject object = getFalseObject(s);
 		grantObject(object);
 		return object;
 	}

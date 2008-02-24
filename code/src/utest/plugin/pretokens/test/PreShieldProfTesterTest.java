@@ -17,27 +17,27 @@
  */
 package plugin.pretokens.test;
 
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
-import pcgen.core.ShieldProf;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMShieldProf;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public class PreShieldProfTesterTest extends
-		AbstractCDOMObjectTestCase<ShieldProf>
+		AbstractCDOMObjectTestCase<CDOMShieldProf>
 {
 
 	PreShieldProfTester tester = new PreShieldProfTester();
 
 	@Override
-	public Class<ShieldProf> getCDOMClass()
+	public Class<CDOMShieldProf> getCDOMClass()
 	{
-		return ShieldProf.class;
+		return CDOMShieldProf.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override

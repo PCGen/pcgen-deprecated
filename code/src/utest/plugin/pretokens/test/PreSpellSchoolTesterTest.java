@@ -20,20 +20,20 @@ package plugin.pretokens.test;
 import org.junit.Before;
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SpellSchool;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.core.Language;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
-import pcgen.core.spell.Spell;
 
 public class PreSpellSchoolTesterTest extends
-		AbstractCDOMPreTestTestCase<Spell>
+		AbstractCDOMPreTestTestCase<CDOMSpell>
 {
 
 	PreSpellSchoolTester tester = new PreSpellSchoolTester();
@@ -53,15 +53,15 @@ public class PreSpellSchoolTesterTest extends
 	}
 
 	@Override
-	public Class<Spell> getCDOMClass()
+	public Class<CDOMSpell> getCDOMClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	public String getKind()
@@ -116,7 +116,7 @@ public class PreSpellSchoolTesterTest extends
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject spell = getObject("Wild Mage");
+		CDOMObject spell = getObject("Wild Mage");
 		PCGraphGrantsEdge edge = grantObject(spell);
 		edge.setAssociation(AssociationKey.SPELL_LEVEL, Integer.valueOf(1));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -134,7 +134,7 @@ public class PreSpellSchoolTesterTest extends
 		Prerequisite prereq = getLevelTwoPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject spell = getObject("Wild Mage");
+		CDOMObject spell = getObject("Wild Mage");
 		PCGraphGrantsEdge edge = grantObject(spell);
 		edge.setAssociation(AssociationKey.SPELL_LEVEL, Integer.valueOf(1));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -157,7 +157,7 @@ public class PreSpellSchoolTesterTest extends
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject lang = grantFalseObject("Winged Mage");
+		CDOMObject lang = grantFalseObject("Winged Mage");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		lang.addToListFor(ListKey.SPELL_SCHOOL, mindAffecting);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -173,7 +173,7 @@ public class PreSpellSchoolTesterTest extends
 		Prerequisite prereq = getStartPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject spell = getObject("Wild Mage");
+		CDOMObject spell = getObject("Wild Mage");
 		PCGraphGrantsEdge edge = grantObject(spell);
 		edge.setAssociation(AssociationKey.SPELL_LEVEL, Integer.valueOf(3));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));

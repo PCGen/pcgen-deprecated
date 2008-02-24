@@ -23,18 +23,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.inst.LanguageList;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.ClassSkillList;
-import pcgen.core.Language;
-import pcgen.core.LanguageList;
-import pcgen.core.PObject;
-import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
@@ -83,14 +83,14 @@ public class PreCSkillTesterTest extends TestCase
 		rules.create(getFalseClass(), string);
 	}
 
-	public Class<Skill> getCDOMClass()
+	public Class<CDOMSkill> getCDOMClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
-	public Class<Language> getFalseClass()
+	public Class<CDOMLanguage> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	public String getKind()
@@ -170,10 +170,10 @@ public class PreCSkillTesterTest extends TestCase
 		return p;
 	}
 
-	public PObject grantCDOMObject(String s, AssociatedPrereqObject apo)
+	public CDOMObject grantCDOMObject(String s, AssociatedPrereqObject apo)
 	{
-		Skill sk = rules.getObject(getCDOMClass(), s);
-		CDOMSimpleSingleRef<Skill> ref = new CDOMSimpleSingleRef<Skill>(
+		CDOMSkill sk = rules.getObject(getCDOMClass(), s);
+		CDOMSimpleSingleRef<CDOMSkill> ref = new CDOMSimpleSingleRef<CDOMSkill>(
 				getCDOMClass(), s);
 		ref.addResolution(sk);
 		ClassSkillList list = rules.getObject(ClassSkillList.class, "*Allowed");
@@ -181,10 +181,10 @@ public class PreCSkillTesterTest extends TestCase
 		return sk;
 	}
 
-	public PObject grantFalseObject(String s, AssociatedPrereqObject apo)
+	public CDOMObject grantFalseObject(String s, AssociatedPrereqObject apo)
 	{
-		Language lan = rules.getObject(getFalseClass(), s);
-		CDOMSimpleSingleRef<Language> ref = new CDOMSimpleSingleRef<Language>(
+		CDOMLanguage lan = rules.getObject(getFalseClass(), s);
+		CDOMSimpleSingleRef<CDOMLanguage> ref = new CDOMSimpleSingleRef<CDOMLanguage>(
 				getFalseClass(), s);
 		ref.addResolution(lan);
 		LanguageList list = rules.getObject(LanguageList.class, "*Allowed");
@@ -296,7 +296,7 @@ public class PreCSkillTesterTest extends TestCase
 		Prerequisite prereq = getTypeDotPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject katana = grantCDOMObject("Katana", clAPO);
+		CDOMObject katana = grantCDOMObject("Katana", clAPO);
 		// Not yet the proper type
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -317,7 +317,7 @@ public class PreCSkillTesterTest extends TestCase
 		Prerequisite prereq = getTypeDotPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject katana = grantFalseObject("Katana", clAPO);
+		CDOMObject katana = grantFalseObject("Katana", clAPO);
 		// Not yet the proper type
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -339,13 +339,13 @@ public class PreCSkillTesterTest extends TestCase
 		Prerequisite prereq = getTypeEqualsPrereq();
 		// PC Should start without the WeaponProf
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject katana = grantCDOMObject("Katana", clAPO);
+		CDOMObject katana = grantCDOMObject("Katana", clAPO);
 		// Not yet the proper type
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 		// Fails because only one is present
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject sword = grantCDOMObject("Longsword", clAPO);
+		CDOMObject sword = grantCDOMObject("Longsword", clAPO);
 		sword.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		katana.removeListFor(ListKey.TYPE);
@@ -364,13 +364,13 @@ public class PreCSkillTesterTest extends TestCase
 		Prerequisite prereq = getTypeEqualsPrereq();
 		// PC Should start without the WeaponProf
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject katana = grantCDOMObject("Katana", clAPO);
+		CDOMObject katana = grantCDOMObject("Katana", clAPO);
 		// Not yet the proper type
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 		// Fails because only one is present
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject sword = grantFalseObject("Longsword", clAPO);
+		CDOMObject sword = grantFalseObject("Longsword", clAPO);
 		sword.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 		// Would be 1 if true
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -456,7 +456,7 @@ public class PreCSkillTesterTest extends TestCase
 		Prerequisite prereq = getTypeDotPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject katana = grantCDOMObject("Katana", crAPO);
+		CDOMObject katana = grantCDOMObject("Katana", crAPO);
 		// Not yet the proper type
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -477,13 +477,13 @@ public class PreCSkillTesterTest extends TestCase
 		Prerequisite prereq = getTypeEqualsPrereq();
 		// PC Should start without the WeaponProf
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject katana = grantCDOMObject("Katana", crAPO);
+		CDOMObject katana = grantCDOMObject("Katana", crAPO);
 		// Not yet the proper type
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 		// Fails because only one is present
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject sword = grantCDOMObject("Longsword", crAPO);
+		CDOMObject sword = grantCDOMObject("Longsword", crAPO);
 		sword.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.removeListFor(ListKey.TYPE);
@@ -568,7 +568,7 @@ public class PreCSkillTesterTest extends TestCase
 		Prerequisite prereq = getTypeDotPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject katana = grantCDOMObject("Katana", null);
+		CDOMObject katana = grantCDOMObject("Katana", null);
 		// Not yet the proper type
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -589,13 +589,13 @@ public class PreCSkillTesterTest extends TestCase
 		Prerequisite prereq = getTypeEqualsPrereq();
 		// PC Should start without the WeaponProf
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject katana = grantCDOMObject("Katana", null);
+		CDOMObject katana = grantCDOMObject("Katana", null);
 		// Not yet the proper type
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 		// Fails because only one is present
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject sword = grantCDOMObject("Longsword", null);
+		CDOMObject sword = grantCDOMObject("Longsword", null);
 		sword.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		katana.removeListFor(ListKey.TYPE);

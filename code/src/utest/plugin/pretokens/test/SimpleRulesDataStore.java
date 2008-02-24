@@ -8,21 +8,21 @@ import pcgen.base.util.DoubleKeyMap;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
-import pcgen.core.PCCharacterLevel;
-import pcgen.core.SizeAdjustment;
+import pcgen.cdom.inst.CDOMPCLevel;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
 import pcgen.rules.RulesDataStore;
 
 public class SimpleRulesDataStore implements RulesDataStore
 {
-	private final List<PCCharacterLevel> list = new ArrayList<PCCharacterLevel>();
+	private final List<CDOMPCLevel> list = new ArrayList<CDOMPCLevel>();
 
-	public PCCharacterLevel getLevel(int level)
+	public CDOMPCLevel getLevel(int level)
 	{
 		if (list.size() <= level)
 		{
 			for (int i = list.size(); i <= level; i++)
 			{
-				list.add(new PCCharacterLevel());
+				list.add(new CDOMPCLevel());
 			}
 		}
 		return list.get(level);
@@ -62,19 +62,19 @@ public class SimpleRulesDataStore implements RulesDataStore
 		return (T) objects.get(cl, key);
 	}
 
-	public SizeAdjustment getNextSize(SizeAdjustment size)
+	public CDOMSizeAdjustment getNextSize(CDOMSizeAdjustment size)
 	{
 		// TODO What if null (if this is last?)
 		return null;
 	}
 
-	public SizeAdjustment getPreviousSize(SizeAdjustment size)
+	public CDOMSizeAdjustment getPreviousSize(CDOMSizeAdjustment size)
 	{
 		// TODO What if null (if this is last?)
 		return null;
 	}
 
-	public SizeAdjustment getDefaultSizeAdjustment()
+	public CDOMSizeAdjustment getDefaultSizeAdjustment()
 	{
 		// TODO Auto-generated method stub
 		return null;

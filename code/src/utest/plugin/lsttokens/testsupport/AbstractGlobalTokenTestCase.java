@@ -28,17 +28,17 @@ import org.junit.BeforeClass;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
-import pcgen.core.PObject;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.RuntimeLoadContext;
 import pcgen.persistence.lst.CampaignSourceEntry;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstLoader;
 import pcgen.persistence.lst.LstToken;
-import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.context.RuntimeLoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.TokenLibrary;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
 public abstract class AbstractGlobalTokenTestCase extends TestCase
 {
@@ -46,8 +46,8 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 	protected PCGenGraph secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
-	protected PObject primaryProf;
-	protected PObject secondaryProf;
+	protected CDOMObject primaryProf;
+	protected CDOMObject secondaryProf;
 
 	private static boolean classSetUpFired = false;
 	protected static CampaignSourceEntry testCampaign;
@@ -55,9 +55,8 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 	@BeforeClass
 	public static final void classSetUp() throws URISyntaxException
 	{
-		testCampaign =
-				new CampaignSourceEntry(new Campaign(), new URI(
-					"file:/Test%20Case"));
+		testCampaign = new CampaignSourceEntry(new Campaign(), new URI(
+				"file:/Test%20Case"));
 		classSetUpFired = true;
 	}
 
@@ -74,22 +73,21 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		secondaryGraph = new PCGenGraph();
 		primaryContext = new RuntimeLoadContext(primaryGraph);
 		secondaryContext = new RuntimeLoadContext(secondaryGraph);
-		primaryProf =
-				primaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
-		secondaryProf =
-				secondaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
+		primaryProf = primaryContext.ref.constructCDOMObject(getCDOMClass(),
+				"TestObj");
+		secondaryProf = secondaryContext.ref.constructCDOMObject(
+				getCDOMClass(), "TestObj");
 	}
 
-	public abstract <T extends PObject> Class<T> getCDOMClass();
+	public abstract <T extends CDOMObject> Class<T> getCDOMClass();
 
 	public static void addToken(LstToken tok)
 	{
-		TokenStore.inst().addToTokenMap(tok);
+		TokenLibrary.addToTokenMap(tok);
 	}
 
-	public static void addBonus(String name, Class<? extends BonusObj> clazz) {
+	public static void addBonus(String name, Class<? extends BonusObj> clazz)
+	{
 		try
 		{
 			Bonus.addBonusClass(clazz, name);
@@ -131,7 +129,7 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		for (int i = 0; i < str.length; i++)
 		{
 			assertEquals("Expected " + i + " item to be equal", str[i],
-				unparsed[i]);
+					unparsed[i]);
 		}
 
 		// Do round Robin
@@ -139,10 +137,10 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		for (String s : unparsed)
 		{
 			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
-				s).append('\t');
+					s).append('\t');
 		}
 		getLoader().parseLine(secondaryContext, secondaryProf,
-			prefix + "TestObj\t" + unparsedBuilt.toString(), testCampaign);
+				unparsedBuilt.toString(), testCampaign.getURI());
 
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
@@ -151,14 +149,14 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		assertEquals(primaryGraph, secondaryGraph);
 
 		// And that it comes back out the same again
-		String[] sUnparsed =
-				getToken().unparse(secondaryContext, secondaryProf);
+		String[] sUnparsed = getToken()
+				.unparse(secondaryContext, secondaryProf);
 		assertEquals(unparsed.length, sUnparsed.length);
 
 		for (int i = 0; i < unparsed.length; i++)
 		{
 			assertEquals("Expected " + i + " item to be equal", unparsed[i],
-				sUnparsed[i]);
+					sUnparsed[i]);
 		}
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(secondaryContext.ref.validate());
@@ -173,6 +171,11 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		{
 			primaryContext.commit();
 		}
+		else
+		{
+			Logging.rewindParseMessages();
+			Logging.replayParsedMessages();
+		}
 		return b;
 	}
 
@@ -182,6 +185,11 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		if (b)
 		{
 			secondaryContext.commit();
+		}
+		else
+		{
+			Logging.rewindParseMessages();
+			Logging.replayParsedMessages();
 		}
 		return b;
 	}
@@ -204,7 +212,7 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		assertEquals(primaryGraph, secondaryGraph);
 	}
 
-	public abstract GlobalLstToken getToken();
+	public abstract CDOMPrimaryToken<CDOMObject> getToken();
 
-	public abstract <T extends PObject> LstLoader<T> getLoader();
+	public abstract <T extends CDOMObject> CDOMLoader<T> getLoader();
 }

@@ -25,22 +25,24 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
-import pcgen.core.PObject;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.RuntimeLoadContext;
-import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.CampaignSourceEntry;
-import pcgen.persistence.lst.LstLoader;
 import pcgen.persistence.lst.LstToken;
-import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.context.RuntimeLoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.TokenLibrary;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
-public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
+public abstract class AbstractTokenTestCase<T extends CDOMObject> extends
+		TestCase
 {
 	protected PCGenGraph primaryGraph;
 	protected PCGenGraph secondaryGraph;
@@ -48,7 +50,6 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 	protected LoadContext secondaryContext;
 	protected T primaryProf;
 	protected T secondaryProf;
-	protected String prefix = "";
 	protected int expectedPrimaryMessageCount = 0;
 
 	private static boolean classSetUpFired = false;
@@ -57,9 +58,8 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 	@BeforeClass
 	public static final void classSetUp() throws URISyntaxException
 	{
-		testCampaign =
-				new CampaignSourceEntry(new Campaign(), new URI(
-					"file:/Test%20Case"));
+		testCampaign = new CampaignSourceEntry(new Campaign(), new URI(
+				"file:/Test%20Case"));
 		classSetUpFired = true;
 	}
 
@@ -82,23 +82,30 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		primaryContext.getObjectContext().setExtractURI(testURI);
 		secondaryContext.getObjectContext().setSourceURI(testURI);
 		secondaryContext.getObjectContext().setExtractURI(testURI);
-		primaryProf =
-				primaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
-		secondaryProf =
-				secondaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
+		primaryProf = getPrimary("TestObj");
+		secondaryProf = getSecondary("TestObj");
 		expectedPrimaryMessageCount = 0;
+	}
+
+	protected T getSecondary(String name)
+	{
+		return secondaryContext.ref.constructCDOMObject(getCDOMClass(), name);
+	}
+
+	protected T getPrimary(String name)
+	{
+		return primaryContext.ref.constructCDOMObject(getCDOMClass(), name);
 	}
 
 	public abstract Class<? extends T> getCDOMClass();
 
 	public static void addToken(LstToken tok)
 	{
-		TokenStore.inst().addToTokenMap(tok);
+		TokenLibrary.addToTokenMap(tok);
 	}
-	
-	public static void addBonus(String name, Class<? extends BonusObj> clazz) {
+
+	public static void addBonus(String name, Class<? extends BonusObj> clazz)
+	{
 		try
 		{
 			Bonus.addBonusClass(clazz, name);
@@ -136,7 +143,7 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		for (int i = 0; i < str.length; i++)
 		{
 			assertEquals("Expected " + i + " item to be equal", str[i],
-				unparsed[i]);
+					unparsed[i]);
 		}
 
 		// Do round Robin
@@ -144,10 +151,10 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		for (String s : unparsed)
 		{
 			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
-				s).append('\t');
+					s).append('\t');
 		}
 		getLoader().parseLine(secondaryContext, secondaryProf,
-			prefix + "TestObj\t" + unparsedBuilt.toString(), testCampaign);
+				unparsedBuilt.toString(), testCampaign.getURI());
 
 		// Ensure the objects are the same
 		isCDOMEqual(primaryProf, secondaryProf);
@@ -156,19 +163,19 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		assertEquals(primaryGraph, secondaryGraph);
 
 		// And that it comes back out the same again
-		String[] sUnparsed =
-				getToken().unparse(secondaryContext, secondaryProf);
+		String[] sUnparsed = getToken()
+				.unparse(secondaryContext, secondaryProf);
 		assertEquals(unparsed.length, sUnparsed.length);
 
 		for (int i = 0; i < unparsed.length; i++)
 		{
 			assertEquals("Expected " + i + " item to be equal", unparsed[i],
-				sUnparsed[i]);
+					sUnparsed[i]);
 		}
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(secondaryContext.ref.validate());
 		assertEquals(expectedPrimaryMessageCount, primaryContext
-			.getWriteMessageCount());
+				.getWriteMessageCount());
 		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 
@@ -192,6 +199,11 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		{
 			primaryContext.commit();
 		}
+		else
+		{
+			Logging.rewindParseMessages();
+			Logging.replayParsedMessages();
+		}
 		return b;
 	}
 
@@ -202,11 +214,16 @@ public abstract class AbstractTokenTestCase<T extends PObject> extends TestCase
 		{
 			secondaryContext.commit();
 		}
+		else
+		{
+			Logging.rewindParseMessages();
+			Logging.replayParsedMessages();
+		}
 		return b;
 	}
 
-	public abstract LstLoader<T> getLoader();
+	public abstract CDOMLoader<T> getLoader();
 
-	public abstract CDOMToken<T> getToken();
+	public abstract CDOMPrimaryToken<T> getToken();
 
 }

@@ -17,28 +17,28 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Language;
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public class PreSpellBookTesterTest extends
-		AbstractCDOMBooleanTestCase<PCClass>
+		AbstractCDOMBooleanTestCase<CDOMPCClass>
 {
 
 	PreSpellBookTester tester = new PreSpellBookTester();
 
 	@Override
-	public Class<PCClass> getCDOMClass()
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	@Override

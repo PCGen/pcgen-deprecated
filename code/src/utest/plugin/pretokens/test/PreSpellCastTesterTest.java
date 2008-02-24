@@ -17,29 +17,29 @@
  */
 package plugin.pretokens.test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
-import pcgen.core.Language;
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public class PreSpellCastTesterTest extends
-		AbstractCDOMObjectKeyTestCase<PCClass, Type>
+		AbstractCDOMObjectKeyTestCase<CDOMPCClass, Type>
 {
 
 	PreSpellCastTester tester = new PreSpellCastTester();
 
 	@Override
-	public Class<PCClass> getCDOMClass()
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	@Override

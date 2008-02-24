@@ -17,27 +17,27 @@
  */
 package plugin.pretokens.test;
 
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
-import pcgen.core.WeaponProf;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public class PreWeaponProfTesterTest extends
-		AbstractCDOMObjectTestCase<WeaponProf>
+		AbstractCDOMObjectTestCase<CDOMWeaponProf>
 {
 
 	PreWeaponProfTester tester = new PreWeaponProfTester();
 
 	@Override
-	public Class<WeaponProf> getCDOMClass()
+	public Class<CDOMWeaponProf> getCDOMClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override

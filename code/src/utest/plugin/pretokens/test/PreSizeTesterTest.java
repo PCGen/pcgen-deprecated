@@ -4,19 +4,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.formula.FixedSizeResolver;
-import pcgen.core.Language;
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
-import pcgen.core.Race;
-import pcgen.core.SizeAdjustment;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
+public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<CDOMRace>
 {
 
 	PreSizeTester tester = new PreSizeTester();
@@ -38,23 +38,23 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		{
 			classSetUp();
 		}
-		rules.create(SizeAdjustment.class, "T");
-		rules.create(SizeAdjustment.class, "S");
-		rules.create(SizeAdjustment.class, "M");
-		rules.create(SizeAdjustment.class, "L");
-		rules.create(SizeAdjustment.class, "H");
+		rules.create(CDOMSizeAdjustment.class, "T");
+		rules.create(CDOMSizeAdjustment.class, "S");
+		rules.create(CDOMSizeAdjustment.class, "M");
+		rules.create(CDOMSizeAdjustment.class, "L");
+		rules.create(CDOMSizeAdjustment.class, "H");
 	}
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	private String getKind()
@@ -69,17 +69,17 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 
 	private FixedSizeResolver getSmallSize()
 	{
-		return new FixedSizeResolver(rules.getObject(SizeAdjustment.class, "S"));
+		return new FixedSizeResolver(rules.getObject(CDOMSizeAdjustment.class, "S"));
 	}
 
 	private FixedSizeResolver getMediumSize()
 	{
-		return new FixedSizeResolver(rules.getObject(SizeAdjustment.class, "M"));
+		return new FixedSizeResolver(rules.getObject(CDOMSizeAdjustment.class, "M"));
 	}
 
 	private FixedSizeResolver getLargeSize()
 	{
-		return new FixedSizeResolver(rules.getObject(SizeAdjustment.class, "L"));
+		return new FixedSizeResolver(rules.getObject(CDOMSizeAdjustment.class, "L"));
 	}
 
 	public Prerequisite getMediumPrereq()
@@ -108,7 +108,7 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		Prerequisite prereq = getMediumPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject human = grantCDOMObject("Human");
+		CDOMObject human = grantCDOMObject("Human");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		human.put(ObjectKey.SIZE, getSmallSize());
 		prereq.setOperator(PrerequisiteOperator.GTEQ);
@@ -157,11 +157,11 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		Prerequisite prereq = getMediumPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject human = grantCDOMObject("Human");
+		CDOMObject human = grantCDOMObject("Human");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		human.put(ObjectKey.SIZE, getLargeSize());
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
-		PObject templ = getObject(PCTemplate.class, "Templ");
+		CDOMObject templ = getObject(CDOMTemplate.class, "Templ");
 		grantObject(templ);
 		human.put(ObjectKey.SIZE, getMediumSize());
 		prereq.setOperator(PrerequisiteOperator.GTEQ);
@@ -212,7 +212,7 @@ public class PreSizeTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		Prerequisite prereq = getMediumPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject falseObj = grantFalseObject("Wild Mage");
+		CDOMObject falseObj = grantFalseObject("Wild Mage");
 		falseObj.put(ObjectKey.SIZE, getLargeSize());
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 	}

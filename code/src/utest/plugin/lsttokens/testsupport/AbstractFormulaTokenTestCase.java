@@ -19,12 +19,11 @@ package plugin.lsttokens.testsupport;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.FormulaKey;
-import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public abstract class AbstractFormulaTokenTestCase<T extends PObject> extends
+public abstract class AbstractFormulaTokenTestCase<T extends CDOMObject> extends
 		AbstractTokenTestCase<T>
 {
 

@@ -2,31 +2,31 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.content.DamageReduction;
-import pcgen.core.Language;
-import pcgen.core.PObject;
-import pcgen.core.Race;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public class PreDamageReductionTesterTest extends
-		AbstractCDOMPreTestTestCase<Race>
+		AbstractCDOMPreTestTestCase<CDOMRace>
 {
 
 	PreDamageReductionTester tester = new PreDamageReductionTester();
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	private String getKind()

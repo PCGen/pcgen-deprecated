@@ -2,34 +2,34 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.content.EquipmentSet;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.core.Equipment;
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public abstract class AbstractCDOMPreEquipTestCase extends
-		AbstractCDOMPreTestTestCase<Equipment>
+		AbstractCDOMPreTestTestCase<CDOMEquipment>
 {
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	public abstract String getKind();
@@ -42,25 +42,24 @@ public abstract class AbstractCDOMPreEquipTestCase extends
 
 	private EquipmentSet activeSet = new EquipmentSet();
 
-	public Equipment equip(String s, int loc)
+	public CDOMEquipment equip(String s, int loc)
 	{
-		Equipment e = getObject(s);
+		CDOMEquipment e = getObject(s);
 		equip(e, loc);
 		return e;
 	}
 
-	public void equip(Equipment e, int loc)
+	public void equip(CDOMEquipment e, int loc)
 	{
 		PCGenGraph graph = pc.getActiveGraph();
 		graph.addNode(e);
-		PCGraphGrantsEdge edge =
-				new PCGraphGrantsEdge(activeSet, e, "TestCase");
+		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(activeSet, e, "TestCase");
 		edge.setAssociation(AssociationKey.EQUIPMENT_LOCATION, Integer
-			.valueOf(loc));
+				.valueOf(loc));
 		graph.addEdge(edge);
 	}
 
-	public void unequip(Equipment e)
+	public void unequip(CDOMEquipment e)
 	{
 		pc.getActiveGraph().removeNode(e);
 	}
@@ -169,7 +168,7 @@ public abstract class AbstractCDOMPreEquipTestCase extends
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		Equipment wild = equip("Wild Mage", getProperLocation());
+		CDOMEquipment wild = equip("Wild Mage", getProperLocation());
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		unequip(wild);
 		equip("Winged Mage", getProperLocation());
@@ -214,7 +213,7 @@ public abstract class AbstractCDOMPreEquipTestCase extends
 			Prerequisite prereq = getWildcard();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			Equipment winged = equip("Winged Creature", getProperLocation());
+			CDOMEquipment winged = equip("Winged Creature", getProperLocation());
 			// Not qualifying
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			unequip(winged);
@@ -265,7 +264,7 @@ public abstract class AbstractCDOMPreEquipTestCase extends
 			Prerequisite prereq = getTypeDotPrereq();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = equip("Katana", getProperLocation());
+			CDOMObject katana = equip("Katana", getProperLocation());
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -290,7 +289,7 @@ public abstract class AbstractCDOMPreEquipTestCase extends
 			Prerequisite prereq = getTypeDotPrereq();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = equip("Katana", getFalseLocation());
+			CDOMObject katana = equip("Katana", getFalseLocation());
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -316,7 +315,7 @@ public abstract class AbstractCDOMPreEquipTestCase extends
 			Prerequisite prereq = getTypeEqualsPrereq();
 			// PC Should start without the WeaponProf
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = equip("Katana", getProperLocation());
+			CDOMObject katana = equip("Katana", getProperLocation());
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
@@ -340,7 +339,7 @@ public abstract class AbstractCDOMPreEquipTestCase extends
 			Prerequisite prereq = getTypeEqualsPrereq();
 			// PC Should start without the WeaponProf
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = equip("Katana", getFalseLocation());
+			CDOMObject katana = equip("Katana", getFalseLocation());
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));

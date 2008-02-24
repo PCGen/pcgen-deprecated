@@ -19,34 +19,36 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.core.Language;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
+public class PreSkillTotTesterTest extends
+		AbstractCDOMPreTestTestCase<CDOMSkill>
 {
 
 	PreSkillTotTester tester = new PreSkillTotTester();
 
 	@Override
-	public Class<Skill> getCDOMClass()
+	public Class<CDOMSkill> getCDOMClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	public String getKind()
@@ -81,7 +83,7 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 		Prerequisite prereq = getSimplePrereq("STR");
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		Skill strStat = getObject("STR");
+		CDOMSkill strStat = getObject("STR");
 		grantObject(strStat);
 		// no weight on edge implies weight == 1??
 		// TODO Should this be one or zero??
@@ -94,10 +96,10 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 		Prerequisite prereq = getSimplePrereq("STR");
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		Skill strStat = getObject("STR");
+		CDOMSkill strStat = getObject("STR");
 		PCGraphGrantsEdge strEdge = grantObject(strStat);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
-		Skill intStat = getObject("INT");
+		CDOMSkill intStat = getObject("INT");
 		PCGraphGrantsEdge intEdge = grantObject(intStat);
 		intEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(15));
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
@@ -115,13 +117,13 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 		Prerequisite prereq = getSimplePrereq("STR");
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		Skill strStat = getObject("STR");
+		CDOMSkill strStat = getObject("STR");
 		PCGraphGrantsEdge strEdge = grantObject(strStat);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 		// Fail, not enough weight on edge
 		assertEquals(13, getTest().passesCDOM(prereq, pc));
-		PObject po = getFalseObject("FOO");
+		CDOMObject po = getFalseObject("FOO");
 		grantObject(po);
 		PCGraphGrantsEdge edge2 = grantObject(po, strStat);
 		assertEquals(14, getTest().passesCDOM(prereq, pc));
@@ -140,14 +142,14 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 		Prerequisite prereq = getSimplePrereq("STR");
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		Skill strStat = getObject("STR");
+		CDOMSkill strStat = getObject("STR");
 		PCGraphGrantsEdge strEdge = grantObject(strStat);
 		// Fail, no weight on edge
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 		assertEquals(13, getTest().passesCDOM(prereq, pc));
-		PObject foo = getFalseObject("FOO");
-		PObject bar = getFalseObject("BAR");
+		CDOMObject foo = getFalseObject("FOO");
+		CDOMObject bar = getFalseObject("BAR");
 		grantObject(bar);
 		grantObject(foo);
 		grantObject(bar, foo);
@@ -167,15 +169,15 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 		Prerequisite prereq = getSimplePrereq("STR");
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		Skill strStat = getObject("STR");
+		CDOMSkill strStat = getObject("STR");
 		PCGraphGrantsEdge strEdge = grantObject(strStat);
 		// Fail, no weight on edge
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 		// Fail, not enough weight on edge
 		assertEquals(13, getTest().passesCDOM(prereq, pc));
-		PObject foo = getFalseObject("FOO");
-		PObject bar = getFalseObject("BAR");
+		CDOMObject foo = getFalseObject("FOO");
+		CDOMObject bar = getFalseObject("BAR");
 		foo.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.FALSE);
 		grantObject(bar);
 		grantObject(foo);
@@ -198,15 +200,15 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 		Prerequisite prereq = getSimplePrereq("STR");
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		Skill strStat = getObject("STR");
+		CDOMSkill strStat = getObject("STR");
 		PCGraphGrantsEdge strEdge = grantObject(strStat);
 		// Fail, no weight on edge
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(11));
 		// Fail, not enough weight on edge
 		assertEquals(11, getTest().passesCDOM(prereq, pc));
-		PObject foo = getFalseObject("FOO");
-		PObject bar = getFalseObject("BAR");
+		CDOMObject foo = getFalseObject("FOO");
+		CDOMObject bar = getFalseObject("BAR");
 		foo.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.TRUE);
 		grantObject(bar);
 		grantObject(foo);
@@ -231,11 +233,11 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 			Prerequisite prereq = getSimplePrereq("TYPE=Martial");
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			Skill strStat = getObject("STR");
+			CDOMSkill strStat = getObject("STR");
 			PCGraphGrantsEdge strEdge = grantObject(strStat);
 			// Fail, no weight on edge, wrong type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			Skill intStat = getObject("INT");
+			CDOMSkill intStat = getObject("INT");
 			PCGraphGrantsEdge intEdge = grantObject(intStat);
 			intEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(15));
 			// Fail, no weight on str edge (still), no type
@@ -276,14 +278,14 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 			Prerequisite prereq = getSimplePrereq("TYPE=Martial");
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			Skill strStat = getObject("STR");
+			CDOMSkill strStat = getObject("STR");
 			PCGraphGrantsEdge strEdge = grantObject(strStat);
 			// Fail, no weight on edge, no type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 			// Fail, not enough weight on edge, no type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject po = getFalseObject("FOO");
+			CDOMObject po = getFalseObject("FOO");
 			grantObject(po);
 			PCGraphGrantsEdge edge2 = grantObject(po, strStat);
 			// Fail, not enough weight on edge (second edge no weight), no type
@@ -323,15 +325,15 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 			Prerequisite prereq = getSimplePrereq("TYPE=Martial");
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			Skill strStat = getObject("STR");
+			CDOMSkill strStat = getObject("STR");
 			PCGraphGrantsEdge strEdge = grantObject(strStat);
 			// Fail, no weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 			// Fail, not enough weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject foo = getFalseObject("FOO");
-			PObject bar = getFalseObject("BAR");
+			CDOMObject foo = getFalseObject("FOO");
+			CDOMObject bar = getFalseObject("BAR");
 			grantObject(bar);
 			grantObject(foo);
 			grantObject(bar, foo);
@@ -373,15 +375,15 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 			Prerequisite prereq = getSimplePrereq("TYPE=Martial");
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			Skill strStat = getObject("STR");
+			CDOMSkill strStat = getObject("STR");
 			PCGraphGrantsEdge strEdge = grantObject(strStat);
 			// Fail, no weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 			// Fail, not enough weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject foo = getFalseObject("FOO");
-			PObject bar = getFalseObject("BAR");
+			CDOMObject foo = getFalseObject("FOO");
+			CDOMObject bar = getFalseObject("BAR");
 			foo.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.FALSE);
 			grantObject(bar);
 			grantObject(foo);
@@ -424,15 +426,15 @@ public class PreSkillTotTesterTest extends AbstractCDOMPreTestTestCase<Skill>
 			Prerequisite prereq = getSimplePrereq("TYPE=Martial");
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			Skill strStat = getObject("STR");
+			CDOMSkill strStat = getObject("STR");
 			PCGraphGrantsEdge strEdge = grantObject(strStat);
 			// Fail, no weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(11));
 			// Fail, not enough weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject foo = getFalseObject("FOO");
-			PObject bar = getFalseObject("BAR");
+			CDOMObject foo = getFalseObject("FOO");
+			CDOMObject bar = getFalseObject("BAR");
 			foo.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.TRUE);
 			grantObject(bar);
 			grantObject(foo);

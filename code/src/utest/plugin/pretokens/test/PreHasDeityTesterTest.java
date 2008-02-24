@@ -2,29 +2,29 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
-import pcgen.core.Deity;
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreHasDeityTesterTest extends AbstractCDOMPreTestTestCase<Deity>
+public class PreHasDeityTesterTest extends AbstractCDOMPreTestTestCase<CDOMDeity>
 {
 
 	PreHasDeityTester tester = new PreHasDeityTester();
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	private String getKind()

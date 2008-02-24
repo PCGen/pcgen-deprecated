@@ -21,12 +21,11 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public abstract class AbstractBigDecimalTokenTestCase<T extends PObject>
+public abstract class AbstractBigDecimalTokenTestCase<T extends CDOMObject>
 		extends AbstractTokenTestCase<T>
 {
 

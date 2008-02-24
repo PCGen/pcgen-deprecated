@@ -2,31 +2,31 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.IntegerKey;
-import pcgen.core.Language;
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
-import pcgen.core.Race;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreLegsTesterTest extends AbstractCDOMPreTestTestCase<Race>
+public class PreLegsTesterTest extends AbstractCDOMPreTestTestCase<CDOMRace>
 {
 
 	PreLegsTester tester = new PreLegsTester();
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	private String getKind()
@@ -85,7 +85,7 @@ public class PreLegsTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		Prerequisite prereq = getOnePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject human = grantCDOMObject("Human");
+		CDOMObject human = grantCDOMObject("Human");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		human.put(IntegerKey.LEGS, Integer.valueOf(1));
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
@@ -133,11 +133,11 @@ public class PreLegsTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		Prerequisite prereq = getOnePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject human = grantCDOMObject("Human");
+		CDOMObject human = grantCDOMObject("Human");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		human.put(IntegerKey.LEGS, Integer.valueOf(3));
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
-		PObject templ = getObject(PCTemplate.class, "Templ");
+		CDOMObject templ = getObject(CDOMTemplate.class, "Templ");
 		grantObject(templ);
 		templ.put(IntegerKey.LEGS, Integer.valueOf(1));
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
@@ -187,7 +187,7 @@ public class PreLegsTesterTest extends AbstractCDOMPreTestTestCase<Race>
 		Prerequisite prereq = getOnePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject falseObj = grantFalseObject("Wild Mage");
+		CDOMObject falseObj = grantFalseObject("Wild Mage");
 		falseObj.put(IntegerKey.LEGS, Integer.valueOf(1));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 	}

@@ -2,32 +2,32 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Language;
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public class PreGenderTesterTest extends
-		AbstractCDOMPreTestTestCase<PCTemplate>
+		AbstractCDOMPreTestTestCase<CDOMTemplate>
 {
 
 	PreGenderTester tester = new PreGenderTester();
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	private String getKind()
@@ -70,7 +70,7 @@ public class PreGenderTesterTest extends
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		pc.setCDOMGender(Gender.Female);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
-		PObject templ = grantCDOMObject("Templ");
+		CDOMObject templ = grantCDOMObject("Templ");
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		templ.put(ObjectKey.GENDER_LOCK, Gender.Neuter);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
@@ -92,7 +92,7 @@ public class PreGenderTesterTest extends
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 		pc.setCDOMGender(Gender.Neuter);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject templ = grantCDOMObject("Templ");
+		CDOMObject templ = grantCDOMObject("Templ");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		templ.put(ObjectKey.GENDER_LOCK, Gender.Male);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -106,7 +106,7 @@ public class PreGenderTesterTest extends
 		Prerequisite prereq = getNotMalePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject falseObj = grantFalseObject("Wild Mage");
+		CDOMObject falseObj = grantFalseObject("Wild Mage");
 		falseObj.put(ObjectKey.GENDER_LOCK, Gender.Neuter);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 	}

@@ -19,14 +19,14 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public abstract class AbstractCDOMObjectKeyTestCase<T extends PObject, OT>
+public abstract class AbstractCDOMObjectKeyTestCase<T extends CDOMObject, OT>
 		extends AbstractCDOMPreTestTestCase<T>
 {
 
@@ -77,11 +77,11 @@ public abstract class AbstractCDOMObjectKeyTestCase<T extends PObject, OT>
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject obj1 = grantCDOMObject("Wild Mage");
+		CDOMObject obj1 = grantCDOMObject("Wild Mage");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		obj1.put(getObjectKey(), getFailObject());
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject obj2 = grantCDOMObject("Winged Mage");
+		CDOMObject obj2 = grantCDOMObject("Winged Mage");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		obj2.put(getObjectKey(), getFailObject());
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -95,10 +95,10 @@ public abstract class AbstractCDOMObjectKeyTestCase<T extends PObject, OT>
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject obj1 = grantCDOMObject("Wild Mage");
+		CDOMObject obj1 = grantCDOMObject("Wild Mage");
 		obj1.put(getObjectKey(), getFailObject());
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject obj2 = grantFalseObject("Winged Mage");
+		CDOMObject obj2 = grantFalseObject("Winged Mage");
 		obj2.put(getObjectKey(), getFailObject());
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		obj2.put(getObjectKey(), getPassObject());

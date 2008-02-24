@@ -17,27 +17,27 @@
  */
 package plugin.pretokens.test;
 
-import pcgen.core.Language;
-import pcgen.core.PObject;
-import pcgen.core.Skill;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public class PreSkillTesterTest extends
-		AbstractCDOMWeightedObjectTestCase<Skill>
+		AbstractCDOMWeightedObjectTestCase<CDOMSkill>
 {
 
 	PreSkillTester tester = new PreSkillTester();
 
 	@Override
-	public Class<Skill> getCDOMClass()
+	public Class<CDOMSkill> getCDOMClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	@Override

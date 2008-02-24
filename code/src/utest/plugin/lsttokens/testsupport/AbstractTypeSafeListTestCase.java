@@ -21,12 +21,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ListKey;
-import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public abstract class AbstractTypeSafeListTestCase<T extends PObject> extends
+public abstract class AbstractTypeSafeListTestCase<T extends CDOMObject> extends
 		AbstractTokenTestCase<T>
 {
 

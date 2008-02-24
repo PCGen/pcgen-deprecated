@@ -20,50 +20,50 @@ package plugin.pretokens.test;
 import org.junit.Before;
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Alignment;
-import pcgen.core.Deity;
-import pcgen.core.Language;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreDeityAlignTesterTest extends AbstractCDOMPreTestTestCase<Deity>
+public class PreDeityAlignTesterTest extends AbstractCDOMPreTestTestCase<CDOMDeity>
 {
 
 	PreDeityAlignTester tester = new PreDeityAlignTester();
-	Alignment lg;
-	Alignment le;
-	Alignment tn;
+	CDOMAlignment lg;
+	CDOMAlignment le;
+	CDOMAlignment tn;
 
 	@Before
 	@Override
 	public void setUp()
 	{
 		super.setUp();
-		lg = rules.create(Alignment.class, "LG");
-		le = rules.create(Alignment.class, "LN");
-		rules.create(Alignment.class, "LE");
-		rules.create(Alignment.class, "NG");
-		tn = rules.create(Alignment.class, "TN");
-		rules.create(Alignment.class, "NE");
-		rules.create(Alignment.class, "CG");
-		rules.create(Alignment.class, "CN");
-		rules.create(Alignment.class, "CE");
+		lg = rules.create(CDOMAlignment.class, "LG");
+		le = rules.create(CDOMAlignment.class, "LN");
+		rules.create(CDOMAlignment.class, "LE");
+		rules.create(CDOMAlignment.class, "NG");
+		tn = rules.create(CDOMAlignment.class, "TN");
+		rules.create(CDOMAlignment.class, "NE");
+		rules.create(CDOMAlignment.class, "CG");
+		rules.create(CDOMAlignment.class, "CN");
+		rules.create(CDOMAlignment.class, "CE");
 	}
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	public String getKind()
@@ -93,7 +93,7 @@ public class PreDeityAlignTesterTest extends AbstractCDOMPreTestTestCase<Deity>
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("Wild Mage");
+		CDOMObject deity = grantCDOMObject("Wild Mage");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		deity.put(ObjectKey.ALIGNMENT, tn);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -107,10 +107,10 @@ public class PreDeityAlignTesterTest extends AbstractCDOMPreTestTestCase<Deity>
 //		Prerequisite prereq = getSimplePrereq();
 //		// PC Should start without
 //		assertEquals(0, getTest().passesCDOM(prereq, pc));
-//		PObject deity = grantCDOMObject("Wild Mage");
+//		CDOMObject deity = grantCDOMObject("Wild Mage");
 //		deity.put(ObjectKey.ALIGNMENT, le);
 //		assertEquals(0, getTest().passesCDOM(prereq, pc));
-//		PObject fo = grantFalseObject("Winged Mage");
+//		CDOMObject fo = grantFalseObject("Winged Mage");
 //		fo.put(ObjectKey.ALIGNMENT, lg);
 //		assertEquals(0, getTest().passesCDOM(prereq, pc));
 //	}

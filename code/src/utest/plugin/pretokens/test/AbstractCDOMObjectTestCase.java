@@ -19,15 +19,15 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
-import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
+public abstract class AbstractCDOMObjectTestCase<T extends CDOMObject> extends
 		AbstractCDOMPreTestTestCase<T>
 {
 
@@ -265,7 +265,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 		assertEquals(0, getTest().passesCDOM(getSimplePrereq(), pc));
 		// And maybe Generic Crossbow
 		assertEquals(isTestStarting() ? 1 : 0, getTest().passesCDOM(
-			getGenericPrereq(), pc));
+				getGenericPrereq(), pc));
 	}
 
 	@Test
@@ -285,7 +285,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			assertEquals(0, getTest().passesCDOM(getSimplePrereq(), pc));
 			// And maybe Generic Crossbow
 			assertEquals(isTestStarting() ? 1 : 0, getTest().passesCDOM(
-				getGenericPrereq(), pc));
+					getGenericPrereq(), pc));
 		}
 	}
 
@@ -371,7 +371,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getTypeDotPrereq();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = grantCDOMObject("Katana");
+			CDOMObject katana = grantCDOMObject("Katana");
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -396,7 +396,7 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getTypeDotPrereq();
 			// PC Should start without
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = grantFalseObject("Katana");
+			CDOMObject katana = grantFalseObject("Katana");
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Exotic"));
@@ -422,13 +422,13 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getTypeEqualsPrereq();
 			// PC Should start without the WeaponProf
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = grantCDOMObject("Katana");
+			CDOMObject katana = grantCDOMObject("Katana");
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 			// Fails because only one is present
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject sword = grantCDOMObject("Longsword");
+			CDOMObject sword = grantCDOMObject("Longsword");
 			sword.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 			assertEquals(1, getTest().passesCDOM(prereq, pc));
 			katana.removeListFor(ListKey.TYPE);
@@ -451,13 +451,13 @@ public abstract class AbstractCDOMObjectTestCase<T extends PObject> extends
 			Prerequisite prereq = getTypeEqualsPrereq();
 			// PC Should start without the WeaponProf
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject katana = grantCDOMObject("Katana");
+			CDOMObject katana = grantCDOMObject("Katana");
 			// Not yet the proper type
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
 			katana.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 			// Fails because only one is present
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject sword = grantFalseObject("Longsword");
+			CDOMObject sword = grantFalseObject("Longsword");
 			sword.addToListFor(ListKey.TYPE, Type.getConstant("Martial"));
 			// Would be 1 if true
 			assertEquals(0, getTest().passesCDOM(prereq, pc));

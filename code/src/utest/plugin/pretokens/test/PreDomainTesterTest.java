@@ -17,26 +17,26 @@
  */
 package plugin.pretokens.test;
 
-import pcgen.core.Domain;
-import pcgen.core.Language;
-import pcgen.core.PObject;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreDomainTesterTest extends AbstractCDOMObjectTestCase<Domain>
+public class PreDomainTesterTest extends AbstractCDOMObjectTestCase<CDOMDomain>
 {
 
 	PreDomainTester tester = new PreDomainTester();
 
 	@Override
-	public Class<Domain> getCDOMClass()
+	public Class<CDOMDomain> getCDOMClass()
 	{
-		return Domain.class;
+		return CDOMDomain.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	@Override

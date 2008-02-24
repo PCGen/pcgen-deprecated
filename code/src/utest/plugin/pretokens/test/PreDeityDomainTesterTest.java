@@ -22,48 +22,48 @@ import org.junit.Test;
 
 import pcgen.cdom.base.CDOMAllRef;
 import pcgen.cdom.base.CDOMGroupRef;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.core.Deity;
-import pcgen.core.Domain;
-import pcgen.core.DomainList;
-import pcgen.core.Language;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.DomainList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
 public class PreDeityDomainTesterTest extends
-		AbstractCDOMPreTestTestCase<Deity>
+		AbstractCDOMPreTestTestCase<CDOMDeity>
 {
 
 	PreDeityDomainTester tester = new PreDeityDomainTester();
 	CDOMReference<DomainList> domainList = getReference(DomainList.class,
 			"*Starting");
-	CDOMReference<Domain> water = getReference(Domain.class, "Water");
-	CDOMReference<Domain> fire = getReference(Domain.class, "Fire");
-	CDOMGroupRef<Domain> allDomains = new CDOMAllRef<Domain>(Domain.class);
+	CDOMReference<CDOMDomain> water = getReference(CDOMDomain.class, "Water");
+	CDOMReference<CDOMDomain> fire = getReference(CDOMDomain.class, "Fire");
+	CDOMGroupRef<CDOMDomain> allDomains = new CDOMAllRef<CDOMDomain>(CDOMDomain.class);
 
 	@Override
 	@Before
 	public void setUp()
 	{
 		super.setUp();
-		allDomains.addResolution(rules.create(Domain.class, "Water"));
-		allDomains.addResolution(rules.create(Domain.class, "Earth"));
-		allDomains.addResolution(rules.create(Domain.class, "Fire"));
+		allDomains.addResolution(rules.create(CDOMDomain.class, "Water"));
+		allDomains.addResolution(rules.create(CDOMDomain.class, "Earth"));
+		allDomains.addResolution(rules.create(CDOMDomain.class, "Fire"));
 	}
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	public String getKind()
@@ -104,7 +104,7 @@ public class PreDeityDomainTesterTest extends
 		Prerequisite prereq = getAnyPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("ThisDeity");
+		CDOMObject deity = grantCDOMObject("ThisDeity");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		addToList("TestCase", deity, domainList, water);
 		// not enough
@@ -122,13 +122,13 @@ public class PreDeityDomainTesterTest extends
 		Prerequisite prereq = getAnyPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("Wild Mage");
-		addToList("TestCase", deity, domainList, getReference(Domain.class,
+		CDOMObject deity = grantCDOMObject("Wild Mage");
+		addToList("TestCase", deity, domainList, getReference(CDOMDomain.class,
 				"Water"));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject fo = grantFalseObject("Winged Mage");
+		CDOMObject fo = grantFalseObject("Winged Mage");
 		addToList("TestCase", fo, domainList,
-				getReference(Domain.class, "Fire"));
+				getReference(CDOMDomain.class, "Fire"));
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -138,7 +138,7 @@ public class PreDeityDomainTesterTest extends
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("Wild Mage");
+		CDOMObject deity = grantCDOMObject("Wild Mage");
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 		addToList("TestCase", deity, domainList, water);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -152,10 +152,10 @@ public class PreDeityDomainTesterTest extends
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("Wild Mage");
+		CDOMObject deity = grantCDOMObject("Wild Mage");
 		addToList("TestCase", deity, domainList, water);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject fo = grantFalseObject("Winged Mage");
+		CDOMObject fo = grantFalseObject("Winged Mage");
 		addToList("TestCase", fo, domainList, fire);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
 	}
@@ -166,7 +166,7 @@ public class PreDeityDomainTesterTest extends
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("Wild Mage");
+		CDOMObject deity = grantCDOMObject("Wild Mage");
 		addToList("TestCase", deity, domainList, allDomains);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}
@@ -177,7 +177,7 @@ public class PreDeityDomainTesterTest extends
 		Prerequisite prereq = getAnyPrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("Wild Mage");
+		CDOMObject deity = grantCDOMObject("Wild Mage");
 		addToList("TestCase", deity, domainList, allDomains);
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}
@@ -193,7 +193,7 @@ public class PreDeityDomainTesterTest extends
 		prereq.setOperand(Integer.toString(allDomains.getObjectCount() + 1));
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("Wild Mage");
+		CDOMObject deity = grantCDOMObject("Wild Mage");
 		addToList("TestCase", deity, domainList, water);
 		addToList("TestCase", deity, domainList, allDomains);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
@@ -212,7 +212,7 @@ public class PreDeityDomainTesterTest extends
 		prereq.setOperand(Integer.toString(allDomains.getObjectCount() + 1));
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject deity = grantCDOMObject("Wild Mage");
+		CDOMObject deity = grantCDOMObject("Wild Mage");
 		addToList("TestCase", deity, domainList, allDomains);
 
 		addToList("TestCase", deity, domainList, water);

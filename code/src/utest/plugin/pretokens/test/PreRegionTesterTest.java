@@ -19,30 +19,30 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.StringKey;
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
-import pcgen.core.Race;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreRegionTesterTest extends AbstractCDOMPreTestTestCase<PCTemplate>
+public class PreRegionTesterTest extends AbstractCDOMPreTestTestCase<CDOMTemplate>
 {
 
 	PreRegionTester tester = new PreRegionTester();
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	public String getKind()
@@ -99,7 +99,7 @@ public class PreRegionTesterTest extends AbstractCDOMPreTestTestCase<PCTemplate>
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
-		PObject template = grantCDOMObject("Template 1");
+		CDOMObject template = grantCDOMObject("Template 1");
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
 		template.put(StringKey.REGION, "New York");
@@ -130,7 +130,7 @@ public class PreRegionTesterTest extends AbstractCDOMPreTestTestCase<PCTemplate>
 		pc.put(StringKey.SUB_REGION, "Finger Lakes");
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
-		PObject falseObj = grantFalseObject("Template 1");
+		CDOMObject falseObj = grantFalseObject("Template 1");
 		assertEquals(0, getTest().passesCDOM(nypre, pc));
 		assertEquals(0, getTest().passesCDOM(flpre, pc));
 		falseObj.put(StringKey.REGION, "New York");

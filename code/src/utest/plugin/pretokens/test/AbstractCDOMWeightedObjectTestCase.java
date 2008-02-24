@@ -19,18 +19,18 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
+public abstract class AbstractCDOMWeightedObjectTestCase<T extends CDOMObject>
 		extends AbstractCDOMPreTestTestCase<T>
 {
 	public abstract String getKind();
@@ -59,7 +59,7 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 		T strStat = getObject("STR");
 		grantObject(strStat);
 		// Fail, no weight on edge
-		//TODO Should weight with no arg be one or zero?
+		// TODO Should weight with no arg be one or zero?
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
 	}
 
@@ -102,7 +102,7 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 		strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 		// Fail, not enough weight on edge
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject po = getFalseObject("FOO");
+		CDOMObject po = getFalseObject("FOO");
 		grantObject(po);
 		PCGraphGrantsEdge edge2 = grantObject(po, strStat);
 		// Fail, not enough weight on edge (second edge no weight)
@@ -129,8 +129,8 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 		strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 		// Fail, not enough weight on edge
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject foo = getFalseObject("FOO");
-		PObject bar = getFalseObject("BAR");
+		CDOMObject foo = getFalseObject("FOO");
+		CDOMObject bar = getFalseObject("BAR");
 		grantObject(bar);
 		grantObject(foo);
 		grantObject(bar, foo);
@@ -159,8 +159,8 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 		strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 		// Fail, not enough weight on edge
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject foo = getFalseObject("FOO");
-		PObject bar = getFalseObject("BAR");
+		CDOMObject foo = getFalseObject("FOO");
+		CDOMObject bar = getFalseObject("BAR");
 		foo.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.FALSE);
 		grantObject(bar);
 		grantObject(foo);
@@ -190,8 +190,8 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 		strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(11));
 		// Fail, not enough weight on edge
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject foo = getFalseObject("FOO");
-		PObject bar = getFalseObject("BAR");
+		CDOMObject foo = getFalseObject("FOO");
+		CDOMObject bar = getFalseObject("BAR");
 		foo.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.TRUE);
 		grantObject(bar);
 		grantObject(foo);
@@ -268,7 +268,7 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 			strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 			// Fail, not enough weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject po = getFalseObject("FOO");
+			CDOMObject po = getFalseObject("FOO");
 			grantObject(po);
 			PCGraphGrantsEdge edge2 = grantObject(po, strStat);
 			// Fail, not enough weight on edge (second edge no weight)
@@ -314,8 +314,8 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 			strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 			// Fail, not enough weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject foo = getFalseObject("FOO");
-			PObject bar = getFalseObject("BAR");
+			CDOMObject foo = getFalseObject("FOO");
+			CDOMObject bar = getFalseObject("BAR");
 			grantObject(bar);
 			grantObject(foo);
 			grantObject(bar, foo);
@@ -363,8 +363,8 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 			strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(13));
 			// Fail, not enough weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject foo = getFalseObject("FOO");
-			PObject bar = getFalseObject("BAR");
+			CDOMObject foo = getFalseObject("FOO");
+			CDOMObject bar = getFalseObject("BAR");
 			foo.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.FALSE);
 			grantObject(bar);
 			grantObject(foo);
@@ -413,8 +413,8 @@ public abstract class AbstractCDOMWeightedObjectTestCase<T extends PObject>
 			strEdge.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(11));
 			// Fail, not enough weight on edge
 			assertEquals(0, getTest().passesCDOM(prereq, pc));
-			PObject foo = getFalseObject("FOO");
-			PObject bar = getFalseObject("BAR");
+			CDOMObject foo = getFalseObject("FOO");
+			CDOMObject bar = getFalseObject("BAR");
 			foo.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.TRUE);
 			grantObject(bar);
 			grantObject(foo);

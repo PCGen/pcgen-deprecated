@@ -19,29 +19,29 @@ package plugin.pretokens.test;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.Language;
-import pcgen.core.PObject;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteTest;
 
-public class PreFeatTesterTest extends AbstractCDOMObjectTestCase<Ability>
+public class PreFeatTesterTest extends AbstractCDOMObjectTestCase<CDOMAbility>
 {
 
 	PreFeatTester tester = new PreFeatTester();
 
 	@Override
-	public Class<Ability> getCDOMClass()
+	public Class<CDOMAbility> getCDOMClass()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
-	public Class<? extends PObject> getFalseClass()
+	public Class<? extends CDOMObject> getFalseClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	@Override
@@ -87,10 +87,10 @@ public class PreFeatTesterTest extends AbstractCDOMObjectTestCase<Ability>
 	}
 
 	@Override
-	public Ability getObject(String s)
+	public CDOMAbility getObject(String s)
 	{
-		Ability a = super.getObject(s);
-		a.setCDOMCategory(AbilityCategory.FEAT);
+		CDOMAbility a = super.getObject(s);
+		a.setCDOMCategory(CDOMAbilityCategory.FEAT);
 		return a;
 	}
 
@@ -100,11 +100,11 @@ public class PreFeatTesterTest extends AbstractCDOMObjectTestCase<Ability>
 		Prerequisite prereq = getSimplePrereq();
 		// PC Should start without
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		Ability wrong = super.getObject("Winged Mage");
-		wrong.setCDOMCategory(AbilityCategory.Mutation);
+		CDOMAbility wrong = super.getObject("Winged Mage");
+		wrong.setCDOMCategory(CDOMAbilityCategory.getConstant("Mutation"));
 		grantObject(wrong);
 		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		PObject right = grantCDOMObject("Winged Mage");
+		CDOMObject right = grantCDOMObject("Winged Mage");
 		assertFalse(wrong.equals(right));
 		// Pass, as it's a FEAT
 		assertEquals(1, getTest().passesCDOM(prereq, pc));
