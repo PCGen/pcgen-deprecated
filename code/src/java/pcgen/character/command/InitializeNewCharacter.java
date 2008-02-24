@@ -4,6 +4,7 @@ import javax.swing.undo.UndoableEdit;
 
 import pcgen.base.graph.monitor.GraphEditMonitor;
 import pcgen.base.lang.Command;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.ChooseActionContainer;
@@ -14,10 +15,9 @@ import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.AnyChoiceSet;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Alignment;
-import pcgen.core.PObject;
-import pcgen.core.Race;
 
 public class InitializeNewCharacter implements Command
 {
@@ -43,12 +43,12 @@ public class InitializeNewCharacter implements Command
 				.getGraphEditMonitor(graph);
 
 		ChooseActionContainer alignment = getSingleShot("ALIGNMENT",
-				Alignment.class);
+				CDOMAlignment.class);
 		graph.addNode(alignment);
 		graph.addEdge(new PCGraphGrantsEdge(graph.getRoot(), alignment,
 				"*Initialization"));
 
-		ChooseActionContainer race = getSingleShot("RACE", Race.class);
+		ChooseActionContainer race = getSingleShot("RACE", CDOMRace.class);
 		graph.addNode(race);
 		graph.addEdge(new PCGraphGrantsEdge(graph.getRoot(), race,
 				"*Initialization"));
@@ -57,11 +57,11 @@ public class InitializeNewCharacter implements Command
 		return edit.getEdit(name);
 	}
 
-	private <T extends PObject> ChooseActionContainer getSingleShot(
+	private <T extends CDOMObject> ChooseActionContainer getSingleShot(
 			String align, Class<T> alignClass)
 	{
 		ChooseActionContainer container = new ChooseActionContainer(align);
-		container.addActor(new GrantActor<Alignment>());
+		container.addActor(new GrantActor<CDOMAlignment>());
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 				.getFormulaFor(1));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory

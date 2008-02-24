@@ -81,9 +81,10 @@ public class ViewGraph {
 					Constants.s_APPNAME, MessageType.WARNING);
 		}
 		
-		PCGenGraph master = Globals.getMasterGraph();
-		JFrame frame = new GraphViewFrame(master);
-		frame.pack();
-		frame.setVisible(true);
+		//TODO need to update this
+		//PCGenGraph master = Globals.getMasterGraph();
+		//JFrame frame = new GraphViewFrame(master);
+		//frame.pack();
+		//frame.setVisible(true);
 	}
 }

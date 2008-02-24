@@ -14,8 +14,8 @@ import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.cdom.inst.PCClassLevel;
-import pcgen.core.PCClass;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.core.PObject;
 
 public class GraphTreeModelFacade implements TreeModel {
@@ -118,11 +118,11 @@ public class GraphTreeModelFacade implements TreeModel {
 		} else {
 			List<PCGraphEdge> outwardEdgeList = graph
 					.getOutwardEdgeList(((Reference) arg0).ref);
-			if (((Reference) arg0).ref instanceof PCClass) {
+			if (((Reference) arg0).ref instanceof CDOMPCClass) {
 				if (arg1 >= outwardEdgeList.size()) {
-					Collection<PCClassLevel> classLevelCollection = ((PCClass) ((Reference) arg0).ref)
+					Collection<CDOMPCClassLevel> classLevelCollection = ((CDOMPCClass) ((Reference) arg0).ref)
 							.getClassLevelCollection();
-					return new Reference(new ArrayList<PCClassLevel>(
+					return new Reference(new ArrayList<CDOMPCClassLevel>(
 							classLevelCollection).get(arg1
 							- outwardEdgeList.size()));
 				}
@@ -146,8 +146,8 @@ public class GraphTreeModelFacade implements TreeModel {
 			return 0;
 		}
 		int adder = 0;
-		if (pro instanceof PCClass) {
-			adder = ((PCClass) pro).getClassLevelCount();
+		if (pro instanceof CDOMPCClass) {
+			adder = ((CDOMPCClass) pro).getClassLevelCount();
 		}
 		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(pro);
 		return adder + (outwardEdgeList == null ? 0 : outwardEdgeList.size());
@@ -169,10 +169,10 @@ public class GraphTreeModelFacade implements TreeModel {
 				return i;
 			}
 		}
-		if (((Reference) arg0).ref instanceof PCClass) {
+		if (((Reference) arg0).ref instanceof CDOMPCClass) {
 			int adder = list.size();
-			ArrayList<PCClassLevel> cl = new ArrayList<PCClassLevel>(
-					((PCClass) ((Reference) arg0).ref)
+			ArrayList<CDOMPCClassLevel> cl = new ArrayList<CDOMPCClassLevel>(
+					((CDOMPCClass) ((Reference) arg0).ref)
 							.getClassLevelCollection());
 			for (int i = 0; i < cl.size(); i++) {
 				if (cl.get(i).equals(((Reference) arg1).ref)) {

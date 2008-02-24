@@ -26,18 +26,18 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.inst.PCClassLevel;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMPCClassLevel;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.CDOMPCLevel;
 import pcgen.cdom.lists.PCGenLists;
-import pcgen.core.Ability;
-import pcgen.core.Alignment;
 import pcgen.core.Deity;
-import pcgen.core.Equipment;
-import pcgen.core.PCCharacterLevel;
-import pcgen.core.PCClass;
-import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
-import pcgen.core.Race;
-import pcgen.core.SizeAdjustment;
 import pcgen.rules.RulesDataStore;
 import pcgen.util.enumeration.AttackType;
 
@@ -74,15 +74,15 @@ public class CharacterDataStore extends CDOMObject
 
 	public int getLevel()
 	{
-		return activeGraph.getGrantedNodeList(PCCharacterLevel.class).size();
+		return activeGraph.getGrantedNodeList(CDOMPCLevel.class).size();
 	}
 
-	public int getLevel(PCClass cl)
+	public int getLevel(CDOMPCClass cl)
 	{
-		List<PCClassLevel> levellist = activeGraph
-				.getGrantedNodeList(PCClassLevel.class);
+		List<CDOMPCClassLevel> levellist = activeGraph
+				.getGrantedNodeList(CDOMPCClassLevel.class);
 		int classLevel = 0;
-		for (PCClassLevel pcl : levellist)
+		for (CDOMPCClassLevel pcl : levellist)
 		{
 			int level = cl.getCDOMLevel(pcl);
 			classLevel = Math.max(classLevel, level);
@@ -97,17 +97,17 @@ public class CharacterDataStore extends CDOMObject
 
 	public int getTotalCDOMPlayerLevels()
 	{
-		List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
-		List<PCClassLevel> levellist = activeGraph
-				.getGrantedNodeList(PCClassLevel.class);
+		List<CDOMPCClass> classlist = activeGraph.getGrantedNodeList(CDOMPCClass.class);
+		List<CDOMPCClassLevel> levellist = activeGraph
+				.getGrantedNodeList(CDOMPCClassLevel.class);
 		int totalLevels = 0;
-		for (PCClass pcClass : classlist)
+		for (CDOMPCClass pcClass : classlist)
 		{
 			Boolean isM = pcClass.get(ObjectKey.IS_MONSTER);
 			if (isM == null || !isM.booleanValue())
 			{
 				int classLevel = 0;
-				for (PCClassLevel pcl : levellist)
+				for (CDOMPCClassLevel pcl : levellist)
 				{
 					int level = pcClass.getCDOMLevel(pcl);
 					classLevel = Math.max(classLevel, level);
@@ -207,9 +207,9 @@ public class CharacterDataStore extends CDOMObject
 	 */
 	public int getCDOMHands()
 	{
-		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		List<CDOMRace> list = activeGraph.getGrantedNodeList(CDOMRace.class);
 		int hands = 0;
-		for (Race r : list)
+		for (CDOMRace r : list)
 		{
 			Integer rh = r.get(IntegerKey.HANDS);
 			if (rh != null)
@@ -219,9 +219,9 @@ public class CharacterDataStore extends CDOMObject
 		}
 
 		// Scan templates for any overrides
-		List<PCTemplate> tlist = activeGraph
-				.getGrantedNodeList(PCTemplate.class);
-		for (PCTemplate t : tlist)
+		List<CDOMTemplate> tlist = activeGraph
+				.getGrantedNodeList(CDOMTemplate.class);
+		for (CDOMTemplate t : tlist)
 		{
 			Integer th = t.get(IntegerKey.HANDS);
 			if (th != null)
@@ -240,9 +240,9 @@ public class CharacterDataStore extends CDOMObject
 	 */
 	public int getCDOMLegs()
 	{
-		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		List<CDOMRace> list = activeGraph.getGrantedNodeList(CDOMRace.class);
 		int legs = 0;
-		for (Race r : list)
+		for (CDOMRace r : list)
 		{
 			Integer rh = r.get(IntegerKey.LEGS);
 			if (rh != null)
@@ -252,9 +252,9 @@ public class CharacterDataStore extends CDOMObject
 		}
 
 		// Scan templates for any overrides
-		List<PCTemplate> tlist = activeGraph
-				.getGrantedNodeList(PCTemplate.class);
-		for (PCTemplate t : tlist)
+		List<CDOMTemplate> tlist = activeGraph
+				.getGrantedNodeList(CDOMTemplate.class);
+		for (CDOMTemplate t : tlist)
 		{
 			Integer th = t.get(IntegerKey.LEGS);
 			if (th != null)
@@ -281,9 +281,9 @@ public class CharacterDataStore extends CDOMObject
 	public Gender getCDOMGender()
 	{
 		Gender gen = genderCDOM;
-		List<PCTemplate> tlist = activeGraph
-				.getGrantedNodeList(PCTemplate.class);
-		for (PCTemplate t : tlist)
+		List<CDOMTemplate> tlist = activeGraph
+				.getGrantedNodeList(CDOMTemplate.class);
+		for (CDOMTemplate t : tlist)
 		{
 			Gender g = t.get(ObjectKey.GENDER_LOCK);
 			if (g != null)
@@ -323,9 +323,9 @@ public class CharacterDataStore extends CDOMObject
 	 */
 	public int getCDOMReach()
 	{
-		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		List<CDOMRace> list = activeGraph.getGrantedNodeList(CDOMRace.class);
 		int reach = 0;
-		for (Race r : list)
+		for (CDOMRace r : list)
 		{
 			Integer rh = r.get(IntegerKey.REACH);
 			if (rh != null)
@@ -335,9 +335,9 @@ public class CharacterDataStore extends CDOMObject
 		}
 
 		// Scan templates for any overrides
-		List<PCTemplate> tlist = activeGraph
-				.getGrantedNodeList(PCTemplate.class);
-		for (PCTemplate t : tlist)
+		List<CDOMTemplate> tlist = activeGraph
+				.getGrantedNodeList(CDOMTemplate.class);
+		for (CDOMTemplate t : tlist)
 		{
 			Integer th = t.get(IntegerKey.REACH);
 			if (th != null)
@@ -352,17 +352,17 @@ public class CharacterDataStore extends CDOMObject
 
 	public int getTotalCDOMMonsterLevels()
 	{
-		List<PCClass> classlist = activeGraph.getGrantedNodeList(PCClass.class);
-		List<PCClassLevel> levellist = activeGraph
-				.getGrantedNodeList(PCClassLevel.class);
+		List<CDOMPCClass> classlist = activeGraph.getGrantedNodeList(CDOMPCClass.class);
+		List<CDOMPCClassLevel> levellist = activeGraph
+				.getGrantedNodeList(CDOMPCClassLevel.class);
 		int totalLevels = 0;
-		for (PCClass pcClass : classlist)
+		for (CDOMPCClass pcClass : classlist)
 		{
 			Boolean isM = pcClass.get(ObjectKey.IS_MONSTER);
 			if (isM != null && isM.booleanValue())
 			{
 				int classLevel = 0;
-				for (PCClassLevel pcl : levellist)
+				for (CDOMPCClassLevel pcl : levellist)
 				{
 					int level = pcClass.getCDOMLevel(pcl);
 					classLevel = Math.max(classLevel, level);
@@ -387,7 +387,7 @@ public class CharacterDataStore extends CDOMObject
 			protected boolean canTraverseEdge(PCGraphEdge edge,
 					PrereqObject gn, int type)
 			{
-				return !(gn instanceof Equipment)
+				return !(gn instanceof CDOMEquipment)
 						&& super.canTraverseEdge(edge, gn, type);
 			}
 		};
@@ -412,14 +412,14 @@ public class CharacterDataStore extends CDOMObject
 		return res;
 	}
 
-	public SizeAdjustment getCDOMSize()
+	public CDOMSizeAdjustment getCDOMSize()
 	{
-		Resolver<SizeAdjustment> resolver = null;
-		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		Resolver<CDOMSizeAdjustment> resolver = null;
+		List<CDOMRace> list = activeGraph.getGrantedNodeList(CDOMRace.class);
 		int mod = 0;
-		for (Race r : list)
+		for (CDOMRace r : list)
 		{
-			Resolver<SizeAdjustment> res = r.get(ObjectKey.SIZE);
+			Resolver<CDOMSizeAdjustment> res = r.get(ObjectKey.SIZE);
 			if (res != null)
 			{
 				resolver = res;
@@ -434,11 +434,11 @@ public class CharacterDataStore extends CDOMObject
 		}
 
 		// Scan templates for any overrides
-		List<PCTemplate> tlist = activeGraph
-				.getGrantedNodeList(PCTemplate.class);
-		for (PCTemplate t : tlist)
+		List<CDOMTemplate> tlist = activeGraph
+				.getGrantedNodeList(CDOMTemplate.class);
+		for (CDOMTemplate t : tlist)
 		{
-			Resolver<SizeAdjustment> res = t.get(ObjectKey.SIZE);
+			Resolver<CDOMSizeAdjustment> res = t.get(ObjectKey.SIZE);
 			if (res != null)
 			{
 				resolver = res;
@@ -455,10 +455,10 @@ public class CharacterDataStore extends CDOMObject
 			return rules.getDefaultSizeAdjustment();
 		}
 
-		SizeAdjustment size = resolver.resolve();
+		CDOMSizeAdjustment size = resolver.resolve();
 		while (mod < 0)
 		{
-			SizeAdjustment prev = rules.getPreviousSize(size);
+			CDOMSizeAdjustment prev = rules.getPreviousSize(size);
 			if (prev == null)
 			{
 				return size;
@@ -468,7 +468,7 @@ public class CharacterDataStore extends CDOMObject
 		}
 		while (mod > 0)
 		{
-			SizeAdjustment next = rules.getNextSize(size);
+			CDOMSizeAdjustment next = rules.getNextSize(size);
 			if (next == null)
 			{
 				return size;
@@ -491,7 +491,7 @@ public class CharacterDataStore extends CDOMObject
 		return set.size();
 	}
 
-	public <AT extends PObject> List<AT> getAssociated(Ability a)
+	public <AT extends CDOMObject> List<AT> getAssociated(CDOMAbility a)
 	{
 		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(a);
 		// TODO Need to consider mult yes/no stack yes/no
@@ -503,7 +503,7 @@ public class CharacterDataStore extends CDOMObject
 		return set;
 	}
 
-	public boolean containsAssociatedKey(Ability a, String assocKey)
+	public boolean containsAssociatedKey(CDOMAbility a, String assocKey)
 	{
 		if (assocKey == null)
 		{
@@ -522,9 +522,9 @@ public class CharacterDataStore extends CDOMObject
 		return false;
 	}
 
-	public Alignment getCDOMAlignment()
+	public CDOMAlignment getCDOMAlignment()
 	{
-		List<Alignment> align = activeGraph.getGrantedNodeList(Alignment.class);
+		List<CDOMAlignment> align = activeGraph.getGrantedNodeList(CDOMAlignment.class);
 		if (align.size() > 1)
 		{
 			// Error
@@ -546,8 +546,8 @@ public class CharacterDataStore extends CDOMObject
 			// templates
 		}
 
-		for (PCTemplate template : activeGraph
-				.getGrantedNodeList(PCTemplate.class))
+		for (CDOMTemplate template : activeGraph
+				.getGrantedNodeList(CDOMTemplate.class))
 		{
 			String tempSubRegion = template
 					.get(pcgen.cdom.enumeration.StringKey.SUB_REGION);
@@ -568,8 +568,8 @@ public class CharacterDataStore extends CDOMObject
 			return pcRegion; // character's region trumps any from templates
 		}
 
-		for (PCTemplate template : activeGraph
-				.getGrantedNodeList(PCTemplate.class))
+		for (CDOMTemplate template : activeGraph
+				.getGrantedNodeList(CDOMTemplate.class))
 		{
 			String tempRegion = template
 					.get(pcgen.cdom.enumeration.StringKey.REGION);

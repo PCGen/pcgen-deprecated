@@ -4,11 +4,12 @@ import gmgen.pluginmgr.PluginLoader;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.transition.CompoundCampaign;
+import pcgen.cdom.transition.CustomCampaign;
 import pcgen.core.Campaign;
 import pcgen.core.Constants;
 import pcgen.core.Globals;
@@ -21,6 +22,8 @@ import pcgen.gui.utils.NonGuiChooser;
 import pcgen.gui.utils.NonGuiChooserRadio;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.PersistenceManager;
+import pcgen.rules.context.RuntimeLoadContext;
+import pcgen.rules.persistence.SystemLoader;
 import pcgen.util.Logging;
 import pcgen.util.chooser.ChooserFactory;
 
@@ -80,7 +83,7 @@ public class ReportUnconstructed
 		try
 		{
 			pManager.initialize();
-			ArrayList<Campaign> arrayList = new ArrayList<Campaign>();
+			CompoundCampaign cc = new CompoundCampaign();
 
 			boolean first = true;
 
@@ -97,8 +100,8 @@ public class ReportUnconstructed
 					}
 					if (fn.equalsIgnoreCase("-warning"))
 					{
-						Logger.getLogger("pcgen").setLevel(Level.WARNING);
-						Logger.getLogger("plugin").setLevel(Level.WARNING);
+						Logger.getLogger("pcgen").setLevel(Logging.LST_INFO);
+						Logger.getLogger("plugin").setLevel(Logging.LST_INFO);
 						continue;
 					}
 				}
@@ -110,11 +113,12 @@ public class ReportUnconstructed
 				}
 				else
 				{
-					arrayList.add(c);
+					cc.addCampaign(c);
 				}
 				first = false;
 			}
-			pManager.loadCampaigns(arrayList);
+			cc.addCampaign(new CustomCampaign());
+			new SystemLoader().loadCampaign(new RuntimeLoadContext(new PCGenGraph()), cc);
 		}
 		catch (PersistenceLayerException e)
 		{
