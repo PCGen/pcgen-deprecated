@@ -22,14 +22,14 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.RaceLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
@@ -37,10 +37,11 @@ import plugin.pretokens.parser.PreRaceParser;
 import plugin.pretokens.writer.PreClassWriter;
 import plugin.pretokens.writer.PreRaceWriter;
 
-public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
+public class FeatTokenTest extends AbstractListTokenTestCase<CDOMRace, CDOMAbility>
 {
 	static FeatToken token = new FeatToken();
-	static RaceLoader loader = new RaceLoader();
+	static CDOMTokenLoader<CDOMRace> loader = new CDOMTokenLoader<CDOMRace>(
+			CDOMRace.class);
 
 	PreClassParser preclass = new PreClassParser();
 	PreClassWriter preclasswriter = new PreClassWriter();
@@ -65,9 +66,9 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 	}
 
 	@Override
-	public Class<Ability> getTargetClass()
+	public Class<CDOMAbility> getTargetClass()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
@@ -95,19 +96,19 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 	}
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Race> getLoader()
+	public CDOMLoader<CDOMRace> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Race> getToken()
+	public CDOMPrimaryToken<CDOMRace> getToken()
 	{
 		return token;
 	}
@@ -115,8 +116,8 @@ public class FeatTokenTest extends AbstractListTokenTestCase<Race, Ability>
 	@Override
 	protected void construct(LoadContext loadContext, String one)
 	{
-		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
-		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
+		CDOMAbility obj = loadContext.ref.constructCDOMObject(CDOMAbility.class, one);
+		loadContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, obj);
 	}
 
 	@Test

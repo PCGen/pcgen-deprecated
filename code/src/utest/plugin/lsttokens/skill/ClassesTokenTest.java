@@ -23,21 +23,22 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pcgen.core.ClassSkillList;
-import pcgen.core.Skill;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SkillLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
 
-public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
+public class ClassesTokenTest extends AbstractTokenTestCase<CDOMSkill>
 {
 
 	static ClassesToken token = new ClassesToken();
-	static SkillLoader loader = new SkillLoader();
+	static CDOMTokenLoader<CDOMSkill> loader = new CDOMTokenLoader<CDOMSkill>(
+			CDOMSkill.class);
 
 	private static boolean classSetUpFired = false;
 
@@ -61,19 +62,19 @@ public class ClassesTokenTest extends AbstractTokenTestCase<Skill>
 	}
 
 	@Override
-	public Class<Skill> getCDOMClass()
+	public Class<CDOMSkill> getCDOMClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Skill> getLoader()
+	public CDOMLoader<CDOMSkill> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Skill> getToken()
+	public CDOMPrimaryToken<CDOMSkill> getToken()
 	{
 		return token;
 	}

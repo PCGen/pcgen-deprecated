@@ -19,42 +19,43 @@ package plugin.lsttokens.race;
 
 import org.junit.Test;
 
-import pcgen.core.Race;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.RaceLoader;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
 public class WeaponbonusTokenTest extends
-		AbstractListTokenTestCase<Race, WeaponProf>
+		AbstractListTokenTestCase<CDOMRace, CDOMWeaponProf>
 {
 
 	static WeaponbonusToken token = new WeaponbonusToken();
-	static RaceLoader loader = new RaceLoader();
+	static CDOMTokenLoader<CDOMRace> loader = new CDOMTokenLoader<CDOMRace>(
+			CDOMRace.class);
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Race> getLoader()
+	public CDOMLoader<CDOMRace> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Race> getToken()
+	public CDOMPrimaryToken<CDOMRace> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<WeaponProf> getTargetClass()
+	public Class<CDOMWeaponProf> getTargetClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
 	@Override

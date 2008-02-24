@@ -19,34 +19,35 @@ package plugin.lsttokens.race;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
-import pcgen.core.Race;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.RaceLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class MonsterClassTokenTest extends AbstractTokenTestCase<Race>
+public class MonsterClassTokenTest extends AbstractTokenTestCase<CDOMRace>
 {
 
 	static MonsterclassToken token = new MonsterclassToken();
-	static RaceLoader loader = new RaceLoader();
+	static CDOMTokenLoader<CDOMRace> loader = new CDOMTokenLoader<CDOMRace>(
+			CDOMRace.class);
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Race> getLoader()
+	public CDOMLoader<CDOMRace> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Race> getToken()
+	public CDOMPrimaryToken<CDOMRace> getToken()
 	{
 		return token;
 	}
@@ -96,18 +97,18 @@ public class MonsterClassTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testSimple() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("Fighter:4");
 	}
 
 	@Test
 	public void testMultiple() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
 		runRoundRobin("Fighter:4", "Wizard:5");
 	}
 }

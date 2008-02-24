@@ -20,32 +20,33 @@ package plugin.lsttokens.skill;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Skill;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SkillLoader;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractYesNoTokenTestCase;
 
-public class UseuntrainedTokenTest extends AbstractYesNoTokenTestCase<Skill>
+public class UseuntrainedTokenTest extends AbstractYesNoTokenTestCase<CDOMSkill>
 {
 
 	static UseuntrainedToken token = new UseuntrainedToken();
-	static SkillLoader loader = new SkillLoader();
+	static CDOMTokenLoader<CDOMSkill> loader = new CDOMTokenLoader<CDOMSkill>(
+			CDOMSkill.class);
 
 	@Override
-	public Class<Skill> getCDOMClass()
+	public Class<CDOMSkill> getCDOMClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Skill> getLoader()
+	public CDOMLoader<CDOMSkill> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Skill> getToken()
+	public CDOMPrimaryToken<CDOMSkill> getToken()
 	{
 		return token;
 	}

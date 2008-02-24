@@ -21,33 +21,34 @@ import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SkillArmorCheck;
-import pcgen.core.Skill;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SkillLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class ACheckTokenTest extends AbstractTokenTestCase<Skill>
+public class ACheckTokenTest extends AbstractTokenTestCase<CDOMSkill>
 {
 
 	static AcheckToken token = new AcheckToken();
-	static SkillLoader loader = new SkillLoader();
+	static CDOMTokenLoader<CDOMSkill> loader = new CDOMTokenLoader<CDOMSkill>(
+			CDOMSkill.class);
 
 	@Override
-	public Class<Skill> getCDOMClass()
+	public Class<CDOMSkill> getCDOMClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Skill> getLoader()
+	public CDOMLoader<CDOMSkill> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Skill> getToken()
+	public CDOMPrimaryToken<CDOMSkill> getToken()
 	{
 		return token;
 	}

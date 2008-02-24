@@ -19,34 +19,35 @@ package plugin.lsttokens.race;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
-import pcgen.core.Race;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.RaceLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class HitDieTokenTest extends AbstractTokenTestCase<Race>
+public class HitDieTokenTest extends AbstractTokenTestCase<CDOMRace>
 {
 
 	static HitdieToken token = new HitdieToken();
-	static RaceLoader loader = new RaceLoader();
+	static CDOMTokenLoader<CDOMRace> loader = new CDOMTokenLoader<CDOMRace>(
+			CDOMRace.class);
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Race> getLoader()
+	public CDOMLoader<CDOMRace> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Race> getToken()
+	public CDOMPrimaryToken<CDOMRace> getToken()
 	{
 		return token;
 	}
@@ -335,8 +336,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinIntegerClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("2|CLASS=Fighter");
 	}
 
@@ -355,8 +356,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinAddClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("%+2|CLASS=Fighter");
 	}
 
@@ -375,8 +376,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinSubtractClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("%-2|CLASS=Fighter");
 	}
 
@@ -395,8 +396,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinMultiplyClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("%*2|CLASS=Fighter");
 	}
 
@@ -415,8 +416,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinDivideClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("%/2|CLASS=Fighter");
 	}
 
@@ -435,8 +436,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinUpClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("%up2|CLASS=Fighter");
 	}
 
@@ -455,8 +456,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinHupClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("%Hup2|CLASS=Fighter");
 	}
 
@@ -475,8 +476,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinDownClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("%down2|CLASS=Fighter");
 	}
 
@@ -495,8 +496,8 @@ public class HitDieTokenTest extends AbstractTokenTestCase<Race>
 	@Test
 	public void testRoundRobinHdownClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("%Hdown2|CLASS=Fighter");
 	}
 

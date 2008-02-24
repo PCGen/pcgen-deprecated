@@ -22,11 +22,11 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.Race;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.RaceLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreHDParser;
@@ -34,7 +34,7 @@ import plugin.pretokens.parser.PreLevelParser;
 import plugin.pretokens.writer.PreHDWriter;
 import plugin.pretokens.writer.PreLevelWriter;
 
-public class StartFeatsTokenTest extends AbstractTokenTestCase<Race>
+public class StartFeatsTokenTest extends AbstractTokenTestCase<CDOMRace>
 {
 
 	PreHDParser prehd = new PreHDParser();
@@ -54,22 +54,23 @@ public class StartFeatsTokenTest extends AbstractTokenTestCase<Race>
 	}
 
 	static StartfeatsToken token = new StartfeatsToken();
-	static RaceLoader loader = new RaceLoader();
+	static CDOMTokenLoader<CDOMRace> loader = new CDOMTokenLoader<CDOMRace>(
+			CDOMRace.class);
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Race> getLoader()
+	public CDOMLoader<CDOMRace> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Race> getToken()
+	public CDOMPrimaryToken<CDOMRace> getToken()
 	{
 		return token;
 	}
