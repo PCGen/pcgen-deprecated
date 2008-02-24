@@ -3,16 +3,16 @@ package plugin.primitive.spell;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.DomainSpellList;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.DomainSpellList;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.PrimitiveToken;
 import pcgen.util.Logging;
 
-public class DomainListToken implements PrimitiveToken<Spell>
+public class DomainListToken implements PrimitiveToken<CDOMSpell>
 {
 
 	private static final Formula MINFORMULA = FormulaFactory
@@ -20,7 +20,7 @@ public class DomainListToken implements PrimitiveToken<Spell>
 	private static final Formula MAXFORMULA = FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE);
 
-	private CDOMSimpleSingleRef<DomainSpellList> ref;
+	private CDOMSingleRef<DomainSpellList> ref;
 	private Formula levelMax = MAXFORMULA;
 	private Formula levelMin = MINFORMULA;
 	private Boolean known = null;
@@ -41,9 +41,9 @@ public class DomainListToken implements PrimitiveToken<Spell>
 		return "DOMAINLIST";
 	}
 
-	public Class<Spell> getReferenceClass()
+	public Class<CDOMSpell> getReferenceClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	public String getLSTformat()
@@ -51,7 +51,7 @@ public class DomainListToken implements PrimitiveToken<Spell>
 		return ref.getLSTformat();
 	}
 
-	public boolean allow(CharacterDataStore pc, Spell obj)
+	public boolean allow(CharacterDataStore pc, CDOMSpell obj)
 	{
 		return pc.getActiveLists().listContains(ref.resolvesTo(), obj);
 	}

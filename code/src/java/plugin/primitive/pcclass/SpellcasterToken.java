@@ -1,12 +1,12 @@
 package plugin.primitive.pcclass;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.PrimitiveToken;
 
-public class SpellcasterToken implements PrimitiveToken<PCClass>
+public class SpellcasterToken implements PrimitiveToken<CDOMPCClass>
 {
 
 	public boolean initialize(LoadContext context, String value, String args)
@@ -28,9 +28,9 @@ public class SpellcasterToken implements PrimitiveToken<PCClass>
 		return "SPELLCASTER";
 	}
 
-	public Class<PCClass> getReferenceClass()
+	public Class<CDOMPCClass> getReferenceClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	public String getLSTformat()
@@ -38,7 +38,7 @@ public class SpellcasterToken implements PrimitiveToken<PCClass>
 		return getTokenName();
 	}
 
-	public boolean allow(CharacterDataStore pc, PCClass obj)
+	public boolean allow(CharacterDataStore pc, CDOMPCClass obj)
 	{
 		return obj.get(ObjectKey.USE_SPELL_SPELL_STAT) != null;
 	}

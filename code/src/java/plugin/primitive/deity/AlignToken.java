@@ -1,17 +1,16 @@
 package plugin.primitive.deity;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Alignment;
-import pcgen.core.Deity;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.PrimitiveToken;
 
-public class AlignToken implements PrimitiveToken<Deity>
+public class AlignToken implements PrimitiveToken<CDOMDeity>
 {
 
-	private CDOMSimpleSingleRef<Alignment> ref;
+	private CDOMAlignment ref;
 
 	public boolean initialize(LoadContext context, String value, String args)
 	{
@@ -19,7 +18,7 @@ public class AlignToken implements PrimitiveToken<Deity>
 		{
 			return false;
 		}
-		ref = context.ref.getCDOMReference(Alignment.class, value);
+		ref = context.ref.getAbbreviatedObject(CDOMAlignment.class, value);
 		return true;
 	}
 
@@ -28,9 +27,9 @@ public class AlignToken implements PrimitiveToken<Deity>
 		return "ALIGN";
 	}
 
-	public Class<Deity> getReferenceClass()
+	public Class<CDOMDeity> getReferenceClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	public String getLSTformat()
@@ -38,9 +37,9 @@ public class AlignToken implements PrimitiveToken<Deity>
 		return ref.getLSTformat();
 	}
 
-	public boolean allow(CharacterDataStore pc, Deity deity)
+	public boolean allow(CharacterDataStore pc, CDOMDeity deity)
 	{
-		return ref.resolvesTo().equals(deity.get(ObjectKey.ALIGNMENT));
+		return ref.equals(deity.get(ObjectKey.ALIGNMENT));
 	}
 
 }

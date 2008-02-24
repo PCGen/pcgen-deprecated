@@ -2,12 +2,12 @@ package plugin.primitive.deity;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Pantheon;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Deity;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.PrimitiveToken;
 
-public class PantheonToken implements PrimitiveToken<Deity>
+public class PantheonToken implements PrimitiveToken<CDOMDeity>
 {
 
 	private Pantheon pantheon;
@@ -27,9 +27,9 @@ public class PantheonToken implements PrimitiveToken<Deity>
 		return "PANTHEON";
 	}
 
-	public Class<Deity> getReferenceClass()
+	public Class<CDOMDeity> getReferenceClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	public String getLSTformat()
@@ -37,7 +37,7 @@ public class PantheonToken implements PrimitiveToken<Deity>
 		return pantheon.toString();
 	}
 
-	public boolean allow(CharacterDataStore pc, Deity deity)
+	public boolean allow(CharacterDataStore pc, CDOMDeity deity)
 	{
 		return deity.containsInList(ListKey.PANTHEON, pantheon);
 	}

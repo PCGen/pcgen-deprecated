@@ -5,16 +5,16 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.ClassSpellList;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.ClassSpellList;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.PrimitiveToken;
 import pcgen.util.Logging;
 
-public class ClassListToken implements PrimitiveToken<Spell>
+public class ClassListToken implements PrimitiveToken<CDOMSpell>
 {
 
 	private static final Formula MINFORMULA = FormulaFactory
@@ -22,7 +22,7 @@ public class ClassListToken implements PrimitiveToken<Spell>
 	private static final Formula MAXFORMULA = FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE);
 
-	private CDOMSimpleSingleRef<ClassSpellList> ref;
+	private CDOMSingleRef<ClassSpellList> ref;
 	private Formula levelMax = MAXFORMULA;
 	private Formula levelMin = MINFORMULA;
 	private Boolean known = null;
@@ -43,14 +43,14 @@ public class ClassListToken implements PrimitiveToken<Spell>
 		return "CLASSLIST";
 	}
 
-	public Class<Spell> getReferenceClass()
+	public Class<CDOMSpell> getReferenceClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
-	public Set<Spell> getSet(CharacterDataStore pc)
+	public Set<CDOMSpell> getSet(CharacterDataStore pc)
 	{
-		return new HashSet<Spell>(pc.getActiveLists().getListContents(
+		return new HashSet<CDOMSpell>(pc.getActiveLists().getListContents(
 				ref.resolvesTo()));
 	}
 
@@ -59,7 +59,7 @@ public class ClassListToken implements PrimitiveToken<Spell>
 		return ref.getLSTformat();
 	}
 
-	public boolean allow(CharacterDataStore pc, Spell obj)
+	public boolean allow(CharacterDataStore pc, CDOMSpell obj)
 	{
 		return pc.getActiveLists().listContains(ref.resolvesTo(), obj);
 	}

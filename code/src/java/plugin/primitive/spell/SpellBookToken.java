@@ -3,13 +3,13 @@ package plugin.primitive.spell;
 import java.util.List;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PCClass;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.PrimitiveToken;
 
-public class SpellBookToken implements PrimitiveToken<Spell>
+public class SpellBookToken implements PrimitiveToken<CDOMSpell>
 {
 
 	private boolean requiresSpellBook;
@@ -41,9 +41,9 @@ public class SpellBookToken implements PrimitiveToken<Spell>
 		return "SPELLBOOK";
 	}
 
-	public Class<Spell> getReferenceClass()
+	public Class<CDOMSpell> getReferenceClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	public String getLSTformat()
@@ -51,11 +51,11 @@ public class SpellBookToken implements PrimitiveToken<Spell>
 		return requiresSpellBook ? "YES" : "NO";
 	}
 
-	public boolean allow(CharacterDataStore pc, Spell obj)
+	public boolean allow(CharacterDataStore pc, CDOMSpell obj)
 	{
-		List<PCClass> classList =
-				pc.getActiveGraph().getGrantedNodeList(PCClass.class);
-		for (PCClass cl : classList)
+		List<CDOMPCClass> classList =
+				pc.getActiveGraph().getGrantedNodeList(CDOMPCClass.class);
+		for (CDOMPCClass cl : classList)
 		{
 			Boolean spellbook = cl.get(ObjectKey.SPELLBOOK);
 			if (spellbook != null

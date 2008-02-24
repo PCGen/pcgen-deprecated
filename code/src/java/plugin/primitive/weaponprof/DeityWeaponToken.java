@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Deity;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.PrimitiveToken;
 
-public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
+public class DeityWeaponToken implements PrimitiveToken<CDOMWeaponProf>
 {
 
 	public boolean initialize(LoadContext context, String value, String args)
@@ -35,27 +35,27 @@ public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 		return "DEITY";
 	}
 
-	public Class<WeaponProf> getReferenceClass()
+	public Class<CDOMWeaponProf> getReferenceClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
-	public Set<WeaponProf> getSet(CharacterDataStore pc)
+	public Set<CDOMWeaponProf> getSet(CharacterDataStore pc)
 	{
-		List<Deity> deities = pc.getActiveGraph().getGrantedNodeList(
-				Deity.class);
-		Set<WeaponProf> wpSet = new HashSet<WeaponProf>();
+		List<CDOMDeity> deities = pc.getActiveGraph().getGrantedNodeList(
+				CDOMDeity.class);
+		Set<CDOMWeaponProf> wpSet = new HashSet<CDOMWeaponProf>();
 		if (deities == null)
 		{
 			return wpSet;
 		}
-		for (Deity deity : deities)
+		for (CDOMDeity deity : deities)
 		{
-			List<CDOMSimpleSingleRef<WeaponProf>> weapons = deity
+			List<CDOMSingleRef<CDOMWeaponProf>> weapons = deity
 					.getListFor(ListKey.DEITYWEAPON);
 			if (weapons != null)
 			{
-				for (CDOMSimpleSingleRef<WeaponProf> wpRef : weapons)
+				for (CDOMSingleRef<CDOMWeaponProf> wpRef : weapons)
 				{
 					wpSet.add(wpRef.resolvesTo());
 				}
@@ -69,21 +69,21 @@ public class DeityWeaponToken implements PrimitiveToken<WeaponProf>
 		return null;
 	}
 
-	public boolean allow(CharacterDataStore pc, WeaponProf obj)
+	public boolean allow(CharacterDataStore pc, CDOMWeaponProf obj)
 	{
-		List<Deity> deities = pc.getActiveGraph().getGrantedNodeList(
-				Deity.class);
+		List<CDOMDeity> deities = pc.getActiveGraph().getGrantedNodeList(
+				CDOMDeity.class);
 		if (deities == null)
 		{
 			return false;
 		}
-		for (Deity deity : deities)
+		for (CDOMDeity deity : deities)
 		{
-			List<CDOMSimpleSingleRef<WeaponProf>> weapons = deity
+			List<CDOMSingleRef<CDOMWeaponProf>> weapons = deity
 					.getListFor(ListKey.DEITYWEAPON);
 			if (weapons != null)
 			{
-				for (CDOMSimpleSingleRef<WeaponProf> wpRef : weapons)
+				for (CDOMSingleRef<CDOMWeaponProf> wpRef : weapons)
 				{
 					if (wpRef.contains(obj))
 					{

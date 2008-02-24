@@ -2,12 +2,12 @@ package plugin.primitive.equipment;
 
 import pcgen.cdom.enumeration.EqWield;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PrimitiveToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.PrimitiveToken;
 
-public class WieldToken implements PrimitiveToken<Equipment>
+public class WieldToken implements PrimitiveToken<CDOMEquipment>
 {
 
 	private EqWield wield;
@@ -27,9 +27,9 @@ public class WieldToken implements PrimitiveToken<Equipment>
 		return "WIELD";
 	}
 
-	public Class<Equipment> getReferenceClass()
+	public Class<CDOMEquipment> getReferenceClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	public String getLSTformat()
@@ -37,7 +37,7 @@ public class WieldToken implements PrimitiveToken<Equipment>
 		return wield.toString();
 	}
 
-	public boolean allow(CharacterDataStore pc, Equipment obj)
+	public boolean allow(CharacterDataStore pc, CDOMEquipment obj)
 	{
 		return wield.equals(obj.get(ObjectKey.WIELD));
 	}
