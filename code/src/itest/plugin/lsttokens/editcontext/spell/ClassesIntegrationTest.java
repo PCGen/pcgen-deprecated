@@ -22,12 +22,12 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.ClassSpellList;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.ClassSpellList;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SpellLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegrationTestCase;
 import plugin.lsttokens.editcontext.testsupport.TestContext;
 import plugin.lsttokens.spell.ClassesToken;
@@ -35,11 +35,13 @@ import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreRaceParser;
 import plugin.pretokens.writer.PreRaceWriter;
 
-public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
+public class ClassesIntegrationTest extends
+		AbstractIntegrationTestCase<CDOMSpell>
 {
 
 	static ClassesToken token = new ClassesToken();
-	static SpellLoader loader = new SpellLoader();
+	static CDOMTokenLoader<CDOMSpell> loader = new CDOMTokenLoader<CDOMSpell>(
+			CDOMSpell.class);
 
 	PreRaceParser prerace = new PreRaceParser();
 	PreRaceWriter preracewriter = new PreRaceWriter();
@@ -54,19 +56,19 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	}
 
 	@Override
-	public Class<Spell> getCDOMClass()
+	public Class<CDOMSpell> getCDOMClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Spell> getLoader()
+	public CDOMLoader<CDOMSpell> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Spell> getToken()
+	public CDOMPrimaryToken<CDOMSpell> getToken()
 	{
 		return token;
 	}
@@ -77,14 +79,14 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 		verifyCleanStart();
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
 		primaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+				.constructCDOMObject(ClassSpellList.class, "Sorcerer");
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
 		secondaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Wizard");
+				.constructCDOMObject(ClassSpellList.class, "Wizard");
 		secondaryContext.ref.constructCDOMObject(ClassSpellList.class,
-			"Sorcerer");
+				"Sorcerer");
 		secondaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Cleric");
+				.constructCDOMObject(ClassSpellList.class, "Cleric");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Wizard=4");
 		commit(modCampaign, tc, "Sorcerer=3|Cleric=4");
@@ -97,7 +99,7 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 		verifyCleanStart();
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
 		secondaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Wizard");
+				.constructCDOMObject(ClassSpellList.class, "Wizard");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Wizard=4[PRERACE:1,Human]");
 		commit(modCampaign, tc, "Wizard=4");
@@ -110,7 +112,7 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 		verifyCleanStart();
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
 		secondaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Wizard");
+				.constructCDOMObject(ClassSpellList.class, "Wizard");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Wizard=4");
 		commit(modCampaign, tc, "Wizard=4[PRERACE:1,Human]");
@@ -122,9 +124,9 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	{
 		verifyCleanStart();
 		primaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+				.constructCDOMObject(ClassSpellList.class, "Sorcerer");
 		secondaryContext.ref.constructCDOMObject(ClassSpellList.class,
-			"Sorcerer");
+				"Sorcerer");
 		TestContext tc = new TestContext();
 		emptyCommit(testCampaign, tc);
 		commit(modCampaign, tc, "Sorcerer=3");
@@ -137,11 +139,11 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 		verifyCleanStart();
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Wizard");
 		secondaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Wizard");
+				.constructCDOMObject(ClassSpellList.class, "Wizard");
 		primaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+				.constructCDOMObject(ClassSpellList.class, "Sorcerer");
 		secondaryContext.ref.constructCDOMObject(ClassSpellList.class,
-			"Sorcerer");
+				"Sorcerer");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Sorcerer,Wizard=2");
 		emptyCommit(modCampaign, tc);
@@ -173,9 +175,9 @@ public class ClassesIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	{
 		verifyCleanStart();
 		primaryContext.ref
-			.constructCDOMObject(ClassSpellList.class, "Sorcerer");
+				.constructCDOMObject(ClassSpellList.class, "Sorcerer");
 		secondaryContext.ref.constructCDOMObject(ClassSpellList.class,
-			"Sorcerer");
+				"Sorcerer");
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "ALL=2");
 		commit(modCampaign, tc, "Sorcerer=1");

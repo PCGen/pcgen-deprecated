@@ -19,45 +19,46 @@ package plugin.lsttokens.editcontext.race;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.RaceLoader;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
 import plugin.lsttokens.race.FeatToken;
 
 public class FeatIntegrationTest extends
-		AbstractListIntegrationTestCase<Race, Ability>
+		AbstractListIntegrationTestCase<CDOMRace, CDOMAbility>
 {
 
 	static FeatToken token = new FeatToken();
-	static RaceLoader loader = new RaceLoader();
+	static CDOMTokenLoader<CDOMRace> loader = new CDOMTokenLoader<CDOMRace>(
+			CDOMRace.class);
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Race> getLoader()
+	public CDOMLoader<CDOMRace> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Race> getToken()
+	public CDOMPrimaryToken<CDOMRace> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<Ability> getTargetClass()
+	public Class<CDOMAbility> getTargetClass()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
@@ -99,8 +100,9 @@ public class FeatIntegrationTest extends
 	@Override
 	protected void construct(LoadContext loadContext, String one)
 	{
-		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
-		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
+		CDOMAbility obj = loadContext.ref.constructCDOMObject(
+				CDOMAbility.class, one);
+		loadContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, obj);
 	}
 
 	@Override

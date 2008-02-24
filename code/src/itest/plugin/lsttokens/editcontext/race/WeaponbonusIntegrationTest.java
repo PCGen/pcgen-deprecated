@@ -22,22 +22,23 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.Race;
-import pcgen.core.WeaponProf;
-import pcgen.core.WeaponProfList;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.cdom.inst.WeaponProfList;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.RaceLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
 import plugin.lsttokens.race.WeaponbonusToken;
 
 public class WeaponbonusIntegrationTest extends
-		AbstractListIntegrationTestCase<Race, WeaponProf>
+		AbstractListIntegrationTestCase<CDOMRace, CDOMWeaponProf>
 {
 
 	static WeaponbonusToken token = new WeaponbonusToken();
-	static RaceLoader loader = new RaceLoader();
+	static CDOMTokenLoader<CDOMRace> loader = new CDOMTokenLoader<CDOMRace>(
+			CDOMRace.class);
 
 	@Override
 	@Before
@@ -48,33 +49,33 @@ public class WeaponbonusIntegrationTest extends
 		 * FIXME This construction of *Starting should be unnecessary
 		 */
 		primaryContext.ref.constructCDOMObject(WeaponProfList.class,
-			"*Starting");
+				"*Starting");
 		secondaryContext.ref.constructCDOMObject(WeaponProfList.class,
-			"*Starting");
+				"*Starting");
 	}
 
 	@Override
-	public Class<Race> getCDOMClass()
+	public Class<CDOMRace> getCDOMClass()
 	{
-		return Race.class;
+		return CDOMRace.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Race> getLoader()
+	public CDOMLoader<CDOMRace> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Race> getToken()
+	public CDOMPrimaryToken<CDOMRace> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<WeaponProf> getTargetClass()
+	public Class<CDOMWeaponProf> getTargetClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
 	@Override

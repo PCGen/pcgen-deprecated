@@ -17,42 +17,43 @@
  */
 package plugin.lsttokens.editcontext.spell;
 
-import pcgen.core.PCStat;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SpellLoader;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.CDOMStat;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractItemIntegrationTestCase;
 import plugin.lsttokens.spell.StatToken;
 
 public class StatIntegrationTest extends
-		AbstractItemIntegrationTestCase<Spell, PCStat>
+		AbstractItemIntegrationTestCase<CDOMSpell, CDOMStat>
 {
 
 	static StatToken token = new StatToken();
-	static SpellLoader loader = new SpellLoader();
+	static CDOMTokenLoader<CDOMSpell> loader = new CDOMTokenLoader<CDOMSpell>(
+			CDOMSpell.class);
 
 	@Override
-	public Class<Spell> getCDOMClass()
+	public Class<CDOMSpell> getCDOMClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Spell> getLoader()
+	public CDOMLoader<CDOMSpell> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Spell> getToken()
+	public CDOMPrimaryToken<CDOMSpell> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<PCStat> getTargetClass()
+	public Class<CDOMStat> getTargetClass()
 	{
-		return PCStat.class;
+		return CDOMStat.class;
 	}
 }

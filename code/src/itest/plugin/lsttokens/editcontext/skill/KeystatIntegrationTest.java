@@ -22,47 +22,49 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PCStat;
-import pcgen.core.Skill;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SkillLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegrationTestCase;
 import plugin.lsttokens.editcontext.testsupport.TestContext;
 import plugin.lsttokens.skill.KeystatToken;
 
-public class KeystatIntegrationTest extends AbstractIntegrationTestCase<Skill>
+public class KeystatIntegrationTest extends
+		AbstractIntegrationTestCase<CDOMSkill>
 {
 
 	static KeystatToken token = new KeystatToken();
-	static SkillLoader loader = new SkillLoader();
+	static CDOMTokenLoader<CDOMSkill> loader = new CDOMTokenLoader<CDOMSkill>(
+			CDOMSkill.class);
 
 	@Override
 	@Before
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
-		primaryContext.ref.constructCDOMObject(PCStat.class, "STR");
-		secondaryContext.ref.constructCDOMObject(PCStat.class, "STR");
-		primaryContext.ref.constructCDOMObject(PCStat.class, "INT");
-		secondaryContext.ref.constructCDOMObject(PCStat.class, "INT");
+		primaryContext.ref.constructCDOMObject(CDOMStat.class, "STR");
+		secondaryContext.ref.constructCDOMObject(CDOMStat.class, "STR");
+		primaryContext.ref.constructCDOMObject(CDOMStat.class, "INT");
+		secondaryContext.ref.constructCDOMObject(CDOMStat.class, "INT");
 	}
 
 	@Override
-	public Class<Skill> getCDOMClass()
+	public Class<CDOMSkill> getCDOMClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Skill> getLoader()
+	public CDOMLoader<CDOMSkill> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Skill> getToken()
+	public CDOMPrimaryToken<CDOMSkill> getToken()
 	{
 		return token;
 	}

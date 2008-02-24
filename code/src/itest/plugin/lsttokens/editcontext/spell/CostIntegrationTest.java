@@ -19,35 +19,36 @@ package plugin.lsttokens.editcontext.spell;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SpellLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegrationTestCase;
 import plugin.lsttokens.editcontext.testsupport.TestContext;
 import plugin.lsttokens.spell.CostToken;
 
-public class CostIntegrationTest extends AbstractIntegrationTestCase<Spell>
+public class CostIntegrationTest extends AbstractIntegrationTestCase<CDOMSpell>
 {
 	static CostToken token = new CostToken();
-	static SpellLoader loader = new SpellLoader();
+	static CDOMTokenLoader<CDOMSpell> loader = new CDOMTokenLoader<CDOMSpell>(
+			CDOMSpell.class);
 
 	@Override
-	public Class<Spell> getCDOMClass()
+	public Class<CDOMSpell> getCDOMClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Spell> getLoader()
+	public CDOMLoader<CDOMSpell> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Spell> getToken()
+	public CDOMPrimaryToken<CDOMSpell> getToken()
 	{
 		return token;
 	}
@@ -55,8 +56,8 @@ public class CostIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Cleric");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Cleric");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Cleric");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Cleric");
 		verifyCleanStart();
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "4");
@@ -67,8 +68,8 @@ public class CostIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	@Test
 	public void testRoundRobinRemovePre() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
 		verifyCleanStart();
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "15|Wizard,10");
@@ -79,8 +80,8 @@ public class CostIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	@Test
 	public void testRoundRobinModPre() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
 		verifyCleanStart();
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "15|Wizard,20");
@@ -91,10 +92,10 @@ public class CostIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	@Test
 	public void testRoundRobinNoSet() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Bard");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Bard");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Sorcerer");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Sorcerer");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Bard");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Bard");
 		verifyCleanStart();
 		TestContext tc = new TestContext();
 		emptyCommit(testCampaign, tc);
@@ -105,8 +106,8 @@ public class CostIntegrationTest extends AbstractIntegrationTestCase<Spell>
 	@Test
 	public void testRoundRobinNoReset() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Bard");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Bard");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Bard");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Bard");
 		verifyCleanStart();
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "2|Bard,4");
