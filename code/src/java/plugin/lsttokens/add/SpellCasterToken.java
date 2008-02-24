@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -31,21 +32,26 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMSpellProgressionInfo;
 import pcgen.core.PObject;
-import pcgen.core.SpellProgressionInfo;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
-public class SpellCasterToken extends AbstractToken implements AddLstToken
+public class SpellCasterToken extends AbstractToken implements AddLstToken, CDOMSecondaryToken<CDOMObject>
 {
 
-	private static final Class<SpellProgressionInfo> SPELL_PROG_CLASS =
-			SpellProgressionInfo.class;
+	private static final Class<CDOMSpellProgressionInfo> SPELL_PROG_CLASS =
+		CDOMSpellProgressionInfo.class;
+
+	public String getParentToken()
+	{
+		return "ADD";
+	}
 
 	public boolean parse(PObject target, String value, int level)
 	{
@@ -84,7 +90,7 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 		return "SPELLCASTER";
 	}
 
-	public boolean parse(LoadContext context, PObject obj, String value)
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		int count;
@@ -125,12 +131,12 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 		boolean foundAny = false;
 		boolean foundOther = false;
 
-		List<CDOMReference<SpellProgressionInfo>> refs =
-				new ArrayList<CDOMReference<SpellProgressionInfo>>();
+		List<CDOMReference<CDOMSpellProgressionInfo>> refs =
+				new ArrayList<CDOMReference<CDOMSpellProgressionInfo>>();
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<SpellProgressionInfo> ref;
+			CDOMReference<CDOMSpellProgressionInfo> ref;
 			if (Constants.LST_ANY.equalsIgnoreCase(token))
 			{
 				foundAny = true;
@@ -169,22 +175,22 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 		}
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
-		container.addActor(new GrantActor<PCTemplate>());
+		container.addActor(new GrantActor<CDOMSpellProgressionInfo>());
 		context.getGraphContext().grant(getTokenName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
 		container.setAssociation(AssociationKey.WEIGHT, Integer.valueOf(1));
-		ReferenceChoiceSet<SpellProgressionInfo> rcs =
-				new ReferenceChoiceSet<SpellProgressionInfo>(refs);
-		ChoiceSet<SpellProgressionInfo> cs =
-				new ChoiceSet<SpellProgressionInfo>("ADD", rcs);
+		ReferenceChoiceSet<CDOMSpellProgressionInfo> rcs =
+				new ReferenceChoiceSet<CDOMSpellProgressionInfo>(refs);
+		ChoiceSet<CDOMSpellProgressionInfo> cs =
+				new ChoiceSet<CDOMSpellProgressionInfo>("ADD", rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -232,5 +238,10 @@ public class SpellCasterToken extends AbstractToken implements AddLstToken
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

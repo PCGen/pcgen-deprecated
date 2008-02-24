@@ -22,16 +22,18 @@
 package plugin.lsttokens.ability;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Ability;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Delta;
 import pcgen.util.Logging;
 
 /**
  * Class deals with ADDSPELLLEVEL Token
  */
-public class AddspelllevelToken implements AbilityLstToken
+public class AddspelllevelToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbility>
 {
 
 	public String getTokenName()
@@ -53,7 +55,7 @@ public class AddspelllevelToken implements AbilityLstToken
 		return false;
 	}
 
-	public boolean parse(LoadContext context, Ability ability, String value)
+	public boolean parse(LoadContext context, CDOMAbility ability, String value)
 	{
 		try
 		{
@@ -76,7 +78,7 @@ public class AddspelllevelToken implements AbilityLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, CDOMAbility ability)
 	{
 		Integer lvl =
 				context.getObjectContext().getInteger(ability,
@@ -92,5 +94,10 @@ public class AddspelllevelToken implements AbilityLstToken
 			return null;
 		}
 		return new String[]{lvl.toString()};
+	}
+
+	public Class<CDOMAbility> getTokenClass()
+	{
+		return CDOMAbility.class;
 	}
 }

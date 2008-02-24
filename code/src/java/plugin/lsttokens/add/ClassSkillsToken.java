@@ -23,38 +23,43 @@ import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.ClassSkillListContainer;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
-import pcgen.cdom.helper.AllowActor;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.ClassSkillList;
+import pcgen.cdom.inst.AbstractCDOMClassAwareObject;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
-import pcgen.core.Skill;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
-public class ClassSkillsToken extends AbstractToken implements AddLstToken
+public class ClassSkillsToken extends AbstractToken implements AddLstToken,
+		CDOMSecondaryToken<AbstractCDOMClassAwareObject>
 {
 
-	private static final Class<Skill> SKILL_CLASS = Skill.class;
+	private static final Class<CDOMSkill> SKILL_CLASS = CDOMSkill.class;
+
+	public String getParentToken()
+	{
+		return "ADD";
+	}
 
 	public boolean parse(PObject target, String value, int level)
 	{
 		if (!target.getClass().equals(PCClass.class))
 		{
 			Logging
-				.errorPrint("ADD:CLASSSKILLS is only valid in Class LST files");
+					.errorPrint("ADD:CLASSSKILLS is only valid in Class LST files");
 			return false;
 		}
 		int pipeLoc = value.indexOf(Constants.PIPE);
@@ -70,14 +75,14 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 			if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 			{
 				Logging.errorPrint("Syntax of ADD:" + getTokenName()
-					+ " only allows one | : " + value);
+						+ " only allows one | : " + value);
 				return false;
 			}
 			countString = value.substring(0, pipeLoc);
 			items = value.substring(pipeLoc + 1);
 		}
 		target.addAddList(level, getTokenName() + "(" + items + ")"
-			+ countString);
+				+ countString);
 		return true;
 	}
 
@@ -87,14 +92,9 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 		return "CLASSSKILLS";
 	}
 
-	public boolean parse(LoadContext context, PObject obj, String value)
+	public boolean parse(LoadContext context, AbstractCDOMClassAwareObject obj,
+			String value)
 	{
-		if (!ClassSkillListContainer.class.isAssignableFrom(obj.getClass()))
-		{
-			Logging.errorPrint("ADD:" + getTokenName()
-				+ " is only supported in Class files");
-			return false;
-		}
 		if (value.length() == 0)
 		{
 			Logging.errorPrint(getTokenName() + " may not have empty argument");
@@ -117,14 +117,14 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 				if (count < 1)
 				{
 					Logging.errorPrint("Count in ADD:" + getTokenName()
-						+ " must be > 0");
+							+ " must be > 0");
 					return false;
 				}
 			}
 			catch (NumberFormatException nfe)
 			{
 				Logging.errorPrint("Invalid Count in ADD:" + getTokenName()
-					+ ": " + countString);
+						+ ": " + countString);
 				return false;
 			}
 			items = value.substring(pipeLoc + 1);
@@ -136,7 +136,7 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		List<CDOMReference<Skill>> refs = new ArrayList<CDOMReference<Skill>>();
+		List<CDOMReference<CDOMSkill>> refs = new ArrayList<CDOMReference<CDOMSkill>>();
 
 		boolean foundAny = false;
 		boolean foundOther = false;
@@ -144,7 +144,7 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<Skill> ref;
+			CDOMReference<CDOMSkill> ref;
 			if (Constants.LST_ANY.equals(token))
 			{
 				foundAny = true;
@@ -153,17 +153,16 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 			else
 			{
 				foundOther = true;
-				ref =
-						TokenUtilities.getTypeOrPrimitive(context, SKILL_CLASS,
-							token);
+				ref = TokenUtilities.getTypeOrPrimitive(context, SKILL_CLASS,
+						token);
 				if (ref == null)
 				{
 					Logging
-						.errorPrint("  Error was encountered while parsing ADD:"
-							+ getTokenName()
-							+ ": "
-							+ token
-							+ " is not a valid reference: " + value);
+							.errorPrint("  Error was encountered while parsing ADD:"
+									+ getTokenName()
+									+ ": "
+									+ token
+									+ " is not a valid reference: " + value);
 					return false;
 				}
 			}
@@ -173,37 +172,45 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 		if (foundAny && foundOther)
 		{
 			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 
-		ClassSkillList csl = ((ClassSkillListContainer) obj).getCDOMClassSkillList();
+		// ClassSkillList csl = ((ClassContext) obj).getCDOMClassSkillList();
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
-		container.addActor(new AllowActor<Skill>(csl));
+		// container.addActor(new AllowActor<CDOMSkill>(csl));
+		/*
+		 * TODO Need to actually add an Actor here (See above)
+		 */
 		context.getGraphContext().grant(getTokenName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
+				.getFormulaFor(Integer.MAX_VALUE));
 		container.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
-		ReferenceChoiceSet<Skill> rcs = new ReferenceChoiceSet<Skill>(refs);
-		ChoiceSet<Skill> cs = new ChoiceSet<Skill>("ADD", rcs);
+		ReferenceChoiceSet<CDOMSkill> rcs = new ReferenceChoiceSet<CDOMSkill>(
+				refs);
+		ChoiceSet<CDOMSkill> cs = new ChoiceSet<CDOMSkill>("ADD", rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context,
+			AbstractCDOMClassAwareObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChooseActionContainer.class);
+		System.err.println("@");
+		AssociatedChanges<ChooseActionContainer> grantChanges = context
+				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+						ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
+			System.err.println("!");
 			return null;
 		}
 		if (!grantChanges.hasAddedItems())
 		{
 			// Zero indicates no Token
+			System.err.println("!!");
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
@@ -213,18 +220,19 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 			if (!"ADD".equals(container.getName()))
 			{
 				context.addWriteMessage("Unexpected CHOOSE container found: "
-					+ container.getName());
+						+ container.getName());
 				continue;
 			}
 			ChoiceSet<?> cs = container.getChoiceSet();
 			if (SKILL_CLASS.equals(cs.getChoiceClass()))
 			{
-				Formula f =
-						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f = container
+						.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
 					context.addWriteMessage("Unable to find " + getTokenName()
-						+ " Count");
+							+ " Count");
+					System.err.println("!!!");
 					return null;
 				}
 				String fString = f.toString();
@@ -240,5 +248,10 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
+	}
+
+	public Class<AbstractCDOMClassAwareObject> getTokenClass()
+	{
+		return AbstractCDOMClassAwareObject.class;
 	}
 }

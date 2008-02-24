@@ -21,17 +21,19 @@
  */
 package plugin.lsttokens.ability;
 
-import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Ability;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deal with CATEGORY token
  */
-public class CategoryToken implements AbilityLstToken
+public class CategoryToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbility>
 {
 
 	public String getTokenName()
@@ -45,12 +47,12 @@ public class CategoryToken implements AbilityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Ability ability, String value)
+	public boolean parse(LoadContext context, CDOMAbility ability, String value)
 	{
 		try
 		{
-			AbilityCategory ac = AbilityCategory.valueOf(value);
-			context.ref.reassociateReference(ac, ability);
+			CDOMAbilityCategory ac = CDOMAbilityCategory.valueOf(value);
+			context.ref.reassociateCategory(ac, ability);
 			return true;
 		}
 		catch (IllegalArgumentException iae)
@@ -61,13 +63,13 @@ public class CategoryToken implements AbilityLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, CDOMAbility ability)
 	{
 		/*
 		 * TODO How does this work with editor vs. real object and using
 		 * reassociateReference??
 		 */
-		AbilityCategory ac =
+		CDOMAbilityCategory ac =
 				context.getObjectContext().getObject(ability,
 					ObjectKey.CATEGORY);
 		if (ac == null)
@@ -78,5 +80,10 @@ public class CategoryToken implements AbilityLstToken
 			return null;
 		}
 		return new String[]{ac.toString()};
+	}
+
+	public Class<CDOMAbility> getTokenClass()
+	{
+		return CDOMAbility.class;
 	}
 }

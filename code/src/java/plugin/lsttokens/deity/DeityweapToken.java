@@ -23,24 +23,27 @@ package plugin.lsttokens.deity;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.Deity;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with DEITYWEAP Token
  */
-public class DeityweapToken extends AbstractToken implements DeityLstToken
+public class DeityweapToken extends AbstractToken implements DeityLstToken,
+		CDOMPrimaryToken<CDOMDeity>
 {
 
-	private static final Class<WeaponProf> WEAPONPROF_CLASS = WeaponProf.class;
+	private static final Class<CDOMWeaponProf> WEAPONPROF_CLASS = CDOMWeaponProf.class;
 
 	@Override
 	public String getTokenName()
@@ -54,7 +57,7 @@ public class DeityweapToken extends AbstractToken implements DeityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Deity deity, String value)
+	public boolean parse(LoadContext context, CDOMDeity deity, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -64,25 +67,28 @@ public class DeityweapToken extends AbstractToken implements DeityLstToken
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
 		{
-			CDOMSimpleSingleRef<WeaponProf> ref =
-					context.ref.getCDOMReference(WEAPONPROF_CLASS, tok
-						.nextToken());
+			CDOMSingleRef<CDOMWeaponProf> ref = context.ref.getCDOMReference(
+					WEAPONPROF_CLASS, tok.nextToken());
 			context.getObjectContext().addToList(deity, ListKey.DEITYWEAPON,
-				ref);
+					ref);
 		}
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, CDOMDeity deity)
 	{
-		Changes<CDOMSimpleSingleRef<WeaponProf>> changes =
-				context.getObjectContext().getListChanges(deity,
-					ListKey.DEITYWEAPON);
+		Changes<CDOMSingleRef<CDOMWeaponProf>> changes = context
+				.getObjectContext().getListChanges(deity, ListKey.DEITYWEAPON);
 		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(
-			changes.getAdded(), Constants.PIPE)};
+		return new String[] { ReferenceUtilities.joinLstFormat(changes
+				.getAdded(), Constants.PIPE) };
+	}
+
+	public Class<CDOMDeity> getTokenClass()
+	{
+		return CDOMDeity.class;
 	}
 }

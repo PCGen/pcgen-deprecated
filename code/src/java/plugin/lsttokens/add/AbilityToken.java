@@ -30,25 +30,26 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.Ability;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.PObject;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
@@ -78,9 +79,14 @@ import pcgen.util.Logging;
  * @author James Dempsey <jdempsey@users.sourceforge.net>
  * @version $Revision$
  */
-public class AbilityToken extends AbstractToken implements AddLstToken
+public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSecondaryToken<CDOMObject>
 {
-	private static final Class<Ability> ABILITY_CLASS = Ability.class;
+	private static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
+
+	public String getParentToken()
+	{
+		return "ADD";
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -174,7 +180,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 		return "ABILITY";
 	}
 
-	public boolean parse(LoadContext context, PObject obj, String value)
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		if (value.length() == 0)
 		{
@@ -215,10 +221,10 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 			return false;
 		}
 
-		AbilityCategory ac;
+		CDOMAbilityCategory ac;
 		try
 		{
-			ac = AbilityCategory.valueOf(nextToken);
+			ac = CDOMAbilityCategory.valueOf(nextToken);
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -246,15 +252,15 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		List<CDOMReference<Ability>> refs =
-				new ArrayList<CDOMReference<Ability>>();
+		List<CDOMReference<CDOMAbility>> refs =
+				new ArrayList<CDOMReference<CDOMAbility>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
 
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<Ability> ref;
+			CDOMReference<CDOMAbility> ref;
 			if (Constants.LST_ANY.equalsIgnoreCase(token))
 			{
 				foundAny = true;
@@ -288,7 +294,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 		}
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
-		container.addActor(new GrantActor<PCTemplate>());
+		container.addActor(new GrantActor<CDOMAbility>());
 		context.getGraphContext().grant(getTokenName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
@@ -296,13 +302,13 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 			.getFormulaFor(Integer.MAX_VALUE));
 		container.setAssociation(AssociationKey.ABILITY_CATEGORY, ac);
 		container.setAssociation(AssociationKey.ABILITY_NATURE, nat);
-		ReferenceChoiceSet<Ability> rcs = new ReferenceChoiceSet<Ability>(refs);
-		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("ADD", rcs);
+		ReferenceChoiceSet<CDOMAbility> rcs = new ReferenceChoiceSet<CDOMAbility>(refs);
+		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>("ADD", rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -337,7 +343,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 						.addWriteMessage("Unable to find Nature for GrantFactory");
 					return null;
 				}
-				AbilityCategory cat =
+				CDOMAbilityCategory cat =
 						container
 							.getAssociation(AssociationKey.ABILITY_CATEGORY);
 				if (cat == null)
@@ -369,5 +375,10 @@ public class AbilityToken extends AbstractToken implements AddLstToken
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

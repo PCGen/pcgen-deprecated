@@ -22,30 +22,35 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.CDOMSpecialAbility;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.GrantActor;
-import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.core.Constants;
-import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
-import pcgen.core.SpecialAbility;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
-public class SABToken extends AbstractToken implements AddLstToken
+public class SABToken extends AbstractToken implements AddLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 
-	private static final Class<SpecialAbility> SPECABILITY_CLASS =
-		SpecialAbility.class;
+	private static final Class<CDOMSpecialAbility> SPECABILITY_CLASS = CDOMSpecialAbility.class;
+
+	public String getParentToken()
+	{
+		return "ADD";
+	}
 
 	public boolean parse(PObject target, String value, int level)
 	{
@@ -53,7 +58,7 @@ public class SABToken extends AbstractToken implements AddLstToken
 		if (pipeLoc == -1)
 		{
 			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SAB "
-				+ "is prohibited.");
+					+ "is prohibited.");
 			Logging.errorPrint("Please use ADD:SAB|name|[count|]X,X");
 			return false;
 		}
@@ -75,19 +80,20 @@ public class SABToken extends AbstractToken implements AddLstToken
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "SAB";
 	}
 
-	public boolean parse(LoadContext context, PObject obj, String value)
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
 			throws PersistenceLayerException
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
 			Logging.errorPrint("Lack of a SUBTOKEN for ADD:SAB "
-				+ "is prohibited.");
+					+ "is prohibited.");
 			Logging.errorPrint("Please use ADD:SAB|name|[count|]X,X");
 			return false;
 		}
@@ -116,14 +122,14 @@ public class SABToken extends AbstractToken implements AddLstToken
 				if (count < 1)
 				{
 					Logging.errorPrint("Count in ADD:" + getTokenName()
-						+ " must be > 0");
+							+ " must be > 0");
 					return false;
 				}
 			}
 			catch (NumberFormatException nfe)
 			{
 				Logging.errorPrint("Invalid Count in ADD:" + getTokenName()
-					+ ": " + countString);
+						+ ": " + countString);
 				return false;
 			}
 			items = rest.substring(pipeLoc + 1);
@@ -134,35 +140,35 @@ public class SABToken extends AbstractToken implements AddLstToken
 			return false;
 		}
 
-		List<CDOMReference<SpecialAbility>> refs =
-				new ArrayList<CDOMReference<SpecialAbility>>();
+		List<CDOMSpecialAbility> refs = new ArrayList<CDOMSpecialAbility>();
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			context.ref.constructIfNecessary(SPECABILITY_CLASS, token);
-			refs.add(context.ref.getCDOMReference(SPECABILITY_CLASS, token));
+			CDOMSpecialAbility sab = new CDOMSpecialAbility(token);
+			refs.add(sab);
 		}
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
-		container.addActor(new GrantActor<PCTemplate>());
+		container.addActor(new GrantActor<CDOMSpecialAbility>());
 		context.getGraphContext().grant(getTokenName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
-		ReferenceChoiceSet<SpecialAbility> rcs =
-				new ReferenceChoiceSet<SpecialAbility>(refs);
-		ChoiceSet<SpecialAbility> cs = new ChoiceSet<SpecialAbility>(name, rcs);
+				.getFormulaFor(Integer.MAX_VALUE));
+		CollectionChoiceSet<CDOMSpecialAbility> rcs = new CollectionChoiceSet<CDOMSpecialAbility>(
+				refs);
+		ChoiceSet<CDOMSpecialAbility> cs = new ChoiceSet<CDOMSpecialAbility>(
+				name, rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChooseActionContainer.class);
+		AssociatedChanges<ChooseActionContainer> grantChanges = context
+				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+						ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
 			return null;
@@ -179,18 +185,18 @@ public class SABToken extends AbstractToken implements AddLstToken
 			if (!"ADD".equals(container.getName()))
 			{
 				context.addWriteMessage("Unexpected CHOOSE container found: "
-					+ container.getName());
+						+ container.getName());
 				continue;
 			}
 			ChoiceSet<?> cs = container.getChoiceSet();
 			if (SPECABILITY_CLASS.equals(cs.getChoiceClass()))
 			{
-				Formula f =
-						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f = container
+						.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
 					context.addWriteMessage("Unable to find " + getTokenName()
-						+ " Count");
+							+ " Count");
 					return null;
 				}
 				String fString = f.toString();
@@ -207,5 +213,10 @@ public class SABToken extends AbstractToken implements AddLstToken
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -22,16 +22,18 @@
 package plugin.lsttokens.deity;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Alignment;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.core.Deity;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with ALIGN Token
  */
-public class AlignToken implements DeityLstToken
+public class AlignToken implements DeityLstToken, CDOMPrimaryToken<CDOMDeity>
 {
 
 	public String getTokenName()
@@ -45,10 +47,10 @@ public class AlignToken implements DeityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Deity deity, String value)
+	public boolean parse(LoadContext context, CDOMDeity deity, String value)
 	{
-		Alignment al =
-				context.ref.getConstructedCDOMObject(Alignment.class, value);
+		CDOMAlignment al =
+				context.ref.getAbbreviatedObject(CDOMAlignment.class, value);
 		if (al == null)
 		{
 			Logging.errorPrint("In " + getTokenName() + " " + value
@@ -59,15 +61,20 @@ public class AlignToken implements DeityLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, CDOMDeity deity)
 	{
-		Alignment at =
+		CDOMAlignment at =
 				context.getObjectContext()
 					.getObject(deity, ObjectKey.ALIGNMENT);
 		if (at == null)
 		{
 			return null;
 		}
-		return new String[]{at.toString()};
+		return new String[]{at.getLSTformat()};
+	}
+
+	public Class<CDOMDeity> getTokenClass()
+	{
+		return CDOMDeity.class;
 	}
 }

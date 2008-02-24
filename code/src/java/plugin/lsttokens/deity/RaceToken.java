@@ -28,17 +28,19 @@ import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.RacePantheon;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.core.Deity;
 import pcgen.core.utils.CoreUtility;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with RACE Token
  */
-public class RaceToken extends AbstractToken implements DeityLstToken
+public class RaceToken extends AbstractToken implements DeityLstToken, CDOMPrimaryToken<CDOMDeity>
 {
 
 	@Override
@@ -59,7 +61,7 @@ public class RaceToken extends AbstractToken implements DeityLstToken
 		return false;
 	}
 
-	public boolean parse(LoadContext context, Deity deity, String value)
+	public boolean parse(LoadContext context, CDOMDeity deity, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -75,7 +77,7 @@ public class RaceToken extends AbstractToken implements DeityLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, CDOMDeity deity)
 	{
 		Changes<RacePantheon> changes =
 				context.getObjectContext().getListChanges(deity,
@@ -85,5 +87,10 @@ public class RaceToken extends AbstractToken implements DeityLstToken
 			return null;
 		}
 		return new String[]{StringUtil.join(changes.getAdded(), Constants.PIPE)};
+	}
+
+	public Class<CDOMDeity> getTokenClass()
+	{
+		return CDOMDeity.class;
 	}
 }

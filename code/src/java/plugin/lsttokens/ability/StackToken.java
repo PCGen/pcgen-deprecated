@@ -22,15 +22,17 @@
 package plugin.lsttokens.ability;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Ability;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deal with STACK token
  */
-public class StackToken implements AbilityLstToken
+public class StackToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbility>
 {
 
 	public String getTokenName()
@@ -44,7 +46,7 @@ public class StackToken implements AbilityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Ability ability, String value)
+	public boolean parse(LoadContext context, CDOMAbility ability, String value)
 	{
 		Boolean set;
 		char firstChar = value.charAt(0);
@@ -75,7 +77,7 @@ public class StackToken implements AbilityLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, CDOMAbility ability)
 	{
 		Boolean stacks =
 				context.getObjectContext().getObject(ability, ObjectKey.STACKS);
@@ -84,5 +86,10 @@ public class StackToken implements AbilityLstToken
 			return null;
 		}
 		return new String[]{stacks.booleanValue() ? "YES" : "NO"};
+	}
+
+	public Class<CDOMAbility> getTokenClass()
+	{
+		return CDOMAbility.class;
 	}
 }

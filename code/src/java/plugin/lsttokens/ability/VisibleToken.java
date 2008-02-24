@@ -22,9 +22,11 @@
 package plugin.lsttokens.ability;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Ability;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
@@ -38,7 +40,7 @@ import pcgen.util.enumeration.Visibility;
  * @author Devon Jones
  * @version $Revision$
  */
-public class VisibleToken implements AbilityLstToken
+public class VisibleToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbility>
 {
 
 	/**
@@ -116,7 +118,7 @@ public class VisibleToken implements AbilityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Ability ability, String value)
+	public boolean parse(LoadContext context, CDOMAbility ability, String value)
 	{
 		Visibility vis;
 		if (value.equals("YES"))
@@ -145,7 +147,7 @@ public class VisibleToken implements AbilityLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, CDOMAbility ability)
 	{
 		Visibility vis =
 				context.getObjectContext().getObject(ability,
@@ -180,4 +182,8 @@ public class VisibleToken implements AbilityLstToken
 		return new String[]{visString};
 	}
 
+	public Class<CDOMAbility> getTokenClass()
+	{
+		return CDOMAbility.class;
+	}
 }

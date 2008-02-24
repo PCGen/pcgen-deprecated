@@ -27,8 +27,8 @@ import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
@@ -41,22 +41,28 @@ import pcgen.cdom.helper.ChooseActor;
 import pcgen.cdom.helper.CompoundOrChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.ArmorProf;
+import pcgen.cdom.inst.CDOMArmorProf;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AutoLstToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
-public class ArmorProfToken extends AbstractToken implements AutoLstToken
+public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMSecondaryToken<CDOMObject>
 {
 
-	private static final Class<ArmorProf> ARMORPROF_CLASS = ArmorProf.class;
+	private static final Class<CDOMArmorProf> ARMORPROF_CLASS = CDOMArmorProf.class;
+
+	public String getParentToken()
+	{
+		return "AUTO";
+	}
 
 	@Override
 	public String getTokenName()
@@ -86,7 +92,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PObject obj, String value)
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		String armorProfs;
 		Prerequisite prereq = null; // Do not initialize, null is significant!
@@ -130,7 +136,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 		boolean foundOther = false;
 
 		StringTokenizer tok = new StringTokenizer(armorProfs, Constants.PIPE);
-		List<PrimitiveChoiceSet<ArmorProf>> pcsList = new ArrayList<PrimitiveChoiceSet<ArmorProf>>();
+		List<PrimitiveChoiceSet<CDOMArmorProf>> pcsList = new ArrayList<PrimitiveChoiceSet<CDOMArmorProf>>();
 		List<PrereqObject> applyList = new ArrayList<PrereqObject>();
 
 		while (tok.hasMoreTokens())
@@ -139,7 +145,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			if ("%LIST".equals(value))
 			{
 				ChooseActionContainer container = obj.getChooseContainer();
-				GrantActor<ArmorProf> actor = new GrantActor<ArmorProf>();
+				GrantActor<CDOMArmorProf> actor = new GrantActor<CDOMArmorProf>();
 				container.addActor(actor);
 				actor.setAssociation(AssociationKey.TOKEN, getTokenName());
 				applyList.add(actor);
@@ -149,7 +155,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 				if (Constants.LST_ALL.equalsIgnoreCase(aProf))
 				{
 					foundAny = true;
-					CDOMReference<ArmorProf> ref = context.ref
+					CDOMReference<CDOMArmorProf> ref = context.ref
 							.getCDOMAllReference(ARMORPROF_CLASS);
 					AssociatedPrereqObject edge = context.getGraphContext()
 							.grant(getTokenName(), obj, ref);
@@ -158,9 +164,9 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 				else if (aProf.startsWith("ARMORTYPE="))
 				{
 					foundOther = true;
-					PrimitiveChoiceSet<ArmorProf> pcs = ChooseLoader
-							.getQualifier(context, ARMORPROF_CLASS,
-									"EQUIPMENT", aProf.substring(5));
+					PrimitiveChoiceSet<CDOMArmorProf> pcs = context
+							.getChoiceSet(ARMORPROF_CLASS, "EQUIPMENT["
+									+ aProf.substring(5) + ']');
 					if (pcs == null)
 					{
 						return false;
@@ -177,7 +183,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 				else
 				{
 					foundOther = true;
-					CDOMReference<ArmorProf> ref = context.ref
+					CDOMReference<CDOMArmorProf> ref = context.ref
 							.getCDOMReference(ARMORPROF_CLASS, aProf);
 					AssociatedPrereqObject edge = context.getGraphContext()
 							.grant(getTokenName(), obj, ref);
@@ -196,22 +202,22 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 
 		if (!pcsList.isEmpty())
 		{
-			PrimitiveChoiceSet<ArmorProf> pcs;
+			PrimitiveChoiceSet<CDOMArmorProf> pcs;
 			if (pcsList.size() == 1)
 			{
 				pcs = pcsList.get(0);
 			}
 			else
 			{
-				pcs = new CompoundOrChoiceSet<ArmorProf>(pcsList);
+				pcs = new CompoundOrChoiceSet<CDOMArmorProf>(pcsList);
 			}
 
-			ChoiceSet<ArmorProf> cs = new ChoiceSet<ArmorProf>(
+			ChoiceSet<CDOMArmorProf> cs = new ChoiceSet<CDOMArmorProf>(
 					"AUTO:ARMORPROF", pcs);
 			AutomaticActionContainer aac = new AutomaticActionContainer(
 					"AUTO:ARMORPROF");
 			aac.setChoiceSet(cs);
-			aac.addActor(new GrantActor<ArmorProf>());
+			aac.addActor(new GrantActor<CDOMArmorProf>());
 			AssociatedPrereqObject edge = context.getGraphContext().grant(
 					getTokenName(), obj, aac);
 			applyList.add(edge);
@@ -229,7 +235,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		List<String> list = new ArrayList<String>();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
@@ -258,7 +264,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 			}
 		}
 
-		AssociatedChanges<ArmorProf> changes = context.getGraphContext()
+		AssociatedChanges<CDOMArmorProf> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, ARMORPROF_CLASS);
 		AssociatedChanges<AutomaticActionContainer> typechanges = context
 				.getGraphContext().getChangesFromToken(getTokenName(), obj,
@@ -357,5 +363,10 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken
 		}
 
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

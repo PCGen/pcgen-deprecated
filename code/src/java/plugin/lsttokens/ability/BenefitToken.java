@@ -24,20 +24,22 @@ package plugin.lsttokens.ability;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Description;
 import pcgen.io.EntityEncoder;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * This class deals with the BENEFIT Token
  */
-public class BenefitToken extends AbstractToken implements AbilityLstToken
+public class BenefitToken extends AbstractToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbility>
 {
 
 	@Override
@@ -64,7 +66,7 @@ public class BenefitToken extends AbstractToken implements AbilityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Ability ability, String value)
+	public boolean parse(LoadContext context, CDOMAbility ability, String value)
 	{
 		if (value.length() == 0)
 		{
@@ -78,7 +80,7 @@ public class BenefitToken extends AbstractToken implements AbilityLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, CDOMAbility ability)
 	{
 		String benefit =
 				context.getObjectContext()
@@ -128,5 +130,10 @@ public class BenefitToken extends AbstractToken implements AbilityLstToken
 		}
 
 		return desc;
+	}
+
+	public Class<CDOMAbility> getTokenClass()
+	{
+		return CDOMAbility.class;
 	}
 }

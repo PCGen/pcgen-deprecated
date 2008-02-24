@@ -26,8 +26,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.HashMapToList;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
@@ -37,25 +37,31 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.EquipmentNature;
 import pcgen.cdom.helper.ChooseActor;
 import pcgen.cdom.helper.GrantActor;
-import pcgen.core.ArmorProf;
-import pcgen.core.Equipment;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AutoLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
-public class EquipToken extends AbstractToken implements AutoLstToken
+public class EquipToken extends AbstractToken implements AutoLstToken, CDOMSecondaryToken<CDOMObject>
 {
 
-	private static final Class<Equipment> EQUIPMENT_CLASS = Equipment.class;
+	private static final Class<CDOMEquipment> EQUIPMENT_CLASS = CDOMEquipment.class;
 
 	private static final Integer INTEGER_ONE = Integer.valueOf(1);
+
+	public String getParentToken()
+	{
+		return "AUTO";
+	}
 
 	@Override
 	public String getTokenName()
@@ -75,7 +81,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PObject obj, String value)
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		String equipItems;
 		Prerequisite prereq = null; // Do not initialize, null is significant!
@@ -124,14 +130,14 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			if ("%LIST".equals(value))
 			{
 				ChooseActionContainer container = obj.getChooseContainer();
-				GrantActor<ArmorProf> actor = new GrantActor<ArmorProf>();
+				GrantActor<CDOMEquipment> actor = new GrantActor<CDOMEquipment>();
 				container.addActor(actor);
 				actor.setAssociation(AssociationKey.TOKEN, getTokenName());
 				apo = actor;
 			}
 			else
 			{
-				CDOMReference<Equipment> ref =
+				CDOMReference<CDOMEquipment> ref =
 						TokenUtilities.getTypeOrPrimitive(context,
 							EQUIPMENT_CLASS, aProf);
 				if (ref == null)
@@ -154,7 +160,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		List<String> list = new ArrayList<String>();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
@@ -183,7 +189,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			}
 		}
 
-		AssociatedChanges<Equipment> changes =
+		AssociatedChanges<CDOMEquipment> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, EQUIPMENT_CLASS);
 		if (list.isEmpty() && changes == null)
@@ -239,5 +245,10 @@ public class EquipToken extends AbstractToken implements AutoLstToken
 			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

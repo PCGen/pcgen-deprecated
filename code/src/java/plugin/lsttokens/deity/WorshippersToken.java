@@ -22,15 +22,17 @@
 package plugin.lsttokens.deity;
 
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.core.Deity;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.DeityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with WORSHIPPERS Token
  */
-public class WorshippersToken implements DeityLstToken
+public class WorshippersToken implements DeityLstToken, CDOMPrimaryToken<CDOMDeity>
 {
 
 	/**
@@ -56,7 +58,7 @@ public class WorshippersToken implements DeityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Deity deity, String value)
+	public boolean parse(LoadContext context, CDOMDeity deity, String value)
 	{
 		if (value.length() == 0)
 		{
@@ -67,7 +69,7 @@ public class WorshippersToken implements DeityLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, CDOMDeity deity)
 	{
 		String worshippers =
 				context.getObjectContext().getString(deity,
@@ -77,5 +79,10 @@ public class WorshippersToken implements DeityLstToken
 			return null;
 		}
 		return new String[]{worshippers};
+	}
+
+	public Class<CDOMDeity> getTokenClass()
+	{
+		return CDOMDeity.class;
 	}
 }

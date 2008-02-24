@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -31,19 +32,24 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.Language;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.core.PObject;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
-public class LanguageToken extends AbstractToken implements AddLstToken
+public class LanguageToken extends AbstractToken implements AddLstToken, CDOMSecondaryToken<CDOMObject>
 {
-	private static final Class<Language> LANGUAGE_CLASS = Language.class;
+	private static final Class<CDOMLanguage> LANGUAGE_CLASS = CDOMLanguage.class;
+
+	public String getParentToken()
+	{
+		return "ADD";
+	}
 
 	public boolean parse(PObject target, String value, int level)
 	{
@@ -82,7 +88,7 @@ public class LanguageToken extends AbstractToken implements AddLstToken
 		return "LANGUAGE";
 	}
 
-	public boolean parse(LoadContext context, PObject obj, String value)
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		int count;
@@ -123,12 +129,12 @@ public class LanguageToken extends AbstractToken implements AddLstToken
 		boolean foundAny = false;
 		boolean foundOther = false;
 
-		List<CDOMReference<Language>> refs =
-				new ArrayList<CDOMReference<Language>>();
+		List<CDOMReference<CDOMLanguage>> refs =
+				new ArrayList<CDOMReference<CDOMLanguage>>();
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<Language> ref;
+			CDOMReference<CDOMLanguage> ref;
 			if (Constants.LST_ANY.equalsIgnoreCase(token))
 			{
 				foundAny = true;
@@ -162,20 +168,20 @@ public class LanguageToken extends AbstractToken implements AddLstToken
 		}
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
-		container.addActor(new GrantActor<PCTemplate>());
+		container.addActor(new GrantActor<CDOMLanguage>());
 		context.getGraphContext().grant(getTokenName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(Integer.MAX_VALUE));
-		ReferenceChoiceSet<Language> rcs =
-				new ReferenceChoiceSet<Language>(refs);
-		ChoiceSet<Language> cs = new ChoiceSet<Language>("ADD", rcs);
+		ReferenceChoiceSet<CDOMLanguage> rcs =
+				new ReferenceChoiceSet<CDOMLanguage>(refs);
+		ChoiceSet<CDOMLanguage> cs = new ChoiceSet<CDOMLanguage>("ADD", rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -223,5 +229,10 @@ public class LanguageToken extends AbstractToken implements AddLstToken
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

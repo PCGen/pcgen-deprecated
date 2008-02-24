@@ -14,7 +14,7 @@ public class ShieldprofToken implements CampaignLstToken
 
 	public String getTokenName()
 	{
-		return "ArmorprofToken.java";
+		return "SHIELDPROF";
 	}
 
 	public boolean parse(Campaign campaign, String value, URI sourceUri)

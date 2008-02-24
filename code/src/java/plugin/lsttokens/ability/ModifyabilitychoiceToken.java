@@ -21,14 +21,16 @@
  */
 package plugin.lsttokens.ability;
 
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Ability;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Deals with the MODIFYABILITYCHOICE token
  */
-public class ModifyabilitychoiceToken implements AbilityLstToken
+public class ModifyabilitychoiceToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbility>
 {
 
 	public String getTokenName()
@@ -42,15 +44,20 @@ public class ModifyabilitychoiceToken implements AbilityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Ability ability, String value)
+	public boolean parse(LoadContext context, CDOMAbility ability, String value)
 	{
 		// FIXME Auto-generated method stub
 		return false;
 	}
 
-	public String[] unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, CDOMAbility ability)
 	{
 		// FIXME Auto-generated method stub
 		return null;
+	}
+
+	public Class<CDOMAbility> getTokenClass()
+	{
+		return CDOMAbility.class;
 	}
 }

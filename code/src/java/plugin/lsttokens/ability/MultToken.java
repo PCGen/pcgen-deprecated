@@ -22,15 +22,17 @@
 package plugin.lsttokens.ability;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Ability;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.AbilityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with the MULT token
  */
-public class MultToken implements AbilityLstToken
+public class MultToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbility>
 {
 
 	public String getTokenName()
@@ -44,7 +46,7 @@ public class MultToken implements AbilityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Ability ability, String value)
+	public boolean parse(LoadContext context, CDOMAbility ability, String value)
 	{
 		Boolean set;
 		char firstChar = value.charAt(0);
@@ -76,7 +78,7 @@ public class MultToken implements AbilityLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Ability ability)
+	public String[] unparse(LoadContext context, CDOMAbility ability)
 	{
 		Boolean mult =
 				context.getObjectContext().getObject(ability,
@@ -86,5 +88,10 @@ public class MultToken implements AbilityLstToken
 			return null;
 		}
 		return new String[]{mult.booleanValue() ? "YES" : "NO"};
+	}
+
+	public Class<CDOMAbility> getTokenClass()
+	{
+		return CDOMAbility.class;
 	}
 }

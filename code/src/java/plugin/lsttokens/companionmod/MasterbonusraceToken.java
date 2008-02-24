@@ -19,4 +19,6 @@ public class MasterbonusraceToken implements CompanionModLstToken
 		cmpMod.getClassMap().put(value.toUpperCase(), "1");
 		return true;
 	}
+
+	// No equivalent in CDOM, handled by the loader
 }

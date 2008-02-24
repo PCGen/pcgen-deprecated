@@ -1,9 +1,9 @@
 package plugin.lsttokens.companionmod;
 
+import java.util.StringTokenizer;
+
 import pcgen.core.character.CompanionMod;
 import pcgen.persistence.lst.CompanionModLstToken;
-
-import java.util.StringTokenizer;
 
 /**
  * Class deals with SWITCHRACE: Token
@@ -24,7 +24,7 @@ public class SwitchraceToken implements CompanionModLstToken
 			final String currT = aTok.nextToken();
 			final String toT = aTok.nextToken();
 			cmpMod.getSwitchRaceMap().put(currT.toUpperCase(),
-				toT.toUpperCase());
+					toT.toUpperCase());
 			return true;
 		}
 		catch (Exception e)

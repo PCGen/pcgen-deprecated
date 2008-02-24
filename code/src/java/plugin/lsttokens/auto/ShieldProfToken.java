@@ -27,8 +27,8 @@ import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
@@ -41,22 +41,29 @@ import pcgen.cdom.helper.ChooseActor;
 import pcgen.cdom.helper.CompoundOrChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMShieldProf;
 import pcgen.core.PObject;
-import pcgen.core.ShieldProf;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.AutoLstToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
-public class ShieldProfToken extends AbstractToken implements AutoLstToken
+public class ShieldProfToken extends AbstractToken implements AutoLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 
-	private static final Class<ShieldProf> SHIELDPROF_CLASS = ShieldProf.class;
+	private static final Class<CDOMShieldProf> SHIELDPROF_CLASS = CDOMShieldProf.class;
+
+	public String getParentToken()
+	{
+		return "AUTO";
+	}
 
 	@Override
 	public String getTokenName()
@@ -86,7 +93,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PObject obj, String value)
+	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		String shieldProfs;
 		Prerequisite prereq = null; // Do not initialize, null is significant!
@@ -126,7 +133,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 		boolean foundOther = false;
 
 		StringTokenizer tok = new StringTokenizer(shieldProfs, Constants.PIPE);
-		List<PrimitiveChoiceSet<ShieldProf>> pcsList = new ArrayList<PrimitiveChoiceSet<ShieldProf>>();
+		List<PrimitiveChoiceSet<CDOMShieldProf>> pcsList = new ArrayList<PrimitiveChoiceSet<CDOMShieldProf>>();
 		List<PrereqObject> applyList = new ArrayList<PrereqObject>();
 
 		while (tok.hasMoreTokens())
@@ -135,7 +142,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 			if ("%LIST".equals(value))
 			{
 				ChooseActionContainer container = obj.getChooseContainer();
-				GrantActor<ShieldProf> actor = new GrantActor<ShieldProf>();
+				GrantActor<CDOMShieldProf> actor = new GrantActor<CDOMShieldProf>();
 				container.addActor(actor);
 				actor.setAssociation(AssociationKey.TOKEN, getTokenName());
 				applyList.add(actor);
@@ -145,7 +152,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 				if (Constants.LST_ALL.equalsIgnoreCase(aProf))
 				{
 					foundAny = true;
-					CDOMReference<ShieldProf> ref = context.ref
+					CDOMReference<CDOMShieldProf> ref = context.ref
 							.getCDOMAllReference(SHIELDPROF_CLASS);
 					AssociatedPrereqObject edge = context.getGraphContext()
 							.grant(getTokenName(), obj, ref);
@@ -154,11 +161,12 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 				else if (aProf.startsWith("SHIELDTYPE="))
 				{
 					foundOther = true;
-					PrimitiveChoiceSet<ShieldProf> pcs = ChooseLoader
-							.getQualifier(context, SHIELDPROF_CLASS,
-									"EQUIPMENT", aProf.substring(6));
+					PrimitiveChoiceSet<CDOMShieldProf> pcs = context
+							.getChoiceSet(SHIELDPROF_CLASS, "EQUIPMENT["
+									+ aProf.substring(6) + ']');
 					if (pcs == null)
 					{
+						Logging.errorPrint("BLAH!");
 						return false;
 					}
 					pcsList.add(pcs);
@@ -173,7 +181,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 				else
 				{
 					foundOther = true;
-					CDOMReference<ShieldProf> ref = context.ref
+					CDOMReference<CDOMShieldProf> ref = context.ref
 							.getCDOMReference(SHIELDPROF_CLASS, aProf);
 					AssociatedPrereqObject edge = context.getGraphContext()
 							.grant(getTokenName(), obj, ref);
@@ -192,22 +200,22 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 
 		if (!pcsList.isEmpty())
 		{
-			PrimitiveChoiceSet<ShieldProf> pcs;
+			PrimitiveChoiceSet<CDOMShieldProf> pcs;
 			if (pcsList.size() == 1)
 			{
 				pcs = pcsList.get(0);
 			}
 			else
 			{
-				pcs = new CompoundOrChoiceSet<ShieldProf>(pcsList);
+				pcs = new CompoundOrChoiceSet<CDOMShieldProf>(pcsList);
 			}
 
-			ChoiceSet<ShieldProf> cs = new ChoiceSet<ShieldProf>(
+			ChoiceSet<CDOMShieldProf> cs = new ChoiceSet<CDOMShieldProf>(
 					"AUTO:SHIELDPROF", pcs);
 			AutomaticActionContainer aac = new AutomaticActionContainer(
 					"AUTO:SHIELDPROF");
 			aac.setChoiceSet(cs);
-			aac.addActor(new GrantActor<ShieldProf>());
+			aac.addActor(new GrantActor<CDOMShieldProf>());
 			AssociatedPrereqObject edge = context.getGraphContext().grant(
 					getTokenName(), obj, aac);
 			applyList.add(edge);
@@ -225,7 +233,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject obj)
+	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		List<String> list = new ArrayList<String>();
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
@@ -254,7 +262,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 			}
 		}
 
-		AssociatedChanges<ShieldProf> changes = context.getGraphContext()
+		AssociatedChanges<CDOMShieldProf> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, SHIELDPROF_CLASS);
 		AssociatedChanges<AutomaticActionContainer> typechanges = context
 				.getGraphContext().getChangesFromToken(getTokenName(), obj,
@@ -353,5 +361,10 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken
 		}
 
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

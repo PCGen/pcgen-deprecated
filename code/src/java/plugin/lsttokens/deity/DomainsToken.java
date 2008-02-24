@@ -29,35 +29,38 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
-import pcgen.base.util.MapToList;
 import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.DomainList;
 import pcgen.core.Deity;
-import pcgen.core.Domain;
-import pcgen.core.DomainList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.DeityLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Class deals with DOMAINS Token
  */
-public class DomainsToken extends AbstractToken implements DeityLstToken
+public class DomainsToken extends AbstractToken implements DeityLstToken,
+		CDOMPrimaryToken<CDOMDeity>
 {
-	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
+	private static final Class<CDOMDomain> DOMAIN_CLASS = CDOMDomain.class;
 
 	/*
 	 * (non-Javadoc)
@@ -77,7 +80,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 	 *      java.lang.String)
 	 */
 	public boolean parse(Deity deity, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (value.length() == 0)
 		{
@@ -95,17 +98,17 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 				final String key = tok.nextToken();
 				if (PreParserFactory.isPreReqString(key))
 				{
-					final PreParserFactory factory =
-							PreParserFactory.getInstance();
+					final PreParserFactory factory = PreParserFactory
+							.getInstance();
 					final Prerequisite r = factory.parse(key);
 					preReqs.add(r);
 				}
 				else
 				{
 					throw new PersistenceLayerException(PropertyFactory
-						.getFormattedString(
-							"Errors.LstTokens.InvalidTokenFormat", //$NON-NLS-1$
-							getClass().getName(), value));
+							.getFormattedString(
+									"Errors.LstTokens.InvalidTokenFormat", //$NON-NLS-1$
+									getClass().getName(), value));
 				}
 			}
 		}
@@ -114,7 +117,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Deity deity, String value)
+	public boolean parse(LoadContext context, CDOMDeity deity, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
@@ -122,12 +125,11 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		}
 
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
-		StringTokenizer commaTok =
-				new StringTokenizer(pipeTok.nextToken(), Constants.COMMA);
-		CDOMReference<DomainList> dl =
-				context.ref.getCDOMReference(DomainList.class, "*Starting");
-		ArrayList<AssociatedPrereqObject> proList =
-				new ArrayList<AssociatedPrereqObject>();
+		StringTokenizer commaTok = new StringTokenizer(pipeTok.nextToken(),
+				Constants.COMMA);
+		CDOMReference<DomainList> dl = context.ref.getCDOMReference(
+				DomainList.class, "*Starting");
+		ArrayList<AssociatedPrereqObject> proList = new ArrayList<AssociatedPrereqObject>();
 
 		boolean first = true;
 		boolean foundAll = false;
@@ -139,7 +141,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			if (tokString.startsWith("PRE") || tokString.startsWith("!PRE"))
 			{
 				Logging.errorPrint("Invalid " + getTokenName()
-					+ ": PRExxx was comma delimited : " + value);
+						+ ": PRExxx was comma delimited : " + value);
 				return false;
 			}
 			if (Constants.LST_DOT_CLEAR.equals(tokString))
@@ -147,15 +149,15 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 				if (!first)
 				{
 					Logging.errorPrint("  Non-sensical " + getTokenName()
-						+ ": .CLEAR was not the first list item: " + value);
+							+ ": .CLEAR was not the first list item: " + value);
 					return false;
 				}
 				context.getListContext().removeAllFromList(getTokenName(),
-					deity, dl);
+						deity, dl);
 			}
 			else if (tokString.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				CDOMReference<Domain> ref;
+				CDOMReference<CDOMDomain> ref;
 				String clearText = tokString.substring(7);
 				if (Constants.LST_ALL.equals(clearText))
 				{
@@ -166,22 +168,22 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 					ref = context.ref.getCDOMReference(DOMAIN_CLASS, clearText);
 				}
 				context.getListContext().removeFromList(getTokenName(), deity,
-					dl, ref);
+						dl, ref);
 			}
 			else if (Constants.LST_ALL.equals(tokString))
 			{
-				CDOMGroupRef<Domain> ref =
-						context.ref.getCDOMAllReference(DOMAIN_CLASS);
+				CDOMGroupRef<CDOMDomain> ref = context.ref
+						.getCDOMAllReference(DOMAIN_CLASS);
 				proList.add(context.getListContext().addToList(getTokenName(),
-					deity, dl, ref));
+						deity, dl, ref));
 				foundAll = true;
 			}
 			else
 			{
-				CDOMSimpleSingleRef<Domain> ref =
-						context.ref.getCDOMReference(DOMAIN_CLASS, tokString);
+				CDOMSingleRef<CDOMDomain> ref = context.ref.getCDOMReference(
+						DOMAIN_CLASS, tokString);
 				proList.add(context.getListContext().addToList(getTokenName(),
-					deity, dl, ref));
+						deity, dl, ref));
 				foundOther = true;
 			}
 			first = false;
@@ -190,7 +192,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		if (foundAll && foundOther)
 		{
 			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ALL and a specific reference: " + value);
+					+ ": Contains ALL and a specific reference: " + value);
 			return false;
 		}
 
@@ -201,7 +203,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			if (prereq == null)
 			{
 				Logging.errorPrint("   (Did you put items after the "
-					+ "PRExxx tags in " + getTokenName() + ":?)");
+						+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
 			for (AssociatedPrereqObject ao : proList)
@@ -213,13 +215,12 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Deity deity)
+	public String[] unparse(LoadContext context, CDOMDeity deity)
 	{
-		CDOMReference<DomainList> dl =
-				context.ref.getCDOMReference(DomainList.class, "*Starting");
-		AssociatedChanges<CDOMReference<Domain>> changes =
-				context.getListContext().getChangesInList(getTokenName(),
-					deity, dl);
+		CDOMReference<DomainList> dl = context.ref.getCDOMReference(
+				DomainList.class, "*Starting");
+		AssociatedChanges<CDOMReference<CDOMDomain>> changes = context
+				.getListContext().getChangesInList(getTokenName(), deity, dl);
 		if (changes == null)
 		{
 			// Legal if no Language was present in the race
@@ -231,8 +232,8 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			if (changes.hasRemovedItems())
 			{
 				context.addWriteMessage("Non-sensical relationship in "
-					+ getTokenName()
-					+ ": global .CLEAR and local .CLEAR. performed");
+						+ getTokenName()
+						+ ": global .CLEAR and local .CLEAR. performed");
 				return null;
 			}
 			list.add(Constants.LST_DOT_CLEAR);
@@ -240,33 +241,30 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 		else if (changes.hasRemovedItems())
 		{
 			list.add(Constants.LST_DOT_CLEAR_DOT
-				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
-					",.CLEAR."));
+					+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+							",.CLEAR."));
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+				.getAddedAssociations();
 		if (mtl != null && !mtl.isEmpty())
 		{
-			MapToList<Set<Prerequisite>, LSTWriteable> m =
-					new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+			MapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
 			for (LSTWriteable ab : mtl.getKeySet())
 			{
 				for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 				{
 					m.addToListFor(new HashSet<Prerequisite>(assoc
-						.getPrerequisiteList()), ab);
+							.getPrerequisiteList()), ab);
 				}
 			}
 			Set<String> set = new TreeSet<String>();
 			for (Set<Prerequisite> prereqs : m.getKeySet())
 			{
-				Set<LSTWriteable> domainSet =
-						new TreeSet<LSTWriteable>(
-							TokenUtilities.WRITEABLE_SORTER);
+				Set<LSTWriteable> domainSet = new TreeSet<LSTWriteable>(
+						TokenUtilities.WRITEABLE_SORTER);
 				domainSet.addAll(m.getListFor(prereqs));
-				StringBuilder sb =
-						new StringBuilder(ReferenceUtilities.joinLstFormat(
-							domainSet, Constants.COMMA));
+				StringBuilder sb = new StringBuilder(ReferenceUtilities
+						.joinLstFormat(domainSet, Constants.COMMA));
 				if (prereqs != null && !prereqs.isEmpty())
 				{
 					sb.append(Constants.PIPE);
@@ -281,5 +279,10 @@ public class DomainsToken extends AbstractToken implements DeityLstToken
 			return null;
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMDeity> getTokenClass()
+	{
+		return CDOMDeity.class;
 	}
 }
