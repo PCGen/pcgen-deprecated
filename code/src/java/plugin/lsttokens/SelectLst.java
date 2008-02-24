@@ -5,13 +5,14 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with SELECT Token
  */
-public class SelectLst implements GlobalLstToken
+public class SelectLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -43,4 +44,8 @@ public class SelectLst implements GlobalLstToken
 		return new String[] { f.toString() };
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

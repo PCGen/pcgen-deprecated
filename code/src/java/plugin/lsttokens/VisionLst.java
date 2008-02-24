@@ -33,9 +33,10 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.Vision;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.VisionType;
 
@@ -46,7 +47,7 @@ import pcgen.util.enumeration.VisionType;
  * @author Devon Jones
  * @version $Revision$
  */
-public class VisionLst implements GlobalLstToken
+public class VisionLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	private static final Class<Vision> VISION_CLASS = Vision.class;
@@ -248,5 +249,10 @@ public class VisionLst implements GlobalLstToken
 			return null;
 		}
 		return new String[]{returnString.toString()};
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -30,17 +30,17 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
@@ -48,13 +48,15 @@ import pcgen.core.PObject;
 import pcgen.core.QualifiedObject;
 import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -104,28 +106,29 @@ import pcgen.util.PropertyFactory;
  * @since 5.11.1
  * 
  */
-public class AbilityLst extends AbstractToken implements GlobalLstToken
+public class AbilityLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<Ability> ABILITY_CLASS = Ability.class;
+	private static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
 
 	/**
 	 * @see pcgen.persistence.lst.GlobalLstToken#parse(pcgen.core.PObject,
 	 *      java.lang.String, int)
 	 */
 	public boolean parse(PObject anObj, String aValue, int anInt)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		final StringTokenizer tok = new StringTokenizer(aValue, Constants.PIPE);
 
 		final String cat = tok.nextToken();
-		final pcgen.core.AbilityCategory category =
-				SettingsHandler.getGame().getAbilityCategory(cat);
+		final pcgen.core.AbilityCategory category = SettingsHandler.getGame()
+				.getAbilityCategory(cat);
 		if (category == null)
 		{
 			throw new PersistenceLayerException(PropertyFactory
-				.getFormattedString("Errors.LstTokens.ValueNotFound", //$NON-NLS-1$
-					getClass().getName(), "Ability Category", cat));
+					.getFormattedString("Errors.LstTokens.ValueNotFound", //$NON-NLS-1$
+							getClass().getName(), "Ability Category", cat));
 		}
 
 		if (tok.hasMoreTokens())
@@ -135,8 +138,8 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 			if (nature == null)
 			{
 				throw new PersistenceLayerException(PropertyFactory
-					.getFormattedString("Errors.LstTokens.ValueNotFound", //$NON-NLS-1$
-						getClass().getName(), "Ability Nature", cat));
+						.getFormattedString("Errors.LstTokens.ValueNotFound", //$NON-NLS-1$
+								getClass().getName(), "Ability Nature", cat));
 			}
 
 			ArrayList<Prerequisite> preReqs = new ArrayList<Prerequisite>();
@@ -149,8 +152,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 					if (anObj instanceof PCClass)
 					{
 						// Classes handle this differently
-						preLevelString =
-								"PRECLASS:1," + anObj.getKeyName() + "=" + anInt; //$NON-NLS-1$ //$NON-NLS-2$
+						preLevelString = "PRECLASS:1," + anObj.getKeyName() + "=" + anInt; //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					Prerequisite r = factory.parse(preLevelString);
 					preReqs.add(r);
@@ -169,8 +171,8 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 				if (PreParserFactory.isPreReqString(key))
 				{
 					isPre = true;
-					final PreParserFactory factory =
-							PreParserFactory.getInstance();
+					final PreParserFactory factory = PreParserFactory
+							.getInstance();
 					final Prerequisite r = factory.parse(key);
 					preReqs.add(r);
 				}
@@ -179,9 +181,9 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 					if (isPre)
 					{
 						Logging.errorPrint("Invalid " + getTokenName() + ": "
-							+ aValue);
+								+ aValue);
 						Logging
-							.errorPrint("  PRExxx must be at the END of the Token");
+								.errorPrint("  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					if (".CLEAR".equals(key))
@@ -189,7 +191,9 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 						if (isFirst)
 						{
 							for (QualifiedObject<String> ab : new ArrayList<QualifiedObject<String>>(
-									anObj.getRawAbilityObjects(category, nature)))
+									anObj
+											.getRawAbilityObjects(category,
+													nature)))
 							{
 								if (ab.getPrereqs().toString().equals(
 										preReqs.toString()))
@@ -200,8 +204,10 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 						}
 						else
 						{
-							Logging.errorPrint("Invalid " + getTokenName()
-									+ ": .CLEAR non-sensical unless it appears first");
+							Logging
+									.errorPrint("Invalid "
+											+ getTokenName()
+											+ ": .CLEAR non-sensical unless it appears first");
 							return false;
 						}
 					}
@@ -229,14 +235,14 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 			for (final String ability : abilityList)
 			{
 				anObj.addAbility(category, nature, new QualifiedObject<String>(
-					ability, preReqs));
+						ability, preReqs));
 			}
 			return true;
 		}
 
 		throw new PersistenceLayerException(PropertyFactory.getFormattedString(
-			"Errors.LstTokens.InvalidTokenFormat", //$NON-NLS-1$
-			getClass().getName(), aValue));
+				"Errors.LstTokens.InvalidTokenFormat", //$NON-NLS-1$
+				getClass().getName(), aValue));
 	}
 
 	/**
@@ -257,25 +263,25 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
-		AbilityCategory ac;
+		CDOMAbilityCategory ac;
 		String cat = tok.nextToken();
 		try
 		{
-			ac = AbilityCategory.valueOf(cat);
+			ac = CDOMAbilityCategory.valueOf(cat);
 		}
 		catch (IllegalArgumentException e)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " refers to invalid Ability Category: " + cat);
+					+ " refers to invalid Ability Category: " + cat);
 			return false;
 		}
 
 		if (!tok.hasMoreTokens())
 		{
 			Logging
-				.errorPrint(getTokenName()
-					+ " must have a Nature, Format is: CATEGORY|NATURE|AbilityName: "
-					+ value);
+					.errorPrint(getTokenName()
+							+ " must have a Nature, Format is: CATEGORY|NATURE|AbilityName: "
+							+ value);
 			return false;
 		}
 
@@ -288,27 +294,25 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 		catch (IllegalArgumentException e)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " refers to invalid Ability Category: " + natureKey);
+					+ " refers to invalid Ability Category: " + natureKey);
 			return false;
 		}
 
 		if (!tok.hasMoreTokens())
 		{
 			Logging
-				.errorPrint(getTokenName()
-					+ " must have abilities, Format is: CATEGORY|NATURE|AbilityName: "
-					+ value);
+					.errorPrint(getTokenName()
+							+ " must have abilities, Format is: CATEGORY|NATURE|AbilityName: "
+							+ value);
 			return false;
 		}
 
 		while (tok.hasMoreTokens())
 		{
-			CDOMCategorizedSingleRef<Ability> ability =
-					context.ref.getCDOMReference(ABILITY_CLASS, ac, tok
-						.nextToken());
-			AssociatedPrereqObject edge =
-					context.getGraphContext().grant(getTokenName(), obj,
-						ability);
+			CDOMSingleRef<CDOMAbility> ability = context.ref.getCDOMReference(
+					ABILITY_CLASS, ac, tok.nextToken());
+			AssociatedPrereqObject edge = context.getGraphContext().grant(
+					getTokenName(), obj, ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
 		}
 		return true;
@@ -316,47 +320,50 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<Ability> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ABILITY_CLASS);
+		AssociatedChanges<CDOMAbility> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), obj, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		DoubleKeyMapToList<AbilityNature, Category<Ability>, LSTWriteable> m =
-				new DoubleKeyMapToList<AbilityNature, Category<Ability>, LSTWriteable>();
+		DoubleKeyMapToList<AbilityNature, Category<CDOMAbility>, LSTWriteable> m = new DoubleKeyMapToList<AbilityNature, Category<CDOMAbility>, LSTWriteable>();
 		for (LSTWriteable ab : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 			{
-				AbilityNature nature =
-						assoc.getAssociation(AssociationKey.ABILITY_NATURE);
-				m.addToListFor(nature, ((CategorizedCDOMReference<Ability>) ab)
-					.getCDOMCategory(), ab);
+				AbilityNature nature = assoc
+						.getAssociation(AssociationKey.ABILITY_NATURE);
+				m.addToListFor(nature,
+						((CategorizedCDOMReference<CDOMAbility>) ab)
+								.getCDOMCategory(), ab);
 			}
 		}
 
 		Set<String> returnSet = new TreeSet<String>();
 		for (AbilityNature nature : m.getKeySet())
 		{
-			for (Category<Ability> category : m.getSecondaryKeySet(nature))
+			for (Category<CDOMAbility> category : m.getSecondaryKeySet(nature))
 			{
 				StringBuilder sb = new StringBuilder();
 				sb.append(category).append(Constants.PIPE);
 				sb.append(nature).append(Constants.PIPE);
 				sb.append(ReferenceUtilities.joinLstFormat(m.getListFor(nature,
-					category), Constants.PIPE));
+						category), Constants.PIPE));
 				returnSet.add(sb.toString());
 			}
 		}
 		return returnSet.toArray(new String[returnSet.size()]);
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

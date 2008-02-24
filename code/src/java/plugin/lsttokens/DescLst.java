@@ -34,11 +34,12 @@ import pcgen.core.Description;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.io.EntityEncoder;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
@@ -46,7 +47,7 @@ import pcgen.util.Logging;
  * 
  * @author djones4
  */
-public class DescLst extends AbstractToken implements GlobalLstToken
+public class DescLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 	/**
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
@@ -266,5 +267,10 @@ public class DescLst extends AbstractToken implements GlobalLstToken
 			return null;
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

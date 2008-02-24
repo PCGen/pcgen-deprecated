@@ -38,17 +38,18 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.constructor.MovementFormulaConstructor;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class MovecloneLst extends AbstractToken implements GlobalLstToken
+public class MovecloneLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	@Override
@@ -191,5 +192,10 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken
 			set.add(sb.toString());
 		}
 		return set.toArray(new String[set.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

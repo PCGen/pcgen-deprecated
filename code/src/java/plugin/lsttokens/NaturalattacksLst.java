@@ -32,7 +32,7 @@ import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -41,33 +41,37 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
 import pcgen.core.Globals;
 import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
 import pcgen.core.Race;
-import pcgen.core.SizeAdjustment;
 import pcgen.core.WeaponProf;
 import pcgen.core.bonus.BonusObj;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.Changes;
-import pcgen.persistence.GraphContext;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.ObjectContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.BonusLoader;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.GraphContext;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.context.ObjectContext;
+import pcgen.rules.persistence.BonusTokenLoader;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
+public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<WeaponProf> WEAPONPROF_CLASS = WeaponProf.class;
+	private static final Class<CDOMWeaponProf> WEAPONPROF_CLASS = CDOMWeaponProf.class;
 
 	/**
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
@@ -112,7 +116,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 	 * @return List
 	 */
 	private static List<Equipment> parseNaturalAttacks(PObject obj,
-		String aString)
+			String aString)
 	{
 		// Currently, this isn't going to work with monk attacks
 		// - their unarmed stuff won't be affected.
@@ -149,8 +153,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 
 		while (attackTok.hasMoreTokens())
 		{
-			StringTokenizer aTok =
-					new StringTokenizer(attackTok.nextToken(), ",");
+			StringTokenizer aTok = new StringTokenizer(attackTok.nextToken(),
+					",");
 			Equipment anEquip = createNaturalWeapon(obj, aTok, aSize);
 
 			if (anEquip != null)
@@ -193,7 +197,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 	 * @return natural weapon
 	 */
 	private static Equipment createNaturalWeapon(PObject obj,
-		StringTokenizer aTok, String aSize)
+			StringTokenizer aTok, String aSize)
 	{
 		final String attackName = aTok.nextToken();
 
@@ -206,8 +210,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		final String profType = aTok.nextToken();
 
 		anEquip.setName(attackName);
-		anEquip.setKeyName(obj.getClass().getSimpleName() + "," + obj.getKey()
-			+ "," + attackName);
+		anEquip.setKeyName(obj.getClass().getSimpleName() + ","
+				+ obj.getKeyName() + "," + attackName);
 		anEquip.setTypeInfo(profType);
 		anEquip.setWeight("0");
 		anEquip.setSize(aSize, true);
@@ -230,7 +234,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		catch (NumberFormatException exc)
 		{
 			Logging.errorPrint("Non-numeric value for number of attacks: '"
-				+ numAttacks + "'");
+					+ numAttacks + "'");
 		}
 
 		if (bonusAttacks > 0)
@@ -263,7 +267,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 			catch (NumberFormatException exc)
 			{
 				Logging.errorPrint("Non-numeric value for hands required: '"
-					+ hString + "'");
+						+ hString + "'");
 			}
 		}
 
@@ -314,9 +318,9 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		 * AFTER this token in the LST file. Thus a deferred resolution (using a
 		 * Resolver) is required.
 		 */
-		CDOMAddressedSingleRef<SizeAdjustment> size =
-				context.ref.getCDOMAddressedReference(obj,
-					SizeAdjustment.class, "Size Adjustment");
+		CDOMAddressedSingleRef<CDOMSizeAdjustment> size = context.ref
+				.getCDOMAddressedReference(obj, CDOMSizeAdjustment.class,
+						"Size Adjustment");
 
 		int count = 1;
 		StringTokenizer attackTok = new StringTokenizer(value, Constants.PIPE);
@@ -333,36 +337,37 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 			{
 				return false;
 			}
-			Equipment anEquip =
-					createNaturalWeapon(context, obj, tokString, size);
+			CDOMEquipment anEquip = createNaturalWeapon(context, obj,
+					tokString, size);
 
 			if (anEquip == null)
 			{
 				Logging.errorPrint("Natural Weapon Creation Failed for : "
-					+ tokString);
+						+ tokString);
 				return false;
 			}
 
 			if (count == 1)
 			{
 				objContext.put(anEquip, StringKey.MODIFIED_NAME,
-					"Natural/Primary");
+						"Natural/Primary");
 			}
 			else
 			{
 				objContext.put(anEquip, StringKey.MODIFIED_NAME,
-					"Natural/Secondary");
+						"Natural/Secondary");
 			}
 
 			objContext
-				.put(anEquip, IntegerKey.OUTPUT_INDEX, Integer.valueOf(0));
+					.put(anEquip, IntegerKey.OUTPUT_INDEX, Integer.valueOf(0));
 			objContext.put(anEquip, IntegerKey.OUTPUT_SUBINDEX, Integer
-				.valueOf(count));
+					.valueOf(count));
 			AssociatedPrereqObject apo = context.getGraphContext().grant(
 					getTokenName(), obj, anEquip);
-			
+
 			apo.setAssociation(AssociationKey.QUANTITY, Integer.valueOf(1));
-			apo.setAssociation(AssociationKey.NUMBER_CARRIED, Integer.valueOf(1));
+			apo.setAssociation(AssociationKey.NUMBER_CARRIED, Integer
+					.valueOf(1));
 			List<AssociationKey<?>> lockedItems = new ArrayList<AssociationKey<?>>();
 			lockedItems.add(AssociationKey.QUANTITY);
 			lockedItems.add(AssociationKey.NUMBER_CARRIED);
@@ -382,8 +387,9 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 	 * @param size
 	 * @return natural weapon
 	 */
-	private Equipment createNaturalWeapon(LoadContext context, CDOMObject obj,
-		String wpn, CDOMAddressedSingleRef<SizeAdjustment> size)
+	private CDOMEquipment createNaturalWeapon(LoadContext context,
+			CDOMObject obj, String wpn,
+			CDOMAddressedSingleRef<CDOMSizeAdjustment> size)
 	{
 		StringTokenizer commaTok = new StringTokenizer(wpn, Constants.COMMA);
 
@@ -392,7 +398,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		if (numTokens != 4 && numTokens != 5)
 		{
 			Logging.errorPrint("Invalid Build of " + "Natural Weapon in "
-				+ getTokenName() + ": " + wpn);
+					+ getTokenName() + ": " + wpn);
 			return null;
 		}
 
@@ -401,11 +407,11 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		if (attackName.equalsIgnoreCase(Constants.LST_NONE))
 		{
 			Logging.errorPrint("Attempt to Build 'None' as a "
-				+ "Natural Weapon in " + getTokenName() + ": " + wpn);
+					+ "Natural Weapon in " + getTokenName() + ": " + wpn);
 			return null;
 		}
 
-		Equipment anEquip = new Equipment();
+		CDOMEquipment anEquip = new CDOMEquipment();
 		anEquip.setName(attackName);
 		/*
 		 * This really can't be raw equipment... It really never needs to be
@@ -416,8 +422,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		 * CONSIDER This really isn't that great, because it's String dependent,
 		 * and may not remove identical items... it certainly works, but is ugly
 		 */
-		anEquip.setKeyName(obj.getClass().getSimpleName() + ","
-			+ obj.getKeyName() + "," + wpn);
+		// anEquip.setKeyName(obj.getClass().getSimpleName() + ","
+		// + obj.getKeyName() + "," + wpn);
 		/*
 		 * Perhaps the construction above should be through context just to
 		 * guarantee uniqueness of the key?? - that's too paranoid
@@ -440,8 +446,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		}
 
 		String numAttacks = commaTok.nextToken();
-		boolean attacksFixed =
-				numAttacks.length() > 0 && numAttacks.charAt(0) == '*';
+		boolean attacksFixed = numAttacks.length() > 0
+				&& numAttacks.charAt(0) == '*';
 		if (attacksFixed)
 		{
 			numAttacks = numAttacks.substring(1);
@@ -450,15 +456,14 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		try
 		{
 			int bonusAttacks = Integer.parseInt(numAttacks) - 1;
-			BonusObj bonus =
-					BonusLoader.getBonus(context, anEquip, "WEAPON", "ATTACKS",
-						Integer.toString(bonusAttacks));
+			BonusObj bonus = BonusTokenLoader.getBonus(context, anEquip,
+					"WEAPON", "ATTACKS", Integer.toString(bonusAttacks));
 			graphContext.grant(getTokenName(), anEquip, bonus);
 		}
 		catch (NumberFormatException exc)
 		{
 			Logging.errorPrint("Non-numeric value for number of attacks in "
-				+ getTokenName() + ": '" + numAttacks + "'");
+					+ getTokenName() + ": '" + numAttacks + "'");
 			return null;
 		}
 
@@ -477,7 +482,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 			catch (NumberFormatException exc)
 			{
 				Logging.errorPrint("Non-numeric value for hands required: '"
-					+ hString + "'");
+						+ hString + "'");
 				return null;
 			}
 		}
@@ -485,8 +490,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 		objContext.put(anEquip, ObjectKey.WEIGHT, BigDecimal.ZERO);
 
 		context.ref.constructIfNecessary(WEAPONPROF_CLASS, attackName);
-		CDOMSimpleSingleRef<WeaponProf> wp =
-				context.ref.getCDOMReference(WEAPONPROF_CLASS, attackName);
+		CDOMSingleRef<CDOMWeaponProf> wp = context.ref.getCDOMReference(
+				WEAPONPROF_CLASS, attackName);
 		objContext.put(anEquip, ObjectKey.WEAPON_PROF, wp);
 		graphContext.grant(getTokenName(), anEquip, wp);
 
@@ -500,9 +505,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<Equipment> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, Equipment.class);
+		AssociatedChanges<CDOMEquipment> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), obj, CDOMEquipment.class);
 		if (changes == null)
 		{
 			return null;
@@ -521,13 +525,13 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 			{
 				sb.append(Constants.PIPE);
 			}
-			Equipment eq = Equipment.class.cast(lstw);
+			CDOMEquipment eq = CDOMEquipment.class.cast(lstw);
 			String name = eq.getDisplayName();
 			// TODO objcontext.getString(eq, StringKey.NAME);
 			if (name == null)
 			{
 				context.addWriteMessage(getTokenName()
-					+ " expected Equipment to have a name");
+						+ " expected Equipment to have a name");
 				return null;
 			}
 			sb.append(name).append(Constants.COMMA);
@@ -535,33 +539,33 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 			if (typech == null)
 			{
 				context.addWriteMessage(getTokenName()
-					+ " expected Equipment to have type changes");
+						+ " expected Equipment to have type changes");
 				return null;
 			}
 			Collection<Type> types = typech.getAdded();
 			if (types == null || types.isEmpty())
 			{
 				context.addWriteMessage(getTokenName()
-					+ " expected Equipment to have a type");
+						+ " expected Equipment to have a type");
 				return null;
 			}
 			sb.append(StringUtil.join(types, Constants.DOT));
 			sb.append(Constants.COMMA);
-			Boolean attProgress =
-					objcontext.getObject(eq, ObjectKey.ATTACKS_PROGRESS);
+			Boolean attProgress = objcontext.getObject(eq,
+					ObjectKey.ATTACKS_PROGRESS);
 			if (attProgress == null)
 			{
 				context.addWriteMessage(getTokenName()
-					+ " expected Equipment to know ATTACKS_PROGRESS state");
+						+ " expected Equipment to know ATTACKS_PROGRESS state");
 				return null;
 			}
 			else if (!attProgress.booleanValue())
 			{
 				sb.append(Constants.CHAR_ASTERISK);
 			}
-			AssociatedChanges<BonusObj> bonusChanges =
-					context.getGraphContext().getChangesFromToken(
-						getTokenName(), eq, BonusObj.class);
+			AssociatedChanges<BonusObj> bonusChanges = context
+					.getGraphContext().getChangesFromToken(getTokenName(), eq,
+							BonusObj.class);
 			if (bonusChanges == null)
 			{
 				sb.append("1");
@@ -578,12 +582,12 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 					if (added.size() != 1)
 					{
 						context.addWriteMessage(getTokenName()
-							+ " expected only one BONUS on Equipment");
+								+ " expected only one BONUS on Equipment");
 						return null;
 					}
 					// TODO Validate BONUS type?
-					String extraAttacks =
-							added.iterator().next().getLSTformat();
+					String extraAttacks = added.iterator().next()
+							.getLSTformat();
 					sb.append(Integer.parseInt(extraAttacks) + 1);
 				}
 			}
@@ -592,18 +596,18 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 			if (head == null)
 			{
 				context.addWriteMessage(getTokenName()
-					+ " expected an EquipmentHead on Equipment");
+						+ " expected an EquipmentHead on Equipment");
 				return null;
 			}
 			String damage = objcontext.getString(head, StringKey.DAMAGE);
 			if (damage == null)
 			{
 				context.addWriteMessage(getTokenName()
-					+ " expected a Damage on EquipmentHead");
+						+ " expected a Damage on EquipmentHead");
 				return null;
 			}
 			sb.append(damage);
-			
+
 			Integer hands = objcontext.getInteger(head, IntegerKey.SLOTS);
 			if (hands != null)
 			{
@@ -612,6 +616,11 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken
 
 			first = false;
 		}
-		return new String[]{sb.toString()};
+		return new String[] { sb.toString() };
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

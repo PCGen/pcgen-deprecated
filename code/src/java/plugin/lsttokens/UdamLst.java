@@ -32,16 +32,17 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.PObject;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class UdamLst implements GlobalLstToken
+public class UdamLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -119,5 +120,10 @@ public class UdamLst implements GlobalLstToken
 			return null;
 		}
 		return returnList.toArray(new String[returnList.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

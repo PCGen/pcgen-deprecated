@@ -33,17 +33,18 @@ import pcgen.core.PObject;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.bonus.BonusObj.StackType;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.BonusLoader;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.BonusTokenLoader;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  */
-public class BonusLst extends AbstractToken implements GlobalLstToken
+public class BonusLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	/**
@@ -84,60 +85,60 @@ public class BonusLst extends AbstractToken implements GlobalLstToken
 		String bValue =
 				aTok.hasMoreTokens() ? aTok.nextToken().toUpperCase() : "0";
 
-		BonusObj bonus =
-				BonusLoader
-					.getBonus(context, obj, bonusName, bonusInfo, bValue);
+//		BonusObj bonus =
+//				BonusTokenLoader
+//					.getBonus(context, obj, bonusName, bonusInfo, bValue);
 
-		while (aTok.hasMoreTokens())
-		{
-			String aString = aTok.nextToken().toUpperCase();
-
-			if (PreParserFactory.isPreReqString(aString))
-			{
-				Prerequisite prereq = getPrerequisite(aString);
-				if (prereq == null)
-				{
-					return false;
-				}
-				bonus.addPreReq(prereq);
-			}
-			else if (aString.startsWith("TYPE=") || aString.startsWith("TYPE."))
-			{
-				String bonusType = aString.substring(5);
-				int dotLoc = bonusType.indexOf('.');
-				if (dotLoc != -1)
-				{
-					final String stackingFlag = bonusType.substring(dotLoc + 1);
-					// TODO - Need to reset bonusType to exclude this but
-					// there is too much dependancy on it being there
-					// built into the code.
-					if (stackingFlag.startsWith("REPLACE")) //$NON-NLS-1$
-					{
-						bonus.setStackingFlag(StackType.REPLACE);
-					}
-					else if (stackingFlag.startsWith("STACK")) //$NON-NLS-1$
-					{
-						bonus.setStackingFlag(StackType.STACK);
-					}
-				}
-				boolean result = bonus.addType(bonusType);
-
-				if (!result)
-				{
-					Logging.errorPrint(new StringBuffer().append(
-						"Could not add type ").append(aString.substring(5))
-						.append(" to bonusType ").append(bonusName).toString());
-				}
-			}
-			else
-			{
-				Logging.errorPrint(new StringBuffer().append(getTokenName())
-					.append(" error: Unexpected argument: ").append(aString)
-					.append(" to bonus ").append(bonusName).append(
-						"; value was: ").append(value).toString());
-			}
-		}
-		context.getObjectContext().addToList(obj, ListKey.BONUSES, bonus);
+//		while (aTok.hasMoreTokens())
+//		{
+//			String aString = aTok.nextToken().toUpperCase();
+//
+//			if (PreParserFactory.isPreReqString(aString))
+//			{
+//				Prerequisite prereq = getPrerequisite(aString);
+//				if (prereq == null)
+//				{
+//					return false;
+//				}
+//				bonus.addPreReq(prereq);
+//			}
+//			else if (aString.startsWith("TYPE=") || aString.startsWith("TYPE."))
+//			{
+//				String bonusType = aString.substring(5);
+//				int dotLoc = bonusType.indexOf('.');
+//				if (dotLoc != -1)
+//				{
+//					final String stackingFlag = bonusType.substring(dotLoc + 1);
+//					// TODO - Need to reset bonusType to exclude this but
+//					// there is too much dependancy on it being there
+//					// built into the code.
+//					if (stackingFlag.startsWith("REPLACE")) //$NON-NLS-1$
+//					{
+//						bonus.setStackingFlag(StackType.REPLACE);
+//					}
+//					else if (stackingFlag.startsWith("STACK")) //$NON-NLS-1$
+//					{
+//						bonus.setStackingFlag(StackType.STACK);
+//					}
+//				}
+//				boolean result = bonus.addType(bonusType);
+//
+//				if (!result)
+//				{
+//					Logging.errorPrint(new StringBuffer().append(
+//						"Could not add type ").append(aString.substring(5))
+//						.append(" to bonusType ").append(bonusName).toString());
+//				}
+//			}
+//			else
+//			{
+//				Logging.errorPrint(new StringBuffer().append(getTokenName())
+//					.append(" error: Unexpected argument: ").append(aString)
+//					.append(" to bonus ").append(bonusName).append(
+//						"; value was: ").append(value).toString());
+//			}
+//		}
+//		context.getObjectContext().addToList(obj, ListKey.BONUSES, bonus);
 		return true;
 	}
 
@@ -145,5 +146,10 @@ public class BonusLst extends AbstractToken implements GlobalLstToken
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

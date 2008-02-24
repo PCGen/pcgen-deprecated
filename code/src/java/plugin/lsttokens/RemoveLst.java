@@ -23,18 +23,20 @@
 package plugin.lsttokens;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.core.Constants;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.RemoveLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class RemoveLst implements GlobalLstToken
+public class RemoveLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -52,7 +54,8 @@ public class RemoveLst implements GlobalLstToken
 		else
 		{
 			Logging
-				.errorPrint(getTokenName() + " only supports FEAT: " + value);
+					.errorPrint(getTokenName() + " only supports FEAT: "
+							+ value);
 			return false;
 		}
 
@@ -60,7 +63,7 @@ public class RemoveLst implements GlobalLstToken
 		if (value.charAt(keyLength) == '(')
 		{
 			Logging
-				.deprecationPrint("REMOVE: syntax with parenthesis is deprecated.");
+					.deprecationPrint("REMOVE: syntax with parenthesis is deprecated.");
 			Logging.deprecationPrint("Please use REMOVE:" + key + "|...");
 			if (anInt > -9)
 			{
@@ -78,13 +81,26 @@ public class RemoveLst implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		return RemoveLoader.parseLine(context, (PObject) obj, value);
+		int pipeLoc = value.indexOf(Constants.PIPE);
+		if (pipeLoc == -1)
+		{
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " requires a SubToken");
+			return false;
+		}
+		return context.processSubToken(obj, getTokenName(), value.substring(0,
+				pipeLoc), value.substring(pipeLoc + 1));
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		return RemoveLoader.unparse(context, obj);
+		return context.unparse(obj, getTokenName());
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

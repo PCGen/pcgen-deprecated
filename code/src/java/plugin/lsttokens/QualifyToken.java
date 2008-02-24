@@ -33,10 +33,21 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
+import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.Qualifier;
-import pcgen.cdom.inst.PCClassLevel;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMPCClassLevel;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Deity;
@@ -49,19 +60,21 @@ import pcgen.core.Race;
 import pcgen.core.Skill;
 import pcgen.core.WeaponProf;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.ReferenceManufacturer;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.context.ReferenceManufacturer;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.StringPClassUtil;
 
 /**
  * Deals with the QUALIFY token for Abilities
  */
-public class QualifyToken extends AbstractToken implements GlobalLstToken
+public class QualifyToken extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
 	@Override
@@ -87,7 +100,7 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 			if ("ABILITY".equals(key))
 			{
 				Logging.errorPrint("Invalid use of ABILITY in QUALIFY "
-					+ "(requires ABILITY=<category>): " + key);
+						+ "(requires ABILITY=<category>): " + key);
 				return false;
 			}
 			c = StringPClassUtil.getClassFor(key);
@@ -97,7 +110,7 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 			if (!"ABILITY".equals(key.substring(0, equalLoc)))
 			{
 				Logging.errorPrint("Invalid use of = in QUALIFY "
-					+ "(only valid for ABILITY): " + key);
+						+ "(only valid for ABILITY): " + key);
 				return false;
 			}
 			c = Ability.class;
@@ -106,12 +119,12 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 		if (c == null)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " expecting a POBJECT Type, found: " + key);
+					+ " expecting a POBJECT Type, found: " + key);
 			Logging
-				.errorPrint("  5.14 Format is: QualifyType|Key[|Key] value was: "
-					+ value);
+					.errorPrint("  5.14 Format is: QualifyType|Key[|Key] value was: "
+							+ value);
 			Logging.errorPrint("  Valid QualifyTypes are: "
-				+ StringPClassUtil.getValidStrings());
+					+ StringPClassUtil.getValidStrings());
 			return false;
 		}
 		else
@@ -132,11 +145,15 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	public List<Class<? extends PObject>> getLegalTypes()
+	public List<Class<? extends ConcretePrereqObject>> getLegalTypes()
 	{
-		return Arrays.asList(Ability.class, Deity.class, Domain.class,
-			Equipment.class, PCClass.class, PCClassLevel.class, Race.class,
-			Skill.class, Spell.class, PCTemplate.class, WeaponProf.class);
+		return Arrays.asList(CDOMAbility.class, CDOMDeity.class,
+				CDOMDomain.class, CDOMEquipment.class, CDOMPCClass.class,
+				CDOMPCClassLevel.class, CDOMRace.class, CDOMSkill.class,
+				CDOMSpell.class, CDOMTemplate.class, CDOMWeaponProf.class,
+				Ability.class, Deity.class, Domain.class, Equipment.class,
+				PCClass.class, Race.class, Skill.class, Spell.class,
+				PCTemplate.class, WeaponProf.class);
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
@@ -154,28 +171,29 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 		if (value.indexOf("|") == -1)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " requires at least two arguments, QualifyType and Key: "
-				+ value);
+					+ " requires at least two arguments, QualifyType and Key: "
+					+ value);
 			return false;
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
-		ReferenceManufacturer<? extends PObject> rm =
-				StringPClassUtil.getReferenceManufacturer(context, st
-					.nextToken());
+		Class<? extends CDOMObject> c = StringPClassUtil.getCDOMClassFor(st
+				.nextToken());
+		ReferenceManufacturer<? extends CDOMObject, ?> rm = context.ref
+				.getReferenceManufacturer(c);
 		if (rm == null)
 		{
 			Logging.errorPrint("  Error encountered parsing " + getTokenName());
 			Logging.errorPrint("  Format is: QualifyType|Key[|Key] value was: "
-				+ value);
+					+ value);
 			Logging.errorPrint("  Valid QualifyTypes are: "
-				+ StringPClassUtil.getValidStrings());
+					+ StringPClassUtil.getValidStrings());
 			return false;
 		}
 
 		while (st.hasMoreTokens())
 		{
-			CDOMReference<? extends PObject> ref =
-					rm.getReference(st.nextToken());
+			CDOMReference<? extends CDOMObject> ref = rm.getReference(st
+					.nextToken());
 			context.obj.addToList(obj, ListKey.QUALIFY, new Qualifier(rm
 					.getCDOMClass(), ref));
 		}
@@ -185,31 +203,30 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Changes<Qualifier> changes =
-				context.getObjectContext().getListChanges(obj, ListKey.QUALIFY);
+		Changes<Qualifier> changes = context.getObjectContext().getListChanges(
+				obj, ListKey.QUALIFY);
 		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
 		Collection<Qualifier> quals = changes.getAdded();
-		HashMapToList<String, CDOMReference<?>> map =
-				new HashMapToList<String, CDOMReference<?>>();
+		HashMapToList<String, CDOMReference<?>> map = new HashMapToList<String, CDOMReference<?>>();
 		for (Qualifier qual : quals)
 		{
-			Class<? extends PObject> cl = qual.getQualifiedClass();
-			String s = StringPClassUtil.getStringFor(cl);
+			Class<? extends CDOMObject> cl = qual.getQualifiedClass();
+			String s = StringPClassUtil.getCDOMStringFor(cl);
 			CDOMReference<?> ref = qual.getQualifiedReference();
 			String key = s;
 			if (ref instanceof CategorizedCDOMReference)
 			{
-				Category<?> cat =
-						((CategorizedCDOMReference) ref).getCDOMCategory();
+				Category<?> cat = ((CategorizedCDOMReference) ref)
+						.getCDOMCategory();
 				key += '=' + cat.toString();
 			}
 			map.addToListFor(key, ref);
 		}
-		Set<CDOMReference<?>> set =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
+		Set<CDOMReference<?>> set = new TreeSet<CDOMReference<?>>(
+				TokenUtilities.REFERENCE_SORTER);
 		Set<String> returnSet = new TreeSet<String>();
 		for (String key : map.getKeySet())
 		{
@@ -217,9 +234,14 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken
 			set.addAll(map.getListFor(key));
 			StringBuilder sb = new StringBuilder();
 			sb.append(key).append(Constants.PIPE).append(
-				ReferenceUtilities.joinLstFormat(set, Constants.PIPE));
+					ReferenceUtilities.joinLstFormat(set, Constants.PIPE));
 			returnSet.add(sb.toString());
 		}
 		return returnSet.toArray(new String[returnSet.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

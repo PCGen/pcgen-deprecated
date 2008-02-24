@@ -25,14 +25,15 @@ package plugin.lsttokens;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * @author djones4
  * 
  */
-public class RegionLst implements GlobalLstToken
+public class RegionLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -70,4 +71,8 @@ public class RegionLst implements GlobalLstToken
 		return new String[]{region};
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

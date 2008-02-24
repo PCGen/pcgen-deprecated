@@ -34,15 +34,16 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SpellResistance;
 import pcgen.core.PObject;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * @author djones4
  * 
  */
-public class SrLst implements GlobalLstToken
+public class SrLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -109,5 +110,10 @@ public class SrLst implements GlobalLstToken
 		}
 		list.addAll(set);
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

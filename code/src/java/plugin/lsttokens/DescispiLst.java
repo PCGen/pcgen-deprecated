@@ -23,16 +23,19 @@
 package plugin.lsttokens;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class DescispiLst implements GlobalLstToken
+public class DescispiLst implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -49,21 +52,21 @@ public class DescispiLst implements GlobalLstToken
 			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
 			{
 				Logging.deprecationPrint("You should use 'YES' or 'NO' as the "
-					+ getTokenName());
+						+ getTokenName());
 				Logging
-					.deprecationPrint("Abbreviations will fail after PCGen 5.14");
+						.deprecationPrint("Abbreviations will fail after PCGen 5.14");
 			}
 			set = true;
 		}
 		else
 		{
 			if (firstChar != 'N' && firstChar != 'n'
-				&& !value.equalsIgnoreCase("NO"))
+					&& !value.equalsIgnoreCase("NO"))
 			{
 				Logging.deprecationPrint("You should use 'YES' or 'NO' as the "
-					+ getTokenName());
+						+ getTokenName());
 				Logging
-					.deprecationPrint("Abbreviations will fail after PCGen 5.14");
+						.deprecationPrint("Abbreviations will fail after PCGen 5.14");
 			}
 			set = false;
 		}
@@ -80,7 +83,7 @@ public class DescispiLst implements GlobalLstToken
 			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
 			{
 				Logging.errorPrint("You should use 'YES' as the "
-					+ getTokenName() + ": " + value);
+						+ getTokenName() + ": " + value);
 				return false;
 			}
 			set = Boolean.TRUE;
@@ -92,23 +95,29 @@ public class DescispiLst implements GlobalLstToken
 				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
 				{
 					Logging.errorPrint("You should use 'YES' or 'NO' as the "
-						+ getTokenName() + ": " + value);
+							+ getTokenName() + ": " + value);
 					return false;
 				}
 			}
 			set = Boolean.FALSE;
 		}
-		obj.setDescPI(set);
+		context.obj.put(obj, ObjectKey.DESC_PI, set);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Boolean descPI = obj.getDescPIObject();
+		Boolean descPI = context.getObjectContext().getObject(obj,
+				ObjectKey.DESC_PI);
 		if (descPI == null)
 		{
 			return null;
 		}
-		return new String[]{descPI.booleanValue() ? "YES" : "NO"};
+		return new String[] { descPI.booleanValue() ? "YES" : "NO" };
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

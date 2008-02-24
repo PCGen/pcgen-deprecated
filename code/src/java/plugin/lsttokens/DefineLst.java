@@ -31,20 +31,21 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.VariableKey;
-import pcgen.core.PCStat;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class DefineLst implements GlobalLstToken
+public class DefineLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
+	private static final Class<CDOMStat> PCSTAT_CLASS = CDOMStat.class;
 
 	public String getTokenName()
 	{
@@ -103,7 +104,7 @@ public class DefineLst implements GlobalLstToken
 		{
 			if (value.startsWith("UNLOCK."))
 			{
-				PCStat stat = context.ref.getConstructedCDOMObject(
+				CDOMStat stat = context.ref.getAbbreviatedObject(
 						PCSTAT_CLASS, value.substring(7));
 				/*
 				 * TODO Unlock the stat here
@@ -135,7 +136,7 @@ public class DefineLst implements GlobalLstToken
 					.substring(barLoc + 1));
 			if (value.startsWith("LOCK."))
 			{
-				PCStat stat = context.ref.getConstructedCDOMObject(
+				CDOMStat stat = context.ref.getAbbreviatedObject(
 						PCSTAT_CLASS, value.substring(5, barLoc));
 				/*
 				 * TODO Lock the stat here
@@ -170,5 +171,10 @@ public class DefineLst implements GlobalLstToken
 					+ context.getObjectContext().getVariable(obj, key));
 		}
 		return set.toArray(new String[set.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

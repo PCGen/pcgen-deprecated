@@ -32,17 +32,18 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
 import pcgen.core.Source;
 import pcgen.core.SourceEntry;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.SourceLoader;
 import pcgen.persistence.lst.SourceLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author zaister
  * 
  */
-public class SourcedateLst implements GlobalLstToken, SourceLstToken
+public class SourcedateLst implements GlobalLstToken, SourceLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -103,5 +104,10 @@ public class SourcedateLst implements GlobalLstToken, SourceLstToken
 		}
 		DateFormat df = new SimpleDateFormat("yyyy-MM"); //$NON-NLS-1$
 		return new String[]{df.format(date)};
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

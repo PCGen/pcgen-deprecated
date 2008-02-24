@@ -30,9 +30,10 @@ import pcgen.core.Constants;
 import pcgen.core.PObject;
 import pcgen.core.utils.MessageType;
 import pcgen.core.utils.ShowMessageDelegate;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.Load;
 
@@ -40,7 +41,7 @@ import pcgen.util.enumeration.Load;
  * @author djones4
  */
 public class UnencumberedmoveLst extends AbstractToken implements
-		GlobalLstToken
+		GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	@Override
@@ -277,5 +278,10 @@ public class UnencumberedmoveLst extends AbstractToken implements
 			}
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

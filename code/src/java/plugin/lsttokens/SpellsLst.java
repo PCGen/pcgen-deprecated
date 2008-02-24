@@ -34,31 +34,33 @@ import java.util.TreeSet;
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.Campaign;
 import pcgen.core.PCSpell;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * @author djones4
  * 
  */
-public class SpellsLst extends AbstractToken implements GlobalLstToken
+public class SpellsLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 	@Override
 	public String getTokenName()
@@ -109,9 +111,9 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 					if (isPre)
 					{
 						Logging.addParseMessage(Logging.LST_ERROR, "Invalid "
-							+ getTokenName() + ": " + sourceLine);
+								+ getTokenName() + ": " + sourceLine);
 						Logging.addParseMessage(Logging.LST_ERROR,
-							"  PRExxx must be at the END of the Token");
+								"  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					casterLevel = token.substring(12);
@@ -121,9 +123,9 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 					if (isPre)
 					{
 						Logging.addParseMessage(Logging.LST_ERROR, "Invalid "
-							+ getTokenName() + ": " + sourceLine);
+								+ getTokenName() + ": " + sourceLine);
 						Logging.addParseMessage(Logging.LST_ERROR,
-							"  PRExxx must be at the END of the Token");
+								"  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					times = token.substring(6);
@@ -133,14 +135,14 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 					isPre = true;
 					try
 					{
-						PreParserFactory factory =
-								PreParserFactory.getInstance();
+						PreParserFactory factory = PreParserFactory
+								.getInstance();
 						preList.add(factory.parse(token));
 					}
 					catch (PersistenceLayerException ple)
 					{
 						Logging.addParseMessage(Logging.LST_ERROR, ple
-							.getMessage());
+								.getMessage());
 					}
 				}
 				else
@@ -148,9 +150,9 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 					if (isPre)
 					{
 						Logging.addParseMessage(Logging.LST_ERROR, "Invalid "
-							+ getTokenName() + ": " + sourceLine);
+								+ getTokenName() + ": " + sourceLine);
 						Logging.addParseMessage(Logging.LST_ERROR,
-							"  PRExxx must be at the END of the Token");
+								"  PRExxx must be at the END of the Token");
 						isPre = false;
 					}
 					preParseSpellList.add(token);
@@ -158,8 +160,8 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			}
 			for (int i = 0; i < preParseSpellList.size(); i++)
 			{
-				StringTokenizer spellTok =
-						new StringTokenizer(preParseSpellList.get(i), ",");
+				StringTokenizer spellTok = new StringTokenizer(
+						preParseSpellList.get(i), ",");
 				String name = spellTok.nextToken();
 				String dcFormula = null;
 				if (spellTok.hasMoreTokens())
@@ -183,7 +185,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 		else
 		{
 			Logging
-				.errorPrint("SPELLS: line minimally requires SPELLS:<spellbook name>|<spell name>");
+					.errorPrint("SPELLS: line minimally requires SPELLS:<spellbook name>|<spell name>");
 		}
 		return spellList;
 	}
@@ -209,7 +211,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 	 * @return spells list
 	 */
 	private boolean createSpellsList(LoadContext context, CDOMObject obj,
-		String sourceLine)
+			String sourceLine)
 	{
 		if (isEmpty(sourceLine) || hasIllegalSeparator('|', sourceLine))
 		{
@@ -220,89 +222,146 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 		String spellBook = tok.nextToken();
 		// Formula casterLevel = null;
 		String casterLevel = null;
-		String times = "1"; // FormulaFactory.getFormulaFor("1");
+		String times = null;
+		String timeunit = null;
 
 		if (!tok.hasMoreTokens())
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ ": minimally requires a Spell Name");
+					+ ": minimally requires a Spell Name");
 			return false;
 		}
 		String token = tok.nextToken();
 
-		if (token.startsWith("TIMES="))
+		while (tok.hasMoreTokens())
 		{
-			// times = FormulaFactory.getFormulaFor(token.substring(6));
-			times = token.substring(6);
-			if (times.length() == 0)
+			if (token.startsWith("TIMES="))
 			{
-				Logging.addParseMessage(Logging.LST_ERROR, "Error in Times in "
-					+ getTokenName() + ": argument was empty");
-				return false;
+				if (times != null)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Found two TIMES entries in " + getTokenName()
+									+ ": invalid: " + sourceLine);
+					return false;
+				}
+				// times = FormulaFactory.getFormulaFor(token.substring(6));
+				times = token.substring(6);
+				if (times.length() == 0)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Error in Times in " + getTokenName()
+									+ ": argument was empty");
+					return false;
+				}
+				if (!tok.hasMoreTokens())
+				{
+					Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+							+ ": minimally requires "
+							+ "a Spell Name (after TIMES=)");
+					return false;
+				}
+				token = tok.nextToken();
 			}
-			if (!tok.hasMoreTokens())
+			else if (token.startsWith("TIMEUNIT="))
 			{
-				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ ": minimally requires a Spell Name (after TIMES=)");
-				return false;
+				if (timeunit != null)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Found two TIMES entries in " + getTokenName()
+									+ ": invalid: " + sourceLine);
+					return false;
+				}
+				// times = FormulaFactory.getFormulaFor(token.substring(6));
+				timeunit = token.substring(9);
+				if (timeunit.length() == 0)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Error in Times in " + getTokenName()
+									+ ": argument was empty");
+					return false;
+				}
+				if (!tok.hasMoreTokens())
+				{
+					Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+							+ ": minimally requires "
+							+ "a Spell Name (after TIMEUNIT=)");
+					return false;
+				}
+				token = tok.nextToken();
 			}
-			token = tok.nextToken();
+			else if (token.startsWith("CASTERLEVEL="))
+			{
+				if (casterLevel != null)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Found two CASTERLEVEL entries in "
+									+ getTokenName() + ": invalid: "
+									+ sourceLine);
+					return false;
+				}
+				// casterLevel =
+				// FormulaFactory.getFormulaFor(token.substring(12));
+				casterLevel = token.substring(12);
+				if (casterLevel.length() == 0)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR,
+							"Error in Caster Level in " + getTokenName()
+									+ ": argument was empty");
+					return false;
+				}
+				if (!tok.hasMoreTokens())
+				{
+					Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+							+ ": minimally requires a "
+							+ "Spell Name (after CASTERLEVEL=)");
+					return false;
+				}
+				token = tok.nextToken();
+			}
+			else
+			{
+				break;
+			}
 		}
-		if (token.startsWith("CASTERLEVEL="))
+		if (times == null)
 		{
-			// casterLevel =
-			// FormulaFactory.getFormulaFor(token.substring(12));
-			casterLevel = token.substring(12);
-			if (casterLevel.length() == 0)
-			{
-				Logging.addParseMessage(Logging.LST_ERROR,
-					"Error in Caster Level in " + getTokenName()
-						+ ": argument was empty");
-				return false;
-			}
-			if (!tok.hasMoreTokens())
-			{
-				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ ": minimally requires a Spell Name (after CASTERLEVEL=)");
-				return false;
-			}
-			token = tok.nextToken();
+			times = "1";
 		}
 
 		if (token.charAt(0) == ',')
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ " Spell arguments may not start with , : " + token);
+					+ " Spell arguments may not start with , : " + token);
 			return false;
 		}
 		if (token.charAt(token.length() - 1) == ',')
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ " Spell arguments may not end with , : " + token);
+					+ " Spell arguments may not end with , : " + token);
 			return false;
 		}
 		if (token.indexOf(",,") != -1)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ " Spell arguments uses double separator ,, : " + token);
+					+ " Spell arguments uses double separator ,, : " + token);
 			return false;
 		}
 
-		DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String> dkm =
-				new DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String>();
+		DoubleKeyMap<CDOMReference<CDOMSpell>, AssociationKey<String>, String> dkm = new DoubleKeyMap<CDOMReference<CDOMSpell>, AssociationKey<String>, String>();
 		while (true)
 		{
 			int commaLoc = token.indexOf(',');
 			String name = commaLoc == -1 ? token : token.substring(0, commaLoc);
-			CDOMReference<Spell> spell =
-					context.ref.getCDOMReference(Spell.class, name);
+			CDOMReference<CDOMSpell> spell = context.ref.getCDOMReference(
+					CDOMSpell.class, name);
 			dkm.put(spell, AssociationKey.CASTER_LEVEL, casterLevel);
-			dkm.put(spell, AssociationKey.TIMES_PER_DAY, times);
+			dkm.put(spell, AssociationKey.TIMES_PER_UNIT, times);
+			dkm.put(spell, AssociationKey.TIME_UNIT, timeunit);
 			dkm.put(spell, AssociationKey.SPELLBOOK, spellBook);
 			if (commaLoc != -1)
 			{
 				dkm.put(spell, AssociationKey.DC_FORMULA, token
-					.substring(commaLoc + 1));
+						.substring(commaLoc + 1));
 			}
 			if (!tok.hasMoreTokens())
 			{
@@ -325,8 +384,8 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			if (prereq == null)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR,
-					"   (Did you put spells after the "
-						+ "PRExxx tags in SPELLS:?)");
+						"   (Did you put spells after the "
+								+ "PRExxx tags in SPELLS:?)");
 				return false;
 			}
 			prereqs.add(prereq);
@@ -341,14 +400,16 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	public void finish(LoadContext context, CDOMObject obj,
-		DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String> dkm,
-		List<Prerequisite> prereqs)
+	public void finish(
+			LoadContext context,
+			CDOMObject obj,
+			DoubleKeyMap<CDOMReference<CDOMSpell>, AssociationKey<String>, String> dkm,
+			List<Prerequisite> prereqs)
 	{
-		for (CDOMReference<Spell> spell : dkm.getKeySet())
+		for (CDOMReference<CDOMSpell> spell : dkm.getKeySet())
 		{
-			AssociatedPrereqObject edge =
-					context.getGraphContext().grant(getTokenName(), obj, spell);
+			AssociatedPrereqObject edge = context.getGraphContext().grant(
+					getTokenName(), obj, spell);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(spell))
 			{
 				edge.setAssociation(ak, dkm.get(spell, ak));
@@ -365,33 +426,30 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<Spell> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, Spell.class);
+		AssociatedChanges<CDOMSpell> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), obj, CDOMSpell.class);
 		if (changes == null)
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		DoubleKeyMapToList<Set<Prerequisite>, Map<AssociationKey<String>, String>, Thingy> m =
-				new DoubleKeyMapToList<Set<Prerequisite>, Map<AssociationKey<String>, String>, Thingy>();
+		DoubleKeyMapToList<Set<Prerequisite>, Map<AssociationKey<String>, String>, Thingy> m = new DoubleKeyMapToList<Set<Prerequisite>, Map<AssociationKey<String>, String>, Thingy>();
 		for (LSTWriteable lw : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(lw))
 			{
-				Map<AssociationKey<String>, String> am =
-						new HashMap<AssociationKey<String>, String>();
+				Map<AssociationKey<String>, String> am = new HashMap<AssociationKey<String>, String>();
 				String dc = null;
 				for (AssociationKey ak : assoc.getAssociationKeys())
 				{
 					if (AssociationKey.SOURCE_URI.equals(ak)
-						|| AssociationKey.FILE_LOCATION.equals(ak))
+							|| AssociationKey.FILE_LOCATION.equals(ak))
 					{
 						// Do nothing
 					}
@@ -405,7 +463,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 					}
 				}
 				m.addToListFor(new HashSet<Prerequisite>(assoc
-					.getPrerequisiteList()), am, new Thingy(lw, dc));
+						.getPrerequisiteList()), am, new Thingy(lw, dc));
 			}
 		}
 
@@ -413,20 +471,26 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			for (Map<AssociationKey<String>, String> am : m
-				.getSecondaryKeySet(prereqs))
+					.getSecondaryKeySet(prereqs))
 			{
 				StringBuilder sb = new StringBuilder();
 				sb.append(am.get(AssociationKey.SPELLBOOK));
-				String times = am.get(AssociationKey.TIMES_PER_DAY);
+				String times = am.get(AssociationKey.TIMES_PER_UNIT);
 				if (!"1".equals(times))
 				{
 					sb.append(Constants.PIPE).append("TIMES=").append(times);
+				}
+				String timeunit = am.get(AssociationKey.TIME_UNIT);
+				if (timeunit != null)
+				{
+					sb.append(Constants.PIPE).append("TIMEUNIT=").append(
+							timeunit);
 				}
 				String casterLvl = am.get(AssociationKey.CASTER_LEVEL);
 				if (casterLvl != null)
 				{
 					sb.append(Constants.PIPE).append("CASTERLEVEL=").append(
-						casterLvl);
+							casterLvl);
 				}
 				List<Thingy> thingyList = m.getListFor(prereqs, am);
 				Set<String> spellSet = new TreeSet<String>();
@@ -462,5 +526,10 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken
 			spell = sp;
 			dc = d;
 		}
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

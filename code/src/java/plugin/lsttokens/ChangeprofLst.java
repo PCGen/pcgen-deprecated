@@ -37,24 +37,25 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.cdom.modifier.ChangeProf;
 import pcgen.core.PObject;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class ChangeprofLst extends AbstractToken implements GlobalLstToken
+public class ChangeprofLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<WeaponProf> WEAPONPROF_CLASS = WeaponProf.class;
+	private static final Class<CDOMWeaponProf> WEAPONPROF_CLASS = CDOMWeaponProf.class;
 
 	@Override
 	public String getTokenName()
@@ -157,7 +158,7 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 			}
 			String[] val = {newType};
 
-			CDOMGroupRef<WeaponProf> newTypeProf =
+			CDOMGroupRef<CDOMWeaponProf> newTypeProf =
 					context.ref.getCDOMTypeReference(WEAPONPROF_CLASS, val);
 
 			String profs = tokText.substring(0, equalLoc);
@@ -174,7 +175,7 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 			StringTokenizer pTok = new StringTokenizer(profs, Constants.COMMA);
 			while (pTok.hasMoreTokens())
 			{
-				CDOMReference<WeaponProf> wp =
+				CDOMReference<CDOMWeaponProf> wp =
 						TokenUtilities.getTypeOrPrimitive(context,
 							WEAPONPROF_CLASS, pTok.nextToken());
 				list.add(new ChangeProf(wp, newTypeProf));
@@ -202,27 +203,27 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 			// Zero indicates no Token
 			return null;
 		}
-		HashMapToList<CDOMGroupRef<WeaponProf>, CDOMReference<WeaponProf>> m =
-				new HashMapToList<CDOMGroupRef<WeaponProf>, CDOMReference<WeaponProf>>();
+		HashMapToList<CDOMGroupRef<CDOMWeaponProf>, CDOMReference<CDOMWeaponProf>> m =
+				new HashMapToList<CDOMGroupRef<CDOMWeaponProf>, CDOMReference<CDOMWeaponProf>>();
 		for (LSTWriteable lw : added)
 		{
 			ChangeProf cp = (ChangeProf) lw;
-			CDOMReference<WeaponProf> source = cp.getSource();
-			CDOMGroupRef<WeaponProf> result = cp.getResult();
+			CDOMReference<CDOMWeaponProf> source = cp.getSource();
+			CDOMGroupRef<CDOMWeaponProf> result = cp.getResult();
 			m.addToListFor(result, source);
 		}
 
-		SortedSet<CDOMReference<WeaponProf>> set =
-				new TreeSet<CDOMReference<WeaponProf>>(
+		SortedSet<CDOMReference<CDOMWeaponProf>> set =
+				new TreeSet<CDOMReference<CDOMWeaponProf>>(
 					TokenUtilities.REFERENCE_SORTER);
 		Set<String> returnSet = new TreeSet<String>();
-		for (CDOMGroupRef<WeaponProf> result : m.getKeySet())
+		for (CDOMGroupRef<CDOMWeaponProf> result : m.getKeySet())
 		{
 			StringBuilder sb = new StringBuilder();
 			boolean needComma = false;
 			set.clear();
 			set.addAll(m.getListFor(result));
-			for (CDOMReference<WeaponProf> source : set)
+			for (CDOMReference<CDOMWeaponProf> source : set)
 			{
 				if (needComma)
 				{
@@ -244,5 +245,10 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken
 			returnSet.add(sb.toString());
 		}
 		return new String[]{StringUtil.join(returnSet, Constants.PIPE)};
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -28,17 +28,18 @@ import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.FollowerLimit;
-import pcgen.core.CompanionList;
+import pcgen.cdom.inst.CompanionList;
 import pcgen.core.PObject;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
@@ -70,7 +71,8 @@ import pcgen.util.Logging;
  * @author divaa01
  * 
  */
-public class FollowersLst implements GlobalLstToken
+public class FollowersLst implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 	/**
 	 * 
@@ -93,7 +95,7 @@ public class FollowersLst implements GlobalLstToken
 	 * @throws PersistenceLayerException
 	 */
 	public boolean parse(PObject obj, String value, int anInt)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		final StringTokenizer tok = new StringTokenizer(value, "|");
 		final String followerType;
@@ -104,7 +106,7 @@ public class FollowersLst implements GlobalLstToken
 		else
 		{
 			throw new PersistenceLayerException(
-				"Invalid FOLLOWERS token format");
+					"Invalid FOLLOWERS token format");
 		}
 		final String followerNumber;
 		if (tok.hasMoreTokens())
@@ -114,7 +116,7 @@ public class FollowersLst implements GlobalLstToken
 		else
 		{
 			throw new PersistenceLayerException(
-				"Invalid FOLLOWERS token format");
+					"Invalid FOLLOWERS token format");
 		}
 
 		obj.setNumFollowers(followerType, followerNumber);
@@ -122,21 +124,21 @@ public class FollowersLst implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
 			Logging
-				.errorPrint(getTokenName()
-					+ " has no PIPE character: Must be of the form <follower type>|<formula>");
+					.errorPrint(getTokenName()
+							+ " has no PIPE character: Must be of the form <follower type>|<formula>");
 			return false;
 		}
 		if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 		{
 			Logging.errorPrint(getTokenName()
-				+ " has too many PIPE characters: "
-				+ "Must be of the form <follower type>|<formula");
+					+ " has too many PIPE characters: "
+					+ "Must be of the form <follower type>|<formula");
 			return false;
 		}
 
@@ -144,29 +146,28 @@ public class FollowersLst implements GlobalLstToken
 		if (followerType.length() == 0)
 		{
 			Logging.errorPrint("Follower Type in " + getTokenName()
-				+ " cannot be empty");
+					+ " cannot be empty");
 			return false;
 		}
 		String followerNumber = value.substring(pipeLoc + 1);
 		if (followerNumber.length() == 0)
 		{
 			Logging.errorPrint("Follower Count in " + getTokenName()
-				+ " cannot be empty");
+					+ " cannot be empty");
 			return false;
 		}
-		CDOMSimpleSingleRef<CompanionList> cl =
-				context.ref.getCDOMReference(CompanionList.class, followerType);
+		CDOMSingleRef<CompanionList> cl = context.ref.getCDOMReference(
+				CompanionList.class, followerType);
 		Formula num = FormulaFactory.getFormulaFor(followerNumber);
 		context.getObjectContext().addToList(obj, ListKey.FOLLOWERS,
-			new FollowerLimit(cl, num));
+				new FollowerLimit(cl, num));
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Changes<FollowerLimit> changes =
-				context.getObjectContext().getListChanges(obj,
-					ListKey.FOLLOWERS);
+		Changes<FollowerLimit> changes = context.getObjectContext()
+				.getListChanges(obj, ListKey.FOLLOWERS);
 		if (changes == null || changes.isEmpty())
 		{
 			return null;
@@ -177,8 +178,13 @@ public class FollowersLst implements GlobalLstToken
 			String followerType = fl.getCompanionList().getLSTformat();
 			Formula followerNumber = fl.getValue();
 			returnSet.add(followerType + Constants.PIPE
-				+ followerNumber.toString());
+					+ followerNumber.toString());
 		}
 		return returnSet.toArray(new String[returnSet.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

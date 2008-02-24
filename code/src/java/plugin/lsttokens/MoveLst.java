@@ -34,17 +34,18 @@ import pcgen.cdom.content.SimpleMovement;
 import pcgen.core.Equipment;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class MoveLst extends AbstractToken implements GlobalLstToken
+public class MoveLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	@Override
@@ -176,5 +177,10 @@ public class MoveLst extends AbstractToken implements GlobalLstToken
 			Logging.errorPrint("Invalid movement (must be an integer >= 0): "
 				+ mod + " in MOVE: " + value);
 		}
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -41,26 +40,27 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ListChoiceSet;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.PCTemplateChooseList;
 import pcgen.core.Campaign;
-import pcgen.core.PCTemplate;
-import pcgen.core.PCTemplateChooseList;
 import pcgen.core.PObject;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * @author djones4
  * 
  */
-public class TemplateLst extends AbstractToken implements GlobalLstToken
+public class TemplateLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<PCTemplate> PCTEMPLATE_CLASS = PCTemplate.class;
+	private static final Class<CDOMTemplate> PCTEMPLATE_CLASS = CDOMTemplate.class;
 
-	private static final Class<PCTemplateChooseList> PCTEMPLATECHOOSELIST_CLASS =
-			PCTemplateChooseList.class;
+	private static final Class<PCTemplateChooseList> PCTEMPLATECHOOSELIST_CLASS = PCTemplateChooseList.class;
 
 	@Override
 	public String getTokenName()
@@ -83,27 +83,25 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 		if (value.startsWith(Constants.LST_CHOOSE))
 		{
 			PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
-			CDOMSingleRef<PCTemplateChooseList> ref =
-					context.ref.getCDOMDirectReference(tcl);
-			boolean returnval =
-					parseChoose(context, cdo, ref, value
-						.substring(Constants.LST_CHOOSE.length()));
+			CDOMSingleRef<PCTemplateChooseList> ref = context.ref
+					.getCDOMDirectReference(tcl);
+			boolean returnval = parseChoose(context, cdo, ref, value
+					.substring(Constants.LST_CHOOSE.length()));
 			if (returnval)
 			{
-				ChooseActionContainer container =
-						new ChooseActionContainer(getTokenName());
-				container.addActor(new GrantActor<PCTemplate>());
-				AssociatedPrereqObject edge =
-						context.getGraphContext().grant(getTokenName(), cdo,
-							container);
+				ChooseActionContainer container = new ChooseActionContainer(
+						getTokenName());
+				container.addActor(new GrantActor<CDOMTemplate>());
+				AssociatedPrereqObject edge = context.getGraphContext().grant(
+						getTokenName(), cdo, container);
 				edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-					.getFormulaFor(1));
+						.getFormulaFor(1));
 				edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT,
-					FormulaFactory.getFormulaFor(1));
-				ListChoiceSet<PCTemplate> rcs =
-						new ListChoiceSet<PCTemplate>(tcl);
-				ChoiceSet<PCTemplate> cs =
-						new ChoiceSet<PCTemplate>("ADD", rcs);
+						FormulaFactory.getFormulaFor(1));
+				ListChoiceSet<CDOMTemplate> rcs = new ListChoiceSet<CDOMTemplate>(
+						tcl);
+				ChoiceSet<CDOMTemplate> cs = new ChoiceSet<CDOMTemplate>("ADD",
+						rcs);
 				edge.setAssociation(AssociationKey.CHOICE, cs);
 			}
 			return returnval;
@@ -111,10 +109,10 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 		else if (value.startsWith(Constants.LST_ADDCHOICE))
 		{
 			PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
-			CDOMSingleRef<PCTemplateChooseList> ref =
-					context.ref.getCDOMDirectReference(tcl);
+			CDOMSingleRef<PCTemplateChooseList> ref = context.ref
+					.getCDOMDirectReference(tcl);
 			return parseChoose(context, cdo, ref, value
-				.substring(Constants.LST_ADDCHOICE.length()));
+					.substring(Constants.LST_ADDCHOICE.length()));
 		}
 		else
 		{
@@ -128,8 +126,8 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 			while (tok.hasMoreTokens())
 			{
 				String tokText = tok.nextToken();
-				CDOMSimpleSingleRef<PCTemplate> ref =
-						context.ref.getCDOMReference(PCTEMPLATE_CLASS, tokText);
+				CDOMSingleRef<CDOMTemplate> ref = context.ref.getCDOMReference(
+						PCTEMPLATE_CLASS, tokText);
 				context.getGraphContext().grant(getTokenName(), cdo, ref);
 			}
 		}
@@ -138,7 +136,7 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 	}
 
 	public boolean parseChoose(LoadContext context, CDOMObject obj,
-		CDOMReference<PCTemplateChooseList> swl, String value)
+			CDOMReference<PCTemplateChooseList> swl, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -149,9 +147,8 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 
 		while (tok.hasMoreTokens())
 		{
-			CDOMSimpleSingleRef<PCTemplate> ref =
-					context.ref.getCDOMReference(PCTEMPLATE_CLASS, tok
-						.nextToken());
+			CDOMSingleRef<CDOMTemplate> ref = context.ref.getCDOMReference(
+					PCTEMPLATE_CLASS, tok.nextToken());
 			context.getListContext().addToList(getTokenName(), obj, swl, ref);
 		}
 		return true;
@@ -159,22 +156,19 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject cdo)
 	{
-		AssociatedChanges<PCTemplate> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					cdo, PCTEMPLATE_CLASS);
+		AssociatedChanges<CDOMTemplate> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), cdo, PCTEMPLATE_CLASS);
 
 		PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
-		CDOMSingleRef<PCTemplateChooseList> ref =
-				context.ref.getCDOMDirectReference(tcl);
-		CDOMReference<PCTemplateChooseList> allRef =
-				context.ref.getCDOMAllReference(PCTEMPLATECHOOSELIST_CLASS);
+		CDOMSingleRef<PCTemplateChooseList> ref = context.ref
+				.getCDOMDirectReference(tcl);
+		CDOMReference<PCTemplateChooseList> allRef = context.ref
+				.getCDOMAllReference(PCTEMPLATECHOOSELIST_CLASS);
 
-		AssociatedChanges<CDOMReference<PCTemplate>> tctChanges =
-				context.getListContext().getChangesInList(getTokenName(), cdo,
-					ref);
-		AssociatedChanges<CDOMReference<PCTemplate>> allChanges =
-				context.getListContext().getChangesInList(getTokenName(), cdo,
-					allRef);
+		AssociatedChanges<CDOMReference<CDOMTemplate>> tctChanges = context
+				.getListContext().getChangesInList(getTokenName(), cdo, ref);
+		AssociatedChanges<CDOMReference<CDOMTemplate>> allChanges = context
+				.getListContext().getChangesInList(getTokenName(), cdo, allRef);
 
 		if (changes == null && tctChanges == null && allChanges == null)
 		{
@@ -189,47 +183,47 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 			if (changes.hasRemovedItems() || changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
-					+ "does not support .CLEAR");
+						+ "does not support .CLEAR");
 				return null;
 			}
 			Collection<LSTWriteable> added = changes.getAdded();
 			if (added != null && !added.isEmpty())
 			{
 				list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
-					Constants.PIPE));
+						Constants.PIPE));
 			}
 		}
 
 		if (tctChanges != null)
 		{
 			if (tctChanges.hasRemovedItems()
-				|| tctChanges.includesGlobalClear())
+					|| tctChanges.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
-					+ "does not support .CLEAR");
+						+ "does not support .CLEAR");
 				return null;
 			}
 			if (tctChanges.hasAddedItems())
 			{
 				list.add(Constants.LST_CHOOSE
-					+ ReferenceUtilities.joinLstFormat(tctChanges.getAdded(),
-						Constants.PIPE));
+						+ ReferenceUtilities.joinLstFormat(tctChanges
+								.getAdded(), Constants.PIPE));
 			}
 		}
 		if (allChanges != null)
 		{
 			if (allChanges.hasRemovedItems()
-				|| allChanges.includesGlobalClear())
+					|| allChanges.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
-					+ "does not support .CLEAR");
+						+ "does not support .CLEAR");
 				return null;
 			}
 			if (allChanges.hasAddedItems())
 			{
 				list.add(Constants.LST_ADDCHOICE
-					+ ReferenceUtilities.joinLstFormat(allChanges.getAdded(),
-						Constants.PIPE));
+						+ ReferenceUtilities.joinLstFormat(allChanges
+								.getAdded(), Constants.PIPE));
 			}
 		}
 		if (list.isEmpty())
@@ -238,5 +232,10 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken
 			return null;
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

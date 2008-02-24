@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
@@ -37,24 +36,26 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
-import pcgen.core.ClassSkillList;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
 import pcgen.core.PObject;
-import pcgen.core.Skill;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * @author djones4
  * 
  */
-public class CskillLst extends AbstractToken implements GlobalLstToken
+public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<Skill> SKILL_CLASS = Skill.class;
+	private static final Class<CDOMSkill> SKILL_CLASS = CDOMSkill.class;
 
 	private static final Class<ClassSkillList> SKILLLIST_CLASS =
 			ClassSkillList.class;
@@ -105,7 +106,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				CDOMReference<Skill> ref;
+				CDOMReference<CDOMSkill> ref;
 				String clearText = tokText.substring(7);
 				if (Constants.LST_ALL.equals(clearText))
 				{
@@ -133,7 +134,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 				 * C/CC Skill object and therefore doesn't know how to search
 				 * the sublists
 				 */
-				CDOMReference<Skill> ref;
+				CDOMReference<CDOMSkill> ref;
 				if (Constants.LST_ALL.equals(tokText))
 				{
 					foundAny = true;
@@ -223,5 +224,10 @@ public class CskillLst extends AbstractToken implements GlobalLstToken
 				.add(ReferenceUtilities.joinLstFormat(addedSet, Constants.PIPE));
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

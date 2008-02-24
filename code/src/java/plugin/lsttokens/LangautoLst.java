@@ -29,23 +29,24 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.core.Language;
+import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.core.PObject;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class LangautoLst extends AbstractToken implements GlobalLstToken
+public class LangautoLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<Language> LANGUAGE_CLASS = Language.class;
+	private static final Class<CDOMLanguage> LANGUAGE_CLASS = CDOMLanguage.class;
 
 	@Override
 	public String getTokenName()
@@ -93,7 +94,7 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 			}
 			else
 			{
-				CDOMReference<Language> ref;
+				CDOMReference<CDOMLanguage> ref;
 				if (Constants.LST_ALL.equals(tokText))
 				{
 					foundAny = true;
@@ -127,7 +128,7 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<Language> changes =
+		AssociatedChanges<CDOMLanguage> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, LANGUAGE_CLASS);
 		if (changes == null)
@@ -157,5 +158,10 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken
 			sb.append(lw.getLSTformat());
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

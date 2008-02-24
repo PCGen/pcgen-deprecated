@@ -28,16 +28,17 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
 import pcgen.core.Source;
 import pcgen.core.SourceEntry;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.SourceLoader;
 import pcgen.persistence.lst.SourceLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * @author djones4
  * 
  */
-public class SourceshortLst implements GlobalLstToken, SourceLstToken
+public class SourceshortLst implements GlobalLstToken, SourceLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -83,4 +84,8 @@ public class SourceshortLst implements GlobalLstToken, SourceLstToken
 		return new String[]{shortName};
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

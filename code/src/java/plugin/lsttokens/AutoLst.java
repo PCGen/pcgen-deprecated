@@ -25,16 +25,18 @@ package plugin.lsttokens;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AutoLoader;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
- *
+ * 
  */
-public class AutoLst implements GlobalLstToken
+public class AutoLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -56,19 +58,26 @@ public class AutoLst implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
+			throws PersistenceLayerException
 	{
-		int barLoc = value.indexOf(Constants.PIPE);
-		if (barLoc == -1)
+		int pipeLoc = value.indexOf(Constants.PIPE);
+		if (pipeLoc == -1)
 		{
-			Logging.errorPrint(getTokenName() + " must contain a PIPE (|)");
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " requires a SubToken");
 			return false;
 		}
-		String subKey = value.substring(0, barLoc);
-		return AutoLoader.parseLine(context, (PObject) obj, subKey, value.substring(barLoc + 1));
+		return context.processSubToken(obj, getTokenName(), value.substring(0,
+				pipeLoc), value.substring(pipeLoc + 1));
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		return AutoLoader.unparse(context, obj);
+		return context.unparse(obj, getTokenName());
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

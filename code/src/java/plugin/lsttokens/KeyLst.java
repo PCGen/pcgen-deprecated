@@ -25,14 +25,15 @@ package plugin.lsttokens;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * @author djones4
  * 
  */
-public class KeyLst implements GlobalLstToken
+public class KeyLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -49,9 +50,7 @@ public class KeyLst implements GlobalLstToken
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		// THIS IS ORDER DEPENDENT, MUST BE DONE BEFORE resetting the key
-		context.ref.reassociateReference(value, ((PObject) obj));
-		// Hacking for duplicate protection
-		((PObject) obj).setKeyName(value);
+		context.ref.reassociateKey(value, obj);
 		/*
 		 * TODO This actually needs to be special - since the Key is the lookup
 		 * method FUTURE isn't this redundant with the set above?!
@@ -62,12 +61,17 @@ public class KeyLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		String key = obj.getKeyName();
-		String display = obj.getDisplayName();
-		if (key.equals(display))
+		String key = context.getObjectContext().getString(obj,
+				StringKey.KEY_NAME);
+		if (key == null)
 		{
 			return null;
 		}
-		return new String[]{key};
+		return new String[] { key };
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

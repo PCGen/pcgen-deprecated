@@ -40,18 +40,19 @@ import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PObject;
 import pcgen.core.utils.CoreUtility;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class ChooseLst implements GlobalLstToken
+public class ChooseLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -109,7 +110,8 @@ public class ChooseLst implements GlobalLstToken
 						return false;
 					}
 					Logging.deprecationPrint("Support for COUNT= in CHOOSE"
-							+ "is tenuous, at best, use the SELECT: token " + value);
+							+ "is tenuous, at best, use the SELECT: token "
+							+ value);
 				}
 				else if (key.startsWith("NUMCHOICES="))
 				{
@@ -136,8 +138,8 @@ public class ChooseLst implements GlobalLstToken
 				}
 			}
 			String prefixString = CoreUtility.join(prefixList, "|");
-			boolean parse =
-					ChooseLoader.parseToken(obj, prefixString, key, val, anInt);
+			boolean parse = ChooseLoader.parseToken(obj, prefixString, key,
+					val, anInt);
 			if (!parse)
 			{
 				// 514 deprecation changes
@@ -154,12 +156,12 @@ public class ChooseLst implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		if (obj instanceof EquipmentModifier)
-		{
-			return false;
-		}
+//		if (obj instanceof CDOMEqMod)
+//		{
+//			return false;
+//		}
 		String token = null;
 		String rest = value;
 		String count = null;
@@ -169,24 +171,7 @@ public class ChooseLst implements GlobalLstToken
 		{
 			token = rest.substring(0, pipeLoc);
 			rest = rest.substring(pipeLoc + 1);
-			if (token.startsWith("COUNT="))
-			{
-				if (count != null)
-				{
-					Logging.addParseMessage(Logging.LST_ERROR,
-							"Cannot use COUNT more than once in CHOOSE: "
-									+ value);
-					return false;
-				}
-				count = token.substring(6);
-				if (count == null)
-				{
-					Logging.addParseMessage(Logging.LST_ERROR,
-							"COUNT in CHOOSE must be a formula: " + value);
-					return false;
-				}
-			}
-			else if (token.startsWith("NUMCHOICES="))
+			if (token.startsWith("NUMCHOICES="))
 			{
 				if (maxCount != null)
 				{
@@ -235,22 +220,23 @@ public class ChooseLst implements GlobalLstToken
 			{
 				if (val.substring(titleLoc + 1).indexOf(Constants.PIPE) != -1)
 				{
-					Logging.addParseMessage(Logging.LST_ERROR,
-						"CHOOSE: If TITLE= is used, must END with TITLE= . "
-							+ "No additional arguments allowed after the title.  "
-							+ "Offending value: " + value);
+					Logging
+							.addParseMessage(
+									Logging.LST_ERROR,
+									"CHOOSE: If TITLE= is used, must END with TITLE= . "
+											+ "No additional arguments allowed after the title.  "
+											+ "Offending value: " + value);
 					return false;
 				}
 				title = val.substring(titleLoc + 7);
 				val = val.substring(0, titleLoc);
 			}
 		}
-		
+
 		/*
 		 * TODO Need to process the title!!!
 		 */
-		PrimitiveChoiceSet<?> chooser =
-				ChooseLoader.parseToken(context, obj, key, val);
+		PrimitiveChoiceSet<?> chooser = context.getChoiceSet(obj, key, val);
 		if (chooser == null)
 		{
 			// Yes, direct access, not through the context!!
@@ -258,13 +244,11 @@ public class ChooseLst implements GlobalLstToken
 			return false;
 		}
 		ChooseActionContainer cac = obj.getChooseContainer();
-		Formula maxFormula =
-				maxCount == null ? FormulaFactory
-					.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
-					.getFormulaFor(maxCount);
-		Formula countFormula =
-				count == null ? FormulaFactory.getFormulaFor(1)
-					: FormulaFactory.getFormulaFor(count);
+		Formula maxFormula = maxCount == null ? FormulaFactory
+				.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
+				.getFormulaFor(maxCount);
+		Formula countFormula = count == null ? FormulaFactory.getFormulaFor(1)
+				: FormulaFactory.getFormulaFor(count);
 		ChoiceSet<?> choiceSet = new ChoiceSet(Constants.CHOOSE, chooser);
 		cac.setChoiceSet(choiceSet);
 		cac.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
@@ -274,9 +258,8 @@ public class ChooseLst implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChoiceSet> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChoiceSet.class);
+		AssociatedChanges<ChoiceSet> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), obj, ChoiceSet.class);
 		if (changes == null)
 		{
 			return null;
@@ -287,7 +270,12 @@ public class ChooseLst implements GlobalLstToken
 			// Zero indicates no Token
 			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(added,
-			Constants.PIPE)};
+		return new String[] { ReferenceUtilities.joinLstFormat(added,
+				Constants.PIPE) };
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

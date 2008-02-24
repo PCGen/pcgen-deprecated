@@ -25,17 +25,18 @@ package plugin.lsttokens;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AddLoader;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class AddLst implements GlobalLstToken
+public class AddLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -70,7 +71,7 @@ public class AddLst implements GlobalLstToken
 		{
 			key = "WEAPONBONUS";
 			Logging.errorPrint("ADD:LIST has been deprecated, please use a "
-				+ "combination of CHOOSE:WEAPONPROF and BONUS:WEAPONPROF");
+					+ "combination of CHOOSE:WEAPONPROF and BONUS:WEAPONPROF");
 		}
 		else if (value.startsWith("EQUIP"))
 		{
@@ -84,7 +85,7 @@ public class AddLst implements GlobalLstToken
 		else if (value.startsWith("Language"))
 		{
 			Logging.deprecationPrint("Use of lower-case Language "
-				+ "in ADD is deprecated. Use upper-case LANGUAGE");
+					+ "in ADD is deprecated. Use upper-case LANGUAGE");
 			key = "LANGUAGE";
 		}
 		else if (value.startsWith("LANGUAGE"))
@@ -110,7 +111,7 @@ public class AddLst implements GlobalLstToken
 		else
 		{
 			Logging
-				.deprecationPrint("Invalid ADD: Token encountered or lack of a SUBTOKEN for ADD:SA is deprecated.");
+					.deprecationPrint("Invalid ADD: Token encountered or lack of a SUBTOKEN for ADD:SA is deprecated.");
 			Logging.deprecationPrint("Please use ADD:SA|name|[count|]X,X");
 			Logging.deprecationPrint("  Offending Token is: ADD:" + value);
 			key = "SA";
@@ -131,17 +132,17 @@ public class AddLst implements GlobalLstToken
 			if (key.equals("FEAT") && value.equals("FEAT"))
 			{
 				Logging.deprecationPrint("ADD:FEAT "
-					+ "should not be used with no parameters");
+						+ "should not be used with no parameters");
 				Logging.deprecationPrint("  This usage is deprecated");
 				Logging
-					.deprecationPrint("  Please use BONUS:FEAT|POOL|1 instead");
+						.deprecationPrint("  Please use BONUS:FEAT|POOL|1 instead");
 				return obj.addBonusList("FEAT|POOL|1");
 			}
 			contents = value.substring(keyLength + 1);
 			if (value.charAt(keyLength) == '(')
 			{
 				Logging
-					.deprecationPrint("ADD: syntax with parenthesis is deprecated.");
+						.deprecationPrint("ADD: syntax with parenthesis is deprecated.");
 				Logging.deprecationPrint("Please use ADD:" + key + "|...");
 				obj.addAddList(anInt, value);
 				return true;
@@ -151,7 +152,7 @@ public class AddLst implements GlobalLstToken
 				if (contents.charAt(keyLength) == ':')
 				{
 					Logging.deprecationPrint("Invalid ADD:SPELLLEVEL Syntax: "
-						+ value);
+							+ value);
 					Logging.deprecationPrint("Please use ADD:SPELLLEVEL|...");
 					obj.addAddList(anInt, value);
 					return true;
@@ -169,12 +170,31 @@ public class AddLst implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-			throws PersistenceLayerException {
-		return AddLoader.parseLine(context, (PObject) obj, value);
+			throws PersistenceLayerException
+	{
+		int pipeLoc = value.indexOf(Constants.PIPE);
+		if (pipeLoc == -1)
+		{
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " requires a SubToken");
+			return false;
+		}
+		String key = value.substring(0, pipeLoc);
+		if (".CLEAR".equals(key))
+		{
+			// TODO Need to perform .CLEAR
+		}
+		return context.processSubToken(obj, getTokenName(), key, value
+				.substring(pipeLoc + 1));
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		return AddLoader.unparse(context, obj);
+		return context.unparse(obj, getTokenName());
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -22,28 +22,37 @@
  */
 package plugin.lsttokens;
 
-import pcgen.cdom.base.AssociatedPrereqObject;
+import java.util.ArrayList;
+import java.util.List;
+
+import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMKit;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class KitLst extends AbstractToken implements GlobalLstToken
+public class KitLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
+
+	private static final Class<CDOMKit> KIT_CLASS = CDOMKit.class;
 
 	@Override
 	public String getTokenName()
@@ -65,10 +74,16 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
+			return false;
+		}
+		if (value.indexOf(',') != -1)
+		{
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " does not use , for a delimiter");
 			return false;
 		}
 
@@ -77,7 +92,7 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 		if (pipeLoc == -1)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " did not have a |, syntax is count|kit[|kit]*");
+					+ " did not have a |, syntax is count|kit[|kit]*");
 			return false;
 		}
 
@@ -88,45 +103,85 @@ public class KitLst extends AbstractToken implements GlobalLstToken
 			if (count <= 0)
 			{
 				Logging.errorPrint("Count in " + getTokenName()
-					+ " must be > 0");
+						+ " must be > 0");
 				return false;
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " parse error: first value must be a number");
+					+ " parse error: first value must be a number");
 			return false;
 		}
 
-		PrimitiveChoiceSet<?> chooser =
-				ChooseLoader.parseToken(context, obj, "KIT", value
-					.substring(pipeLoc + 1));
+		PrimitiveChoiceSet<?> chooser = context.getChoiceSet(KIT_CLASS, value
+				.substring(pipeLoc + 1));
 		if (chooser == null)
 		{
 			Logging.errorPrint("Internal Error: " + getTokenName()
-				+ " failed to build Chooser");
+					+ " failed to build Chooser");
 			return false;
 		}
+		ChooseActionContainer container = new ChooseActionContainer("KIT");
+		context.getGraphContext().grant(getTokenName(), obj, container);
+		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+				.getFormulaFor(count));
+		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+				.getFormulaFor(count));
 		ChoiceSet<?> choiceSet = new ChoiceSet("KIT", chooser);
-		AssociatedPrereqObject edge =
-				context.getGraphContext().grant(getTokenName(), obj, choiceSet);
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(count));
+		container.setChoiceSet(choiceSet);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		ChoiceSet<?> choice =
-				context.getObjectContext().getObject(obj, ObjectKey.KIT_CHOICE);
-		if (choice == null)
+		AssociatedChanges<ChooseActionContainer> grantChanges = context
+				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+						ChooseActionContainer.class);
+		if (grantChanges == null)
 		{
 			return null;
 		}
-		// Substring takes off the KIT| prefix
-		return new String[]{choice.getLSTformat().substring(4)};
+		if (!grantChanges.hasAddedItems())
+		{
+			// Zero indicates no Token
+			return null;
+		}
+		List<String> addStrings = new ArrayList<String>();
+		for (LSTWriteable lstw : grantChanges.getAdded())
+		{
+			ChooseActionContainer container = (ChooseActionContainer) lstw;
+			if (!"KIT".equals(container.getName()))
+			{
+				context.addWriteMessage("Unexpected CHOOSE container found: "
+						+ container.getName());
+				continue;
+			}
+			ChoiceSet<?> cs = container.getChoiceSet();
+			if (KIT_CLASS.equals(cs.getChoiceClass()))
+			{
+				Formula f = container
+						.getAssociation(AssociationKey.CHOICE_COUNT);
+				if (f == null)
+				{
+					context.addWriteMessage("Unable to find " + getTokenName()
+							+ " Count");
+					return null;
+				}
+				String fString = f.toString();
+				StringBuilder sb = new StringBuilder();
+				sb.append(fString).append(Constants.PIPE);
+				sb.append(cs.getLSTformat());
+				addStrings.add(sb.toString());
+			}
+		}
+		return addStrings.toArray(new String[addStrings.size()]);
+		// // Substring takes off the KIT| prefix
+		// return new String[] { choice.getLSTformat().substring(4) };
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -8,24 +8,27 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.CDOMSpecialAbility;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.Skill;
 import pcgen.core.SpecialAbility;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
-public class SabLst extends AbstractToken implements GlobalLstToken
+public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<SpecialAbility> SA_CLASS = SpecialAbility.class;
+	private static final Class<CDOMSpecialAbility> SA_CLASS = CDOMSpecialAbility.class;
 
 	@Override
 	public String getTokenName()
@@ -214,7 +217,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken
 			return false;
 		}
 
-		SpecialAbility sa = new SpecialAbility(firstToken);
+		CDOMSpecialAbility sa = new CDOMSpecialAbility(firstToken);
 
 		if (!tok.hasMoreTokens())
 		{
@@ -272,7 +275,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken
 			 * class, so that items like Class Level can be correctly
 			 * calculated).
 			 */
-			if (obj instanceof PCClass && "var".equals(prereq.getKind()))
+			if (obj instanceof CDOMPCClass && "var".equals(prereq.getKind()))
 			{
 				prereq.setSubKey("CLASS:" + obj.getKeyName());
 			}
@@ -289,7 +292,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<SpecialAbility> changes =
+		AssociatedChanges<CDOMSpecialAbility> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, SA_CLASS);
 		if (changes == null)
@@ -310,8 +313,8 @@ public class SabLst extends AbstractToken implements GlobalLstToken
 		for (LSTWriteable lw : added)
 		{
 			StringBuilder sb = new StringBuilder();
-			SpecialAbility ab = (SpecialAbility) lw;
-			sb.append(ab.getDisplayName());
+			sb.append(lw.getLSTformat());
+			CDOMSpecialAbility ab = (CDOMSpecialAbility) lw;
 			if (ab.hasPrerequisites())
 			{
 				sb.append(Constants.PIPE);
@@ -321,5 +324,10 @@ public class SabLst extends AbstractToken implements GlobalLstToken
 			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

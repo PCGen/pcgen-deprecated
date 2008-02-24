@@ -26,14 +26,15 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.PObject;
 import pcgen.io.EntityEncoder;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * @author djones4
  * 
  */
-public class TempdescLst implements GlobalLstToken
+public class TempdescLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -64,5 +65,10 @@ public class TempdescLst implements GlobalLstToken
 			return null;
 		}
 		return new String[]{EntityEncoder.encode(descr)};
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -40,25 +39,27 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.ClassSpellList;
+import pcgen.cdom.inst.DomainSpellList;
 import pcgen.core.Campaign;
-import pcgen.core.ClassSpellList;
-import pcgen.core.DomainSpellList;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * @author djones4
  * 
  */
-public class SpelllevelLst extends AbstractToken implements GlobalLstToken
+public class SpelllevelLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	@Override
@@ -268,7 +269,7 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		return true;
 	}
 
-	private <CL extends PObject & CDOMList<Spell>> boolean subParse(
+	private <CL extends CDOMObject & CDOMList<CDOMSpell>> boolean subParse(
 		LoadContext context, CDOMObject obj, Class<CL> tagType,
 		String tokString, String spellString, List<Prerequisite> prereqs)
 	{
@@ -301,8 +302,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 
 		StringTokenizer clTok =
 				new StringTokenizer(casterString, Constants.COMMA);
-		List<CDOMReference<? extends CDOMList<Spell>>> slList =
-				new ArrayList<CDOMReference<? extends CDOMList<Spell>>>();
+		List<CDOMReference<? extends CDOMList<CDOMSpell>>> slList =
+				new ArrayList<CDOMReference<? extends CDOMList<CDOMSpell>>>();
 		while (clTok.hasMoreTokens())
 		{
 			String classString = clTok.nextToken();
@@ -340,9 +341,9 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		while (spTok.hasMoreTokens())
 		{
 			String spellName = spTok.nextToken();
-			CDOMReference<Spell> sp =
-					context.ref.getCDOMReference(Spell.class, spellName);
-			for (CDOMReference<? extends CDOMList<Spell>> sl : slList)
+			CDOMReference<CDOMSpell> sp =
+					context.ref.getCDOMReference(CDOMSpell.class, spellName);
+			for (CDOMReference<? extends CDOMList<CDOMSpell>> sl : slList)
 			{
 				AssociatedPrereqObject tpr =
 						context.getListContext().addToList(getTokenName(), obj,
@@ -461,4 +462,8 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken
 		return map;
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

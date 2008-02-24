@@ -36,12 +36,13 @@ import pcgen.core.DamageReduction;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
@@ -49,7 +50,7 @@ import pcgen.util.Logging;
  * 
  */
 
-public class DrLst extends AbstractToken implements GlobalLstToken
+public class DrLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 
 	private static final Class<DamageReduction> DR_CLASS =
@@ -205,5 +206,10 @@ public class DrLst extends AbstractToken implements GlobalLstToken
 		}
 		list.addAll(set);
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

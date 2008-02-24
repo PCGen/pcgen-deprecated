@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -41,19 +40,21 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.core.CompanionList;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CompanionList;
 import pcgen.core.FollowerOption;
 import pcgen.core.PObject;
-import pcgen.core.Race;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstUtils;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -105,7 +106,7 @@ import pcgen.util.PropertyFactory;
  * @author divaa01
  * 
  */
-public class CompanionListLst extends AbstractToken implements GlobalLstToken
+public class CompanionListLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 {
 	private static final String COMPANIONLIST = "COMPANIONLIST"; //$NON-NLS-1$
 
@@ -250,7 +251,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 
 		StringTokenizer subTok = new StringTokenizer(list, LstUtils.COMMA);
 
-		Set<CDOMReference<Race>> races = new HashSet<CDOMReference<Race>>();
+		Set<CDOMReference<CDOMRace>> races = new HashSet<CDOMReference<CDOMRace>>();
 		boolean foundAny = false;
 		while (subTok.hasMoreTokens())
 		{
@@ -258,11 +259,11 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			if (Constants.LST_ANY.equalsIgnoreCase(tokString))
 			{
 				foundAny = true;
-				races.add(context.ref.getCDOMAllReference(Race.class));
+				races.add(context.ref.getCDOMAllReference(CDOMRace.class));
 			}
 			else
 			{
-				races.add(context.ref.getCDOMReference(Race.class, tokString));
+				races.add(context.ref.getCDOMReference(CDOMRace.class, tokString));
 			}
 		}
 		if (foundAny && races.size() > 1)
@@ -362,7 +363,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 	}
 
 	private void finish(LoadContext context, CDOMObject obj,
-		String companionType, Set<CDOMReference<Race>> races,
+		String companionType, Set<CDOMReference<CDOMRace>> races,
 		Integer followerAdjustment, List<Prerequisite> prereqs)
 	{
 		context.ref.constructIfNecessary(CompanionList.class, companionType);
@@ -370,7 +371,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 				context.ref
 					.getCDOMReference(CompanionList.class, companionType);
 
-		for (CDOMReference<Race> race : races)
+		for (CDOMReference<CDOMRace> race : races)
 		{
 			AssociatedPrereqObject edge =
 					context.getListContext().addToList(getTokenName(), obj,
@@ -472,5 +473,10 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken
 			}
 		}
 		return set.toArray(new String[set.size()]);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }
