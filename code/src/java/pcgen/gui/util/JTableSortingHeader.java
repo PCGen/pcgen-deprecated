@@ -130,7 +130,7 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener,
 
     public void mouseClicked(MouseEvent e)
     {
-        if (getResizingColumn() == null)
+        if (getCursor() == Cursor.getDefaultCursor())
         {
             sorter.toggleSort(trackedColumn.getModelIndex());
             repaint();

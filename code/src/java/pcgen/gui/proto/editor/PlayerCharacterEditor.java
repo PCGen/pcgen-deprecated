@@ -25,11 +25,22 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTreeViewTable1 = new pcgen.gui.util.JTreeViewTable();
+        jTableEx1 = new pcgen.gui.util.JTableEx();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane1.setViewportView(jTreeViewTable1);
+        jTableEx1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"sdfa", "tegh", "wvczs", "yuue"},
+                {"ghjd", "asdf", "trtw", "sfdgj"},
+                {null, "asdrj", "kjffs", "sfgj"},
+                {"dfg", "cbnc", "mnvx", "xssd"}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTableEx1);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -48,7 +59,7 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private pcgen.gui.util.JTreeViewTable jTreeViewTable1;
+    private pcgen.gui.util.JTableEx jTableEx1;
     // End of variables declaration//GEN-END:variables
     
 }
