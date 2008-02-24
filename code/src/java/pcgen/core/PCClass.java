@@ -34,8 +34,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.DoubleKeyMap;
-import pcgen.cdom.base.ClassSkillListContainer;
-import pcgen.cdom.inst.PCClassLevel;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.character.CharacterSpell;
@@ -70,8 +68,8 @@ import pcgen.util.enumeration.VisionType;
  * 
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  */
-public class PCClass extends PObject implements ClassSkillListContainer {
-	public static final Integer NO_LEVEL_LIMIT = Integer.valueOf(-1);
+public class PCClass extends PObject {
+	public static final int NO_LEVEL_LIMIT = -1;
 
 	/*
 	 * FINALALLCLASSLEVELS Since this applies to a ClassLevel line
@@ -715,6 +713,7 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 	private HashMap<AttackType, String> attackCycleMap = null;
 
 	private SpellProgressionInfo castInfo = null;
+	private boolean allowBaseClass = true;
 
 //	private DoubleKeyMap<AbilityCategory, Integer, List<String>> theAutoAbilities = null;
 
@@ -6054,7 +6053,11 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 			if (!sc.hasLevelArrayModsForLevel(level)) {
 				continue;
 			}
-
+			if(!sc.qualifiesForSubstitutionLevel(aPC, level))
+			{
+				continue;
+			}
+				
 			choiceList.add(sc);
 		}
 		Collections.sort(choiceList); 	// sort the SubstitutionClass's 
@@ -6232,12 +6235,15 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 		);
 		
 		// add base class to the chooser at the TOP
-		final List<Object> columnList2 = new ArrayList<Object>(3);
-		columnList2.add(this);
-		columnList2.add("0");
-		columnList2.add("");
-		choiceList.add(0,columnList2);
-		
+		if (this.allowBaseClass)
+		{
+			final List<Object> columnList2 = new ArrayList<Object>(3);
+			columnList2.add(this);
+			columnList2.add("0");
+			columnList2.add("");
+			choiceList.add(0,columnList2);
+		}
+			
 		
 		
 		/*
@@ -6245,12 +6251,15 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 		 * not be a fabulous assumption
 		 */
 		final ChooserInterface c = ChooserFactory.getChooserInstance();
+		
+
 		c.setTitle("School Choice (Specialisation)");
 		c.setMessageText("Make a selection.  The cost column indicates the cost of that selection. "
 						+ "If this cost is non-zero, you will be asked to also "
 						+ "select items from this list to give up to cover that cost.");
 		c.setTotalChoicesAvail(1);
 		c.setPoolFlag(false);
+		
 
 		// c.setCostColumnNumber(1); // Allow 1 choice, regardless of
 		// cost...cost will be applied in second phase
@@ -6262,12 +6271,27 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 		} else if (choiceList.size() != 0) {
 			c.setVisible(true);
 		}
-
-		List<List<PCClass>> selectedList = c.getSelectedList(); 
+		
+		List<List<PCClass>> selectedList; 
+		if (!allowBaseClass)
+		{
+			while(c.getSelectedList().size()==0)
+			{
+				c.setVisible(true);
+			}
+			selectedList = c.getSelectedList();
+			
+		}
+		else
+		{
+			selectedList = c.getSelectedList();
+		}
+		
 		if (selectedList.size() == 0)
 		{
 			return;
 		}
+
 		List<PCClass> selectedRow = selectedList.get(0);
 		if (selectedRow.size() == 0)
 		{
@@ -6283,6 +6307,7 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 			specialtyList = null;
 			
 			SubClass sc = (SubClass) subselected;
+			
 			choiceList = new ArrayList<List>();
 			
 			for (SubClass sub : subClassList) {
@@ -6309,16 +6334,20 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 				columnList.add(sub);
 				columnList.add(Integer.toString(displayedCost));
 				columnList.add(sub.getSupplementalDisplayInfo());
+				columnList.add(sub.getChoice());
 
 				choiceList.add(columnList);
 			}
+			
 
 			setSubClassKey(sc.getKeyName());
 
 			if (sc.getChoice().length() > 0) {
 				addSpecialty(sc.getChoice());
 			}
-
+			
+			columnNames.add("Specialty");
+			
 			if (sc.getCost() != 0) {
 				final ChooserInterface c1 = ChooserFactory.getChooserInstance();
 				c1.setTitle("School Choice (Prohibited)");
@@ -6384,7 +6413,7 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 		{
 			SubstitutionClass sc = (SubstitutionClass)selected;
 			setSubstitutionClassKey(sc.getKeyName(), aLevel);
-			sc.applyLevelArrayModsToLevel(this, aLevel);
+			sc.applyLevelArrayModsToLevel(this, aLevel, aPC);
 			return;
 		}
 		else 
@@ -6889,6 +6918,23 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 		}
 		return returnList;
 	}
+
+	/**
+	 * @return the allowBaseClass
+	 */
+	public boolean getAllowBaseClass()
+	{
+		return allowBaseClass;
+	}
+
+	/**
+	 * @param allowBaseClass the allowBaseClass to set
+	 */
+	public void setAllowBaseClass(final boolean allowBaseClass)
+	{
+		this.allowBaseClass = allowBaseClass;
+	}
+	
 	
 //	public void removeAutoAbilities(final AbilityCategory aCategory, final int aLevel)
 //	{
@@ -6904,66 +6950,6 @@ public class PCClass extends PObject implements ClassSkillListContainer {
 //		}
 //		theAutoAbilities.put(aCategory, aLevel, null);
 //	}
-
-	/*
-	 * BEGIN CDOM CODE
-	 */
 	
-	Map<Integer, PCClassLevel> levelMap = new HashMap<Integer, PCClassLevel>();
-	
-	public PCClassLevel getClassLevel(int lvl) {
-		if (!levelMap.containsKey(lvl)) {
-			PCClassLevel classLevel = new PCClassLevel(this, lvl);
-			classLevel.setName(getDisplayName() + "(" + lvl + ")");
-			levelMap.put(lvl, classLevel);
-		}
-		return levelMap.get(lvl);
-	}
-	
-	public int getClassLevelCount() {
-		return levelMap.size();
-	}
-	
-	public Collection<PCClassLevel> getClassLevelCollection() {
-		return Collections.unmodifiableCollection(levelMap.values());
-	}
-
-	private SpellProgressionInfo spi = null;
-	
-	public SpellProgressionInfo getCDOMSpellProgression()
-	{
-		if (spi == null)
-		{
-			spi = new SpellProgressionInfo();
-		}
-		return spi;
-	}
-
-	public boolean hasCDOMSpellProgression()
-	{
-		return spi != null;
-	}
-
-	public int getCDOMLevel(PCClassLevel pcl)
-	{
-		if (this.equals(pcl.getSource()))
-		{
-			for (Map.Entry<Integer, PCClassLevel> me : levelMap.entrySet())
-			{
-				if (me.getValue().equals(pcl))
-				{
-					return me.getKey().intValue();
-				}
-			}
-		}
-		return -1;
-	}
-
-	private ClassSkillList cdomClassSkillList = new ClassSkillList();
-	
-	public ClassSkillList getCDOMClassSkillList()
-	{
-		return cdomClassSkillList;
-	}
 	
 }

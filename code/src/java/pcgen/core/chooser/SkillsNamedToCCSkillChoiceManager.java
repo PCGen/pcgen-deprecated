@@ -77,6 +77,7 @@ public class SkillsNamedToCCSkillChoiceManager extends SkillsNamedChoiceManager 
 		if (pobject != null && pobject instanceof Ability)
 		{
 			Ability anAbility = (Ability) pobject;
+
 			List<String> skillList = anAbility.getCcSkillList();
 			if (skillList != null)
 			{

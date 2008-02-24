@@ -37,6 +37,7 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.transition.CampaignInterface;
 import pcgen.core.CampaignURL.URLKind;
 import pcgen.core.utils.ListKey;
 import pcgen.core.utils.MessageType;
@@ -49,7 +50,7 @@ import pcgen.persistence.lst.CampaignSourceEntry;
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  * @version $Revision$
  */
-public class Campaign extends PObject
+public class Campaign extends PObject implements CampaignInterface
 {
 	private Map<String, String> publisherMap = new HashMap<String, String>();
 	private Properties options = new Properties();
@@ -303,6 +304,26 @@ public class Campaign extends PObject
 	public void addAllTemplateFiles(final List<CampaignSourceEntry> files)
 	{
 		listChar.addAllToListFor(ListKey.FILE_TEMPLATE, files);
+	}
+
+	/**
+	 * Adds the list of armor proficiency files to this campaign.
+	 * 
+	 * @param files the files
+	 */
+	public void addAllArmorProfFiles(List<CampaignSourceEntry> files)
+	{
+		listChar.addAllToListFor(ListKey.FILE_ARMOR_PROF, files);
+	}
+
+	/**
+	 * Adds the list of shield proficiency files to this campaign.
+	 * 
+	 * @param files the files
+	 */
+	public void addAllShieldProfFiles(List<CampaignSourceEntry> files)
+	{
+		listChar.addAllToListFor(ListKey.FILE_SHIELD_PROF, files);
 	}
 
 	/**
@@ -1451,5 +1472,29 @@ public class Campaign extends PObject
 			}
 		}
 		return kindList;
+	}
+
+	public int countTotalFiles()
+	{
+		int count = listChar.getSizeOfListFor(ListKey.FILE_ABILITY_CATEGORY);
+		count += listChar.getSizeOfListFor(ListKey.FILE_BIO_SET);
+		count += listChar.getSizeOfListFor(ListKey.FILE_CLASS);
+		count += listChar.getSizeOfListFor(ListKey.FILE_COMPANION_MOD);
+		count += listChar.getSizeOfListFor(ListKey.FILE_DEITY);
+		count += listChar.getSizeOfListFor(ListKey.FILE_DOMAIN);
+		count += listChar.getSizeOfListFor(ListKey.FILE_EQUIP);
+		count += listChar.getSizeOfListFor(ListKey.FILE_EQUIP_MOD);
+		count += listChar.getSizeOfListFor(ListKey.FILE_ABILITY);
+		count += listChar.getSizeOfListFor(ListKey.FILE_FEAT);
+		count += listChar.getSizeOfListFor(ListKey.FILE_KIT);
+		count += listChar.getSizeOfListFor(ListKey.FILE_LANGUAGE);
+		count += listChar.getSizeOfListFor(ListKey.FILE_RACE);
+		count += listChar.getSizeOfListFor(ListKey.FILE_SKILL);
+		count += listChar.getSizeOfListFor(ListKey.FILE_SPELL);
+		count += listChar.getSizeOfListFor(ListKey.FILE_TEMPLATE);
+		count += listChar.getSizeOfListFor(ListKey.FILE_WEAPON_PROF);
+		count += listChar.getSizeOfListFor(ListKey.FILE_ARMOR_PROF);
+		count += listChar.getSizeOfListFor(ListKey.FILE_SHIELD_PROF);
+		return count;
 	}
 }

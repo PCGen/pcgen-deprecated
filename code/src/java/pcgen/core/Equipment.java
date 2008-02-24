@@ -44,8 +44,6 @@ import java.util.regex.Pattern;
 
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.StringKey;
-import pcgen.cdom.inst.EquipmentHead;
-import pcgen.character.CharacterDataStore;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.character.WieldCategory;
 import pcgen.core.prereq.PrereqHandler;
@@ -7808,63 +7806,4 @@ public final class Equipment extends PObject implements Serializable,
 	{
 		shieldProf = prof;
 	}
-
-	/*
-	 * CDOM Code below here
-	 */
-
-	List<EquipmentHead> heads = new ArrayList<EquipmentHead>();
-
-	public EquipmentHead getEquipmentHead(int index)
-	{
-		EquipmentHead head;
-		if (index <= 0)
-		{
-			throw new IndexOutOfBoundsException(Integer.toString(index));
-		}
-		else
-		{
-			int headsIndex = index - 1;
-			int currentSize = heads.size();
-			if (headsIndex >= currentSize)
-			{
-				for (int i = 0; i < headsIndex - currentSize; i++)
-				{
-					heads.add(null);
-				}
-				head = new EquipmentHead(this, index);
-				heads.add(head);
-			}
-			else
-			{
-				head = heads.get(headsIndex);
-				if (head == null)
-				{
-					head = new EquipmentHead(this, index);
-					heads.add(headsIndex, head);
-				}
-			}
-		}
-		return head;
-	}
-
-	public EquipmentHead getEquipmentHeadReference(int index)
-	{
-		if (index <= 0)
-		{
-			throw new IndexOutOfBoundsException(Integer.toString(index));
-		}
-		else if (index <= heads.size())
-		{
-			return heads.get(index - 1);
-		}
-		return null;
-	}
-
-	public WieldCategory getEffectiveWieldCategory(CharacterDataStore character)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

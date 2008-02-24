@@ -32,16 +32,14 @@ import pcgen.util.Logging;
 /**
  * This class represents a generic description field.
  * 
- * <p>
- * The class supports the description object having one or more prerequisites as
- * well as performing variable substitution on the string itself.
+ * <p>The class supports the description object having one or more prerequisites
+ * as well as performing variable substitution on the string itself.
  * 
- * <p>
- * Variable substitution is performed by replacing a placeholder indicated by %#
- * with the #th variable in the variable list. For example, the string <br />
- * <code>&quot;This is %1 variable %3 %2&quot;</code> <br />
- * would be replaced with the string &quot;This is a variable substitution
- * string&quot; if the variable list was &quot;a&quot;,&quot;string&quot;,
+ * <p>Variable substitution is performed by replacing a placeholder indicated
+ * by %# with the #th variable in the variable list.  For example, the string
+ * <br /><code>&quot;This is %1 variable %3 %2&quot;</code>
+ * <br />would be replaced with the string &quot;This is a variable substitution
+ * string&quot; if the variable list was &quot;a&quot;,&quot;string&quot;, 
  * &quot;substitution&quot;.
  * 
  * @author boomer70 <boomer70@yahoo.com>
@@ -53,58 +51,53 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 	private List<String> theComponents = new ArrayList<String>();
 	private List<String> theVariables = null;
 	private PObject theOwner = null;
-
+	
 	private static final String VAR_NAME = "%NAME"; //$NON-NLS-1$
 	private static final String VAR_CHOICE = "%CHOICE"; //$NON-NLS-1$
 	private static final String VAR_LIST = "%LIST"; //$NON-NLS-1$
-
 	private static final String VAR_FEATS = "%FEAT="; //$NON-NLS-1$
 	
 	private static final String VAR_MARKER = "$$VAR:"; //$NON-NLS-1$
-
+	
 	/**
 	 * Default constructor.
 	 * 
-	 * @param aString
-	 *            The description string.
+	 * @param aString The description string.
 	 */
-	public Description(final String aString)
+	public Description( final String aString )
 	{
 		int currentInd = 0;
 		int percentInd = -1;
-		while ((percentInd = aString.indexOf('%', currentInd)) != -1)
+		while ( (percentInd = aString.indexOf('%', currentInd)) != -1 )
 		{
 			final String preText = aString.substring(currentInd, percentInd);
-			if (preText.length() > 0)
+			if ( preText.length() > 0 )
 			{
 				theComponents.add(preText);
 			}
-			if (percentInd == aString.length() - 1)
+			if ( percentInd == aString.length() - 1)
 			{
 				theComponents.add("%"); //$NON-NLS-1$
 				return;
 			}
-			if (aString.charAt(percentInd + 1) == '{')
+			if ( aString.charAt(percentInd + 1) == '{' )
 			{
-				// This is a bracketed placeholder. The replacement parameter
+				// This is a bracketed placeholder.  The replacement parameter
 				// is contained within the {}
 				currentInd = aString.indexOf('}', percentInd + 1) + 1;
-				final String replacement =
-						aString.substring(percentInd + 1, currentInd);
+				final String replacement = aString.substring(percentInd + 1, currentInd);
 				// For the time being we will only support numerics here.
 				try
 				{
 					Integer.parseInt(replacement);
 				}
-				catch (NumberFormatException nfe)
+				catch (NumberFormatException nfe )
 				{
-					Logging
-						.errorPrintLocalised(
-							"Errors.Description.InvalidVariableReplacement", replacement); //$NON-NLS-1$
+					Logging.errorPrintLocalised("Errors.Description.InvalidVariableReplacement", replacement); //$NON-NLS-1$
 				}
 				theComponents.add(VAR_MARKER + replacement);
 			}
-			else if (aString.charAt(percentInd + 1) == '%')
+			else if ( aString.charAt(percentInd + 1) == '%' )
 			{
 				// This is an escape sequence so we can actually print a %
 				currentInd = percentInd + 2;
@@ -112,10 +105,10 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 			}
 			else
 			{
-				// In this case we have an unbracketed placeholder. We will
+				// In this case we have an unbracketed placeholder.  We will
 				// walk the string until such time as we no longer have a number
 				currentInd = percentInd + 1;
-				while (currentInd < aString.length())
+				while ( currentInd < aString.length() )
 				{
 					final char val = aString.charAt(currentInd);
 					try
@@ -128,49 +121,46 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 						break;
 					}
 				}
-				if (currentInd > percentInd + 1)
+				if ( currentInd > percentInd + 1 )
 				{
-					theComponents.add(VAR_MARKER
-						+ aString.substring(percentInd + 1, currentInd));
+					theComponents.add(VAR_MARKER + aString.substring(percentInd+1, currentInd));
 				}
 				else
 				{
 					// We broke out of the variable finding loop without finding
-					// even a single integer. Assume we have a DESC field that
+					// even a single integer.  Assume we have a DESC field that
 					// is using a % unescaped.
-					theComponents.add(aString.substring(percentInd,
-						percentInd + 1));
+					theComponents.add(aString.substring(percentInd, percentInd+1));
 				}
 			}
 		}
 		theComponents.add(aString.substring(currentInd));
 	}
-
+	
 	/**
 	 * Adds a variable to use in variable substitution.
 	 * 
 	 * @param aVariable
 	 */
-	public void addVariable(final String aVariable)
+	public void addVariable( final String aVariable )
 	{
-		if (theVariables == null)
+		if ( theVariables == null )
 		{
 			theVariables = new ArrayList<String>();
 		}
-		theVariables.add(aVariable);
+		theVariables.add( aVariable );
 	}
-
+	
 	/**
 	 * Sets the owner of this description.
 	 * 
-	 * @param anOwner
-	 *            The <tt>PObject</tt> this description is associated with.
+	 * @param anOwner The <tt>PObject</tt> this description is associated with.
 	 */
-	public void setOwner(final PObject anOwner)
+	public void setOwner( final PObject anOwner )
 	{
 		theOwner = anOwner;
 	}
-
+	
 	/**
 	 * Gets the owner of this description.
 	 * 
@@ -180,62 +170,57 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 	{
 		return theOwner;
 	}
-
+	
 	/**
-	 * Gets the description string after having tested all prereqs and
+	 * Gets the description string after having tested all prereqs and 
 	 * substituting all variables.
 	 * 
-	 * @param aPC
-	 *            The PlayerCharacter used to evaluate formulas.
+	 * @param aPC The PlayerCharacter used to evaluate formulas.
 	 * 
 	 * @return The fully substituted description string.
 	 */
-	public String getDescription(final PlayerCharacter aPC)
+	public String getDescription( final PlayerCharacter aPC )
 	{
 		final StringBuffer buf = new StringBuffer();
-
+		
 		if (this.qualifies(aPC))
 		{
-			if (theOwner instanceof Ability)
+			if ( theOwner instanceof Ability )
 			{
-				theOwner = aPC.getAbilityMatching((Ability) theOwner);
+				theOwner = aPC.getAbilityMatching((Ability)theOwner);
 			}
-			for (final String comp : theComponents)
+			for ( final String comp : theComponents )
 			{
-				if (comp.startsWith(VAR_MARKER))
+				if ( comp.startsWith(VAR_MARKER) )
 				{
-					final int ind =
-							Integer.parseInt(comp
-								.substring(VAR_MARKER.length()));
-					if (theVariables == null || ind > theVariables.size())
+					final int ind = Integer.parseInt(comp.substring(VAR_MARKER.length()));
+					if ( theVariables == null || ind > theVariables.size() )
 					{
 						buf.append(Constants.EMPTY_STRING);
 						continue;
 					}
 					final String var = theVariables.get(ind - 1);
-					if (var.equals(VAR_NAME))
+					if ( var.equals(VAR_NAME) )
 					{
-						if (theOwner != null)
+						if ( theOwner != null )
 						{
 							buf.append(theOwner.getOutputName());
 						}
 					}
-					else if (var.equals(VAR_CHOICE))
+					else if ( var.equals(VAR_CHOICE) )
 					{
-						if (theOwner != null
-							&& theOwner.getAssociatedCount() > 0)
+						if ( theOwner != null && theOwner.getAssociatedCount() > 0 )
 						{
 							buf.append(theOwner.getAssociated(0));
 						}
 					}
-					else if (var.equals(VAR_LIST))
+					else if ( var.equals(VAR_LIST) )
 					{
-						if (theOwner != null)
+						if ( theOwner != null )
 						{
-							for (int i = 0; i < theOwner
-								.getAssociatedCount(true); i++)
+							for ( int i = 0; i < theOwner.getAssociatedCount(true); i++ )
 							{
-								if (i > 0)
+								if ( i > 0 )
 								{
 									if (theOwner.getAssociatedCount(true) != 2)
 									{
@@ -282,8 +267,7 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 					}
 					else
 					{
-						buf.append(aPC
-							.getVariableValue(var, "Description").intValue()); //$NON-NLS-1$
+						buf.append(aPC.getVariableValue(var, "Description").intValue()); //$NON-NLS-1$
 					}
 				}
 				else
@@ -294,23 +278,24 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 		}
 		return buf.toString();
 	}
-
+	
 	/**
 	 * Gets the Description tag in PCC format.
 	 * 
 	 * @return A String in LST file format for this description.
+	 * 
+	 * @see pcgen.core.PrereqObject#getPCCText()
 	 */
 	@Override
 	public String getPCCText()
 	{
 		final StringBuffer buf = new StringBuffer();
-
-		for (final String str : theComponents)
+		
+		for ( final String str : theComponents )
 		{
-			if (str.startsWith(VAR_MARKER))
+			if ( str.startsWith(VAR_MARKER) )
 			{
-				final int ind =
-						Integer.parseInt(str.substring(VAR_MARKER.length()));
+				final int ind = Integer.parseInt(str.substring(VAR_MARKER.length()));
 				buf.append('%' + String.valueOf(ind));
 			}
 			else
@@ -318,15 +303,15 @@ public class Description extends ConcretePrereqObject implements LSTWriteable
 				buf.append(str);
 			}
 		}
-		if (theVariables != null)
+		if ( theVariables != null )
 		{
-			for (final String var : theVariables)
+			for ( final String var : theVariables )
 			{
 				buf.append(Constants.PIPE);
 				buf.append(var);
 			}
 		}
-
+		
 		buf.append(super.getPCCText());
 		return buf.toString();
 	}

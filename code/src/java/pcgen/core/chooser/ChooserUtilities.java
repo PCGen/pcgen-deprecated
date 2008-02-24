@@ -222,6 +222,7 @@ public class ChooserUtilities
 	 * @param process
 	 * @param aPC
 	 * @param addIt
+     * @param category The AbilityCategory whose pool will be charged for the ability (if any). May be null.
 	 *
 	 * @return true if aPObject was modified
 	 */
@@ -244,7 +245,7 @@ public class ChooserUtilities
 		if (aMan instanceof AbstractBasicChoiceManager && aPObject instanceof Ability)
 		{
 			Ability a = (Ability) aPObject;
-			pcgen.core.AbilityCategory cat;
+			AbilityCategory cat;
 			if (category == null)
 			{
 				cat = SettingsHandler.getGame().getAbilityCategory(

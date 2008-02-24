@@ -36,9 +36,7 @@ import pcgen.core.utils.CoreUtility;
  * 
  * @author Tom Parker <thpr@users.sourceforge.net>
  */
-public class SpellProgressionInfo extends PObject implements
-		Cloneable
-{
+public class SpellProgressionInfo implements Cloneable {
 
 	/*
 	 * FUTURETYPESAFETY Currently can't do better than String in knownMap,

@@ -20,12 +20,11 @@
  */
 package pcgen.core;
 
-import java.util.StringTokenizer;
-
-import pcgen.cdom.base.AbbreviatedObject;
 import pcgen.core.utils.MessageType;
 import pcgen.core.utils.ShowMessageDelegate;
 import pcgen.util.Logging;
+
+import java.util.StringTokenizer;
 
 /**
  * <code>PCStat</code>.
@@ -33,7 +32,7 @@ import pcgen.util.Logging;
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  * @version $Revision$
  */
-public final class PCStat extends PObject implements AbbreviatedObject
+public final class PCStat extends PObject
 {
 	private String abbreviation = ""; // should be 3 characters all caps
 	private String penaltyVar = "";
@@ -55,7 +54,7 @@ public final class PCStat extends PObject implements AbbreviatedObject
 
 	public String getAbb()
 	{
-		return getAbbreviation();
+		return abbreviation;
 	}
 
 	public void setBaseScore(final int x)
@@ -157,11 +156,5 @@ public final class PCStat extends PObject implements AbbreviatedObject
 	String getStatMod()
 	{
 		return statMod;
-	}
-	
-	//CDOM Interface method (preferred to getAbb())
-	public String getAbbreviation()
-	{
-		return abbreviation;
 	}
 }

@@ -26,10 +26,7 @@
  */
 package pcgen.core.character;
 
-import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.core.Constants;
-import pcgen.core.Globals;
-import pcgen.core.Race;
 import pcgen.core.SettingsHandler;
 import pcgen.util.UnreachableError;
 
@@ -38,7 +35,7 @@ import pcgen.util.UnreachableError;
  * @author Jayme Cox <jaymecox@users.sourceforge.net>
  * @version $Revision$
  **/
-public final class Follower extends ConcretePrereqObject implements Comparable<Object>, Cloneable
+public final class Follower implements Comparable<Object>, Cloneable
 {
 	/*
 	 *
@@ -125,14 +122,6 @@ public final class Follower extends ConcretePrereqObject implements Comparable<O
 	public String getRace()
 	{
 		return race;
-	}
-
-	/*
-	 * FIXME This is a CDOM hack to keep until the Race is directly stored here
-	 */
-	public Race getRaceObject()
-	{
-		return Globals.getRaceKeyed(race);
 	}
 
 	/** 

@@ -23,11 +23,15 @@
  */
 package pcgen.core;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import pcgen.util.Delta;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
-
-import java.util.*;
 
 /**
  * {<code>EquipmentChoice</code>} holds the details of a choice or

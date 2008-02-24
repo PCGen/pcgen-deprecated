@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
@@ -863,6 +862,11 @@ public final class Race extends PObject
 			txt.append("\tLEVELADJUSTMENT:").append(levelAdjustment);
 		}
 
+		if (!Constants.s_NONE.equals(displayName))
+		{
+			txt.append("\tOUTPUTNAME:").append(displayName);
+		}
+
 		if ((bonusSkillList != null) && (bonusSkillList.length() > 0))
 		{
 			txt.append("\tSKILL:").append(bonusSkillList);
@@ -1242,36 +1246,5 @@ public final class Race extends PObject
 	private String getBonusSkillList()
 	{
 		return bonusSkillList;
-	}
-	
-	/*
-	 * BEGIN CDOM CODE
-	 */
-	public int sizesAdvancedCDOM(int currentHD)
-	{
-		List<Integer> list = getListFor(ListKey.HITDICE_ADVANCEMENT);
-		if (list != null)
-		{
-			for (int x = 0; x < list.size(); x++)
-			{
-				int listDie = list.get(x).intValue();
-				if ((currentHD <= listDie) || (listDie == -1))
-				{
-					return x;
-				}
-			}
-		}
-		return 0;
-	}
-
-	private Kit defaultMonsterKit;
-	
-	public Kit getCompatMonsterKit()
-	{
-		if (defaultMonsterKit == null)
-		{
-			defaultMonsterKit = new Kit();
-		}
-		return defaultMonsterKit;
 	}
 }

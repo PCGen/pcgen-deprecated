@@ -178,7 +178,7 @@ public class WeaponEquipment implements Cloneable
 		}
 		catch (NumberFormatException ignore)
 		{
-			Logging.debugPrint("Invalid Range in Equipment: " + aString);
+			Logging.errorPrint("Invalid Range in Equipment: " + aString);
 		}
 	}
 

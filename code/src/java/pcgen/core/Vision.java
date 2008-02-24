@@ -34,23 +34,19 @@ public class Vision extends ConcretePrereqObject implements Comparable<Vision>,
 
 	private final String distance;
 
-	public Vision(VisionType type, String dist)
-	{
-		if (type == null)
-		{
+	public Vision(VisionType type, String dist) {
+		if (type == null) {
 			throw new IllegalArgumentException("Vision Type cannot be null");
 		}
 		visionType = type;
 		distance = dist;
 	}
 
-	public String getDistance()
-	{
+	public String getDistance() {
 		return distance;
 	}
 
-	public VisionType getType()
-	{
+	public VisionType getType() {
 		return visionType;
 	}
 
@@ -67,16 +63,12 @@ public class Vision extends ConcretePrereqObject implements Comparable<Vision>,
 		}
 	}
 
-	private String toString(int d)
-	{
-		if (d <= 0)
-		{
-			return visionType.toString();
+	private String toString(int dist) {
+		String vision = visionType + " (" + dist + "')";
+		if(dist <= 0) {
+			vision = visionType.toString();
 		}
-		else
-		{
-			return visionType + " (" + d + "')";
-		}
+		return vision;
 	}
 
 	@Override

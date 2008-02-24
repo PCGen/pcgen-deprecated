@@ -19,8 +19,13 @@
  */
 package pcgen.core;
 
-import pcgen.cdom.base.CategorizedCDOMObject;
-import pcgen.cdom.base.Category;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.chooser.ChooserUtilities;
@@ -33,20 +38,13 @@ import pcgen.util.chooser.ChooserFactory;
 import pcgen.util.chooser.ChooserInterface;
 import pcgen.util.enumeration.Tab;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Definition and games rules for an Ability.
  *
  * @author   ???
  * @version  $Revision$
  */
-public final class Ability extends PObject implements HasCost, Categorisable, CategorizedCDOMObject<Ability>
+public final class Ability extends PObject implements HasCost, Categorisable
 {
 	/** An enum for the various types of ability options. */
 	public enum Nature {
@@ -507,7 +505,7 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 		switch (getVisibility())
 		{
 			case NO:
-				txt.append("EXPORT");
+				txt.append("NO");
 				break;
 
 			case EXPORT:
@@ -609,6 +607,7 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 	 *
 	 * @param   aPC    The Player Character that we're opening the chooser for.
 	 * @param   addIt  Whether to add or remove a choice from this Ability.
+     * @param   category The ability category whose pool is to be charged for the ability.
 	 *
 	 * @return  true if the Ability was modified, false otherwise
 	 */
@@ -638,6 +637,7 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 	 * @param process if false do not process the choice, just poplate the lists
 	 * @param aPC the PC that owns the Ability
 	 * @param addIt Whether to add or remove a choice from this Ability
+     * @param category The ability category whose pool is to be charged for the ability.
 	 *
 	 * @return true if we processed the list of choices, false if we used the routine to
 	 * build the list of choices without processing them.
@@ -863,13 +863,8 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 		}
 
 		// build a list of available choices and choices already made.
-		anAbility.modChoices(
-				abilityList,
-				selectedList,
-				false,
-				aPC,
-				true,
-				SettingsHandler.getGame().getAbilityCategory(this.getCategory()));
+		anAbility.modChoices(abilityList, selectedList, false, aPC, true,
+			SettingsHandler.getGame().getAbilityCategory(this.getCategory()));
 
 		final int currentSelections = selectedList.size();
 
@@ -953,26 +948,9 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 	 * @return true if they are equal
 	 */
     @Override
-	public boolean equals(Object o)
+	public boolean equals(final Object other)
 	{
-    	if (o == this)
-    	{
-    		return true;
-    	}
-    	if (o instanceof Ability)
-		{
-    		Ability other = (Ability) o;
-    		if (getCDOMCategory() != null)
-    		{
-    			if (other.getCDOMCategory() == null
-					|| !other.getCDOMCategory().equals(getCDOMCategory()))
-				{
-					return false;
-				}
-			}
-			return other.getCDOMCategory() == null && compareTo(other) == 0;
-		}
-    	return false;
+		return other instanceof Ability && this.compareTo(other) == 0;
 	}
     
     /**
@@ -994,16 +972,4 @@ public final class Ability extends PObject implements HasCost, Categorisable, Ca
 	public boolean isSameBaseAbility(Ability that) {
 		return AbilityUtilities.areSameAbility(this, that);
 	}
-
-    private Category<Ability> cat;
-    
-    public void setCDOMCategory(Category<Ability> ac)
-    {
-    	cat = ac;
-    }
-    
-    public Category<Ability> getCDOMCategory()
-    {
-    	return cat;
-    }
 }

@@ -25,56 +25,53 @@
  */
 package pcgen.core;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.enumeration.ProhibitedSpellType;
 import pcgen.core.spell.Spell;
+import pcgen.util.enumeration.ProhibitedSpellType;
 
 /**
  * @author stefan
- * 
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
  */
-public class SpellProhibitor<T> extends ConcretePrereqObject implements
-		LSTWriteable
-{
+public class SpellProhibitor extends ConcretePrereqObject {
 
-	private ProhibitedSpellType<T> type = null;
-	private Set<T> valueSet = null;
+	private ProhibitedSpellType type = null;
+	private List<String> valueList = null;
 
 	public SpellProhibitor()
 	{
-		// Empty Construtor
+		//Empty Construtor
 	}
 
-	public ProhibitedSpellType<T> getType()
+	public ProhibitedSpellType getType()
 	{
 		return type;
 	}
 
-	public Set<T> getValueSet()
+	public List<String> getValueList()
 	{
-		return valueSet;
+		return valueList;
 	}
 
-	public void setType(ProhibitedSpellType<T> prohibitedType)
+	public void setType(ProhibitedSpellType prohibitedType) 
 	{
 		type = prohibitedType;
 	}
 
-	public void addValue(T value)
+	public void addValue(String value)
 	{
-		if (valueSet == null)
+		if (valueList == null)
 		{
-			valueSet = new HashSet<T>();
+			valueList = new ArrayList<String>();
 		}
-		valueSet.add(value);
+		valueList.add(value);
 	}
-
+	
 	public boolean isProhibited(Spell s, PlayerCharacter aPC)
 	{
 		/*
@@ -83,61 +80,29 @@ public class SpellProhibitor<T> extends ConcretePrereqObject implements
 		 * Alignment type
 		 */
 		if (type.equals(ProhibitedSpellType.ALIGNMENT)
-			&& !Globals.checkRule(RuleConstants.PROHIBITSPELLS))
+				&& !Globals.checkRule(RuleConstants.PROHIBITSPELLS))
 		{
 			return false;
 		}
-
+		
 		if (!qualifies(aPC))
 		{
 			return false;
 		}
-
+		
 		int hits = 0;
-
-		for (T typeDesc : type.getCheckList(s))
+		
+		for (String typeDesc : type.getCheckList(s))
 		{
-			for (T prohib : valueSet)
+			for (String prohib : valueList)
 			{
-				if (prohib.equals(typeDesc))
+				if (prohib.equalsIgnoreCase(typeDesc))
 				{
 					hits++;
 				}
 			}
 		}
-
-		return hits == type.getRequiredCount(valueSet);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return type.hashCode() ^ valueSet.size();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (this == o)
-		{
-			return true;
-		}
-		if (!(o instanceof SpellProhibitor))
-		{
-			return false;
-		}
-		SpellProhibitor<?> other = (SpellProhibitor) o;
-		if ((type == null && other.type == null)
-			|| (type != null && type.equals(other.type)))
-		{
-			return (other.valueSet == null && valueSet == null)
-				|| valueSet != null && valueSet.equals(other.valueSet);
-		}
-		return false;
-	}
-
-	public String getLSTformat()
-	{
-		return type.toString();
+		
+		return hits == type.getRequiredCount(valueList);
 	}
 }

@@ -284,4 +284,9 @@ public class ListKeyMapToList
 	{
 		return map.containsInList(key, value);
 	}
+
+	public int getSizeOfListFor(ListKey<?> key)
+	{
+		return map.getSizeOfListFor(key);
+	}
 }

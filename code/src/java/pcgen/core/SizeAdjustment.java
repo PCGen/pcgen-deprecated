@@ -22,8 +22,6 @@ package pcgen.core;
 
 import java.util.List;
 
-import pcgen.base.enumeration.TypeSafeConstant;
-import pcgen.cdom.base.AbbreviatedObject;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.utils.CoreUtility;
 
@@ -33,8 +31,7 @@ import pcgen.core.utils.CoreUtility;
  * @author Greg Bingleman <byngl@users.sourceforge.net>
  * @version $Revision$
  */
-public final class SizeAdjustment extends PObject implements TypeSafeConstant,
-		AbbreviatedObject
+public final class SizeAdjustment extends PObject 
 {
 	private String abbreviation = ""; // should be 1-character long
 	private boolean isDefaultSize = false;

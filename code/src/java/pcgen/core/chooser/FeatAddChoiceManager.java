@@ -212,9 +212,10 @@ public class FeatAddChoiceManager extends AbstractBasicStringChoiceManager {
 				//
 				if (!anAbility.isStacks())
 				{
-					for (Iterator e = sselectedList.iterator(); e.hasNext();)
+					for (Iterator<String> e = sselectedList.iterator(); e
+						.hasNext();)
 					{
-						final int idx = aavailableList.indexOf(e.next().toString());
+						final int idx = aavailableList.indexOf(e.next());
 
 						if (idx > -1)
 						{

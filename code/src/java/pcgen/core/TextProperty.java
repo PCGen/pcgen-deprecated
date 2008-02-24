@@ -229,22 +229,4 @@ public abstract class TextProperty extends PObject implements Serializable, Comp
 		}
 		return retString;
 	}
-
-	
-	/*
-	 * FIXME NOT consistent with COMPARE TO, but used for CDOM...
-	 */
-	public int hashCode() {
-		return keyName.hashCode() ^ propDesc.hashCode();
-	}
-	
-	public boolean equals(Object o) {
-		if (o instanceof TextProperty)
-		{
-			TextProperty tp = (TextProperty) o;
-			return keyName.equals(tp.keyName)
-					&& propDesc.equals(tp.propDesc);
-		}
-		return false;
-	}
 }

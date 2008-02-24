@@ -43,7 +43,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pcgen.base.util.DoubleKeyMap;
-import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.KeyedObject;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.StringKey;
@@ -82,7 +82,7 @@ import pcgen.util.enumeration.VisionType;
  * @author Bryan McRoberts <merton_monk@users.sourceforge.net>
  * @version $Revision$
  */
-public class PObject extends CDOMObject implements Cloneable, Serializable, Comparable<Object>,
+public class PObject extends ConcretePrereqObject implements Cloneable, Serializable, Comparable<Object>,
 	SourcedObject, KeyedListContainer, KeyedObject
 {
 	/** Standard serialVersionUID for Serializable objects */
@@ -1372,12 +1372,6 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 		return 1;
 	}
 
-	@Override
-	public int hashCode()
-	{
-		return getKeyName().hashCode();
-	}
-	
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -1492,7 +1486,6 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 			fireNameChanged(displayName, aString);
 			displayName = aString;
 			this.setKeyName(aString);
-			super.setName(aString);
 		}
 	}
 
@@ -2287,7 +2280,7 @@ public class PObject extends CDOMObject implements Cloneable, Serializable, Comp
 					{
 						if (element.getClassKeyName().equalsIgnoreCase(aClass.getKeyName()))
 						{
-							for (Ability aFeat : element.getObjects())
+							for (Ability aFeat : (List<Ability>)element.getObjects())
 							{
 								if (!theFeatList.contains(aFeat))
 									theFeatList.add(aFeat);

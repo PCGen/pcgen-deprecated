@@ -25,9 +25,7 @@
  */
 package pcgen.core;
 
-import pcgen.cdom.base.ConcretePrereqObject;
-
-public class SpellFilter extends ConcretePrereqObject {
+public class SpellFilter {
 	
 	private String spellName;
 	
@@ -64,7 +62,6 @@ public class SpellFilter extends ConcretePrereqObject {
 		return true;
 	}
 	
-	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		if (spellLevel >= 0) {
