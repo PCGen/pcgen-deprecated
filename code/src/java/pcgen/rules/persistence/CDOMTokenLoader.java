@@ -120,71 +120,77 @@ public class CDOMTokenLoader<T extends CDOMObject> implements CDOMLoader<T>
 
 		for (int i = 0; i < fileLines.length; i++)
 		{
-			String line = fileLines[i];
-			if ((line.length() == 0)
-					|| (line.charAt(0) == LstFileLoader.LINE_COMMENT_CHAR))
-			{
-				continue;
-			}
-			int sepLoc = line.indexOf('\t');
-			String firstToken;
-			String restOfLine;
-			if (sepLoc == -1)
-			{
-				firstToken = line;
-				restOfLine = null;
-			}
-			else
-			{
-				firstToken = line.substring(0, sepLoc);
-				restOfLine = line.substring(sepLoc + 1);
-			}
+			parseFullLine(context, i, fileLines[i], sourceEntry);
+		}
+	}
 
-			// check for copies, mods, and forgets
-			// TODO - Figure out why we need to check SOURCE in this file
-			if (line.startsWith("SOURCE")) //$NON-NLS-1$
+	public void parseFullLine(LoadContext context, int i, String line,
+			CampaignSourceEntry sourceEntry)
+	{
+		if ((line.length() == 0)
+				|| (line.charAt(0) == LstFileLoader.LINE_COMMENT_CHAR))
+		{
+			return;
+		}
+		URI uri = sourceEntry.getURI();
+		int sepLoc = line.indexOf('\t');
+		String firstToken;
+		String restOfLine;
+		if (sepLoc == -1)
+		{
+			firstToken = line;
+			restOfLine = null;
+		}
+		else
+		{
+			firstToken = line.substring(0, sepLoc);
+			restOfLine = line.substring(sepLoc + 1);
+		}
+
+		// check for copies, mods, and forgets
+		// TODO - Figure out why we need to check SOURCE in this file
+		if (line.startsWith("SOURCE")) //$NON-NLS-1$
+		{
+			// TODO sourceMap = SourceLoader.parseLine(line,
+			// sourceEntry.getURI());
+		}
+		else if (firstToken.indexOf(".COPY") > 0)
+		{
+			copyList.add(new ModEntry(sourceEntry, line, i + 1));
+		}
+		else if (firstToken.indexOf(".MOD") > 0)
+		{
+			// TODO modEntryList.add(new ModEntry(sourceEntry, line, i +
+			// 1));
+		}
+		else if (firstToken.indexOf(".FORGET") > 0)
+		{
+			// TODO forgetLineList.add(line);
+		}
+		else
+		{
+			try
 			{
-				// TODO sourceMap = SourceLoader.parseLine(line,
-				// sourceEntry.getURI());
+				parseLine(context, getCDOMObject(context, firstToken),
+						restOfLine, uri);
 			}
-			else if (firstToken.indexOf(".COPY") > 0)
+			catch (PersistenceLayerException ple)
 			{
-				copyList.add(new ModEntry(sourceEntry, line, i + 1));
+				String message = PropertyFactory.getFormattedString(
+						"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
+						uri, i + 1, ple.getMessage());
+				Logging.addParseMessage(Logging.LST_ERROR, message);
+				Logging.debugPrint("Parse error:", ple); //$NON-NLS-1$
 			}
-			else if (firstToken.indexOf(".MOD") > 0)
+			catch (Throwable t)
 			{
-				// TODO modEntryList.add(new ModEntry(sourceEntry, line, i +
-				// 1));
-			}
-			else if (firstToken.indexOf(".FORGET") > 0)
-			{
-				// TODO forgetLineList.add(line);
-			}
-			else
-			{
-				try
-				{
-					parseLine(context, getCDOMObject(context, firstToken),
-							restOfLine, uri);
-				}
-				catch (PersistenceLayerException ple)
-				{
-					String message = PropertyFactory.getFormattedString(
-							"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
-							uri, i + 1, ple.getMessage());
-					Logging.addParseMessage(Logging.LST_ERROR, message);
-					Logging.debugPrint("Parse error:", ple); //$NON-NLS-1$
-				}
-				catch (Throwable t)
-				{
-					String message = PropertyFactory.getFormattedString(
-							"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
-							uri, i + 1, t.getMessage());
-					Logging.addParseMessage(Logging.LST_ERROR, message);
-					Logging.addParseMessage(Logging.LST_ERROR, PropertyFactory
-							.getString("Errors.LstFileLoader.Ignoring")
-							+ "\n" + t);
-				}
+				String message = PropertyFactory.getFormattedString(
+						"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
+						uri, i + 1, t.getMessage());
+				Logging.addParseMessage(Logging.LST_ERROR, message);
+				Logging.addParseMessage(Logging.LST_ERROR, PropertyFactory
+						.getString("Errors.LstFileLoader.Ignoring")
+						+ "\n" + t);
 			}
 		}
 	}
