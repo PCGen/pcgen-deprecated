@@ -22,22 +22,23 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.Language;
-import pcgen.core.LanguageList;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.LanguageList;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
 import plugin.lsttokens.template.LangbonusToken;
 
 public class LangbonusIntegrationTest extends
-		AbstractListIntegrationTestCase<PCTemplate, Language>
+		AbstractListIntegrationTestCase<CDOMTemplate, CDOMLanguage>
 {
 
 	static LangbonusToken token = new LangbonusToken();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
 	@Before
@@ -49,31 +50,31 @@ public class LangbonusIntegrationTest extends
 		 */
 		primaryContext.ref.constructCDOMObject(LanguageList.class, "*Starting");
 		secondaryContext.ref.constructCDOMObject(LanguageList.class,
-			"*Starting");
+				"*Starting");
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCTemplate> getToken()
+	public CDOMPrimaryToken<CDOMTemplate> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<Language> getTargetClass()
+	public Class<CDOMLanguage> getTargetClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	@Override

@@ -19,36 +19,37 @@ package plugin.lsttokens.editcontext.weaponprof;
 
 import org.junit.Test;
 
-import pcgen.core.WeaponProf;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.WeaponProfLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegerIntegrationTestCase;
 import plugin.lsttokens.editcontext.testsupport.TestContext;
 import plugin.lsttokens.weaponprof.HandsToken;
 
 public class HandsIntegrationTest extends
-		AbstractIntegerIntegrationTestCase<WeaponProf>
+		AbstractIntegerIntegrationTestCase<CDOMWeaponProf>
 {
 
 	static HandsToken token = new HandsToken();
-	static WeaponProfLoader loader = new WeaponProfLoader();
+	static CDOMTokenLoader<CDOMWeaponProf> loader = new CDOMTokenLoader<CDOMWeaponProf>(
+			CDOMWeaponProf.class);
 
 	@Override
-	public Class<WeaponProf> getCDOMClass()
+	public Class<CDOMWeaponProf> getCDOMClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<WeaponProf> getLoader()
+	public CDOMLoader<CDOMWeaponProf> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<WeaponProf> getToken()
+	public CDOMPrimaryToken<CDOMWeaponProf> getToken()
 	{
 		return token;
 	}

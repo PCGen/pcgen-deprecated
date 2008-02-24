@@ -22,16 +22,16 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.persistence.PersistenceLayerException;
+import pcgen.rules.context.LoadContext;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
 import plugin.pretokens.parser.PreRaceParser;
 import plugin.pretokens.writer.PreClassWriter;
 import plugin.pretokens.writer.PreRaceWriter;
 
-public abstract class AbstractListIntegrationTestCase<T extends PObject, TC extends PObject>
+public abstract class AbstractListIntegrationTestCase<T extends CDOMObject, TC extends CDOMObject>
 		extends AbstractIntegrationTestCase<T>
 {
 

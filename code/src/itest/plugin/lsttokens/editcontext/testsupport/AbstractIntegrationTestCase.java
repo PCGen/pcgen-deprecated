@@ -26,22 +26,22 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
-import pcgen.core.PObject;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
-import pcgen.persistence.EditorLoadContext;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
 import pcgen.persistence.lst.CampaignSourceEntry;
-import pcgen.persistence.lst.LstLoader;
 import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.EditorLoadContext;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.TokenRegistration;
 
-public abstract class AbstractIntegrationTestCase<T extends PObject> extends
+public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 		TestCase
 {
 	protected PCGenGraph primaryGraph;
@@ -57,9 +57,9 @@ public abstract class AbstractIntegrationTestCase<T extends PObject> extends
 	protected static CampaignSourceEntry testCampaign;
 	protected static CampaignSourceEntry modCampaign;
 
-	public abstract LstLoader<T> getLoader();
+	public abstract CDOMLoader<T> getLoader();
 
-	public abstract CDOMToken<T> getToken();
+	public abstract CDOMPrimaryToken<T> getToken();
 
 	@BeforeClass
 	public static final void classSetUp() throws URISyntaxException
@@ -139,7 +139,7 @@ public abstract class AbstractIntegrationTestCase<T extends PObject> extends
 		URI uri = campaign.getURI();
 		primaryContext.setSourceURI(uri);
 		getLoader().parseLine(primaryContext, primaryProf,
-			prefix + "TestObj\t" + unparsedBuilt.toString(), campaign);
+			prefix + "TestObj\t" + unparsedBuilt.toString(), campaign.getURI());
 		tc.putText(uri, str);
 		tc.putCampaign(uri, campaign);
 	}
@@ -150,7 +150,7 @@ public abstract class AbstractIntegrationTestCase<T extends PObject> extends
 		URI uri = campaign.getURI();
 		primaryContext.setSourceURI(uri);
 		getLoader().parseLine(primaryContext, primaryProf, prefix + "TestObj",
-			campaign);
+			campaign.getURI());
 		tc.putText(uri, null);
 		tc.putCampaign(uri, campaign);
 	}
@@ -168,7 +168,7 @@ public abstract class AbstractIntegrationTestCase<T extends PObject> extends
 			{
 				assertNull("Expecting empty unparsed", unparsed);
 				getLoader().parseLine(secondaryContext, secondaryProf,
-					prefix + "TestObj", tc.getCampaign(uri));
+					prefix + "TestObj", uri);
 				continue;
 			}
 			assertEquals(str.size(), unparsed.length);
@@ -189,7 +189,7 @@ public abstract class AbstractIntegrationTestCase<T extends PObject> extends
 			secondaryContext.setSourceURI(uri);
 			getLoader().parseLine(secondaryContext, secondaryProf,
 				prefix + "TestObj\t" + unparsedBuilt.toString(),
-				tc.getCampaign(uri));
+				uri);
 		}
 
 		// Ensure the objects are the same

@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pcgen.core.PObject;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.persistence.PersistenceLayerException;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
@@ -14,7 +14,7 @@ import plugin.pretokens.parser.PreLevelParser;
 import plugin.pretokens.writer.PreClassWriter;
 import plugin.pretokens.writer.PreLevelWriter;
 
-public abstract class AbstractTextPropertyIntegrationTestCase<T extends PObject>
+public abstract class AbstractTextPropertyIntegrationTestCase<T extends CDOMObject>
 		extends AbstractIntegrationTestCase<T>
 {
 
