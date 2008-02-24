@@ -1,9 +1,14 @@
 package pcgen.rules.persistence;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Observable;
+import java.util.Set;
+import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMAlignment;
 import pcgen.cdom.inst.CDOMArmorProf;
@@ -43,6 +48,7 @@ import pcgen.cdom.kit.CDOMKitTable;
 import pcgen.cdom.kit.CDOMKitTemplate;
 import pcgen.cdom.transition.CampaignInterface;
 import pcgen.core.SettingsHandler;
+import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.rules.context.LoadContext;
 
 public class SystemLoader extends Observable
@@ -253,5 +259,101 @@ public class SystemLoader extends Observable
 		context.ref.buildDerivedObjects();
 		context.ref.validate();
 		context.resolveReferences();
+	}
+
+	public void unloadCampaign(LoadContext lc, CampaignInterface cc,
+			String outputDirectory)
+	{
+
+		// File gameModeDir = new File(SettingsHandler.getPcgenSystemDir(),
+		// "gameModes");
+		// File specificGameModeDir = new File(gameModeDir, SettingsHandler
+		// .getGame().getFolderName());
+		// File statsAndChecks = new File(specificGameModeDir,
+		// "statsandchecks.lst");
+		// statsChecksLoader.loadLstFile(context, statsAndChecks.toURI());
+		// File sizeAdjustment = new File(specificGameModeDir,
+		// "sizeadjustment.lst");
+		// sizeLoader.loadLstFile(context, sizeAdjustment.toURI());
+
+		// abilityCategoryLoader.loadLstFiles(context, campaign
+		// .getAbilityCategoryFiles());
+
+		// wProfLoader.loadLstFiles(context, campaign.getWeaponProfFiles());
+		// aProfLoader.loadLstFiles(context, campaign.getArmorProfFiles());
+		// sProfLoader.loadLstFiles(context, campaign.getShieldProfFiles());
+		//
+		for (CampaignSourceEntry cse : cc.getSkillFiles())
+		{
+			lc.setExtractURI(cse.getURI());
+			System.out.println(cse.getURI());
+			Collection<CDOMSkill> skills = lc.ref
+					.getConstructedCDOMObjects(CDOMSkill.class);
+			Set<CDOMSkill> set = new TreeSet<CDOMSkill>(
+					TokenUtilities.WRITEABLE_SORTER);
+			set.addAll(skills);
+			for (CDOMSkill lang : set)
+			{
+				String unparse = StringUtil.join(lc.unparse(lang), "\t");
+				if (cse.getURI().equals(lang.get(ObjectKey.SOURCE_URI)))
+				{
+					System.out.println(lang.getDisplayName() + '\t' + unparse);
+				}
+				else if (unparse.length() != 0)
+				{
+					System.out.println(lang.getKeyName() + ".MOD\t" + unparse);
+				}
+			}
+		}
+
+
+		for (CampaignSourceEntry cse : cc.getLanguageFiles())
+		{
+			lc.setExtractURI(cse.getURI());
+			System.out.println(cse.getURI());
+			Collection<CDOMLanguage> languages = lc.ref
+					.getConstructedCDOMObjects(CDOMLanguage.class);
+			Set<CDOMLanguage> set = new TreeSet<CDOMLanguage>(
+					TokenUtilities.WRITEABLE_SORTER);
+			set.addAll(languages);
+			for (CDOMLanguage lang : set)
+			{
+				String unparse = StringUtil.join(lc.unparse(lang), "\t");
+				if (cse.getURI().equals(lang.get(ObjectKey.SOURCE_URI)))
+				{
+					System.out.println(lang.getDisplayName() + '\t' + unparse);
+				}
+				else if (unparse.length() != 0)
+				{
+					System.out.println(lang.getKeyName() + ".MOD\t" + unparse);
+				}
+			}
+		}
+
+		// abilityLoader.loadLstFiles(context, campaign.getAbilityFiles());
+		//
+		// featLoader.loadLstFiles(context, campaign.getFeatFiles());
+		//
+		// raceLoader.loadLstFiles(context, campaign.getRaceFiles());
+		//
+		// domainLoader.loadLstFiles(context, campaign.getDomainFiles());
+		//
+		// spellLoader.loadLstFiles(context, campaign.getSpellFiles());
+		// deityLoader.loadLstFiles(context, campaign.getDeityFiles());
+		//
+		// classLoader.loadLstFiles(context, campaign.getClassFiles());
+		//
+		// templateLoader.loadLstFiles(context, campaign.getTemplateFiles());
+		//
+		// eqModLoader.loadLstFiles(context, campaign.getEquipModFiles());
+		//
+		// equipmentLoader.loadLstFiles(context, campaign.getEquipFiles());
+		//
+		// companionModLoader.loadLstFiles(context, campaign
+		// .getCompanionModFiles());
+		// kitLoader.loadLstFiles(context, campaign.getKitFiles());
+
+		// TODO Auto-generated method stub
+
 	}
 }

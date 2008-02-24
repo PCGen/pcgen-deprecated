@@ -223,6 +223,10 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 			list
 				.add(ReferenceUtilities.joinLstFormat(addedSet, Constants.PIPE));
 		}
+		if (list.isEmpty())
+		{
+			return null;
+		}
 		return list.toArray(new String[list.size()]);
 	}
 

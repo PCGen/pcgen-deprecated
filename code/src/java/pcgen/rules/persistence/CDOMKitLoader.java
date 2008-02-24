@@ -88,6 +88,7 @@ public class CDOMKitLoader implements CDOMLoader<CDOMKit>
 	public void loadLstFile(LoadContext context, URI uri)
 	{
 		StringBuilder dataBuffer;
+		context.setSourceURI(uri);
 
 		try
 		{

@@ -87,6 +87,7 @@ public class CDOMLineLoader<T extends CDOMObject> implements CDOMLoader<T>
 	public void loadLstFile(LoadContext context, URI uri)
 	{
 		StringBuilder dataBuffer;
+		context.setSourceURI(uri);
 
 		try
 		{

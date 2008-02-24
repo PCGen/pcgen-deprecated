@@ -24,6 +24,7 @@ import pcgen.base.formula.Formula;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.enumeration.IntegerKey;
@@ -31,6 +32,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.VariableKey;
+import pcgen.core.prereq.Prerequisite;
 
 public class ObjectContext
 {
@@ -84,6 +86,11 @@ public class ObjectContext
 		edits.put(cdo, fk, f);
 	}
 
+	public void put(ConcretePrereqObject cpo, Prerequisite p)
+	{
+		edits.put(cpo, p);
+	}
+
 	public void put(CDOMObject cdo, IntegerKey ik, Integer i)
 	{
 		edits.put(cdo, ik, i);
@@ -128,54 +135,68 @@ public class ObjectContext
 		}
 		for (URI uri : edits.negativeMap.getKeySet())
 		{
-			for (CDOMObject cdo : edits.negativeMap.getSecondaryKeySet(uri))
+			for (ConcretePrereqObject cpo : edits.negativeMap
+					.getSecondaryKeySet(uri))
 			{
-				CDOMObject neg = edits.negativeMap.get(uri, cdo);
-				for (StringKey key : neg.getStringKeys())
+				if (cpo instanceof CDOMObject)
 				{
-					commit.put(cdo, key, null);
-				}
-				for (ListKey<?> key : neg.getListKeys())
-				{
-					removeListKey(cdo, key, neg);
+					CDOMObject cdo = (CDOMObject) cpo;
+					CDOMObject neg = edits.negativeMap.get(uri, cdo);
+					for (StringKey key : neg.getStringKeys())
+					{
+						commit.put(cdo, key, null);
+					}
+					for (ListKey<?> key : neg.getListKeys())
+					{
+						removeListKey(cdo, key, neg);
+					}
 				}
 			}
 		}
 		for (URI uri : edits.positiveMap.getKeySet())
 		{
-			for (CDOMObject cdo : edits.positiveMap.getSecondaryKeySet(uri))
+			for (ConcretePrereqObject cpo : edits.positiveMap
+					.getSecondaryKeySet(uri))
 			{
-				CDOMObject pos = edits.positiveMap.get(uri, cdo);
-				for (StringKey key : pos.getStringKeys())
+				CDOMObject pos = edits.positiveMap.get(uri, cpo);
+				for (Prerequisite p : pos.getPrerequisiteList())
 				{
-					commit.put(cdo, key, pos.get(key));
+					commit.put(cpo, p);
 				}
-				for (IntegerKey key : pos.getIntegerKeys())
+				if (cpo instanceof CDOMObject)
 				{
-					commit.put(cdo, key, pos.get(key));
+					CDOMObject cdo = (CDOMObject) cpo;
+					for (StringKey key : pos.getStringKeys())
+					{
+						commit.put(cdo, key, pos.get(key));
+					}
+					for (IntegerKey key : pos.getIntegerKeys())
+					{
+						commit.put(cdo, key, pos.get(key));
+					}
+					for (FormulaKey key : pos.getFormulaKeys())
+					{
+						commit.put(cdo, key, pos.get(key));
+					}
+					for (VariableKey key : pos.getVariableKeys())
+					{
+						commit.put(cdo, key, pos.get(key));
+					}
+					for (ObjectKey<?> key : pos.getObjectKeys())
+					{
+						putObjectKey(cdo, key, pos);
+					}
+					for (ListKey<?> key : pos.getListKeys())
+					{
+						putListKey(cdo, key, pos);
+					}
+					/*
+					 * TODO CDOM List Mods
+					 */
+					/*
+					 * TODO Deal with cloned objects
+					 */
 				}
-				for (FormulaKey key : pos.getFormulaKeys())
-				{
-					commit.put(cdo, key, pos.get(key));
-				}
-				for (VariableKey key : pos.getVariableKeys())
-				{
-					commit.put(cdo, key, pos.get(key));
-				}
-				for (ObjectKey<?> key : pos.getObjectKeys())
-				{
-					putObjectKey(cdo, key, pos);
-				}
-				for (ListKey<?> key : pos.getListKeys())
-				{
-					putListKey(cdo, key, pos);
-				}
-				/*
-				 * TODO CDOM List Mods
-				 */
-				/*
-				 * TODO Deal with cloned objects
-				 */
 			}
 		}
 		decommit();
@@ -256,9 +277,9 @@ public class ObjectContext
 	public class TrackingObjectCommitStrategy implements ObjectCommitStrategy
 	{
 
-		private DoubleKeyMap<URI, CDOMObject, CDOMObject> positiveMap = new DoubleKeyMap<URI, CDOMObject, CDOMObject>();
+		private DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject> positiveMap = new DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject>();
 
-		private DoubleKeyMap<URI, CDOMObject, CDOMObject> negativeMap = new DoubleKeyMap<URI, CDOMObject, CDOMObject>();
+		private DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject> negativeMap = new DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject>();
 
 		private DoubleKeyMapToList<URI, CDOMObject, ListKey<?>> globalClearSet = new DoubleKeyMapToList<URI, CDOMObject, ListKey<?>>();
 
@@ -277,7 +298,12 @@ public class ObjectContext
 			return negative;
 		}
 
-		private CDOMObject getPositive(URI source, CDOMObject cdo)
+		public void put(ConcretePrereqObject cpo, Prerequisite p)
+		{
+			getPositive(sourceURI, cpo).addPrerequisite(p);
+		}
+
+		private CDOMObject getPositive(URI source, ConcretePrereqObject cdo)
 		{
 			CDOMObject positive = positiveMap.get(source, cdo);
 			if (positive == null)
@@ -435,6 +461,18 @@ public class ObjectContext
 			}
 			return null;
 		}
+
+		public Changes<Prerequisite> getPrerequisiteChanges(
+				ConcretePrereqObject obj)
+		{
+			return new CollectionChanges<Prerequisite>(getPositive(extractURI,
+					obj).getPrerequisiteList(), null, false);
+		}
+	}
+
+	public Changes<Prerequisite> getPrerequisiteChanges(ConcretePrereqObject obj)
+	{
+		return commit.getPrerequisiteChanges(obj);
 	}
 
 }

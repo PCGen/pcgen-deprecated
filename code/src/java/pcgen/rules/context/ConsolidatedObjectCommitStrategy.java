@@ -22,6 +22,7 @@ import java.util.Set;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.enumeration.IntegerKey;
@@ -29,6 +30,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.VariableKey;
+import pcgen.core.prereq.Prerequisite;
 
 public class ConsolidatedObjectCommitStrategy implements ObjectCommitStrategy
 {
@@ -145,6 +147,17 @@ public class ConsolidatedObjectCommitStrategy implements ObjectCommitStrategy
 	public <T> void removeFromList(CDOMObject cdo, ListKey<T> lk, T val)
 	{
 		cdo.removeFromListFor(lk, val);
+	}
+
+	public void put(ConcretePrereqObject cpo, Prerequisite p)
+	{
+		cpo.addPrerequisite(p);
+	}
+
+	public Changes<Prerequisite> getPrerequisiteChanges(ConcretePrereqObject obj)
+	{
+		return new CollectionChanges<Prerequisite>(obj.getPrerequisiteList(),
+				null, false);
 	}
 
 }

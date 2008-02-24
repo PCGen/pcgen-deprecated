@@ -318,8 +318,8 @@ public class ReferenceSupport<T extends CDOMObject, RT extends CDOMSingleRef<T>>
 			}
 			else if (!keyName.equalsIgnoreCase(second.toString()))
 			{
-				Logging.errorPrint("Magical Key Change: " + second + " to "
-						+ keyName);
+//				Logging.errorPrint("Magical Key Change: " + second + " to "
+//						+ keyName);
 				returnGood = false;
 			}
 		}

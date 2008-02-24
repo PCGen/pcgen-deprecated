@@ -100,6 +100,7 @@ public class CDOMTokenLoader<T extends CDOMObject> implements CDOMLoader<T>
 			CampaignSourceEntry sourceEntry)
 	{
 		URI uri = sourceEntry.getURI();
+		context.setSourceURI(uri);
 		StringBuilder dataBuffer;
 
 		try

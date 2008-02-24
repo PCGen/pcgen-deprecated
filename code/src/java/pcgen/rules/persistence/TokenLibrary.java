@@ -11,15 +11,8 @@ import java.util.TreeSet;
 import pcgen.base.lang.UnreachableError;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.cdom.enumeration.IntegerKey;
-import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMPCClass;
-import pcgen.cdom.inst.CDOMPCClassLevel;
-import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PrerequisiteParserInterface;
-import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMCompatibilitySubToken;
 import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -30,7 +23,9 @@ import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.rules.persistence.token.ChooseLstGlobalQualifierToken;
 import pcgen.rules.persistence.token.ChooseLstQualifierToken;
+import pcgen.rules.persistence.token.ClassWrappedToken;
 import pcgen.rules.persistence.token.DeferredToken;
+import pcgen.rules.persistence.token.PreCompatibilityToken;
 import pcgen.rules.persistence.token.PrimitiveToken;
 import pcgen.rules.persistence.token.QualifierToken;
 import pcgen.rules.persistence.util.TokenFamily;
@@ -193,14 +188,18 @@ public class TokenLibrary
 			TokenFamily.CURRENT.putPrerequisiteToken(prereqToken);
 			for (String s : prereqToken.kindsHandled())
 			{
+				/*
+				 * TODO Theoretically these belong in REV514, but put into
+				 * current for unparse testing
+				 */
 				PreCompatibilityToken pos = new PreCompatibilityToken(s,
 						prereqToken, false);
-				TokenFamily.REV514.putToken(pos);
-				TokenFamily.REV514.putSubToken(pos);
+				TokenFamily.CURRENT.putToken(pos);
+				TokenFamily.CURRENT.putSubToken(pos);
 				PreCompatibilityToken neg = new PreCompatibilityToken(s,
 						prereqToken, true);
-				TokenFamily.REV514.putToken(neg);
-				TokenFamily.REV514.putSubToken(neg);
+				TokenFamily.CURRENT.putToken(neg);
+				TokenFamily.CURRENT.putSubToken(neg);
 			}
 		}
 		if (newToken instanceof CDOMCompatibilityToken)
@@ -373,121 +372,4 @@ public class TokenLibrary
 		return CDOMObject.class;
 	}
 
-	private static class PreCompatibilityToken implements
-			CDOMCompatibilityToken<ConcretePrereqObject>,
-			CDOMCompatibilitySubToken<ConcretePrereqObject>
-	{
-
-		private final String tokenRoot;
-		private final String tokenName;
-		private final PrerequisiteParserInterface token;
-		private final boolean invert;
-
-		public PreCompatibilityToken(String s,
-				PrerequisiteParserInterface prereqToken, boolean inv)
-		{
-			tokenRoot = s.toUpperCase();
-			token = prereqToken;
-			invert = inv;
-			tokenName = (invert ? "!" : "") + "PRE" + tokenRoot;
-		}
-
-		public Class<ConcretePrereqObject> getTokenClass()
-		{
-			return ConcretePrereqObject.class;
-		}
-
-		public boolean parse(LoadContext context, ConcretePrereqObject obj,
-				String value) throws PersistenceLayerException
-		{
-			Prerequisite p = token.parse(tokenRoot, value, invert, false);
-			if (p == null)
-			{
-				return false;
-			}
-			obj.addPrerequisite(p);
-			return true;
-		}
-
-		public String getTokenName()
-		{
-			return tokenName;
-		}
-
-		public int compatibilityLevel()
-		{
-			return 5;
-		}
-
-		public int compatibilityPriority()
-		{
-			return 0;
-		}
-
-		public int compatibilitySubLevel()
-		{
-			return 14;
-		}
-
-		public String getParentToken()
-		{
-			return "*KITTOKEN";
-		}
-
-	}
-
-	public static class ClassWrappedToken implements
-			CDOMCompatibilityToken<CDOMPCClassLevel>
-	{
-
-		private static int wrapIndex = Integer.MIN_VALUE;
-
-		private static final Integer ONE = Integer.valueOf(1);
-
-		private CDOMToken<CDOMPCClass> wrappedToken;
-
-		private int priority = wrapIndex++;
-
-		public Class<CDOMPCClassLevel> getTokenClass()
-		{
-			return CDOMPCClassLevel.class;
-		}
-
-		public ClassWrappedToken(CDOMToken<CDOMPCClass> tok)
-		{
-			wrappedToken = tok;
-		}
-
-		public boolean parse(LoadContext context, CDOMPCClassLevel obj,
-				String value) throws PersistenceLayerException
-		{
-			if (ONE.equals(obj.get(IntegerKey.LEVEL)))
-			{
-				CDOMPCClass parent = (CDOMPCClass) obj.get(ObjectKey.PARENT);
-				return wrappedToken.parse(context, parent, value);
-			}
-			return false;
-		}
-
-		public String getTokenName()
-		{
-			return wrappedToken.getTokenName();
-		}
-
-		public int compatibilityLevel()
-		{
-			return 5;
-		}
-
-		public int compatibilityPriority()
-		{
-			return priority;
-		}
-
-		public int compatibilitySubLevel()
-		{
-			return 14;
-		}
-
-	}
 }

@@ -93,6 +93,7 @@ public abstract class LoadContext
 	public void setExtractURI(URI extractURI)
 	{
 		getObjectContext().setExtractURI(extractURI);
+		ref.setExtractURI(extractURI);
 		getGraphContext().setExtractURI(extractURI);
 		getListContext().setExtractURI(extractURI);
 	}
@@ -106,6 +107,7 @@ public abstract class LoadContext
 	public void setSourceURI(URI sourceURI)
 	{
 		getObjectContext().setSourceURI(sourceURI);
+		ref.setSourceURI(sourceURI);
 		getGraphContext().setSourceURI(sourceURI);
 		getListContext().setSourceURI(sourceURI);
 	}

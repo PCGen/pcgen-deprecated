@@ -22,12 +22,14 @@ import java.util.Set;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.VariableKey;
+import pcgen.core.prereq.Prerequisite;
 
 public interface ObjectCommitStrategy
 {
@@ -65,4 +67,8 @@ public interface ObjectCommitStrategy
 	public void setExtractURI(URI extractURI);
 
 	public void setSourceURI(URI sourceURI);
+
+	public void put(ConcretePrereqObject cpo, Prerequisite p);
+
+	public Changes<Prerequisite> getPrerequisiteChanges(ConcretePrereqObject obj);
 }

@@ -34,6 +34,7 @@ import pcgen.rules.persistence.token.ChooseLstGlobalQualifierToken;
 import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.rules.persistence.token.PrimitiveToken;
 import pcgen.rules.persistence.util.TokenFamily;
+import pcgen.rules.persistence.util.TokenFamilyIterator;
 import pcgen.util.Logging;
 
 public class TokenSupport
@@ -366,7 +367,7 @@ public class TokenSupport
 		return false;
 	}
 
-	public String[] unparse(LoadContext context, CDOMObject cdo,
+	public <T extends CDOMObject> String[] unparse(LoadContext context, T cdo,
 			String tokenName)
 	{
 		/*
@@ -397,44 +398,23 @@ public class TokenSupport
 		return list.size() == 0 ? null : list.toArray(new String[list.size()]);
 	}
 
-	public Collection<String> unparse(LoadContext context, CDOMObject cdo)
+	public <T extends CDOMObject> Collection<String> unparse(
+			LoadContext context, T cdo)
 	{
-		/*
-		 * TODO THIS IS WRONG - if the LOCAL version of a token works, the
-		 * GLOBAL should not be called :P
-		 */
 		Set<String> set = new TreeSet<String>();
-		for (CDOMToken token : TokenFamily.CURRENT.getTokens(cdo.getClass()))
+		Class<T> cl = (Class<T>) cdo.getClass();
+		TokenFamilyIterator<T> it = new TokenFamilyIterator<T>(cl);
+		while (it.hasNext())
 		{
-			if (token instanceof CDOMPrimaryToken)
+			CDOMPrimaryToken<? super T> token = it.next();
+			String[] s = token.unparse(context, cdo);
+			if (s != null)
 			{
-				CDOMPrimaryToken tok = (CDOMPrimaryToken) token;
 				StringBuilder sb2 = new StringBuilder();
 				sb2.append(token.getTokenName()).append(':');
-				String[] s = tok.unparse(context, cdo);
-				if (s != null)
+				for (String aString : s)
 				{
-					for (String aString : s)
-					{
-						set.add(sb2.toString() + aString);
-					}
-				}
-			}
-		}
-		for (CDOMToken token : TokenFamily.CURRENT.getTokens(CDOMObject.class))
-		{
-			if (token instanceof CDOMPrimaryToken)
-			{
-				CDOMPrimaryToken tok = (CDOMPrimaryToken) token;
-				StringBuilder sb2 = new StringBuilder();
-				sb2.append(token.getTokenName()).append(':');
-				String[] s = tok.unparse(context, cdo);
-				if (s != null)
-				{
-					for (String aString : s)
-					{
-						set.add(sb2.toString() + aString);
-					}
+					set.add(sb2.toString() + aString);
 				}
 			}
 		}

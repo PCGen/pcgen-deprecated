@@ -17,6 +17,7 @@
  */
 package pcgen.rules.context;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,6 +34,7 @@ import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.SubClassCategory;
 import pcgen.cdom.inst.CDOMDomain;
@@ -98,14 +100,17 @@ public class ReferenceContext
 
 	public <T extends CDOMObject> T constructCDOMObject(Class<T> c, String val)
 	{
+		T obj;
 		if (CategorizedCDOMObject.class.isAssignableFrom(c))
 		{
-			return (T) categorized.constructCDOMObject((Class) c, null, val);
+			obj = (T) categorized.constructCDOMObject((Class) c, null, val);
 		}
 		else
 		{
-			return simple.constructCDOMObject(c, val);
+			obj =  simple.constructCDOMObject(c, val);
 		}
+		obj.put(ObjectKey.SOURCE_URI, sourceURI);
+		return obj;
 	}
 
 	public <T extends CDOMObject> void constructIfNecessary(Class<T> cl,
@@ -295,5 +300,29 @@ public class ReferenceContext
 	{
 		OneToOneMap<T, String> map = (OneToOneMap<T, String>) abbMap.get(cl);
 		return map == null ? null : map.getKeyFor(value);
+	}
+	
+	private URI sourceURI;
+
+	private URI extractURI;
+
+	public URI getExtractURI()
+	{
+		return extractURI;
+	}
+
+	public void setExtractURI(URI extractURI)
+	{
+		this.extractURI = extractURI;
+	}
+
+	public URI getSourceURI()
+	{
+		return sourceURI;
+	}
+
+	public void setSourceURI(URI sourceURI)
+	{
+		this.sourceURI = sourceURI;
 	}
 }
