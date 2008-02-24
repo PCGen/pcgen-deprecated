@@ -23,15 +23,17 @@ package plugin.lsttokens.equipmentmodifier;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with CHARGES token
  */
-public class ChargesToken implements EquipmentModifierLstToken
+public class ChargesToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	public String getTokenName()
@@ -45,7 +47,7 @@ public class ChargesToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
@@ -114,7 +116,7 @@ public class ChargesToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		Integer max =
 				context.getObjectContext().getInteger(mod,
@@ -148,5 +150,10 @@ public class ChargesToken implements EquipmentModifierLstToken
 			return null;
 		}
 		return new String[]{min + Constants.PIPE + max};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

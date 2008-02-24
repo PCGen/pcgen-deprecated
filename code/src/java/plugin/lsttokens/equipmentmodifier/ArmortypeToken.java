@@ -30,17 +30,19 @@ import pcgen.base.util.TypeSafeMap;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.modifier.ChangeArmorType;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with ARMORTYPE token
  */
-public class ArmortypeToken implements EquipmentModifierLstToken
+public class ArmortypeToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	public String getTokenName()
@@ -54,7 +56,7 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
@@ -92,7 +94,7 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		AssociatedChanges<ChangeArmorType> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -125,5 +127,10 @@ public class ArmortypeToken implements EquipmentModifierLstToken
 			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

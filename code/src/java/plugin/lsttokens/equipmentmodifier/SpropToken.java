@@ -30,19 +30,21 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SpecialProperty;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with SPROP token
  */
 public class SpropToken extends AbstractToken implements
-		EquipmentModifierLstToken
+		EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	@Override
@@ -65,7 +67,7 @@ public class SpropToken extends AbstractToken implements
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
@@ -87,7 +89,7 @@ public class SpropToken extends AbstractToken implements
 		return true;
 	}
 
-	public SpecialProperty subParse(LoadContext context, EquipmentModifier mod,
+	public SpecialProperty subParse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -171,7 +173,7 @@ public class SpropToken extends AbstractToken implements
 		return sa;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		AssociatedChanges<SpecialProperty> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -206,5 +208,10 @@ public class SpropToken extends AbstractToken implements
 			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

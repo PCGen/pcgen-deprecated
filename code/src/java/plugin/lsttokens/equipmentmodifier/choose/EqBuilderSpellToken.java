@@ -25,21 +25,22 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.SpellLevelLimit;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.util.Logging;
 
 public class EqBuilderSpellToken extends AbstractToken implements
-		EqModChooseLstToken, EqModChooseCompatibilityToken
+		EqModChooseLstToken, ChoiceSetToken<CDOMEqMod>
 {
 
-	private final Class<Spell> SPELL_CLASS = Spell.class;
+	private final Class<CDOMSpell> SPELL_CLASS = CDOMSpell.class;
 
 	public boolean parse(EquipmentModifier po, String prefix, String value)
 	{
@@ -131,6 +132,7 @@ public class EqBuilderSpellToken extends AbstractToken implements
 		return true;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "EQBUILDER.SPELL";
@@ -151,16 +153,15 @@ public class EqBuilderSpellToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
-			EquipmentModifier mod, String value)
-			throws PersistenceLayerException
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMEqMod mod,
+			String value) throws PersistenceLayerException
 	{
 		List<SpellLevelLimit> sllList = new ArrayList<SpellLevelLimit>();
 
 		if (value == null)
 		{
-			CDOMReference<Spell> allRef = context.ref
-					.getCDOMAllReference(Spell.class);
+			CDOMReference<CDOMSpell> allRef = context.ref
+					.getCDOMAllReference(CDOMSpell.class);
 			sllList.add(new SpellLevelLimit(allRef, 0, Integer.MAX_VALUE));
 		}
 		else
@@ -192,13 +193,16 @@ public class EqBuilderSpellToken extends AbstractToken implements
 				}
 				String maxLevel = st.nextToken();
 				int max = Integer.parseInt(maxLevel);
-				CDOMReference<Spell> ref = context.ref.getCDOMTypeReference(
-						SPELL_CLASS, type);
+				CDOMReference<CDOMSpell> ref = context.ref
+						.getCDOMTypeReference(SPELL_CLASS, type);
 				sllList.add(new SpellLevelLimit(ref, min, max));
 			}
 		}
-		return new PrimitiveChoiceSet<?>[] { new CollectionChoiceSet<SpellLevelLimit>(
-				sllList) };
+		return new CollectionChoiceSet<SpellLevelLimit>(sllList);
 	}
 
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
+	}
 }

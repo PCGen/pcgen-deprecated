@@ -23,21 +23,23 @@ package plugin.lsttokens.equipmentmodifier;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Deals with REPLACES token
  */
 public class ReplacesToken extends AbstractToken implements
-		EquipmentModifierLstToken
+		EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	@Override
@@ -52,8 +54,7 @@ public class ReplacesToken extends AbstractToken implements
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
-		String value)
+	public boolean parse(LoadContext context, CDOMEqMod mod, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
@@ -63,25 +64,28 @@ public class ReplacesToken extends AbstractToken implements
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
 		while (tok.hasMoreTokens())
 		{
-			CDOMSimpleSingleRef<EquipmentModifier> ref =
-					context.ref.getCDOMReference(EquipmentModifier.class, tok
-						.nextToken());
+			CDOMSingleRef<CDOMEqMod> ref = context.ref.getCDOMReference(
+					CDOMEqMod.class, tok.nextToken());
 			context.getObjectContext().addToList(mod, ListKey.REPLACED_KEYS,
-				ref);
+					ref);
 		}
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
-		Changes<CDOMSimpleSingleRef<EquipmentModifier>> changes =
-				context.getObjectContext().getListChanges(mod,
-					ListKey.REPLACED_KEYS);
+		Changes<CDOMSingleRef<CDOMEqMod>> changes = context.getObjectContext()
+				.getListChanges(mod, ListKey.REPLACED_KEYS);
 		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
-		return new String[]{ReferenceUtilities.joinLstFormat(
-			changes.getAdded(), Constants.COMMA)};
+		return new String[] { ReferenceUtilities.joinLstFormat(changes
+				.getAdded(), Constants.COMMA) };
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

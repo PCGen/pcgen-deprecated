@@ -24,14 +24,16 @@ package plugin.lsttokens.equipmentmodifier;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Deals with COSTPRE token
  */
-public class CostpreToken implements EquipmentModifierLstToken
+public class CostpreToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	public String getTokenName()
@@ -45,7 +47,7 @@ public class CostpreToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		context.getObjectContext().put(mod, FormulaKey.BASECOST,
@@ -53,7 +55,7 @@ public class CostpreToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		Formula f =
 				context.getObjectContext().getFormula(mod, FormulaKey.BASECOST);
@@ -62,5 +64,10 @@ public class CostpreToken implements EquipmentModifierLstToken
 			return null;
 		}
 		return new String[]{f.toString()};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

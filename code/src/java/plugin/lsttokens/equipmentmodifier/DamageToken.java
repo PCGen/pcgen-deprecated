@@ -22,14 +22,16 @@
 package plugin.lsttokens.equipmentmodifier;
 
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Deals with DAMAGE token
  */
-public class DamageToken implements EquipmentModifierLstToken
+public class DamageToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	public String getTokenName()
@@ -43,14 +45,14 @@ public class DamageToken implements EquipmentModifierLstToken
 		return false;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		context.getObjectContext().put(mod, StringKey.DAMAGE, value);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		String damage =
 				context.getObjectContext().getString(mod, StringKey.DAMAGE);
@@ -59,5 +61,10 @@ public class DamageToken implements EquipmentModifierLstToken
 			return null;
 		}
 		return new String[]{damage};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

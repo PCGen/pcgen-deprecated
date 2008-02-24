@@ -26,9 +26,11 @@ package plugin.lsttokens.equipmentmodifier;
 
 import pcgen.cdom.enumeration.EqModFormatCat;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
@@ -36,7 +38,7 @@ import pcgen.util.Logging;
  * modifier should be added in the name of any equipment item the eqmod is added
  * to.
  */
-public class FormatcatToken implements EquipmentModifierLstToken
+public class FormatcatToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	/**
@@ -76,7 +78,7 @@ public class FormatcatToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		try
@@ -93,7 +95,7 @@ public class FormatcatToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		EqModFormatCat fc =
 				context.getObjectContext().getObject(mod, ObjectKey.FORMAT);
@@ -102,5 +104,10 @@ public class FormatcatToken implements EquipmentModifierLstToken
 			return null;
 		}
 		return new String[]{fc.toString()};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

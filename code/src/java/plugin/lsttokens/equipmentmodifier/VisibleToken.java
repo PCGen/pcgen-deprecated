@@ -22,9 +22,11 @@
 package plugin.lsttokens.equipmentmodifier;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
@@ -38,7 +40,7 @@ import pcgen.util.enumeration.Visibility;
  * @author Devon Jones
  * @version $Revision$
  */
-public class VisibleToken implements EquipmentModifierLstToken
+public class VisibleToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	/**
@@ -59,7 +61,7 @@ public class VisibleToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		try
@@ -76,7 +78,7 @@ public class VisibleToken implements EquipmentModifierLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		Visibility vis =
 				context.getObjectContext().getObject(mod, ObjectKey.VISIBILITY);
@@ -104,5 +106,10 @@ public class VisibleToken implements EquipmentModifierLstToken
 			return null;
 		}
 		return new String[]{visString};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

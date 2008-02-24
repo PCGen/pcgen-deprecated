@@ -21,26 +21,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.helper.ChainedChoiceSet;
 import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.NumberChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.PCStat;
 import pcgen.core.SettingsHandler;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.util.Logging;
 
 public class StatBonusToken extends AbstractToken implements
-		EqModChooseLstToken, EqModChooseCompatibilityToken
+		EqModChooseLstToken, ChoiceSetToken<CDOMEqMod>
 {
 
-	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
+	private static final Class<CDOMStat> PCSTAT_CLASS = CDOMStat.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "STATBONUS";
@@ -184,9 +188,8 @@ public class StatBonusToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
-			EquipmentModifier mod, String value)
-			throws PersistenceLayerException
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMEqMod mod,
+			String value) throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -204,7 +207,7 @@ public class StatBonusToken extends AbstractToken implements
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		Integer min = null;
 		Integer max = null;
-		ArrayList<PCStat> statList = new ArrayList<PCStat>();
+		ArrayList<CDOMStat> statList = new ArrayList<CDOMStat>();
 		while (tok.hasMoreTokens())
 		{
 			String tokString = tok.nextToken();
@@ -230,10 +233,11 @@ public class StatBonusToken extends AbstractToken implements
 			}
 			else
 			{
-				PCStat ref = context.ref.getConstructedCDOMObject(PCSTAT_CLASS,
-						tokString);
+				CDOMStat ref = context.ref.getAbbreviatedObject(
+						PCSTAT_CLASS, tokString);
 				if (ref == null)
 				{
+					Logging.errorPrint("Unable to find STAT: " + tokString);
 					return null;
 				}
 				statList.add(ref);
@@ -272,9 +276,13 @@ public class StatBonusToken extends AbstractToken implements
 					.addAll(context.ref.getConstructedCDOMObjects(PCSTAT_CLASS));
 		}
 		statList.trimToSize();
-		return new PrimitiveChoiceSet<?>[] {
-				new CollectionChoiceSet<PCStat>(statList),
-				new NumberChoiceSet(min, max) };
+		return new ChainedChoiceSet<CDOMStat>(
+				new CollectionChoiceSet<CDOMStat>(statList),
+				new NumberChoiceSet(min, max));
 	}
 
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
+	}
 }

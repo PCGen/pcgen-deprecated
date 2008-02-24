@@ -19,16 +19,17 @@ package plugin.lsttokens.equipmentmodifier.choose;
 
 import pcgen.cdom.helper.NoChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.util.Logging;
 
 public class NoChoiceToken extends AbstractToken implements
-		EqModChooseLstToken, EqModChooseCompatibilityToken
+		EqModChooseLstToken, ChoiceSetToken<CDOMEqMod>
 {
 
 	public boolean parse(EquipmentModifier po, String prefix, String value)
@@ -50,6 +51,7 @@ public class NoChoiceToken extends AbstractToken implements
 		return false;
 	}
 
+	@Override
 	public String getTokenName()
 	{
 		return "NOCHOICE";
@@ -70,14 +72,18 @@ public class NoChoiceToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
-			EquipmentModifier mod, String value)
-			throws PersistenceLayerException
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMEqMod mod,
+			String value) throws PersistenceLayerException
 	{
 		if (!isEmpty(value))
 		{
 			return null;
 		}
-		return new PrimitiveChoiceSet<?>[] { new NoChoiceSet() };
+		return new NoChoiceSet();
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

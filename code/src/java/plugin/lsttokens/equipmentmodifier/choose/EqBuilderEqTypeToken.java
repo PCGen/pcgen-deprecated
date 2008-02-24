@@ -25,13 +25,14 @@ package plugin.lsttokens.equipmentmodifier.choose;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.util.Logging;
 
 /**
@@ -45,7 +46,7 @@ import pcgen.util.Logging;
  * @version $Revision$
  */
 public class EqBuilderEqTypeToken extends AbstractToken implements
-		EqModChooseLstToken, EqModChooseCompatibilityToken
+		EqModChooseLstToken, ChoiceSetToken<CDOMEqMod>
 {
 
 	public boolean parse(EquipmentModifier po, String prefix, String value)
@@ -129,6 +130,7 @@ public class EqBuilderEqTypeToken extends AbstractToken implements
 	 * 
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "EQBUILDER.EQTYPE";
@@ -149,12 +151,15 @@ public class EqBuilderEqTypeToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
-			EquipmentModifier mod, String value)
-			throws PersistenceLayerException
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMEqMod mod,
+			String value) throws PersistenceLayerException
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
+	}
 }

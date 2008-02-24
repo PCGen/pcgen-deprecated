@@ -22,15 +22,17 @@
 package plugin.lsttokens.equipmentmodifier;
 
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with FUMBLERANGE token
  */
-public class FumblerangeToken implements EquipmentModifierLstToken
+public class FumblerangeToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	public String getTokenName()
@@ -44,7 +46,7 @@ public class FumblerangeToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		if (value.length() == 0)
@@ -56,7 +58,7 @@ public class FumblerangeToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		String range =
 				context.getObjectContext().getString(mod,
@@ -66,5 +68,10 @@ public class FumblerangeToken implements EquipmentModifierLstToken
 			return null;
 		}
 		return new String[]{range};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

@@ -27,17 +27,19 @@ import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Deals with ITYPE token
  */
 public class ItypeToken extends AbstractToken implements
-		EquipmentModifierLstToken
+		EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	@Override
@@ -52,7 +54,7 @@ public class ItypeToken extends AbstractToken implements
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('.', value))
@@ -69,7 +71,7 @@ public class ItypeToken extends AbstractToken implements
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		Changes<Type> changes =
 				context.getObjectContext().getListChanges(mod,
@@ -79,5 +81,10 @@ public class ItypeToken extends AbstractToken implements
 			return null;
 		}
 		return new String[]{StringUtil.join(changes.getAdded(), Constants.DOT)};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

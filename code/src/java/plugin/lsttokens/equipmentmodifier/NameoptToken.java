@@ -24,15 +24,17 @@ package plugin.lsttokens.equipmentmodifier;
 import pcgen.cdom.enumeration.EqModNameOpt;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with NAMEOPT token
  */
-public class NameoptToken implements EquipmentModifierLstToken
+public class NameoptToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	public String getTokenName()
@@ -46,7 +48,7 @@ public class NameoptToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		if (value.length() == 0)
@@ -81,7 +83,7 @@ public class NameoptToken implements EquipmentModifierLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		EqModNameOpt opt =
 				context.getObjectContext().getObject(mod, ObjectKey.NAME_OPT);
@@ -128,5 +130,10 @@ public class NameoptToken implements EquipmentModifierLstToken
 			}
 		}
 		return new String[]{retString};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

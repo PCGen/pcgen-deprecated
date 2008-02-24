@@ -22,15 +22,17 @@
 package plugin.lsttokens.equipmentmodifier;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with COSTDOUBLE token
  */
-public class CostdoubleToken implements EquipmentModifierLstToken
+public class CostdoubleToken implements EquipmentModifierLstToken, CDOMPrimaryToken<CDOMEqMod>
 {
 
 	public String getTokenName()
@@ -69,7 +71,7 @@ public class CostdoubleToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
+	public boolean parse(LoadContext context, CDOMEqMod mod,
 		String value)
 	{
 		Boolean set;
@@ -101,7 +103,7 @@ public class CostdoubleToken implements EquipmentModifierLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, EquipmentModifier mod)
+	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
 		Boolean stacks =
 				context.getObjectContext()
@@ -111,5 +113,10 @@ public class CostdoubleToken implements EquipmentModifierLstToken
 			return null;
 		}
 		return new String[]{stacks.booleanValue() ? "YES" : "NO"};
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

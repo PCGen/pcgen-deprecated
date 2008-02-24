@@ -24,19 +24,21 @@ import java.util.StringTokenizer;
 import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.NumberChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.util.Logging;
 
 public class NumberToken extends AbstractToken implements EqModChooseLstToken,
-		EqModChooseCompatibilityToken
+		ChoiceSetToken<CDOMEqMod>
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "NUMBER";
@@ -86,7 +88,7 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		Integer min = null;
 		Integer max = null;
-		
+
 		while (tok.hasMoreTokens())
 		{
 			String tokString = tok.nextToken();
@@ -178,9 +180,8 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
-			EquipmentModifier mod, String value)
-			throws PersistenceLayerException
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMEqMod mod,
+			String value) throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -321,15 +322,19 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 			{
 				if (increment.intValue() < 1)
 				{
-					Logging
-							.errorPrint("Increment in CHOOSE must be >= 1: "
-									+ value);
+					Logging.errorPrint("Increment in CHOOSE must be >= 1: "
+							+ value);
 					return null;
 				}
 				ncs.setIncrement(increment.intValue());
 			}
 			cs = ncs;
 		}
-		return new PrimitiveChoiceSet<?>[] { cs };
+		return cs;
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

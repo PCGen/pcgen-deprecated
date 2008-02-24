@@ -21,26 +21,29 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.helper.ChainedChoiceSet;
 import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.NumberChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
-import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.EqModChooseCompatibilityToken;
 import pcgen.persistence.lst.EqModChooseLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.util.Logging;
 
 public class SkillBonusToken extends AbstractToken implements
-		EqModChooseLstToken, EqModChooseCompatibilityToken
+		EqModChooseLstToken, ChoiceSetToken<CDOMEqMod>
 {
 
-	private static final Class<Skill> SKILL_CLASS = Skill.class;
+	private static final Class<CDOMSkill> SKILL_CLASS = CDOMSkill.class;
 
+	@Override
 	public String getTokenName()
 	{
 		return "SKILLBONUS";
@@ -169,9 +172,8 @@ public class SkillBonusToken extends AbstractToken implements
 		return 14;
 	}
 
-	public PrimitiveChoiceSet<?>[] parse(LoadContext context,
-			EquipmentModifier mod, String value)
-			throws PersistenceLayerException
+	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMEqMod mod,
+			String value) throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -189,7 +191,7 @@ public class SkillBonusToken extends AbstractToken implements
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		Integer min = null;
 		Integer max = null;
-		ArrayList<CDOMReference<Skill>> skillList = new ArrayList<CDOMReference<Skill>>();
+		ArrayList<CDOMReference<CDOMSkill>> skillList = new ArrayList<CDOMReference<CDOMSkill>>();
 		while (tok.hasMoreTokens())
 		{
 			String tokString = tok.nextToken();
@@ -215,8 +217,8 @@ public class SkillBonusToken extends AbstractToken implements
 			}
 			else
 			{
-				CDOMReference<Skill> ref = TokenUtilities.getTypeOrPrimitive(
-						context, SKILL_CLASS, tokString);
+				CDOMReference<CDOMSkill> ref = TokenUtilities
+						.getTypeOrPrimitive(context, SKILL_CLASS, tokString);
 				if (ref == null)
 				{
 					return null;
@@ -256,9 +258,13 @@ public class SkillBonusToken extends AbstractToken implements
 			skillList.add(context.ref.getCDOMAllReference(SKILL_CLASS));
 		}
 		skillList.trimToSize();
-		return new PrimitiveChoiceSet<?>[] {
-				new CollectionChoiceSet<CDOMReference<Skill>>(skillList),
-				new NumberChoiceSet(min, max) };
+		return new ChainedChoiceSet<CDOMReference<CDOMSkill>>(
+				new CollectionChoiceSet<CDOMReference<CDOMSkill>>(skillList),
+				new NumberChoiceSet(min, max));
 	}
 
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
+	}
 }
