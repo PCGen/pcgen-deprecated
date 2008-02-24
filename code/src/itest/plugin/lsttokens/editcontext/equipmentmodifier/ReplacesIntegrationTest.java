@@ -19,34 +19,35 @@ package plugin.lsttokens.editcontext.equipmentmodifier;
 
 import org.junit.Test;
 
-import pcgen.core.EquipmentModifier;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentModifierLoader;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractTypeSafeListIntegrationTestCase;
 import plugin.lsttokens.equipmentmodifier.ReplacesToken;
 
 public class ReplacesIntegrationTest extends
-		AbstractTypeSafeListIntegrationTestCase<EquipmentModifier>
+		AbstractTypeSafeListIntegrationTestCase<CDOMEqMod>
 {
 
 	static ReplacesToken token = new ReplacesToken();
-	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
+	static CDOMTokenLoader<CDOMEqMod> loader = new CDOMTokenLoader<CDOMEqMod>(
+			CDOMEqMod.class);
 
 	@Override
-	public Class<EquipmentModifier> getCDOMClass()
+	public Class<CDOMEqMod> getCDOMClass()
 	{
-		return EquipmentModifier.class;
+		return CDOMEqMod.class;
 	}
 
 	@Override
-	public LstLoader<EquipmentModifier> getLoader()
+	public CDOMLoader<CDOMEqMod> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<EquipmentModifier> getToken()
+	public CDOMPrimaryToken<CDOMEqMod> getToken()
 	{
 		return token;
 	}
@@ -54,10 +55,8 @@ public class ReplacesIntegrationTest extends
 	@Override
 	public Object getConstant(String string)
 	{
-		primaryContext.ref
-			.constructIfNecessary(EquipmentModifier.class, string);
-		secondaryContext.ref.constructIfNecessary(EquipmentModifier.class,
-			string);
+		primaryContext.ref.constructIfNecessary(CDOMEqMod.class, string);
+		secondaryContext.ref.constructIfNecessary(CDOMEqMod.class, string);
 		return null;
 	}
 

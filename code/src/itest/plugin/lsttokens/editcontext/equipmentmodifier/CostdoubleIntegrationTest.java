@@ -19,35 +19,37 @@ package plugin.lsttokens.editcontext.equipmentmodifier;
 
 import org.junit.Test;
 
-import pcgen.core.EquipmentModifier;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentModifierLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegrationTestCase;
 import plugin.lsttokens.editcontext.testsupport.TestContext;
 import plugin.lsttokens.equipmentmodifier.CostdoubleToken;
 
-public class CostdoubleIntegrationTest extends AbstractIntegrationTestCase<EquipmentModifier>
+public class CostdoubleIntegrationTest extends
+		AbstractIntegrationTestCase<CDOMEqMod>
 {
 
 	static CostdoubleToken token = new CostdoubleToken();
-	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
+	static CDOMTokenLoader<CDOMEqMod> loader = new CDOMTokenLoader<CDOMEqMod>(
+			CDOMEqMod.class);
 
 	@Override
-	public Class<EquipmentModifier> getCDOMClass()
+	public Class<CDOMEqMod> getCDOMClass()
 	{
-		return EquipmentModifier.class;
+		return CDOMEqMod.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<EquipmentModifier> getLoader()
+	public CDOMLoader<CDOMEqMod> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<EquipmentModifier> getToken()
+	public CDOMPrimaryToken<CDOMEqMod> getToken()
 	{
 		return token;
 	}

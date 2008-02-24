@@ -17,34 +17,35 @@
  */
 package plugin.lsttokens.editcontext.equipmentmodifier;
 
-import pcgen.core.EquipmentModifier;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.EquipmentModifierLoader;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegerIntegrationTestCase;
 import plugin.lsttokens.equipmentmodifier.PlusToken;
 
 public class PlusIntegrationTest extends
-		AbstractIntegerIntegrationTestCase<EquipmentModifier>
+		AbstractIntegerIntegrationTestCase<CDOMEqMod>
 {
 
 	static PlusToken token = new PlusToken();
-	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
+	static CDOMTokenLoader<CDOMEqMod> loader = new CDOMTokenLoader<CDOMEqMod>(
+			CDOMEqMod.class);
 
 	@Override
-	public Class<EquipmentModifier> getCDOMClass()
+	public Class<CDOMEqMod> getCDOMClass()
 	{
-		return EquipmentModifier.class;
+		return CDOMEqMod.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<EquipmentModifier> getLoader()
+	public CDOMLoader<CDOMEqMod> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<EquipmentModifier> getToken()
+	public CDOMPrimaryToken<CDOMEqMod> getToken()
 	{
 		return token;
 	}
