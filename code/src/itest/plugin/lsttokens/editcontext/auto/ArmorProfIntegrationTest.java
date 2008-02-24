@@ -19,10 +19,11 @@ package plugin.lsttokens.editcontext.auto;
 
 import org.junit.Test;
 
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.ArmorProf;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.auto.ArmorProfToken;
 
 public class ArmorProfIntegrationTest extends AbstractAutoTokenTestCase
@@ -40,10 +41,11 @@ public class ArmorProfIntegrationTest extends AbstractAutoTokenTestCase
 		return ArmorProf.class;
 	}
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}

@@ -23,68 +23,70 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Alignment;
-import pcgen.core.Deity;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.DeityLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.deity.AlignToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractIntegrationTestCase;
 import plugin.lsttokens.editcontext.testsupport.TestContext;
 
-public class AlignIntegrationTest extends AbstractIntegrationTestCase<Deity>
+public class AlignIntegrationTest extends
+		AbstractIntegrationTestCase<CDOMDeity>
 {
 	static AlignToken token = new AlignToken();
-	static DeityLoader loader = new DeityLoader();
+	static CDOMTokenLoader<CDOMDeity> loader = new CDOMTokenLoader<CDOMDeity>(
+			CDOMDeity.class);
 
 	@Override
 	@Before
 	public final void setUp() throws PersistenceLayerException,
-		URISyntaxException
+			URISyntaxException
 	{
 		super.setUp();
-		primaryContext.ref.constructCDOMObject(Alignment.class, "LG");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "LN");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "LE");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "NG");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "TN");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "NE");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "CG");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "CN");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "CE");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "LG");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "LN");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "LE");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "NG");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "TN");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "NE");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "CG");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "CN");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "CE");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LG");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LN");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LE");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "NG");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "TN");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "NE");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CG");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CN");
+		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CE");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LG");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LN");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LE");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "NG");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "TN");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "NE");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CG");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CN");
+		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CE");
 	}
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Deity> getLoader()
+	public CDOMLoader<CDOMDeity> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Deity> getToken()
+	public CDOMPrimaryToken<CDOMDeity> getToken()
 	{
 		return token;
 	}
 
 	public Object getConstant(String string)
 	{
-		return primaryContext.ref.getConstructedCDOMObject(Alignment.class, string);
+		return primaryContext.ref.getAbbreviatedObject(CDOMAlignment.class, string);
 	}
 
 	public ObjectKey<?> getObjectKey()

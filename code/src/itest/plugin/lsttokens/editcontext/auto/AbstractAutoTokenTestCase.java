@@ -22,11 +22,11 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AutoLstToken;
-import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.AutoLst;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
@@ -60,7 +60,7 @@ public abstract class AbstractAutoTokenTestCase extends
 
 	protected abstract AutoLstToken getSubToken();
 
-	protected abstract <T extends PObject> Class<T> getSubTokenType();
+	protected abstract <T extends CDOMObject> Class<T> getSubTokenType();
 
 	public String getSubTokenString()
 	{
@@ -354,7 +354,7 @@ public abstract class AbstractAutoTokenTestCase extends
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}

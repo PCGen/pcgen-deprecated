@@ -20,34 +20,35 @@ package plugin.lsttokens.editcontext.deity;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.Type;
-import pcgen.core.Deity;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.DeityLoader;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.deity.PantheonToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractTypeSafeListIntegrationTestCase;
 
 public class PantheonIntegrationTest extends
-		AbstractTypeSafeListIntegrationTestCase<Deity>
+		AbstractTypeSafeListIntegrationTestCase<CDOMDeity>
 {
 
 	static PantheonToken token = new PantheonToken();
-	static DeityLoader loader = new DeityLoader();
+	static CDOMTokenLoader<CDOMDeity> loader = new CDOMTokenLoader<CDOMDeity>(
+			CDOMDeity.class);
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public LstLoader<Deity> getLoader()
+	public CDOMLoader<CDOMDeity> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Deity> getToken()
+	public CDOMPrimaryToken<CDOMDeity> getToken()
 	{
 		return token;
 	}

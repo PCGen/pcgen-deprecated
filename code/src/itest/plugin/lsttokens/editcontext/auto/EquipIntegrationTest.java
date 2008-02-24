@@ -19,11 +19,12 @@ package plugin.lsttokens.editcontext.auto;
 
 import org.junit.Test;
 
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.Equipment;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.auto.EquipToken;
 
 public class EquipIntegrationTest extends AbstractAutoTokenTestCase
@@ -41,10 +42,11 @@ public class EquipIntegrationTest extends AbstractAutoTokenTestCase
 		return Equipment.class;
 	}
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
