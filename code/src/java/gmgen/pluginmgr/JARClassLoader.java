@@ -47,13 +47,14 @@ import pcgen.core.prereq.PrerequisiteTestFactory;
 import pcgen.io.ExportHandler;
 import pcgen.io.exporttoken.Token;
 import pcgen.persistence.lst.LstToken;
-import pcgen.persistence.lst.PrimitiveToken;
-import pcgen.persistence.lst.QualifierToken;
 import pcgen.persistence.lst.TokenStore;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriterFactory;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriterInterface;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.prereq.PrerequisiteParserInterface;
+import pcgen.rules.persistence.TokenLibrary;
+import pcgen.rules.persistence.token.PrimitiveToken;
+import pcgen.rules.persistence.token.QualifierToken;
 import pcgen.util.Logging;
 import pcgen.util.PCGenCommand;
 import pcgen.util.PJEP;
@@ -498,10 +499,14 @@ public class JARClassLoader extends ClassLoader
 
 	private void loadLstTokens(Class<?> clazz, int modifiers) throws Exception
 	{
-		if (!Modifier.isInterface(modifiers) && !Modifier.isAbstract(modifiers) && LstToken.class.isAssignableFrom(clazz))
+		if (!Modifier.isInterface(modifiers) && !Modifier.isAbstract(modifiers))
 		{
-			LstToken pl = (LstToken) clazz.newInstance();
-			TokenStore.inst().addToTokenMap(pl);
+			if (LstToken.class.isAssignableFrom(clazz))
+			{
+				LstToken pl = (LstToken) clazz.newInstance();
+				TokenStore.inst().addToTokenMap(pl);
+				TokenLibrary.addToTokenMap(pl);
+			}
 		}
 	}
 
@@ -510,7 +515,7 @@ public class JARClassLoader extends ClassLoader
 		if (!Modifier.isInterface(modifiers) && !Modifier.isAbstract(modifiers) && PrimitiveToken.class.isAssignableFrom(clazz))
 		{
 			PrimitiveToken<?> pl = (PrimitiveToken<?>) clazz.newInstance();
-			TokenStore.inst().addToPrimitiveMap(pl);
+			TokenLibrary.addToPrimitiveMap(pl);
 		}
 	}
 
@@ -519,7 +524,7 @@ public class JARClassLoader extends ClassLoader
 		if (!Modifier.isInterface(modifiers) && !Modifier.isAbstract(modifiers) && QualifierToken.class.isAssignableFrom(clazz))
 		{
 			QualifierToken<?> pl = (QualifierToken<?>) clazz.newInstance();
-			TokenStore.inst().addToQualifierMap(pl);
+			TokenLibrary.addToQualifierMap(pl);
 		}
 	}
 
@@ -538,6 +543,7 @@ public class JARClassLoader extends ClassLoader
 			if(PrerequisiteParserInterface.class.isAssignableFrom(clazz)) {
 				PrerequisiteParserInterface parser = (PrerequisiteParserInterface) clazz.newInstance();
 				PreParserFactory.register(parser);
+				TokenLibrary.addToTokenMap(parser);
 			}
 			else if(PrerequisiteTest.class.isAssignableFrom(clazz)) {
 				PrerequisiteTest test = (PrerequisiteTest) clazz.newInstance();

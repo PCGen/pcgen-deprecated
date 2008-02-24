@@ -21,9 +21,6 @@
 package gmgen.pluginmgr;
 
 import gmgen.util.MiscUtilities;
-import pcgen.core.Globals;
-import pcgen.core.SettingsHandler;
-import pcgen.util.Logging;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +28,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import pcgen.core.Globals;
+import pcgen.core.SettingsHandler;
+import pcgen.persistence.lst.prereq.PreMultParser;
+import pcgen.rules.persistence.TokenLibrary;
+import pcgen.util.Logging;
 
 /**
  *  Loads plugins into gmgen.  looks dor any .jar files in ./plugins, and then
@@ -86,6 +89,7 @@ public class PluginLoader
 				jar.getClassLoader().startAllPlugins(system);
 			}
 			loadedMap.put(system, system);
+			TokenLibrary.addToTokenMap(new PreMultParser());
 		}
 	}
 
