@@ -25,16 +25,18 @@ import java.math.BigDecimal;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.BigDecimalHelper;
 import pcgen.util.Logging;
 
 /**
  * Class deals with FACE Token
  */
-public class FaceToken implements PCTemplateLstToken
+public class FaceToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -88,12 +90,12 @@ public class FaceToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		return parseFace(context, template, value);
 	}
 
-	protected boolean parseFace(LoadContext context, PCTemplate fObj,
+	protected boolean parseFace(LoadContext context, CDOMTemplate fObj,
 		String value)
 	{
 		int commaLoc = value.indexOf(Constants.COMMA);
@@ -185,7 +187,7 @@ public class FaceToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		BigDecimal width =
 				context.getObjectContext().getObject(pct, ObjectKey.FACE_WIDTH);
@@ -223,5 +225,10 @@ public class FaceToken implements PCTemplateLstToken
 			sb.append(',').append(h);
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

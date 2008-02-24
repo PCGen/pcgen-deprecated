@@ -26,15 +26,18 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.formula.FixedSizeResolver;
 import pcgen.cdom.formula.FormulaSizeResolver;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.core.SizeAdjustment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with SIZE Token
  */
-public class SizeToken implements PCTemplateLstToken
+public class SizeToken implements PCTemplateLstToken,
+		CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -48,12 +51,12 @@ public class SizeToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template,
+			String value)
 	{
-		SizeAdjustment size =
-				context.ref.silentlyGetConstructedCDOMObject(
-					SizeAdjustment.class, value);
-		Resolver<SizeAdjustment> res;
+		CDOMSizeAdjustment size = context.ref.getAbbreviatedObject(
+				CDOMSizeAdjustment.class, value);
+		Resolver<CDOMSizeAdjustment> res;
 		if (size == null)
 		{
 			res = new FormulaSizeResolver(FormulaFactory.getFormulaFor(value));
@@ -66,14 +69,19 @@ public class SizeToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate template)
+	public String[] unparse(LoadContext context, CDOMTemplate template)
 	{
-		Resolver<SizeAdjustment> res =
-				context.getObjectContext().getObject(template, ObjectKey.SIZE);
+		Resolver<CDOMSizeAdjustment> res = context.getObjectContext()
+				.getObject(template, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;
 		}
-		return new String[]{res.toLSTFormat()};
+		return new String[] { res.toLSTFormat() };
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

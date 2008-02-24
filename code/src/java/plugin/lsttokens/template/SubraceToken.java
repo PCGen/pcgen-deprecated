@@ -23,16 +23,18 @@ package plugin.lsttokens.template;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SubRace;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SUBRACE Token
  */
-public class SubraceToken extends AbstractToken implements PCTemplateLstToken
+public class SubraceToken extends AbstractToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	@Override
@@ -70,7 +72,7 @@ public class SubraceToken extends AbstractToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		if (isEmpty(value))
 		{
@@ -81,7 +83,7 @@ public class SubraceToken extends AbstractToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		SubRace subRace =
 				context.getObjectContext().getObject(pct, ObjectKey.SUBRACE);
@@ -90,6 +92,11 @@ public class SubraceToken extends AbstractToken implements PCTemplateLstToken
 			return null;
 		}
 		return new String[]{subRace.toString()};
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 
 }

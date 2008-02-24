@@ -35,24 +35,26 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.AbstractHitDieModifier;
 import pcgen.cdom.content.HitDie;
 import pcgen.cdom.content.HitDieCommandFactory;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.cdom.modifier.HitDieFormula;
 import pcgen.cdom.modifier.HitDieLock;
 import pcgen.cdom.modifier.HitDieStep;
-import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with HITDIE Token
  */
-public class HitdieToken extends AbstractToken implements PCTemplateLstToken
+public class HitdieToken extends AbstractToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
-	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
+	private static final Class<CDOMPCClass> PCCLASS_CLASS = CDOMPCClass.class;
 
 	@Override
 	public String getTokenName()
@@ -66,7 +68,7 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		try
 		{
@@ -78,7 +80,7 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 					+ "is not of format: <int>[|<prereq>]");
 				return false;
 			}
-			CDOMReference<PCClass> owner;
+			CDOMReference<CDOMPCClass> owner;
 			if (pipeLoc != -1)
 			{
 				// Has a limitation
@@ -285,7 +287,7 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		AssociatedChanges<HitDieCommandFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -317,5 +319,10 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken
 		}
 
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

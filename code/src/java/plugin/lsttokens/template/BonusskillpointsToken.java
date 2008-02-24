@@ -25,16 +25,18 @@ import java.util.Collection;
 
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ClassSkillPointFactory;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with BONUSSKILLPOINTS Token
  */
-public class BonusskillpointsToken implements PCTemplateLstToken
+public class BonusskillpointsToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -56,7 +58,7 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		try
 		{
@@ -79,7 +81,7 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		AssociatedChanges<ClassSkillPointFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -110,5 +112,10 @@ public class BonusskillpointsToken implements PCTemplateLstToken
 			return null;
 		}
 		return new String[]{Integer.toString(skillPoints)};
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

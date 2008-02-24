@@ -3,15 +3,17 @@ package plugin.lsttokens.subclass;
 import java.math.BigDecimal;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMSubClass;
 import pcgen.core.SubClass;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SubClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with COST Token
  */
-public class CostToken implements SubClassLstToken
+public class CostToken implements SubClassLstToken, CDOMPrimaryToken<CDOMSubClass>
 {
 
 	public String getTokenName()
@@ -32,7 +34,7 @@ public class CostToken implements SubClassLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, SubClass sc, String value)
+	public boolean parse(LoadContext context, CDOMSubClass sc, String value)
 	{
 		try
 		{
@@ -51,5 +53,16 @@ public class CostToken implements SubClassLstToken
 			Logging.errorPrint(getTokenName() + " expected a number: " + value);
 			return false;
 		}
+	}
+
+	public String[] unparse(LoadContext context, CDOMSubClass obj)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Class<CDOMSubClass> getTokenClass()
+	{
+		return CDOMSubClass.class;
 	}
 }

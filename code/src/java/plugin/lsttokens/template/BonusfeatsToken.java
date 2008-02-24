@@ -28,26 +28,28 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.Ability;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with BONUSFEATS Token
  */
-public class BonusfeatsToken implements PCTemplateLstToken
+public class BonusfeatsToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
-	private static final Class<Ability> ABILITY_CLASS = Ability.class;
+	private static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
 
 	public String getTokenName()
 	{
@@ -77,7 +79,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 		throws PersistenceLayerException
 	{
 		int featCount;
@@ -100,27 +102,27 @@ public class BonusfeatsToken implements PCTemplateLstToken
 
 		ChooseActionContainer container =
 				new ChooseActionContainer(getTokenName());
-		container.addActor(new GrantActor<PCTemplate>());
+		container.addActor(new GrantActor<CDOMAbility>());
 		context.getGraphContext().grant(getTokenName(), template, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		container.setAssociation(AssociationKey.ABILITY_CATEGORY,
-			AbilityCategory.FEAT);
+			CDOMAbilityCategory.FEAT);
 		container.setAssociation(AssociationKey.ABILITY_NATURE,
 			AbilityNature.NORMAL);
-		CDOMGroupRef<Ability> ref =
+		CDOMGroupRef<CDOMAbility> ref =
 				context.ref.getCDOMAllReference(ABILITY_CLASS,
-					AbilityCategory.FEAT);
-		ReferenceChoiceSet<Ability> rcs =
-				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
-		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
+					CDOMAbilityCategory.FEAT);
+		ReferenceChoiceSet<CDOMAbility> rcs =
+				new ReferenceChoiceSet<CDOMAbility>(Collections.singletonList(ref));
+		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>(getTokenName(), rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate template)
+	public String[] unparse(LoadContext context, CDOMTemplate template)
 	{
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -164,7 +166,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 						.addWriteMessage("Unable to find Nature for GrantFactory");
 					return null;
 				}
-				AbilityCategory cat =
+				CDOMAbilityCategory cat =
 						container
 							.getAssociation(AssociationKey.ABILITY_CATEGORY);
 				if (cat == null)
@@ -173,7 +175,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 						.addWriteMessage("Unable to find Category for GrantFactory");
 					return null;
 				}
-				if (!AbilityCategory.FEAT.equals(cat)
+				if (!CDOMAbilityCategory.FEAT.equals(cat)
 					|| !AbilityNature.NORMAL.equals(nat))
 				{
 					// can't handle those here!
@@ -193,5 +195,10 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			}
 		}
 		return new String[]{returnString};
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

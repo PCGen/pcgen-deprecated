@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.template;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -31,19 +32,19 @@ import pcgen.base.lang.UnreachableError;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteOperator;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.LstToken;
-import pcgen.persistence.lst.LstUtils;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.persistence.lst.PObjectLoader;
 import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
@@ -54,7 +55,7 @@ import pcgen.util.Logging;
  * 
  * @version $Revision$
  */
-public class LevelToken extends AbstractToken implements PCTemplateLstToken
+public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 	/*
 	 * (non-Javadoc)
@@ -121,7 +122,7 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 		throws PersistenceLayerException
 	{
 		if (".CLEAR".equals(value))
@@ -179,39 +180,18 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 		String standardizedPrereq =
 				getPrerequisiteString(context, Collections
 					.singletonList(prereq));
-		PCTemplate derivative = template.getPseudoTemplate(standardizedPrereq);
+		CDOMTemplate derivative = template.getPseudoTemplate(standardizedPrereq);
 		derivative.put(ObjectKey.PSEUDO_PARENT, template);
 		derivative.addPrerequisite(prereq);
 		context.getGraphContext().grant(getTokenName(), template, derivative);
-		PCTemplateLstToken token =
-				TokenStore.inst().getToken(PCTemplateLstToken.class, typeStr);
-		if (token == null)
-		{
-			if (!PObjectLoader.parseTag(context, derivative, typeStr, argument))
-			{
-				Logging.errorPrint("Illegal template Token '" + typeStr + "' '"
-					+ value + "' for " + template.getDisplayName());
-				return false;
-			}
-		}
-		else
-		{
-			LstUtils.deprecationCheck(token, derivative, argument);
-			if (!token.parse(context, derivative, argument))
-			{
-				Logging.errorPrint("Error Parsing Token '" + typeStr
-					+ " in template " + template.getDisplayName());
-				return false;
-			}
-		}
-		return true;
+		return context.processToken(derivative, typeStr, argument);
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<PCTemplate> changes =
+		AssociatedChanges<CDOMTemplate> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pct, PCTemplate.class);
+					pct, CDOMTemplate.class);
 		if (changes == null)
 		{
 			return null;
@@ -221,7 +201,7 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 
 		for (LSTWriteable lstw : changes.getAdded())
 		{
-			PCTemplate pctChild = PCTemplate.class.cast(lstw);
+			CDOMTemplate pctChild = CDOMTemplate.class.cast(lstw);
 			if (pctChild.getPrerequisiteCount() != 1)
 			{
 				context.addWriteMessage("Only one Prerequisiste allowed on "
@@ -245,34 +225,14 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 			StringBuilder sb = new StringBuilder();
 			sb.append(prereq.getOperand()).append(':');
 
-			for (LstToken token : TokenStore.inst().getTokenMap(
-				PCTemplateLstToken.class).values())
+			Collection<String> unparse = context.unparse(pctChild);
+			if (unparse != null)
 			{
-				StringBuilder sb2 = new StringBuilder();
-				sb2.append(sb).append(token.getTokenName()).append(':');
-				String[] s =
-						((PCTemplateLstToken) token).unparse(context, pctChild);
-				if (s != null)
+				int masterLength = sb.length();
+				for (String str : unparse)
 				{
-					for (String aString : s)
-					{
-						set.add(sb2.toString() + aString);
-					}
-				}
-			}
-			for (LstToken token : TokenStore.inst().getTokenMap(
-				GlobalLstToken.class).values())
-			{
-				StringBuilder sb2 = new StringBuilder();
-				sb2.append(sb).append(token.getTokenName()).append(':');
-				String[] s =
-						((GlobalLstToken) token).unparse(context, pctChild);
-				if (s != null)
-				{
-					for (String aString : s)
-					{
-						set.add(sb2.toString() + aString);
-					}
+					sb.setLength(masterLength);
+					set.add(sb.append(str).toString());
 				}
 			}
 		}
@@ -281,5 +241,10 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken
 			return null;
 		}
 		return set.toArray(new String[set.size()]);
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

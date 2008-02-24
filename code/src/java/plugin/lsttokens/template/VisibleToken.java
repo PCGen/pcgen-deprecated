@@ -22,16 +22,18 @@
 package plugin.lsttokens.template;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
 /**
  * Class deals with VISIBLE Token
  */
-public class VisibleToken implements PCTemplateLstToken
+public class VisibleToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	/*
@@ -92,7 +94,7 @@ public class VisibleToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		Visibility vis;
 		if (value.equals("DISPLAY"))
@@ -120,7 +122,7 @@ public class VisibleToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate template)
+	public String[] unparse(LoadContext context, CDOMTemplate template)
 	{
 		Visibility vis =
 				context.getObjectContext().getObject(template,
@@ -176,5 +178,10 @@ public class VisibleToken implements PCTemplateLstToken
 		buff.append(value);
 		buff.append("' is not valid, please use ");
 		return buff.toString();
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

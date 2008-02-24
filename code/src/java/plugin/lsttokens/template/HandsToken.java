@@ -22,15 +22,17 @@
 package plugin.lsttokens.template;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with HANDS Token
  */
-public class HandsToken implements PCTemplateLstToken
+public class HandsToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -57,7 +59,7 @@ public class HandsToken implements PCTemplateLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		try
 		{
@@ -79,7 +81,7 @@ public class HandsToken implements PCTemplateLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		Integer hands =
 				context.getObjectContext().getInteger(pct, IntegerKey.HANDS);
@@ -94,5 +96,10 @@ public class HandsToken implements PCTemplateLstToken
 			return null;
 		}
 		return new String[]{hands.toString()};
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

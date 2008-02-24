@@ -23,15 +23,17 @@ package plugin.lsttokens.weaponprof;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.WeaponProfLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with HANDS Token
  */
-public class HandsToken implements WeaponProfLstToken
+public class HandsToken implements WeaponProfLstToken, CDOMPrimaryToken<CDOMWeaponProf>
 {
 
 	public String getTokenName()
@@ -45,7 +47,7 @@ public class HandsToken implements WeaponProfLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, WeaponProf prof, String value)
+	public boolean parse(LoadContext context, CDOMWeaponProf prof, String value)
 	{
 		int hands;
 		if ("1IFLARGERTHANWEAPON".equals(value))
@@ -76,7 +78,7 @@ public class HandsToken implements WeaponProfLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, WeaponProf prof)
+	public String[] unparse(LoadContext context, CDOMWeaponProf prof)
 	{
 		Integer i =
 				context.getObjectContext().getInteger(prof, IntegerKey.HANDS);
@@ -106,5 +108,10 @@ public class HandsToken implements WeaponProfLstToken
 			hands = i.toString();
 		}
 		return new String[]{hands};
+	}
+
+	public Class<CDOMWeaponProf> getTokenClass()
+	{
+		return CDOMWeaponProf.class;
 	}
 }

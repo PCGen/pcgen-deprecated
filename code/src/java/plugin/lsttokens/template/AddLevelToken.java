@@ -26,21 +26,24 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelCommandFactory;
-import pcgen.core.PCClass;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * New Token to support Adding Levels to say a Lycanthorpe template
  */
-public class AddLevelToken implements PCTemplateLstToken
+public class AddLevelToken implements PCTemplateLstToken,
+		CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public boolean parse(PCTemplate template, String value)
@@ -54,21 +57,22 @@ public class AddLevelToken implements PCTemplateLstToken
 		return "ADDLEVEL";
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template,
+			String value)
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
 			Logging.errorPrint("No | found in " + getTokenName());
 			Logging.errorPrint("  " + getTokenName()
-				+ " requires at format: Class|LevelCount");
+					+ " requires at format: Class|LevelCount");
 			return false;
 		}
 		if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 		{
 			Logging.errorPrint("Two | found in " + getTokenName());
 			Logging.errorPrint("  " + getTokenName()
-				+ " requires at format: Class|LevelCount");
+					+ " requires at format: Class|LevelCount");
 			return false;
 		}
 		String classString = value.substring(0, pipeLoc);
@@ -76,11 +80,11 @@ public class AddLevelToken implements PCTemplateLstToken
 		{
 			Logging.errorPrint("Empty Class found in " + getTokenName());
 			Logging.errorPrint("  " + getTokenName()
-				+ " requires at format: Class|LevelCount");
+					+ " requires at format: Class|LevelCount");
 			return false;
 		}
-		CDOMSimpleSingleRef<PCClass> cl =
-				context.ref.getCDOMReference(PCClass.class, classString);
+		CDOMSingleRef<CDOMPCClass> cl = context.ref.getCDOMReference(
+				CDOMPCClass.class, classString);
 		String numLevels = value.substring(pipeLoc + 1);
 		try
 		{
@@ -88,7 +92,7 @@ public class AddLevelToken implements PCTemplateLstToken
 			if (lvls <= 0)
 			{
 				Logging.errorPrint("Number of Levels granted in "
-					+ getTokenName() + " must be greater than zero");
+						+ getTokenName() + " must be greater than zero");
 				return false;
 			}
 			LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
@@ -98,18 +102,18 @@ public class AddLevelToken implements PCTemplateLstToken
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint("Class Level found in " + getTokenName() + " ("
-				+ numLevels + ") was not an Integer.");
+					+ numLevels + ") was not an Integer.");
 			Logging.errorPrint("  " + getTokenName()
-				+ " requires at format: Class|LevelCount");
+					+ " requires at format: Class|LevelCount");
 			return false;
 		}
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<LevelCommandFactory> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pct, LevelCommandFactory.class);
+		AssociatedChanges<LevelCommandFactory> changes = context
+				.getGraphContext().getChangesFromToken(getTokenName(), pct,
+						LevelCommandFactory.class);
 		if (changes == null)
 		{
 			return null;
@@ -128,7 +132,7 @@ public class AddLevelToken implements PCTemplateLstToken
 			if (lvls <= 0)
 			{
 				context.addWriteMessage("Number of Levels granted in "
-					+ getTokenName() + " must be greater than zero");
+						+ getTokenName() + " must be greater than zero");
 				return null;
 			}
 			sb.append(lcf.getLSTformat()).append(Constants.PIPE).append(lvls);
@@ -136,5 +140,10 @@ public class AddLevelToken implements PCTemplateLstToken
 		}
 
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

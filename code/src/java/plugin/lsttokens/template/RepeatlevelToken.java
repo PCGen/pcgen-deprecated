@@ -28,33 +28,31 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstToken;
-import pcgen.persistence.lst.LstUtils;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.persistence.lst.PObjectLoader;
-import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with REPEATLEVEL Token
  */
 public class RepeatlevelToken extends AbstractToken implements
-		PCTemplateLstToken
+		PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
-	private static final Class<PCTemplate> PCTEMPLATE_CLASS = PCTemplate.class;
+	private static final Class<CDOMTemplate> PCTEMPLATE_CLASS = CDOMTemplate.class;
 
 	@Override
 	public String getTokenName()
@@ -156,7 +154,7 @@ public class RepeatlevelToken extends AbstractToken implements
 		}
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 		throws PersistenceLayerException
 	{
 		//
@@ -321,7 +319,7 @@ public class RepeatlevelToken extends AbstractToken implements
 				new StringBuilder(consecutive).append(':').append(maxLevel)
 					.append(':').append(lvlIncrement).append(':')
 					.append(iLevel).toString();
-		PCTemplate consolidator = template.getPseudoTemplate(pseudoName);
+		CDOMTemplate consolidator = template.getPseudoTemplate(pseudoName);
 		consolidator.put(IntegerKey.CONSECUTIVE, Integer.valueOf(consecutive));
 		consolidator.put(IntegerKey.MAX_LEVEL, Integer.valueOf(maxLevel));
 		consolidator.put(IntegerKey.LEVEL_INCREMENT, Integer
@@ -340,35 +338,15 @@ public class RepeatlevelToken extends AbstractToken implements
 				String standardizedPrereq =
 						getPrerequisiteString(context, Collections
 							.singletonList(prereq));
-				PCTemplate derivative =
+				CDOMTemplate derivative =
 						consolidator.getPseudoTemplate(standardizedPrereq);
 				derivative.put(ObjectKey.PSEUDO_PARENT, consolidator);
 				derivative.addPrerequisite(prereq);
 				context.getGraphContext().grant(getTokenName(), consolidator,
 					derivative);
-				PCTemplateLstToken token =
-						TokenStore.inst().getToken(PCTemplateLstToken.class,
-							typeStr);
-				if (token == null)
+				if (!context.processToken(derivative, typeStr, contentStr))
 				{
-					if (!PObjectLoader.parseTag(context, derivative, typeStr,
-						contentStr))
-					{
-						Logging.errorPrint("Illegal template Token '" + typeStr
-							+ "' '" + value + "' for "
-							+ template.getDisplayName());
-						return false;
-					}
-				}
-				else
-				{
-					LstUtils.deprecationCheck(token, derivative, contentStr);
-					if (!token.parse(context, derivative, contentStr))
-					{
-						Logging.errorPrint("Error Parsing Token '" + typeStr
-							+ " in template " + template.getDisplayName());
-						return false;
-					}
+					return false;
 				}
 			}
 			if (consecutive != 0)
@@ -386,9 +364,9 @@ public class RepeatlevelToken extends AbstractToken implements
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<PCTemplate> changes =
+		AssociatedChanges<CDOMTemplate> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, PCTEMPLATE_CLASS);
 		if (changes == null)
@@ -399,7 +377,7 @@ public class RepeatlevelToken extends AbstractToken implements
 		Set<String> list = new TreeSet<String>();
 		for (LSTWriteable lstw : new HashSet<LSTWriteable>(added))
 		{
-			PCTemplate agg = PCTEMPLATE_CLASS.cast(lstw);
+			CDOMTemplate agg = PCTEMPLATE_CLASS.cast(lstw);
 			if (!getTokenName().equals(agg.get(StringKey.TOKEN)))
 			{
 				continue;
@@ -413,8 +391,7 @@ public class RepeatlevelToken extends AbstractToken implements
 			sb.append(consecutive).append(Constants.PIPE);
 			sb.append(maxLevel).append(Constants.COLON);
 			sb.append(iLevel).append(Constants.COLON);
-			String prefix = sb.toString();
-			AssociatedChanges<PCTemplate> subchanges =
+			AssociatedChanges<CDOMTemplate> subchanges =
 					context.getGraphContext().getChangesFromToken(
 						getTokenName(), agg, PCTEMPLATE_CLASS);
 			Collection<LSTWriteable> perAddCollection = subchanges.getAdded();
@@ -425,8 +402,16 @@ public class RepeatlevelToken extends AbstractToken implements
 				return null;
 			}
 			LSTWriteable next = perAddCollection.iterator().next();
-			Set<String> set = subUnparse(prefix, context, (PCTemplate) next);
-			list.addAll(set);
+			Collection<String> unparse = context.unparse((CDOMObject) next);
+			if (unparse != null)
+			{
+				int masterLength = sb.length();
+				for (String str : unparse)
+				{
+					sb.setLength(masterLength);
+					list.add(sb.append(str).toString());
+				}
+			}
 		}
 		if (list.isEmpty())
 		{
@@ -435,40 +420,8 @@ public class RepeatlevelToken extends AbstractToken implements
 		return list.toArray(new String[list.size()]);
 	}
 
-	private Set<String> subUnparse(String prefix, LoadContext context,
-		PCTemplate agg)
+	public Class<CDOMTemplate> getTokenClass()
 	{
-		Set<String> set = new TreeSet<String>();
-		for (LstToken token : TokenStore.inst().getTokenMap(
-			PCTemplateLstToken.class).values())
-		{
-			String[] s = ((PCTemplateLstToken) token).unparse(context, agg);
-			if (s != null)
-			{
-				StringBuilder sb = new StringBuilder();
-				sb.append(prefix).append(token.getTokenName()).append(':');
-				String fullPrefix = sb.toString();
-				for (String aString : s)
-				{
-					set.add(fullPrefix + aString);
-				}
-			}
-		}
-		for (LstToken token : TokenStore.inst().getTokenMap(
-			GlobalLstToken.class).values())
-		{
-			String[] s = ((GlobalLstToken) token).unparse(context, agg);
-			if (s != null)
-			{
-				StringBuilder sb = new StringBuilder();
-				sb.append(prefix).append(token.getTokenName()).append(':');
-				String fullPrefix = sb.toString();
-				for (String aString : s)
-				{
-					set.add(fullPrefix + aString);
-				}
-			}
-		}
-		return set;
+		return CDOMTemplate.class;
 	}
 }

@@ -24,14 +24,16 @@ package plugin.lsttokens.template;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with LEVELADJUSTMENT Token
  */
-public class LeveladjustmentToken implements PCTemplateLstToken
+public class LeveladjustmentToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -45,14 +47,14 @@ public class LeveladjustmentToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		context.getObjectContext().put(template, FormulaKey.LEVEL_ADJUSTMENT,
 			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		Formula f =
 				context.getObjectContext().getFormula(pct,
@@ -62,5 +64,10 @@ public class LeveladjustmentToken implements PCTemplateLstToken
 			return null;
 		}
 		return new String[]{f.toString()};
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

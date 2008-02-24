@@ -33,23 +33,25 @@ import pcgen.cdom.base.Category;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SubClassCategory;
-import pcgen.core.PCClass;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSubClass;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.core.SubClass;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with FAVOREDCLASS Token
  */
 public class FavoredclassToken extends AbstractToken implements
-		PCTemplateLstToken
+		PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
-	public static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
-	public static final Class<SubClass> SUBCLASS_CLASS = SubClass.class;
+	public static final Class<CDOMPCClass> PCCLASS_CLASS = CDOMPCClass.class;
+	public static final Class<CDOMSubClass> SUBCLASS_CLASS = CDOMSubClass.class;
 
 	@Override
 	public String getTokenName()
@@ -63,7 +65,7 @@ public class FavoredclassToken extends AbstractToken implements
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		return parseFavoredClass(context, template, value);
 	}
@@ -84,7 +86,7 @@ public class FavoredclassToken extends AbstractToken implements
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<? extends PCClass> ref;
+			CDOMReference<? extends CDOMPCClass> ref;
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
@@ -121,9 +123,9 @@ public class FavoredclassToken extends AbstractToken implements
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		Changes<CDOMReference<? extends PCClass>> changes =
+		Changes<CDOMReference<? extends CDOMPCClass>> changes =
 				context.getObjectContext().getListChanges(pct,
 					ListKey.FAVORED_CLASS);
 		if (changes == null || changes.isEmpty())
@@ -131,12 +133,12 @@ public class FavoredclassToken extends AbstractToken implements
 			return null;
 		}
 		SortedSet<String> set = new TreeSet<String>();
-		for (CDOMReference<? extends PCClass> ref : changes.getAdded())
+		for (CDOMReference<? extends CDOMPCClass> ref : changes.getAdded())
 		{
-			Class<? extends PCClass> refClass = ref.getReferenceClass();
+			Class<? extends CDOMPCClass> refClass = ref.getReferenceClass();
 			if (SUBCLASS_CLASS.equals(refClass))
 			{
-				Category<SubClass> parent = ((CategorizedCDOMReference<SubClass>) ref)
+				Category<CDOMSubClass> parent = ((CategorizedCDOMReference<CDOMSubClass>) ref)
 						.getCDOMCategory();
 				set.add(parent.toString() + "." + ref.getLSTformat());
 			}
@@ -146,5 +148,10 @@ public class FavoredclassToken extends AbstractToken implements
 			}
 		}
 		return new String[] { StringUtil.join(set, Constants.COMMA) };
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

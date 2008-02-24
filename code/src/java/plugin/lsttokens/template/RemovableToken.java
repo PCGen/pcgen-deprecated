@@ -22,15 +22,17 @@
 package plugin.lsttokens.template;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with REMOVABLE Token
  */
-public class RemovableToken implements PCTemplateLstToken
+public class RemovableToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -69,7 +71,7 @@ public class RemovableToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		Boolean set;
 		char firstChar = value.charAt(0);
@@ -100,7 +102,7 @@ public class RemovableToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		Boolean b =
 				context.getObjectContext().getObject(pct, ObjectKey.REMOVABLE);
@@ -109,5 +111,10 @@ public class RemovableToken implements PCTemplateLstToken
 			return null;
 		}
 		return new String[]{b.booleanValue() ? "YES" : "NO"};
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }

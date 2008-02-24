@@ -22,15 +22,17 @@
 package plugin.lsttokens.template;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with NONPP Token
  */
-public class NonppToken implements PCTemplateLstToken
+public class NonppToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -51,7 +53,7 @@ public class NonppToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		try
 		{
@@ -73,7 +75,7 @@ public class NonppToken implements PCTemplateLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		Integer nonpp =
 				context.getObjectContext().getInteger(pct, IntegerKey.NONPP);
@@ -90,4 +92,8 @@ public class NonppToken implements PCTemplateLstToken
 		return new String[]{nonpp.toString()};
 	}
 
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
+	}
 }

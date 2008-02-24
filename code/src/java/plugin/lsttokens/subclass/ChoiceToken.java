@@ -1,18 +1,20 @@
 package plugin.lsttokens.subclass;
 
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.content.CDOMSpellProhibitor;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.ProhibitedSpellType;
-import pcgen.core.SpellProhibitor;
+import pcgen.cdom.inst.CDOMSubClass;
 import pcgen.core.SubClass;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SubClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with CHOICE Token
  */
-public class ChoiceToken implements SubClassLstToken
+public class ChoiceToken implements SubClassLstToken, CDOMPrimaryToken<CDOMSubClass>
 {
 
 	public String getTokenName()
@@ -53,7 +55,7 @@ public class ChoiceToken implements SubClassLstToken
 		return false;
 	}
 
-	public boolean parse(LoadContext context, SubClass sc, String value)
+	public boolean parse(LoadContext context, CDOMSubClass sc, String value)
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
@@ -74,7 +76,7 @@ public class ChoiceToken implements SubClassLstToken
 		if ("SCHOOL".equals(type) || "SUBSCHOOL".equals(type)
 				|| "DESCRIPTOR".equals(type))
 		{
-			SpellProhibitor<?> sp = getSpellProhib(ProhibitedSpellType
+			CDOMSpellProhibitor<?> sp = getSpellProhib(ProhibitedSpellType
 					.getReference(type), value.substring(pipeLoc + 1));
 			context.getObjectContext().put(sc, ObjectKey.SELETED_SPELLS, sp);
 			return true;
@@ -87,12 +89,23 @@ public class ChoiceToken implements SubClassLstToken
 		}
 	}
 
-	private <T> SpellProhibitor<T> getSpellProhib(ProhibitedSpellType<T> pst,
+	private <T> CDOMSpellProhibitor<T> getSpellProhib(ProhibitedSpellType<T> pst,
 			String arg)
 	{
-		SpellProhibitor<T> spSchool = new SpellProhibitor<T>();
+		CDOMSpellProhibitor<T> spSchool = new CDOMSpellProhibitor<T>();
 		spSchool.setType(pst);
 		spSchool.addValue(pst.getTypeValue(arg));
 		return spSchool;
+	}
+
+	public String[] unparse(LoadContext context, CDOMSubClass obj)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Class<CDOMSubClass> getTokenClass()
+	{
+		return CDOMSubClass.class;
 	}
 }

@@ -27,18 +27,20 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.RaceSubType;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with RACESUBTYPE Token
  */
 public class RacesubtypeToken extends AbstractToken implements
-		PCTemplateLstToken
+		PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
 {
 
 	@Override
@@ -53,7 +55,7 @@ public class RacesubtypeToken extends AbstractToken implements
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -87,7 +89,7 @@ public class RacesubtypeToken extends AbstractToken implements
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCTemplate pct)
+	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
 		Changes<RaceSubType> addedChanges =
 				context.getObjectContext().getListChanges(pct,
@@ -128,5 +130,10 @@ public class RacesubtypeToken extends AbstractToken implements
 			}
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMTemplate> getTokenClass()
+	{
+		return CDOMTemplate.class;
 	}
 }
