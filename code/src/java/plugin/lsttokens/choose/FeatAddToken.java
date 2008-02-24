@@ -23,26 +23,24 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.Ability;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.Constants;
-import pcgen.core.PCTemplate;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
 public class FeatAddToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -50,19 +48,19 @@ public class FeatAddToken extends AbstractToken implements ChooseLstToken,
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -78,7 +76,7 @@ public class FeatAddToken extends AbstractToken implements ChooseLstToken,
 			if (equalsLoc == tokString.length() - 1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments must have value after = : " + tokString);
+						+ " arguments must have value after = : " + tokString);
 				Logging.errorPrint("  entire token was: " + value);
 				return false;
 			}
@@ -115,25 +113,30 @@ public class FeatAddToken extends AbstractToken implements ChooseLstToken,
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		ChooseActionContainer container = cdo.getChooseContainer();
-		AssociatedPrereqObject edge =
-				context.getGraphContext().grant(getTokenName(), cdo, container);
-		container.addActor(new GrantActor<PCTemplate>());
+		AssociatedPrereqObject edge = context.getGraphContext().grant(
+				getTokenName(), cdo, container);
+		container.addActor(new GrantActor<CDOMAbility>());
 		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(1));
+				.getFormulaFor(1));
 		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(1));
+				.getFormulaFor(1));
 		edge.setAssociation(AssociationKey.ABILITY_CATEGORY,
-			AbilityCategory.FEAT);
+				CDOMAbilityCategory.FEAT);
 		edge
-			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
-		PrimitiveChoiceSet<Ability> pcs =
-				ChooseLoader.parseToken(context, Ability.class, "QUALIFIED["
-					+ value + "]");
-		ChoiceSet<Ability> cs = new ChoiceSet<Ability>("ADD", pcs);
+				.setAssociation(AssociationKey.ABILITY_NATURE,
+						AbilityNature.NORMAL);
+		PrimitiveChoiceSet<CDOMAbility> pcs = context.getChoiceSet(
+				CDOMAbility.class, "QUALIFIED[" + value + "]");
+		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>("ADD", pcs);
 		edge.setAssociation(AssociationKey.CHOICE, cs);
 		return pcs;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

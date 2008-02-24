@@ -19,16 +19,16 @@ package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.PObject;
-import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
-public class SkillsToken implements ChooseLstToken, ChooseCompatibilityToken
+public class SkillsToken implements ChooseLstToken,
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -36,7 +36,7 @@ public class SkillsToken implements ChooseLstToken, ChooseCompatibilityToken
 		if (value != null)
 		{
 			Logging.deprecationPrint("CHOOSE:" + getTokenName()
-				+ " will ignore arguments: " + value);
+					+ " will ignore arguments: " + value);
 		}
 		// No args - legal
 		StringBuilder sb = new StringBuilder();
@@ -55,9 +55,9 @@ public class SkillsToken implements ChooseLstToken, ChooseCompatibilityToken
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
-		return ChooseLoader.parseToken(context, Skill.class, "PC");
+		return context.getChoiceSet(CDOMSkill.class, "PC");
 	}
 
 	public int compatibilityLevel()
@@ -73,5 +73,10 @@ public class SkillsToken implements ChooseLstToken, ChooseCompatibilityToken
 	public int compatibilitySubLevel()
 	{
 		return 14;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

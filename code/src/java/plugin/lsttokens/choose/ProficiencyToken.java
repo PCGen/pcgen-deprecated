@@ -21,21 +21,20 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.ArmorProf;
+import pcgen.cdom.inst.CDOMArmorProf;
+import pcgen.cdom.inst.CDOMShieldProf;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
-import pcgen.core.ShieldProf;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
 public class ProficiencyToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -43,19 +42,19 @@ public class ProficiencyToken extends AbstractToken implements ChooseLstToken,
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -66,31 +65,33 @@ public class ProficiencyToken extends AbstractToken implements ChooseLstToken,
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " must have two or more | delimited arguments : " + value);
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
 			return false;
 		}
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		if (tok.countTokens() < 3)
 		{
 			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " requires at least three arguments: " + value);
+					+ " requires at least three arguments: " + value);
 			return false;
 		}
 		String first = tok.nextToken();
 		if (!first.equals("ARMOR") && !first.equals("SHIELD")
-			&& !first.equals("WEAPON"))
+				&& !first.equals("WEAPON"))
 		{
 			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " first argument was not ARMOR, SHIELD, or WEAPON");
+					+ " first argument was not ARMOR, SHIELD, or WEAPON");
 			return false;
 		}
 		String second = tok.nextToken();
 		if (!second.equals("PC") && !second.equals("ALL")
-			&& !second.equals("UNIQUE"))
+				&& !second.equals("UNIQUE"))
 		{
 			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " second argument was not PC, ALL, or UNIQUE");
+					+ " second argument was not PC, ALL, or UNIQUE");
 			return false;
 		}
 		while (tok.hasMoreTokens())
@@ -100,7 +101,7 @@ public class ProficiencyToken extends AbstractToken implements ChooseLstToken,
 			if (equalsLoc == tokString.length() - 1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments must have value after = : " + tokString);
+						+ " arguments must have value after = : " + tokString);
 				Logging.errorPrint("  entire token was: " + value);
 				return false;
 			}
@@ -137,24 +138,24 @@ public class ProficiencyToken extends AbstractToken implements ChooseLstToken,
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return null;
 		}
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return null;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return null;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -165,47 +166,49 @@ public class ProficiencyToken extends AbstractToken implements ChooseLstToken,
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " must have two or more | delimited arguments : " + value);
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
 			return null;
 		}
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		if (tok.countTokens() < 3)
 		{
 			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " requires at least three arguments: " + value);
+					+ " requires at least three arguments: " + value);
 			return null;
 		}
 		String first = tok.nextToken();
 		if (first.equals("ARMOR"))
 		{
-			return subParse(context, ArmorProf.class, tok);
+			return subParse(context, CDOMArmorProf.class, tok);
 		}
 		else if (first.equals("SHIELD"))
 		{
-			return subParse(context, ShieldProf.class, tok);
+			return subParse(context, CDOMShieldProf.class, tok);
 		}
 		else if (first.equals("WEAPON"))
 		{
-			return subParse(context, WeaponProf.class, tok);
+			return subParse(context, CDOMWeaponProf.class, tok);
 		}
 		else
 		{
 			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " first argument was not ARMOR, SHIELD, or WEAPON");
+					+ " first argument was not ARMOR, SHIELD, or WEAPON");
 			return null;
 		}
 	}
 
-	private <T extends PObject> PrimitiveChoiceSet<?> subParse(
-		LoadContext context, Class<T> name, StringTokenizer tok)
+	private <T extends CDOMObject> PrimitiveChoiceSet<?> subParse(
+			LoadContext context, Class<T> name, StringTokenizer tok)
 	{
 		String second = tok.nextToken();
 		if (!second.equals("PC") && !second.equals("ALL")
-			&& !second.equals("UNIQUE"))
+				&& !second.equals("UNIQUE"))
 		{
 			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " second argument was not PC, ALL, or UNIQUE");
+					+ " second argument was not PC, ALL, or UNIQUE");
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
@@ -221,6 +224,11 @@ public class ProficiencyToken extends AbstractToken implements ChooseLstToken,
 			sb.append(tok.nextToken());
 		}
 		sb.append(']');
-		return ChooseLoader.parseToken(context, name, sb.toString());
+		return context.getChoiceSet(name, sb.toString());
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

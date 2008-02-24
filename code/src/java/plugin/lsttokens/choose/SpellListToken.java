@@ -18,8 +18,8 @@
 package plugin.lsttokens.choose;
 
 import pcgen.core.PObject;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.util.Logging;
 
 public class SpellListToken extends AbstractToken implements ChooseLstToken

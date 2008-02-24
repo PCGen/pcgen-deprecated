@@ -22,13 +22,14 @@ import pcgen.cdom.enumeration.SpellSchool;
 import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
-public class SchoolsToken implements ChooseLstToken, ChooseCompatibilityToken
+public class SchoolsToken implements ChooseLstToken,
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -70,9 +71,14 @@ public class SchoolsToken implements ChooseLstToken, ChooseCompatibilityToken
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		return new CollectionChoiceSet<SpellSchool>(SpellSchool
-			.getAllConstants());
+				.getAllConstants());
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

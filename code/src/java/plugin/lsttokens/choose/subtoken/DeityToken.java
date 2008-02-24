@@ -19,17 +19,17 @@ package plugin.lsttokens.choose.subtoken;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.Deity;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCDOMLstToken;
-import pcgen.persistence.lst.ChooseLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 
-public class DeityToken extends AbstractToken implements ChooseCDOMLstToken
+public class DeityToken extends AbstractToken implements
+		ChoiceSetToken<CDOMObject>
 {
 
-	private static final Class<Deity> DEITY_CLASS = Deity.class;
+	private static final Class<CDOMDeity> DEITY_CLASS = CDOMDeity.class;
 
 	@Override
 	public String getTokenName()
@@ -38,9 +38,13 @@ public class DeityToken extends AbstractToken implements ChooseCDOMLstToken
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
-		return ChooseLoader.parseToken(context, DEITY_CLASS, value);
+		return context.getChoiceSet(DEITY_CLASS, value);
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

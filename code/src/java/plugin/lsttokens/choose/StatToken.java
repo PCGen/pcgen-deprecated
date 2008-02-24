@@ -22,20 +22,20 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.core.Constants;
 import pcgen.core.PCStat;
 import pcgen.core.PObject;
 import pcgen.core.SettingsHandler;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
 public class StatToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -49,7 +49,7 @@ public class StatToken extends AbstractToken implements ChooseLstToken,
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -69,7 +69,7 @@ public class StatToken extends AbstractToken implements ChooseLstToken,
 				}
 			}
 			Logging.errorPrint("Did not find STAT: " + tokText
-				+ " used in CHOOSE: " + value);
+					+ " used in CHOOSE: " + value);
 		}
 		StringBuilder sb = new StringBuilder();
 		if (prefix.length() > 0)
@@ -88,7 +88,7 @@ public class StatToken extends AbstractToken implements ChooseLstToken,
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		String newValue = null;
 		// null means no args - use all stats - legal
@@ -101,7 +101,7 @@ public class StatToken extends AbstractToken implements ChooseLstToken,
 			if (value.indexOf('[') != -1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not contain [] : " + value);
+						+ " arguments may not contain [] : " + value);
 				return null;
 			}
 			if (hasIllegalSeparator('|', value))
@@ -110,7 +110,7 @@ public class StatToken extends AbstractToken implements ChooseLstToken,
 			}
 			newValue = "REMOVE[" + value + "]";
 		}
-		return ChooseLoader.parseToken(context, PCStat.class, newValue);
+		return context.getChoiceSet(CDOMStat.class, newValue);
 	}
 
 	public int compatibilityLevel()
@@ -126,5 +126,10 @@ public class StatToken extends AbstractToken implements ChooseLstToken,
 	public int compatibilitySubLevel()
 	{
 		return 14;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

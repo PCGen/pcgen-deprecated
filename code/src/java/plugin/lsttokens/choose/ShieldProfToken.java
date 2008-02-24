@@ -26,18 +26,18 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.Equipment;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
 import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
 public class ShieldProfToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -45,19 +45,19 @@ public class ShieldProfToken extends AbstractToken implements ChooseLstToken,
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -73,7 +73,7 @@ public class ShieldProfToken extends AbstractToken implements ChooseLstToken,
 			if (equalsLoc == tokString.length() - 1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments must have value after = : " + tokString);
+						+ " arguments must have value after = : " + tokString);
 				Logging.errorPrint("  entire token was: " + value);
 				return false;
 			}
@@ -110,18 +110,18 @@ public class ShieldProfToken extends AbstractToken implements ChooseLstToken,
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return null;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return null;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -129,49 +129,47 @@ public class ShieldProfToken extends AbstractToken implements ChooseLstToken,
 			return null;
 		}
 
-		List<CDOMReference<Equipment>> cs =
-				new ArrayList<CDOMReference<Equipment>>();
+		List<CDOMReference<CDOMEquipment>> cs = new ArrayList<CDOMReference<CDOMEquipment>>();
 		if (Constants.LST_ANY.equals(value))
 		{
-			cs.add(context.ref.getCDOMTypeReference(Equipment.class, "Shield"));
+			cs.add(context.ref.getCDOMTypeReference(CDOMEquipment.class,
+					"Shield"));
 		}
 		else
 		{
-			List<CDOMReference<Equipment>> rc =
-					getReferenceChooser(context, value);
+			List<CDOMReference<CDOMEquipment>> rc = getReferenceChooser(
+					context, value);
 			if (rc == null)
 			{
 				return null;
 			}
 			cs.addAll(rc);
 		}
-		return new ReferenceChoiceSet<Equipment>(cs);
+		return new ReferenceChoiceSet<CDOMEquipment>(cs);
 	}
 
-	private List<CDOMReference<Equipment>> getReferenceChooser(
-		LoadContext context, String rest)
+	private List<CDOMReference<CDOMEquipment>> getReferenceChooser(
+			LoadContext context, String rest)
 	{
 		StringTokenizer st = new StringTokenizer(rest, Constants.PIPE);
-		List<CDOMReference<Equipment>> eqList =
-				new ArrayList<CDOMReference<Equipment>>();
+		List<CDOMReference<CDOMEquipment>> eqList = new ArrayList<CDOMReference<CDOMEquipment>>();
 		while (st.hasMoreTokens())
 		{
 			String tokString = st.nextToken();
 			if (Constants.LST_ANY.equals(tokString))
 			{
 				Logging.errorPrint("In CHOOSE:" + getTokenName()
-					+ ": Cannot use ANY and another qualifier: " + rest);
+						+ ": Cannot use ANY and another qualifier: " + rest);
 				return null;
 			}
 			else
 			{
-				CDOMReference<Equipment> ref;
+				CDOMReference<CDOMEquipment> ref;
 				if (tokString.startsWith(Constants.LST_TYPE_OLD)
-					|| tokString.startsWith(Constants.LST_TYPE))
+						|| tokString.startsWith(Constants.LST_TYPE))
 				{
-					ref =
-							TokenUtilities.getTypeReference(context,
-								Equipment.class, "Shield."
+					ref = TokenUtilities.getTypeReference(context,
+							CDOMEquipment.class, "Shield."
 									+ tokString.substring(5));
 				}
 				else
@@ -179,14 +177,13 @@ public class ShieldProfToken extends AbstractToken implements ChooseLstToken,
 					/*
 					 * TODO What if this isn't a shield??
 					 */
-					ref =
-							context.ref.getCDOMReference(Equipment.class,
-								tokString);
+					ref = context.ref.getCDOMReference(CDOMEquipment.class,
+							tokString);
 				}
 				if (ref == null)
 				{
 					Logging.errorPrint("Invalid Reference: " + tokString
-						+ " in CHOOSE:" + getTokenName() + ": " + rest);
+							+ " in CHOOSE:" + getTokenName() + ": " + rest);
 					return null;
 				}
 				eqList.add(ref);
@@ -195,4 +192,8 @@ public class ShieldProfToken extends AbstractToken implements ChooseLstToken,
 		return eqList;
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

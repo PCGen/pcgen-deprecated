@@ -21,19 +21,18 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
 public class SpellsToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -41,19 +40,19 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken,
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -69,15 +68,15 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken,
 			if (equalsLoc == tokText.length() - 1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments must have value after = : " + tokText);
+						+ " arguments must have value after = : " + tokText);
 				Logging.errorPrint("  entire token was: " + value);
 				return false;
 			}
 			if (!tokText.startsWith("CLASS=") && !tokText.startsWith("DOMAIN="))
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " argument must start with CLASS= or DOMAIN= : "
-					+ tokText);
+						+ " argument must start with CLASS= or DOMAIN= : "
+						+ tokText);
 				Logging.errorPrint("  Entire Token was: " + value);
 				return false;
 			}
@@ -114,18 +113,18 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken,
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return null;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return null;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -143,7 +142,7 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken,
 			if (equalsLoc == tokText.length() - 1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments must have value after = : " + tokText);
+						+ " arguments must have value after = : " + tokText);
 				Logging.errorPrint("  entire token was: " + value);
 				return null;
 			}
@@ -162,13 +161,18 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken,
 			else
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " argument must start with CLASS= or DOMAIN= : "
-					+ tokText);
+						+ " argument must start with CLASS= or DOMAIN= : "
+						+ tokText);
 				Logging.errorPrint("  Entire Token was: " + value);
 				return null;
 			}
 			needPipe = true;
 		}
-		return ChooseLoader.parseToken(context, Spell.class, sb.toString());
+		return context.getChoiceSet(CDOMSpell.class, sb.toString());
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

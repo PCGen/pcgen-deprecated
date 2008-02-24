@@ -24,19 +24,18 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.CompoundOrChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.core.Constants;
-import pcgen.core.Language;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
 public class LanguageToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -44,13 +43,13 @@ public class LanguageToken extends AbstractToken implements ChooseLstToken,
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -76,7 +75,7 @@ public class LanguageToken extends AbstractToken implements ChooseLstToken,
 			if (tokString.indexOf('.') != tokString.lastIndexOf('.'))
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments cannot have two . : " + tokString);
+						+ " arguments cannot have two . : " + tokString);
 				Logging.errorPrint("  format for argument must be X or X.Y");
 				Logging.errorPrint("  entire token was: " + value);
 				return false;
@@ -111,24 +110,24 @@ public class LanguageToken extends AbstractToken implements ChooseLstToken,
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return null;
 		}
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return null;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return null;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -136,8 +135,7 @@ public class LanguageToken extends AbstractToken implements ChooseLstToken,
 			return null;
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
-		List<PrimitiveChoiceSet<Language>> pcsList =
-				new ArrayList<PrimitiveChoiceSet<Language>>();
+		List<PrimitiveChoiceSet<CDOMLanguage>> pcsList = new ArrayList<PrimitiveChoiceSet<CDOMLanguage>>();
 		while (st.hasMoreTokens())
 		{
 			String tokString = st.nextToken();
@@ -149,15 +147,15 @@ public class LanguageToken extends AbstractToken implements ChooseLstToken,
 			if (dotLoc != tokString.lastIndexOf('.'))
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments cannot have two . : " + tokString);
+						+ " arguments cannot have two . : " + tokString);
 				Logging.errorPrint("  format for argument must be X or X.Y");
 				Logging.errorPrint("  entire token was: " + value);
 				return null;
 			}
 			if (dotLoc == -1)
 			{
-				pcsList.add(ChooseLoader.parseToken(context, Language.class,
-					"TYPE=" + value));
+				pcsList.add(context.getChoiceSet(CDOMLanguage.class, "TYPE="
+						+ value));
 			}
 			else
 			{
@@ -173,7 +171,12 @@ public class LanguageToken extends AbstractToken implements ChooseLstToken,
 		}
 		else
 		{
-			return new CompoundOrChoiceSet<Language>(pcsList);
+			return new CompoundOrChoiceSet<CDOMLanguage>(pcsList);
 		}
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

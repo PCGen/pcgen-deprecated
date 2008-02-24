@@ -20,13 +20,14 @@ package plugin.lsttokens.choose.subtoken;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.NoChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCDOMLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.util.Logging;
 
-public class NoChoiceToken extends AbstractToken implements ChooseCDOMLstToken
+public class NoChoiceToken extends AbstractToken implements
+		ChoiceSetToken<CDOMObject>
 {
 
 	@Override
@@ -36,14 +37,19 @@ public class NoChoiceToken extends AbstractToken implements ChooseCDOMLstToken
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		if (value != null)
 		{
 			Logging.errorPrint(getTokenName() + " had arguments. "
-				+ "Must not have arguments: " + value);
+					+ "Must not have arguments: " + value);
 			return null;
 		}
 		return new NoChoiceSet();
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

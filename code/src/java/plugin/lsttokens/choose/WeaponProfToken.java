@@ -21,8 +21,8 @@ import java.util.StringTokenizer;
 
 import pcgen.core.Constants;
 import pcgen.core.PObject;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.util.Logging;
 
 public class WeaponProfToken extends AbstractToken implements ChooseLstToken

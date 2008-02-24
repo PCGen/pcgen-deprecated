@@ -19,17 +19,17 @@ package plugin.lsttokens.choose.subtoken;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.PCStat;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCDOMLstToken;
-import pcgen.persistence.lst.ChooseLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 
-public class PCStatToken extends AbstractToken implements ChooseCDOMLstToken
+public class PCStatToken extends AbstractToken implements
+		ChoiceSetToken<CDOMObject>
 {
 
-	private static final Class<PCStat> STAT_CLASS = PCStat.class;
+	private static final Class<CDOMStat> STAT_CLASS = CDOMStat.class;
 
 	@Override
 	public String getTokenName()
@@ -38,13 +38,17 @@ public class PCStatToken extends AbstractToken implements ChooseCDOMLstToken
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		if (value == null)
 		{
-			return ChooseLoader.parseToken(context, STAT_CLASS, "ALL");
+			return context.getChoiceSet(STAT_CLASS, "ALL");
 		}
-		return ChooseLoader.parseToken(context, STAT_CLASS, value);
+		return context.getChoiceSet(STAT_CLASS, value);
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

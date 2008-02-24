@@ -25,18 +25,17 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.CompoundOrChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.PObject;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
 public class WeaponProfsToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -110,30 +109,29 @@ public class WeaponProfsToken extends AbstractToken implements ChooseLstToken,
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
 			String value) throws PersistenceLayerException
 	{
-		List<PrimitiveChoiceSet<WeaponProf>> pcsList = new ArrayList<PrimitiveChoiceSet<WeaponProf>>();
+		List<PrimitiveChoiceSet<CDOMWeaponProf>> pcsList = new ArrayList<PrimitiveChoiceSet<CDOMWeaponProf>>();
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
 		while (st.hasMoreTokens())
 		{
 			String tokString = st.nextToken();
 			if (Constants.LST_LIST.equals(tokString))
 			{
-				pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
-						"PC"));
+				pcsList.add(context.getChoiceSet(CDOMWeaponProf.class, "PC"));
 			}
 			else if ("DEITYWEAPON".equals(tokString))
 			{
-				pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
+				pcsList.add(context.getChoiceSet(CDOMWeaponProf.class,
 						"DEITYWEAPON"));
 			}
 			else if (tokString.startsWith("ADD."))
 			{
-				pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
+				pcsList.add(context.getChoiceSet(CDOMWeaponProf.class,
 						tokString.substring(4)));
 			}
 			else
 			{
-				pcsList.add(ChooseLoader.parseToken(context, WeaponProf.class,
-						"PC[" + tokString + "]"));
+				pcsList.add(context.getChoiceSet(CDOMWeaponProf.class, "PC["
+						+ tokString + "]"));
 			}
 		}
 		// while (choicesIt.hasNext())
@@ -406,7 +404,12 @@ public class WeaponProfsToken extends AbstractToken implements ChooseLstToken,
 		}
 		else
 		{
-			return new CompoundOrChoiceSet<WeaponProf>(pcsList);
+			return new CompoundOrChoiceSet<CDOMWeaponProf>(pcsList);
 		}
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

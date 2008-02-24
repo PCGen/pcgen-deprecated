@@ -19,18 +19,17 @@ package plugin.lsttokens.choose.subtoken;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.ShieldProf;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMShieldProf;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCDOMLstToken;
-import pcgen.persistence.lst.ChooseLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 
 public class ShieldProfToken extends AbstractToken implements
-		ChooseCDOMLstToken
+		ChoiceSetToken<CDOMObject>
 {
 
-	private static final Class<ShieldProf> SHIELDPROF_CLASS = ShieldProf.class;
+	private static final Class<CDOMShieldProf> SHIELDPROF_CLASS = CDOMShieldProf.class;
 
 	@Override
 	public String getTokenName()
@@ -39,9 +38,13 @@ public class ShieldProfToken extends AbstractToken implements
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
-		return ChooseLoader.parseToken(context, SHIELDPROF_CLASS, value);
+		return context.getChoiceSet(SHIELDPROF_CLASS, value);
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

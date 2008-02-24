@@ -22,18 +22,17 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.PObject;
-import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
-import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
 public class CCSkillListToken extends AbstractToken implements ChooseLstToken,
-		ChooseCompatibilityToken
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -41,19 +40,19 @@ public class CCSkillListToken extends AbstractToken implements ChooseLstToken,
 		if (value == null)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " requires additional arguments");
+					+ " requires additional arguments");
 			return false;
 		}
 		if (value.indexOf('|') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain | : " + value);
+					+ " arguments may not contain | : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator(',', value))
@@ -78,25 +77,25 @@ public class CCSkillListToken extends AbstractToken implements ChooseLstToken,
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		String newValue = "CROSSCLASS";
 		if (value != null)
 		{
 			if (Constants.LST_LIST.equals(value))
 			{
-				return ChooseLoader.parseToken(context, Skill.class, newValue);
+				return context.getChoiceSet(CDOMSkill.class, newValue);
 			}
 			if (value.indexOf('|') != -1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not contain | : " + value);
+						+ " arguments may not contain | : " + value);
 				return null;
 			}
 			if (value.indexOf('[') != -1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not contain [] : " + value);
+						+ " arguments may not contain [] : " + value);
 				return null;
 			}
 			if (hasIllegalSeparator(',', value))
@@ -120,7 +119,7 @@ public class CCSkillListToken extends AbstractToken implements ChooseLstToken,
 			sb.append(']');
 			newValue = sb.toString();
 		}
-		return ChooseLoader.parseToken(context, Skill.class, newValue);
+		return context.getChoiceSet(CDOMSkill.class, newValue);
 	}
 
 	public int compatibilityLevel()
@@ -136,5 +135,10 @@ public class CCSkillListToken extends AbstractToken implements ChooseLstToken,
 	public int compatibilitySubLevel()
 	{
 		return 14;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

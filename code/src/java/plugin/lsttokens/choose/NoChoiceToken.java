@@ -21,13 +21,14 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.NoChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.ChooseCompatibilityToken;
 import pcgen.persistence.lst.ChooseLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
-public class NoChoiceToken implements ChooseLstToken, ChooseCompatibilityToken
+public class NoChoiceToken implements ChooseLstToken,
+		ChoiceSetCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -45,7 +46,7 @@ public class NoChoiceToken implements ChooseLstToken, ChooseCompatibilityToken
 			return true;
 		}
 		Logging.deprecationPrint("CHOOSE:" + getTokenName()
-			+ " will ignore arguments: " + value);
+				+ " will ignore arguments: " + value);
 		return false;
 	}
 
@@ -70,8 +71,13 @@ public class NoChoiceToken implements ChooseLstToken, ChooseCompatibilityToken
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		return new NoChoiceSet();
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

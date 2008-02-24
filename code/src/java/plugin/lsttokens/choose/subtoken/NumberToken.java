@@ -23,13 +23,14 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.helper.FormulaChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseCDOMLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.util.Logging;
 
-public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
+public class NumberToken extends AbstractToken implements
+		ChoiceSetToken<CDOMObject>
 {
 
 	@Override
@@ -39,14 +40,15 @@ public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
 	}
 
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject obj,
-		String value) throws PersistenceLayerException
+			String value) throws PersistenceLayerException
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 
 		if (pipeLoc == -1)
 		{
 			Logging.errorPrint(getTokenName() + " had only one argument. "
-				+ "Must have three arguments, MIN=, MAX= and TITLE=: " + value);
+					+ "Must have three arguments, MIN=, MAX= and TITLE=: "
+					+ value);
 			return null;
 		}
 
@@ -54,7 +56,7 @@ public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
 		if (!minString.startsWith("MIN="))
 		{
 			Logging.errorPrint(getTokenName()
-				+ " first argument must start with MIN=: " + minString);
+					+ " first argument must start with MIN=: " + minString);
 			return null;
 		}
 		Formula min;
@@ -80,7 +82,7 @@ public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
 		if (!maxString.startsWith("MAX="))
 		{
 			Logging.errorPrint(getTokenName()
-				+ " second argument must start with MAX=: " + maxString);
+					+ " second argument must start with MAX=: " + maxString);
 			return null;
 		}
 
@@ -105,5 +107,10 @@ public class NumberToken extends AbstractToken implements ChooseCDOMLstToken
 			}
 		}
 		return new FormulaChoiceSet(min, max);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }
