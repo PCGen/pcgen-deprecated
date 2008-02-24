@@ -5,7 +5,8 @@
  */
 package pcgen.gui.proto.editor;
 
-import pcgen.gui.proto.util.JSortableTableHeader;
+import pcgen.gui.util.JTableSortingHeader;
+import pcgen.gui.util.JTreeTable;
 
 /**
  *
@@ -27,22 +28,11 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jSortableTable1 = new pcgen.gui.util.JSortableTable();
+        jTreeTable1 = new pcgen.gui.util.JTreeTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jSortableTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"johny", "nznz", "adf", "wer"},
-                {"ged", "drsd", "wer", "adfa"},
-                {"swr", "fewws", "vxz", null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jSortableTable1.setTableHeader(new JSortableTableHeader(jSortableTable1));
-        jScrollPane1.setViewportView(jSortableTable1);
+        jScrollPane1.setViewportView(jTreeTable1);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -61,7 +51,7 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private pcgen.gui.util.JSortableTable jSortableTable1;
+    private pcgen.gui.util.JTreeTable jTreeTable1;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -1,5 +1,5 @@
 /*
- * JSortableTableHeader.java
+ * JTableSortingHeader.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
  * 
  * Created on Feb 16, 2008, 8:27:21 PM
  */
-package pcgen.gui.proto.util;
+package pcgen.gui.util;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -35,16 +35,13 @@ import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pcgen.gui.util.IconUtilities;
-import pcgen.gui.util.JSortableTable;
-import pcgen.gui.util.ModelSorter;
 import pcgen.gui.util.ModelSorter.SortingPriority;
 
 /**
  *
  * @author Connor Petty<mistercpp2000@gmail.com>
  */
-public class JSortableTableHeader extends JTableHeader
+public class JTableSortingHeader extends JTableHeader
 {
 
     private static final Icon ASCENDING_ICON = IconUtilities.getImageIcon("Down16.gif");//TODO: implement
@@ -54,7 +51,7 @@ public class JSortableTableHeader extends JTableHeader
     private ModelSorter sorter;
     private TableColumn trackedColumn;
 
-    public JSortableTableHeader(JSortableTable table)
+    public JTableSortingHeader(JTableEx table)
     {
         super(table.getColumnModel());
         MouseTracker tracker = new MouseTracker();
@@ -106,7 +103,6 @@ public class JSortableTableHeader extends JTableHeader
         public void mousePressed(MouseEvent e)
         {
             usedModel.setPressed(true);
-            usedModel.setArmed(true);
             repaint();
         }
 

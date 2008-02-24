@@ -18,6 +18,8 @@
  **/
 package pcgen.gui.util;
 
+import java.util.Comparator;
+import java.util.List;
 import pcgen.gui.util.treetable.TreeTableModel;
 import java.awt.Component;
 import java.awt.Container;
@@ -52,7 +54,10 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+import pcgen.gui.util.table.SortableTableModel;
+import pcgen.gui.util.treetable.DefaultSortableTreeTableModel;
 import pcgen.gui.util.treetable.DefaultTreeTableModel;
+import pcgen.gui.util.treetable.SortableTreeTableModel;
 import pcgen.gui.util.treetable.TreeTableNode;
 
 /**
@@ -65,10 +70,10 @@ import pcgen.gui.util.treetable.TreeTableNode;
  * @author Philip Milne
  * @author Scott Violet
  **/
-public class JTreeTable extends JTable
+public class JTreeTable extends JTableEx
 {
 
-    static final long serialVersionUID = -3571248405124682593L;
+    private static final long serialVersionUID = -3571248405124682593L;
     /** A subclass of JTree. */
     private TreeTableCellRenderer tree;
     private TreeTableModelAdapter adapter;
@@ -102,14 +107,10 @@ public class JTreeTable extends JTable
         UIManager.put("Tree.leftChildIndent", Integer.valueOf(3)); //$NON-NLS-1$
         UIManager.put("Tree.rightChildIndent", Integer.valueOf(8)); //$NON-NLS-1$
 
-        // Create the tree. It will be used as a renderer and editor.
-        tree = new TreeTableCellRenderer(treeTableModel);
-        tree.setRootVisible(false);
-        adapter = createDefaultTreeTableModelAdapter(treeTableModel, tree);
-        // Install a tableModel representing the visible rows in tree.
-
+        tree = new TreeTableCellRenderer();
+        adapter = new TreeTableModelAdapter(tree);
+        setTreeTableModel(treeTableModel);
         super.setModel(adapter);
-
         // Force the JTable and JTree to share row selection models.
         ListToTreeSelectionModelWrapper selectionWrapper =
                 new ListToTreeSelectionModelWrapper();
@@ -140,12 +141,6 @@ public class JTreeTable extends JTable
         }
     }
 
-    protected TreeTableModelAdapter createDefaultTreeTableModelAdapter(TreeTableModel treeTableModel,
-                                                                        JTree tree)
-    {
-        return new TreeTableModelAdapter(treeTableModel, tree);
-    }
-
     @SuppressWarnings("unchecked")
     public TreeTableModel getTreeTableModel()
     {
@@ -154,24 +149,12 @@ public class JTreeTable extends JTable
 
     public void setTreeTableModel(TreeTableModel model)
     {
+        if (model != null && !(model instanceof SortableTreeTableModel))
+        {
+            model = new DefaultSortableTreeTableModel(model);
+        }
         tree.setModel(model);
-        adapter.setTreeTableModel(model);
-    }
-
-    @Override
-    public void setModel(TableModel model)
-    {
-        if (model instanceof TreeTableModelAdapter)
-        {
-            adapter.setTreeTableModel(null);
-            adapter = (TreeTableModelAdapter) model;
-            adapter.setTreeTableModel((TreeTableModel)tree.getModel());
-            super.setModel(model);
-        }
-        else
-        {
-            setTreeTableModel(new DefaultTreeTableModel(model));
-        }
+        adapter.setTreeTableModel((SortableTreeTableModel) model);
     }
 
     /**
@@ -309,10 +292,11 @@ public class JTreeTable extends JTable
      * @author Scott Violet
      */
     protected static class TreeTableModelAdapter extends AbstractTableModel
+            implements SortableTableModel
     {
 
         private JTree tree;
-        protected TreeTableModel treeTableModel;
+        private SortableTreeTableModel treeTableModel;
         private TreeModelListener modelListener;
 
         /**
@@ -320,11 +304,9 @@ public class JTreeTable extends JTable
          * @param treeTableModel
          * @param tree
          */
-        TreeTableModelAdapter(TreeTableModel treeTableModel, JTree tree)
+        TreeTableModelAdapter(JTree tree)
         {
             this.tree = tree;
-            this.treeTableModel = treeTableModel;
-
             tree.addTreeExpansionListener(new TreeExpansionListener()
                                   {
                                       // Don't use fireTableRowsInserted() here;
@@ -377,7 +359,7 @@ public class JTreeTable extends JTable
             }
         }
 
-        public void setTreeTableModel(TreeTableModel model)
+        public void setTreeTableModel(SortableTreeTableModel model)
         {
             if (treeTableModel != null)
             {
@@ -464,6 +446,11 @@ public class JTreeTable extends JTable
             return null;
         }
 
+        public void sortModel(Comparator<List<?>> comparator)
+        {
+            treeTableModel.sortModel(comparator);
+        }
+
     }
 
     /**
@@ -474,11 +461,6 @@ public class JTreeTable extends JTable
     {
         // Last table/tree row asked to render
         private int visibleRow;
-
-        TreeTableCellRenderer(TreeModel model)
-        {
-            super(model);
-        }
 
         /**
          * This is overridden to set the height

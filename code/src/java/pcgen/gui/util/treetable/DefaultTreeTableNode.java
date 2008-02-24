@@ -76,7 +76,7 @@ public class DefaultTreeTableNode extends DefaultMutableTreeNode implements Tree
 
     private void setValues(List<Object> values)
     {
-        this.data = new UnboundedArrayList<Object>(data);
+        this.data = new UnboundedArrayList<Object>(values);
     }
 
     @Override

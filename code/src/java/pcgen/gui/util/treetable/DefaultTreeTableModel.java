@@ -40,12 +40,12 @@ public class DefaultTreeTableModel extends AbstractTreeTableModel
     {
         super();
     }
-    
+
     protected DefaultTreeTableModel(TreeTableNode root)
     {
         super(root);
     }
-    
+
     public DefaultTreeTableModel(TableModel tableModel)
     {
         super(null);
