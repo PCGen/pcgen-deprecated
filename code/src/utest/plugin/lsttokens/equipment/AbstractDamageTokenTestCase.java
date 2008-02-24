@@ -19,26 +19,27 @@ package plugin.lsttokens.equipment;
 
 import org.junit.Test;
 
-import pcgen.core.Equipment;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
 public abstract class AbstractDamageTokenTestCase extends
-		AbstractTokenTestCase<Equipment>
+		AbstractTokenTestCase<CDOMEquipment>
 {
 
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}

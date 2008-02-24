@@ -17,8 +17,8 @@
  */
 package plugin.lsttokens.equipment;
 
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 public class AltDamageTokenTest extends AbstractDamageTokenTestCase
 {
@@ -26,7 +26,7 @@ public class AltDamageTokenTest extends AbstractDamageTokenTestCase
 	public static AltdamageToken token = new AltdamageToken();
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}

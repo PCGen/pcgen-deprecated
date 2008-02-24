@@ -19,35 +19,36 @@ package plugin.lsttokens.equipment;
 
 import org.junit.Test;
 
-import pcgen.core.Equipment;
-import pcgen.core.EquipmentModifier;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
 public abstract class AbstractEqModTokenTestCase extends
-		AbstractListTokenTestCase<Equipment, EquipmentModifier>
+		AbstractListTokenTestCase<CDOMEquipment, CDOMEqMod>
 {
 
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<EquipmentModifier> getTargetClass()
+	public Class<CDOMEqMod> getTargetClass()
 	{
-		return EquipmentModifier.class;
+		return CDOMEqMod.class;
 	}
 
 	@Override
@@ -181,9 +182,9 @@ public abstract class AbstractEqModTokenTestCase extends
 	public void testRoundRobinOnlyAssociation()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+		primaryContext.ref.constructCDOMObject(CDOMEqMod.class,
 			"EQMOD2");
-		secondaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+		secondaryContext.ref.constructCDOMObject(CDOMEqMod.class,
 			"EQMOD2");
 		runRoundRobin("EQMOD2|9500");
 	}
@@ -191,9 +192,9 @@ public abstract class AbstractEqModTokenTestCase extends
 	public void testRoundRobinComplexAssociation()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+		primaryContext.ref.constructCDOMObject(CDOMEqMod.class,
 			"EQMOD2");
-		secondaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+		secondaryContext.ref.constructCDOMObject(CDOMEqMod.class,
 			"EQMOD2");
 		runRoundRobin("EQMOD2|COST[9500]");
 	}
@@ -207,9 +208,9 @@ public abstract class AbstractEqModTokenTestCase extends
 	public void testRoundRobinComplexMultipleAssociation()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+		primaryContext.ref.constructCDOMObject(CDOMEqMod.class,
 			"EQMOD2");
-		secondaryContext.ref.constructCDOMObject(EquipmentModifier.class,
+		secondaryContext.ref.constructCDOMObject(CDOMEqMod.class,
 			"EQMOD2");
 		runRoundRobin("EQMOD2|COST[9500]PLUS[+1]");
 	}

@@ -20,36 +20,37 @@ package plugin.lsttokens.equipment;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.ArmorProf;
-import pcgen.core.Equipment;
-import pcgen.core.ShieldProf;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMArmorProf;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMShieldProf;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class ProficiencyTokenTest extends AbstractTokenTestCase<Equipment>
+public class ProficiencyTokenTest extends AbstractTokenTestCase<CDOMEquipment>
 {
 	static ProficiencyToken token = new ProficiencyToken();
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}
@@ -514,9 +515,9 @@ public class ProficiencyTokenTest extends AbstractTokenTestCase<Equipment>
 
 	protected void construct(LoadContext loadContext, String one)
 	{
-		loadContext.ref.constructCDOMObject(WeaponProf.class, one);
-		loadContext.ref.constructCDOMObject(ShieldProf.class, one);
-		loadContext.ref.constructCDOMObject(ArmorProf.class, one);
+		loadContext.ref.constructCDOMObject(CDOMWeaponProf.class, one);
+		loadContext.ref.constructCDOMObject(CDOMShieldProf.class, one);
+		loadContext.ref.constructCDOMObject(CDOMArmorProf.class, one);
 	}
 
 	private boolean isClearLegal()

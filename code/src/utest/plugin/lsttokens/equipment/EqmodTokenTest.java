@@ -19,8 +19,8 @@ package plugin.lsttokens.equipment;
 
 import org.junit.Test;
 
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 public class EqmodTokenTest extends AbstractEqModTokenTestCase
 {
@@ -28,7 +28,7 @@ public class EqmodTokenTest extends AbstractEqModTokenTestCase
 	static EqmodToken token = new EqmodToken();
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}

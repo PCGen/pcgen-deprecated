@@ -23,35 +23,36 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
 import pcgen.cdom.mode.Size;
-import pcgen.core.Equipment;
-import pcgen.core.SizeAdjustment;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class SizeTokenTest extends AbstractTokenTestCase<Equipment>
+public class SizeTokenTest extends AbstractTokenTestCase<CDOMEquipment>
 {
 
 	static SizeToken token = new SizeToken();
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}
@@ -61,14 +62,18 @@ public class SizeTokenTest extends AbstractTokenTestCase<Equipment>
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
-		SizeAdjustment ps = primaryContext.ref.constructCDOMObject(SizeAdjustment.class, "S");
-		ps.setAbbreviation("S");
-		SizeAdjustment pm = primaryContext.ref.constructCDOMObject(SizeAdjustment.class, "M");
-		pm.setAbbreviation("M");
-		SizeAdjustment ss = secondaryContext.ref.constructCDOMObject(SizeAdjustment.class, "S");
-		ss.setAbbreviation("S");
-		SizeAdjustment sm = secondaryContext.ref.constructCDOMObject(SizeAdjustment.class, "M");
-		sm.setAbbreviation("M");
+		CDOMSizeAdjustment ps = primaryContext.ref.constructCDOMObject(
+				CDOMSizeAdjustment.class, "Small");
+		primaryContext.ref.registerAbbreviation(ps, "S");
+		CDOMSizeAdjustment pm = primaryContext.ref.constructCDOMObject(
+				CDOMSizeAdjustment.class, "Medium");
+		primaryContext.ref.registerAbbreviation(pm, "M");
+		CDOMSizeAdjustment ss = secondaryContext.ref.constructCDOMObject(
+				CDOMSizeAdjustment.class, "Small");
+		secondaryContext.ref.registerAbbreviation(ss, "S");
+		CDOMSizeAdjustment sm = secondaryContext.ref.constructCDOMObject(
+				CDOMSizeAdjustment.class, "Medium");
+		secondaryContext.ref.registerAbbreviation(sm, "M");
 	}
 
 	@Override

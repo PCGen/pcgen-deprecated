@@ -18,41 +18,42 @@
 package plugin.lsttokens.equipment;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractItemTokenTestCase;
 
 public class BaseItemTokenTest extends
-		AbstractItemTokenTestCase<Equipment, Equipment>
+		AbstractItemTokenTestCase<CDOMEquipment, CDOMEquipment>
 {
 
 	static BaseitemToken token = new BaseitemToken();
-	static EquipmentLoader loader = new EquipmentLoader();
+	static CDOMTokenLoader<CDOMEquipment> loader = new CDOMTokenLoader<CDOMEquipment>(
+			CDOMEquipment.class);
 
 	@Override
-	public Class<Equipment> getCDOMClass()
+	public Class<CDOMEquipment> getCDOMClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Equipment> getLoader()
+	public CDOMLoader<CDOMEquipment> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<Equipment> getTargetClass()
+	public Class<CDOMEquipment> getTargetClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
 	@Override

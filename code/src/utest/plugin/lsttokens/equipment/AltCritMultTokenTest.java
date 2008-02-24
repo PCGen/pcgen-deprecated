@@ -17,15 +17,15 @@
  */
 package plugin.lsttokens.equipment;
 
-import pcgen.core.Equipment;
-import pcgen.persistence.lst.CDOMToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 public class AltCritMultTokenTest extends AbstractCritMultTokenTestCase
 {
 	static AltcritmultToken token = new AltcritmultToken();
 
 	@Override
-	public CDOMToken<Equipment> getToken()
+	public CDOMPrimaryToken<CDOMEquipment> getToken()
 	{
 		return token;
 	}
