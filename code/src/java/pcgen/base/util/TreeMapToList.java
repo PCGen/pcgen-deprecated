@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import pcgen.util.MapToList;
+
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
  * 

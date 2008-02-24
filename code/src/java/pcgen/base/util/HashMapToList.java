@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import pcgen.util.MapToList;
+
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
  * 
@@ -453,5 +455,11 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 			//TODO
 		}
 		return false;
+	}
+
+	public int getSizeOfListFor(K key)
+	{
+		List<V> list = mapToList.get(key);
+		return list == null ? 0 : list.size();
 	}
 }
