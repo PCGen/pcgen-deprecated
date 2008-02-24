@@ -10,6 +10,7 @@ import java.util.List;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
@@ -90,8 +91,8 @@ public class PreSpellCastMemorizeTester extends AbstractPrerequisiteTest
 		int runningTotal = 0;
 		
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<PCClass> list = activeGraph.getGrantedNodeList(PCClass.class);
-		for (PCClass aClass : list)
+		List<CDOMPCClass> list = activeGraph.getGrantedNodeList(CDOMPCClass.class);
+		for (CDOMPCClass aClass : list)
 		{
 			if (prereqMemorized.equals(aClass.get(ObjectKey.MEMORIZE_SPELLS)))
 			{

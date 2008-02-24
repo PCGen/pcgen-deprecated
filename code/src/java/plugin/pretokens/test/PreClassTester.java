@@ -12,6 +12,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PCClass;
@@ -191,9 +192,9 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 		int countedTotal = 0;
 		if ("SPELLCASTER".equalsIgnoreCase(classString)) //$NON-NLS-1$
 		{
-			List<PCClass> classlist =
-					activeGraph.getGrantedNodeList(PCClass.class);
-			for (PCClass pcClass : classlist)
+			List<CDOMPCClass> classlist =
+					activeGraph.getGrantedNodeList(CDOMPCClass.class);
+			for (CDOMPCClass pcClass : classlist)
 			{
 				Type type = pcClass.get(ObjectKey.SPELL_TYPE);
 				if (type != null)
@@ -219,9 +220,9 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 			try
 			{
 				Type reqType = Type.valueOf(typeString);
-				List<PCClass> classlist =
-						activeGraph.getGrantedNodeList(PCClass.class);
-				for (PCClass pcClass : classlist)
+				List<CDOMPCClass> classlist =
+						activeGraph.getGrantedNodeList(CDOMPCClass.class);
+				for (CDOMPCClass pcClass : classlist)
 				{
 					Type type = pcClass.get(ObjectKey.SPELL_TYPE);
 					if (reqType.equals(type))
@@ -249,9 +250,9 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 		}
 		else if (Constants.LST_ANY.equals(classString))
 		{
-			List<PCClass> classlist =
-					activeGraph.getGrantedNodeList(PCClass.class);
-			for (PCClass pcClass : classlist)
+			List<CDOMPCClass> classlist =
+					activeGraph.getGrantedNodeList(CDOMPCClass.class);
+			for (CDOMPCClass pcClass : classlist)
 			{
 				int thisLevel = character.getLevel(pcClass);
 				if (prereq.isCountMultiples())
@@ -270,8 +271,8 @@ public class PreClassTester extends AbstractPrerequisiteTest implements
 		// TODO need to account for type
 		else
 		{
-			PCClass pcClass =
-					activeGraph.getGrantedNode(PCClass.class, classString);
+			CDOMPCClass pcClass =
+					activeGraph.getGrantedNode(CDOMPCClass.class, classString);
 			int thisLevel = character.getLevel(pcClass);
 			if (prereq.isCountMultiples())
 			{

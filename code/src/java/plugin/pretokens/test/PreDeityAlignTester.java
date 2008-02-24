@@ -10,9 +10,9 @@ import java.util.List;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Alignment;
-import pcgen.core.Deity;
 import pcgen.core.GameMode;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
@@ -121,11 +121,11 @@ public class PreDeityAlignTester extends AbstractPrerequisiteTest implements
 	{
 		int runningTotal = 0;
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
-		Alignment requiredAlign = character.getRulesData().getObject(
-					Alignment.class, prereq.getKey());
+		List<CDOMDeity> list = activeGraph.getGrantedNodeList(CDOMDeity.class);
+		CDOMAlignment requiredAlign = character.getRulesData().getObject(
+				CDOMAlignment.class, prereq.getKey());
 		// TODO What if requiredAlign is null?
-		for (Deity d : list)
+		for (CDOMDeity d : list)
 		{
 			if (requiredAlign.equals(d.get(ObjectKey.ALIGNMENT)))
 			{

@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import java.util.List;
 
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PCTemplate;
 import pcgen.core.PlayerCharacter;
@@ -116,8 +117,8 @@ public class PreTemplateTester extends AbstractPrerequisiteTest implements
 		}
 
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<PCTemplate> list =
-				activeGraph.getGrantedNodeList(PCTemplate.class);
+		List<CDOMTemplate> list =
+				activeGraph.getGrantedNodeList(CDOMTemplate.class);
 		
 		if (!list.isEmpty())
 		{
@@ -127,7 +128,7 @@ public class PreTemplateTester extends AbstractPrerequisiteTest implements
 			if (wildCard >= 0)
 			{
 				templateKey = templateKey.substring(0, wildCard);
-				for (PCTemplate aTemplate : list)
+				for (CDOMTemplate aTemplate : list)
 				{
 					if (aTemplate.getKeyName().toUpperCase().startsWith(
 						templateKey))
@@ -138,7 +139,7 @@ public class PreTemplateTester extends AbstractPrerequisiteTest implements
 			}
 			else
 			{
-				if (activeGraph.containsGranted(PCTemplate.class, templateKey))
+				if (activeGraph.containsGranted(CDOMTemplate.class, templateKey))
 				{
 					runningTotal++;
 				}

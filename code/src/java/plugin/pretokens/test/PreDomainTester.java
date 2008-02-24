@@ -29,8 +29,8 @@ package plugin.pretokens.test;
 import java.util.List;
 
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMDomain;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Domain;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -105,7 +105,7 @@ public class PreDomainTester extends AbstractPrerequisiteTest implements
 		}
 
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<Domain> list = activeGraph.getGrantedNodeList(Domain.class);
+		List<CDOMDomain> list = activeGraph.getGrantedNodeList(CDOMDomain.class);
 
 		if (!list.isEmpty())
 		{
@@ -117,7 +117,7 @@ public class PreDomainTester extends AbstractPrerequisiteTest implements
 			}
 			else
 			{
-				if (activeGraph.containsGranted(Domain.class, domainKey))
+				if (activeGraph.containsGranted(CDOMDomain.class, domainKey))
 				{
 					runningTotal++;
 				}

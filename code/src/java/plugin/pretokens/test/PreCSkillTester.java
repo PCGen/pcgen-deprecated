@@ -31,8 +31,9 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.ClassSkillList;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
@@ -165,16 +166,16 @@ public class PreCSkillTester extends AbstractPrerequisiteTest implements
 					.startsWith("TYPE="));
 		String key = isType ? requiredSkillKey.substring(5) : requiredSkillKey;
 
-		Set<Skill> matchingSkills = new HashSet<Skill>();
+		Set<CDOMSkill> matchingSkills = new HashSet<CDOMSkill>();
 		for (ClassSkillList csl : lists)
 		{
-			Collection<Skill> skillList = character.getCDOMListContents(csl);
+			Collection<CDOMSkill> skillList = character.getCDOMListContents(csl);
 			if (skillList != null)
 			{
 				if (isType)
 				{
 					// Skill name is actually type to compare for
-					SKILL: for (Skill sk : skillList)
+					SKILL: for (CDOMSkill sk : skillList)
 					{
 						StringTokenizer tok = new StringTokenizer(key, ".");
 						//
@@ -203,7 +204,7 @@ public class PreCSkillTester extends AbstractPrerequisiteTest implements
 				}
 				else
 				{
-					for (Skill sk : skillList)
+					for (CDOMSkill sk : skillList)
 					{
 						if (key.equalsIgnoreCase(sk.getKeyName()))
 						{

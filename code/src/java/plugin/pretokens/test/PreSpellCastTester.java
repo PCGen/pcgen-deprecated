@@ -29,6 +29,7 @@ package plugin.pretokens.test;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
@@ -97,7 +98,7 @@ public class PreSpellCastTester extends AbstractPrerequisiteTest implements
 		int runningTotal = 0;
 
 		PCGenGraph activeGraph = character.getActiveGraph();
-		for (PCClass cl : activeGraph.getGrantedNodeList(PCClass.class))
+		for (CDOMPCClass cl : activeGraph.getGrantedNodeList(CDOMPCClass.class))
 		{
 			Type spellType = cl.get(ObjectKey.SPELL_TYPE);
 			if (spellType != null

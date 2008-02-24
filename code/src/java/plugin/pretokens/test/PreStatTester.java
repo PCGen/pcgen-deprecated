@@ -27,8 +27,8 @@
 package plugin.pretokens.test;
 
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PCStat;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -82,7 +82,7 @@ public class PreStatTester extends AbstractPrerequisiteTest implements
 	{
 		int targetNumber = Integer.parseInt(prereq.getOperand());
 		PCGenGraph graph = character.getActiveGraph();
-		PCStat stat = graph.getGrantedNode(PCStat.class, prereq.getKey());
+		CDOMStat stat = graph.getGrantedNode(CDOMStat.class, prereq.getKey());
 		int statVal = character.getTotalWeight(stat);
 		int runningTotal = prereq.getOperator().compare(statVal, targetNumber);
 		return countedTotal(prereq, runningTotal);

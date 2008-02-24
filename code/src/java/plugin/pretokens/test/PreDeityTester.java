@@ -12,8 +12,8 @@ import java.util.List;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Pantheon;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Deity;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -106,12 +106,12 @@ public class PreDeityTester extends AbstractPrerequisiteTest implements
 		int runningTotal = 0;
 
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
+		List<CDOMDeity> list = activeGraph.getGrantedNodeList(CDOMDeity.class);
 
 		if (prereq.getKey().startsWith("PANTHEON."))//$NON-NLS-1$
 		{
 			Pantheon p = Pantheon.valueOf(prereq.getKey().substring(9));
-			for (Deity d : list)
+			for (CDOMDeity d : list)
 			{
 				List<Pantheon> pantheonList = d.getListFor(ListKey.PANTHEON);
 				if (prereq.getOperator().equals(PrerequisiteOperator.EQ)
@@ -134,7 +134,7 @@ public class PreDeityTester extends AbstractPrerequisiteTest implements
 		}
 		else
 		{
-			for (Deity d : list)
+			for (CDOMDeity d : list)
 			{
 				String charDeity = d.getKeyName();
 				if (prereq.getOperator().equals(PrerequisiteOperator.EQ)

@@ -28,9 +28,11 @@ package plugin.pretokens.test;
 
 import java.util.List;
 
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMArmorProf;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.ArmorProf;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -99,11 +101,12 @@ public class PreArmorProfTester extends AbstractPrerequisiteTest implements
 		if (aString.startsWith("TYPE.") || aString.startsWith("TYPE=")) //$NON-NLS-1$ //$NON-NLS-2$
 		{
 			final String requiredType = aString.substring(5);
-			List<ArmorProf> list =
-					activeGraph.getGrantedNodeList(ArmorProf.class);
-			for (ArmorProf ap : list)
+			List<CDOMArmorProf> list =
+					activeGraph.getGrantedNodeList(CDOMArmorProf.class);
+			Type reqType = Type.getConstant(requiredType);
+			for (CDOMArmorProf ap : list)
 			{
-				if (ap.isType(requiredType))
+				if (ap.containsInList(ListKey.TYPE, reqType))
 				{
 					runningTotal++;
 				}
@@ -111,7 +114,7 @@ public class PreArmorProfTester extends AbstractPrerequisiteTest implements
 		}
 		else
 		{
-			if (activeGraph.containsGranted(ArmorProf.class, aString))
+			if (activeGraph.containsGranted(CDOMArmorProf.class, aString))
 			{
 				runningTotal++;
 			}

@@ -35,6 +35,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SpellSchool;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
@@ -100,11 +101,11 @@ public class PreSpellSchoolTester extends AbstractPrerequisiteTest implements
 
 		PCGenGraph activeGraph = character.getActiveGraph();
 		// Build a list of all possible spells (innate & known)
-		List<Spell> spells = activeGraph.getGrantedNodeList(Spell.class);
+		List<CDOMSpell> spells = activeGraph.getGrantedNodeList(CDOMSpell.class);
 		
-		Set<Spell> spellSet = new HashSet<Spell>();
+		Set<CDOMSpell> spellSet = new HashSet<CDOMSpell>();
 		
-		for (Spell s : spells)
+		for (CDOMSpell s : spells)
 		{
 			List<SpellSchool> schoolList = s.getListFor(ListKey.SPELL_SCHOOL);
 			if (schoolList != null && schoolList.contains(school))

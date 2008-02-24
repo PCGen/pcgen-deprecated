@@ -30,6 +30,7 @@ import java.util.List;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
@@ -85,8 +86,8 @@ public class PreSpellBookTester extends AbstractPrerequisiteTest implements
 		int requiredNumber = Integer.parseInt(prereq.getOperand());
 
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<PCClass> list = activeGraph.getGrantedNodeList(PCClass.class);
-		for (PCClass spellClass : list)
+		List<CDOMPCClass> list = activeGraph.getGrantedNodeList(CDOMPCClass.class);
+		for (CDOMPCClass spellClass : list)
 		{
 			Boolean sb = spellClass.get(ObjectKey.SPELLBOOK);
 			if (sb != null && sb.booleanValue() == prereqUsesBook)

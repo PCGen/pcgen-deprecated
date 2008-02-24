@@ -30,9 +30,9 @@ import java.util.List;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Alignment;
-import pcgen.core.Deity;
 import pcgen.core.Equipment;
 import pcgen.core.GameMode;
 import pcgen.core.Globals;
@@ -171,15 +171,15 @@ public class PreAlignTester extends AbstractPrerequisiteTest implements
 		// }
 		String alignString = prereq.getKey();
 		PCGenGraph activeGraph = character.getActiveGraph();
-		Alignment pcAlign = character.getCDOMAlignment();
+		CDOMAlignment pcAlign = character.getCDOMAlignment();
 		if (alignString.equalsIgnoreCase("Deity"))
 		{
-			List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
+			List<CDOMDeity> list = activeGraph.getGrantedNodeList(CDOMDeity.class);
 			if (list != null)
 			{
-				for (Deity d : list)
+				for (CDOMDeity d : list)
 				{
-					Alignment alignment = d.get(ObjectKey.ALIGNMENT);
+					CDOMAlignment alignment = d.get(ObjectKey.ALIGNMENT);
 					if (alignment != null && alignment.equals(pcAlign))
 					{
 						runningTotal++;
@@ -189,8 +189,8 @@ public class PreAlignTester extends AbstractPrerequisiteTest implements
 		}
 		else
 		{
-			Alignment requiredAlign = character.getRulesData().getObject(
-						Alignment.class, alignString);
+			CDOMAlignment requiredAlign = character.getRulesData().getObject(
+					CDOMAlignment.class, alignString);
 			if (requiredAlign.equals(pcAlign))
 			{
 				runningTotal = 1;

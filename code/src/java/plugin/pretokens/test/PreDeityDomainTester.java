@@ -29,14 +29,13 @@ package plugin.pretokens.test;
 import java.util.Collection;
 import java.util.List;
 
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.DomainList;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Deity;
-import pcgen.core.Domain;
-import pcgen.core.DomainList;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -101,27 +100,27 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 		int requiredNumber = Integer.parseInt(prereq.getOperand());
 		int runningTotal = 0;
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<Deity> list = activeGraph.getGrantedNodeList(Deity.class);
+		List<CDOMDeity> list = activeGraph.getGrantedNodeList(CDOMDeity.class);
 		String requiredDomain = prereq.getKey();
 		boolean requiresAny = Constants.LST_ANY.equals(requiredDomain);
 		CDOMReference<DomainList> dl = character.getRulesData().getReference(
 				DomainList.class, "*Starting");
-		for (Deity d : list)
+		for (CDOMDeity d : list)
 		{
-			Collection<CDOMReference<Domain>> mods = d.getListMods(dl);
+			Collection<CDOMReference<CDOMDomain>> mods = d.getListMods(dl);
 			System.err.println(mods);
 			if (mods != null)
 			{
 				if (requiresAny)
 				{
-					for (CDOMReference<Domain> domain : mods)
+					for (CDOMReference<CDOMDomain> domain : mods)
 					{
 						System.err.println("!" + domain.getLSTformat());
 						String domainString = domain.getLSTformat();
 						if (Constants.LST_ALL.equals(domainString))
 						{
 							runningTotal = character.getRulesData().getAll(
-									Domain.class).size();
+									CDOMDomain.class).size();
 							break;
 						}
 						else
@@ -132,7 +131,7 @@ public class PreDeityDomainTester extends AbstractPrerequisiteTest implements
 				}
 				else
 				{
-					for (CDOMReference<Domain> domain : mods)
+					for (CDOMReference<CDOMDomain> domain : mods)
 					{
 						String domainString = domain.getLSTformat();
 						if (Constants.LST_ALL.equals(domainString))

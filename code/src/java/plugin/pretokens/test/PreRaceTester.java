@@ -35,6 +35,7 @@ import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.RaceSubType;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Constants;
 import pcgen.core.PlayerCharacter;
@@ -155,11 +156,11 @@ public class PreRaceTester extends AbstractPrerequisiteTest implements
 		final String requiredRace = prereq.getKey();
 		int runningTotal = 0;
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<Race> list = activeGraph.getGrantedNodeList(Race.class);
+		List<CDOMRace> list = activeGraph.getGrantedNodeList(CDOMRace.class);
 
 		if (requiredRace.startsWith("TYPE=") || requiredRace.startsWith("TYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
 		{
-			RACE: for (Race r : list)
+			RACE: for (CDOMRace r : list)
 			{
 				StringTokenizer tok =
 					new StringTokenizer(requiredRace.substring(5), ".");
@@ -196,7 +197,7 @@ public class PreRaceTester extends AbstractPrerequisiteTest implements
 		}
 		else
 		{
-			for (Race r : list)
+			for (CDOMRace r : list)
 			{
 				final String characterRace = r.getKeyName();
 				final int wild = requiredRace.indexOf('%');

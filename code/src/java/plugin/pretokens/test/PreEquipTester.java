@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.character.EquipmentSetFacade;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
@@ -187,7 +188,7 @@ public class PreEquipTester extends AbstractPrerequisiteTest implements
 		{
 			String targetEquip = prereq.getKey();
 
-			for (Equipment eq : set.getEquipment())
+			for (CDOMEquipment eq : set.getEquipment())
 			{
 				if (targetEquip.startsWith("WIELDCATEGORY=")
 					|| targetEquip.startsWith("WIELDCATEGORY."))

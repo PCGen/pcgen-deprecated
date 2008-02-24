@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.character.EquipmentSetFacade;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
@@ -162,9 +163,9 @@ public class PreArmorTypeTester extends AbstractPrerequisiteTest implements
 
 		EquipmentSetFacade set = character.getEquipped();
 		
-		for (Equipment equip : set.getEquipment())
+		for (CDOMEquipment equip : set.getEquipment())
 		{
-			if (!equip.isArmor())
+			if (equip.getListFor(ListKey.TYPE).contains("ARMOR"))
 			{
 				continue;
 			}

@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.PlayerCharacter;
@@ -166,10 +167,10 @@ public class PreItemTester extends AbstractPrerequisiteTest implements
 		 * that complete graph, such as a deeply embedded AUTO:EQUIP, for which
 		 * the PC is not eligible... :P
 		 */
-		List<Equipment> list = null;
+		List<CDOMEquipment> list = null;
 		String aString = prereq.getKey();
 
-		for (Equipment eq : list)
+		for (CDOMEquipment eq : list)
 		{
 			if (aString.startsWith("TYPE=") || aString.startsWith("TYPE.")) //$NON-NLS-1$ //$NON-NLS-2$
 			{

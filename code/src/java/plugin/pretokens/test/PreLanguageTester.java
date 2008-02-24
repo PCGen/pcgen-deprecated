@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Globals;
 import pcgen.core.Language;
@@ -109,16 +110,16 @@ public class PreLanguageTester extends AbstractPrerequisiteTest implements
 		PCGenGraph activeGraph = character.getActiveGraph();
 
 		if (requiredLang.equalsIgnoreCase("ANY")) { //$NON-NLS-1$
-			runningTotal = activeGraph.getGrantedNodeCount(Language.class);
+			runningTotal = activeGraph.getGrantedNodeCount(CDOMLanguage.class);
 		}
 		else if (requiredLang.startsWith("TYPE.")
 			|| requiredLang.startsWith("TYPE="))
 		{
-			List<Language> list =
-					activeGraph.getGrantedNodeList(Language.class);
+			List<CDOMLanguage> list =
+					activeGraph.getGrantedNodeList(CDOMLanguage.class);
 			if (list != null)
 			{
-				LANG: for (Language lang : list)
+				LANG: for (CDOMLanguage lang : list)
 				{
 					StringTokenizer tok =
 							new StringTokenizer(requiredLang.substring(5), ".");
@@ -137,7 +138,7 @@ public class PreLanguageTester extends AbstractPrerequisiteTest implements
 		}
 		else
 		{
-			if (activeGraph.containsGranted(Language.class, requiredLang))
+			if (activeGraph.containsGranted(CDOMLanguage.class, requiredLang))
 			{
 				runningTotal = 1;
 			}

@@ -9,15 +9,15 @@ package plugin.pretokens.test;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
 import pcgen.core.Equipment;
-import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
@@ -151,10 +151,10 @@ public class PreFeatTester extends AbstractPrerequisiteTest implements
 
 		int runningTotal = 0;
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<Ability> list = activeGraph.getGrantedNodeList(Ability.class);
-		ABILITY: for (Ability a : list)
+		List<CDOMAbility> list = activeGraph.getGrantedNodeList(CDOMAbility.class);
+		ABILITY: for (CDOMAbility a : list)
 		{
-			if (!pcgen.cdom.enumeration.AbilityCategory.FEAT.equals(a
+			if (!pcgen.cdom.enumeration.CDOMAbilityCategory.FEAT.equals(a
 				.getCDOMCategory()))
 			{
 				continue;
@@ -230,7 +230,7 @@ public class PreFeatTester extends AbstractPrerequisiteTest implements
 	}
 
 	private int getWildcardCount(CharacterDataStore character, boolean countMults,
-		Ability a, String subKey)
+			CDOMAbility a, String subKey)
 	{
 		int count = 0;
 
@@ -251,9 +251,9 @@ public class PreFeatTester extends AbstractPrerequisiteTest implements
 			}
 			else
 			{
-				List<PObject> assoc = character.getAssociated(a);
+				List<CDOMObject> assoc = character.getAssociated(a);
 				String subStart = subKey.substring(0, wildCardPos - 1);
-				for (PObject po : assoc)
+				for (CDOMObject po : assoc)
 				{
 					if (po.getKeyName().regionMatches(true, 0, subStart, 0,
 						wildCardPos))
@@ -271,11 +271,11 @@ public class PreFeatTester extends AbstractPrerequisiteTest implements
 	}
 
 	private int getAssociatedCountOfType(CharacterDataStore character,
-		boolean countMults, Ability a, String subKey)
+		boolean countMults, CDOMAbility a, String subKey)
 	{
 		int runningTotal = 0;
-		List<PObject> list = character.getAssociated(a);
-		POBJECT: for (PObject po : list)
+		List<CDOMObject> list = character.getAssociated(a);
+		POBJECT: for (CDOMObject po : list)
 		{
 			StringTokenizer tok = new StringTokenizer(subKey.substring(5), ".");
 			// Must match all listed types in order to qualify
@@ -297,7 +297,7 @@ public class PreFeatTester extends AbstractPrerequisiteTest implements
 	}
 
 	private int getAbilityWeight(CharacterDataStore character, boolean countMults,
-		Ability a)
+			CDOMAbility a)
 	{
 		int increment;
 		Boolean mult = a.get(ObjectKey.MULTIPLE_ALLOWED);

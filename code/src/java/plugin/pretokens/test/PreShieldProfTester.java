@@ -32,9 +32,9 @@ import java.util.StringTokenizer;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMShieldProf;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
-import pcgen.core.ShieldProf;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -110,9 +110,9 @@ public class PreShieldProfTester extends AbstractPrerequisiteTest implements
 		final String aString = prereq.getKey();
 		if (aString.startsWith("TYPE.") || aString.startsWith("TYPE=")) //$NON-NLS-1$ //$NON-NLS-2$
 		{
-			List<ShieldProf> list =
-					activeGraph.getGrantedNodeList(ShieldProf.class);
-			SHIELDPROF: for (ShieldProf sp : list)
+			List<CDOMShieldProf> list =
+					activeGraph.getGrantedNodeList(CDOMShieldProf.class);
+			SHIELDPROF: for (CDOMShieldProf sp : list)
 			{
 				StringTokenizer tok =
 						new StringTokenizer(aString.substring(5), ".");
@@ -130,7 +130,7 @@ public class PreShieldProfTester extends AbstractPrerequisiteTest implements
 		}
 		else
 		{
-			if (activeGraph.containsGranted(ShieldProf.class, aString))
+			if (activeGraph.containsGranted(CDOMShieldProf.class, aString))
 			{
 				runningTotal++;
 			}

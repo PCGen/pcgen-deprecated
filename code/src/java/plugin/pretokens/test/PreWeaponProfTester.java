@@ -32,6 +32,8 @@ import java.util.StringTokenizer;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Equipment;
 import pcgen.core.EquipmentList;
@@ -179,7 +181,7 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 			for (String weaponKey : CoreUtility.split(character.getCDOMDeity()
 				.getFavoredWeapon(), '|'))
 			{
-				if (activeGraph.containsGranted(WeaponProf.class, weaponKey))
+				if (activeGraph.containsGranted(CDOMWeaponProf.class, weaponKey))
 				{
 					runningTotal++;
 				}
@@ -187,11 +189,11 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 		}
 		else if (aString.startsWith("TYPE.") || aString.startsWith("TYPE=")) //$NON-NLS-1$ //$NON-NLS-2$
 		{
-			List<WeaponProf> list =
-					activeGraph.getGrantedNodeList(WeaponProf.class);
+			List<CDOMWeaponProf> list =
+					activeGraph.getGrantedNodeList(CDOMWeaponProf.class);
 			if (list != null)
 			{
-				WEAPONPROF: for (WeaponProf wp : list)
+				WEAPONPROF: for (CDOMWeaponProf wp : list)
 				{
 					StringTokenizer tok =
 							new StringTokenizer(aString.substring(5), ".");
@@ -201,9 +203,9 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 						Type requiredType = Type.getConstant(tok.nextToken());
 						if (!wp.containsInList(ListKey.TYPE, requiredType))
 						{
-							Equipment eq =
-									EquipmentList.getEquipmentNamed(wp
-										.getKeyName());
+							CDOMEquipment eq = character.getRulesData()
+									.getObject(CDOMEquipment.class,
+											wp.getKeyName());
 							if (eq != null)
 							{
 								StringTokenizer eqtok =
@@ -231,7 +233,7 @@ public class PreWeaponProfTester extends AbstractPrerequisiteTest implements
 		}
 		else
 		{
-			if (activeGraph.containsGranted(WeaponProf.class, aString))
+			if (activeGraph.containsGranted(CDOMWeaponProf.class, aString))
 			{
 				runningTotal++;
 			}

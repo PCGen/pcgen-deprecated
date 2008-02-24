@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
@@ -203,8 +204,8 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 		if ((requiredSkillKey.startsWith("TYPE.") || requiredSkillKey
 			.startsWith("TYPE=")))
 		{
-			List<Skill> list = graph.getGrantedNodeList(Skill.class);
-			SKILL: for (Skill aSkill : list)
+			List<CDOMSkill> list = graph.getGrantedNodeList(CDOMSkill.class);
+			SKILL: for (CDOMSkill aSkill : list)
 			{
 				StringTokenizer tok =
 						new StringTokenizer(requiredSkillKey.substring(5), ".");
@@ -229,8 +230,8 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 			int percentLoc = requiredSkillKey.lastIndexOf('%');
 			if (percentLoc == -1)
 			{
-				Skill skill =
-						graph.getGrantedNode(Skill.class, requiredSkillKey);
+				CDOMSkill skill =
+						graph.getGrantedNode(CDOMSkill.class, requiredSkillKey);
 				if (prereq.getOperator().compare(
 					character.getTotalWeight(skill), requiredRanks) > 0)
 				{
@@ -239,8 +240,8 @@ public class PreSkillTester extends AbstractPrerequisiteTest implements
 			}
 			else
 			{
-				List<Skill> list = graph.getGrantedNodeList(Skill.class);
-				for (Skill aSkill : list)
+				List<CDOMSkill> list = graph.getGrantedNodeList(CDOMSkill.class);
+				for (CDOMSkill aSkill : list)
 				{
 					String aSkillKey = aSkill.getKeyName().toUpperCase();
 					if (aSkillKey.startsWith(requiredSkillKey.substring(0,
