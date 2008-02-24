@@ -21,17 +21,17 @@
  */
 package plugin.lsttokens.pcclass;
 
-import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with ABB Token for PCC files
  */
-public class AbbToken implements PCClassLstToken, PCClassClassLstToken
+public class AbbToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	/**
@@ -58,24 +58,29 @@ public class AbbToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (value.length() == 0)
 		{
 			Logging.errorPrint(getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		context.getObjectContext().put(pcc, StringKey.ABB, value);
+		context.ref.registerAbbreviation(pcc, value);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		String abb = context.getObjectContext().getString(pcc, StringKey.ABB);
+		String abb = context.ref.getAbbreviation(pcc);
 		if (abb == null)
 		{
 			return null;
 		}
 		return new String[]{abb};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

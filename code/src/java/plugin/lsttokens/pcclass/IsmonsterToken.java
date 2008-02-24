@@ -23,17 +23,18 @@ package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.ClassSkillList;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.ClassSkillList;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with ISMONSTER Token
  */
-public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
+public class IsmonsterToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	private static final Class<ClassSkillList> SKILLLIST_CLASS =
@@ -63,7 +64,7 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		Boolean set;
 		char firstChar = value.charAt(0);
@@ -97,7 +98,7 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Boolean isM =
 				context.getObjectContext().getObject(pcc, ObjectKey.IS_MONSTER);
@@ -106,5 +107,10 @@ public class IsmonsterToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		return new String[]{isM.booleanValue() ? "YES" : "NO"};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

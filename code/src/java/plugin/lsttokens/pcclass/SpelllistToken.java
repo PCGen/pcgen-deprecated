@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.CDOMListObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -36,25 +37,25 @@ import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.cdom.helper.SpellReferenceChoiceSet;
-import pcgen.core.CDOMListObject;
-import pcgen.core.ClassSpellList;
-import pcgen.core.DomainSpellList;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.ClassSpellList;
+import pcgen.cdom.inst.DomainSpellList;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SPELLLIST Token
  */
 public class SpelllistToken extends AbstractToken implements PCClassLstToken,
-		PCClassClassLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
 	private static Class<ClassSpellList> SPELLLIST_CLASS = ClassSpellList.class;
@@ -123,7 +124,7 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -213,15 +214,15 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 				.getFormulaFor(Integer.MAX_VALUE));
 
-		ReferenceChoiceSet<? extends CDOMListObject<Spell>> rcs = new SpellReferenceChoiceSet(
+		ReferenceChoiceSet<? extends CDOMListObject<CDOMSpell>> rcs = new SpellReferenceChoiceSet(
 				refs);
-		ChoiceSet<? extends CDOMListObject<Spell>> cs = new ChoiceSet(
+		ChoiceSet<? extends CDOMListObject<CDOMSpell>> cs = new ChoiceSet(
 				getTokenName(), rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		AssociatedChanges<ChooseActionContainer> grantChanges = context
 				.getGraphContext().getChangesFromToken(getTokenName(), pcc,
@@ -265,5 +266,10 @@ public class SpelllistToken extends AbstractToken implements PCClassLstToken,
 			// }
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

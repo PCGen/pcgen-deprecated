@@ -19,27 +19,31 @@
  * Last Editor: $Author$
  * Last Edited: $Date$
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.core.PCClass;
-import pcgen.core.SpellProgressionInfo;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassLevelLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with CAST Token
  */
 public class CastToken extends AbstractToken implements PCClassLstToken,
-		PCClassLevelLstToken
+		CDOMPrimaryToken<CDOMPCClassLevel>
 {
 
 	@Override
@@ -67,8 +71,7 @@ public class CastToken extends AbstractToken implements PCClassLstToken,
 		return false;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value,
-		int level)
+	public boolean parse(LoadContext context, CDOMPCClassLevel pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
@@ -76,8 +79,6 @@ public class CastToken extends AbstractToken implements PCClassLstToken,
 		}
 
 		StringTokenizer st = new StringTokenizer(value, Constants.COMMA);
-
-		List<String> castList = new ArrayList<String>(st.countTokens());
 		while (st.hasMoreTokens())
 		{
 			String tok = st.nextToken();
@@ -86,7 +87,7 @@ public class CastToken extends AbstractToken implements PCClassLstToken,
 				if (Integer.parseInt(tok) < 0)
 				{
 					Logging.errorPrint("Invalid Spell Count: " + tok
-						+ " is less than zero");
+							+ " is less than zero");
 					return false;
 				}
 			}
@@ -94,26 +95,26 @@ public class CastToken extends AbstractToken implements PCClassLstToken,
 			{
 				// OK, it must be a formula...
 			}
-			castList.add(tok);
+			context.obj.addToList(pcc, ListKey.CAST, FormulaFactory
+					.getFormulaFor(tok));
 		}
-
-		SpellProgressionInfo sp = pcc.getCDOMSpellProgression();
-		sp.setCast(level, castList);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc, int level)
+	public String[] unparse(LoadContext context, CDOMPCClassLevel pcc)
 	{
-		if (!pcc.hasCDOMSpellProgression())
+		Changes<Formula> changes = context.obj
+				.getListChanges(pcc, ListKey.CAST);
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
-		SpellProgressionInfo sp = pcc.getCDOMSpellProgression();
-		List<String> list = sp.getCastForLevel(level);
-		if (list == null || list.isEmpty())
-		{
-			return null;
-		}
-		return new String[]{StringUtil.join(list, Constants.COMMA)};
+		return new String[] { StringUtil.join(changes.getAdded(),
+				Constants.COMMA) };
+	}
+
+	public Class<CDOMPCClassLevel> getTokenClass()
+	{
+		return CDOMPCClassLevel.class;
 	}
 }

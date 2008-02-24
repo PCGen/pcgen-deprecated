@@ -24,15 +24,16 @@ package plugin.lsttokens.pcclass;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with ITEMCREATE Token
  */
-public class ItemcreateToken implements PCClassLstToken, PCClassClassLstToken
+public class ItemcreateToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -46,7 +47,7 @@ public class ItemcreateToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		context.getObjectContext().put(pcc,
 			FormulaKey.ITEM_CREATION_MULTIPLIER,
@@ -54,7 +55,7 @@ public class ItemcreateToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Formula f =
 				context.getObjectContext().getFormula(pcc,
@@ -64,5 +65,10 @@ public class ItemcreateToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		return new String[]{f.toString()};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

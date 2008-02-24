@@ -31,23 +31,24 @@ import java.util.TreeSet;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.CDOMSpellProhibitor;
 import pcgen.cdom.enumeration.ProhibitedSpellType;
 import pcgen.cdom.enumeration.SpellSchool;
 import pcgen.cdom.enumeration.SpellSubSchool;
 import pcgen.cdom.inst.Aggregator;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.core.SpellProhibitor;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with PROHIBITED Token
  */
 public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
-		PCClassClassLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
 	@Override
@@ -70,23 +71,23 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
-		List<SpellProhibitor<?>> spList = subParse(context, pcc, value);
+		List<CDOMSpellProhibitor<?>> spList = subParse(context, pcc, value);
 		if (spList == null || spList.isEmpty())
 		{
 			return false;
 		}
 		Aggregator agg = new Aggregator(pcc, pcc, getTokenName());
 		context.getGraphContext().grant(getTokenName(), pcc, agg);
-		for (SpellProhibitor<?> sp : spList)
+		for (CDOMSpellProhibitor<?> sp : spList)
 		{
 			context.getGraphContext().grant(getTokenName(), agg, sp);
 		}
 		return true;
 	}
 
-	public List<SpellProhibitor<?>> subParse(LoadContext context, PCClass pcc,
+	public List<CDOMSpellProhibitor<?>> subParse(LoadContext context, CDOMPCClass pcc,
 		String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
@@ -94,11 +95,11 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 			return null;
 		}
 
-		SpellProhibitor<SpellSchool> spSchool =
-				new SpellProhibitor<SpellSchool>();
+		CDOMSpellProhibitor<SpellSchool> spSchool =
+				new CDOMSpellProhibitor<SpellSchool>();
 		spSchool.setType(ProhibitedSpellType.SCHOOL);
-		SpellProhibitor<SpellSubSchool> spSubSchool =
-				new SpellProhibitor<SpellSubSchool>();
+		CDOMSpellProhibitor<SpellSubSchool> spSubSchool =
+				new CDOMSpellProhibitor<SpellSubSchool>();
 		spSubSchool.setType(ProhibitedSpellType.SUBSCHOOL);
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
@@ -110,13 +111,13 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 			spSubSchool.addValue(SpellSubSchool.getConstant(aValue));
 		}
 
-		List<SpellProhibitor<?>> list = new ArrayList<SpellProhibitor<?>>(2);
+		List<CDOMSpellProhibitor<?>> list = new ArrayList<CDOMSpellProhibitor<?>>(2);
 		list.add(spSchool);
 		list.add(spSubSchool);
 		return list;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		AssociatedChanges<Aggregator> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -138,9 +139,9 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 		}
 		Aggregator agg = (Aggregator) added.iterator().next();
 
-		AssociatedChanges<SpellProhibitor> aggChanges =
+		AssociatedChanges<CDOMSpellProhibitor> aggChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
-					agg, SpellProhibitor.class);
+					agg, CDOMSpellProhibitor.class);
 		if (aggChanges == null)
 		{
 			context.addWriteMessage("Invalid Aggregator in " + getTokenName()
@@ -163,7 +164,7 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 		String retString = null;
 		for (LSTWriteable lstw : aggAdded)
 		{
-			SpellProhibitor<?> sp = SpellProhibitor.class.cast(lstw);
+			CDOMSpellProhibitor<?> sp = CDOMSpellProhibitor.class.cast(lstw);
 			Set<?> valueSet = sp.getValueSet();
 			Set<String> stringSet = new TreeSet<String>();
 			for (Object o : valueSet)
@@ -187,5 +188,10 @@ public class ProhibitedToken extends AbstractToken implements PCClassLstToken,
 			}
 		}
 		return new String[]{retString};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

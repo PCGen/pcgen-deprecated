@@ -33,24 +33,26 @@ import java.util.TreeSet;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.content.CDOMSpellProhibitor;
 import pcgen.cdom.enumeration.ProhibitedSpellType;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
 import pcgen.core.SpellProhibitor;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with PROHIBITSPELL Token
  */
 public class ProhibitspellToken extends AbstractToken implements
-		PCClassLstToken, PCClassClassLstToken
+		PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	@Override
@@ -97,7 +99,8 @@ public class ProhibitspellToken extends AbstractToken implements
 						new StringTokenizer(aString, ".", false);
 				final String aType = elements.nextToken();
 
-				for (ProhibitedSpellType type : ProhibitedSpellType.values())
+				for (pcgen.util.enumeration.ProhibitedSpellType type : pcgen.util.enumeration.ProhibitedSpellType
+						.values())
 				{
 					if (type.toString().equalsIgnoreCase(aType))
 					{
@@ -143,9 +146,9 @@ public class ProhibitspellToken extends AbstractToken implements
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
-		SpellProhibitor<?> sp = subParse(context, pcc, value);
+		CDOMSpellProhibitor<?> sp = subParse(context, pcc, value);
 		if (sp == null)
 		{
 			return false;
@@ -154,7 +157,7 @@ public class ProhibitspellToken extends AbstractToken implements
 		return true;
 	}
 
-	public SpellProhibitor<?> subParse(LoadContext context, PCClass pcc,
+	public CDOMSpellProhibitor<?> subParse(LoadContext context, CDOMPCClass pcc,
 		String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
@@ -190,7 +193,7 @@ public class ProhibitspellToken extends AbstractToken implements
 			return null;
 		}
 
-		SpellProhibitor<?> spellProb =
+		CDOMSpellProhibitor<?> spellProb =
 				typeSafeParse(context, pcc, type, token.substring(dotLoc + 1));
 		if (spellProb == null)
 		{
@@ -224,10 +227,10 @@ public class ProhibitspellToken extends AbstractToken implements
 		return spellProb;
 	}
 
-	private <T> SpellProhibitor<T> typeSafeParse(LoadContext context,
-		PCClass pcc, ProhibitedSpellType<T> type, String args)
+	private <T> CDOMSpellProhibitor<T> typeSafeParse(LoadContext context,
+			CDOMPCClass pcc, ProhibitedSpellType<T> type, String args)
 	{
-		SpellProhibitor<T> spellProb = new SpellProhibitor<T>();
+		CDOMSpellProhibitor<T> spellProb = new CDOMSpellProhibitor<T>();
 		spellProb.setType(type);
 		if (args.length() == 0)
 		{
@@ -278,11 +281,11 @@ public class ProhibitspellToken extends AbstractToken implements
 		return spellProb;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<SpellProhibitor> changes =
+		AssociatedChanges<CDOMSpellProhibitor> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pcc, SpellProhibitor.class);
+					pcc, CDOMSpellProhibitor.class);
 		if (changes == null)
 		{
 			return null;
@@ -296,7 +299,7 @@ public class ProhibitspellToken extends AbstractToken implements
 		List<String> list = new ArrayList<String>();
 		for (LSTWriteable lstw : added)
 		{
-			SpellProhibitor<?> sp = (SpellProhibitor) lstw;
+			CDOMSpellProhibitor<?> sp = (CDOMSpellProhibitor<?>) lstw;
 			StringBuilder sb = new StringBuilder();
 			ProhibitedSpellType pst = sp.getType();
 			sb.append(pst.toString().toUpperCase());
@@ -326,5 +329,10 @@ public class ProhibitspellToken extends AbstractToken implements
 	{
 		return pst.getRequiredCount(spValues) == 1 ? Constants.COMMA
 			: Constants.DOT;
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

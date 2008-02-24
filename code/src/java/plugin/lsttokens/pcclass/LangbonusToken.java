@@ -28,25 +28,26 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
-import pcgen.core.Language;
-import pcgen.core.LanguageList;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.LanguageList;
 import pcgen.core.PCClass;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with LANGBONUS Token
  */
 public class LangbonusToken extends AbstractToken implements PCClassLstToken,
-		PCClassClassLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
-	private static final Class<Language> LANGUAGE_CLASS = Language.class;
+	private static final Class<CDOMLanguage> LANGUAGE_CLASS = CDOMLanguage.class;
 
 	private static final Class<LanguageList> LANGUAGELIST_CLASS =
 			LanguageList.class;
@@ -63,7 +64,7 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
@@ -94,7 +95,7 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				CDOMReference<Language> lang;
+				CDOMReference<CDOMLanguage> lang;
 				String clearText = tokText.substring(7);
 				if (Constants.LST_ALL.equals(clearText))
 				{
@@ -126,7 +127,7 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 				 * the graph would also make it harder to trace the source of
 				 * class skills, etc.)
 				 */
-				CDOMReference<Language> lang;
+				CDOMReference<CDOMLanguage> lang;
 				if (Constants.LST_ALL.equals(tokText))
 				{
 					foundAny = true;
@@ -160,11 +161,11 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		CDOMReference<LanguageList> swl =
 				context.ref.getCDOMReference(LANGUAGELIST_CLASS, "*Starting");
-		AssociatedChanges<CDOMReference<Language>> changes =
+		AssociatedChanges<CDOMReference<CDOMLanguage>> changes =
 				context.getListContext().getChangesInList(getTokenName(), pcc,
 					swl);
 		if (changes == null)
@@ -201,5 +202,10 @@ public class LangbonusToken extends AbstractToken implements PCClassLstToken,
 			return null;
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

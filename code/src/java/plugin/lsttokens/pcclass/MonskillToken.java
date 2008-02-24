@@ -26,29 +26,30 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.BonusLoader;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.BonusTokenLoader;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Class deals with MONSKILL Token
  */
 public class MonskillToken extends AbstractToken implements PCClassLstToken,
-		PCClassClassLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
 	@Override
@@ -64,7 +65,7 @@ public class MonskillToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -79,7 +80,7 @@ public class MonskillToken extends AbstractToken implements PCClassLstToken,
 			return false;
 		}
 		BonusObj bonus =
-				BonusLoader.getBonus(context, pcc, "MONSKILLPTS", "NUMBER",
+				BonusTokenLoader.getBonus(context, pcc, "MONSKILLPTS", "NUMBER",
 					bonusString);
 		bonus.addPrerequisite(getPrerequisite("PRELEVELMAX:1"));
 		AssociatedPrereqObject assoc =
@@ -91,7 +92,7 @@ public class MonskillToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		AssociatedChanges<BonusObj> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -144,5 +145,10 @@ public class MonskillToken extends AbstractToken implements PCClassLstToken,
 			return null;
 		}
 		return set.toArray(new String[set.size()]);
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

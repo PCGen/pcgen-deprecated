@@ -24,15 +24,16 @@ package plugin.lsttokens.pcclass;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with CRFORMULA Token
  */
-public class CrformulaToken implements PCClassLstToken, PCClassClassLstToken
+public class CrformulaToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -46,14 +47,14 @@ public class CrformulaToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		context.getObjectContext().put(pcc, FormulaKey.CR,
 			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Formula f = context.getObjectContext().getFormula(pcc, FormulaKey.CR);
 		if (f == null)
@@ -61,5 +62,10 @@ public class CrformulaToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		return new String[]{f.toString()};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

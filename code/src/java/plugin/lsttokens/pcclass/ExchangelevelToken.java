@@ -24,23 +24,24 @@ package plugin.lsttokens.pcclass;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelExchange;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with EXCHANGELEVEL Token
  */
 public class ExchangelevelToken extends AbstractToken implements
-		PCClassLstToken, PCClassClassLstToken
+		PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	@Override
@@ -55,7 +56,7 @@ public class ExchangelevelToken extends AbstractToken implements
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -66,13 +67,13 @@ public class ExchangelevelToken extends AbstractToken implements
 		if (tok.countTokens() != 4)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " must have 4 | delimited arguments : " + value);
+					+ " must have 4 | delimited arguments : " + value);
 			return false;
 		}
 
 		String classString = tok.nextToken();
-		CDOMSimpleSingleRef<PCClass> cl =
-				context.ref.getCDOMReference(PCClass.class, classString);
+		CDOMSingleRef<CDOMPCClass> cl = context.ref.getCDOMReference(
+				CDOMPCClass.class, classString);
 		String mindlString = tok.nextToken();
 		int mindl;
 		try
@@ -82,7 +83,7 @@ public class ExchangelevelToken extends AbstractToken implements
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint(getTokenName() + " expected an integer: "
-				+ mindlString);
+					+ mindlString);
 			return false;
 		}
 		String maxdlString = tok.nextToken();
@@ -94,7 +95,7 @@ public class ExchangelevelToken extends AbstractToken implements
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint(getTokenName() + " expected an integer: "
-				+ maxdlString);
+					+ maxdlString);
 			return false;
 		}
 		String minremString = tok.nextToken();
@@ -106,7 +107,7 @@ public class ExchangelevelToken extends AbstractToken implements
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint(getTokenName() + " expected an integer: "
-				+ minremString);
+					+ minremString);
 			return false;
 		}
 		try
@@ -118,17 +119,16 @@ public class ExchangelevelToken extends AbstractToken implements
 		catch (IllegalArgumentException e)
 		{
 			Logging.errorPrint("Error in " + getTokenName() + " "
-				+ e.getMessage());
+					+ e.getMessage());
 			Logging.errorPrint("  Token contents: " + value);
 			return false;
 		}
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<LevelExchange> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pcc, LevelExchange.class);
+		AssociatedChanges<LevelExchange> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), pcc, LevelExchange.class);
 		if (changes == null)
 		{
 			return null;
@@ -142,7 +142,7 @@ public class ExchangelevelToken extends AbstractToken implements
 		if (added.size() > 1)
 		{
 			context
-				.addWriteMessage("Only 1 LevelExchange is allowed per Class");
+					.addWriteMessage("Only 1 LevelExchange is allowed per Class");
 			return null;
 		}
 		LevelExchange le = (LevelExchange) added.iterator().next();
@@ -151,6 +151,11 @@ public class ExchangelevelToken extends AbstractToken implements
 		sb.append(le.getMinDonatingLevel()).append(Constants.PIPE);
 		sb.append(le.getMaxDonatedLevels()).append(Constants.PIPE);
 		sb.append(le.getDonatingLowerLevelBound());
-		return new String[]{sb.toString()};
+		return new String[] { sb.toString() };
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

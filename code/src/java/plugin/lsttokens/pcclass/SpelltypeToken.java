@@ -23,16 +23,17 @@ package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SPELLTYPE Token
  */
-public class SpelltypeToken implements PCClassLstToken, PCClassClassLstToken
+public class SpelltypeToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -50,7 +51,7 @@ public class SpelltypeToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (value.length() == 0)
 		{
@@ -62,7 +63,7 @@ public class SpelltypeToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Type type =
 				context.getObjectContext().getObject(pcc, ObjectKey.SPELL_TYPE);
@@ -71,5 +72,10 @@ public class SpelltypeToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		return new String[]{type.toString()};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

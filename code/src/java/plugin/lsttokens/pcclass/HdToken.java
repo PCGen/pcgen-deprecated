@@ -22,16 +22,17 @@
 package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with HD Token
  */
-public class HdToken implements PCClassLstToken, PCClassClassLstToken
+public class HdToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -52,7 +53,7 @@ public class HdToken implements PCClassLstToken, PCClassClassLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		try
 		{
@@ -74,7 +75,7 @@ public class HdToken implements PCClassLstToken, PCClassClassLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Integer lpf =
 				context.getObjectContext().getInteger(pcc, IntegerKey.HIT_DIE);
@@ -88,5 +89,10 @@ public class HdToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		return new String[]{lpf.toString()};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

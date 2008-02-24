@@ -26,17 +26,16 @@ import java.util.List;
 
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.SubClassCategory;
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
-import pcgen.core.SubClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSubClass;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * @author djones4
  * 
  */
-public class KeyToken implements PCClassClassLstToken
+public class KeyToken implements CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -44,12 +43,10 @@ public class KeyToken implements PCClassClassLstToken
 		return "KEY";
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		// THIS IS ORDER DEPENDENT, MUST BE DONE BEFORE resetting the key
-		context.ref.reassociateReference(value, ((PObject) pcc));
-		// Hacking for duplicate protection
-		((PObject) pcc).setKeyName(value);
+		context.ref.reassociateKey(value, (pcc));
 		/*
 		 * TODO This actually needs to be special - since the Key is the lookup
 		 * method FUTURE isn't this redundant with the set above?!
@@ -59,19 +56,19 @@ public class KeyToken implements PCClassClassLstToken
 		 * Note the additional work done here for PCClass, because the PCClass
 		 * key is used as a CATEGORY for SubClasses.
 		 */
-		List<SubClass> subclasses = pcc.getSubClassList();
+		List<CDOMSubClass> subclasses = pcc.getCDOMSubClassList();
 		if (subclasses != null)
 		{
 			SubClassCategory scc = SubClassCategory.getConstant(value);
-			for (SubClass sc : subclasses)
+			for (CDOMSubClass sc : subclasses)
 			{
-				context.ref.reassociateReference(scc, sc);
+				context.ref.reassociateCategory(scc, sc);
 			}
 		}
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		/*
 		 * TODO more appropriate to grab KEY_NAME! (in case the key was set it
@@ -84,5 +81,10 @@ public class KeyToken implements PCClassClassLstToken
 			return null;
 		}
 		return new String[]{key};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

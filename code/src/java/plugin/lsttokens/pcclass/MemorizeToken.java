@@ -22,16 +22,17 @@
 package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with MEMORIZE Token
  */
-public class MemorizeToken implements PCClassLstToken, PCClassClassLstToken
+public class MemorizeToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -45,7 +46,7 @@ public class MemorizeToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		Boolean set;
 		char firstChar = value.charAt(0);
@@ -76,7 +77,7 @@ public class MemorizeToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Boolean mem =
 				context.getObjectContext().getObject(pcc,
@@ -86,5 +87,10 @@ public class MemorizeToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		return new String[]{mem.booleanValue() ? "YES" : "NO"};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

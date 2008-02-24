@@ -19,51 +19,65 @@
  * Last Editor: $Author$
  * Last Edited: $Date$
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.formula.Formula;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.core.PCClass;
-import pcgen.core.SpellProgressionInfo;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassLevelLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
- * Class deals with SPECIALTYKNOWN Token
+ * Class deals with KNOWN Token
  */
-public class SpecialtyknownToken extends AbstractToken implements
-		PCClassLstToken, PCClassLevelLstToken
+public class KnownToken extends AbstractToken implements PCClassLstToken,
+		CDOMPrimaryToken<CDOMPCClassLevel>
 {
 
 	@Override
 	public String getTokenName()
 	{
-		return "SPECIALTYKNOWN";
+		return "KNOWN";
 	}
 
 	public boolean parse(PCClass pcclass, String value, int level)
 	{
-		StringTokenizer st = new StringTokenizer(value, ",");
-		List<String> list = new ArrayList<String>(st.countTokens());
-
-		while (st.hasMoreTokens())
+		if (level > 0)
 		{
-			list.add(st.nextToken());
-		}
+			StringTokenizer st = new StringTokenizer(value, ",");
 
-		pcclass.addSpecialtyKnown(level, list);
-		return true;
+			List<String> knownList = new ArrayList<String>(st.countTokens());
+			while (st.hasMoreTokens())
+			{
+				String nextToken = st.nextToken();
+				if (nextToken.endsWith("+d"))
+				{
+					Logging.errorPrint("+d use in KNOWN has been deprecated.  "
+							+ "Use SPECIALTYKNOWN instead");
+				}
+				knownList.add(nextToken);
+			}
+
+			pcclass.setKnown(level, knownList);
+			return true;
+		}
+		Logging.errorPrint("KNOWN tag without level not allowed!");
+		return false;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value,
-		int level)
+	public boolean parse(LoadContext context, CDOMPCClassLevel pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
@@ -72,7 +86,6 @@ public class SpecialtyknownToken extends AbstractToken implements
 
 		StringTokenizer st = new StringTokenizer(value, Constants.COMMA);
 
-		List<String> knownList = new ArrayList<String>(st.countTokens());
 		while (st.hasMoreTokens())
 		{
 			String tok = st.nextToken();
@@ -81,7 +94,7 @@ public class SpecialtyknownToken extends AbstractToken implements
 				if (Integer.parseInt(tok) < 0)
 				{
 					Logging.errorPrint("Invalid Spell Count: " + tok
-						+ " is less than zero");
+							+ " is less than zero");
 					return false;
 				}
 			}
@@ -89,26 +102,26 @@ public class SpecialtyknownToken extends AbstractToken implements
 			{
 				// OK, it must be a formula...
 			}
-			knownList.add(tok);
+			context.obj.addToList(pcc, ListKey.KNOWN, FormulaFactory
+					.getFormulaFor(tok));
 		}
-
-		SpellProgressionInfo sp = pcc.getCDOMSpellProgression();
-		sp.setSpecialtyKnown(level, knownList);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc, int level)
+	public String[] unparse(LoadContext context, CDOMPCClassLevel pcc)
 	{
-		if (!pcc.hasCDOMSpellProgression())
+		Changes<Formula> changes = context.obj.getListChanges(pcc,
+				ListKey.KNOWN);
+		if (changes == null || changes.isEmpty())
 		{
 			return null;
 		}
-		SpellProgressionInfo sp = pcc.getCDOMSpellProgression();
-		List<String> list = sp.getSpecialtyKnownForLevel(level);
-		if (list == null || list.isEmpty())
-		{
-			return null;
-		}
-		return new String[]{StringUtil.join(list, Constants.COMMA)};
+		return new String[] { StringUtil.join(changes.getAdded(),
+				Constants.COMMA) };
+	}
+
+	public Class<CDOMPCClassLevel> getTokenClass()
+	{
+		return CDOMPCClassLevel.class;
 	}
 }

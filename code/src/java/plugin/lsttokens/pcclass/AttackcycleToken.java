@@ -28,13 +28,14 @@ import java.util.TreeSet;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.AttackCycle;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.AttackType;
 
@@ -42,7 +43,7 @@ import pcgen.util.enumeration.AttackType;
  * Class deals with ATTACKCYCLE Token
  */
 public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
-		PCClassClassLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
 	@Override
@@ -91,7 +92,7 @@ public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -139,7 +140,7 @@ public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Changes<AttackCycle> changes =
 				context.getObjectContext().getListChanges(pcc,
@@ -180,5 +181,10 @@ public class AttackcycleToken extends AbstractToken implements PCClassLstToken,
 			}
 		}
 		return new String[]{StringUtil.join(set, Constants.PIPE)};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

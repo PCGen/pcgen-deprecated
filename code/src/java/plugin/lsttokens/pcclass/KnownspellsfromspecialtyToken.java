@@ -22,17 +22,18 @@
 package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with KNOWNSPELLSFROMSPECIALTY Token
  */
 public class KnownspellsfromspecialtyToken implements PCClassLstToken,
-		PCClassClassLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -53,7 +54,7 @@ public class KnownspellsfromspecialtyToken implements PCClassLstToken,
 		}
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		try
 		{
@@ -76,7 +77,7 @@ public class KnownspellsfromspecialtyToken implements PCClassLstToken,
 		}
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Integer ksfs =
 				context.getObjectContext().getInteger(pcc,
@@ -91,5 +92,10 @@ public class KnownspellsfromspecialtyToken implements PCClassLstToken,
 			return null;
 		}
 		return new String[]{ksfs.toString()};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

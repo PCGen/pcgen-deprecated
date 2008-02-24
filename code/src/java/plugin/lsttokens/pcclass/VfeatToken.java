@@ -29,39 +29,39 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMCategorizedSingleRef;
-import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
 import pcgen.core.PCClass;
-import pcgen.core.PObject;
 import pcgen.core.QualifiedObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.persistence.lst.PCClassUniversalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.utils.FeatParser;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Class deals with VFEAT Token
  */
 public class VfeatToken extends AbstractToken implements PCClassLstToken,
-		PCClassUniversalLstToken
+		CDOMPrimaryToken<CDOMPCClass>
 {
-	public static final Class<Ability> ABILITY_CLASS = Ability.class;
+	public static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
 
 	@Override
 	public String getTokenName()
@@ -71,37 +71,37 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 
 	public boolean parse(PCClass pcclass, String value, int level)
 	{
-		List<QualifiedObject<String>> vfeatList =
-				FeatParser.parseVirtualFeatListToQualObj(value);
+		List<QualifiedObject<String>> vfeatList = FeatParser
+				.parseVirtualFeatListToQualObj(value);
 		for (final QualifiedObject<String> ability : vfeatList)
 		{
 			String preLevelString = "";
 			try
 			{
 				PreParserFactory factory = PreParserFactory.getInstance();
-				preLevelString =
-						"PRECLASS:1," + pcclass.getKeyName() + "=" + level; //$NON-NLS-1$ //$NON-NLS-2$
+				preLevelString = "PRECLASS:1," + pcclass.getKeyName() + "=" + level; //$NON-NLS-1$ //$NON-NLS-2$
 				Prerequisite r = factory.parse(preLevelString);
 				ability.addPrerequisite(r);
 			}
 			catch (PersistenceLayerException notUsed)
 			{
 				Logging.errorPrint("Failed to create level prereq for VFEAT "
-					+ value + ". Prereq was " + preLevelString + ".", notUsed);
+						+ value + ". Prereq was " + preLevelString + ".",
+						notUsed);
 				return false;
 			}
 			pcclass.addAbility(AbilityCategory.FEAT, Ability.Nature.VIRTUAL,
-				ability);
+					ability);
 		}
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PObject po, String value)
+	public boolean parse(LoadContext context, CDOMPCClass po, String value)
 	{
 		return parseFeat(context, po, value);
 	}
 
-	public boolean parseFeat(LoadContext context, CDOMObject obj, String value)
+	public boolean parseFeat(LoadContext context, CDOMPCClass obj, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -115,23 +115,21 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 		if (token.startsWith("PRE") || token.startsWith("!PRE"))
 		{
 			Logging.errorPrint("Cannot have only PRExxx subtoken in "
-				+ getTokenName());
+					+ getTokenName());
 			return false;
 		}
 
-		ArrayList<AssociatedPrereqObject> edgeList =
-				new ArrayList<AssociatedPrereqObject>();
+		ArrayList<AssociatedPrereqObject> edgeList = new ArrayList<AssociatedPrereqObject>();
 
 		while (true)
 		{
-			CDOMCategorizedSingleRef<Ability> ability =
-					context.ref.getCDOMReference(ABILITY_CLASS,
-						pcgen.cdom.enumeration.AbilityCategory.FEAT, token);
-			AssociatedPrereqObject edge =
-					context.getGraphContext().grant(getTokenName(), obj,
-						ability);
+			CDOMSingleRef<CDOMAbility> ability = context.ref.getCDOMReference(
+					ABILITY_CLASS,
+					pcgen.cdom.enumeration.CDOMAbilityCategory.FEAT, token);
+			AssociatedPrereqObject edge = context.getGraphContext().grant(
+					getTokenName(), obj, ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,
-				AbilityNature.VIRTUAL);
+					AbilityNature.VIRTUAL);
 			edgeList.add(edge);
 
 			if (!tok.hasMoreTokens())
@@ -152,7 +150,7 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 			if (prereq == null)
 			{
 				Logging.errorPrint("   (Did you put feats after the "
-					+ "PRExxx tags in " + getTokenName() + ":?)");
+						+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
 			for (AssociatedPrereqObject edge : edgeList)
@@ -169,46 +167,45 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject pct)
+	public String[] unparse(LoadContext context, CDOMPCClass pct)
 	{
-		AssociatedChanges<Ability> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pct, ABILITY_CLASS);
+		AssociatedChanges<CDOMAbility> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), pct, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		MapToList<Set<Prerequisite>, LSTWriteable> m =
-				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+		MapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
 		for (LSTWriteable ab : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 			{
-				AbilityNature an =
-						assoc.getAssociation(AssociationKey.ABILITY_NATURE);
+				AbilityNature an = assoc
+						.getAssociation(AssociationKey.ABILITY_NATURE);
 				if (!AbilityNature.VIRTUAL.equals(an))
 				{
 					context.addWriteMessage("Abilities awarded by "
-						+ getTokenName() + " must be of VIRTUAL AbilityNature");
+							+ getTokenName()
+							+ " must be of VIRTUAL AbilityNature");
 					return null;
 				}
-				if (!pcgen.cdom.enumeration.AbilityCategory.FEAT
-					.equals(((CategorizedCDOMReference<Ability>) ab)
-						.getCDOMCategory()))
+				if (!pcgen.cdom.enumeration.CDOMAbilityCategory.FEAT
+						.equals(((CategorizedCDOMReference<CDOMAbility>) ab)
+								.getCDOMCategory()))
 				{
 					context.addWriteMessage("Abilities awarded by "
-						+ getTokenName() + " must be of CATEGORY FEAT");
+							+ getTokenName() + " must be of CATEGORY FEAT");
 					return null;
 				}
 				m.addToListFor(new HashSet<Prerequisite>(assoc
-					.getPrerequisiteList()), ab);
+						.getPrerequisiteList()), ab);
 			}
 		}
 
@@ -216,17 +213,20 @@ public class VfeatToken extends AbstractToken implements PCClassLstToken,
 
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			String ab =
-					ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-						Constants.PIPE);
+			String ab = ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+					Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
-				ab =
-						ab + Constants.PIPE
-							+ getPrerequisiteString(context, prereqs);
+				ab = ab + Constants.PIPE
+						+ getPrerequisiteString(context, prereqs);
 			}
 			list.add(ab);
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

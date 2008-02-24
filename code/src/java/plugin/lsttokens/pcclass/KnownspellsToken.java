@@ -34,26 +34,26 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.KnownSpellIdentifier;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.PCClass;
-import pcgen.core.PObject;
 import pcgen.core.SpellFilter;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.persistence.lst.PCClassUniversalLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with KNOWNSPELLS Token
  */
 public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
-		PCClassUniversalLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
-	private static final Class<Spell> SPELL_CLASS = Spell.class;
+	private static final Class<CDOMSpell> SPELL_CLASS = CDOMSpell.class;
 
 	@Override
 	public String getTokenName()
@@ -157,7 +157,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PObject po, String value)
+	public boolean parse(LoadContext context, CDOMPCClass po, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -202,7 +202,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 
 			// must satisfy all elements in a comma delimited list
 			Integer levelLim = null;
-			CDOMReference<Spell> sp = null;
+			CDOMReference<CDOMSpell> sp = null;
 			while (commaTok.hasMoreTokens())
 			{
 				String filterString = commaTok.nextToken();
@@ -266,7 +266,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject po)
+	public String[] unparse(LoadContext context, CDOMPCClass po)
 	{
 		AssociatedChanges<KnownSpellIdentifier> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -293,7 +293,7 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 		for (LSTWriteable lstw : added)
 		{
 			KnownSpellIdentifier ksi = (KnownSpellIdentifier) lstw;
-			CDOMReference<Spell> ref = ksi.getLimit();
+			CDOMReference<CDOMSpell> ref = ksi.getLimit();
 			Integer i = ksi.getSpellLevel();
 			map.put(ref, i);
 		}
@@ -324,5 +324,10 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 			return null;
 		}
 		return new String[]{StringUtil.join(list, Constants.PIPE)};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

@@ -27,23 +27,24 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.Constants;
-import pcgen.core.Deity;
 import pcgen.core.PCClass;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with DEITY Token
  */
 public class DeityToken extends AbstractToken implements PCClassLstToken,
-		PCClassClassLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
-	private static final Class<Deity> DEITY_CLASS = Deity.class;
+	private static final Class<CDOMDeity> DEITY_CLASS = CDOMDeity.class;
 
 	@Override
 	public String getTokenName()
@@ -73,7 +74,7 @@ public class DeityToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -85,16 +86,16 @@ public class DeityToken extends AbstractToken implements PCClassLstToken,
 		while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
-			CDOMReference<Deity> deity =
+			CDOMReference<CDOMDeity> deity =
 					context.ref.getCDOMReference(DEITY_CLASS, tokText);
 			context.getGraphContext().grant(getTokenName(), pcc, deity);
 		}
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<Deity> changes =
+		AssociatedChanges<CDOMDeity> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, DEITY_CLASS);
 		if (changes == null)
@@ -109,5 +110,10 @@ public class DeityToken extends AbstractToken implements PCClassLstToken,
 		}
 		return new String[]{ReferenceUtilities.joinLstFormat(added,
 			Constants.PIPE)};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

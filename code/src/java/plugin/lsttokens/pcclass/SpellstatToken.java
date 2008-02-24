@@ -22,20 +22,21 @@
 package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.core.PCClass;
-import pcgen.core.PCStat;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SPELLSTAT Token
  */
-public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
+public class SpellstatToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
-	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
+	private static final Class<CDOMStat> PCSTAT_CLASS = CDOMStat.class;
 
 	public String getTokenName()
 	{
@@ -48,7 +49,7 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if ("SPELL".equalsIgnoreCase(value))
 		{
@@ -66,7 +67,7 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 		}
 		context.getObjectContext().put(pcc, ObjectKey.CASTER_WITHOUT_SPELL_STAT,
 				Boolean.FALSE);
-		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
+		CDOMStat pcs = context.ref.getAbbreviatedObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
 			Logging.errorPrint("Invalid Stat Abbreviation in " + getTokenName()
@@ -77,9 +78,9 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		PCStat pcs =
+		CDOMStat pcs =
 				context.getObjectContext().getObject(pcc, ObjectKey.SPELL_STAT);
 		Boolean useStat =
 			context.getObjectContext().getObject(pcc,
@@ -141,7 +142,12 @@ public class SpellstatToken implements PCClassLstToken, PCClassClassLstToken
 		}
 		else
 		{
-			return new String[]{pcs.getKeyName()};
+			return new String[] { pcs.getLSTformat() };
 		}
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

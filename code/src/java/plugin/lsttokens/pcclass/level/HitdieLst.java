@@ -20,7 +20,7 @@
  * Last Editor: $Author$
  * Last Edited: $Date$
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
 import pcgen.base.formula.AddingFormula;
 import pcgen.base.formula.DividingFormula;
@@ -31,15 +31,15 @@ import pcgen.cdom.content.AbstractHitDieModifier;
 import pcgen.cdom.content.HitDie;
 import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.inst.PCClassLevel;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.cdom.modifier.HitDieFormula;
 import pcgen.cdom.modifier.HitDieLock;
 import pcgen.cdom.modifier.HitDieStep;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassLevelLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
@@ -47,7 +47,7 @@ import pcgen.util.Logging;
  * 
  */
 public class HitdieLst extends AbstractToken implements PCClassLstToken,
-		PCClassLevelLstToken
+CDOMPrimaryToken<CDOMPCClassLevel>
 {
 
 	@Override
@@ -62,8 +62,7 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass cl, String value,
-		int level)
+	public boolean parse(LoadContext context, CDOMPCClassLevel pcl, String value)
 	{
 		try
 		{
@@ -219,7 +218,6 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 				hdm = new HitDieLock(new HitDie(i));
 			}
 
-			PCClassLevel pcl = cl.getClassLevel(level);
 			HitDieCommandFactory cf = new HitDieCommandFactory(pcl, hdm);
 			context.getObjectContext().put(pcl, ObjectKey.HITDIE, cf);
 			return true;
@@ -233,9 +231,8 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 		}
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc, int level)
+	public String[] unparse(LoadContext context, CDOMPCClassLevel pcl)
 	{
-		PCClassLevel pcl = pcc.getClassLevel(level);
 		HitDieCommandFactory hdcf =
 				context.getObjectContext().getObject(pcl, ObjectKey.HITDIE);
 		if (hdcf == null)
@@ -243,5 +240,10 @@ public class HitdieLst extends AbstractToken implements PCClassLstToken,
 			return null;
 		}
 		return new String[]{hdcf.getModifier().getLSTform()};
+	}
+
+	public Class<CDOMPCClassLevel> getTokenClass()
+	{
+		return CDOMPCClassLevel.class;
 	}
 }

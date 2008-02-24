@@ -25,35 +25,36 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.DomainList;
 import pcgen.core.Domain;
-import pcgen.core.DomainList;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
-import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.persistence.lst.PCClassUniversalLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Class deals with ADDDOMAINS Token
  */
 public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
-		PCClassUniversalLstToken
+		CDOMPrimaryToken<CDOMPCClass>
 {
 
-	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
+	private static final Class<CDOMDomain> DOMAIN_CLASS = CDOMDomain.class;
 
 	@Override
 	public String getTokenName()
@@ -120,7 +121,7 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PObject po, String value)
+	public boolean parse(LoadContext context, CDOMPCClass po, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('.', value))
 		{
@@ -183,12 +184,12 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject po)
+	public String[] unparse(LoadContext context, CDOMPCClass po)
 	{
 		CDOMReference<DomainList> allowedDomainList =
 				context.ref.getCDOMReference(DomainList.class, "*Allowed");
 
-		AssociatedChanges<CDOMReference<Domain>> changes =
+		AssociatedChanges<CDOMReference<CDOMDomain>> changes =
 				context.getListContext().getChangesInList(getTokenName(), po,
 					allowedDomainList);
 		if (changes == null)
@@ -258,5 +259,10 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 			}
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

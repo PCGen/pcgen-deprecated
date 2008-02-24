@@ -22,17 +22,18 @@
 package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
 /**
  * Class deals with VISIBLE Token
  */
-public class VisibleToken implements PCClassLstToken, PCClassClassLstToken
+public class VisibleToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -75,7 +76,7 @@ public class VisibleToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		Visibility vis;
 		if (value.equals("NO"))
@@ -95,7 +96,7 @@ public class VisibleToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Visibility vis =
 				context.getObjectContext().getObject(pcc, ObjectKey.VISIBILITY);
@@ -119,5 +120,10 @@ public class VisibleToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		return new String[]{visString};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

@@ -35,21 +35,21 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.ClassSkillList;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.ClassSkillList;
 import pcgen.core.PCClass;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SKILLLIST Token
  */
 public class SkilllistToken extends AbstractToken implements PCClassLstToken,
-		PCClassClassLstToken
+CDOMPrimaryToken<CDOMPCClass>
 {
 
 	private static final Class<ClassSkillList> SKILLLIST_CLASS =
@@ -95,7 +95,7 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -172,7 +172,7 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 
 		ChooseActionContainer container =
 				new ChooseActionContainer(getTokenName());
-		container.addActor(new GrantActor<PCTemplate>());
+		container.addActor(new GrantActor<ClassSkillList>());
 		context.getGraphContext().grant(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(count));
@@ -186,7 +186,7 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -227,5 +227,10 @@ public class SkilllistToken extends AbstractToken implements PCClassLstToken,
 			}
 		}
 		return addStrings.toArray(new String[addStrings.size()]);
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

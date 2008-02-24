@@ -27,34 +27,35 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.Domain;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
-import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.persistence.lst.PCClassUniversalLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Class deals with DOMAIN Token
  */
 public class DomainToken extends AbstractToken implements PCClassLstToken,
-		PCClassUniversalLstToken
+		CDOMPrimaryToken<CDOMPCClass>
 {
 
-	private static final Class<Domain> DOMAIN_CLASS = Domain.class;
+	private static final Class<CDOMDomain> DOMAIN_CLASS = CDOMDomain.class;
 
 	@Override
 	public String getTokenName()
@@ -84,11 +85,10 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 				if (!aString.endsWith("]"))
 				{
 					Logging.errorPrint("Unresolved Prerequisite on Domain "
-						+ aString + " in " + getTokenName());
+							+ aString + " in " + getTokenName());
 				}
-				prereq =
-						aString.substring(openBracketLoc + 1, aString.length()
-							- openBracketLoc - 2);
+				prereq = aString.substring(openBracketLoc + 1, aString.length()
+						- openBracketLoc - 2);
 			}
 
 			Domain thisDomain = Globals.getDomainKeyed(domainKey);
@@ -96,7 +96,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 			if (thisDomain == null)
 			{
 				Logging.errorPrint("Unresolved Domain " + domainKey + " in "
-					+ getTokenName());
+						+ getTokenName());
 			}
 			else
 			{
@@ -106,12 +106,12 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 					try
 					{
 						clonedDomain.addPreReq(PreParserFactory.getInstance()
-							.parse(prereq));
+								.parse(prereq));
 					}
 					catch (PersistenceLayerException e)
 					{
 						Logging.errorPrint("Error generating Prerequisite "
-							+ prereq + " in " + getTokenName());
+								+ prereq + " in " + getTokenName());
 					}
 				}
 				pcclass.addDomain(level, clonedDomain);
@@ -121,7 +121,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PObject po, String value)
+	public boolean parse(LoadContext context, CDOMPCClass po, String value)
 	{
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
@@ -148,7 +148,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 				if (tok.indexOf(']') != -1)
 				{
 					Logging.errorPrint("Invalid " + getTokenName()
-						+ " must have '[' if it contains a PREREQ tag");
+							+ " must have '[' if it contains a PREREQ tag");
 					return false;
 				}
 				domainKey = tok;
@@ -158,25 +158,25 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 				if (tok.indexOf(']') != tok.length() - 1)
 				{
 					Logging.errorPrint("Invalid " + getTokenName()
-						+ " must end with ']' if it contains a PREREQ tag");
+							+ " must end with ']' if it contains a PREREQ tag");
 					return false;
 				}
 				domainKey = tok.substring(0, openBracketLoc);
-				String prereqString =
-						tok.substring(openBracketLoc + 1, tok.length() - 1);
+				String prereqString = tok.substring(openBracketLoc + 1, tok
+						.length() - 1);
 				if (prereqString.length() == 0)
 				{
 					Logging.errorPrint(getTokenName()
-						+ " cannot have empty prerequisite : " + value);
+							+ " cannot have empty prerequisite : " + value);
 					return false;
 				}
 				prereq = getPrerequisite(prereqString);
 			}
-			CDOMSimpleSingleRef<Domain> domain =
-					context.ref.getCDOMReference(DOMAIN_CLASS, domainKey);
+			CDOMSingleRef<CDOMDomain> domain = context.ref.getCDOMReference(
+					DOMAIN_CLASS, domainKey);
 
-			AssociatedPrereqObject edge =
-					context.getGraphContext().grant(getTokenName(), po, domain);
+			AssociatedPrereqObject edge = context.getGraphContext().grant(
+					getTokenName(), po, domain);
 			if (prereq != null)
 			{
 				edge.addPrerequisite(prereq);
@@ -185,11 +185,10 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PObject po)
+	public String[] unparse(LoadContext context, CDOMPCClass po)
 	{
-		AssociatedChanges<Domain> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					po, DOMAIN_CLASS);
+		AssociatedChanges<CDOMDomain> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), po, DOMAIN_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -202,11 +201,11 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 		if (changes.hasRemovedItems())
 		{
 			context.addWriteMessage(getTokenName()
-				+ " does not support .CLEAR.");
+					+ " does not support .CLEAR.");
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+				.getAddedAssociations();
 		if (mtl != null && !mtl.isEmpty())
 		{
 			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
@@ -216,7 +215,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 				if (assocList.size() != 1)
 				{
 					context
-						.addWriteMessage("Only one Association to a CHOOSE can be made per object");
+							.addWriteMessage("Only one Association to a CHOOSE can be made per object");
 					return null;
 				}
 				AssociatedPrereqObject assoc = assocList.get(0);
@@ -228,8 +227,8 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 					if (prereqs.size() > 1)
 					{
 						context.addWriteMessage("Incoming Edge to "
-							+ po.getKey() + " had more than one "
-							+ "Prerequisite: " + prereqs.size());
+								+ po.getKey() + " had more than one "
+								+ "Prerequisite: " + prereqs.size());
 						return null;
 					}
 					sb.append('[');
@@ -241,7 +240,7 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 					catch (PersistenceLayerException e)
 					{
 						context.addWriteMessage("Error writing Prerequisite: "
-							+ e);
+								+ e);
 						return null;
 					}
 					sb.append(swriter.toString());
@@ -254,6 +253,11 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 		{
 			return null;
 		}
-		return new String[]{StringUtil.join(list, Constants.PIPE)};
+		return new String[] { StringUtil.join(list, Constants.PIPE) };
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

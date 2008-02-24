@@ -22,16 +22,17 @@
 package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with MAXLEVEL Token
  */
-public class MaxlevelToken implements PCClassLstToken, PCClassClassLstToken
+public class MaxlevelToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -43,7 +44,7 @@ public class MaxlevelToken implements PCClassLstToken, PCClassClassLstToken
 	{
 		if ("NOLIMIT".equalsIgnoreCase(value))
 		{
-			pcclass.setMaxLevel(PCClass.NO_LEVEL_LIMIT.intValue());
+			pcclass.setMaxLevel(PCClass.NO_LEVEL_LIMIT);
 			return true;
 		}
 		try
@@ -57,7 +58,7 @@ public class MaxlevelToken implements PCClassLstToken, PCClassClassLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		Integer lim;
 		if ("NOLIMIT".equalsIgnoreCase(value))
@@ -87,7 +88,7 @@ public class MaxlevelToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
 		Integer lim =
 				context.getObjectContext().getInteger(pcc,
@@ -107,5 +108,10 @@ public class MaxlevelToken implements PCClassLstToken, PCClassClassLstToken
 			return null;
 		}
 		return new String[]{returnString};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

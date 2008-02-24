@@ -28,28 +28,28 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.AbilityCategory;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.Ability;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with XTRAFEATS Token
  */
-public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
+public class XtrafeatsToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
-	private static final Class<Ability> ABILITY_CLASS = Ability.class;
+	private static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
 
 	/**
 	 * Get Token name
@@ -82,7 +82,7 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		int featCount;
 		try
@@ -104,22 +104,22 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 
 		ChooseActionContainer container =
 				new ChooseActionContainer(getTokenName());
-		container.addActor(new GrantActor<PCTemplate>());
+		container.addActor(new GrantActor<CDOMAbility>());
 		context.getGraphContext().grant(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		container.setAssociation(AssociationKey.ABILITY_CATEGORY,
-			AbilityCategory.FEAT);
+			CDOMAbilityCategory.FEAT);
 		container.setAssociation(AssociationKey.ABILITY_NATURE,
 			AbilityNature.NORMAL);
-		CDOMGroupRef<Ability> ref =
+		CDOMGroupRef<CDOMAbility> ref =
 				context.ref.getCDOMAllReference(ABILITY_CLASS,
-					AbilityCategory.FEAT);
-		ReferenceChoiceSet<Ability> rcs =
-				new ReferenceChoiceSet<Ability>(Collections.singletonList(ref));
-		ChoiceSet<Ability> cs = new ChoiceSet<Ability>(getTokenName(), rcs);
+					CDOMAbilityCategory.FEAT);
+		ReferenceChoiceSet<CDOMAbility> rcs =
+				new ReferenceChoiceSet<CDOMAbility>(Collections.singletonList(ref));
+		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>(getTokenName(), rcs);
 		container.setChoiceSet(cs);
 		/*
 		 * Unlike Race's STARTFEATS, no prereq is required here since this in a
@@ -129,7 +129,7 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass obj)
+	public String[] unparse(LoadContext context, CDOMPCClass obj)
 	{
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -173,7 +173,7 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 						.addWriteMessage("Unable to find Nature for GrantFactory");
 					return null;
 				}
-				AbilityCategory cat =
+				CDOMAbilityCategory cat =
 						container
 							.getAssociation(AssociationKey.ABILITY_CATEGORY);
 				if (cat == null)
@@ -182,7 +182,7 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 						.addWriteMessage("Unable to find Category for GrantFactory");
 					return null;
 				}
-				if (!AbilityCategory.FEAT.equals(cat)
+				if (!CDOMAbilityCategory.FEAT.equals(cat)
 					|| !AbilityNature.NORMAL.equals(nat))
 				{
 					// can't handle those here!
@@ -202,5 +202,10 @@ public class XtrafeatsToken implements PCClassLstToken, PCClassClassLstToken
 			}
 		}
 		return new String[]{returnString};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

@@ -23,16 +23,17 @@ package plugin.lsttokens.pcclass;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.PCClassClassLstToken;
 import pcgen.persistence.lst.PCClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with EXCLASS Token
  */
-public class ExclassToken implements PCClassLstToken, PCClassClassLstToken
+public class ExclassToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
 
 	public String getTokenName()
@@ -46,27 +47,32 @@ public class ExclassToken implements PCClassLstToken, PCClassClassLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (value.length() == 0)
 		{
 			Logging.errorPrint(getTokenName() + " may not have empty argument");
 			return false;
 		}
-		CDOMReference<PCClass> cl =
-				context.ref.getCDOMReference(PCClass.class, value);
+		CDOMReference<CDOMPCClass> cl =
+				context.ref.getCDOMReference(CDOMPCClass.class, value);
 		context.getObjectContext().put(pcc, ObjectKey.EX_CLASS, cl);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, PCClass pcc)
+	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		CDOMReference<PCClass> cl =
+		CDOMReference<CDOMPCClass> cl =
 				context.getObjectContext().getObject(pcc, ObjectKey.EX_CLASS);
 		if (cl == null)
 		{
 			return null;
 		}
 		return new String[]{cl.getLSTformat()};
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }
