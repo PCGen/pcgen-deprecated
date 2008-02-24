@@ -25,15 +25,26 @@
 
 package plugin.lsttokens.kit.deity;
 
+import java.util.Collection;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.kit.CDOMKitDeity;
 import pcgen.core.kit.KitDeity;
 import pcgen.persistence.lst.KitDeityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * DOMAIN Token for KitDeity
  */
-public class DomainToken implements KitDeityLstToken
+public class DomainToken extends AbstractToken implements KitDeityLstToken,
+		CDOMSecondaryToken<CDOMKitDeity>
 {
 	public boolean parse(KitDeity kitDeity, String value)
 	{
@@ -51,8 +62,49 @@ public class DomainToken implements KitDeityLstToken
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "DOMAIN";
+	}
+
+	public Class<CDOMKitDeity> getTokenClass()
+	{
+		return CDOMKitDeity.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitDeity kitDeity,
+			String value)
+	{
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return false;
+		}
+
+		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
+		while (pipeTok.hasMoreTokens())
+		{
+			String tokString = pipeTok.nextToken();
+			CDOMSingleRef<CDOMDomain> ref = context.ref.getCDOMReference(
+					CDOMDomain.class, tokString);
+			kitDeity.addDomain(ref);
+		}
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitDeity kitDeity)
+	{
+		Collection<CDOMReference<CDOMDomain>> domains = kitDeity.getDomains();
+		if (domains == null || domains.isEmpty())
+		{
+			return null;
+		}
+		return new String[] { ReferenceUtilities.joinLstFormat(domains,
+				Constants.PIPE) };
 	}
 }

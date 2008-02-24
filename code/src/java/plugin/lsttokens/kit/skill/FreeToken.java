@@ -25,13 +25,18 @@
 
 package plugin.lsttokens.kit.skill;
 
+import pcgen.cdom.kit.CDOMKitSkill;
 import pcgen.core.kit.KitSkill;
 import pcgen.persistence.lst.KitSkillLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
+import pcgen.util.Logging;
 
 /**
  * FREE Token for KitSkill
  */
-public class FreeToken implements KitSkillLstToken
+public class FreeToken implements KitSkillLstToken,
+		CDOMSecondaryToken<CDOMKitSkill>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +61,57 @@ public class FreeToken implements KitSkillLstToken
 	{
 		kitSkill.setFree(value.startsWith("Y"));
 		return true;
+	}
+
+	public Class<CDOMKitSkill> getTokenClass()
+	{
+		return CDOMKitSkill.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitSkill kitSkill,
+			String value)
+	{
+		Boolean set;
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
+		{
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+						+ getTokenName() + ": " + value);
+				return false;
+			}
+			set = Boolean.TRUE;
+		}
+		else
+		{
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+							+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = Boolean.FALSE;
+		}
+		kitSkill.setFree(set);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitSkill kitSkill)
+	{
+		Boolean mult = kitSkill.getFree();
+		if (mult == null)
+		{
+			return null;
+		}
+		return new String[] { mult.booleanValue() ? "YES" : "NO" };
 	}
 }

@@ -25,14 +25,18 @@
 
 package plugin.lsttokens.kit.ability;
 
+import pcgen.cdom.kit.CDOMKitAbility;
 import pcgen.core.kit.KitAbilities;
 import pcgen.persistence.lst.KitAbilityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
  * FREE Token for KitAbility
  */
-public class FreeToken implements KitAbilityLstToken
+public class FreeToken implements KitAbilityLstToken,
+		CDOMSecondaryToken<CDOMKitAbility>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -52,23 +56,78 @@ public class FreeToken implements KitAbilityLstToken
 		{
 			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
 			{
-				Logging.deprecationPrint("You should use 'YES' or 'NO' as the " + getTokenName());
-				Logging.deprecationPrint("Abbreviations will fail after PCGen 5.14");
+				Logging.deprecationPrint("You should use 'YES' or 'NO' as the "
+						+ getTokenName());
+				Logging
+						.deprecationPrint("Abbreviations will fail after PCGen 5.14");
 			}
 			set = true;
 		}
-		else 
+		else
 		{
 			if (firstChar != 'N' && firstChar != 'n'
-				&& !value.equalsIgnoreCase("NO"))
+					&& !value.equalsIgnoreCase("NO"))
 			{
 				Logging.deprecationPrint("You should use 'YES' or 'NO' as the "
 						+ getTokenName());
-				Logging.deprecationPrint("Abbreviations will fail after PCGen 5.14");
+				Logging
+						.deprecationPrint("Abbreviations will fail after PCGen 5.14");
 			}
 			set = false;
 		}
 		kitAbility.setFree(set);
 		return true;
+	}
+
+	public Class<CDOMKitAbility> getTokenClass()
+	{
+		return CDOMKitAbility.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitAbility kitAbility,
+			String value)
+	{
+		Boolean set;
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
+		{
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+						+ getTokenName() + ": " + value);
+				return false;
+			}
+			set = Boolean.TRUE;
+		}
+		else
+		{
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+							+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = Boolean.FALSE;
+		}
+		kitAbility.setFree(set);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitAbility kitAbility)
+	{
+		Boolean mult = kitAbility.getFree();
+		if (mult == null)
+		{
+			return null;
+		}
+		return new String[] { mult.booleanValue() ? "YES" : "NO" };
 	}
 }

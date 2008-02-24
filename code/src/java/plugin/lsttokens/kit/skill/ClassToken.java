@@ -25,13 +25,20 @@
 
 package plugin.lsttokens.kit.skill;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.kit.CDOMKitSkill;
 import pcgen.core.kit.KitSkill;
 import pcgen.persistence.lst.KitSkillLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * CLASS token for KitSkill
  */
-public class ClassToken implements KitSkillLstToken
+public class ClassToken implements KitSkillLstToken,
+		CDOMSecondaryToken<CDOMKitSkill>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +63,34 @@ public class ClassToken implements KitSkillLstToken
 	{
 		kitSkill.setClassName(value);
 		return true;
+	}
+
+	public Class<CDOMKitSkill> getTokenClass()
+	{
+		return CDOMKitSkill.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitSkill kitSkill,
+			String value)
+	{
+		CDOMSingleRef<CDOMPCClass> ref = context.ref.getCDOMReference(
+				CDOMPCClass.class, value);
+		kitSkill.setPcclass(ref);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitSkill kitSkill)
+	{
+		CDOMReference<CDOMPCClass> ref = kitSkill.getPcclass();
+		if (ref == null)
+		{
+			return null;
+		}
+		return new String[] { ref.getLSTformat() };
 	}
 }

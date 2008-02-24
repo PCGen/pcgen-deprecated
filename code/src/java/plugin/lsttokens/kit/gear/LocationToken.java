@@ -25,13 +25,17 @@
 
 package plugin.lsttokens.kit.gear;
 
+import pcgen.cdom.kit.CDOMKitGear;
 import pcgen.core.kit.KitGear;
 import pcgen.persistence.lst.KitGearLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * LOCATION Token for Kit Gears
  */
-public class LocationToken implements KitGearLstToken
+public class LocationToken implements KitGearLstToken,
+		CDOMSecondaryToken<CDOMKitGear>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +60,31 @@ public class LocationToken implements KitGearLstToken
 	{
 		kitGear.setLocation(value);
 		return true;
+	}
+
+	public Class<CDOMKitGear> getTokenClass()
+	{
+		return CDOMKitGear.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitGear kitGear, String value)
+	{
+		kitGear.setLocation(value);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitGear kitGear)
+	{
+		String bd = kitGear.getLocation();
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
 	}
 }

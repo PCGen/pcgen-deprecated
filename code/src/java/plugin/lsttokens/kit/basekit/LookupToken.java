@@ -25,13 +25,19 @@
 
 package plugin.lsttokens.kit.basekit;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.kit.CDOMKitGear;
 import pcgen.core.kit.BaseKit;
 import pcgen.persistence.lst.BaseKitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * LOOKUP token for base kits
  */
-public class LookupToken implements BaseKitLstToken
+public class LookupToken implements BaseKitLstToken,
+		CDOMSecondaryToken<CDOMKitGear>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -47,5 +53,36 @@ public class LookupToken implements BaseKitLstToken
 	{
 		baseKit.addLookup(value);
 		return true;
+	}
+
+	public Class<CDOMKitGear> getTokenClass()
+	{
+		return CDOMKitGear.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitGear kitGear, String value)
+	{
+		int commaLoc = value.indexOf(',');
+		if (commaLoc == -1)
+		{
+			return false;
+		}
+		if (commaLoc != value.lastIndexOf(','))
+		{
+			return false;
+		}
+		String tableEntry = value.substring(0, commaLoc);
+		Formula f = FormulaFactory.getFormulaFor(value.substring(commaLoc + 1));
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitGear kitGear)
+	{
+		return null;
 	}
 }

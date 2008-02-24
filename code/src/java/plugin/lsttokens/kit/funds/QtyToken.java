@@ -25,13 +25,19 @@
 
 package plugin.lsttokens.kit.funds;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.kit.CDOMKitFunds;
 import pcgen.core.kit.KitFunds;
 import pcgen.persistence.lst.KitFundsLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * QTY Token
  */
-public class QtyToken implements KitFundsLstToken
+public class QtyToken implements KitFundsLstToken,
+		CDOMSecondaryToken<CDOMKitFunds>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +62,31 @@ public class QtyToken implements KitFundsLstToken
 	{
 		kitFunds.setQty(value);
 		return true;
+	}
+
+	public Class<CDOMKitFunds> getTokenClass()
+	{
+		return CDOMKitFunds.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitFunds kitFunds, String value)
+	{
+		kitFunds.setQuantity(FormulaFactory.getFormulaFor(value));
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitFunds kitFunds)
+	{
+		Formula f = kitFunds.getQuantity();
+		if (f == null)
+		{
+			return null;
+		}
+		return new String[] { f.toString() };
 	}
 }

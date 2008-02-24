@@ -42,6 +42,7 @@ public class SpellsToken extends KitLstToken
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "SPELLS";
@@ -69,4 +70,6 @@ public class SpellsToken extends KitLstToken
 		}
 		return true;
 	}
+
+	//No CDOM Equivalent - handled in loader
 }

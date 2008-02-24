@@ -25,13 +25,20 @@
 
 package plugin.lsttokens.kit.clazz;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.enumeration.SubClassCategory;
+import pcgen.cdom.inst.CDOMSubClass;
+import pcgen.cdom.kit.CDOMKitClass;
 import pcgen.core.kit.KitClass;
 import pcgen.persistence.lst.KitClassLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
- * parses SUBCLASS token for Kit Class 
+ * parses SUBCLASS token for Kit Class
  */
-public class SubclassToken implements KitClassLstToken
+public class SubclassToken implements KitClassLstToken,
+		CDOMSecondaryToken<CDOMKitClass>
 {
 	public boolean parse(KitClass kitClass, String value)
 	{
@@ -47,5 +54,37 @@ public class SubclassToken implements KitClassLstToken
 	public String getTokenName()
 	{
 		return "SUBCLASS";
+	}
+
+	public Class<CDOMKitClass> getTokenClass()
+	{
+		return CDOMKitClass.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitClass kitClass, String value)
+	{
+		CDOMReference<CDOMSubClass> sc = context.ref.getCDOMReference(
+				CDOMSubClass.class, SubClassCategory.getConstant(kitClass
+						.getPcclass().getLSTformat()), value);
+		kitClass.setSubClass(sc);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitClass kitClass)
+	{
+		/*
+		 * TODO I think this is wrong - category becomes a problem in unparse
+		 */
+		CDOMReference<CDOMSubClass> ref = kitClass.getSubClass();
+		if (ref == null)
+		{
+			return null;
+		}
+		return new String[] { ref.getLSTformat() };
 	}
 }

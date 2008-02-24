@@ -69,4 +69,6 @@ public class AbilityToken extends KitLstToken
 		}
 		return true;
 	}
+
+	//No CDOM Equivalent - handled in loader
 }

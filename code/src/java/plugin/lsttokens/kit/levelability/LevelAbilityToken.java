@@ -25,14 +25,20 @@
 
 package plugin.lsttokens.kit.levelability;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.kit.CDOMKitLevelAbility;
 import pcgen.core.kit.KitLevelAbility;
 import pcgen.persistence.lst.KitLevelAbilityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
  * Level Ability token (a component of Kits)
  */
-public class LevelAbilityToken implements KitLevelAbilityLstToken
+public class LevelAbilityToken implements KitLevelAbilityLstToken,
+		CDOMSecondaryToken<CDOMKitLevelAbility>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,7 +62,56 @@ public class LevelAbilityToken implements KitLevelAbilityLstToken
 	public boolean parse(KitLevelAbility kitLA, String value)
 	{
 		Logging.errorPrint("Ignoring second LEVELABILITY tag \"" + value
-			+ "\" in Kit.");
+				+ "\" in Kit.");
 		return false;
+	}
+
+	public Class<CDOMKitLevelAbility> getTokenClass()
+	{
+		return CDOMKitLevelAbility.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitLevelAbility kitLA,
+			String value)
+	{
+		int equalLoc = value.indexOf('=');
+		if (equalLoc == -1)
+		{
+			Logging.errorPrint(getTokenName() + " requires an =: " + value);
+			return false;
+		}
+		String className = value.substring(0, equalLoc);
+		String level = value.substring(equalLoc + 1);
+		CDOMReference<CDOMPCClass> cl = context.ref.getCDOMReference(
+				CDOMPCClass.class, className);
+		try
+		{
+			Integer lvl = Integer.valueOf(level);
+			if (lvl.intValue() <= 0)
+			{
+				Logging.errorPrint(getTokenName() + " expected an integer > 0");
+				return false;
+			}
+			kitLA.setLevel(lvl);
+		}
+		catch (NumberFormatException nfe)
+		{
+			Logging.errorPrint(getTokenName()
+					+ " expected an integer.  Tag must be of the form: "
+					+ getTokenName() + ":<int>");
+			return false;
+		}
+		kitLA.setClass(cl);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitLevelAbility kitLA)
+	{
+		return null;
 	}
 }

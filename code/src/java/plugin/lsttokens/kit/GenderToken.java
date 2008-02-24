@@ -28,21 +28,27 @@ package plugin.lsttokens.kit;
 import java.net.URI;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.enumeration.Gender;
+import pcgen.cdom.kit.CDOMKitGender;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitBio;
 import pcgen.persistence.SystemLoader;
 import pcgen.persistence.lst.KitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * GENDER token for Kits
  */
-public class GenderToken extends KitLstToken
+public class GenderToken extends KitLstToken implements
+		CDOMSecondaryToken<CDOMKitGender>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "GENDER";
@@ -61,8 +67,8 @@ public class GenderToken extends KitLstToken
 	@Override
 	public boolean parse(Kit aKit, String value, URI source)
 	{
-		final StringTokenizer colToken =
-				new StringTokenizer(value, SystemLoader.TAB_DELIM);
+		final StringTokenizer colToken = new StringTokenizer(value,
+				SystemLoader.TAB_DELIM);
 
 		KitBio kBio = new KitBio();
 		kBio.setGender(colToken.nextToken());
@@ -78,5 +84,36 @@ public class GenderToken extends KitLstToken
 		aKit.addObject(kBio);
 
 		return true;
+	}
+
+	public Class<CDOMKitGender> getTokenClass()
+	{
+		return CDOMKitGender.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitGender kitGender,
+			String value)
+	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
+		kitGender.setGender(Gender.valueOf(value));
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitGender kitGender)
+	{
+		Gender race = kitGender.getGender();
+		if (race == null)
+		{
+			return null;
+		}
+		return new String[] { race.toString() };
 	}
 }

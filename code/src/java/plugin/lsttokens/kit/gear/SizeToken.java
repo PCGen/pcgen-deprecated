@@ -25,13 +25,16 @@
 
 package plugin.lsttokens.kit.gear;
 
+import pcgen.cdom.kit.CDOMKitGear;
 import pcgen.core.kit.KitGear;
 import pcgen.persistence.lst.KitGearLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * SIZE token for KitGear
  */
-public class SizeToken implements KitGearLstToken
+public class SizeToken implements KitGearLstToken, CDOMSecondaryToken<CDOMKitGear>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +59,31 @@ public class SizeToken implements KitGearLstToken
 	{
 		kitGear.setSize(value);
 		return true;
+	}
+
+	public Class<CDOMKitGear> getTokenClass()
+	{
+		return CDOMKitGear.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitGear kitGear, String value)
+	{
+		kitGear.setSize(value);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitGear kitGear)
+	{
+		String bd = kitGear.getSize();
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
 	}
 }

@@ -49,6 +49,7 @@ public class StartpackToken extends KitLstToken
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "STARTPACK";
@@ -77,4 +78,6 @@ public class StartpackToken extends KitLstToken
 		}
 		return true;
 	}
+
+	//No CDOM Equivalent - handled in loader
 }

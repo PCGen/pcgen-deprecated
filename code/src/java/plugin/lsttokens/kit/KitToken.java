@@ -26,26 +26,37 @@
 package plugin.lsttokens.kit;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.inst.CDOMKit;
+import pcgen.cdom.kit.CDOMKitKit;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitKit;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.persistence.lst.BaseKitLoader;
 import pcgen.persistence.lst.KitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
  * Handles the KIT tag for Kits. Allows Common tags for this Kit line as well.
  */
-public class KitToken extends KitLstToken
+public class KitToken extends KitLstToken implements
+		CDOMSecondaryToken<CDOMKitKit>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "KIT";
@@ -63,10 +74,10 @@ public class KitToken extends KitLstToken
 	 */
 	@Override
 	public boolean parse(Kit aKit, String value, URI source)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		final StringTokenizer colToken =
-				new StringTokenizer(value, SystemLoader.TAB_DELIM);
+		final StringTokenizer colToken = new StringTokenizer(value,
+				SystemLoader.TAB_DELIM);
 		KitKit kKit = new KitKit(colToken.nextToken());
 
 		while (colToken.hasMoreTokens())
@@ -75,18 +86,58 @@ public class KitToken extends KitLstToken
 			if (colString.startsWith("KIT:"))
 			{
 				Logging.errorPrint("Ignoring second KIT tag \"" + colString
-					+ "\" in KitToken.parse");
+						+ "\" in KitToken.parse");
 			}
 			else
 			{
 				if (BaseKitLoader.parseCommonTags(kKit, colString, source) == false)
 				{
 					throw new PersistenceLayerException("Unknown KitKit info "
-						+ " \"" + colString + "\"");
+							+ " \"" + colString + "\"");
 				}
 			}
 		}
 		aKit.addObject(kKit);
 		return true;
+	}
+
+	public Class<CDOMKitKit> getTokenClass()
+	{
+		return CDOMKitKit.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitKit kitKit, String value)
+	{
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return false;
+		}
+
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
+		while (tok.hasMoreTokens())
+		{
+			String tokText = tok.nextToken();
+			CDOMSingleRef<CDOMKit> ref = context.ref.getCDOMReference(
+					CDOMKit.class, tokText);
+			kitKit.addKit(ref);
+		}
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitKit kitKit)
+	{
+		Collection<CDOMReference<CDOMKit>> domains = kitKit.getKits();
+		if (domains == null || domains.isEmpty())
+		{
+			return null;
+		}
+		return new String[] { ReferenceUtilities.joinLstFormat(domains,
+				Constants.PIPE) };
 	}
 }

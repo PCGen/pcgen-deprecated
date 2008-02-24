@@ -25,20 +25,28 @@
 
 package plugin.lsttokens.kit.deity;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.kit.CDOMKitDeity;
 import pcgen.core.kit.KitDeity;
 import pcgen.persistence.lst.KitDeityLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
- * DEITY token for KitDeity 
+ * DEITY token for KitDeity
  */
-public class DeityToken implements KitDeityLstToken
+public class DeityToken extends AbstractToken implements KitDeityLstToken,
+		CDOMSecondaryToken<CDOMKitDeity>
 {
 
 	public boolean parse(KitDeity kitDeity, String value)
 	{
 		Logging.errorPrint("Ignoring second DEITY tag \"" + value
-			+ "\" in Kit.");
+				+ "\" in Kit.");
 		return false;
 	}
 
@@ -47,9 +55,42 @@ public class DeityToken implements KitDeityLstToken
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "DEITY";
 	}
 
+	public Class<CDOMKitDeity> getTokenClass()
+	{
+		return CDOMKitDeity.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitDeity kitDeity,
+			String value)
+	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
+		CDOMSingleRef<CDOMDeity> ref = context.ref.getCDOMReference(
+				CDOMDeity.class, value);
+		kitDeity.setDeity(ref);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitDeity kitDeity)
+	{
+		CDOMReference<CDOMDeity> race = kitDeity.getDeity();
+		if (race == null)
+		{
+			return null;
+		}
+		return new String[] { race.getLSTformat() };
+	}
 }

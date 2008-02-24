@@ -25,14 +25,18 @@
 
 package plugin.lsttokens.kit.table;
 
+import pcgen.cdom.kit.CDOMKitTable;
 import pcgen.core.Kit;
 import pcgen.persistence.lst.KitTableLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
  * TABLE token for KitTable
  */
-public class TableToken implements KitTableLstToken
+public class TableToken implements KitTableLstToken,
+		CDOMSecondaryToken<CDOMKitTable>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,7 +60,34 @@ public class TableToken implements KitTableLstToken
 	public boolean parse(Kit kit, final String tableName, String value)
 	{
 		Logging.errorPrint("Ignoring second TABLE tag \"" + value
-			+ "\" in Kit.");
+				+ "\" in Kit.");
 		return false;
+	}
+
+	public Class<CDOMKitTable> getTokenClass()
+	{
+		return CDOMKitTable.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitTable kitTable,
+			String value)
+	{
+		kitTable.setTableName(value);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitTable kitTable)
+	{
+		String bd = kitTable.getTableName();
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
 	}
 }

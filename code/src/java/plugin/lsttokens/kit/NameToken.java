@@ -28,23 +28,28 @@ package plugin.lsttokens.kit;
 import java.net.URI;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.kit.CDOMKitName;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitBio;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.persistence.lst.KitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * Handles the NAME tag for a Kit. Also can accept a GENDER tag on the same line
  * for historical reasons.
  */
-public class NameToken extends KitLstToken
+public class NameToken extends KitLstToken implements
+		CDOMSecondaryToken<CDOMKitName>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "NAME";
@@ -63,10 +68,10 @@ public class NameToken extends KitLstToken
 	 */
 	@Override
 	public boolean parse(Kit aKit, String value, URI source)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		final StringTokenizer colToken =
-				new StringTokenizer(value, SystemLoader.TAB_DELIM);
+		final StringTokenizer colToken = new StringTokenizer(value,
+				SystemLoader.TAB_DELIM);
 
 		KitBio kBio = new KitBio();
 		kBio.setCharacterName(colToken.nextToken());
@@ -83,4 +88,35 @@ public class NameToken extends KitLstToken
 
 		return true;
 	}
+
+	public Class<CDOMKitName> getTokenClass()
+	{
+		return CDOMKitName.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitName kitName, String value)
+	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
+		kitName.setName(value);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitName kitName)
+	{
+		String bd = kitName.getName();
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
+	}
+
 }

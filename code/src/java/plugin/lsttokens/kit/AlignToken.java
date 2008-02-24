@@ -26,27 +26,36 @@
 package plugin.lsttokens.kit;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.kit.CDOMKitAlignment;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitAlignment;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.persistence.lst.BaseKitLoader;
 import pcgen.persistence.lst.KitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
  * Handles the ALIGN tag for a Kit. Also will handle any Common tags on the
  * ALIGN line.
  */
-public class AlignToken extends KitLstToken
+public class AlignToken extends KitLstToken implements
+		CDOMSecondaryToken<CDOMKitAlignment>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "ALIGN";
@@ -64,10 +73,10 @@ public class AlignToken extends KitLstToken
 	 */
 	@Override
 	public boolean parse(Kit aKit, String value, URI source)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		final StringTokenizer colToken =
-				new StringTokenizer(value, SystemLoader.TAB_DELIM);
+		final StringTokenizer colToken = new StringTokenizer(value,
+				SystemLoader.TAB_DELIM);
 		KitAlignment kAlign = new KitAlignment(colToken.nextToken());
 
 		while (colToken.hasMoreTokens())
@@ -76,18 +85,60 @@ public class AlignToken extends KitLstToken
 			if (colString.startsWith("ALIGN:"))
 			{
 				Logging.errorPrint("Ignoring second ALIGN tag \"" + colString
-					+ "\"");
+						+ "\"");
 			}
 			else
 			{
 				if (BaseKitLoader.parseCommonTags(kAlign, colString, source) == false)
 				{
 					throw new PersistenceLayerException(
-						"Unknown KitAlign info " + " \"" + colString + "\"");
+							"Unknown KitAlign info " + " \"" + colString + "\"");
 				}
 			}
 		}
 		aKit.addObject(kAlign);
 		return true;
 	}
+
+	public Class<CDOMKitAlignment> getTokenClass()
+	{
+		return CDOMKitAlignment.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitAlignment kitAlignment,
+			String value)
+	{
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return false;
+		}
+
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
+		while (tok.hasMoreTokens())
+		{
+			String tokText = tok.nextToken();
+			CDOMAlignment ref = context.ref.getAbbreviatedObject(
+					CDOMAlignment.class, tokText);
+			kitAlignment.addAlignment(ref);
+		}
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitAlignment kitAlignment)
+	{
+		Collection<CDOMAlignment> domains = kitAlignment.getAlignments();
+		if (domains == null || domains.isEmpty())
+		{
+			return null;
+		}
+		return new String[] { ReferenceUtilities.joinLstFormat(domains,
+				Constants.PIPE) };
+	}
+
 }

@@ -45,6 +45,7 @@ public class TableToken extends KitLstToken
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "TABLE";
@@ -72,4 +73,6 @@ public class TableToken extends KitLstToken
 		}
 		return true;
 	}
+
+	//No CDOM Equivalent - handled in loader
 }

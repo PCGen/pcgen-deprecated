@@ -25,13 +25,18 @@
 
 package plugin.lsttokens.kit.startpack;
 
+import pcgen.cdom.enumeration.KitApply;
+import pcgen.cdom.inst.CDOMKit;
 import pcgen.core.Kit;
 import pcgen.persistence.lst.KitStartpackLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
- * Deals with APPLY lst token within KitStartpack 
+ * Deals with APPLY lst token within KitStartpack
  */
-public class ApplyToken implements KitStartpackLstToken
+public class ApplyToken implements KitStartpackLstToken,
+		CDOMSecondaryToken<CDOMKit>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +61,32 @@ public class ApplyToken implements KitStartpackLstToken
 	{
 		kit.setApplyMode(value);
 		return true;
+	}
+
+	public Class<CDOMKit> getTokenClass()
+	{
+		return CDOMKit.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKit kit, String value)
+	{
+		KitApply ka = KitApply.valueOf(value);
+		kit.setApply(ka);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKit kit)
+	{
+		KitApply bd = kit.getApply();
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
 	}
 }

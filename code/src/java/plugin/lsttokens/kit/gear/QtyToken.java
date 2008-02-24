@@ -25,13 +25,19 @@
 
 package plugin.lsttokens.kit.gear;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.kit.CDOMKitGear;
 import pcgen.core.kit.KitGear;
 import pcgen.persistence.lst.KitGearLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * QTY token for Kit GEAR
  */
-public class QtyToken implements KitGearLstToken
+public class QtyToken implements KitGearLstToken,
+		CDOMSecondaryToken<CDOMKitGear>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +62,31 @@ public class QtyToken implements KitGearLstToken
 	{
 		kitGear.setQty(value);
 		return true;
+	}
+
+	public Class<CDOMKitGear> getTokenClass()
+	{
+		return CDOMKitGear.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitGear kitGear, String value)
+	{
+		kitGear.setQuantity(FormulaFactory.getFormulaFor(value));
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitGear kitGear)
+	{
+		Formula f = kitGear.getQuantity();
+		if (f == null)
+		{
+			return null;
+		}
+		return new String[] { f.toString() };
 	}
 }

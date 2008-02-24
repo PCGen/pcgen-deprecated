@@ -28,24 +28,32 @@ package plugin.lsttokens.kit;
 import java.net.URI;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.kit.CDOMKitRace;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitRace;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.persistence.lst.BaseKitLoader;
 import pcgen.persistence.lst.KitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
  * Handles the RACE tag as well as Common tags on the RACE line.
  */
-public class RaceToken extends KitLstToken
+public class RaceToken extends KitLstToken implements
+		CDOMSecondaryToken<CDOMKitRace>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "RACE";
@@ -63,10 +71,10 @@ public class RaceToken extends KitLstToken
 	 */
 	@Override
 	public boolean parse(Kit aKit, String value, URI source)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		final StringTokenizer colToken =
-				new StringTokenizer(value, SystemLoader.TAB_DELIM);
+		final StringTokenizer colToken = new StringTokenizer(value,
+				SystemLoader.TAB_DELIM);
 		KitRace kRace = new KitRace(colToken.nextToken());
 
 		while (colToken.hasMoreTokens())
@@ -75,18 +83,51 @@ public class RaceToken extends KitLstToken
 			if (colString.startsWith("RACE:"))
 			{
 				Logging.errorPrint("Ignoring second RACE tag \"" + colString
-					+ "\" in RaceToken.parse");
+						+ "\" in RaceToken.parse");
 			}
 			else
 			{
 				if (BaseKitLoader.parseCommonTags(kRace, colString, source) == false)
 				{
 					throw new PersistenceLayerException("Unknown KitRace info "
-						+ " \"" + colString + "\"");
+							+ " \"" + colString + "\"");
 				}
 			}
 		}
 		aKit.addObject(kRace);
 		return true;
 	}
+
+	public Class<CDOMKitRace> getTokenClass()
+	{
+		return CDOMKitRace.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitRace kitRace, String value)
+	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
+		CDOMSingleRef<CDOMRace> ref = context.ref.getCDOMReference(
+				CDOMRace.class, value);
+		kitRace.setRace(ref);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitRace kitRace)
+	{
+		CDOMReference<CDOMRace> race = kitRace.getRace();
+		if (race == null)
+		{
+			return null;
+		}
+		return new String[] { race.getLSTformat() };
+	}
+
 }

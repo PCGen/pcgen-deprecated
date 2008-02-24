@@ -27,10 +27,16 @@ package plugin.lsttokens.kit.basekit;
 
 import java.util.StringTokenizer;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.kit.AbstractCDOMKitObject;
 import pcgen.core.kit.BaseKit;
 import pcgen.persistence.lst.BaseKitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
-public class OptionToken implements BaseKitLstToken
+public class OptionToken implements BaseKitLstToken,
+		CDOMSecondaryToken<AbstractCDOMKitObject>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -63,5 +69,59 @@ public class OptionToken implements BaseKitLstToken
 			baseKit.addOptionRange(lowVal, highVal);
 		}
 		return true;
+	}
+
+	public Class<AbstractCDOMKitObject> getTokenClass()
+	{
+		return AbstractCDOMKitObject.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, AbstractCDOMKitObject kit,
+			String value)
+	{
+		int commaLoc = value.indexOf(',');
+		String minString;
+		String maxString;
+		if (commaLoc == -1)
+		{
+			minString = value;
+			maxString = value;
+		}
+		else if (commaLoc != value.lastIndexOf(','))
+		{
+			return false;
+		}
+		else
+		{
+			minString = value.substring(0, commaLoc);
+			maxString = value.substring(commaLoc + 1);
+		}
+		Formula min = FormulaFactory.getFormulaFor(minString);
+		Formula max = FormulaFactory.getFormulaFor(maxString);
+		kit.setOptionBounds(min, max);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, AbstractCDOMKitObject kit)
+	{
+		Formula min = kit.getOptionMin();
+		Formula max = kit.getOptionMax();
+		if (min == null && max == null)
+		{
+			return null;
+		}
+		// TODO Error if only one is null
+		StringBuilder sb = new StringBuilder();
+		sb.append(min);
+		if (!min.equals(max))
+		{
+			sb.append(',').append(max);
+		}
+		return new String[] { sb.toString() };
 	}
 }

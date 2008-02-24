@@ -25,13 +25,20 @@
 
 package plugin.lsttokens.kit.skill;
 
+import java.math.BigDecimal;
+
+import pcgen.cdom.kit.CDOMKitSkill;
 import pcgen.core.kit.KitSkill;
 import pcgen.persistence.lst.KitSkillLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
+import pcgen.util.Logging;
 
 /**
  * RANK token
  */
-public class RankToken implements KitSkillLstToken
+public class RankToken implements KitSkillLstToken,
+		CDOMSecondaryToken<CDOMKitSkill>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +63,47 @@ public class RankToken implements KitSkillLstToken
 	{
 		kitSkill.setRank(value);
 		return true;
+	}
+
+	public Class<CDOMKitSkill> getTokenClass()
+	{
+		return CDOMKitSkill.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitSkill kitSkill,
+			String value)
+	{
+		try
+		{
+			BigDecimal rank = new BigDecimal(value);
+			if (rank.compareTo(BigDecimal.ZERO) < 0)
+			{
+				Logging.errorPrint(getTokenName()
+						+ " must be a positive number: " + value);
+				return false;
+			}
+			kitSkill.setRank(rank);
+			return true;
+		}
+		catch (NumberFormatException e)
+		{
+			Logging.errorPrint(getTokenName() + " expected a number: " + value);
+			return false;
+		}
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitSkill kitSkill)
+	{
+		BigDecimal bd = kitSkill.getRank();
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
 	}
 }

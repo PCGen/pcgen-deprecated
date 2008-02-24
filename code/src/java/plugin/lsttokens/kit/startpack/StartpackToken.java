@@ -59,4 +59,6 @@ public class StartpackToken implements KitStartpackLstToken
 			+ "\" in Kit.");
 		return false;
 	}
+	
+	//No equivalent in CDOM - processed in the loader
 }

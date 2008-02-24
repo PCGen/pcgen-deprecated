@@ -25,13 +25,19 @@
 
 package plugin.lsttokens.kit.spells;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.kit.CDOMKitSpells;
 import pcgen.core.kit.KitSpells;
 import pcgen.persistence.lst.KitSpellsLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 /**
  * COUNT Token for KitSpells
  */
-public class CountToken implements KitSpellsLstToken
+public class CountToken implements KitSpellsLstToken,
+		CDOMSecondaryToken<CDOMKitSpells>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
@@ -56,5 +62,32 @@ public class CountToken implements KitSpellsLstToken
 	{
 		kitSpells.setCountFormula(value);
 		return true;
+	}
+
+	public Class<CDOMKitSpells> getTokenClass()
+	{
+		return CDOMKitSpells.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitSpells kitSpells,
+			String value)
+	{
+		kitSpells.setCount(FormulaFactory.getFormulaFor(value));
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitSpells kitSpells)
+	{
+		Formula bd = kitSpells.getCount();
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
 	}
 }

@@ -28,9 +28,16 @@ package plugin.lsttokens.kit;
 import java.net.URI;
 import java.util.StringTokenizer;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.inst.CDOMStat;
+import pcgen.cdom.kit.CDOMKitStat;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitStat;
 import pcgen.persistence.lst.KitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
@@ -38,13 +45,15 @@ import pcgen.util.Logging;
  * The tag format is:<br>
  * <code>STAT:STR=15|DEX=14|WIS=10|CON=10|INT=10|CHA=18</code>
  */
-public class StatToken extends KitLstToken
+public class StatToken extends KitLstToken implements
+		CDOMSecondaryToken<CDOMKitStat>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "STAT";
@@ -84,4 +93,59 @@ public class StatToken extends KitLstToken
 		}
 		return (stats != null);
 	}
+
+	public Class<CDOMKitStat> getTokenClass()
+	{
+		return CDOMKitStat.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitStat kitStat, String value)
+	{
+		if (isEmpty(value) || hasIllegalSeparator('.', value))
+		{
+			return false;
+		}
+		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
+		while (st.hasMoreTokens())
+		{
+			String token = st.nextToken();
+			int equalLoc = token.indexOf('=');
+			if (equalLoc == -1)
+			{
+				Logging.errorPrint("Illegal " + getTokenName()
+						+ " did not have Stat=X format: " + value);
+				return false;
+			}
+			if (equalLoc != token.lastIndexOf('='))
+			{
+				Logging.errorPrint("Illegal " + getTokenName()
+						+ " had two equal signs, is not Stat=X format: "
+						+ value);
+				return false;
+			}
+			String statName = token.substring(0, equalLoc);
+			CDOMStat stat = context.ref.getAbbreviatedObject(CDOMStat.class,
+					statName);
+			if (stat == null)
+			{
+				Logging.errorPrint("Unable to find STAT: " + statName);
+				return false;
+			}
+			Formula statValue = FormulaFactory.getFormulaFor(token
+					.substring(equalLoc + 1));
+			kitStat.addStat(stat, statValue);
+		}
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitStat kitStat)
+	{
+		return null;
+	}
+
 }

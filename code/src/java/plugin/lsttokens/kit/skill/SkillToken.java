@@ -25,20 +25,34 @@
 
 package plugin.lsttokens.kit.skill;
 
+import java.util.Collection;
+import java.util.StringTokenizer;
+
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.kit.CDOMKitSkill;
 import pcgen.core.kit.KitSkill;
 import pcgen.persistence.lst.KitSkillLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
  * SKILL for Kit Skill
  */
-public class SkillToken implements KitSkillLstToken
+public class SkillToken extends AbstractToken implements KitSkillLstToken,
+		CDOMSecondaryToken<CDOMKitSkill>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "SKILL";
@@ -56,7 +70,47 @@ public class SkillToken implements KitSkillLstToken
 	public boolean parse(KitSkill kitSkill, String value)
 	{
 		Logging.errorPrint("Ignoring second SKILL tag \"" + value
-			+ "\" in Kit.");
+				+ "\" in Kit.");
 		return false;
+	}
+
+	public Class<CDOMKitSkill> getTokenClass()
+	{
+		return CDOMKitSkill.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitSkill kitSkill,
+			String value)
+	{
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
+		{
+			return false;
+		}
+
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
+		while (tok.hasMoreTokens())
+		{
+			String tokText = tok.nextToken();
+			kitSkill.addSkill(TokenUtilities.getTypeOrPrimitive(context,
+					CDOMSkill.class, tokText));
+		}
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitSkill kitSkill)
+	{
+		Collection<CDOMReference<CDOMSkill>> ref = kitSkill.getSkills();
+		if (ref == null)
+		{
+			return null;
+		}
+		return new String[] { ReferenceUtilities.joinLstFormat(ref,
+				Constants.PIPE) };
 	}
 }

@@ -28,24 +28,31 @@ package plugin.lsttokens.kit;
 import java.net.URI;
 import java.util.StringTokenizer;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.kit.CDOMKitSelect;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitSelect;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.persistence.lst.BaseKitLoader;
 import pcgen.persistence.lst.KitLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
 /**
  * SELECT for Kit
  */
-public class SelectToken extends KitLstToken
+public class SelectToken extends KitLstToken implements
+		CDOMSecondaryToken<CDOMKitSelect>
 {
 	/**
 	 * Gets the name of the tag this class will parse.
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "SELECT";
@@ -63,10 +70,10 @@ public class SelectToken extends KitLstToken
 	 */
 	@Override
 	public boolean parse(Kit aKit, String value, URI source)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		final StringTokenizer colToken =
-				new StringTokenizer(value, SystemLoader.TAB_DELIM);
+		final StringTokenizer colToken = new StringTokenizer(value,
+				SystemLoader.TAB_DELIM);
 		KitSelect kSelect = new KitSelect(colToken.nextToken());
 
 		while (colToken.hasMoreTokens())
@@ -75,18 +82,47 @@ public class SelectToken extends KitLstToken
 			if (colString.startsWith("SELECT:"))
 			{
 				Logging.errorPrint("Ignoring second SELECT tag \"" + colString
-					+ "\" in SelectToken.parse");
+						+ "\" in SelectToken.parse");
 			}
 			else
 			{
 				if (BaseKitLoader.parseCommonTags(kSelect, colString, source) == false)
 				{
 					throw new PersistenceLayerException(
-						"Unknown KitSelect info " + " \"" + colString + "\"");
+							"Unknown KitSelect info " + " \"" + colString
+									+ "\"");
 				}
 			}
 		}
 		aKit.addObject(kSelect);
 		return true;
 	}
+
+	public Class<CDOMKitSelect> getTokenClass()
+	{
+		return CDOMKitSelect.class;
+	}
+
+	public String getParentToken()
+	{
+		return "*KITTOKEN";
+	}
+
+	public boolean parse(LoadContext context, CDOMKitSelect kitSelect,
+			String value)
+	{
+		kitSelect.setSelect(FormulaFactory.getFormulaFor(value));
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMKitSelect kitSelect)
+	{
+		Formula f = kitSelect.getSelect();
+		if (f == null)
+		{
+			return null;
+		}
+		return new String[] { f.toString() };
+	}
+
 }
