@@ -1,18 +1,19 @@
 package plugin.lsttokens.oldchoose;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.choose.FeatListToken;
 
 public class FeatListTokenTest extends AbstractChooseTokenTestCase
 {
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	static FeatListToken subToken = new FeatListToken();
 
@@ -23,29 +24,29 @@ public class FeatListTokenTest extends AbstractChooseTokenTestCase
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	protected Class<Ability> getSubTokenType()
+	protected Class<CDOMAbility> getSubTokenType()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
 	protected void construct(LoadContext loadContext, String one)
 	{
-		Ability obj =
+		CDOMAbility obj =
 				loadContext.ref.constructCDOMObject(getSubTokenType(), one);
-		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
+		loadContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, obj);
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override

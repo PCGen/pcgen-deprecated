@@ -1,16 +1,17 @@
 package plugin.lsttokens.oldchoose;
 
-import pcgen.core.PCTemplate;
-import pcgen.core.PObject;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.choose.NoChoiceToken;
 
 public class NoChoiceTokenTest extends AbstractEmptyChooseTokenTestCase
 {
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	static NoChoiceToken subToken = new NoChoiceToken();
 
@@ -21,19 +22,19 @@ public class NoChoiceTokenTest extends AbstractEmptyChooseTokenTestCase
 	}
 
 	@Override
-	protected <T extends PObject> Class<T> getSubTokenType()
+	protected <T extends CDOMObject> Class<T> getSubTokenType()
 	{
 		return null;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}

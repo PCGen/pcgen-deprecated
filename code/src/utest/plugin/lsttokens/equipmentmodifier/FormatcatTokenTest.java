@@ -21,34 +21,35 @@ import org.junit.Test;
 
 import pcgen.cdom.enumeration.EqModFormatCat;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.EquipmentModifier;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.EquipmentModifierLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
 public class FormatcatTokenTest extends
-		AbstractTokenTestCase<EquipmentModifier>
+		AbstractTokenTestCase<CDOMEqMod>
 {
 
 	static FormatcatToken token = new FormatcatToken();
-	static EquipmentModifierLoader loader = new EquipmentModifierLoader();
+	static CDOMTokenLoader<CDOMEqMod> loader = new CDOMTokenLoader<CDOMEqMod>(
+			CDOMEqMod.class);
 
 	@Override
-	public Class<EquipmentModifier> getCDOMClass()
+	public Class<CDOMEqMod> getCDOMClass()
 	{
-		return EquipmentModifier.class;
+		return CDOMEqMod.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<EquipmentModifier> getLoader()
+	public CDOMLoader<CDOMEqMod> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<EquipmentModifier> getToken()
+	public CDOMPrimaryToken<CDOMEqMod> getToken()
 	{
 		return token;
 	}

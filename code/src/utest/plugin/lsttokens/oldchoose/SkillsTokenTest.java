@@ -1,15 +1,16 @@
 package plugin.lsttokens.oldchoose;
 
-import pcgen.core.PCTemplate;
-import pcgen.core.Skill;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.choose.SkillsToken;
 
 public class SkillsTokenTest extends AbstractEmptyChooseTokenTestCase
 {
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	static SkillsToken subToken = new SkillsToken();
 
@@ -20,19 +21,19 @@ public class SkillsTokenTest extends AbstractEmptyChooseTokenTestCase
 	}
 
 	@Override
-	protected Class<Skill> getSubTokenType()
+	protected Class<CDOMSkill> getSubTokenType()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}

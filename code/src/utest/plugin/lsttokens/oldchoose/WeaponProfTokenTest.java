@@ -5,18 +5,19 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PCTemplate;
-import pcgen.core.WeaponProf;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.choose.WeaponProfToken;
 
 public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 {
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Before
 	@Override
@@ -35,21 +36,21 @@ public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	protected Class<WeaponProf> getSubTokenType()
+	protected Class<CDOMWeaponProf> getSubTokenType()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override

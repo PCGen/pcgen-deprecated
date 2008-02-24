@@ -2,18 +2,19 @@ package plugin.lsttokens.oldchoose;
 
 import org.junit.Test;
 
-import pcgen.core.PCStat;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMStat;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.choose.StatToken;
 
 public class StatTokenTest extends AbstractChooseTokenTestCase
 {
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	static StatToken subToken = new StatToken();
 
@@ -24,21 +25,21 @@ public class StatTokenTest extends AbstractChooseTokenTestCase
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	protected Class<PCStat> getSubTokenType()
+	protected Class<CDOMStat> getSubTokenType()
 	{
-		return PCStat.class;
+		return CDOMStat.class;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override

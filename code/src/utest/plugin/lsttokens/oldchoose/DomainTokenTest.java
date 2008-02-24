@@ -2,19 +2,20 @@ package plugin.lsttokens.oldchoose;
 
 import org.junit.Test;
 
-import pcgen.core.Deity;
-import pcgen.core.Domain;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.choose.DomainToken;
 
 public class DomainTokenTest extends AbstractChooseTokenTestCase
 {
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	static DomainToken subToken = new DomainToken();
 
@@ -25,21 +26,21 @@ public class DomainTokenTest extends AbstractChooseTokenTestCase
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	protected Class<Domain> getSubTokenType()
+	protected Class<CDOMDomain> getSubTokenType()
 	{
-		return Domain.class;
+		return CDOMDomain.class;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
@@ -86,8 +87,8 @@ public class DomainTokenTest extends AbstractChooseTokenTestCase
 	@Test
 	public void testRoundRobinDeity() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Deity.class, "Zeus");
-		secondaryContext.ref.constructCDOMObject(Deity.class, "Zeus");
+		primaryContext.ref.constructCDOMObject(CDOMDeity.class, "Zeus");
+		secondaryContext.ref.constructCDOMObject(CDOMDeity.class, "Zeus");
 		runRoundRobin(getSubTokenString() + "|DEITY=Zeus");
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(secondaryContext.ref.validate());
