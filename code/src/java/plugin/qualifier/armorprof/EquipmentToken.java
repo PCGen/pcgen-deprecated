@@ -21,49 +21,49 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.inst.CDOMArmorProf;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.ArmorProf;
-import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.ChooseLstQualifierToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
-public class EquipmentToken implements ChooseLstQualifierToken<ArmorProf>
+public class EquipmentToken implements ChooseLstQualifierToken<CDOMArmorProf>
 {
 	private static Type ARMOR_TYPE = Type.getConstant("ARMOR");
 
-	private PrimitiveChoiceFilter<Equipment> pcs = null;
+	private PrimitiveChoiceFilter<CDOMEquipment> pcs = null;
 
 	public String getTokenName()
 	{
 		return "EQUIPMENT";
 	}
 
-	public Class<ArmorProf> getChoiceClass()
+	public Class<CDOMArmorProf> getChoiceClass()
 	{
-		return ArmorProf.class;
+		return CDOMArmorProf.class;
 	}
 
-	public Set<ArmorProf> getSet(CharacterDataStore pc)
+	public Set<CDOMArmorProf> getSet(CharacterDataStore pc)
 	{
-		Set<ArmorProf> profs = new HashSet<ArmorProf>();
-		Set<Equipment> equipment = pc.getRulesData().getAll(Equipment.class);
+		Set<CDOMArmorProf> profs = new HashSet<CDOMArmorProf>();
+		Set<CDOMEquipment> equipment = pc.getRulesData().getAll(
+				CDOMEquipment.class);
 		if (equipment != null)
 		{
-			for (Equipment e : equipment)
+			for (CDOMEquipment e : equipment)
 			{
 				if (e.getListFor(ListKey.TYPE).contains(ARMOR_TYPE))
 				{
 					if (pcs == null || pcs.allow(pc, e))
 					{
-						CDOMSimpleSingleRef<ArmorProf> prof =
-								e.get(ObjectKey.ARMOR_PROF);
+						CDOMSingleRef<CDOMArmorProf> prof = e
+								.get(ObjectKey.ARMOR_PROF);
 						if (prof != null)
 						{
 							profs.add(prof.resolvesTo());
@@ -86,8 +86,8 @@ public class EquipmentToken implements ChooseLstQualifierToken<ArmorProf>
 		return sb.toString();
 	}
 
-	public boolean initialize(LoadContext context, Class<ArmorProf> cl,
-		String condition, String value)
+	public boolean initialize(LoadContext context, Class<CDOMArmorProf> cl,
+			String condition, String value)
 	{
 		if (condition != null)
 		{
@@ -98,19 +98,19 @@ public class EquipmentToken implements ChooseLstQualifierToken<ArmorProf>
 		}
 		if (value != null)
 		{
-			pcs =
-					ChooseLoader.getPrimitiveChoiceFilter(context,
-						Equipment.class, value);
+			pcs = context.getPrimitiveChoiceFilter(CDOMEquipment.class, value);
 			return pcs != null;
 		}
 		return true;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
 		return pcs == null ? 0 : pcs.hashCode();
 	}
-	
+
+	@Override
 	public boolean equals(Object o)
 	{
 		if (o instanceof EquipmentToken)

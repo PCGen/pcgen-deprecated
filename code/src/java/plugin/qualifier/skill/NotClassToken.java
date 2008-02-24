@@ -26,28 +26,27 @@ import pcgen.cdom.base.AssociatedObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
 import pcgen.cdom.lists.PCGenLists;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.ClassSkillList;
-import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.ChooseLstQualifierToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
-public class NotClassToken implements ChooseLstQualifierToken<Skill>
+public class NotClassToken implements ChooseLstQualifierToken<CDOMSkill>
 {
 
-	private PrimitiveChoiceFilter<Skill> pcs = null;
+	private PrimitiveChoiceFilter<CDOMSkill> pcs = null;
 
 	public String getTokenName()
 	{
 		return "!CLASS";
 	}
 
-	public Class<Skill> getChoiceClass()
+	public Class<CDOMSkill> getChoiceClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	public String getLSTformat()
@@ -61,7 +60,7 @@ public class NotClassToken implements ChooseLstQualifierToken<Skill>
 		return sb.toString();
 	}
 
-	public boolean initialize(LoadContext context, Class<Skill> cl, String condition, String value)
+	public boolean initialize(LoadContext context, Class<CDOMSkill> cl, String condition, String value)
 	{
 		if (condition != null)
 		{
@@ -72,15 +71,15 @@ public class NotClassToken implements ChooseLstQualifierToken<Skill>
 		}
 		if (value != null)
 		{
-			pcs = ChooseLoader.getPrimitiveChoiceFilter(context, cl, value);
+			pcs = context.getPrimitiveChoiceFilter(cl, value);
 			return pcs != null;
 		}
 		return true;
 	}
 
-	public Set<Skill> getSet(CharacterDataStore pc)
+	public Set<CDOMSkill> getSet(CharacterDataStore pc)
 	{
-		Set<Skill> skillSet = new HashSet<Skill>();
+		Set<CDOMSkill> skillSet = new HashSet<CDOMSkill>();
 		PCGenLists activeLists = pc.getActiveLists();
 		Set<ClassSkillList> lists = activeLists.getLists(ClassSkillList.class);
 		SkillCost classCost = SkillCost.CLASS;
@@ -88,8 +87,8 @@ public class NotClassToken implements ChooseLstQualifierToken<Skill>
 		{
 			for (ClassSkillList csl : lists)
 			{
-				Collection<Skill> contents = activeLists.getListContents(csl);
-				for (Skill sk : contents)
+				Collection<CDOMSkill> contents = activeLists.getListContents(csl);
+				for (CDOMSkill sk : contents)
 				{
 					AssociatedObject assoc =
 							activeLists.getListAssociation(csl, sk);

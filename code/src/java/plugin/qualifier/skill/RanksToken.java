@@ -23,17 +23,16 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.ChooseLstQualifierToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
-public class RanksToken implements ChooseLstQualifierToken<Skill>
+public class RanksToken implements ChooseLstQualifierToken<CDOMSkill>
 {
 
-	private PrimitiveChoiceFilter<Skill> pcs = null;
+	private PrimitiveChoiceFilter<CDOMSkill> pcs = null;
 	
 	private int ranks;
 
@@ -42,9 +41,9 @@ public class RanksToken implements ChooseLstQualifierToken<Skill>
 		return "RANKS";
 	}
 
-	public Class<Skill> getChoiceClass()
+	public Class<CDOMSkill> getChoiceClass()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	public String getLSTformat()
@@ -58,7 +57,7 @@ public class RanksToken implements ChooseLstQualifierToken<Skill>
 		return sb.toString();
 	}
 
-	public boolean initialize(LoadContext context, Class<Skill> cl, String condition, String value)
+	public boolean initialize(LoadContext context, Class<CDOMSkill> cl, String condition, String value)
 	{
 		if (condition == null)
 		{
@@ -80,21 +79,21 @@ public class RanksToken implements ChooseLstQualifierToken<Skill>
 		}
 		if (value != null)
 		{
-			pcs = ChooseLoader.getPrimitiveChoiceFilter(context, cl, value);
+			pcs = context.getPrimitiveChoiceFilter(cl, value);
 			return pcs != null;
 		}
 		return true;
 	}
 
-	public Set<Skill> getSet(CharacterDataStore pc)
+	public Set<CDOMSkill> getSet(CharacterDataStore pc)
 	{
-		Set<Skill> skillSet = new HashSet<Skill>(pc.getRulesData().getAll(
-				Skill.class));
-		List<Skill> skillList =
-				pc.getActiveGraph().getGrantedNodeList(Skill.class);
+		Set<CDOMSkill> skillSet = new HashSet<CDOMSkill>(pc.getRulesData().getAll(
+				CDOMSkill.class));
+		List<CDOMSkill> skillList =
+				pc.getActiveGraph().getGrantedNodeList(CDOMSkill.class);
 		if (skillList != null)
 		{
-			for (Skill sk : skillList)
+			for (CDOMSkill sk : skillList)
 			{
 				if (pc.getTotalWeight(sk) >= ranks)
 				{

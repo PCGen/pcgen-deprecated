@@ -22,33 +22,32 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PCStat;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.ChooseLstQualifierToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
-public class RemoveToken implements ChooseLstQualifierToken<PCStat>
+public class RemoveToken implements ChooseLstQualifierToken<CDOMStat>
 {
-	private PrimitiveChoiceFilter<PCStat> pcs = null;
+	private PrimitiveChoiceFilter<CDOMStat> pcs = null;
 
 	public String getTokenName()
 	{
 		return "REMOVE";
 	}
 
-	public Class<PCStat> getChoiceClass()
+	public Class<CDOMStat> getChoiceClass()
 	{
-		return PCStat.class;
+		return CDOMStat.class;
 	}
 
-	public Set<PCStat> getSet(CharacterDataStore pc)
+	public Set<CDOMStat> getSet(CharacterDataStore pc)
 	{
-		Set<PCStat> stats = pc.getRulesData().getAll(PCStat.class);
+		Set<CDOMStat> stats = pc.getRulesData().getAll(CDOMStat.class);
 		if (stats != null && pcs != null)
 		{
-			for (Iterator<PCStat> it = stats.iterator(); it.hasNext();)
+			for (Iterator<CDOMStat> it = stats.iterator(); it.hasNext();)
 			{
 				if (pcs.allow(pc, it.next()))
 				{
@@ -70,7 +69,7 @@ public class RemoveToken implements ChooseLstQualifierToken<PCStat>
 		return sb.toString();
 	}
 
-	public boolean initialize(LoadContext context, Class<PCStat> cl, String condition, String value)
+	public boolean initialize(LoadContext context, Class<CDOMStat> cl, String condition, String value)
 	{
 		if (condition != null)
 		{
@@ -81,7 +80,7 @@ public class RemoveToken implements ChooseLstQualifierToken<PCStat>
 		}
 		if (value != null)
 		{
-			pcs = ChooseLoader.getPrimitiveChoiceFilter(context, cl, value);
+			pcs = context.getPrimitiveChoiceFilter(cl, value);
 			return pcs != null;
 		}
 		return true;

@@ -22,45 +22,46 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Deity;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.ChooseLstQualifierToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
-public class DeityWeaponToken implements ChooseLstQualifierToken<WeaponProf>
+public class DeityWeaponToken implements
+		ChooseLstQualifierToken<CDOMWeaponProf>
 {
 
-	private PrimitiveChoiceFilter<WeaponProf> pcs = null;
+	private PrimitiveChoiceFilter<CDOMWeaponProf> pcs = null;
 
 	public String getTokenName()
 	{
 		return "DEITYWEAPON";
 	}
 
-	public Class<WeaponProf> getChoiceClass()
+	public Class<CDOMWeaponProf> getChoiceClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
-	public Set<WeaponProf> getSet(CharacterDataStore pc)
+	public Set<CDOMWeaponProf> getSet(CharacterDataStore pc)
 	{
-		Set<WeaponProf> set = new HashSet<WeaponProf>();
-		List<Deity> list = pc.getActiveGraph().getGrantedNodeList(Deity.class);
+		Set<CDOMWeaponProf> set = new HashSet<CDOMWeaponProf>();
+		List<CDOMDeity> list = pc.getActiveGraph().getGrantedNodeList(
+				CDOMDeity.class);
 		if (list != null)
 		{
-			for (Deity deity : list)
+			for (CDOMDeity deity : list)
 			{
-				List<CDOMSimpleSingleRef<WeaponProf>> weapons =
-						deity.getListFor(ListKey.DEITYWEAPON);
-				for (CDOMSimpleSingleRef<WeaponProf> weapon : weapons)
+				List<CDOMSingleRef<CDOMWeaponProf>> weapons = deity
+						.getListFor(ListKey.DEITYWEAPON);
+				for (CDOMSingleRef<CDOMWeaponProf> weapon : weapons)
 				{
-					WeaponProf wp = weapon.resolvesTo();
+					CDOMWeaponProf wp = weapon.resolvesTo();
 					if (pcs == null || pcs.allow(pc, wp))
 					{
 						set.add(wp);
@@ -82,8 +83,8 @@ public class DeityWeaponToken implements ChooseLstQualifierToken<WeaponProf>
 		return sb.toString();
 	}
 
-	public boolean initialize(LoadContext context, Class<WeaponProf> cl,
-		String condition, String value)
+	public boolean initialize(LoadContext context, Class<CDOMWeaponProf> cl,
+			String condition, String value)
 	{
 		if (condition != null)
 		{
@@ -94,7 +95,7 @@ public class DeityWeaponToken implements ChooseLstQualifierToken<WeaponProf>
 		}
 		if (value != null)
 		{
-			pcs = ChooseLoader.getPrimitiveChoiceFilter(context, cl, value);
+			pcs = context.getPrimitiveChoiceFilter(cl, value);
 			return pcs != null;
 		}
 		return true;

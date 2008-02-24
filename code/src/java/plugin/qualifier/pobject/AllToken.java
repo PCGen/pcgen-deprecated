@@ -21,15 +21,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.ChooseLstGlobalQualifierToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChooseLstGlobalQualifierToken;
 import pcgen.util.Logging;
 
-public class AllToken<T extends PObject> implements
+public class AllToken<T extends CDOMObject> implements
 		ChooseLstGlobalQualifierToken<T>
 {
 
@@ -58,7 +57,7 @@ public class AllToken<T extends PObject> implements
 		refClass = cl;
 		if (value != null)
 		{
-			pcs = ChooseLoader.getPrimitiveChoiceFilter(context, cl, value);
+			pcs = context.getPrimitiveChoiceFilter(cl, value);
 			return pcs != null;
 		}
 		return true;
