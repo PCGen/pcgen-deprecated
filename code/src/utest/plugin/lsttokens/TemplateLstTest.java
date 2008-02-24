@@ -19,15 +19,16 @@ package plugin.lsttokens;
 
 import org.junit.Test;
 
-import pcgen.core.PCTemplate;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalListTokenTestCase;
 
 public class TemplateLstTest extends
-		AbstractGlobalListTokenTestCase<PCTemplate>
+		AbstractGlobalListTokenTestCase<CDOMTemplate>
 {
 
 	@Override
@@ -37,9 +38,9 @@ public class TemplateLstTest extends
 	}
 
 	@Override
-	public Class<PCTemplate> getTargetClass()
+	public Class<CDOMTemplate> getTargetClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
@@ -66,23 +67,24 @@ public class TemplateLstTest extends
 		return false;
 	}
 
-	static GlobalLstToken token = new TemplateLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new TemplateLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}

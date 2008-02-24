@@ -22,11 +22,12 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PCTemplate;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
@@ -36,23 +37,24 @@ import plugin.pretokens.writer.PreRaceWriter;
 
 public class DescLstTest extends AbstractGlobalTokenTestCase
 {
-	static GlobalLstToken token = new DescLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new DescLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}

@@ -19,35 +19,37 @@ package plugin.lsttokens;
 
 import org.junit.Test;
 
-import pcgen.core.Kit;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMKit;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 
 public class KitLstTest extends AbstractGlobalTokenTestCase
 {
 
-	static GlobalLstToken token = new KitLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new KitLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}
@@ -61,7 +63,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 
 	@Test
 	public void testInvalidInputMissingNumber()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("|TestType"));
 		assertNoSideEffects();
@@ -88,8 +90,10 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(parse("1|TestWP1,TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		if (parse("1|TestWP1,TestWP2"))
+		{
+			assertFalse(primaryContext.ref.validate());
+		}
 	}
 
 	@Test
@@ -97,8 +101,10 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		assertTrue(parse("1|TestWP1.TestWP2"));
-		assertFalse(primaryContext.ref.validate());
+		if (parse("1|TestWP1.TestWP2"))
+		{
+			assertFalse(primaryContext.ref.validate());
+		}
 	}
 
 	@Test
@@ -196,7 +202,7 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 
 	protected void construct(LoadContext loadContext, String one)
 	{
-		loadContext.ref.constructCDOMObject(Kit.class, one);
+		loadContext.ref.constructCDOMObject(CDOMKit.class, one);
 	}
 
 }

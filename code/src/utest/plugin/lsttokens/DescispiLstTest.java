@@ -19,33 +19,36 @@ package plugin.lsttokens;
 
 import org.junit.Test;
 
-import pcgen.core.PCTemplate;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 
 public class DescispiLstTest extends AbstractGlobalTokenTestCase
 {
 
-	static GlobalLstToken token = new DescispiLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new DescispiLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}
@@ -61,48 +64,48 @@ public class DescispiLstTest extends AbstractGlobalTokenTestCase
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("YES"));
-		assertTrue(primaryProf.isDescPI());
+		assertTrue(primaryProf.get(ObjectKey.DESC_PI));
 		internalTestInvalidInputString(Boolean.TRUE);
 		assertTrue(primaryGraph.isEmpty());
 	}
 
 	public void internalTestInvalidInputString(Boolean val)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
+		assertNull(primaryProf.get(ObjectKey.DESC_PI));
 		assertFalse(parse("String"));
-		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
+		assertEquals(val, primaryProf.get(ObjectKey.DESC_PI));
 		assertFalse(parse("TYPE=TestType"));
-		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
+		assertEquals(val, primaryProf.get(ObjectKey.DESC_PI));
 		assertFalse(parse("TYPE.TestType"));
-		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
+		assertEquals(val, primaryProf.get(ObjectKey.DESC_PI));
 		assertFalse(parse("ALL"));
-		assertEquals(val, Boolean.valueOf(primaryProf.isDescPI()));
+		assertEquals(val, primaryProf.get(ObjectKey.DESC_PI));
 	}
 
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
 		assertTrue(parse("YES"));
-		assertTrue(primaryProf.isDescPI());
+		assertTrue(primaryProf.get(ObjectKey.DESC_PI));
 		assertTrue(parse("NO"));
-		assertFalse(primaryProf.isDescPI());
+		assertFalse(primaryProf.get(ObjectKey.DESC_PI));
 		// We're nice enough to be case insensitive here...
 		assertTrue(parse("YeS"));
-		assertTrue(primaryProf.isDescPI());
+		assertTrue(primaryProf.get(ObjectKey.DESC_PI));
 		assertTrue(parse("Yes"));
-		assertTrue(primaryProf.isDescPI());
+		assertTrue(primaryProf.get(ObjectKey.DESC_PI));
 		assertTrue(parse("No"));
-		assertFalse(primaryProf.isDescPI());
+		assertFalse(primaryProf.get(ObjectKey.DESC_PI));
 		// And we also allow single characters
 		assertTrue(parse("Y"));
-		assertTrue(primaryProf.isDescPI());
+		assertTrue(primaryProf.get(ObjectKey.DESC_PI));
 		assertTrue(parse("N"));
-		assertFalse(primaryProf.isDescPI());
+		assertFalse(primaryProf.get(ObjectKey.DESC_PI));
 		assertTrue(parse("y"));
-		assertTrue(primaryProf.isDescPI());
+		assertTrue(primaryProf.get(ObjectKey.DESC_PI));
 		assertTrue(parse("n"));
-		assertFalse(primaryProf.isDescPI());
+		assertFalse(primaryProf.get(ObjectKey.DESC_PI));
 	}
 
 	@Test

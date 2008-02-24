@@ -22,21 +22,23 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.PCTemplate;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 
 public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 {
 
-	static GlobalLstToken token = new QualifyToken();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new QualifyToken();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
 	@Before
@@ -46,19 +48,19 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}
@@ -123,18 +125,18 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinJustSpell() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
 		runRoundRobin("SPELL|Fireball");
 	}
 
 	@Test
 	public void testRoundRobinTwoSpell() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		runRoundRobin("SPELL|Fireball|Lightning Bolt");
 	}
 
@@ -142,15 +144,15 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	public void testRoundRobinTwoBooksJustSpell()
 		throws PersistenceLayerException
 	{
-		Ability a =
+		CDOMAbility a =
 				primaryContext.ref
-					.constructCDOMObject(Ability.class, "My Feat");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, a);
-		a = secondaryContext.ref.constructCDOMObject(Ability.class, "My Feat");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, a);
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+					.constructCDOMObject(CDOMAbility.class, "My Feat");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, a);
+		a = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "My Feat");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, a);
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		runRoundRobin("ABILITY=FEAT|My Feat", "SPELL|Lightning Bolt");
 	}
 }

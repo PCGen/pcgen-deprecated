@@ -19,34 +19,36 @@ package plugin.lsttokens;
 
 import org.junit.Test;
 
-import pcgen.core.PCTemplate;
-import pcgen.core.WeaponProf;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 
 public class ChangeProfLstTest extends AbstractGlobalTokenTestCase
 {
 
-	static GlobalLstToken token = new ChangeprofLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new ChangeprofLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}
@@ -153,46 +155,46 @@ public class ChangeProfLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
+		primaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
+		secondaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
 		runRoundRobin("Hammer=Martial");
 	}
 
 	@Test
 	public void testRoundRobinTwo() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Pipe");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Pipe");
+		primaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
+		secondaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
+		primaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Pipe");
+		secondaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Pipe");
 		runRoundRobin("Hammer,Pipe=Martial");
 	}
 
 	@Test
 	public void testRoundRobinType() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
+		primaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
+		secondaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
 		runRoundRobin("Hammer,TYPE.Heavy=Martial");
 	}
 
 	@Test
 	public void testRoundRobinTwoResult() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Pipe");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Pipe");
+		primaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
+		secondaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
+		primaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Pipe");
+		secondaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Pipe");
 		runRoundRobin("Hammer=Martial|Pipe=Exotic");
 	}
 
 	@Test
 	public void testRoundRobinComplex() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Hammer");
-		primaryContext.ref.constructCDOMObject(WeaponProf.class, "Nail");
-		secondaryContext.ref.constructCDOMObject(WeaponProf.class, "Nail");
+		primaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
+		secondaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Hammer");
+		primaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Nail");
+		secondaryContext.ref.constructCDOMObject(CDOMWeaponProf.class, "Nail");
 		runRoundRobin("Hammer,TYPE.Heavy,TYPE.Medium=Martial|Nail,TYPE.Crazy,TYPE.Disposable=Exotic");
 	}
 }

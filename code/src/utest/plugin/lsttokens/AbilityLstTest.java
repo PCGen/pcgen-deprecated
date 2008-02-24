@@ -19,35 +19,37 @@ package plugin.lsttokens;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 
 public class AbilityLstTest extends AbstractGlobalTokenTestCase
 {
 
-	static GlobalLstToken token = new AbilityLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new AbilityLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}
@@ -140,95 +142,95 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinJustSpell() throws PersistenceLayerException
 	{
-		Ability ab =
-				primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		CDOMAbility ab =
+				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1");
 	}
 
 	@Test
 	public void testRoundRobinTwoSpell() throws PersistenceLayerException
 	{
-		Ability ab =
-				primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = primaryContext.ref.constructCDOMObject(Ability.class, "Abil2");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil2");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		CDOMAbility ab =
+				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1|Abil2");
 	}
 
 	@Test
 	public void testRoundRobinTwoNature() throws PersistenceLayerException
 	{
-		Ability ab =
-				primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = primaryContext.ref.constructCDOMObject(Ability.class, "Abil2");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil2");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = primaryContext.ref.constructCDOMObject(Ability.class, "Abil3");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil3");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = primaryContext.ref.constructCDOMObject(Ability.class, "Abil4");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil4");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		CDOMAbility ab =
+				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil3");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil3");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil4");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil4");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1|Abil2", "FEAT|VIRTUAL|Abil3|Abil4");
 	}
 
 	@Test
 	public void testRoundRobinTwoCategory() throws PersistenceLayerException
 	{
-		Ability ab =
-				primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = primaryContext.ref.constructCDOMObject(Ability.class, "Abil2");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil2");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		AbilityCategory ac = AbilityCategory.getConstant("NEWCAT");
-		ab = primaryContext.ref.constructCDOMObject(Ability.class, "Abil3");
-		primaryContext.ref.reassociateReference(ac, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil3");
-		secondaryContext.ref.reassociateReference(ac, ab);
-		ab = primaryContext.ref.constructCDOMObject(Ability.class, "Abil4");
-		primaryContext.ref.reassociateReference(ac, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil4");
-		secondaryContext.ref.reassociateReference(ac, ab);
+		CDOMAbility ab =
+				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		CDOMAbilityCategory ac = CDOMAbilityCategory.getConstant("NEWCAT");
+		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil3");
+		primaryContext.ref.reassociateCategory(ac, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil3");
+		secondaryContext.ref.reassociateCategory(ac, ab);
+		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil4");
+		primaryContext.ref.reassociateCategory(ac, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil4");
+		secondaryContext.ref.reassociateCategory(ac, ab);
 		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil2", "NEWCAT|VIRTUAL|Abil3|Abil4");
 	}
 
 	@Test
 	public void testRoundRobinDupe() throws PersistenceLayerException
 	{
-		Ability ab =
-				primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		CDOMAbility ab =
+				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1");
 	}
 
 	@Test
 	public void testRoundRobinDupeDiffNature() throws PersistenceLayerException
 	{
-		Ability ab =
-				primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
-		secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		CDOMAbility ab =
+				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1", "FEAT|VIRTUAL|Abil1");
 	}
 
@@ -237,9 +239,9 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	// PersistenceLayerException
 	// {
 	// Ability ab =
-	// primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
 	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
 	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
 	// runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1|PRERACE:1,Human");
 	// assertTrue(primaryContext.ref.validate());
@@ -251,9 +253,9 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	// throws PersistenceLayerException
 	// {
 	// Ability ab =
-	// primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
 	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
 	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
 	// runRoundRobin("FEAT|VIRTUAL|Abil1",
 	// "FEAT|VIRTUAL|Abil1|PRERACE:1,Human");
@@ -266,9 +268,9 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	// throws PersistenceLayerException
 	// {
 	// Ability ab =
-	// primaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
 	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// ab = secondaryContext.ref.constructCDOMObject(Ability.class, "Abil1");
+	// ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
 	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
 	// runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1|PRERACE:1,Elf",
 	// "FEAT|VIRTUAL|Abil1|PRERACE:1,Human");

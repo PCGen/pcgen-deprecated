@@ -22,14 +22,15 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.ClassSpellList;
-import pcgen.core.DomainSpellList;
-import pcgen.core.PCTemplate;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.ClassSpellList;
+import pcgen.cdom.inst.DomainSpellList;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
@@ -40,8 +41,9 @@ import plugin.pretokens.writer.PreRaceWriter;
 public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 {
 
-	static GlobalLstToken token = new SpelllevelLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new SpelllevelLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	PreClassParser preclass = new PreClassParser();
 	PreClassWriter preclasswriter = new PreClassWriter();
@@ -57,26 +59,26 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 		TokenRegistration.register(preclasswriter);
 		TokenRegistration.register(prerace);
 		TokenRegistration.register(preracewriter);
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}
@@ -249,8 +251,8 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinJustSpell() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
 		secondaryContext.ref
 			.constructCDOMObject(ClassSpellList.class, "Cleric");
@@ -260,10 +262,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoSpell() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
 		secondaryContext.ref
 			.constructCDOMObject(ClassSpellList.class, "Cleric");
@@ -273,10 +275,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoLevel() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
 		secondaryContext.ref
 			.constructCDOMObject(ClassSpellList.class, "Cleric");
@@ -286,10 +288,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testValidInputTwoClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
 		secondaryContext.ref
 			.constructCDOMObject(ClassSpellList.class, "Cleric");
@@ -301,10 +303,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoDiffClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
 		secondaryContext.ref
 			.constructCDOMObject(ClassSpellList.class, "Cleric");
@@ -487,8 +489,8 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	public void testDomainRoundRobinJustSpell()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
 			"Cleric");
@@ -498,10 +500,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testDomainRoundRobinTwoSpell() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
 			"Cleric");
@@ -511,10 +513,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testDomainRoundRobinTwoLevel() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
 			"Cleric");
@@ -525,10 +527,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	public void testDomainRoundRobinTwoDomain()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
 			"Cleric");
@@ -541,8 +543,8 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testDomainRoundRobinPre() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
 			"Cleric");
@@ -552,8 +554,8 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testDomainRoundRobinDupePre() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
 			"Cleric");
@@ -564,10 +566,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testDomainRoundRobinTwoPre() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
 			"Cleric");
@@ -577,10 +579,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testDomainRoundRobinSplitPre() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(DomainSpellList.class, "Cleric");
 		secondaryContext.ref.constructCDOMObject(DomainSpellList.class,
 			"Cleric");
@@ -591,10 +593,10 @@ public class SpellLevelLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testMixedRoundRobinTwoDomain() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 		primaryContext.ref.constructCDOMObject(ClassSpellList.class, "Cleric");
 		secondaryContext.ref
 			.constructCDOMObject(ClassSpellList.class, "Cleric");

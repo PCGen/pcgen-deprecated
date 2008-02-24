@@ -22,12 +22,13 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PCTemplate;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
@@ -38,8 +39,9 @@ import plugin.pretokens.writer.PreRaceWriter;
 public class SpellsLstTest extends AbstractGlobalTokenTestCase
 {
 
-	static GlobalLstToken token = new SpellsLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new SpellsLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	PreClassParser preclass = new PreClassParser();
 	PreClassWriter preclasswriter = new PreClassWriter();
@@ -55,26 +57,26 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 		TokenRegistration.register(preclasswriter);
 		TokenRegistration.register(prerace);
 		TokenRegistration.register(preracewriter);
-		primaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Fireball");
-		secondaryContext.ref.constructCDOMObject(Spell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}

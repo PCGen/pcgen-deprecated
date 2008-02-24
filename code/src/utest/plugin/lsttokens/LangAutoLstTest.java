@@ -17,14 +17,15 @@
  */
 package plugin.lsttokens;
 
-import pcgen.core.Language;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMLanguage;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalListTokenTestCase;
 
-public class LangAutoLstTest extends AbstractGlobalListTokenTestCase<Language>
+public class LangAutoLstTest extends AbstractGlobalListTokenTestCase<CDOMLanguage>
 {
 
 	@Override
@@ -34,9 +35,9 @@ public class LangAutoLstTest extends AbstractGlobalListTokenTestCase<Language>
 	}
 
 	@Override
-	public Class<Language> getTargetClass()
+	public Class<CDOMLanguage> getTargetClass()
 	{
-		return Language.class;
+		return CDOMLanguage.class;
 	}
 
 	@Override
@@ -63,23 +64,24 @@ public class LangAutoLstTest extends AbstractGlobalListTokenTestCase<Language>
 		return true;
 	}
 
-	static GlobalLstToken token = new LangautoLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new LangautoLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}

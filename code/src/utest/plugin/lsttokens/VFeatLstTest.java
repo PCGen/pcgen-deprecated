@@ -22,14 +22,15 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalListTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
@@ -37,7 +38,7 @@ import plugin.pretokens.parser.PreLevelParser;
 import plugin.pretokens.writer.PreClassWriter;
 import plugin.pretokens.writer.PreLevelWriter;
 
-public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
+public class VFeatLstTest extends AbstractGlobalListTokenTestCase<CDOMAbility>
 {
 
 	@Override
@@ -58,9 +59,9 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 	}
 
 	@Override
-	public Class<Ability> getTargetClass()
+	public Class<CDOMAbility> getTargetClass()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
@@ -87,23 +88,24 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 		return false;
 	}
 
-	static GlobalLstToken token = new VFeatLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMPrimaryToken<CDOMObject> token = new VFeatLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public CDOMPrimaryToken<CDOMObject> getToken()
 	{
 		return token;
 	}
@@ -111,8 +113,8 @@ public class VFeatLstTest extends AbstractGlobalListTokenTestCase<Ability>
 	@Override
 	protected void construct(LoadContext loadContext, String one)
 	{
-		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
-		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
+		CDOMAbility obj = loadContext.ref.constructCDOMObject(CDOMAbility.class, one);
+		loadContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, obj);
 	}
 
 	@Test
