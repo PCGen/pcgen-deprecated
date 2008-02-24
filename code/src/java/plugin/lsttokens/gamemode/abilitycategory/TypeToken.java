@@ -57,4 +57,6 @@ public class TypeToken implements AbilityCategoryLstToken
 	{
 		return "TYPE"; //$NON-NLS-1$
 	}
+	
+	//CDOM handled by global TYPE token
 }

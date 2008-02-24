@@ -22,8 +22,14 @@
  */
 package plugin.lsttokens.gamemode.abilitycategory;
 
+import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.AbilityCategory;
 import pcgen.persistence.lst.AbilityCategoryLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Handles the CATEGORY token on an ABILITYCATEGORY line.
@@ -32,11 +38,15 @@ import pcgen.persistence.lst.AbilityCategoryLstToken;
  * 
  * @since 5.11.1
  */
-public class CategoryToken implements AbilityCategoryLstToken
+public class CategoryToken extends AbstractToken implements
+		AbilityCategoryLstToken, CDOMPrimaryToken<CDOMAbilityCategory>
 {
 
+	private static final Class<CDOMAbilityCategory> AC_CLASS = CDOMAbilityCategory.class;
+
 	/**
-	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory, java.lang.String)
+	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory,
+	 *      java.lang.String)
 	 */
 	public boolean parse(final AbilityCategory aCat, final String aValue)
 	{
@@ -47,8 +57,37 @@ public class CategoryToken implements AbilityCategoryLstToken
 	/**
 	 * @see pcgen.persistence.lst.LstToken#getTokenName()
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "CATEGORY"; //$NON-NLS-1$
+	}
+
+	public boolean parse(LoadContext context, CDOMAbilityCategory eq,
+			String value)
+	{
+		if (isEmpty(value))
+		{
+			return false;
+		}
+		context.getObjectContext().put(eq, ObjectKey.PARENT_CATEGORY,
+				context.ref.getCDOMReference(AC_CLASS, value));
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMAbilityCategory eq)
+	{
+		CDOMSingleRef<CDOMAbilityCategory> ref = context.getObjectContext()
+				.getObject(eq, ObjectKey.PARENT_CATEGORY);
+		if (ref == null)
+		{
+			return null;
+		}
+		return new String[] { ref.getLSTformat() };
+	}
+
+	public Class<CDOMAbilityCategory> getTokenClass()
+	{
+		return AC_CLASS;
 	}
 }

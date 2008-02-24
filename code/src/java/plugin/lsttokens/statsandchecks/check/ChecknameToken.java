@@ -30,4 +30,6 @@ public class ChecknameToken implements PCCheckLstToken
 		SettingsHandler.getGame().addToCheckList(obj);
 		return true;
 	}
+	
+	//This has no equivalent in CDOM - handled in the loader
 }

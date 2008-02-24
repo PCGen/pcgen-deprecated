@@ -22,8 +22,13 @@
  */
 package plugin.lsttokens.gamemode.abilitycategory;
 
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.AbilityCategory;
 import pcgen.persistence.lst.AbilityCategoryLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
 /**
  * Handles the EDITPOOL token on an ABILITYCATEGORY line.
@@ -32,10 +37,12 @@ import pcgen.persistence.lst.AbilityCategoryLstToken;
  * 
  * @since 5.11.1
  */
-public class EditPoolToken implements AbilityCategoryLstToken
+public class EditPoolToken implements AbilityCategoryLstToken,
+		CDOMPrimaryToken<CDOMAbilityCategory>
 {
 	/**
-	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory, java.lang.String)
+	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory,
+	 *      java.lang.String)
 	 */
 	public boolean parse(final AbilityCategory aCat, final String aValue)
 	{
@@ -60,5 +67,53 @@ public class EditPoolToken implements AbilityCategoryLstToken
 	public String getTokenName()
 	{
 		return "EDITPOOL"; //$NON-NLS-1$
+	}
+
+	public boolean parse(LoadContext context, CDOMAbilityCategory adj,
+			String value)
+	{
+		Boolean set;
+		char firstChar = value.charAt(0);
+		if (firstChar == 'y' || firstChar == 'Y')
+		{
+			if (value.length() > 1 && !value.equalsIgnoreCase("YES"))
+			{
+				Logging.errorPrint("You should use 'YES' as the "
+						+ getTokenName() + ": " + value);
+				return false;
+			}
+			set = Boolean.TRUE;
+		}
+		else
+		{
+			if (firstChar != 'N' && firstChar != 'n')
+			{
+				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+				{
+					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+							+ getTokenName() + ": " + value);
+					return false;
+				}
+			}
+			set = Boolean.FALSE;
+		}
+		context.getObjectContext().put(adj, ObjectKey.EDITPOOL, set);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMAbilityCategory adj)
+	{
+		Boolean mult = context.getObjectContext().getObject(adj,
+				ObjectKey.EDITPOOL);
+		if (mult == null)
+		{
+			return null;
+		}
+		return new String[] { mult.booleanValue() ? "YES" : "NO" };
+	}
+
+	public Class<CDOMAbilityCategory> getTokenClass()
+	{
+		return CDOMAbilityCategory.class;
 	}
 }

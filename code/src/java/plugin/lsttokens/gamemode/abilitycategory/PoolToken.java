@@ -22,8 +22,14 @@
  */
 package plugin.lsttokens.gamemode.abilitycategory;
 
+import pcgen.base.formula.Formula;
+import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.core.AbilityCategory;
 import pcgen.persistence.lst.AbilityCategoryLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Handles the POOL token on an ABILITYCATEGORY line.
@@ -32,11 +38,13 @@ import pcgen.persistence.lst.AbilityCategoryLstToken;
  * 
  * @since 5.11.1
  */
-public class PoolToken implements AbilityCategoryLstToken
+public class PoolToken implements AbilityCategoryLstToken,
+		CDOMPrimaryToken<CDOMAbilityCategory>
 {
 
 	/**
-	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory, java.lang.String)
+	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory,
+	 *      java.lang.String)
 	 */
 	public boolean parse(final AbilityCategory aCat, final String aValue)
 	{
@@ -53,4 +61,27 @@ public class PoolToken implements AbilityCategoryLstToken
 		return "POOL"; //$NON-NLS-1$
 	}
 
+	public boolean parse(LoadContext context, CDOMAbilityCategory stat,
+			String value)
+	{
+		context.getObjectContext().put(stat, FormulaKey.POOL,
+				FormulaFactory.getFormulaFor(value));
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMAbilityCategory stat)
+	{
+		Formula f = context.getObjectContext()
+				.getFormula(stat, FormulaKey.POOL);
+		if (f == null)
+		{
+			return null;
+		}
+		return new String[] { f.toString() };
+	}
+
+	public Class<CDOMAbilityCategory> getTokenClass()
+	{
+		return CDOMAbilityCategory.class;
+	}
 }

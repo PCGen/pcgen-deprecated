@@ -19,4 +19,6 @@ public class AlignmentnameToken implements PCAlignmentLstToken
 		align.setName(value);
 		return true;
 	}
+	
+	//Not used in CDOM, done in the loader
 }

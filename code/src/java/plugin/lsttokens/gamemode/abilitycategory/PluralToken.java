@@ -22,8 +22,13 @@
  */
 package plugin.lsttokens.gamemode.abilitycategory;
 
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.AbilityCategory;
 import pcgen.persistence.lst.AbilityCategoryLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
 /**
  * Handles the PLURAL token on an ABILITYCATEGORY line.
@@ -32,10 +37,12 @@ import pcgen.persistence.lst.AbilityCategoryLstToken;
  * 
  * @since 5.11.1
  */
-public class PluralToken implements AbilityCategoryLstToken
+public class PluralToken implements AbilityCategoryLstToken,
+		CDOMPrimaryToken<CDOMAbilityCategory>
 {
 	/**
-	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory, java.lang.String)
+	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory,
+	 *      java.lang.String)
 	 */
 	public boolean parse(final AbilityCategory aCat, final String aValue)
 	{
@@ -50,5 +57,32 @@ public class PluralToken implements AbilityCategoryLstToken
 	public String getTokenName()
 	{
 		return "PLURAL"; //$NON-NLS-1$
+	}
+
+	public boolean parse(LoadContext context, CDOMAbilityCategory eq,
+			String value)
+	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " argument may not be empty");
+			return false;
+		}
+		context.getObjectContext().put(eq, StringKey.PLURAL, value);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMAbilityCategory eq)
+	{
+		String rof = context.getObjectContext().getString(eq, StringKey.PLURAL);
+		if (rof == null)
+		{
+			return null;
+		}
+		return new String[] { rof };
+	}
+
+	public Class<CDOMAbilityCategory> getTokenClass()
+	{
+		return CDOMAbilityCategory.class;
 	}
 }

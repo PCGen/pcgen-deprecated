@@ -22,8 +22,13 @@
  */
 package plugin.lsttokens.gamemode.abilitycategory;
 
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.AbilityCategory;
 import pcgen.persistence.lst.AbilityCategoryLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
 /**
  * Handles the DISPLAYNAME token on an ABILITYCATEGORY line.
@@ -32,11 +37,13 @@ import pcgen.persistence.lst.AbilityCategoryLstToken;
  * 
  * @since 5.11.1
  */
-public class DisplayNameToken implements AbilityCategoryLstToken
+public class DisplayNameToken implements AbilityCategoryLstToken,
+		CDOMPrimaryToken<CDOMAbilityCategory>
 {
 
 	/**
-	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory, java.lang.String)
+	 * @see pcgen.persistence.lst.AbilityCategoryLstToken#parse(pcgen.core.AbilityCategory,
+	 *      java.lang.String)
 	 */
 	public boolean parse(final AbilityCategory aCat, final String aValue)
 	{
@@ -50,5 +57,33 @@ public class DisplayNameToken implements AbilityCategoryLstToken
 	public String getTokenName()
 	{
 		return "DISPLAYNAME"; //$NON-NLS-1$
+	}
+
+	public boolean parse(LoadContext context, CDOMAbilityCategory eq,
+			String value)
+	{
+		if (value.length() == 0)
+		{
+			Logging.errorPrint(getTokenName() + " argument may not be empty");
+			return false;
+		}
+		context.getObjectContext().put(eq, StringKey.DISPLAY_NAME, value);
+		return true;
+	}
+
+	public String[] unparse(LoadContext context, CDOMAbilityCategory eq)
+	{
+		String rof = context.getObjectContext().getString(eq,
+				StringKey.DISPLAY_NAME);
+		if (rof == null)
+		{
+			return null;
+		}
+		return new String[] { rof };
+	}
+
+	public Class<CDOMAbilityCategory> getTokenClass()
+	{
+		return CDOMAbilityCategory.class;
 	}
 }

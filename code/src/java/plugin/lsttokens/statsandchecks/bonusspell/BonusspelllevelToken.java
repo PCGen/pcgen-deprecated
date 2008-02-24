@@ -21,4 +21,6 @@ public class BonusspelllevelToken implements BonusSpellLstToken
 		bonus.put(BonusSpellLoader.LEVEL, value);
 		return true;
 	}
+	
+	//This has no equivalent in CDOM - handled in the loader...
 }

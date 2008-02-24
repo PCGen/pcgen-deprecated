@@ -19,4 +19,6 @@ public class StatnameToken implements PCStatLstToken
 		stat.setName(value);
 		return true;
 	}
+	
+	//NO CDOM Implementation (handled in the loader)
 }

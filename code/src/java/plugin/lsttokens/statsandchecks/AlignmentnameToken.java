@@ -53,4 +53,6 @@ public class AlignmentnameToken implements StatsAndChecksLstToken
 			return false;
 		}
 	}
+
+	//There is no token in CDOM for this - handled in CompositeLineLoader
 }
