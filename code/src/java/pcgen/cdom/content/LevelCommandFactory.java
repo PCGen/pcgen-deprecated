@@ -17,21 +17,21 @@
  */
 package pcgen.cdom.content;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.core.PCClass;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.rules.persistence.TokenUtilities;
 
 public class LevelCommandFactory extends ConcretePrereqObject implements
 		Comparable<LevelCommandFactory>, LSTWriteable
 {
 
-	private final CDOMSimpleSingleRef<PCClass> pcClass;
+	private final CDOMSingleRef<CDOMPCClass> pcClass;
 
 	private final int levels;
 
-	public LevelCommandFactory(CDOMSimpleSingleRef<PCClass> cl, int lvls)
+	public LevelCommandFactory(CDOMSingleRef<CDOMPCClass> cl, int lvls)
 	{
 		pcClass = cl;
 		levels = lvls;
@@ -42,7 +42,7 @@ public class LevelCommandFactory extends ConcretePrereqObject implements
 		return levels;
 	}
 
-	public PCClass getPCClass()
+	public CDOMPCClass getPCClass()
 	{
 		return pcClass.resolvesTo();
 	}

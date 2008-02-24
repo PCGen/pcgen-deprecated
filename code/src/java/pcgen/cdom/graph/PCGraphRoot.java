@@ -22,6 +22,12 @@ public class PCGraphRoot implements PrereqObject
 			"Cannot add Prerequisites to PCGraphRoot");
 	}
 
+	public void addPreReq(Prerequisite preReq)
+	{
+		throw new UnsupportedOperationException(
+			"Cannot add Prerequisites to PCGraphRoot");
+	}
+
 	public void clearPrerequisiteList()
 	{
 		// Fine, it's always empty :)

@@ -20,17 +20,17 @@ package pcgen.cdom.content;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMSpell;
 
 public class KnownSpellIdentifier extends ConcretePrereqObject implements
 		LSTWriteable
 {
 
-	private final CDOMReference<Spell> ref;
+	private final CDOMReference<CDOMSpell> ref;
 
 	private final Integer spellLevel;
 
-	public KnownSpellIdentifier(CDOMReference<Spell> sr, Integer levelLimit)
+	public KnownSpellIdentifier(CDOMReference<CDOMSpell> sr, Integer levelLimit)
 	{
 		if (sr == null)
 		{
@@ -40,13 +40,13 @@ public class KnownSpellIdentifier extends ConcretePrereqObject implements
 		spellLevel = levelLimit;
 	}
 
-	public boolean matchesFilter(Spell s, int testSpellLevel)
+	public boolean matchesFilter(CDOMSpell s, int testSpellLevel)
 	{
 		// TODO Need to implement this method
 		return false;
 	}
 
-	public CDOMReference<Spell> getLimit()
+	public CDOMReference<CDOMSpell> getLimit()
 	{
 		return ref;
 	}

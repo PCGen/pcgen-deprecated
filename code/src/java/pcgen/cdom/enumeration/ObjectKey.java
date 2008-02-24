@@ -36,19 +36,19 @@ import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.base.util.DefaultMap;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.content.CDOMSpellProhibitor;
 import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.Alignment;
-import pcgen.core.ArmorProf;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMArmorProf;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMShieldProf;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
+import pcgen.cdom.inst.CDOMStat;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.Deity;
-import pcgen.core.Equipment;
-import pcgen.core.PCClass;
-import pcgen.core.PCStat;
-import pcgen.core.ShieldProf;
-import pcgen.core.SizeAdjustment;
-import pcgen.core.SpellProhibitor;
-import pcgen.core.WeaponProf;
 import pcgen.util.enumeration.DefaultTriState;
 import pcgen.util.enumeration.Load;
 import pcgen.util.enumeration.Visibility;
@@ -58,7 +58,8 @@ import pcgen.util.enumeration.Visibility;
  * 
  * This is a Typesafe enumeration of legal String Characteristics of an object.
  */
-public final class ObjectKey<T> {
+public final class ObjectKey<T>
+{
 
 	/*
 	 * TODO Should ObjectKey take in the Class in order to be able to cast to
@@ -66,9 +67,8 @@ public final class ObjectKey<T> {
 	 * 
 	 * have a .cast(Object o) method on ObjectKey???
 	 */
-	public static final ObjectKey<Resolver<SizeAdjustment>> SIZE =
-			new ObjectKey<Resolver<SizeAdjustment>>();
-	
+	public static final ObjectKey<Resolver<CDOMSizeAdjustment>> SIZE = new ObjectKey<Resolver<CDOMSizeAdjustment>>();
+
 	public static final ObjectKey<Region> REGION = new ObjectKey<Region>();
 
 	public static final ObjectKey<SubRegion> SUBREGION = new ObjectKey<SubRegion>();
@@ -95,17 +95,17 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Boolean> HAS_SPELL_FORMULA = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<CDOMReference<PCClass>> EX_CLASS = new ObjectKey<CDOMReference<PCClass>>();
+	public static final ObjectKey<CDOMReference<CDOMPCClass>> EX_CLASS = new ObjectKey<CDOMReference<CDOMPCClass>>();
 
 	public static final ObjectKey<Gender> GENDER_LOCK = new ObjectKey<Gender>();
 
 	public static final ObjectKey<BigDecimal> COST = new ObjectKey<BigDecimal>();
 
-	public static final ObjectKey<PCStat> KEY_STAT = new ObjectKey<PCStat>();
+	public static final ObjectKey<CDOMStat> KEY_STAT = new ObjectKey<CDOMStat>();
 
-	public static final ObjectKey<PCStat> SPELL_STAT = new ObjectKey<PCStat>();
+	public static final ObjectKey<CDOMStat> SPELL_STAT = new ObjectKey<CDOMStat>();
 
-	public static final ObjectKey<PCStat> BONUS_SPELL_STAT = new ObjectKey<PCStat>();
+	public static final ObjectKey<CDOMStat> BONUS_SPELL_STAT = new ObjectKey<CDOMStat>();
 
 	public static final ObjectKey<Boolean> READ_ONLY = new ObjectKey<Boolean>();
 
@@ -121,11 +121,11 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<EqWield> WIELD = new ObjectKey<EqWield>();
 
-	public static final ObjectKey<CDOMSimpleSingleRef<WeaponProf>> WEAPON_PROF = new ObjectKey<CDOMSimpleSingleRef<WeaponProf>>();
+	public static final ObjectKey<CDOMSingleRef<CDOMWeaponProf>> WEAPON_PROF = new ObjectKey<CDOMSingleRef<CDOMWeaponProf>>();
 
 	public static final ObjectKey<EqModControl> MOD_CONTROL = new ObjectKey<EqModControl>();
 
-	public static final ObjectKey<CDOMSimpleSingleRef<Equipment>> BASE_ITEM = new ObjectKey<CDOMSimpleSingleRef<Equipment>>();
+	public static final ObjectKey<CDOMSingleRef<CDOMEquipment>> BASE_ITEM = new ObjectKey<CDOMSingleRef<CDOMEquipment>>();
 
 	public static final ObjectKey<Boolean> USE_MASTER_SKILL = new ObjectKey<Boolean>();
 
@@ -137,9 +137,9 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<SkillArmorCheck> ARMOR_CHECK = new ObjectKey<SkillArmorCheck>();
 
-	public static final ObjectKey<Alignment> ALIGNMENT = new ObjectKey<Alignment>();
+	public static final ObjectKey<CDOMAlignment> ALIGNMENT = new ObjectKey<CDOMAlignment>();
 
-	public static final ObjectKey<DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>> COMPONENT_COST = new ObjectKey<DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>>();
+	public static final ObjectKey<DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer>> COMPONENT_COST = new ObjectKey<DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer>>();
 
 	public static final ObjectKey<Boolean> EXCLUSIVE = new ObjectKey<Boolean>();
 
@@ -147,7 +147,7 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Boolean> CONTAINER_CONSTANT_WEIGHT = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<AbilityCategory> CATEGORY = new ObjectKey<AbilityCategory>();
+	public static final ObjectKey<CDOMAbilityCategory> CATEGORY = new ObjectKey<CDOMAbilityCategory>();
 
 	public static final ObjectKey<Boolean> ATTACKS_PROGRESS = new ObjectKey<Boolean>();
 
@@ -173,32 +173,56 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Boolean> HAS_BONUS_SPELL_STAT = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<CDOMSimpleSingleRef<ShieldProf>> SHIELD_PROF = new ObjectKey<CDOMSimpleSingleRef<ShieldProf>>();
+	public static final ObjectKey<CDOMSingleRef<CDOMShieldProf>> SHIELD_PROF = new ObjectKey<CDOMSingleRef<CDOMShieldProf>>();
 
-	public static final ObjectKey<CDOMSimpleSingleRef<ArmorProf>> ARMOR_PROF = new ObjectKey<CDOMSimpleSingleRef<ArmorProf>>();
+	public static final ObjectKey<CDOMSingleRef<CDOMArmorProf>> ARMOR_PROF = new ObjectKey<CDOMSingleRef<CDOMArmorProf>>();
 
-	public static final ObjectKey<BigDecimal>  PROHIBITED_COST = new ObjectKey<BigDecimal>();
+	public static final ObjectKey<BigDecimal> PROHIBITED_COST = new ObjectKey<BigDecimal>();
 
 	public static final ObjectKey<Boolean> USE_SPELL_SPELL_STAT = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<SpellProhibitor<?>> SELETED_SPELLS = new ObjectKey<SpellProhibitor<?>>();
+	public static final ObjectKey<CDOMSpellProhibitor<?>> SELETED_SPELLS = new ObjectKey<CDOMSpellProhibitor<?>>();
 
 	public static final ObjectKey<Boolean> CASTER_WITHOUT_SPELL_STAT = new ObjectKey<Boolean>();
 
 	public static final ObjectKey<Deity> DEITY = new ObjectKey<Deity>();
 
+	public static final ObjectKey<Boolean> IS_DEFAULT = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<Boolean> FRACTIONAL_POOL = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<Boolean> EDITPOOL = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<Boolean> EDITABLE = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<CDOMSingleRef<CDOMAbilityCategory>> PARENT_CATEGORY = new ObjectKey<CDOMSingleRef<CDOMAbilityCategory>>();
+
+	public static final ObjectKey<Boolean> USEMASTERSKILL = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<Boolean> DESC_PI = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<Boolean> NAME_PI = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<Object> PARENT = new ObjectKey<Object>();
+
+	public static final ObjectKey<Boolean> ALLOWBASECLASS = new ObjectKey<Boolean>();
+
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 
-	private ObjectKey() {
+	private ObjectKey()
+	{
 		// Only allow instantation here
 	}
 
-	public T cast(Object o) {
+	public T cast(Object o)
+	{
 		return (T) o;
 	}
 
-	public static <OT> ObjectKey<OT> getKeyFor(Class<OT> c, String s) {
-		if (map == null) {
+	public static <OT> ObjectKey<OT> getKeyFor(Class<OT> c, String s)
+	{
+		if (map == null)
+		{
 			buildMap();
 		}
 		/*
@@ -211,29 +235,39 @@ public final class ObjectKey<T> {
 		 * is requested.
 		 */
 		ObjectKey<OT> o = (ObjectKey<OT>) map.get(s);
-		if (o == null) {
+		if (o == null)
+		{
 			o = new ObjectKey<OT>();
 			map.put(s, o);
 		}
 		return o;
 	}
 
-	private static void buildMap() {
+	private static void buildMap()
+	{
 		map = new CaseInsensitiveMap<ObjectKey<?>>();
 		Field[] fields = ObjectKey.class.getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
+		for (int i = 0; i < fields.length; i++)
+		{
 			int mod = fields[i].getModifiers();
 
 			if (Modifier.isStatic(mod) && Modifier.isFinal(mod)
-					&& Modifier.isPublic(mod)) {
-				try {
+					&& Modifier.isPublic(mod))
+			{
+				try
+				{
 					Object o = fields[i].get(null);
-					if (o instanceof ObjectKey) {
+					if (o instanceof ObjectKey)
+					{
 						map.put(fields[i].getName(), (ObjectKey<?>) o);
 					}
-				} catch (IllegalArgumentException e) {
+				}
+				catch (IllegalArgumentException e)
+				{
 					throw new InternalError();
-				} catch (IllegalAccessException e) {
+				}
+				catch (IllegalAccessException e)
+				{
 					throw new InternalError();
 				}
 			}
@@ -241,7 +275,8 @@ public final class ObjectKey<T> {
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		/*
 		 * CONSIDER Should this find a way to do a Two-Way Map or something to
 		 * that effect?
@@ -250,8 +285,10 @@ public final class ObjectKey<T> {
 		{
 			buildMap();
 		}
-		for (Map.Entry<?, ObjectKey<?>> me : map.entrySet()) {
-			if (me.getValue() == this) {
+		for (Map.Entry<?, ObjectKey<?>> me : map.entrySet())
+		{
+			if (me.getValue() == this)
+			{
 				return me.getKey().toString();
 			}
 		}
@@ -259,8 +296,10 @@ public final class ObjectKey<T> {
 		return "";
 	}
 
-	public static Collection<ObjectKey<?>> getAllConstants() {
-		if (map == null) {
+	public static Collection<ObjectKey<?>> getAllConstants()
+	{
+		if (map == null)
+		{
 			buildMap();
 		}
 		return new HashSet<ObjectKey<?>>(map.values());

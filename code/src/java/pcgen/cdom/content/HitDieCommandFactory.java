@@ -19,7 +19,7 @@ package pcgen.cdom.content;
 
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.persistence.TokenUtilities;
 
 public class HitDieCommandFactory extends ConcretePrereqObject implements
 		Comparable<HitDieCommandFactory>, LSTWriteable

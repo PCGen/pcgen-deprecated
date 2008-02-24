@@ -6,17 +6,17 @@ import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.inst.CDOMSpellProgressionInfo;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.SpellProgressionInfo;
 
 public class SpellLevelChoiceSet implements PrimitiveChoiceSet<String>
 {
 
-	private final CDOMReference<SpellProgressionInfo> spellLists;
+	private final CDOMReference<CDOMSpellProgressionInfo> spellLists;
 	private final Formula minimum;
 	private final Formula maximum;
 
-	public SpellLevelChoiceSet(CDOMReference<SpellProgressionInfo> slref,
+	public SpellLevelChoiceSet(CDOMReference<CDOMSpellProgressionInfo> slref,
 		Formula min, Formula max)
 	{
 		spellLists = slref;
@@ -33,10 +33,10 @@ public class SpellLevelChoiceSet implements PrimitiveChoiceSet<String>
 	{
 		Set<String> set = new TreeSet<String>();
 
-		List<SpellProgressionInfo> classes =
+		List<CDOMSpellProgressionInfo> classes =
 				pc.getActiveGraph().getGrantedNodeList(
-					SpellProgressionInfo.class);
-		for (SpellProgressionInfo cl : classes)
+						CDOMSpellProgressionInfo.class);
+		for (CDOMSpellProgressionInfo cl : classes)
 		{
 			if (spellLists.contains(cl))
 			{

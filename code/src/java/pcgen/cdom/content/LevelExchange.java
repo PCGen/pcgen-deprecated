@@ -20,12 +20,12 @@ package pcgen.cdom.content;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.core.PCClass;
+import pcgen.cdom.inst.CDOMPCClass;
 
 public class LevelExchange extends ConcretePrereqObject implements LSTWriteable
 {
 
-	private final CDOMSingleRef<PCClass> exchangeClass;
+	private final CDOMSingleRef<CDOMPCClass> exchangeClass;
 
 	private final int minDonatingLevel;
 
@@ -33,7 +33,7 @@ public class LevelExchange extends ConcretePrereqObject implements LSTWriteable
 
 	private final int donatingLowerLevelBound;
 
-	public LevelExchange(CDOMSingleRef<PCClass> pcc, int minDonatingLvl,
+	public LevelExchange(CDOMSingleRef<CDOMPCClass> pcc, int minDonatingLvl,
 		int maxDonated, int donatingLowerBound)
 	{
 		if (minDonatingLvl <= 0)
@@ -76,7 +76,7 @@ public class LevelExchange extends ConcretePrereqObject implements LSTWriteable
 		return donatingLowerLevelBound;
 	}
 
-	public CDOMSingleRef<PCClass> getExchangeClass()
+	public CDOMSingleRef<CDOMPCClass> getExchangeClass()
 	{
 		return exchangeClass;
 	}

@@ -32,7 +32,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.character.CharacterDataStore;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.persistence.TokenUtilities;
 
 public class ReferenceChoiceSet<T extends PrereqObject> implements
 		PrimitiveChoiceSet<T>

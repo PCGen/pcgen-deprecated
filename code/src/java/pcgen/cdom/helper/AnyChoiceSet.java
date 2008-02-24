@@ -24,16 +24,18 @@ package pcgen.cdom.helper;
 
 import java.util.Set;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PObject;
 
-public class AnyChoiceSet<T extends PObject> implements PrimitiveChoiceSet<T>
+public class AnyChoiceSet<T extends CDOMObject> implements
+		PrimitiveChoiceSet<T>
 {
 
 	private Class<T> choiceClass;
 
-	public static <T extends PObject> AnyChoiceSet<T> getAnyChooser(Class<T> cl)
+	public static <T extends CDOMObject> AnyChoiceSet<T> getAnyChooser(
+			Class<T> cl)
 	{
 		return new AnyChoiceSet<T>(cl);
 	}
@@ -48,7 +50,7 @@ public class AnyChoiceSet<T extends PObject> implements PrimitiveChoiceSet<T>
 		if (CategorizedCDOMObject.class.isAssignableFrom(cl))
 		{
 			throw new IllegalArgumentException(
-				"Cannot use Categorized Class without a Category");
+					"Cannot use Categorized Class without a Category");
 		}
 		choiceClass = cl;
 	}
@@ -66,5 +68,18 @@ public class AnyChoiceSet<T extends PObject> implements PrimitiveChoiceSet<T>
 	public Class<T> getChoiceClass()
 	{
 		return choiceClass;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return choiceClass.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return o instanceof AnyChoiceSet
+				&& choiceClass.equals(((AnyChoiceSet<?>) o).choiceClass);
 	}
 }

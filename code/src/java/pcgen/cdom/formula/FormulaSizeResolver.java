@@ -2,9 +2,9 @@ package pcgen.cdom.formula;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.formula.Resolver;
-import pcgen.core.SizeAdjustment;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
 
-public class FormulaSizeResolver implements Resolver<SizeAdjustment>
+public class FormulaSizeResolver implements Resolver<CDOMSizeAdjustment>
 {
 
 	private final Formula size;
@@ -14,7 +14,7 @@ public class FormulaSizeResolver implements Resolver<SizeAdjustment>
 		size = s;
 	}
 
-	public SizeAdjustment resolve()
+	public CDOMSizeAdjustment resolve()
 	{
 		// TODO Need to define how this will happen
 		return null;

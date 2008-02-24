@@ -1,9 +1,9 @@
 package pcgen.cdom.helper;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PObject;
 
-public class PatternMatchFilter<T extends PObject> implements
+public class PatternMatchFilter<T extends CDOMObject> implements
 		PrimitiveChoiceFilter<T>
 {
 

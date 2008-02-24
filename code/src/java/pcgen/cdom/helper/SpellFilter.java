@@ -26,12 +26,12 @@ package pcgen.cdom.helper;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.Type;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMSpell;
 
 public class SpellFilter
 {
 
-	private Spell spell;
+	private CDOMSpell spell;
 
 	private Type spellType;
 
@@ -42,7 +42,7 @@ public class SpellFilter
 		this.spellLevel = lvl;
 	}
 
-	public void setSpell(Spell sp)
+	public void setSpell(CDOMSpell sp)
 	{
 		this.spell = sp;
 	}
@@ -57,7 +57,7 @@ public class SpellFilter
 		return spellLevel < 0 && spellType == null && spell == null;
 	}
 
-	public boolean matchesFilter(Spell sp, int testSpellLevel)
+	public boolean matchesFilter(CDOMSpell sp, int testSpellLevel)
 	{
 		if (spellLevel >= 0 && testSpellLevel != spellLevel)
 		{

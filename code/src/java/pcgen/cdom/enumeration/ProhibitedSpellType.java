@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMSpell;
 
 public abstract class ProhibitedSpellType<T>
 {
@@ -36,7 +36,7 @@ public abstract class ProhibitedSpellType<T>
 			new ProhibitedSpellType<SpellDescriptor>("Alignment")
 			{
 				@Override
-				public Collection<SpellDescriptor> getCheckList(Spell s)
+				public Collection<SpellDescriptor> getCheckList(CDOMSpell s)
 				{
 					return s.getListFor(ListKey.SPELL_DESCRIPTOR);
 				}
@@ -64,7 +64,7 @@ public abstract class ProhibitedSpellType<T>
 			new ProhibitedSpellType<SpellDescriptor>("Descriptor")
 			{
 				@Override
-				public Collection<SpellDescriptor> getCheckList(Spell s)
+				public Collection<SpellDescriptor> getCheckList(CDOMSpell s)
 				{
 					return s.getListFor(ListKey.SPELL_DESCRIPTOR);
 				}
@@ -92,7 +92,7 @@ public abstract class ProhibitedSpellType<T>
 			new ProhibitedSpellType<SpellSchool>("School")
 			{
 				@Override
-				public Collection<SpellSchool> getCheckList(Spell s)
+				public Collection<SpellSchool> getCheckList(CDOMSpell s)
 				{
 					return s.getListFor(ListKey.SPELL_SCHOOL);
 				}
@@ -120,7 +120,7 @@ public abstract class ProhibitedSpellType<T>
 			new ProhibitedSpellType<SpellSubSchool>("SubSchool")
 			{
 				@Override
-				public Collection<SpellSubSchool> getCheckList(Spell s)
+				public Collection<SpellSubSchool> getCheckList(CDOMSpell s)
 				{
 					return s.getListFor(ListKey.SPELL_SUBSCHOOL);
 				}
@@ -148,7 +148,7 @@ public abstract class ProhibitedSpellType<T>
 			new ProhibitedSpellType<String>("Spell")
 			{
 				@Override
-				public Collection<String> getCheckList(Spell s)
+				public Collection<String> getCheckList(CDOMSpell s)
 				{
 					return Collections.singletonList(s.getKeyName());
 				}
@@ -179,7 +179,7 @@ public abstract class ProhibitedSpellType<T>
 		text = s;
 	}
 
-	public abstract Collection<T> getCheckList(Spell s);
+	public abstract Collection<T> getCheckList(CDOMSpell s);
 
 	public abstract Class<T> getReferencedClass();
 

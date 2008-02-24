@@ -29,18 +29,19 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import pcgen.base.formula.Formula;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.helper.AttackCycle;
 import pcgen.cdom.helper.Capacity;
 import pcgen.cdom.helper.FollowerLimit;
 import pcgen.cdom.helper.Qualifier;
 import pcgen.cdom.helper.Quality;
-import pcgen.core.Alignment;
-import pcgen.core.EquipmentModifier;
-import pcgen.core.PCClass;
-import pcgen.core.WeaponProf;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.bonus.BonusObj;
 
 /**
@@ -60,8 +61,8 @@ public final class ListKey<T>
 
 	public static final ListKey<Pantheon> PANTHEON = new ListKey<Pantheon>();
 
-	public static final ListKey<CDOMSimpleSingleRef<WeaponProf>> DEITYWEAPON =
-			new ListKey<CDOMSimpleSingleRef<WeaponProf>>();
+	public static final ListKey<CDOMSingleRef<CDOMWeaponProf>> DEITYWEAPON =
+			new ListKey<CDOMSingleRef<CDOMWeaponProf>>();
 
 	public static final ListKey<RacePantheon> RACE_PANTHEON =
 			new ListKey<RacePantheon>();
@@ -77,8 +78,8 @@ public final class ListKey<T>
 
 	public static final ListKey<String> VARIANTS = new ListKey<String>();
 
-	public static final ListKey<CDOMSimpleSingleRef<EquipmentModifier>> REPLACED_KEYS =
-			new ListKey<CDOMSimpleSingleRef<EquipmentModifier>>();
+	public static final ListKey<CDOMSingleRef<CDOMEqMod>> REPLACED_KEYS =
+			new ListKey<CDOMSingleRef<CDOMEqMod>>();
 
 	public static final ListKey<Type> ITEM_TYPES = new ListKey<Type>();
 
@@ -86,8 +87,8 @@ public final class ListKey<T>
 
 	public static final ListKey<Type> PROFICIENCY_TYPES = new ListKey<Type>();
 
-	public static final ListKey<Alignment> FOLLOWER_ALIGN =
-			new ListKey<Alignment>();
+	public static final ListKey<CDOMAlignment> FOLLOWER_ALIGN =
+			new ListKey<CDOMAlignment>();
 
 	public static final ListKey<Capacity> CAPACITY = new ListKey<Capacity>();
 
@@ -97,8 +98,8 @@ public final class ListKey<T>
 	public static final ListKey<Integer> HITDICE_ADVANCEMENT =
 			new ListKey<Integer>();
 
-	public static final ListKey<CDOMReference<? extends PCClass>> FAVORED_CLASS =
-			new ListKey<CDOMReference<? extends PCClass>>();
+	public static final ListKey<CDOMReference<? extends CDOMPCClass>> FAVORED_CLASS =
+			new ListKey<CDOMReference<? extends CDOMPCClass>>();
 
 	public static final ListKey<Quality> QUALITY = new ListKey<Quality>();
 
@@ -113,6 +114,12 @@ public final class ListKey<T>
 	public static final ListKey<BonusObj> BONUSES = new ListKey<BonusObj>();
 
 	public static final ListKey<AttackCycle> ATTACK_CYCLE = new ListKey<AttackCycle>();
+
+	public static final ListKey<Formula> CAST = new ListKey<Formula>();
+
+	public static final ListKey<Formula> KNOWN = new ListKey<Formula>();
+	
+	public static final ListKey<Formula> SPECIALTYKNOWN = new ListKey<Formula>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey()

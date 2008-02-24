@@ -1,23 +1,23 @@
 package pcgen.cdom.helper;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMSpell;
 
 public class SpellLevelLimit
 {
 
-	private final CDOMReference<Spell> spellType;
+	private final CDOMReference<CDOMSpell> spellType;
 	private final int minLevel;
 	private final int maxLevel;
 
-	public SpellLevelLimit(CDOMReference<Spell> type, int min, int max)
+	public SpellLevelLimit(CDOMReference<CDOMSpell> type, int min, int max)
 	{
 		spellType = type;
 		minLevel = min;
 		maxLevel = max;
 	}
 
-	public CDOMReference<Spell> getSpellGrouping()
+	public CDOMReference<CDOMSpell> getSpellGrouping()
 	{
 		return spellType;
 	}

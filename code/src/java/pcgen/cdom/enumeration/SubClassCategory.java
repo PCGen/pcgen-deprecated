@@ -23,14 +23,14 @@ import java.util.Collections;
 import pcgen.base.enumeration.TypeSafeConstant;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.Category;
-import pcgen.core.SubClass;
+import pcgen.cdom.inst.CDOMSubClass;
 
 /**
  * @author Tom Parker (thpr [at] yahoo.com)
  * 
  * This Class is a Type Safe Constant.
  */
-public final class SubClassCategory implements TypeSafeConstant, Category<SubClass>
+public final class SubClassCategory implements TypeSafeConstant, Category<CDOMSubClass>
 {
 
 	/**

@@ -34,11 +34,12 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.VariableKey;
+import pcgen.cdom.inst.PCTemplateChooseList;
 import pcgen.cdom.util.ListKeyMapToList;
-import pcgen.core.PCTemplateChooseList;
 import pcgen.core.SourceEntry;
 
-public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
+public abstract class CDOMObject extends ConcretePrereqObject implements
+		LSTWriteable
 {
 
 	private final SourceEntry source = new SourceEntry();
@@ -48,34 +49,24 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	 * well, in one HashMap... this will control the size of CDOMObject.
 	 */
 	/** A map to hold items keyed by Integers for the object */
-	private final Map<IntegerKey, Integer> integerChar =
-			new HashMap<IntegerKey, Integer>();
+	private final Map<IntegerKey, Integer> integerChar = new HashMap<IntegerKey, Integer>();
 
 	/** A map to hold items keyed by Strings for the object */
-	private final Map<StringKey, String> stringChar =
-			new HashMap<StringKey, String>();
+	private final Map<StringKey, String> stringChar = new HashMap<StringKey, String>();
 
 	/** A map to hold items keyed by Strings for the object */
-	private final Map<FormulaKey, Formula> formulaChar =
-			new HashMap<FormulaKey, Formula>();
+	private final Map<FormulaKey, Formula> formulaChar = new HashMap<FormulaKey, Formula>();
 
 	/** A map to hold items keyed by Strings for the object */
-	private final Map<VariableKey, Formula> variableChar =
-			new HashMap<VariableKey, Formula>();
+	private final Map<VariableKey, Formula> variableChar = new HashMap<VariableKey, Formula>();
 
 	/** A map to hold items keyed by Strings for the object */
-	private final Map<ObjectKey<?>, Object> objectChar =
-			new HashMap<ObjectKey<?>, Object>();
+	private final Map<ObjectKey<?>, Object> objectChar = new HashMap<ObjectKey<?>, Object>();
 
 	/** A map of Lists for the object */
 	private final ListKeyMapToList listChar = new ListKeyMapToList();
 
-	private final DoubleKeyMapToList<CDOMReference<? extends CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject> cdomListMods =
-			new DoubleKeyMapToList<CDOMReference<? extends CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject>();
-
-	private Boolean namePI = null;
-
-	private Boolean descPI = null;
+	private final DoubleKeyMapToList<CDOMReference<? extends CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject> cdomListMods = new DoubleKeyMapToList<CDOMReference<? extends CDOMList<? extends CDOMObject>>, CDOMReference<?>, AssociatedPrereqObject>();
 
 	public SourceEntry getSourceEntry()
 	{
@@ -229,7 +220,7 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	public final <T> List<T> getSafeListFor(ListKey<T> key)
 	{
 		return listChar.containsListFor(key) ? listChar.getListFor(key)
-			: new ArrayList<T>();
+				: new ArrayList<T>();
 	}
 
 	public final int getSizeOfListFor(ListKey<?> key)
@@ -261,40 +252,10 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	{
 		return listChar.removeFromListFor(key, obj);
 	}
-	
+
 	public final Set<ListKey<?>> getListKeys()
 	{
 		return listChar.getKeySet();
-	}
-
-	public final Boolean getDescPIObject()
-	{
-		return descPI;
-	}
-
-	public final boolean isDescPI()
-	{
-		return descPI == null ? false : descPI.booleanValue();
-	}
-
-	public final void setDescPI(Boolean descIsPI)
-	{
-		this.descPI = descIsPI;
-	}
-
-	public final Boolean getNamePIObject()
-	{
-		return namePI;
-	}
-
-	public final boolean isNamePI()
-	{
-		return namePI == null ? false : namePI.booleanValue();
-	}
-
-	public final void setNamePI(Boolean nameIsPI)
-	{
-		this.namePI = nameIsPI;
 	}
 
 	public String getKey()
@@ -311,7 +272,12 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	{
 		// FIXME TODO Patched for now to avoid NPEs, but this is wrong
 		// TODO Auto-generated method stub
-		return this.get(StringKey.NAME);
+		String returnKey = this.get(StringKey.KEY_NAME);
+		if (returnKey == null)
+		{
+			returnKey = this.get(StringKey.NAME);
+		}
+		return returnKey;
 	}
 
 	public String getDisplayName()
@@ -331,11 +297,6 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		{
 			return true;
 		}
-		if (namePI != cdo.namePI || descPI != cdo.descPI)
-		{
-			System.err.println("CDOM Inequality PI");
-			return false;
-		}
 		/*
 		 * FIXME Test source here
 		 * 
@@ -343,65 +304,69 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 		 */
 		if (!integerChar.equals(cdo.integerChar))
 		{
-			System.err.println("CDOM Inequality Integer");
-			System.err.println(integerChar + " " + cdo.integerChar);
+			// System.err.println("CDOM Inequality Integer");
+			// System.err.println(integerChar + " " + cdo.integerChar);
 			return false;
 		}
 		if (!stringChar.equals(cdo.stringChar))
 		{
-			System.err.println("CDOM Inequality String");
-			System.err.println(stringChar + " " + cdo.stringChar);
+			// System.err.println("CDOM Inequality String");
+			// System.err.println(stringChar + " " + cdo.stringChar);
 			return false;
 		}
 		if (!formulaChar.equals(cdo.formulaChar))
 		{
-			System.err.println("CDOM Inequality Formula");
-			System.err.println(formulaChar + " " + cdo.formulaChar);
+			// System.err.println("CDOM Inequality Formula");
+			// System.err.println(formulaChar + " " + cdo.formulaChar);
 			return false;
 		}
 		if (!variableChar.equals(cdo.variableChar))
 		{
-			System.err.println("CDOM Inequality Variable");
-			System.err.println(variableChar + " " + cdo.variableChar);
+			// System.err.println("CDOM Inequality Variable");
+			// System.err.println(variableChar + " " + cdo.variableChar);
 			return false;
 		}
 		if (!objectChar.equals(cdo.objectChar))
 		{
-			System.err.println("CDOM Inequality Object");
-			System.err.println(objectChar + " " + cdo.objectChar);
+			// System.err.println("CDOM Inequality Object");
+			// System.err.println(objectChar + " " + cdo.objectChar);
 			return false;
 		}
 		if (!listChar.equals(cdo.listChar))
 		{
-			System.err.println("CDOM Inequality List");
-			System.err.println(listChar + " " + cdo.listChar);
+			// System.err.println("CDOM Inequality List");
+			// System.err.println(listChar + " " + cdo.listChar);
+			// System.err.println(listChar.getKeySet() + " "
+			// + cdo.listChar.getKeySet());
 			return false;
 		}
 		if (!cdomListMods.equals(cdo.cdomListMods))
 		{
-			System.err.println("CDOM Inequality ListMods");
-			System.err.println(cdomListMods + " " + cdo.cdomListMods);
-			System.err.println(cdomListMods.getKeySet() + " "
-				+ cdo.cdomListMods.getKeySet());
+			// System.err.println("CDOM Inequality ListMods");
+			// System.err.println(cdomListMods + " " + cdo.cdomListMods);
+			// System.err.println(cdomListMods.getKeySet() + " "
+			// + cdo.cdomListMods.getKeySet());
 			return false;
 		}
 		return true;
 	}
 
-	public <T extends CDOMObject> void putToList(CDOMReference<? extends CDOMList<? extends CDOMObject>> list,
-		CDOMReference<T> granted, AssociatedPrereqObject associations)
+	public <T extends CDOMObject> void putToList(
+			CDOMReference<? extends CDOMList<? extends CDOMObject>> list,
+			CDOMReference<T> granted, AssociatedPrereqObject associations)
 	{
 		cdomListMods.addToListFor(list, granted, associations);
 	}
 
-	public boolean hasListMods(CDOMReference<? extends CDOMList<? extends CDOMObject>> list)
+	public boolean hasListMods(
+			CDOMReference<? extends CDOMList<? extends CDOMObject>> list)
 	{
 		return cdomListMods.containsListFor(list);
 	}
 
-	// TODO Is there a way to get type safety here?  
+	// TODO Is there a way to get type safety here?
 	public <BT extends CDOMObject> Collection<CDOMReference<BT>> getListMods(
-		CDOMReference<? extends CDOMList<BT>> list)
+			CDOMReference<? extends CDOMList<BT>> list)
 	{
 		Set set = cdomListMods.getSecondaryKeySet(list);
 		if (set == null || set.isEmpty())
@@ -412,7 +377,8 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 	}
 
 	public Collection<AssociatedPrereqObject> getListAssociations(
-		CDOMReference<? extends CDOMList<? extends CDOMObject>> list, CDOMReference<?> key)
+			CDOMReference<? extends CDOMList<? extends CDOMObject>> list,
+			CDOMReference<?> key)
 	{
 		return cdomListMods.getListFor(list, key);
 	}
@@ -457,6 +423,19 @@ public class CDOMObject extends ConcretePrereqObject implements LSTWriteable
 			chooseContainer = new ChooseActionContainer("CHOOSE");
 		}
 		return chooseContainer;
+	}
+
+	protected void overlayCDOMObject(CDOMObject cdo)
+	{
+		integerChar.putAll(cdo.integerChar);
+		stringChar.putAll(cdo.stringChar);
+		formulaChar.putAll(cdo.formulaChar);
+		objectChar.putAll(cdo.objectChar);
+		variableChar.putAll(cdo.variableChar);
+		listChar.addAllLists(cdo.listChar);
+		/*
+		 * TODO Need to do CDOMListMods
+		 */
 	}
 
 }

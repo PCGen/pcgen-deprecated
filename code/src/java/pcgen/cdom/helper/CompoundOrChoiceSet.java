@@ -30,7 +30,7 @@ import java.util.TreeSet;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.character.CharacterDataStore;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.persistence.TokenUtilities;
 
 public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
 {

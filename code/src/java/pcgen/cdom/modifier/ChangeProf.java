@@ -22,18 +22,18 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.Modifier;
-import pcgen.core.WeaponProf;
+import pcgen.cdom.inst.CDOMWeaponProf;
 
 public class ChangeProf extends ConcretePrereqObject implements
-		Modifier<WeaponProf>, LSTWriteable
+		Modifier<CDOMWeaponProf>, LSTWriteable
 {
 
-	private final CDOMReference<WeaponProf> source;
+	private final CDOMReference<CDOMWeaponProf> source;
 
-	private final CDOMGroupRef<WeaponProf> result;
+	private final CDOMGroupRef<CDOMWeaponProf> result;
 
-	public ChangeProf(CDOMReference<WeaponProf> sourceProf,
-		CDOMGroupRef<WeaponProf> resultType)
+	public ChangeProf(CDOMReference<CDOMWeaponProf> sourceProf,
+		CDOMGroupRef<CDOMWeaponProf> resultType)
 	{
 		if (sourceProf == null)
 		{
@@ -49,7 +49,7 @@ public class ChangeProf extends ConcretePrereqObject implements
 		result = resultType;
 	}
 
-	public WeaponProf applyModifier(WeaponProf obj)
+	public CDOMWeaponProf applyModifier(CDOMWeaponProf obj)
 	{
 		if (source.contains(obj))
 		{
@@ -60,17 +60,17 @@ public class ChangeProf extends ConcretePrereqObject implements
 		return obj;
 	}
 
-	public Class<WeaponProf> getModifiedClass()
+	public Class<CDOMWeaponProf> getModifiedClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
-	public CDOMReference<WeaponProf> getSource()
+	public CDOMReference<CDOMWeaponProf> getSource()
 	{
 		return source;
 	}
 
-	public CDOMGroupRef<WeaponProf> getResult()
+	public CDOMGroupRef<CDOMWeaponProf> getResult()
 	{
 		return result;
 	}

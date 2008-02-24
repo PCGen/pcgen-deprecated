@@ -22,26 +22,25 @@ import java.util.Collections;
 
 import pcgen.base.enumeration.TypeSafeConstant;
 import pcgen.base.util.CaseInsensitiveMap;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Category;
-import pcgen.core.Ability;
+import pcgen.cdom.inst.CDOMAbility;
 
 /**
  * @author Tom Parker (thpr [at] yahoo.com)
  * 
  * This Class is a Type Safe Constant.
  */
-public final class AbilityCategory implements TypeSafeConstant, Category<Ability>
+public final class CDOMAbilityCategory extends CDOMObject implements
+		TypeSafeConstant, Category<CDOMAbility>
 {
 
-	public static AbilityCategory FEAT = getConstant("FEAT");
-	public static AbilityCategory Mutation = getConstant("Mutation");
-	public static AbilityCategory Salient_Divine_Ability =
-			getConstant("Salient_Divine_Ability");
+	public static CDOMAbilityCategory FEAT = getConstant("FEAT");
 
 	/**
 	 * This Map contains the mappings from Strings to the Type Safe Constant
 	 */
-	private static CaseInsensitiveMap<AbilityCategory> typeMap;
+	private static CaseInsensitiveMap<CDOMAbilityCategory> typeMap;
 
 	/**
 	 * This is used to provide a unique ordinal to each constant in this class
@@ -58,10 +57,11 @@ public final class AbilityCategory implements TypeSafeConstant, Category<Ability
 	 */
 	private final transient int ordinal;
 
-	private AbilityCategory(String name)
+	private CDOMAbilityCategory(String name)
 	{
 		ordinal = ordinalCount++;
 		fieldName = name;
+		setName(name);
 	}
 
 	/**
@@ -92,14 +92,14 @@ public final class AbilityCategory implements TypeSafeConstant, Category<Ability
 	 *            The name of the constant to be returned
 	 * @return The Constant for the given name
 	 */
-	public static AbilityCategory getConstant(String s)
+	public static CDOMAbilityCategory getConstant(String s)
 	{
 		if (typeMap == null)
 		{
-			typeMap = new CaseInsensitiveMap<AbilityCategory>();
+			typeMap = new CaseInsensitiveMap<CDOMAbilityCategory>();
 		}
 		String lookup = s.replace('_', ' ');
-		AbilityCategory o = typeMap.get(lookup);
+		CDOMAbilityCategory o = typeMap.get(lookup);
 		if (o == null)
 		{
 			/*
@@ -108,9 +108,9 @@ public final class AbilityCategory implements TypeSafeConstant, Category<Ability
 			if (s.length() == 0)
 			{
 				throw new IllegalArgumentException(
-					"Type Name cannot be zero length");
+						"Type Name cannot be zero length");
 			}
-			o = new AbilityCategory(lookup);
+			o = new CDOMAbilityCategory(lookup);
 			typeMap.put(lookup, o);
 		}
 		return o;
@@ -125,13 +125,13 @@ public final class AbilityCategory implements TypeSafeConstant, Category<Ability
 	 *            The name of the constant to be returned
 	 * @return The Constant for the given name
 	 */
-	public static AbilityCategory valueOf(String s)
+	public static CDOMAbilityCategory valueOf(String s)
 	{
 		if (typeMap == null)
 		{
-			typeMap = new CaseInsensitiveMap<AbilityCategory>();
+			typeMap = new CaseInsensitiveMap<CDOMAbilityCategory>();
 		}
-		AbilityCategory o = typeMap.get(s);
+		CDOMAbilityCategory o = typeMap.get(s);
 		if (o == null)
 		{
 			throw new IllegalArgumentException(s);
@@ -148,7 +148,7 @@ public final class AbilityCategory implements TypeSafeConstant, Category<Ability
 	 * 
 	 * @return a Collection of all of the Constants in this Class.
 	 */
-	public static Collection<AbilityCategory> getAllConstants()
+	public static Collection<CDOMAbilityCategory> getAllConstants()
 	{
 		if (typeMap == null)
 		{
@@ -173,6 +173,14 @@ public final class AbilityCategory implements TypeSafeConstant, Category<Ability
 		{
 			typeMap.clear();
 		}
+	}
+
+	@Override
+	public CDOMObject clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException(
+				"Cloning prohibited: CDOMAbilityCategory "
+						+ "is a TypeSafeConstant class");
 	}
 
 }

@@ -10,12 +10,12 @@ import pcgen.cdom.content.EquipmentSet;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.core.Equipment;
+import pcgen.cdom.inst.CDOMEquipment;
 
 public class EquipmentSetFacade
 {
 
-	private final Class<Equipment> EQUIPMENT_CLASS = Equipment.class;
+	private final Class<CDOMEquipment> EQUIPMENT_CLASS = CDOMEquipment.class;
 
 	private final PCGenGraph graph;
 
@@ -36,13 +36,13 @@ public class EquipmentSetFacade
 		set = activeSet;
 	}
 
-	public Collection<Equipment> getEquipment()
+	public Collection<CDOMEquipment> getEquipment()
 	{
 		DirectedBreadthFirstTraverseAlgorithm<PrereqObject, PCGraphEdge> trav =
 				new DirectedBreadthFirstTraverseAlgorithm<PrereqObject, PCGraphEdge>(
 					graph);
 		trav.traverseFromNode(set);
-		List<Equipment> list = new ArrayList<Equipment>();
+		List<CDOMEquipment> list = new ArrayList<CDOMEquipment>();
 		for (PrereqObject po : trav.getVisitedNodes())
 		{
 			if (EQUIPMENT_CLASS.isInstance(po))
@@ -53,7 +53,7 @@ public class EquipmentSetFacade
 		return list;
 	}
 
-	public Collection<Equipment> getEquipment(final int location)
+	public Collection<CDOMEquipment> getEquipment(final int location)
 	{
 		DirectedBreadthFirstTraverseAlgorithm<PrereqObject, PCGraphEdge> trav =
 				new DirectedBreadthFirstTraverseAlgorithm<PrereqObject, PCGraphEdge>(
@@ -79,7 +79,7 @@ public class EquipmentSetFacade
 
 				};
 		trav.traverseFromNode(set);
-		List<Equipment> list = new ArrayList<Equipment>();
+		List<CDOMEquipment> list = new ArrayList<CDOMEquipment>();
 		for (PrereqObject po : trav.getVisitedNodes())
 		{
 			if (EQUIPMENT_CLASS.isInstance(po))

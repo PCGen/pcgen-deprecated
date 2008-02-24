@@ -28,15 +28,14 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.PObject;
 
-public class RetainingChooser<T extends PObject> implements
+public class RetainingChooser<T extends CDOMObject> implements
 		PrimitiveChoiceSet<T>
 {
 
-	private final Set<PrimitiveChoiceFilter<? super T>> retainingSet =
-			new HashSet<PrimitiveChoiceFilter<? super T>>();
+	private final Set<PrimitiveChoiceFilter<? super T>> retainingSet = new HashSet<PrimitiveChoiceFilter<? super T>>();
 
 	private final PrimitiveChoiceSet<T> baseSet;
 
@@ -60,7 +59,7 @@ public class RetainingChooser<T extends PObject> implements
 	}
 
 	public void addAllRetainingChoiceFilters(
-		Collection<PrimitiveChoiceFilter<T>> coll)
+			Collection<PrimitiveChoiceFilter<T>> coll)
 	{
 		if (coll == null)
 		{
@@ -93,7 +92,7 @@ public class RetainingChooser<T extends PObject> implements
 	public String getLSTformat()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(baseSet.getLSTformat()).append('[');
+		// sb.append(baseSet.getLSTformat()).append('[');
 		Set<String> sortSet = new TreeSet<String>();
 		for (PrimitiveChoiceFilter<? super T> cf : retainingSet)
 		{
@@ -109,11 +108,29 @@ public class RetainingChooser<T extends PObject> implements
 			needPipe = true;
 			sb.append(s);
 		}
+		// sb.append(']');
 		return sb.toString();
 	}
 
 	public Class<T> getChoiceClass()
 	{
 		return baseSet.getChoiceClass();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return baseSet.hashCode() + retainingSet.size();
+	}
+
+	public boolean equals(Object o)
+	{
+		if (o instanceof RetainingChooser)
+		{
+			RetainingChooser other = (RetainingChooser) o;
+			return baseSet.equals(other.baseSet)
+					&& retainingSet.equals(other.retainingSet);
+		}
+		return false;
 	}
 }

@@ -35,6 +35,7 @@ import pcgen.core.prereq.Prerequisite;
  */
 public interface PrereqObject
 {
+	
 	public void addPrerequisite(Prerequisite preReq);
 
 	public void addAllPrerequisites(Prerequisite... prereqs);
@@ -54,5 +55,8 @@ public interface PrereqObject
 	public boolean hasPrerequisiteOfType(String matchType);
 	
 	public Class<? extends PrereqObject> getReferenceClass();
+
+	@Deprecated
+	public void addPreReq(Prerequisite preReq);
 	
 }

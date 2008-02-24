@@ -24,7 +24,6 @@ import pcgen.base.graph.core.DirectionalSetMapGraph;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.CharacterDescription;
-import pcgen.core.PObject;
 
 public class PCGenGraph extends
 		DirectionalSetMapGraph<PrereqObject, PCGraphEdge>
@@ -51,7 +50,7 @@ public class PCGenGraph extends
 		return list;
 	}
 
-	public <T extends PObject> T getGrantedNode(Class<T> name, String s)
+	public <T extends CDOMObject> T getGrantedNode(Class<T> name, String s)
 	{
 		// Long/Slow implementation...
 		for (PrereqObject pro : getNodeList())

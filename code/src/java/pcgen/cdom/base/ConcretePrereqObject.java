@@ -39,13 +39,14 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteUtilities;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
+import pcgen.prereq.CDOMPrerequisiteUtilities;
 
 /**
  * This class implements support for prerequisites for an object.
  * 
  * @author boomer70 <boomer70@yahoo.com>
  */
-public class ConcretePrereqObject implements PrereqObject, Cloneable
+public class ConcretePrereqObject implements PrereqObject
 {
 	/**
 	 * The list of prerequisites
@@ -203,22 +204,28 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 	 */
 	public void setPrerequisiteListFrom(PrereqObject prereqObject)
 	{
+		List<Prerequisite> workingList;
 		if (prereqObject.getClass().equals(ConcretePrereqObject.class))
 		{
 			ConcretePrereqObject pro = (ConcretePrereqObject) prereqObject;
-			thePrereqs = new ArrayList<Prerequisite>(pro.thePrereqs.size());
-			try
+			workingList = pro.thePrereqs;
+		}
+		else
+		{
+			workingList = prereqObject.getPrerequisiteList();
+		}
+		thePrereqs = new ArrayList<Prerequisite>(workingList.size());
+		try
+		{
+			for (Prerequisite element : workingList)
 			{
-				for (Prerequisite element : pro.thePrereqs)
-				{
-					thePrereqs.add(element.clone());
-				}
+				thePrereqs.add(element.clone());
 			}
-			catch (CloneNotSupportedException cnse)
-			{
-				throw new UnreachableError(
+		}
+		catch (CloneNotSupportedException cnse)
+		{
+			throw new UnreachableError(
 					"Code assumes Prerequisite is Cloneable", cnse);
-			}
 		}
 	}
 
@@ -248,27 +255,13 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 				return true;
 			}
 			if (matchType != null
-				&& matchType.equalsIgnoreCase(prereq.getKind()))
+					&& matchType.equalsIgnoreCase(prereq.getKind()))
 			{
 				return true;
 			}
 		}
 
 		return false;
-	}
-
-	/**
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	public ConcretePrereqObject clone() throws CloneNotSupportedException
-	{
-		final ConcretePrereqObject obj = (ConcretePrereqObject) super.clone();
-		if (thePrereqs != null)
-		{
-			obj.thePrereqs = new ArrayList<Prerequisite>(thePrereqs);
-		}
-		return obj;
 	}
 
 	// TODO FACADE, to be moved (inlined?)
@@ -282,7 +275,7 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 	public final String preReqHTMLStrings(final PlayerCharacter aPC)
 	{
 		return PrerequisiteUtilities.preReqHTMLStringsForList(aPC, null,
-			thePrereqs, true);
+				thePrereqs, true);
 	}
 
 	/**
@@ -293,10 +286,10 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 	 * @return the pre requesites as an HTML String
 	 */
 	public String preReqHTMLStrings(final PlayerCharacter aPC,
-		final boolean includeHeader)
+			final boolean includeHeader)
 	{
 		return PrerequisiteUtilities.preReqHTMLStringsForList(aPC, null,
-			thePrereqs, includeHeader);
+				thePrereqs, includeHeader);
 	}
 
 	/**
@@ -307,10 +300,10 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 	 * @return the pre requesites as an HTML String given an object
 	 */
 	public final String preReqHTMLStrings(final PlayerCharacter aPC,
-		final PObject p)
+			final PObject p)
 	{
 		return PrerequisiteUtilities.preReqHTMLStringsForList(aPC, p,
-			thePrereqs, true);
+				thePrereqs, true);
 	}
 
 	/**
@@ -325,7 +318,7 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 
 	/** TODO This is rather foobar'd */
 	public final boolean passesPreReqToGain(final Equipment p,
-		final PlayerCharacter aPC)
+			final PlayerCharacter aPC)
 	{
 		if (!hasPreReqs())
 		{
@@ -401,7 +394,7 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 	 * @see pcgen.core.prereq.Prerequisite#setLevelQualifier(int)
 	 */
 	public final void addPreReq(final Prerequisite preReq,
-		final int levelQualifier)
+			final int levelQualifier)
 	{
 		if (preReq == null)
 		{
@@ -458,7 +451,7 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 			return true;
 		}
 
-		return PrereqHandler.passesAll(thePrereqs, aPC, null);
+		return CDOMPrerequisiteUtilities.passesAll(thePrereqs, aPC, null);
 	}
 
 	/**
@@ -510,8 +503,8 @@ public class ConcretePrereqObject implements PrereqObject, Cloneable
 		{
 			return false;
 		}
-		ArrayList<Prerequisite> removed =
-				new ArrayList<Prerequisite>(thePrereqs);
+		ArrayList<Prerequisite> removed = new ArrayList<Prerequisite>(
+				thePrereqs);
 		removed.removeAll(otherPRL);
 		return removed.isEmpty();
 	}

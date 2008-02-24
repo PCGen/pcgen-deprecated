@@ -71,7 +71,7 @@ public class PCGenLists
 	}
 
 	public <LT extends CDOMObject, T extends CDOMList<LT>> boolean listContains(
-		T list, Spell obj)
+		T list, LT obj)
 	{
 		return lists.containsKey(list, obj);
 	}

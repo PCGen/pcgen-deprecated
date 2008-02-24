@@ -49,98 +49,69 @@ public final class AssociationKey<T>
 	 * 
 	 * have a .cast(Object o) method on ObjectKey???
 	 */
-	public static final AssociationKey<Integer> SPELL_LEVEL =
-			new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> SPELL_LEVEL = new AssociationKey<Integer>();
 
-	public static final AssociationKey<SkillCost> SKILL_COST =
-			new AssociationKey<SkillCost>();
+	public static final AssociationKey<SkillCost> SKILL_COST = new AssociationKey<SkillCost>();
 
-	public static final AssociationKey<AbilityNature> ABILITY_NATURE =
-			new AssociationKey<AbilityNature>();
+	public static final AssociationKey<AbilityNature> ABILITY_NATURE = new AssociationKey<AbilityNature>();
 
-	public static final AssociationKey<String> CASTER_LEVEL =
-			new AssociationKey<String>();
+	public static final AssociationKey<String> CASTER_LEVEL = new AssociationKey<String>();
 
-	public static final AssociationKey<String> TIMES_PER_DAY =
-			new AssociationKey<String>();
+	public static final AssociationKey<String> TIMES_PER_UNIT = new AssociationKey<String>();
 
-	public static final AssociationKey<String> SPELLBOOK =
-			new AssociationKey<String>();
+	public static final AssociationKey<String> SPELLBOOK = new AssociationKey<String>();
 
-	public static final AssociationKey<String> DC_FORMULA =
-			new AssociationKey<String>();
+	public static final AssociationKey<String> DC_FORMULA = new AssociationKey<String>();
 
-	public static final AssociationKey<String> ONLY =
-			new AssociationKey<String>();
+	public static final AssociationKey<String> ONLY = new AssociationKey<String>();
 
-	public static final AssociationKey<AbilityCategory> ABILITY_CATEGORY =
-			new AssociationKey<AbilityCategory>();
+	public static final AssociationKey<CDOMAbilityCategory> ABILITY_CATEGORY = new AssociationKey<CDOMAbilityCategory>();
 
-	public static final AssociationKey<EquipmentNature> EQUIPMENT_NATURE =
-			new AssociationKey<EquipmentNature>();
+	public static final AssociationKey<EquipmentNature> EQUIPMENT_NATURE = new AssociationKey<EquipmentNature>();
 
-	public static final AssociationKey<Integer> QUANTITY =
-			new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> QUANTITY = new AssociationKey<Integer>();
 
-	public static final AssociationKey<URI> RETIRED_BY =
-			new AssociationKey<URI>();
+	public static final AssociationKey<URI> RETIRED_BY = new AssociationKey<URI>();
 
-	public static final AssociationKey<Integer> SEQUENCE_NUMBER =
-			new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> SEQUENCE_NUMBER = new AssociationKey<Integer>();
 
-	public static final AssociationKey<URI> SOURCE_URI =
-			new AssociationKey<URI>();
+	public static final AssociationKey<URI> SOURCE_URI = new AssociationKey<URI>();
 
-	public static final AssociationKey<Integer> FOLLOWER_ADJUSTMENT =
-			new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> FOLLOWER_ADJUSTMENT = new AssociationKey<Integer>();
 
-	public static final AssociationKey<CDOMObject> OWNER =
-			new AssociationKey<CDOMObject>();
+	public static final AssociationKey<CDOMObject> OWNER = new AssociationKey<CDOMObject>();
 
-	public static final AssociationKey<String> TOKEN =
-			new AssociationKey<String>();
+	public static final AssociationKey<String> TOKEN = new AssociationKey<String>();
 
-	public static final AssociationKey<Integer> WEIGHT =
-			new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> WEIGHT = new AssociationKey<Integer>();
 
-	public static final AssociationKey<Integer> EQUIPMENT_LOCATION =
-			new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> EQUIPMENT_LOCATION = new AssociationKey<Integer>();
 
-	public static final AssociationKey<CDOMObject> ABILITY_ASSOCIATION =
-			new AssociationKey<CDOMObject>();
+	public static final AssociationKey<CDOMObject> ABILITY_ASSOCIATION = new AssociationKey<CDOMObject>();
 
-	public static final AssociationKey<AssociationListKey<?>> CHOICE_KEY =
-			new AssociationKey<AssociationListKey<?>>();
+	public static final AssociationKey<AssociationListKey<?>> CHOICE_KEY = new AssociationKey<AssociationListKey<?>>();
 
-	public static final AssociationKey<Formula> CHOICE_COUNT =
-			new AssociationKey<Formula>();
+	public static final AssociationKey<Formula> CHOICE_COUNT = new AssociationKey<Formula>();
 
-	public static final AssociationKey<Formula> CHOICE_MAXCOUNT =
-			new AssociationKey<Formula>();
+	public static final AssociationKey<Formula> CHOICE_MAXCOUNT = new AssociationKey<Formula>();
 
-	public static final AssociationKey<URI> GLOBAL_REMOVE =
-		new AssociationKey<URI>();
+	public static final AssociationKey<URI> GLOBAL_REMOVE = new AssociationKey<URI>();
 
-	public static final AssociationKey<Boolean> IRRELEVANT =
-			new AssociationKey<Boolean>();
+	public static final AssociationKey<Boolean> IRRELEVANT = new AssociationKey<Boolean>();
 
-	public static final AssociationKey<FileLocation> FILE_LOCATION =
-		new AssociationKey<FileLocation>();
+	public static final AssociationKey<FileLocation> FILE_LOCATION = new AssociationKey<FileLocation>();
 
-	public static final AssociationKey<ChoiceSet<?>> CHOICE =
-			new AssociationKey<ChoiceSet<?>>();
+	public static final AssociationKey<ChoiceSet<?>> CHOICE = new AssociationKey<ChoiceSet<?>>();
 
-	public static final AssociationKey<String> CHOICE_TITLE = 
-		new AssociationKey<String>();
+	public static final AssociationKey<String> CHOICE_TITLE = new AssociationKey<String>();
 
-	public static final AssociationKey<Integer> NUMBER_CARRIED = 
-		new AssociationKey<Integer>();
+	public static final AssociationKey<Integer> NUMBER_CARRIED = new AssociationKey<Integer>();
 
-	public static final AssociationKey<List<AssociationKey<?>>> LOCK = 
-		new AssociationKey<List<AssociationKey<?>>>();
+	public static final AssociationKey<List<AssociationKey<?>>> LOCK = new AssociationKey<List<AssociationKey<?>>>();
 
 	public static final AssociationKey<Boolean> REQUIRED = new AssociationKey<Boolean>();
 
+	public static final AssociationKey<String> TIME_UNIT = new AssociationKey<String>();
 
 	private static CaseInsensitiveMap<AssociationKey<?>> map = null;
 
@@ -187,7 +158,7 @@ public final class AssociationKey<T>
 			int mod = fields[i].getModifiers();
 
 			if (Modifier.isStatic(mod) && Modifier.isFinal(mod)
-				&& Modifier.isPublic(mod))
+					&& Modifier.isPublic(mod))
 			{
 				try
 				{

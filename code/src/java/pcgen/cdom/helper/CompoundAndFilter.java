@@ -25,7 +25,7 @@ public class CompoundAndFilter<T> implements PrimitiveChoiceFilter<T>
 		{
 			throw new IllegalArgumentException();
 		}
-		refClass = set.iterator().next().getReferenceClass();
+		refClass = coll.iterator().next().getReferenceClass();
 		set.addAll(coll);
 	}
 
