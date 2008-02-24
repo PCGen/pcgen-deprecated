@@ -23,11 +23,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.DrLst;
 import plugin.lsttokens.SabLst;
 import plugin.lsttokens.SrLst;
@@ -36,11 +36,12 @@ import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreHDParser;
 import plugin.pretokens.writer.PreHDWriter;
 
-public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
+public class HDTokenTest extends AbstractTokenTestCase<CDOMTemplate>
 {
 
 	static HdToken token = new HdToken();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	private static boolean classSetUpFired = false;
 
@@ -60,7 +61,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Override
 	@Before
 	public final void setUp() throws PersistenceLayerException,
-		URISyntaxException
+			URISyntaxException
 	{
 		super.setUp();
 		if (!classSetUpFired)
@@ -70,19 +71,19 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCTemplate> getToken()
+	public CDOMPrimaryToken<CDOMTemplate> getToken()
 	{
 		return token;
 	}
@@ -131,7 +132,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputEmptyDRNoColon()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("3+:DR"));
 		assertNoSideEffects();
@@ -181,7 +182,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputEmptySRNoColon()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("3+:SR"));
 		assertNoSideEffects();
@@ -189,7 +190,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputEmptySANoColon()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("3+:SAB"));
 		assertNoSideEffects();
@@ -197,7 +198,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputEmptyCRNoColon()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("3+:CR"));
 		assertNoSideEffects();
@@ -224,7 +225,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputNoSpecificClear()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse(".CLEAR.3+:CR:3"));
 		assertNoSideEffects();
@@ -232,7 +233,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputBadHDRangePlus()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("+3:SAB:Special Abil"));
 		assertNoSideEffects();
@@ -240,7 +241,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputBadHDRangeMult()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("*3:SAB:Special Abil"));
 		assertNoSideEffects();
@@ -248,7 +249,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputBadHDRangeTwoDash()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("1--3:SAB:Special Abil"));
 		assertNoSideEffects();
@@ -256,7 +257,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputBadHDRangeEndDash()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("4-:SAB:Special Abil"));
 		assertNoSideEffects();
@@ -264,7 +265,7 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testInvalidInputBadHDRangeUpTo()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("-4:SAB:Special Abil"));
 		assertNoSideEffects();
@@ -321,14 +322,14 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testRoundRobinMinimumSRNumber()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		runRoundRobin("3+:SR:25");
 	}
 
 	@Test
 	public void testRoundRobinMinimumSRFormula()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		runRoundRobin("3+:SR:Formula");
 	}
@@ -341,14 +342,14 @@ public class HDTokenTest extends AbstractTokenTestCase<PCTemplate>
 
 	@Test
 	public void testRoundRobinMinimumCRNumber()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		runRoundRobin("4+:CR:3");
 	}
 
 	@Test
 	public void testRoundRobinMinimumCRFormula()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		runRoundRobin("4+:CR:Formula");
 	}

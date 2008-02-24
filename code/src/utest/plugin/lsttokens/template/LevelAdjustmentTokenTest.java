@@ -18,33 +18,34 @@
 package plugin.lsttokens.template;
 
 import pcgen.cdom.enumeration.FormulaKey;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractFormulaTokenTestCase;
 
 
-public class LevelAdjustmentTokenTest extends AbstractFormulaTokenTestCase<PCTemplate>
+public class LevelAdjustmentTokenTest extends AbstractFormulaTokenTestCase<CDOMTemplate>
 {
 
 	static LeveladjustmentToken token = new LeveladjustmentToken();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCTemplate> getToken()
+	public CDOMPrimaryToken<CDOMTemplate> getToken()
 	{
 		return token;
 	}

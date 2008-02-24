@@ -20,32 +20,33 @@ package plugin.lsttokens.spell;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.StringKey;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SpellLoader;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractStringTokenTestCase;
 
-public class DurationTokenTest extends AbstractStringTokenTestCase<Spell>
+public class DurationTokenTest extends AbstractStringTokenTestCase<CDOMSpell>
 {
 
 	static DurationToken token = new DurationToken();
-	static SpellLoader loader = new SpellLoader();
+	static CDOMTokenLoader<CDOMSpell> loader = new CDOMTokenLoader<CDOMSpell>(
+			CDOMSpell.class);
 
 	@Override
-	public Class<Spell> getCDOMClass()
+	public Class<CDOMSpell> getCDOMClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Spell> getLoader()
+	public CDOMLoader<CDOMSpell> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Spell> getToken()
+	public CDOMPrimaryToken<CDOMSpell> getToken()
 	{
 		return token;
 	}

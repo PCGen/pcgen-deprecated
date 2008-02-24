@@ -20,35 +20,36 @@ package plugin.lsttokens.spell;
 import org.junit.Test;
 
 import pcgen.base.util.DefaultMap;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.PCClass;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SpellLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class CostTokenTest extends AbstractTokenTestCase<Spell>
+public class CostTokenTest extends AbstractTokenTestCase<CDOMSpell>
 {
 	static CostToken token = new CostToken();
-	static SpellLoader loader = new SpellLoader();
+	static CDOMTokenLoader<CDOMSpell> loader = new CDOMTokenLoader<CDOMSpell>(
+			CDOMSpell.class);
 
 	@Override
-	public Class<Spell> getCDOMClass()
+	public Class<CDOMSpell> getCDOMClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Spell> getLoader()
+	public CDOMLoader<CDOMSpell> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Spell> getToken()
+	public CDOMPrimaryToken<CDOMSpell> getToken()
 	{
 		return token;
 	}
@@ -172,7 +173,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	@Test
 	public void testValidInputs() throws PersistenceLayerException
 	{
-		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm;
+		DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer> dm;
 		assertTrue(parse("5"));
 		dm = primaryProf.get(ObjectKey.COMPONENT_COST);
 		assertTrue(dm.isEmpty());
@@ -191,8 +192,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	public void testOutputOne() throws PersistenceLayerException
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
-		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
-				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
+		DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer> dm = new DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer>();
 		dm.setDefaultValue(Integer.valueOf(1));
 		primaryProf.put(ObjectKey.COMPONENT_COST, dm);
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
@@ -204,8 +204,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	public void testOutputZero() throws PersistenceLayerException
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
-		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
-				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
+		DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer> dm = new DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer>();
 		dm.setDefaultValue(Integer.valueOf(0));
 		primaryProf.put(ObjectKey.COMPONENT_COST, dm);
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
@@ -217,8 +216,7 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	public void testBadOutputMinusTwo() throws PersistenceLayerException
 	{
 		assertTrue(0 == primaryContext.getWriteMessageCount());
-		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
-				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
+		DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer> dm = new DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer>();
 		dm.setDefaultValue(Integer.valueOf(-2));
 		primaryProf.put(ObjectKey.COMPONENT_COST, dm);
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
@@ -247,29 +245,29 @@ public class CostTokenTest extends AbstractTokenTestCase<Spell>
 	@Test
 	public void testRoundRobinOneClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
 		runRoundRobin("5|Wizard,10");
 	}
 
 	@Test
 	public void testRoundRobinTwoClassSortTest()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Sorcerer");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Sorcerer");
 		runRoundRobin("5|Sorcerer,50|Wizard,35");
 	}
 
 	@Test
 	public void testRoundRobinTwoClass() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Wizard");
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Sorcerer");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Wizard");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Sorcerer");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Sorcerer");
 		runRoundRobin("5|Sorcerer,25|Wizard,25");
 	}
 }

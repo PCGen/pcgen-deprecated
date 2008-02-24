@@ -19,33 +19,34 @@ package plugin.lsttokens.template;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
+public class AddLevelTokenTest extends AbstractTokenTestCase<CDOMTemplate>
 {
 	static AddLevelToken token = new AddLevelToken();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCTemplate> getToken()
+	public CDOMPrimaryToken<CDOMTemplate> getToken()
 	{
 		return token;
 	}
@@ -120,18 +121,18 @@ public class AddLevelTokenTest extends AbstractTokenTestCase<PCTemplate>
 	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
 		runRoundRobin("Fighter|3");
 	}
 
 	@Test
 	public void testRoundRobinMultiple() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Thief");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Fighter");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Thief");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Thief");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Fighter");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Thief");
 		runRoundRobin("Fighter|3", "Thief|4");
 	}
 

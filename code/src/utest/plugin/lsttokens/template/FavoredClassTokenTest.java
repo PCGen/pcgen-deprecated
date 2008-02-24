@@ -19,42 +19,43 @@ package plugin.lsttokens.template;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
 public class FavoredClassTokenTest extends
-		AbstractListTokenTestCase<PCTemplate, PCClass>
+		AbstractListTokenTestCase<CDOMTemplate, CDOMPCClass>
 {
 
 	static FavoredclassToken token = new FavoredclassToken();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCTemplate> getToken()
+	public CDOMPrimaryToken<CDOMTemplate> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<PCClass> getTargetClass()
+	public Class<CDOMPCClass> getTargetClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Override

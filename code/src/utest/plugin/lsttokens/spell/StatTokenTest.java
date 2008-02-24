@@ -22,45 +22,50 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PCStat;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.SpellLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class StatTokenTest extends AbstractTokenTestCase<Spell>
+public class StatTokenTest extends AbstractTokenTestCase<CDOMSpell>
 {
 
 	static StatToken token = new StatToken();
-	static SpellLoader loader = new SpellLoader();
+	static CDOMTokenLoader<CDOMSpell> loader = new CDOMTokenLoader<CDOMSpell>(
+			CDOMSpell.class);
 
 	@Override
 	@Before
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
-		primaryContext.ref.constructCDOMObject(PCStat.class, "STR");
-		secondaryContext.ref.constructCDOMObject(PCStat.class, "STR");
-		primaryContext.ref.constructCDOMObject(PCStat.class, "INT");
-		secondaryContext.ref.constructCDOMObject(PCStat.class, "INT");
+		CDOMStat ps = primaryContext.ref.constructCDOMObject(CDOMStat.class, "Strength");
+		primaryContext.ref.registerAbbreviation(ps, "STR");
+		CDOMStat ss = secondaryContext.ref.constructCDOMObject(CDOMStat.class, "Strength");
+		secondaryContext.ref.registerAbbreviation(ss, "STR");
+		CDOMStat pi = primaryContext.ref.constructCDOMObject(CDOMStat.class, "Intelligence");
+		primaryContext.ref.registerAbbreviation(pi, "INT");
+		CDOMStat si = secondaryContext.ref.constructCDOMObject(CDOMStat.class, "Intelligence");
+		secondaryContext.ref.registerAbbreviation(si, "INT");
 	}
 
 	@Override
-	public Class<Spell> getCDOMClass()
+	public Class<CDOMSpell> getCDOMClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Spell> getLoader()
+	public CDOMLoader<CDOMSpell> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Spell> getToken()
+	public CDOMPrimaryToken<CDOMSpell> getToken()
 	{
 		return token;
 	}

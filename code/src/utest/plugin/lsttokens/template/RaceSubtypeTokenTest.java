@@ -23,34 +23,35 @@ import org.junit.Test;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.RaceSubType;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTypeSafeListTestCase;
 
 public class RaceSubtypeTokenTest extends
-		AbstractTypeSafeListTestCase<PCTemplate>
+		AbstractTypeSafeListTestCase<CDOMTemplate>
 {
 
 	static RacesubtypeToken token = new RacesubtypeToken();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCTemplate> getToken()
+	public CDOMPrimaryToken<CDOMTemplate> getToken()
 	{
 		return token;
 	}
@@ -145,7 +146,7 @@ public class RaceSubtypeTokenTest extends
 	@Test
 	public void testInvalidRemoveEmpty() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
+		primaryContext.ref.constructCDOMObject(CDOMTemplate.class, "TestWP1");
 		assertFalse(parse(".REMOVE."));
 		assertNoSideEffects();
 	}
@@ -153,7 +154,7 @@ public class RaceSubtypeTokenTest extends
 	@Test
 	public void testInvalidRemoveListEnd() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
+		primaryContext.ref.constructCDOMObject(CDOMTemplate.class, "TestWP1");
 		assertFalse(parse("TestWP1" + getJoinCharacter() + ".REMOVE."));
 		assertNoSideEffects();
 	}
@@ -161,7 +162,7 @@ public class RaceSubtypeTokenTest extends
 	@Test
 	public void testInvalidRemoveListStart() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
+		primaryContext.ref.constructCDOMObject(CDOMTemplate.class, "TestWP1");
 		assertFalse(parse(".REMOVE." + getJoinCharacter() + "TestWP1"));
 		assertNoSideEffects();
 	}
@@ -170,8 +171,8 @@ public class RaceSubtypeTokenTest extends
 	public void testInvalidRemoveListDoubleJoin()
 		throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP1");
-		primaryContext.ref.constructCDOMObject(PCTemplate.class, "TestWP2");
+		primaryContext.ref.constructCDOMObject(CDOMTemplate.class, "TestWP1");
+		primaryContext.ref.constructCDOMObject(CDOMTemplate.class, "TestWP2");
 		assertFalse(parse(".REMOVE.TestWP2" + getJoinCharacter()
 			+ getJoinCharacter() + ".REMOVE.TestWP1"));
 		assertNoSideEffects();
