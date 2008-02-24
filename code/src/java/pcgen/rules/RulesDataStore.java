@@ -4,22 +4,22 @@ import java.util.Set;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.core.PCCharacterLevel;
-import pcgen.core.SizeAdjustment;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
+import pcgen.cdom.inst.CDOMPCLevel;
 
 public interface RulesDataStore
 {
-	public PCCharacterLevel getLevel(int level);
+	public CDOMPCLevel getLevel(int level);
 
 	public <T extends CDOMObject> Set<T> getAll(Class<T> cl);
 
 	public <T extends CDOMObject> T getObject(Class<T> cl, String key);
 
-	public SizeAdjustment getNextSize(SizeAdjustment size);
+	public CDOMSizeAdjustment getNextSize(CDOMSizeAdjustment size);
 
-	public SizeAdjustment getPreviousSize(SizeAdjustment size);
+	public CDOMSizeAdjustment getPreviousSize(CDOMSizeAdjustment size);
 
-	public SizeAdjustment getDefaultSizeAdjustment();
+	public CDOMSizeAdjustment getDefaultSizeAdjustment();
 
 	public <TT extends CDOMObject> CDOMReference<TT> getReference(Class<TT> cl,
 			String name);

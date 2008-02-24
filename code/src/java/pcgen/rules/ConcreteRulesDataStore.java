@@ -6,21 +6,21 @@ import java.util.Set;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.core.DomainList;
-import pcgen.core.PCCharacterLevel;
-import pcgen.core.SizeAdjustment;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
+import pcgen.cdom.inst.DomainList;
+import pcgen.cdom.inst.CDOMPCLevel;
 
 public class ConcreteRulesDataStore
 {
-	private final List<PCCharacterLevel> list = new ArrayList<PCCharacterLevel>();
+	private final List<CDOMPCLevel> list = new ArrayList<CDOMPCLevel>();
 
-	public PCCharacterLevel getLevel(int level)
+	public CDOMPCLevel getLevel(int level)
 	{
 		if (list.size() <= level)
 		{
 			for (int i = list.size(); i <= level; i++)
 			{
-				list.add(new PCCharacterLevel());
+				list.add(new CDOMPCLevel());
 			}
 		}
 		return list.get(level);
@@ -36,19 +36,19 @@ public class ConcreteRulesDataStore
 		return null;
 	}
 
-	public SizeAdjustment getNextSize(SizeAdjustment size)
+	public CDOMSizeAdjustment getNextSize(CDOMSizeAdjustment size)
 	{
 		// TODO What if null (if this is last?)
 		return null;
 	}
 
-	public SizeAdjustment getPreviousSize(SizeAdjustment size)
+	public CDOMSizeAdjustment getPreviousSize(CDOMSizeAdjustment size)
 	{
 		// TODO What if null (if this is last?)
 		return null;
 	}
 
-	public SizeAdjustment getDefaultSizeAdjustment()
+	public CDOMSizeAdjustment getDefaultSizeAdjustment()
 	{
 		// TODO Auto-generated method stub
 		return null;
