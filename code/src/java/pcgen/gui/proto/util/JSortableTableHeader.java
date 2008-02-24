@@ -20,17 +20,25 @@
  */
 package pcgen.gui.proto.util;
 
-import pcgen.gui.util.JTreeViewTable;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.List;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.table.TableColumn;
-import pcgen.gui.util.SortingHeaderRenderer;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pcgen.gui.util.treeview.TreeViewTableModel;
+import pcgen.gui.util.IconUtilities;
+import pcgen.gui.util.JSortableTable;
+import pcgen.gui.util.ModelSorter;
+import pcgen.gui.util.ModelSorter.SortingPriority;
 
 /**
  *
@@ -39,20 +47,26 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
 public class JSortableTableHeader extends JTableHeader
 {
 
-    private TreeViewTableModel tableModel;
+    private static final Icon ASCENDING_ICON = IconUtilities.getImageIcon("Down16.gif");//TODO: implement
+    private static final Icon DESCENDING_ICON = IconUtilities.getImageIcon("Up16.gif");
+    private static final ButtonModel defaultModel = new DefaultButtonModel();
+    private final ButtonModel usedModel = new DefaultButtonModel();
+    private ModelSorter sorter;
     private TableColumn trackedColumn;
 
-    public JSortableTableHeader(JTreeViewTable table)
+    public JSortableTableHeader(JSortableTable table)
     {
         super(table.getColumnModel());
-        addMouseMotionListener(new ColumnTracker());
-        tableModel = table.getTreeViewTableModel();
+        MouseTracker tracker = new MouseTracker();
+        addMouseListener(tracker);
+        addMouseMotionListener(tracker);
+        sorter = table.getModelSorter();
     }
 
     @Override
-    public TableCellRenderer createDefaultRenderer()
+    protected TableCellRenderer createDefaultRenderer()
     {
-        return new SortingHeaderRenderer(this);
+        return new SortingHeaderRenderer();
     }
 
     public TableColumn getTrackedColumn()
@@ -60,13 +74,23 @@ public class JSortableTableHeader extends JTableHeader
         return trackedColumn;
     }
 
-    public TreeViewTableModel getTableModel()
+    public ModelSorter getModelSorter()
     {
-        return tableModel;
+        return sorter;
     }
 
-    private final class ColumnTracker implements MouseMotionListener
+    private final class MouseTracker implements MouseMotionListener,
+                                                  MouseListener
     {
+
+        public void mouseClicked(MouseEvent e)
+        {
+            if (getCursor() == Cursor.getDefaultCursor())
+            {
+                sorter.toggleSort(trackedColumn.getModelIndex());
+                repaint();
+            }
+        }
 
         public void mouseDragged(MouseEvent e)
         {
@@ -77,6 +101,78 @@ public class JSortableTableHeader extends JTableHeader
         {
             TableColumnModel model = getColumnModel();
             trackedColumn = model.getColumn(model.getColumnIndexAtX(e.getX()));
+        }
+
+        public void mousePressed(MouseEvent e)
+        {
+            usedModel.setPressed(true);
+            usedModel.setArmed(true);
+            repaint();
+        }
+
+        public void mouseReleased(MouseEvent e)
+        {
+            usedModel.setPressed(false);
+        }
+
+        public void mouseEntered(MouseEvent e)
+        {
+            usedModel.setRollover(true);
+        }
+
+        public void mouseExited(MouseEvent e)
+        {
+            usedModel.setRollover(false);
+        }
+
+    }
+
+    public class SortingHeaderRenderer extends JButton implements TableCellRenderer
+    {
+
+        public SortingHeaderRenderer()
+        {
+            setHorizontalTextPosition(LEADING);
+        }
+
+        public Component getTableCellRendererComponent(JTable table,
+                                                        Object value,
+                                                        boolean isSelected,
+                                                        boolean hasFocus,
+                                                        int row,
+                                                        int column)
+        {
+            if (trackedColumn != null && trackedColumn.getHeaderValue() == value &&
+                    trackedColumn == getDraggedColumn())
+            {
+                setModel(usedModel);
+            }
+            else
+            {
+                setModel(defaultModel);
+            }
+            Icon icon = null;
+            TableColumn currentColumn = table.getColumn(value);
+            List<? extends SortingPriority> list = sorter.getSortingPriority();
+            if (!list.isEmpty())
+            {
+                SortingPriority order = list.get(0);
+                if (order.getColumn() == currentColumn.getModelIndex())
+                {
+                    switch (order.getMode())
+                    {
+                        case ASCENDING:
+                            icon = ASCENDING_ICON;
+                            break;
+                        case DESCENDING:
+                            icon = DESCENDING_ICON;
+                            break;
+                    }
+                }
+            }
+            setIcon(icon);
+            setText(value.toString());
+            return this;
         }
 
     }

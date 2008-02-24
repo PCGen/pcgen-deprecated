@@ -36,24 +36,26 @@ public class JSortableTable extends JTable
 
     public JSortableTable()
     {
-        super();
+        this(null);
     }
 
     public JSortableTable(TableModel model)
     {
         super(model);
+        setModelSorter(new ModelSorter());
     }
 
     @Override
     public void setModel(TableModel model)
     {
-        if (model instanceof SortableTableModel)
+        if (!(model instanceof SortableTableModel))
         {
-            super.setModel(model);
+            model = new DefaultSortableTableModel(model);
         }
-        else
+        super.setModel(model);
+        if (sorter != null)
         {
-            super.setModel(new DefaultSortableTableModel(model));
+            sorter.setModel(getModel());
         }
     }
 

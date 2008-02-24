@@ -23,11 +23,12 @@ package pcgen.gui.util;
 import java.util.Comparator;
 import java.util.List;
 import javax.swing.JTree;
+import javax.swing.table.TableModel;
+import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
 import pcgen.gui.util.treetable.DefaultSortableTreeTableModel;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
 import pcgen.gui.util.treetable.TreeTableModel;
-import pcgen.util.Comparators;
 
 /**
  *
@@ -46,6 +47,7 @@ public class JSortableTreeTable extends JTreeTable
     public JSortableTreeTable(SortableTreeTableModel model)
     {
         super(model);
+        setModelSorter(new ModelSorter());
     }
 
     @Override
@@ -56,21 +58,44 @@ public class JSortableTreeTable extends JTreeTable
                                                  tree);
     }
 
+    @Override
+    public void setModel(TableModel model)
+    {
+        if (!(model instanceof SortableTableModel))
+        {
+            model = new DefaultSortableTableModel(model);
+        }
+        super.setModel(model);
+        if (sorter != null)
+        {
+            sorter.setModel(getModel());
+        }
+    }
+
     public ModelSorter getModelSorter()
     {
         return sorter;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public SortableTableModel getModel()
+    {
+        return (SortableTableModel) super.getModel();
+    }
+
+    @Override
     public void setTreeTableModel(TreeTableModel model)
     {
-        if (model instanceof SortableTreeTableModel)
+        if (!(model instanceof SortableTreeTableModel))
         {
-            super.setTreeTableModel(model);
+            model = new DefaultSortableTreeTableModel(model);
         }
-        else
+
+        super.setTreeTableModel(model);
+        if (sorter != null)
         {
-            super.setTreeTableModel(new DefaultSortableTreeTableModel(model));
+            sorter.setModel(getModel());
         }
     }
 

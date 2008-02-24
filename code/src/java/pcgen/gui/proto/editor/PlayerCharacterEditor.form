@@ -33,7 +33,36 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="pcgen.gui.util.JSortableTable" name="jSortableTable1">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="4" rowCount="3">
+                <Column editable="true" title="Title 1" type="java.lang.Object">
+                  <Data value="johny"/>
+                  <Data value="ged"/>
+                  <Data value="swr"/>
+                </Column>
+                <Column editable="true" title="Title 2" type="java.lang.Object">
+                  <Data value="nznz"/>
+                  <Data value="drsd"/>
+                  <Data value="fewws"/>
+                </Column>
+                <Column editable="true" title="Title 3" type="java.lang.Object">
+                  <Data value="adf"/>
+                  <Data value="wer"/>
+                  <Data value="vxz"/>
+                </Column>
+                <Column editable="true" title="Title 4" type="java.lang.Object">
+                  <Data value="wer"/>
+                  <Data value="adfa"/>
+                  <Data value="null"/>
+                </Column>
+              </Table>
+            </Property>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new JSortableTableHeader(jSortableTable1)" type="code"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

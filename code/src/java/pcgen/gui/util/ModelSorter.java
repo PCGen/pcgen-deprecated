@@ -21,6 +21,7 @@
 package pcgen.gui.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class ModelSorter
 
     private final EventListenerList listenerList = new EventListenerList();
     private final RowComparator rowComparator = new RowComparator();
-    private List<? extends SortingPriority> columnkeys = null;
+    private List<? extends SortingPriority> columnkeys = Collections.emptyList();
     private SortableModel model;
 
     public void addTableSorterListener(ModelSorterListener listener)
@@ -77,14 +78,20 @@ public class ModelSorter
         switch (index)
         {
             case 0:
-                list.set(0, new SortingPriority(column, SortMode.DESCENDING));
-                break;
+                if (list.get(0).getMode() == SortMode.ASCENDING)
+                {
+                    list.set(0, new SortingPriority(column, SortMode.DESCENDING));
+                    break;
+                }
             default:
                 list.remove(index);
             case -1:
                 list.add(0, new SortingPriority(column, SortMode.ASCENDING));
         }
-        list.setSize(2);
+        if (list.size() > 2)
+        {
+            list.setSize(2);
+        }
         setSortingPriority(list);
     }
 
@@ -124,7 +131,6 @@ public class ModelSorter
         {
             for (SortingPriority priority : columnkeys)
             {
-
                 if (priority.getMode() == SortMode.UNORDERED)
                 {
                     continue;

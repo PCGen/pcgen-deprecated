@@ -30,7 +30,6 @@ import pcgen.gui.util.treetable.AbstractTreeTableModel;
 import pcgen.gui.util.treetable.DefaultSortableTreeTableNode;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
 import pcgen.gui.util.treetable.TreeTableNode;
-import pcgen.util.Comparators;
 import pcgen.util.UnboundedArrayList;
 
 /**
@@ -198,7 +197,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
                     ArrayList<Object> datalist = new UnboundedArrayList<Object>(1);
                     datalist.add(key);
                     List<?> data = dataMap.get(key);
-                    if (key != null)
+                    if (data != null)
                     {
                         datalist.add(data);
                     }

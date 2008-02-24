@@ -5,30 +5,7 @@
  */
 package pcgen.gui.proto.editor;
 
-import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.List;
-import javax.swing.ButtonModel;
-import javax.swing.DefaultButtonModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import pcgen.gui.util.JTreeViewTable;
-import pcgen.gui.util.treeview.DataView;
-import pcgen.gui.util.treeview.DefaultDataViewColumn;
-import pcgen.gui.util.treeview.TreeView;
-import pcgen.gui.util.treeview.TreeViewModel;
-import pcgen.gui.util.treeview.TreeViewPath;
-import pcgen.util.Comparators;
+import pcgen.gui.proto.util.JSortableTableHeader;
 
 /**
  *
@@ -50,11 +27,22 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jSortableTable1 = new pcgen.gui.util.JSortableTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane1.setViewportView(jTable1);
+        jSortableTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"johny", "nznz", "adf", "wer"},
+                {"ged", "drsd", "wer", "adfa"},
+                {"swr", "fewws", "vxz", null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jSortableTable1.setTableHeader(new JSortableTableHeader(jSortableTable1));
+        jScrollPane1.setViewportView(jSortableTable1);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -73,7 +61,7 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private pcgen.gui.util.JSortableTable jSortableTable1;
     // End of variables declaration//GEN-END:variables
     
 }

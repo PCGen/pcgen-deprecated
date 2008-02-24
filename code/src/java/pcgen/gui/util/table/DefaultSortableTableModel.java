@@ -147,12 +147,19 @@ public class DefaultSortableTableModel extends DefaultTableModel implements Sort
                 setValueAt(model.getValueAt(x, y), x, y);
             }
         }
+        Vector titles = new Vector();
+        for(int x = 0; x < getColumnCount(); x++)
+        {
+            titles.add(model.getColumnName(x));
+        }
+        setColumnIdentifiers(titles);
     }
 
     @SuppressWarnings("unchecked")
     public void sortModel(Comparator<List<?>> comparator)
     {
         Collections.sort(dataVector, comparator);
+        fireTableDataChanged();
     }
 
 }

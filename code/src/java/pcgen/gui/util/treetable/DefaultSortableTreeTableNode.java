@@ -176,8 +176,11 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
             if (!child.isLeaf())
             {
                 child.sortChildren(comparator);
-                Collections.swap(children, index, x);
-                Collections.swap(childData, index, x);
+                if (index != x)
+                {
+                    Collections.swap(children, index, x);
+                    Collections.swap(childData, index, x);
+                }
                 index++;
             }
         }
