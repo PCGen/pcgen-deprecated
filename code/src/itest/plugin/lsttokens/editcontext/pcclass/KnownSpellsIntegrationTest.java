@@ -21,21 +21,22 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
-import pcgen.core.spell.Spell;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
 import plugin.lsttokens.pcclass.KnownspellsToken;
 
 public class KnownSpellsIntegrationTest extends
-		AbstractListIntegrationTestCase<PObject, Spell>
+		AbstractListIntegrationTestCase<CDOMPCClass, CDOMSpell>
 {
 
 	static KnownspellsToken token = new KnownspellsToken();
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
 	public void setUp() throws PersistenceLayerException, URISyntaxException
@@ -45,27 +46,27 @@ public class KnownSpellsIntegrationTest extends
 	}
 
 	@Override
-	public Class<PCClass> getCDOMClass()
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public LstLoader getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PObject> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<Spell> getTargetClass()
+	public Class<CDOMSpell> getTargetClass()
 	{
-		return Spell.class;
+		return CDOMSpell.class;
 	}
 
 	@Override

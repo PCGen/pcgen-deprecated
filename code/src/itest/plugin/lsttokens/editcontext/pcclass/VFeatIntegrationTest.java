@@ -21,23 +21,24 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
 import plugin.lsttokens.pcclass.VfeatToken;
 
 public class VFeatIntegrationTest extends
-		AbstractListIntegrationTestCase<PObject, Ability>
+		AbstractListIntegrationTestCase<CDOMPCClass, CDOMAbility>
 {
 
 	static VfeatToken token = new VfeatToken();
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
 	public void setUp() throws PersistenceLayerException, URISyntaxException
@@ -47,27 +48,27 @@ public class VFeatIntegrationTest extends
 	}
 
 	@Override
-	public Class<PCClass> getCDOMClass()
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public LstLoader getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PObject> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<Ability> getTargetClass()
+	public Class<CDOMAbility> getTargetClass()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
@@ -109,8 +110,9 @@ public class VFeatIntegrationTest extends
 	@Override
 	protected void construct(LoadContext loadContext, String one)
 	{
-		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
-		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
+		CDOMAbility obj = loadContext.ref.constructCDOMObject(
+				CDOMAbility.class, one);
+		loadContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, obj);
 	}
 
 	@Override

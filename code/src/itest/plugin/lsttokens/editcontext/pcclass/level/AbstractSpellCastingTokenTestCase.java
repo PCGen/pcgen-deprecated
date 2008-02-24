@@ -15,12 +15,11 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.editcontext.pcclass;
+package plugin.lsttokens.editcontext.pcclass.level;
 
 import org.junit.Test;
 
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.PCClassLevelLoader;
 
 public abstract class AbstractSpellCastingTokenTestCase extends
 		AbstractPCClassLevelTokenTestCase
@@ -30,21 +29,21 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
 		// Default is not to write out anything
-		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 2));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 3));
+		assertNull(getToken().unparse(primaryContext, primaryProf1));
+		assertNull(getToken().unparse(primaryContext, primaryProf2));
+		assertNull(getToken().unparse(primaryContext, primaryProf3));
 		// Ensure the graphs are the same at the start
 		assertEquals(primaryGraph, secondaryGraph);
 
 		// Set value
 		for (String s : str)
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, s, 2));
+			assertTrue(getToken().parse(primaryContext, primaryProf2, s));
 		}
 		// Doesn't pollute other levels
-		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
+		assertNull(getToken().unparse(primaryContext, primaryProf1));
 		// Get back the appropriate token:
-		String[] unparsed = getToken().unparse(primaryContext, primaryProf, 2);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf2);
 
 		assertEquals(str.length, unparsed.length);
 
@@ -55,7 +54,7 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 		}
 
 		// And works for subsequent levels
-		unparsed = getToken().unparse(primaryContext, primaryProf, 3);
+		unparsed = getToken().unparse(primaryContext, primaryProf3);
 
 		assertEquals(str.length, unparsed.length);
 
@@ -72,20 +71,22 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
 				s).append('\t');
 		}
-		PCClassLevelLoader.parseLine(secondaryContext, secondaryProf,
-			unparsedBuilt.toString(), testCampaign, 2);
+		loader.parseLine(secondaryContext, secondaryProf2,
+			unparsedBuilt.toString(), testCampaign.getURI());
 
 		// Ensure the objects are the same
-		assertEquals(primaryProf, secondaryProf);
+		assertEquals(primaryProf1, secondaryProf1);
+		assertEquals(primaryProf2, secondaryProf2);
+		assertEquals(primaryProf3, secondaryProf3);
 
 		// Ensure the graphs are the same
 		assertEquals(primaryGraph, secondaryGraph);
 
 		// And that it comes back out the same again
 		// Doesn't pollute other levels
-		assertNull(getToken().unparse(secondaryContext, secondaryProf, 1));
+		assertNull(getToken().unparse(secondaryContext, secondaryProf1));
 		String[] sUnparsed =
-				getToken().unparse(secondaryContext, secondaryProf, 2);
+				getToken().unparse(secondaryContext, secondaryProf2);
 		assertEquals(unparsed.length, sUnparsed.length);
 
 		for (int i = 0; i < unparsed.length; i++)
@@ -98,32 +99,32 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 	@Test
 	public void testInvalidListEmpty() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "", 2));
+		assertFalse(getToken().parse(primaryContext, primaryProf2, ""));
 	}
 
 	@Test
 	public void testInvalidListEnd() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1,", 2));
+		assertFalse(getToken().parse(primaryContext, primaryProf2, "1,"));
 	}
 
 	@Test
 	public void testInvalidListStart() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, ",1", 2));
+		assertFalse(getToken().parse(primaryContext, primaryProf2, ",1"));
 	}
 
 	@Test
 	public void testInvalidListDoubleJoin() throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1,,2", 2));
+		assertFalse(getToken().parse(primaryContext, primaryProf2, "1,,2"));
 	}
 
 	@Test
 	public void testInvalidListNegativeNumber()
 		throws PersistenceLayerException
 	{
-		assertFalse(getToken().parse(primaryContext, primaryProf, "1,-2", 2));
+		assertFalse(getToken().parse(primaryContext, primaryProf2, "1,-2"));
 	}
 
 	@Test

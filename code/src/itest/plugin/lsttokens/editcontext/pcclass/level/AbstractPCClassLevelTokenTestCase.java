@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.editcontext.pcclass;
+package plugin.lsttokens.editcontext.pcclass.level;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,16 +26,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.core.Campaign;
-import pcgen.core.PCClass;
-import pcgen.persistence.EditorLoadContext;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.persistence.lst.LstToken;
-import pcgen.persistence.lst.PCClassLevelLoader;
-import pcgen.persistence.lst.PCClassLevelLstToken;
 import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.EditorLoadContext;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.TokenRegistration;
 
 public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
@@ -44,8 +44,14 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 	protected PCGenGraph secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
-	protected PCClass primaryProf;
-	protected PCClass secondaryProf;
+	protected CDOMPCClassLevel primaryProf1;
+	protected CDOMPCClassLevel secondaryProf1;
+	protected CDOMPCClassLevel primaryProf2;
+	protected CDOMPCClassLevel secondaryProf2;
+	protected CDOMPCClassLevel primaryProf3;
+	protected CDOMPCClassLevel secondaryProf3;
+	static CDOMTokenLoader<CDOMPCClassLevel> loader = new CDOMTokenLoader<CDOMPCClassLevel>(
+			CDOMPCClassLevel.class);
 
 	private static boolean classSetUpFired = false;
 	protected static CampaignSourceEntry testCampaign;
@@ -53,9 +59,8 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 	@BeforeClass
 	public static final void classSetUp() throws URISyntaxException
 	{
-		testCampaign =
-				new CampaignSourceEntry(new Campaign(), new URI(
-					"file:/Test%20Case"));
+		testCampaign = new CampaignSourceEntry(new Campaign(), new URI(
+				"file:/Test%20Case"));
 		classSetUpFired = true;
 	}
 
@@ -73,17 +78,23 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		secondaryGraph = new PCGenGraph();
 		primaryContext = new EditorLoadContext();
 		secondaryContext = new EditorLoadContext();
-		primaryProf =
-				primaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
-		secondaryProf =
-				secondaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
+		primaryProf1 = primaryContext.ref.constructCDOMObject(getCDOMClass(),
+				"TestObj1");
+		secondaryProf1 = secondaryContext.ref.constructCDOMObject(
+				getCDOMClass(), "TestObj1");
+		primaryProf2 = primaryContext.ref.constructCDOMObject(getCDOMClass(),
+				"TestObj2");
+		secondaryProf2 = secondaryContext.ref.constructCDOMObject(
+				getCDOMClass(), "TestObj2");
+		primaryProf3 = primaryContext.ref.constructCDOMObject(getCDOMClass(),
+				"TestObj3");
+		secondaryProf3 = secondaryContext.ref.constructCDOMObject(
+				getCDOMClass(), "TestObj3");
 	}
 
-	public Class<? extends PCClass> getCDOMClass()
+	public Class<CDOMPCClassLevel> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClassLevel.class;
 	}
 
 	public static void addToken(LstToken tok)
@@ -94,29 +105,29 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
 		// Default is not to write out anything
-		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 2));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 3));
+		assertNull(getToken().unparse(primaryContext, primaryProf1));
+		assertNull(getToken().unparse(primaryContext, primaryProf2));
+		assertNull(getToken().unparse(primaryContext, primaryProf3));
 		// Ensure the graphs are the same at the start
 		assertEquals(primaryGraph, secondaryGraph);
 
 		// Set value
 		for (String s : str)
 		{
-			assertTrue(getToken().parse(primaryContext, primaryProf, s, 2));
+			assertTrue(getToken().parse(primaryContext, primaryProf2, s));
 		}
 		// Doesn't pollute other levels
-		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 3));
+		assertNull(getToken().unparse(primaryContext, primaryProf1));
+		assertNull(getToken().unparse(primaryContext, primaryProf3));
 		// Get back the appropriate token:
-		String[] unparsed = getToken().unparse(primaryContext, primaryProf, 2);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf2);
 
 		assertEquals(str.length, unparsed.length);
 
 		for (int i = 0; i < str.length; i++)
 		{
 			assertEquals("Expected " + i + " item to be equal", str[i],
-				unparsed[i]);
+					unparsed[i]);
 		}
 
 		// Do round Robin
@@ -124,32 +135,34 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		for (String s : unparsed)
 		{
 			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
-				s).append('\t');
+					s).append('\t');
 		}
-		PCClassLevelLoader.parseLine(secondaryContext, secondaryProf,
-			unparsedBuilt.toString(), testCampaign, 2);
+		loader.parseLine(secondaryContext, secondaryProf2, unparsedBuilt
+				.toString(), testCampaign.getURI());
 
 		// Ensure the objects are the same
-		assertEquals(primaryProf, secondaryProf);
+		assertEquals(primaryProf1, secondaryProf1);
+		assertEquals(primaryProf2, secondaryProf2);
+		assertEquals(primaryProf3, secondaryProf3);
 
 		// Ensure the graphs are the same
 		assertEquals(primaryGraph, secondaryGraph);
 
 		// And that it comes back out the same again
 		// Doesn't pollute other levels
-		assertNull(getToken().unparse(secondaryContext, secondaryProf, 1));
-		assertNull(getToken().unparse(secondaryContext, secondaryProf, 3));
-		String[] sUnparsed =
-				getToken().unparse(secondaryContext, secondaryProf, 2);
+		assertNull(getToken().unparse(secondaryContext, secondaryProf1));
+		assertNull(getToken().unparse(secondaryContext, secondaryProf3));
+		String[] sUnparsed = getToken().unparse(secondaryContext,
+				secondaryProf2);
 		assertEquals(unparsed.length, sUnparsed.length);
 
 		for (int i = 0; i < unparsed.length; i++)
 		{
 			assertEquals("Expected " + i + " item to be equal", unparsed[i],
-				sUnparsed[i]);
+					sUnparsed[i]);
 		}
 	}
 
-	public abstract PCClassLevelLstToken getToken();
+	public abstract CDOMPrimaryToken<CDOMPCClassLevel> getToken();
 
 }

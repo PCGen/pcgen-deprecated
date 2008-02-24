@@ -21,22 +21,23 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.core.Domain;
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
 import plugin.lsttokens.editcontext.testsupport.TestContext;
 import plugin.lsttokens.pcclass.AdddomainsToken;
 
 public class AddDomainsIntegrationTest extends
-		AbstractListIntegrationTestCase<PObject, Domain>
+		AbstractListIntegrationTestCase<CDOMPCClass, CDOMDomain>
 {
 
 	static AdddomainsToken token = new AdddomainsToken();
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
 	public void setUp() throws PersistenceLayerException, URISyntaxException
@@ -46,27 +47,27 @@ public class AddDomainsIntegrationTest extends
 	}
 
 	@Override
-	public Class<PCClass> getCDOMClass()
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public LstLoader getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PObject> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<Domain> getTargetClass()
+	public Class<CDOMDomain> getTargetClass()
 	{
-		return Domain.class;
+		return CDOMDomain.class;
 	}
 
 	@Override
@@ -112,7 +113,8 @@ public class AddDomainsIntegrationTest extends
 	}
 
 	@Test
-	public void testRoundRobinAddBracketPrereq() throws PersistenceLayerException
+	public void testRoundRobinAddBracketPrereq()
+			throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
@@ -124,7 +126,8 @@ public class AddDomainsIntegrationTest extends
 	}
 
 	@Test
-	public void testRoundRobinRemoveBracketPrereq() throws PersistenceLayerException
+	public void testRoundRobinRemoveBracketPrereq()
+			throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");

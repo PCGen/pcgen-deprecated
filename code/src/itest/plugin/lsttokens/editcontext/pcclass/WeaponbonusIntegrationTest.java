@@ -22,21 +22,23 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.PCClass;
-import pcgen.core.WeaponProf;
-import pcgen.core.WeaponProfList;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.cdom.inst.WeaponProfList;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.editcontext.testsupport.AbstractListIntegrationTestCase;
 import plugin.lsttokens.pcclass.WeaponbonusToken;
 
 public class WeaponbonusIntegrationTest extends
-		AbstractListIntegrationTestCase<PCClass, WeaponProf>
+		AbstractListIntegrationTestCase<CDOMPCClass, CDOMWeaponProf>
 {
 
 	static WeaponbonusToken token = new WeaponbonusToken();
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
 	@Before
@@ -54,27 +56,27 @@ public class WeaponbonusIntegrationTest extends
 	}
 
 	@Override
-	public Class<PCClass> getCDOMClass()
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public LstLoader getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCClass> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<WeaponProf> getTargetClass()
+	public Class<CDOMWeaponProf> getTargetClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
 	@Override
