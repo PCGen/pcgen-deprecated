@@ -21,16 +21,17 @@ import org.junit.Test;
 
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Pantheon;
-import pcgen.core.Deity;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.DeityLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTypeSafeListTestCase;
 
-public class PantheonTokenTest extends AbstractTypeSafeListTestCase<Deity>
+public class PantheonTokenTest extends AbstractTypeSafeListTestCase<CDOMDeity>
 {
 	static PantheonToken token = new PantheonToken();
-	static DeityLoader loader = new DeityLoader();
+	static CDOMTokenLoader<CDOMDeity> loader = new CDOMTokenLoader<CDOMDeity>(
+			CDOMDeity.class);
 
 	@Override
 	public char getJoinCharacter()
@@ -39,19 +40,19 @@ public class PantheonTokenTest extends AbstractTypeSafeListTestCase<Deity>
 	}
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Deity> getLoader()
+	public CDOMLoader<CDOMDeity> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Deity> getToken()
+	public CDOMPrimaryToken<CDOMDeity> getToken()
 	{
 		return token;
 	}

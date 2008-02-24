@@ -23,59 +23,54 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Alignment;
-import pcgen.core.Deity;
+import pcgen.cdom.inst.CDOMAlignment;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.DeityLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class AlignTokenTest extends AbstractTokenTestCase<Deity>
+public class AlignTokenTest extends AbstractTokenTestCase<CDOMDeity>
 {
 	static AlignToken token = new AlignToken();
-	static DeityLoader loader = new DeityLoader();
+	static CDOMTokenLoader<CDOMDeity> loader = new CDOMTokenLoader<CDOMDeity>(
+			CDOMDeity.class);
 
 	@Override
 	@Before
 	public final void setUp() throws PersistenceLayerException,
-		URISyntaxException
+			URISyntaxException
 	{
 		super.setUp();
-		primaryContext.ref.constructCDOMObject(Alignment.class, "LG");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "LN");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "LE");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "NG");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "TN");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "NE");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "CG");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "CN");
-		primaryContext.ref.constructCDOMObject(Alignment.class, "CE");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "LG");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "LN");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "LE");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "NG");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "TN");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "NE");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "CG");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "CN");
-		secondaryContext.ref.constructCDOMObject(Alignment.class, "CE");
+		CDOMAlignment lg = primaryContext.ref.constructCDOMObject(
+				CDOMAlignment.class, "Lawful Good");
+		primaryContext.ref.registerAbbreviation(lg, "LG");
+		CDOMAlignment ln = primaryContext.ref.constructCDOMObject(
+				CDOMAlignment.class, "Lawful Neutral");
+		primaryContext.ref.registerAbbreviation(ln, "LN");
+		CDOMAlignment slg = secondaryContext.ref.constructCDOMObject(
+				CDOMAlignment.class, "Lawful Good");
+		secondaryContext.ref.registerAbbreviation(slg, "LG");
+		CDOMAlignment sln = secondaryContext.ref.constructCDOMObject(
+				CDOMAlignment.class, "Lawful Neutral");
+		secondaryContext.ref.registerAbbreviation(sln, "LN");
 	}
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Deity> getLoader()
+	public CDOMLoader<CDOMDeity> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Deity> getToken()
+	public CDOMPrimaryToken<CDOMDeity> getToken()
 	{
 		return token;
 	}
@@ -120,51 +115,9 @@ public class AlignTokenTest extends AbstractTokenTestCase<Deity>
 	}
 
 	@Test
-	public void testRoundRobinNG() throws PersistenceLayerException
-	{
-		runRoundRobin("NG");
-	}
-
-	@Test
-	public void testRoundRobinCG() throws PersistenceLayerException
-	{
-		runRoundRobin("CG");
-	}
-
-	@Test
 	public void testRoundRobinLN() throws PersistenceLayerException
 	{
 		runRoundRobin("LN");
-	}
-
-	@Test
-	public void testRoundRobinTN() throws PersistenceLayerException
-	{
-		runRoundRobin("TN");
-	}
-
-	@Test
-	public void testRoundRobinCN() throws PersistenceLayerException
-	{
-		runRoundRobin("CN");
-	}
-
-	@Test
-	public void testRoundRobinLE() throws PersistenceLayerException
-	{
-		runRoundRobin("LE");
-	}
-
-	@Test
-	public void testRoundRobinNE() throws PersistenceLayerException
-	{
-		runRoundRobin("NE");
-	}
-
-	@Test
-	public void testRoundRobinCE() throws PersistenceLayerException
-	{
-		runRoundRobin("CE");
 	}
 
 }

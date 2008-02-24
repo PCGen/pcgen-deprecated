@@ -18,32 +18,33 @@
 package plugin.lsttokens.deity;
 
 import pcgen.cdom.enumeration.StringKey;
-import pcgen.core.Deity;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.DeityLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractStringTokenTestCase;
 
-public class SymbolTokenTest extends AbstractStringTokenTestCase<Deity>
+public class SymbolTokenTest extends AbstractStringTokenTestCase<CDOMDeity>
 {
 
 	static SymbolToken token = new SymbolToken();
-	static DeityLoader loader = new DeityLoader();
+	static CDOMTokenLoader<CDOMDeity> loader = new CDOMTokenLoader<CDOMDeity>(
+			CDOMDeity.class);
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Deity> getLoader()
+	public CDOMLoader<CDOMDeity> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Deity> getToken()
+	public CDOMPrimaryToken<CDOMDeity> getToken()
 	{
 		return token;
 	}

@@ -20,34 +20,36 @@ package plugin.lsttokens.ability;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Ability;
+import pcgen.cdom.inst.CDOMAbility;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbilityLoader;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.enumeration.Visibility;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
 
-public class VisibleTokenTest extends AbstractTokenTestCase<Ability>
+public class VisibleTokenTest extends AbstractTokenTestCase<CDOMAbility>
 {
 
 	static VisibleToken token = new VisibleToken();
-	static AbilityLoader loader = new AbilityLoader();
+
+	static CDOMTokenLoader<CDOMAbility> loader = new CDOMTokenLoader<CDOMAbility>(
+			CDOMAbility.class);
 
 	@Override
-	public Class<Ability> getCDOMClass()
+	public Class<CDOMAbility> getCDOMClass()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Ability> getLoader()
+	public CDOMLoader<CDOMAbility> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Ability> getToken()
+	public CDOMPrimaryToken<CDOMAbility> getToken()
 	{
 		return token;
 	}

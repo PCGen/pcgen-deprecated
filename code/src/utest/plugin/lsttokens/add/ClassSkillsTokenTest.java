@@ -19,12 +19,12 @@ package plugin.lsttokens.add;
 
 import java.net.URISyntaxException;
 
-import pcgen.core.PCClass;
-import pcgen.core.Skill;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.persistence.lst.LstLoader;
-import plugin.lsttokens.testsupport.PCClassLoaderFacade;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 
 public class ClassSkillsTokenTest extends AbstractAddTokenTestCase
 {
@@ -46,21 +46,22 @@ public class ClassSkillsTokenTest extends AbstractAddTokenTestCase
 	}
 
 	@Override
-	protected Class<Skill> getSubTokenType()
+	protected Class<CDOMSkill> getSubTokenType()
 	{
-		return Skill.class;
+		return CDOMSkill.class;
 	}
 
 	@Override
-	public Class<PCClass> getCDOMClass()
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
-	public LstLoader<PCClass> getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}

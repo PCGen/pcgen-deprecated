@@ -20,32 +20,33 @@ package plugin.lsttokens.ability;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Ability;
-import pcgen.persistence.lst.AbilityLoader;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractYesNoTokenTestCase;
 
-public class StackTokenTest extends AbstractYesNoTokenTestCase<Ability>
+public class StackTokenTest extends AbstractYesNoTokenTestCase<CDOMAbility>
 {
 
 	static StackToken token = new StackToken();
-	static AbilityLoader loader = new AbilityLoader();
+	static CDOMTokenLoader<CDOMAbility> loader = new CDOMTokenLoader<CDOMAbility>(
+			CDOMAbility.class);
 
 	@Override
-	public Class<Ability> getCDOMClass()
+	public Class<CDOMAbility> getCDOMClass()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Ability> getLoader()
+	public CDOMLoader<CDOMAbility> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Ability> getToken()
+	public CDOMPrimaryToken<CDOMAbility> getToken()
 	{
 		return token;
 	}

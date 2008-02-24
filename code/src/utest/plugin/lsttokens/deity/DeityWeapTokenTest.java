@@ -19,19 +19,20 @@ package plugin.lsttokens.deity;
 
 import org.junit.Test;
 
-import pcgen.core.Deity;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.DeityLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
 public class DeityWeapTokenTest extends
-		AbstractListTokenTestCase<Deity, WeaponProf>
+		AbstractListTokenTestCase<CDOMDeity, CDOMWeaponProf>
 {
 	static DeityweapToken token = new DeityweapToken();
-	static DeityLoader loader = new DeityLoader();
+	static CDOMTokenLoader<CDOMDeity> loader = new CDOMTokenLoader<CDOMDeity>(
+			CDOMDeity.class);
 
 	@Override
 	public char getJoinCharacter()
@@ -40,9 +41,9 @@ public class DeityWeapTokenTest extends
 	}
 
 	@Override
-	public Class<WeaponProf> getTargetClass()
+	public Class<CDOMWeaponProf> getTargetClass()
 	{
-		return WeaponProf.class;
+		return CDOMWeaponProf.class;
 	}
 
 	@Override
@@ -70,19 +71,19 @@ public class DeityWeapTokenTest extends
 	}
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Deity> getLoader()
+	public CDOMLoader<CDOMDeity> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Deity> getToken()
+	public CDOMPrimaryToken<CDOMDeity> getToken()
 	{
 		return token;
 	}
@@ -90,7 +91,7 @@ public class DeityWeapTokenTest extends
 	@Override
 	protected void construct(LoadContext loadContext, String one)
 	{
-		loadContext.ref.constructCDOMObject(WeaponProf.class, one);
+		loadContext.ref.constructCDOMObject(CDOMWeaponProf.class, one);
 	}
 
 	@Test

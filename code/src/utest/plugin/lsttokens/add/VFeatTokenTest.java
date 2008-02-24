@@ -17,13 +17,13 @@
  */
 package plugin.lsttokens.add;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 
 public class VFeatTokenTest extends AbstractAddTokenTestCase
 {
@@ -37,21 +37,22 @@ public class VFeatTokenTest extends AbstractAddTokenTestCase
 	}
 
 	@Override
-	protected Class<Ability> getSubTokenType()
+	protected Class<CDOMAbility> getSubTokenType()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
@@ -59,9 +60,9 @@ public class VFeatTokenTest extends AbstractAddTokenTestCase
 	@Override
 	protected void construct(LoadContext loadContext, String one)
 	{
-		Ability ab =
-				loadContext.ref.constructCDOMObject(getSubTokenType(), one);
-		loadContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
+		CDOMAbility ab = loadContext.ref.constructCDOMObject(getSubTokenType(),
+				one);
+		loadContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 	}
 
 	@Override

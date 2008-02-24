@@ -22,13 +22,13 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.core.Deity;
-import pcgen.core.Domain;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMDeity;
+import pcgen.cdom.inst.CDOMDomain;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.DeityLoader;
-import pcgen.persistence.lst.LstObjectFileLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreClassParser;
@@ -36,10 +36,11 @@ import plugin.pretokens.parser.PreLevelParser;
 import plugin.pretokens.writer.PreClassWriter;
 import plugin.pretokens.writer.PreLevelWriter;
 
-public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
+public class DomainsTokenTest extends AbstractListTokenTestCase<CDOMDeity, CDOMDomain>
 {
 	static DomainsToken token = new DomainsToken();
-	static DeityLoader loader = new DeityLoader();
+	static CDOMTokenLoader<CDOMDeity> loader = new CDOMTokenLoader<CDOMDeity>(
+			CDOMDeity.class);
 
 	@Override
 	@Before
@@ -59,9 +60,9 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	}
 
 	@Override
-	public Class<Domain> getTargetClass()
+	public Class<CDOMDomain> getTargetClass()
 	{
-		return Domain.class;
+		return CDOMDomain.class;
 	}
 
 	@Override
@@ -89,19 +90,19 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	}
 
 	@Override
-	public Class<Deity> getCDOMClass()
+	public Class<CDOMDeity> getCDOMClass()
 	{
-		return Deity.class;
+		return CDOMDeity.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<Deity> getLoader()
+	public CDOMLoader<CDOMDeity> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<Deity> getToken()
+	public CDOMPrimaryToken<CDOMDeity> getToken()
 	{
 		return token;
 	}
@@ -109,7 +110,7 @@ public class DomainsTokenTest extends AbstractListTokenTestCase<Deity, Domain>
 	@Override
 	protected void construct(LoadContext loadContext, String one)
 	{
-		loadContext.ref.constructCDOMObject(Domain.class, one);
+		loadContext.ref.constructCDOMObject(CDOMDomain.class, one);
 	}
 
 	@Test

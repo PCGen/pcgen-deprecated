@@ -17,10 +17,10 @@
  */
 package plugin.lsttokens.add;
 
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 
 public class TemplateTokenTest extends AbstractAddTokenTestCase
 {
@@ -34,25 +34,26 @@ public class TemplateTokenTest extends AbstractAddTokenTestCase
 	}
 
 	@Override
-	protected Class<PCTemplate> getSubTokenType()
+	protected Class<CDOMTemplate> getSubTokenType()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
-
 	@Override
 	public boolean isTypeLegal()
 	{

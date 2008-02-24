@@ -19,13 +19,13 @@ package plugin.lsttokens.auto;
 
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
-import pcgen.core.Ability;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 
 public class FeatTokenTest extends AbstractAutoTokenTestCase
 {
@@ -39,30 +39,31 @@ public class FeatTokenTest extends AbstractAutoTokenTestCase
 	}
 
 	@Override
-	protected Class<Ability> getSubTokenType()
+	protected Class<CDOMAbility> getSubTokenType()
 	{
-		return Ability.class;
+		return CDOMAbility.class;
 	}
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
-	protected void construct(LoadContext loadContext, String one)
-	{
-		Ability obj = loadContext.ref.constructCDOMObject(Ability.class, one);
-		loadContext.ref.reassociateReference(AbilityCategory.FEAT, obj);
-	}
-
-	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	protected void construct(LoadContext loadContext, String one)
 	{
-		return PCTemplate.class;
+		CDOMAbility obj = loadContext.ref.constructCDOMObject(CDOMAbility.class, one);
+		loadContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, obj);
+	}
+
+	@Override
+	public Class<CDOMTemplate> getCDOMClass()
+	{
+		return CDOMTemplate.class;
 	}
 
 	@Override
