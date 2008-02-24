@@ -30,7 +30,7 @@ import pcgen.core.ArmorProf;
 /**
  * <code>ArmorProfToken</code>
  */
-public interface ArmorProfLstToken extends CDOMToken<ArmorProf>
+public interface ArmorProfLstToken extends LstToken
 {
 	/**
 	 * Parses an ArmorProf object

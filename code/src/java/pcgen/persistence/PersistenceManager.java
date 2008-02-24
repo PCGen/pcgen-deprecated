@@ -146,6 +146,9 @@ public final class PersistenceManager
 		{
 			instance.initialize();
 
+			// Loading pending MODs
+			instance.loadModItems(true);
+
 			initialized = true;
 		}
 	}
@@ -162,6 +165,9 @@ public final class PersistenceManager
 		try
 		{
 			instance.loadCampaigns(aSelectedCampaignsList);
+
+			// Loading pending MODs
+			instance.loadModItems(true);
 		}
 		catch (PersistenceLayerException ple)
 		{

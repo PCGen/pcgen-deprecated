@@ -1,6 +1,5 @@
 /*
  * CompanionModLoader.java
- * Copyright 2007 (C) Tom Parker <thpr@users.sourceforge.net>
  * Copyright 2001 (C) Bryan McRoberts <merton_monk@yahoo.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -28,12 +27,11 @@
  */
 package pcgen.persistence.lst;
 
-import java.net.URI;
-import java.text.ParseException;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import pcgen.core.Globals;
+import pcgen.core.PObject;
 import pcgen.core.character.CompanionMod;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
@@ -41,46 +39,45 @@ import pcgen.util.Logging;
 
 /**
  * Loads the level based Mount and Familiar benefits
- * 
+ *
  * @author Jayme Cox <jaymecox@users.sourceforge.net>
  * @version $Revision$
- */
-public class CompanionModLoader extends LstLineFileLoader {
-
-	private Map<String, String> sourceMap = null;
+ **/
+public class CompanionModLoader extends LstObjectFileLoader<CompanionMod> 
+{
 
 	@Override
-	public void parseLine(String lstLine, URI sourceURI)
-			throws PersistenceLayerException {
-		
-		if (lstLine.startsWith("SOURCE")) //$NON-NLS-1$
-		{
-			sourceMap = SourceLoader.parseLine(lstLine, sourceURI);
-			return;
+	protected void addGlobalObject(PObject pObj) {
+		//This is commented out to avoid problems - see Tracker 
+		//  - thpr 1/11/07
+//		final CompanionMod cm = Globals.getCompanionMod(pObj.getKeyName());
+//		if (cm == null) {
+			Globals.addCompanionMod((CompanionMod) pObj);
+//		}
+	}
+
+	@Override
+	protected CompanionMod getObjectKeyed(String aKey) {
+		return null;
+		//This is commented out to avoid problems - see Tracker 
+		//  - thpr 1/11/07
+		//return Globals.getCompanionMod(aKey);
+	}
+
+	@Override
+	public CompanionMod parseLine(CompanionMod cmpMod, String inputLine,
+			CampaignSourceEntry source) throws PersistenceLayerException {
+		if (cmpMod == null) {
+			cmpMod = new CompanionMod();
 		}
 		
-		CompanionMod cmpMod = new CompanionMod();
-
-		final StringTokenizer colToken = new StringTokenizer(lstLine,
+		final StringTokenizer colToken = new StringTokenizer(inputLine,
 				SystemLoader.TAB_DELIM);
-
+		
 		String name = null;
-		cmpMod.setSourceCampaign(getActiveSource().getCampaign());
-		cmpMod.setSourceURI(sourceURI);
-		
-		// Make sure the source info was set
-		if (sourceMap != null)
-		{
-			try
-			{
-				cmpMod.setSourceMap(sourceMap);
-			}
-			catch (ParseException e)
-			{
-				throw new PersistenceLayerException(e.toString());
-			}
-		}
-		
+		cmpMod.setSourceCampaign(source.getCampaign());
+		cmpMod.setSourceURI(source.getURI());
+
 		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
 				CompanionModLstToken.class);
 		while (colToken.hasMoreTokens()) {
@@ -94,30 +91,44 @@ public class CompanionModLoader extends LstLineFileLoader {
 			}
 			final int idxColon = colString.indexOf(':');
 			String key = "";
-			try {
+			try
+			{
 				key = colString.substring(0, idxColon);
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				throw new PersistenceLayerException();
 			}
-			CompanionModLstToken token = (CompanionModLstToken) tokenMap
-					.get(key);
-			if (token != null) {
+			CompanionModLstToken token =
+					(CompanionModLstToken) tokenMap.get(key);
+			if (token != null)
+			{
 				final String value = colString.substring(idxColon + 1);
 				LstUtils.deprecationCheck(token, cmpMod, value);
-				if (!token.parse(cmpMod, value)) {
+				if (!token.parse(cmpMod, value))
+				{
 					Logging.errorPrint("Error parsing CompanionMod "
-							+ cmpMod.getDisplayName() + ':' + sourceURI
-							+ ':' + colString + "\"");
+						+ cmpMod.getDisplayName() + ':' + source.toString()
+						+ ':' + colString + "\"");
 				}
-			} else if (PObjectLoader.parseTag(cmpMod, colString)) {
+			}
+			else if (PObjectLoader.parseTag(cmpMod, colString))
+			{
 				continue;
-			} else {
-				Logging.addParseMessage(Logging.LST_ERROR,
-						"Unrecognized Token in CompanionMod: " + sourceURI
-								+ ":" + " \"" + colString + "\"");
+			}
+			else
+			{
+				Logging.errorPrint("Unrecognized Token in CompanionMod: "
+						+ source.toString() + ":" + " \"" + colString + "\"");
 			}
 		}
+		
+		completeObject(source, cmpMod);
+		return null;
+	}
 
-		Globals.addCompanionMod(cmpMod);
+	@Override
+	protected void performForget(CompanionMod objToForget) {
+		Globals.removeCompanionMod(objToForget);
 	}
 }

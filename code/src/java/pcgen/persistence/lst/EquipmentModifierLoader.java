@@ -43,118 +43,102 @@ import pcgen.util.UnreachableError;
  * @version $Revision$
  */
 public final class EquipmentModifierLoader extends
-		GenericLstLoader<EquipmentModifier>
-{
+		LstObjectFileLoader<EquipmentModifier> {
 	@Override
-	protected void addGlobalObject(PObject pObj)
-	{
+	protected void addGlobalObject(PObject pObj) {
 		// getEquipmentKeyedNoCustom??
-		final EquipmentModifier aTemplate =
-				EquipmentList.getModifierKeyed(pObj.getKeyName());
-		if (aTemplate == null)
-		{
+		final EquipmentModifier aTemplate = EquipmentList.getModifierKeyed(pObj
+				.getKeyName());
+		if (aTemplate == null) {
 			EquipmentList.addEquipmentModifier((EquipmentModifier) pObj);
 		}
 
 	}
 
 	@Override
-	protected EquipmentModifier getObjectKeyed(String aKey)
-	{
+	protected EquipmentModifier getObjectKeyed(String aKey) {
 		return EquipmentList.getModifierKeyed(aKey);
 	}
 
 	@Override
-	public void parseLine(EquipmentModifier eqMod, String inputLine,
-		CampaignSourceEntry source) throws PersistenceLayerException
-	{
-		final StringTokenizer colToken =
-				new StringTokenizer(inputLine, SystemLoader.TAB_DELIM);
+	public EquipmentModifier parseLine(EquipmentModifier eqMod,
+			String inputLine, CampaignSourceEntry source)
+			throws PersistenceLayerException {
+		if (eqMod == null) {
+			eqMod = new EquipmentModifier();
+		}
 
-		Map<String, LstToken> tokenMap =
-				TokenStore.inst().getTokenMap(EquipmentModifierLstToken.class);
-		while (colToken.hasMoreTokens())
-		{
-			while (colToken.hasMoreTokens())
-			{
+		final StringTokenizer colToken = new StringTokenizer(inputLine,
+				SystemLoader.TAB_DELIM);
+
+		String name = colToken.nextToken();
+		eqMod.setName(name.replace('|', ' '));
+		eqMod.setSourceCampaign(source.getCampaign());
+		eqMod.setSourceURI(source.getURI());
+
+		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
+				EquipmentModifierLstToken.class);
+		while (colToken.hasMoreTokens()) {
+			while (colToken.hasMoreTokens()) {
 				final String colString = colToken.nextToken().trim();
 
 				final int idxColon = colString.indexOf(':');
 				String key = "";
-				try
-				{
+				try {
 					key = colString.substring(0, idxColon);
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					// TODO Handle Exception
 				}
 
-				EquipmentModifierLstToken token =
-						(EquipmentModifierLstToken) tokenMap.get(key);
-				if (token != null)
-				{
+				EquipmentModifierLstToken token = (EquipmentModifierLstToken) tokenMap
+						.get(key);
+				if (token != null) {
 					final String value = colString.substring(idxColon + 1);
 					LstUtils.deprecationCheck(token, eqMod, value);
-					if (!token.parse(eqMod, value))
-					{
+					if (!token.parse(eqMod, value)) {
 						Logging.errorPrint("Error parsing EqMod "
-							+ eqMod.getDisplayName() + ':' + source.getURI()
-							+ ':' + colString + "\"");
+								+ eqMod.getDisplayName() + ':'
+								+ source.getURI() + ':' + colString + "\"");
 					}
-				}
-				else if (PObjectLoader.parseTag(eqMod, colString))
-				{
+				} else if (PObjectLoader.parseTag(eqMod, colString)) {
 					continue;
-				}
-				else
-				{
+				} else {
 					Logging.errorPrint("Illegal equipment modifier info "
-						+ source + ":" + " \"" + colString + "\"");
+							+ source + ":" + " \"" + colString + "\"");
 				}
 			}
 		}
 
 		completeObject(source, eqMod);
+		return null;
 	}
 
 	@Override
-	protected void performForget(EquipmentModifier objToForget)
-	{
+	protected void performForget(EquipmentModifier objToForget) {
 		throw new java.lang.UnsupportedOperationException(
-			"Cannot FORGET an EquipmentModifier");
+				"Cannot FORGET an EquipmentModifier");
 	}
 
 	/**
 	 * This method adds the default available equipment modifiers to the
 	 * Globals.
-	 * 
-	 * @throws PersistenceLayerException
+	 * @throws PersistenceLayerException 
 	 * 
 	 * @throws PersistenceLayerException
 	 *             if some bizarre error occurs, likely due to a change in
 	 *             EquipmentModifierLoader
 	 */
-	public void addDefaultEquipmentMods() throws PersistenceLayerException
-	{
+	public void addDefaultEquipmentMods() throws PersistenceLayerException {
 		CampaignSourceEntry source;
-		try
-		{
-			source =
-					new CampaignSourceEntry(new Campaign(), new URI("file:/"
-						+ getClass().getName() + ".java"));
-		}
-		catch (URISyntaxException e)
-		{
+		try {
+			source = new CampaignSourceEntry(new Campaign(),
+					new URI("file:/" + getClass().getName() + ".java"));
+		} catch (URISyntaxException e) {
 			throw new UnreachableError(e);
 		}
 		String aLine;
 		EquipmentModifier anObj = new EquipmentModifier();
-		anObj.setName("Add Type");
-		anObj.setSourceCampaign(source.getCampaign());
-		anObj.setSourceURI(source.getURI());
-		aLine =
-				"KEY:ADDTYPE\tTYPE:ALL\tCOST:0\tNAMEOPT:NONAME\tSOURCELONG:PCGen Internal\tCHOOSE:EQBUILDER.EQTYPE|COUNT=ALL|TITLE=desired TYPE(s)";
+		aLine = "Add Type\tKEY:ADDTYPE\tTYPE:ALL\tCOST:0\tNAMEOPT:NONAME\tSOURCELONG:PCGen Internal\tCHOOSE:EQBUILDER.EQTYPE|COUNT=ALL|TITLE=desired TYPE(s)";
 		parseLine(anObj, aLine, source);
 
 		//
@@ -162,35 +146,13 @@ public final class EquipmentModifierLoader extends
 		// equipment
 		//
 		anObj = new EquipmentModifier();
-		anObj.setName(Constants.s_INTERNAL_EQMOD_WEAPON);
-		anObj.setSourceCampaign(source.getCampaign());
-		anObj.setSourceURI(source.getURI());
-		aLine = "TYPE:Weapon\tVISIBLE:No\tCHOOSE:NOCHOICE\tNAMEOPT:NONAME";
+		aLine = Constants.s_INTERNAL_EQMOD_WEAPON
+				+ "\tTYPE:Weapon\tVISIBLE:No\tCHOOSE:NOCHOICE\tNAMEOPT:NONAME";
 		parseLine(anObj, aLine, source);
 
 		anObj = new EquipmentModifier();
-		anObj.setName(Constants.s_INTERNAL_EQMOD_ARMOR);
-		anObj.setSourceCampaign(source.getCampaign());
-		anObj.setSourceURI(source.getURI());
-		aLine = "TYPE:Armor\tVISIBLE:No\tCHOOSE:NOCHOICE\tNAMEOPT:NONAME";
+		aLine = Constants.s_INTERNAL_EQMOD_ARMOR
+				+ "\tTYPE:Armor\tVISIBLE:No\tCHOOSE:NOCHOICE\tNAMEOPT:NONAME";
 		parseLine(anObj, aLine, source);
-	}
-
-	@Override
-	public Class<EquipmentModifier> getLoadClass()
-	{
-		return EquipmentModifier.class;
-	}
-
-	@Override
-	public Class<EquipmentModifierLstCompatibilityToken> getCompatibilityTokenClass()
-	{
-		return EquipmentModifierLstCompatibilityToken.class;
-	}
-
-	@Override
-	public Class<EquipmentModifierLstToken> getTokenClass()
-	{
-		return EquipmentModifierLstToken.class;
 	}
 }

@@ -26,15 +26,13 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>SpellLstToken</code>
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface SpellLstToken extends CDOMToken<Spell>
+public interface SpellLstToken extends LstToken
 {
 	/**
 	 * Parses an Spell object
@@ -42,11 +40,5 @@ public interface SpellLstToken extends CDOMToken<Spell>
 	 * @param value
 	 * @return true if parse OK
 	 */
-	public boolean parse(Spell spell, String value);
-
-	public boolean parse(LoadContext context, Spell spell, String value)
-			throws PersistenceLayerException;
-	
-	public String[] unparse(LoadContext context, Spell spell);
+	public abstract boolean parse(Spell spell, String value);
 }
-

@@ -22,32 +22,26 @@
  */
 package pcgen.persistence.lst;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
-import pcgen.base.util.ReverseIntegerComparator;
-import pcgen.base.util.TripleKeyMap;
-import pcgen.cdom.enumeration.SubClassCategory;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.SubClass;
 import pcgen.core.SubstitutionClass;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- * 
- * @author David Rice <david-pcgen@jcuz.com>
+ *
+ * @author  David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
+public final class PCClassLoader extends LstObjectFileLoader<PCClass>
 {
 	/** Creates a new instance of PCClassLoader */
 	public PCClassLoader()
@@ -55,365 +49,8 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		super();
 	}
 
-	@Override
-	public PCClass parseLine(LoadContext context, PCClass target,
-		String lstLine, CampaignSourceEntry source)
-	{
-		int tabLoc = lstLine.indexOf("\t");
-		String firstToken;
-		String restOfLine;
-		if (tabLoc == -1)
-		{
-			// Error??
-			firstToken = lstLine;
-			restOfLine = "";
-		}
-		else
-		{
-			firstToken = lstLine.substring(0, tabLoc);
-			restOfLine = lstLine.substring(tabLoc + 1);
-		}
-
-		if (target == null)
-		{
-			if (firstToken.startsWith("CLASS:"))
-			{
-				String className = firstToken.substring(6);
-				target =
-						context.ref.silentlyGetConstructedCDOMObject(
-							getLoadClass(), className);
-				if (target == null)
-				{
-					target =
-							context.ref.constructCDOMObject(getLoadClass(),
-								className);
-					target.setName(className);
-					target.setSourceCampaign(source.getCampaign());
-					target.setSourceURI(source.getURI());
-				}
-			}
-			else
-			{
-				Logging.errorPrint("How did I see this line: " + lstLine);
-				return null;
-			}
-		}
-		int colonLoc = firstToken.indexOf(":");
-		if (colonLoc == -1)
-		{
-			int lvl = Integer.parseInt(firstToken);
-			PCClassLevelLoader.parseLine(context, target, restOfLine, source,
-					lvl);
-		}
-		else
-		{
-			String firstArg = firstToken.substring(0, colonLoc);
-			if (firstArg.equals("SUBCLASS"))
-			{
-				if (lstLine.indexOf("\t") == -1)
-				{
-					Logging.errorPrint("Expected SUBCLASS to have "
-						+ "additional Tags in " + source.getURI()
-						+ " (e.g. COST is a required Tag in a SUBCLASS)");
-				}
-				String subClassKey = firstToken.substring(9);
-				SubClassCategory scc = SubClassCategory.getConstant(target.getKey());
-				SubClass sc = context.ref.silentlyGetConstructedCDOMObject(
-						SubClass.class, scc, subClassKey);
-				if (sc == null)
-				{
-					sc = context.ref.constructCDOMObject(SubClass.class,
-							subClassKey);
-					sc.setSourceCampaign(source.getCampaign());
-					sc.setSourceURI(source.getURI());
-					sc.setName(subClassKey);
-					context.ref.reassociateReference(scc, sc);
-					// TODO Is this necessary to add to the class?
-					target.addSubClass(sc);
-				}
-				parseSubClassLine(context, sc, restOfLine, source);
-			}
-			else if (firstArg.equals("SUBCLASSLEVEL"))
-			{
-
-				// FIXME
-				// SubClassLoader.parseLine(context, sc, restOfLine, source);
-			}
-			else if (firstArg.equals("SUBSTITUTIONCLASS"))
-			{
-				if (lstLine.indexOf("\t") == -1)
-				{
-					Logging.errorPrint("Expected SUBSTITUTIONCLASS to have "
-						+ "additional Tags in " + source.getURI()
-						+ " (otherwise SUBSTITUTIONCLASS has no value)");
-				}
-				String subClassKey = firstToken.substring(18);
-				// TODO FIXME Should this really be through LoadContext??
-				SubstitutionClass sc =
-						target.getSubstitutionClassKeyed(subClassKey);
-				if (sc == null)
-				{
-					sc = new SubstitutionClass();
-					sc.setSourceCampaign(source.getCampaign());
-					sc.setSourceURI(source.getURI());
-					sc.setName(subClassKey);
-					target.addSubstitutionClass(sc);
-				}
-				parseClassLine(context, sc, restOfLine, source);
-			}
-			else if (firstArg.equals("SUBSTITUTIONCLASSLEVEL"))
-			{
-				// FIXME
-				// SubstitutionClassLoader.parseLine(context, sc, restOfLine,
-				// source);
-			}
-			else if (firstArg.equals("CLASS"))
-			{
-				PCClass thisTarget =
-						context.ref.silentlyGetConstructedCDOMObject(
-							getLoadClass(), firstToken.substring(6));
-				if (thisTarget != target)
-				{
-					target =
-							context.ref.constructCDOMObject(getLoadClass(),
-								firstToken.substring(6));
-					target.setName(firstToken.substring(6));
-					target.setSourceCampaign(source.getCampaign());
-					target.setSourceURI(source.getURI());
-				}
-				parseClassLine(context, target, restOfLine, source);
-			}
-			else
-			{
-				try
-				{
-					int lvl = Integer.parseInt(firstArg);
-					String rest = firstToken.substring(colonLoc + 1);
-					if (!rest.startsWith("REPEATLEVEL:"))
-					{
-						Logging.errorPrint("Invalid REPEATLEVEL syntax found: " + firstToken);
-						return target;
-					}
-					parseRepeatClassLevel(context, restOfLine, source, target,
-							lvl, rest.substring(12));
-				}
-				catch (NumberFormatException nfe)
-				{
-					Logging.errorPrint("Not sure what to do with: " + lstLine);
-				}
-			}
-		}
-		
-		
-		return target;
-	}
-
-	private void parseSubClassLine(LoadContext context, SubClass sc,
-		String restOfLine, CampaignSourceEntry source)
-	{
-		StringTokenizer colToken = new StringTokenizer(restOfLine, "\t");
-		while (colToken.hasMoreTokens())
-		{
-			String colString = colToken.nextToken().trim();
-			int idxColon = colString.indexOf(':');
-			if (idxColon == -1)
-			{
-				Logging.errorPrint("Invalid Token - does not contain a colon: "
-					+ colString);
-				return;
-			}
-			else if (idxColon == 0)
-			{
-				Logging.errorPrint("Invalid Token - starts with a colon: "
-					+ colString);
-				return;
-			}
-			String key = colString.substring(0, idxColon);
-			String value =
-					(idxColon == colString.length() - 1) ? null : colString
-						.substring(idxColon + 1);
-			SubClassLstToken subclasstoken =
-					TokenStore.inst().getToken(SubClassLstToken.class, key);
-
-			if (subclasstoken == null)
-			{
-				if (processSubClassCompatible(context, sc, key, value, source))
-				{
-					context.commit();
-					Logging.clearParseMessages();
-					continue;
-				}
-				context.decommit();
-			}
-			else
-			{
-				LstUtils.deprecationCheck(subclasstoken, sc, value);
-				if (subclasstoken.parse(context, sc, value))
-				{
-					context.commit();
-					Logging.clearParseMessages();
-					continue;
-				}
-				else
-				{
-					context.decommit();
-					if (processSubClassCompatible(context, sc, key, value,
-							source))
-					{
-						context.commit();
-						Logging.clearParseMessages();
-						continue;
-					}
-					context.decommit();
-				}
-			}
-			
-			parseToken(context, sc, key, value, source);
-		}
-	}
-
-	private void parseClassLine(LoadContext context, PCClass target,
-		String lstLine, CampaignSourceEntry source)
-	{
-		StringTokenizer colToken = new StringTokenizer(lstLine, "\t");
-		while (colToken.hasMoreTokens())
-		{
-			String colString = colToken.nextToken().trim();
-			int idxColon = colString.indexOf(':');
-			if (idxColon == -1)
-			{
-				Logging.errorPrint("Invalid Token - does not contain a colon: "
-					+ colString);
-				return;
-			}
-			else if (idxColon == 0)
-			{
-				Logging.errorPrint("Invalid Token - starts with a colon: "
-					+ colString);
-				return;
-			}
-			String key = colString.substring(0, idxColon);
-			String value =
-					(idxColon == colString.length() - 1) ? null : colString
-						.substring(idxColon + 1);
-			parseToken(context, target, key, value, source);
-		}
-	}
-
-	private void parseRepeatClassLevel(LoadContext context, String lstLine,
-			CampaignSourceEntry source, PCClass pcClass, int iLevel,
-			String colString)
-	{
-		//
-		// REPEAT:<level increment>|<consecutive>|<max level>
-		//
-		StringTokenizer repeatToken = new StringTokenizer(colString, "|");
-		int lvlIncrement = 1000; // an arbitrarily large number...
-		try
-		{
-			lvlIncrement = Integer.parseInt(repeatToken.nextToken());
-		}
-		catch (NumberFormatException nfe)
-		{
-			Logging.errorPrint("Non-Numeric Level Increment info '"
-					+ colString + "' in " + source.getURI(), nfe);
-			return;
-		}
-		Integer consecutive = 0;
-		Integer maxLevel = null;
-		if (repeatToken.hasMoreTokens())
-		{
-			String token = repeatToken.nextToken();
-			boolean consumed = false;
-			if (token.startsWith("SKIP="))
-			{
-				try
-				{
-					consecutive = Integer.parseInt(token.substring(5));
-				}
-				catch (NumberFormatException nfe)
-				{
-					Logging.errorPrint("Non-Numeric Consecutive Level info '"
-							+ colString + "' in " + source.getURI(), nfe);
-					return;
-				}
-				if (repeatToken.hasMoreTokens())
-				{
-					token = repeatToken.nextToken();
-				}
-				else
-				{
-					consumed = true;
-				}
-			}
-			/*
-			 * Note this is intentionally NOT else if
-			 */
-			if (token.startsWith("MAX="))
-			{
-				String maxString = token.substring(4);
-				try
-				{
-					maxLevel = Integer.parseInt(maxString);
-				}
-				catch (NumberFormatException nfe)
-				{
-					Logging.errorPrint("Non-Numeric Max Level info MAX='"
-							+ maxLevel + "' in " + source.getURI(), nfe);
-					return;
-				}
-				consumed = true;
-			}
-			if (!consumed)
-			{
-				Logging.errorPrint("Did not understand REPEATLEVEL flag: "
-						+ token + " in " + source.getURI());
-				return;
-			}
-			if (repeatToken.hasMoreTokens())
-			{
-				Logging.errorPrint("Did not understand REPEATLEVEL "
-						+ "extra token: " + repeatToken.nextToken() + " in "
-						+ source.getURI());
-				return;
-			}
-		}
-		if (maxLevel == null)
-		{
-			if (pcClass.hasMaxLevel())
-			{
-				maxLevel = pcClass.getMaxLevel();
-			}
-			else
-			{
-				maxLevel = 100; // an arbitrarily large number...
-			}
-		}
-		int count = consecutive;
-		for (int lvl = iLevel; lvl <= maxLevel; lvl += lvlIncrement)
-		{
-			if ((consecutive == 0) || (count != 0))
-			{
-				PCClassLevelLoader.parseLine(context, pcClass, lstLine, source,
-						lvl);
-			}
-			if (consecutive != 0)
-			{
-				if (count == 0)
-				{
-					count = consecutive;
-				}
-				else
-				{
-					--count;
-				}
-			}
-		}
-	}
-	
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
-	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
 	public PCClass parseLine(PCClass target, String lstLine,
@@ -422,9 +59,9 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		PCClass pcClass = target;
 
 		/*
-		 * FIXME TODO This should probably be done AFTER SUB*CLASS string
-		 * checking, as a null PCClass with SUB* items is meaningless... and an
-		 * error that should be flagged to the user - thpr 1/10/07
+		 * FIXME TODO This should probably be done AFTER SUB*CLASS string checking,
+		 * as a null PCClass with SUB* items is meaningless... and an error that should
+		 * be flagged to the user - thpr 1/10/07
 		 */
 		if (pcClass == null)
 		{
@@ -579,8 +216,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					pcClass.setSourceURI(source.getURI());
 					pcClass.setSourceCampaign(source.getCampaign());
 				}
-				// need to grab PCClass instance for this .MOD minus the .MOD
-				// part of the name
+				// need to grab PCClass instance for this .MOD minus the .MOD part of the name
 				else if (name.endsWith(".MOD"))
 				{
 					pcClass =
@@ -611,7 +247,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 					// I think we can ignore this, as
 					// it's supposed to be the level #
 					// but could be almost anything else
-					Logging.debugPrint("Expected a level value, but got '"
+					Logging.errorPrint("Expected a level value, but got '"
 						+ colString + "' instead in " + source.getURI(), nfe);
 				}
 
@@ -623,13 +259,28 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 			{
 				continue;
 			}
-			else if (colString.startsWith("HASSUBCLASS:"))
+			else if (colString.equals("HASSUBCLASS"))
 			{
 				pcClass.setHasSubClass(true);
 			}
-			else if (colString.startsWith("HASSUBSTITUTIONLEVEL:"))
+			else if (colString.equals("HASSUBSTITUTIONLEVEL"))
 			{
 				pcClass.setHasSubstitutionClass(true);
+			}
+			else if (colString.startsWith("MULTIPREREQS"))
+			{
+				//Deprecated in 5.11 Alpha cycle - thpr 12/7/06
+				Logging
+					.errorPrint("In: "
+						+ pcClass.getDisplayName()
+						+ ':'
+						+ source.getURI()
+						+ ':'
+						+ colString
+						+ ", The MULTIPREREQS tag has been deprecated.  "
+						+ "Use PREMULT with !PRECLASS:1,Any instead. "
+						+ "(e.g. PREMULT:1,[PRECLASS:1,Noble=1],[!PRECLASS:1,Any] )");
+				pcClass.setMultiPreReqs(true);
 			}
 			else if (colString.startsWith("REPEATLEVEL:"))
 			{
@@ -645,7 +296,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				LstUtils.deprecationCheck(token, pcClass, value);
 				if (!token.parse(pcClass, value, iLevel))
 				{
-					Logging.debugPrint("Error parsing pcclass "
+					Logging.errorPrint("Error parsing ability "
 						+ pcClass.getDisplayName() + ':' + source.getURI()
 						+ ':' + colString + "\"");
 				}
@@ -659,7 +310,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 				if (!(pcClass instanceof SubClass)
 					&& !(pcClass instanceof SubstitutionClass))
 				{
-					Logging.debugPrint("Illegal class info tag '" + colString
+					Logging.errorPrint("Illegal class info tag '" + colString
 						+ "' in " + source.getURI());
 				}
 			}
@@ -773,8 +424,7 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 		}
 
 		final int tabIndex = lstLine.indexOf(SystemLoader.TAB_DELIM);
-		int count = consecutive - 1; // first one already added by processing
-		// of lstLine, so skip it
+		int count = consecutive - 1; // first one already added by processing of lstLine, so skip it
 		for (int lvl = iLevel + lvlIncrement; lvl <= maxLevel; lvl +=
 				lvlIncrement)
 		{
@@ -850,351 +500,5 @@ public final class PCClassLoader extends LstLeveledObjectFileLoader<PCClass>
 	{
 		// TODO - Create Globals.addClass( final PCClass aClass )
 		Globals.getClassList().add((PCClass) pObj);
-	}
-
-	public void parseToken(LoadContext context, PCClass pcclass, String key,
-		String value, CampaignSourceEntry source)
-	{
-		PCClassUniversalLstToken univtoken =
-				TokenStore.inst().getToken(PCClassUniversalLstToken.class, key);
-		PCClassClassLstToken classtoken =
-				TokenStore.inst().getToken(PCClassClassLstToken.class, key);
-
-		if (classtoken == null)
-		{
-			if (!processClassCompatible(context, pcclass, key, value, source))
-			{
-				processUniversalToken(context, pcclass, key, value, source,
-					univtoken);
-			}
-		}
-		else
-		{
-			processClassToken(context, pcclass, key, value, source, classtoken);
-		}
-	}
-
-	static void processUniversalToken(LoadContext context, PObject po,
-		String key, String value, CampaignSourceEntry source,
-		PCClassUniversalLstToken univtoken)
-	{
-		if (univtoken == null)
-		{
-			if (processUniversalCompatible(context, po, key, value, source))
-			{
-				context.commit();
-			}
-			else
-			{
-				context.decommit();
-				if (PObjectLoader.parseTag(context, po, key, value))
-				{
-					context.commit();
-					Logging.clearParseMessages();
-				}
-				else
-				{
-					context.decommit();
-					Logging.rewindParseMessages();
-					Logging.replayParsedMessages();
-					Logging.errorPrint("Illegal PCClass Token '" + key
-							+ "' for " + po.getDisplayName() + " in "
-							+ source.getURI() + " of "
-							+ source.getCampaign() + ".");
-				}
-			}
-		}
-		else
-		{
-			LstUtils.deprecationCheck(univtoken, po, value);
-			try
-			{
-				if (univtoken.parse(context, po, value))
-				{
-					context.commit();
-				}
-				else
-				{
-					context.decommit();
-					if (processUniversalCompatible(context, po, key, value,
-						source))
-					{
-						context.commit();
-						Logging.clearParseMessages();
-					}
-					else
-					{
-						context.decommit();
-						Logging.rewindParseMessages();
-						Logging.replayParsedMessages();
-						Logging.errorPrint("Error parsing token " + key
-							+ " in pcclass " + po.getDisplayName() + ':'
-							+ source.getURI() + ':' + value + "\"");
-					}
-				}
-			}
-			catch (PersistenceLayerException e)
-			{
-				context.decommit();
-				Logging.errorPrint("Error parsing PCClass Token '" + key
-					+ "' for " + po.getDisplayName() + " in " + source.getURI()
-					+ " of " + source.getCampaign() + ".");
-			}
-		}
-	}
-
-	private static boolean processUniversalCompatible(LoadContext context,
-		PObject po, String key, String value, CampaignSourceEntry source)
-	{
-		Collection<? extends CDOMCompatibilityToken<PObject>> tokens =
-				TokenStore.inst().getCompatibilityToken(
-					PCClassUniversalLstCompatibilityToken.class, key);
-		if (tokens != null && !tokens.isEmpty())
-		{
-			TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PObject>> tkm =
-					new TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PObject>>();
-			for (CDOMCompatibilityToken<PObject> tok : tokens)
-			{
-				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
-					.valueOf(tok.compatibilitySubLevel()), Integer.valueOf(tok
-					.compatibilityPriority()), tok);
-			}
-			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
-			primarySet.addAll(tkm.getKeySet());
-			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
-			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
-			for (Integer level : primarySet)
-			{
-				secondarySet.addAll(tkm.getSecondaryKeySet(level));
-				for (Integer subLevel : secondarySet)
-				{
-					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
-					for (Integer priority : tertiarySet)
-					{
-						CDOMCompatibilityToken<PObject> tok =
-								tkm.get(level, subLevel, priority);
-						try
-						{
-							if (tok.parse(context, po, value))
-							{
-								return true;
-							}
-						}
-						catch (PersistenceLayerException e)
-						{
-							Logging.errorPrint("Error parsing PCClass Token '"
-								+ key + "' for " + po.getDisplayName() + " in "
-								+ source.getURI() + " of "
-								+ source.getCampaign() + ".");
-						}
-						context.decommit();
-					}
-					tertiarySet.clear();
-				}
-				secondarySet.clear();
-			}
-		}
-		return false;
-	}
-
-	private void processClassToken(LoadContext context, PCClass pcclass,
-		String key, String value, CampaignSourceEntry source,
-		PCClassClassLstToken classtoken)
-	{
-		LstUtils.deprecationCheck(classtoken, pcclass, value);
-		try
-		{
-			if (classtoken.parse(context, pcclass, value))
-			{
-				context.commit();
-			}
-			else
-			{
-				context.decommit();
-				Logging.markParseMessages();
-				if (processClassCompatible(context, pcclass, key, value, source))
-				{
-					context.commit();
-					Logging.clearParseMessages();
-				}
-				else
-				{
-					context.decommit();
-					Logging.rewindParseMessages();
-					Logging.replayParsedMessages();
-					Logging.errorPrint("Error parsing token " + key
-						+ " in pcclass " + pcclass.getDisplayName() + ':'
-						+ source.getURI() + ':' + value + "\"");
-				}
-			}
-		}
-		catch (PersistenceLayerException e)
-		{
-			context.decommit();
-			Logging.errorPrint("Error parsing " + getLoadClass().getName()
-				+ " Token '" + key + "' for " + pcclass.getDisplayName()
-				+ " in " + source.getURI() + " of " + source.getCampaign()
-				+ ".");
-		}
-	}
-
-	private static final ReverseIntegerComparator REVERSE =
-			new ReverseIntegerComparator();
-
-	private boolean processClassCompatible(LoadContext context,
-			PCClass pcclass, String key, String value,
-			CampaignSourceEntry source)
-	{
-		Collection<? extends CDOMCompatibilityToken<PCClass>> tokens = TokenStore
-				.inst().getCompatibilityToken(
-						PCClassClassLstCompatibilityToken.class, key);
-		if (tokens != null && !tokens.isEmpty())
-		{
-			TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PCClass>> tkm = new TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<PCClass>>();
-			for (CDOMCompatibilityToken<PCClass> tok : tokens)
-			{
-				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
-						.valueOf(tok.compatibilitySubLevel()), Integer
-						.valueOf(tok.compatibilityPriority()), tok);
-			}
-			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
-			primarySet.addAll(tkm.getKeySet());
-			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
-			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
-			for (Integer level : primarySet)
-			{
-				secondarySet.addAll(tkm.getSecondaryKeySet(level));
-				for (Integer subLevel : secondarySet)
-				{
-					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
-					for (Integer priority : tertiarySet)
-					{
-						CDOMCompatibilityToken<PCClass> tok = tkm.get(level,
-								subLevel, priority);
-						try
-						{
-							if (tok.parse(context, pcclass, value))
-							{
-								return true;
-							}
-							context.decommit();
-						}
-						catch (PersistenceLayerException e)
-						{
-							Logging.errorPrint("Error parsing "
-									+ getLoadClass().getName() + " Token '"
-									+ key + "' for " + pcclass.getDisplayName()
-									+ " in " + source.getURI() + " of "
-									+ source.getCampaign() + ".");
-						}
-					}
-					tertiarySet.clear();
-				}
-				secondarySet.clear();
-			}
-		}
-		return false;
-	}
-
-	private boolean processSubClassCompatible(LoadContext context,
-			SubClass subclass, String key, String value,
-			CampaignSourceEntry source)
-	{
-		Collection<? extends CDOMCompatibilityToken<SubClass>> tokens = TokenStore
-				.inst().getCompatibilityToken(
-						SubClassLstCompatibilityToken.class, key);
-		if (tokens != null && !tokens.isEmpty())
-		{
-			TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<SubClass>> tkm = new TripleKeyMap<Integer, Integer, Integer, CDOMCompatibilityToken<SubClass>>();
-			for (CDOMCompatibilityToken<SubClass> tok : tokens)
-			{
-				tkm.put(Integer.valueOf(tok.compatibilityLevel()), Integer
-						.valueOf(tok.compatibilitySubLevel()), Integer
-						.valueOf(tok.compatibilityPriority()), tok);
-			}
-			TreeSet<Integer> primarySet = new TreeSet<Integer>(REVERSE);
-			primarySet.addAll(tkm.getKeySet());
-			TreeSet<Integer> secondarySet = new TreeSet<Integer>(REVERSE);
-			TreeSet<Integer> tertiarySet = new TreeSet<Integer>(REVERSE);
-			for (Integer level : primarySet)
-			{
-				secondarySet.addAll(tkm.getSecondaryKeySet(level));
-				for (Integer subLevel : secondarySet)
-				{
-					tertiarySet.addAll(tkm.getTertiaryKeySet(level, subLevel));
-					for (Integer priority : tertiarySet)
-					{
-						CDOMCompatibilityToken<SubClass> tok = tkm.get(level,
-								subLevel, priority);
-						try
-						{
-							if (tok.parse(context, subclass, value))
-							{
-								return true;
-							}
-							context.decommit();
-						}
-						catch (PersistenceLayerException e)
-						{
-							Logging.errorPrint("Error parsing "
-									+ getLoadClass().getName() + " Token '"
-									+ key + "' for " + subclass.getDisplayName()
-									+ " in " + source.getURI() + " of "
-									+ source.getCampaign() + ".");
-						}
-					}
-					tertiarySet.clear();
-				}
-				secondarySet.clear();
-			}
-		}
-		return false;
-	}
-	
-	/*
-	 * FIXME parseToken should only be used for PCClass - what about
-	 * PCClassLevel?
-	 */
-	@Override
-	public Class<PCClass> getLoadClass()
-	{
-		return PCClass.class;
-	}
-
-	@Override
-	protected String preprocessLine(String line)
-	{
-		int repeatLoc = line.indexOf("\tREPEATLEVEL:");
-		if (repeatLoc == -1)
-		{
-			return line;
-		}
-		int firstTabLoc = line.indexOf("\t");
-		String level = line.substring(0, firstTabLoc);
-		String before = line.substring(firstTabLoc, repeatLoc);
-		int tabLoc = line.indexOf("\t", repeatLoc + 13);
-		String after = line.substring(tabLoc);
-		String repeat = line.substring(repeatLoc + 13, tabLoc);
-		StringTokenizer st = new StringTokenizer(repeat, ":");
-		if (st.countTokens() > 3)
-		{
-			Logging.errorPrint("Unable to process old REPEATLEVEL: syntax on line: " + line);
-			return line;
-		}
-		StringBuilder newLine = new StringBuilder();
-		newLine.append(level);
-		newLine.append(":REPEATLEVEL:");
-		newLine.append(st.nextToken());
-		if (st.hasMoreTokens())
-		{
-			newLine.append("|SKIP=").append(st.nextToken());
-		}
-		if (st.hasMoreTokens())
-		{
-			newLine.append("|MAX=").append(st.nextToken());
-		}
-		newLine.append(before);
-		newLine.append(after);
-		return newLine.toString();
 	}
 }

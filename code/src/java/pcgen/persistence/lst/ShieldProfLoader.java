@@ -32,7 +32,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
-public final class ShieldProfLoader extends GenericLstLoader<ShieldProf>
+public final class ShieldProfLoader extends LstObjectFileLoader<ShieldProf>
 {
 	/** Creates a new instance of ShieldProfLoader */
 	public ShieldProfLoader()
@@ -44,7 +44,7 @@ public final class ShieldProfLoader extends GenericLstLoader<ShieldProf>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public void parseLine(ShieldProf aWP, String lstLine,
+	public ShieldProf parseLine(ShieldProf aWP, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
 		ShieldProf prof = aWP;
@@ -109,6 +109,8 @@ public final class ShieldProfLoader extends GenericLstLoader<ShieldProf>
 		// WeaponProfs are one line each;
 		// finish the object and return null
 		completeObject(source, prof);
+
+		return null;
 	}
 
 	/**
@@ -143,24 +145,5 @@ public final class ShieldProfLoader extends GenericLstLoader<ShieldProf>
 		// TODO - What exactly is this doing?  Why would we set that it is not
 		// a new item when we just added it?
 		pObj.setNewItem(false);
-	}
-
-	@Override
-	public Class<ShieldProf> getLoadClass()
-	{
-		return ShieldProf.class;
-	}
-
-	@Override
-	public Class<? extends CDOMCompatibilityToken<ShieldProf>> getCompatibilityTokenClass()
-	{
-		//TODO Need to specify this
-		return null;
-	}
-
-	@Override
-	public Class<? extends CDOMToken<ShieldProf>> getTokenClass()
-	{
-		return ShieldProfLstToken.class;
 	}
 }

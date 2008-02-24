@@ -33,7 +33,6 @@ import pcgen.core.Ability;
 import pcgen.core.Constants;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
@@ -43,7 +42,7 @@ import pcgen.util.Logging;
  * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public class AbilityLoader extends GenericLstLoader<Ability>
+public class AbilityLoader extends LstObjectFileLoader<Ability>
 {
 	/** Creates a new instance of AbilityLoader */
 	public AbilityLoader()
@@ -56,13 +55,25 @@ public class AbilityLoader extends GenericLstLoader<Ability>
 	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public void parseLine(Ability ability, String lstLine,
+	public Ability parseLine(Ability ability, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
 		Ability anAbility = ability;
 
+		if (anAbility == null)
+		{
+			anAbility = new Ability();
+		}
+		else if (anAbility.getCategory() == null
+			|| anAbility.getCategory().length() == 0)
+		{
+			// TODO - Make this into an Enum Categorisable.Category.NONE
+			anAbility.setCategory("BROKENABILTYNOCATEGORYSET");
+		}
+
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
+		int col = 0;
 
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(AbilityLstToken.class);
@@ -81,7 +92,13 @@ public class AbilityLoader extends GenericLstLoader<Ability>
 				// TODO Handle Exception
 			}
 			AbilityLstToken token = (AbilityLstToken) tokenMap.get(key);
-			if (token != null)
+			if (col == 0)
+			{
+				anAbility.setName(colString);
+				anAbility.setSourceCampaign(source.getCampaign());
+				anAbility.setSourceURI(source.getURI());
+			}
+			else if (token != null)
 			{
 				final String value = colString.substring(idxColon + 1);
 				LstUtils.deprecationCheck(token, anAbility, value);
@@ -110,15 +127,18 @@ public class AbilityLoader extends GenericLstLoader<Ability>
 			}
 			else
 			{
-				Logging.debugPrintLocalised("Errors.AbilityLoader.UnknownTag", //$NON-NLS-1$
+				Logging.errorPrintLocalised("Errors.AbilityLoader.UnknownTag", //$NON-NLS-1$
 					colString, source.getURI());
 			}
+
+			++col;
 		}
 
 		// setChanged();
 		// notifyObservers(anAbility);
 
 		completeObject(source, anAbility);
+		return null;
 	}
 
 	/**
@@ -174,33 +194,6 @@ public class AbilityLoader extends GenericLstLoader<Ability>
 	protected void addGlobalObject(final PObject pObj)
 	{
 		Globals.addAbility((Ability) pObj);
-	}
-
-	@Override
-	public Class<Ability> getLoadClass()
-	{
-		return Ability.class;
-	}
-
-	@Override
-	protected Ability getCDOMObjectKeyed(LoadContext context, String key)
-	{
-		throw new IllegalArgumentException("Cannot determine Category");
-		// return context.ref.getConstructedCDOMObject(getLoadClass(),
-		// AbilityCategory.FEAT, key);
-	}
-
-	@Override
-	public Class<? extends CDOMCompatibilityToken<Ability>> getCompatibilityTokenClass()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Class<AbilityLstToken> getTokenClass()
-	{
-		return AbilityLstToken.class;
 	}
 	
 	@Override

@@ -29,10 +29,10 @@ import pcgen.core.PObject;
 
 /**
  * <code>AutoLstToken</code>
- * 
- * @author Thomas Parker <thpr@users.sourceforge.net>
+ *
+ * @author  Thomas Parker <thpr@users.sourceforge.net>
  */
-public interface AddLstToken extends CDOMToken<PObject>
+public interface AddLstToken extends LstToken
 {
-	public boolean parse(PObject target, String value, int level);
+	public abstract boolean parse(PObject target, String value, int level);
 }

@@ -24,7 +24,7 @@ package pcgen.persistence.lst;
 
 import java.net.URI;
 
-import pcgen.cdom.base.CDOMObject;
+import pcgen.core.PObject;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 
@@ -45,7 +45,7 @@ public class LstUtils
 	 * @param obj
 	 * @param value
 	 */
-	public static void deprecationCheck(LstToken token, CDOMObject obj,
+	public static void deprecationCheck(LstToken token, PObject obj,
 		String value)
 	{
 		if (token instanceof DeprecatedToken)
@@ -54,7 +54,7 @@ public class LstUtils
 					PropertyFactory.getFormattedString(
 						"Warnings.LstTokens.Deprecated", //$NON-NLS-1$
 						token.getTokenName(), value, obj.getDisplayName(), obj
-							.getSourceEntry().toString(),
+							.getDefaultSourceString(),
 						((DeprecatedToken) token).getMessage(obj, value));
 			deprecationWarning(msg);
 		}

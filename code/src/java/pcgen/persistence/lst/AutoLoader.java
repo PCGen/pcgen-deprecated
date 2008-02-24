@@ -22,13 +22,9 @@
  */
 package pcgen.persistence.lst;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.util.Logging;
 
@@ -36,12 +32,11 @@ public final class AutoLoader
 {
 	private AutoLoader()
 	{
-		// Utility Class, no construction needed
+		//Utility Class, no construction needed
 	}
 
 	/**
 	 * This method is static so it can be used by the AUTO Token.
-	 * 
 	 * @param target
 	 * @param lstLine
 	 * @param source
@@ -57,7 +52,7 @@ public final class AutoLoader
 			LstUtils.deprecationCheck(token, target, value);
 			if (!token.parse(target, value, level))
 			{
-				Logging.errorPrint("Error parsing AUTO:" + key + "|" + value);
+				Logging.errorPrint("Error parsing AUTO: " + key + ":" + value);
 				return false;
 			}
 			return true;
@@ -67,48 +62,5 @@ public final class AutoLoader
 			Logging.errorPrint("Error parsing AUTO, invalid SubToken: " + key);
 			return false;
 		}
-	}
-
-	public static boolean parseLine(LoadContext context, PObject obj,
-		String key, String value)
-	{
-		Map<String, LstToken> tokenMap =
-				TokenStore.inst().getTokenMap(AutoLstToken.class);
-		AutoLstToken token = (AutoLstToken) tokenMap.get(key);
-		if (token != null)
-		{
-			LstUtils.deprecationCheck(token, obj, value);
-			if (!token.parse(context, obj, value))
-			{
-				Logging.addParseMessage(Logging.LST_ERROR,
-						"Error parsing AUTO:" + key + "|" + value);
-				return false;
-			}
-			return true;
-		}
-		else
-		{
-			Logging.addParseMessage(Logging.LST_ERROR,
-					"Error parsing AUTO, invalid SubToken: " + key);
-			return false;
-		}
-	}
-
-	public static String[] unparse(LoadContext context, CDOMObject obj)
-	{
-		List<String> list = new ArrayList<String>();
-		for (LstToken token : TokenStore.inst().getTokenMap(AutoLstToken.class)
-			.values())
-		{
-			String[] s = ((AutoLstToken) token).unparse(context, (PObject) obj);
-			if (s != null)
-			{
-				for (String aString : s)
-				{
-					list.add(token.getTokenName() + "|" + aString);
-				}
-			}
-		}
-		return list.size() == 0 ? null : list.toArray(new String[list.size()]);
 	}
 }

@@ -118,7 +118,7 @@ public class FeatParser
 				{
 					final PreParserFactory factory = PreParserFactory.getInstance();
 					final Prerequisite prereq = factory.parse(preString);
-					prO.addPrerequisite(prereq);
+					prO.addPreReq(prereq);
 				}
 				catch (PersistenceLayerException ple)
 				{

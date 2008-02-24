@@ -34,11 +34,11 @@ import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- * 
- * @author David Rice <david-pcgen@jcuz.com>
+ *
+ * @author  David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-final class LanguageLoader extends GenericLstLoader<Language>
+final class LanguageLoader extends LstObjectFileLoader<Language>
 {
 	/** Creates a new instance of LanguageLoader */
 	public LanguageLoader()
@@ -47,19 +47,26 @@ final class LanguageLoader extends GenericLstLoader<Language>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
-	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public void parseLine(Language lang, String lstLine,
+	public Language parseLine(Language aLang, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
+		Language lang = aLang;
+
+		if (lang == null)
+		{
+			lang = new Language();
+		}
+
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
 
+		int col = 0;
+
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(LanguageLstToken.class);
-
 		while (colToken.hasMoreTokens())
 		{
 			final String colString = colToken.nextToken().trim();
@@ -75,7 +82,13 @@ final class LanguageLoader extends GenericLstLoader<Language>
 			}
 			LanguageLstToken token = (LanguageLstToken) tokenMap.get(key);
 
-			if (token != null)
+			if (col == 0)
+			{
+				lang.setName(colString);
+				lang.setSourceCampaign(source.getCampaign());
+				lang.setSourceURI(source.getURI());
+			}
+			else if (token != null)
 			{
 				final String value = colString.substring(idxColon + 1).trim();
 				LstUtils.deprecationCheck(token, lang, value);
@@ -95,9 +108,12 @@ final class LanguageLoader extends GenericLstLoader<Language>
 				Logging.errorPrint("Unknown tag '" + colString + "' in "
 					+ source.getURI());
 			}
+
+			++col;
 		}
 
 		completeObject(source, lang);
+		return null;
 	}
 
 	/**
@@ -126,24 +142,5 @@ final class LanguageLoader extends GenericLstLoader<Language>
 	{
 		// TODO - Create Globals.addLanguage( final Language aLang )
 		Globals.getLanguageList().add((Language) pObj);
-	}
-
-	@Override
-	public Class<Language> getLoadClass()
-	{
-		return Language.class;
-	}
-
-	@Override
-	public Class<? extends CDOMCompatibilityToken<Language>> getCompatibilityTokenClass()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Class<LanguageLstToken> getTokenClass()
-	{
-		return LanguageLstToken.class;
 	}
 }

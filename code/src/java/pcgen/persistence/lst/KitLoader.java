@@ -30,7 +30,6 @@ import pcgen.core.Globals;
 import pcgen.core.Kit;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.util.Logging;
 
@@ -41,7 +40,7 @@ import pcgen.util.Logging;
  * @author Greg Bingleman <byngl@hotmail.com>
  * @version $Revision$
  */
-public final class KitLoader extends LstLeveledObjectFileLoader<Kit> {
+public final class KitLoader extends LstObjectFileLoader<Kit> {
 	@Override
 	protected void addGlobalObject(PObject pObj) {
 		Kit k = (Kit) pObj;
@@ -130,68 +129,9 @@ public final class KitLoader extends LstLeveledObjectFileLoader<Kit> {
 	}
 	
 	@Override
-	protected void loadLstFile(LoadContext context, CampaignSourceEntry cse) {
+	protected void loadLstFile(CampaignSourceEntry cse) {
 		clearGlobalTokens();
 		clearKitPrerequisites();
-		super.loadLstFile(context, cse);
-	}
-
-	@Override
-	public Class<Kit> getLoadClass() {
-		return Kit.class;
-	}
-
-	@Override
-	protected Kit parseLine(LoadContext context, Kit kit, String line,
-			CampaignSourceEntry source) {
-		int tabLoc = line.indexOf("\t");
-		String firstToken;
-		if (tabLoc == -1) {
-			// Error??
-			firstToken = line;
-		} else {
-			firstToken = line.substring(0, tabLoc);
-		}
-		String restOfLine = line.substring(tabLoc + 1);
-
-		int colonLoc = firstToken.indexOf(":");
-		if (colonLoc == -1) {
-			Logging.errorPrint("Invalid Kit Line: " + line);
-			return kit;
-		}
-		String key = firstToken.substring(0, colonLoc);
-		/*
-		 * TODO FIXME This should really be in the STARTPACK Token, but it's
-		 * here temporarily while the KitTokens do not take in the source - that
-		 * should eventually be remedied??
-		 */
-		if ("STARTPACK".equals(key)) {
-			String name = firstToken.substring(colonLoc + 1);
-			Kit thisTarget = context.ref.silentlyGetConstructedCDOMObject(getLoadClass(), name);
-			if (thisTarget != kit || kit == null) {
-				kit = context.ref.constructCDOMObject(getLoadClass(), name);
-				// No need to set the name - done in STARTPACK
-				// FIXME Well, need to do it until the tokens are actually called :)
-				kit.setName(name);
-				kit.setSourceCampaign(source.getCampaign());
-				kit.setSourceURI(source.getURI());
-			}
-		}
-		KitLstToken token = TokenStore.inst().getToken(KitLstToken.class, key);
-
-		if (token == null) {
-			Logging.errorPrint("Illegal Kit Token '" + key + "' for "
-					+ kit.getDisplayName() + " in " + source.getURI() + " of "
-					+ source.getCampaign() + ".");
-		} else {
-			LstUtils.deprecationCheck(token, kit, restOfLine);
-//			FIXME TODO Commented out for to avoid attempt at duplicate AbilityInfo load
-//			if (!token.parse(kit, line)) {
-//				Logging.errorPrint("Error parsing token " + key + " in Kit "
-//						+ kit.getDisplayName() + ':' + source.getFile() + ':'
-//						+ restOfLine + "\"");
-//			}
-		}
-		return kit;
+		super.loadLstFile(cse);
 	}
 }

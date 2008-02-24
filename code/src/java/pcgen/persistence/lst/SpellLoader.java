@@ -40,11 +40,11 @@ import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.util.Logging;
 
 /**
- * 
- * @author David Rice <david-pcgen@jcuz.com>
+ *
+ * @author  David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class SpellLoader extends GenericLstLoader<Spell>
+public final class SpellLoader extends LstObjectFileLoader<Spell>
 {
 	/** Creates a new instance of SpellLoader */
 	public SpellLoader()
@@ -53,13 +53,20 @@ public final class SpellLoader extends GenericLstLoader<Spell>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
-	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public void parseLine(Spell spell, String lstLine,
+	public Spell parseLine(Spell aSpell, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
+		Spell spell = aSpell;
+
+		if (spell == null)
+		{
+			spell = new Spell();
+		}
+
+		int i = 0;
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
 
@@ -81,7 +88,25 @@ public final class SpellLoader extends GenericLstLoader<Spell>
 			}
 			SpellLstToken token = (SpellLstToken) tokenMap.get(key);
 
-			if (token != null)
+			// The very first one is the Name
+			if (i == 0)
+			{
+				if ((!colString.equals(spell.getKeyName()))
+					&& (colString.indexOf(".MOD") < 0))
+				{
+					completeObject(source, spell);
+					spell = new Spell();
+					spell.setName(colString);
+					spell.setSourceCampaign(source.getCampaign());
+					spell.setSourceURI(source.getURI());
+				}
+
+				i++;
+
+				continue;
+			}
+
+			else if (token != null)
 			{
 				final String value = colString.substring(idxColon + 1).trim();
 				LstUtils.deprecationCheck(token, spell, value);
@@ -104,6 +129,7 @@ public final class SpellLoader extends GenericLstLoader<Spell>
 		}
 
 		completeObject(source, spell);
+		return null;
 	}
 
 	/**
@@ -121,6 +147,54 @@ public final class SpellLoader extends GenericLstLoader<Spell>
 	@Override
 	protected void finishObject(PObject target)
 	{
+		// TODO - This code is broken now.  I think it always was though.
+		//		Object obj = Globals.getSpellMap().get(target.getKeyName());
+		//		if (obj == null)
+		//		{
+		//			Globals.addToSpellMap( target.getKeyName(), target );
+		//		}
+		//		else
+		//		{
+		//			ArrayList aList;
+		//			if (obj instanceof ArrayList)
+		//				aList = (ArrayList)obj;
+		//			else
+		//			{
+		//				aList = new ArrayList();
+		//				aList.add(obj);
+		//			}
+		//			boolean match = false;
+		//			for (Iterator i = aList.iterator(); i.hasNext();)
+		//			{
+		//				Spell aSpell = (Spell)i.next();
+		//				Object a = aSpell.getLevelInfo(null);
+		//				Object b = ((Spell)target).getLevelInfo(null);
+		//				if ((a==null && b==null) || (a!=null && a.equals(b)))
+		//				{
+		//					match = true;
+		//				}
+		//			}
+		//			if (!match)
+		//			{
+		//				final Spell aSpell = Globals.getSpellKeyed(target.getKeyName());
+		//				if (aSpell == null)
+		//				{
+		//					aList.add(target);
+		//					Globals.addToSpellMap( target.getKeyName(), aList );
+		//				}
+		//				else if (!target.equals(aSpell))
+		//				{
+		//					if (SettingsHandler.isAllowOverride())
+		//					{
+		//						if (target.getSourceDateValue() > aSpell.getSourceDateValue())
+		//						{
+		//							Globals.getSpellMap().remove(aSpell.getKeyName());
+		//							Globals.addToSpellMap( target.getKeyName(), target );
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
 	}
 
 	/**
@@ -134,12 +208,10 @@ public final class SpellLoader extends GenericLstLoader<Spell>
 
 	/**
 	 * @param spell
-	 * @param typeString
-	 *            should be CLASS or DOMAIN
-	 * @param listString
-	 *            should be name,name,name=level|name,name=level|etc where name
-	 *            is the name of a class or domain and level is an integer for
-	 *            this spell's level for the named class/domain
+	 * @param typeString should be CLASS or DOMAIN
+	 * @param listString should be name,name,name=level|name,name=level|etc
+	 * where name is the name of a class or domain and
+	 * level is an integer for this spell's level for the named class/domain
 	 * @throws PersistenceLayerException
 	 */
 	public static void setLevelList(Spell spell, final String typeString,
@@ -151,20 +223,15 @@ public final class SpellLoader extends GenericLstLoader<Spell>
 
 		if (j < i)
 		{
-			Logging
-				.errorPrint("Warning: Close Bracket before Open Bracket in Level List: "
-					+ listString);
+			Logging.errorPrint("Warning: Close Bracket before Open Bracket in Level List: " + listString);
 			j = listString.length();
 		}
 
 		if (i >= 0)
 		{
 			preReqTag = listString.substring(i + 1, j);
-			if (preReqTag.length() == 0)
-			{
-				Logging
-					.errorPrint("Warning: Empty Prerequisite in Level List: "
-						+ listString);
+			if (preReqTag.length() == 0) {
+				Logging.errorPrint("Warning: Empty Prerequisite in Level List: " + listString);
 			}
 			listString = listString.substring(0, i);
 		}
@@ -174,8 +241,7 @@ public final class SpellLoader extends GenericLstLoader<Spell>
 
 		while (aTok.hasMoreTokens())
 		{
-			final String aList = aTok.nextToken(); // could be name=x or
-													// name,name=x
+			final String aList = aTok.nextToken(); // could be name=x or name,name=x
 
 			final StringTokenizer bTok = new StringTokenizer(aList, "=", false);
 
@@ -239,24 +305,5 @@ public final class SpellLoader extends GenericLstLoader<Spell>
 			}
 			spellList.add((Spell) pObj);
 		}
-	}
-
-	@Override
-	public Class<Spell> getLoadClass()
-	{
-		return Spell.class;
-	}
-
-	@Override
-	public Class<? extends CDOMCompatibilityToken<Spell>> getCompatibilityTokenClass()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Class<SpellLstToken> getTokenClass()
-	{
-		return SpellLstToken.class;
 	}
 }

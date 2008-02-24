@@ -1,5 +1,4 @@
 /*
- * AutoLstToken
  * Copyright 2007 (C) Thomas Parker <thpr@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -26,16 +25,13 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 
 /**
  * <code>AutoLstToken</code>
  *
  * @author  Thomas Parker <thpr@users.sourceforge.net>
  */
-public interface AutoLstToken extends CDOMToken<PObject>
+public interface AutoLstToken extends LstToken
 {
-	public boolean parse(PObject target, String value, int level);
-
-	public boolean parse(LoadContext context, PObject obj, String value);
+	public abstract boolean parse(PObject target, String value, int level);
 }

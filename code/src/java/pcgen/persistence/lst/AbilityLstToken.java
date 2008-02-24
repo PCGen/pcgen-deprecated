@@ -26,15 +26,13 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.Ability;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.PersistenceLayerException;
 
 /**
  * <code>AbilityLstToken</code>
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface AbilityLstToken extends CDOMToken<Ability>
+public interface AbilityLstToken extends LstToken
 {
 	/**
 	 * Parses an Ability object
@@ -42,10 +40,5 @@ public interface AbilityLstToken extends CDOMToken<Ability>
 	 * @param value
 	 * @return true if parse OK
 	 */
-	public boolean parse(Ability ability, String value);
-
-	public boolean parse(LoadContext context, Ability ability, String value)
-		throws PersistenceLayerException;
-
-	public String[] unparse(LoadContext context, Ability ability);
+	public abstract boolean parse(Ability ability, String value);
 }

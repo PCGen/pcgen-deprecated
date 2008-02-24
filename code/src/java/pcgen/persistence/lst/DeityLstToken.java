@@ -26,7 +26,6 @@
 package pcgen.persistence.lst;
 
 import pcgen.core.Deity;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 
 /**
@@ -34,19 +33,13 @@ import pcgen.persistence.PersistenceLayerException;
  *
  * @author  Devon Jones <soulcatcher@evilsoft.org>
  */
-public interface DeityLstToken extends CDOMToken<Deity>
+public interface DeityLstToken extends LstToken
 {
 	/**
 	 * Parses an Deity object
 	 * @param deity
 	 * @param value
 	 * @return true if parse OK
-	 * @throws PersistenceLayerException 
 	 */
-	public boolean parse(Deity deity, String value) throws PersistenceLayerException;
-
-	public boolean parse(LoadContext context, Deity deit, String value)
-		throws PersistenceLayerException;
-
-	public String[] unparse(LoadContext context, Deity deity);
+	public abstract boolean parse(Deity deity, String value) throws PersistenceLayerException;
 }

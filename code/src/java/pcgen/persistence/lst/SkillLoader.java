@@ -37,7 +37,7 @@ import pcgen.util.Logging;
  * @author  David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class SkillLoader extends GenericLstLoader<Skill>
+public final class SkillLoader extends LstObjectFileLoader<Skill>
 {
 	/** Creates a new instance of SkillLoader */
 	public SkillLoader()
@@ -49,11 +49,23 @@ public final class SkillLoader extends GenericLstLoader<Skill>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public void parseLine(Skill aSkill, String lstLine,
+	public Skill parseLine(Skill aSkill, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
+		Skill skill = aSkill;
+
+		if (skill == null)
+		{
+			skill = new Skill();
+			skill.setSourceCampaign(source.getCampaign());
+			skill.setSourceURI(source.getURI());
+		}
+
 		final StringTokenizer colToken =
-			new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
+				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
+
+		// first column is the name; after that are LST tags
+		skill.setName(colToken.nextToken());
 
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(SkillLstToken.class);
@@ -75,23 +87,23 @@ public final class SkillLoader extends GenericLstLoader<Skill>
 			if ("REQ".equals(colString))
 			{
 				Logging.errorPrint("You are using a deprecated tag "
-						+ "(REQ) in Skills " + aSkill.getDisplayName() + ':'
+						+ "(REQ) in Skills " + skill.getDisplayName() + ':'
 						+ source.getURI() + ':' + colString);
 				Logging.errorPrint("  Use USEUNTRAINED instead");
-				aSkill.setRequired(true);
+				skill.setRequired(true);
 			}
 			else if (token != null)
 			{
 				final String value = colString.substring(idxColon + 1).trim();
-				LstUtils.deprecationCheck(token, aSkill, value);
-				if (!token.parse(aSkill, value))
+				LstUtils.deprecationCheck(token, skill, value);
+				if (!token.parse(skill, value))
 				{
 					Logging.errorPrint("Error parsing skill "
-						+ aSkill.getDisplayName() + ':' + source.getURI() + ':'
+						+ skill.getDisplayName() + ':' + source.getURI() + ':'
 						+ colString + "\"");
 				}
 			}
-			else if (PObjectLoader.parseTag(aSkill, colString))
+			else if (PObjectLoader.parseTag(skill, colString))
 			{
 				continue;
 			}
@@ -102,7 +114,8 @@ public final class SkillLoader extends GenericLstLoader<Skill>
 			}
 		}
 
-		completeObject(source, aSkill);
+		completeObject(source, skill);
+		return null;
 	}
 
 	/**
@@ -131,23 +144,5 @@ public final class SkillLoader extends GenericLstLoader<Skill>
 	{
 		// TODO - Create Globals.addSkill(pObj);
 		Globals.getSkillList().add((Skill) pObj);
-	}
-
-	@Override
-	public Class<Skill> getLoadClass() {
-		return Skill.class;
-	}
-
-	@Override
-	public Class<? extends CDOMCompatibilityToken<Skill>> getCompatibilityTokenClass()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Class<SkillLstToken> getTokenClass()
-	{
-		return SkillLstToken.class;
 	}
 }

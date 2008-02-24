@@ -30,7 +30,7 @@ import pcgen.core.ShieldProf;
 /**
  * <code>ShieldProfToken</code>
  */
-public interface ShieldProfLstToken extends CDOMToken<ShieldProf>
+public interface ShieldProfLstToken extends LstToken
 {
 	/**
 	 * Parses an ShieldProf object

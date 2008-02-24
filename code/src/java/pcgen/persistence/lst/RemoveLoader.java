@@ -19,14 +19,9 @@
  */
 package pcgen.persistence.lst;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.Constants;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.util.Logging;
 
@@ -36,39 +31,6 @@ public final class RemoveLoader
 	private RemoveLoader()
 	{
 		super();
-	}
-
-	public static boolean parseLine(LoadContext context, PObject obj,
-		String value) throws PersistenceLayerException
-	{
-		Map<String, LstToken> tokenMap =
-				TokenStore.inst().getTokenMap(RemoveLstToken.class);
-
-		int pipeLoc = value.indexOf(Constants.PIPE);
-		if (pipeLoc == -1)
-		{
-			Logging.errorPrint("REMOVE requires a SubToken");
-			return false;
-		}
-		String key = value.substring(0, pipeLoc);
-		RemoveLstToken token = (RemoveLstToken) tokenMap.get(key);
-
-		if (token != null)
-		{
-			LstUtils.deprecationCheck(token, obj, value);
-			if (!token.parse(context, obj, value.substring(pipeLoc + 1)))
-			{
-				Logging.errorPrint("Error parsing REMOVE in "
-					+ obj.getDisplayName() + ':' + value);
-				return false;
-			}
-		}
-		else
-		{
-			Logging.errorPrint("Illegal REMOVE info '" + value + "'");
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -102,24 +64,5 @@ public final class RemoveLoader
 				.errorPrint("Error parsing REMOVE, invalid SubToken: " + key);
 			return false;
 		}
-	}
-
-	public static String[] unparse(LoadContext context, CDOMObject obj)
-	{
-		List<String> list = new ArrayList<String>();
-		for (LstToken token : TokenStore.inst().getTokenMap(
-			RemoveLstToken.class).values())
-		{
-			String[] s =
-					((RemoveLstToken) token).unparse(context, (PObject) obj);
-			if (s != null)
-			{
-				for (String aString : s)
-				{
-					list.add(token.getTokenName() + "|" + aString);
-				}
-			}
-		}
-		return list.size() == 0 ? null : list.toArray(new String[list.size()]);
 	}
 }

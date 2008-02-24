@@ -40,39 +40,42 @@ import pcgen.util.Logging;
  * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class EquipmentLoader extends GenericLstLoader<Equipment>
-{
+public final class EquipmentLoader extends LstObjectFileLoader<Equipment> {
 
 	@Override
-	protected void addGlobalObject(PObject pObj)
-	{
-		// getEquipmentKeyedNoCustom??
-		final Equipment aTemplate =
-				EquipmentList.getEquipmentNamed(pObj.getKeyName());
-		if (aTemplate == null)
-		{
+	protected void addGlobalObject(PObject pObj) {
+		//getEquipmentKeyedNoCustom??
+		final Equipment aTemplate = EquipmentList
+				.getEquipmentNamed(pObj.getKeyName());
+		if (aTemplate == null) {
 			EquipmentList.addEquipment((Equipment) pObj);
 		}
 
 	}
 
 	@Override
-	protected Equipment getObjectKeyed(String aKey)
-	{
+	protected Equipment getObjectKeyed(String aKey) {
 		return EquipmentList.getEquipmentNamed(aKey);
 	}
 
 	@Override
-	public void parseLine(Equipment equipment, String inputLine,
-		CampaignSourceEntry source) throws PersistenceLayerException
-	{
-		final StringTokenizer colToken =
-				new StringTokenizer(inputLine, SystemLoader.TAB_DELIM);
+	public Equipment parseLine(Equipment equipment, String inputLine,
+			CampaignSourceEntry source) throws PersistenceLayerException {
+		if (equipment == null) {
+			equipment = new Equipment();
+		}
+		
+		final StringTokenizer colToken = new StringTokenizer(inputLine,
+				SystemLoader.TAB_DELIM);
+		
+		String name = colToken.nextToken();
+		equipment.setName(name);
+		equipment.setSourceCampaign(source.getCampaign());
+		equipment.setSourceURI(source.getURI());
 
-		Map<String, LstToken> tokenMap =
-				TokenStore.inst().getTokenMap(EquipmentLstToken.class);
-		while (colToken.hasMoreTokens())
-		{
+		Map<String, LstToken> tokenMap = TokenStore.inst().getTokenMap(
+				EquipmentLstToken.class);
+		while (colToken.hasMoreTokens()) {
 			final String colString = colToken.nextToken().trim();
 
 			final int idxColon = colString.indexOf(':');
@@ -97,42 +100,37 @@ public final class EquipmentLoader extends GenericLstLoader<Equipment>
 						+ colString + "\"");
 				}
 			}
+			else if (colString.startsWith("Cost:"))
+			{
+				Logging.errorPrint("Cost deprecated, use COST "
+					+ equipment.getName() + ':' + source.getURI() + ':'
+					+ colString + "\"");
+				token = (EquipmentLstToken) tokenMap.get("COST");
+				final String value = colString.substring(idxColon + 1);
+				if (!token.parse(equipment, value))
+				{
+					Logging.errorPrint("Error parsing Equipment "
+						+ equipment.getName() + ':' + source.getURI() + ':'
+						+ colString + "\"");
+				}
+			}
 			else if (PObjectLoader.parseTag(equipment, colString))
-
 			{
 				continue;
 			}
 			else
 			{
-				Logging.debugPrint("Illegal Equipment info "
+				Logging.errorPrint("Illegal Equipment info "
 					+ source.toString() + ":" + " \"" + colString + "\"");
 			}
 		}
-
+		
 		completeObject(source, equipment);
+		return null;
 	}
 
 	@Override
-	protected void performForget(Equipment objToForget)
-	{
+	protected void performForget(Equipment objToForget) {
 		EquipmentList.remove(objToForget);
-	}
-
-	@Override
-	public Class<Equipment> getLoadClass()
-	{
-		return Equipment.class;
-	}
-
-	@Override
-	public Class<EquipmentLstCompatibilityToken> getCompatibilityTokenClass()
-	{
-		return EquipmentLstCompatibilityToken.class;
-	}
-
-	@Override
-	public Class<EquipmentLstToken> getTokenClass()
-	{
-		return EquipmentLstToken.class;
 	}
 }

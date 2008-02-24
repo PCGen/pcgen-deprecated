@@ -28,16 +28,18 @@
  */
 package pcgen.persistence.lst.output.prereq;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.persistence.PersistenceLayerException;
 
+import java.io.IOException;
+import java.io.Writer;
+
 public class PrerequisiteMultWriter extends AbstractPrerequisiteWriter
 		implements PrerequisiteWriterInterface
 {
+	private boolean allSkillTot = false;
+
 	/* (non-Javadoc)
 	 * @see pcgen.persistence.lst.output.prereq.PrerequisiteWriterInterface#kindHandled()
 	 */
@@ -84,6 +86,12 @@ public class PrerequisiteMultWriter extends AbstractPrerequisiteWriter
 				}
 			}
 
+			if (isSpecialCase(prereq))
+			{
+				handleSpecialCase(writer, prereq);
+				return;
+			}
+
 			if (prereq.getOperator().equals(PrerequisiteOperator.LT))
 			{
 				writer.write('!');
@@ -122,4 +130,64 @@ public class PrerequisiteMultWriter extends AbstractPrerequisiteWriter
 			throw new PersistenceLayerException(e.getMessage());
 		}
 	}
+
+	/**
+	 * @param writer
+	 * @param prereq
+	 * @throws IOException
+	 */
+	private void handleSpecialCase(Writer writer, Prerequisite prereq)
+		throws IOException
+	{
+		if (allSkillTot)
+		{
+			if (prereq.getOperator().equals(PrerequisiteOperator.LT))
+			{
+				writer.write('!');
+			}
+			writer.write("PRESKILLTOT:");
+
+			int i = 0;
+			for (Prerequisite subreq : prereq.getPrerequisites())
+			{
+				if (i > 0)
+				{
+					writer.write(',');
+				}
+				writer.write(subreq.getKey());
+				i++;
+			}
+			writer.write('=');
+			writer.write(prereq.getOperand());
+		}
+	}
+
+	/**
+	 * @param prereq
+	 * @return TRUE if special case, else FALSE
+	 */
+	private boolean isSpecialCase(Prerequisite prereq)
+	{
+		// Special case of all subreqs being SKILL with total-values=true
+		allSkillTot = true;
+		for (Prerequisite element : prereq.getPrerequisites())
+		{
+			if (!allSkillTot)
+			{
+				break;
+			}
+			if (!"skill".equalsIgnoreCase(element.getKind())
+				|| !element.isTotalValues())
+			{
+				allSkillTot = false;
+			}
+		}
+		if (allSkillTot)
+		{
+			return allSkillTot;
+		}
+
+		return false;
+	}
+
 }

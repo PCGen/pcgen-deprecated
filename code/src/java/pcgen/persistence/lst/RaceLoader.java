@@ -37,11 +37,11 @@ import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
 /**
- * 
- * @author David Rice <david-pcgen@jcuz.com>
+ *
+ * @author  David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public final class RaceLoader extends GenericLstLoader<Race>
+public final class RaceLoader extends LstObjectFileLoader<Race>
 {
 	/** Creates a new instance of RaceLoader */
 	public RaceLoader()
@@ -50,20 +50,29 @@ public final class RaceLoader extends GenericLstLoader<Race>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
-	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public void parseLine(Race race, String lstLine, CampaignSourceEntry source)
+	public Race parseLine(Race aRace, String lstLine, CampaignSourceEntry source)
 		throws PersistenceLayerException
 	{
+		Race race = aRace;
+
+		if (race == null)
+		{
+			race = new Race();
+		}
 
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
+		int col = -1;
+
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(RaceLstToken.class);
 		while (colToken.hasMoreTokens())
 		{
+			++col;
+
 			final String colString = colToken.nextToken().trim();
 			final int idxColon = colString.indexOf(':');
 			String key = "";
@@ -77,7 +86,19 @@ public final class RaceLoader extends GenericLstLoader<Race>
 			}
 			RaceLstToken token = (RaceLstToken) tokenMap.get(key);
 
-			if (colString.startsWith("CHOOSE:LANGAUTO:"))
+			// presence of : in column 1 means no required fields (good!)
+			if ((col < 10) && (colString.indexOf(':') >= 0))
+			{
+				col = 10;
+			}
+
+			if (col == 0)
+			{
+				race.setName(colString);
+				race.setSourceCampaign(source.getCampaign());
+				race.setSourceURI(source.getURI());
+			}
+			else if (colString.startsWith("CHOOSE:LANGAUTO:"))
 			{
 				race.setChooseLanguageAutos(colString.substring(16));
 			}
@@ -87,7 +108,7 @@ public final class RaceLoader extends GenericLstLoader<Race>
 				LstUtils.deprecationCheck(token, race, value);
 				if (!token.parse(race, value))
 				{
-					Logging.debugPrint("Error parsing race "
+					Logging.errorPrint("Error parsing race "
 						+ race.getDisplayName() + ':' + source.getURI() + ':'
 						+ colString + "\"");
 				}
@@ -98,7 +119,7 @@ public final class RaceLoader extends GenericLstLoader<Race>
 			}
 			else
 			{
-				Logging.debugPrint("Illegal race tag '" + colString + "' in "
+				Logging.errorPrint("Illegal race tag '" + colString + "' in "
 					+ source.getURI());
 			}
 		}
@@ -111,10 +132,11 @@ public final class RaceLoader extends GenericLstLoader<Race>
 		if (race.getRaceType().equals(Constants.s_NONE))
 		{
 			/** TODO Uncomment this once the data is updated. */
-			// logError("Race " + race.getName() + " has no race type.");
+			//			logError("Race " + race.getName() + " has no race type.");
 		}
 
 		completeObject(source, race);
+		return null;
 	}
 
 	/**
@@ -142,23 +164,5 @@ public final class RaceLoader extends GenericLstLoader<Race>
 	protected void addGlobalObject(final PObject pObj)
 	{
 		Globals.addRace((Race) pObj);
-	}
-
-	@Override
-	public Class<Race> getLoadClass()
-	{
-		return Race.class;
-	}
-
-	@Override
-	public Class<? extends CDOMCompatibilityToken<Race>> getCompatibilityTokenClass()
-	{
-		return RaceLstCompatibilityToken.class;
-	}
-
-	@Override
-	public Class<RaceLstToken> getTokenClass()
-	{
-		return RaceLstToken.class;
 	}
 }

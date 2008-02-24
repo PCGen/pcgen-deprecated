@@ -28,12 +28,11 @@ import java.util.StringTokenizer;
 import pcgen.core.ArmorProf;
 import pcgen.core.Globals;
 import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.SystemLoader;
 import pcgen.util.Logging;
 
-public final class ArmorProfLoader extends GenericLstLoader<ArmorProf>
+public final class ArmorProfLoader extends LstObjectFileLoader<ArmorProf>
 {
 	/** Creates a new instance of ArmorProfLoader */
 	public ArmorProfLoader()
@@ -45,7 +44,7 @@ public final class ArmorProfLoader extends GenericLstLoader<ArmorProf>
 	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public void parseLine(ArmorProf aWP, String lstLine,
+	public ArmorProf parseLine(ArmorProf aWP, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
 		ArmorProf prof = aWP;
@@ -110,6 +109,8 @@ public final class ArmorProfLoader extends GenericLstLoader<ArmorProf>
 		// WeaponProfs are one line each;
 		// finish the object and return null
 		completeObject(source, prof);
+
+		return null;
 	}
 
 	/**
@@ -145,24 +146,4 @@ public final class ArmorProfLoader extends GenericLstLoader<ArmorProf>
 		// a new item when we just added it?
 		pObj.setNewItem(false);
 	}
-
-	@Override
-	public Class<ArmorProf> getLoadClass()
-	{
-		return ArmorProf.class;
-	}
-
-	@Override
-	public Class<? extends CDOMCompatibilityToken<ArmorProf>> getCompatibilityTokenClass()
-	{
-		//TODO Need to specify this
-		return null;
-	}
-
-	@Override
-	public Class<? extends CDOMToken<ArmorProf>> getTokenClass()
-	{
-		return ArmorProfLstToken.class;
-	}
-
 }

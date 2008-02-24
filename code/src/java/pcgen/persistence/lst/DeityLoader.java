@@ -35,11 +35,11 @@ import pcgen.util.Logging;
 
 /**
  * This class is an LstObjectLoader that loads deity information.
- * 
+ *
  * @author David Rice <david-pcgen@jcuz.com>
  * @version $Revision$
  */
-public class DeityLoader extends GenericLstLoader<Deity>
+public class DeityLoader extends LstObjectFileLoader<Deity>
 {
 	/**
 	 * Creates a new instance of DeityLoader
@@ -50,15 +50,22 @@ public class DeityLoader extends GenericLstLoader<Deity>
 	}
 
 	/**
-	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject,
-	 *      java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
+	 * @see pcgen.persistence.lst.LstObjectFileLoader#parseLine(pcgen.core.PObject, java.lang.String, pcgen.persistence.lst.CampaignSourceEntry)
 	 */
 	@Override
-	public void parseLine(Deity deity, String lstLine,
+	public Deity parseLine(Deity aDeity, String lstLine,
 		CampaignSourceEntry source) throws PersistenceLayerException
 	{
+		Deity deity = aDeity;
+
+		if (deity == null)
+		{
+			deity = new Deity();
+		}
+
 		final StringTokenizer colToken =
 				new StringTokenizer(lstLine, SystemLoader.TAB_DELIM);
+		boolean firstCol = true;
 
 		Map<String, LstToken> tokenMap =
 				TokenStore.inst().getTokenMap(DeityLstToken.class);
@@ -91,6 +98,19 @@ public class DeityLoader extends GenericLstLoader<Deity>
 			{
 				continue;
 			}
+			else if (firstCol)
+			{
+				if ((!colString.equals(deity.getKeyName()))
+					&& (colString.indexOf(".MOD") < 0))
+				{
+					completeObject(source, deity);
+					deity = new Deity();
+					deity.setName(colString);
+					deity.setSourceCampaign(source.getCampaign());
+					deity.setSourceURI(source.getURI());
+				}
+				firstCol = false;
+			}
 			else
 			{
 				Logging.errorPrint("Illegal deity info '" + colString
@@ -100,6 +120,7 @@ public class DeityLoader extends GenericLstLoader<Deity>
 		}
 
 		completeObject(source, deity);
+		return null;
 	}
 
 	/**
@@ -128,24 +149,5 @@ public class DeityLoader extends GenericLstLoader<Deity>
 	{
 		// TODO - Create Globals.addDeity( final Deity aDeity );
 		Globals.getDeityList().add((Deity) pObj);
-	}
-
-	@Override
-	public Class<Deity> getLoadClass()
-	{
-		return Deity.class;
-	}
-
-	@Override
-	public Class<? extends CDOMCompatibilityToken<Deity>> getCompatibilityTokenClass()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Class<DeityLstToken> getTokenClass()
-	{
-		return DeityLstToken.class;
 	}
 }

@@ -118,7 +118,6 @@ public class AbilityCategoryLoader extends LstLineFileLoader
 			if (key.equals("ABILITYCATEGORY")) //$NON-NLS-1$
 			{
 				final String value = colString.substring(idxColon + 1).trim();
-				pcgen.cdom.enumeration.AbilityCategory.getConstant(value);
 				cat = aGameMode.silentlyGetAbilityCategory(value);
 
 				if (cat == null)
