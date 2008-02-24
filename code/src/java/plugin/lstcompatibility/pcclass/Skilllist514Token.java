@@ -33,24 +33,21 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.ClassSkillList;
-import pcgen.core.PCClass;
-import pcgen.core.PCTemplate;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstCompatibilityToken;
-import pcgen.persistence.lst.PCClassLevelLstCompatibilityToken;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.ClassSkillList;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SKILLLIST Token
  */
 public class Skilllist514Token extends AbstractToken implements
-		PCClassClassLstCompatibilityToken, PCClassLevelLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMPCClass>
 {
 
-	private static final Class<ClassSkillList> SKILLLIST_CLASS =
-			ClassSkillList.class;
+	private static final Class<ClassSkillList> SKILLLIST_CLASS = ClassSkillList.class;
 
 	@Override
 	public String getTokenName()
@@ -58,7 +55,7 @@ public class Skilllist514Token extends AbstractToken implements
 		return "SKILLLIST";
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -67,7 +64,7 @@ public class Skilllist514Token extends AbstractToken implements
 		if (value.indexOf('|') == -1)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " may not have only one argument");
+					+ " may not have only one argument");
 			return false;
 		}
 
@@ -79,19 +76,18 @@ public class Skilllist514Token extends AbstractToken implements
 			if (count <= 0)
 			{
 				Logging.errorPrint("Number in " + getTokenName()
-					+ " must be greater than zero: " + value);
+						+ " must be greater than zero: " + value);
 				return false;
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint("Invalid Number in " + getTokenName() + ": "
-				+ value);
+					+ value);
 			return false;
 		}
 
-		List<CDOMReference<ClassSkillList>> refs =
-				new ArrayList<CDOMReference<ClassSkillList>>();
+		List<CDOMReference<ClassSkillList>> refs = new ArrayList<CDOMReference<ClassSkillList>>();
 
 		boolean foundAny = false;
 		boolean foundOther = false;
@@ -116,22 +112,22 @@ public class Skilllist514Token extends AbstractToken implements
 		if (foundAny && foundOther)
 		{
 			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 
-		ChooseActionContainer container =
-				new ChooseActionContainer(getTokenName());
-		container.addActor(new GrantActor<PCTemplate>());
+		ChooseActionContainer container = new ChooseActionContainer(
+				getTokenName());
+		container.addActor(new GrantActor<ClassSkillList>());
 		context.getGraphContext().grant(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
-		ReferenceChoiceSet<ClassSkillList> rcs =
-				new ReferenceChoiceSet<ClassSkillList>(refs);
-		ChoiceSet<ClassSkillList> cs =
-				new ChoiceSet<ClassSkillList>(getTokenName(), rcs);
+				.getFormulaFor(Integer.MAX_VALUE));
+		ReferenceChoiceSet<ClassSkillList> rcs = new ReferenceChoiceSet<ClassSkillList>(
+				refs);
+		ChoiceSet<ClassSkillList> cs = new ChoiceSet<ClassSkillList>(
+				getTokenName(), rcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
@@ -151,12 +147,8 @@ public class Skilllist514Token extends AbstractToken implements
 		return 14;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value, int level)
+	public Class<CDOMPCClass> getTokenClass()
 	{
-		if (level == 1)
-		{
-			return parse(context, pcc, value);
-		}
-		return false;
+		return CDOMPCClass.class;
 	}
 }

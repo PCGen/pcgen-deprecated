@@ -15,17 +15,17 @@ import pcgen.cdom.helper.CompoundOrChoiceSet;
 import pcgen.cdom.helper.GrantBonusActor;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.SpellLevelChoiceSet;
+import pcgen.cdom.inst.CDOMSpellProgressionInfo;
 import pcgen.core.Constants;
-import pcgen.core.SpellProgressionInfo;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -50,7 +50,7 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		String token = value;
 		String rest = value;
@@ -63,7 +63,7 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			if (token.startsWith("COUNT="))
 			{
 				Logging.errorPrint("Cannot use COUNT in CHOOSE:SPELLLEVEL: "
-					+ value);
+						+ value);
 				return false;
 			}
 			else if (token.startsWith("NUMCHOICES="))
@@ -71,16 +71,16 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 				if (maxCount != null)
 				{
 					Logging
-						.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
-							+ value);
+							.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				maxCount = token.substring(11);
 				if (maxCount == null || maxCount.length() == 0)
 				{
 					Logging
-						.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
-							+ value);
+							.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
+									+ value);
 					return false;
 				}
 			}
@@ -98,7 +98,7 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 		if (rest.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return false;
 		}
 		List<String> list = new ArrayList<String>();
@@ -109,7 +109,8 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			if (closeLoc != rest.length() - 1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments does not contain matching brackets: " + rest);
+						+ " arguments does not contain matching brackets: "
+						+ rest);
 				return false;
 			}
 			String bracketString = rest.substring(bracketLoc + 1, closeLoc);
@@ -120,8 +121,8 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			else
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not contain [" + bracketString + "] : "
-					+ value);
+						+ " arguments may not contain [" + bracketString
+						+ "] : " + value);
 				return false;
 			}
 			rest = rest.substring(0, bracketLoc);
@@ -134,8 +135,10 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 		pipeLoc = rest.indexOf("|");
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " must have two or more | delimited arguments : " + value);
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
 			return false;
 		}
 		int count;
@@ -146,20 +149,19 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " first argument must be an Integer : " + value);
+					+ " first argument must be an Integer : " + value);
 			return false;
 		}
 
-		StringTokenizer tok =
-				new StringTokenizer(rest.substring(pipeLoc + 1), Constants.PIPE);
+		StringTokenizer tok = new StringTokenizer(rest.substring(pipeLoc + 1),
+				Constants.PIPE);
 		if (tok.countTokens() % 3 != 0)
 		{
 			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " requires a multiple of three arguments: " + value);
+					+ " requires a multiple of three arguments: " + value);
 			return false;
 		}
-		List<PrimitiveChoiceSet<String>> pcsList =
-				new ArrayList<PrimitiveChoiceSet<String>>();
+		List<PrimitiveChoiceSet<String>> pcsList = new ArrayList<PrimitiveChoiceSet<String>>();
 		while (tok.hasMoreTokens())
 		{
 			String tokString = tok.nextToken();
@@ -167,7 +169,7 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			if (equalsLoc == tokString.length() - 1)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments must have value after = : " + tokString);
+						+ " arguments must have value after = : " + tokString);
 				Logging.errorPrint("  entire token was: " + value);
 				return false;
 			}
@@ -178,14 +180,14 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			else if (!tokString.startsWith("TYPE="))
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " argument must start with CLASS= or TYPE= : "
-					+ tokString);
+						+ " argument must start with CLASS= or TYPE= : "
+						+ tokString);
 				Logging.errorPrint("  Entire Token was: " + value);
 				return false;
 			}
-			CDOMReference<SpellProgressionInfo> slref =
-					TokenUtilities.getTypeOrPrimitive(context,
-						SpellProgressionInfo.class, tokString);
+			CDOMReference<CDOMSpellProgressionInfo> slref = TokenUtilities
+					.getTypeOrPrimitive(context,
+							CDOMSpellProgressionInfo.class, tokString);
 			Formula min;
 			try
 			{
@@ -195,7 +197,7 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			catch (NumberFormatException nfe)
 			{
 				Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " second argument must be an Integer : " + value);
+						+ " second argument must be an Integer : " + value);
 				return false;
 			}
 			// No validation can be performed because third is a formula :P
@@ -203,12 +205,11 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			pcsList.add(new SpellLevelChoiceSet(slref, min, max));
 		}
 
-		PrimitiveChoiceSet<String> pcs =
-				new CompoundOrChoiceSet<String>(pcsList);
-		Formula maxFormula =
-				maxCount == null ? FormulaFactory
-					.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
-					.getFormulaFor(maxCount);
+		PrimitiveChoiceSet<String> pcs = new CompoundOrChoiceSet<String>(
+				pcsList);
+		Formula maxFormula = maxCount == null ? FormulaFactory
+				.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
+				.getFormulaFor(maxCount);
 		Formula countFormula = FormulaFactory.getFormulaFor(count);
 		ChoiceSet<String> chooser = new ChoiceSet<String>("Choose", pcs);
 		ChooseActionContainer container = cdo.getChooseContainer();
@@ -220,5 +221,10 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			container.addActor(new GrantBonusActor(s));
 		}
 		return true;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

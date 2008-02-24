@@ -32,10 +32,10 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.helper.Capacity;
-import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.EquipmentLstCompatibilityToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.BigDecimalHelper;
 import pcgen.util.Logging;
 
@@ -43,7 +43,7 @@ import pcgen.util.Logging;
  * Deals with CONTAINS token
  */
 public class Contains512Token extends AbstractToken implements
-		EquipmentLstCompatibilityToken
+CDOMCompatibilityToken<CDOMEquipment>
 {
 
 	BigDecimal MINUS_ONE = new BigDecimal(-1);
@@ -54,7 +54,7 @@ public class Contains512Token extends AbstractToken implements
 		return "CONTAINS";
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -220,5 +220,10 @@ public class Contains512Token extends AbstractToken implements
 	public int compatibilityPriority()
 	{
 		return 0;
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

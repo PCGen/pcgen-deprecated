@@ -23,23 +23,23 @@ package plugin.lstcompatibility.equipment;
 
 import java.util.List;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.Type;
-import pcgen.core.ArmorProf;
+import pcgen.cdom.inst.CDOMArmorProf;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMShieldProf;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.Constants;
-import pcgen.core.Equipment;
-import pcgen.core.ShieldProf;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.DeferredToken;
-import pcgen.persistence.lst.EquipmentLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
+import pcgen.rules.persistence.token.DeferredToken;
 import pcgen.util.Logging;
 
-public class Proficiency512Token implements EquipmentLstCompatibilityToken,
-		DeferredToken<Equipment>
+public class Proficiency512Token implements
+		CDOMCompatibilityToken<CDOMEquipment>, DeferredToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -47,7 +47,7 @@ public class Proficiency512Token implements EquipmentLstCompatibilityToken,
 		return "PROFICIENCY";
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		if (value.indexOf(Constants.PIPE) == -1)
 		{
@@ -74,12 +74,12 @@ public class Proficiency512Token implements EquipmentLstCompatibilityToken,
 		return 12;
 	}
 
-	public Class<Equipment> getObjectClass()
+	public Class<CDOMEquipment> getObjectClass()
 	{
-		return Equipment.class;
+		return CDOMEquipment.class;
 	}
 
-	public boolean process(LoadContext context, Equipment eq)
+	public boolean process(LoadContext context, CDOMEquipment eq)
 	{
 		String value = eq.get(StringKey.COMPAT_PROFICIENCY);
 		if (value == null)
@@ -106,8 +106,8 @@ public class Proficiency512Token implements EquipmentLstCompatibilityToken,
 								+ eq.get(StringKey.COMPAT_PROFICIENCY_SOURCE));
 				return false;
 			}
-			CDOMSimpleSingleRef<WeaponProf> wp = context.ref.getCDOMReference(
-					WeaponProf.class, value);
+			CDOMSingleRef<CDOMWeaponProf> wp = context.ref.getCDOMReference(
+					CDOMWeaponProf.class, value);
 			context.getObjectContext().put(eq, ObjectKey.WEAPON_PROF, wp);
 		}
 		else if (isArmor)
@@ -119,14 +119,14 @@ public class Proficiency512Token implements EquipmentLstCompatibilityToken,
 								+ eq.get(StringKey.COMPAT_PROFICIENCY_SOURCE));
 				return false;
 			}
-			CDOMSimpleSingleRef<ArmorProf> wp = context.ref.getCDOMReference(
-					ArmorProf.class, value);
+			CDOMSingleRef<CDOMArmorProf> wp = context.ref.getCDOMReference(
+					CDOMArmorProf.class, value);
 			context.getObjectContext().put(eq, ObjectKey.ARMOR_PROF, wp);
 		}
 		else if (isShield)
 		{
-			CDOMSimpleSingleRef<ShieldProf> wp = context.ref.getCDOMReference(
-					ShieldProf.class, value);
+			CDOMSingleRef<CDOMShieldProf> wp = context.ref.getCDOMReference(
+					CDOMShieldProf.class, value);
 			context.getObjectContext().put(eq, ObjectKey.SHIELD_PROF, wp);
 		}
 		else
@@ -138,5 +138,10 @@ public class Proficiency512Token implements EquipmentLstCompatibilityToken,
 		}
 
 		return false;
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

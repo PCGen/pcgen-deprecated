@@ -3,16 +3,13 @@ package plugin.lstcompatibility.global;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.AutoLoader;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
-import pcgen.util.Logging;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class Auto512Lst_ShieldProf extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -37,7 +34,7 @@ public class Auto512Lst_ShieldProf extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (!value.startsWith("SHIELDPROF|"))
 		{
@@ -60,7 +57,12 @@ public class Auto512Lst_ShieldProf extends AbstractToken implements
 				newProf.append(token);
 			}
 		}
-		return AutoLoader.parseLine(context, (PObject) cdo, "SHIELDPROF",
+		return context.processSubToken(cdo, getTokenName(), "SHIELDPROF",
 				newProf.toString());
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

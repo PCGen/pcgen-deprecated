@@ -8,14 +8,14 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.NoChoiceSet;
-import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class Choose512Lst_EqBuilder extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -40,14 +40,14 @@ public class Choose512Lst_EqBuilder extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (!value.startsWith("EQBUILDER|"))
 		{
 			// Not valid compatibility
 			return false;
 		}
-		if (!(cdo instanceof EquipmentModifier))
+		if (!(cdo instanceof CDOMEqMod))
 		{
 			return false;
 		}
@@ -60,5 +60,10 @@ public class Choose512Lst_EqBuilder extends AbstractToken implements
 		cac.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		cac.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		return true;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

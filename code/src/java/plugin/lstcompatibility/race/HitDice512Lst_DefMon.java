@@ -17,15 +17,15 @@
  */
 package plugin.lstcompatibility.race;
 
-import pcgen.core.Kit;
-import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMKit;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.RaceLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class HitDice512Lst_DefMon extends AbstractToken implements
-		RaceLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMRace>
 {
 
 	@Override
@@ -49,8 +49,8 @@ public class HitDice512Lst_DefMon extends AbstractToken implements
 		return 12;
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
-		throws PersistenceLayerException
+	public boolean parse(LoadContext context, CDOMRace race, String value)
+			throws PersistenceLayerException
 	{
 		int commaLoc = value.indexOf(',');
 		if (commaLoc == -1)
@@ -61,10 +61,15 @@ public class HitDice512Lst_DefMon extends AbstractToken implements
 		{
 			return false;
 		}
-		Kit kit = race.getCompatMonsterKit();
+		CDOMKit kit = race.getCompatMonsterKit();
 		kit.setCompatHitDice(Integer.parseInt(value.substring(0, commaLoc)));
 		kit.setCompatHitDiceSize(Integer
-			.parseInt(value.substring(commaLoc + 1)));
+				.parseInt(value.substring(commaLoc + 1)));
 		return true;
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

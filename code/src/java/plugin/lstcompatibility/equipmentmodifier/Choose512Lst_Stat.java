@@ -3,15 +3,15 @@ package plugin.lstcompatibility.equipmentmodifier;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
-import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.EquipmentModifierLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class Choose512Lst_Stat extends AbstractToken implements
-		EquipmentModifierLstCompatibilityToken
+CDOMCompatibilityToken<CDOMEqMod>
 {
 
 	@Override
@@ -35,7 +35,7 @@ public class Choose512Lst_Stat extends AbstractToken implements
 		return 12;
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier cdo,
+	public boolean parse(LoadContext context, CDOMEqMod cdo,
 			String value) throws PersistenceLayerException
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
@@ -72,7 +72,11 @@ public class Choose512Lst_Stat extends AbstractToken implements
 				}
 			}
 		}
-		return ChooseLoader.parseEqModToken(cdo, "", "STATBONUS", val
-				.toString());
+		return false;//return ChooseLoader.parseEqModToken(cdo, "", "STATBONUS", val.toString());
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

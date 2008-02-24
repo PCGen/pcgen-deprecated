@@ -22,16 +22,16 @@
 package plugin.lstcompatibility.equipment;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.cdom.inst.EquipmentHead;
-import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.EquipmentLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with ALTCRITMULT token
  */
-public class Altcritical512Token implements EquipmentLstCompatibilityToken
+public class Altcritical512Token implements CDOMCompatibilityToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -39,7 +39,7 @@ public class Altcritical512Token implements EquipmentLstCompatibilityToken
 		return "ALTCRITICAL";
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		Integer cm = null;
 		if ((value.length() > 0) && (value.charAt(0) == 'x'))
@@ -56,7 +56,7 @@ public class Altcritical512Token implements EquipmentLstCompatibilityToken
 			catch (NumberFormatException nfe)
 			{
 				Logging.errorPrint(getTokenName()
-					+ " was expecting an Integer: " + value);
+						+ " was expecting an Integer: " + value);
 				return false;
 			}
 		}
@@ -67,8 +67,8 @@ public class Altcritical512Token implements EquipmentLstCompatibilityToken
 		if (cm == null)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " was expecting x followed by an integer "
-				+ "or the special value '-' (representing no value)");
+					+ " was expecting x followed by an integer "
+					+ "or the special value '-' (representing no value)");
 			return false;
 		}
 		EquipmentHead altHead = eq.getEquipmentHead(2);
@@ -89,5 +89,10 @@ public class Altcritical512Token implements EquipmentLstCompatibilityToken
 	public int compatibilitySubLevel()
 	{
 		return 12;
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

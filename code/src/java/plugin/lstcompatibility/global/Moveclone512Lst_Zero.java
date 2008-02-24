@@ -32,9 +32,9 @@ import pcgen.base.formula.SubtractingFormula;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.constructor.MovementFormulaConstructor;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 /**
@@ -42,7 +42,7 @@ import pcgen.util.Logging;
  * 
  */
 public class Moveclone512Lst_Zero extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -80,9 +80,9 @@ public class Moveclone512Lst_Zero extends AbstractToken implements
 			if (denom <= 0)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ " was expecting a Positive Integer "
-					+ "for dividing Movement, was : "
-					+ formulaString.substring(1));
+						+ " was expecting a Positive Integer "
+						+ "for dividing Movement, was : "
+						+ formulaString.substring(1));
 				return false;
 			}
 			form = new DividingFormula(denom);
@@ -93,9 +93,9 @@ public class Moveclone512Lst_Zero extends AbstractToken implements
 			if (mult <= 0)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ " was expecting a Positive "
-					+ "Integer for multiplying Movement, was : "
-					+ formulaString.substring(1));
+						+ " was expecting a Positive "
+						+ "Integer for multiplying Movement, was : "
+						+ formulaString.substring(1));
 				return false;
 			}
 			form = new MultiplyingFormula(mult);
@@ -106,9 +106,9 @@ public class Moveclone512Lst_Zero extends AbstractToken implements
 			if (add <= 0)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ " was expecting a Positive "
-					+ "Integer for adding Movement, was : "
-					+ formulaString.substring(1));
+						+ " was expecting a Positive "
+						+ "Integer for adding Movement, was : "
+						+ formulaString.substring(1));
 				return false;
 			}
 			form = new AddingFormula(add);
@@ -127,8 +127,8 @@ public class Moveclone512Lst_Zero extends AbstractToken implements
 			}
 		}
 
-		MovementFormulaConstructor fc =
-				new MovementFormulaConstructor(oldType, newType, form);
+		MovementFormulaConstructor fc = new MovementFormulaConstructor(oldType,
+				newType, form);
 
 		context.getGraphContext().grant(getTokenName(), obj, fc);
 		return true;
@@ -147,5 +147,10 @@ public class Moveclone512Lst_Zero extends AbstractToken implements
 	public int compatibilitySubLevel()
 	{
 		return 12;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

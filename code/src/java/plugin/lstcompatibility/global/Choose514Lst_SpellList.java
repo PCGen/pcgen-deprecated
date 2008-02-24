@@ -8,16 +8,15 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 public class Choose514Lst_SpellList extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -42,7 +41,7 @@ public class Choose514Lst_SpellList extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		String token = null;
 		String rest = value;
@@ -58,15 +57,15 @@ public class Choose514Lst_SpellList extends AbstractToken implements
 				if (count != null)
 				{
 					Logging
-						.errorPrint("Cannot use COUNT more than once in CHOOSE: "
-							+ value);
+							.errorPrint("Cannot use COUNT more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				count = token.substring(6);
 				if (count == null)
 				{
 					Logging.errorPrint("COUNT in CHOOSE must be a formula: "
-						+ value);
+							+ value);
 					return false;
 				}
 			}
@@ -75,16 +74,16 @@ public class Choose514Lst_SpellList extends AbstractToken implements
 				if (maxCount != null)
 				{
 					Logging
-						.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
-							+ value);
+							.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				maxCount = token.substring(11);
 				if (maxCount == null || maxCount.length() == 0)
 				{
 					Logging
-						.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
-							+ value);
+							.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
+									+ value);
 					return false;
 				}
 			}
@@ -112,22 +111,25 @@ public class Choose514Lst_SpellList extends AbstractToken implements
 		{
 			return false;
 		}
-		PrimitiveChoiceSet<Spell> pcs =
-				ChooseLoader.parseToken(context, Spell.class, args);
-		ChoiceSet<Spell> chooser = new ChoiceSet<Spell>("Choose", pcs);
+		PrimitiveChoiceSet<CDOMSpell> pcs = context.getChoiceSet(
+				CDOMSpell.class, args);
+		ChoiceSet<CDOMSpell> chooser = new ChoiceSet<CDOMSpell>("Choose", pcs);
 		ChooseActionContainer container = cdo.getChooseContainer();
 		container.setChoiceSet(chooser);
 
-		Formula maxFormula =
-				maxCount == null ? FormulaFactory
-					.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
-					.getFormulaFor(maxCount);
-		Formula countFormula =
-				count == null ? FormulaFactory.getFormulaFor("INT")
-					: FormulaFactory.getFormulaFor(count);
+		Formula maxFormula = maxCount == null ? FormulaFactory
+				.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
+				.getFormulaFor(maxCount);
+		Formula countFormula = count == null ? FormulaFactory
+				.getFormulaFor("INT") : FormulaFactory.getFormulaFor(count);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 
 		return true;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

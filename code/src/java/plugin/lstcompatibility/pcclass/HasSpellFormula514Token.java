@@ -21,13 +21,13 @@
  */
 package plugin.lstcompatibility.pcclass;
 
-import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstCompatibilityToken;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class HasSpellFormula514Token extends AbstractToken implements
-		PCClassClassLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMPCClass>
 {
 
 	@Override
@@ -36,7 +36,7 @@ public class HasSpellFormula514Token extends AbstractToken implements
 		return "HASSPELLFORMULA";
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		return true;
 	}
@@ -54,5 +54,10 @@ public class HasSpellFormula514Token extends AbstractToken implements
 	public int compatibilitySubLevel()
 	{
 		return 14;
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

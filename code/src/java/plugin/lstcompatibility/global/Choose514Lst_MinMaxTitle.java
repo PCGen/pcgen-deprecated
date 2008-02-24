@@ -30,14 +30,13 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.ChooseCDOMLstToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
-import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
-public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
+public class Choose514Lst_MinMaxTitle implements
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -46,23 +45,14 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 	}
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
 		{
 			// Has to be at least two items for MinMaxTitle
 			Logging.addParseMessage(Logging.LST_ERROR,
-				"CHOOSE min/max/title must have a PIPE");
-			return false;
-		}
-		ChooseCDOMLstToken cTok =
-				TokenStore.inst().getToken(ChooseCDOMLstToken.class, "NUMBER");
-		if (cTok == null)
-		{
-			// Depends on NUMBER token being valid...
-			Logging.addParseMessage(Logging.LST_ERROR,
-				"CHOOSE min/max/title must have NUMBER token to delegate to");
+					"CHOOSE min/max/title must have a PIPE");
 			return false;
 		}
 		String token = value.substring(0, pipeLoc);
@@ -76,14 +66,15 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 				if (count != null)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"Cannot use COUNT more than once in CHOOSE: " + value);
+							"Cannot use COUNT more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				count = token.substring(6);
 				if (count == null)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"COUNT in CHOOSE must be a formula: " + value);
+							"COUNT in CHOOSE must be a formula: " + value);
 					return false;
 				}
 			}
@@ -92,15 +83,15 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 				if (maxCount != null)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"Cannot use NUMCHOICES more than once in CHOOSE: "
-							+ value);
+							"Cannot use NUMCHOICES more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				maxCount = token.substring(11);
 				if (maxCount == null || maxCount.length() == 0)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"NUMCHOICES in CHOOSE must be a formula: " + value);
+							"NUMCHOICES in CHOOSE must be a formula: " + value);
 					return false;
 				}
 			}
@@ -112,8 +103,8 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 			if (pipeLoc == -1)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR,
-					"CHOOSE min/max/title must contain both MIN= and MAX=: "
-						+ value);
+						"CHOOSE min/max/title must contain both MIN= and MAX=: "
+								+ value);
 				return false;
 			}
 			else
@@ -131,15 +122,17 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 			{
 				if (min != null)
 				{
-					Logging.addParseMessage(Logging.LST_ERROR,
-						"Cannot use MIN more than once in CHOOSE: " + value);
+					Logging
+							.addParseMessage(Logging.LST_ERROR,
+									"Cannot use MIN more than once in CHOOSE: "
+											+ value);
 					return false;
 				}
 				min = token.substring(4);
 				if (min == null || min.length() == 0)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"MIN in CHOOSE must be a number: " + value);
+							"MIN in CHOOSE must be a number: " + value);
 					return false;
 				}
 			}
@@ -147,15 +140,17 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 			{
 				if (max != null)
 				{
-					Logging.addParseMessage(Logging.LST_ERROR,
-						"Cannot use MAX more than once in CHOOSE: " + value);
+					Logging
+							.addParseMessage(Logging.LST_ERROR,
+									"Cannot use MAX more than once in CHOOSE: "
+											+ value);
 					return false;
 				}
 				max = token.substring(4);
 				if (max == null || max.length() == 0)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"MAX in CHOOSE must be a number: " + value);
+							"MAX in CHOOSE must be a number: " + value);
 					return false;
 				}
 			}
@@ -164,14 +159,15 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 				if (title != null)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"Cannot use TITLE more than once in CHOOSE: " + value);
+							"Cannot use TITLE more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				title = token.substring(6);
 				if (title == null || title.length() == 0)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-						"TITLE in CHOOSE must be a number: " + value);
+							"TITLE in CHOOSE must be a number: " + value);
 					return false;
 				}
 			}
@@ -200,19 +196,19 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 		{
 			// Parse failed (unexpected stuff)
 			Logging.addParseMessage(Logging.LST_ERROR,
-				"CHOOSE min/max/title found unexpected stuff: " + rest);
+					"CHOOSE min/max/title found unexpected stuff: " + rest);
 			return false;
 		}
 		if (min == null)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR,
-				"CHOOSE min/max/title had no MIN=");
+					"CHOOSE min/max/title had no MIN=");
 			return false;
 		}
 		if (max == null)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR,
-				"CHOOSE min/max/title had no MAX=");
+					"CHOOSE min/max/title had no MAX=");
 			return false;
 		}
 		StringBuilder sb = new StringBuilder();
@@ -221,19 +217,18 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 		{
 			sb.append("|TITLE=").append(title);
 		}
-		PrimitiveChoiceSet<?> chooser = cTok.parse(context, obj, sb.toString());
+		PrimitiveChoiceSet<?> chooser = context.getChoiceSet(obj, "NUMBER", sb
+				.toString());
 		if (chooser == null)
 		{
 			return false;
 		}
 
-		Formula maxFormula =
-				maxCount == null ? FormulaFactory
-					.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
-					.getFormulaFor(maxCount);
-		Formula countFormula =
-				count == null ? FormulaFactory.getFormulaFor(1)
-					: FormulaFactory.getFormulaFor(count);
+		Formula maxFormula = maxCount == null ? FormulaFactory
+				.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
+				.getFormulaFor(maxCount);
+		Formula countFormula = count == null ? FormulaFactory.getFormulaFor(1)
+				: FormulaFactory.getFormulaFor(count);
 		ChoiceSet<?> cs = new ChoiceSet("Choose", chooser);
 		ChooseActionContainer container = obj.getChooseContainer();
 		container.setChoiceSet(cs);
@@ -255,5 +250,10 @@ public class Choose514Lst_MinMaxTitle implements GlobalLstCompatibilityToken
 	public int compatibilityPriority()
 	{
 		return 0;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

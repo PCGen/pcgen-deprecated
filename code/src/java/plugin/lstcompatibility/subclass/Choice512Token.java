@@ -21,22 +21,22 @@
  */
 package plugin.lstcompatibility.subclass;
 
+import pcgen.cdom.content.CDOMSpellProhibitor;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.ProhibitedSpellType;
 import pcgen.cdom.enumeration.SpellDescriptor;
 import pcgen.cdom.enumeration.SpellSchool;
 import pcgen.cdom.enumeration.SpellSubSchool;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMSubClass;
 import pcgen.core.Constants;
-import pcgen.core.SpellProhibitor;
-import pcgen.core.SubClass;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.DeferredToken;
-import pcgen.persistence.lst.SubClassLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
+import pcgen.rules.persistence.token.DeferredToken;
 import pcgen.util.Logging;
 
-public class Choice512Token implements SubClassLstCompatibilityToken,
-		DeferredToken<SubClass>
+public class Choice512Token implements CDOMCompatibilityToken<CDOMSubClass>,
+		DeferredToken<CDOMSubClass>
 {
 
 	public String getTokenName()
@@ -44,7 +44,7 @@ public class Choice512Token implements SubClassLstCompatibilityToken,
 		return "CHOICE";
 	}
 
-	public boolean parse(LoadContext context, SubClass sc, String value)
+	public boolean parse(LoadContext context, CDOMSubClass sc, String value)
 	{
 		if (value.indexOf(Constants.PIPE) == -1)
 		{
@@ -71,12 +71,12 @@ public class Choice512Token implements SubClassLstCompatibilityToken,
 		return 12;
 	}
 
-	public Class<SubClass> getObjectClass()
+	public Class<CDOMSubClass> getObjectClass()
 	{
-		return SubClass.class;
+		return CDOMSubClass.class;
 	}
 
-	public boolean process(LoadContext context, SubClass sc)
+	public boolean process(LoadContext context, CDOMSubClass sc)
 	{
 		String value = sc.get(StringKey.COMPAT_CHOICE);
 		if (value == null)
@@ -130,18 +130,22 @@ public class Choice512Token implements SubClassLstCompatibilityToken,
 				return false;
 			}
 		}
-		SpellProhibitor<?> sp = getSpellProhib(pst, value);
+		CDOMSpellProhibitor<?> sp = getSpellProhib(pst, value);
 		context.getObjectContext().put(sc, ObjectKey.SELETED_SPELLS, sp);
 		return true;
 	}
 
-	private <T> SpellProhibitor<T> getSpellProhib(ProhibitedSpellType<T> pst,
+	private <T> CDOMSpellProhibitor<T> getSpellProhib(ProhibitedSpellType<T> pst,
 			String arg)
 	{
-		SpellProhibitor<T> spSchool = new SpellProhibitor<T>();
+		CDOMSpellProhibitor<T> spSchool = new CDOMSpellProhibitor<T>();
 		spSchool.setType(pst);
 		spSchool.addValue(pst.getTypeValue(arg));
 		return spSchool;
 	}
 
+	public Class<CDOMSubClass> getTokenClass()
+	{
+		return CDOMSubClass.class;
+	}
 }

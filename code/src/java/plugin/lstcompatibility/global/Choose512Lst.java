@@ -9,16 +9,15 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.ChooseLoader;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 public class Choose512Lst extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -45,7 +44,7 @@ public class Choose512Lst extends AbstractToken implements
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 			throws PersistenceLayerException
 	{
-		if (obj instanceof EquipmentModifier)
+		if (obj instanceof CDOMEqMod)
 		{
 			return false;
 		}
@@ -140,10 +139,12 @@ public class Choose512Lst extends AbstractToken implements
 			{
 				if (v.substring(titleLoc + 1).indexOf(Constants.PIPE) != -1)
 				{
-					Logging.addParseMessage(Logging.LST_ERROR,
-						"CHOOSE: If TITLE= is used, must END with TITLE= . "
-							+ "No additional arguments allowed after the title.  "
-							+ "Offending value: " + value);
+					Logging
+							.addParseMessage(
+									Logging.LST_ERROR,
+									"CHOOSE: If TITLE= is used, must END with TITLE= . "
+											+ "No additional arguments allowed after the title.  "
+											+ "Offending value: " + value);
 					return false;
 				}
 				title = v.substring(titleLoc + 7);
@@ -154,8 +155,7 @@ public class Choose512Lst extends AbstractToken implements
 		/*
 		 * TODO Need to process the title!!!
 		 */
-		PrimitiveChoiceSet<?> chooser = ChooseLoader.parseToken(context, obj,
-				key, v);
+		PrimitiveChoiceSet<?> chooser = context.getChoiceSet(obj, key, v);
 		if (chooser == null)
 		{
 			// Yes, direct access, not through the context!!
@@ -173,5 +173,10 @@ public class Choose512Lst extends AbstractToken implements
 		cac.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		cac.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		return true;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

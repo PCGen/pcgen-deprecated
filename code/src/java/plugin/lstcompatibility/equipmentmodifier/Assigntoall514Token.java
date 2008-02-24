@@ -22,15 +22,14 @@
 package plugin.lstcompatibility.equipmentmodifier;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.EquipmentModifier;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.EquipmentModifierLstCompatibilityToken;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 /**
  * Deals with ASSIGNTOALL token
  */
-public class Assigntoall514Token implements
-		EquipmentModifierLstCompatibilityToken
+public class Assigntoall514Token implements CDOMCompatibilityToken<CDOMEqMod>
 {
 
 	public String getTokenName()
@@ -38,8 +37,7 @@ public class Assigntoall514Token implements
 		return "ASSIGNTOALL";
 	}
 
-	public boolean parse(LoadContext context, EquipmentModifier mod,
-		String value)
+	public boolean parse(LoadContext context, CDOMEqMod mod, String value)
 	{
 		Boolean set;
 		char firstChar = value.charAt(0);
@@ -68,5 +66,10 @@ public class Assigntoall514Token implements
 	public int compatibilityPriority()
 	{
 		return 0;
+	}
+
+	public Class<CDOMEqMod> getTokenClass()
+	{
+		return CDOMEqMod.class;
 	}
 }

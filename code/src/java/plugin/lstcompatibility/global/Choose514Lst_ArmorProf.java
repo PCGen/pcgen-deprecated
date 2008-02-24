@@ -13,16 +13,16 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 public class Choose514Lst_ArmorProf extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -47,7 +47,7 @@ public class Choose514Lst_ArmorProf extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (!value.startsWith("ARMORPROF|"))
 		{
@@ -58,13 +58,13 @@ public class Choose514Lst_ArmorProf extends AbstractToken implements
 		if (value.indexOf(',') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
+					+ " arguments may not contain , : " + value);
 			return false;
 		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain [] : " + value);
+					+ " arguments may not contain [] : " + value);
 			return false;
 		}
 		if (hasIllegalSeparator('|', value))
@@ -75,8 +75,10 @@ public class Choose514Lst_ArmorProf extends AbstractToken implements
 		int pipeLoc = value.indexOf("|");
 		if (pipeLoc == -1)
 		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " must have two or more | delimited arguments : " + value);
+			Logging
+					.errorPrint("CHOOSE:" + getTokenName()
+							+ " must have two or more | delimited arguments : "
+							+ value);
 			return false;
 		}
 		int count;
@@ -87,32 +89,33 @@ public class Choose514Lst_ArmorProf extends AbstractToken implements
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " first argument must be an Integer : " + value);
+					+ " first argument must be an Integer : " + value);
 			return false;
 		}
-		List<CDOMReference<Equipment>> cs =
-				new ArrayList<CDOMReference<Equipment>>();
+		List<CDOMReference<CDOMEquipment>> cs = new ArrayList<CDOMReference<CDOMEquipment>>();
 		String rest = value.substring(pipeLoc + 1);
 		if (Constants.LST_ANY.equals(rest))
 		{
-			cs.add(context.ref.getCDOMTypeReference(Equipment.class, "Armor"));
+			cs.add(context.ref.getCDOMTypeReference(CDOMEquipment.class,
+					"Armor"));
 		}
 		else
 		{
-			List<CDOMReference<Equipment>> rc =
-					getReferenceChooser(context, rest);
+			List<CDOMReference<CDOMEquipment>> rc = getReferenceChooser(
+					context, rest);
 			if (rc == null)
 			{
 				return false;
 			}
 			cs.addAll(rc);
 		}
-		ReferenceChoiceSet<Equipment> pcs =
-				new ReferenceChoiceSet<Equipment>(cs);
+		ReferenceChoiceSet<CDOMEquipment> pcs = new ReferenceChoiceSet<CDOMEquipment>(
+				cs);
 
 		Formula maxFormula = FormulaFactory.getFormulaFor(count);
 		Formula countFormula = FormulaFactory.getFormulaFor(1);
-		ChoiceSet<Equipment> chooser = new ChoiceSet<Equipment>("Choose", pcs);
+		ChoiceSet<CDOMEquipment> chooser = new ChoiceSet<CDOMEquipment>(
+				"Choose", pcs);
 		ChooseActionContainer container = cdo.getChooseContainer();
 		container.setChoiceSet(chooser);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
@@ -120,30 +123,28 @@ public class Choose514Lst_ArmorProf extends AbstractToken implements
 		return true;
 	}
 
-	private List<CDOMReference<Equipment>> getReferenceChooser(
-		LoadContext context, String rest)
+	private List<CDOMReference<CDOMEquipment>> getReferenceChooser(
+			LoadContext context, String rest)
 	{
 		StringTokenizer st = new StringTokenizer(rest, Constants.PIPE);
-		List<CDOMReference<Equipment>> eqList =
-				new ArrayList<CDOMReference<Equipment>>();
+		List<CDOMReference<CDOMEquipment>> eqList = new ArrayList<CDOMReference<CDOMEquipment>>();
 		while (st.hasMoreTokens())
 		{
 			String tokString = st.nextToken();
 			if (Constants.LST_ANY.equals(tokString))
 			{
 				Logging.errorPrint("In CHOOSE:" + getTokenName()
-					+ ": Cannot use ANY and another qualifier: " + rest);
+						+ ": Cannot use ANY and another qualifier: " + rest);
 				return null;
 			}
 			else
 			{
-				CDOMReference<Equipment> ref;
+				CDOMReference<CDOMEquipment> ref;
 				if (tokString.startsWith(Constants.LST_TYPE_OLD)
-					|| tokString.startsWith(Constants.LST_TYPE))
+						|| tokString.startsWith(Constants.LST_TYPE))
 				{
-					ref =
-							TokenUtilities.getTypeReference(context,
-								Equipment.class, "Armor."
+					ref = TokenUtilities.getTypeReference(context,
+							CDOMEquipment.class, "Armor."
 									+ tokString.substring(5));
 				}
 				else
@@ -151,14 +152,13 @@ public class Choose514Lst_ArmorProf extends AbstractToken implements
 					/*
 					 * TODO What if this isn't armor??
 					 */
-					ref =
-							context.ref.getCDOMReference(Equipment.class,
-								tokString);
+					ref = context.ref.getCDOMReference(CDOMEquipment.class,
+							tokString);
 				}
 				if (ref == null)
 				{
 					Logging.errorPrint("Invalid Reference: " + tokString
-						+ " in CHOOSE:" + getTokenName() + ": " + rest);
+							+ " in CHOOSE:" + getTokenName() + ": " + rest);
 					return null;
 				}
 				eqList.add(ref);
@@ -167,4 +167,8 @@ public class Choose514Lst_ArmorProf extends AbstractToken implements
 		return eqList;
 	}
 
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
+	}
 }

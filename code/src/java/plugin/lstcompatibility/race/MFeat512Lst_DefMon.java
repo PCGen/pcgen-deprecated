@@ -19,17 +19,17 @@ package plugin.lstcompatibility.race;
 
 import java.util.StringTokenizer;
 
+import pcgen.cdom.inst.CDOMKit;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Constants;
-import pcgen.core.Kit;
-import pcgen.core.Race;
 import pcgen.core.kit.KitAbilities;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.RaceLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class MFeat512Lst_DefMon extends AbstractToken implements
-		RaceLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMRace>
 {
 
 	@Override
@@ -53,15 +53,20 @@ public class MFeat512Lst_DefMon extends AbstractToken implements
 		return 12;
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 		throws PersistenceLayerException
 	{
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
-		Kit kit = race.getCompatMonsterKit();
+		CDOMKit kit = race.getCompatMonsterKit();
 		while (st.hasMoreTokens())
 		{
 			kit.addObject(new KitAbilities(st.nextToken(), "FEAT", true));
 		}
 		return true;
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

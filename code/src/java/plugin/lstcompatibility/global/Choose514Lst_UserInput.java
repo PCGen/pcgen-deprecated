@@ -1,14 +1,14 @@
 package plugin.lstcompatibility.global;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 public class Choose514Lst_UserInput extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -77,14 +77,19 @@ public class Choose514Lst_UserInput extends AbstractToken implements
 			return false;
 		}
 
-		//TODO Need to figure out how to handle this!!
-		//Formula maxFormula = FormulaFactory.getFormulaFor(count);
-		//Formula countFormula = FormulaFactory.getFormulaFor(count);
-		//PromptActionContainer container = cdo.getPromptContainer();
-		//container.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
-		//container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
-		//container.setAssociation(AssociationKey.CHOICE_TITLE, title);
+		// TODO Need to figure out how to handle this!!
+		// Formula maxFormula = FormulaFactory.getFormulaFor(count);
+		// Formula countFormula = FormulaFactory.getFormulaFor(count);
+		// PromptActionContainer container = cdo.getPromptContainer();
+		// container.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
+		// container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
+		// container.setAssociation(AssociationKey.CHOICE_TITLE, title);
 
 		return true;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

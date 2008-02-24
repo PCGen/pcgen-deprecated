@@ -22,14 +22,14 @@
 package plugin.lstcompatibility.equipment;
 
 import pcgen.cdom.enumeration.IntegerKey;
-import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.EquipmentLstCompatibilityToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 /**
  * Deals with CRITRANGE token
  */
-public class Range512Token implements EquipmentLstCompatibilityToken
+public class Range512Token implements CDOMCompatibilityToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -37,7 +37,7 @@ public class Range512Token implements EquipmentLstCompatibilityToken
 		return "RANGE";
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		try
 		{
@@ -65,5 +65,10 @@ public class Range512Token implements EquipmentLstCompatibilityToken
 	public int compatibilitySubLevel()
 	{
 		return 12;
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

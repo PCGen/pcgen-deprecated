@@ -32,11 +32,11 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 /**
@@ -44,7 +44,7 @@ import pcgen.util.Logging;
  * 
  */
 public class Spells514Lst extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 	@Override
 	public String getTokenName()
@@ -73,7 +73,7 @@ public class Spells514Lst extends AbstractToken implements
 	 * @return spells list
 	 */
 	private boolean createSpellsList(LoadContext context, CDOMObject obj,
-		String sourceLine)
+			String sourceLine)
 	{
 		if (isEmpty(sourceLine) || hasIllegalSeparator('|', sourceLine))
 		{
@@ -89,7 +89,7 @@ public class Spells514Lst extends AbstractToken implements
 		if (!tok.hasMoreTokens())
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ ": minimally requires a Spell Name");
+					+ ": minimally requires a Spell Name");
 			return false;
 		}
 		String token = tok.nextToken();
@@ -102,14 +102,17 @@ public class Spells514Lst extends AbstractToken implements
 			if (casterLevel.length() == 0)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR,
-					"Error in Caster Level in " + getTokenName()
-						+ ": argument was empty");
+						"Error in Caster Level in " + getTokenName()
+								+ ": argument was empty");
 				return false;
 			}
 			if (!tok.hasMoreTokens())
 			{
-				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ ": minimally requires a Spell Name (after CASTERLEVEL=)");
+				Logging
+						.addParseMessage(
+								Logging.LST_ERROR,
+								getTokenName()
+										+ ": minimally requires a Spell Name (after CASTERLEVEL=)");
 				return false;
 			}
 			token = tok.nextToken();
@@ -121,13 +124,13 @@ public class Spells514Lst extends AbstractToken implements
 			if (times.length() == 0)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, "Error in Times in "
-					+ getTokenName() + ": argument was empty");
+						+ getTokenName() + ": argument was empty");
 				return false;
 			}
 			if (!tok.hasMoreTokens())
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-					+ ": minimally requires a Spell Name (after TIMES=)");
+						+ ": minimally requires a Spell Name (after TIMES=)");
 				return false;
 			}
 			token = tok.nextToken();
@@ -136,37 +139,36 @@ public class Spells514Lst extends AbstractToken implements
 		if (token.charAt(0) == ',')
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ " Spell arguments may not start with , : " + token);
+					+ " Spell arguments may not start with , : " + token);
 			return false;
 		}
 		if (token.charAt(token.length() - 1) == ',')
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ " Spell arguments may not end with , : " + token);
+					+ " Spell arguments may not end with , : " + token);
 			return false;
 		}
 		if (token.indexOf(",,") != -1)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-				+ " Spell arguments uses double separator ,, : " + token);
+					+ " Spell arguments uses double separator ,, : " + token);
 			return false;
 		}
 
-		DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String> dkm =
-				new DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String>();
+		DoubleKeyMap<CDOMReference<CDOMSpell>, AssociationKey<String>, String> dkm = new DoubleKeyMap<CDOMReference<CDOMSpell>, AssociationKey<String>, String>();
 		while (true)
 		{
 			int commaLoc = token.indexOf(',');
 			String name = commaLoc == -1 ? token : token.substring(0, commaLoc);
-			CDOMReference<Spell> spell =
-					context.ref.getCDOMReference(Spell.class, name);
+			CDOMReference<CDOMSpell> spell = context.ref.getCDOMReference(
+					CDOMSpell.class, name);
 			dkm.put(spell, AssociationKey.CASTER_LEVEL, casterLevel);
-			dkm.put(spell, AssociationKey.TIMES_PER_DAY, times);
+			dkm.put(spell, AssociationKey.TIMES_PER_UNIT, times);
 			dkm.put(spell, AssociationKey.SPELLBOOK, spellBook);
 			if (commaLoc != -1)
 			{
 				dkm.put(spell, AssociationKey.DC_FORMULA, token
-					.substring(commaLoc + 1));
+						.substring(commaLoc + 1));
 			}
 			if (!tok.hasMoreTokens())
 			{
@@ -189,8 +191,8 @@ public class Spells514Lst extends AbstractToken implements
 			if (prereq == null)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR,
-					"   (Did you put spells after the "
-						+ "PRExxx tags in SPELLS:?)");
+						"   (Did you put spells after the "
+								+ "PRExxx tags in SPELLS:?)");
 				return false;
 			}
 			prereqs.add(prereq);
@@ -205,14 +207,16 @@ public class Spells514Lst extends AbstractToken implements
 		return true;
 	}
 
-	public void finish(LoadContext context, CDOMObject obj,
-		DoubleKeyMap<CDOMReference<Spell>, AssociationKey<String>, String> dkm,
-		List<Prerequisite> prereqs)
+	public void finish(
+			LoadContext context,
+			CDOMObject obj,
+			DoubleKeyMap<CDOMReference<CDOMSpell>, AssociationKey<String>, String> dkm,
+			List<Prerequisite> prereqs)
 	{
-		for (CDOMReference<Spell> spell : dkm.getKeySet())
+		for (CDOMReference<CDOMSpell> spell : dkm.getKeySet())
 		{
-			AssociatedPrereqObject edge =
-					context.getGraphContext().grant(getTokenName(), obj, spell);
+			AssociatedPrereqObject edge = context.getGraphContext().grant(
+					getTokenName(), obj, spell);
 			for (AssociationKey<String> ak : dkm.getSecondaryKeySet(spell))
 			{
 				edge.setAssociation(ak, dkm.get(spell, ak));
@@ -240,5 +244,10 @@ public class Spells514Lst extends AbstractToken implements
 	public int compatibilitySubLevel()
 	{
 		return 14;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

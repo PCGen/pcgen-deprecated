@@ -21,15 +21,15 @@ import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMKit;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Constants;
-import pcgen.core.Kit;
-import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class Bonus514Lst_DefMonCombatBab extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -40,7 +40,7 @@ public class Bonus514Lst_DefMonCombatBab extends AbstractToken implements
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (!(obj instanceof Race))
+		if (!(obj instanceof CDOMRace))
 		{
 			return false;
 		}
@@ -65,13 +65,13 @@ public class Bonus514Lst_DefMonCombatBab extends AbstractToken implements
 		{
 			String aString = aTok.nextToken().toUpperCase();
 			if (!aString.equals("PREDEFAULTMONSTER:Y")
-				&& !aString.equals("TYPE=BASE.REPLACE"))
+					&& !aString.equals("TYPE=BASE.REPLACE"))
 			{
 				// Only looking for Default Monster items
 				return false;
 			}
 		}
-		Kit kit = ((Race) obj).getCompatMonsterKit();
+		CDOMKit kit = ((CDOMRace) obj).getCompatMonsterKit();
 		kit.setCompatEndingBAB(Integer.parseInt(bValue));
 		return true;
 	}
@@ -89,5 +89,10 @@ public class Bonus514Lst_DefMonCombatBab extends AbstractToken implements
 	public int compatibilitySubLevel()
 	{
 		return 14;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

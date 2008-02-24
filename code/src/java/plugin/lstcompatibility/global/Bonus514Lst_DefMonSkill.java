@@ -21,16 +21,16 @@ import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMKit;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Constants;
-import pcgen.core.Kit;
-import pcgen.core.Race;
 import pcgen.core.kit.KitSkill;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class Bonus514Lst_DefMonSkill extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -41,7 +41,7 @@ public class Bonus514Lst_DefMonSkill extends AbstractToken implements
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (!(obj instanceof Race))
+		if (!(obj instanceof CDOMRace))
 		{
 			return false;
 		}
@@ -69,7 +69,7 @@ public class Bonus514Lst_DefMonSkill extends AbstractToken implements
 			// Only looking for Default Monster items, no types expected...
 			return false;
 		}
-		Kit kit = ((Race) obj).getCompatMonsterKit();
+		CDOMKit kit = ((CDOMRace) obj).getCompatMonsterKit();
 		StringTokenizer st = new StringTokenizer(bonusInfo, Constants.COMMA);
 		while (st.hasMoreTokens())
 		{
@@ -94,5 +94,10 @@ public class Bonus514Lst_DefMonSkill extends AbstractToken implements
 	public int compatibilitySubLevel()
 	{
 		return 14;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.CDOMListObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -34,23 +35,20 @@ import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.cdom.helper.SpellReferenceChoiceSet;
-import pcgen.core.CDOMListObject;
-import pcgen.core.ClassSpellList;
-import pcgen.core.DomainSpellList;
-import pcgen.core.PCClass;
-import pcgen.core.PCTemplate;
-import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstCompatibilityToken;
-import pcgen.persistence.lst.PCClassLevelLstCompatibilityToken;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.ClassSpellList;
+import pcgen.cdom.inst.DomainSpellList;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SPELLLIST Token
  */
 public class Spelllist514Token extends AbstractToken implements
-		PCClassClassLstCompatibilityToken, PCClassLevelLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMPCClass>
 {
 
 	private static Class<ClassSpellList> SPELLLIST_CLASS = ClassSpellList.class;
@@ -62,7 +60,7 @@ public class Spelllist514Token extends AbstractToken implements
 		return "SPELLLIST";
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -71,7 +69,7 @@ public class Spelllist514Token extends AbstractToken implements
 		if (value.indexOf('|') == -1)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " may not have only one argument");
+					+ " may not have only one argument");
 			return false;
 		}
 
@@ -83,17 +81,17 @@ public class Spelllist514Token extends AbstractToken implements
 			if (count <= 0)
 			{
 				Logging.errorPrint("Number in " + getTokenName()
-					+ " must be greater than zero: " + value);
+						+ " must be greater than zero: " + value);
 				return false;
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint("Invalid Number in " + getTokenName() + ": "
-				+ value);
+					+ value);
 			return false;
 		}
-		
+
 		List<CDOMReference<?>> refs = new ArrayList<CDOMReference<?>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
@@ -131,7 +129,7 @@ public class Spelllist514Token extends AbstractToken implements
 
 		ChooseActionContainer container = new ChooseActionContainer(
 				getTokenName());
-		container.addActor(new GrantActor<PCTemplate>());
+		container.addActor(new GrantActor<CDOMListObject<CDOMSpell>>());
 		context.getGraphContext().grant(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 				.getFormulaFor(count));
@@ -145,9 +143,9 @@ public class Spelllist514Token extends AbstractToken implements
 		 * on the back end of this, the Chooser will probably have issues
 		 * knowing what to do.
 		 */
-		ReferenceChoiceSet<? extends CDOMListObject<Spell>> rcs = new SpellReferenceChoiceSet(
+		ReferenceChoiceSet<? extends CDOMListObject<CDOMSpell>> rcs = new SpellReferenceChoiceSet(
 				refs);
-		ChoiceSet<? extends CDOMListObject<Spell>> cs = new ChoiceSet(
+		ChoiceSet<? extends CDOMListObject<CDOMSpell>> cs = new ChoiceSet(
 				getTokenName(), rcs);
 		container.setChoiceSet(cs);
 		return true;
@@ -168,13 +166,8 @@ public class Spelllist514Token extends AbstractToken implements
 		return 14;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value,
-		int level)
+	public Class<CDOMPCClass> getTokenClass()
 	{
-		if (level == 1)
-		{
-			return parse(context, pcc, value);
-		}
-		return false;
+		return CDOMPCClass.class;
 	}
 }

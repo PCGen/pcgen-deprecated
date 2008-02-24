@@ -19,7 +19,7 @@
  * Last Editor: $Author: thpr $
  * Last Edited: $Date: 2007-07-04 21:36:43 -0400 (Wed, 04 Jul 2007) $
  */
-package plugin.lstcompatibility.pcclass;
+package plugin.lstcompatibility.pcclass.level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.inst.CDOMAbility;
-import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
@@ -45,7 +45,7 @@ import pcgen.util.Logging;
  * Class deals with FEAT Token
  */
 public class FeatAuto512Token extends AbstractToken implements
-		CDOMCompatibilityToken<CDOMPCClass>
+		CDOMCompatibilityToken<CDOMPCClassLevel>
 {
 	public static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
 
@@ -55,7 +55,7 @@ public class FeatAuto512Token extends AbstractToken implements
 		return "FEATAUTO";
 	}
 
-	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClassLevel pcc, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -134,8 +134,8 @@ public class FeatAuto512Token extends AbstractToken implements
 		return 0;
 	}
 
-	public Class<CDOMPCClass> getTokenClass()
+	public Class<CDOMPCClassLevel> getTokenClass()
 	{
-		return CDOMPCClass.class;
+		return CDOMPCClassLevel.class;
 	}
 }

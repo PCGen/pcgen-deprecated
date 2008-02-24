@@ -21,20 +21,21 @@
  */
 package plugin.lstcompatibility.pcclass;
 
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.PCClassClassLstCompatibilityToken;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with PRERACETYPE Token
  */
-public class Preracetype512Token extends AbstractToken implements PCClassLstToken,
-		PCClassClassLstCompatibilityToken
+public class Preracetype512Token extends AbstractToken implements
+		PCClassLstToken, CDOMCompatibilityToken<CDOMPCClass>
 {
 
 	@Override
@@ -49,7 +50,7 @@ public class Preracetype512Token extends AbstractToken implements PCClassLstToke
 		return true;
 	}
 
-	public boolean parse(LoadContext context, PCClass pcc, String value)
+	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
 		try
 		{
@@ -60,8 +61,8 @@ public class Preracetype512Token extends AbstractToken implements PCClassLstToke
 		catch (PersistenceLayerException ple)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR,
-				"Invalid conversion from PRERACETYPE to PRERACE for " + value
-					+ " " + ple.getLocalizedMessage());
+					"Invalid conversion from PRERACETYPE to PRERACE for "
+							+ value + " " + ple.getLocalizedMessage());
 			return false;
 		}
 	}
@@ -79,5 +80,10 @@ public class Preracetype512Token extends AbstractToken implements PCClassLstToke
 	public int compatibilitySubLevel()
 	{
 		return 12;
+	}
+
+	public Class<CDOMPCClass> getTokenClass()
+	{
+		return CDOMPCClass.class;
 	}
 }

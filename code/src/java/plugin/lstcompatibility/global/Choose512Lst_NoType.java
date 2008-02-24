@@ -11,17 +11,17 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.CollectionChoiceSet;
-import pcgen.core.Equipment;
-import pcgen.core.EquipmentModifier;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.chooser.ChooserUtilities;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
 public class Choose512Lst_NoType extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -46,14 +46,14 @@ public class Choose512Lst_NoType extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		if (cdo instanceof EquipmentModifier)
+		if (cdo instanceof CDOMEqMod)
 		{
 			return false;
 			// CONSIDER TODO return parseEqMod(context, cdo, value);
 		}
-		if (cdo instanceof Equipment)
+		if (cdo instanceof CDOMEquipment)
 		{
 			return false;
 		}
@@ -71,15 +71,15 @@ public class Choose512Lst_NoType extends AbstractToken implements
 				if (count != null)
 				{
 					Logging
-						.errorPrint("Cannot use COUNT more than once in CHOOSE: "
-							+ value);
+							.errorPrint("Cannot use COUNT more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				count = token.substring(6);
 				if (count == null)
 				{
 					Logging.errorPrint("COUNT in CHOOSE must be a formula: "
-						+ value);
+							+ value);
 					return false;
 				}
 			}
@@ -88,16 +88,16 @@ public class Choose512Lst_NoType extends AbstractToken implements
 				if (maxCount != null)
 				{
 					Logging
-						.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
-							+ value);
+							.errorPrint("Cannot use NUMCHOICES more than once in CHOOSE: "
+									+ value);
 					return false;
 				}
 				maxCount = token.substring(11);
 				if (maxCount == null || maxCount.length() == 0)
 				{
 					Logging
-						.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
-							+ value);
+							.errorPrint("NUMCHOICES in CHOOSE must be a formula: "
+									+ value);
 					return false;
 				}
 			}
@@ -132,13 +132,11 @@ public class Choose512Lst_NoType extends AbstractToken implements
 		ChooseActionContainer container = cdo.getChooseContainer();
 		container.setChoiceSet(chooser);
 
-		Formula maxFormula =
-				maxCount == null ? FormulaFactory
-					.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
-					.getFormulaFor(maxCount);
-		Formula countFormula =
-				count == null ? FormulaFactory.getFormulaFor("1")
-					: FormulaFactory.getFormulaFor(count);
+		Formula maxFormula = maxCount == null ? FormulaFactory
+				.getFormulaFor(Integer.MAX_VALUE) : FormulaFactory
+				.getFormulaFor(maxCount);
+		Formula countFormula = count == null ? FormulaFactory
+				.getFormulaFor("1") : FormulaFactory.getFormulaFor(count);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 
@@ -146,7 +144,7 @@ public class Choose512Lst_NoType extends AbstractToken implements
 	}
 
 	public boolean parseEqMod(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -179,5 +177,10 @@ public class Choose512Lst_NoType extends AbstractToken implements
 		container.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
 		return true;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

@@ -29,8 +29,8 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.core.Vision;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.VisionType;
 
@@ -41,7 +41,7 @@ import pcgen.util.enumeration.VisionType;
  * @author Devon Jones
  * @version $Revision: 3059 $
  */
-public class Vision514Lst implements GlobalLstCompatibilityToken
+public class Vision514Lst implements CDOMCompatibilityToken<CDOMObject>
 {
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
@@ -151,5 +151,10 @@ public class Vision514Lst implements GlobalLstCompatibilityToken
 	public String getTokenName()
 	{
 		return "VISION";
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

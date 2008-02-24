@@ -24,14 +24,14 @@ package plugin.lstcompatibility.equipment;
 import java.math.BigDecimal;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.EquipmentLstCompatibilityToken;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 /**
  * Deals with WT token
  */
-public class Wt512Token implements EquipmentLstCompatibilityToken
+public class Wt512Token implements CDOMCompatibilityToken<CDOMEquipment>
 {
 
 	/**
@@ -48,7 +48,7 @@ public class Wt512Token implements EquipmentLstCompatibilityToken
 	 * Note that weight is kept separate for speed of processing character
 	 * weight... (will this actually work with containers like bags of holding?)
 	 */
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		try
 		{
@@ -76,5 +76,10 @@ public class Wt512Token implements EquipmentLstCompatibilityToken
 	public int compatibilitySubLevel()
 	{
 		return 12;
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

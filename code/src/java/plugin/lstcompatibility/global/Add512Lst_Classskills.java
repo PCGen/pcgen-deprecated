@@ -1,16 +1,14 @@
 package plugin.lstcompatibility.global;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.AddLoader;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class Add512Lst_Classskills extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -35,14 +33,14 @@ public class Add512Lst_Classskills extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (!value.startsWith("CLASSSKILLS("))
 		{
 			// Not valid compatibility
 			return false;
 		}
-		if (!(cdo instanceof PCClass))
+		if (!(cdo instanceof CDOMPCClass))
 		{
 			return false;
 		}
@@ -62,7 +60,12 @@ public class Add512Lst_Classskills extends AbstractToken implements
 		{
 			count = value.substring(endParenLoc + 1);
 		}
-		return AddLoader.parseLine(context, (PObject) cdo, "CLASSSKILLS|"
-			+ count + "|" + feats);
+		return context.processSubToken(cdo, getTokenName(), "CLASSSKILLS",
+				count + "|" + feats);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

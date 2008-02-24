@@ -1,15 +1,13 @@
 package plugin.lstcompatibility.global;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.core.PObject;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.AddLoader;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 
 public class Add512Lst_Feat extends AbstractToken implements
-		GlobalLstCompatibilityToken
+		CDOMCompatibilityToken<CDOMObject>
 {
 
 	@Override
@@ -34,7 +32,7 @@ public class Add512Lst_Feat extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, CDOMObject cdo, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		if (!value.startsWith("FEAT("))
 		{
@@ -44,7 +42,7 @@ public class Add512Lst_Feat extends AbstractToken implements
 		int endParenLoc = value.indexOf(")");
 		if (endParenLoc == -1)
 		{
-			//Don't deal with bad constructs
+			// Don't deal with bad constructs
 			return false;
 		}
 		String feats = value.substring(5, endParenLoc);
@@ -57,7 +55,12 @@ public class Add512Lst_Feat extends AbstractToken implements
 		{
 			count = value.substring(endParenLoc + 1);
 		}
-		return AddLoader.parseLine(context, (PObject) cdo, "FEAT|" + count
-			+ "|" + feats);
+		return context.processSubToken(cdo, getTokenName(), "FEAT", count + "|"
+				+ feats);
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }

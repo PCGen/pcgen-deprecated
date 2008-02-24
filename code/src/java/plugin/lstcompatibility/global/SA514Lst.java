@@ -1,26 +1,20 @@
 package plugin.lstcompatibility.global;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
-import pcgen.core.PCClass;
-import pcgen.core.SpecialAbility;
+import pcgen.cdom.content.CDOMSpecialAbility;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
-import pcgen.persistence.lst.GlobalLstCompatibilityToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMCompatibilityToken;
 import pcgen.util.Logging;
 
-public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityToken
+public class SA514Lst extends AbstractToken implements
+		CDOMCompatibilityToken<CDOMObject>
 {
-
-	private static final Class<SpecialAbility> SA_CLASS = SpecialAbility.class;
 
 	@Override
 	public String getTokenName()
@@ -30,7 +24,7 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (obj instanceof PCClass)
+		if (obj instanceof CDOMPCClass)
 		{
 			return false;
 		}
@@ -49,7 +43,7 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 	 *            int level at which the ability is gained
 	 */
 	public boolean parseSpecialAbility(LoadContext context, CDOMObject obj,
-		String aString)
+			String aString)
 	{
 		if (isEmpty(aString) || hasIllegalSeparator('|', aString))
 		{
@@ -62,7 +56,7 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 		if (firstToken.startsWith("PRE") || firstToken.startsWith("!PRE"))
 		{
 			Logging.errorPrint("Cannot have only PRExxx subtoken in "
-				+ getTokenName());
+					+ getTokenName());
 			return false;
 		}
 
@@ -79,11 +73,11 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
 			Logging.errorPrint("SA tag confused by redundant '.CLEAR'"
-				+ aString);
+					+ aString);
 			return false;
 		}
 
-		SpecialAbility sa = new SpecialAbility(firstToken);
+		CDOMSpecialAbility sa = new CDOMSpecialAbility(firstToken);
 
 		if (!tok.hasMoreTokens())
 		{
@@ -100,7 +94,7 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 			if (Constants.LST_DOT_CLEAR.equals(token))
 			{
 				Logging.errorPrint("SA tag confused by '.CLEAR' as a "
-					+ "middle token: " + aString);
+						+ "middle token: " + aString);
 				return false;
 			}
 			else if (token.startsWith("PRE") || token.startsWith("!PRE"))
@@ -132,7 +126,7 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 			if (prereq == null)
 			{
 				Logging.errorPrint("   (Did you put Abilities after the "
-					+ "PRExxx tags in " + getTokenName() + ":?)");
+						+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
 			/*
@@ -141,7 +135,7 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 			 * class, so that items like Class Level can be correctly
 			 * calculated).
 			 */
-			if (obj instanceof PCClass && "var".equals(prereq.getKind()))
+			if (obj instanceof CDOMPCClass && "var".equals(prereq.getKind()))
 			{
 				prereq.setSubKey("CLASS:" + obj.getKeyName());
 			}
@@ -154,42 +148,6 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 		}
 		context.getGraphContext().grant(getTokenName(), obj, sa);
 		return true;
-	}
-
-	public String[] unparse(LoadContext context, CDOMObject obj)
-	{
-		AssociatedChanges<SpecialAbility> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, SA_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
-		Collection<LSTWriteable> added = changes.getAdded();
-		List<String> list = new ArrayList<String>(added.size() + 1);
-		if (changes.includesGlobalClear())
-		{
-			list.add(Constants.LST_DOT_CLEAR);
-		}
-		else if (added.isEmpty())
-		{
-			// Zero indicates no Token (and no global clear, so nothing to do)
-			return null;
-		}
-		for (LSTWriteable lw : added)
-		{
-			StringBuilder sb = new StringBuilder();
-			SpecialAbility ab = (SpecialAbility) lw;
-			sb.append(ab.getDisplayName());
-			if (ab.hasPrerequisites())
-			{
-				sb.append(Constants.PIPE);
-				sb.append(getPrerequisiteString(context, ab
-					.getPrerequisiteList()));
-			}
-			list.add(sb.toString());
-		}
-		return list.toArray(new String[list.size()]);
 	}
 
 	public int compatibilityLevel()
@@ -205,5 +163,10 @@ public class SA514Lst extends AbstractToken implements GlobalLstCompatibilityTok
 	public int compatibilitySubLevel()
 	{
 		return 12;
+	}
+
+	public Class<CDOMObject> getTokenClass()
+	{
+		return CDOMObject.class;
 	}
 }
