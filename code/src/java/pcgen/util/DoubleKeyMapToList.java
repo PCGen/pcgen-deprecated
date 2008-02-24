@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 
 import pcgen.base.util.HashMapToList;
-import pcgen.base.util.MapToList;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
