@@ -5,18 +5,18 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SubRegion;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
-import pcgen.core.Ability;
-import pcgen.core.PCTemplate;
+import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.util.enumeration.Visibility;
 import plugin.lsttokens.pcclass.LevelsperfeatToken;
 import plugin.lsttokens.template.AddLevelToken;
@@ -48,15 +48,16 @@ import plugin.lsttokens.template.VisibleToken;
 import plugin.lsttokens.template.WeaponbonusToken;
 import plugin.lsttokens.testsupport.TokenRegistration;
 
-public class TemplateTest extends AbstractIntegrationTestCase<PCTemplate>
+public class TemplateTest extends AbstractIntegrationTestCase<CDOMTemplate>
 {
 
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 
 	@Override
 	@Before
 	public final void setUp() throws PersistenceLayerException,
-		URISyntaxException
+			URISyntaxException
 	{
 		super.setUp();
 		TokenRegistration.register(new AddLevelToken());
@@ -90,13 +91,13 @@ public class TemplateTest extends AbstractIntegrationTestCase<PCTemplate>
 	}
 
 	@Override
-	public Class<PCTemplate> getCDOMClass()
+	public Class<CDOMTemplate> getCDOMClass()
 	{
-		return PCTemplate.class;
+		return CDOMTemplate.class;
 	}
 
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
@@ -105,23 +106,23 @@ public class TemplateTest extends AbstractIntegrationTestCase<PCTemplate>
 	public void testImportBasicTemplate() throws PersistenceLayerException
 	{
 		verifyClean();
-		primaryProf =
-				loader.parseFullLine(primaryContext, 1,
-					"TestTemplate\tHANDS:2\t"
-						+ "SUBREGION:New South Wales\tVISIBLE:NO\tFEAT:Feat1",
-					testCampaign);
+		primaryProf = new CDOMTemplate();
+		primaryProf.setName("TestTemplate");
+		loader.parseLine(primaryContext, primaryProf, "HANDS:2\t"
+				+ "SUBREGION:New South Wales\tVISIBLE:NO\tFEAT:Feat1",
+				testCampaign.getURI());
 		secondaryProf.put(IntegerKey.HANDS, Integer.valueOf(2));
 		secondaryProf.put(ObjectKey.SUBREGION, SubRegion
-			.valueOf("New South Wales"));
+				.valueOf("New South Wales"));
 		secondaryProf.put(ObjectKey.VISIBILITY, Visibility.NO);
 		secondaryProf.put(ObjectKey.SOURCE_URI, testCampaign.getURI());
 		secondaryProf.setName("TestTemplate");
-		PCGraphGrantsEdge edge =
-				new PCGraphGrantsEdge(secondaryProf, secondaryContext.ref
-					.getCDOMReference(Ability.class, AbilityCategory.FEAT,
-						"Feat1"), "FEAT");
+		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(secondaryProf,
+				secondaryContext.ref.getCDOMReference(CDOMAbility.class,
+						CDOMAbilityCategory.FEAT, "Feat1"), "FEAT");
 		edge
-			.setAssociation(AssociationKey.ABILITY_NATURE, AbilityNature.NORMAL);
+				.setAssociation(AssociationKey.ABILITY_NATURE,
+						AbilityNature.NORMAL);
 		edge.setAssociation(AssociationKey.SOURCE_URI, null);
 		secondaryGraph.addEdge(edge);
 		verifyClean();

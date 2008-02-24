@@ -24,13 +24,13 @@ package plugin.lsttokens.loader;
 
 import java.net.URI;
 
-import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
-import pcgen.persistence.EditorLoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.context.EditorLoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.VisionLst;
 import plugin.lsttokens.loader.testsupport.AbstractTokenLoaderTestCase;
 
@@ -41,11 +41,12 @@ import plugin.lsttokens.loader.testsupport.AbstractTokenLoaderTestCase;
  * @version $Revision$
  */
 public class VisionLstLoaderTest extends AbstractTokenLoaderTestCase{
-	static GlobalLstToken token = new VisionLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static VisionLst token = new VisionLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 	
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
@@ -57,7 +58,7 @@ public class VisionLstLoaderTest extends AbstractTokenLoaderTestCase{
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public VisionLst getToken()
 	{
 		return token;
 	}

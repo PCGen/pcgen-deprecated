@@ -25,18 +25,18 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
-import pcgen.core.PObject;
-import pcgen.persistence.EditorLoadContext;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CampaignSourceEntry;
-import pcgen.persistence.lst.LstLoader;
 import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.EditorLoadContext;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
 
-public abstract class AbstractIntegrationTestCase<T extends PObject> extends
+public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 		TestCase
 {
 	protected PCGenGraph primaryGraph;
@@ -52,7 +52,7 @@ public abstract class AbstractIntegrationTestCase<T extends PObject> extends
 	protected static CampaignSourceEntry testCampaign;
 	protected static CampaignSourceEntry modCampaign;
 
-	public abstract LstLoader<T> getLoader();
+	public abstract CDOMLoader<T> getLoader();
 
 	@BeforeClass
 	public static final void classSetUp() throws URISyntaxException

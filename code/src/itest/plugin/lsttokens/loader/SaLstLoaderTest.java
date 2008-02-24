@@ -22,10 +22,11 @@
  */
 package plugin.lsttokens.loader;
 
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.SabLst;
 import plugin.lsttokens.loader.testsupport.AbstractTokenLoaderTestCase;
 
@@ -36,11 +37,12 @@ import plugin.lsttokens.loader.testsupport.AbstractTokenLoaderTestCase;
  * @version $Revision$
  */
 public class SaLstLoaderTest extends AbstractTokenLoaderTestCase{
-	static GlobalLstToken token = new SabLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
+	static SabLst token = new SabLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
 	
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
@@ -52,7 +54,7 @@ public class SaLstLoaderTest extends AbstractTokenLoaderTestCase{
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public SabLst getToken()
 	{
 		return token;
 	}

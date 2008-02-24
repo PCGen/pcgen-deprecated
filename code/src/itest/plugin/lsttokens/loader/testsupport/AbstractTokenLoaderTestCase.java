@@ -33,16 +33,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import pcgen.base.lang.StringUtil;
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
-import pcgen.core.PObject;
-import pcgen.persistence.EditorLoadContext;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.RuntimeLoadContext;
 import pcgen.persistence.lst.CampaignSourceEntry;
-import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.context.EditorLoadContext;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.context.RuntimeLoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * <code>AbstractTokenLoaderTestCase</code> is an abstract test case for
@@ -51,11 +51,11 @@ import pcgen.persistence.lst.LstLoader;
  * @author Koen Van Daele <vandaelek@users.sourceforge.net>
  * @version $Revision$
  */
-public abstract class AbstractTokenLoaderTestCase extends TestCase
+public abstract class AbstractTokenLoaderTestCase<T extends CDOMObject> extends TestCase
 {
 	protected PCGenGraph graph;
 	protected LoadContext context;
-	protected PObject prof;
+	protected T prof;
 
 	private static boolean classSetUpFired = false;
 
@@ -156,11 +156,11 @@ public abstract class AbstractTokenLoaderTestCase extends TestCase
 
 	protected abstract boolean isDotClearable();
 
-	public abstract GlobalLstToken getToken();
+	public abstract CDOMPrimaryToken<T> getToken();
 
-	public abstract <T extends PObject> LstLoader<T> getLoader();
+	public abstract CDOMLoader<T> getLoader();
 
-	public abstract <T extends PObject> Class<T> getCDOMClass();
+	public abstract Class<T> getCDOMClass();
 
 	protected void testParse(LoadContext context, String tok)
 		throws PersistenceLayerException

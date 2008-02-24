@@ -22,25 +22,29 @@
  */
 package plugin.lsttokens.loader;
 
+import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.LstObjectFileLoader;
-import pcgen.persistence.lst.PCTemplateLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
 import plugin.lsttokens.LangautoLst;
 import plugin.lsttokens.loader.testsupport.AbstractTokenLoaderTestCase;
 
 /**
- * <code>LangAutoLstLoaderTest</code> tests LANGAUTO tags in both Runtime and Editor contexts.
- *
+ * <code>LangAutoLstLoaderTest</code> tests LANGAUTO tags in both Runtime and
+ * Editor contexts.
+ * 
  * @author Koen Van Daele <vandaelek@users.sourceforge.net>
  * @version $Revision$
  */
-public class LangAutoLoaderTest extends AbstractTokenLoaderTestCase{
-	static GlobalLstToken token = new LangautoLst();
-	static PCTemplateLoader loader = new PCTemplateLoader();
-	
+public class LangAutoLoaderTest extends AbstractTokenLoaderTestCase
+{
+	static LangautoLst token = new LangautoLst();
+	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
+			CDOMTemplate.class);
+
 	@Override
-	public LstObjectFileLoader<PCTemplate> getLoader()
+	public CDOMLoader<CDOMTemplate> getLoader()
 	{
 		return loader;
 	}
@@ -52,21 +56,21 @@ public class LangAutoLoaderTest extends AbstractTokenLoaderTestCase{
 	}
 
 	@Override
-	public GlobalLstToken getToken()
+	public LangautoLst getToken()
 	{
 		return token;
 	}
-	
+
 	public String[] getTestArray()
 	{
-		return new String[] {"Gnome" , "Aspalanisch", "Common"};
+		return new String[] { "Gnome", "Aspalanisch", "Common" };
 	}
-	
+
 	protected boolean isClearable()
 	{
 		return true;
 	}
-	
+
 	protected boolean isDotClearable()
 	{
 		return false;
