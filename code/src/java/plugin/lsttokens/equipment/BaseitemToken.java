@@ -21,19 +21,22 @@
  */
 package plugin.lsttokens.equipment;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Deals with BASEITEM token
  */
-public class BaseitemToken extends AbstractToken implements EquipmentLstToken
+public class BaseitemToken extends AbstractToken implements EquipmentLstToken,
+		CDOMPrimaryToken<CDOMEquipment>
 {
-	private static final Class<Equipment> EQUIPMENT_CLASS = Equipment.class;
+	private static final Class<CDOMEquipment> EQUIPMENT_CLASS = CDOMEquipment.class;
 
 	@Override
 	public String getTokenName()
@@ -47,25 +50,30 @@ public class BaseitemToken extends AbstractToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		if (isEmpty(value))
 		{
 			return false;
 		}
 		context.getObjectContext().put(eq, ObjectKey.BASE_ITEM,
-			context.ref.getCDOMReference(EQUIPMENT_CLASS, value));
+				context.ref.getCDOMReference(EQUIPMENT_CLASS, value));
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
-		CDOMSimpleSingleRef<Equipment> ref =
-				context.getObjectContext().getObject(eq, ObjectKey.BASE_ITEM);
+		CDOMSingleRef<CDOMEquipment> ref = context.getObjectContext()
+				.getObject(eq, ObjectKey.BASE_ITEM);
 		if (ref == null)
 		{
 			return null;
 		}
-		return new String[]{ref.getLSTformat()};
+		return new String[] { ref.getLSTformat() };
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

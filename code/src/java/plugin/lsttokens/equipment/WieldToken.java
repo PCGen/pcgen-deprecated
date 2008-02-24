@@ -23,15 +23,17 @@ package plugin.lsttokens.equipment;
 
 import pcgen.cdom.enumeration.EqWield;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with WIELD token
  */
-public class WieldToken implements EquipmentLstToken
+public class WieldToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	/**
@@ -57,7 +59,7 @@ public class WieldToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		try
 		{
@@ -73,7 +75,7 @@ public class WieldToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		EqWield w = context.getObjectContext().getObject(eq, ObjectKey.WIELD);
 		if (w == null)
@@ -81,5 +83,10 @@ public class WieldToken implements EquipmentLstToken
 			return null;
 		}
 		return new String[]{w.toString()};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

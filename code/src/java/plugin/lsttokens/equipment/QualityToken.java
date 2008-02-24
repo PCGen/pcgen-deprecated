@@ -28,16 +28,18 @@ import java.util.TreeSet;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.Quality;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with ACCHECK token
  */
-public class QualityToken implements EquipmentLstToken
+public class QualityToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -62,7 +64,7 @@ public class QualityToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		if (pipeLoc == -1)
@@ -96,7 +98,7 @@ public class QualityToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		Changes<Quality> changes =
 				context.getObjectContext().getListChanges(eq, ListKey.QUALITY);
@@ -111,5 +113,10 @@ public class QualityToken implements EquipmentLstToken
 				Constants.PIPE).append(q.getValue()).toString());
 		}
 		return set.toArray(new String[set.size()]);
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

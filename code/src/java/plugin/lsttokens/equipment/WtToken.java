@@ -24,15 +24,17 @@ package plugin.lsttokens.equipment;
 import java.math.BigDecimal;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with WT token
  */
-public class WtToken implements EquipmentLstToken
+public class WtToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	/**
@@ -62,7 +64,7 @@ public class WtToken implements EquipmentLstToken
 	 * Note that weight is kept separate for speed of processing character
 	 * weight... (will this actually work with containers like bags of holding?)
 	 */
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		try
 		{
@@ -84,7 +86,7 @@ public class WtToken implements EquipmentLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		BigDecimal weight =
 				context.getObjectContext().getObject(eq, ObjectKey.WEIGHT);
@@ -93,5 +95,10 @@ public class WtToken implements EquipmentLstToken
 			return null;
 		}
 		return new String[]{weight.toString()};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

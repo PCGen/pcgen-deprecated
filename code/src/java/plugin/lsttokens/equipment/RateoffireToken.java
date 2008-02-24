@@ -22,15 +22,17 @@
 package plugin.lsttokens.equipment;
 
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with RATEOFFIRE token
  */
-public class RateoffireToken implements EquipmentLstToken
+public class RateoffireToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -44,7 +46,7 @@ public class RateoffireToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		if (value.length() == 0)
 		{
@@ -55,7 +57,7 @@ public class RateoffireToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		String rof =
 				context.getObjectContext()
@@ -65,5 +67,10 @@ public class RateoffireToken implements EquipmentLstToken
 			return null;
 		}
 		return new String[]{rof};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

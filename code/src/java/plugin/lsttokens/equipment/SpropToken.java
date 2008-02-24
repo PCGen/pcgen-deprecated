@@ -30,18 +30,20 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SpecialProperty;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with SPROP token
  */
-public class SpropToken extends AbstractToken implements EquipmentLstToken
+public class SpropToken extends AbstractToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	@Override
@@ -64,7 +66,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -85,7 +87,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		return true;
 	}
 
-	public SpecialProperty subParse(LoadContext context, Equipment eq,
+	public SpecialProperty subParse(LoadContext context, CDOMEquipment eq,
 		String value)
 	{
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -169,7 +171,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 		return sa;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		AssociatedChanges<SpecialProperty> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -204,5 +206,10 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken
 			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

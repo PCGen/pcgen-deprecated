@@ -22,15 +22,17 @@
 package plugin.lsttokens.equipment;
 
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Deals with ALTDAMAGE token
  */
-public class AltdamageToken implements EquipmentLstToken
+public class AltdamageToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -44,14 +46,14 @@ public class AltdamageToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		context.getObjectContext().put(eq.getEquipmentHead(2),
 			StringKey.DAMAGE, value);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		EquipmentHead head = eq.getEquipmentHeadReference(2);
 		if (head == null)
@@ -65,5 +67,10 @@ public class AltdamageToken implements EquipmentLstToken
 			return null;
 		}
 		return new String[]{damage};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

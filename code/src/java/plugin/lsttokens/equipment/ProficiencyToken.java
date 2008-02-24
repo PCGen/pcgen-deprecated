@@ -21,23 +21,25 @@
  */
 package plugin.lsttokens.equipment;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.ArmorProf;
+import pcgen.cdom.inst.CDOMArmorProf;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMShieldProf;
+import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.Constants;
 import pcgen.core.Equipment;
-import pcgen.core.ShieldProf;
-import pcgen.core.WeaponProf;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with PROFICIENCY token
  */
 public class ProficiencyToken extends AbstractToken implements
-		EquipmentLstToken
+		EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	@Override
@@ -105,7 +107,7 @@ public class ProficiencyToken extends AbstractToken implements
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		if (isEmpty(value))
 		{
@@ -137,20 +139,20 @@ public class ProficiencyToken extends AbstractToken implements
 		}
 		if (subtoken.equals("WEAPON"))
 		{
-			CDOMSimpleSingleRef<WeaponProf> wp = context.ref.getCDOMReference(
-					WeaponProf.class, prof);
+			CDOMSingleRef<CDOMWeaponProf> wp = context.ref.getCDOMReference(
+					CDOMWeaponProf.class, prof);
 			context.getObjectContext().put(eq, ObjectKey.WEAPON_PROF, wp);
 		}
 		else if (subtoken.equals("ARMOR"))
 		{
-			CDOMSimpleSingleRef<ArmorProf> wp = context.ref.getCDOMReference(
-					ArmorProf.class, prof);
+			CDOMSingleRef<CDOMArmorProf> wp = context.ref.getCDOMReference(
+					CDOMArmorProf.class, prof);
 			context.getObjectContext().put(eq, ObjectKey.ARMOR_PROF, wp);
 		}
 		else if (subtoken.equals("SHIELD"))
 		{
-			CDOMSimpleSingleRef<ShieldProf> wp = context.ref.getCDOMReference(
-					ShieldProf.class, prof);
+			CDOMSingleRef<CDOMShieldProf> wp = context.ref.getCDOMReference(
+					CDOMShieldProf.class, prof);
 			context.getObjectContext().put(eq, ObjectKey.SHIELD_PROF, wp);
 		}
 		else
@@ -164,14 +166,14 @@ public class ProficiencyToken extends AbstractToken implements
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
-		CDOMSimpleSingleRef<WeaponProf> wp = context.getObjectContext()
+		CDOMSingleRef<CDOMWeaponProf> wp = context.getObjectContext()
 				.getObject(eq, ObjectKey.WEAPON_PROF);
-		CDOMSimpleSingleRef<ShieldProf> sp = context.getObjectContext()
+		CDOMSingleRef<CDOMShieldProf> sp = context.getObjectContext()
 				.getObject(eq, ObjectKey.SHIELD_PROF);
-		CDOMSimpleSingleRef<ArmorProf> ap = context.getObjectContext()
-				.getObject(eq, ObjectKey.ARMOR_PROF);
+		CDOMSingleRef<CDOMArmorProf> ap = context.getObjectContext().getObject(
+				eq, ObjectKey.ARMOR_PROF);
 		if (wp == null)
 		{
 			if (sp == null)
@@ -209,5 +211,10 @@ public class ProficiencyToken extends AbstractToken implements
 					+ "WEAPON and SHIELD Proficiencies");
 			return null;
 		}
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

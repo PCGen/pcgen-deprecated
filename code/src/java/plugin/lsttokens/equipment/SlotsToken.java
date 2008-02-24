@@ -22,15 +22,17 @@
 package plugin.lsttokens.equipment;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with SLOTS token
  */
-public class SlotsToken implements EquipmentLstToken
+public class SlotsToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -51,7 +53,7 @@ public class SlotsToken implements EquipmentLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		try
 		{
@@ -73,7 +75,7 @@ public class SlotsToken implements EquipmentLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		Integer slots =
 				context.getObjectContext().getInteger(eq, IntegerKey.SLOTS);
@@ -88,5 +90,10 @@ public class SlotsToken implements EquipmentLstToken
 			return null;
 		}
 		return new String[]{slots.toString()};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

@@ -33,18 +33,20 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.helper.Capacity;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.BigDecimalHelper;
 import pcgen.util.Logging;
 
 /**
  * Deals with CONTAINS token
  */
-public class ContainsToken extends AbstractToken implements EquipmentLstToken
+public class ContainsToken extends AbstractToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	@Override
@@ -59,7 +61,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -234,7 +236,7 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		Changes<Capacity> changes =
 				context.getObjectContext().getListChanges(eq, ListKey.CAPACITY);
@@ -332,5 +334,10 @@ public class ContainsToken extends AbstractToken implements EquipmentLstToken
 				total.getCapacity());
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

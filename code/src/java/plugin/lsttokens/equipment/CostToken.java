@@ -24,15 +24,17 @@ package plugin.lsttokens.equipment;
 import java.math.BigDecimal;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with COST token
  */
-public class CostToken implements EquipmentLstToken
+public class CostToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -46,7 +48,7 @@ public class CostToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		try
 		{
@@ -70,7 +72,7 @@ public class CostToken implements EquipmentLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		BigDecimal bd =
 				context.getObjectContext().getObject(eq, ObjectKey.COST);
@@ -79,5 +81,10 @@ public class CostToken implements EquipmentLstToken
 			return null;
 		}
 		return new String[]{bd.toString()};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

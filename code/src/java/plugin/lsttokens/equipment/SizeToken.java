@@ -24,16 +24,18 @@ package plugin.lsttokens.equipment;
 import pcgen.base.formula.Resolver;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.formula.FixedSizeResolver;
+import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
 import pcgen.core.Equipment;
-import pcgen.core.SizeAdjustment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with SIZE token
  */
-public class SizeToken implements EquipmentLstToken
+public class SizeToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -47,10 +49,10 @@ public class SizeToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
-		SizeAdjustment size =
-				context.ref.getConstructedCDOMObject(SizeAdjustment.class,
+		CDOMSizeAdjustment size =
+				context.ref.getAbbreviatedObject(CDOMSizeAdjustment.class,
 					value);
 		if (size == null)
 		{
@@ -62,14 +64,19 @@ public class SizeToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
-		Resolver<SizeAdjustment> res =
+		Resolver<CDOMSizeAdjustment> res =
 				context.getObjectContext().getObject(eq, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;
 		}
 		return new String[]{res.toLSTFormat()};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

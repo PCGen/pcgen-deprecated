@@ -23,15 +23,17 @@ package plugin.lsttokens.equipment;
 
 import pcgen.cdom.enumeration.EqModControl;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Deals with MODS token
  */
-public class ModsToken implements EquipmentLstToken
+public class ModsToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	public String getTokenName()
@@ -67,7 +69,7 @@ public class ModsToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		try
 		{
@@ -83,7 +85,7 @@ public class ModsToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		EqModControl control =
 				context.getObjectContext().getObject(eq, ObjectKey.MOD_CONTROL);
@@ -92,5 +94,10 @@ public class ModsToken implements EquipmentLstToken
 			return null;
 		}
 		return new String[]{control.toString()};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

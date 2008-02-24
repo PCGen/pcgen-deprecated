@@ -31,28 +31,30 @@ import java.util.Map.Entry;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.DoubleKeyMap;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.cdom.inst.EquipmentHead;
 import pcgen.core.Equipment;
-import pcgen.core.EquipmentModifier;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Deals with EQMOD token
  */
-public class EqmodToken extends AbstractToken implements EquipmentLstToken
+public class EqmodToken extends AbstractToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
-	private static final Class<EquipmentModifier> EQUIPMENT_MODIFIER_CLASS =
-			EquipmentModifier.class;
+	private static final Class<CDOMEqMod> EQUIPMENT_MODIFIER_CLASS =
+		CDOMEqMod.class;
 
 	@Override
 	public String getTokenName()
@@ -66,7 +68,7 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		if (Constants.LST_NONE.equals(value))
 		{
@@ -78,10 +80,10 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 		}
 
 		StringTokenizer dotTok = new StringTokenizer(value, Constants.DOT);
-		DoubleKeyMap<CDOMReference<EquipmentModifier>, AssociationKey<String>, String> dkm =
-				new DoubleKeyMap<CDOMReference<EquipmentModifier>, AssociationKey<String>, String>();
-		List<CDOMReference<EquipmentModifier>> mods =
-				new ArrayList<CDOMReference<EquipmentModifier>>();
+		DoubleKeyMap<CDOMReference<CDOMEqMod>, AssociationKey<String>, String> dkm =
+				new DoubleKeyMap<CDOMReference<CDOMEqMod>, AssociationKey<String>, String>();
+		List<CDOMReference<CDOMEqMod>> mods =
+				new ArrayList<CDOMReference<CDOMEqMod>>();
 
 		while (dotTok.hasMoreTokens())
 		{
@@ -103,7 +105,7 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 
 			// The type of EqMod, eg: ABILITYPLUS
 			final String eqModKey = pipeTok.nextToken();
-			CDOMReference<EquipmentModifier> eqMod =
+			CDOMReference<CDOMEqMod> eqMod =
 					context.ref.getCDOMReference(EQUIPMENT_MODIFIER_CLASS,
 						eqModKey);
 			mods.add(eqMod);
@@ -157,7 +159,7 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 			}
 		}
 		EquipmentHead primHead = eq.getEquipmentHead(1);
-		for (CDOMReference<EquipmentModifier> eqMod : mods)
+		for (CDOMReference<CDOMEqMod> eqMod : mods)
 		{
 			AssociatedPrereqObject edge =
 					context.getGraphContext().grant(getTokenName(), primHead,
@@ -171,7 +173,7 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		EquipmentHead head = eq.getEquipmentHeadReference(1);
 		if (head == null)
@@ -179,7 +181,7 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 			return null;
 		}
 
-		AssociatedChanges<EquipmentModifier> changes =
+		AssociatedChanges<CDOMEqMod> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					head, EQUIPMENT_MODIFIER_CLASS);
 		if (changes == null)
@@ -251,5 +253,10 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken
 			}
 		}
 		return new String[]{StringUtil.join(set, Constants.DOT)};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }

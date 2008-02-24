@@ -27,9 +27,11 @@ package plugin.lsttokens.equipment;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.EquipmentLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * <code>PageUsageToken</code> deals with PAGEUSAGE token
@@ -37,7 +39,7 @@ import pcgen.persistence.lst.EquipmentLstToken;
  * @author James Dempsey <jdempsey@users.sourceforge.net>
  * @version $Revision$
  */
-public class PageUsageToken implements EquipmentLstToken
+public class PageUsageToken implements EquipmentLstToken, CDOMPrimaryToken<CDOMEquipment>
 {
 
 	/**
@@ -58,14 +60,14 @@ public class PageUsageToken implements EquipmentLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Equipment eq, String value)
+	public boolean parse(LoadContext context, CDOMEquipment eq, String value)
 	{
 		context.getObjectContext().put(eq, FormulaKey.PAGE_USAGE,
 			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Equipment eq)
+	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
 		Formula f =
 				context.getObjectContext()
@@ -75,5 +77,10 @@ public class PageUsageToken implements EquipmentLstToken
 			return null;
 		}
 		return new String[]{f.toString()};
+	}
+
+	public Class<CDOMEquipment> getTokenClass()
+	{
+		return CDOMEquipment.class;
 	}
 }
