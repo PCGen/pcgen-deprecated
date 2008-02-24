@@ -48,15 +48,12 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import pcgen.gui.util.table.SortableTableModel;
 import pcgen.gui.util.treetable.DefaultSortableTreeTableModel;
-import pcgen.gui.util.treetable.DefaultTreeTableModel;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
 import pcgen.gui.util.treetable.TreeTableNode;
 
@@ -291,7 +288,7 @@ public class JTreeTable extends JTableEx
      * @author Philip Milne
      * @author Scott Violet
      */
-    protected static class TreeTableModelAdapter extends AbstractTableModel
+    private static class TreeTableModelAdapter extends AbstractTableModel
             implements SortableTableModel
     {
 
@@ -353,10 +350,6 @@ public class JTreeTable extends JTableEx
                 }
 
             };
-            if (treeTableModel != null)
-            {
-                treeTableModel.addTreeModelListener(modelListener);
-            }
         }
 
         public void setTreeTableModel(SortableTreeTableModel model)

@@ -33,7 +33,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="pcgen.gui.util.JTreeTable" name="jTreeTable1">
+        <Component class="pcgen.gui.util.JTreeViewTable" name="jTreeViewTable1">
         </Component>
       </SubComponents>
     </Container>

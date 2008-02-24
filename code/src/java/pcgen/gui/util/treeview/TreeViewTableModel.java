@@ -88,6 +88,11 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
+    public Collection<TreeView<E>> getSelectableTreeViews()
+    {
+        return viewMap.keySet();
+    }
+
     public TreeView<E> getSelectedTreeView()
     {
         return selectedView;

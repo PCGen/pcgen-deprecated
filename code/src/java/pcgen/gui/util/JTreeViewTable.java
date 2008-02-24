@@ -20,7 +20,16 @@
  */
 package pcgen.gui.util;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.util.Collection;
+import javax.swing.AbstractAction;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.table.TableColumnModel;
+import pcgen.gui.util.treeview.TreeView;
 import pcgen.gui.util.treeview.TreeViewModel;
 import pcgen.gui.util.treeview.TreeViewTableModel;
 
@@ -31,6 +40,12 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
 public class JTreeViewTable extends JTreeTable
 {
 
+    public JTreeViewTable()
+    {
+        this(null);
+    }
+
+    @SuppressWarnings("unchecked")
     public <T> JTreeViewTable(TreeViewModel<T> model, Collection<T> collection)
     {
         this(new TreeViewTableModel(model, collection));
@@ -39,8 +54,10 @@ public class JTreeViewTable extends JTreeTable
     public JTreeViewTable(TreeViewTableModel model)
     {
         super(model);
+        setTableHeader(new JTreeViewHeader());
     }
 
+    @SuppressWarnings("unchecked")
     public TreeViewTableModel getTreeViewTableModel()
     {
         return (TreeViewTableModel) super.getTreeTableModel();
@@ -51,4 +68,103 @@ public class JTreeViewTable extends JTreeTable
         super.setTreeTableModel(model);
     }
 
+    private class JTreeViewHeader extends JTableSortingHeader
+    {
+
+        public JTreeViewHeader()
+        {
+            super(JTreeViewTable.this);
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+            super.mouseClicked(e);
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e)
+        {
+            super.mouseMoved(e);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+            super.mousePressed(e);
+            maybeShowPopup(e);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+            super.mouseReleased(e);
+            maybeShowPopup(e);
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e)
+        {
+            super.mouseEntered(e);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e)
+        {
+            super.mouseExited(e);
+        }
+
+        @SuppressWarnings("unchecked")
+        private void maybeShowPopup(MouseEvent e)
+        {
+            if (e.isPopupTrigger() && getTrackedColumn().getModelIndex() == 0)
+            {
+                JPopupMenu treeviewMenu = new JPopupMenu();
+                Collection<TreeView> views = getTreeViewTableModel().getSelectableTreeViews();
+                for (TreeView treeview : views)
+                {
+                    treeviewMenu.add(new JMenuItem(new ChangeViewAction(treeview)));
+                }
+                treeviewMenu.setPopupSize(getTrackedColumn().getWidth(), -1);
+                Point loc = getPopupLocation(e);
+                treeviewMenu.show(e.getComponent(),
+                                  loc.x, loc.y);
+            }
+        }
+
+        @Override
+        public Point getPopupLocation(MouseEvent e)
+        {
+            TableColumnModel columnmodel = getColumnModel();
+            Rectangle rect = getHeaderRect(columnmodel.getColumnIndexAtX(e.getX()));
+            rect.translate(0, rect.height);
+            return rect.getLocation();
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private class ChangeViewAction extends AbstractAction
+    {
+
+        private TreeView view;
+
+        public ChangeViewAction(TreeView view)
+        {
+            super(view.getViewName());
+            this.view = view;
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            getTreeViewTableModel().setSelectedTreeView(view);
+        }
+
+    }
 }
