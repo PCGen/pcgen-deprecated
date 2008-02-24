@@ -22,15 +22,17 @@
 package plugin.lsttokens.race;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with LEGS Token
  */
-public class LegsToken implements RaceLstToken
+public class LegsToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 
 	public String getTokenName()
@@ -51,7 +53,7 @@ public class LegsToken implements RaceLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		try
 		{
@@ -73,7 +75,7 @@ public class LegsToken implements RaceLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		Integer legs =
 				context.getObjectContext().getInteger(race, IntegerKey.LEGS);
@@ -88,5 +90,10 @@ public class LegsToken implements RaceLstToken
 			return null;
 		}
 		return new String[]{legs.toString()};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

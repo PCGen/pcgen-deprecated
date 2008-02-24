@@ -23,14 +23,16 @@ package plugin.lsttokens.spell;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with TARGETAREA Token
  */
-public class TargetareaToken implements SpellLstToken
+public class TargetareaToken implements SpellLstToken, CDOMPrimaryToken<CDOMSpell>
 {
 
 	public String getTokenName()
@@ -44,7 +46,7 @@ public class TargetareaToken implements SpellLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Spell spell, String value)
+	public boolean parse(LoadContext context, CDOMSpell spell, String value)
 	{
 		if (value.length() == 0)
 		{
@@ -55,7 +57,7 @@ public class TargetareaToken implements SpellLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, CDOMSpell spell)
 	{
 		String targetArea =
 				context.getObjectContext().getString(spell,
@@ -65,5 +67,10 @@ public class TargetareaToken implements SpellLstToken
 			return null;
 		}
 		return new String[]{targetArea};
+	}
+
+	public Class<CDOMSpell> getTokenClass()
+	{
+		return CDOMSpell.class;
 	}
 }

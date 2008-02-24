@@ -29,30 +29,32 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.core.DomainSpellList;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.DomainSpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLoader;
 import pcgen.persistence.lst.SpellLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Class deals with DOMAINS Token
  */
-public class DomainsToken extends AbstractToken implements SpellLstToken
+public class DomainsToken extends AbstractToken implements SpellLstToken, CDOMPrimaryToken<CDOMSpell>
 {
 
 	private static final Class<DomainSpellList> SPELLLIST_CLASS =
@@ -93,7 +95,7 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, Spell spell, String value)
+	public boolean parse(LoadContext context, CDOMSpell spell, String value)
 	{
 		if (Constants.LST_DOT_CLEARALL.equals(value))
 		{
@@ -230,7 +232,7 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, CDOMSpell spell)
 	{
 		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<DomainSpellList>> dkmtl =
 				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<DomainSpellList>>();
@@ -382,5 +384,10 @@ public class DomainsToken extends AbstractToken implements SpellLstToken
 			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMSpell> getTokenClass()
+	{
+		return CDOMSpell.class;
 	}
 }

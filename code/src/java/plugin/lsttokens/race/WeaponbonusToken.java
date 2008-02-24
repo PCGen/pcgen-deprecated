@@ -29,22 +29,24 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.cdom.inst.WeaponProfList;
 import pcgen.core.Race;
-import pcgen.core.WeaponProf;
-import pcgen.core.WeaponProfList;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with WEAPONBONUS Token
  */
-public class WeaponbonusToken extends AbstractToken implements RaceLstToken
+public class WeaponbonusToken extends AbstractToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
-	private static final Class<WeaponProf> WEAPONPROF_CLASS = WeaponProf.class;
+	private static final Class<CDOMWeaponProf> WEAPONPROF_CLASS = CDOMWeaponProf.class;
 
 	private static final Class<WeaponProfList> WEAPONPROFLIST_CLASS =
 			WeaponProfList.class;
@@ -68,7 +70,7 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		return parseWeaponBonus(context, race, value);
 	}
@@ -91,7 +93,7 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 		while (tok.hasMoreTokens())
 		{
 			String tokText = tok.nextToken();
-			CDOMReference<WeaponProf> ref;
+			CDOMReference<CDOMWeaponProf> ref;
 			if (Constants.LST_ALL.equals(tokText))
 			{
 				foundAny = true;
@@ -123,11 +125,11 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		CDOMReference<WeaponProfList> swl =
 				context.ref.getCDOMReference(WEAPONPROFLIST_CLASS, "*Starting");
-		AssociatedChanges<CDOMReference<WeaponProf>> changes =
+		AssociatedChanges<CDOMReference<CDOMWeaponProf>> changes =
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
 		if (changes == null)
@@ -143,5 +145,10 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken
 		}
 		return new String[]{ReferenceUtilities.joinLstFormat(added,
 			Constants.PIPE)};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

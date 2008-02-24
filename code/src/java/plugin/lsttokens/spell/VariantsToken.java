@@ -27,17 +27,19 @@ import java.util.StringTokenizer;
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with VARIANTS Token
  */
-public class VariantsToken extends AbstractToken implements SpellLstToken
+public class VariantsToken extends AbstractToken implements SpellLstToken, CDOMPrimaryToken<CDOMSpell>
 {
 
 	@Override
@@ -66,7 +68,7 @@ public class VariantsToken extends AbstractToken implements SpellLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Spell spell, String value)
+	public boolean parse(LoadContext context, CDOMSpell spell, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -99,7 +101,7 @@ public class VariantsToken extends AbstractToken implements SpellLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, CDOMSpell spell)
 	{
 		Changes<String> changes =
 				context.getObjectContext().getListChanges(spell,
@@ -131,5 +133,10 @@ public class VariantsToken extends AbstractToken implements SpellLstToken
 			return null;
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMSpell> getTokenClass()
+	{
+		return CDOMSpell.class;
 	}
 }

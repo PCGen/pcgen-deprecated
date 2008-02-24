@@ -22,15 +22,17 @@
 package plugin.lsttokens.skill;
 
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SkillLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with USEUNTRAINED Token
  */
-public class UseuntrainedToken implements SkillLstToken
+public class UseuntrainedToken implements SkillLstToken, CDOMPrimaryToken<CDOMSkill>
 {
 
 	public String getTokenName()
@@ -69,7 +71,7 @@ public class UseuntrainedToken implements SkillLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Skill skill, String value)
+	public boolean parse(LoadContext context, CDOMSkill skill, String value)
 	{
 		Boolean set;
 		char firstChar = value.charAt(0);
@@ -100,7 +102,7 @@ public class UseuntrainedToken implements SkillLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, CDOMSkill skill)
 	{
 		Boolean useUntrained =
 				context.getObjectContext().getObject(skill,
@@ -110,5 +112,10 @@ public class UseuntrainedToken implements SkillLstToken
 			return null;
 		}
 		return new String[]{useUntrained.booleanValue() ? "YES" : "NO"};
+	}
+
+	public Class<CDOMSkill> getTokenClass()
+	{
+		return CDOMSkill.class;
 	}
 }

@@ -27,18 +27,20 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with HITDICEADVANCEMENT Token
  */
 public class HitdiceadvancementToken extends AbstractToken implements
-		RaceLstToken
+		RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 	@Override
 	public String getTokenName()
@@ -82,7 +84,7 @@ public class HitdiceadvancementToken extends AbstractToken implements
 		}
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
 		{
@@ -134,7 +136,7 @@ public class HitdiceadvancementToken extends AbstractToken implements
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		Changes<Integer> changes =
 				context.getObjectContext().getListChanges(race,
@@ -179,5 +181,10 @@ public class HitdiceadvancementToken extends AbstractToken implements
 			}
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

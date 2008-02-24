@@ -27,7 +27,6 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
@@ -35,21 +34,24 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
-import pcgen.core.ClassSkillList;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
 import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SkillLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Class deals with CLASSES Token
  */
-public class ClassesToken extends AbstractToken implements SkillLstToken
+public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPrimaryToken<CDOMSkill>
 {
 
 	private static final Class<ClassSkillList> SKILLLIST_CLASS =
@@ -67,7 +69,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Skill skill, String value)
+	public boolean parse(LoadContext context, CDOMSkill skill, String value)
 	{
 		if (Constants.LST_ALL.equals(value))
 		{
@@ -129,7 +131,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 	}
 
 	private AssociatedPrereqObject addSkillAllowed(LoadContext context,
-		Skill skill, CDOMReference<ClassSkillList> ref)
+			CDOMSkill skill, CDOMReference<ClassSkillList> ref)
 	{
 		AssociatedPrereqObject edge =
 				context.getListContext().addToMasterList(getTokenName(), skill,
@@ -138,7 +140,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 		return edge;
 	}
 
-	public String[] unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, CDOMSkill skill)
 	{
 		CDOMGroupRef<ClassSkillList> allRef =
 				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
@@ -271,5 +273,10 @@ public class ClassesToken extends AbstractToken implements SkillLstToken
 			needBar = true;
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMSkill> getTokenClass()
+	{
+		return CDOMSkill.class;
 	}
 }

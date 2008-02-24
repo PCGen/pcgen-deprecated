@@ -23,15 +23,17 @@ package plugin.lsttokens.race;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.RaceType;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with RACETYPE Token
  */
-public class RacetypeToken extends AbstractToken implements RaceLstToken
+public class RacetypeToken extends AbstractToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 
 	@Override
@@ -46,7 +48,7 @@ public class RacetypeToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		if (isEmpty(value))
 		{
@@ -57,7 +59,7 @@ public class RacetypeToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		RaceType raceType =
 				context.getObjectContext().getObject(race, ObjectKey.RACETYPE);
@@ -66,5 +68,10 @@ public class RacetypeToken extends AbstractToken implements RaceLstToken
 			return null;
 		}
 		return new String[]{raceType.toString()};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

@@ -36,24 +36,26 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.AbstractHitDieModifier;
 import pcgen.cdom.content.HitDie;
 import pcgen.cdom.content.HitDieCommandFactory;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.cdom.modifier.HitDieFormula;
 import pcgen.cdom.modifier.HitDieLock;
 import pcgen.cdom.modifier.HitDieStep;
-import pcgen.core.PCClass;
 import pcgen.core.Race;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with HITDIE Token
  */
-public class HitdieToken extends AbstractToken implements RaceLstToken
+public class HitdieToken extends AbstractToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 
-	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
+	private static final Class<CDOMPCClass> PCCLASS_CLASS = CDOMPCClass.class;
 
 	@Override
 	public String getTokenName()
@@ -67,7 +69,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		try
 		{
@@ -79,7 +81,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 					+ "is not of format: <int>[|<prereq>]");
 				return false;
 			}
-			CDOMReference<PCClass> owner;
+			CDOMReference<CDOMPCClass> owner;
 			if (pipeLoc != -1)
 			{
 				// Has a limitation
@@ -287,7 +289,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		AssociatedChanges<HitDieCommandFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
@@ -319,5 +321,10 @@ public class HitdieToken extends AbstractToken implements RaceLstToken
 		}
 
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

@@ -24,16 +24,18 @@ package plugin.lsttokens.race;
 import pcgen.base.formula.Resolver;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.formula.FixedSizeResolver;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMSizeAdjustment;
 import pcgen.core.Race;
-import pcgen.core.SizeAdjustment;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SIZE Token
  */
-public class SizeToken implements RaceLstToken
+public class SizeToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 
 	public String getTokenName()
@@ -47,10 +49,10 @@ public class SizeToken implements RaceLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
-		SizeAdjustment size =
-				context.ref.getConstructedCDOMObject(SizeAdjustment.class,
+		CDOMSizeAdjustment size =
+				context.ref.getAbbreviatedObject(CDOMSizeAdjustment.class,
 					value);
 		if (size == null)
 		{
@@ -62,14 +64,19 @@ public class SizeToken implements RaceLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
-		Resolver<SizeAdjustment> res =
+		Resolver<CDOMSizeAdjustment> res =
 				context.getObjectContext().getObject(race, ObjectKey.SIZE);
 		if (res == null)
 		{
 			return null;
 		}
 		return new String[]{res.toLSTFormat()};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

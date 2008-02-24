@@ -27,17 +27,19 @@ import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SpellSchool;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.SettingsHandler;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.Changes;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.rules.context.Changes;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with SCHOOL Token
  */
-public class SchoolToken extends AbstractToken implements SpellLstToken
+public class SchoolToken extends AbstractToken implements SpellLstToken, CDOMPrimaryToken<CDOMSpell>
 {
 
 	@Override
@@ -59,7 +61,7 @@ public class SchoolToken extends AbstractToken implements SpellLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Spell spell, String value)
+	public boolean parse(LoadContext context, CDOMSpell spell, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -76,7 +78,7 @@ public class SchoolToken extends AbstractToken implements SpellLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, CDOMSpell spell)
 	{
 		Changes<SpellSchool> changes =
 				context.getObjectContext().getListChanges(spell,
@@ -86,5 +88,10 @@ public class SchoolToken extends AbstractToken implements SpellLstToken
 			return null;
 		}
 		return new String[]{StringUtil.join(changes.getAdded(), Constants.PIPE)};
+	}
+
+	public Class<CDOMSpell> getTokenClass()
+	{
+		return CDOMSpell.class;
 	}
 }

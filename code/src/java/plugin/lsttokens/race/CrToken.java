@@ -25,15 +25,17 @@ import java.util.Collection;
 
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChallengeRating;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with CR Token
  */
-public class CrToken implements RaceLstToken
+public class CrToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 
 	public String getTokenName()
@@ -59,14 +61,14 @@ public class CrToken implements RaceLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		ChallengeRating cr = new ChallengeRating(value);
 		context.getGraphContext().grant(getTokenName(), race, cr);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		AssociatedChanges<ChallengeRating> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(), race,
@@ -89,5 +91,10 @@ public class CrToken implements RaceLstToken
 		}
 		ChallengeRating cr = (ChallengeRating) added.iterator().next();
 		return new String[]{cr.getLSTformat()};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

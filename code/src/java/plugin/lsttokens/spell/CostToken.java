@@ -25,24 +25,27 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DefaultMap;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.PCClass;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.SpellLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with COST Token
  */
-public class CostToken extends AbstractToken implements SpellLstToken
+public class CostToken extends AbstractToken implements SpellLstToken,
+		CDOMPrimaryToken<CDOMSpell>
 {
 
-	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
+	private static final Class<CDOMPCClass> PCCLASS_CLASS = CDOMPCClass.class;
 
 	@Override
 	public String getTokenName()
@@ -56,7 +59,7 @@ public class CostToken extends AbstractToken implements SpellLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Spell spell, String value)
+	public boolean parse(LoadContext context, CDOMSpell spell, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -64,8 +67,7 @@ public class CostToken extends AbstractToken implements SpellLstToken
 		}
 
 		StringTokenizer pipeTok = new StringTokenizer(value, Constants.PIPE);
-		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
-				new DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer>();
+		DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer> dm = new DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer>();
 		String defaultCost = pipeTok.nextToken();
 		try
 		{
@@ -73,8 +75,8 @@ public class CostToken extends AbstractToken implements SpellLstToken
 			if (i.intValue() < 0)
 			{
 				Logging.errorPrint("Default Cost for Spell " + spell.getKey()
-					+ " was found to be negative.  Must have a "
-					+ "non-negative default cost.");
+						+ " was found to be negative.  Must have a "
+						+ "non-negative default cost.");
 				return false;
 			}
 			dm.setDefaultValue(i);
@@ -82,7 +84,7 @@ public class CostToken extends AbstractToken implements SpellLstToken
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint(getTokenName() + " token's default value ("
-				+ defaultCost + ") was not a number, in line: " + value);
+					+ defaultCost + ") was not a number, in line: " + value);
 			return false;
 		}
 		while (pipeTok.hasMoreTokens())
@@ -92,34 +94,33 @@ public class CostToken extends AbstractToken implements SpellLstToken
 			if (commaLoc == -1)
 			{
 				Logging.errorPrint(getTokenName() + " " + " override value "
-					+ classOverride + " did not contain a comma");
+						+ classOverride + " did not contain a comma");
 				return false;
 			}
 			if (commaLoc != classOverride.lastIndexOf(Constants.COMMA))
 			{
 				Logging.errorPrint(getTokenName() + " " + " override value "
-					+ classOverride + " contains more than one comma");
+						+ classOverride + " contains more than one comma");
 				return false;
 			}
 			String classString = classOverride.substring(0, commaLoc);
-			CDOMSimpleSingleRef<PCClass> pcc =
-					context.ref.getCDOMReference(PCCLASS_CLASS, classString);
+			CDOMSingleRef<CDOMPCClass> pcc = context.ref.getCDOMReference(
+					PCCLASS_CLASS, classString);
 			try
 			{
-				Integer i =
-						Integer.valueOf(classOverride.substring(commaLoc + 1));
+				Integer i = Integer.valueOf(classOverride
+						.substring(commaLoc + 1));
 				if (i.intValue() < 0)
 				{
 					Logging.errorPrint("Cost for Class " + classString
-						+ " in Spell " + spell.getKey()
-						+ " was found to be negative.  Must have a "
-						+ "non-negative cost.");
+							+ " in Spell " + spell.getKey()
+							+ " was found to be negative.  Must have a "
+							+ "non-negative cost.");
 					return false;
 				}
 				if (dm.put(pcc, i) != null)
 				{
-					Logging
-						.errorPrint("Class " + classString
+					Logging.errorPrint("Class " + classString
 							+ " was referenced multiple times in "
 							+ getTokenName());
 					return false;
@@ -128,7 +129,7 @@ public class CostToken extends AbstractToken implements SpellLstToken
 			catch (NumberFormatException nfe)
 			{
 				Logging.errorPrint(getTokenName() + " " + classString
-					+ " override value was not a number");
+						+ " override value was not a number");
 				return false;
 			}
 		}
@@ -136,11 +137,10 @@ public class CostToken extends AbstractToken implements SpellLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, CDOMSpell spell)
 	{
-		DefaultMap<CDOMSimpleSingleRef<PCClass>, Integer> dm =
-				context.getObjectContext().getObject(spell,
-					ObjectKey.COMPONENT_COST);
+		DefaultMap<CDOMSingleRef<CDOMPCClass>, Integer> dm = context
+				.getObjectContext().getObject(spell, ObjectKey.COMPONENT_COST);
 		if (dm == null)
 		{
 			return null;
@@ -150,39 +150,43 @@ public class CostToken extends AbstractToken implements SpellLstToken
 		if (defaultValue == null)
 		{
 			context.addWriteMessage("Default Cost for Spell " + spell.getKey()
-				+ " was found to be null.  Must have a default cost "
-				+ "if there are class costs specified.");
+					+ " was found to be null.  Must have a default cost "
+					+ "if there are class costs specified.");
 			return null;
 		}
 		if (defaultValue.intValue() < 0)
 		{
 			context.addWriteMessage("Default Cost for Spell " + spell.getKey()
-				+ " was found to be negative.  Must have a "
-				+ "non-negative default cost if there are class "
-				+ "costs specified.");
+					+ " was found to be negative.  Must have a "
+					+ "non-negative default cost if there are class "
+					+ "costs specified.");
 			return null;
 		}
 		sb.append(defaultValue);
-		TreeSet<CDOMSimpleSingleRef<PCClass>> set =
-				new TreeSet<CDOMSimpleSingleRef<PCClass>>(
-					TokenUtilities.REFERENCE_SORTER);
+		TreeSet<CDOMSingleRef<CDOMPCClass>> set = new TreeSet<CDOMSingleRef<CDOMPCClass>>(
+				TokenUtilities.REFERENCE_SORTER);
 		set.addAll(dm.keySet());
-		for (CDOMSimpleSingleRef<PCClass> key : set)
+		for (CDOMSingleRef<CDOMPCClass> key : set)
 		{
 			String className = key.getName();
 			Integer cost = dm.get(key);
 			if (cost.intValue() < 0)
 			{
 				context.addWriteMessage("Cost for PCClass " + className
-					+ " for Spell " + spell.getKey()
-					+ " was found to be negative.  Must have a "
-					+ "non-negative cost if there are class "
-					+ "costs specified.");
+						+ " for Spell " + spell.getKey()
+						+ " was found to be negative.  Must have a "
+						+ "non-negative cost if there are class "
+						+ "costs specified.");
 				return null;
 			}
 			sb.append(Constants.PIPE);
 			sb.append(className).append(Constants.COMMA).append(cost);
 		}
-		return new String[]{sb.toString()};
+		return new String[] { sb.toString() };
+	}
+
+	public Class<CDOMSpell> getTokenClass()
+	{
+		return CDOMSpell.class;
 	}
 }

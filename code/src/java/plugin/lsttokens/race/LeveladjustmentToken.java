@@ -24,14 +24,16 @@ package plugin.lsttokens.race;
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.FormulaKey;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
 /**
  * Class deals with LEVELADJUSTMENT Token
  */
-public class LeveladjustmentToken implements RaceLstToken
+public class LeveladjustmentToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 
 	public String getTokenName()
@@ -45,14 +47,14 @@ public class LeveladjustmentToken implements RaceLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		context.getObjectContext().put(race, FormulaKey.LEVEL_ADJUSTMENT,
 			FormulaFactory.getFormulaFor(value));
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		Formula f =
 				context.getObjectContext().getFormula(race,
@@ -62,5 +64,10 @@ public class LeveladjustmentToken implements RaceLstToken
 			return null;
 		}
 		return new String[]{f.toString()};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

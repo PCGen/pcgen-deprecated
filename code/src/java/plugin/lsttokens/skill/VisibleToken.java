@@ -23,16 +23,18 @@ package plugin.lsttokens.skill;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SkillLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
 /**
  * Class deals with VISIBLE Token
  */
-public class VisibleToken implements SkillLstToken
+public class VisibleToken implements SkillLstToken, CDOMPrimaryToken<CDOMSkill>
 {
 
 	public String getTokenName()
@@ -173,7 +175,7 @@ public class VisibleToken implements SkillLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Skill skill, String value)
+	public boolean parse(LoadContext context, CDOMSkill skill, String value)
 	{
 		String visString = value;
 		int pipeLoc = value.indexOf(Constants.PIPE);
@@ -217,7 +219,7 @@ public class VisibleToken implements SkillLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, CDOMSkill skill)
 	{
 		Visibility vis = context.getObjectContext().getObject(skill, ObjectKey.VISIBILITY);
 		if (vis == null)
@@ -247,4 +249,8 @@ public class VisibleToken implements SkillLstToken
 		return new String[]{sb.toString()};
 	}
 
+	public Class<CDOMSkill> getTokenClass()
+	{
+		return CDOMSkill.class;
+	}
 }

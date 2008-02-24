@@ -25,16 +25,18 @@ import java.math.BigDecimal;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.BigDecimalHelper;
 import pcgen.util.Logging;
 
 /**
  * Class deals with FACE Token
  */
-public class FaceToken implements RaceLstToken
+public class FaceToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 
 	public String getTokenName()
@@ -88,12 +90,12 @@ public class FaceToken implements RaceLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Race template, String value)
+	public boolean parse(LoadContext context, CDOMRace template, String value)
 	{
 		return parseFace(context, template, value);
 	}
 
-	protected boolean parseFace(LoadContext context, Race fObj, String value)
+	protected boolean parseFace(LoadContext context, CDOMRace fObj, String value)
 	{
 		int commaLoc = value.indexOf(Constants.COMMA);
 		if (commaLoc != value.lastIndexOf(Constants.COMMA))
@@ -184,7 +186,7 @@ public class FaceToken implements RaceLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		BigDecimal width =
 				context.getObjectContext()
@@ -223,5 +225,10 @@ public class FaceToken implements RaceLstToken
 			sb.append(',').append(h);
 		}
 		return new String[]{sb.toString()};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

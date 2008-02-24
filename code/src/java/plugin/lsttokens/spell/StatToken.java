@@ -22,19 +22,21 @@
 package plugin.lsttokens.spell;
 
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.core.PCStat;
+import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with STAT Token
  */
-public class StatToken implements SpellLstToken
+public class StatToken implements SpellLstToken, CDOMPrimaryToken<CDOMSpell>
 {
 
-	private static final Class<PCStat> PCSTAT_CLASS = PCStat.class;
+	private static final Class<CDOMStat> PCSTAT_CLASS = CDOMStat.class;
 
 	public String getTokenName()
 	{
@@ -47,28 +49,32 @@ public class StatToken implements SpellLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Spell spell, String value)
+	public boolean parse(LoadContext context, CDOMSpell spell, String value)
 	{
-		PCStat pcs = context.ref.getConstructedCDOMObject(PCSTAT_CLASS, value);
+		CDOMStat pcs = context.ref.getAbbreviatedObject(PCSTAT_CLASS, value);
 		if (pcs == null)
 		{
 			Logging.errorPrint("Invalid Stat Abbreviation in Token + "
-				+ getTokenName() + ": " + value);
+					+ getTokenName() + ": " + value);
 			return false;
 		}
 		context.getObjectContext().put(spell, ObjectKey.SPELL_STAT, pcs);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, CDOMSpell spell)
 	{
-		PCStat pcs =
-				context.getObjectContext().getObject(spell,
-					ObjectKey.SPELL_STAT);
+		CDOMStat pcs = context.getObjectContext().getObject(spell,
+				ObjectKey.SPELL_STAT);
 		if (pcs == null)
 		{
 			return null;
 		}
-		return new String[]{pcs.getKeyName()};
+		return new String[] { pcs.getLSTformat() };
+	}
+
+	public Class<CDOMSpell> getTokenClass()
+	{
+		return CDOMSpell.class;
 	}
 }

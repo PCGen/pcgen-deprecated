@@ -22,15 +22,17 @@
 package plugin.lsttokens.spell;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.spell.Spell;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SpellLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with CT Token
  */
-public class CtToken implements SpellLstToken
+public class CtToken implements SpellLstToken, CDOMPrimaryToken<CDOMSpell>
 {
 
 	public String getTokenName()
@@ -60,7 +62,7 @@ public class CtToken implements SpellLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, Spell spell, String value)
+	public boolean parse(LoadContext context, CDOMSpell spell, String value)
 	{
 		try
 		{
@@ -84,7 +86,7 @@ public class CtToken implements SpellLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Spell spell)
+	public String[] unparse(LoadContext context, CDOMSpell spell)
 	{
 		Integer i =
 				context.getObjectContext().getInteger(spell,
@@ -100,5 +102,10 @@ public class CtToken implements SpellLstToken
 			return null;
 		}
 		return new String[]{i.toString()};
+	}
+
+	public Class<CDOMSpell> getTokenClass()
+	{
+		return CDOMSpell.class;
 	}
 }

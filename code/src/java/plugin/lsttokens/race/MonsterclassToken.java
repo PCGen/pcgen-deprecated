@@ -27,24 +27,27 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSimpleSingleRef;
+import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelCommandFactory;
-import pcgen.core.PCClass;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with MONSTERCLASS Token
  */
-public class MonsterclassToken implements RaceLstToken
+public class MonsterclassToken implements RaceLstToken,
+		CDOMPrimaryToken<CDOMRace>
 {
 
-	private static final Class<PCClass> PCCLASS_CLASS = PCClass.class;
+	private static final Class<CDOMPCClass> PCCLASS_CLASS = CDOMPCClass.class;
 
 	public String getTokenName()
 	{
@@ -55,8 +58,8 @@ public class MonsterclassToken implements RaceLstToken
 	{
 		try
 		{
-			final StringTokenizer mclass =
-					new StringTokenizer(value, Constants.COLON);
+			final StringTokenizer mclass = new StringTokenizer(value,
+					Constants.COLON);
 
 			if (mclass.countTokens() != 2)
 			{
@@ -72,24 +75,24 @@ public class MonsterclassToken implements RaceLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		int colonLoc = value.indexOf(Constants.COLON);
 		if (colonLoc == -1)
 		{
 			Logging.errorPrint(getTokenName() + " must have only a colon: "
-				+ value);
+					+ value);
 			return false;
 		}
 		if (colonLoc != value.lastIndexOf(Constants.COLON))
 		{
 			Logging.errorPrint(getTokenName() + " must have only one colon: "
-				+ value);
+					+ value);
 			return false;
 		}
 		String classString = value.substring(0, colonLoc);
-		CDOMSimpleSingleRef<PCClass> cl =
-				context.ref.getCDOMReference(PCCLASS_CLASS, classString);
+		CDOMSingleRef<CDOMPCClass> cl = context.ref.getCDOMReference(
+				PCCLASS_CLASS, classString);
 		try
 		{
 			String numLevels = value.substring(colonLoc + 1);
@@ -97,7 +100,7 @@ public class MonsterclassToken implements RaceLstToken
 			if (lvls <= 0)
 			{
 				Logging.errorPrint("Number of levels in " + getTokenName()
-					+ " must be greater than zero: " + value);
+						+ " must be greater than zero: " + value);
 				return false;
 			}
 			LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
@@ -107,16 +110,16 @@ public class MonsterclassToken implements RaceLstToken
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint("Number of levels in " + getTokenName()
-				+ " must be an integer greater than zero: " + value);
+					+ " must be an integer greater than zero: " + value);
 			return false;
 		}
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
-		AssociatedChanges<LevelCommandFactory> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					race, LevelCommandFactory.class);
+		AssociatedChanges<LevelCommandFactory> changes = context
+				.getGraphContext().getChangesFromToken(getTokenName(), race,
+						LevelCommandFactory.class);
 		if (changes == null)
 		{
 			return null;
@@ -135,12 +138,17 @@ public class MonsterclassToken implements RaceLstToken
 			if (lvls <= 0)
 			{
 				context.addWriteMessage("Number of Levels granted in "
-					+ getTokenName() + " must be greater than zero");
+						+ getTokenName() + " must be greater than zero");
 				return null;
 			}
 			sb.append(lcf.getLSTformat()).append(Constants.COLON).append(lvls);
 			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

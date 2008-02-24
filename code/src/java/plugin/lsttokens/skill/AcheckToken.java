@@ -23,15 +23,17 @@ package plugin.lsttokens.skill;
 
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.SkillArmorCheck;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.Skill;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.SkillLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with ACHECK Token
  */
-public class AcheckToken implements SkillLstToken
+public class AcheckToken implements SkillLstToken, CDOMPrimaryToken<CDOMSkill>
 {
 
 	public String getTokenName()
@@ -45,7 +47,7 @@ public class AcheckToken implements SkillLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Skill skill, String value)
+	public boolean parse(LoadContext context, CDOMSkill skill, String value)
 	{
 		try
 		{
@@ -61,7 +63,7 @@ public class AcheckToken implements SkillLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Skill skill)
+	public String[] unparse(LoadContext context, CDOMSkill skill)
 	{
 		SkillArmorCheck sac =
 				context.getObjectContext().getObject(skill,
@@ -71,5 +73,10 @@ public class AcheckToken implements SkillLstToken
 			return null;
 		}
 		return new String[]{sac.toString()};
+	}
+
+	public Class<CDOMSkill> getTokenClass()
+	{
+		return CDOMSkill.class;
 	}
 }

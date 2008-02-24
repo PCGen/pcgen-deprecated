@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -34,22 +33,25 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
-import pcgen.core.ClassSkillList;
+import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
 import pcgen.core.Race;
-import pcgen.core.Skill;
-import pcgen.persistence.AssociatedChanges;
-import pcgen.persistence.LoadContext;
-import pcgen.persistence.lst.AbstractToken;
 import pcgen.persistence.lst.RaceLstToken;
-import pcgen.persistence.lst.utils.TokenUtilities;
+import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
+import pcgen.rules.persistence.token.AbstractToken;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
+import pcgen.util.MapToList;
 
 /**
  * Class deals with MONCSKILL Token
  */
-public class MoncskillToken extends AbstractToken implements RaceLstToken
+public class MoncskillToken extends AbstractToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
-	private static final Class<Skill> SKILL_CLASS = Skill.class;
+	private static final Class<CDOMSkill> SKILL_CLASS = CDOMSkill.class;
 
 	private static final Class<ClassSkillList> SKILLLIST_CLASS =
 			ClassSkillList.class;
@@ -66,7 +68,7 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -99,7 +101,7 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
-				CDOMReference<Skill> skill;
+				CDOMReference<CDOMSkill> skill;
 				String clearText = tokText.substring(7);
 				if (Constants.LST_ALL.equals(clearText))
 				{
@@ -130,7 +132,7 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 				 * the graph would also make it harder to trace the source of
 				 * class skills, etc.)
 				 */
-				CDOMReference<Skill> skill;
+				CDOMReference<CDOMSkill> skill;
 				if (Constants.LST_ALL.equals(tokText))
 				{
 					foundAny = true;
@@ -165,11 +167,11 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		CDOMReference<ClassSkillList> swl =
 				context.ref.getCDOMReference(SKILLLIST_CLASS, "*Monster");
-		AssociatedChanges<CDOMReference<Skill>> changes =
+		AssociatedChanges<CDOMReference<CDOMSkill>> changes =
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
 		if (changes == null)
@@ -222,5 +224,10 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken
 			return null;
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }

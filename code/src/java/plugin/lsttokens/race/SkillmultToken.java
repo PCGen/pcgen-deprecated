@@ -22,15 +22,17 @@
 package plugin.lsttokens.race;
 
 import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.lst.RaceLstToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with SKILLMULT Token
  */
-public class SkillmultToken implements RaceLstToken
+public class SkillmultToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 {
 
 	public String getTokenName()
@@ -51,7 +53,7 @@ public class SkillmultToken implements RaceLstToken
 		}
 	}
 
-	public boolean parse(LoadContext context, Race race, String value)
+	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		try
 		{
@@ -75,7 +77,7 @@ public class SkillmultToken implements RaceLstToken
 		}
 	}
 
-	public String[] unparse(LoadContext context, Race race)
+	public String[] unparse(LoadContext context, CDOMRace race)
 	{
 		Integer sp =
 				context.getObjectContext().getInteger(race,
@@ -91,5 +93,10 @@ public class SkillmultToken implements RaceLstToken
 			return null;
 		}
 		return new String[]{sp.toString()};
+	}
+
+	public Class<CDOMRace> getTokenClass()
+	{
+		return CDOMRace.class;
 	}
 }
