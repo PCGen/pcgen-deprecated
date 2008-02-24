@@ -15,18 +15,21 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
-import pcgen.persistence.lst.PCClassLevelLstToken;
+import pcgen.cdom.inst.CDOMPCClassLevel;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
-public class SpecialtyKnownTokenTest extends AbstractSpellCastingTokenTestCase
+
+public class KnownTokenTest extends AbstractSpellCastingTokenTestCase
 {
-	static SpecialtyknownToken token = new SpecialtyknownToken();
+	static KnownToken token = new KnownToken();
 
 	@Override
-	public PCClassLevelLstToken getToken()
+	public CDOMPrimaryToken<CDOMPCClassLevel> getToken()
 	{
 		return token;
 	}
+
 
 }

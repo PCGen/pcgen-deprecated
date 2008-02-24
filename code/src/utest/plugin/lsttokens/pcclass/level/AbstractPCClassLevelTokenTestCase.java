@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,16 +27,17 @@ import org.junit.BeforeClass;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.core.Campaign;
-import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.RuntimeLoadContext;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.persistence.lst.LstToken;
-import pcgen.persistence.lst.PCClassLevelLoader;
-import pcgen.persistence.lst.PCClassLevelLstToken;
-import pcgen.persistence.lst.TokenStore;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.context.RuntimeLoadContext;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.TokenLibrary;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.TokenRegistration;
 
 public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
@@ -45,8 +46,16 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 	protected PCGenGraph secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
-	protected PCClass primaryProf;
-	protected PCClass secondaryProf;
+	protected CDOMPCClass primaryProf;
+	protected CDOMPCClass secondaryProf;
+	protected CDOMPCClassLevel primaryProf1;
+	protected CDOMPCClassLevel secondaryProf1;
+	protected CDOMPCClassLevel primaryProf2;
+	protected CDOMPCClassLevel secondaryProf2;
+	protected CDOMPCClassLevel primaryProf3;
+	protected CDOMPCClassLevel secondaryProf3;
+	protected CDOMTokenLoader<CDOMPCClassLevel> loader = new CDOMTokenLoader<CDOMPCClassLevel>(
+			CDOMPCClassLevel.class);
 
 	private static boolean classSetUpFired = false;
 	protected static CampaignSourceEntry testCampaign;
@@ -74,30 +83,36 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		secondaryGraph = new PCGenGraph();
 		primaryContext = new RuntimeLoadContext(primaryGraph);
 		secondaryContext = new RuntimeLoadContext(secondaryGraph);
-		primaryProf =
-				primaryContext.ref.constructCDOMObject(getCDOMClass(),
+		primaryProf = 
+			primaryContext.ref.constructCDOMObject(CDOMPCClass.class,
 					"TestObj");
 		secondaryProf =
-				secondaryContext.ref.constructCDOMObject(getCDOMClass(),
+				secondaryContext.ref.constructCDOMObject(CDOMPCClass.class,
 					"TestObj");
+		primaryProf1 = primaryProf.getClassLevel(1);
+		primaryProf2 = primaryProf.getClassLevel(2);
+		primaryProf3 = primaryProf.getClassLevel(3);
+		secondaryProf1 = secondaryProf.getClassLevel(1);
+		secondaryProf2 = secondaryProf.getClassLevel(2);
+		secondaryProf3 = secondaryProf.getClassLevel(3);
 	}
 
-	public Class<? extends PCClass> getCDOMClass()
+	public Class<? extends CDOMPCClassLevel> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClassLevel.class;
 	}
 
 	public static void addToken(LstToken tok)
 	{
-		TokenStore.inst().addToTokenMap(tok);
+		TokenLibrary.addToTokenMap(tok);
 	}
 
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
 		// Default is not to write out anything
-		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 2));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 3));
+		assertNull(getToken().unparse(primaryContext, primaryProf1));
+		assertNull(getToken().unparse(primaryContext, primaryProf2));
+		assertNull(getToken().unparse(primaryContext, primaryProf3));
 		// Ensure the graphs are the same at the start
 		assertEquals(primaryGraph, secondaryGraph);
 
@@ -107,10 +122,10 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 			assertTrue(parse(s, 2));
 		}
 		// Doesn't pollute other levels
-		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 3));
+		assertNull(getToken().unparse(primaryContext, primaryProf1));
+		assertNull(getToken().unparse(primaryContext, primaryProf3));
 		// Get back the appropriate token:
-		String[] unparsed = getToken().unparse(primaryContext, primaryProf, 2);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf2);
 
 		assertEquals(str.length, unparsed.length);
 
@@ -127,8 +142,8 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
 				s).append('\t');
 		}
-		PCClassLevelLoader.parseLine(secondaryContext, secondaryProf,
-			unparsedBuilt.toString(), testCampaign, 2);
+		loader.parseLine(secondaryContext, secondaryProf2, unparsedBuilt
+				.toString(), testCampaign.getURI());
 
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
@@ -138,10 +153,10 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 
 		// And that it comes back out the same again
 		// Doesn't pollute other levels
-		assertNull(getToken().unparse(secondaryContext, secondaryProf, 1));
-		assertNull(getToken().unparse(secondaryContext, secondaryProf, 3));
+		assertNull(getToken().unparse(secondaryContext, secondaryProf1));
+		assertNull(getToken().unparse(secondaryContext, secondaryProf3));
 		String[] sUnparsed =
-				getToken().unparse(secondaryContext, secondaryProf, 2);
+				getToken().unparse(secondaryContext, secondaryProf2);
 		assertEquals(unparsed.length, sUnparsed.length);
 
 		for (int i = 0; i < unparsed.length; i++)
@@ -155,7 +170,7 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 
-	public abstract PCClassLevelLstToken getToken();
+	public abstract CDOMPrimaryToken<CDOMPCClassLevel> getToken();
 
 	public void isCDOMEqual(CDOMObject cdo1, CDOMObject cdo2)
 	{
@@ -173,7 +188,7 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 	public boolean parse(String str, int level)
 		throws PersistenceLayerException
 	{
-		boolean b = getToken().parse(primaryContext, primaryProf, str, level);
+		boolean b = getToken().parse(primaryContext, primaryProf.getClassLevel(level), str);
 		if (b)
 		{
 			primaryContext.commit();
@@ -185,7 +200,7 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		throws PersistenceLayerException
 	{
 		boolean b =
-				getToken().parse(secondaryContext, secondaryProf, str, level);
+				getToken().parse(secondaryContext, secondaryProf.getClassLevel(level), str);
 		if (b)
 		{
 			secondaryContext.commit();

@@ -17,29 +17,28 @@
  */
 package plugin.lsttokens.pcclass;
 
+import junit.framework.TestSuite;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import junit.framework.TestSuite;
-
 @RunWith(Suite.class)
-@Suite.SuiteClasses({AbbTokenTest.class, AddDomainsTokenTest.class,
-	AttackCycleTokenTest.class, BonusSpellStatTokenTest.class,
-	CastTokenTest.class, CRFormulaTokenTest.class, DeityTokenTest.class,
-	DomainTokenTest.class, ExchangeLevelTokenTest.class,
-	ExClassTokenTest.class, HDTokenTest.class, HitDieTokenTest.class,
-	IsMonsterTokenTest.class, ItemCreateTokenTest.class,
-	KnownSpellsFromSpecialtyTokenTest.class, KnownspellsTokenTest.class,
-	KnownTokenTest.class, LangbonusTokenTest.class,
-	LevelsPerFeatTokenTest.class, MaxLevelTokenTest.class,
-	MemorizeTokenTest.class, ModToSkillsTokenTest.class,
-	MonNonSkillTHDTokenTest.class, MonSkillTokenTest.class,
-	ProhibitedTokenTest.class, ProhibitspellTokenTest.class,
-	SkillListTokenTest.class, SpecialtyKnownTokenTest.class,
-	SpellBookTokenTest.class, SpellListTokenTest.class,
-	SpellStatTokenTest.class, SpellTypeTokenTest.class,
-	StartSkillPtsTokenTest.class, VFeatTokenTest.class, VisibleTokenTest.class,
-	WeaponbonusTokenTest.class, XtraFeatsTokenTest.class})
+@Suite.SuiteClasses( { AbbTokenTest.class, AddDomainsTokenTest.class,
+		AttackCycleTokenTest.class, BonusSpellStatTokenTest.class,
+		CRFormulaTokenTest.class, DeityTokenTest.class, DomainTokenTest.class,
+		ExchangeLevelTokenTest.class, ExClassTokenTest.class,
+		HDTokenTest.class, IsMonsterTokenTest.class, ItemCreateTokenTest.class,
+		KnownSpellsFromSpecialtyTokenTest.class, KnownspellsTokenTest.class,
+		LangbonusTokenTest.class, LevelsPerFeatTokenTest.class,
+		MaxLevelTokenTest.class, MemorizeTokenTest.class,
+		ModToSkillsTokenTest.class, MonNonSkillTHDTokenTest.class,
+		MonSkillTokenTest.class, ProhibitedTokenTest.class,
+		ProhibitspellTokenTest.class, SkillListTokenTest.class,
+		SpellBookTokenTest.class, SpellListTokenTest.class,
+		SpellStatTokenTest.class, SpellTypeTokenTest.class,
+		StartSkillPtsTokenTest.class, VFeatTokenTest.class,
+		VisibleTokenTest.class, WeaponbonusTokenTest.class,
+		XtraFeatsTokenTest.class })
 public class TokenPCClassTestSuite extends TestSuite
 {
 	// No contents, see annotations

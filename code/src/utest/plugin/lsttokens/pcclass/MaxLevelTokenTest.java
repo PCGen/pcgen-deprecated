@@ -21,40 +21,34 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
-import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
-public class MaxLevelTokenTest extends AbstractTokenTestCase<PCClass>
+public class MaxLevelTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 {
 
 	static MaxlevelToken token = new MaxlevelToken();
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
-	public void setUp() throws PersistenceLayerException, URISyntaxException
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		super.setUp();
-		prefix = "CLASS:";
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public Class<PCClass> getCDOMClass()
-	{
-		return PCClass.class;
-	}
-
-	@Override
-	public LstLoader<PCClass> getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCClass> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}

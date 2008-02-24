@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
 import java.net.URISyntaxException;
 
@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.cdom.inst.CDOMSpell;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
@@ -31,27 +32,42 @@ import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
 
 public class KnownspellsTokenTest extends
-		AbstractListTokenTestCase<CDOMPCClass, CDOMSpell>
+		AbstractListTokenTestCase<CDOMPCClassLevel, CDOMSpell>
 {
 
 	static KnownspellsToken token = new KnownspellsToken();
-	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
-			CDOMPCClass.class);
+	static CDOMTokenLoader<CDOMPCClassLevel> loader = new CDOMTokenLoader<CDOMPCClassLevel>(
+			CDOMPCClassLevel.class);
 
+	private final CDOMPCClass primClass = new CDOMPCClass();
+	private final CDOMPCClass secClass = new CDOMPCClass();
+	
 	@Override
-	public Class<CDOMPCClass> getCDOMClass()
+	protected CDOMPCClassLevel getPrimary(String name)
 	{
-		return CDOMPCClass.class;
+		return primClass.getClassLevel(1);
 	}
 
 	@Override
-	public CDOMLoader<CDOMPCClass> getLoader()
+	protected CDOMPCClassLevel getSecondary(String name)
+	{
+		return secClass.getClassLevel(1);
+	}
+
+	@Override
+	public Class<CDOMPCClassLevel> getCDOMClass()
+	{
+		return CDOMPCClassLevel.class;
+	}
+
+	@Override
+	public CDOMLoader<CDOMPCClassLevel> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMPrimaryToken<CDOMPCClass> getToken()
+	public CDOMPrimaryToken<CDOMPCClassLevel> getToken()
 	{
 		return token;
 	}

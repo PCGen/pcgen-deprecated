@@ -21,42 +21,36 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.core.ClassSpellList;
-import pcgen.core.DomainSpellList;
-import pcgen.core.PCClass;
-import pcgen.persistence.LoadContext;
+import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.ClassSpellList;
+import pcgen.cdom.inst.DomainSpellList;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
-import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
-public class SpellListTokenTest extends AbstractTokenTestCase<PCClass>
+public class SpellListTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 {
 	static SpelllistToken token = new SpelllistToken();
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
-	public void setUp() throws PersistenceLayerException, URISyntaxException
+	public Class<? extends CDOMPCClass> getCDOMClass()
 	{
-		super.setUp();
-		prefix = "CLASS:";
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public Class<? extends PCClass> getCDOMClass()
-	{
-		return PCClass.class;
-	}
-
-	@Override
-	public LstLoader<PCClass> getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCClass> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}

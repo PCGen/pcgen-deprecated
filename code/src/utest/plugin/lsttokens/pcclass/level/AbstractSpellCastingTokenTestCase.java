@@ -15,12 +15,11 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
 import org.junit.Test;
 
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.PCClassLevelLoader;
 
 public abstract class AbstractSpellCastingTokenTestCase extends
 		AbstractPCClassLevelTokenTestCase
@@ -30,9 +29,9 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
 		// Default is not to write out anything
-		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 2));
-		assertNull(getToken().unparse(primaryContext, primaryProf, 3));
+		assertNull(getToken().unparse(primaryContext, primaryProf1));
+		assertNull(getToken().unparse(primaryContext, primaryProf2));
+		assertNull(getToken().unparse(primaryContext, primaryProf3));
 		// Ensure the graphs are the same at the start
 		assertEquals(primaryGraph, secondaryGraph);
 
@@ -42,38 +41,30 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 			assertTrue(parse(s, 2));
 		}
 		// Doesn't pollute other levels
-		assertNull(getToken().unparse(primaryContext, primaryProf, 1));
+		assertNull(getToken().unparse(primaryContext, primaryProf1));
 		// Get back the appropriate token:
-		String[] unparsed = getToken().unparse(primaryContext, primaryProf, 2);
+		String[] unparsed = getToken().unparse(primaryContext, primaryProf2);
 
 		assertEquals(str.length, unparsed.length);
 
 		for (int i = 0; i < str.length; i++)
 		{
 			assertEquals("Expected " + i + " item to be equal", str[i],
-				unparsed[i]);
+					unparsed[i]);
 		}
 
-		// And works for subsequent levels
-		unparsed = getToken().unparse(primaryContext, primaryProf, 3);
-
-		assertEquals(str.length, unparsed.length);
-
-		for (int i = 0; i < str.length; i++)
-		{
-			assertEquals("Expected SL " + i + " item to be equal", str[i],
-				unparsed[i]);
-		}
+		// And fails for subsequent levels
+		assertNull(getToken().unparse(primaryContext, primaryProf3));
 
 		// Do round Robin
 		StringBuilder unparsedBuilt = new StringBuilder();
 		for (String s : unparsed)
 		{
 			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
-				s).append('\t');
+					s).append('\t');
 		}
-		PCClassLevelLoader.parseLine(secondaryContext, secondaryProf,
-			unparsedBuilt.toString(), testCampaign, 2);
+		loader.parseLine(secondaryContext, secondaryProf2, unparsedBuilt
+				.toString(), testCampaign.getURI());
 
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
@@ -83,15 +74,15 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 
 		// And that it comes back out the same again
 		// Doesn't pollute other levels
-		assertNull(getToken().unparse(secondaryContext, secondaryProf, 1));
-		String[] sUnparsed =
-				getToken().unparse(secondaryContext, secondaryProf, 2);
+		assertNull(getToken().unparse(secondaryContext, secondaryProf1));
+		String[] sUnparsed = getToken().unparse(secondaryContext,
+				secondaryProf2);
 		assertEquals(unparsed.length, sUnparsed.length);
 
 		for (int i = 0; i < unparsed.length; i++)
 		{
 			assertEquals("Expected " + i + " item to be equal", unparsed[i],
-				sUnparsed[i]);
+					sUnparsed[i]);
 		}
 		assertEquals(0, primaryContext.getWriteMessageCount());
 		assertEquals(0, secondaryContext.getWriteMessageCount());
@@ -127,7 +118,7 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 
 	@Test
 	public void testInvalidListNegativeNumber()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("1,-2", 2));
 		assertNoSideEffects();

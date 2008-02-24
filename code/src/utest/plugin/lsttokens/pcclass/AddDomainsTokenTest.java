@@ -21,24 +21,24 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.core.Domain;
-import pcgen.core.PCClass;
-import pcgen.core.PObject;
+import pcgen.cdom.inst.CDOMDomain;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractListTokenTestCase;
-import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreRaceParser;
 import plugin.pretokens.writer.PreRaceWriter;
 
 public class AddDomainsTokenTest extends
-		AbstractListTokenTestCase<PObject, Domain>
+		AbstractListTokenTestCase<CDOMPCClass, CDOMDomain>
 {
 
 	static AdddomainsToken token = new AdddomainsToken();
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	PreRaceParser prerace = new PreRaceParser();
 	PreRaceWriter preracewriter = new PreRaceWriter();
@@ -49,31 +49,30 @@ public class AddDomainsTokenTest extends
 		super.setUp();
 		TokenRegistration.register(prerace);
 		TokenRegistration.register(preracewriter);
-		prefix = "CLASS:";
 	}
 
 	@Override
-	public Class<PCClass> getCDOMClass()
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public LstLoader getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PObject> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}
 
 	@Override
-	public Class<Domain> getTargetClass()
+	public Class<CDOMDomain> getTargetClass()
 	{
-		return Domain.class;
+		return CDOMDomain.class;
 	}
 
 	@Override

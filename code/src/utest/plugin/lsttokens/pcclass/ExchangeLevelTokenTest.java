@@ -21,47 +21,41 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import pcgen.core.PCClass;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.persistence.PersistenceLayerException;
-import pcgen.persistence.lst.CDOMToken;
-import pcgen.persistence.lst.LstLoader;
+import pcgen.rules.persistence.CDOMLoader;
+import pcgen.rules.persistence.CDOMTokenLoader;
+import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractTokenTestCase;
-import plugin.lsttokens.testsupport.PCClassLoaderFacade;
 
-public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
+public class ExchangeLevelTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 {
 
 	static ExchangelevelToken token = new ExchangelevelToken();
-	static PCClassLoaderFacade loader = new PCClassLoaderFacade();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
-	public void setUp() throws PersistenceLayerException, URISyntaxException
+	public Class<CDOMPCClass> getCDOMClass()
 	{
-		super.setUp();
-		prefix = "CLASS:";
+		return CDOMPCClass.class;
 	}
 
 	@Override
-	public Class<PCClass> getCDOMClass()
-	{
-		return PCClass.class;
-	}
-
-	@Override
-	public LstLoader getLoader()
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMToken<PCClass> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}
 
-	public Class<PCClass> getTargetClass()
+	public Class<CDOMPCClass> getTargetClass()
 	{
-		return PCClass.class;
+		return CDOMPCClass.class;
 	}
 
 	@Test
@@ -237,24 +231,24 @@ public class ExchangeLevelTokenTest extends AbstractTokenTestCase<PCClass>
 	@Test
 	public void testRoundRobinSimple() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Paladin");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Paladin");
 		runRoundRobin("Paladin|11|10|1");
 	}
 
 	@Test
 	public void testRoundRobinZeroRem() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Paladin");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Paladin");
 		runRoundRobin("Paladin|10|10|0");
 	}
 
 	@Test
 	public void testRoundRobinHighMax() throws PersistenceLayerException
 	{
-		primaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
-		secondaryContext.ref.constructCDOMObject(PCClass.class, "Paladin");
+		primaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Paladin");
+		secondaryContext.ref.constructCDOMObject(CDOMPCClass.class, "Paladin");
 		runRoundRobin("Paladin|5|10|1");
 	}
 }

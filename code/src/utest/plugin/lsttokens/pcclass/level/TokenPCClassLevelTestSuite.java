@@ -15,18 +15,19 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
-import pcgen.persistence.lst.PCClassLevelLstToken;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class CastTokenTest extends AbstractSpellCastingTokenTestCase
+import junit.framework.TestSuite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses( { AddDomainsTokenTest.class, CastTokenTest.class,
+		DomainTokenTest.class, HitDieTokenTest.class,
+		KnownspellsTokenTest.class, KnownTokenTest.class,
+		SpecialtyKnownTokenTest.class, VFeatTokenTest.class })
+public class TokenPCClassLevelTestSuite extends TestSuite
 {
-	static CastToken token = new CastToken();
-
-	@Override
-	public PCClassLevelLstToken getToken()
-	{
-		return token;
-	}
-
+	// No contents, see annotations
 }

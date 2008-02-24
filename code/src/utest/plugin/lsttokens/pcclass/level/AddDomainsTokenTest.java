@@ -15,15 +15,15 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens.pcclass;
+package plugin.lsttokens.pcclass.level;
 
 import java.net.URISyntaxException;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.inst.CDOMDomain;
 import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
@@ -33,18 +33,18 @@ import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreRaceParser;
 import plugin.pretokens.writer.PreRaceWriter;
 
-public class DomainTokenTest extends AbstractListTokenTestCase<CDOMPCClass, CDOMDomain>
+public class AddDomainsTokenTest extends
+		AbstractListTokenTestCase<CDOMPCClassLevel, CDOMDomain>
 {
 
-	static DomainToken token = new DomainToken();
-	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
-			CDOMPCClass.class);
+	static AdddomainsToken token = new AdddomainsToken();
+	static CDOMTokenLoader<CDOMPCClassLevel> loader = new CDOMTokenLoader<CDOMPCClassLevel>(
+			CDOMPCClassLevel.class);
 
 	PreRaceParser prerace = new PreRaceParser();
 	PreRaceWriter preracewriter = new PreRaceWriter();
 
 	@Override
-	@Before
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
@@ -52,20 +52,35 @@ public class DomainTokenTest extends AbstractListTokenTestCase<CDOMPCClass, CDOM
 		TokenRegistration.register(preracewriter);
 	}
 
+	private final CDOMPCClass primClass = new CDOMPCClass();
+	private final CDOMPCClass secClass = new CDOMPCClass();
+	
 	@Override
-	public Class<CDOMPCClass> getCDOMClass()
+	protected CDOMPCClassLevel getPrimary(String name)
 	{
-		return CDOMPCClass.class;
+		return primClass.getClassLevel(1);
 	}
 
 	@Override
-	public CDOMLoader<CDOMPCClass> getLoader()
+	protected CDOMPCClassLevel getSecondary(String name)
+	{
+		return secClass.getClassLevel(1);
+	}
+
+	@Override
+	public Class<CDOMPCClassLevel> getCDOMClass()
+	{
+		return CDOMPCClassLevel.class;
+	}
+
+	@Override
+	public CDOMLoader<CDOMPCClassLevel> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public CDOMPrimaryToken<CDOMPCClass> getToken()
+	public CDOMPrimaryToken<CDOMPCClassLevel> getToken()
 	{
 		return token;
 	}
@@ -103,7 +118,7 @@ public class DomainTokenTest extends AbstractListTokenTestCase<CDOMPCClass, CDOM
 	@Override
 	public char getJoinCharacter()
 	{
-		return '|';
+		return '.';
 	}
 
 	@Test
@@ -140,7 +155,7 @@ public class DomainTokenTest extends AbstractListTokenTestCase<CDOMPCClass, CDOM
 
 	@Test
 	public void testInvalidTrailingAfterBracket()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		assertFalse(parse("TestWP1[PRERACE:Dwarf]Hi"));
@@ -158,6 +173,16 @@ public class DomainTokenTest extends AbstractListTokenTestCase<CDOMPCClass, CDOM
 	}
 
 	@Test
+	public void testRoundRobinDupeTwoPrereqs() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		runRoundRobin("TestWP1[PRERACE:1,Dwarf].TestWP1[PRERACE:1,Human]");
+	}
+
+	@Test
 	public void testRoundRobinThreeWithPre() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
@@ -167,7 +192,6 @@ public class DomainTokenTest extends AbstractListTokenTestCase<CDOMPCClass, CDOM
 		construct(secondaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("TestWP1[PRERACE:1,Dwarf]" + getJoinCharacter()
-			+ "TestWP2[PRERACE:1,Human]" + getJoinCharacter() + "TestWP3");
+				+ "TestWP2[PRERACE:1,Human]" + getJoinCharacter() + "TestWP3");
 	}
-
 }
