@@ -105,6 +105,7 @@ public class JTreeTable extends JTableEx
         UIManager.put("Tree.rightChildIndent", Integer.valueOf(8)); //$NON-NLS-1$
 
         tree = new TreeTableCellRenderer();
+        tree.setRootVisible(false);
         adapter = new TreeTableModelAdapter(tree);
         setTreeTableModel(treeTableModel);
         super.setModel(adapter);
