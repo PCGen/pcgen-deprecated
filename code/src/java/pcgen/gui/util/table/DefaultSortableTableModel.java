@@ -23,13 +23,11 @@ package pcgen.gui.util.table;
 import pcgen.gui.util.*;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import pcgen.util.Comparators;
 
 /**
  *

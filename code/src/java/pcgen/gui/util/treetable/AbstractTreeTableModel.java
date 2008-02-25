@@ -14,7 +14,6 @@
 package pcgen.gui.util.treetable;
 
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
 
 /**
  * An abstract implementation of the TreeTableModel interface, handling the list

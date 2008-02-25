@@ -24,7 +24,6 @@ import java.util.Comparator;
 import java.util.List;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreeNode;
-import pcgen.util.Comparators;
 
 /**
  *
