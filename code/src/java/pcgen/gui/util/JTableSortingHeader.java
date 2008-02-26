@@ -23,6 +23,7 @@ package pcgen.gui.util;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -36,29 +37,25 @@ import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pcgen.gui.util.ModelSorter.SortingPriority;
+import pcgen.gui.util.SortingPriority;
 
 /**
  *
  * @author Connor Petty<mistercpp2000@gmail.com>
  */
-public class JTableSortingHeader extends JTableHeader implements MouseListener,
-                                                                  MouseMotionListener
+public class JTableSortingHeader extends JTableHeader implements MouseListener
 {
 
-    private static final Icon ASCENDING_ICON = IconUtilities.getImageIcon("Down16.gif");
-    private static final Icon DESCENDING_ICON = IconUtilities.getImageIcon("Up16.gif");
+    private static final Icon ASCENDING_ICON = ResourceManager.getImageIcon(ResourceManager.Icon.Down16);
+    private static final Icon DESCENDING_ICON = ResourceManager.getImageIcon(ResourceManager.Icon.Up16);
     private static final ButtonModel defaultModel = new DefaultButtonModel();
     private final ButtonModel usedModel = new DefaultButtonModel();
-    private ModelSorter sorter;
-    private TableColumn trackedColumn;
 
     public JTableSortingHeader(JTableEx table)
     {
         super(table.getColumnModel());
+        this.table = table;
         addMouseListener(this);
-        addMouseMotionListener(this);
-        sorter = table.getModelSorter();
     }
 
     @Override
@@ -67,14 +64,21 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener,
         return new SortingHeaderRenderer();
     }
 
-    public TableColumn getTrackedColumn()
+    @Override
+    public JTableEx getTable()
     {
-        return trackedColumn;
+        return (JTableEx) super.getTable();
     }
 
-    public ModelSorter getModelSorter()
+    public TableColumn getTrackedColumn()
     {
-        return sorter;
+        TableColumnModel model = getColumnModel();
+        Point mousepos = getMousePosition();
+        if (mousepos != null)
+        {
+            return model.getColumn(model.getColumnIndexAtX(mousepos.x));
+        }
+        return null;
     }
 
     public class SortingHeaderRenderer extends JButton implements TableCellRenderer
@@ -83,7 +87,7 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener,
         public SortingHeaderRenderer()
         {
             setHorizontalTextPosition(LEADING);
-            this.setMargin(new Insets(0,0,0,0));
+            this.setMargin(new Insets(0, 0, 0, 0));
         }
 
         public Component getTableCellRendererComponent(JTable table,
@@ -93,6 +97,7 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener,
                                                         int row,
                                                         int column)
         {
+            TableColumn trackedColumn = getTrackedColumn();
             if (trackedColumn != null && trackedColumn.getHeaderValue() == value &&
                     trackedColumn == getDraggedColumn())
             {
@@ -104,7 +109,7 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener,
             }
             Icon icon = null;
             TableColumn currentColumn = table.getColumn(value);
-            List<? extends SortingPriority> list = sorter.getSortingPriority();
+            List<? extends SortingPriority> list = getTable().getSortingPriority();
             if (!list.isEmpty())
             {
                 SortingPriority order = list.get(0);
@@ -132,20 +137,10 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener,
     {
         if (getCursor() == Cursor.getDefaultCursor())
         {
-            sorter.toggleSort(trackedColumn.getModelIndex());
+            getTable().toggleSort(getTrackedColumn().getModelIndex());
+            usedModel.setPressed(false);
             repaint();
         }
-    }
-
-    public void mouseDragged(MouseEvent e)
-    {
-
-    }
-
-    public void mouseMoved(MouseEvent e)
-    {
-        TableColumnModel model = getColumnModel();
-        trackedColumn = model.getColumn(model.getColumnIndexAtX(e.getX()));
     }
 
     public void mousePressed(MouseEvent e)

@@ -5,6 +5,8 @@
  */
 package pcgen.gui.proto.editor;
 
+import pcgen.gui.util.panes.SpinningTabbedPane;
+
 /**
  *
  * @author  Connor Petty <mistercpp2000@gmail.com>

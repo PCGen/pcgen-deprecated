@@ -34,36 +34,6 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="pcgen.gui.util.JTableEx" name="jTableEx1">
-          <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="4">
-                <Column editable="true" title="Title 1" type="java.lang.Object">
-                  <Data value="sdfa"/>
-                  <Data value="ghjd"/>
-                  <Data value="null"/>
-                  <Data value="dfg"/>
-                </Column>
-                <Column editable="true" title="Title 2" type="java.lang.Object">
-                  <Data value="tegh"/>
-                  <Data value="asdf"/>
-                  <Data value="asdrj"/>
-                  <Data value="cbnc"/>
-                </Column>
-                <Column editable="true" title="Title 3" type="java.lang.Object">
-                  <Data value="wvczs"/>
-                  <Data value="trtw"/>
-                  <Data value="kjffs"/>
-                  <Data value="mnvx"/>
-                </Column>
-                <Column editable="true" title="Title 4" type="java.lang.Object">
-                  <Data value="yuue"/>
-                  <Data value="sfdgj"/>
-                  <Data value="sfgj"/>
-                  <Data value="xssd"/>
-                </Column>
-              </Table>
-            </Property>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>

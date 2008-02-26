@@ -25,11 +25,19 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Vector;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
+import pcgen.gui.util.table.DefaultDynamicTableColumnModel;
+import pcgen.gui.util.table.DynamicTableColumnModel;
+import pcgen.util.Comparators;
 
 /**
  *  <code>JTableEx</code> extends JTable to provide auto-tooltips.
@@ -41,7 +49,8 @@ public class JTableEx extends JTable
 {
 
     private static final long serialVersionUID = 514835142307946415L;
-    protected ModelSorter sorter;
+    private final RowComparator rowComparator = new RowComparator();
+    private List<SortingPriority> columnkeys;
 
     /**
      * Constructor
@@ -55,7 +64,7 @@ public class JTableEx extends JTable
      * Constructor
      * @param tm
      */
-    public JTableEx(TableModel tm)
+    public JTableEx(SortableTableModel tm)
     {
         this(tm, null, null);
     }
@@ -65,12 +74,12 @@ public class JTableEx extends JTable
      * @param tm
      * @param tcm
      */
-    public JTableEx(TableModel tm, TableColumnModel tcm)
+    public JTableEx(SortableTableModel tm, DynamicTableColumnModel tcm)
     {
         this(tm, tcm, null);
     }
 
-    private JTableEx(TableModel tm, TableColumnModel tcm,
+    private JTableEx(SortableTableModel tm, DynamicTableColumnModel tcm,
                       ListSelectionModel lsm)
     {
         super(tm, tcm, lsm);
@@ -81,8 +90,13 @@ public class JTableEx extends JTable
                            SwingConstants.RIGHT));
         setDefaultRenderer(Integer.class, new AlignCellRenderer(
                            SwingConstants.RIGHT));
-        setModelSorter(new ModelSorter());
+        setSortingPriority(createDefaultSortingPriority());
         setTableHeader(new JTableSortingHeader(this));
+    }
+
+    protected List<? extends SortingPriority> createDefaultSortingPriority()
+    {
+        return Collections.emptyList();
     }
 
     @Override
@@ -93,37 +107,28 @@ public class JTableEx extends JTable
             model = new DefaultSortableTableModel(model);
         }
         super.setModel(model);
-        if (sorter != null)
-        {
-            sorter.setModel(getModel());
-        }
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public SortableTableModel getModel()
     {
         return (SortableTableModel) super.getModel();
     }
 
-    public ModelSorter getModelSorter()
+    @Override
+    public void setColumnModel(TableColumnModel columnModel)
     {
-        return sorter;
+        if (!(columnModel instanceof DynamicTableColumnModel))
+        {
+            columnModel = new DefaultDynamicTableColumnModel(columnModel, 1);
+        }
+        super.setColumnModel(columnModel);
     }
 
-    public void setModelSorter(ModelSorter sorter)
+    @Override
+    public DynamicTableColumnModel getColumnModel()
     {
-        ModelSorter old = this.sorter;
-        if (old != null)
-        {
-            old.setModel(null);
-        }
-        if (sorter != null)
-        {
-            sorter.setModel(getModel());
-        }
-        this.sorter = sorter;
-    //TODO: do something with old
+        return (DynamicTableColumnModel) super.getColumnModel();
     }
 
     /**
@@ -136,6 +141,79 @@ public class JTableEx extends JTable
     {
         getColumnModel().getColumn(col).setCellRenderer(
                 new AlignCellRenderer(alignment));
+    }
+
+    public void toggleSort(int column)
+    {
+        Vector<SortingPriority> list = new Vector<SortingPriority>(getSortingPriority());
+        int index;
+        for (index = list.size() - 1; index >= 0; index--)
+        {
+            if (list.get(index).getColumn() == column)
+            {
+                break;
+            }
+        }
+        switch (index)
+        {
+            case 0:
+                if (list.get(0).getMode() == SortMode.ASCENDING)
+                {
+                    list.set(0, new SortingPriority(column, SortMode.DESCENDING));
+                    break;
+                }
+            default:
+                list.remove(index);
+            case -1:
+                list.add(0, new SortingPriority(column, SortMode.ASCENDING));
+        }
+        if (list.size() > 2)
+        {
+            list.setSize(2);
+        }
+        setSortingPriority(list);
+    }
+
+    public void setSortingPriority(List<? extends SortingPriority> keys)
+    {
+        this.columnkeys = Collections.unmodifiableList(keys);
+        getModel().sortModel(rowComparator);
+    }
+
+    public List<? extends SortingPriority> getSortingPriority()
+    {
+        return columnkeys;
+    }
+
+    private final class RowComparator implements Comparator<List<?>>
+    {
+
+        @SuppressWarnings("unchecked")
+        public int compare(List<?> o1,
+                            List<?> o2)
+        {
+            SortableModel model = getModel();
+            for (SortingPriority priority : columnkeys)
+            {
+                if (priority.getMode() == SortMode.UNORDERED)
+                {
+                    continue;
+                }
+                int column = priority.getColumn();
+                Comparator comparator = Comparators.getComparatorFor(model.getColumnClass(column));
+                int ret = comparator.compare(o1.get(column), o2.get(column));
+                if (priority.getMode() == SortMode.DESCENDING)
+                {
+                    ret *= -1;
+                }
+                if (ret != 0)
+                {
+                    return ret;
+                }
+            }
+            return 0;
+        }
+
     }
 
     /**

@@ -83,18 +83,6 @@ public class JTreeViewTable extends JTreeTable
         }
 
         @Override
-        public void mouseDragged(MouseEvent e)
-        {
-
-        }
-
-        @Override
-        public void mouseMoved(MouseEvent e)
-        {
-            super.mouseMoved(e);
-        }
-
-        @Override
         public void mousePressed(MouseEvent e)
         {
             super.mousePressed(e);

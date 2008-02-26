@@ -1,5 +1,5 @@
 /*
- * ModelSorterEvent.java
+ * ListMap.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,16 +16,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 20, 2008, 9:33:05 PM
+ * Created on Feb 2, 2008, 7:47:15 PM
  */
 
-package pcgen.gui.util;
+package pcgen.util;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public class ModelSorterEvent 
-{
-    
+public interface ListMap<K, V, C extends List<V>> extends CollectionMap<K, V, C>{
+    void add(K key, int index, V value);
+    void addAll(K key, int index, Collection<? extends V> values);
+    V get(Object key, int index);
+    V set(Object key, int index, V value);
+    int indexOf(Object key, Object value);
+    int lastIndexOf(Object key, Object value);
+    V remove(Object key, int index);
 }
