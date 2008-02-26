@@ -184,4 +184,11 @@ public class CDOMLineLoader<T extends CDOMObject> implements CDOMLoader<T>
 	{
 		return targetPrefix;
 	}
+
+	public void unloadLstFiles(LoadContext lc,
+			Collection<CampaignSourceEntry> languageFiles)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

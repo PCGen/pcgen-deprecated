@@ -234,4 +234,11 @@ public class CDOMKitLoader implements CDOMLoader<CDOMKit>
 	{
 		return targetClass;
 	}
+
+	public void unloadLstFiles(LoadContext lc,
+			Collection<CampaignSourceEntry> languageFiles)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

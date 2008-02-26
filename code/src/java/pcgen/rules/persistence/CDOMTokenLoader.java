@@ -1,5 +1,8 @@
 package pcgen.rules.persistence;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,8 +10,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.persistence.lst.LstFileLoader;
@@ -257,5 +263,63 @@ public class CDOMTokenLoader<T extends CDOMObject> implements CDOMLoader<T>
 			lineNumber = i;
 		}
 
+	}
+
+	public void unloadLstFiles(LoadContext lc,
+			Collection<CampaignSourceEntry> files)
+	{
+		for (CampaignSourceEntry cse : files)
+		{
+			lc.setExtractURI(cse.getURI());
+			URI writeURI = cse.getWriteURI();
+			String path = writeURI.getPath().substring(1);
+			File f = new File(path);
+			ensureCreated(f.getParentFile());
+			try
+			{
+				PrintWriter pw = new PrintWriter(f);
+				Collection<T> objects = lc.ref
+						.getConstructedCDOMObjects(targetClass);
+//				System.err.println(objects.size());
+//				Set<T> set = new TreeSet<T>(TokenUtilities.WRITEABLE_SORTER);
+//				set.addAll(objects);
+//				System.err.println(set.size());
+//				List<T> out = new ArrayList<T>();
+//				out.addAll(objects);
+//				out.removeAll(set);
+//				System.err.println(out);
+				for (T obj : objects)
+				{
+					String unparse = StringUtil.join(lc.unparse(obj), "\t");
+					if (cse.getURI().equals(obj.get(ObjectKey.SOURCE_URI)))
+					{
+						pw.println(obj.getDisplayName() + '\t' + unparse);
+					}
+					else if (unparse.length() != 0)
+					{
+						pw.println(obj.getKeyName() + ".MOD\t" + unparse);
+					}
+				}
+				pw.close();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private boolean ensureCreated(File rec)
+	{
+		if (!rec.exists())
+		{
+			if (!ensureCreated(rec.getParentFile()))
+			{
+				return false;
+			}
+			return rec.mkdir();
+		}
+		return true;
 	}
 }

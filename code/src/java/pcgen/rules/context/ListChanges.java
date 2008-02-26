@@ -9,20 +9,24 @@ import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.rules.persistence.TokenUtilities;
 import pcgen.util.MapToList;
 
 public class ListChanges<T extends CDOMObject> implements
 		AssociatedChanges<CDOMReference<T>>
 {
+	private String tokenName;
 	private CDOMObject positive;
 	private CDOMObject negative;
 	private CDOMReference<? extends CDOMList<T>> list;
 	private boolean clear;
 
-	public ListChanges(CDOMObject added, CDOMObject removed,
-		CDOMReference<? extends CDOMList<T>> listref, boolean globallyCleared)
+	public ListChanges(String token, CDOMObject added, CDOMObject removed,
+			CDOMReference<? extends CDOMList<T>> listref,
+			boolean globallyCleared)
 	{
+		tokenName = token;
 		positive = added;
 		negative = removed;
 		list = listref;
@@ -36,31 +40,48 @@ public class ListChanges<T extends CDOMObject> implements
 
 	public boolean isEmpty()
 	{
+		/*
+		 * TODO This lies :P
+		 */
 		return !clear && !hasAddedItems() && !hasRemovedItems();
 	}
 
 	public Collection<LSTWriteable> getAdded()
 	{
-		TreeSet<LSTWriteable> set =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
+		TreeSet<LSTWriteable> set = new TreeSet<LSTWriteable>(
+				TokenUtilities.WRITEABLE_SORTER);
 		Collection<CDOMReference<T>> listMods = positive.getListMods(list);
 		if (listMods != null)
 		{
-			set.addAll(listMods);
+			for (CDOMReference<T> ref : listMods)
+			{
+				for (AssociatedPrereqObject assoc : positive
+						.getListAssociations(list, ref))
+				{
+					if (tokenName.equals(assoc
+							.getAssociation(AssociationKey.TOKEN)))
+					{
+						set.add(ref);
+					}
+				}
+			}
 		}
 		return set;
 	}
 
 	public boolean hasAddedItems()
 	{
+		/*
+		 * TODO This lies :P
+		 */
 		return positive != null && positive.getListMods(list) != null
-			&& !positive.getListMods(list).isEmpty();
+				&& !positive.getListMods(list).isEmpty();
 	}
 
 	public Collection<LSTWriteable> getRemoved()
 	{
-		TreeSet<LSTWriteable> set =
-				new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
+		TreeSet<LSTWriteable> set = new TreeSet<LSTWriteable>(
+				TokenUtilities.WRITEABLE_SORTER);
 		if (negative == null)
 		{
 			return set;
@@ -68,21 +89,34 @@ public class ListChanges<T extends CDOMObject> implements
 		Collection<CDOMReference<T>> listMods = negative.getListMods(list);
 		if (listMods != null)
 		{
-			set.addAll(listMods);
+			for (CDOMReference<T> ref : listMods)
+			{
+				for (AssociatedPrereqObject assoc : negative
+						.getListAssociations(list, ref))
+				{
+					if (tokenName.equals(assoc
+							.getAssociation(AssociationKey.TOKEN)))
+					{
+						set.add(ref);
+					}
+				}
+			}
 		}
 		return set;
 	}
 
 	public boolean hasRemovedItems()
 	{
+		/*
+		 * TODO This lies :P
+		 */
 		return negative != null && negative.getListMods(list) != null
-			&& !negative.getListMods(list).isEmpty();
+				&& !negative.getListMods(list).isEmpty();
 	}
 
 	public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations()
 	{
-		MapToList<LSTWriteable, AssociatedPrereqObject> owned =
-			new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
+		MapToList<LSTWriteable, AssociatedPrereqObject> owned = new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
 				TokenUtilities.WRITEABLE_SORTER);
 		Collection<CDOMReference<T>> mods = positive.getListMods(list);
 		if (mods == null)
@@ -91,11 +125,15 @@ public class ListChanges<T extends CDOMObject> implements
 		}
 		for (CDOMReference<T> lw : mods)
 		{
-			Collection<AssociatedPrereqObject> assocs =
-					positive.getListAssociations(list, lw);
+			Collection<AssociatedPrereqObject> assocs = positive
+					.getListAssociations(list, lw);
 			for (AssociatedPrereqObject assoc : assocs)
 			{
-				owned.addToListFor(lw, assoc);
+				if (tokenName
+						.equals(assoc.getAssociation(AssociationKey.TOKEN)))
+				{
+					owned.addToListFor(lw, assoc);
+				}
 			}
 		}
 		if (owned.isEmpty())
@@ -108,16 +146,19 @@ public class ListChanges<T extends CDOMObject> implements
 	public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations()
 	{
 		Collection<CDOMReference<T>> mods = negative.getListMods(list);
-		MapToList<LSTWriteable, AssociatedPrereqObject> owned =
-				new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
-					TokenUtilities.WRITEABLE_SORTER);
+		MapToList<LSTWriteable, AssociatedPrereqObject> owned = new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
+				TokenUtilities.WRITEABLE_SORTER);
 		for (CDOMReference<T> lw : mods)
 		{
-			Collection<AssociatedPrereqObject> assocs =
-					negative.getListAssociations(list, lw);
+			Collection<AssociatedPrereqObject> assocs = negative
+					.getListAssociations(list, lw);
 			for (AssociatedPrereqObject assoc : assocs)
 			{
-				owned.addToListFor(lw, assoc);
+				if (tokenName
+						.equals(assoc.getAssociation(AssociationKey.TOKEN)))
+				{
+					owned.addToListFor(lw, assoc);
+				}
 			}
 		}
 		if (owned.isEmpty())

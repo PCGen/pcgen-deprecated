@@ -299,4 +299,11 @@ public class CDOMClassLstLoader
 		loader.parseLine(context, obj, restOfLine, uri);
 	}
 
+	public void unloadLstFiles(LoadContext context,
+			Collection<CampaignSourceEntry> classFiles)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

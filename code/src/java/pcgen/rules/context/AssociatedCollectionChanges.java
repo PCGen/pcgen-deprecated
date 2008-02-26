@@ -44,7 +44,7 @@ public class AssociatedCollectionChanges<T> implements AssociatedChanges<T>
 
 	public Collection<LSTWriteable> getRemoved()
 	{
-		return negative.getKeySet();
+		return negative == null ? null : negative.getKeySet();
 	}
 
 	public boolean hasRemovedItems()

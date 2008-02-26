@@ -1,14 +1,14 @@
 package pcgen.rules.persistence;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Observable;
-import java.util.Set;
-import java.util.TreeSet;
 
-import pcgen.base.lang.StringUtil;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
-import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMAlignment;
 import pcgen.cdom.inst.CDOMArmorProf;
@@ -50,6 +50,7 @@ import pcgen.cdom.transition.CampaignInterface;
 import pcgen.core.SettingsHandler;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.rules.context.LoadContext;
+import pcgen.util.Logging;
 
 public class SystemLoader extends Observable
 {
@@ -261,9 +262,10 @@ public class SystemLoader extends Observable
 		context.resolveReferences();
 	}
 
-	public void unloadCampaign(LoadContext lc, CampaignInterface cc,
+	public void unloadCampaign(LoadContext context, CampaignInterface campaign,
 			String outputDirectory)
 	{
+		URI out = new File(outputDirectory).toURI();
 
 		// File gameModeDir = new File(SettingsHandler.getPcgenSystemDir(),
 		// "gameModes");
@@ -279,81 +281,75 @@ public class SystemLoader extends Observable
 		// abilityCategoryLoader.loadLstFiles(context, campaign
 		// .getAbilityCategoryFiles());
 
-		// wProfLoader.loadLstFiles(context, campaign.getWeaponProfFiles());
-		// aProfLoader.loadLstFiles(context, campaign.getArmorProfFiles());
-		// sProfLoader.loadLstFiles(context, campaign.getShieldProfFiles());
-		//
-		for (CampaignSourceEntry cse : cc.getSkillFiles())
-		{
-			lc.setExtractURI(cse.getURI());
-			System.out.println(cse.getURI());
-			Collection<CDOMSkill> skills = lc.ref
-					.getConstructedCDOMObjects(CDOMSkill.class);
-			Set<CDOMSkill> set = new TreeSet<CDOMSkill>(
-					TokenUtilities.WRITEABLE_SORTER);
-			set.addAll(skills);
-			for (CDOMSkill lang : set)
-			{
-				String unparse = StringUtil.join(lc.unparse(lang), "\t");
-				if (cse.getURI().equals(lang.get(ObjectKey.SOURCE_URI)))
-				{
-					System.out.println(lang.getDisplayName() + '\t' + unparse);
-				}
-				else if (unparse.length() != 0)
-				{
-					System.out.println(lang.getKeyName() + ".MOD\t" + unparse);
-				}
-			}
-		}
+		wProfLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getWeaponProfFiles()));
+		aProfLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getShieldProfFiles()));
+		sProfLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getShieldProfFiles()));
+		skillLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getSkillFiles()));
+		languageLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getLanguageFiles()));
+		abilityLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getAbilityFiles()));
+		featLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getFeatFiles()));
+		raceLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getRaceFiles()));
+		domainLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getDomainFiles()));
+		spellLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getSpellFiles()));
+		deityLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getDeityFiles()));
+		classLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getClassFiles()));
+		templateLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getTemplateFiles()));
+		eqModLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
+				out, campaign.getEquipModFiles()));
+		equipmentLoader.unloadLstFiles(context, prepare(
+				campaign.getSourceURI(), out, campaign.getEquipFiles()));
 
-
-		for (CampaignSourceEntry cse : cc.getLanguageFiles())
-		{
-			lc.setExtractURI(cse.getURI());
-			System.out.println(cse.getURI());
-			Collection<CDOMLanguage> languages = lc.ref
-					.getConstructedCDOMObjects(CDOMLanguage.class);
-			Set<CDOMLanguage> set = new TreeSet<CDOMLanguage>(
-					TokenUtilities.WRITEABLE_SORTER);
-			set.addAll(languages);
-			for (CDOMLanguage lang : set)
-			{
-				String unparse = StringUtil.join(lc.unparse(lang), "\t");
-				if (cse.getURI().equals(lang.get(ObjectKey.SOURCE_URI)))
-				{
-					System.out.println(lang.getDisplayName() + '\t' + unparse);
-				}
-				else if (unparse.length() != 0)
-				{
-					System.out.println(lang.getKeyName() + ".MOD\t" + unparse);
-				}
-			}
-		}
-
-		// abilityLoader.loadLstFiles(context, campaign.getAbilityFiles());
-		//
-		// featLoader.loadLstFiles(context, campaign.getFeatFiles());
-		//
-		// raceLoader.loadLstFiles(context, campaign.getRaceFiles());
-		//
-		// domainLoader.loadLstFiles(context, campaign.getDomainFiles());
-		//
-		// spellLoader.loadLstFiles(context, campaign.getSpellFiles());
-		// deityLoader.loadLstFiles(context, campaign.getDeityFiles());
-		//
-		// classLoader.loadLstFiles(context, campaign.getClassFiles());
-		//
-		// templateLoader.loadLstFiles(context, campaign.getTemplateFiles());
-		//
-		// eqModLoader.loadLstFiles(context, campaign.getEquipModFiles());
-		//
-		// equipmentLoader.loadLstFiles(context, campaign.getEquipFiles());
-		//
-		// companionModLoader.loadLstFiles(context, campaign
+		// companionModLoader.unloadLstFiles(context, campaign
 		// .getCompanionModFiles());
-		// kitLoader.loadLstFiles(context, campaign.getKitFiles());
+		// kitLoader.unloadLstFiles(context, campaign.getKitFiles());
 
 		// TODO Auto-generated method stub
 
+	}
+
+	private List<CampaignSourceEntry> prepare(URI sourceURI, URI out,
+			Collection<CampaignSourceEntry> incoming)
+	{
+		String source = sourceURI.toString();
+		int slashLoc = source.lastIndexOf('/');
+		String uriBase = source.substring(0, slashLoc);
+		List<CampaignSourceEntry> list = new ArrayList<CampaignSourceEntry>();
+		for (CampaignSourceEntry cse : incoming)
+		{
+			String uriLocal = cse.getURI().toString();
+			if (uriLocal.startsWith(uriBase))
+			{
+				String relative = uriLocal.substring(uriBase.length());
+				try
+				{
+					URI uri = new URI(out + relative);
+					cse.setWriteURI(uri);
+					list.add(cse);
+				}
+				catch (URISyntaxException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				Logging.errorPrint("Skipping: " + uriLocal);
+			}
+		}
+		return list;
 	}
 }

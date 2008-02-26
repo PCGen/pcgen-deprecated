@@ -14,7 +14,6 @@ import pcgen.base.lang.CaseInsensitiveString;
 import pcgen.base.lang.UnreachableError;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.TripleKeyMap;
-import pcgen.cdom.base.CDOMObject;
 import pcgen.persistence.lst.prereq.PrerequisiteParserInterface;
 import pcgen.rules.persistence.token.CDOMSubToken;
 import pcgen.rules.persistence.token.CDOMToken;
@@ -80,8 +79,7 @@ public class TokenFamily implements Comparable<TokenFamily>
 		return (CDOMSubToken<T>) subTokenMap.get(cl, token, key);
 	}
 
-	public <T extends CDOMObject> Set<CDOMSubToken<?>> getSubTokens(
-			Class<? extends T> cl, String token)
+	public Set<CDOMSubToken<?>> getSubTokens(Class<?> cl, String token)
 	{
 		return subTokenMap.values(cl, token);
 	}

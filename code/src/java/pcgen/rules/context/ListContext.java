@@ -300,6 +300,10 @@ public class ListContext
 			this.sourceURI = sourceURI;
 		}
 
+		/*
+		 * TODO These maps (throughout this entire class) are probably problems
+		 * because they are not using Identity characteristics
+		 */
 		private TripleKeyMap<CDOMReference<? extends CDOMList<?>>, OwnerURI, LSTWriteable, AssociatedPrereqObject> positiveMasterMap = new TripleKeyMap<CDOMReference<? extends CDOMList<?>>, OwnerURI, LSTWriteable, AssociatedPrereqObject>();
 
 		private HashMapToList<CDOMReference<? extends CDOMList<?>>, OwnerURI> masterClearSet = new HashMapToList<CDOMReference<? extends CDOMList<?>>, OwnerURI>();
@@ -364,7 +368,11 @@ public class ListContext
 					lo);
 			for (LSTWriteable lw : added)
 			{
-				map.addToListFor(lw, positiveMasterMap.get(swl, lo, lw));
+				AssociatedPrereqObject apo = positiveMasterMap.get(swl, lo, lw);
+				if (tokenName.equals(apo.getAssociation(AssociationKey.TOKEN)))
+				{
+					map.addToListFor(lw, apo);
+				}
 			}
 			return new AssociatedCollectionChanges<LSTWriteable>(map, null,
 					masterClearSet.containsInList(swl, lo));
@@ -455,9 +463,10 @@ public class ListContext
 				String tokenName, CDOMObject owner,
 				CDOMReference<? extends CDOMList<T>> swl)
 		{
-			return new ListChanges<T>(getPositive(extractURI, owner),
-					getNegative(extractURI, owner), swl, globalClearSet
-							.containsInList(extractURI, owner, swl));
+			return new ListChanges<T>(tokenName,
+					getPositive(extractURI, owner), getNegative(extractURI,
+							owner), swl, globalClearSet.containsInList(
+							extractURI, owner, swl));
 		}
 
 		public boolean hasMasterLists()

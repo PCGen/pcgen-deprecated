@@ -226,6 +226,14 @@ public class SimpleReferenceContext
 			{
 				throw new IllegalArgumentException(val);
 			}
+			if (val.startsWith("TIMEUNIT="))
+			{
+				throw new IllegalArgumentException(val);
+			}
+			if (val.startsWith("CASTERLEVEL="))
+			{
+				throw new IllegalArgumentException(val);
+			}
 			if (refClass.equals(PCClass.class))
 			{
 				if (val.startsWith("CLASS"))

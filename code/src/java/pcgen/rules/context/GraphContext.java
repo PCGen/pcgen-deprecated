@@ -19,6 +19,8 @@ package pcgen.rules.context;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -172,13 +174,13 @@ public class GraphContext
 	{
 
 		private DoubleKeyMapToList<String, CDOMObject, URI> globalRemoveSet =
-				new DoubleKeyMapToList<String, CDOMObject, URI>();
+				new DoubleKeyMapToList<String, CDOMObject, URI>(HashMap.class, IdentityHashMap.class);
 
 		private TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject> added =
-				new TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject>();
+				new TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject>(HashMap.class, IdentityHashMap.class, IdentityHashMap.class);
 
 		private TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject> removed =
-				new TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject>();
+				new TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject>(HashMap.class, IdentityHashMap.class, IdentityHashMap.class);
 
 		private URI sourceURI;
 

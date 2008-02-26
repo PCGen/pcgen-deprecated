@@ -33,8 +33,8 @@ import pcgen.rules.persistence.token.ChoiceSetToken;
 import pcgen.rules.persistence.token.ChooseLstGlobalQualifierToken;
 import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.rules.persistence.token.PrimitiveToken;
-import pcgen.rules.persistence.util.TokenFamily;
 import pcgen.rules.persistence.util.TokenFamilyIterator;
+import pcgen.rules.persistence.util.TokenFamilySubIterator;
 import pcgen.util.Logging;
 
 public class TokenSupport
@@ -370,32 +370,26 @@ public class TokenSupport
 	public <T extends CDOMObject> String[] unparse(LoadContext context, T cdo,
 			String tokenName)
 	{
-		/*
-		 * TODO This is a challenge - how to properly unparse if local & global
-		 * both exist?
-		 */
-		List<String> list = new ArrayList<String>();
-		/*
-		 * TODO This can't be cdo.getClass and just a getSubTokens ... needs to
-		 * be an iterator that is intelligent to the tracing up the object
-		 * hierarchy...
-		 */
-		for (CDOMSubToken<?> token : TokenFamily.CURRENT.getSubTokens(cdo
-				.getClass(), tokenName))
+		Set<String> set = new TreeSet<String>();
+		Class<T> cl = (Class<T>) cdo.getClass();
+		TokenFamilySubIterator<T> it = new TokenFamilySubIterator<T>(cl, tokenName);
+		while (it.hasNext())
 		{
-			if (token instanceof CDOMSecondaryToken)
+			CDOMSecondaryToken<? super T> token = it.next();
+			String[] s = token.unparse(context, cdo);
+			if (s != null)
 			{
-				String[] s = ((CDOMSecondaryToken) token).unparse(context, cdo);
-				if (s != null)
+				for (String aString : s)
 				{
-					for (String aString : s)
-					{
-						list.add(token.getTokenName() + "|" + aString);
-					}
+					set.add(token.getTokenName() + '|' + aString);
 				}
 			}
 		}
-		return list.size() == 0 ? null : list.toArray(new String[list.size()]);
+		if (set.isEmpty())
+		{
+			return null;
+		}
+		return set.toArray(new String[set.size()]);
 	}
 
 	public <T extends CDOMObject> Collection<String> unparse(
@@ -410,13 +404,15 @@ public class TokenSupport
 			String[] s = token.unparse(context, cdo);
 			if (s != null)
 			{
-				StringBuilder sb2 = new StringBuilder();
-				sb2.append(token.getTokenName()).append(':');
 				for (String aString : s)
 				{
-					set.add(sb2.toString() + aString);
+					set.add(token.getTokenName() + ':' + aString);
 				}
 			}
+		}
+		if (set.isEmpty())
+		{
+			return null;
 		}
 		return set;
 	}

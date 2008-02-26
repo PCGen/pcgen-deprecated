@@ -204,7 +204,14 @@ public class ReferenceContext
 	public <T extends CDOMObject> Collection<T> getConstructedCDOMObjects(
 			Class<T> c)
 	{
-		return simple.getConstructedCDOMObjects(c);
+		if (CategorizedCDOMObject.class.isAssignableFrom(c))
+		{
+			return categorized.getAllConstructedCDOMObjects((Class) c);
+		}
+		else
+		{
+			return simple.getConstructedCDOMObjects(c);
+		}
 	}
 
 	public <T extends CDOMObject & CategorizedCDOMObject<T>> Collection<T> getConstructedCDOMObjects(

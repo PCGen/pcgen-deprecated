@@ -60,7 +60,10 @@ public class ReferenceSupport<T extends CDOMObject, RT extends CDOMSingleRef<T>>
 	{
 		if (!baseClass.isInstance(obj))
 		{
-			// TODO Error
+			Logging.errorPrint("Attempted to register a "
+					+ obj.getClass().getName() + " in " + baseClass.getName()
+					+ " ReferenceSupport");
+			return;
 		}
 		CaseInsensitiveString cik = new CaseInsensitiveString(key);
 		if (active.containsKey(cik))
@@ -318,8 +321,8 @@ public class ReferenceSupport<T extends CDOMObject, RT extends CDOMSingleRef<T>>
 			}
 			else if (!keyName.equalsIgnoreCase(second.toString()))
 			{
-//				Logging.errorPrint("Magical Key Change: " + second + " to "
-//						+ keyName);
+				// Logging.errorPrint("Magical Key Change: " + second + " to "
+				// + keyName);
 				returnGood = false;
 			}
 		}

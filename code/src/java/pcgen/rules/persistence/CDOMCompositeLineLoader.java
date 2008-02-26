@@ -159,4 +159,11 @@ public class CDOMCompositeLineLoader implements CDOMLoader<CDOMObject>
 	{
 		throw new UnsupportedOperationException();
 	}
+
+	public void unloadLstFiles(LoadContext lc,
+			Collection<CampaignSourceEntry> languageFiles)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

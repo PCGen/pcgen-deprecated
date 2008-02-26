@@ -189,7 +189,7 @@ public class ConsolidatedListCommitStrategy implements ListCommitStrategy
 		if (owner.hasListMods(swl))
 		{
 			// TODO Deal with matching the token... :/
-			return new ListChanges<T>(owner, null, swl, false);
+			return new ListChanges<T>(tokenName, owner, null, swl, false);
 		}
 		return null;
 	}

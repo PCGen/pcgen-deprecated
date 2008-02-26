@@ -17,8 +17,10 @@
  */
 package pcgen.rules.context;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import pcgen.base.util.DoubleKeyMap;
@@ -90,6 +92,19 @@ public class CategorizedReferenceContext
 			Class<T> name, Category<T> cat)
 	{
 		return getRefSupport(name, cat).getConstructedCDOMObjects();
+	}
+
+	public <U extends CDOMObject & CategorizedCDOMObject<U>> Collection<? extends CDOMObject> getAllConstructedCDOMObjects(
+			Class<U> name)
+	{
+		List<CDOMObject> list = new ArrayList<CDOMObject>();
+		for (Category<?> cat : refMap.getSecondaryKeySet(name))
+		{
+			Collection<U> constructedCDOMObjects = getRefSupport(name,
+					(Category<U>) cat).getConstructedCDOMObjects();
+			list.addAll(constructedCDOMObjects);
+		}
+		return list;
 	}
 
 	public <T extends CDOMObject & CategorizedCDOMObject<T>> boolean containsConstructedCDOMObject(

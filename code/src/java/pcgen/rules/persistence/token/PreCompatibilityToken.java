@@ -90,7 +90,7 @@ public class PreCompatibilityToken implements
 		for (Prerequisite p : changes.getAdded())
 		{
 			String kind = p.getKind();
-			if (kind.regionMatches(true, 0, tokenRoot, 0, Math.min(tokenRoot
+			if (kind == null || kind.regionMatches(true, 0, tokenRoot, 0, Math.min(tokenRoot
 					.length(), kind.length())))
 			{
 				final StringWriter capture = new StringWriter();

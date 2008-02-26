@@ -18,6 +18,8 @@
 package pcgen.rules.context;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
@@ -277,11 +279,14 @@ public class ObjectContext
 	public class TrackingObjectCommitStrategy implements ObjectCommitStrategy
 	{
 
-		private DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject> positiveMap = new DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject>();
+		private DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject> positiveMap = new DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject>(
+				HashMap.class, IdentityHashMap.class);
 
-		private DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject> negativeMap = new DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject>();
+		private DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject> negativeMap = new DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject>(
+				HashMap.class, IdentityHashMap.class);
 
-		private DoubleKeyMapToList<URI, CDOMObject, ListKey<?>> globalClearSet = new DoubleKeyMapToList<URI, CDOMObject, ListKey<?>>();
+		private DoubleKeyMapToList<URI, CDOMObject, ListKey<?>> globalClearSet = new DoubleKeyMapToList<URI, CDOMObject, ListKey<?>>(
+				HashMap.class, IdentityHashMap.class);
 
 		private URI sourceURI;
 

@@ -8,11 +8,7 @@ import pcgen.util.MapToList;
 
 public interface AssociatedChanges<T>
 {
-	public boolean hasRemovedItems();
-
 	public boolean includesGlobalClear();
-
-	public boolean hasAddedItems();
 
 	public Collection<LSTWriteable> getAdded();
 
