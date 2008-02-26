@@ -17,11 +17,8 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.net.URISyntaxException;
-
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.inst.CDOMPCClass;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;

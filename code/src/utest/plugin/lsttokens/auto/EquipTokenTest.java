@@ -99,25 +99,25 @@ public class EquipTokenTest extends AbstractAutoTokenTestCase
 
 	@Test
 	public void testRoundRobinDupeDiffPrereqs()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
-		runRoundRobin(getSubTokenString() + "|TestWP1[PRERACE:1,Human]",
-			getSubTokenString() + "|TestWP1");
+		runRoundRobin(getSubTokenString() + "|TestWP1", getSubTokenString()
+				+ "|TestWP1[PRERACE:1,Human]");
 	}
 
 	@Test
 	public void testRoundRobinDupeTwoDiffPrereqs()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP2");
 		runRoundRobin(
-			getSubTokenString() + "|TestWP1|TestWP1[PRERACE:1,Human]",
-			getSubTokenString() + "|TestWP2|TestWP2[PRERACE:1,Elf]");
+				getSubTokenString() + "|TestWP1|TestWP1[PRERACE:1,Human]",
+				getSubTokenString() + "|TestWP2|TestWP2[PRERACE:1,Elf]");
 	}
 
 	@Override

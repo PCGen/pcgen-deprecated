@@ -17,9 +17,6 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.net.URISyntaxException;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.inst.CDOMPCClass;

@@ -65,8 +65,8 @@ public class SourceWebLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
-	public void testRoundRobinFormula() throws PersistenceLayerException
+	public void testRoundRobinURL() throws PersistenceLayerException
 	{
-		runRoundRobin("3+CL(\"Fighter\"");
+		runRoundRobin("http://pcgen.sourceforge.net");
 	}
 }

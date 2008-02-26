@@ -36,7 +36,6 @@ public class ClassSkillsTokenTest extends AbstractAddTokenTestCase
 	public void setUp() throws PersistenceLayerException, URISyntaxException
 	{
 		super.setUp();
-		super.setPrefix("CLASS:");
 	}
 
 	@Override

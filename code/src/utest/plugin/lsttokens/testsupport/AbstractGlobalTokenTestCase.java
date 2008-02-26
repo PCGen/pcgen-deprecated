@@ -102,13 +102,6 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		}
 	}
 
-	private String prefix = "";
-
-	protected void setPrefix(String s)
-	{
-		prefix = (s == null ? "" : s);
-	}
-
 	public void runRoundRobin(String... str) throws PersistenceLayerException
 	{
 		// Default is not to write out anything
