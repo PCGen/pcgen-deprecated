@@ -43,7 +43,8 @@ import pcgen.util.Logging;
  * @author djones4
  * 
  */
-public class LangautoLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
+public class LangautoLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
 	private static final Class<CDOMLanguage> LANGUAGE_CLASS = CDOMLanguage.class;
@@ -86,8 +87,8 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken, CDOMPr
 				if (!firstToken)
 				{
 					Logging.errorPrint("Non-sensical situation was "
-						+ "encountered while parsing " + getTokenName()
-						+ ": When used, .CLEAR must be the first argument");
+							+ "encountered while parsing " + getTokenName()
+							+ ": When used, .CLEAR must be the first argument");
 					return false;
 				}
 				context.getGraphContext().removeAll(getTokenName(), obj);
@@ -103,14 +104,13 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken, CDOMPr
 				else
 				{
 					foundOther = true;
-					ref =
-							TokenUtilities.getTypeOrPrimitive(context,
-								LANGUAGE_CLASS, tokText);
+					ref = TokenUtilities.getTypeOrPrimitive(context,
+							LANGUAGE_CLASS, tokText);
 				}
 				if (ref == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
-						+ getTokenName());
+							+ getTokenName());
 					return false;
 				}
 				context.getGraphContext().grant(getTokenName(), obj, ref);
@@ -120,7 +120,7 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken, CDOMPr
 		if (foundAny && foundOther)
 		{
 			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 		return true;
@@ -128,9 +128,8 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken, CDOMPr
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<CDOMLanguage> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, LANGUAGE_CLASS);
+		AssociatedChanges<CDOMLanguage> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), obj, LANGUAGE_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -143,21 +142,24 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken, CDOMPr
 			sb.append(Constants.LST_DOT_CLEAR);
 			needComma = true;
 		}
-		else if (added.isEmpty())
+		else if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token (and no global clear, so nothing to do)
 			return null;
 		}
-		for (LSTWriteable lw : added)
+		if (added != null)
 		{
-			if (needComma)
+			for (LSTWriteable lw : added)
 			{
-				sb.append(Constants.COMMA);
+				if (needComma)
+				{
+					sb.append(Constants.COMMA);
+				}
+				needComma = true;
+				sb.append(lw.getLSTformat());
 			}
-			needComma = true;
-			sb.append(lw.getLSTformat());
 		}
-		return new String[]{sb.toString()};
+		return new String[] { sb.toString() };
 	}
 
 	public Class<CDOMObject> getTokenClass()

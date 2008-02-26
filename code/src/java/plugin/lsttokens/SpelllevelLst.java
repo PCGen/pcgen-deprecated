@@ -432,7 +432,9 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken, CDOM
 				// Legal if no SPELLLEVEL was present
 				continue;
 			}
-			if (changes.hasRemovedItems() || changes.includesGlobalClear())
+			Collection<LSTWriteable> removedItems = changes.getRemoved();
+			if (removedItems != null && !removedItems.isEmpty()
+					|| changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
 					+ " does not support .CLEAR");

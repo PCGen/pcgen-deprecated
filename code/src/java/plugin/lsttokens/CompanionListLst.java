@@ -403,7 +403,9 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken, C
 				// Legal if no COMPANIONLIST was present
 				continue;
 			}
-			if (changes.hasRemovedItems() || changes.includesGlobalClear())
+			Collection<LSTWriteable> removedItems = changes.getRemoved();
+			if (removedItems != null && !removedItems.isEmpty()
+					|| changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
 					+ " does not support .CLEAR");

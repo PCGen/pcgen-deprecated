@@ -26,6 +26,7 @@
 package plugin.lsttokens.add;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -79,13 +80,19 @@ import pcgen.util.Logging;
  * @author James Dempsey <jdempsey@users.sourceforge.net>
  * @version $Revision$
  */
-public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSecondaryToken<CDOMObject>
+public class AbilityToken extends AbstractToken implements AddLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 	private static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
 
 	public String getParentToken()
 	{
 		return "ADD";
+	}
+
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
 	}
 
 	/*
@@ -104,7 +111,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 		if (tokens.length < 3)
 		{
 			Logging.errorPrint("Syntax of ADD:" + getTokenName()
-				+ " only allows three or four | : " + value);
+					+ " only allows three or four | : " + value);
 			return false;
 		}
 		try
@@ -115,7 +122,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 			if (tokens.length != 4)
 			{
 				Logging.errorPrint("Syntax of ADD:" + getTokenName()
-					+ " requires four | when a count is present: " + value);
+						+ " requires four | when a count is present: " + value);
 				return false;
 			}
 		}
@@ -124,8 +131,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 			countString = "1";
 			if (tokens.length != 3)
 			{
-				Logging
-					.errorPrint("Syntax of ADD:" + getTokenName()
+				Logging.errorPrint("Syntax of ADD:" + getTokenName()
 						+ " requires three | when a count is not present: "
 						+ value);
 				return false;
@@ -137,7 +143,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 		if (category == null)
 		{
 			Logging.errorPrint("Malformed ADD Token: Missing Category: "
-				+ value);
+					+ value);
 			return false;
 		}
 		String nature = tokens[index++];
@@ -151,7 +157,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 		if (abilities == null)
 		{
 			Logging.errorPrint("Malformed ADD Token: Missing Abilities: "
-				+ value);
+					+ value);
 			return false;
 		}
 
@@ -184,7 +190,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 	{
 		if (value.length() == 0)
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			Logging.errorPrint(getFullName() + " may not have empty argument");
 			return false;
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
@@ -196,14 +202,15 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 			count = Integer.parseInt(nextToken);
 			if (count < 1)
 			{
-				Logging.errorPrint("Count in ADD:" + getTokenName()
-					+ " must be > 0");
+				Logging
+						.errorPrint("Count in " + getFullName()
+								+ " must be > 0");
 				return false;
 			}
 			if (!st.hasMoreTokens())
 			{
-				Logging.errorPrint("Invalid " + getTokenName()
-					+ ": has only a Count: " + value);
+				Logging.errorPrint("Invalid " + getFullName()
+						+ ": has only a Count: " + value);
 				return false;
 			}
 			nextToken = st.nextToken();
@@ -216,8 +223,9 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 		// 2 left, because the first was already fetched
 		if (st.countTokens() != 2)
 		{
-			Logging.errorPrint("Invalid " + getTokenName()
-				+ ": does not have the proper number of arguments: " + value);
+			Logging.errorPrint("Invalid " + getFullName()
+					+ ": does not have the proper number of arguments: "
+					+ value);
 			return false;
 		}
 
@@ -228,8 +236,8 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 		}
 		catch (IllegalArgumentException iae)
 		{
-			Logging.errorPrint("Invalid Ability Category in " + getTokenName()
-				+ ": " + value);
+			Logging.errorPrint("Invalid Ability Category in " + getFullName()
+					+ ": " + value);
 			return false;
 		}
 
@@ -240,8 +248,8 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 		}
 		catch (IllegalArgumentException iae)
 		{
-			Logging.errorPrint("Invalid Ability Nature in " + getTokenName()
-				+ ": " + value);
+			Logging.errorPrint("Invalid Ability Nature in " + getFullName()
+					+ ": " + value);
 			return false;
 		}
 
@@ -252,8 +260,7 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		List<CDOMReference<CDOMAbility>> refs =
-				new ArrayList<CDOMReference<CDOMAbility>>();
+		List<CDOMReference<CDOMAbility>> refs = new ArrayList<CDOMReference<CDOMAbility>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
 
@@ -269,16 +276,12 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 			else
 			{
 				foundOther = true;
-				ref =
-						TokenUtilities.getTypeOrPrimitive(context,
-							ABILITY_CLASS, ac, token);
+				ref = TokenUtilities.getTypeOrPrimitive(context, ABILITY_CLASS,
+						ac, token);
 				if (ref == null)
 				{
-					Logging
-						.errorPrint("  Error was encountered while parsing ADD:"
-							+ getTokenName()
-							+ ": "
-							+ token
+					Logging.errorPrint("  Error was encountered while parsing "
+							+ getFullName() + ": " + token
 							+ " is not a valid reference: " + value);
 					return false;
 				}
@@ -288,21 +291,22 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 
 		if (foundAny && foundOther)
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+			Logging.errorPrint("Non-sensical " + getFullName()
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new GrantActor<CDOMAbility>());
-		context.getGraphContext().grant(getTokenName(), obj, container);
+		context.getGraphContext().grant(getFullName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
+				.getFormulaFor(Integer.MAX_VALUE));
 		container.setAssociation(AssociationKey.ABILITY_CATEGORY, ac);
 		container.setAssociation(AssociationKey.ABILITY_NATURE, nat);
-		ReferenceChoiceSet<CDOMAbility> rcs = new ReferenceChoiceSet<CDOMAbility>(refs);
+		ReferenceChoiceSet<CDOMAbility> rcs = new ReferenceChoiceSet<CDOMAbility>(
+				refs);
 		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>("ADD", rcs);
 		container.setChoiceSet(cs);
 		return true;
@@ -310,54 +314,54 @@ public class AbilityToken extends AbstractToken implements AddLstToken, CDOMSeco
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChooseActionContainer.class);
+		AssociatedChanges<ChooseActionContainer> grantChanges = context
+				.getGraphContext().getChangesFromToken(getFullName(), obj,
+						ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
 			return null;
 		}
-		if (!grantChanges.hasAddedItems())
+		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : grantChanges.getAdded())
+		for (LSTWriteable lstw : addedItems)
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!"ADD".equals(container.getName()))
 			{
 				context.addWriteMessage("Unexpected CHOOSE container found: "
-					+ container.getName());
+						+ container.getName());
 				continue;
 			}
 			ChoiceSet<?> cs = container.getChoiceSet();
 			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
 			{
-				AbilityNature nat =
-						container.getAssociation(AssociationKey.ABILITY_NATURE);
+				AbilityNature nat = container
+						.getAssociation(AssociationKey.ABILITY_NATURE);
 				if (nat == null)
 				{
 					context
-						.addWriteMessage("Unable to find Nature for GrantFactory");
+							.addWriteMessage("Unable to find Nature for GrantFactory");
 					return null;
 				}
-				CDOMAbilityCategory cat =
-						container
-							.getAssociation(AssociationKey.ABILITY_CATEGORY);
+				CDOMAbilityCategory cat = container
+						.getAssociation(AssociationKey.ABILITY_CATEGORY);
 				if (cat == null)
 				{
 					context
-						.addWriteMessage("Unable to find Category for GrantFactory");
+							.addWriteMessage("Unable to find Category for GrantFactory");
 					return null;
 				}
-				Formula f =
-						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f = container
+						.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
-					context.addWriteMessage("Unable to find " + getTokenName()
-						+ " Count");
+					context.addWriteMessage("Unable to find " + getFullName()
+							+ " Count");
 					return null;
 				}
 				String fString = f.toString();

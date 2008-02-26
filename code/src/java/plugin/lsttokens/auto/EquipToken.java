@@ -51,7 +51,8 @@ import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 import pcgen.util.MapToList;
 
-public class EquipToken extends AbstractToken implements AutoLstToken, CDOMSecondaryToken<CDOMObject>
+public class EquipToken extends AbstractToken implements AutoLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 
 	private static final Class<CDOMEquipment> EQUIPMENT_CLASS = CDOMEquipment.class;
@@ -69,12 +70,17 @@ public class EquipToken extends AbstractToken implements AutoLstToken, CDOMSecon
 		return "EQUIP";
 	}
 
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
+	}
+
 	public boolean parse(PObject target, String value, int level)
 	{
 		if (level > 1)
 		{
 			Logging.errorPrint("AUTO:" + getTokenName()
-				+ " is not supported on class level lines");
+					+ " is not supported on class level lines");
 			return false;
 		}
 		target.addAutoArray(getTokenName(), value);
@@ -101,17 +107,16 @@ public class EquipToken extends AbstractToken implements AutoLstToken, CDOMSecon
 			equipItems = value.substring(0, openBracketLoc);
 			if (!value.endsWith("]"))
 			{
-				Logging.errorPrint("Unresolved Prerequisite in "
-					+ getTokenName() + " " + value + " in " + getTokenName());
+				Logging.errorPrint("Unresolved Prerequisite in " + value
+						+ " in " + getFullName());
 				return false;
 			}
-			prereq =
-					getPrerequisite(value.substring(openBracketLoc + 1, value
-						.length() - 1));
+			prereq = getPrerequisite(value.substring(openBracketLoc + 1, value
+					.length() - 1));
 			if (prereq == null)
 			{
 				Logging.errorPrint("Error generating Prerequisite " + prereq
-					+ " in " + getTokenName());
+						+ " in " + getFullName());
 				return false;
 			}
 		}
@@ -132,26 +137,25 @@ public class EquipToken extends AbstractToken implements AutoLstToken, CDOMSecon
 				ChooseActionContainer container = obj.getChooseContainer();
 				GrantActor<CDOMEquipment> actor = new GrantActor<CDOMEquipment>();
 				container.addActor(actor);
-				actor.setAssociation(AssociationKey.TOKEN, getTokenName());
+				actor.setAssociation(AssociationKey.TOKEN, getFullName());
 				apo = actor;
 			}
 			else
 			{
-				CDOMReference<CDOMEquipment> ref =
-						TokenUtilities.getTypeOrPrimitive(context,
-							EQUIPMENT_CLASS, aProf);
+				CDOMReference<CDOMEquipment> ref = TokenUtilities
+						.getTypeOrPrimitive(context, EQUIPMENT_CLASS, aProf);
 				if (ref == null)
 				{
 					return false;
 				}
-				apo = context.getGraphContext().grant(getTokenName(), obj, ref);
+				apo = context.getGraphContext().grant(getFullName(), obj, ref);
 			}
 			if (prereq != null)
 			{
 				apo.addPrerequisite(prereq);
 			}
 			apo.setAssociation(AssociationKey.EQUIPMENT_NATURE,
-				EquipmentNature.AUTOMATIC);
+					EquipmentNature.AUTOMATIC);
 			apo.setAssociation(AssociationKey.QUANTITY, INTEGER_ONE);
 			// TODO Need to account for output index??
 			// newEq.setOutputIndex(aList.size());
@@ -172,8 +176,8 @@ public class EquipToken extends AbstractToken implements AutoLstToken, CDOMSecon
 			if (actor instanceof GrantActor)
 			{
 				GrantActor<?> ga = GrantActor.class.cast(actor);
-				if (!getTokenName().equals(
-					ga.getAssociation(AssociationKey.TOKEN)))
+				if (!getFullName().equals(
+						ga.getAssociation(AssociationKey.TOKEN)))
 				{
 					continue;
 				}
@@ -189,44 +193,42 @@ public class EquipToken extends AbstractToken implements AutoLstToken, CDOMSecon
 			}
 		}
 
-		AssociatedChanges<CDOMEquipment> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, EQUIPMENT_CLASS);
+		AssociatedChanges<CDOMEquipment> changes = context.getGraphContext()
+				.getChangesFromToken(getFullName(), obj, EQUIPMENT_CLASS);
 		if (list.isEmpty() && changes == null)
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+				.getAddedAssociations();
 		if (list.isEmpty() && (mtl == null || mtl.isEmpty()))
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		HashMapToList<Set<Prerequisite>, LSTWriteable> m =
-				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+		HashMapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
 		for (LSTWriteable lstw : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(lstw))
 			{
 				m.addToListFor(new HashSet<Prerequisite>(assoc
-					.getPrerequisiteList()), lstw);
+						.getPrerequisiteList()), lstw);
 			}
 		}
-		
+
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.append(ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-				Constants.PIPE));
+					Constants.PIPE));
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				if (prereqs.size() > 1)
 				{
 					context.addWriteMessage("Error: "
-						+ obj.getClass().getSimpleName()
-						+ " had more than one Prerequisite for "
-						+ getTokenName());
+							+ obj.getClass().getSimpleName()
+							+ " had more than one Prerequisite for "
+							+ getFullName());
 					return null;
 				}
 				Prerequisite p = prereqs.iterator().next();

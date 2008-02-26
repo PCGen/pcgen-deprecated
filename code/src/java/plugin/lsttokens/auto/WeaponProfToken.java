@@ -50,7 +50,8 @@ import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 import pcgen.util.MapToList;
 
-public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOMSecondaryToken<CDOMObject>
+public class WeaponProfToken extends AbstractToken implements AutoLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 
 	private static final Class<CDOMWeaponProf> WEAPONPROF_CLASS = CDOMWeaponProf.class;
@@ -66,12 +67,17 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOM
 		return "WEAPONPROF";
 	}
 
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
+	}
+
 	public boolean parse(PObject target, String value, int level)
 	{
 		if (level > 1)
 		{
 			Logging.errorPrint("AUTO:" + getTokenName()
-				+ " is not supported on class level lines");
+					+ " is not supported on class level lines");
 			return false;
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
@@ -79,10 +85,10 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOM
 		{
 			if (st.nextToken().startsWith("TYPE"))
 			{
-//				Logging.deprecationPrint("TYPE= in AUTO:" + getTokenName()
-//						+ " Must refer to the Weapon Proficiency LST File.  "
-//						+ "Consider WEAPONTYPE= "
-//						+ "if you are trying to match an Equipment TYPE");
+				// Logging.deprecationPrint("TYPE= in AUTO:" + getTokenName()
+				// + " Must refer to the Weapon Proficiency LST File. "
+				// + "Consider WEAPONTYPE= "
+				// + "if you are trying to match an Equipment TYPE");
 				break;
 			}
 		}
@@ -107,16 +113,15 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOM
 			if (!value.endsWith("]"))
 			{
 				Logging.errorPrint("Unresolved Prerequisite in "
-					+ getTokenName() + " " + value + " in " + getTokenName());
+						+ getFullName() + " " + value + " in " + getFullName());
 				return false;
 			}
-			prereq =
-					getPrerequisite(value.substring(openBracketLoc + 1, value
-						.length() - 1));
+			prereq = getPrerequisite(value.substring(openBracketLoc + 1, value
+					.length() - 1));
 			if (prereq == null)
 			{
 				Logging.errorPrint("Error generating Prerequisite " + prereq
-					+ " in " + getTokenName());
+						+ " in " + getFullName());
 				return false;
 			}
 		}
@@ -139,7 +144,7 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOM
 				ChooseActionContainer container = obj.getChooseContainer();
 				GrantActor<CDOMWeaponProf> actor = new GrantActor<CDOMWeaponProf>();
 				container.addActor(actor);
-				actor.setAssociation(AssociationKey.TOKEN, getTokenName());
+				actor.setAssociation(AssociationKey.TOKEN, getFullName());
 				if (prereq != null)
 				{
 					actor.addPrerequisite(prereq);
@@ -156,17 +161,15 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOM
 				else
 				{
 					foundOther = true;
-					ref =
-							TokenUtilities.getTypeOrPrimitive(context,
-								WEAPONPROF_CLASS, aProf);
+					ref = TokenUtilities.getTypeOrPrimitive(context,
+							WEAPONPROF_CLASS, aProf);
 				}
 				if (ref == null)
 				{
 					return false;
 				}
-				AssociatedPrereqObject edge =
-						context.getGraphContext().grant(getTokenName(), obj,
-							ref);
+				AssociatedPrereqObject edge = context.getGraphContext().grant(
+						getFullName(), obj, ref);
 				if (prereq != null)
 				{
 					edge.addPrerequisite(prereq);
@@ -176,8 +179,8 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOM
 
 		if (foundAny && foundOther)
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+			Logging.errorPrint("Non-sensical " + getFullName()
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 
@@ -196,8 +199,8 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOM
 			if (actor instanceof GrantActor)
 			{
 				GrantActor<?> ga = GrantActor.class.cast(actor);
-				if (!getTokenName().equals(
-					ga.getAssociation(AssociationKey.TOKEN)))
+				if (!getFullName().equals(
+						ga.getAssociation(AssociationKey.TOKEN)))
 				{
 					continue;
 				}
@@ -213,49 +216,55 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken, CDOM
 			}
 		}
 
-		AssociatedChanges<CDOMWeaponProf> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, WEAPONPROF_CLASS);
+		AssociatedChanges<CDOMWeaponProf> changes = context.getGraphContext()
+				.getChangesFromToken(getFullName(), obj, WEAPONPROF_CLASS);
 		if (list.isEmpty() && changes == null)
 		{
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+				.getAddedAssociations();
 		if (list.isEmpty() && (mtl == null || mtl.isEmpty()))
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		HashMapToList<Set<Prerequisite>, LSTWriteable> m =
-				new HashMapToList<Set<Prerequisite>, LSTWriteable>();
+		HashMapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
 		for (LSTWriteable ab : mtl.getKeySet())
 		{
 			List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
 			if (assocList.size() != 1)
 			{
 				context
-					.addWriteMessage("Only one Association to a CHOOSE can be made per object");
+						.addWriteMessage("Only one Association for "
+								+ getFullName() + " can be made per object, "
+								+ assocList.size() + " occurred in "
+								+ obj.getKeyName());
+				/*
+				 * TODO Consider allowing more than one, simply because it
+				 * should be okay to have more than one with the same PRE...
+				 * just an accident in listing it twice, not an integrity
+				 * problem, per se
+				 */
 				return null;
 			}
 			AssociatedPrereqObject assoc = assocList.get(0);
 			m.addToListFor(new HashSet<Prerequisite>(assoc
-				.getPrerequisiteList()), ab);
+					.getPrerequisiteList()), ab);
 		}
 
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			String ab =
-					ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
-						Constants.PIPE);
+			String ab = ReferenceUtilities.joinLstFormat(m.getListFor(prereqs),
+					Constants.PIPE);
 			if (prereqs != null && !prereqs.isEmpty())
 			{
 				if (prereqs.size() > 1)
 				{
 					context.addWriteMessage("Error: "
-						+ obj.getClass().getSimpleName()
-						+ " had more than one Prerequisite for "
-						+ getTokenName());
+							+ obj.getClass().getSimpleName()
+							+ " had more than one Prerequisite for "
+							+ getFullName());
 					return null;
 				}
 				Prerequisite p = prereqs.iterator().next();

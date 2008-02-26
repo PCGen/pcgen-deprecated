@@ -25,7 +25,8 @@ import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
-public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
+public class SabLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
 	private static final Class<CDOMSpecialAbility> SA_CLASS = CDOMSpecialAbility.class;
@@ -64,8 +65,8 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 			if (saName.indexOf("|") != -1)
 			{
 				Logging
-					.errorPrint("Cannot .CLEAR. an SAB with a | in the token: "
-						+ value);
+						.errorPrint("Cannot .CLEAR. an SAB with a | in the token: "
+								+ value);
 				return false;
 			}
 			obj.removeSAB(saName, level);
@@ -105,7 +106,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 					PreParserFactory factory = PreParserFactory.getInstance();
 					Prerequisite prereq = factory.parse(argument);
 					if (obj instanceof PCClass
-						&& "var".equals(prereq.getKind()))
+							&& "var".equals(prereq.getKind()))
 					{
 						prereq.setSubKey("CLASS:" + obj.getKeyName());
 					}
@@ -120,7 +121,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 			else if (token.startsWith(".CLEAR"))
 			{
 				Logging.errorPrint("Embedded .CLEAR in " + getTokenName()
-					+ " is not supported: " + value);
+						+ " is not supported: " + value);
 				return false;
 			}
 			else
@@ -128,9 +129,9 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 				if (isPre)
 				{
 					Logging.errorPrint("Invalid " + getTokenName() + ": "
-						+ value);
+							+ value);
 					Logging
-						.errorPrint("  PRExxx must be at the END of the Token");
+							.errorPrint("  PRExxx must be at the END of the Token");
 					return false;
 				}
 				if (!first)
@@ -153,7 +154,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 			catch (PersistenceLayerException notUsed)
 			{
 				Logging.errorPrint("Failed to assign level prerequisite.",
-					notUsed);
+						notUsed);
 			}
 		}
 		if (obj instanceof PCClass)
@@ -165,7 +166,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 		obj.addSAB(sa, level);
 		return true;
 	}
-	
+
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
 		return parseSpecialAbility(context, obj, value);
@@ -183,7 +184,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 	 *            int level at which the ability is gained
 	 */
 	public boolean parseSpecialAbility(LoadContext context, CDOMObject obj,
-		String aString)
+			String aString)
 	{
 		if (isEmpty(aString) || hasIllegalSeparator('|', aString))
 		{
@@ -196,7 +197,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 		if (firstToken.startsWith("PRE") || firstToken.startsWith("!PRE"))
 		{
 			Logging.errorPrint("Cannot have only PRExxx subtoken in "
-				+ getTokenName());
+					+ getTokenName());
 			return false;
 		}
 
@@ -213,7 +214,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
 			Logging.errorPrint("SA tag confused by redundant '.CLEAR'"
-				+ aString);
+					+ aString);
 			return false;
 		}
 
@@ -222,6 +223,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 		if (!tok.hasMoreTokens())
 		{
 			context.getGraphContext().grant(getTokenName(), obj, sa);
+			sa.setName(firstToken);
 			return true;
 		}
 
@@ -234,7 +236,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 			if (Constants.LST_DOT_CLEAR.equals(token))
 			{
 				Logging.errorPrint("SA tag confused by '.CLEAR' as a "
-					+ "middle token: " + aString);
+						+ "middle token: " + aString);
 				return false;
 			}
 			else if (token.startsWith("PRE") || token.startsWith("!PRE"))
@@ -266,7 +268,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 			if (prereq == null)
 			{
 				Logging.errorPrint("   (Did you put Abilities after the "
-					+ "PRExxx tags in " + getTokenName() + ":?)");
+						+ "PRExxx tags in " + getTokenName() + ":?)");
 				return false;
 			}
 			/*
@@ -292,36 +294,39 @@ public class SabLst extends AbstractToken implements GlobalLstToken, CDOMPrimary
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<CDOMSpecialAbility> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, SA_CLASS);
+		AssociatedChanges<CDOMSpecialAbility> changes = context
+				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+						SA_CLASS);
 		if (changes == null)
 		{
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		List<String> list = new ArrayList<String>(added.size() + 1);
+		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		else if (added.isEmpty())
+		else if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token (and no global clear, so nothing to do)
 			return null;
 		}
-		for (LSTWriteable lw : added)
+		if (added != null)
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.append(lw.getLSTformat());
-			CDOMSpecialAbility ab = (CDOMSpecialAbility) lw;
-			if (ab.hasPrerequisites())
+			for (LSTWriteable lw : added)
 			{
-				sb.append(Constants.PIPE);
-				sb.append(getPrerequisiteString(context, ab
-					.getPrerequisiteList()));
+				StringBuilder sb = new StringBuilder();
+				sb.append(lw.getLSTformat());
+				CDOMSpecialAbility ab = (CDOMSpecialAbility) lw;
+				if (ab.hasPrerequisites())
+				{
+					sb.append(Constants.PIPE);
+					sb.append(getPrerequisiteString(context, ab
+							.getPrerequisiteList()));
+				}
+				list.add(sb.toString());
 			}
-			list.add(sb.toString());
 		}
 		return list.toArray(new String[list.size()]);
 	}

@@ -28,6 +28,7 @@ import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -206,6 +207,10 @@ public final class ObjectKey<T>
 	public static final ObjectKey<Object> PARENT = new ObjectKey<Object>();
 
 	public static final ObjectKey<Boolean> ALLOWBASECLASS = new ObjectKey<Boolean>();
+
+	public static final ObjectKey<URI> SOURCE_WEB = new ObjectKey<URI>();
+
+	public static final ObjectKey<Date> SOURCE_DATE = new ObjectKey<Date>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 

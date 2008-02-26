@@ -291,7 +291,7 @@ public class ProhibitspellToken extends AbstractToken implements
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		if (added.isEmpty())
+		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token present
 			return null;

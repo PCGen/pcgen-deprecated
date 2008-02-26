@@ -18,6 +18,7 @@
 package plugin.lsttokens.remove;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -47,13 +48,25 @@ import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
-public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSecondaryToken<CDOMObject>
+public class FeatToken extends AbstractToken implements RemoveLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 	private static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
 
 	public String getParentToken()
 	{
 		return "REMOVE";
+	}
+
+	@Override
+	public String getTokenName()
+	{
+		return "FEAT";
+	}
+
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
 	}
 
 	public boolean parse(PObject target, String value, int level)
@@ -76,7 +89,7 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 			if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 			{
 				Logging.errorPrint("Syntax of REMOVE:" + getTokenName()
-					+ " only allows one | : " + value);
+						+ " only allows one | : " + value);
 				return false;
 			}
 			countString = value.substring(0, pipeLoc);
@@ -85,24 +98,18 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 		if (level > -9)
 		{
 			target.setRemoveString(level + "|" + getTokenName() + "(" + items
-				+ ")" + countString);
+					+ ")" + countString);
 		}
 		else
 		{
 			target.setRemoveString("0|" + getTokenName() + "(" + items + ")"
-				+ countString);
+					+ countString);
 		}
 		return true;
 	}
 
-	@Override
-	public String getTokenName()
-	{
-		return "FEAT";
-	}
-
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		int pipeLoc = value.indexOf(Constants.PIPE);
 		int count;
@@ -120,15 +127,15 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 				count = Integer.parseInt(countString);
 				if (count < 1)
 				{
-					Logging.errorPrint("Count in ADD:" + getTokenName()
-						+ " must be > 0");
+					Logging.errorPrint("Count in " + getFullName()
+							+ " must be > 0");
 					return false;
 				}
 			}
 			catch (NumberFormatException nfe)
 			{
-				Logging.errorPrint("Invalid Count in ADD:" + getTokenName()
-					+ ": " + countString);
+				Logging.errorPrint("Invalid Count in " + getFullName()
+						+ ": " + countString);
 				return false;
 			}
 			items = value.substring(pipeLoc + 1);
@@ -140,10 +147,8 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 		}
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 
-		List<CDOMReference<CDOMAbility>> refs =
-				new ArrayList<CDOMReference<CDOMAbility>>();
-		List<PrimitiveChoiceSet<CDOMAbility>> pcsList =
-				new ArrayList<PrimitiveChoiceSet<CDOMAbility>>();
+		List<CDOMReference<CDOMAbility>> refs = new ArrayList<CDOMReference<CDOMAbility>>();
+		List<PrimitiveChoiceSet<CDOMAbility>> pcsList = new ArrayList<PrimitiveChoiceSet<CDOMAbility>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
 
@@ -153,20 +158,20 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 			if (Constants.LST_ANY.equalsIgnoreCase(token))
 			{
 				foundAny = true;
-				CDOMReference<CDOMAbility> ref =
-						context.ref.getCDOMAllReference(ABILITY_CLASS,
-							CDOMAbilityCategory.FEAT);
+				CDOMReference<CDOMAbility> ref = context.ref
+						.getCDOMAllReference(ABILITY_CLASS,
+								CDOMAbilityCategory.FEAT);
 				refs.add(ref);
 			}
 			else if ("CHOICE".equalsIgnoreCase(token))
 			{
-				//TODO Need to process Grouping: CATEGORY, NATURE, etc.
+				// TODO Need to process Grouping: CATEGORY, NATURE, etc.
 				PrimitiveChoiceSet<CDOMAbility> chooser = context.getChoiceSet(
 						CDOMAbility.class, "PC");
 				if (chooser == null)
 				{
-					Logging.errorPrint("Internal Error: REMOVE:"
-						+ getTokenName() + " failed to build Chooser");
+					Logging.errorPrint("Internal Error: "
+							+ getFullName() + " failed to build Chooser");
 					return false;
 				}
 				pcsList.add(chooser);
@@ -182,9 +187,9 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 			else
 			{
 				foundOther = true;
-				CDOMReference<CDOMAbility> ref =
-						TokenUtilities.getTypeOrPrimitive(context,
-							ABILITY_CLASS, CDOMAbilityCategory.FEAT, token);
+				CDOMReference<CDOMAbility> ref = TokenUtilities
+						.getTypeOrPrimitive(context, ABILITY_CLASS,
+								CDOMAbilityCategory.FEAT, token);
 				if (ref == null)
 				{
 					return false;
@@ -195,8 +200,8 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 
 		if (foundAny && foundOther)
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+			Logging.errorPrint("Non-sensical " + getFullName()
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 
@@ -216,15 +221,15 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 
 		ChooseActionContainer container = new ChooseActionContainer("REMOVE");
 		container.addActor(new RemoveActor());
-		context.getGraphContext().grant(getTokenName(), obj, container);
+		context.getGraphContext().grant(getFullName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
+				.getFormulaFor(Integer.MAX_VALUE));
 		container.setAssociation(AssociationKey.ABILITY_CATEGORY,
-			CDOMAbilityCategory.FEAT);
+				CDOMAbilityCategory.FEAT);
 		container.setAssociation(AssociationKey.ABILITY_NATURE,
-			AbilityNature.NORMAL);
+				AbilityNature.NORMAL);
 		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>("REMOVE", pcs);
 		container.setChoiceSet(cs);
 		return true;
@@ -232,60 +237,60 @@ public class FeatToken extends AbstractToken implements RemoveLstToken, CDOMSeco
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChooseActionContainer.class);
+		AssociatedChanges<ChooseActionContainer> grantChanges = context
+				.getGraphContext().getChangesFromToken(getFullName(), obj,
+						ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
 			return null;
 		}
-		if (!grantChanges.hasAddedItems())
+		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> removeStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : grantChanges.getAdded())
+		for (LSTWriteable lstw : addedItems)
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!"REMOVE".equals(container.getName()))
 			{
 				context.addWriteMessage("Unexpected CHOOSE container found: "
-					+ container.getName());
+						+ container.getName());
 				continue;
 			}
 			ChoiceSet<?> cs = container.getChoiceSet();
 			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
 			{
-				AbilityNature nat =
-						container.getAssociation(AssociationKey.ABILITY_NATURE);
+				AbilityNature nat = container
+						.getAssociation(AssociationKey.ABILITY_NATURE);
 				if (nat == null)
 				{
 					context
-						.addWriteMessage("Unable to find Nature for GrantFactory");
+							.addWriteMessage("Unable to find Nature for GrantFactory");
 					return null;
 				}
-				CDOMAbilityCategory cat =
-						container
-							.getAssociation(AssociationKey.ABILITY_CATEGORY);
+				CDOMAbilityCategory cat = container
+						.getAssociation(AssociationKey.ABILITY_CATEGORY);
 				if (cat == null)
 				{
 					context
-						.addWriteMessage("Unable to find Category for GrantFactory");
+							.addWriteMessage("Unable to find Category for GrantFactory");
 					return null;
 				}
 				if (!CDOMAbilityCategory.FEAT.equals(cat)
-					|| !AbilityNature.NORMAL.equals(nat))
+						|| !AbilityNature.NORMAL.equals(nat))
 				{
 					// can't handle those here!
 					continue;
 				}
-				Formula f =
-						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f = container
+						.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
-					context.addWriteMessage("Unable to find " + getTokenName()
-						+ " Count");
+					context.addWriteMessage("Unable to find " + getFullName()
+							+ " Count");
 					return null;
 				}
 				String fString = f.toString();

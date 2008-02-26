@@ -18,6 +18,7 @@
 package plugin.lsttokens.add;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -50,6 +51,11 @@ public class SABToken extends AbstractToken implements AddLstToken,
 	public String getParentToken()
 	{
 		return "ADD";
+	}
+
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
 	}
 
 	public boolean parse(PObject target, String value, int level)
@@ -121,15 +127,15 @@ public class SABToken extends AbstractToken implements AddLstToken,
 				count = Integer.parseInt(countString);
 				if (count < 1)
 				{
-					Logging.errorPrint("Count in ADD:" + getTokenName()
+					Logging.errorPrint("Count in " + getFullName()
 							+ " must be > 0");
 					return false;
 				}
 			}
 			catch (NumberFormatException nfe)
 			{
-				Logging.errorPrint("Invalid Count in ADD:" + getTokenName()
-						+ ": " + countString);
+				Logging.errorPrint("Invalid Count in " + getFullName() + ": "
+						+ countString);
 				return false;
 			}
 			items = rest.substring(pipeLoc + 1);
@@ -151,7 +157,7 @@ public class SABToken extends AbstractToken implements AddLstToken,
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new GrantActor<CDOMSpecialAbility>());
-		context.getGraphContext().grant(getTokenName(), obj, container);
+		context.getGraphContext().grant(getFullName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -167,19 +173,20 @@ public class SABToken extends AbstractToken implements AddLstToken,
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		AssociatedChanges<ChooseActionContainer> grantChanges = context
-				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+				.getGraphContext().getChangesFromToken(getFullName(), obj,
 						ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
 			return null;
 		}
-		if (!grantChanges.hasAddedItems())
+		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : grantChanges.getAdded())
+		for (LSTWriteable lstw : addedItems)
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!"ADD".equals(container.getName()))
@@ -195,7 +202,7 @@ public class SABToken extends AbstractToken implements AddLstToken,
 						.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
-					context.addWriteMessage("Unable to find " + getTokenName()
+					context.addWriteMessage("Unable to find " + getFullName()
 							+ " Count");
 					return null;
 				}

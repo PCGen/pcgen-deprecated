@@ -23,6 +23,7 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -52,13 +53,13 @@ import pcgen.util.MapToList;
  * @author djones4
  * 
  */
-public class CcskillLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
+public class CcskillLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
 	private static final Class<CDOMSkill> SKILL_CLASS = CDOMSkill.class;
 
-	private static final Class<ClassSkillList> CLASSSKILLLIST_CLASS =
-			ClassSkillList.class;
+	private static final Class<ClassSkillList> CLASSSKILLLIST_CLASS = ClassSkillList.class;
 
 	@Override
 	public String getTokenName()
@@ -101,7 +102,7 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken, CDOMPri
 				if (!first)
 				{
 					Logging.errorPrint("  Non-sensical " + getTokenName()
-						+ ": .CLEAR was not the first list item");
+							+ ": .CLEAR was not the first list item");
 					return false;
 				}
 				context.getGraphContext().removeAll(getTokenName(), obj);
@@ -116,14 +117,13 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken, CDOMPri
 				}
 				else
 				{
-					ref =
-							TokenUtilities.getTypeOrPrimitive(context,
-								SKILL_CLASS, clearText);
+					ref = TokenUtilities.getTypeOrPrimitive(context,
+							SKILL_CLASS, clearText);
 				}
 				if (ref == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
-						+ getTokenName());
+							+ getTokenName());
 					return false;
 				}
 				context.getGraphContext().remove(getTokenName(), obj, ref);
@@ -145,33 +145,28 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken, CDOMPri
 				else
 				{
 					foundOther = true;
-					ref =
-							TokenUtilities.getTypeOrPrimitive(context,
-								SKILL_CLASS, tokText);
+					ref = TokenUtilities.getTypeOrPrimitive(context,
+							SKILL_CLASS, tokText);
 				}
 				if (ref == null)
 				{
 					Logging.errorPrint("  Error was encountered while parsing "
-						+ getTokenName());
+							+ getTokenName());
 					return false;
 				}
-				AssociatedPrereqObject edge =
-						context.getListContext()
-							.addToMasterList(
-								getTokenName(),
-								obj,
-								context.ref
-									.getCDOMAllReference(CLASSSKILLLIST_CLASS),
-								ref);
+				CDOMGroupRef<ClassSkillList> aref = context.ref
+						.getCDOMAllReference(CLASSSKILLLIST_CLASS);
+				AssociatedPrereqObject edge = context.getListContext()
+						.addToMasterList(getTokenName(), obj, aref, ref);
 				edge.setAssociation(AssociationKey.SKILL_COST,
-					SkillCost.CROSS_CLASS);
+						SkillCost.CROSS_CLASS);
 			}
 			first = false;
 		}
 		if (foundAny && foundOther)
 		{
 			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 		return true;
@@ -179,55 +174,55 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken, CDOMPri
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		CDOMGroupRef<ClassSkillList> listRef =
-				context.ref.getCDOMAllReference(CLASSSKILLLIST_CLASS);
-		AssociatedChanges<LSTWriteable> changes =
-				context.getListContext().getChangesInMasterList(getTokenName(),
-					obj, listRef);
+		CDOMGroupRef<ClassSkillList> listRef = context.ref
+				.getCDOMAllReference(CLASSSKILLLIST_CLASS);
+		AssociatedChanges<LSTWriteable> changes = context.getListContext()
+				.getChangesInMasterList(getTokenName(), obj, listRef);
 		if (changes == null)
 		{
 			// Legal if no CSKILL was present
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		if (changes.hasRemovedItems())
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty())
 		{
 			if (changes.includesGlobalClear())
 			{
 				context.addWriteMessage("Non-sensical relationship in "
-					+ getTokenName()
-					+ ": global .CLEAR and local .CLEAR. performed");
+						+ getTokenName()
+						+ ": global .CLEAR and local .CLEAR. performed");
 				return null;
 			}
 			list.add(Constants.LST_DOT_CLEAR_DOT
-				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
-					",|.CLEAR."));
+					+ ReferenceUtilities.joinLstFormat(removedItems,
+							",|.CLEAR."));
 		}
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		if (changes.hasAddedItems())
+		MapToList<LSTWriteable, AssociatedPrereqObject> map = changes
+				.getAddedAssociations();
+		if (map != null && !map.isEmpty())
 		{
-			MapToList<LSTWriteable, AssociatedPrereqObject> map =
-					changes.getAddedAssociations();
 			Set<LSTWriteable> addedList = map.getKeySet();
 			for (LSTWriteable added : addedList)
 			{
 				for (AssociatedPrereqObject assoc : map.getListFor(added))
 				{
 					if (!SkillCost.CROSS_CLASS.equals(assoc
-						.getAssociation(AssociationKey.SKILL_COST)))
+							.getAssociation(AssociationKey.SKILL_COST)))
 					{
 						context
-							.addWriteMessage("Skill Cost must be CROSS_CLASS for Token "
-								+ getTokenName());
+								.addWriteMessage("Skill Cost must be CROSS_CLASS for Token "
+										+ getTokenName());
 						return null;
 					}
 				}
 			}
 			list.add(ReferenceUtilities
-				.joinLstFormat(addedList, Constants.PIPE));
+					.joinLstFormat(addedList, Constants.PIPE));
 		}
 		if (list.isEmpty())
 		{

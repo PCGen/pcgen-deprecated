@@ -68,6 +68,11 @@ public class FeatToken extends AbstractToken implements AutoLstToken,
 		return "FEAT";
 	}
 
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
+	}
+
 	public boolean parse(PObject target, String value, int level)
 	{
 		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
@@ -183,21 +188,21 @@ public class FeatToken extends AbstractToken implements AutoLstToken,
 									+ " must appear alone or first: " + value);
 					return false;
 				}
-				context.getGraphContext().removeAll(getTokenName(), obj);
+				context.getGraphContext().removeAll(getFullName(), obj);
 			}
 			else if (feat.startsWith(".CLEAR."))
 			{
 				String name = feat.substring(7);
 				CDOMSingleRef<CDOMAbility> ability = context.ref
 						.getCDOMReference(ABILITY_CLASS, ac, name);
-				context.getGraphContext().remove(getTokenName(), obj, ability);
+				context.getGraphContext().remove(getFullName(), obj, ability);
 			}
 			else
 			{
 				CDOMSingleRef<CDOMAbility> ability = context.ref
 						.getCDOMReference(ABILITY_CLASS, ac, feat);
 				AssociatedPrereqObject edge = context.getGraphContext().grant(
-						getTokenName(), obj, ability);
+						getFullName(), obj, ability);
 				edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
 			}
 			first = false;
@@ -208,7 +213,7 @@ public class FeatToken extends AbstractToken implements AutoLstToken,
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
 		AssociatedChanges<CDOMAbility> changes = context.getGraphContext()
-				.getChangesFromToken(getTokenName(), obj, ABILITY_CLASS);
+				.getChangesFromToken(getFullName(), obj, ABILITY_CLASS);
 		if (changes == null)
 		{
 			return null;
@@ -230,7 +235,7 @@ public class FeatToken extends AbstractToken implements AutoLstToken,
 				if (!AbilityNature.AUTOMATIC.equals(an))
 				{
 					context.addWriteMessage("Abilities awarded by "
-							+ getTokenName()
+							+ getFullName()
 							+ " must be of AUTOMATIC AbilityNature");
 					return null;
 				}
@@ -239,7 +244,7 @@ public class FeatToken extends AbstractToken implements AutoLstToken,
 								.getCDOMCategory()))
 				{
 					context.addWriteMessage("Abilities awarded by "
-							+ getTokenName() + " must be of CATEGORY FEAT");
+							+ getFullName() + " must be of CATEGORY FEAT");
 					return null;
 				}
 				m.addToListFor(new HashSet<Prerequisite>(assoc

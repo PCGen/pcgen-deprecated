@@ -73,7 +73,7 @@ public class SrLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		else
 		{
 			context.getGraphContext().grant(getTokenName(), obj,
-				getSpellResistance(value));
+					getSpellResistance(value));
 		}
 		return true;
 	}
@@ -85,30 +85,33 @@ public class SrLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<SpellResistance> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, SpellResistance.class);
+		AssociatedChanges<SpellResistance> changes = context
+				.getGraphContext()
+				.getChangesFromToken(getTokenName(), obj, SpellResistance.class);
 		if (changes == null)
 		{
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		List<String> list = new ArrayList<String>(added.size() + 1);
+		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		else if (added.isEmpty())
+		else if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token (and no global clear, so nothing to do)
 			return null;
 		}
-		Set<String> set = new TreeSet<String>();
-		for (LSTWriteable lw : added)
+		if (added != null)
 		{
-			set.add(lw.getLSTformat());
+			Set<String> set = new TreeSet<String>();
+			for (LSTWriteable lw : added)
+			{
+				set.add(lw.getLSTformat());
+			}
+			list.addAll(set);
 		}
-		list.addAll(set);
 		return list.toArray(new String[list.size()]);
 	}
 

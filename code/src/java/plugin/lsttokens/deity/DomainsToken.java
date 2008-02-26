@@ -22,6 +22,7 @@
 package plugin.lsttokens.deity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -227,9 +228,10 @@ public class DomainsToken extends AbstractToken implements DeityLstToken,
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (changes.includesGlobalClear())
 		{
-			if (changes.hasRemovedItems())
+			if (removedItems != null && !removedItems.isEmpty())
 			{
 				context.addWriteMessage("Non-sensical relationship in "
 						+ getTokenName()
@@ -238,10 +240,10 @@ public class DomainsToken extends AbstractToken implements DeityLstToken,
 			}
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		else if (changes.hasRemovedItems())
+		else if (removedItems != null && !removedItems.isEmpty())
 		{
 			list.add(Constants.LST_DOT_CLEAR_DOT
-					+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+					+ ReferenceUtilities.joinLstFormat(removedItems,
 							",.CLEAR."));
 		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes

@@ -23,6 +23,7 @@ package plugin.lsttokens.pcclass.level;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -197,7 +198,8 @@ public class DomainToken extends AbstractToken implements
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		if (changes.hasRemovedItems())
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty())
 		{
 			context.addWriteMessage(getTokenName()
 					+ " does not support .CLEAR.");

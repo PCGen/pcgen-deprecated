@@ -55,11 +55,13 @@ import java.util.Set;
 public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 {
 
+	private final Class<? extends Map> firstClass;
+	private final Class<? extends Map> secondClass;
+
 	/**
 	 * The actual map containing the map to map to Lists
 	 */
-	private Map<K1, HashMapToList<K2, V>> mtmtl =
-			new HashMap<K1, HashMapToList<K2, V>>();
+	private Map<K1, HashMapToList<K2, V>> mtmtl = new HashMap<K1, HashMapToList<K2, V>>();
 
 	/**
 	 * Constructs a new DoubleKeyMapToList
@@ -67,6 +69,17 @@ public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 	public DoubleKeyMapToList()
 	{
 		super();
+		firstClass = secondClass = HashMap.class;
+	}
+
+	/**
+	 * Constructs a new DoubleKeyMapToList
+	 */
+	public DoubleKeyMapToList(Class<? extends Map> cl1, Class<? extends Map> cl2)
+	{
+		super();
+		firstClass = cl1;
+		secondClass = cl2;
 	}
 
 	/**
@@ -93,7 +106,7 @@ public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 		HashMapToList<K2, V> localMap = mtmtl.get(key1);
 		if (localMap == null)
 		{
-			localMap = new HashMapToList<K2, V>();
+			localMap = new HashMapToList<K2, V>(secondClass);
 			mtmtl.put(key1, localMap);
 		}
 		localMap.addToListFor(key2, value);
@@ -333,14 +346,14 @@ public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 	@Override
 	public Object clone() throws CloneNotSupportedException
 	{
-		DoubleKeyMapToList<K1, K2, V> dkm =
-				(DoubleKeyMapToList<K1, K2, V>) super.clone();
-		dkm.mtmtl = new HashMap<K1, HashMapToList<K2, V>>();
+		DoubleKeyMapToList<K1, K2, V> dkm = (DoubleKeyMapToList<K1, K2, V>) super
+				.clone();
+		dkm.mtmtl = createGlobalMap();
 		for (Iterator<K1> it = mtmtl.keySet().iterator(); it.hasNext();)
 		{
 			K1 key = it.next();
 			HashMapToList<K2, V> m = mtmtl.get(key);
-			HashMapToList<K2, V> hmtl = new HashMapToList<K2, V>();
+			HashMapToList<K2, V> hmtl = new HashMapToList<K2, V>(secondClass);
 			hmtl.addAllLists(m);
 			dkm.mtmtl.put(key, hmtl);
 		}
@@ -367,7 +380,7 @@ public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 	public boolean containsInList(K1 key1, K2 key2, V value)
 	{
 		return containsListFor(key1, key2)
-			&& mtmtl.get(key1).containsInList(key2, value);
+				&& mtmtl.get(key1).containsInList(key2, value);
 	}
 
 	/**
@@ -390,7 +403,6 @@ public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 		return localMap == null ? 0 : localMap.sizeOfListFor(key2);
 	}
 
-
 	@Override
 	public int hashCode()
 	{
@@ -401,6 +413,26 @@ public class DoubleKeyMapToList<K1, K2, V> implements Cloneable
 	public boolean equals(Object o)
 	{
 		return o instanceof DoubleKeyMapToList
-			&& mtmtl.equals(((DoubleKeyMapToList<?, ?, ?>) o).mtmtl);
+				&& mtmtl.equals(((DoubleKeyMapToList<?, ?, ?>) o).mtmtl);
+	}
+
+	private Map<K1, HashMapToList<K2, V>> createGlobalMap()
+	{
+		try
+		{
+			return firstClass.newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for DoubleKeyMap must possess a zero-argument constructor",
+					e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for DoubleKeyMap must possess a public zero-argument constructor",
+					e);
+		}
 	}
 }

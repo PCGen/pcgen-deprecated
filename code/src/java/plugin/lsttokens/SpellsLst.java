@@ -33,7 +33,7 @@ import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.DoubleKeyMap;
-import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.TripleKeyMap;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -439,14 +439,15 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 			// Zero indicates no Token
 			return null;
 		}
-		DoubleKeyMapToList<Set<Prerequisite>, Map<AssociationKey<String>, String>, Thingy> m = new DoubleKeyMapToList<Set<Prerequisite>, Map<AssociationKey<String>, String>, Thingy>();
+
+		TripleKeyMap<Set<Prerequisite>, Map<AssociationKey<?>, String>, LSTWriteable, String> m = new TripleKeyMap<Set<Prerequisite>, Map<AssociationKey<?>, String>, LSTWriteable, String>();
 		for (LSTWriteable lw : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(lw))
 			{
-				Map<AssociationKey<String>, String> am = new HashMap<AssociationKey<String>, String>();
+				Map<AssociationKey<?>, String> am = new HashMap<AssociationKey<?>, String>();
 				String dc = null;
-				for (AssociationKey ak : assoc.getAssociationKeys())
+				for (AssociationKey<?> ak : assoc.getAssociationKeys())
 				{
 					if (AssociationKey.SOURCE_URI.equals(ak)
 							|| AssociationKey.FILE_LOCATION.equals(ak))
@@ -462,15 +463,15 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 						am.put(ak, (String) assoc.getAssociation(ak));
 					}
 				}
-				m.addToListFor(new HashSet<Prerequisite>(assoc
-						.getPrerequisiteList()), am, new Thingy(lw, dc));
+				m.put(new HashSet<Prerequisite>(assoc.getPrerequisiteList()),
+						am, lw, dc);
 			}
 		}
 
 		Set<String> set = new TreeSet<String>();
 		for (Set<Prerequisite> prereqs : m.getKeySet())
 		{
-			for (Map<AssociationKey<String>, String> am : m
+			for (Map<AssociationKey<?>, String> am : m
 					.getSecondaryKeySet(prereqs))
 			{
 				StringBuilder sb = new StringBuilder();
@@ -492,14 +493,14 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 					sb.append(Constants.PIPE).append("CASTERLEVEL=").append(
 							casterLvl);
 				}
-				List<Thingy> thingyList = m.getListFor(prereqs, am);
 				Set<String> spellSet = new TreeSet<String>();
-				for (Thingy t : thingyList)
+				for (LSTWriteable spell : m.getTertiaryKeySet(prereqs, am))
 				{
-					String spellString = t.spell.getLSTformat();
-					if (t.dc != null)
+					String spellString = spell.getLSTformat();
+					String dc = m.get(prereqs, am, spell);
+					if (dc != null)
 					{
-						spellString += Constants.COMMA + t.dc;
+						spellString += Constants.COMMA + dc;
 					}
 					spellSet.add(spellString);
 				}
@@ -514,18 +515,6 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 			}
 		}
 		return set.toArray(new String[set.size()]);
-	}
-
-	private static class Thingy
-	{
-		public final LSTWriteable spell;
-		public final String dc;
-
-		public Thingy(LSTWriteable sp, String d)
-		{
-			spell = sp;
-			dc = d;
-		}
 	}
 
 	public Class<CDOMObject> getTokenClass()

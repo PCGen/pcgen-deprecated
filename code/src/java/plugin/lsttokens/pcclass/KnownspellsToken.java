@@ -280,13 +280,18 @@ CDOMPrimaryToken<CDOMPCClass>
 		{
 			list.add(Constants.LST_DOT_CLEARALL);
 		}
-		if (changes.hasRemovedItems())
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty())
 		{
 			context.addWriteMessage(getTokenName()
 				+ " does not support .CLEAR.");
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty())
+		{
+			return null;
+		}
 		Map<CDOMReference<?>, Integer> map =
 				new TreeMap<CDOMReference<?>, Integer>(
 					TokenUtilities.REFERENCE_SORTER);
@@ -318,10 +323,6 @@ CDOMPrimaryToken<CDOMPCClass>
 				sb.append("LEVEL=").append(i);
 			}
 			list.add(sb.toString());
-		}
-		if (list.isEmpty())
-		{
-			return null;
 		}
 		return new String[]{StringUtil.join(list, Constants.PIPE)};
 	}

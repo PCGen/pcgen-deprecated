@@ -22,6 +22,7 @@
 package plugin.lsttokens.skill;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -51,11 +52,11 @@ import pcgen.util.MapToList;
 /**
  * Class deals with CLASSES Token
  */
-public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPrimaryToken<CDOMSkill>
+public class ClassesToken extends AbstractToken implements SkillLstToken,
+		CDOMPrimaryToken<CDOMSkill>
 {
 
-	private static final Class<ClassSkillList> SKILLLIST_CLASS =
-			ClassSkillList.class;
+	private static final Class<ClassSkillList> SKILLLIST_CLASS = ClassSkillList.class;
 
 	@Override
 	public String getTokenName()
@@ -74,7 +75,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPr
 		if (Constants.LST_ALL.equals(value))
 		{
 			addSkillAllowed(context, skill, context.ref
-				.getCDOMAllReference(SKILLLIST_CLASS));
+					.getCDOMAllReference(SKILLLIST_CLASS));
 			return true;
 		}
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
@@ -93,10 +94,10 @@ public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPr
 			{
 				String clString = className.substring(1);
 				if (Constants.LST_ALL.equals(clString)
-					|| Constants.LST_ANY.equals(clString))
+						|| Constants.LST_ANY.equals(clString))
 				{
 					Logging.errorPrint("Invalid " + getTokenName()
-						+ " cannot use !ALL");
+							+ " cannot use !ALL");
 					return false;
 				}
 				prevented.add(getPrerequisite("!PRECLASS:1," + clString));
@@ -104,7 +105,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPr
 			else
 			{
 				addSkillAllowed(context, skill, context.ref.getCDOMReference(
-					SKILLLIST_CLASS, className));
+						SKILLLIST_CLASS, className));
 				added = true;
 			}
 		}
@@ -113,15 +114,15 @@ public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPr
 			if (added)
 			{
 				Logging.errorPrint("Non-sensical " + getTokenName() + ": "
-					+ value);
+						+ value);
 				Logging.errorPrint("  Token contains both negated "
-					+ "and non-negated class references");
+						+ "and non-negated class references");
 				return false;
 			}
-			CDOMReference<ClassSkillList> ref =
-					context.ref.getCDOMAllReference(SKILLLIST_CLASS);
-			AssociatedPrereqObject allEdge =
-					addSkillAllowed(context, skill, ref);
+			CDOMReference<ClassSkillList> ref = context.ref
+					.getCDOMAllReference(SKILLLIST_CLASS);
+			AssociatedPrereqObject allEdge = addSkillAllowed(context, skill,
+					ref);
 			for (Prerequisite prereq : prevented)
 			{
 				allEdge.addPrerequisite(prereq);
@@ -133,83 +134,83 @@ public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPr
 	private AssociatedPrereqObject addSkillAllowed(LoadContext context,
 			CDOMSkill skill, CDOMReference<ClassSkillList> ref)
 	{
-		AssociatedPrereqObject edge =
-				context.getListContext().addToMasterList(getTokenName(), skill,
-					ref, skill);
+		AssociatedPrereqObject edge = context.getListContext().addToMasterList(
+				getTokenName(), skill, ref, skill);
 		edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 		return edge;
 	}
 
 	public String[] unparse(LoadContext context, CDOMSkill skill)
 	{
-		CDOMGroupRef<ClassSkillList> allRef =
-				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
-		SortedSet<CDOMReference<ClassSkillList>> set =
-				new TreeSet<CDOMReference<ClassSkillList>>(
-					TokenUtilities.REFERENCE_SORTER);
+		CDOMGroupRef<ClassSkillList> allRef = context.ref
+				.getCDOMAllReference(SKILLLIST_CLASS);
+		SortedSet<CDOMReference<ClassSkillList>> set = new TreeSet<CDOMReference<ClassSkillList>>(
+				TokenUtilities.REFERENCE_SORTER);
 		boolean usesAll = false;
 		boolean usesIndividual = false;
 		boolean negated = false;
-		Changes<CDOMReference> masterChanges =
-				context.getListContext().getMasterListChanges(getTokenName(),
-					skill, SKILLLIST_CLASS);
+		Changes<CDOMReference> masterChanges = context.getListContext()
+				.getMasterListChanges(getTokenName(), skill, SKILLLIST_CLASS);
 		if (masterChanges.includesGlobalClear())
 		{
 			context
-				.addWriteMessage(getTokenName() + " does not support .CLEAR");
+					.addWriteMessage(getTokenName()
+							+ " does not support .CLEAR");
 		}
 		if (masterChanges.hasRemovedItems())
 		{
 			context.addWriteMessage(getTokenName()
-				+ " does not support .CLEAR.");
+					+ " does not support .CLEAR.");
 			return null;
 		}
 		for (CDOMReference<ClassSkillList> swl : masterChanges.getAdded())
 		{
-			AssociatedChanges<LSTWriteable> changes =
-					context.getListContext().getChangesInMasterList(
-						getTokenName(), skill, swl);
+			AssociatedChanges<LSTWriteable> changes = context.getListContext()
+					.getChangesInMasterList(getTokenName(), skill, swl);
 			if (changes == null)
 			{
 				// Legal if no CLASSES was present in the Spell
 				continue;
 			}
-			if (changes.hasRemovedItems() || changes.includesGlobalClear())
+			Collection<LSTWriteable> removedItems = changes.getRemoved();
+			if (removedItems != null && !removedItems.isEmpty()
+					|| changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
-					+ " does not support .CLEAR.");
+						+ " does not support .CLEAR.");
 				return null;
 			}
-			if (changes.hasAddedItems())
+			MapToList<LSTWriteable, AssociatedPrereqObject> map = changes
+					.getAddedAssociations();
+			if (map != null && !map.isEmpty())
 			{
-				MapToList<LSTWriteable, AssociatedPrereqObject> map =
-						changes.getAddedAssociations();
 				for (LSTWriteable added : map.getKeySet())
 				{
 					if (!skill.getLSTformat().equals(added.getLSTformat()))
 					{
 						context.addWriteMessage("Skill " + getTokenName()
-							+ " token cannot allow another Skill "
-							+ "(must only allow itself)");
+								+ " token cannot allow another Skill "
+								+ "(must only allow itself)");
 						return null;
 					}
 					for (AssociatedPrereqObject assoc : map.getListFor(added))
 					{
-						SkillCost sc =
-								assoc.getAssociation(AssociationKey.SKILL_COST);
+						SkillCost sc = assoc
+								.getAssociation(AssociationKey.SKILL_COST);
 						if (sc == null)
 						{
 							context.addWriteMessage("Allowed Skill in "
-								+ skill.getKey() + " had no SkillCost");
+									+ skill.getKey() + " had no SkillCost");
 							return null;
 						}
 						if (!sc.equals(SkillCost.CLASS))
 						{
 							context.addWriteMessage("Allowed Skill "
-								+ skill.getKey() + " built by "
-								+ getTokenName() + "had invalid SkillCost: "
-								+ sc + ". Must be CLASS skills if defined by "
-								+ getTokenName());
+									+ skill.getKey() + " built by "
+									+ getTokenName()
+									+ "had invalid SkillCost: " + sc
+									+ ". Must be CLASS skills if defined by "
+									+ getTokenName());
 							return null;
 						}
 						if (swl.equals(allRef))
@@ -218,14 +219,14 @@ public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPr
 							if (assoc.hasPrerequisites())
 							{
 								negated = true;
-								List<Prerequisite> prereqs =
-										assoc.getPrerequisiteList();
+								List<Prerequisite> prereqs = assoc
+										.getPrerequisiteList();
 								for (Prerequisite p : prereqs)
 								{
 									// Mimic getting a Reference back from the
 									// Prereq
 									set.add(context.ref.getCDOMReference(
-										SKILLLIST_CLASS, p.getKey()));
+											SKILLLIST_CLASS, p.getKey()));
 								}
 							}
 							else
@@ -250,10 +251,10 @@ public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPr
 		if (usesAll && usesIndividual)
 		{
 			context.addWriteMessage("All SkillList Reference was "
-				+ "attached to " + skill.getKey() + " by Token "
-				+ getTokenName() + " but there are also "
-				+ "other references granting " + skill.getKey()
-				+ " as a Class Skill.  " + "This is non-sensical");
+					+ "attached to " + skill.getKey() + " by Token "
+					+ getTokenName() + " but there are also "
+					+ "other references granting " + skill.getKey()
+					+ " as a Class Skill.  " + "This is non-sensical");
 			return null;
 		}
 
@@ -272,7 +273,7 @@ public class ClassesToken extends AbstractToken implements SkillLstToken, CDOMPr
 			sb.append(ref.getLSTformat());
 			needBar = true;
 		}
-		return new String[]{sb.toString()};
+		return new String[] { sb.toString() };
 	}
 
 	public Class<CDOMSkill> getTokenClass()

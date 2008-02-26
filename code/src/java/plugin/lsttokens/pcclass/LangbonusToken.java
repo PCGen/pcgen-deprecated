@@ -22,11 +22,13 @@
 package plugin.lsttokens.pcclass;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.inst.CDOMPCClass;
@@ -174,7 +176,8 @@ CDOMPrimaryToken<CDOMPCClass>
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		if (changes.hasRemovedItems())
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty())
 		{
 			if (changes.includesGlobalClear())
 			{
@@ -184,16 +187,17 @@ CDOMPrimaryToken<CDOMPCClass>
 				return null;
 			}
 			list.add(Constants.LST_DOT_CLEAR_DOT
-				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+				+ ReferenceUtilities.joinLstFormat(removedItems,
 					",.CLEAR."));
 		}
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		if (changes.hasAddedItems())
+		Collection<LSTWriteable> addedItems = changes.getAdded();
+		if (addedItems != null && !addedItems.isEmpty())
 		{
-			list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
+			list.add(ReferenceUtilities.joinLstFormat(addedItems,
 				Constants.COMMA));
 		}
 		if (list.isEmpty())

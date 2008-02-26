@@ -141,7 +141,7 @@ CDOMPrimaryToken<CDOMPCClass>
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		if (added.isEmpty())
+		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no add
 			return null;

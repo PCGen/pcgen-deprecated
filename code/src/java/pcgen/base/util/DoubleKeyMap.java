@@ -53,6 +53,9 @@ import java.util.Map.Entry;
 public class DoubleKeyMap<K1, K2, V> implements Cloneable
 {
 
+	private final Class<? extends Map> firstClass;
+	private final Class<? extends Map> secondClass;
+
 	/**
 	 * The internal Map to Map structure used to store the objects in this
 	 * DoubleKeyMap
@@ -65,7 +68,20 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	public DoubleKeyMap()
 	{
 		super();
+		firstClass = secondClass = HashMap.class;
 		map = new HashMap<K1, Map<K2, V>>();
+	}
+
+	/**
+	 * Creates a new, empty DoubleKeyMap
+	 */
+	public DoubleKeyMap(Class<? extends Map> cl1, Class<? extends Map> cl2)
+	{
+		super();
+		firstClass = cl1;
+		secondClass = cl2;
+		map = createGlobalMap();
+		createLocalMap();
 	}
 
 	/**
@@ -109,7 +125,7 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 		Map<K2, V> localMap = map.get(key1);
 		if (localMap == null)
 		{
-			localMap = new HashMap<K2, V>();
+			localMap = createLocalMap();
 			map.put(key1, localMap);
 		}
 		return localMap.put(key2, value);
@@ -132,7 +148,7 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 			Map<K2, V> localMap = map.get(me.getKey());
 			if (localMap == null)
 			{
-				localMap = new HashMap<K2, V>();
+				localMap = createLocalMap();
 				map.put(me.getKey(), localMap);
 			}
 			localMap.putAll(me.getValue());
@@ -346,7 +362,7 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	public DoubleKeyMap<K1, K2, V> clone() throws CloneNotSupportedException
 	{
 		DoubleKeyMap<K1, K2, V> dkm = (DoubleKeyMap<K1, K2, V>) super.clone();
-		dkm.map = new HashMap<K1, Map<K2, V>>();
+		dkm.map = createGlobalMap();
 		for (Map.Entry<K1, Map<K2, V>> me : map.entrySet())
 		{
 			dkm.map.put(me.getKey(), new HashMap<K2, V>(me.getValue()));
@@ -384,6 +400,47 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	public boolean equals(Object o)
 	{
 		return o instanceof DoubleKeyMap
-			&& map.equals(((DoubleKeyMap<?, ?, ?>) o).map);
+				&& map.equals(((DoubleKeyMap<?, ?, ?>) o).map);
 	}
+
+	private Map<K2, V> createLocalMap()
+	{
+		try
+		{
+			return secondClass.newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for DoubleKeyMap must possess a zero-argument constructor",
+					e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for DoubleKeyMap must possess a public zero-argument constructor",
+					e);
+		}
+	}
+
+	private Map<K1, Map<K2, V>> createGlobalMap()
+	{
+		try
+		{
+			return firstClass.newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for DoubleKeyMap must possess a zero-argument constructor",
+					e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for DoubleKeyMap must possess a public zero-argument constructor",
+					e);
+		}
+	}
+
 }

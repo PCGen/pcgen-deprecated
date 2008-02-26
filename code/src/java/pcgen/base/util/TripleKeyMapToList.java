@@ -18,7 +18,9 @@
 package pcgen.base.util;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -51,14 +53,17 @@ import java.util.Set;
 public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 {
 
+	private final Class<? extends Map> firstClass;
+	private final Class<? extends Map> secondClass;
+	private final Class<? extends Map> thirdClass;
+
 	/**
 	 * The underlying map for the TripleKeyMapToList. This class protects its
 	 * internal structure, so no method should ever return an object capable of
 	 * modifying the maps. All modifications should be done through direct calls
 	 * to the methods of TripleKeyMapToList.
 	 */
-	private final DoubleKeyMap<K1, K2, HashMapToList<K3, V>> map =
-			new DoubleKeyMap<K1, K2, HashMapToList<K3, V>>();
+	private final DoubleKeyMap<K1, K2, HashMapToList<K3, V>> map;
 
 	/**
 	 * Constructs a new (empty) TripleKeyMapToList
@@ -66,6 +71,23 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	public TripleKeyMapToList()
 	{
 		super();
+		firstClass = secondClass = thirdClass = HashMap.class;
+		map = new DoubleKeyMap<K1, K2, HashMapToList<K3, V>>(firstClass,
+				secondClass);
+	}
+
+	/**
+	 * Constructs a new (empty) TripleKeyMapToList
+	 */
+	public TripleKeyMapToList(Class<? extends Map> cl1,
+			Class<? extends Map> cl2, Class<? extends Map> cl3)
+	{
+		super();
+		firstClass = cl1;
+		secondClass = cl2;
+		thirdClass = cl3;
+		map = new DoubleKeyMap<K1, K2, HashMapToList<K3, V>>(firstClass,
+				secondClass);
 	}
 
 	/**
@@ -95,7 +117,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 		HashMapToList<K3, V> localMap = map.get(key1, key2);
 		if (localMap == null)
 		{
-			localMap = new HashMapToList<K3, V>();
+			localMap = new HashMapToList<K3, V>(thirdClass);
 			map.put(key1, key2, localMap);
 		}
 		localMap.addToListFor(key3, value);

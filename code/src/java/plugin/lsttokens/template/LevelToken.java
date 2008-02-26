@@ -197,9 +197,12 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDO
 			return null;
 		}
 
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty()){
+			return null;
+		}
 		Set<String> set = new TreeSet<String>();
-
-		for (LSTWriteable lstw : changes.getAdded())
+		for (LSTWriteable lstw : added)
 		{
 			CDOMTemplate pctChild = CDOMTemplate.class.cast(lstw);
 			if (pctChild.getPrerequisiteCount() != 1)

@@ -116,5 +116,8 @@ public enum StringKey {
 	 PENALTYVAR,
 	 PLURAL,
 	 DISPLAY_LOCATION,
-	 ABB;
+	 ABB,
+	 SOURCE_SHORT,
+	 SOURCE_LONG,
+	 SOURCE_PAGE;
 }

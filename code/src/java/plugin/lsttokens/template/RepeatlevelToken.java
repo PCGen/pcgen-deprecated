@@ -374,6 +374,9 @@ public class RepeatlevelToken extends AbstractToken implements
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
+		if (added == null || added.isEmpty()){
+			return null;
+		}
 		Set<String> list = new TreeSet<String>();
 		for (LSTWriteable lstw : new HashSet<LSTWriteable>(added))
 		{

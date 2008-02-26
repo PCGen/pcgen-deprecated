@@ -38,11 +38,14 @@ public class CompoundCampaign implements CampaignInterface
 		return 0;
 	}
 
+	private URI uri;
+	
 	public URI getSourceURI()
 	{
+		return uri;
 		// TODO Auto-generated method stub
 		// TODO must be unique :P
-		return null;
+		// return null;
 	}
 
 	public void addCampaign(CampaignInterface c)
@@ -50,6 +53,10 @@ public class CompoundCampaign implements CampaignInterface
 		if (c != null)
 		{
 			campaignSet.add(c);
+			if (uri == null)
+			{
+				uri = c.getSourceURI();
+			}
 		}
 	}
 

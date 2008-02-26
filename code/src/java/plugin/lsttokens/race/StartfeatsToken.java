@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.race;
 
+import java.util.Collection;
 import java.util.Collections;
 
 import pcgen.base.formula.Formula;
@@ -154,13 +155,14 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken, CDOM
 		{
 			return null;
 		}
-		if (!grantChanges.hasAddedItems())
+		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		String returnString = null;
-		for (LSTWriteable lstw : grantChanges.getAdded())
+		for (LSTWriteable lstw : addedItems)
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (getTokenName().equals(container.getName()))

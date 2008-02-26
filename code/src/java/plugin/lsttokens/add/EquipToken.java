@@ -18,6 +18,7 @@
 package plugin.lsttokens.add;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -42,13 +43,19 @@ import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
-public class EquipToken extends AbstractToken implements AddLstToken, CDOMSecondaryToken<CDOMObject>
+public class EquipToken extends AbstractToken implements AddLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 	private static final Class<CDOMEquipment> EQUIPMENT_CLASS = CDOMEquipment.class;
 
 	public String getParentToken()
 	{
 		return "ADD";
+	}
+
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
 	}
 
 	public boolean parse(PObject target, String value, int level)
@@ -71,14 +78,14 @@ public class EquipToken extends AbstractToken implements AddLstToken, CDOMSecond
 			if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 			{
 				Logging.errorPrint("Syntax of ADD:" + getTokenName()
-					+ " only allows one | : " + value);
+						+ " only allows one | : " + value);
 				return false;
 			}
 			countString = value.substring(0, pipeLoc);
 			items = value.substring(pipeLoc + 1);
 		}
 		target.addAddList(level, getTokenName() + "(" + items + ")"
-			+ countString);
+				+ countString);
 		return true;
 	}
 
@@ -106,15 +113,15 @@ public class EquipToken extends AbstractToken implements AddLstToken, CDOMSecond
 				count = Integer.parseInt(countString);
 				if (count < 1)
 				{
-					Logging.errorPrint("Count in ADD:" + getTokenName()
-						+ " must be > 0");
+					Logging.errorPrint("Count in " + getFullName()
+							+ " must be > 0");
 					return false;
 				}
 			}
 			catch (NumberFormatException nfe)
 			{
-				Logging.errorPrint("Invalid Count in ADD:" + getTokenName()
-					+ ": " + countString);
+				Logging.errorPrint("Invalid Count in " + getFullName() + ": "
+						+ countString);
 				return false;
 			}
 			items = value.substring(pipeLoc + 1);
@@ -129,8 +136,7 @@ public class EquipToken extends AbstractToken implements AddLstToken, CDOMSecond
 		boolean foundAny = false;
 		boolean foundOther = false;
 
-		List<CDOMReference<CDOMEquipment>> refs =
-				new ArrayList<CDOMReference<CDOMEquipment>>();
+		List<CDOMReference<CDOMEquipment>> refs = new ArrayList<CDOMReference<CDOMEquipment>>();
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
@@ -143,16 +149,12 @@ public class EquipToken extends AbstractToken implements AddLstToken, CDOMSecond
 			else
 			{
 				foundOther = true;
-				ref =
-						TokenUtilities.getTypeOrPrimitive(context,
-							EQUIPMENT_CLASS, token);
+				ref = TokenUtilities.getTypeOrPrimitive(context,
+						EQUIPMENT_CLASS, token);
 				if (ref == null)
 				{
-					Logging
-						.errorPrint("  Error was encountered while parsing ADD:"
-							+ getTokenName()
-							+ ": "
-							+ token
+					Logging.errorPrint("  Error was encountered while parsing "
+							+ getFullName() + ": " + token
 							+ " is not a valid reference: " + value);
 					return false;
 				}
@@ -162,20 +164,20 @@ public class EquipToken extends AbstractToken implements AddLstToken, CDOMSecond
 
 		if (foundAny && foundOther)
 		{
-			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+			Logging.errorPrint("Non-sensical " + getFullName()
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new GrantActor<CDOMEquipment>());
-		context.getGraphContext().grant(getTokenName(), obj, container);
+		context.getGraphContext().grant(getFullName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
-		ReferenceChoiceSet<CDOMEquipment> rcs =
-				new ReferenceChoiceSet<CDOMEquipment>(refs);
+				.getFormulaFor(Integer.MAX_VALUE));
+		ReferenceChoiceSet<CDOMEquipment> rcs = new ReferenceChoiceSet<CDOMEquipment>(
+				refs);
 		ChoiceSet<CDOMEquipment> cs = new ChoiceSet<CDOMEquipment>("ADD", rcs);
 		container.setChoiceSet(cs);
 		return true;
@@ -183,37 +185,38 @@ public class EquipToken extends AbstractToken implements AddLstToken, CDOMSecond
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChooseActionContainer.class);
+		AssociatedChanges<ChooseActionContainer> grantChanges = context
+				.getGraphContext().getChangesFromToken(getFullName(), obj,
+						ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
 			return null;
 		}
-		if (!grantChanges.hasAddedItems())
+		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : grantChanges.getAdded())
+		for (LSTWriteable lstw : addedItems)
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!"ADD".equals(container.getName()))
 			{
 				context.addWriteMessage("Unexpected CHOOSE container found: "
-					+ container.getName());
+						+ container.getName());
 				continue;
 			}
 			ChoiceSet<?> cs = container.getChoiceSet();
 			if (EQUIPMENT_CLASS.equals(cs.getChoiceClass()))
 			{
-				Formula f =
-						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f = container
+						.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
-					context.addWriteMessage("Unable to find " + getTokenName()
-						+ " Count");
+					context.addWriteMessage("Unable to find " + getFullName()
+							+ " Count");
 					return null;
 				}
 				String fString = f.toString();

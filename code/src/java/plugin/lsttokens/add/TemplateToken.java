@@ -18,6 +18,7 @@
 package plugin.lsttokens.add;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -41,7 +42,8 @@ import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 
-public class TemplateToken extends AbstractToken implements AddLstToken, CDOMSecondaryToken<CDOMObject>
+public class TemplateToken extends AbstractToken implements AddLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 
 	private static final Class<CDOMTemplate> PCTEMPLATE_CLASS = CDOMTemplate.class;
@@ -49,6 +51,11 @@ public class TemplateToken extends AbstractToken implements AddLstToken, CDOMSec
 	public String getParentToken()
 	{
 		return "ADD";
+	}
+
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
 	}
 
 	public boolean parse(PObject target, String value, int level)
@@ -66,14 +73,14 @@ public class TemplateToken extends AbstractToken implements AddLstToken, CDOMSec
 			if (pipeLoc != value.lastIndexOf(Constants.PIPE))
 			{
 				Logging.errorPrint("Syntax of ADD:" + getTokenName()
-					+ " only allows one | : " + value);
+						+ " only allows one | : " + value);
 				return false;
 			}
 			countString = value.substring(0, pipeLoc);
 			items = value.substring(pipeLoc + 1);
 		}
 		target.addAddList(level, getTokenName() + "(" + items + ")"
-			+ countString);
+				+ countString);
 		return true;
 	}
 
@@ -87,7 +94,7 @@ public class TemplateToken extends AbstractToken implements AddLstToken, CDOMSec
 	{
 		if (value.length() == 0)
 		{
-			Logging.errorPrint(getTokenName() + " may not have empty argument");
+			Logging.errorPrint(getFullName() + " may not have empty argument");
 			return false;
 		}
 		int pipeLoc = value.indexOf(Constants.PIPE);
@@ -106,15 +113,15 @@ public class TemplateToken extends AbstractToken implements AddLstToken, CDOMSec
 				count = Integer.parseInt(countString);
 				if (count < 1)
 				{
-					Logging.errorPrint("Count in ADD:" + getTokenName()
-						+ " must be > 0");
+					Logging.errorPrint("Count in " + getFullName()
+							+ " must be > 0");
 					return false;
 				}
 			}
 			catch (NumberFormatException nfe)
 			{
-				Logging.errorPrint("Invalid Count in ADD:" + getTokenName()
-					+ ": " + countString);
+				Logging.errorPrint("Invalid Count in " + getFullName() + ": "
+						+ countString);
 				return false;
 			}
 			items = value.substring(pipeLoc + 1);
@@ -125,24 +132,23 @@ public class TemplateToken extends AbstractToken implements AddLstToken, CDOMSec
 			return false;
 		}
 
-		List<CDOMReference<CDOMTemplate>> refs =
-				new ArrayList<CDOMReference<CDOMTemplate>>();
+		List<CDOMReference<CDOMTemplate>> refs = new ArrayList<CDOMReference<CDOMTemplate>>();
 		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
 		while (tok.hasMoreTokens())
 		{
 			refs.add(context.ref.getCDOMReference(PCTEMPLATE_CLASS, tok
-				.nextToken()));
+					.nextToken()));
 		}
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new GrantActor<CDOMTemplate>());
-		context.getGraphContext().grant(getTokenName(), obj, container);
+		context.getGraphContext().grant(getFullName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(count));
+				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE));
-		ReferenceChoiceSet<CDOMTemplate> rcs =
-				new ReferenceChoiceSet<CDOMTemplate>(refs);
+				.getFormulaFor(Integer.MAX_VALUE));
+		ReferenceChoiceSet<CDOMTemplate> rcs = new ReferenceChoiceSet<CDOMTemplate>(
+				refs);
 		ChoiceSet<CDOMTemplate> cs = new ChoiceSet<CDOMTemplate>("ADD", rcs);
 		container.setChoiceSet(cs);
 		return true;
@@ -150,37 +156,38 @@ public class TemplateToken extends AbstractToken implements AddLstToken, CDOMSec
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, ChooseActionContainer.class);
+		AssociatedChanges<ChooseActionContainer> grantChanges = context
+				.getGraphContext().getChangesFromToken(getFullName(), obj,
+						ChooseActionContainer.class);
 		if (grantChanges == null)
 		{
 			return null;
 		}
-		if (!grantChanges.hasAddedItems())
+		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		List<String> addStrings = new ArrayList<String>();
-		for (LSTWriteable lstw : grantChanges.getAdded())
+		for (LSTWriteable lstw : addedItems)
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (!"ADD".equals(container.getName()))
 			{
 				context.addWriteMessage("Unexpected CHOOSE container found: "
-					+ container.getName());
+						+ container.getName());
 				continue;
 			}
 			ChoiceSet<?> cs = container.getChoiceSet();
 			if (PCTEMPLATE_CLASS.equals(cs.getChoiceClass()))
 			{
-				Formula f =
-						container.getAssociation(AssociationKey.CHOICE_COUNT);
+				Formula f = container
+						.getAssociation(AssociationKey.CHOICE_COUNT);
 				if (f == null)
 				{
-					context.addWriteMessage("Unable to find " + getTokenName()
-						+ " Count");
+					context.addWriteMessage("Unable to find " + getFullName()
+							+ " Count");
 					return null;
 				}
 				String fString = f.toString();

@@ -54,7 +54,8 @@ import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
 import pcgen.util.MapToList;
 
-public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMSecondaryToken<CDOMObject>
+public class ArmorProfToken extends AbstractToken implements AutoLstToken,
+		CDOMSecondaryToken<CDOMObject>
 {
 
 	private static final Class<CDOMArmorProf> ARMORPROF_CLASS = CDOMArmorProf.class;
@@ -68,6 +69,11 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 	public String getTokenName()
 	{
 		return "ARMORPROF";
+	}
+
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
 	}
 
 	public boolean parse(PObject target, String value, int level)
@@ -112,9 +118,8 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 			armorProfs = value.substring(0, openBracketLoc);
 			if (!value.endsWith("]"))
 			{
-				Logging.errorPrint("Unresolved Prerequisite in "
-						+ getTokenName() + " " + value + " in "
-						+ getTokenName());
+				Logging.errorPrint("Unresolved Prerequisite in " + value
+						+ " in " + getFullName());
 				return false;
 			}
 			prereq = getPrerequisite(value.substring(openBracketLoc + 1, value
@@ -122,7 +127,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 			if (prereq == null)
 			{
 				Logging.errorPrint("Error generating Prerequisite " + prereq
-						+ " in " + getTokenName());
+						+ " in " + getFullName());
 				return false;
 			}
 		}
@@ -147,7 +152,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 				ChooseActionContainer container = obj.getChooseContainer();
 				GrantActor<CDOMArmorProf> actor = new GrantActor<CDOMArmorProf>();
 				container.addActor(actor);
-				actor.setAssociation(AssociationKey.TOKEN, getTokenName());
+				actor.setAssociation(AssociationKey.TOKEN, getFullName());
 				applyList.add(actor);
 			}
 			else
@@ -158,7 +163,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 					CDOMReference<CDOMArmorProf> ref = context.ref
 							.getCDOMAllReference(ARMORPROF_CLASS);
 					AssociatedPrereqObject edge = context.getGraphContext()
-							.grant(getTokenName(), obj, ref);
+							.grant(getFullName(), obj, ref);
 					applyList.add(edge);
 				}
 				else if (aProf.startsWith("ARMORTYPE="))
@@ -176,7 +181,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 				else if (aProf.startsWith("TYPE=") || aProf.startsWith("TYPE."))
 				{
 					Logging.addParseMessage(Logging.LST_ERROR, aProf
-							+ " is prohibited in AUTO:" + getTokenName()
+							+ " is prohibited in " + getFullName()
 							+ ". Do you mean ARMORTYPE=?");
 					return false;
 				}
@@ -186,7 +191,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 					CDOMReference<CDOMArmorProf> ref = context.ref
 							.getCDOMReference(ARMORPROF_CLASS, aProf);
 					AssociatedPrereqObject edge = context.getGraphContext()
-							.grant(getTokenName(), obj, ref);
+							.grant(getFullName(), obj, ref);
 					applyList.add(edge);
 				}
 			}
@@ -195,7 +200,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 		if (foundAny && foundOther)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, "Non-sensical "
-					+ getTokenName()
+					+ getFullName()
 					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
@@ -219,7 +224,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 			aac.setChoiceSet(cs);
 			aac.addActor(new GrantActor<CDOMArmorProf>());
 			AssociatedPrereqObject edge = context.getGraphContext().grant(
-					getTokenName(), obj, aac);
+					getFullName(), obj, aac);
 			applyList.add(edge);
 
 		}
@@ -247,7 +252,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 			if (actor instanceof GrantActor)
 			{
 				GrantActor<?> ga = GrantActor.class.cast(actor);
-				if (!getTokenName().equals(
+				if (!getFullName().equals(
 						ga.getAssociation(AssociationKey.TOKEN)))
 				{
 					continue;
@@ -265,9 +270,9 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 		}
 
 		AssociatedChanges<CDOMArmorProf> changes = context.getGraphContext()
-				.getChangesFromToken(getTokenName(), obj, ARMORPROF_CLASS);
+				.getChangesFromToken(getFullName(), obj, ARMORPROF_CLASS);
 		AssociatedChanges<AutomaticActionContainer> typechanges = context
-				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+				.getGraphContext().getChangesFromToken(getFullName(), obj,
 						AutomaticActionContainer.class);
 		if (list.isEmpty() && changes == null && typechanges == null)
 		{
@@ -343,7 +348,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken, CDOMS
 					context.addWriteMessage("Error: "
 							+ obj.getClass().getSimpleName()
 							+ " had more than one Prerequisite for "
-							+ getTokenName());
+							+ getFullName());
 					return null;
 				}
 				Prerequisite p = prereqs.iterator().next();

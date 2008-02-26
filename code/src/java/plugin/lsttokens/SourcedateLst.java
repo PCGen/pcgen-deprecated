@@ -29,9 +29,8 @@ import java.util.Date;
 import java.util.Map;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PObject;
-import pcgen.core.Source;
-import pcgen.core.SourceEntry;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.SourceLoader;
 import pcgen.persistence.lst.SourceLstToken;
@@ -43,8 +42,12 @@ import pcgen.util.Logging;
  * @author zaister
  * 
  */
-public class SourcedateLst implements GlobalLstToken, SourceLstToken, CDOMPrimaryToken<CDOMObject>
+public class SourcedateLst implements GlobalLstToken, SourceLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
+
+	private static final DateFormat DATE_FORMATTER = new SimpleDateFormat(
+			"yyyy-MM"); //$NON-NLS-1$
 
 	public String getTokenName()
 	{
@@ -73,37 +76,37 @@ public class SourcedateLst implements GlobalLstToken, SourceLstToken, CDOMPrimar
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
+		Date theDate;
 		try
 		{
-			obj.getSourceEntry().getSourceBook().setDate(value);
+			theDate = DATE_FORMATTER.parse(value);
 		}
-		catch (ParseException e)
+		catch (ParseException pe)
 		{
-			Logging.errorPrint("Error parsing date", e);
-			return false;
+			try
+			{
+				theDate = DateFormat.getDateInstance().parse(value);
+			}
+			catch (ParseException e)
+			{
+				Logging.addParseMessage(Logging.LST_ERROR, "Invalid Date: "
+						+ value + " found in " + getTokenName());
+				return false;
+			}
 		}
+		context.obj.put(obj, ObjectKey.SOURCE_DATE, theDate);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		SourceEntry sourceEntry = obj.getSourceEntry();
-		if (sourceEntry == null)
-		{
-			return null;
-		}
-		Source sourceBook = sourceEntry.getSourceBook();
-		if (sourceBook == null)
-		{
-			return null;
-		}
-		Date date = sourceBook.getDate();
+		Date date = context.getObjectContext().getObject(obj,
+				ObjectKey.SOURCE_DATE);
 		if (date == null)
 		{
 			return null;
 		}
-		DateFormat df = new SimpleDateFormat("yyyy-MM"); //$NON-NLS-1$
-		return new String[]{df.format(date)};
+		return new String[] { DATE_FORMATTER.format(date) };
 	}
 
 	public Class<CDOMObject> getTokenClass()

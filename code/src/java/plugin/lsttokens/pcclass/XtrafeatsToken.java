@@ -21,6 +21,7 @@
  */
 package plugin.lsttokens.pcclass;
 
+import java.util.Collection;
 import java.util.Collections;
 
 import pcgen.base.formula.Formula;
@@ -138,13 +139,14 @@ public class XtrafeatsToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCC
 		{
 			return null;
 		}
-		if (!grantChanges.hasAddedItems())
+		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
 		String returnString = null;
-		for (LSTWriteable lstw : grantChanges.getAdded())
+		for (LSTWriteable lstw : addedItems)
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
 			if (getTokenName().equals(container.getName()))

@@ -23,6 +23,7 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -238,7 +239,8 @@ public class DescLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		if (changes.hasRemovedItems())
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty())
 		{
 			if (changes.includesGlobalClear())
 			{
@@ -248,16 +250,17 @@ public class DescLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 				return null;
 			}
 			list.add(Constants.LST_DOT_CLEAR_DOT
-				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+				+ ReferenceUtilities.joinLstFormat(removedItems,
 					",|.CLEAR."));
 		}
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		if (changes.hasAddedItems())
+		Collection<LSTWriteable> addedItems = changes.getAdded();
+		if (addedItems != null)
 		{
-			for (LSTWriteable lw : changes.getAdded())
+			for (LSTWriteable lw : addedItems)
 			{
 				list.add(lw.getLSTformat());
 			}

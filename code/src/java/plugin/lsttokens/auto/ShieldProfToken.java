@@ -71,6 +71,11 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 		return "SHIELDPROF";
 	}
 
+	private String getFullName()
+	{
+		return getParentToken() + ":" + getTokenName();
+	}
+
 	public boolean parse(PObject target, String value, int level)
 	{
 		if (level > 1)
@@ -109,9 +114,8 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 			shieldProfs = value.substring(0, openBracketLoc);
 			if (!value.endsWith("]"))
 			{
-				Logging.errorPrint("Unresolved Prerequisite in "
-						+ getTokenName() + " " + value + " in "
-						+ getTokenName());
+				Logging.errorPrint("Unresolved Prerequisite in " + value
+						+ " in " + getFullName());
 				return false;
 			}
 			prereq = getPrerequisite(value.substring(openBracketLoc + 1, value
@@ -119,7 +123,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 			if (prereq == null)
 			{
 				Logging.errorPrint("Error generating Prerequisite " + prereq
-						+ " in " + getTokenName());
+						+ " in " + getFullName());
 				return false;
 			}
 		}
@@ -144,7 +148,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 				ChooseActionContainer container = obj.getChooseContainer();
 				GrantActor<CDOMShieldProf> actor = new GrantActor<CDOMShieldProf>();
 				container.addActor(actor);
-				actor.setAssociation(AssociationKey.TOKEN, getTokenName());
+				actor.setAssociation(AssociationKey.TOKEN, getFullName());
 				applyList.add(actor);
 			}
 			else
@@ -155,7 +159,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 					CDOMReference<CDOMShieldProf> ref = context.ref
 							.getCDOMAllReference(SHIELDPROF_CLASS);
 					AssociatedPrereqObject edge = context.getGraphContext()
-							.grant(getTokenName(), obj, ref);
+							.grant(getFullName(), obj, ref);
 					applyList.add(edge);
 				}
 				else if (aProf.startsWith("SHIELDTYPE="))
@@ -174,7 +178,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 				else if (aProf.startsWith("TYPE=") || aProf.startsWith("TYPE."))
 				{
 					Logging.addParseMessage(Logging.LST_ERROR, aProf
-							+ " is prohibited in AUTO:" + getTokenName()
+							+ " is prohibited in " + getFullName()
 							+ ". Do you mean SHIELDTYPE=?");
 					return false;
 				}
@@ -184,7 +188,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 					CDOMReference<CDOMShieldProf> ref = context.ref
 							.getCDOMReference(SHIELDPROF_CLASS, aProf);
 					AssociatedPrereqObject edge = context.getGraphContext()
-							.grant(getTokenName(), obj, ref);
+							.grant(getFullName(), obj, ref);
 					applyList.add(edge);
 				}
 			}
@@ -193,7 +197,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 		if (foundAny && foundOther)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR, "Non-sensical "
-					+ getTokenName()
+					+ getFullName()
 					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
@@ -217,7 +221,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 			aac.setChoiceSet(cs);
 			aac.addActor(new GrantActor<CDOMShieldProf>());
 			AssociatedPrereqObject edge = context.getGraphContext().grant(
-					getTokenName(), obj, aac);
+					getFullName(), obj, aac);
 			applyList.add(edge);
 
 		}
@@ -245,7 +249,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 			if (actor instanceof GrantActor)
 			{
 				GrantActor<?> ga = GrantActor.class.cast(actor);
-				if (!getTokenName().equals(
+				if (!getFullName().equals(
 						ga.getAssociation(AssociationKey.TOKEN)))
 				{
 					continue;
@@ -263,9 +267,9 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 		}
 
 		AssociatedChanges<CDOMShieldProf> changes = context.getGraphContext()
-				.getChangesFromToken(getTokenName(), obj, SHIELDPROF_CLASS);
+				.getChangesFromToken(getFullName(), obj, SHIELDPROF_CLASS);
 		AssociatedChanges<AutomaticActionContainer> typechanges = context
-				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+				.getGraphContext().getChangesFromToken(getFullName(), obj,
 						AutomaticActionContainer.class);
 		if (list.isEmpty() && changes == null && typechanges == null)
 		{
@@ -341,7 +345,7 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 					context.addWriteMessage("Error: "
 							+ obj.getClass().getSimpleName()
 							+ " had more than one Prerequisite for "
-							+ getTokenName());
+							+ getFullName());
 					return null;
 				}
 				Prerequisite p = prereqs.iterator().next();

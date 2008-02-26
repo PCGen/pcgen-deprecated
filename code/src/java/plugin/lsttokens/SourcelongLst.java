@@ -25,9 +25,8 @@ package plugin.lsttokens;
 import java.util.Map;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.PObject;
-import pcgen.core.Source;
-import pcgen.core.SourceEntry;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.SourceLoader;
 import pcgen.persistence.lst.SourceLstToken;
@@ -38,7 +37,8 @@ import pcgen.rules.persistence.token.CDOMPrimaryToken;
  * @author djones4
  * 
  */
-public class SourcelongLst implements GlobalLstToken, SourceLstToken, CDOMPrimaryToken<CDOMObject>
+public class SourcelongLst implements GlobalLstToken, SourceLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -60,28 +60,19 @@ public class SourcelongLst implements GlobalLstToken, SourceLstToken, CDOMPrimar
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		obj.getSourceEntry().getSourceBook().setLongName(value);
+		context.getObjectContext().put(obj, StringKey.SOURCE_LONG, value);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		SourceEntry sourceEntry = obj.getSourceEntry();
-		if (sourceEntry == null)
+		String source = context.getObjectContext().getString(obj,
+				StringKey.SOURCE_LONG);
+		if (source == null)
 		{
 			return null;
 		}
-		Source sourceBook = sourceEntry.getSourceBook();
-		if (sourceBook == null)
-		{
-			return null;
-		}
-		String longname = sourceBook.getLongName();
-		if (longname == null)
-		{
-			return null;
-		}
-		return new String[]{longname};
+		return new String[] { source };
 	}
 
 	public Class<CDOMObject> getTokenClass()

@@ -23,6 +23,7 @@ package plugin.lsttokens.spell;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -54,11 +55,11 @@ import pcgen.util.MapToList;
 /**
  * Class deals with CLASSES Token
  */
-public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPrimaryToken<CDOMSpell>
+public class ClassesToken extends AbstractToken implements SpellLstToken,
+		CDOMPrimaryToken<CDOMSpell>
 {
 
-	private static final Class<ClassSpellList> SPELLLIST_CLASS =
-			ClassSpellList.class;
+	private static final Class<ClassSpellList> SPELLLIST_CLASS = ClassSpellList.class;
 
 	@Override
 	public String getTokenName()
@@ -71,9 +72,10 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 		if (value.equals(".CLEAR"))
 		{
 			Logging.deprecationPrint(".CLEAR is deprecated in "
-				+ getTokenName() + " because it has side effects on DOMAINS:");
+					+ getTokenName()
+					+ " because it has side effects on DOMAINS:");
 			Logging
-				.deprecationPrint("  please use .CLEARALL to clear only CLASSES");
+					.deprecationPrint("  please use .CLEARALL to clear only CLASSES");
 			spell.clearLevelInfo();
 			return true;
 		}
@@ -122,16 +124,16 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 			if (value.indexOf(']') != value.length() - 1)
 			{
 				Logging.errorPrint("Invalid " + getTokenName()
-					+ " must end with ']' if it contains a PREREQ tag");
+						+ " must end with ']' if it contains a PREREQ tag");
 				return false;
 			}
 			classKey = value.substring(0, openBracketLoc);
-			String prereqString =
-					value.substring(openBracketLoc + 1, value.length() - 1);
+			String prereqString = value.substring(openBracketLoc + 1, value
+					.length() - 1);
 			if (prereqString.length() == 0)
 			{
 				Logging.errorPrint(getTokenName()
-					+ " cannot have empty prerequisite : " + value);
+						+ " cannot have empty prerequisite : " + value);
 				return false;
 			}
 			prereq = getPrerequisite(prereqString);
@@ -151,14 +153,14 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 			if (equalLoc == -1)
 			{
 				Logging.errorPrint("Malformed " + getTokenName()
-					+ " Token (expecting an =): " + tokString);
+						+ " Token (expecting an =): " + tokString);
 				Logging.errorPrint("Line was: " + value);
 				return false;
 			}
 			if (equalLoc != tokString.lastIndexOf(Constants.EQUALS))
 			{
 				Logging.errorPrint("Malformed " + getTokenName()
-					+ " Token (more than one =): " + tokString);
+						+ " Token (more than one =): " + tokString);
 				Logging.errorPrint("Line was: " + value);
 				return false;
 			}
@@ -172,14 +174,14 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 				if (level.intValue() < 0)
 				{
 					Logging.errorPrint(getTokenName()
-						+ " may not use a negative level: " + value);
+							+ " may not use a negative level: " + value);
 					return false;
 				}
 			}
 			catch (NumberFormatException nfe)
 			{
 				Logging.errorPrint("Malformed Level in " + getTokenName()
-					+ " (expected an Integer): " + levelString);
+						+ " (expected an Integer): " + levelString);
 				Logging.errorPrint("Line was: " + value);
 				return false;
 			}
@@ -189,8 +191,8 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 				return false;
 			}
 
-			StringTokenizer commaTok =
-					new StringTokenizer(nameList, Constants.COMMA);
+			StringTokenizer commaTok = new StringTokenizer(nameList,
+					Constants.COMMA);
 
 			while (commaTok.hasMoreTokens())
 			{
@@ -204,18 +206,16 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 				else
 				{
 					foundOther = true;
-					ref =
-							TokenUtilities.getTypeOrPrimitive(context,
-								SPELLLIST_CLASS, token);
+					ref = TokenUtilities.getTypeOrPrimitive(context,
+							SPELLLIST_CLASS, token);
 					if (ref == null)
 					{
 						Logging.errorPrint("  error was in " + getTokenName());
 						return false;
 					}
 				}
-				AssociatedPrereqObject edge =
-						context.getListContext().addToMasterList(
-							getTokenName(), spell, ref, spell);
+				AssociatedPrereqObject edge = context.getListContext()
+						.addToMasterList(getTokenName(), spell, ref, spell);
 				edge.setAssociation(AssociationKey.SPELL_LEVEL, level);
 				if (prereq != null)
 				{
@@ -226,7 +226,7 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 		if (foundAny && foundOther)
 		{
 			Logging.errorPrint("Non-sensical " + getTokenName()
-				+ ": Contains ANY and a specific reference: " + value);
+					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
 		return true;
@@ -234,12 +234,10 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 
 	public String[] unparse(LoadContext context, CDOMSpell spell)
 	{
-		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>> dkmtl =
-				new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>>();
+		DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>> dkmtl = new DoubleKeyMapToList<Prerequisite, Integer, CDOMReference<ClassSpellList>>();
 		List<String> list = new ArrayList<String>();
-		Changes<CDOMReference> masterChanges =
-				context.getListContext().getMasterListChanges(getTokenName(),
-					spell, SPELLLIST_CLASS);
+		Changes<CDOMReference> masterChanges = context.getListContext()
+				.getMasterListChanges(getTokenName(), spell, SPELLLIST_CLASS);
 		if (masterChanges.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEARALL);
@@ -247,42 +245,43 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 		if (masterChanges.hasRemovedItems())
 		{
 			context.addWriteMessage(getTokenName()
-				+ " does not support .CLEAR.");
+					+ " does not support .CLEAR.");
 			return null;
 		}
 		for (CDOMReference<ClassSpellList> swl : masterChanges.getAdded())
 		{
-			AssociatedChanges<LSTWriteable> changes =
-					context.getListContext().getChangesInMasterList(
-						getTokenName(), spell, swl);
+			AssociatedChanges<LSTWriteable> changes = context.getListContext()
+					.getChangesInMasterList(getTokenName(), spell, swl);
 			if (changes == null)
 			{
 				// Legal if no CLASSES was present in the Spell
 				continue;
 			}
-			if (changes.hasRemovedItems() || changes.includesGlobalClear())
+			Collection<LSTWriteable> removedItems = changes.getRemoved();
+			if (removedItems != null && !removedItems.isEmpty()
+					|| changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
-					+ " does not support .CLEAR.");
+						+ " does not support .CLEAR.");
 				return null;
 			}
-			if (changes.hasAddedItems())
+			MapToList<LSTWriteable, AssociatedPrereqObject> map = changes
+					.getAddedAssociations();
+			if (map != null && !map.isEmpty())
 			{
-				MapToList<LSTWriteable, AssociatedPrereqObject> map =
-						changes.getAddedAssociations();
 				for (LSTWriteable added : map.getKeySet())
 				{
 					if (!spell.getLSTformat().equals(added.getLSTformat()))
 					{
 						context.addWriteMessage("Spell " + getTokenName()
-							+ " token cannot allow another Spell "
-							+ "(must only allow itself)");
+								+ " token cannot allow another Spell "
+								+ "(must only allow itself)");
 						return null;
 					}
 					for (AssociatedPrereqObject assoc : map.getListFor(added))
 					{
-						List<Prerequisite> prereqs =
-								assoc.getPrerequisiteList();
+						List<Prerequisite> prereqs = assoc
+								.getPrerequisiteList();
 						Prerequisite prereq;
 						if (prereqs == null || prereqs.size() == 0)
 						{
@@ -295,25 +294,24 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 						else
 						{
 							context.addWriteMessage("Incoming Edge to "
-								+ spell.getKey() + " had more than one "
-								+ "Prerequisite: " + prereqs.size());
+									+ spell.getKey() + " had more than one "
+									+ "Prerequisite: " + prereqs.size());
 							return null;
 						}
-						Integer level =
-								assoc
-									.getAssociation(AssociationKey.SPELL_LEVEL);
+						Integer level = assoc
+								.getAssociation(AssociationKey.SPELL_LEVEL);
 						if (level == null)
 						{
 							context.addWriteMessage("Incoming Allows Edge to "
-								+ spell.getKey()
-								+ " had no Spell Level defined");
+									+ spell.getKey()
+									+ " had no Spell Level defined");
 							return null;
 						}
 						if (level.intValue() < 0)
 						{
 							context.addWriteMessage("Incoming Allows Edge to "
-								+ spell.getKey() + " had invalid Level: "
-								+ level + ". Must be >= 0.");
+									+ spell.getKey() + " had invalid Level: "
+									+ level + ". Must be >= 0.");
 							return null;
 						}
 						dkmtl.addToListFor(prereq, level, swl);
@@ -334,9 +332,8 @@ public class ClassesToken extends AbstractToken implements SpellLstToken, CDOMPr
 			}
 		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-		SortedSet<CDOMReference<ClassSpellList>> set =
-				new TreeSet<CDOMReference<ClassSpellList>>(
-					TokenUtilities.REFERENCE_SORTER);
+		SortedSet<CDOMReference<ClassSpellList>> set = new TreeSet<CDOMReference<ClassSpellList>>(
+				TokenUtilities.REFERENCE_SORTER);
 		SortedSet<Integer> levelSet = new TreeSet<Integer>();
 		for (Prerequisite prereq : dkmtl.getKeySet())
 		{

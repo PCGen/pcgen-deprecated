@@ -22,6 +22,7 @@
 package plugin.lsttokens.pcclass.level;
 
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -196,7 +197,9 @@ CDOMPrimaryToken<CDOMPCClassLevel>
 			// Legal if no ADDDOMAIN was present
 			return null;
 		}
-		if (changes.hasRemovedItems() || changes.includesGlobalClear())
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty()
+				|| changes.includesGlobalClear())
 		{
 			context
 				.addWriteMessage(getTokenName() + " does not support .CLEAR");

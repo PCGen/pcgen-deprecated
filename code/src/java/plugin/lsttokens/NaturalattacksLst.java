@@ -54,7 +54,6 @@ import pcgen.core.WeaponProf;
 import pcgen.core.bonus.BonusObj;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.rules.context.AssociatedChanges;
-import pcgen.rules.context.Changes;
 import pcgen.rules.context.GraphContext;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.context.ObjectContext;
@@ -413,6 +412,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 
 		CDOMEquipment anEquip = new CDOMEquipment();
 		anEquip.setName(attackName);
+		anEquip.put(ObjectKey.PARENT, obj);
 		/*
 		 * This really can't be raw equipment... It really never needs to be
 		 * referred to, but this means that duplicates are never being detected
@@ -430,7 +430,6 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 		 */
 
 		GraphContext graphContext = context.getGraphContext();
-		ObjectContext objContext = context.getObjectContext();
 		EquipmentHead equipHead = anEquip.getEquipmentHead(1);
 
 		String profType = commaTok.nextToken();
@@ -442,7 +441,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 		while (dotTok.hasMoreTokens())
 		{
 			Type wt = Type.getConstant(dotTok.nextToken());
-			objContext.addToList(anEquip, ListKey.TYPE, wt);
+			anEquip.addToListFor(ListKey.TYPE, wt);
 		}
 
 		String numAttacks = commaTok.nextToken();
@@ -452,7 +451,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 		{
 			numAttacks = numAttacks.substring(1);
 		}
-		anEquip.put(ObjectKey.ATTACKS_PROGRESS, Boolean.valueOf(!attacksFixed));
+		anEquip.put(ObjectKey.ATTACKS_PROGRESS, Boolean
+				.valueOf(!attacksFixed));
 		try
 		{
 			int bonusAttacks = Integer.parseInt(numAttacks) - 1;
@@ -467,7 +467,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 			return null;
 		}
 
-		objContext.put(equipHead, StringKey.DAMAGE, commaTok.nextToken());
+		equipHead.put(StringKey.DAMAGE, commaTok.nextToken());
 
 		// sage_sam 02 Dec 2002 for Bug #586332
 		// allow hands to be required to equip natural weapons
@@ -476,7 +476,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 			final String hString = commaTok.nextToken();
 			try
 			{
-				objContext.put(equipHead, IntegerKey.SLOTS, Integer
+				equipHead.put(IntegerKey.SLOTS, Integer
 						.valueOf(Integer.parseInt(hString)));
 			}
 			catch (NumberFormatException exc)
@@ -487,16 +487,16 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 			}
 		}
 
-		objContext.put(anEquip, ObjectKey.WEIGHT, BigDecimal.ZERO);
+		anEquip.put(ObjectKey.WEIGHT, BigDecimal.ZERO);
 
 		context.ref.constructIfNecessary(WEAPONPROF_CLASS, attackName);
 		CDOMSingleRef<CDOMWeaponProf> wp = context.ref.getCDOMReference(
 				WEAPONPROF_CLASS, attackName);
-		objContext.put(anEquip, ObjectKey.WEAPON_PROF, wp);
+		anEquip.put(ObjectKey.WEAPON_PROF, wp);
 		graphContext.grant(getTokenName(), anEquip, wp);
 
-		objContext.put(equipHead, IntegerKey.CRIT_RANGE, Integer.valueOf(1));
-		objContext.put(equipHead, IntegerKey.CRIT_MULT, Integer.valueOf(2));
+		equipHead.put(IntegerKey.CRIT_RANGE, Integer.valueOf(1));
+		equipHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(2));
 
 		graphContext.grant(Constants.VT_EQ_HEAD, anEquip, equipHead);
 		graphContext.grant(getTokenName(), anEquip, size);
@@ -518,7 +518,6 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 		}
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
-		ObjectContext objcontext = context.getObjectContext();
 		for (LSTWriteable lstw : added)
 		{
 			if (!first)
@@ -535,14 +534,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 				return null;
 			}
 			sb.append(name).append(Constants.COMMA);
-			Changes<Type> typech = objcontext.getListChanges(eq, ListKey.TYPE);
-			if (typech == null)
-			{
-				context.addWriteMessage(getTokenName()
-						+ " expected Equipment to have type changes");
-				return null;
-			}
-			Collection<Type> types = typech.getAdded();
+			List<Type> types = eq.getListFor(ListKey.TYPE);
 			if (types == null || types.isEmpty())
 			{
 				context.addWriteMessage(getTokenName()
@@ -551,8 +543,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 			}
 			sb.append(StringUtil.join(types, Constants.DOT));
 			sb.append(Constants.COMMA);
-			Boolean attProgress = objcontext.getObject(eq,
-					ObjectKey.ATTACKS_PROGRESS);
+			Boolean attProgress = eq.get(ObjectKey.ATTACKS_PROGRESS);
 			if (attProgress == null)
 			{
 				context.addWriteMessage(getTokenName()
@@ -582,7 +573,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 					if (added.size() != 1)
 					{
 						context.addWriteMessage(getTokenName()
-								+ " expected only one BONUS on Equipment");
+								+ " expected only one BONUS on Equipment: "
+								+ added);
 						return null;
 					}
 					// TODO Validate BONUS type?
@@ -599,7 +591,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 						+ " expected an EquipmentHead on Equipment");
 				return null;
 			}
-			String damage = objcontext.getString(head, StringKey.DAMAGE);
+			String damage = head.get(StringKey.DAMAGE);
 			if (damage == null)
 			{
 				context.addWriteMessage(getTokenName()
@@ -608,7 +600,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 			}
 			sb.append(damage);
 
-			Integer hands = objcontext.getInteger(head, IntegerKey.SLOTS);
+			Integer hands = head.get(IntegerKey.SLOTS);
 			if (hands != null)
 			{
 				sb.append(',').append(hands);

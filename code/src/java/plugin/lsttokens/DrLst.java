@@ -50,11 +50,11 @@ import pcgen.util.Logging;
  * 
  */
 
-public class DrLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
+public class DrLst extends AbstractToken implements GlobalLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
-	private static final Class<DamageReduction> DR_CLASS =
-			DamageReduction.class;
+	private static final Class<DamageReduction> DR_CLASS = DamageReduction.class;
 
 	@Override
 	public String getTokenName()
@@ -74,8 +74,8 @@ public class DrLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryT
 				if (obj instanceof PCClass)
 				{
 					// Classes handle this differently
-					preLevelString =
-							"PRECLASS:1," + obj.getKeyName() + "=" + anInt;
+					preLevelString = "PRECLASS:1," + obj.getKeyName() + "="
+							+ anInt;
 				}
 				Prerequisite r = factory.parse(preLevelString);
 				preReqs.add(r);
@@ -138,21 +138,22 @@ public class DrLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryT
 			if (values.length != 2)
 			{
 				Logging.errorPrint(getTokenName()
-					+ " failed to build DamageReduction with value " + value);
+						+ " failed to build DamageReduction with value "
+						+ value);
 				Logging
-					.errorPrint("  ...expected a String with one / as a separator");
+						.errorPrint("  ...expected a String with one / as a separator");
 				return false;
 			}
 			if (values[0].length() == 0)
 			{
 				Logging.errorPrint("Amount of Reduction in " + getTokenName()
-					+ " cannot be empty");
+						+ " cannot be empty");
 				return false;
 			}
 			if (values[1].length() == 0)
 			{
 				Logging.errorPrint("Damage Type in " + getTokenName()
-					+ " cannot be empty");
+						+ " cannot be empty");
 				return false;
 			}
 			dr = new DamageReduction(values[0], values[1]);
@@ -160,8 +161,8 @@ public class DrLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryT
 		catch (IllegalArgumentException iae)
 		{
 			Logging.errorPrint(getTokenName()
-				+ " failed to build DamageReduction with value " + value
-				+ " ... " + iae.getLocalizedMessage());
+					+ " failed to build DamageReduction with value " + value
+					+ " ... " + iae.getLocalizedMessage());
 			return false;
 		}
 
@@ -181,28 +182,30 @@ public class DrLst extends AbstractToken implements GlobalLstToken, CDOMPrimaryT
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<DamageReduction> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					obj, DR_CLASS);
+		AssociatedChanges<DamageReduction> changes = context.getGraphContext()
+				.getChangesFromToken(getTokenName(), obj, DR_CLASS);
 		if (changes == null)
 		{
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		List<String> list = new ArrayList<String>(added.size() + 1);
+		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		else if (added.isEmpty())
+		else if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token (and no global clear, so nothing to do)
 			return null;
 		}
 		Set<String> set = new TreeSet<String>();
-		for (LSTWriteable lw : added)
+		if (added != null)
 		{
-			set.add(lw.getLSTformat());
+			for (LSTWriteable lw : added)
+			{
+				set.add(lw.getLSTformat());
+			}
 		}
 		list.addAll(set);
 		return list.toArray(new String[list.size()]);

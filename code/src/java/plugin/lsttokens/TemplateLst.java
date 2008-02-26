@@ -180,7 +180,9 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken,
 
 		if (changes != null)
 		{
-			if (changes.hasRemovedItems() || changes.includesGlobalClear())
+			Collection<LSTWriteable> removedItems = changes.getRemoved();
+			if (removedItems != null && !removedItems.isEmpty()
+					|| changes.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
 						+ "does not support .CLEAR");
@@ -189,41 +191,45 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken,
 			Collection<LSTWriteable> added = changes.getAdded();
 			if (added != null && !added.isEmpty())
 			{
-				list.add(ReferenceUtilities.joinLstFormat(changes.getAdded(),
-						Constants.PIPE));
+				list.add(ReferenceUtilities
+						.joinLstFormat(added, Constants.PIPE));
 			}
 		}
 
 		if (tctChanges != null)
 		{
-			if (tctChanges.hasRemovedItems()
+			Collection<LSTWriteable> addedItems = tctChanges.getAdded();
+			Collection<LSTWriteable> removedItems = tctChanges.getRemoved();
+			if (removedItems != null && !removedItems.isEmpty()
 					|| tctChanges.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
 						+ "does not support .CLEAR");
 				return null;
 			}
-			if (tctChanges.hasAddedItems())
+			if (addedItems != null && !addedItems.isEmpty())
 			{
 				list.add(Constants.LST_CHOOSE
-						+ ReferenceUtilities.joinLstFormat(tctChanges
-								.getAdded(), Constants.PIPE));
+						+ ReferenceUtilities.joinLstFormat(addedItems,
+								Constants.PIPE));
 			}
 		}
 		if (allChanges != null)
 		{
-			if (allChanges.hasRemovedItems()
+			Collection<LSTWriteable> addedItems = allChanges.getAdded();
+			Collection<LSTWriteable> removedItems = allChanges.getRemoved();
+			if (removedItems != null && !removedItems.isEmpty()
 					|| allChanges.includesGlobalClear())
 			{
 				context.addWriteMessage(getTokenName()
 						+ "does not support .CLEAR");
 				return null;
 			}
-			if (allChanges.hasAddedItems())
+			if (addedItems != null && !addedItems.isEmpty())
 			{
 				list.add(Constants.LST_ADDCHOICE
-						+ ReferenceUtilities.joinLstFormat(allChanges
-								.getAdded(), Constants.PIPE));
+						+ ReferenceUtilities.joinLstFormat(addedItems,
+								Constants.PIPE));
 			}
 		}
 		if (list.isEmpty())

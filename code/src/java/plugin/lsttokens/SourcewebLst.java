@@ -22,23 +22,26 @@
  */
 package plugin.lsttokens;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.PObject;
-import pcgen.core.Source;
-import pcgen.core.SourceEntry;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.SourceLoader;
 import pcgen.persistence.lst.SourceLstToken;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
  * 
  */
-public class SourcewebLst implements GlobalLstToken, SourceLstToken, CDOMPrimaryToken<CDOMObject>
+public class SourcewebLst implements GlobalLstToken, SourceLstToken,
+		CDOMPrimaryToken<CDOMObject>
 {
 
 	public String getTokenName()
@@ -60,28 +63,28 @@ public class SourcewebLst implements GlobalLstToken, SourceLstToken, CDOMPrimary
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		obj.getSourceEntry().getSourceBook().setWebsite(value);
-		return true;
+		try
+		{
+			context.obj.put(obj, ObjectKey.SOURCE_WEB, new URI(value));
+			return true;
+		}
+		catch (URISyntaxException e)
+		{
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Invalid Web site value: " + value);
+			return false;
+		}
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		SourceEntry sourceEntry = obj.getSourceEntry();
-		if (sourceEntry == null)
+		URI uri = context.getObjectContext().getObject(obj,
+				ObjectKey.SOURCE_WEB);
+		if (uri == null)
 		{
 			return null;
 		}
-		Source sourceBook = sourceEntry.getSourceBook();
-		if (sourceBook == null)
-		{
-			return null;
-		}
-		String website = sourceBook.getWebsite();
-		if (website == null)
-		{
-			return null;
-		}
-		return new String[]{website};
+		return new String[] { uri.toString() };
 	}
 
 	public Class<CDOMObject> getTokenClass()

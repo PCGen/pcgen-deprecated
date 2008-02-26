@@ -8,7 +8,7 @@ public class CDOMEqMod extends CDOMObject
 	@Override
 	public int hashCode()
 	{
-		String name = this.getDisplayName();
+		String name = this.getKeyName();
 		return name == null ? 0 : name.hashCode();
 	}
 

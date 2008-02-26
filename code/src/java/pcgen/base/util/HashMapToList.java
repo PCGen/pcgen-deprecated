@@ -54,12 +54,14 @@ import pcgen.util.MapToList;
 public class HashMapToList<K, V> implements MapToList<K, V>
 {
 
+	private final Class<? extends Map> firstClass;
+
 	/**
 	 * The actual map containing the map of objects to Lists
 	 */
 	// TODO FIXME only protected due to .equals ugliness in core, change back w/
 	// new core
-	protected final Map<K, List<V>> mapToList = new HashMap<K, List<V>>();
+	protected final Map<K, List<V>> mapToList;
 
 	/*
 	 * TODO This can be consolidated with TreeMapToList into an
@@ -72,6 +74,18 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 	public HashMapToList()
 	{
 		super();
+		firstClass = HashMap.class;
+		mapToList = createGlobalMap();
+	}
+
+	/**
+	 * Creates a new HashMapToList
+	 */
+	public HashMapToList(Class<? extends Map> cl)
+	{
+		super();
+		firstClass = cl;
+		mapToList = createGlobalMap();
 	}
 
 	/**
@@ -94,7 +108,7 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 		if (mapToList.containsKey(key))
 		{
 			throw new IllegalArgumentException("Cannot re-initialize key: "
-				+ key);
+					+ key);
 		}
 		mapToList.put(key, new ArrayList<V>());
 	}
@@ -415,7 +429,7 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 		if (subList == null)
 		{
 			throw new IllegalArgumentException(key
-				+ " is not a key in this HashMapToList");
+					+ " is not a key in this HashMapToList");
 		}
 		return subList.get(i);
 	}
@@ -452,7 +466,7 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 		}
 		else if (o instanceof MapToList)
 		{
-			//TODO
+			// TODO
 		}
 		return false;
 	}
@@ -461,5 +475,25 @@ public class HashMapToList<K, V> implements MapToList<K, V>
 	{
 		List<V> list = mapToList.get(key);
 		return list == null ? 0 : list.size();
+	}
+
+	private Map<K, List<V>> createGlobalMap()
+	{
+		try
+		{
+			return firstClass.newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for HashMapToList must possess a zero-argument constructor",
+					e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for HashMapToList must possess a public zero-argument constructor",
+					e);
+		}
 	}
 }

@@ -23,6 +23,7 @@
 package plugin.lsttokens;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -184,7 +185,8 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		if (changes.hasRemovedItems())
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty())
 		{
 			if (changes.includesGlobalClear())
 			{
@@ -194,17 +196,17 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 				return null;
 			}
 			list.add(Constants.LST_DOT_CLEAR_DOT
-				+ ReferenceUtilities.joinLstFormat(changes.getRemoved(),
+				+ ReferenceUtilities.joinLstFormat(removedItems,
 					",|.CLEAR."));
 		}
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		if (changes.hasAddedItems())
+		MapToList<LSTWriteable, AssociatedPrereqObject> map = changes
+				.getAddedAssociations();
+		if (map != null && !map.isEmpty())
 		{
-			MapToList<LSTWriteable, AssociatedPrereqObject> map =
-					changes.getAddedAssociations();
 			Set<LSTWriteable> addedSet = map.getKeySet();
 			for (LSTWriteable added : addedSet)
 			{
