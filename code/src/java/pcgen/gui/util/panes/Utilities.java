@@ -29,6 +29,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import pcgen.gui.util.ResourceManager;
+import pcgen.gui.util.ResourceManager.Icons;
 
 /**
  * <code>Utilities</code>.
@@ -52,50 +54,47 @@ final class Utilities implements SwingConstants
 	/** End (far right) direction. */
 	public static final int END = 17;
 
-	/** Icon for New item. */
-	public static final ImageIcon NEW_ICON = getImageIcon("resources/New16.gif");
+	/** Icons for New item. */
+	public static final ImageIcon NEW_ICON = ResourceManager.getImageIcon(Icons.New16);
 
-	/** Icon for Close item. */
-	public static final ImageIcon CLOSE_ICON = getImageIcon("resources/Close16.gif");
+	/** Icons for Close item. */
+	public static final ImageIcon CLOSE_ICON = ResourceManager.getImageIcon(Icons.Close16);
 
-	/** Icon for Center item. */
-	public static final ImageIcon CENTER_ICON = getImageIcon("resources/Stop16.gif");
+	/** Icons for Center item. */
+	public static final ImageIcon CENTER_ICON = ResourceManager.getImageIcon(Icons.Stop16);
 
-	/** Icon for Flip item. */
-	public static final ImageIcon FLIP_ICON = getImageIcon("resources/Refresh16.gif");
+	/** Icons for Flip item. */
+	public static final ImageIcon FLIP_ICON = ResourceManager.getImageIcon(Icons.Refresh16);
 
-	/** Icon for Reset item. */
-	public static final ImageIcon RESET_ICON = getImageIcon("resources/Redo16.gif");
+	/** Icons for Reset item. */
+	public static final ImageIcon RESET_ICON = ResourceManager.getImageIcon(Icons.Redo16);
 
-	/** Icon for Locked item. */
-	public static final ImageIcon LOCK_ICON = getImageIcon("resources/Bookmarks16.gif");
+	/** Icons for Locked item. */
+	public static final ImageIcon LOCK_ICON = ResourceManager.getImageIcon(Icons.Bookmarks16);
 
-	/** Icon for Join item. */
-	public static final ImageIcon JOIN_ICON = getImageIcon("resources/Pause16.gif");
+	/** Icons for Up item. */
+	public static final ImageIcon UP_ICON = ResourceManager.getImageIcon(Icons.Up16);
 
-	/** Icon for Up item. */
-	public static final ImageIcon UP_ICON = getImageIcon("resources/Up16.gif");
+	/** Icons for Left item. */
+	public static final ImageIcon LEFT_ICON = ResourceManager.getImageIcon(Icons.Back16);
 
-	/** Icon for Left item. */
-	public static final ImageIcon LEFT_ICON = getImageIcon("resources/Back16.gif");
+	/** Icons for Down item. */
+	public static final ImageIcon DOWN_ICON = ResourceManager.getImageIcon(Icons.Down16);
 
-	/** Icon for Down item. */
-	public static final ImageIcon DOWN_ICON = getImageIcon("resources/Down16.gif");
+	/** Icons for Right item. */
+	public static final ImageIcon RIGHT_ICON = ResourceManager.getImageIcon(Icons.Forward16);
 
-	/** Icon for Right item. */
-	public static final ImageIcon RIGHT_ICON = getImageIcon("resources/Forward16.gif");
+	/** Icons for Top item. */
+	public static final ImageIcon TOP_ICON = ResourceManager.getImageIcon(Icons.UUp16);
 
-	/** Icon for Top item. */
-	public static final ImageIcon TOP_ICON = getImageIcon("resources/UUp16.gif");
+	/** Icons for Beginning item. */
+	public static final ImageIcon BEGINNING_ICON = ResourceManager.getImageIcon(Icons.BBack16);
 
-	/** Icon for Beginning item. */
-	public static final ImageIcon BEGINNING_ICON = getImageIcon("resources/BBack16.gif");
+	/** Icons for Bottom item. */
+	public static final ImageIcon BOTTOM_ICON = ResourceManager.getImageIcon(Icons.DDown16);
 
-	/** Icon for Bottom item. */
-	public static final ImageIcon BOTTOM_ICON = getImageIcon("resources/DDown16.gif");
-
-	/** Icon for End item. */
-	public static final ImageIcon END_ICON = getImageIcon("resources/FForward16.gif");
+	/** Icons for End item. */
+	public static final ImageIcon END_ICON = ResourceManager.getImageIcon(Icons.FForward16);
 
 	private Utilities()
 	{

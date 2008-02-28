@@ -46,8 +46,8 @@ import pcgen.gui.util.SortingPriority;
 public class JTableSortingHeader extends JTableHeader implements MouseListener
 {
 
-    private static final Icon ASCENDING_ICON = ResourceManager.getImageIcon(ResourceManager.Icon.Down16);
-    private static final Icon DESCENDING_ICON = ResourceManager.getImageIcon(ResourceManager.Icon.Up16);
+    private static final Icon ASCENDING_ICON = ResourceManager.getImageIcon(ResourceManager.Icons.Down16);
+    private static final Icon DESCENDING_ICON = ResourceManager.getImageIcon(ResourceManager.Icons.Up16);
     private static final ButtonModel defaultModel = new DefaultButtonModel();
     private final ButtonModel usedModel = new DefaultButtonModel();
 

@@ -34,9 +34,9 @@ public class ResourceManager
 
     /** The URL to the resource folder of pcgen */
     public static final String RESOURCE_URL = "/pcgen/gui/resource/";
-    private static final Map<Icon, ImageIcon> iconMap = new HashMap<Icon, ImageIcon>();
+    private static final Map<Icons, ImageIcon> iconMap = new HashMap<Icons, ImageIcon>();
 
-    public static enum Icon
+    public static enum Icons
     {
 
         About16,
@@ -130,7 +130,7 @@ public class ResourceManager
         return new ImageIcon(iconURL);
     }
 
-    public static ImageIcon getImageIcon(Icon icon)
+    public static ImageIcon getImageIcon(Icons icon)
     {
         ImageIcon image = iconMap.get(icon);
         if (image == null)

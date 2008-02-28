@@ -38,6 +38,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
 {
 
     protected Vector<List<Object>> childData = null;
+    private int index = -1;
 
     public DefaultSortableTreeTableNode()
     {
@@ -99,6 +100,16 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
     }
 
     @Override
+    public void insert(MutableTreeNode child, int i)
+    {
+        if (child instanceof DefaultSortableTreeTableNode)
+        {
+            ((DefaultSortableTreeTableNode) child).setIndex(i);
+        }
+        super.insert(child, i);
+    }
+
+    @Override
     public void remove(int index)
     {
         if (childData != null && index < childData.size())
@@ -117,12 +128,22 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
         return null;
     }
 
+    private int getIndex()
+    {
+        return index;
+    }
+
+    private void setIndex(int index)
+    {
+        this.index = index;
+    }
+
     public List<Object> getValues()
     {
         DefaultSortableTreeTableNode parentNode = getSortableParent();
         if (parentNode != null)
         {
-            return parentNode.getChildData(parentNode.getIndex(this));
+            return parentNode.getChildData(getIndex());
         }
         return null;
     }
@@ -169,26 +190,30 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
     @SuppressWarnings("unchecked")
     public void sortChildren(Comparator<List<?>> comparator)
     {
-        int index = 0;
+        int i = 0;
         for (int x = 0; x < childData.size(); x++)
         {
             DefaultSortableTreeTableNode child = (DefaultSortableTreeTableNode) children.get(x);
+            // this makes sure that non-leaf nodes are the first nodes in the child array
             if (!child.isLeaf())
             {
                 child.sortChildren(comparator);
-                if (index != x)
+                if (i != x)
                 {
-                    Collections.swap(children, index, x);
-                    Collections.swap(childData, index, x);
+                    Collections.swap(children, i, x);
+                    Collections.swap(childData, i, x);
+                    child.setIndex(i);
+                    child = (DefaultSortableTreeTableNode) children.get(x);
+                    child.setIndex(x);
                 }
-                index++;
+                i++;
             }
         }
-        List sublist = children.subList(0, index);
+        List sublist = children.subList(0, i);
         Collections.sort(sublist, new NodeComparator(comparator));
-        sublist = childData.subList(0, index);
+        sublist = childData.subList(0, i);
         Collections.sort(sublist, comparator);
-        sublist = childData.subList(index, childData.size());
+        sublist = childData.subList(i, childData.size());
         Collections.sort(sublist, comparator);
     }
 
