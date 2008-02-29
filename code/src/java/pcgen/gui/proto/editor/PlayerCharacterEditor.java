@@ -5,7 +5,11 @@
  */
 package pcgen.gui.proto.editor;
 
+import javax.swing.table.TableModel;
+import pcgen.gui.util.JTablePane;
 import pcgen.gui.util.panes.SpinningTabbedPane;
+import pcgen.gui.util.table.DefaultSortableTableModel;
+import pcgen.gui.util.table.SortableTableModel;
 
 /**
  *
@@ -26,25 +30,12 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTableEx1 = new pcgen.gui.util.JTableEx();
+        jTablePane1 = new pcgen.gui.util.JTablePane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTableEx1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"sdfa", "tegh", "wvczs", "yuue"},
-                {"ghjd", "asdf", "trtw", "sfdgj"},
-                {null, "asdrj", "kjffs", "sfgj"},
-                {"dfg", "cbnc", "mnvx", "xssd"}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTableEx1);
-
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jTablePane1.setModel(getTableModel());
+        getContentPane().add(jTablePane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -59,9 +50,22 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
             }
         });
     }
+    public SortableTableModel getTableModel()
+    {
+        return new DefaultSortableTableModel(
+            new Object [][] {
+                {"sdfa", "tegh", "wvczs", "yuue"},
+                {"ghjd", "asdf", "trtw", "pin"},
+                {"hty", "iohf", "kjffs", "sfgj"},
+                {"dfg", "cbnc", "mnvx", "xssd"}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        );
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private pcgen.gui.util.JTableEx jTableEx1;
+    private pcgen.gui.util.JTablePane jTablePane1;
     // End of variables declaration//GEN-END:variables
     
 }

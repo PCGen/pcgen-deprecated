@@ -25,7 +25,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,8 +34,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
-import pcgen.gui.util.table.DefaultDynamicTableColumnModel;
-import pcgen.gui.util.table.DynamicTableColumnModel;
 import pcgen.util.Comparators;
 
 /**
@@ -74,12 +71,12 @@ public class JTableEx extends JTable
      * @param tm
      * @param tcm
      */
-    public JTableEx(SortableTableModel tm, DynamicTableColumnModel tcm)
+    public JTableEx(SortableTableModel tm, TableColumnModel tcm)
     {
         this(tm, tcm, null);
     }
 
-    private JTableEx(SortableTableModel tm, DynamicTableColumnModel tcm,
+    public JTableEx(SortableTableModel tm, TableColumnModel tcm,
                       ListSelectionModel lsm)
     {
         super(tm, tcm, lsm);
@@ -113,22 +110,6 @@ public class JTableEx extends JTable
     public SortableTableModel getModel()
     {
         return (SortableTableModel) super.getModel();
-    }
-
-    @Override
-    public void setColumnModel(TableColumnModel columnModel)
-    {
-        if (!(columnModel instanceof DynamicTableColumnModel))
-        {
-            columnModel = new DefaultDynamicTableColumnModel(columnModel, 1);
-        }
-        super.setColumnModel(columnModel);
-    }
-
-    @Override
-    public DynamicTableColumnModel getColumnModel()
-    {
-        return (DynamicTableColumnModel) super.getColumnModel();
     }
 
     /**

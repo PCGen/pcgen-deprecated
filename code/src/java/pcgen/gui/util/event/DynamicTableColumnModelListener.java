@@ -1,5 +1,5 @@
 /*
- * DynamicTableColumnModel.java
+ * DynamicTableColumnModelListener.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,30 +16,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 25, 2008, 3:57:47 PM
+ * Created on Feb 28, 2008, 7:47:48 PM
  */
-package pcgen.gui.util.table;
 
-import java.util.List;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import pcgen.gui.util.event.DynamicTableColumnModelListener;
+package pcgen.gui.util.event;
+
+import java.util.EventListener;
+import javax.swing.event.TableColumnModelEvent;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public interface DynamicTableColumnModel extends TableColumnModel
+public interface DynamicTableColumnModelListener extends EventListener
 {
-
-    public void addDynamicTableColumnModelListener(DynamicTableColumnModelListener listener);
-
-    public void removeDynamicTableColumnModelListener(DynamicTableColumnModelListener listener);
-
-    public List<TableColumn> getAvailableColumns();
-
-    public boolean isVisible(TableColumn column);
-
-    public void toggleVisible(TableColumn column);
-
+    public void availableColumnAdded(TableColumnModelEvent event);
+    public void availableColumnRemove(TableColumnModelEvent event);
 }
