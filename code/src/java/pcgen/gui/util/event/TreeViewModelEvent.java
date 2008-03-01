@@ -1,5 +1,5 @@
 /*
- * DataView.java
+ * TreeViewModelEvent.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,21 +16,40 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 14, 2008, 4:17:32 PM
+ * Created on Feb 29, 2008, 10:54:37 PM
  */
-package pcgen.gui.util.treeview;
+package pcgen.gui.util.event;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.EventObject;
+import pcgen.gui.util.treeview.TreeViewModel;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public interface DataView<E>
+public class TreeViewModelEvent<E> extends EventObject
 {
 
-    List<?> getData(E obj);
+    private Collection<E> oldData;
+    private Collection<E> newData;
 
-    List<? extends DataViewColumn> getDataColumns();
+    public TreeViewModelEvent(TreeViewModel<E> source, Collection<E> oldData,
+                               Collection<E> newData)
+    {
+        super(source);
+        this.oldData = oldData;
+        this.newData = newData;
+    }
+
+    public Collection<E> getOldData()
+    {
+        return oldData;
+    }
+
+    public Collection<E> getNewData()
+    {
+        return newData;
+    }
 
 }

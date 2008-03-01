@@ -30,9 +30,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import pcgen.gui.util.table.DefaultSortableTableModel;
+import pcgen.gui.util.table.DynamicTableColumnModel;
 import pcgen.gui.util.table.SortableTableModel;
 import pcgen.util.Comparators;
 
@@ -77,7 +79,7 @@ public class JTableEx extends JTable
     }
 
     public JTableEx(SortableTableModel tm, TableColumnModel tcm,
-                      ListSelectionModel lsm)
+                     ListSelectionModel lsm)
     {
         super(tm, tcm, lsm);
 
@@ -94,6 +96,37 @@ public class JTableEx extends JTable
     protected List<? extends SortingPriority> createDefaultSortingPriority()
     {
         return Collections.emptyList();
+    }
+
+    @Override
+    public void createDefaultColumnsFromModel()
+    {
+        TableModel m = getModel();
+        if (m != null)
+        {
+            // Remove any current columns
+            TableColumnModel cm = getColumnModel();
+            if (cm instanceof DynamicTableColumnModel)
+            {
+                DynamicTableColumnModel dm = (DynamicTableColumnModel) cm;
+                TableColumn[] columns = dm.getAvailableColumns().toArray(new TableColumn[0]);
+                for (TableColumn column : columns)
+                {
+                    dm.removeColumn(column);
+                }
+            }
+            while (cm.getColumnCount() > 0)
+            {
+                cm.removeColumn(cm.getColumn(0));
+            }
+
+            // Create new columns from the data model info
+            for (int i = 0; i < m.getColumnCount(); i++)
+            {
+                TableColumn newColumn = new TableColumn(i);
+                addColumn(newColumn);
+            }
+        }
     }
 
     @Override
@@ -158,6 +191,11 @@ public class JTableEx extends JTable
     public void setSortingPriority(List<? extends SortingPriority> keys)
     {
         this.columnkeys = Collections.unmodifiableList(keys);
+        sortModel();
+    }
+
+    public void sortModel()
+    {
         getModel().sortModel(rowComparator);
     }
 
@@ -182,7 +220,36 @@ public class JTableEx extends JTable
                 }
                 int column = priority.getColumn();
                 Comparator comparator = Comparators.getComparatorFor(model.getColumnClass(column));
-                int ret = comparator.compare(o1.get(column), o2.get(column));
+                Object obj1 = null;
+                Object obj2 = null;
+                if (o1.size() > column)
+                {
+                    obj1 = o1.get(column);
+                }
+                if (o2.size() > column)
+                {
+                    obj2 = o2.get(column);
+                }
+                int ret;
+                if (obj1 == null || obj2 == null)
+                {
+                    if (obj1 == obj2)
+                    {
+                        ret = 0;
+                    }
+                    else if (obj1 == null)
+                    {
+                        ret = -1;
+                    }
+                    else
+                    {
+                        ret = 1;
+                    }
+                }
+                else
+                {
+                    ret = comparator.compare(obj1, obj2);
+                }
                 if (priority.getMode() == SortMode.DESCENDING)
                 {
                     ret *= -1;

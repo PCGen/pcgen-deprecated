@@ -26,7 +26,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.List;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultButtonModel;
@@ -37,7 +36,6 @@ import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import pcgen.gui.util.SortingPriority;
 
 /**
  *
@@ -97,9 +95,8 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener
                                                         int row,
                                                         int column)
         {
-            TableColumn trackedColumn = getTrackedColumn();
-            if (trackedColumn != null && trackedColumn.getHeaderValue() == value &&
-                    trackedColumn == getDraggedColumn())
+            TableColumn draggedColumn = getDraggedColumn();
+            if (draggedColumn != null && draggedColumn.getHeaderValue() == value)
             {
                 setModel(usedModel);
             }

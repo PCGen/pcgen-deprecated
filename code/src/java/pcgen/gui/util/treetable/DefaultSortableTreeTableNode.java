@@ -20,14 +20,13 @@
  */
 package pcgen.gui.util.treetable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import pcgen.util.UnboundedArrayList;
 
 /**
  *
@@ -37,7 +36,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
         implements SortableTreeTableNode
 {
 
-    protected Vector<List<Object>> childData = null;
+    protected ArrayList<List<Object>> childData = null;
     private int index = -1;
 
     public DefaultSortableTreeTableNode()
@@ -57,7 +56,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
                 List<Object> data = treeTableNode.getValues();
                 if (data != null)
                 {
-                    data = new UnboundedArrayList<Object>(data);
+                    data = new ArrayList<Object>(data);
                 }
                 add(child, data);
             }
@@ -75,7 +74,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
         {
             if (childData == null)
             {
-                childData = new Vector<List<Object>>();
+                childData = new ArrayList<List<Object>>();
             }
             if (newChild.getParent() == this)
             {
@@ -85,7 +84,6 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
             {
                 insert(newChild, childData.size());
             }
-            childData.add(null);
         }
         else
         {
@@ -96,7 +94,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
     public void add(DefaultSortableTreeTableNode node, List<Object> data)
     {
         add(node);
-        childData.setElementAt(data, childData.size() - 1);
+        childData.set(childData.size() - 1, data);
     }
 
     @Override
@@ -105,6 +103,11 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
         if (child instanceof DefaultSortableTreeTableNode)
         {
             ((DefaultSortableTreeTableNode) child).setIndex(i);
+            if (childData == null)
+            {
+                childData = new ArrayList<List<Object>>();
+            }
+            childData.add(i, null);
         }
         super.insert(child, i);
     }
@@ -114,7 +117,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
     {
         if (childData != null && index < childData.size())
         {
-            childData.removeElementAt(index);
+            childData.remove(index);
         }
         super.remove(index);
     }
@@ -160,7 +163,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
     public Object getValueAt(int column)
     {
         List<Object> data = getValues();
-        if (data != null)
+        if (data != null && data.size() > column)
         {
             return data.get(column);
         }
@@ -170,10 +173,16 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
     public void setValueAt(Object value, int column)
     {
         List<Object> data = getValues();
-        if (data != null)
+        if (data == null)
         {
-            data.set(column, value);
+            data = new ArrayList<Object>();
+            getSortableParent().add(this, data);
         }
+        while (data.size() <= column)
+        {
+            data.add(null);
+        }
+        data.set(column, value);
     }
 
     @Override
@@ -190,6 +199,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
     @SuppressWarnings("unchecked")
     public void sortChildren(Comparator<List<?>> comparator)
     {
+
         int i = 0;
         for (int x = 0; x < childData.size(); x++)
         {
@@ -215,6 +225,7 @@ public class DefaultSortableTreeTableNode extends DefaultMutableTreeNode
         Collections.sort(sublist, comparator);
         sublist = childData.subList(i, childData.size());
         Collections.sort(sublist, comparator);
+
     }
 
     private static class NodeComparator implements Comparator<DefaultSortableTreeTableNode>

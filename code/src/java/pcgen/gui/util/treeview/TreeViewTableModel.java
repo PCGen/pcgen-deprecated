@@ -30,7 +30,6 @@ import pcgen.gui.util.treetable.AbstractTreeTableModel;
 import pcgen.gui.util.treetable.DefaultSortableTreeTableNode;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
 import pcgen.gui.util.treetable.TreeTableNode;
-import pcgen.util.UnboundedArrayList;
 
 /**
  *
@@ -43,39 +42,23 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
     private final Map<TreeView<E>, TreeViewNode> viewMap = new HashMap<TreeView<E>, TreeViewNode>();
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     private final NameViewColumn namecolumn = new NameViewColumn();
-    private final DataView dataview;
-    private final List<DataViewColumn> datacolumns;
-    private TreeView<E> selectedView;
+    private final DataView<E> dataview;
+    private final List<? extends DataViewColumn> datacolumns;
+    private TreeView<E> selectedView = null;
 
-    @SuppressWarnings("unchecked")
-    public TreeViewTableModel(TreeViewModel<E> model,
-                               Collection<E> data)
+    public TreeViewTableModel(DataView<E> dataView)
     {
-        super(null);
-
-        this.dataview = model.getDataView();
+        this.dataview = dataView;
         this.datacolumns = dataview.getDataColumns();
-        populateViewMap(model.getTreeViews());
-        populateDataMap(data);
-        setSelectedTreeView(model.getTreeViews().get(0));
     }
 
     public void setData(Collection<E> data)
     {
         populateDataMap(data);
-        populateViewMap(viewMap.keySet());
+        viewMap.clear();
         setSelectedTreeView(selectedView);
     }
 
-    private void populateViewMap(Collection<? extends TreeView<E>> treeviews)
-    {
-        for (TreeView<E> view : treeviews)
-        {
-            viewMap.put(view, new TreeViewNode());
-        }
-    }
-
-    @SuppressWarnings("unchecked")
     private void populateDataMap(Collection<E> data)
     {
         dataMap.entrySet().retainAll(data);
@@ -88,11 +71,6 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
-    public Collection<TreeView<E>> getSelectableTreeViews()
-    {
-        return viewMap.keySet();
-    }
-
     public TreeView<E> getSelectedTreeView()
     {
         return selectedView;
@@ -100,23 +78,24 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     public void setSelectedTreeView(TreeView<E> view)
     {
-        this.selectedView = view;
-        TreeViewNode node = viewMap.get(view);
-        if (node == null)
+        if (view != null)
         {
-            throw new IllegalArgumentException("Attempting to use an unknown TreeView");
-        }
-        if (node.isLeaf())
-        {
-            for (E element : dataMap.keySet())
+            this.selectedView = view;
+            TreeViewNode node = viewMap.get(view);
+            if (node == null)
             {
-                for (TreeViewPath<E> path : view.getPaths(element))
+                node = new TreeViewNode();
+                for (E element : dataMap.keySet())
                 {
-                    node.createPath(path);
+                    for (TreeViewPath<E> path : view.getPaths(element))
+                    {
+                        node.createPath(path);
+                    }
                 }
+                viewMap.put(view, node);
             }
+            setRoot(node);
         }
-        setRoot(node);
     }
 
     public int getColumnCount()
@@ -188,23 +167,26 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
             {
                 Object key = path.getPathComponent(level);
                 TreeViewNode node = null;
-                for (int i = 0; i < childData.size(); i++)
+                if (childData != null)
                 {
-                    if (getChildData(i).get(0).equals(key))
+                    for (int i = 0; i < childData.size(); i++)
                     {
-                        node = (TreeViewNode) children.get(i);
-                        break;
+                        if (getChildData(i).get(0).equals(key))
+                        {
+                            node = (TreeViewNode) children.get(i);
+                            break;
+                        }
                     }
                 }
                 if (node == null)
                 {
                     node = new TreeViewNode(level + 1);
-                    ArrayList<Object> datalist = new UnboundedArrayList<Object>(1);
+                    ArrayList<Object> datalist = new ArrayList<Object>(1);
                     datalist.add(key);
                     List<?> data = dataMap.get(key);
                     if (data != null)
                     {
-                        datalist.add(data);
+                        datalist.addAll(data);
                     }
                     datalist.trimToSize();
                     add(node, datalist);

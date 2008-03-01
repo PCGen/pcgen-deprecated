@@ -364,6 +364,7 @@ public class JTreeTable extends JTableEx
             {
                 treeTableModel.addTreeModelListener(modelListener);
             }
+            fireTableStructureChanged();
         }
 
         @Override

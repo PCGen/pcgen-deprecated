@@ -20,11 +20,11 @@
  */
 package pcgen.gui.util.treetable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
-import pcgen.util.UnboundedArrayList;
 
 /**
  *
@@ -76,7 +76,7 @@ public class DefaultTreeTableNode extends DefaultMutableTreeNode implements Tree
 
     private void setValues(List<Object> values)
     {
-        this.data = new UnboundedArrayList<Object>(values);
+        this.data = new ArrayList<Object>(values);
     }
 
     @Override

@@ -54,11 +54,11 @@ public class DefaultTreeTableModel extends AbstractTreeTableModel
         for (int x = 0; x < tableModel.getRowCount(); x++)
         {
             TreeTableNode child = createDefaultTreeTableNode();
+            rootNode.insert(child, x);
             for (int y = 0; y < columnCount; y++)
             {
                 child.setValueAt(tableModel.getValueAt(x, y), y);
             }
-            rootNode.insert(child, x);
         }
         columnClasses = new ArrayList<Class<?>>(columnCount);
         columnNames = new ArrayList<String>(columnCount);

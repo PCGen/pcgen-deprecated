@@ -21,10 +21,10 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
-    <Component class="pcgen.gui.util.JTablePane" name="jTablePane1">
+    <Component class="pcgen.gui.util.JTreeViewPane" name="jTreeViewPane1">
       <Properties>
-        <Property name="model" type="pcgen.gui.util.table.SortableTableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="getTableModel()" type="code"/>
+        <Property name="treeViewModel" type="pcgen.gui.util.treeview.TreeViewModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new DateModel()" type="code"/>
         </Property>
       </Properties>
       <Constraints>

@@ -5,6 +5,8 @@
  */
 package pcgen.gui.util.treeview;
 
+import pcgen.gui.util.event.TreeViewModelListener;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,8 +16,16 @@ import java.util.List;
 public interface TreeViewModel<E>
 {
 
+    void addTreeViewModelListener(TreeViewModelListener<E> listener);
+
+    void removeTreeViewModelListener(TreeViewModelListener<E> listener);
+
     List<? extends TreeView<E>> getTreeViews();
 
+    int getStartingIndex();
+
     DataView<E> getDataView();
+
+    Collection<E> getData();
 
 }

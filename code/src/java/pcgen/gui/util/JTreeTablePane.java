@@ -1,5 +1,5 @@
 /*
- * DataView.java
+ * JTreeTablePane.java
  * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,21 +16,45 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 14, 2008, 4:17:32 PM
+ * Created on Feb 29, 2008, 12:56:51 AM
  */
-package pcgen.gui.util.treeview;
+package pcgen.gui.util;
 
-import java.util.List;
+import pcgen.gui.util.table.SortableTableModel;
+import pcgen.gui.util.treetable.TreeTableModel;
 
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public interface DataView<E>
+public class JTreeTablePane extends JTablePane
 {
 
-    List<?> getData(E obj);
+    public JTreeTablePane()
+    {
+        this(null);
+    }
 
-    List<? extends DataViewColumn> getDataColumns();
+    public JTreeTablePane(TreeTableModel model)
+    {
+        super(new JTreeTable(model));
+    }
+
+    @Override
+    protected JTreeTable getTable()
+    {
+        return (JTreeTable) super.getTable();
+    }
+
+    @Override
+    public void setModel(SortableTableModel model)
+    {
+        //TODO: log something
+    }
+
+    public void setTreeTableModel(TreeTableModel model)
+    {
+        getTable().setTreeTableModel(model);
+    }
 
 }

@@ -5,20 +5,34 @@
  */
 package pcgen.gui.proto.editor;
 
-import javax.swing.table.TableModel;
-import pcgen.gui.util.JTablePane;
-import pcgen.gui.util.panes.SpinningTabbedPane;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
+import pcgen.gui.util.treetable.DefaultSortableTreeTableModel;
+import pcgen.gui.util.treeview.AbstractTreeViewModel;
+import pcgen.gui.util.treeview.DataView;
+import pcgen.gui.util.treeview.DataViewColumn;
+import pcgen.gui.util.treeview.DefaultDataViewColumn;
+import pcgen.gui.util.treeview.TreeView;
+import pcgen.gui.util.treeview.TreeViewModel;
+import pcgen.gui.util.treeview.TreeViewPath;
 
 /**
  *
  * @author  Connor Petty <mistercpp2000@gmail.com>
  */
-public class PlayerCharacterEditor extends javax.swing.JFrame {
+public class PlayerCharacterEditor extends javax.swing.JFrame
+{
 
     /** Creates new form PlayerCharacterEditor */
-    public PlayerCharacterEditor() {
+    public PlayerCharacterEditor()
+    {
         initComponents();
     }
 
@@ -30,42 +44,188 @@ public class PlayerCharacterEditor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTablePane1 = new pcgen.gui.util.JTablePane();
+        jTreeViewPane1 = new pcgen.gui.util.JTreeViewPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTablePane1.setModel(getTableModel());
-        getContentPane().add(jTablePane1, java.awt.BorderLayout.CENTER);
+        jTreeViewPane1.setTreeViewModel(new DateModel());
+        getContentPane().add(jTreeViewPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    public static void main(String args[])
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+                                {
 
-            public void run() {
-                new PlayerCharacterEditor().setVisible(true);
-            }
-        });
+                                    public void run()
+                                    {
+                                        new PlayerCharacterEditor().setVisible(true);
+                                    }
+
+                                });
     }
+
     public SortableTableModel getTableModel()
     {
         return new DefaultSortableTableModel(
-            new Object [][] {
-                {"sdfa", "tegh", "wvczs", "yuue"},
-                {"ghjd", "asdf", "trtw", "pin"},
-                {"hty", "iohf", "kjffs", "sfgj"},
-                {"dfg", "cbnc", "mnvx", "xssd"}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        );
+                new Object[][]{
+            {"sdfa",
+             "tegh",
+             "wvczs",
+             "yuue"
+    },
+            {"ghjd",
+             "asdf",
+             "trtw",
+             "pin"
+    },
+            {"hty",
+             "iohf",
+             "kjffs",
+             "sfgj"
+    },
+            {"dfg",
+             "cbnc",
+             "mnvx",
+             "xssd"
+    }
+        },
+                new String[]{
+            "Title 1",
+            "Title 2",
+            "Title 3",
+            "Title 4"
+        });
+    }
+
+    public TreeViewModel<Date> getViewModel()
+    {
+        return new DateModel();
+    }
+    private static Collection<Date> getData()
+    {
+        ArrayList<Date> list = new ArrayList<Date>();
+        Calendar cal = Calendar.getInstance();
+        cal.set(1543, 12, 9);
+        list.add(cal.getTime());
+        cal.set(1453, 4, 23);
+        list.add(cal.getTime());
+        cal.set(3734, 7, 18);
+        list.add(cal.getTime());
+        cal.set(1682, 10, 2);
+        list.add(cal.getTime());
+        cal.set(6432, 2, 2);
+        list.add(cal.getTime());
+        cal.set(1543, 9, 12);
+        list.add(cal.getTime());
+        cal.set(2345, 4, 12);
+        list.add(cal.getTime());
+        return list;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private pcgen.gui.util.JTablePane jTablePane1;
+    private pcgen.gui.util.JTreeViewPane jTreeViewPane1;
     // End of variables declaration//GEN-END:variables
-    
+    private static class DateModel extends AbstractTreeViewModel<Date>
+    {
+
+        private static List<? extends TreeView<Date>> views = Arrays.asList(DateTree.values());
+        private static DataView<Date> data = new DateView();
+
+        public DateModel()
+        {
+            super(PlayerCharacterEditor.getData());
+        }
+        public List<? extends TreeView<Date>> getTreeViews()
+        {
+            return views;
+        }
+
+        public int getStartingIndex()
+        {
+            return 0;
+        }
+
+        public DataView<Date> getDataView()
+        {
+            return data;
+        }
+
+    }
+
+    private static class DateView implements DataView<Date>
+    {
+
+        public List<?> getData(Date obj)
+        {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(obj);
+            return Arrays.asList(cal.get(Calendar.MONTH),
+                                 cal.get(Calendar.WEEK_OF_MONTH),
+                                 cal.get(Calendar.DAY_OF_WEEK));
+        }
+
+        public List<? extends DataViewColumn> getDataColumns()
+        {
+            return Arrays.asList(new DefaultDataViewColumn("Month",
+                                                           Integer.class),
+                                 new DefaultDataViewColumn("Week", Integer.class),
+                                 new DefaultDataViewColumn("Day of Week",
+                                                           Integer.class));
+        }
+
+    }
+
+    private static enum DateTree implements TreeView<Date>
+    {
+
+        TIME("Time"),
+        DAY_TIME("Day/Time"),
+        MONTH_TIME("Month/Time"),
+        MONTH_WEEK_DAY_TIME("Month/Week/Day/Time");
+        private String name;
+
+        private DateTree(String name)
+        {
+            this.name = name;
+        }
+
+        public String getViewName()
+        {
+            return name;
+        }
+
+        public List<TreeViewPath<Date>> getPaths(Date pobj)
+        {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(pobj);
+            switch (this)
+            {
+                case TIME:
+                    return Collections.singletonList(new TreeViewPath<Date>(pobj));
+                case DAY_TIME:
+                    return Collections.singletonList(new TreeViewPath<Date>(pobj,
+                                                                            "" +
+                                                                            cal.get(Calendar.DAY_OF_MONTH)));
+                case MONTH_TIME:
+                    return Collections.singletonList(new TreeViewPath<Date>(pobj,
+                                                                            "" +
+                                                                            cal.get(Calendar.MONTH)));
+                case MONTH_WEEK_DAY_TIME:
+                    return Collections.singletonList(new TreeViewPath<Date>(pobj,
+                                                                            "" +
+                                                                            cal.get(Calendar.MONTH),
+                                                                            "" +
+                                                                            cal.get(Calendar.WEEK_OF_MONTH),
+                                                                            "" +
+                                                                            cal.get(Calendar.DAY_OF_MONTH)));
+                default:
+                    return null;
+            }
+        }
+
+    }
 }

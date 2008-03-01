@@ -27,7 +27,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.table.TableColumn;
 import pcgen.gui.util.event.DynamicTableColumnModelListener;
@@ -53,7 +52,7 @@ public class JTablePane extends JScrollPane
      */
     public JTablePane()
     {
-        this(null, null, null);
+        this((SortableTableModel)null);
     }
 
     /**
@@ -62,27 +61,16 @@ public class JTablePane extends JScrollPane
      */
     public JTablePane(SortableTableModel tm)
     {
-        this(tm, null, null);
+        this(new JTableEx(tm));
     }
 
-    /**
-     * Constructor
-     * @param tm
-     * @param tcm
-     */
-    public JTablePane(SortableTableModel tm, DynamicTableColumnModel tcm)
-    {
-        this(tm, tcm, null);
-    }
-
-    private JTablePane(SortableTableModel tm, DynamicTableColumnModel tcm,
-                        ListSelectionModel lsm)
+    protected JTablePane(JTableEx table)
     {
         super(VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        setTable(new JTableEx(tm, tcm, lsm));
+        setTable(table);
         setColumnModel(createDefaultDynamicTableColumnModel());
     }
-
+    
     protected DynamicTableColumnModel createDefaultDynamicTableColumnModel()
     {
         return new DefaultDynamicTableColumnModel(table.getColumnModel(), 1);
@@ -127,6 +115,11 @@ public class JTablePane extends JScrollPane
         setViewportView(table);
     }
 
+    protected JTableEx getTable()
+    {
+        return table;
+    }
+    
     private class CornerAction extends AbstractAction
     {
 
