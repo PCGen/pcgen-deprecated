@@ -30,6 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -196,7 +197,10 @@ public class JTableEx extends JTable
 
     public void sortModel()
     {
+        TableColumnModel old = getColumnModel();
+        setColumnModel(new DefaultTableColumnModel());
         getModel().sortModel(rowComparator);
+        setColumnModel(old);
     }
 
     public List<? extends SortingPriority> getSortingPriority()

@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import pcgen.gui.util.event.TreeViewModelEvent;
@@ -164,7 +165,11 @@ public class JTreeViewPane extends JTablePane
 
         public void actionPerformed(ActionEvent e)
         {
+            //make sure that the original dynamictableModel is not changed
+            TableColumnModel old = getTable().getColumnModel();
+            getTable().setColumnModel(new DefaultTableColumnModel());
             treetableModel.setSelectedTreeView(view);
+            getTable().setColumnModel(old);
         }
 
     }

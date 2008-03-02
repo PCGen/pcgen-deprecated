@@ -129,6 +129,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
     public void sortModel(Comparator<List<?>> comparator)
     {
         viewMap.get(selectedView).sortChildren(comparator);
+        reload();
     }
 
     private final class NameViewColumn implements DataViewColumn

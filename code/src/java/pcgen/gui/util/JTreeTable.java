@@ -28,6 +28,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Enumeration;
 import java.util.EventObject;
 
 import javax.swing.CellRendererPane;
@@ -443,7 +444,13 @@ public class JTreeTable extends JTableEx
 
         public void sortModel(Comparator<List<?>> comparator)
         {
+
+            Enumeration<TreePath> paths = tree.getExpandedDescendants(new TreePath(treeTableModel.getRoot()));
             treeTableModel.sortModel(comparator);
+            while (paths.hasMoreElements())
+            {
+                tree.expandPath(paths.nextElement());
+            }
         }
 
     }
