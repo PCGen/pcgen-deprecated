@@ -20,7 +20,6 @@
  */
 package pcgen.gui.util;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -168,7 +167,9 @@ public class JTreeViewPane extends JTablePane
             //make sure that the original dynamictableModel is not changed
             TableColumnModel old = getTable().getColumnModel();
             getTable().setColumnModel(new DefaultTableColumnModel());
+            TableColumn viewColumn = old.getColumn(old.getColumnIndex(treetableModel.getSelectedTreeView().getViewName()));
             treetableModel.setSelectedTreeView(view);
+            viewColumn.setHeaderValue(view.getViewName());
             getTable().setColumnModel(old);
         }
 
