@@ -18,9 +18,10 @@
  * 
  * Created on Feb 20, 2008, 8:17:05 PM
  */
-
 package pcgen.gui.util.treetable;
 
+import java.util.Comparator;
+import java.util.List;
 import pcgen.gui.util.SortableModel;
 
 /**
@@ -29,5 +30,21 @@ import pcgen.gui.util.SortableModel;
  */
 public interface SortableTreeTableModel extends TreeTableModel, SortableModel
 {
-    
+
+    public static class TreeNodeComparator implements Comparator<TreeTableNode>
+    {
+
+        private Comparator<List<?>> comparator;
+
+        public TreeNodeComparator(Comparator<List<?>> comparator)
+        {
+            this.comparator = comparator;
+        }
+
+        public int compare(TreeTableNode o1, TreeTableNode o2)
+        {
+            return comparator.compare(o1.getValues(), o2.getValues());
+        }
+
+    }
 }

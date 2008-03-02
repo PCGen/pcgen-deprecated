@@ -128,7 +128,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     public void sortModel(Comparator<List<?>> comparator)
     {
-        viewMap.get(selectedView).sortChildren(comparator);
+        viewMap.get(selectedView).sortChildren(new TreeNodeComparator(comparator));
         reload();
     }
 
@@ -154,11 +154,13 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
 
         public TreeViewNode()
         {
-            this(0);
+            super();
+            this.level = 0;
         }
 
-        private TreeViewNode(int level)
+        private TreeViewNode(int level, List<Object> data)
         {
+            super(data);
             this.level = level;
         }
 
@@ -168,20 +170,20 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
             {
                 Object key = path.getPathComponent(level);
                 TreeViewNode node = null;
-                if (childData != null)
+                if (children != null)
                 {
-                    for (int i = 0; i < childData.size(); i++)
+                    for (int i = 0; i < children.size(); i++)
                     {
-                        if (getChildData(i).get(0).equals(key))
+                        TreeViewNode child = (TreeViewNode) children.get(i);
+                        if (child.getValueAt(0).equals(key))
                         {
-                            node = (TreeViewNode) children.get(i);
+                            node = child;
                             break;
                         }
                     }
                 }
                 if (node == null)
                 {
-                    node = new TreeViewNode(level + 1);
                     ArrayList<Object> datalist = new ArrayList<Object>(1);
                     datalist.add(key);
                     List<?> data = dataMap.get(key);
@@ -190,7 +192,8 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
                         datalist.addAll(data);
                     }
                     datalist.trimToSize();
-                    add(node, datalist);
+                    node = new TreeViewNode(level + 1, datalist);
+                    add(node);
                 }
                 node.createPath(path);
             }

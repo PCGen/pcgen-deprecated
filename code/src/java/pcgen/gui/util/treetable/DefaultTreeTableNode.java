@@ -61,11 +61,23 @@ public class DefaultTreeTableNode extends DefaultMutableTreeNode implements Tree
 
     public Object getValueAt(int column)
     {
-        return data.get(column);
+        if (data.size() > column)
+        {
+            return data.get(column);
+        }
+        return null;
     }
 
     public void setValueAt(Object value, int column)
     {
+        if (data.isEmpty())
+        {
+            data = new ArrayList<Object>(column + 1);
+        }
+        while (data.size() <= column)
+        {
+            data.add(null);
+        }
         data.set(column, value);
     }
 
@@ -74,7 +86,7 @@ public class DefaultTreeTableNode extends DefaultMutableTreeNode implements Tree
         return data;
     }
 
-    private void setValues(List<Object> values)
+    protected void setValues(List<Object> values)
     {
         this.data = new ArrayList<Object>(values);
     }
@@ -82,10 +94,13 @@ public class DefaultTreeTableNode extends DefaultMutableTreeNode implements Tree
     @Override
     public String toString()
     {
-        Object name = data.get(0);
-        if (name != null)
+        if (!data.isEmpty())
         {
-            return name.toString();
+            Object name = data.get(0);
+            if (name != null)
+            {
+                return name.toString();
+            }
         }
         return super.toString();
     }

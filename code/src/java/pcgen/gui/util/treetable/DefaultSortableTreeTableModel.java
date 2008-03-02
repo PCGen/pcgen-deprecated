@@ -42,7 +42,7 @@ public class DefaultSortableTreeTableModel extends DefaultTreeTableModel
     {
         super(root);
     }
-    
+
     public DefaultSortableTreeTableModel(TableModel model)
     {
         super(model);
@@ -67,7 +67,8 @@ public class DefaultSortableTreeTableModel extends DefaultTreeTableModel
 
     public void sortModel(Comparator<List<?>> comparator)
     {
-        ((SortableTreeTableNode) getRoot()).sortChildren(comparator);
+        ((SortableTreeTableNode) getRoot()).sortChildren(new TreeNodeComparator(comparator));
+        reload();
     }
 
 }

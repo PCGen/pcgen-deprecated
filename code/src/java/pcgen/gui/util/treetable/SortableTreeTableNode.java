@@ -21,7 +21,6 @@
 package pcgen.gui.util.treetable;
 
 import java.util.Comparator;
-import java.util.List;
 
 /**
  *
@@ -30,6 +29,6 @@ import java.util.List;
 public interface SortableTreeTableNode extends TreeTableNode
 {
 
-    public void sortChildren(Comparator<List<?>> comparator);
+    public void sortChildren(Comparator<TreeTableNode> comparator);
 
 }
