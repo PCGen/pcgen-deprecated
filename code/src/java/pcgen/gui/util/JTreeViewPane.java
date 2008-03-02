@@ -25,7 +25,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
+import javax.swing.ButtonGroup;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -92,13 +95,18 @@ public class JTreeViewPane extends JTablePane
 
                                         });
         treeviewMenu = new JPopupMenu();
-        List<? extends TreeView<?>> views = viewModel.getTreeViews();
+        ButtonGroup group = new ButtonGroup();
+        List<? extends TreeView<T>> views = viewModel.getTreeViews();
+        TreeView<T> startingView = views.get(viewModel.getStartingIndex());
         for (TreeView<?> treeview : views)
         {
-            treeviewMenu.add(new ChangeViewAction(treeview));
+            JMenuItem item = new JRadioButtonMenuItem(new ChangeViewAction(treeview));
+            item.setSelected(treeview == startingView);
+            group.add(item);
+            treeviewMenu.add(item);
         }
         model.setData(viewModel.getData());
-        model.setSelectedTreeView(viewModel.getTreeViews().get(viewModel.getStartingIndex()));
+        model.setSelectedTreeView(startingView);
         getTable().setTreeTableModel(model);
     }
 
@@ -165,12 +173,14 @@ public class JTreeViewPane extends JTablePane
         public void actionPerformed(ActionEvent e)
         {
             //make sure that the original dynamictableModel is not changed
-            TableColumnModel old = getTable().getColumnModel();
-            getTable().setColumnModel(new DefaultTableColumnModel());
+            JTreeTable table = getTable();
+            TableColumnModel old = table.getColumnModel();
+            table.setColumnModel(new DefaultTableColumnModel());
             TableColumn viewColumn = old.getColumn(old.getColumnIndex(treetableModel.getSelectedTreeView().getViewName()));
             treetableModel.setSelectedTreeView(view);
             viewColumn.setHeaderValue(view.getViewName());
-            getTable().setColumnModel(old);
+            table.setColumnModel(old);
+            table.sortModel();
         }
 
     }

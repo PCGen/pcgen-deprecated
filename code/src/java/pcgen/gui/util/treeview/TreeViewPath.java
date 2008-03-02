@@ -46,6 +46,7 @@ public class TreeViewPath<E>
 	this(new Object[]{path, pobj}, 2);
     }
 
+    @SuppressWarnings("unchecked")
     public TreeViewPath(E pobj, String... path)
     {
 	this(path, pobj);
@@ -122,6 +123,7 @@ public class TreeViewPath<E>
      * @return the Object at the end of the path
      * @see #TreePath(Object[])
      */
+    @SuppressWarnings("unchecked")
     public E getLastPathComponent()
     {
 	return (E) path[length - 1];
@@ -159,7 +161,7 @@ public class TreeViewPath<E>
 	    return false;
 	}
 
-	final TreeViewPath<E> other = (TreeViewPath<E>) obj;
+	final TreeViewPath other = (TreeViewPath) obj;
 	if (this.length != other.length)
 	{
 	    return false;

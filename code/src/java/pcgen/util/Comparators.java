@@ -28,6 +28,7 @@ import java.util.Date;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
+@SuppressWarnings("unchecked")
 public final class Comparators
 {
 

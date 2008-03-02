@@ -76,19 +76,8 @@ public class JTreeTable extends JTableEx
     private TreeTableCellRenderer tree;
     private TreeTableModelAdapter adapter;
 
-    public JTreeTable()
+    static
     {
-        this(null);
-    }
-
-    /**
-     * Constructor
-     * @param treeTableModel
-     */
-    public JTreeTable(TreeTableModel treeTableModel)
-    {
-        super();
-
         /*
         JTreeTable's event handling assumes bad things about
         mouse pressed/released that are not true on MacOS X.
@@ -104,7 +93,20 @@ public class JTreeTable extends JTableEx
         UIManager.put("TreeTableUI", "javax.swing.plaf.metal.MetalTreeUI"); //$NON-NLS-1$ //$NON-NLS-2$
         UIManager.put("Tree.leftChildIndent", Integer.valueOf(3)); //$NON-NLS-1$
         UIManager.put("Tree.rightChildIndent", Integer.valueOf(8)); //$NON-NLS-1$
+    }
 
+    public JTreeTable()
+    {
+        this(null);
+    }
+
+    /**
+     * Constructor
+     * @param treeTableModel
+     */
+    public JTreeTable(TreeTableModel treeTableModel)
+    {
+        super();
         tree = new TreeTableCellRenderer();
         tree.setRootVisible(false);
         adapter = new TreeTableModelAdapter(tree);
@@ -444,13 +446,14 @@ public class JTreeTable extends JTableEx
 
         public void sortModel(Comparator<List<?>> comparator)
         {
-
             Enumeration<TreePath> paths = tree.getExpandedDescendants(new TreePath(treeTableModel.getRoot()));
+            TreePath[] selectionPaths = tree.getSelectionPaths();
             treeTableModel.sortModel(comparator);
             while (paths.hasMoreElements())
             {
                 tree.expandPath(paths.nextElement());
             }
+            tree.setSelectionPaths(selectionPaths);
         }
 
     }

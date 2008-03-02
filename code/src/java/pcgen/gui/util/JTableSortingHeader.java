@@ -33,6 +33,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.table.TableColumn;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -132,7 +133,8 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener
 
     public void mouseClicked(MouseEvent e)
     {
-        if (getCursor() == Cursor.getDefaultCursor())
+        if (SwingUtilities.isLeftMouseButton(e) && getCursor() ==
+                Cursor.getDefaultCursor())
         {
             getTable().toggleSort(getTrackedColumn().getModelIndex());
             usedModel.setPressed(false);
@@ -142,13 +144,19 @@ public class JTableSortingHeader extends JTableHeader implements MouseListener
 
     public void mousePressed(MouseEvent e)
     {
-        usedModel.setPressed(true);
-        repaint();
+        if (SwingUtilities.isLeftMouseButton(e))
+        {
+            usedModel.setPressed(true);
+            repaint();
+        }
     }
 
     public void mouseReleased(MouseEvent e)
     {
-        usedModel.setPressed(false);
+        if (SwingUtilities.isLeftMouseButton(e))
+        {
+            usedModel.setPressed(false);
+        }
     }
 
     public void mouseEntered(MouseEvent e)

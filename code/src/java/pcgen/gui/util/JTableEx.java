@@ -100,37 +100,6 @@ public class JTableEx extends JTable
     }
 
     @Override
-    public void createDefaultColumnsFromModel()
-    {
-        TableModel m = getModel();
-        if (m != null)
-        {
-            // Remove any current columns
-            TableColumnModel cm = getColumnModel();
-            if (cm instanceof DynamicTableColumnModel)
-            {
-                DynamicTableColumnModel dm = (DynamicTableColumnModel) cm;
-                TableColumn[] columns = dm.getAvailableColumns().toArray(new TableColumn[0]);
-                for (TableColumn column : columns)
-                {
-                    dm.removeColumn(column);
-                }
-            }
-            while (cm.getColumnCount() > 0)
-            {
-                cm.removeColumn(cm.getColumn(0));
-            }
-
-            // Create new columns from the data model info
-            for (int i = 0; i < m.getColumnCount(); i++)
-            {
-                TableColumn newColumn = new TableColumn(i);
-                addColumn(newColumn);
-            }
-        }
-    }
-
-    @Override
     public void setModel(TableModel model)
     {
         if (!(model instanceof SortableTableModel))

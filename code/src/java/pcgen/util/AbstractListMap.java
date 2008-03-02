@@ -110,7 +110,7 @@ public abstract class AbstractListMap<K, V, L extends List<V>>
 	{
 	    return false;
 	}
-	remove((K)key, index);
+	remove(key, index);
 	return true;
     }
 
