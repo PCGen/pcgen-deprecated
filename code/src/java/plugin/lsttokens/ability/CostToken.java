@@ -52,14 +52,8 @@ public class CostToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbility>
 	{
 		try
 		{
-			BigDecimal cost = new BigDecimal(value);
-			if (cost.compareTo(BigDecimal.ZERO) < 0)
-			{
-				Logging.errorPrint(getTokenName()
-					+ " must be a positive number: " + value);
-				return false;
-			}
-			context.getObjectContext().put(ability, ObjectKey.COST, cost);
+			context.getObjectContext().put(ability, ObjectKey.COST,
+					new BigDecimal(value));
 			return true;
 		}
 		catch (NumberFormatException e)
