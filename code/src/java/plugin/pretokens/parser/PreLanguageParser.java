@@ -69,7 +69,6 @@ public class PreLanguageParser extends AbstractPrerequisiteListParser implements
 		{
 			for (Prerequisite element : prereq.getPrerequisites())
 			{
-				element.setOperator(PrerequisiteOperator.EQ);
 				if (element.getKey().equalsIgnoreCase("ANY"))
 				{
 					element.setCountMultiples(true);

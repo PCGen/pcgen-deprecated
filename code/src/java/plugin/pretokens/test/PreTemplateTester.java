@@ -69,6 +69,7 @@ public class PreTemplateTester extends AbstractPrerequisiteTest implements
 
 		if (!character.getTemplateList().isEmpty())
 		{
+
 			String templateKey = prereq.getKey().toUpperCase();
 			final int wildCard = templateKey.indexOf('%');
 			//handle wildcards (always assume they end the line)

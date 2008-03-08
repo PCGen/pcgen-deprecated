@@ -28,14 +28,14 @@
  */
 package plugin.pretokens.writer;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.output.prereq.AbstractPrerequisiteWriter;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriterInterface;
-
-import java.io.IOException;
-import java.io.Writer;
 
 public class PreDeityWriter extends AbstractPrerequisiteWriter implements
 		PrerequisiteWriterInterface
@@ -54,9 +54,8 @@ public class PreDeityWriter extends AbstractPrerequisiteWriter implements
 	 */
 	public PrerequisiteOperator[] operatorsHandled()
 	{
-		return new PrerequisiteOperator[]{PrerequisiteOperator.EQ,
-			PrerequisiteOperator.GTEQ, PrerequisiteOperator.LT,
-			PrerequisiteOperator.NEQ};
+		return new PrerequisiteOperator[] { PrerequisiteOperator.GTEQ,
+				PrerequisiteOperator.LT };
 	}
 
 	/* (non-Javadoc)
@@ -86,4 +85,30 @@ public class PreDeityWriter extends AbstractPrerequisiteWriter implements
 		}
 	}
 
+
+	@Override
+	public boolean specialCase(Writer writer, Prerequisite prereq)
+			throws IOException
+	{
+		PrerequisiteOperator po = getConsolidateMethod(kindHandled(), prereq, false);
+		if (po == null)
+		{
+			return false;
+		}
+		if (!po.equals(prereq.getOperator()))
+		{
+			writer.write('!');
+		}
+
+		writer.write("PRE" + kindHandled().toUpperCase() + ":"
+				+ (prereq.isOverrideQualify() ? "Q:" : ""));
+		writer.write(po.equals(PrerequisiteOperator.GTEQ) ? prereq.getOperand()
+				: "1");
+		for (Prerequisite p : prereq.getPrerequisites())
+		{
+			writer.write(',');
+			writer.write(p.getKey());
+		}
+		return true;
+	}
 }
