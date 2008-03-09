@@ -19,7 +19,7 @@
  */
 package pcgen.base.graph.core;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -69,12 +69,12 @@ public interface DirectionalEdge<N> extends Edge<N>
 	 * 
 	 * @return A List of the Source Nodes of this DirectionalEdge
 	 */
-	public List<N> getSourceNodes();
+	public Set<N> getSourceNodes();
 
 	/**
 	 * Returns a List of the Sink Nodes of this DirectionalEdge.
 	 * 
 	 * @return A List of the Sink Nodes of this DirectionalEdge
 	 */
-	public List<N> getSinkNodes();
+	public Set<N> getSinkNodes();
 }

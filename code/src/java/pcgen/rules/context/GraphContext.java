@@ -43,7 +43,7 @@ import pcgen.util.MapToList;
 public class GraphContext
 {
 
-	private final TrackingGraphCommitStrategy edits =
+	private static final TrackingGraphCommitStrategy edits =
 			new TrackingGraphCommitStrategy();
 
 	private final GraphCommitStrategy commit;
@@ -170,7 +170,7 @@ public class GraphContext
 		return commit.getChangesFromToken(tokenName, pct, name);
 	}
 
-	public class TrackingGraphCommitStrategy implements GraphCommitStrategy
+	public static class TrackingGraphCommitStrategy implements GraphCommitStrategy
 	{
 
 		private DoubleKeyMapToList<String, CDOMObject, URI> globalRemoveSet =

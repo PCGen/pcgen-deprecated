@@ -19,12 +19,14 @@
  */
 package pcgen.base.graph.core;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import pcgen.base.util.ListSet;
+import pcgen.util.SharedHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -77,7 +79,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	/**
 	 * The List of nodes contained in this Graph.
 	 */
-	private final List<N> nodeList;
+	private final ListSet<N> nodeList;
 
 	/**
 	 * The List of edges contained in this Graph. An edge must be connected to a
@@ -85,7 +87,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * whether this addition is done implicitly by addEdge [it is in
 	 * AbstractListMapGraph] or whether it is explicit).
 	 */
-	private final List<ET> edgeList;
+	private final ListSet<ET> edgeList;
 
 	/**
 	 * A Map indicating which nodes are connected to which edges. This is
@@ -107,8 +109,8 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	public AbstractListMapGraph()
 	{
 		super();
-		edgeList = new ArrayList<ET>();
-		nodeList = new ArrayList<N>();
+		edgeList = new ListSet<ET>();
+		nodeList = new ListSet<N>();
 		gcs = new GraphChangeSupport<N, ET>(this);
 		nodeEdgeMap = new HashMap<N, Set<ET>>();
 	}
@@ -234,11 +236,11 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * .hashCode() method) for AbstractListMapGraph to maintain proper
 	 * operation.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getNodeList()
+	 * @see pcgen.base.graph.core.Graph#getNodes()
 	 */
-	public List<N> getNodeList()
+	public Set<N> getNodes()
 	{
-		return new ArrayList<N>(nodeList);
+		return new SharedHashSet<N>(nodeList);
 	}
 
 	/**
@@ -250,11 +252,11 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * modification of the returned Edges will modify the Edges contained within
 	 * the AbstractListMapGraph.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getEdgeList()
+	 * @see pcgen.base.graph.core.Graph#getEdges()
 	 */
-	public List<ET> getEdgeList()
+	public Set<ET> getEdges()
 	{
-		return new ArrayList<ET>(edgeList);
+		return new SharedHashSet<ET>(edgeList);
 	}
 
 	/**
@@ -353,7 +355,9 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	{
 		// implicitly returns null if gn is not in the nodeEdgeMap
 		Set<ET> s = nodeEdgeMap.get(gn);
-		return s == null ? null : new HashSet<ET>(s);
+                if(s == null)
+                    return Collections.emptySet();
+                return new SharedHashSet<ET>(s);
 	}
 
 	/**
@@ -412,7 +416,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		Graph<N, ET> otherGraph = (Graph<N, ET>) other;
-		List<N> otherNodeList = otherGraph.getNodeList();
+		Set<N> otherNodeList = otherGraph.getNodes();
 		int thisNodeSize = nodeList.size();
 		if (thisNodeSize != otherNodeList.size())
 		{
@@ -420,7 +424,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherNodeList = new ArrayList<N>(otherNodeList);
+		otherNodeList = new HashSet<N>(otherNodeList);
 		if (otherNodeList.retainAll(nodeList))
 		{
 			// Some nodes are not identical
@@ -430,7 +434,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// Here, the node lists are identical...
-		List<ET> otherEdgeList = otherGraph.getEdgeList();
+		Set<ET> otherEdgeList = otherGraph.getEdges();
 		int thisEdgeSize = edgeList.size();
 		if (thisEdgeSize != otherEdgeList.size())
 		{
@@ -438,7 +442,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherEdgeList = new ArrayList<ET>(otherEdgeList);
+		otherEdgeList = new HashSet<ET>(otherEdgeList);
 		if (otherEdgeList.retainAll(edgeList))
 		{
 			// Other Graph contains extra edges

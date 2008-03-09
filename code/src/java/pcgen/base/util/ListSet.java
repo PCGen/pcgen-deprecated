@@ -19,7 +19,7 @@
  */
 package pcgen.base.util;
 
-import java.util.AbstractSet;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -33,7 +33,7 @@ import java.util.Set;
  * Set. This is most useful to minimize the memory footprint for very small sets
  * where search time will not be a concern.
  */
-public class ListSet<T> extends AbstractSet<T> implements Set<T>
+public class ListSet<T> extends AbstractList<T> implements Set<T>
 {
 
 	/**
@@ -245,4 +245,11 @@ public class ListSet<T> extends AbstractSet<T> implements Set<T>
 		}
 		return false;
 	}
+
+    @Override
+    public T get(int index)
+    {
+        return list.get(index);
+    }
+
 }

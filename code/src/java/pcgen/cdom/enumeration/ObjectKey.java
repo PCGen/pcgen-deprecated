@@ -43,13 +43,13 @@ import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.CDOMAlignment;
 import pcgen.cdom.inst.CDOMArmorProf;
+import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMShieldProf;
 import pcgen.cdom.inst.CDOMSizeAdjustment;
 import pcgen.cdom.inst.CDOMStat;
 import pcgen.cdom.inst.CDOMWeaponProf;
-import pcgen.core.Deity;
 import pcgen.util.enumeration.DefaultTriState;
 import pcgen.util.enumeration.Load;
 import pcgen.util.enumeration.Visibility;
@@ -186,7 +186,7 @@ public final class ObjectKey<T>
 
 	public static final ObjectKey<Boolean> CASTER_WITHOUT_SPELL_STAT = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<Deity> DEITY = new ObjectKey<Deity>();
+	public static final ObjectKey<CDOMDeity> DEITY = new ObjectKey<CDOMDeity>();
 
 	public static final ObjectKey<Boolean> IS_DEFAULT = new ObjectKey<Boolean>();
 

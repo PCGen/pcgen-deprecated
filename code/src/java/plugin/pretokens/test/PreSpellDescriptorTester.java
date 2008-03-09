@@ -109,7 +109,7 @@ public class PreSpellDescriptorTester extends AbstractPrerequisiteTest
 			List<SpellDescriptor> descrList = s.getListFor(ListKey.SPELL_DESCRIPTOR);
 			if (descrList != null && descrList.contains(descr))
 			{
-				List<PCGraphEdge> assocEdges = activeGraph.getInwardEdgeList(s);
+				Set<PCGraphEdge> assocEdges = activeGraph.getInwardEdgeSet(s);
 				for (PCGraphEdge edge : assocEdges)
 				{
 					if (edge.getAssociation(AssociationKey.SPELL_LEVEL)

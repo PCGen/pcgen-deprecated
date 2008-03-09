@@ -19,19 +19,14 @@ package plugin.qualifier.stat;
 
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
 
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMStat;
 import pcgen.character.CharacterDataStore;
-import pcgen.rules.context.LoadContext;
-import pcgen.rules.persistence.token.ChooseLstQualifierToken;
-import pcgen.util.Logging;
+import plugin.qualifier.AbstractQualifierToken;
 
-public class RemoveToken implements ChooseLstQualifierToken<CDOMStat>
+public class RemoveToken extends AbstractQualifierToken<CDOMStat>
 {
-	private PrimitiveChoiceFilter<CDOMStat> pcs = null;
-
+	
 	public String getTokenName()
 	{
 		return "REMOVE";
@@ -56,33 +51,5 @@ public class RemoveToken implements ChooseLstQualifierToken<CDOMStat>
 			}
 		}
 		return stats;
-	}
-
-	public String getLSTformat()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName());
-		if (pcs != null)
-		{
-			sb.append('[').append(pcs.getLSTformat()).append(']');
-		}
-		return sb.toString();
-	}
-
-	public boolean initialize(LoadContext context, Class<CDOMStat> cl, String condition, String value)
-	{
-		if (condition != null)
-		{
-			Logging.addParseMessage(Level.SEVERE, "Cannot make "
-					+ getTokenName()
-					+ " into a conditional Qualifier, remove =");
-			return false;
-		}
-		if (value != null)
-		{
-			pcs = context.getPrimitiveChoiceFilter(cl, value);
-			return pcs != null;
-		}
-		return true;
 	}
 }

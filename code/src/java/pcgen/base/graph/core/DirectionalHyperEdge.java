@@ -46,6 +46,7 @@ public interface DirectionalHyperEdge<N> extends DirectionalEdge<N>
 	 *            DirectionalHyperEdge
 	 * @return A Replacement DirectionalHyperEdge connected to the given Nodes
 	 */
+        @Deprecated
 	public DirectionalHyperEdge<N> createReplacementEdge(Collection<N> gn1,
 		Collection<N> gn2);
 

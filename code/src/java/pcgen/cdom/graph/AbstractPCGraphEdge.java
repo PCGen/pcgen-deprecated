@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Set;
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.ConcretePrereqObject;
@@ -164,14 +165,14 @@ public abstract class AbstractPCGraphEdge extends ConcretePrereqObject
 		return 0;
 	}
 
-	public List<PrereqObject> getSinkNodes()
+	public Set<PrereqObject> getSinkNodes()
 	{
-		return Collections.singletonList(secondNode);
+		return Collections.singleton(secondNode);
 	}
 
-	public List<PrereqObject> getSourceNodes()
+	public Set<PrereqObject> getSourceNodes()
 	{
-		return Collections.singletonList(firstNode);
+		return Collections.singleton(firstNode);
 	}
 
 	/*

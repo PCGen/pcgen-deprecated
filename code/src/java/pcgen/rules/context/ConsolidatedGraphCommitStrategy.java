@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
+import java.util.Set;
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.io.FileLocationFactory;
 import pcgen.base.util.TreeMapToList;
@@ -82,7 +83,7 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 
 	public void remove(String tokenName, CDOMObject obj, PrereqObject child)
 	{
-		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
+		Set<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeSet(obj);
 		if (outwardEdgeList != null)
 		{
 			for (PCGraphEdge edge : outwardEdgeList)
@@ -107,7 +108,7 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 
 	public void removeAll(String tokenName, CDOMObject obj)
 	{
-		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
+		Set<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeSet(obj);
 		if (outwardEdgeList != null)
 		{
 			for (PCGraphEdge edge : outwardEdgeList)
@@ -149,8 +150,8 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 			Collection<LSTWriteable> coll =
 					new WeightedCollection<LSTWriteable>(
 						TokenUtilities.WRITEABLE_SORTER);
-			List<PCGraphEdge> outwardEdgeList =
-					graph.getOutwardEdgeList(source);
+			Set<PCGraphEdge> outwardEdgeList =
+					graph.getOutwardEdgeSet(source);
 			if (outwardEdgeList == null)
 			{
 				return coll;
@@ -192,8 +193,8 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 			TreeMapToList<LSTWriteable, AssociatedPrereqObject> coll =
 					new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
 						TokenUtilities.WRITEABLE_SORTER);
-			List<PCGraphEdge> outwardEdgeList =
-					graph.getOutwardEdgeList(source);
+			Set<PCGraphEdge> outwardEdgeList =
+					graph.getOutwardEdgeSet(source);
 			if (outwardEdgeList == null)
 			{
 				return coll;
@@ -242,8 +243,8 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 
 		public boolean hasAddedItems()
 		{
-			List<PCGraphEdge> outwardEdgeList =
-					graph.getOutwardEdgeList(source);
+			Set<PCGraphEdge> outwardEdgeList =
+					graph.getOutwardEdgeSet(source);
 			if (outwardEdgeList == null)
 			{
 				return false;

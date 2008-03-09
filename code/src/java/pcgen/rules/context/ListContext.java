@@ -23,7 +23,7 @@ import pcgen.util.MapToList;
 public class ListContext
 {
 
-	private final TrackingListCommitStrategy edits = new TrackingListCommitStrategy();
+	private static final TrackingListCommitStrategy edits = new TrackingListCommitStrategy();
 
 	private final ListCommitStrategy commit;
 
@@ -264,7 +264,7 @@ public class ListContext
 		edge.setAssociation(ak, assoc.getAssociation(ak));
 	}
 
-	public class TrackingListCommitStrategy implements ListCommitStrategy
+	public static class TrackingListCommitStrategy implements ListCommitStrategy
 	{
 
 		protected class CDOMShell extends CDOMObject

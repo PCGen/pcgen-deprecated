@@ -29,6 +29,7 @@ import java.util.Collection;
  * NonDirectionalEdge places no contract on the number of Nodes to which it can
  * be connected, other than it must be greater than zero.
  */
+@Deprecated
 public interface NonDirectionalEdge<N> extends Edge<N>
 {
 	/**
@@ -45,5 +46,5 @@ public interface NonDirectionalEdge<N> extends Edge<N>
 	 * @return A 'replacement' Edge for this NonDirectionalEdge which is
 	 *         connected to the given Nodes.
 	 */
-	public NonDirectionalEdge<N> createReplacementEdge(Collection<N> gn1);
+        public NonDirectionalEdge<N> createReplacementEdge(Collection<N> gn1);
 }

@@ -18,7 +18,7 @@
 package pcgen.base.graph.visitor;
 
 import java.util.IdentityHashMap;
-import java.util.List;
+import java.util.Set;
 
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.graph.core.DirectionalGraph;
@@ -193,13 +193,13 @@ public class DirectedNodeWeightCalculation<N, ET extends DirectionalEdge<N>>
 			{
 				loopDetect = currentNodeCount;
 			}
-			for (N node : workingGraph.getNodeList())
+			for (N node : workingGraph.getNodes())
 			{
-				if (!workingGraph.getInwardEdgeList(node).isEmpty())
+				if (!workingGraph.getInwardEdgeSet(node).isEmpty())
 				{
 					continue;
 				}
-				List<ET> inEdges = relevantGraph.getInwardEdgeList(node);
+				Set<ET> inEdges = relevantGraph.getInwardEdgeSet(node);
 				int weight;
 				if (inEdges.isEmpty())
 				{
@@ -214,7 +214,7 @@ public class DirectedNodeWeightCalculation<N, ET extends DirectionalEdge<N>>
 					}
 				}
 				nodeWeightMap.put(node, Integer.valueOf(weight));
-				for (ET edge : workingGraph.getOutwardEdgeList(node))
+				for (ET edge : workingGraph.getOutwardEdgeSet(node))
 				{
 					int edgeWeight = getEdgeWeight(weight, edge);
 					edgeWeightMap.put(edge, Integer.valueOf(edgeWeight));

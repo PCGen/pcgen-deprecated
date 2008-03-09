@@ -20,19 +20,13 @@ package plugin.qualifier.skill;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMSkill;
 import pcgen.character.CharacterDataStore;
-import pcgen.rules.context.LoadContext;
-import pcgen.rules.persistence.token.ChooseLstQualifierToken;
-import pcgen.util.Logging;
+import plugin.qualifier.AbstractQualifierToken;
 
-public class NoRankToken implements ChooseLstQualifierToken<CDOMSkill>
+public class NoRankToken extends AbstractQualifierToken<CDOMSkill>
 {
-
-	private PrimitiveChoiceFilter<CDOMSkill> pcs = null;
 
 	public String getTokenName()
 	{
@@ -42,34 +36,6 @@ public class NoRankToken implements ChooseLstQualifierToken<CDOMSkill>
 	public Class<CDOMSkill> getChoiceClass()
 	{
 		return CDOMSkill.class;
-	}
-
-	public String getLSTformat()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName());
-		if (pcs != null)
-		{
-			sb.append('[').append(pcs.getLSTformat()).append(']');
-		}
-		return sb.toString();
-	}
-
-	public boolean initialize(LoadContext context, Class<CDOMSkill> cl, String condition, String value)
-	{
-		if (condition != null)
-		{
-			Logging.addParseMessage(Level.SEVERE, "Cannot make "
-					+ getTokenName()
-					+ " into a conditional Qualifier, remove =");
-			return false;
-		}
-		if (value != null)
-		{
-			pcs = context.getPrimitiveChoiceFilter(cl, value);
-			return pcs != null;
-		}
-		return true;
 	}
 
 	public Set<CDOMSkill> getSet(CharacterDataStore pc)

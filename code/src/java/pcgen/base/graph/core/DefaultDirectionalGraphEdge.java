@@ -21,6 +21,7 @@ package pcgen.base.graph.core;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -29,7 +30,7 @@ import java.util.List;
  * is an edge of a Graph which is connected to two (and only two) GraphNodes.
  */
 public class DefaultDirectionalGraphEdge<N> extends DefaultGraphEdge<N>
-		implements DirectionalEdge<N>
+		implements DirectionalGraphEdge<N>
 {
 
 	/**
@@ -94,9 +95,9 @@ public class DefaultDirectionalGraphEdge<N> extends DefaultGraphEdge<N>
 	 * 
 	 * @see pcgen.base.graph.core.DirectionalEdge#getSourceNodes()
 	 */
-	public List<N> getSinkNodes()
+	public Set<N> getSinkNodes()
 	{
-		return Collections.singletonList(getNodeAt(1));
+		return Collections.singleton(getNodeAt(1));
 	}
 
 	/**
@@ -111,9 +112,9 @@ public class DefaultDirectionalGraphEdge<N> extends DefaultGraphEdge<N>
 	 * 
 	 * @see pcgen.base.graph.core.DirectionalEdge#getSourceNodes()
 	 */
-	public List<N> getSourceNodes()
+	public Set<N> getSourceNodes()
 	{
-		return Collections.singletonList(getNodeAt(0));
+		return Collections.singleton(getNodeAt(0));
 	}
 
 }

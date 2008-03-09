@@ -142,8 +142,8 @@ public class PruneUnconnectedToNodeCommand<N, ET extends DirectionalEdge<N>>
 		 * Must copy the arrays, because we are going to mutate them, and they
 		 * are not guaranteed to be value semantic by the Graph Interface
 		 */
-		List<ET> edgeList = new ArrayList<ET>(graph.getEdgeList());
-		List<N> nodeList = new ArrayList<N>(graph.getNodeList());
+		List<ET> edgeList = new ArrayList<ET>(graph.getEdges());
+		List<N> nodeList = new ArrayList<N>(graph.getNodes());
 		edgeList.removeAll(dfta.getVisitedEdges());
 		nodeList.removeAll(dfta.getVisitedNodes());
 		/*

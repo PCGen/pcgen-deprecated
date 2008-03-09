@@ -21,12 +21,15 @@
 package pcgen.base.graph.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import pcgen.base.util.IdentityHashSet;
+import pcgen.util.SharedHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -211,11 +214,11 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 	 * Node's .hashCode() method) for AbstractIdentityEdgeMapGraph to maintain
 	 * proper operation.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getNodeList()
+	 * @see pcgen.base.graph.core.Graph#getNodes()
 	 */
-	public List<N> getNodeList()
+	public Set<N> getNodes()
 	{
-		return new ArrayList<N>(nodeMap.keySet());
+		return new SharedHashSet<N>(nodeMap.keySet());
 	}
 
 	/**
@@ -227,11 +230,11 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 	 * are returned BY REFERENCE, and modification of the returned Edges will
 	 * modify the Edges contained within the AbstractIdentityEdgeMapGraph.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getEdgeList()
+	 * @see pcgen.base.graph.core.Graph#getEdges()
 	 */
-	public List<ET> getEdgeList()
+	public Set<ET> getEdges()
 	{
-		return new ArrayList<ET>(edgeSet);
+		return new SharedHashSet<ET>(edgeSet);
 	}
 
 	/**
@@ -329,11 +332,13 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 	 * 
 	 * @see pcgen.base.graph.core.Graph#getAdjacentEdges(java.lang.Object)
 	 */
-	public List<ET> getAdjacentEdges(N gn)
+	public Set<ET> getAdjacentEdges(N gn)
 	{
 		// implicitly returns null if gn is not in the nodeEdgeMap
 		Set<ET> s = nodeEdgeMap.get(gn);
-		return s == null ? null : new ArrayList<ET>(s);
+                if(s == null)
+                    return Collections.emptySet();
+                return new SharedHashSet<ET>(s);
 	}
 
 	/**
@@ -392,7 +397,7 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 			return false;
 		}
 		Graph<N, ET> otherGraph = (Graph<N, ET>) other;
-		List<N> otherNodeList = otherGraph.getNodeList();
+		Set<N> otherNodeList = otherGraph.getNodes();
 		int thisNodeSize = nodeMap.size();
 		if (thisNodeSize != otherNodeList.size())
 		{
@@ -402,7 +407,7 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherNodeList = new ArrayList<N>(otherNodeList);
+		otherNodeList = new HashSet<N>(otherNodeList);
 		if (otherNodeList.retainAll(nodeMap.keySet()))
 		{
 			// Some nodes are not identical
@@ -416,7 +421,7 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 				System.err.println("1- " + o.hashCode() + " " + o);
 			}
 			System.err.println("?!?");
-			ArrayList<N> al2 = new ArrayList<N>(otherGraph.getNodeList());
+			ArrayList<N> al2 = new ArrayList<N>(otherGraph.getNodes());
 			al2.removeAll(otherNodeList);
 			for (Object o : al2)
 			{
@@ -432,7 +437,7 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 			return false;
 		}
 		// Here, the node lists are identical...
-		List<ET> otherEdgeList = otherGraph.getEdgeList();
+		Set<ET> otherEdgeList = otherGraph.getEdges();
 		int thisEdgeSize = edgeSet.size();
 		if (thisEdgeSize != otherEdgeList.size())
 		{
@@ -442,7 +447,7 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherEdgeList = new ArrayList<ET>(otherEdgeList);
+		otherEdgeList = new HashSet<ET>(otherEdgeList);
 		if (otherEdgeList.retainAll(edgeSet))
 		{
 			// Other Graph contains extra edges
