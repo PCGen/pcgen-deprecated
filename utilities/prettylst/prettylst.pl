@@ -1785,6 +1785,7 @@ my %master_order = (
         'MEMORIZE',
         'KNOWNSPELLS',
         'SPELLBOOK',
+        'HASSPELLFORMULA',         # [ 1893279 ] HASSPELLFORMULA Class Line tag
         'HASSUBCLASS',
         'ALLOWBASECLASS',
         'HASSUBSTITUTIONLEVEL',
@@ -3890,7 +3891,6 @@ my %tagheader = (
         'HANDS'                 => 'Nb Hands',
         'HASSUBCLASS'           => 'Subclass?',
         'ALLOWBASECLASS'        => 'Base class as subclass?',
-        'HASSUBSTITUTIONLEVEL'  => 'Substitution levels?',
         'HD'                    => 'Hit Dice',
         'HEIGHT'                => 'Height',
         'HITDIE'                => 'Hit Dice Size',
@@ -4104,15 +4104,17 @@ my %tagheader = (
     },
 
     'CLASS' => {
-        '000ClassName'  => '# Class Name',
-        'ABB'           => 'Abbreviation',
-        'ITEMCREATE'    => 'Craft Level Mult.',
-        'LEVELSPERFEAT' => 'Levels per Feat',
-        'MODTOSKILLS'   => 'Add INT to Skill Points?',
-        'MONNONSKILLHD' => 'Extra Hit Die Skills Limit',
-        'MULTIPREREQS'  => 'MULTIPREREQS',
-        'SPECIALS'      => 'Class Special Ability',
-        'DEITY'         => 'Deities allowed',
+        '000ClassName'          => '# Class Name',
+        'ABB'                   => 'Abbreviation',
+        'HASSUBSTITUTIONLEVEL'  => 'Substitution levels?',
+        'HASSPELLFORMULA'       => 'Spell Fomulas?',         # [ 1893279 ] HASSPELLFORMULA Class Line tag
+        'ITEMCREATE'            => 'Craft Level Mult.',
+        'LEVELSPERFEAT'         => 'Levels per Feat',
+        'MODTOSKILLS'           => 'Add INT to Skill Points?',
+        'MONNONSKILLHD'         => 'Extra Hit Die Skills Limit',
+        'MULTIPREREQS'          => 'MULTIPREREQS',
+        'SPECIALS'              => 'Class Special Ability',
+        'DEITY'                 => 'Deities allowed',
     },
 
     'CLASS Level' => {
@@ -12621,6 +12623,7 @@ BEGIN {
                         KNOWNSPELLS                 => 1,
                         KNOWNSPELLSFROMSPECIALTY    => 1,
                         MEMORIZE                    => 1,
+                        HASSPELLFORMULA             => 1, # [ 1893279 ] HASSPELLFORMULA Class Line tag
                         PROHIBITED                  => 1,
                         SPELLBOOK                   => 1,
                         SPELLLEVEL                  => 1,
@@ -14655,6 +14658,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1893279 ] HASSPELLFORMULA Class Line tag
 
 [ 1805245 ] NATURALATTACKS allowed more than once in RACE
 
