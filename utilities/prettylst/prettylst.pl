@@ -1747,6 +1747,7 @@ my %master_order = (
         'TEMPDESC',
         'SPELLLEVEL:CLASS:*',
         'SPELLLEVEL:DOMAIN:*',
+        'UNENCUMBEREDMOVE',
     ],
 
     'BIOSET AGESET' => [
@@ -1876,6 +1877,7 @@ my %master_order = (
         'MONNONSKILLHD:*',
         'SPELLLEVEL:CLASS',
         'SPELLLEVEL:DOMAIN',
+        'UNENCUMBEREDMOVE',
     ],
 
     'CLASS Level' => [
@@ -1980,6 +1982,7 @@ my %master_order = (
         'SPELLLEVEL:DOMAIN',
         'SPELLLIST',
         'NATURALATTACKS',
+        'UNENCUMBEREDMOVE',
     ],
 
     'COMPANIONMOD' => [
@@ -2118,6 +2121,7 @@ my %master_order = (
         'SA:*',
         'SAB:.CLEAR',
         'SAB:*',
+        'UNENCUMBEREDMOVE',
     ],
 
     'DOMAIN' => [
@@ -2198,6 +2202,7 @@ my %master_order = (
         'DESCISPI',
         'DESC',
         'SPELLLEVEL:DOMAIN',
+        'UNENCUMBEREDMOVE',
     ],
 
     'EQUIPMENT' => [
@@ -2310,6 +2315,7 @@ my %master_order = (
         'AUTO:WEAPONPROF',
         'ADD:SPELLCASTER',
         'DESC',
+        'UNENCUMBEREDMOVE',
     ],
 
     'EQUIPMOD' => [
@@ -2396,6 +2402,7 @@ my %master_order = (
         'SPELLS:*',
         'RATEOFFIRE',
         'AUTO:EQUIP',
+        'UNENCUMBEREDMOVE',
     ],
 
     'FEAT' => [
@@ -2511,6 +2518,7 @@ my %master_order = (
         'TEMPDESC',
         'SPELLLEVEL:CLASS:*',
         'SPELLLEVEL:DOMAIN:*',
+        'UNENCUMBEREDMOVE',
     ],
 
     'KIT ALIGN' => [
@@ -3004,6 +3012,7 @@ my %master_order = (
         'CSKILL:.CLEAR',
         'CSKILL',
         'ADDDOMAINS',
+        'UNENCUMBEREDMOVE',
         'SOURCEPAGE',
     ],
 
@@ -3037,6 +3046,7 @@ my %master_order = (
         'CSKILL:.CLEAR',
         'CSKILL',
         'ADDDOMAINS',
+        'UNENCUMBEREDMOVE',
         'SOURCEPAGE',
     ],
 
@@ -3126,6 +3136,7 @@ my %master_order = (
         'SUBCLASS',
         'SPELLLIST',
         'NATURALATTACKS',
+        'UNENCUMBEREDMOVE',
     ],
 
     'SUBSTITUTIONLEVEL' => [
@@ -3216,6 +3227,7 @@ my %master_order = (
         'SUBCLASS',
         'SPELLLIST',
         'NATURALATTACKS',
+        'UNENCUMBEREDMOVE',
     ],
 
     'SWITCHRACE' => [
@@ -3345,6 +3357,7 @@ my %master_order = (
         'ADD:SPELLCASTER',
         'HANDS',
         'NATURALATTACKS:*',
+        'UNENCUMBEREDMOVE',
         'TEMPDESC',
     ],
 
@@ -14658,6 +14671,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1893278 ] UNENCUMBEREDMOVE is a global tag
 
 [ 1893279 ] HASSPELLFORMULA Class Line tag
 
