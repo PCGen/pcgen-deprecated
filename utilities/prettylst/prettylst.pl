@@ -195,8 +195,9 @@ my %conversion_enable =
      'ALL:Fix Common Extended ASCII'      => 0, #[1324519 ] ASCII characters
      'ALL:Weaponauto simple conversion'   => 0, #[ 1223873 ] WEAPONAUTO is no longer valid
      'DEITY:Followeralign conversion'     => 0, #[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
-       'ALL:ADD Syntax Fix'                 => 0,               #[1678577 ] ADD: syntax no longer uses parens
-       'ALL:PRESPELLTYPE Syntax'            => 0,               #[1678570 ] Correct PRESPELLTYPE syntax
+     'ALL:ADD Syntax Fix'                 => 0,               #[1678577 ] ADD: syntax no longer uses parens
+     'ALL:PRESPELLTYPE Syntax'            => 0,               #[1678570 ] Correct PRESPELLTYPE syntax
+     'ALL:Convert ADD:SA to ADD:SAB'      => 0,               #[ 1864711 ] Convert ADD:SA to ADD:SAB
 
 );
 
@@ -340,11 +341,13 @@ $logging = Ewarn->new(warning_level=>$cl_options{warning_level});
 
 #####################################
 # Convertion options
-
 if ( $cl_options{convert} ) {
-    if ( $cl_options{convert} eq 'RACETYPE' ) {
+	if ( $cl_options{convert} eq 'ADD:SAB' ) {
+		$conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'} = 1;
+	}
+elsif ( $cl_options{convert} eq 'RACETYPE' ) {
         $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
-    }
+}
 elsif ( $cl_options{convert} eq 'Followeralign') {
     $conversion_enable{'DEITY:Followeralign conversion'} = 1;
 }
@@ -3426,36 +3429,51 @@ my %master_order = (
 ######################## Conversion #############################
 # Tags that must be seen as valid to allow convertion.
 
+if ( $conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'} ) {
+	push @{ $master_order{'CLASS'} },         'ADD:SA';
+	push @{ $master_order{'CLASS Level'} },   'ADD:SA';
+	push @{ $master_order{'COMPANIONMOD'} },  'ADD:SA';
+	push @{ $master_order{'DEITY'} },         'ADD:SA';
+	push @{ $master_order{'DOMAIN'} },        'ADD:SA';
+	push @{ $master_order{'EQUIPMENT'} },     'ADD:SA';
+	push @{ $master_order{'EQUIPMOD'} },      'ADD:SA';
+	push @{ $master_order{'FEAT'} },          'ADD:SA';
+	push @{ $master_order{'RACE'} },          'ADD:SA';
+	push @{ $master_order{'SKILL'} },         'ADD:SA';
+	push @{ $master_order{'SUBCLASSLEVEL'} }, 'ADD:SA';
+	push @{ $master_order{'TEMPLATE'} },      'ADD:SA';
+	push @{ $master_order{'WEAPONPROF'} },    'ADD:SA';
+}
 if ( $conversion_enable{'EQUIP: ALTCRITICAL to ALTCRITMULT'} ) {
 	push @{ $master_order{'EQUIPMENT'} }, 'ALTCRITICAL';
 }
 
 if ( $conversion_enable{'BIOSET:generate the new files'} ) {
-    push @{ $master_order{'RACE'} }, 'AGE', 'HEIGHT', 'WEIGHT';
+	push @{ $master_order{'RACE'} }, 'AGE', 'HEIGHT', 'WEIGHT';
 }
 
 if ( $conversion_enable{'EQUIPMENT: remove ATTACKS'} ) {
-    push @{ $master_order{'EQUIPMENT'} }, 'ATTACKS';
+	push @{ $master_order{'EQUIPMENT'} }, 'ATTACKS';
 }
 
 if ( $conversion_enable{'PCC:GAME to GAMEMODE'} ) {
-    push @{ $master_order{'PCC'} }, 'GAME';
+	push @{ $master_order{'PCC'} }, 'GAME';
 }
 
 if ( $conversion_enable{'ALL:BONUS:MOVE convertion'} ) {
-    push @{ $master_order{'CLASS'} },         'BONUS:MOVE:*';
-    push @{ $master_order{'CLASS Level'} },   'BONUS:MOVE:*';
-    push @{ $master_order{'COMPANIONMOD'} },  'BONUS:MOVE:*';
-    push @{ $master_order{'DEITY'} },         'BONUS:MOVE:*';
-    push @{ $master_order{'DOMAIN'} },        'BONUS:MOVE:*';
-    push @{ $master_order{'EQUIPMENT'} },     'BONUS:MOVE:*';
-    push @{ $master_order{'EQUIPMOD'} },      'BONUS:MOVE:*';
-    push @{ $master_order{'FEAT'} },          'BONUS:MOVE:*';
-    push @{ $master_order{'RACE'} },          'BONUS:MOVE:*';
-    push @{ $master_order{'SKILL'} },         'BONUS:MOVE:*';
-    push @{ $master_order{'SUBCLASSLEVEL'} }, 'BONUS:MOVE:*';
-    push @{ $master_order{'TEMPLATE'} },      'BONUS:MOVE:*';
-    push @{ $master_order{'WEAPONPROF'} },    'BONUS:MOVE:*';
+	push @{ $master_order{'CLASS'} },         'BONUS:MOVE:*';
+	push @{ $master_order{'CLASS Level'} },   'BONUS:MOVE:*';
+	push @{ $master_order{'COMPANIONMOD'} },  'BONUS:MOVE:*';
+	push @{ $master_order{'DEITY'} },         'BONUS:MOVE:*';
+	push @{ $master_order{'DOMAIN'} },        'BONUS:MOVE:*';
+	push @{ $master_order{'EQUIPMENT'} },     'BONUS:MOVE:*';
+	push @{ $master_order{'EQUIPMOD'} },      'BONUS:MOVE:*';
+	push @{ $master_order{'FEAT'} },          'BONUS:MOVE:*';
+	push @{ $master_order{'RACE'} },          'BONUS:MOVE:*';
+	push @{ $master_order{'SKILL'} },         'BONUS:MOVE:*';
+	push @{ $master_order{'SUBCLASSLEVEL'} }, 'BONUS:MOVE:*';
+	push @{ $master_order{'TEMPLATE'} },      'BONUS:MOVE:*';
+	push @{ $master_order{'WEAPONPROF'} },    'BONUS:MOVE:*';
 }
 
 if ( $conversion_enable{'WEAPONPROF:No more SIZE'} ) {
@@ -3565,6 +3583,7 @@ my %token_ADD_tag = map { $_ => 1 } (
     'ADD:FORCEPOINT',
     'ADD:INIT',
     'ADD:LANGUAGE',
+    'ADD:SAB',
     'ADD:SPECIAL',
     'ADD:SPELLCASTER',
     'ADD:SKILL',
@@ -3801,6 +3820,7 @@ my %tagheader = (
         'ADD'                   => 'Add',
         'ADD:EQUIP'             => 'Choose an Equipment',
         'ADD:FEAT'              => 'Choose a Feat',
+        'ADD:SAB'               => 'Choose a Special Ability',
         'ADD:SKILL'             => 'Choose a Skill',
         'ADDDOMAINS'            => 'Additional Devine Domain',
         'ADDSPELLLEVEL'         => 'Add Spell Lvl',
@@ -11045,6 +11065,28 @@ BEGIN {
    }
 
     ##################################################################
+    # [ 1864711 ] Convert ADD:SA to ADD:SAB
+    #
+    # In most files, take ADD:SA and replace with ADD:SAB
+
+	if (   $conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'}
+		&& exists $line_ref->{'ADD:SA'}
+	) {
+		$logging->ewarn( WARNING,
+			qq{Change ADD:SA for ADD:SAB in "$line_ref->{'ADD:SA'}[0]"},
+			$file_for_error,
+			$line_for_error
+		);
+		my $satag;
+		$satag = $line_ref->{'ADD:SA'}[0];
+		$satag =~ s/ADD:SA/ADD:SAB/;
+		$line_ref->{'ADD:SAB'}[0] = $satag;
+		delete $line_ref->{'ADD:SA'};
+	}
+
+
+
+    ##################################################################
     # [ 1514765 ] Conversion to remove old defaultmonster tags
     # Gawaine42 (Richard Bowers)
     # Bonuses associated with a PREDEFAULTMONSTER:Y need to be removed
@@ -14671,6 +14713,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1864711 ] Convert ADD:SA to ADD:SAB
 
 [ 1893278 ] UNENCUMBEREDMOVE is a global tag
 
