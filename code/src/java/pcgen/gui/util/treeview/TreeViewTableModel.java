@@ -160,8 +160,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
 
         public TreeViewNode(Vector<TreeViewPath<E>> paths)
         {
-            super(null, paths);
-            this.level = 0;
+            this(0, null, paths);
         }
 
         private TreeViewNode(int level, Object name,
