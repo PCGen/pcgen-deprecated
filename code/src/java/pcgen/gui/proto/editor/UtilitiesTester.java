@@ -1,5 +1,5 @@
 /*
- * PlayerCharacterEditor.java
+ * UtilitiesTester.java
  *
  * Created on February 14, 2008, 8:31 PM
  */
@@ -27,11 +27,11 @@ import pcgen.gui.util.treeview.TreeViewPath;
  *
  * @author  Connor Petty <mistercpp2000@gmail.com>
  */
-public class PlayerCharacterEditor extends javax.swing.JFrame
+public class UtilitiesTester extends javax.swing.JFrame
 {
 
-    /** Creates new form PlayerCharacterEditor */
-    public PlayerCharacterEditor()
+    /** Creates new form UtilitiesTester */
+    public UtilitiesTester()
     {
         initComponents();
     }
@@ -63,7 +63,7 @@ public class PlayerCharacterEditor extends javax.swing.JFrame
 
                                     public void run()
                                     {
-                                        new PlayerCharacterEditor().setVisible(true);
+                                        new UtilitiesTester().setVisible(true);
                                     }
 
                                 });
@@ -137,7 +137,7 @@ public class PlayerCharacterEditor extends javax.swing.JFrame
 
         public DateModel()
         {
-            super(PlayerCharacterEditor.getData());
+            super(UtilitiesTester.getData());
         }
         public List<? extends TreeView<Date>> getTreeViews()
         {

@@ -53,8 +53,7 @@ public class CompactList<E> extends AbstractList<E>
     public CompactList(E... elements)
     {
 	list = new ArrayList<E>(elements.length);
-	for(E element : elements)
-	    list.add(element);
+        Collections.addAll(list, elements);
     }
     
     public CompactList(Collection<? extends E> c)

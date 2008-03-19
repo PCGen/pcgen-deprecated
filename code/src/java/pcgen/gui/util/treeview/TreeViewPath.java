@@ -21,7 +21,6 @@
 package pcgen.gui.util.treeview;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  *
@@ -66,9 +65,10 @@ public class TreeViewPath<E>
     {
 	if(path == null || path.length == 0 || pobjs == null || pobjs.length == 0)
             throw new IllegalArgumentException("path in TreePath must be non null and not empty.");
-	List list = Arrays.asList(path, pobjs);
-	this.path = list.toArray();
-	this.length = list.size();
+        this.length = path.length+pobjs.length;
+        this.path = new Object[length];
+        System.arraycopy(path, 0, this.path, 0, path.length);
+        System.arraycopy(pobjs, 0, this.path, path.length, pobjs.length);
     }
 
     private TreeViewPath(Object[] path, int length)

@@ -20,16 +20,20 @@
  */
 package pcgen.gui.util.treeview;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
+import javax.swing.JTree;
 import pcgen.gui.util.treetable.AbstractTreeTableModel;
-import pcgen.gui.util.treetable.DefaultSortableTreeTableNode;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
+import pcgen.gui.util.treetable.SortableTreeTableNode;
 import pcgen.gui.util.treetable.TreeTableNode;
+import pcgen.util.CollectionMaps;
+import pcgen.util.ListMap;
 
 /**
  *
@@ -84,14 +88,15 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
             TreeViewNode node = viewMap.get(view);
             if (node == null)
             {
-                node = new TreeViewNode();
+                Vector<TreeViewPath<E>> paths = new Vector<TreeViewPath<E>>();
                 for (E element : dataMap.keySet())
                 {
                     for (TreeViewPath<E> path : view.getPaths(element))
                     {
-                        node.createPath(path);
+                        paths.add(path);
                     }
                 }
+                node = new TreeViewNode(paths);
                 viewMap.put(view, node);
             }
             setRoot(node);
@@ -147,62 +152,119 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     }
 
-    private final class TreeViewNode extends DefaultSortableTreeTableNode
+    private final class TreeViewNode extends JTree.DynamicUtilTreeNode
+            implements SortableTreeTableNode
     {
 
         private final int level;
 
-        public TreeViewNode()
+        public TreeViewNode(Vector<TreeViewPath<E>> paths)
         {
-            super();
+            super(null, paths);
             this.level = 0;
         }
 
-        private TreeViewNode(int level, List<Object> data)
+        private TreeViewNode(int level, Object name,
+                              Vector<TreeViewPath<E>> paths)
         {
-            super(data);
+            super(name, paths);
             this.level = level;
-        }
-
-        public void createPath(TreeViewPath<E> path)
-        {
-            if (path.getPathCount() > level)
-            {
-                Object key = path.getPathComponent(level);
-                TreeViewNode node = null;
-                if (children != null)
-                {
-                    for (int i = 0; i < children.size(); i++)
-                    {
-                        TreeViewNode child = (TreeViewNode) children.get(i);
-                        if (child.getValueAt(0).equals(key))
-                        {
-                            node = child;
-                            break;
-                        }
-                    }
-                }
-                if (node == null)
-                {
-                    ArrayList<Object> datalist = new ArrayList<Object>(1);
-                    datalist.add(key);
-                    List<?> data = dataMap.get(key);
-                    if (data != null)
-                    {
-                        datalist.addAll(data);
-                    }
-                    datalist.trimToSize();
-                    node = new TreeViewNode(level + 1, datalist);
-                    add(node);
-                }
-                node.createPath(path);
-            }
         }
 
         @Override
         public int getLevel()
         {
             return level;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        protected void loadChildren()
+        {
+            loadedChildren = true;
+            if (childValue != null)
+            {
+                ListMap<Object, TreeViewPath<E>, Vector<TreeViewPath<E>>> vectorMap = CollectionMaps.createListMap(HashMap.class,
+                                                                                                                   Vector.class);
+                Vector<TreeViewPath<E>> vector = (Vector<TreeViewPath<E>>) childValue;
+                for (TreeViewPath<E> path : vector)
+                {
+                    if (path.getPathCount() > level)
+                    {
+                        Object key = path.getPathComponent(level);
+                        vectorMap.add(key, path);
+                    }
+                }
+                for (Object key : vectorMap.keySet())
+                {
+                    vector = vectorMap.get(key);
+                    TreeViewNode child;
+                    if (vector.size() == 1 &&
+                            vector.firstElement().getPathCount() <= level + 1)
+                    {
+                        child = new TreeViewNode(level + 1, key, null);
+                    }
+                    else
+                    {
+                        child = new TreeViewNode(level + 1, key, vector);
+                    }
+                    add(child);
+                }
+                childValue = null;
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        public void sortChildren(Comparator<TreeTableNode> comparator)
+        {
+            if (!loadedChildren)
+            {
+                loadChildren();
+            }
+            if (children != null)
+            {
+                Collections.sort(children, comparator);
+                for (Object obj : children)
+                {
+                    TreeViewNode child = (TreeViewNode) obj;
+                    if (child.loadedChildren)
+                    {
+                        child.sortChildren(comparator);
+                    }
+                }
+            }
+        }
+
+        public List<Object> getValues()
+        {
+            Vector<Object> list = new Vector<Object>(getColumnCount());
+            list.add(userObject);
+            List<?> data = dataMap.get(userObject);
+            if (data != null)
+            {
+                list.addAll(data);
+            }
+            list.setSize(getColumnCount());
+            return list;
+        }
+
+        public Object getValueAt(int column)
+        {
+            if (column == 0)
+            {
+                return userObject;
+            }
+            List<?> data = dataMap.get(userObject);
+            if (data != null && data.size() >= column)
+            {
+                return data.get(column - 1);
+            }
+            return null;
+        }
+
+        public void setValueAt(Object value, int column)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }
