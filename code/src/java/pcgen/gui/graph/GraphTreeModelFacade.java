@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Set;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import pcgen.base.util.ListSet;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
@@ -33,7 +35,7 @@ public class GraphTreeModelFacade implements TreeModel {
 		parentClass = cl;
 		root = new RootReference(cl);
 		rootChildren = new ArrayList<PrereqObject>();
-		List<PrereqObject> list = graph.getNodeList();
+		Set<PrereqObject> list = graph.getNodes();
 		for (PrereqObject pro : list) {
 			if (parentClass.equals(pro.getClass())) {
 				rootChildren.add(pro);
@@ -116,8 +118,8 @@ public class GraphTreeModelFacade implements TreeModel {
 		if (arg0.equals(root)) {
 			return new PrimaryReference(rootChildren.get(arg1));
 		} else {
-			List<PCGraphEdge> outwardEdgeList = graph
-					.getOutwardEdgeList(((Reference) arg0).ref);
+			ListSet<PCGraphEdge> outwardEdgeList = new ListSet<PCGraphEdge>();
+                        outwardEdgeList.addAll(graph.getOutwardEdgeSet(((Reference) arg0).ref));
 			if (((Reference) arg0).ref instanceof CDOMPCClass) {
 				if (arg1 >= outwardEdgeList.size()) {
 					Collection<CDOMPCClassLevel> classLevelCollection = ((CDOMPCClass) ((Reference) arg0).ref)
@@ -129,9 +131,9 @@ public class GraphTreeModelFacade implements TreeModel {
 			}
 			PCGraphEdge edge = outwardEdgeList.get(arg1);
 			if (edge instanceof PCGraphGrantsEdge) {
-				return new Reference(edge.getSinkNodes().get(0));
+				return new Reference(edge.getSinkNodes().iterator().next());
 			} else {
-				return new SomethingReference(edge.getSinkNodes().get(0));
+				return new SomethingReference(edge.getSinkNodes().iterator().next());
 			}
 		}
 	}
@@ -149,7 +151,7 @@ public class GraphTreeModelFacade implements TreeModel {
 		if (pro instanceof CDOMPCClass) {
 			adder = ((CDOMPCClass) pro).getClassLevelCount();
 		}
-		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(pro);
+		Set<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeSet(pro);
 		return adder + (outwardEdgeList == null ? 0 : outwardEdgeList.size());
 	}
 
@@ -161,10 +163,10 @@ public class GraphTreeModelFacade implements TreeModel {
 				&& parentClass.equals(((Reference) arg0).ref.getClass())) {
 			return -1;
 		}
-		List<PCGraphEdge> list = graph
-				.getOutwardEdgeList(((Reference) arg0).ref);
+                ListSet<PCGraphEdge> list = new ListSet<PCGraphEdge>();
+		list.addAll(graph.getOutwardEdgeSet(((Reference) arg0).ref));
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getSinkNodes().get(0)
+			if (list.get(i).getSinkNodes().iterator().next()
 					.equals(((Reference) arg1).ref)) {
 				return i;
 			}
