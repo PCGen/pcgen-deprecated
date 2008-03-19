@@ -35,6 +35,23 @@ import java.util.logging.Logger;
 public final class CollectionMaps
 {
 
+    private CollectionMaps()
+    {
+    }
+
+    private static <T> T createInstance(Class<T> c)
+    {
+        try
+        {
+            return c.newInstance();
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(c.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public static <K, V, C extends Collection<V>> CollectionMap<K, V, C> createCollectionMap(Class<? extends Map> mapClass,
                                                                                                Class<C> collectionClass)
     {
@@ -42,12 +59,7 @@ public final class CollectionMaps
         {
             return new BasicCollectionMap<K, V, C>(mapClass, collectionClass);
         }
-        catch (InstantiationException ex)
-        {
-            Logger.getLogger(CollectionMaps.class.getName()).log(Level.SEVERE,
-                                                                 null, ex);
-        }
-        catch (IllegalAccessException ex)
+        catch (Exception ex)
         {
             Logger.getLogger(CollectionMaps.class.getName()).log(Level.SEVERE,
                                                                  null, ex);
@@ -62,12 +74,7 @@ public final class CollectionMaps
         {
             return new BasicListMap<K, V, C>(mapClass, listClass);
         }
-        catch (InstantiationException ex)
-        {
-            Logger.getLogger(CollectionMaps.class.getName()).log(Level.SEVERE,
-                                                                 null, ex);
-        }
-        catch (IllegalAccessException ex)
+        catch (Exception ex)
         {
             Logger.getLogger(CollectionMaps.class.getName()).log(Level.SEVERE,
                                                                  null, ex);
@@ -90,34 +97,13 @@ public final class CollectionMaps
             this.collectionClass = collectionClass;
         }
 
-        private C createInstance()
-        {
-            try
-            {
-                return collectionClass.newInstance();
-            }
-            catch (InstantiationException ex)
-            {
-                Logger.getLogger(CollectionMaps.class.getName()).log(Level.SEVERE,
-                                                                     null,
-                                                                     ex);
-            }
-            catch (IllegalAccessException ex)
-            {
-                Logger.getLogger(CollectionMaps.class.getName()).log(Level.SEVERE,
-                                                                     null,
-                                                                     ex);
-            }
-            return null;
-        }
-
         @Override
         public void add(K key, int index, V value)
         {
             C list = get(key);
             if (list == null)
             {
-                put(key, list = createInstance());
+                put(key, list = createInstance(collectionClass));
             }
             list.add(index, value);
         }
@@ -128,7 +114,7 @@ public final class CollectionMaps
             C collection = get(key);
             if (collection == null)
             {
-                put(key, collection = createInstance());
+                put(key, collection = createInstance(collectionClass));
             }
             return collection != null && collection.addAll(values);
         }
@@ -219,34 +205,13 @@ public final class CollectionMaps
             this.collectionClass = collectionClass;
         }
 
-        private C createInstance()
-        {
-            try
-            {
-                return collectionClass.newInstance();
-            }
-            catch (InstantiationException ex)
-            {
-                Logger.getLogger(CollectionMaps.class.getName()).log(Level.SEVERE,
-                                                                     null,
-                                                                     ex);
-            }
-            catch (IllegalAccessException ex)
-            {
-                Logger.getLogger(CollectionMaps.class.getName()).log(Level.SEVERE,
-                                                                     null,
-                                                                     ex);
-            }
-            return null;
-        }
-
         @Override
         public boolean add(K key, V value)
         {
             C collection = get(key);
             if (collection == null)
             {
-                put(key, collection = createInstance());
+                put(key, collection = createInstance(collectionClass));
             }
             return collection != null && collection.add(value);
         }
@@ -257,7 +222,7 @@ public final class CollectionMaps
             C collection = get(key);
             if (collection == null)
             {
-                put(key, collection = createInstance());
+                put(key, collection = createInstance(collectionClass));
             }
             return collection != null && collection.addAll(values);
         }
