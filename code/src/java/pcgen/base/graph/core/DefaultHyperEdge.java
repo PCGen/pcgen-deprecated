@@ -22,7 +22,6 @@ package pcgen.base.graph.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import pcgen.util.SharedArrayList;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -102,7 +101,7 @@ public class DefaultHyperEdge<N> implements NonDirectionalEdge<N>, HyperEdge<N>
 	 */
 	public List<N> getAdjacentNodes()
 	{
-		return new SharedArrayList<N>(nodes);
+		return new ArrayList<N>(nodes);
 	}
 
 	/**

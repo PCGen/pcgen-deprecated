@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 
 import pcgen.base.util.IdentityHashSet;
-import pcgen.util.SharedHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -218,7 +217,7 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 	 */
 	public Set<N> getNodes()
 	{
-		return new SharedHashSet<N>(nodeMap.keySet());
+		return new HashSet<N>(nodeMap.keySet());
 	}
 
 	/**
@@ -234,7 +233,7 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 	 */
 	public Set<ET> getEdges()
 	{
-		return new SharedHashSet<ET>(edgeSet);
+		return new HashSet<ET>(edgeSet);
 	}
 
 	/**
@@ -338,7 +337,7 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 		Set<ET> s = nodeEdgeMap.get(gn);
                 if(s == null)
                     return Collections.emptySet();
-                return new SharedHashSet<ET>(s);
+                return new HashSet<ET>(s);
 	}
 
 	/**

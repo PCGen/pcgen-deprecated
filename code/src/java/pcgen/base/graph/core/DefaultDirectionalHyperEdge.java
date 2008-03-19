@@ -22,10 +22,10 @@ package pcgen.base.graph.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import pcgen.base.util.ListSet;
-import pcgen.util.SharedHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -268,7 +268,7 @@ public class DefaultDirectionalHyperEdge<N> implements DirectionalHyperEdge<N>
         {
             return Collections.emptySet();
         }
-        return new SharedHashSet<N>(sinkNodes);
+        return new HashSet<N>(sinkNodes);
     }
 
     /**
@@ -289,7 +289,7 @@ public class DefaultDirectionalHyperEdge<N> implements DirectionalHyperEdge<N>
         {
             return Collections.emptySet();
         }
-        return new SharedHashSet<N>(sourceNodes);
+        return new HashSet<N>(sourceNodes);
     }
 
     /**

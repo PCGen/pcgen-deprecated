@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import pcgen.util.SharedHashSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -228,7 +227,7 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 	 */
 	public Set<N> getNodes()
 	{
-		return new SharedHashSet<N>(nodeMap.keySet());
+		return new HashSet<N>(nodeMap.keySet());
 	}
 
 	/**
@@ -244,7 +243,7 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 	 */
 	public Set<ET> getEdges()
 	{
-		return new SharedHashSet<ET>(edgeSet);
+		return new HashSet<ET>(edgeSet);
 	}
 
 	/**
