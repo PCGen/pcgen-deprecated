@@ -174,7 +174,7 @@ public class InsertEdgeCommandTest extends TestCase {
 		UndoableEdit edit = factory2.execute();
 		assertTrue(graph.containsEdge(edge2));
 		assertTrue(graph.containsNode(node3));
-		assertTrue(graph.getNodeList().contains(node3));
+		assertTrue(graph.getNodes().contains(node3));
 		assertFalse(graph.containsEdge(innocentEdge));
 		assertTrue(edit.canUndo());
 		assertFalse(edit.canRedo());

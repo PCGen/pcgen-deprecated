@@ -140,7 +140,7 @@ public class ReplaceGraphNodeCommandTest extends TestCase {
 		assertTrue(graph.containsEdge(edge3));
 		assertTrue(graph.containsEdge(edge4));
 		assertTrue(graph.containsEdge(edge5));
-		assertEquals(5, graph.getEdgeList().size());
+		assertEquals(5, graph.getEdges().size());
 		UndoableEdit edit = factory2.execute();
 		assertTrue(graph.containsNode(node3));
 		assertFalse(graph.containsNode(node4));
@@ -150,9 +150,9 @@ public class ReplaceGraphNodeCommandTest extends TestCase {
 		assertFalse(graph.containsEdge(edge2));
 		assertTrue(graph.containsEdge(edge3));
 		assertFalse(graph.containsEdge(edge4));
-		assertEquals(5, graph.getEdgeList().size());
+		assertEquals(5, graph.getEdges().size());
 		graphITER: for (Iterator<DirectionalHyperEdge<Integer>> it = graph
-				.getEdgeList().iterator(); it.hasNext();) {
+				.getEdges().iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			for (Iterator<GraphEdge> postIt = postExecution.iterator(); postIt
 					.hasNext();) {
@@ -176,7 +176,7 @@ public class ReplaceGraphNodeCommandTest extends TestCase {
 		assertTrue(graph.containsEdge(edge3));
 		assertTrue(graph.containsEdge(edge4));
 		assertTrue(graph.containsEdge(edge5));
-		assertEquals(5, graph.getEdgeList().size());
+		assertEquals(5, graph.getEdges().size());
 		assertFalse(edit.canUndo());
 		assertTrue(edit.canRedo());
 		edit.redo();
@@ -188,9 +188,9 @@ public class ReplaceGraphNodeCommandTest extends TestCase {
 		assertFalse(graph.containsEdge(edge2));
 		assertTrue(graph.containsEdge(edge3));
 		assertFalse(graph.containsEdge(edge4));
-		assertEquals(5, graph.getEdgeList().size());
+		assertEquals(5, graph.getEdges().size());
 		graphITER: for (Iterator<DirectionalHyperEdge<Integer>> it = graph
-				.getEdgeList().iterator(); it.hasNext();) {
+				.getEdges().iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			for (Iterator<GraphEdge> postIt = postExecution.iterator(); postIt
 					.hasNext();) {
@@ -240,14 +240,14 @@ public class ReplaceGraphNodeCommandTest extends TestCase {
 		Double o = new Double(9.4);
 		TestDirectionalReferencedGraphEdge edge = new TestDirectionalReferencedGraphEdge(
 				node1, node3, o);
-		assertEquals(5, graph.getEdgeList().size());
+		assertEquals(5, graph.getEdges().size());
 		assertTrue(graph.addEdge(edge));
-		assertEquals(6, graph.getEdgeList().size());
+		assertEquals(6, graph.getEdges().size());
 		Command c = new ReplaceNodeCommand("edit", graph, node1, node2);
 		UndoableEdit edit = c.execute();
-		assertEquals(6, graph.getEdgeList().size());
+		assertEquals(6, graph.getEdges().size());
 		boolean checked = false;
-		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdgeList()
+		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdges()
 				.iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			if (node2.equals(ge.getNodeAt(0)) && node3.equals(ge.getNodeAt(1))) {
@@ -261,7 +261,7 @@ public class ReplaceGraphNodeCommandTest extends TestCase {
 		assertFalse(edit.canRedo());
 		edit.undo();
 		checked = false;
-		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdgeList()
+		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdges()
 				.iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			if (node1.equals(ge.getNodeAt(0)) && node3.equals(ge.getNodeAt(1))) {
@@ -274,7 +274,7 @@ public class ReplaceGraphNodeCommandTest extends TestCase {
 		assertTrue(edit.canRedo());
 		edit.redo();
 		checked = false;
-		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdgeList()
+		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdges()
 				.iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			if (node2.equals(ge.getNodeAt(0)) && node3.equals(ge.getNodeAt(1))) {

@@ -20,6 +20,7 @@ package pcgen.base.graph.core;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -81,18 +82,18 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertEquals(node2, listener.lastAddNode);
 		// check special case
 		assertFalse(getStrategy().containsNode(null));
-		assertEquals(2, getStrategy().getNodeList().size());
+		assertEquals(2, getStrategy().getNodes().size());
 		assertEquals(2, getStrategy().getNodeCount());
 		assertFalse(getStrategy().addNode(null));
 		// ensure it didn't get stored!
 		assertFalse(getStrategy().containsNode(null));
-		assertEquals(2, getStrategy().getNodeList().size());
+		assertEquals(2, getStrategy().getNodes().size());
 		assertEquals(2, getStrategy().getNodeCount());
 		assertEquals(node2, listener.lastAddNode);
 		//
 		assertTrue(getStrategy().addNode(node3));
 		assertTrue(getStrategy().containsNode(node3));
-		assertEquals(3, getStrategy().getNodeList().size());
+		assertEquals(3, getStrategy().getNodes().size());
 		assertEquals(3, getStrategy().getNodeCount());
 		assertEquals(node3, listener.lastAddNode);
 	}
@@ -113,19 +114,19 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertTrue(getStrategy().addEdge(edge));
 		assertFalse(getStrategy().isEmpty());
 		assertTrue(getStrategy().containsEdge(edge));
-		assertTrue(getStrategy().getEdgeList().contains(edge));
+		assertTrue(getStrategy().getEdges().contains(edge));
 		// implicit adding of nodes
 		assertEquals(2, getStrategy().getNodeCount());
 		assertTrue(getStrategy().containsNode(node1));
-		assertTrue(getStrategy().getNodeList().contains(node1));
+		assertTrue(getStrategy().getNodes().contains(node1));
 		assertTrue(getStrategy().containsNode(node2));
-		assertTrue(getStrategy().getNodeList().contains(node2));
+		assertTrue(getStrategy().getNodes().contains(node2));
 		assertEquals(edge, listener.lastAddEdge);
 		// does not work a second time (multigraph not allowed THAT way!)
 		listener.lastAddEdge = null;
 		assertFalse(getStrategy().addEdge(edge));
 		assertNull(listener.lastAddEdge);
-		assertEquals(2, getStrategy().getNodeList().size());
+		assertEquals(2, getStrategy().getNodes().size());
 		// check that something else works!
 		assertFalse(getStrategy().containsEdge(edge2));
 		assertTrue(getStrategy().addEdge(edge2));
@@ -133,15 +134,15 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertEquals(edge2, listener.lastAddEdge);
 		// implicit add
 		assertTrue(getStrategy().containsNode(node3));
-		assertTrue(getStrategy().getNodeList().contains(node3));
-		assertEquals(3, getStrategy().getNodeList().size());
+		assertTrue(getStrategy().getNodes().contains(node3));
+		assertEquals(3, getStrategy().getNodes().size());
 		// check special case
 		assertFalse(getStrategy().containsEdge(null));
-		assertEquals(2, getStrategy().getEdgeList().size());
+		assertEquals(2, getStrategy().getEdges().size());
 		assertFalse(getStrategy().addEdge(null));
 		// ensure it didn't get stored!
 		assertFalse(getStrategy().containsEdge(null));
-		assertEquals(2, getStrategy().getEdgeList().size());
+		assertEquals(2, getStrategy().getEdges().size());
 		assertEquals(edge2, listener.lastAddEdge);
 		assertFalse(getStrategy().containsNode(node4));
 		T he1 = getLegalHyperEdge(new Integer[]{node4});
@@ -171,22 +172,22 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertTrue(getStrategy().addEdge(edge));
 		assertFalse(getStrategy().isEmpty());
 		assertTrue(getStrategy().containsEdge(edge));
-		assertTrue(getStrategy().getEdgeList().contains(edge));
+		assertTrue(getStrategy().getEdges().contains(edge));
 		// implicit adding of nodes
 		assertEquals(2, getStrategy().getNodeCount());
 		assertTrue(getStrategy().containsNode(node1));
-		assertTrue(getStrategy().getNodeList().contains(node1));
+		assertTrue(getStrategy().getNodes().contains(node1));
 		assertTrue(getStrategy().containsNode(node2));
-		assertTrue(getStrategy().getNodeList().contains(node2));
+		assertTrue(getStrategy().getNodes().contains(node2));
 		assertEquals(edge, listener.lastAddEdge);
 		// does not work a second time (multigraph not allowed THAT way!)
 		listener.lastAddEdge = null;
 		assertFalse(getStrategy().addEdge(edge));
 		assertNull(listener.lastAddEdge);
-		assertEquals(2, getStrategy().getNodeList().size());
+		assertEquals(2, getStrategy().getNodes().size());
 		getStrategy().clear();
-		assertEquals(0, getStrategy().getNodeList().size());
-		assertTrue(getStrategy().getEdgeList().isEmpty());
+		assertEquals(0, getStrategy().getNodes().size());
+		assertTrue(getStrategy().getEdges().isEmpty());
 		assertTrue(getStrategy().isEmpty());
 		// TODO Need to check that clear triggered listener items
 	}
@@ -227,15 +228,15 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 	public void testGetNodeList()
 	{
 		Integer node = new Integer(1);
-		assertTrue(getStrategy().getNodeList().isEmpty());
+		assertTrue(getStrategy().getNodes().isEmpty());
 		getStrategy().addNode(node);
-		assertEquals(1, getStrategy().getNodeList().size());
-		assertEquals(node, getStrategy().getNodeList().get(0));
+		assertEquals(1, getStrategy().getNodes().size());
+		assertEquals(node, getStrategy().getNodes().iterator().next());
 		// transfer ownership: ensure I can modify without messing with
 		// strategy's list or vice versa
-		List<Integer> myList = getStrategy().getNodeList();
+		Set<Integer> myList = getStrategy().getNodes();
 		myList.add(new Integer(4));
-		assertEquals(1, getStrategy().getNodeList().size());
+		assertEquals(1, getStrategy().getNodes().size());
 		assertEquals(2, myList.size());
 	}
 
@@ -246,15 +247,15 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		T edge = getLegalEdge(node1, node2);
 		getStrategy().addNode(node1);
 		getStrategy().addNode(node2);
-		assertTrue(getStrategy().getEdgeList().isEmpty());
+		assertTrue(getStrategy().getEdges().isEmpty());
 		getStrategy().addEdge(edge);
-		assertEquals(1, getStrategy().getEdgeList().size());
-		assertEquals(edge, getStrategy().getEdgeList().get(0));
+		assertEquals(1, getStrategy().getEdges().size());
+		assertEquals(edge, getStrategy().getEdges().iterator().next());
 		// transfer ownership: ensure I can modify without messing with
 		// strategy's list or vice versa
-		List<T> myList = getStrategy().getEdgeList();
+		Set<T> myList = getStrategy().getEdges();
 		myList.add(getLegalEdge(node1, new Integer(4)));
-		assertEquals(1, getStrategy().getEdgeList().size());
+		assertEquals(1, getStrategy().getEdges().size());
 		assertEquals(2, myList.size());
 	}
 
@@ -295,8 +296,8 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertTrue(getStrategy().addEdge(tempEdge1));
 		T tempEdge2 = getLegalEdge(node2, node);
 		assertTrue(getStrategy().addEdge(tempEdge2));
-		assertEquals(2, getStrategy().getNodeList().size());
-		assertEquals(2, getStrategy().getEdgeList().size());
+		assertEquals(2, getStrategy().getNodes().size());
+		assertEquals(2, getStrategy().getEdges().size());
 		listener.lastRemoveNode = null;
 		listener.edgeCount = 0;
 		listener.nodeCount = 0;
@@ -308,14 +309,14 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 			|| listener.lastRemoveEdge == tempEdge2);
 		// ASSUME the notification of edges works correctly (doesn't check
 		// precisely (just that there were two)!)
-		assertEquals(1, getStrategy().getNodeList().size());
-		assertEquals(0, getStrategy().getEdgeList().size());
+		assertEquals(1, getStrategy().getNodes().size());
+		assertEquals(0, getStrategy().getEdges().size());
 		// check special case (no byproducts - just ignore)
-		assertEquals(1, getStrategy().getNodeList().size());
+		assertEquals(1, getStrategy().getNodes().size());
 		assertFalse(getStrategy().removeNode(null));
 		assertEquals(node, listener.lastRemoveNode);
 		assertTrue(getStrategy().containsNode(node2));
-		assertEquals(1, getStrategy().getNodeList().size());
+		assertEquals(1, getStrategy().getNodes().size());
 	}
 
 	public void testRemoveEdge()
@@ -357,18 +358,18 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertTrue(getStrategy().containsEdge(edge2));
 		// node with adjacent edges (both first and second node)
 		assertTrue(getStrategy().addEdge(edge3));
-		assertEquals(2, getStrategy().getEdgeList().size());
+		assertEquals(2, getStrategy().getEdges().size());
 		listener.lastRemoveEdge = null;
 		assertTrue(getStrategy().removeEdge(edge2));
 		assertEquals(edge2, listener.lastRemoveEdge);
-		assertEquals(1, getStrategy().getEdgeList().size());
+		assertEquals(1, getStrategy().getEdges().size());
 		// check special case (no byproducts - just ignore)
-		assertEquals(1, getStrategy().getEdgeList().size());
+		assertEquals(1, getStrategy().getEdges().size());
 		assertFalse(getStrategy().removeEdge(null));
 		// non-notification
 		assertEquals(edge2, listener.lastRemoveEdge);
 		assertTrue(getStrategy().containsEdge(edge3));
-		assertEquals(1, getStrategy().getEdgeList().size());
+		assertEquals(1, getStrategy().getEdges().size());
 	}
 
 	public void testGetAdjacentEdgeList()
@@ -477,38 +478,38 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());
 		assertTrue(master.addNode(node1));
-		assertEquals(1, master.getNodeList().size());
+		assertEquals(1, master.getNodes().size());
 		assertFalse(testGraph.equals(master));
 		master.removeNode(node1);
-		assertTrue(master.getNodeList().isEmpty());
-		assertEquals(0, master.getNodeList().size());
+		assertTrue(master.getNodes().isEmpty());
+		assertEquals(0, master.getNodes().size());
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());
 		assertTrue(testGraph.addNode(node1));
-		assertEquals(1, testGraph.getNodeList().size());
+		assertEquals(1, testGraph.getNodes().size());
 		assertFalse(testGraph.equals(master));
 		assertTrue(master.addNode(node4));
-		assertEquals(1, master.getNodeList().size());
-		assertEquals(1, testGraph.getNodeList().size());
+		assertEquals(1, master.getNodes().size());
+		assertEquals(1, testGraph.getNodes().size());
 		System.err.println("!");
 		assertFalse(testGraph.equals(master));
 		assertTrue(testGraph.addNode(node4));
-		assertEquals(2, testGraph.getNodeList().size());
+		assertEquals(2, testGraph.getNodes().size());
 		System.err.println("!!");
 		assertFalse(testGraph.equals(master));
 		assertTrue(master.addNode(node3));
-		assertEquals(2, master.getNodeList().size());
-		assertEquals(2, testGraph.getNodeList().size());
+		assertEquals(2, master.getNodes().size());
+		assertEquals(2, testGraph.getNodes().size());
 		System.err.println("!!!");
 		assertFalse(testGraph.equals(master));
 		assertTrue(testGraph.addNode(node3));
-		assertEquals(2, master.getNodeList().size());
-		assertEquals(3, testGraph.getNodeList().size());
+		assertEquals(2, master.getNodes().size());
+		assertEquals(3, testGraph.getNodes().size());
 		System.err.println("!!!!");
 		assertFalse(testGraph.equals(master));
 		assertTrue(master.addNode(node1));
-		assertEquals(3, master.getNodeList().size());
-		assertEquals(3, testGraph.getNodeList().size());
+		assertEquals(3, master.getNodes().size());
+		assertEquals(3, testGraph.getNodes().size());
 		System.err.println("!!!!!");
 		assertTrue(testGraph.equals(master));
 		assertEquals(testGraph.hashCode(), master.hashCode());

@@ -18,6 +18,7 @@
 package pcgen.base.graph.core;
 
 import java.util.List;
+import java.util.Set;
 
 import pcgen.base.graph.core.DefaultDirectionalGraphEdge;
 import pcgen.base.graph.core.DirectionalEdge;
@@ -140,7 +141,7 @@ public class DefaultDirectionalGraphEdgeTest extends TestCase {
 	}
 
 	public void testGetSourceNode() {
-		List l;
+		Set l;
 		l = edge1.getSourceNodes();
 		assertEquals(1, l.size());
 		assertTrue(l.contains(node1));
@@ -159,7 +160,7 @@ public class DefaultDirectionalGraphEdgeTest extends TestCase {
 	}
 
 	public void testGetSinkNode() {
-		List l;
+		Set l;
 		l = edge1.getSinkNodes();
 		assertEquals(1, l.size());
 		assertTrue(l.contains(node2));

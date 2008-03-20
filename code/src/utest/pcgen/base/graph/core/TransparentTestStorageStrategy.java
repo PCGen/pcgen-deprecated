@@ -17,15 +17,8 @@
  */
 package pcgen.base.graph.core;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import pcgen.base.graph.core.Graph;
-import pcgen.base.graph.core.GraphChangeListener;
-import pcgen.base.graph.core.GraphChangeSupport;
-import pcgen.base.graph.core.Edge;
-import pcgen.base.graph.core.SimpleListGraph;
 
 /**
  * @author Me
@@ -79,15 +72,15 @@ public class TransparentTestStorageStrategy<N, ET extends Edge<N>>
 		return containsEdgeReturn;
 	}
 
-	public List<N> getNodeListReturn;
+	public Set<N> getNodeListReturn;
 
-	public List<N> getNodeList() {
+	public Set<N> getNodes() {
 		return getNodeListReturn;
 	}
 
-	public List<ET> getEdgeListReturn;
+	public Set<ET> getEdgeListReturn;
 
-	public List<ET> getEdgeList() {
+	public Set<ET> getEdges() {
 		return getEdgeListReturn;
 	}
 

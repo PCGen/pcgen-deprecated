@@ -481,7 +481,7 @@ public class CharacterDataStore extends CDOMObject
 
 	public int getAssociatedCount(PrereqObject pro)
 	{
-		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(pro);
+		Set<PCGraphEdge> list = activeGraph.getInwardEdgeSet(pro);
 		// TODO Need to consider mult yes/no stack yes/no
 		List set = new ArrayList();
 		for (PCGraphEdge edge : list)
@@ -493,7 +493,7 @@ public class CharacterDataStore extends CDOMObject
 
 	public <AT extends CDOMObject> List<AT> getAssociated(CDOMAbility a)
 	{
-		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(a);
+		Set<PCGraphEdge> list = activeGraph.getInwardEdgeSet(a);
 		// TODO Need to consider mult yes/no stack yes/no
 		List set = new ArrayList();
 		for (PCGraphEdge edge : list)
@@ -509,7 +509,7 @@ public class CharacterDataStore extends CDOMObject
 		{
 			return false;
 		}
-		List<PCGraphEdge> list = activeGraph.getInwardEdgeList(a);
+		Set<PCGraphEdge> list = activeGraph.getInwardEdgeSet(a);
 		for (PCGraphEdge edge : list)
 		{
 			CDOMObject assoc = edge

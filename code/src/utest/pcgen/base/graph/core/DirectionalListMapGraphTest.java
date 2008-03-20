@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import pcgen.base.graph.core.DefaultDirectionalHyperEdge;
 import pcgen.base.graph.core.DefaultGraphEdge;
@@ -67,12 +68,12 @@ public class DirectionalListMapGraphTest extends
 			return null;
 		}
 
-		public List<Integer> getSinkNodes() {
+		public Set<Integer> getSinkNodes() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
-		public List<Integer> getSourceNodes() {
+		public Set<Integer> getSourceNodes() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -125,24 +126,24 @@ public class DirectionalListMapGraphTest extends
 		assertTrue(strategy.addEdge(edge2));
 		assertTrue(strategy.addEdge(edge3));
 		assertTrue(strategy.addEdge(edge4));
-		List<DirectionalEdge<Integer>> l = strategy.getInwardEdgeList(node1);
+		Set<DirectionalEdge<Integer>> l = strategy.getInwardEdgeSet(node1);
 		// order is not significant
 		assertEquals(1, l.size());
 		assertTrue(l.contains(edge3));
-		l = strategy.getInwardEdgeList(node3);
+		l = strategy.getInwardEdgeSet(node3);
 		// order is not significant
 		assertEquals(2, l.size());
 		assertTrue(l.contains(edge2));
 		assertTrue(l.contains(edge4));
 		strategy.removeNode(node2);
-		l = strategy.getInwardEdgeList(node3);
+		l = strategy.getInwardEdgeSet(node3);
 		// order is not significant
 		assertEquals(1, l.size());
 		assertTrue(l.contains(edge4));
 		// not in graph
-		assertNull(strategy.getInwardEdgeList(node2));
+		assertNull(strategy.getInwardEdgeSet(node2));
 		// special case
-		assertNull(strategy.getInwardEdgeList(null));
+		assertNull(strategy.getInwardEdgeSet(null));
 	}
 
 	public void testGetOutwardEdgeList() {
@@ -160,24 +161,24 @@ public class DirectionalListMapGraphTest extends
 		assertTrue(strategy.addEdge(edge2));
 		assertTrue(strategy.addEdge(edge3));
 		assertTrue(strategy.addEdge(edge4));
-		List<DirectionalEdge<Integer>> l = strategy.getOutwardEdgeList(node2);
+		Set<DirectionalEdge<Integer>> l = strategy.getOutwardEdgeSet(node2);
 		// order is not significant
 		assertEquals(1, l.size());
 		assertTrue(l.contains(edge2));
-		l = strategy.getOutwardEdgeList(node1);
+		l = strategy.getOutwardEdgeSet(node1);
 		// order is not significant
 		assertEquals(2, l.size());
 		assertTrue(l.contains(edge1));
 		assertTrue(l.contains(edge4));
 		strategy.removeNode(node2);
-		l = strategy.getOutwardEdgeList(node1);
+		l = strategy.getOutwardEdgeSet(node1);
 		// order is not significant
 		assertEquals(1, l.size());
 		assertTrue(l.contains(edge4));
 		// not in graph
-		assertNull(strategy.getOutwardEdgeList(node2));
+		assertNull(strategy.getOutwardEdgeSet(node2));
 		// special case
-		assertNull(strategy.getOutwardEdgeList(null));
+		assertNull(strategy.getOutwardEdgeSet(null));
 	}
 
 	public void testHasInwardEdgeList() {
@@ -285,7 +286,7 @@ public class DirectionalListMapGraphTest extends
 		assertFalse(strategy.containsNode(node));
 		assertFalse(strategy.containsNode(node2));
 		assertFalse(strategy.containsNode(falseNode1));
-		assertEquals(0, strategy.getNodeList().size());
+		assertEquals(0, strategy.getNodes().size());
 		// No nodes are in the graph, so response is null
 		assertNull(strategy.getInternalizedNode(null));
 		assertNull(strategy.getInternalizedNode(node));
@@ -298,7 +299,7 @@ public class DirectionalListMapGraphTest extends
 		//Note that this returns true due to .equals()
 		assertTrue(strategy.containsNode(falseNode1));
 		//But that an instance test will fail
-		for (Integer i : strategy.getNodeList()) {
+		for (Integer i : strategy.getNodes()) {
 			assertTrue(i == node || i == node2);
 			assertTrue(i != falseNode1);
 		}

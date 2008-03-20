@@ -72,7 +72,7 @@ public class SimpleListMapGraphTest extends AbstractGraphTestCase<Edge<Integer>>
 		assertFalse(strategy.containsNode(node));
 		assertFalse(strategy.containsNode(node2));
 		assertFalse(strategy.containsNode(falseNode1));
-		assertEquals(0, strategy.getNodeList().size());
+		assertEquals(0, strategy.getNodes().size());
 		// No nodes are in the graph, so response is null
 		assertNull(strategy.getInternalizedNode(null));
 		assertNull(strategy.getInternalizedNode(node));
@@ -85,7 +85,7 @@ public class SimpleListMapGraphTest extends AbstractGraphTestCase<Edge<Integer>>
 		//Note that this returns true due to .equals()
 		assertTrue(strategy.containsNode(falseNode1));
 		//But that an instance test will fail
-		for (Integer i : strategy.getNodeList()) {
+		for (Integer i : strategy.getNodes()) {
 			assertTrue(i == node || i == node2);
 			assertTrue(i != falseNode1);
 		}
