@@ -53,6 +53,8 @@ public class CategoryToken implements AbilityLstToken, CDOMPrimaryToken<CDOMAbil
 		{
 			CDOMAbilityCategory ac = CDOMAbilityCategory.valueOf(value);
 			context.ref.reassociateCategory(ac, ability);
+			//TODO may be temporary...
+			context.obj.put(ability, ObjectKey.CATEGORY, ac);
 			return true;
 		}
 		catch (IllegalArgumentException iae)

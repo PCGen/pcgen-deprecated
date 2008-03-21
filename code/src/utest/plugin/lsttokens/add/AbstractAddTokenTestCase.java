@@ -444,28 +444,29 @@ public abstract class AbstractAddTokenTestCase extends
 		}
 	}
 
-	@Test
-	public void testRoundRobinDupe() throws PersistenceLayerException
-	{
-		construct(primaryContext, "TestWP1");
-		construct(primaryContext, "TestWP2");
-		construct(primaryContext, "TestWP3");
-		construct(secondaryContext, "TestWP1");
-		construct(secondaryContext, "TestWP2");
-		construct(secondaryContext, "TestWP3");
-		runRoundRobin(getSubTokenString() + "|TestWP1,TestWP2,TestWP3",
-			getSubTokenString() + "|TestWP1,TestWP2,TestWP3");
-	}
+//TODO Need to support this...
+//	@Test
+//	public void testRoundRobinDupe() throws PersistenceLayerException
+//	{
+//		construct(primaryContext, "TestWP1");
+//		construct(primaryContext, "TestWP2");
+//		construct(primaryContext, "TestWP3");
+//		construct(secondaryContext, "TestWP1");
+//		construct(secondaryContext, "TestWP2");
+//		construct(secondaryContext, "TestWP3");
+//		runRoundRobin(getSubTokenString() + "|TestWP1,TestWP2,TestWP3",
+//			getSubTokenString() + "|TestWP1,TestWP2,TestWP3");
+//	}
 
-	@Test
-	public void testRoundRobinDupeType() throws PersistenceLayerException
-	{
-		if (isTypeLegal())
-		{
-			runRoundRobin(getSubTokenString() + "|TYPE=TestType",
-				getSubTokenString() + "|TYPE=TestType");
-		}
-	}
+//	@Test
+//	public void testRoundRobinDupeType() throws PersistenceLayerException
+//	{
+//		if (isTypeLegal())
+//		{
+//			runRoundRobin(getSubTokenString() + "|TYPE=TestType",
+//				getSubTokenString() + "|TYPE=TestType");
+//		}
+//	}
 
 	@Test
 	public void testRoundRobinTestEqualThree() throws PersistenceLayerException

@@ -60,7 +60,7 @@ public class CostTokenTest extends AbstractBigDecimalTokenTestCase<CDOMAbility>
 	@Override
 	public boolean isNegativeAllowed()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

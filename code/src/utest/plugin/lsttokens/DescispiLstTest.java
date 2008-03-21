@@ -56,7 +56,7 @@ public class DescispiLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidInputString() throws PersistenceLayerException
 	{
-		internalTestInvalidInputString(Boolean.FALSE);
+		internalTestInvalidInputString(null);
 		assertTrue(primaryGraph.isEmpty());
 	}
 
@@ -72,7 +72,7 @@ public class DescispiLstTest extends AbstractGlobalTokenTestCase
 	public void internalTestInvalidInputString(Boolean val)
 			throws PersistenceLayerException
 	{
-		assertNull(primaryProf.get(ObjectKey.DESC_PI));
+		assertEquals(val, primaryProf.get(ObjectKey.DESC_PI));
 		assertFalse(parse("String"));
 		assertEquals(val, primaryProf.get(ObjectKey.DESC_PI));
 		assertFalse(parse("TYPE=TestType"));

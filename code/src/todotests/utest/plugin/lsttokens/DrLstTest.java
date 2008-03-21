@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens;
+package utest.plugin.lsttokens;
 
 import org.junit.Test;
 
@@ -25,6 +25,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import plugin.lsttokens.DrLst;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 
 public class DrLstTest extends AbstractGlobalTokenTestCase

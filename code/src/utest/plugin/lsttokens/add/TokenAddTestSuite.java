@@ -25,7 +25,8 @@ import junit.framework.TestSuite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({AbilityTokenTest.class, ClassSkillsTokenTest.class,
 	EquipTokenTest.class, FeatTokenTest.class, LanguageTokenTest.class,
-	SABTokenTest.class, SkillTokenTest.class, SpellCasterTokenTest.class,
+	//SABTokenTest.class,
+	SkillTokenTest.class, SpellCasterTokenTest.class,
 	TemplateTokenTest.class, VFeatTokenTest.class})
 public class TokenAddTestSuite extends TestSuite
 {
