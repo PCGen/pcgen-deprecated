@@ -113,7 +113,7 @@ These files can be renamed and used for releases.
 	</path>
 
 	<path id="javadoc.classpath">
-		<pathelement path="${build.classes.dir} ${lib.dir}/lib/junit.jar" />
+		<pathelement path="${build.classes.dir} ${lib.dir}/lib/junit-4.1.jar" />
 		<pathelement location="${bin.dir}/${jar.bin.file}" />
 		<path refid="project.jars" />
 	</path>
@@ -123,9 +123,11 @@ These files can be renamed and used for releases.
 	<property name="test.manifest.file" value="code/manifest-tests" />
 	<property name="test.framework.class" value="AllJUnitTests" />
 	<property name="base.utest.class" value="pcgen.base.AllBaseUnitTests" />
+	<property name="base.utest.file" value="pcgen/base/AllBaseUnitTests*" />
 	<property name="token.utest.class" value="plugin.lsttokens.AllTokenUnitTests" />
+	<property name="token.utest.file" value="plugin/lsttokens/AllTokenUnitTests*" />
 	<property name="token.itest.class" value="plugin.lsttokens.AllTokenIntegrationTests" />
-	<property name="test.manifest.extra.jars" value="${manifest.extra.jars} ${s}/test/junit.jar ${lib.dir}/test/xmlunit1.0.jar" />
+	<property name="test.manifest.extra.jars" value="${manifest.extra.jars} ${s}/test/junit-4.1.jar ${lib.dir}/test/xmlunit1.0.jar" />
 	<property name="test.all-output.file" value="TEST-test.AllJUnitTests.txt" />
 
 	<property name="test.bin.pcgen.bat" value="pcgen-tests.bat" />
@@ -140,7 +142,6 @@ These files can be renamed and used for releases.
 		<pathelement path="${build.classes.dir}" />
 		<pathelement path="${build.testclasses.dir}" />
 		<pathelement location="${bin.dir}/${jar.bin.file}" />
-		<pathelement location="${bin.dir}/${test.jar.file}" />
 		<path refid="project.test.jars" />
 	</path>
 
@@ -330,7 +331,7 @@ pcgen.filepaths=user
 
 	<target name="complete" depends="clean, svnupdate, build, test, emma.report, docs, deploy" description="Everything including update from SVN." />
 
-	<target name="main" depends="build, test" description="[default] Do an (incremental) build." />
+	<target name="main" depends="build, quicktest" description="[default] Do an (incremental) build." />
 
 	<target name="docs" depends="compile-compile" description="Build Java API documentation">
 		<mkdir dir="${doc.dir}" />
@@ -671,11 +672,14 @@ pcgen.filepaths=user
 
 
 	<!-- Testing targets -->
-	<target name="test" depends="dotest, failure.notice, success.notice" description="Run test suite (include lib/test/junit.jar and lib/test/xmlunit1.0.jar in CLASSPATH)">
+	<target name="quicktest" depends="doquicktest, testreport, failure.notice, success.notice" description="Run shorter test suite (include lib/test/junit-4.1.jar and lib/test/xmlunit1.0.jar in CLASSPATH)">
+	</target>
+	
+	<target name="test" depends="dotest, testreport, failure.notice, success.notice" description="Run full test suite (include lib/test/junit-4.1.jar and lib/test/xmlunit1.0.jar in CLASSPATH)">
 	</target>
 
-	<target name="dotest" depends="testclean, test.jar">
-		<junit fork="yes" printsummary="on" failureproperty="junitfailure" dir="${basedir}">
+	<target name="doquicktest" depends="testclean, test.compile" >
+		<junit fork="yes" printsummary="on" failureproperty="junitfailure" dir="${basedir}" forkmode="perBatch">
 			<jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
 			<jvmarg value="-Demma.coverage.out.merge=true" />
 			<jvmarg value="-Xmx192M" />
@@ -685,9 +689,22 @@ pcgen.filepaths=user
 				<path refid="test.project.classpath" />
 				<path refid="emma.lib" />
 			</classpath>
-			<test name="${base.utest.class}" todir="${build.dir}/test-results/xml" />
-			<test name="${token.utest.class}" todir="${build.dir}/test-results/xml" />
+			<batchtest todir="${build.dir}/test-results/xml">
+				<fileset dir="${basedir}/code/src/utest">
+				  <!-- <include name="pcgen/**/*.java"/>
+				  <exclude name="${base.utest.file}"/> -->
+				  <include name="${base.utest.file}"/>
+				</fileset>
+			</batchtest>
+			<batchtest todir="${build.dir}/test-results/xml">
+				<fileset dir="${basedir}/code/src/utest">
+				  <include name="${token.utest.file}"/>
+				</fileset>
+			</batchtest>
 		</junit>
+	</target>
+	
+	<target name="dotest" depends="testclean, test.compile,doquicktest">
 		<junit fork="yes" printsummary="on" failureproperty="junitfailure" dir="${basedir}">
 			<jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
 			<jvmarg value="-Demma.coverage.out.merge=true" />
@@ -707,7 +724,9 @@ pcgen.filepaths=user
 			</batchtest>
 			<!-- test name="${test.framework.class}" / -->
 		</junit>
-
+	</target>
+	
+	<target name="testreport">
 		<mkdir dir="${build.rpt.dir}/test-results" />
 		<junitreport todir="${build.rpt.dir}/test-results">
 			<fileset dir="${build.dir}/test-results/xml">
@@ -770,10 +789,10 @@ Class-Path: ${test.manifest.extra.jars}
 
 	<target name="test.scripts" depends="init">
 		<echo file="${bin.dir}/${test.bin.pcgen.bat}">@echo off
-java -classpath bin/pcgen-tests.jar;bin/pcgen.jar;lib/test/junit.jar;lib/test/xmlunit1.0.jar;lib/fop/xercesImpl-2.2.1.jar;lib/fop/avalon-framework-cvs-20020806.jar;lib/fop/xml-apis.jar;lib/fop/xalan-2.4.1.jar;lib/fop/batik.jar;lib/fop/fop.jar;lib/lnf/kunststoff.jar;lib/lnf/skinlf.jar;lib/lnf/wraplf.jar;lib/jep/jep-2.24.jar junit.swingui.TestRunner AllJUnitTests
+java -classpath bin/pcgen-tests.jar;bin/pcgen.jar;lib/test/junit-4.1.jar;lib/test/xmlunit1.0.jar;lib/fop/xercesImpl-2.2.1.jar;lib/fop/avalon-framework-cvs-20020806.jar;lib/fop/xml-apis.jar;lib/fop/xalan-2.4.1.jar;lib/fop/batik.jar;lib/fop/fop.jar;lib/lnf/kunststoff.jar;lib/lnf/skinlf.jar;lib/lnf/wraplf.jar;lib/jep/jep-2.24.jar junit.swingui.TestRunner AllJUnitTests
 </echo>
 		<echo file="${bin.dir}/${test.bin.pcgen.sh}">#!/bin/sh
-java -classpath bin/pcgen-tests.jar:bin/pcgen.jar:lib/test/junit.jar:lib/test/xmlunit1.0.jar:lib/fop/xercesImpl-2.2.1.jar:lib/fop/avalon-framework-cvs-20020806.jar:lib/fop/xml-apis.jar:lib/fop/xalan-2.4.1.jar:lib/fop/batik.jar:lib/fop/fop.jar:lib/lnf/kunststoff.jar:lib/lnf/skinlf.jar:lib/lnf/wraplf.jar:lib/jep/jep-2.24.jar junit.swingui.TestRunner AllJUnitTests
+java -classpath bin/pcgen-tests.jar:bin/pcgen.jar:lib/test/junit-4.1.jar:lib/test/xmlunit1.0.jar:lib/fop/xercesImpl-2.2.1.jar:lib/fop/avalon-framework-cvs-20020806.jar:lib/fop/xml-apis.jar:lib/fop/xalan-2.4.1.jar:lib/fop/batik.jar:lib/fop/fop.jar:lib/lnf/kunststoff.jar:lib/lnf/skinlf.jar:lib/lnf/wraplf.jar:lib/jep/jep-2.24.jar junit.swingui.TestRunner AllJUnitTests
 </echo>
 		<chmod file="${bin.dir}/${test.bin.pcgen.sh}" perm="+x" />
 	</target>
