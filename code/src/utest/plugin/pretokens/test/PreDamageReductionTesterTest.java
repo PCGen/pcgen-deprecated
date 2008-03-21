@@ -81,55 +81,55 @@ public class PreDamageReductionTesterTest extends
 		}
 	}
 
-	@Test
-	public void testInsufficient() throws PrerequisiteException
-	{
-		Prerequisite prereq = getOnePrereq();
-		// PC Should start without
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		DamageReduction fiveOne = DamageReduction.getDamageReduction("5/+1");
-		grantObject(fiveOne);
-		// Insufficient
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		DamageReduction fiveTwo = DamageReduction.getDamageReduction("5/+2");
-		grantObject(fiveTwo);
-		// Insufficient
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-	}
-
-	@Test
-	public void testExact() throws PrerequisiteException
-	{
-		Prerequisite prereq = getOnePrereq();
-		// PC Should start without
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		DamageReduction tenOne = DamageReduction.getDamageReduction("10/+1");
-		grantObject(tenOne);
-		assertEquals(1, getTest().passesCDOM(prereq, pc));
-	}
-
-	@Test
-	public void testExactOr() throws PrerequisiteException
-	{
-		Prerequisite prereq = getOnePrereq();
-		// PC Should start without
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		DamageReduction tenOne =
-				DamageReduction.getDamageReduction("10/+1 or +2");
-		grantObject(tenOne);
-		assertEquals(1, getTest().passesCDOM(prereq, pc));
-	}
-
-	@Test
-	public void testSurplus() throws PrerequisiteException
-	{
-		Prerequisite prereq = getOnePrereq();
-		// PC Should start without
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		DamageReduction tenOne = DamageReduction.getDamageReduction("15/+1");
-		grantObject(tenOne);
-		assertEquals(1, getTest().passesCDOM(prereq, pc));
-	}
+//	@Test
+//	public void testInsufficient() throws PrerequisiteException
+//	{
+//		Prerequisite prereq = getOnePrereq();
+//		// PC Should start without
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		DamageReduction fiveOne = DamageReduction.getDamageReduction("5/+1");
+//		grantObject(fiveOne);
+//		// Insufficient
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		DamageReduction fiveTwo = DamageReduction.getDamageReduction("5/+2");
+//		grantObject(fiveTwo);
+//		// Insufficient
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//	}
+//
+//	@Test
+//	public void testExact() throws PrerequisiteException
+//	{
+//		Prerequisite prereq = getOnePrereq();
+//		// PC Should start without
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		DamageReduction tenOne = DamageReduction.getDamageReduction("10/+1");
+//		grantObject(tenOne);
+//		assertEquals(1, getTest().passesCDOM(prereq, pc));
+//	}
+//
+//	@Test
+//	public void testExactOr() throws PrerequisiteException
+//	{
+//		Prerequisite prereq = getOnePrereq();
+//		// PC Should start without
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		DamageReduction tenOne =
+//				DamageReduction.getDamageReduction("10/+1 or +2");
+//		grantObject(tenOne);
+//		assertEquals(1, getTest().passesCDOM(prereq, pc));
+//	}
+//
+//	@Test
+//	public void testSurplus() throws PrerequisiteException
+//	{
+//		Prerequisite prereq = getOnePrereq();
+//		// PC Should start without
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		DamageReduction tenOne = DamageReduction.getDamageReduction("15/+1");
+//		grantObject(tenOne);
+//		assertEquals(1, getTest().passesCDOM(prereq, pc));
+//	}
 
 	// TODO Need to consider inverted? !PRE?
 

@@ -103,78 +103,78 @@ public class PreSpellResistanceTesterTest extends TestCase
 		return edge;
 	}
 
-	@Test
-	public void testInsufficient() throws PrerequisiteException
-	{
-		Prerequisite prereq = getOnePrereq();
-		// PC Should start without
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		SpellResistance five =
-				new SpellResistance(FormulaFactory.getFormulaFor(5));
-		grantObject(five);
-		// Insufficient
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		SpellResistance ten =
-				new SpellResistance(FormulaFactory.getFormulaFor(10));
-		grantObject(ten);
-		// Insufficient
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-	}
-
-	@Test
-	public void testExact() throws PrerequisiteException
-	{
-		Prerequisite prereq = getOnePrereq();
-		// PC Should start without
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		SpellResistance five =
-				new SpellResistance(FormulaFactory.getFormulaFor(5));
-		grantObject(five);
-		// Insufficient
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		SpellResistance fifteen =
-				new SpellResistance(FormulaFactory.getFormulaFor(15));
-		grantObject(fifteen);
-		// Okay
-		assertEquals(1, getTest().passesCDOM(prereq, pc));
-		SpellResistance six =
-				new SpellResistance(FormulaFactory.getFormulaFor(6));
-		grantObject(six);
-		// Okay, testing max not last
-		assertEquals(1, getTest().passesCDOM(prereq, pc));
-	}
-
-	@Test
-	public void testSurplus() throws PrerequisiteException
-	{
-		Prerequisite prereq = getOnePrereq();
-		// PC Should start without
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		SpellResistance twenty =
-				new SpellResistance(FormulaFactory.getFormulaFor(20));
-		grantObject(twenty);
-		assertEquals(1, getTest().passesCDOM(prereq, pc));
-	}
-
-	@Test
-	public void testInsufficientEquipment() throws PrerequisiteException
-	{
-		Prerequisite prereq = getOnePrereq();
-		// PC Should start without
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		SpellResistance five =
-				new SpellResistance(FormulaFactory.getFormulaFor(5));
-		grantObject(five);
-		// Insufficient
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-		SpellResistance fifteen =
-				new SpellResistance(FormulaFactory.getFormulaFor(15));
-		Equipment eq = new Equipment();
-		grantObject(eq);
-		grantObject(eq, fifteen);
-		// Insufficient (on equipment)
-		assertEquals(0, getTest().passesCDOM(prereq, pc));
-	}
+//	@Test
+//	public void testInsufficient() throws PrerequisiteException
+//	{
+//		Prerequisite prereq = getOnePrereq();
+//		// PC Should start without
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		SpellResistance five =
+//				new SpellResistance(FormulaFactory.getFormulaFor(5));
+//		grantObject(five);
+//		// Insufficient
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		SpellResistance ten =
+//				new SpellResistance(FormulaFactory.getFormulaFor(10));
+//		grantObject(ten);
+//		// Insufficient
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//	}
+//
+//	@Test
+//	public void testExact() throws PrerequisiteException
+//	{
+//		Prerequisite prereq = getOnePrereq();
+//		// PC Should start without
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		SpellResistance five =
+//				new SpellResistance(FormulaFactory.getFormulaFor(5));
+//		grantObject(five);
+//		// Insufficient
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		SpellResistance fifteen =
+//				new SpellResistance(FormulaFactory.getFormulaFor(15));
+//		grantObject(fifteen);
+//		// Okay
+//		assertEquals(1, getTest().passesCDOM(prereq, pc));
+//		SpellResistance six =
+//				new SpellResistance(FormulaFactory.getFormulaFor(6));
+//		grantObject(six);
+//		// Okay, testing max not last
+//		assertEquals(1, getTest().passesCDOM(prereq, pc));
+//	}
+//
+//	@Test
+//	public void testSurplus() throws PrerequisiteException
+//	{
+//		Prerequisite prereq = getOnePrereq();
+//		// PC Should start without
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		SpellResistance twenty =
+//				new SpellResistance(FormulaFactory.getFormulaFor(20));
+//		grantObject(twenty);
+//		assertEquals(1, getTest().passesCDOM(prereq, pc));
+//	}
+//
+//	@Test
+//	public void testInsufficientEquipment() throws PrerequisiteException
+//	{
+//		Prerequisite prereq = getOnePrereq();
+//		// PC Should start without
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		SpellResistance five =
+//				new SpellResistance(FormulaFactory.getFormulaFor(5));
+//		grantObject(five);
+//		// Insufficient
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//		SpellResistance fifteen =
+//				new SpellResistance(FormulaFactory.getFormulaFor(15));
+//		Equipment eq = new Equipment();
+//		grantObject(eq);
+//		grantObject(eq, fifteen);
+//		// Insufficient (on equipment)
+//		assertEquals(0, getTest().passesCDOM(prereq, pc));
+//	}
 
 	// TODO Need to consider inverted? !PRE?
 
