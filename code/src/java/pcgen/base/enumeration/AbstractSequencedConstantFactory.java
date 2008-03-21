@@ -51,7 +51,7 @@ public abstract class AbstractSequencedConstantFactory<T extends TypeSafeConstan
 	/**
 	 * The Map of Sequenced Constants for this Factory
 	 */
-	testprivate SortedMap<Integer, SCFValue<T>> typeMap;
+	private SortedMap<Integer, SCFValue<T>> typeMap;
 
 	/**
 	 * Creates a new AbstractSequencedConstantFactory - class must be extended
