@@ -29,10 +29,10 @@ package plugin.pretokens.test;
 import java.util.List;
 
 import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.inst.CDOMSubClass;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PCClass;
 import pcgen.core.PlayerCharacter;
-import pcgen.core.SubClass;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
@@ -108,8 +108,8 @@ public class PreSubClassTester extends AbstractPrerequisiteTest implements
 
 		String requiredClass = prereq.getKey();
 		PCGenGraph activeGraph = character.getActiveGraph();
-		List<SubClass> list = activeGraph.getGrantedNodeList(SubClass.class);
-		for (SubClass cl : list)
+		List<CDOMSubClass> list = activeGraph.getGrantedNodeList(CDOMSubClass.class);
+		for (CDOMSubClass cl : list)
 		{
 			String subClassName = cl.getKeyName();
 			if (requiredClass.equalsIgnoreCase(subClassName))

@@ -6,10 +6,19 @@ import pcgen.cdom.base.CDOMObject;
 public class CDOMSizeAdjustment extends CDOMObject implements TypeSafeConstant
 {
 
+	private static int sizeOrdinal = 0;
+	
+	private int ordinal;
+	
+	public CDOMSizeAdjustment()
+	{
+		super();
+		ordinal = sizeOrdinal++;
+	}
+
 	public int getOrdinal()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return ordinal;
 	}
 
 	@Override

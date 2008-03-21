@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import pcgen.cdom.inst.CDOMSpell;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.CharacterDomain;
 import pcgen.core.Globals;
@@ -141,14 +142,14 @@ public class PreSpellTester extends AbstractPrerequisiteTest implements
 					.getString("PreSpell.error.badly_formed_attribute") + prereq.toString()); //$NON-NLS-1$
 		}
 
-		Set<Spell> spellSet = new HashSet<Spell>();
+		Set<CDOMSpell> spellSet = new HashSet<CDOMSpell>();
 		
 		// Build a list of all possible spells (innate & known)
-		List<Spell> aArrayList =
-				character.getActiveGraph().getGrantedNodeList(Spell.class);
+		List<CDOMSpell> aArrayList =
+				character.getActiveGraph().getGrantedNodeList(CDOMSpell.class);
 		String spellName = prereq.getKey();
 
-		for (Spell aSpell : aArrayList)
+		for (CDOMSpell aSpell : aArrayList)
 		{
 			if (aSpell.getKeyName().equalsIgnoreCase(spellName))
 			{
