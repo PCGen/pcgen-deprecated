@@ -220,15 +220,15 @@ public class TransferAdjacentGraphEdgesToNewNodeCommandTest extends TestCase {
 		assertTrue(graph.containsEdge(edge3));
 		assertTrue(graph.containsEdge(edge4));
 		assertTrue(graph.containsEdge(edge5));
-		assertEquals(5, graph.getEdges().size());
+		assertEquals(5, graph.getEdgeList().size());
 		UndoableEdit edit = factory2.execute();
 		assertTrue(graph.containsNode(node2));
 		assertTrue(graph.containsNode(node3));
 		assertTrue(graph.containsNode(node4));
 		assertTrue(graph.containsNode(node5));
-		assertEquals(5, graph.getEdges().size());
+		assertEquals(5, graph.getEdgeList().size());
 		graphITER: for (Iterator<DirectionalHyperEdge<Integer>> it = graph
-				.getEdges().iterator(); it.hasNext();) {
+				.getEdgeList().iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			for (Iterator<GraphEdge> postIt = postExecution.iterator(); postIt
 					.hasNext();) {
@@ -259,9 +259,9 @@ public class TransferAdjacentGraphEdgesToNewNodeCommandTest extends TestCase {
 		assertTrue(graph.containsNode(node3));
 		assertTrue(graph.containsNode(node4));
 		assertTrue(graph.containsNode(node5));
-		assertEquals(5, graph.getEdges().size());
+		assertEquals(5, graph.getEdgeList().size());
 		graphITER: for (Iterator<DirectionalHyperEdge<Integer>> it = graph
-				.getEdges().iterator(); it.hasNext();) {
+				.getEdgeList().iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			for (Iterator<GraphEdge> postIt = postExecution.iterator(); postIt
 					.hasNext();) {
@@ -312,18 +312,18 @@ public class TransferAdjacentGraphEdgesToNewNodeCommandTest extends TestCase {
 		Double o = new Double(9.4);
 		TestDirectionalReferencedGraphEdge edge = new TestDirectionalReferencedGraphEdge(
 				node1, node3, o);
-		assertEquals(5, graph.getEdges().size());
+		assertEquals(5, graph.getEdgeList().size());
 		assertTrue(graph.addEdge(edge));
 		Command c = new TransferEdgesCommand("edit", graph, node1, node2);
-		assertEquals(6, graph.getEdges().size());
+		assertEquals(6, graph.getEdgeList().size());
 		assertEquals(2, graph.getAdjacentEdges(node1).size());
 		assertEquals(0, graph.getAdjacentEdges(node2).size());
 		UndoableEdit edit = c.execute();
-		assertEquals(6, graph.getEdges().size());
+		assertEquals(6, graph.getEdgeList().size());
 		assertEquals(0, graph.getAdjacentEdges(node1).size());
 		assertEquals(2, graph.getAdjacentEdges(node2).size());
 		boolean checked = false;
-		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdges()
+		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdgeList()
 				.iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			if (node2.equals(ge.getNodeAt(0)) && node3.equals(ge.getNodeAt(1))) {
@@ -338,7 +338,7 @@ public class TransferAdjacentGraphEdgesToNewNodeCommandTest extends TestCase {
 		assertEquals(2, graph.getAdjacentEdges(node1).size());
 		assertEquals(0, graph.getAdjacentEdges(node2).size());
 		checked = false;
-		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdges()
+		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdgeList()
 				.iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			if (node1.equals(ge.getNodeAt(0)) && node3.equals(ge.getNodeAt(1))) {
@@ -353,7 +353,7 @@ public class TransferAdjacentGraphEdgesToNewNodeCommandTest extends TestCase {
 		assertEquals(0, graph.getAdjacentEdges(node1).size());
 		assertEquals(2, graph.getAdjacentEdges(node2).size());
 		checked = false;
-		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdges()
+		for (Iterator<DirectionalHyperEdge<Integer>> it = graph.getEdgeList()
 				.iterator(); it.hasNext();) {
 			DirectionalHyperEdge<Integer> ge = it.next();
 			if (node2.equals(ge.getNodeAt(0)) && node3.equals(ge.getNodeAt(1))) {

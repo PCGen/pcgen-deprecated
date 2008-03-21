@@ -19,7 +19,7 @@
  */
 package pcgen.base.graph.core;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -42,7 +42,7 @@ public interface DirectionalGraph<N, ET extends DirectionalEdge<N>> extends
 	 *            The Node for which to return the inward Edges.
 	 * @return The List of Edges for which the given Node is a sink Node.
 	 */
-	public Set<ET> getInwardEdgeSet(N v);
+	public List<ET> getInwardEdgeList(N v);
 
 	/**
 	 * Returns a List of the Edges for which the given Node is a source Node in
@@ -52,7 +52,7 @@ public interface DirectionalGraph<N, ET extends DirectionalEdge<N>> extends
 	 *            The Node for which to return the outward Edges.
 	 * @return The List of Edges for which the given Node is a source Node.
 	 */
-	public Set<ET> getOutwardEdgeSet(N v);
+	public List<ET> getOutwardEdgeList(N v);
 
 	/**
 	 * Returns true if the given Node is connected to any Edge in this

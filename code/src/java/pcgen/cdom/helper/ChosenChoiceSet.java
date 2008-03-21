@@ -78,7 +78,7 @@ public class ChosenChoiceSet<T> implements PrimitiveChoiceSet<T>
 	public Set<T> getSet(CharacterDataStore pc)
 	{
 		PCGenGraph graph = pc.getActiveGraph();
-		Set<PCGraphEdge> edges = graph.getOutwardEdgeSet(baseObject);
+		List<PCGraphEdge> edges = graph.getOutwardEdgeList(baseObject);
 		Set<T> returnSet = new HashSet<T>();
 		for (PCGraphEdge edge : edges)
 		{

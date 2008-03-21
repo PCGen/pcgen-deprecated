@@ -41,7 +41,7 @@ public class TokenSupport
 {
 	public static final Class<CDOMObject> CDOM_OBJECT_CLASS = CDOMObject.class;
 
-	public static <T extends CDOMObject> boolean processToken(LoadContext context,
+	public <T extends CDOMObject> boolean processToken(LoadContext context,
 			T derivative, String typeStr, String argument)
 			throws PersistenceLayerException
 	{
@@ -62,7 +62,7 @@ public class TokenSupport
 		return false;
 	}
 
-	public static <T extends CDOMObject> PrimitiveChoiceSet<T> getChoiceSet(
+	public <T extends CDOMObject> PrimitiveChoiceSet<T> getChoiceSet(
 			LoadContext context, Class<T> poClass, String value)
 	{
 		// PC[TYPE=x|<primitive1>|<primitive2>|<primitive3>]|QUALIFIED[!TYPE=y,TYPE=z|<primitive4>]
@@ -195,7 +195,7 @@ public class TokenSupport
 		}
 	}
 
-	public static <T extends CDOMObject> PrimitiveChoiceFilter<T> getPrimitiveChoiceFilter(
+	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getPrimitiveChoiceFilter(
 			LoadContext context, Class<T> cl, String key)
 	{
 		if (key.indexOf(',') == -1)
@@ -211,7 +211,7 @@ public class TokenSupport
 		return new CompoundAndFilter<T>(filterList);
 	}
 
-	public static <T extends CDOMObject> PrimitiveChoiceSet<T> getQualifier(
+	public <T extends CDOMObject> PrimitiveChoiceSet<T> getQualifier(
 			LoadContext context, Class<T> cl, String key, String value)
 	{
 		/*
@@ -251,7 +251,7 @@ public class TokenSupport
 		}
 	}
 
-	public static <T extends CDOMObject> PrimitiveChoiceFilter<T> getAtomicChoiceFilter(
+	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getAtomicChoiceFilter(
 			LoadContext context, Class<T> cl, String key)
 	{
 		int openBracketLoc = key.indexOf('[');
@@ -344,7 +344,7 @@ public class TokenSupport
 		return prim;
 	}
 
-	public static <T> boolean processSubToken(LoadContext context, T cdo,
+	public <T> boolean processSubToken(LoadContext context, T cdo,
 			String tokenName, String key, String value)
 			throws PersistenceLayerException
 	{
@@ -367,7 +367,7 @@ public class TokenSupport
 		return false;
 	}
 
-	public static <T extends CDOMObject> String[] unparse(LoadContext context, T cdo,
+	public <T extends CDOMObject> String[] unparse(LoadContext context, T cdo,
 			String tokenName)
 	{
 		Set<String> set = new TreeSet<String>();
@@ -392,7 +392,7 @@ public class TokenSupport
 		return set.toArray(new String[set.size()]);
 	}
 
-	public static <T extends CDOMObject> Collection<String> unparse(
+	public <T extends CDOMObject> Collection<String> unparse(
 			LoadContext context, T cdo)
 	{
 		Set<String> set = new TreeSet<String>();
@@ -417,7 +417,7 @@ public class TokenSupport
 		return set;
 	}
 
-	public static <T extends CDOMObject> PrimitiveChoiceSet<?> getChoiceSet(
+	public <T extends CDOMObject> PrimitiveChoiceSet<?> getChoiceSet(
 			LoadContext context, T obj, String key, String val)
 			throws PersistenceLayerException
 	{
@@ -440,7 +440,7 @@ public class TokenSupport
 		return null;
 	}
 
-	public static Prerequisite getPrerequisite(LoadContext context, String key,
+	public Prerequisite getPrerequisite(LoadContext context, String key,
 			String value) throws PersistenceLayerException
 	{
 		for (Iterator<PrerequisiteParserInterface> it = new PreTokenIterator(

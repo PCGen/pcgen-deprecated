@@ -17,15 +17,27 @@
  */
 package plugin.qualifier.skill;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
+import pcgen.cdom.base.AssociatedObject;
+import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
+import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.lists.PCGenLists;
 import pcgen.character.CharacterDataStore;
-import plugin.qualifier.AbstractQualifierToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChooseLstQualifierToken;
+import pcgen.util.Logging;
 
-public class NotClassToken extends AbstractQualifierToken<CDOMSkill>
+public class NotClassToken implements ChooseLstQualifierToken<CDOMSkill>
 {
+
+	private PrimitiveChoiceFilter<CDOMSkill> pcs = null;
 
 	public String getTokenName()
 	{
@@ -37,8 +49,57 @@ public class NotClassToken extends AbstractQualifierToken<CDOMSkill>
 		return CDOMSkill.class;
 	}
 
+	public String getLSTformat()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(getTokenName());
+		if (pcs != null)
+		{
+			sb.append('[').append(pcs.getLSTformat()).append(']');
+		}
+		return sb.toString();
+	}
+
+	public boolean initialize(LoadContext context, Class<CDOMSkill> cl, String condition, String value)
+	{
+		if (condition != null)
+		{
+			Logging.addParseMessage(Level.SEVERE, "Cannot make "
+					+ getTokenName()
+					+ " into a conditional Qualifier, remove =");
+			return false;
+		}
+		if (value != null)
+		{
+			pcs = context.getPrimitiveChoiceFilter(cl, value);
+			return pcs != null;
+		}
+		return true;
+	}
+
 	public Set<CDOMSkill> getSet(CharacterDataStore pc)
 	{
-		return SkillTokenUtilities.getSet(pc, true, SkillCost.CLASS);
+		Set<CDOMSkill> skillSet = new HashSet<CDOMSkill>();
+		PCGenLists activeLists = pc.getActiveLists();
+		Set<ClassSkillList> lists = activeLists.getLists(ClassSkillList.class);
+		SkillCost classCost = SkillCost.CLASS;
+		if (lists != null)
+		{
+			for (ClassSkillList csl : lists)
+			{
+				Collection<CDOMSkill> contents = activeLists.getListContents(csl);
+				for (CDOMSkill sk : contents)
+				{
+					AssociatedObject assoc =
+							activeLists.getListAssociation(csl, sk);
+					if (!classCost.equals(assoc
+						.getAssociation(AssociationKey.SKILL_COST)))
+					{
+						skillSet.add(sk);
+					}
+				}
+			}
+		}
+		return skillSet;
 	}
 }

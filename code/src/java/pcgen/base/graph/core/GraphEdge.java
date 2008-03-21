@@ -56,6 +56,5 @@ public interface GraphEdge<N> extends Edge<N>
 	 *            The second Node to be connected to the replacement GraphEdge.
 	 * @return The replacement GraphEdge.
 	 */
-        @Deprecated
 	public GraphEdge<N> createReplacementEdge(N gn1, N gn2);
 }

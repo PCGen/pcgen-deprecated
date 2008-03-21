@@ -30,7 +30,7 @@ import java.util.List;
  * HyperEdge. As a HyperEdge, a DefaultHyperEdge can be connected to any
  * non-zero number of GraphNodes.
  */
-public class DefaultHyperEdge<N> implements NonDirectionalEdge<N>, HyperEdge<N>
+public class DefaultHyperEdge<N> implements NonDirectionalEdge<N>
 {
 
 	/**
@@ -137,7 +137,6 @@ public class DefaultHyperEdge<N> implements NonDirectionalEdge<N>, HyperEdge<N>
 	 * 
 	 * @see pcgen.base.graph.core.NonDirectionalEdge#createReplacementEdge(java.util.Collection)
 	 */
-        @Deprecated
 	public DefaultHyperEdge<N> createReplacementEdge(Collection<N> gn1)
 	{
 		return new DefaultHyperEdge<N>(gn1);

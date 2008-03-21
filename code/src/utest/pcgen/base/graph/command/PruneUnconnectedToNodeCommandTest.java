@@ -85,7 +85,7 @@ public class PruneUnconnectedToNodeCommandTest extends ComplexCommandTestCase {
 		assertTrue(graph.containsNode(node6));
 		assertTrue(graph.containsNode(node7));
 		assertTrue(graph.containsNode(node8));
-		assertEquals(8, graph.getNodes().size());
+		assertEquals(8, graph.getNodeList().size());
 		assertTrue(graph.containsEdge(edge1));
 		assertTrue(graph.containsEdge(edge2));
 		assertTrue(graph.containsEdge(edge3));
@@ -93,7 +93,7 @@ public class PruneUnconnectedToNodeCommandTest extends ComplexCommandTestCase {
 		assertTrue(graph.containsEdge(edge5));
 		assertTrue(graph.containsEdge(edge6));
 		assertTrue(graph.containsEdge(edge7));
-		assertEquals(7, graph.getEdges().size());
+		assertEquals(7, graph.getEdgeList().size());
 		factory.execute();
 		assertTrue(graph.containsNode(node1));
 		assertTrue(graph.containsNode(node2));
@@ -103,7 +103,7 @@ public class PruneUnconnectedToNodeCommandTest extends ComplexCommandTestCase {
 		assertTrue(graph.containsNode(node6));
 		assertTrue(graph.containsNode(node7));
 		assertTrue(graph.containsNode(node8));
-		assertEquals(8, graph.getNodes().size());
+		assertEquals(8, graph.getNodeList().size());
 		assertTrue(graph.containsEdge(edge1));
 		assertTrue(graph.containsEdge(edge2));
 		assertTrue(graph.containsEdge(edge3));
@@ -111,7 +111,7 @@ public class PruneUnconnectedToNodeCommandTest extends ComplexCommandTestCase {
 		assertTrue(graph.containsEdge(edge5));
 		assertTrue(graph.containsEdge(edge6));
 		assertTrue(graph.containsEdge(edge7));
-		assertEquals(7, graph.getEdges().size());
+		assertEquals(7, graph.getEdgeList().size());
 	}
 	
 	public void testRemoveNormal() {

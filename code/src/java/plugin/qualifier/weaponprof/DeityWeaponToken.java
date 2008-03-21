@@ -20,16 +20,23 @@ package plugin.qualifier.weaponprof;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.character.CharacterDataStore;
-import plugin.qualifier.AbstractQualifierToken;
+import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.ChooseLstQualifierToken;
+import pcgen.util.Logging;
 
-public class DeityWeaponToken extends AbstractQualifierToken<CDOMWeaponProf>
+public class DeityWeaponToken implements
+		ChooseLstQualifierToken<CDOMWeaponProf>
 {
+
+	private PrimitiveChoiceFilter<CDOMWeaponProf> pcs = null;
 
 	public String getTokenName()
 	{
@@ -63,5 +70,34 @@ public class DeityWeaponToken extends AbstractQualifierToken<CDOMWeaponProf>
 			}
 		}
 		return set;
+	}
+
+	public String getLSTformat()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(getTokenName());
+		if (pcs != null)
+		{
+			sb.append('[').append(pcs.getLSTformat()).append(']');
+		}
+		return sb.toString();
+	}
+
+	public boolean initialize(LoadContext context, Class<CDOMWeaponProf> cl,
+			String condition, String value)
+	{
+		if (condition != null)
+		{
+			Logging.addParseMessage(Level.SEVERE, "Cannot make "
+					+ getTokenName()
+					+ " into a conditional Qualifier, remove =");
+			return false;
+		}
+		if (value != null)
+		{
+			pcs = context.getPrimitiveChoiceFilter(cl, value);
+			return pcs != null;
+		}
+		return true;
 	}
 }

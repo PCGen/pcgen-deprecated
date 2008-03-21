@@ -21,11 +21,7 @@ package pcgen.base.graph.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import pcgen.base.util.ListSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -44,284 +40,277 @@ import pcgen.base.util.ListSet;
 public class DefaultDirectionalHyperEdge<N> implements DirectionalHyperEdge<N>
 {
 
-    /**
-     * The List of source Nodes to which this DefaultDirectionalHyperEdge is
-     * connected.
-     * 
-     * In normal operation, this List must not be empty (should be enforced in
-     * object construction). This List may be null if the
-     * DefaultDirectionalHyperEdge has no source Nodes.
-     */
-    private final ListSet<N> sourceNodes;
-    /**
-     * The List of sink Nodes to which this DefaultDirectionalHyperEdge is
-     * connected.
-     * 
-     * In normal operation, this List must not be null or empty (should be
-     * enforced in object construction).
-     */
-    private final ListSet<N> sinkNodes;
+	/**
+	 * The List of source Nodes to which this DefaultDirectionalHyperEdge is
+	 * connected.
+	 * 
+	 * In normal operation, this List must not be empty (should be enforced in
+	 * object construction). This List may be null if the
+	 * DefaultDirectionalHyperEdge has no source Nodes.
+	 */
+	private final List<N> sourceNodes;
 
-    /**
-     * Constructs a DefaultDirectionalHyperEdge with the given Nodes as source
-     * Nodes and Sink Nodes. Either parameter individually may be null or an
-     * empty Collection; the only restriction is that both Collections cannot be
-     * null or empty. (A DefaultDirectionalHyperEdge must connect to at least
-     * one Node)
-     * 
-     * @param sourceN
-     *            The Collection of source Nodes for this
-     *            DefaultDirectionalHyperEdge.
-     * @param sinkN
-     *            The Collection of source Nodes for this
-     *            DefaultDirectionalHyperEdge.
-     */
-    public DefaultDirectionalHyperEdge(Collection<N> sourceN,
-                                        Collection<N> sinkN)
-    {
-        super();
-        if (sourceN == null && sinkN == null)
-        {
-            throw new IllegalArgumentException(
-                    "Both Collections to DefaultDirectionalGraphEdge cannot be null");
-        }
-        /*
-         * Copy before length check for thread safety
-         */
-        if (sourceN == null || sourceN.isEmpty())
-        {
-            sourceNodes = null;
-        }
-        else
-        {
-            sourceNodes = new ListSet<N>(sourceN.size());
-            sourceNodes.addAll(sourceN);
-            for (N node : sourceNodes)
-            {
-                if (node == null)
-                {
-                    throw new IllegalArgumentException(
-                            "Source Node List contains null");
-                }
-            }
-        }
-        if (sinkN == null || sinkN.isEmpty())
-        {
-            sinkNodes = null;
-        }
-        else
-        {
-            sinkNodes = new ListSet<N>(sinkN.size());
-            sinkNodes.addAll(sinkN);
-            for (N node : sinkNodes)
-            {
-                if (node == null)
-                {
-                    throw new IllegalArgumentException(
-                            "Sink Node List contains null");
-                }
-            }
-        }
-        if (sourceNodes == null && sinkNodes == null)
-        {
-            throw new IllegalArgumentException(
-                    "GraphNode List of DefaultHyperEdge cannot be empty");
-        }
-    }
+	/**
+	 * The List of sink Nodes to which this DefaultDirectionalHyperEdge is
+	 * connected.
+	 * 
+	 * In normal operation, this List must not be null or empty (should be
+	 * enforced in object construction).
+	 */
+	private final List<N> sinkNodes;
 
-    /**
-     * Returns the Node at the given index.
-     * 
-     * @see pcgen.base.graph.core.Edge#getNodeAt(int)
-     */
-    public N getNodeAt(int i)
-    {
-        if (sourceNodes != null && i < sourceNodes.size())
-        {
-            return sourceNodes.get(i);
-        }
-        if (sinkNodes != null)
-        {
-            int index = sourceNodes == null ? i : i - sourceNodes.size();
-            return sinkNodes.get(index);
-        }
-        throw new IndexOutOfBoundsException();
-    }
+	/**
+	 * Constructs a DefaultDirectionalHyperEdge with the given Nodes as source
+	 * Nodes and Sink Nodes. Either parameter individually may be null or an
+	 * empty Collection; the only restriction is that both Collections cannot be
+	 * null or empty. (A DefaultDirectionalHyperEdge must connect to at least
+	 * one Node)
+	 * 
+	 * @param sourceN
+	 *            The Collection of source Nodes for this
+	 *            DefaultDirectionalHyperEdge.
+	 * @param sinkN
+	 *            The Collection of source Nodes for this
+	 *            DefaultDirectionalHyperEdge.
+	 */
+	public DefaultDirectionalHyperEdge(Collection<N> sourceN,
+		Collection<N> sinkN)
+	{
+		super();
+		if (sourceN == null && sinkN == null)
+		{
+			throw new IllegalArgumentException(
+				"Both Collections to DefaultDirectionalGraphEdge cannot be null");
+		}
+		/*
+		 * Copy before length check for thread safety
+		 */
+		if (sourceN == null || sourceN.isEmpty())
+		{
+			sourceNodes = null;
+		}
+		else
+		{
+			sourceNodes = new ArrayList<N>(sourceN.size());
+			sourceNodes.addAll(sourceN);
+			for (N node : sourceNodes)
+			{
+				if (node == null)
+				{
+					throw new IllegalArgumentException(
+						"Source Node List contains null");
+				}
+			}
+		}
+		if (sinkN == null || sinkN.isEmpty())
+		{
+			sinkNodes = null;
+		}
+		else
+		{
+			sinkNodes = new ArrayList<N>(sinkN.size());
+			sinkNodes.addAll(sinkN);
+			for (N node : sinkNodes)
+			{
+				if (node == null)
+				{
+					throw new IllegalArgumentException(
+						"Sink Node List contains null");
+				}
+			}
+		}
+		if (sourceNodes == null && sinkNodes == null)
+		{
+			throw new IllegalArgumentException(
+				"GraphNode List of DefaultHyperEdge cannot be empty");
+		}
+	}
 
-    /**
-     * Returns a List of the Nodes which are adjacent (connected) to this
-     * DefaultDirectionalHyperEdge.
-     * 
-     * Ownership of the returned List is transferred to the calling Object. No
-     * reference to the List Object is maintained by
-     * DefaultDirectionalHyperEdge. However, the Edges contained in the List are
-     * returned BY REFERENCE, and modification of the returned Edges will modify
-     * the Edges contained within the DefaultDirectionalHyperEdge.
-     * 
-     * @see pcgen.base.graph.core.Edge#getAdjacentNodes()
-     */
-    public List<N> getAdjacentNodes()
-    {
-        ArrayList<N> returnList = new ArrayList<N>(getAdjacentNodeCount());
-        if (sourceNodes != null)
-        {
-            returnList.addAll(sourceNodes);
-        }
-        if (sinkNodes != null)
-        {
-            returnList.addAll(sinkNodes);
-        }
-        return returnList;
-    }
+	/**
+	 * Returns the Node at the given index.
+	 * 
+	 * @see pcgen.base.graph.core.Edge#getNodeAt(int)
+	 */
+	public N getNodeAt(int i)
+	{
+		if (sourceNodes != null && i < sourceNodes.size())
+		{
+			return sourceNodes.get(i);
+		}
+		if (sinkNodes != null)
+		{
+			int index = sourceNodes == null ? i : i - sourceNodes.size();
+			return sinkNodes.get(index);
+		}
+		throw new IndexOutOfBoundsException();
+	}
 
-    /**
-     * Returns true if the given Node is adjacent (connected) to this
-     * DefaultDirectionalHyperEdge.
-     * 
-     * @see pcgen.base.graph.core.Edge#isAdjacentNode(java.lang.Object)
-     */
-    public boolean isAdjacentNode(N gn)
-    {
-        if (sourceNodes != null && sourceNodes.contains(gn))
-        {
-            return true;
-        }
-        if (sinkNodes != null && sinkNodes.contains(gn))
-        {
-            return true;
-        }
-        return false;
-    }
+	/**
+	 * Returns a List of the Nodes which are adjacent (connected) to this
+	 * DefaultDirectionalHyperEdge.
+	 * 
+	 * Ownership of the returned List is transferred to the calling Object. No
+	 * reference to the List Object is maintained by
+	 * DefaultDirectionalHyperEdge. However, the Edges contained in the List are
+	 * returned BY REFERENCE, and modification of the returned Edges will modify
+	 * the Edges contained within the DefaultDirectionalHyperEdge.
+	 * 
+	 * @see pcgen.base.graph.core.Edge#getAdjacentNodes()
+	 */
+	public List<N> getAdjacentNodes()
+	{
+		ArrayList<N> returnList = new ArrayList<N>(getAdjacentNodeCount());
+		if (sourceNodes != null)
+		{
+			returnList.addAll(sourceNodes);
+		}
+		if (sinkNodes != null)
+		{
+			returnList.addAll(sinkNodes);
+		}
+		return returnList;
+	}
 
-    /*
-     * FIXME TODO This is DECEPTIVE, given that it does not return what one
-     * would expect to be able to use in getNodeAt :(
-     * 
-     * The question is accuracy vs. storage vs. ??? Should the List that is
-     * storing items here really store a special object that has a key for
-     * source/sink/both and the items? What does that mean for the speed of the
-     * get lists? Should the source/sink/both be a separate list/array?
-     */
-    /**
-     * Returns a count of the number of adjacent (connected) Nodes to this
-     * DefaultDirectionalHyperEdge.
-     * 
-     * @see pcgen.base.graph.core.Edge#getAdjacentNodeCount()
-     */
-    public int getAdjacentNodeCount()
-    {
-        if (sourceNodes == null)
-        {
-            return sinkNodes.size();
-        }
-        else if (sinkNodes == null)
-        {
-            return sourceNodes.size();
-        }
-        // Neither is null
-        int size = sourceNodes.size();
-        for (N node : sinkNodes)
-        {
-            if (!sourceNodes.contains(node))
-            {
-                size++;
-            }
-        }
-        return size;
-    }
+	/**
+	 * Returns true if the given Node is adjacent (connected) to this
+	 * DefaultDirectionalHyperEdge.
+	 * 
+	 * @see pcgen.base.graph.core.Edge#isAdjacentNode(java.lang.Object)
+	 */
+	public boolean isAdjacentNode(N gn)
+	{
+		if (sourceNodes != null && sourceNodes.contains(gn))
+		{
+			return true;
+		}
+		if (sinkNodes != null && sinkNodes.contains(gn))
+		{
+			return true;
+		}
+		return false;
+	}
 
-    /**
-     * Returns a bitmask indicating the interface type of the given Node with
-     * respect to this DefaultDirectionalHyperEdge.
-     * 
-     * @see pcgen.base.graph.core.DirectionalEdge#getNodeInterfaceType(java.lang.Object)
-     */
-    public int getNodeInterfaceType(N node)
-    {
-        int type = 0;
-        if (sourceNodes != null && sourceNodes.contains(node))
-        {
-            type |= DirectionalEdge.SOURCE;
-        }
-        if (sinkNodes != null && sinkNodes.contains(node))
-        {
-            type |= DirectionalEdge.SINK;
-        }
-        return type;
-    }
+	/*
+	 * FIXME TODO This is DECEPTIVE, given that it does not return what one
+	 * would expect to be able to use in getNodeAt :(
+	 * 
+	 * The question is accuracy vs. storage vs. ??? Should the List that is
+	 * storing items here really store a special object that has a key for
+	 * source/sink/both and the items? What does that mean for the speed of the
+	 * get lists? Should the source/sink/both be a separate list/array?
+	 */
 
-    /**
-     * Returns a List of the sink Nodes of this DefaultDirectionalHyperEdge.
-     * Will return null if there are no sink Nodes.
-     * 
-     * Ownership of the returned List is transferred to the calling Object. No
-     * reference to the List Object is maintained by
-     * DefaultDirectionalHyperEdge. However, the Edges contained in the List are
-     * returned BY REFERENCE, and modification of the returned Edges will modify
-     * the Edges contained within the DefaultDirectionalHyperEdge.
-     * 
-     * @see pcgen.base.graph.core.DirectionalEdge#getSinkNodes()
-     */
-    public Set<N> getSinkNodes()
-    {
-        if (sinkNodes == null)
-        {
-            return Collections.emptySet();
-        }
-        return new HashSet<N>(sinkNodes);
-    }
+	/**
+	 * Returns a count of the number of adjacent (connected) Nodes to this
+	 * DefaultDirectionalHyperEdge.
+	 * 
+	 * @see pcgen.base.graph.core.Edge#getAdjacentNodeCount()
+	 */
+	public int getAdjacentNodeCount()
+	{
+		if (sourceNodes == null)
+		{
+			return sinkNodes.size();
+		}
+		else if (sinkNodes == null)
+		{
+			return sourceNodes.size();
+		}
+		// Neither is null
+		int size = sourceNodes.size();
+		for (N node : sinkNodes)
+		{
+			if (!sourceNodes.contains(node))
+			{
+				size++;
+			}
+		}
+		return size;
+	}
 
-    /**
-     * Returns a List of the source Nodes of this DefaultDirectionalHyperEdge.
-     * Will return null if there are no source Nodes.
-     * 
-     * Ownership of the returned List is transferred to the calling Object. No
-     * reference to the List Object is maintained by
-     * DefaultDirectionalHyperEdge. However, the Nodes contained in the List are
-     * returned BY REFERENCE, and modification of the returned Nodes will modify
-     * the Nodes contained within the DefaultDirectionalHyperEdge.
-     * 
-     * @see pcgen.base.graph.core.DirectionalEdge#getSourceNodes()
-     */
-    public Set<N> getSourceNodes()
-    {
-        if (sourceNodes == null)
-        {
-            return Collections.emptySet();
-        }
-        return new HashSet<N>(sourceNodes);
-    }
+	/**
+	 * Returns a bitmask indicating the interface type of the given Node with
+	 * respect to this DefaultDirectionalHyperEdge.
+	 * 
+	 * @see pcgen.base.graph.core.DirectionalEdge#getNodeInterfaceType(java.lang.Object)
+	 */
+	public int getNodeInterfaceType(N node)
+	{
+		int type = 0;
+		if (sourceNodes != null && sourceNodes.contains(node))
+		{
+			type |= DirectionalEdge.SOURCE;
+		}
+		if (sinkNodes != null && sinkNodes.contains(node))
+		{
+			type |= DirectionalEdge.SINK;
+		}
+		return type;
+	}
 
-    /**
-     * Creates a replacement DefaultDirectionalHyperEdge with the given Nodes as
-     * source Nodes and Sink Nodes. Either parameter individually may be null or
-     * an empty Collection; the only restriction is that both Collections cannot
-     * be null or empty. (A DefaultDirectionalHyperEdge must connect to at least
-     * one Node)
-     * 
-     * @see pcgen.base.graph.core.DirectionalHyperEdge#createReplacementEdge(java.util.Collection,
-     *      java.util.Collection)
-     */
-    public DefaultDirectionalHyperEdge<N> createReplacementEdge(
-            Collection<N> gn1, Collection<N> gn2)
-    {
-        if (gn1 == null)
-        {
-            throw new IllegalArgumentException(
-                    "Incoming Collection to createReplacementEdge in DefaultGraphEdge cannot be null");
-        }
-        if (gn2 == null)
-        {
-            throw new IllegalArgumentException(
-                    "Outgoing Collection to createReplacementEdge in DefaultGraphEdge cannot be null");
-        }
-        // Not thread safe to test this before copying the list...
-        if (gn1.size() != 1 && gn2.size() != 1)
-        {
-            throw new IllegalArgumentException(
-                    "Collection Lengths to createReplacementEdge in DefaultGraphEdge must be 1 each");
-        }
-        return new DefaultDirectionalHyperEdge<N>(gn1, gn2);
-    }
+	/**
+	 * Returns a List of the sink Nodes of this DefaultDirectionalHyperEdge.
+	 * Will return null if there are no sink Nodes.
+	 * 
+	 * Ownership of the returned List is transferred to the calling Object. No
+	 * reference to the List Object is maintained by
+	 * DefaultDirectionalHyperEdge. However, the Edges contained in the List are
+	 * returned BY REFERENCE, and modification of the returned Edges will modify
+	 * the Edges contained within the DefaultDirectionalHyperEdge.
+	 * 
+	 * @see pcgen.base.graph.core.DirectionalEdge#getSinkNodes()
+	 */
+	public List<N> getSinkNodes()
+	{
+		return sinkNodes == null ? null : new ArrayList<N>(sinkNodes);
+	}
 
+	/**
+	 * Returns a List of the source Nodes of this DefaultDirectionalHyperEdge.
+	 * Will return null if there are no source Nodes.
+	 * 
+	 * Ownership of the returned List is transferred to the calling Object. No
+	 * reference to the List Object is maintained by
+	 * DefaultDirectionalHyperEdge. However, the Nodes contained in the List are
+	 * returned BY REFERENCE, and modification of the returned Nodes will modify
+	 * the Nodes contained within the DefaultDirectionalHyperEdge.
+	 * 
+	 * @see pcgen.base.graph.core.DirectionalEdge#getSourceNodes()
+	 */
+	public List<N> getSourceNodes()
+	{
+		return sourceNodes == null ? null : new ArrayList<N>(sourceNodes);
+	}
+
+	/**
+	 * Creates a replacement DefaultDirectionalHyperEdge with the given Nodes as
+	 * source Nodes and Sink Nodes. Either parameter individually may be null or
+	 * an empty Collection; the only restriction is that both Collections cannot
+	 * be null or empty. (A DefaultDirectionalHyperEdge must connect to at least
+	 * one Node)
+	 * 
+	 * @see pcgen.base.graph.core.DirectionalHyperEdge#createReplacementEdge(java.util.Collection,
+	 *      java.util.Collection)
+	 */
+	public DefaultDirectionalHyperEdge<N> createReplacementEdge(
+		Collection<N> gn1, Collection<N> gn2)
+	{
+		if (gn1 == null)
+		{
+			throw new IllegalArgumentException(
+				"Incoming Collection to createReplacementEdge in DefaultGraphEdge cannot be null");
+		}
+		if (gn2 == null)
+		{
+			throw new IllegalArgumentException(
+				"Outgoing Collection to createReplacementEdge in DefaultGraphEdge cannot be null");
+		}
+		// Not thread safe to test this before copying the list...
+		if (gn1.size() != 1 && gn2.size() != 1)
+		{
+			throw new IllegalArgumentException(
+				"Collection Lengths to createReplacementEdge in DefaultGraphEdge must be 1 each");
+		}
+		return new DefaultDirectionalHyperEdge<N>(gn1, gn2);
+	}
 }

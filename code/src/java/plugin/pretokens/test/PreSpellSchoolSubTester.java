@@ -110,7 +110,7 @@ public class PreSpellSchoolSubTester extends AbstractPrerequisiteTest implements
 			List<SpellSubSchool> subSchoolList = s.getListFor(ListKey.SPELL_SUBSCHOOL);
 			if (subSchoolList != null && subSchoolList.contains(school))
 			{
-				Set<PCGraphEdge> assocEdges = activeGraph.getInwardEdgeSet(s);
+				List<PCGraphEdge> assocEdges = activeGraph.getInwardEdgeList(s);
 				for (PCGraphEdge edge : assocEdges)
 				{
 					if (edge.getAssociation(AssociationKey.SPELL_LEVEL)

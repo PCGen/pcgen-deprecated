@@ -223,11 +223,11 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 	 * must not alter the hash code (as returned by the Node's .hashCode()
 	 * method) for AbstractSetMapGraph to maintain proper operation.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getNodes()
+	 * @see pcgen.base.graph.core.Graph#getNodeList()
 	 */
-	public Set<N> getNodes()
+	public List<N> getNodeList()
 	{
-		return new HashSet<N>(nodeMap.keySet());
+		return new ArrayList<N>(nodeMap.keySet());
 	}
 
 	/**
@@ -239,11 +239,11 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 	 * modification of the returned Edges will modify the Edges contained within
 	 * the AbstractSetMapGraph.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getEdges()
+	 * @see pcgen.base.graph.core.Graph#getEdgeList()
 	 */
-	public Set<ET> getEdges()
+	public List<ET> getEdgeList()
 	{
-		return new HashSet<ET>(edgeSet);
+		return new ArrayList<ET>(edgeSet);
 	}
 
 	/**
@@ -402,7 +402,7 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		Graph<N, ET> otherGraph = (Graph<N, ET>) other;
-		Set<N> otherNodeList = otherGraph.getNodes();
+		List<N> otherNodeList = otherGraph.getNodeList();
 		int thisNodeSize = nodeMap.size();
 		if (thisNodeSize != otherNodeList.size())
 		{
@@ -412,7 +412,7 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherNodeList = new HashSet<N>(otherNodeList);
+		otherNodeList = new ArrayList<N>(otherNodeList);
 		if (otherNodeList.retainAll(nodeMap.keySet()))
 		{
 			// Some nodes are not identical
@@ -426,7 +426,7 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 				System.err.println("1- " + o.hashCode() + " " + o);
 			}
 			System.err.println("?!?");
-			ArrayList<N> al2 = new ArrayList<N>(otherGraph.getNodes());
+			ArrayList<N> al2 = new ArrayList<N>(otherGraph.getNodeList());
 			al2.removeAll(otherNodeList);
 			for (Object o : al2)
 			{
@@ -442,7 +442,7 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// Here, the node lists are identical...
-		Set<ET> otherEdgeList = otherGraph.getEdges();
+		List<ET> otherEdgeList = otherGraph.getEdgeList();
 		int thisEdgeSize = edgeSet.size();
 		if (thisEdgeSize != otherEdgeList.size())
 		{
@@ -452,7 +452,7 @@ public abstract class AbstractSetMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherEdgeList = new HashSet<ET>(otherEdgeList);
+		otherEdgeList = new ArrayList<ET>(otherEdgeList);
 		if (otherEdgeList.retainAll(edgeSet))
 		{
 			// Other Graph contains extra edges

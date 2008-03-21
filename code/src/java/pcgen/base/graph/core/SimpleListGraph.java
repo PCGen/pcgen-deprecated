@@ -159,11 +159,11 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 	 * modification of the returned Nodes will modify the nodes contained within
 	 * the SimpleListGraph.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getNodes()
+	 * @see pcgen.base.graph.core.Graph#getNodeList()
 	 */
-	public Set<N> getNodes()
+	public List<N> getNodeList()
 	{
-		return new HashSet<N>(nodeList);
+		return new ArrayList<N>(nodeList);
 	}
 
 	/**
@@ -175,11 +175,11 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 	 * modification of the returned Edges will modify the Edges contained within
 	 * the SimpleListGraph.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getEdges()
+	 * @see pcgen.base.graph.core.Graph#getEdgeList()
 	 */
-	public Set<ET> getEdges()
+	public List<ET> getEdgeList()
 	{
-		return new HashSet<ET>(edgeList);
+		return new ArrayList<ET>(edgeList);
 	}
 
 	/**
@@ -325,28 +325,28 @@ public class SimpleListGraph<N, ET extends Edge<N>> implements Graph<N, ET>
 			return false;
 		}
 		Graph<N, ET> otherGraph = (Graph<N, ET>) other;
-		Set<N> otherNodeList = otherGraph.getNodes();
+		List<N> otherNodeList = otherGraph.getNodeList();
 		int thisNodeSize = nodeList.size();
 		if (thisNodeSize != otherNodeList.size())
 		{
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherNodeList = new HashSet<N>(otherNodeList);
+		otherNodeList = new ArrayList<N>(otherNodeList);
 		if (otherNodeList.retainAll(nodeList))
 		{
 			// Other Graph contains extra nodes
 			return false;
 		}
 		// Here, the node lists are identical...
-		Set<ET> otherEdgeList = otherGraph.getEdges();
+		List<ET> otherEdgeList = otherGraph.getEdgeList();
 		int thisEdgeSize = edgeList.size();
 		if (thisEdgeSize != otherEdgeList.size())
 		{
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherEdgeList = new HashSet<ET>(otherEdgeList);
+		otherEdgeList = new ArrayList<ET>(otherEdgeList);
 		// possible that the Other Graph contains extra edges
 		return !otherEdgeList.retainAll(edgeList);
 	}

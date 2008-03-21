@@ -40,7 +40,7 @@ public class PCGenGraph extends
 	{
 		// Long/Slow implementation...
 		List<T> list = new ArrayList<T>();
-		for (PrereqObject pro : getNodes())
+		for (PrereqObject pro : getNodeList())
 		{
 			if (name.isInstance(pro))
 			{
@@ -53,7 +53,7 @@ public class PCGenGraph extends
 	public <T extends CDOMObject> T getGrantedNode(Class<T> name, String s)
 	{
 		// Long/Slow implementation...
-		for (PrereqObject pro : getNodes())
+		for (PrereqObject pro : getNodeList())
 		{
 			if (name.isInstance(pro))
 			{
@@ -71,7 +71,7 @@ public class PCGenGraph extends
 	{
 		// Long/Slow implementation...
 		int count = 0;
-		for (PrereqObject pro : getNodes())
+		for (PrereqObject pro : getNodeList())
 		{
 			if (name.isInstance(pro))
 			{
@@ -90,7 +90,7 @@ public class PCGenGraph extends
 	public <T extends CDOMObject> boolean containsGranted(Class<T> name,
 		String templateKey)
 	{
-		for (PrereqObject pro : getNodes())
+		for (PrereqObject pro : getNodeList())
 		{
 			if (name.isInstance(pro))
 			{

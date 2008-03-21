@@ -21,7 +21,6 @@ package pcgen.base.graph.core;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -124,7 +123,7 @@ public interface Graph<N, ET extends Edge<N>>
 	 * 
 	 * @return A List of the Nodes in this Graph
 	 */
-	public Set<N> getNodes();
+	public List<N> getNodeList();
 
 	/**
 	 * Returns a List of the Edges in this Graph. Will return an Empty List (not
@@ -132,7 +131,7 @@ public interface Graph<N, ET extends Edge<N>>
 	 * 
 	 * @return A List of the Edges in this Graph
 	 */
-	public Set<ET> getEdges();
+	public List<ET> getEdgeList();
 
 	/**
 	 * Removes the given Node from the Graph.
@@ -167,14 +166,14 @@ public interface Graph<N, ET extends Edge<N>>
 
 	/**
 	 * Returns a Set of the Edges that are adjacent (connected) to the given
-	 * Node.
+	 * Node. Returns null if the given Node is not present in the Graph.
 	 * 
 	 * @param v
 	 *            The Node for which the adjacent Edges should be returned.
 	 * @return A Set of the Edges that are adjacent (connected) to the given
 	 *         Node.
 	 */
-	public Set<ET> getAdjacentEdges(N v);
+	public Collection<ET> getAdjacentEdges(N v);
 
 	/**
 	 * Adds a new GraphChangeListener to receive GraphChangeEvents

@@ -63,7 +63,7 @@ public class ListChoiceSet<T extends CDOMObject> implements
 		 * getSet relax to a Collection or can getCODMListContents tighten to a
 		 * set?
 		 */
-		return new HashSet(pc.getCDOMListContents(list));
+		return new HashSet<T>(pc.getCDOMListContents(list));
 	}
 
 	@Override

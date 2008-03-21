@@ -20,9 +20,9 @@
  */
 package pcgen.base.graph.core;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -89,16 +89,16 @@ public class DirectionalIdentityEdgeMapGraph<N, ET extends DirectionalEdge<N>>
 	 * are returned BY REFERENCE, and modification of the returned Edges will
 	 * modify the Edges contained within the DirectionalIdentityEdgeMapGraph.
 	 * 
-	 * @see pcgen.base.graph.core.DirectionalGraph#getInwardEdgeSet(java.lang.Object)
+	 * @see pcgen.base.graph.core.DirectionalGraph#getInwardEdgeList(java.lang.Object)
 	 */
-	public Set<ET> getInwardEdgeSet(N v)
+	public List<ET> getInwardEdgeList(N v)
 	{
-		Set<ET> adjacentEdgeList = super.getAdjacentEdges(v);
+		List<ET> adjacentEdgeList = super.getAdjacentEdges(v);
 		if (adjacentEdgeList == null)
 		{
-			return Collections.emptySet();
+			return null;
 		}
-		Set<ET> inwardEdgeList = new HashSet<ET>();
+		List<ET> inwardEdgeList = new LinkedList<ET>();
 		for (ET edge : adjacentEdgeList)
 		{
 			if ((edge.getNodeInterfaceType(v) & DirectionalEdge.SINK) != 0)
@@ -118,16 +118,16 @@ public class DirectionalIdentityEdgeMapGraph<N, ET extends DirectionalEdge<N>>
 	 * are returned BY REFERENCE, and modification of the returned Edges will
 	 * modify the Edges contained within the DirectionalIdentityEdgeMapGraph.
 	 * 
-	 * @see pcgen.base.graph.core.DirectionalGraph#getOutwardEdgeSet(java.lang.Object)
+	 * @see pcgen.base.graph.core.DirectionalGraph#getOutwardEdgeList(java.lang.Object)
 	 */
-	public Set<ET> getOutwardEdgeSet(N v)
+	public List<ET> getOutwardEdgeList(N v)
 	{
-		Set<ET> adjacentEdgeList = super.getAdjacentEdges(v);
+		List<ET> adjacentEdgeList = super.getAdjacentEdges(v);
 		if (adjacentEdgeList == null)
 		{
-			return Collections.emptySet();
+			return null;
 		}
-		Set<ET> outwardEdgeList = new HashSet<ET>();
+		List<ET> outwardEdgeList = new ArrayList<ET>();
 		for (ET edge : adjacentEdgeList)
 		{
 			if ((edge.getNodeInterfaceType(v) & DirectionalEdge.SOURCE) != 0)
@@ -145,7 +145,7 @@ public class DirectionalIdentityEdgeMapGraph<N, ET extends DirectionalEdge<N>>
 	 */
 	public boolean hasInwardEdge(N v)
 	{
-		Set<ET> adjacentEdgeList = super.getAdjacentEdges(v);
+		List<ET> adjacentEdgeList = super.getAdjacentEdges(v);
 		if (adjacentEdgeList == null)
 		{
 			return false;
@@ -168,7 +168,7 @@ public class DirectionalIdentityEdgeMapGraph<N, ET extends DirectionalEdge<N>>
 	 */
 	public boolean hasOutwardEdge(N v)
 	{
-		Set<ET> adjacentEdgeList = super.getAdjacentEdges(v);
+		List<ET> adjacentEdgeList = super.getAdjacentEdges(v);
 		if (adjacentEdgeList == null)
 		{
 			return false;

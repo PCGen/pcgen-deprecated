@@ -191,62 +191,64 @@ public abstract class LoadContext
 		}
 	}
 
+	private TokenSupport support = new TokenSupport();
+
 	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getAtomicChoiceFilter(
 			Class<T> cl, String key)
 	{
-		return TokenSupport.getAtomicChoiceFilter(this, cl, key);
+		return support.getAtomicChoiceFilter(this, cl, key);
 	}
 
 	public <T extends CDOMObject> PrimitiveChoiceSet<T> getChoiceSet(
 			Class<T> poClass, String value)
 	{
-		return TokenSupport.getChoiceSet(this, poClass, value);
+		return support.getChoiceSet(this, poClass, value);
 	}
 
 	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getPrimitiveChoiceFilter(
 			Class<T> cl, String key)
 	{
-		return TokenSupport.getPrimitiveChoiceFilter(this, cl, key);
+		return support.getPrimitiveChoiceFilter(this, cl, key);
 	}
 
 	public <T extends CDOMObject> PrimitiveChoiceSet<T> getQualifier(
 			Class<T> cl, String key, String value)
 	{
-		return TokenSupport.getQualifier(this, cl, key, value);
+		return support.getQualifier(this, cl, key, value);
 	}
 
 	public <T> boolean processSubToken(T cdo, String tokenName,
 			String key, String value) throws PersistenceLayerException
 	{
-		return TokenSupport.processSubToken(this, cdo, tokenName, key, value);
+		return support.processSubToken(this, cdo, tokenName, key, value);
 	}
 
 	public <T extends CDOMObject> boolean processToken(T derivative,
 			String typeStr, String argument) throws PersistenceLayerException
 	{
-		return TokenSupport.processToken(this, derivative, typeStr, argument);
+		return support.processToken(this, derivative, typeStr, argument);
 	}
 
 	public String[] unparse(CDOMObject cdo, String tokenName)
 	{
-		return TokenSupport.unparse(this, cdo, tokenName);
+		return support.unparse(this, cdo, tokenName);
 	}
 
 	public Collection<String> unparse(CDOMObject cdo)
 	{
-		return TokenSupport.unparse(this, cdo);
+		return support.unparse(this, cdo);
 	}
 
 	public <T extends CDOMObject> PrimitiveChoiceSet<?> getChoiceSet(T obj,
 			String key, String val) throws PersistenceLayerException
 	{
-		return TokenSupport.getChoiceSet(this, obj, key, val);
+		return support.getChoiceSet(this, obj, key, val);
 	}
 
 	public Prerequisite getPrerequisite(String string, String value)
 			throws PersistenceLayerException
 	{
-		return TokenSupport.getPrerequisite(this, string, value);
+		return support.getPrerequisite(this, string, value);
 	}
 
 	public <T extends CDOMObject> T cloneConstructedCDOMObject(T cdo, String newName)

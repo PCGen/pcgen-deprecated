@@ -19,8 +19,9 @@
  */
 package pcgen.base.graph.core;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -87,16 +88,16 @@ public class DirectionalListMapGraph<N, ET extends DirectionalEdge<N>> extends
 	 * modification of the returned Edges will modify the Edges contained within
 	 * the DirectionalListMapGraph.
 	 * 
-	 * @see pcgen.base.graph.core.DirectionalGraph#getInwardEdgeSet(java.lang.Object)
+	 * @see pcgen.base.graph.core.DirectionalGraph#getInwardEdgeList(java.lang.Object)
 	 */
-	public Set<ET> getInwardEdgeSet(N v)
+	public List<ET> getInwardEdgeList(N v)
 	{
 		Set<ET> adjacentEdgeList = super.getAdjacentEdges(v);
 		if (adjacentEdgeList == null)
 		{
-			return Collections.emptySet();
+			return null;
 		}
-		Set<ET> inwardEdgeList = new HashSet<ET>();
+		List<ET> inwardEdgeList = new LinkedList<ET>();
 		for (ET edge : adjacentEdgeList)
 		{
 			if ((edge.getNodeInterfaceType(v) & DirectionalEdge.SINK) != 0)
@@ -116,16 +117,16 @@ public class DirectionalListMapGraph<N, ET extends DirectionalEdge<N>> extends
 	 * modification of the returned Edges will modify the Edges contained within
 	 * the DirectionalListMapGraph.
 	 * 
-	 * @see pcgen.base.graph.core.DirectionalGraph#getOutwardEdgeSet(java.lang.Object)
+	 * @see pcgen.base.graph.core.DirectionalGraph#getOutwardEdgeList(java.lang.Object)
 	 */
-	public Set<ET> getOutwardEdgeSet(N v)
+	public List<ET> getOutwardEdgeList(N v)
 	{
 		Set<ET> adjacentEdgeList = super.getAdjacentEdges(v);
 		if (adjacentEdgeList == null)
 		{
-			return Collections.emptySet();
+			return null;
 		}
-		Set<ET> outwardEdgeList = new HashSet<ET>();
+		List<ET> outwardEdgeList = new ArrayList<ET>();
 		for (ET edge : adjacentEdgeList)
 		{
 			if ((edge.getNodeInterfaceType(v) & DirectionalEdge.SOURCE) != 0)

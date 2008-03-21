@@ -107,7 +107,8 @@ public final class GraphUtilities
 	private static <A, ET extends DirectionalEdge<A>> void accumulateDescendentNodes(
 		DirectionalGraph<A, ET> graph, A node, Collection<A> descendents)
 	{
-		for (ET edge : graph.getOutwardEdgeSet(node))
+		List<ET> children = graph.getOutwardEdgeList(node);
+		for (ET edge : children)
 		{
 			List<A> graphNodes = edge.getAdjacentNodes();
 			for (A gn : graphNodes)

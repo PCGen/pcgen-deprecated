@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import pcgen.base.graph.core.DefaultDirectionalHyperEdge;
 import pcgen.base.graph.core.DirectionalEdge;
@@ -326,7 +325,7 @@ public class DefaultDirectionalHyperEdgeTest extends TestCase {
 		DefaultDirectionalHyperEdge<Integer> edge = edge1
 				.createReplacementEdge(sourceL, sinkL);
 		assertEquals(3, edge.getAdjacentNodeCount());
-		Set<Integer> l = edge.getSourceNodes();
+		List<Integer> l = edge.getSourceNodes();
 		assertEquals(2, l.size());
 		assertTrue(l.contains(node3));
 		assertTrue(l.contains(node4));
@@ -361,7 +360,7 @@ public class DefaultDirectionalHyperEdgeTest extends TestCase {
 		DefaultDirectionalHyperEdge<Integer> edge = new DefaultDirectionalHyperEdge<Integer>(
 				sourceL, sinkL);
 		assertEquals(3, edge.getAdjacentNodeCount());
-		Set<Integer> l = edge.getSourceNodes();
+		List<Integer> l = edge.getSourceNodes();
 		assertEquals(2, l.size());
 		assertTrue(l.contains(node3));
 		assertTrue(l.contains(node4));

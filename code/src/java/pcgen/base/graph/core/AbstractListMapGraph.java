@@ -19,13 +19,12 @@
  */
 package pcgen.base.graph.core;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import pcgen.base.util.ListSet;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -78,7 +77,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	/**
 	 * The List of nodes contained in this Graph.
 	 */
-	private final ListSet<N> nodeList;
+	private final List<N> nodeList;
 
 	/**
 	 * The List of edges contained in this Graph. An edge must be connected to a
@@ -86,7 +85,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * whether this addition is done implicitly by addEdge [it is in
 	 * AbstractListMapGraph] or whether it is explicit).
 	 */
-	private final ListSet<ET> edgeList;
+	private final List<ET> edgeList;
 
 	/**
 	 * A Map indicating which nodes are connected to which edges. This is
@@ -108,8 +107,8 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	public AbstractListMapGraph()
 	{
 		super();
-		edgeList = new ListSet<ET>();
-		nodeList = new ListSet<N>();
+		edgeList = new ArrayList<ET>();
+		nodeList = new ArrayList<N>();
 		gcs = new GraphChangeSupport<N, ET>(this);
 		nodeEdgeMap = new HashMap<N, Set<ET>>();
 	}
@@ -235,11 +234,11 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * .hashCode() method) for AbstractListMapGraph to maintain proper
 	 * operation.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getNodes()
+	 * @see pcgen.base.graph.core.Graph#getNodeList()
 	 */
-	public Set<N> getNodes()
+	public List<N> getNodeList()
 	{
-		return new HashSet<N>(nodeList);
+		return new ArrayList<N>(nodeList);
 	}
 
 	/**
@@ -251,11 +250,11 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	 * modification of the returned Edges will modify the Edges contained within
 	 * the AbstractListMapGraph.
 	 * 
-	 * @see pcgen.base.graph.core.Graph#getEdges()
+	 * @see pcgen.base.graph.core.Graph#getEdgeList()
 	 */
-	public Set<ET> getEdges()
+	public List<ET> getEdgeList()
 	{
-		return new HashSet<ET>(edgeList);
+		return new ArrayList<ET>(edgeList);
 	}
 
 	/**
@@ -354,9 +353,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 	{
 		// implicitly returns null if gn is not in the nodeEdgeMap
 		Set<ET> s = nodeEdgeMap.get(gn);
-                if(s == null)
-                    return Collections.emptySet();
-                return new HashSet<ET>(s);
+		return s == null ? null : new HashSet<ET>(s);
 	}
 
 	/**
@@ -415,7 +412,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		Graph<N, ET> otherGraph = (Graph<N, ET>) other;
-		Set<N> otherNodeList = otherGraph.getNodes();
+		List<N> otherNodeList = otherGraph.getNodeList();
 		int thisNodeSize = nodeList.size();
 		if (thisNodeSize != otherNodeList.size())
 		{
@@ -423,7 +420,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherNodeList = new HashSet<N>(otherNodeList);
+		otherNodeList = new ArrayList<N>(otherNodeList);
 		if (otherNodeList.retainAll(nodeList))
 		{
 			// Some nodes are not identical
@@ -433,7 +430,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// Here, the node lists are identical...
-		Set<ET> otherEdgeList = otherGraph.getEdges();
+		List<ET> otherEdgeList = otherGraph.getEdgeList();
 		int thisEdgeSize = edgeList.size();
 		if (thisEdgeSize != otherEdgeList.size())
 		{
@@ -441,7 +438,7 @@ public abstract class AbstractListMapGraph<N, ET extends Edge<N>> implements
 			return false;
 		}
 		// (potentially wasteful, but defensive copy)
-		otherEdgeList = new HashSet<ET>(otherEdgeList);
+		otherEdgeList = new ArrayList<ET>(otherEdgeList);
 		if (otherEdgeList.retainAll(edgeList))
 		{
 			// Other Graph contains extra edges
