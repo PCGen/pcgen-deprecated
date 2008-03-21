@@ -48,7 +48,6 @@ public abstract class AbstractGraphTestCase<T extends Edge<Integer>> extends
 
 	public void testAddNode()
 	{
-		assertFalse(true);
 		getStrategy().addGraphChangeListener(listener);
 		Integer node = new Integer(1);
 		Integer node2 = new Integer(2);
