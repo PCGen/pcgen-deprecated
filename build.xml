@@ -687,7 +687,6 @@ pcgen.filepaths=user
 			</classpath>
 			<test name="${base.utest.class}" todir="${build.dir}/test-results/xml" />
 			<test name="${token.utest.class}" todir="${build.dir}/test-results/xml" />
-			<test name="${token.itest.class}" todir="${build.dir}/test-results/xml" />
 		</junit>
 		<junit fork="yes" printsummary="on" failureproperty="junitfailure" dir="${basedir}">
 			<jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
