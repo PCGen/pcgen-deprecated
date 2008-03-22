@@ -1,4 +1,4 @@
-s       #TITLE=PCGen Syntax
+#TITLE=PCGen Syntax
 
 #DELIMITER=,(){}[]-+*%/="'~!&|\<>?:;.
 
@@ -52,7 +52,7 @@ s       #TITLE=PCGen Syntax
 
 #HEREDOC=
 
-#AUTOCASE=y
+#AUTOCASE=n
 
 #NUMBER_PATTERN=cpp
 
