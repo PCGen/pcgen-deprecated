@@ -17,14 +17,14 @@
  */
 package plugin.lsttokens.editcontext.pcclass;
 
+import junit.framework.TestSuite;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import junit.framework.TestSuite;
-
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	AbbIntegrationTest.class,
+	//AbbIntegrationTest.class,
 	AddDomainsIntegrationTest.class,
 	AttackCycleIntegrationTest.class,
 	BonusSpellStatIntegrationTest.class,

@@ -23,7 +23,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import plugin.lsttokens.editcontext.ability.AbilityIntegrationTestSuite;
-import plugin.lsttokens.editcontext.auto.AutoIntegrationTestSuite;
 import plugin.lsttokens.editcontext.deity.DeityIntegrationTestSuite;
 import plugin.lsttokens.editcontext.domain.DomainIntegrationTestSuite;
 import plugin.lsttokens.editcontext.equipment.EquipmentIntegrationTestSuite;
@@ -40,7 +39,8 @@ import plugin.lsttokens.editcontext.weaponprof.WeaponProfIntegrationTestSuite;
 	GlobalIntegrationTestSuite.class,
 	AbilityIntegrationTestSuite.class,
 	// AddIntegrationTestSuite.class,
-	AutoIntegrationTestSuite.class, DeityIntegrationTestSuite.class,
+	//AutoIntegrationTestSuite.class,
+	DeityIntegrationTestSuite.class,
 	DomainIntegrationTestSuite.class, EquipmentIntegrationTestSuite.class,
 	EqModIntegrationTestSuite.class, PCClassIntegrationTestSuite.class,
 	RaceIntegrationTestSuite.class, SkillIntegrationTestSuite.class,

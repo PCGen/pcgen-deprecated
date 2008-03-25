@@ -17,8 +17,11 @@
  */
 package plugin.lsttokens.editcontext.spell;
 
+import java.net.URISyntaxException;
+
 import pcgen.cdom.inst.CDOMSpell;
 import pcgen.cdom.inst.CDOMStat;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -32,6 +35,20 @@ public class StatIntegrationTest extends
 	static StatToken token = new StatToken();
 	static CDOMTokenLoader<CDOMSpell> loader = new CDOMTokenLoader<CDOMSpell>(
 			CDOMSpell.class);
+
+	@Override
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		CDOMStat ps = primaryContext.ref.constructCDOMObject(CDOMStat.class, "Strength");
+		primaryContext.ref.registerAbbreviation(ps, "TestWP1");
+		CDOMStat ss = secondaryContext.ref.constructCDOMObject(CDOMStat.class, "Strength");
+		secondaryContext.ref.registerAbbreviation(ss, "TestWP1");
+		CDOMStat pi = primaryContext.ref.constructCDOMObject(CDOMStat.class, "Intelligence");
+		primaryContext.ref.registerAbbreviation(pi, "TestWP2");
+		CDOMStat si = secondaryContext.ref.constructCDOMObject(CDOMStat.class, "Intelligence");
+		secondaryContext.ref.registerAbbreviation(si, "TestWP2");
+	}
 
 	@Override
 	public Class<CDOMSpell> getCDOMClass()

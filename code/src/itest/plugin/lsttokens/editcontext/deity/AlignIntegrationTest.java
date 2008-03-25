@@ -46,24 +46,18 @@ public class AlignIntegrationTest extends
 			URISyntaxException
 	{
 		super.setUp();
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LG");
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LN");
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LE");
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "NG");
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "TN");
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "NE");
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CG");
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CN");
-		primaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CE");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LG");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LN");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "LE");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "NG");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "TN");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "NE");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CG");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CN");
-		secondaryContext.ref.constructCDOMObject(CDOMAlignment.class, "CE");
+		CDOMAlignment lg = primaryContext.ref.constructCDOMObject(
+				CDOMAlignment.class, "Lawful Good");
+		primaryContext.ref.registerAbbreviation(lg, "LG");
+		CDOMAlignment ln = primaryContext.ref.constructCDOMObject(
+				CDOMAlignment.class, "Lawful Neutral");
+		primaryContext.ref.registerAbbreviation(ln, "LN");
+		CDOMAlignment slg = secondaryContext.ref.constructCDOMObject(
+				CDOMAlignment.class, "Lawful Good");
+		secondaryContext.ref.registerAbbreviation(slg, "LG");
+		CDOMAlignment sln = secondaryContext.ref.constructCDOMObject(
+				CDOMAlignment.class, "Lawful Neutral");
+		secondaryContext.ref.registerAbbreviation(sln, "LN");
 	}
 
 	@Override
@@ -99,7 +93,7 @@ public class AlignIntegrationTest extends
 	{
 		verifyCleanStart();
 		TestContext tc = new TestContext();
-		commit(testCampaign, tc, "TN");
+		commit(testCampaign, tc, "LN");
 		commit(modCampaign, tc, "LG");
 		completeRoundRobin(tc);
 	}
@@ -110,7 +104,7 @@ public class AlignIntegrationTest extends
 		verifyCleanStart();
 		TestContext tc = new TestContext();
 		emptyCommit(testCampaign, tc);
-		commit(modCampaign, tc, "NG");
+		commit(modCampaign, tc, "LG");
 		completeRoundRobin(tc);
 	}
 
@@ -119,7 +113,7 @@ public class AlignIntegrationTest extends
 	{
 		verifyCleanStart();
 		TestContext tc = new TestContext();
-		commit(testCampaign, tc, "LE");
+		commit(testCampaign, tc, "LN");
 		emptyCommit(modCampaign, tc);
 		completeRoundRobin(tc);
 	}

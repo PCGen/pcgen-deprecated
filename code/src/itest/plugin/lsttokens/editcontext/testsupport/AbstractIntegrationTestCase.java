@@ -64,12 +64,10 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 	@BeforeClass
 	public static final void classSetUp() throws URISyntaxException
 	{
-		testCampaign =
-				new CampaignSourceEntry(new Campaign(), new URI(
-					"file:/Test%20Case"));
-		modCampaign =
-				new CampaignSourceEntry(new Campaign(), new URI(
-					"file:/Test%20Case%20Modifier"));
+		testCampaign = new CampaignSourceEntry(new Campaign(), new URI(
+				"file:/Test%20Case"));
+		modCampaign = new CampaignSourceEntry(new Campaign(), new URI(
+				"file:/Test%20Case%20Modifier"));
 		classSetUpFired = true;
 	}
 
@@ -87,12 +85,10 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 		secondaryGraph = new PCGenGraph();
 		primaryContext = new EditorLoadContext();
 		secondaryContext = new EditorLoadContext();
-		primaryProf =
-				primaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
-		secondaryProf =
-				secondaryContext.ref.constructCDOMObject(getCDOMClass(),
-					"TestObj");
+		primaryProf = primaryContext.ref.constructCDOMObject(getCDOMClass(),
+				"TestObj");
+		secondaryProf = secondaryContext.ref.constructCDOMObject(
+				getCDOMClass(), "TestObj");
 	}
 
 	public abstract Class<? extends T> getCDOMClass();
@@ -102,7 +98,8 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 		TokenStore.inst().addToTokenMap(tok);
 	}
 
-	public static void addBonus(String name, Class<? extends BonusObj> clazz) {
+	public static void addBonus(String name, Class<? extends BonusObj> clazz)
+	{
 		try
 		{
 			Bonus.addBonusClass(clazz, name);
@@ -128,35 +125,35 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 	}
 
 	protected void commit(CampaignSourceEntry campaign, TestContext tc,
-		String... str) throws PersistenceLayerException
+			String... str) throws PersistenceLayerException
 	{
 		StringBuilder unparsedBuilt = new StringBuilder();
 		for (String s : str)
 		{
 			unparsedBuilt.append(getToken().getTokenName()).append(':').append(
-				s).append('\t');
+					s).append('\t');
 		}
 		URI uri = campaign.getURI();
 		primaryContext.setSourceURI(uri);
 		getLoader().parseLine(primaryContext, primaryProf,
-			prefix + "TestObj\t" + unparsedBuilt.toString(), campaign.getURI());
+				unparsedBuilt.toString(), campaign.getURI());
 		tc.putText(uri, str);
 		tc.putCampaign(uri, campaign);
 	}
 
 	protected void emptyCommit(CampaignSourceEntry campaign, TestContext tc)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		URI uri = campaign.getURI();
 		primaryContext.setSourceURI(uri);
-		getLoader().parseLine(primaryContext, primaryProf, prefix + "TestObj",
-			campaign.getURI());
+		getLoader().parseLine(primaryContext, primaryProf, null,
+				campaign.getURI());
 		tc.putText(uri, null);
 		tc.putCampaign(uri, campaign);
 	}
 
 	public void completeRoundRobin(TestContext tc)
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		for (URI uri : tc.getURIs())
 		{
@@ -167,8 +164,8 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 			if (str == null)
 			{
 				assertNull("Expecting empty unparsed", unparsed);
-				getLoader().parseLine(secondaryContext, secondaryProf,
-					prefix + "TestObj", uri);
+				getLoader().parseLine(secondaryContext, secondaryProf, null,
+						uri);
 				continue;
 			}
 			assertEquals(str.size(), unparsed.length);
@@ -176,7 +173,7 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 			for (int i = 0; i < str.size(); i++)
 			{
 				assertEquals("Expected " + i + " item to be equal", str.get(i),
-					unparsed[i]);
+						unparsed[i]);
 			}
 
 			// Do round Robin
@@ -184,12 +181,11 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 			for (String s : unparsed)
 			{
 				unparsedBuilt.append(getToken().getTokenName()).append(':')
-					.append(s).append('\t');
+						.append(s).append('\t');
 			}
 			secondaryContext.setSourceURI(uri);
 			getLoader().parseLine(secondaryContext, secondaryProf,
-				prefix + "TestObj\t" + unparsedBuilt.toString(),
-				uri);
+					unparsedBuilt.toString(), uri);
 		}
 
 		// Ensure the objects are the same
@@ -204,8 +200,8 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 			List<String> str = tc.getText(uri);
 			secondaryContext.setExtractURI(uri);
 			// Get back the appropriate token:
-			String[] unparsed =
-					getToken().unparse(secondaryContext, secondaryProf);
+			String[] unparsed = getToken().unparse(secondaryContext,
+					secondaryProf);
 			if (str == null)
 			{
 				assertNull(unparsed);
@@ -216,14 +212,14 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 			for (int i = 0; i < str.size(); i++)
 			{
 				assertEquals("Expected " + i + " item to be equal", str.get(i),
-					unparsed[i]);
+						unparsed[i]);
 			}
 		}
 
 		assertTrue(primaryContext.ref.validate());
 		assertTrue(secondaryContext.ref.validate());
 		assertEquals(expectedPrimaryMessageCount, primaryContext
-			.getWriteMessageCount());
+				.getWriteMessageCount());
 		assertEquals(0, secondaryContext.getWriteMessageCount());
 	}
 

@@ -69,7 +69,7 @@ public abstract class AbstractTextPropertyIntegrationTestCase<T extends CDOMObje
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc, "Rheinhessen|VarOne|VarTwo");
 		commit(modCampaign, tc,
-			"Rheinhessen|VarOne|VarTwo|PRECLASS:1,Fighter=1|PRELEVEL:5");
+			"Rheinhessen|VarOne|VarTwo|PRECLASS:1,Fighter=1|PRELEVEL:MIN=5");
 		completeRoundRobin(tc);
 	}
 
@@ -79,7 +79,7 @@ public abstract class AbstractTextPropertyIntegrationTestCase<T extends CDOMObje
 		verifyCleanStart();
 		TestContext tc = new TestContext();
 		commit(testCampaign, tc,
-			"Rheinhessen|VarOne|VarTwo|PRECLASS:1,Fighter=1|PRELEVEL:5");
+			"Rheinhessen|VarOne|VarTwo|PRECLASS:1,Fighter=1|PRELEVEL:MIN=5");
 		commit(modCampaign, tc, "Rheinhessen");
 		completeRoundRobin(tc);
 	}
@@ -101,7 +101,7 @@ public abstract class AbstractTextPropertyIntegrationTestCase<T extends CDOMObje
 		verifyCleanStart();
 		TestContext tc = new TestContext();
 		emptyCommit(testCampaign, tc);
-		commit(modCampaign, tc, "Rheinhessen (% of %)|VarOne|VarTwo|PRELEVEL:5");
+		commit(modCampaign, tc, "Rheinhessen (% of %)|VarOne|VarTwo|PRELEVEL:MIN=5");
 		completeRoundRobin(tc);
 	}
 
@@ -110,7 +110,7 @@ public abstract class AbstractTextPropertyIntegrationTestCase<T extends CDOMObje
 	{
 		verifyCleanStart();
 		TestContext tc = new TestContext();
-		commit(testCampaign, tc, "Rheinhessen|VarOne|VarTwo|!PRELEVEL:5");
+		commit(testCampaign, tc, "Rheinhessen|VarOne|VarTwo|!PRELEVEL:MIN=5");
 		emptyCommit(modCampaign, tc);
 		completeRoundRobin(tc);
 	}

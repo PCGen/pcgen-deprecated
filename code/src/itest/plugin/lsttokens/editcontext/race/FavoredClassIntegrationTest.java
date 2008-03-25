@@ -62,7 +62,7 @@ public class FavoredClassIntegrationTest extends
 	@Override
 	public boolean isTypeLegal()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

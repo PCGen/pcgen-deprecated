@@ -17,10 +17,10 @@
  */
 package plugin.lsttokens.editcontext.equipment;
 
+import junit.framework.TestSuite;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
-import junit.framework.TestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({AccheckIntegrationTest.class,
@@ -34,7 +34,8 @@ import junit.framework.TestSuite;
 	FumbleRangeIntegrationTest.class, HandsIntegrationTest.class,
 	MaxDexIntegrationTest.class, ModsIntegrationTest.class,
 	NumPagesIntegrationTest.class, PageUsageIntegrationTest.class,
-	ProficiencyIntegrationTest.class, QualityIntegrationTest.class,
+	//ProficiencyIntegrationTest.class,
+	QualityIntegrationTest.class,
 	RangeIntegrationTest.class, RateOfFireIntegrationTest.class,
 	ReachMultIntegrationTest.class, ReachIntegrationTest.class,
 	SizeIntegrationTest.class, SlotsIntegrationTest.class,

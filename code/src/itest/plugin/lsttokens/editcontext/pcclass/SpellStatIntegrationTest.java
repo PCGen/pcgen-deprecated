@@ -46,10 +46,14 @@ public class SpellStatIntegrationTest extends
 	{
 		super.setUp();
 		prefix = "CLASS:";
-		primaryContext.ref.constructCDOMObject(CDOMStat.class, "STR");
-		secondaryContext.ref.constructCDOMObject(CDOMStat.class, "STR");
-		primaryContext.ref.constructCDOMObject(CDOMStat.class, "INT");
-		secondaryContext.ref.constructCDOMObject(CDOMStat.class, "INT");
+		CDOMStat ps = primaryContext.ref.constructCDOMObject(CDOMStat.class, "Strength");
+		primaryContext.ref.registerAbbreviation(ps, "STR");
+		CDOMStat ss = secondaryContext.ref.constructCDOMObject(CDOMStat.class, "Strength");
+		secondaryContext.ref.registerAbbreviation(ss, "STR");
+		CDOMStat pi = primaryContext.ref.constructCDOMObject(CDOMStat.class, "Intelligence");
+		primaryContext.ref.registerAbbreviation(pi, "INT");
+		CDOMStat si = secondaryContext.ref.constructCDOMObject(CDOMStat.class, "Intelligence");
+		secondaryContext.ref.registerAbbreviation(si, "INT");
 	}
 
 	@Override
