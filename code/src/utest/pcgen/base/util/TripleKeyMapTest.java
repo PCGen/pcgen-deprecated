@@ -70,6 +70,7 @@ public class TripleKeyMapTest extends TestCase {
 
 	TripleKeyMap<Integer, Double, Character, String> tkm;
 
+	@Override
 	@Before
 	public void setUp() {
 		tkm = new TripleKeyMap<Integer, Double, Character, String>();

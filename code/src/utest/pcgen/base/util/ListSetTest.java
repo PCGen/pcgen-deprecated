@@ -28,21 +28,27 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ListSetTest extends TestCase {
+public class ListSetTest extends TestCase
+{
 
-	ListSet ls, ls2, ls3, ls4;
+	ListSet<Integer> ls, ls2, ls3, ls4;
 
-	Comparator<Integer> c = new Comparator<Integer>() {
+	Comparator<Integer> c = new Comparator<Integer>()
+	{
 
-		public int compare(Integer arg0, Integer arg1) {
-			if (arg0 == arg1) {
+		public int compare(Integer arg0, Integer arg1)
+		{
+			if (arg0 == arg1)
+			{
 				return 0;
 			}
 			int comp = arg0.compareTo(arg1);
-			if (comp != 0) {
+			if (comp != 0)
+			{
 				return comp;
 			}
-			if (System.identityHashCode(arg0) < System.identityHashCode(arg1)) {
+			if (System.identityHashCode(arg0) < System.identityHashCode(arg1))
+			{
 				return -1;
 			}
 			return 1;
@@ -50,23 +56,35 @@ public class ListSetTest extends TestCase {
 
 	};
 
+	@Override
 	@Before
-	public void setUp() {
-		ls = new ListSet();
-		ls2 = new ListSet(15);
-		ls3 = new ListSet(c);
-		ls4 = new ListSet(14, c);
+	public void setUp()
+	{
+		ls = new ListSet<Integer>();
+		ls2 = new ListSet<Integer>(15);
+		ls3 = new ListSet<Integer>(c);
+		ls4 = new ListSet<Integer>(14, c);
 	}
 
 	@Test
-	public void testSize() {
+	public void testArchitecture()
+	{
+		assertFalse(
+				"ListSet must not implement List, as it does not always return true to add(), as defined by the List interface",
+				ls instanceof List);
+	}
+
+	@Test
+	public void testSize()
+	{
 		testSetSize(ls);
 		testSetSize(ls2);
 		testSetSize(ls3);
 		testSetSize(ls4);
 	}
 
-	public void testSetSize(ListSet set) {
+	public void testSetSize(ListSet<Integer> set)
+	{
 		assertTrue(set.isEmpty());
 		assertEquals(0, set.size());
 		set.add(Integer.valueOf(1));
@@ -90,14 +108,16 @@ public class ListSetTest extends TestCase {
 	}
 
 	@Test
-	public void testAddRemove() {
+	public void testAddRemove()
+	{
 		testBasicSet(ls);
 		testBasicSet(ls2);
 		testIdentitySet(ls3);
 		testIdentitySet(ls4);
 	}
 
-	public void testBasicSet(ListSet set) {
+	public void testBasicSet(ListSet<Integer> set)
+	{
 		assertTrue(set.isEmpty());
 		assertFalse(set.remove(Integer.valueOf(1)));
 		assertFalse(set.contains(new Integer(1)));
@@ -164,7 +184,8 @@ public class ListSetTest extends TestCase {
 		assertTrue(set.contains(new Integer(5)));
 	}
 
-	public void testIdentitySet(ListSet set) {
+	public void testIdentitySet(ListSet<Integer> set)
+	{
 		assertTrue(set.isEmpty());
 		assertFalse(set.remove(Integer.valueOf(1)));
 		assertFalse(set.contains(Integer.valueOf(1)));
@@ -236,21 +257,26 @@ public class ListSetTest extends TestCase {
 	}
 
 	@Test
-	public void testIterator() {
+	public void testIterator()
+	{
 		testIterator(ls);
 		testIterator(ls2);
 		testIterator(ls3);
 		testIterator(ls4);
 	}
 
-	public void testIterator(ListSet set) {
-		Iterator it = set.iterator();
+	public void testIterator(ListSet<Integer> set)
+	{
+		Iterator<Integer> it = set.iterator();
 		assertNotNull(it);
 		assertFalse(it.hasNext());
-		try {
+		try
+		{
 			it.next();
 			fail();
-		} catch (NoSuchElementException ise) {
+		}
+		catch (NoSuchElementException ise)
+		{
 			// Yes!
 		}
 		Integer five = Integer.valueOf(5);
@@ -259,11 +285,11 @@ public class ListSetTest extends TestCase {
 		set.add(three);
 		Integer one = Integer.valueOf(1);
 		set.add(one);
-		List total = new ArrayList();
+		List<Integer> total = new ArrayList<Integer>();
 		total.add(one);
 		total.add(three);
 		total.add(five);
-		Iterator iter = set.iterator();
+		Iterator<Integer> iter = set.iterator();
 		assertNotNull(iter);
 		assertTrue(iter.hasNext());
 		Object o1 = iter.next();
@@ -279,30 +305,38 @@ public class ListSetTest extends TestCase {
 		assertTrue(total.remove(o3));
 		assertTrue(total.isEmpty());
 		assertFalse(iter.hasNext());
-		try {
+		try
+		{
 			iter.next();
 			fail();
-		} catch (NoSuchElementException ise) {
+		}
+		catch (NoSuchElementException ise)
+		{
 			// Yes!
 		}
 	}
-	
+
 	@Test
-	public void testIteratorRemove() {
+	public void testIteratorRemove()
+	{
 		testIteratorRemove(ls);
 		testIteratorRemove(ls2);
 		testIteratorRemove(ls3);
 		testIteratorRemove(ls4);
 	}
 
-	public void testIteratorRemove(ListSet set) {
-		Iterator it = set.iterator();
+	public void testIteratorRemove(ListSet<Integer> set)
+	{
+		Iterator<Integer> it = set.iterator();
 		assertNotNull(it);
 		assertFalse(it.hasNext());
-		try {
+		try
+		{
 			it.next();
 			fail();
-		} catch (NoSuchElementException ise) {
+		}
+		catch (NoSuchElementException ise)
+		{
 			// Yes!
 		}
 		Integer five = Integer.valueOf(5);
@@ -311,11 +345,11 @@ public class ListSetTest extends TestCase {
 		set.add(three);
 		Integer one = Integer.valueOf(1);
 		set.add(one);
-		List total = new ArrayList();
+		List<Integer> total = new ArrayList<Integer>();
 		total.add(one);
 		total.add(three);
 		total.add(five);
-		Iterator iter = set.iterator();
+		Iterator<Integer> iter = set.iterator();
 		assertNotNull(iter);
 		assertTrue(iter.hasNext());
 		Object o1 = iter.next();

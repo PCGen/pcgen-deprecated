@@ -19,8 +19,11 @@ package plugin.lsttokens.template;
 
 import org.junit.Test;
 
+import pcgen.cdom.enumeration.SubClassCategory;
 import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMSubClass;
 import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -89,8 +92,67 @@ public class FavoredClassTokenTest extends
 	}
 
 	@Test
-	public void dummyTest()
+	public void testInvalidInputSubClassNoSub()
+			throws PersistenceLayerException
 	{
-		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("TestWP1."));
+		assertNoSideEffects();
 	}
+
+	@Test
+	public void testInvalidInputSubClassNoClass()
+			throws PersistenceLayerException
+	{
+		assertFalse(parse(".TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInputSubDoubleSeparator()
+			throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("TestWP1..Two"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testCategorization() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertTrue(parse("TestWP1.Two"));
+		CDOMSubClass obj = primaryContext.ref.constructCDOMObject(
+				CDOMSubClass.class, "Two");
+		SubClassCategory cat = SubClassCategory.getConstant("TestWP2");
+		primaryContext.ref.reassociateCategory(cat, obj);
+		assertFalse(primaryContext.ref.validate());
+		obj = primaryContext.ref.constructCDOMObject(CDOMSubClass.class, "Two");
+		cat = SubClassCategory.getConstant("TestWP1");
+		primaryContext.ref.reassociateCategory(cat, obj);
+		assertTrue(primaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinThreeSub() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(primaryContext, "TestWP3");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP3");
+		CDOMSubClass obj = primaryContext.ref.constructCDOMObject(
+				CDOMSubClass.class, "Sub");
+		SubClassCategory cat = SubClassCategory.getConstant("TestWP2");
+		primaryContext.ref.reassociateCategory(cat, obj);
+		obj = secondaryContext.ref.constructCDOMObject(CDOMSubClass.class,
+				"Sub");
+		secondaryContext.ref.reassociateCategory(cat, obj);
+		System.err.println("!");
+		runRoundRobin("TestWP1" + getJoinCharacter() + "TestWP2.Sub"
+				+ getJoinCharacter() + "TestWP3");
+		System.err.println("!!");
+	}
+
 }

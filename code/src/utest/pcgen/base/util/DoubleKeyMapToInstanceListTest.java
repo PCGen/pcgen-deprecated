@@ -37,6 +37,7 @@ public class DoubleKeyMapToInstanceListTest extends TestCase {
 	private static final char CONST_A = 'A';
 	DoubleKeyMapToInstanceList<Integer, Double, Character> dkm;
 
+	@Override
 	@Before
 	public void setUp() {
 		dkm = new DoubleKeyMapToInstanceList<Integer, Double, Character>();
@@ -58,7 +59,7 @@ public class DoubleKeyMapToInstanceListTest extends TestCase {
 	public void testPutGet() {
 		assertNull(dkm.getListFor(Integer.valueOf(1), Double.valueOf(0)));
 		populate();
-		List l = dkm.getListFor(Integer.valueOf(1), Double.valueOf(1));
+		List<Character> l = dkm.getListFor(Integer.valueOf(1), Double.valueOf(1));
 		assertEquals(2, l.size());
 		assertTrue(l.contains(CONST_A));
 		assertTrue(l.contains(CONST_B));
@@ -77,7 +78,7 @@ public class DoubleKeyMapToInstanceListTest extends TestCase {
 		assertTrue(l.contains(CONST_E));
 		assertTrue(l.contains(null));
 		l.remove(Character.valueOf(CONST_E));
-		List l2 = dkm.getListFor(Integer.valueOf(2), Double.valueOf(2));
+		List<Character> l2 = dkm.getListFor(Integer.valueOf(2), Double.valueOf(2));
 		assertEquals(2, l2.size());
 		assertTrue(l2.contains(CONST_E));
 		assertTrue(l2.contains(null));
@@ -121,7 +122,7 @@ public class DoubleKeyMapToInstanceListTest extends TestCase {
 	public void testRemoveListFor() {
 		assertNull(dkm.removeListFor(Integer.valueOf(1), Double.valueOf(1)));
 		populate();
-		List l = dkm.removeListFor(Integer.valueOf(1), Double.valueOf(1));
+		List<Character> l = dkm.removeListFor(Integer.valueOf(1), Double.valueOf(1));
 		assertEquals(2, l.size());
 		assertTrue(l.contains(CONST_A));
 		assertTrue(l.contains(CONST_B));

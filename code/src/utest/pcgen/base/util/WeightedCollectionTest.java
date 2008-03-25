@@ -36,17 +36,18 @@ public class WeightedCollectionTest extends TestCase {
 
 	private static final Integer I1 = Integer.valueOf(1);
 
-	WeightedCollection wc;
+	WeightedCollection<Integer> wc;
 
+	@Override
 	@Before
 	public void setUp() {
-		wc = new WeightedCollection();
+		wc = new WeightedCollection<Integer>();
 	}
 
 	@Test
 	public void testBadIntConstructor() {
 		try {
-			new WeightedCollection(-5);
+			new WeightedCollection<Integer>(-5);
 			fail();
 		} catch (IllegalArgumentException iae) {
 			// OK
@@ -56,7 +57,7 @@ public class WeightedCollectionTest extends TestCase {
 	@Test
 	public void testBadCollectionConstructor() {
 		try {
-			new WeightedCollection((Collection) null);
+			new WeightedCollection<Integer>((Collection<Integer>) null);
 			fail();
 		} catch (NullPointerException npe) {
 			// OK
@@ -67,11 +68,11 @@ public class WeightedCollectionTest extends TestCase {
 
 	@Test
 	public void testCollectionConstructorSemantics() {
-		Collection c = new ArrayList();
+		Collection<Integer> c = new ArrayList<Integer>();
 		assertTrue(c.add(I1));
 		assertTrue(c.add(I2));
 		assertTrue(c.add(null));
-		WeightedCollection col = new WeightedCollection(c);
+		WeightedCollection<Integer> col = new WeightedCollection<Integer>(c);
 		assertEquals(3, col.size());
 		c.add(Integer.valueOf(4));
 		assertEquals(3, col.size());
@@ -219,7 +220,7 @@ public class WeightedCollectionTest extends TestCase {
 	public void testEquals() {
 		assertTrue(wc.add(2, 5));
 		assertTrue(wc.add(1, 2));
-		WeightedCollection wc2 = new WeightedCollection(15);
+		WeightedCollection<Integer> wc2 = new WeightedCollection<Integer>(15);
 		assertTrue(wc2.isEmpty());
 		assertEquals(0, wc2.size());
 		assertTrue(wc2.add(2));
@@ -262,7 +263,7 @@ public class WeightedCollectionTest extends TestCase {
 
 	@Test
 	public void testUnweightedHasNextIterator() {
-		Iterator it = wc.unweightedIterator();
+		Iterator<Integer> it = wc.unweightedIterator();
 		assertNotNull(it);
 		assertFalse(it.hasNext());
 		assertTrue(wc.add(I1));
@@ -302,7 +303,7 @@ public class WeightedCollectionTest extends TestCase {
 
 	@Test
 	public void testUnweightedNextIterator() {
-		Iterator it = wc.unweightedIterator();
+		Iterator<Integer> it = wc.unweightedIterator();
 		assertNotNull(it);
 		try {
 			it.next();
@@ -342,7 +343,7 @@ public class WeightedCollectionTest extends TestCase {
 
 	@Test
 	public void testWeightedHasNextIterator() {
-		Iterator it = wc.iterator();
+		Iterator<Integer> it = wc.iterator();
 		assertNotNull(it);
 		assertFalse(it.hasNext());
 		assertTrue(wc.add(I1));
@@ -387,7 +388,7 @@ public class WeightedCollectionTest extends TestCase {
 
 	@Test
 	public void testWeightedNextIterator() {
-		Iterator it = wc.iterator();
+		Iterator<Integer> it = wc.iterator();
 		assertNotNull(it);
 		try {
 			it.next();
@@ -435,7 +436,7 @@ public class WeightedCollectionTest extends TestCase {
 
 	@Test
 	public void testBadWeightedRemove() {
-		Iterator it = wc.iterator();
+		Iterator<Integer> it = wc.iterator();
 		try {
 			it.remove();
 			fail();
@@ -448,7 +449,7 @@ public class WeightedCollectionTest extends TestCase {
 
 	@Test
 	public void testBadUnweightedRemove() {
-		Iterator it = wc.unweightedIterator();
+		Iterator<Integer> it = wc.unweightedIterator();
 		try {
 			it.remove();
 			fail();

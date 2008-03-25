@@ -24,11 +24,12 @@ import org.junit.Test;
 
 public class DefaultMapTest extends TestCase {
 
-	DefaultMap dm;
+	DefaultMap<Integer, Double> dm;
 
+	@Override
 	@Before
 	public void setUp() {
-		dm = new DefaultMap();
+		dm = new DefaultMap<Integer, Double>();
 	}
 
 	public void populate() {

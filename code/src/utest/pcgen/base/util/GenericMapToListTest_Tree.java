@@ -20,13 +20,14 @@ package pcgen.base.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class TreeMapToListTest extends TestCase
+public class GenericMapToListTest_Tree extends TestCase
 {
 
 	private static final Character CONST_E = 'E';
@@ -41,13 +42,12 @@ public class TreeMapToListTest extends TestCase
 
 	private static final Character CONST_A = 'A';
 
-	TreeMapToList<Integer, Character> dkm;
+	GenericMapToList<Integer, Character> dkm;
 
 	@Override
 	@Before
-	public void setUp()
-	{
-		dkm = new TreeMapToList<Integer, Character>();
+	public void setUp() {
+		dkm = GenericMapToList.getMapToList(TreeMap.class);
 	}
 
 	public void populate()
@@ -62,24 +62,6 @@ public class TreeMapToListTest extends TestCase
 	}
 
 	@Test
-	public void testPutNull()
-	{
-		try
-		{
-			dkm.addToListFor(null, CONST_F);
-			fail();
-		}
-		catch (NullPointerException e)
-		{
-			// OK
-		}
-		catch (IllegalArgumentException e)
-		{
-			// OK
-		}
-	}
-
-	@Test
 	public void testInitializeListFor()
 	{
 		assertNull(dkm.getListFor(Integer.valueOf(1)));
@@ -90,6 +72,24 @@ public class TreeMapToListTest extends TestCase
 		{
 			dkm.initializeListFor(Integer.valueOf(1));
 			fail();
+		}
+		catch (IllegalArgumentException e)
+		{
+			// OK
+		}
+	}
+
+	@Test
+	public void testPutNull()
+	{
+		try
+		{
+			dkm.addToListFor(null, CONST_F);
+			fail();
+		}
+		catch (NullPointerException e)
+		{
+			// OK
 		}
 		catch (IllegalArgumentException e)
 		{

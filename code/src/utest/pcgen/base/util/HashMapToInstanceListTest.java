@@ -17,19 +17,22 @@
  */
 package pcgen.base.util;
 
-import org.junit.Before;
 import org.junit.Test;
 
+public class HashMapToInstanceListTest extends HashMapToListTest
+{
 
-public class HashMapToInstanceListTest extends HashMapToListTest {
-
-	@Before
-	public void setUp() {
-		dkm = new HashMapToInstanceList<Integer, Character>();
+	@Override
+	protected AbstractMapToList<Integer, Character> getMapToList()
+	{
+		return new HashMapToInstanceList<Integer, Character>();
 	}
 
+	@Override
 	@Test
-	public void testInstanceBehavior() {
+	public void testInstanceBehavior()
+	{
+		AbstractMapToList<Integer, Character> dkm = getMapToList();
 		Character ca = Character.valueOf('a');
 		Character cb = Character.valueOf('b');
 		Character cc = Character.valueOf('c');

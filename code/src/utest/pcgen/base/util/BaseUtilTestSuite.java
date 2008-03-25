@@ -23,12 +23,15 @@ import org.junit.runners.Suite;
 import junit.framework.TestSuite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({CaseInsensitiveMapTest.class, DefaultMapTest.class,
-	DoubleKeyMapTest.class, DoubleKeyMapToInstanceListTest.class,
-	DoubleKeyMapToListTest.class, HashMapToListTest.class,
-	HashMapToInstanceListTest.class, ListSetTest.class,
-	MapCollectionTest.class, TreeMapToListTest.class, TripleKeyMapTest.class,
-	TypeSafeMapTest.class, WeightedCollectionTest.class})
+@Suite.SuiteClasses( { CaseInsensitiveMapTest.class, DefaultMapTest.class,
+		DoubleKeyMapTest.class, DoubleKeyMapToInstanceListTest.class,
+		DoubleKeyMapToListTest.class, GenericMapToListTest_Hash.class,
+		GenericMapToListTest_IdentityHash.class,
+		GenericMapToListTest_Tree.class, HashMapToListTest.class,
+		HashMapToInstanceListTest.class, ListSetTest.class,
+		MapCollectionTest.class, TreeMapToListTest.class,
+		TripleKeyMapTest.class, TypeSafeMapTest.class,
+		WeightedCollectionTest.class })
 public class BaseUtilTestSuite extends TestSuite
 {
 	// No contents, see annotations

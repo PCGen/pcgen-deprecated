@@ -32,11 +32,12 @@ public class MapCollectionTest extends TestCase {
 
 	public MapCollection mc;
 
-	public Map m;
+	public Map<Integer, Double> m;
 
+	@Override
 	@Before
 	public void setUp() {
-		m = new HashMap();
+		m = new HashMap<Integer, Double>();
 		m.put(Integer.valueOf(1), Double.valueOf(1));
 		m.put(Integer.valueOf(2), Double.valueOf(2));
 		m.put(Integer.valueOf(3), null);
@@ -67,7 +68,7 @@ public class MapCollectionTest extends TestCase {
 
 	@Test
 	public void testIsEmpty() {
-		assertTrue(new MapCollection(new HashMap()).isEmpty());
+		assertTrue(new MapCollection(new HashMap<Integer, Double>()).isEmpty());
 		assertFalse(mc.isEmpty());
 		assertFalse(m.isEmpty());
 		assertTrue(mc.contains(Integer.valueOf(1)));
@@ -93,7 +94,7 @@ public class MapCollectionTest extends TestCase {
 
 	@Test
 	public void testSize() {
-		assertEquals(0, new MapCollection(new HashMap()).size());
+		assertEquals(0, new MapCollection(new HashMap<Integer, Double>()).size());
 		assertEquals(10, mc.size());
 	}
 
@@ -129,7 +130,7 @@ public class MapCollectionTest extends TestCase {
 
 	@Test
 	public void testEmptyIterator() {
-		Iterator it = new MapCollection(new HashMap()).iterator();
+		Iterator it = new MapCollection(new HashMap<Integer, Double>()).iterator();
 		assertNotNull(it);
 		assertFalse(it.hasNext());
 		try {

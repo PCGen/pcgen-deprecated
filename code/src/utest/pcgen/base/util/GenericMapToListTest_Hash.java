@@ -17,12 +17,15 @@
  */
 package pcgen.base.util;
 
+import java.util.HashMap;
 
-public class HashMapToListTest extends AbstractMapToListTest
+public class GenericMapToListTest_Hash extends AbstractMapToListTest
 {
+
 	@Override
 	protected AbstractMapToList<Integer, Character> getMapToList()
 	{
-		return new HashMapToList<Integer, Character>();
+		return GenericMapToList.getMapToList(HashMap.class);
 	}
+
 }
