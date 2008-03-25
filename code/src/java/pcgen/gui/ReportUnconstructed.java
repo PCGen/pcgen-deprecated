@@ -86,6 +86,7 @@ public class ReportUnconstructed
 			CompoundCampaign cc = new CompoundCampaign();
 
 			boolean first = true;
+			boolean notfound = false;
 
 			for (String fn : args)
 			{
@@ -109,6 +110,7 @@ public class ReportUnconstructed
 						Globals.getCampaignByURI(new File(fn).toURI(), true);
 				if (c == null)
 				{
+					notfound = true;
 					System.err.println("Can't find: " + fn);
 				}
 				else
@@ -116,6 +118,14 @@ public class ReportUnconstructed
 					cc.addCampaign(c);
 				}
 				first = false;
+			}
+			if (notfound)
+			{
+				System.err.println("Didn't find at least one campaign.  Known campaigns are:");
+				for (Campaign c : Globals.getCampaignList())
+				{
+					System.err.println(c.getSourceURI());
+				}
 			}
 			cc.addCampaign(new CustomCampaign());
 			new SystemLoader().loadCampaign(new RuntimeLoadContext(new PCGenGraph()), cc);
