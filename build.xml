@@ -127,6 +127,7 @@ These files can be renamed and used for releases.
 	<property name="token.utest.class" value="plugin.lsttokens.AllTokenUnitTests" />
 	<property name="token.utest.file" value="plugin/lsttokens/AllTokenUnitTests*" />
 	<property name="token.itest.class" value="plugin.lsttokens.AllTokenIntegrationTests" />
+	<property name="token.itest.file" value="plugin/lsttokens/AllTokenIntegrationTests*" />
 	<property name="test.manifest.extra.jars" value="${manifest.extra.jars} ${s}/test/junit-4.1.jar ${lib.dir}/test/xmlunit1.0.jar" />
 	<property name="test.all-output.file" value="TEST-test.AllJUnitTests.txt" />
 
@@ -699,6 +700,11 @@ pcgen.filepaths=user
 			<batchtest todir="${build.dir}/test-results/xml">
 				<fileset dir="${basedir}/code/src/utest">
 				  <include name="${token.utest.file}"/>
+				</fileset>
+			</batchtest>
+			<batchtest todir="${build.dir}/test-results/xml">
+				<fileset dir="${basedir}/code/src/itest">
+				  <include name="${token.itest.file}"/>
 				</fileset>
 			</batchtest>
 		</junit>

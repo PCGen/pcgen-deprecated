@@ -46,7 +46,7 @@ import plugin.lsttokens.editcontext.weaponprof.WeaponProfIntegrationTestSuite;
 	RaceIntegrationTestSuite.class, SkillIntegrationTestSuite.class,
 	SpellIntegrationTestSuite.class, TemplateIntegrationTestSuite.class,
 	WeaponProfIntegrationTestSuite.class})
-public class AllTokenIntegrationTests extends TestSuite
+public class AllTokenEditContextIntegrationTests extends TestSuite
 {
 	// No contents, see annotations
 }
