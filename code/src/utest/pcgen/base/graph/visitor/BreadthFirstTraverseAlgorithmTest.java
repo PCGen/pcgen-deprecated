@@ -22,9 +22,9 @@ import java.util.Set;
 import pcgen.base.graph.core.DirectionalGraph;
 import pcgen.base.graph.core.DirectionalListMapGraph;
 import pcgen.base.graph.core.Edge;
+import pcgen.base.graph.testsupport.TestDirectionalEdge;
 import pcgen.base.graph.visitor.BreadthFirstTraverseAlgorithm;
 import pcgen.base.graph.visitor.DirectedBreadthFirstTraverseAlgorithm;
-import pcgen.base.graph.core.TestDirectionalEdge;
 
 import junit.framework.TestCase;
 

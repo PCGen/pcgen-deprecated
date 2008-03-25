@@ -23,9 +23,9 @@ import pcgen.base.graph.core.DefaultDirectionalGraphEdge;
 import pcgen.base.graph.core.DirectionalGraph;
 import pcgen.base.graph.core.DirectionalListMapGraph;
 import pcgen.base.graph.core.Edge;
+import pcgen.base.graph.testsupport.TestDirectionalEdge;
 import pcgen.base.graph.visitor.DepthFirstTraverseAlgorithm;
 import pcgen.base.graph.visitor.DirectedDepthFirstTraverseAlgorithm;
-import pcgen.base.graph.core.TestDirectionalEdge;
 
 import junit.framework.TestCase;
 

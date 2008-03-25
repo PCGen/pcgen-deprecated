@@ -22,8 +22,8 @@ import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.graph.core.DirectionalGraph;
 import pcgen.base.graph.core.DirectionalListMapGraph;
 import pcgen.base.graph.core.Edge;
-import pcgen.base.graph.core.TestDirectionalEdge;
-import pcgen.base.graph.core.TestDirectionalHyperEdge;
+import pcgen.base.graph.testsupport.TestDirectionalEdge;
+import pcgen.base.graph.testsupport.TestDirectionalHyperEdge;
 import pcgen.base.util.DefaultMap;
 
 public class DirectedNodeWeightCalculationTest extends TestCase

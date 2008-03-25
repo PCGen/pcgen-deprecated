@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import pcgen.base.graph.testsupport.TestGraphChangeListener;
+
 import junit.framework.TestCase;
 
 /**

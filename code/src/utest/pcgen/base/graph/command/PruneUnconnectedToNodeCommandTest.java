@@ -19,9 +19,9 @@ package pcgen.base.graph.command;
 
 import javax.swing.undo.UndoableEdit;
 
-import pcgen.base.graph.core.ComplexCommandTestCase;
 import pcgen.base.graph.core.DefaultDirectionalGraphEdge;
 import pcgen.base.graph.core.UnsupportedGraphOperationException;
+import pcgen.base.graph.testsupport.ComplexCommandTestCase;
 import pcgen.base.lang.Command;
 
 public class PruneUnconnectedToNodeCommandTest extends ComplexCommandTestCase {

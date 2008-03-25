@@ -30,8 +30,8 @@ import pcgen.base.graph.core.NodeChangeEvent;
 import pcgen.base.graph.core.SimpleListMapGraph;
 import pcgen.base.graph.core.UnsupportedGraphOperationException;
 import pcgen.base.lang.Command;
-import pcgen.base.graph.core.TestDirectionalEdge;
-import pcgen.base.graph.core.TestDirectionalHyperEdge;
+import pcgen.base.graph.testsupport.TestDirectionalEdge;
+import pcgen.base.graph.testsupport.TestDirectionalHyperEdge;
 
 import junit.framework.TestCase;
 

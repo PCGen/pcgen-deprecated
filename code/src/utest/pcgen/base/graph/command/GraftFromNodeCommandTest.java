@@ -27,7 +27,7 @@ import pcgen.base.graph.core.GraphChangeListener;
 import pcgen.base.graph.core.NodeChangeEvent;
 import pcgen.base.graph.core.UnsupportedGraphOperationException;
 import pcgen.base.lang.Command;
-import pcgen.base.graph.core.ComplexCommandTestCase;
+import pcgen.base.graph.testsupport.ComplexCommandTestCase;
 
 public class GraftFromNodeCommandTest extends ComplexCommandTestCase {
 	private Command factory;

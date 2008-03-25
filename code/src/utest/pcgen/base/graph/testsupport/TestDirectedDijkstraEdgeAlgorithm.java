@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007 Tom Parker <thpr@users.sourceforge.net>
+ * Copyright (c) Thomas Parker, 2005.
  * 
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -15,17 +15,27 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.base.formula;
+package pcgen.base.graph.testsupport;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import pcgen.base.graph.core.DirectionalEdge;
+import pcgen.base.graph.core.Edge;
+import pcgen.base.graph.core.Graph;
+import pcgen.base.graph.visitor.DijkstraEdgeAlgorithm;
 
-import junit.framework.TestSuite;
+public class TestDirectedDijkstraEdgeAlgorithm extends DijkstraEdgeAlgorithm {
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({AddingFormulaTest.class, DividingFormulaTest.class,
-	MultiplyingFormulaTest.class, SubtractingFormulaTest.class})
-public class BaseFormulaTestSuite extends TestSuite
-{
-	// No contents, see annotations
+	public TestDirectedDijkstraEdgeAlgorithm(Graph g) {
+		super(g);
+	}
+
+	public TestDirectedDijkstraEdgeAlgorithm(Graph g, double limit) {
+		super(g, limit);
+	}
+
+	@Override
+	protected boolean canTraverseEdge(Edge edge, Object gn, int type) {
+		return (edge instanceof DirectionalEdge)
+				&& (((DirectionalEdge) edge).getNodeInterfaceType(gn) & type) != 0;
+	}
+
 }

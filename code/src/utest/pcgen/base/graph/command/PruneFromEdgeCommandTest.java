@@ -20,12 +20,12 @@ package pcgen.base.graph.command;
 import javax.swing.undo.UndoableEdit;
 
 import pcgen.base.graph.command.PruneFromEdgeCommand;
-import pcgen.base.graph.core.ComplexCommandTestCase;
 import pcgen.base.graph.core.DefaultDirectionalGraphEdge;
 import pcgen.base.graph.core.EdgeChangeEvent;
 import pcgen.base.graph.core.GraphChangeListener;
 import pcgen.base.graph.core.NodeChangeEvent;
 import pcgen.base.graph.core.UnsupportedGraphOperationException;
+import pcgen.base.graph.testsupport.ComplexCommandTestCase;
 import pcgen.base.lang.Command;
 
 public class PruneFromEdgeCommandTest extends ComplexCommandTestCase {

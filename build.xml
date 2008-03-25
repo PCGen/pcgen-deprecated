@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
 build.xml - an Ant build file for PCGEN
 
@@ -709,40 +708,24 @@ pcgen.filepaths=user
 			-->
 			<batchtest todir="${build.dir}/test-results/xml">
 				<fileset dir="${basedir}/code/src/utest">
-				  <include name="pcgen/**/*.java"/>
-				  <exclude name="**/*Suite.java"/>
+				  <include name="pcgen/base/**/*.java"/>
 				  <exclude name="**/Abstract*.java"/>
 				  <exclude name="**/testsupport/*.java"/>
-				  <exclude name="**/ComplexCommandTestCase.java"/>
-				  <exclude name="**/TestDirectionalEdge.java"/>
-				  <exclude name="**/TestDirectionalHyperEdge.java"/>
-				  <exclude name="**/TestGraphChangeListener.java"/>
-				  <exclude name="**/TransparentTestStorageStrategy.java"/>
-				  <exclude name="pcgen/base/graph/visitor/Test*Algorithm.java"/>
-				  <exclude name="pcgen/base/AllBaseUnitTests.java"/>
 				</fileset>
 			</batchtest>
 			<batchtest todir="${build.dir}/test-results/xml">
 				<fileset dir="${basedir}/code/src/utest">
-				  <include name="plugin/**/*.java"/>
-				  <exclude name="**/*Suite.java"/>
+				  <include name="plugin/lsttokens/**/*.java"/>
 				  <exclude name="**/Abstract*.java"/>
 				  <exclude name="**/testsupport/*.java"/>
 				  <exclude name="plugin/lsttokens/oldchoose/*.java" />
-				  <exclude name="plugin/lsttokens/AllTokenUnitTests.java"/>
-				  <exclude name="plugin/pretokens/test/SimpleRulesDataStore.java"/>
-				  <include name="${token.utest.file}"/>
 				</fileset>
 			</batchtest>
 			<batchtest todir="${build.dir}/test-results/xml">
 				<fileset dir="${basedir}/code/src/itest">
-				  <include name="plugin/**/*.java"/>
-				  <exclude name="**/*Suite.java"/>
+				  <include name="plugin/lsttoken/editcontext/**/*.java"/>
 				  <exclude name="**/Abstract*.java"/>
 				  <exclude name="**/testsupport/*.java"/>
-				  <exclude name="plugin/lsttokens/*.java" />
-				  <exclude name="plugin/lsttokens/editcontext/*.java" />
-				  <exclude name="plugin/lsttokens/loader/*.java" />
 				</fileset>
 			</batchtest>
 		</junit>

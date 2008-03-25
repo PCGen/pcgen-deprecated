@@ -19,9 +19,10 @@ package pcgen.base.graph.visitor;
 
 import pcgen.base.graph.core.DirectionalListMapGraph;
 import pcgen.base.graph.core.Graph;
+import pcgen.base.graph.testsupport.TestDirectedDijkstraNodeAlgorithm;
+import pcgen.base.graph.testsupport.TestDirectionalEdge;
+import pcgen.base.graph.testsupport.TestDirectionalHyperEdge;
 import pcgen.base.graph.visitor.DijkstraNodeAlgorithm;
-import pcgen.base.graph.core.TestDirectionalEdge;
-import pcgen.base.graph.core.TestDirectionalHyperEdge;
 import junit.framework.TestCase;
 
 /**
