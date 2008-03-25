@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.base.util.PropertyFactory;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
@@ -53,7 +54,6 @@ import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * Class deals with DOMAINS Token
@@ -222,11 +222,6 @@ public class DomainsToken extends AbstractToken implements DeityLstToken,
 				DomainList.class, "*Starting");
 		AssociatedChanges<CDOMReference<CDOMDomain>> changes = context
 				.getListContext().getChangesInList(getTokenName(), deity, dl);
-		if (changes == null)
-		{
-			// Legal if no Language was present in the race
-			return null;
-		}
 		List<String> list = new ArrayList<String>();
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (changes.includesGlobalClear())

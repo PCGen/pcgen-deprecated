@@ -294,10 +294,6 @@ public class HitdieToken extends AbstractToken implements RaceLstToken, CDOMPrim
 		AssociatedChanges<HitDieCommandFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					race, HitDieCommandFactory.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

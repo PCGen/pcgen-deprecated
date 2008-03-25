@@ -176,10 +176,6 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken, CDOM
 		AssociatedChanges<SpecialProperty> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					eq, SpecialProperty.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

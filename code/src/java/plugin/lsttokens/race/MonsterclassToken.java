@@ -120,10 +120,6 @@ public class MonsterclassToken implements RaceLstToken,
 		AssociatedChanges<LevelCommandFactory> changes = context
 				.getGraphContext().getChangesFromToken(getTokenName(), race,
 						LevelCommandFactory.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

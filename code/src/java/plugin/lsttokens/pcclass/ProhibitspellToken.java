@@ -286,10 +286,6 @@ public class ProhibitspellToken extends AbstractToken implements
 		AssociatedChanges<CDOMSpellProhibitor> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, CDOMSpellProhibitor.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

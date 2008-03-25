@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -52,7 +53,6 @@ import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 		CDOMSecondaryToken<CDOMObject>
@@ -271,67 +271,56 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 		AssociatedChanges<AutomaticActionContainer> typechanges = context
 				.getGraphContext().getChangesFromToken(getFullName(), obj,
 						AutomaticActionContainer.class);
-		if (list.isEmpty() && changes == null && typechanges == null)
-		{
-			return null;
-		}
 		HashMapToList<Set<Prerequisite>, String> m = new HashMapToList<Set<Prerequisite>, String>();
-		if (changes != null)
+		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+				.getAddedAssociations();
+		if (mtl != null && !mtl.isEmpty())
 		{
-			MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
-					.getAddedAssociations();
-			if (mtl != null && !mtl.isEmpty())
+			// Zero indicates no Content, others processed here
+			for (LSTWriteable ab : mtl.getKeySet())
 			{
-				// Zero indicates no Content, others processed here
-				for (LSTWriteable ab : mtl.getKeySet())
+				List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
+				if (assocList.size() != 1)
 				{
-					List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
-					if (assocList.size() != 1)
-					{
-						context
-								.addWriteMessage("Only one Association to AUTO can be made per object");
-						return null;
-					}
-					AssociatedPrereqObject assoc = assocList.get(0);
-					m.addToListFor(new HashSet<Prerequisite>(assoc
-							.getPrerequisiteList()), ab.getLSTformat());
+					context
+							.addWriteMessage("Only one Association to AUTO can be made per object");
+					return null;
 				}
+				AssociatedPrereqObject assoc = assocList.get(0);
+				m.addToListFor(new HashSet<Prerequisite>(assoc
+						.getPrerequisiteList()), ab.getLSTformat());
 			}
 		}
-		if (typechanges != null)
+		mtl = typechanges.getAddedAssociations();
+		if (mtl != null && !mtl.isEmpty())
 		{
-			MapToList<LSTWriteable, AssociatedPrereqObject> mtl = typechanges
-					.getAddedAssociations();
-			if (mtl != null && !mtl.isEmpty())
+			// Zero indicates no Content, others processed here
+			for (LSTWriteable ab : mtl.getKeySet())
 			{
-				// Zero indicates no Content, others processed here
-				for (LSTWriteable ab : mtl.getKeySet())
+				List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
+				if (assocList.size() != 1)
 				{
-					List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
-					if (assocList.size() != 1)
-					{
-						context
-								.addWriteMessage("Only one Association to AUTO can be made per object");
-						return null;
-					}
-					AssociatedPrereqObject assoc = assocList.get(0);
-					String lstFormat = ab.getLSTformat();
-					if (lstFormat.startsWith("EQUIPMENT[")
-							&& lstFormat.endsWith("]"))
-					{
-						String temp = lstFormat.substring(10, lstFormat
-								.length() - 1);
-						m.addToListFor(new HashSet<Prerequisite>(assoc
-								.getPrerequisiteList()), "SHIELD"
-								+ StringUtil.replaceAll(temp, "]|EQUIPMENT[",
-										"|SHIELD"));
-					}
-					else
-					{
-						context.addWriteMessage("Unexpected CHOICE in AUTO: "
-								+ lstFormat);
-						return null;
-					}
+					context
+							.addWriteMessage("Only one Association to AUTO can be made per object");
+					return null;
+				}
+				AssociatedPrereqObject assoc = assocList.get(0);
+				String lstFormat = ab.getLSTformat();
+				if (lstFormat.startsWith("EQUIPMENT[")
+						&& lstFormat.endsWith("]"))
+				{
+					String temp = lstFormat.substring(10,
+							lstFormat.length() - 1);
+					m.addToListFor(new HashSet<Prerequisite>(assoc
+							.getPrerequisiteList()), "SHIELD"
+							+ StringUtil.replaceAll(temp, "]|EQUIPMENT[",
+									"|SHIELD"));
+				}
+				else
+				{
+					context.addWriteMessage("Unexpected CHOICE in AUTO: "
+							+ lstFormat);
+					return null;
 				}
 			}
 		}

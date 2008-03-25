@@ -122,10 +122,6 @@ CDOMPrimaryToken<CDOMPCClass>
 		AssociatedChanges<Aggregator> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, Aggregator.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

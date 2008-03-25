@@ -3,6 +3,7 @@ package pcgen.rules.context;
 import java.util.Collection;
 import java.util.TreeSet;
 
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TreeMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -11,7 +12,6 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.rules.persistence.TokenUtilities;
-import pcgen.util.MapToList;
 
 public class ListChanges<T extends CDOMObject> implements
 		AssociatedChanges<CDOMReference<T>>

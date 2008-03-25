@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TreeMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -16,7 +17,6 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.rules.persistence.TokenUtilities;
-import pcgen.util.MapToList;
 
 public class ConsolidatedListCommitStrategy implements ListCommitStrategy
 {
@@ -129,10 +129,6 @@ public class ConsolidatedListCommitStrategy implements ListCommitStrategy
 				}
 			}
 		}
-		if (owned.isEmpty())
-		{
-			return null;
-		}
 		return new AssociatedCollectionChanges<LSTWriteable>(owned, null, false);
 	}
 
@@ -186,11 +182,7 @@ public class ConsolidatedListCommitStrategy implements ListCommitStrategy
 		String tokenName, CDOMObject owner,
 		CDOMReference<? extends CDOMList<T>> swl)
 	{
-		if (owner.hasListMods(swl))
-		{
-			// TODO Deal with matching the token... :/
-			return new ListChanges<T>(tokenName, owner, null, swl, false);
-		}
-		return null;
+		// TODO Deal with matching the token... :/
+		return new ListChanges<T>(tokenName, owner, null, swl, false);
 	}
 }

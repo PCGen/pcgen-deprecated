@@ -135,10 +135,6 @@ public class XtrafeatsToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCC
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, ChooseActionContainer.class);
-		if (grantChanges == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{

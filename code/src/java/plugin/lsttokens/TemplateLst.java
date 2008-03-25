@@ -170,67 +170,48 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken,
 		AssociatedChanges<CDOMReference<CDOMTemplate>> allChanges = context
 				.getListContext().getChangesInList(getTokenName(), cdo, allRef);
 
-		if (changes == null && tctChanges == null && allChanges == null)
-		{
-			// No templates
-			return null;
-		}
-
 		List<String> list = new ArrayList<String>();
 
-		if (changes != null)
+		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty()
+				|| changes.includesGlobalClear())
 		{
-			Collection<LSTWriteable> removedItems = changes.getRemoved();
-			if (removedItems != null && !removedItems.isEmpty()
-					|| changes.includesGlobalClear())
-			{
-				context.addWriteMessage(getTokenName()
-						+ "does not support .CLEAR");
-				return null;
-			}
-			Collection<LSTWriteable> added = changes.getAdded();
-			if (added != null && !added.isEmpty())
-			{
-				list.add(ReferenceUtilities
-						.joinLstFormat(added, Constants.PIPE));
-			}
+			context.addWriteMessage(getTokenName() + "does not support .CLEAR");
+			return null;
+		}
+		Collection<LSTWriteable> added = changes.getAdded();
+		if (added != null && !added.isEmpty())
+		{
+			list.add(ReferenceUtilities.joinLstFormat(added, Constants.PIPE));
 		}
 
-		if (tctChanges != null)
+		Collection<LSTWriteable> addedItems = tctChanges.getAdded();
+		removedItems = tctChanges.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty()
+				|| tctChanges.includesGlobalClear())
 		{
-			Collection<LSTWriteable> addedItems = tctChanges.getAdded();
-			Collection<LSTWriteable> removedItems = tctChanges.getRemoved();
-			if (removedItems != null && !removedItems.isEmpty()
-					|| tctChanges.includesGlobalClear())
-			{
-				context.addWriteMessage(getTokenName()
-						+ "does not support .CLEAR");
-				return null;
-			}
-			if (addedItems != null && !addedItems.isEmpty())
-			{
-				list.add(Constants.LST_CHOOSE
-						+ ReferenceUtilities.joinLstFormat(addedItems,
-								Constants.PIPE));
-			}
+			context.addWriteMessage(getTokenName() + "does not support .CLEAR");
+			return null;
 		}
-		if (allChanges != null)
+		if (addedItems != null && !addedItems.isEmpty())
 		{
-			Collection<LSTWriteable> addedItems = allChanges.getAdded();
-			Collection<LSTWriteable> removedItems = allChanges.getRemoved();
-			if (removedItems != null && !removedItems.isEmpty()
-					|| allChanges.includesGlobalClear())
-			{
-				context.addWriteMessage(getTokenName()
-						+ "does not support .CLEAR");
-				return null;
-			}
-			if (addedItems != null && !addedItems.isEmpty())
-			{
-				list.add(Constants.LST_ADDCHOICE
-						+ ReferenceUtilities.joinLstFormat(addedItems,
-								Constants.PIPE));
-			}
+			list.add(Constants.LST_CHOOSE
+					+ ReferenceUtilities.joinLstFormat(addedItems,
+							Constants.PIPE));
+		}
+		addedItems = allChanges.getAdded();
+		removedItems = allChanges.getRemoved();
+		if (removedItems != null && !removedItems.isEmpty()
+				|| allChanges.includesGlobalClear())
+		{
+			context.addWriteMessage(getTokenName() + "does not support .CLEAR");
+			return null;
+		}
+		if (addedItems != null && !addedItems.isEmpty())
+		{
+			list.add(Constants.LST_ADDCHOICE
+					+ ReferenceUtilities.joinLstFormat(addedItems,
+							Constants.PIPE));
 		}
 		if (list.isEmpty())
 		{

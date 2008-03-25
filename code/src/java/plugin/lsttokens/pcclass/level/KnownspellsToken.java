@@ -270,10 +270,6 @@ CDOMPrimaryToken<CDOMPCClassLevel>
 		AssociatedChanges<KnownSpellIdentifier> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					po, KnownSpellIdentifier.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{

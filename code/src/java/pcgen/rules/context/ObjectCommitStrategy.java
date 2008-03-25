@@ -50,8 +50,6 @@ public interface ObjectCommitStrategy
 
 	public <T> void removeFromList(CDOMObject cdo, ListKey<T> lk, T val);
 
-	public String getString(CDOMObject cdo, StringKey sk);
-
 	public Integer getInteger(CDOMObject cdo, IntegerKey ik);
 
 	public Formula getFormula(CDOMObject cdo, FormulaKey fk);
@@ -71,4 +69,6 @@ public interface ObjectCommitStrategy
 	public void put(ConcretePrereqObject cpo, Prerequisite p);
 
 	public Changes<Prerequisite> getPrerequisiteChanges(ConcretePrereqObject obj);
+
+	public String getString(CDOMObject cdo, StringKey sk);
 }

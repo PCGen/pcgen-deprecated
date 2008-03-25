@@ -184,10 +184,6 @@ public class DrLst extends AbstractToken implements GlobalLstToken,
 	{
 		AssociatedChanges<DamageReduction> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, DR_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())

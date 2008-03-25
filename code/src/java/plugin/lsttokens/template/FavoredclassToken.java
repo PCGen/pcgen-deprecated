@@ -95,6 +95,10 @@ public class FavoredclassToken extends AbstractToken implements
 			else
 			{
 				foundOther = true;
+				if (hasIllegalSeparator('.', token))
+				{
+					return false;
+				}
 				int dotLoc = token.indexOf('.');
 				if (dotLoc == -1)
 				{

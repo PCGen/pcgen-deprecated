@@ -19,9 +19,7 @@
  */
 package pcgen.base.util;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,12 +30,12 @@ import java.util.Set;
  * class).
  * 
  * This class is reference-semantic. In appropriate cases (such as calling the
- * addToListFor method), HashMapToList will maintain a reference to the given
- * Object. HashMapToList will not modify any of the Objects it is passed;
+ * addToListFor method), GenericMapToList will maintain a reference to the given
+ * Object. GenericMapToList will not modify any of the Objects it is passed;
  * however, it reserves the right to return references to Objects it contains to
  * other Objects.
  * 
- * However, when any method in which HashMapToList returns a Collection,
+ * However, when any method in which GenericMapToList returns a Collection,
  * ownership of the Collection itself is transferred to the calling Object, but
  * the contents of the Collection (keys, values, etc.) are references whose
  * ownership should be respected.
@@ -46,20 +44,48 @@ import java.util.Set;
  * appropriate for use in Java 1.5 (Typed Collections are probably more
  * appropriate)
  */
-public class HashMapToList<K, V> extends AbstractMapToList<K, V>
+public class GenericMapToList<K, V> extends AbstractMapToList<K, V>
 {
 
+	private final Class<? extends Map> underlyingClass;
+
 	/**
-	 * Creates a new HashMapToList
+	 * Creates a new GenericMapToList
+	 * 
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
-	public HashMapToList()
+	public GenericMapToList(Class<? extends Map> cl)
+			throws InstantiationException, IllegalAccessException
 	{
-		super(new HashMap<K, List<V>>());
+		super(cl.newInstance());
+		underlyingClass = cl;
+	}
+
+	public static <K, V> GenericMapToList<K, V> getMapToList(
+			Class<? extends Map> cl)
+	{
+		try
+		{
+			return new GenericMapToList<K, V>(cl);
+		}
+		catch (InstantiationException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for GenericMapToList must possess a zero-argument constructor",
+					e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new IllegalArgumentException(
+					"Class for GenericMapToList must possess a public zero-argument constructor",
+					e);
+		}
 	}
 
 	@Override
 	protected Set<K> getEmptySet()
 	{
-		return new HashSet<K>();
+		return new WrappedMapSet<K>(underlyingClass);
 	}
 }

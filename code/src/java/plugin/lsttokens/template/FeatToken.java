@@ -28,6 +28,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSingleRef;
@@ -48,7 +49,6 @@ import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * Class deals with FEAT Token
@@ -145,10 +145,6 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken,
 	{
 		AssociatedChanges<CDOMAbility> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), pct, ABILITY_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())

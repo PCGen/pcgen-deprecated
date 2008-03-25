@@ -6,6 +6,7 @@ import java.util.List;
 
 import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.io.FileLocationFactory;
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TreeMapToList;
 import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.base.AssociatedPrereqObject;
@@ -17,7 +18,6 @@ import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.rules.persistence.TokenUtilities;
-import pcgen.util.MapToList;
 
 public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 {

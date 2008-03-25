@@ -234,10 +234,6 @@ public class DescLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 		AssociatedChanges<Description> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, Description.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		List<String> list = new ArrayList<String>();
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())

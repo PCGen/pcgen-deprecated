@@ -260,10 +260,6 @@ public class ChooseLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 	{
 		AssociatedChanges<ChoiceSet> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, ChoiceSet.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

@@ -168,11 +168,6 @@ public class LangbonusToken extends AbstractToken implements PCTemplateLstToken,
 		AssociatedChanges<CDOMReference<CDOMLanguage>> changes =
 				context.getListContext().getChangesInList(getTokenName(), pct,
 					swl);
-		if (changes == null)
-		{
-			// Legal if no Language was present in the race
-			return null;
-		}
 		List<String> list = new ArrayList<String>();
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())

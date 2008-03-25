@@ -17,8 +17,11 @@
  */
 package pcgen.base.util;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -45,8 +48,23 @@ import java.util.List;
  * appropriate for use in Java 1.5 (Typed Collections are probably more
  * appropriate)
  */
-public class HashMapToInstanceList<K, V> extends HashMapToList<K, V>
+public class HashMapToInstanceList<K, V> extends AbstractMapToList<K, V>
 {
+
+	/**
+	 * Creates a new HashMapToList
+	 */
+	public HashMapToInstanceList()
+	{
+		super(new HashMap<K, List<V>>());
+	}
+
+	@Override
+	protected Set<K> getEmptySet()
+	{
+		return new HashSet<K>();
+	}
+
 	/**
 	 * Returns true if this MapToList contains a List for the given key and that
 	 * list contains the given object (this is an instance test against the
@@ -70,7 +88,7 @@ public class HashMapToInstanceList<K, V> extends HashMapToList<K, V>
 		{
 			return false;
 		}
-		for (V o : mapToList.get(key))
+		for (V o : getListFor(key))
 		{
 			if (o == object)
 			{
@@ -115,7 +133,7 @@ public class HashMapToInstanceList<K, V> extends HashMapToList<K, V>
 				it.remove();
 				if (list.isEmpty())
 				{
-					mapToList.remove(key);
+					removeListFor(key);
 				}
 				return true;
 			}

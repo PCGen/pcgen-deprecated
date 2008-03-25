@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
@@ -46,7 +47,6 @@ import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * Class deals with DOMAIN Token
@@ -189,10 +189,6 @@ public class DomainToken extends AbstractToken implements
 	{
 		AssociatedChanges<CDOMDomain> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), po, DOMAIN_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{

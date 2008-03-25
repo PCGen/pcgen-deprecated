@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -45,7 +46,6 @@ import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * Class deals with MONCCSKILL Token
@@ -172,11 +172,6 @@ public class MonccskillToken extends AbstractToken implements RaceLstToken,
 				SKILLLIST_CLASS, "*Monster");
 		AssociatedChanges<CDOMReference<CDOMSkill>> changes = context
 				.getListContext().getChangesInList(getTokenName(), race, swl);
-		if (changes == null)
-		{
-			// Legal if no MONCSKILL was present in the race
-			return null;
-		}
 		List<String> list = new ArrayList<String>();
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())

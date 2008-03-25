@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
@@ -43,7 +44,6 @@ import pcgen.rules.persistence.BonusTokenLoader;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * Class deals with MONSKILL Token
@@ -97,10 +97,6 @@ CDOMPrimaryToken<CDOMPCClass>
 		AssociatedChanges<BonusObj> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, BonusObj.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		Set<String> set = new TreeSet<String>();
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =

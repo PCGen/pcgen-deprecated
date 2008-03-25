@@ -148,10 +148,6 @@ public class MoveLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 		AssociatedChanges<SimpleMovement> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, SimpleMovement.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

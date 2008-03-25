@@ -86,10 +86,6 @@ public class BonusskillpointsToken implements PCTemplateLstToken, CDOMPrimaryTok
 		AssociatedChanges<ClassSkillPointFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, ClassSkillPointFactory.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

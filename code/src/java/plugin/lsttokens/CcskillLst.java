@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
@@ -47,7 +48,6 @@ import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * @author djones4
@@ -178,11 +178,6 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken,
 				.getCDOMAllReference(CLASSSKILLLIST_CLASS);
 		AssociatedChanges<LSTWriteable> changes = context.getListContext()
 				.getChangesInMasterList(getTokenName(), obj, listRef);
-		if (changes == null)
-		{
-			// Legal if no CSKILL was present
-			return null;
-		}
 		List<String> list = new ArrayList<String>();
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())

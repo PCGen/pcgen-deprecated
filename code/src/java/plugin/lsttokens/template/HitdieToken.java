@@ -292,10 +292,6 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken, CD
 		AssociatedChanges<HitDieCommandFactory> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, HitDieCommandFactory.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

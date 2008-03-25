@@ -259,7 +259,7 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	 */
 	public Set<K1> getKeySet()
 	{
-		return new HashSet<K1>(map.keySet());
+		return new WrappedMapSet<K1>(firstClass, map.keySet());
 	}
 
 	/**
@@ -283,7 +283,7 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 		{
 			return Collections.emptySet();
 		}
-		return new HashSet<K2>(localMap.keySet());
+		return new WrappedMapSet<K2>(secondClass, localMap.keySet());
 	}
 
 	/**
@@ -335,26 +335,6 @@ public class DoubleKeyMap<K1, K2, V> implements Cloneable
 	public int primaryKeyCount()
 	{
 		return map.size();
-	}
-
-	/**
-	 * Returns the number of secondary keys in this DoubleKeyMap for the given
-	 * primary key
-	 * 
-	 * @param aPrimaryKey
-	 *            The primary key for which the number of secondary keys will be
-	 *            returned
-	 * @return the number of secondary keys in this DoubleKeyMap for the given
-	 *         primary key
-	 */
-	public int secondaryKeyCount(K1 aPrimaryKey)
-	{
-		final Map<K2, V> localMap = map.get(aPrimaryKey);
-		if (localMap == null)
-		{
-			return 0;
-		}
-		return localMap.size();
 	}
 
 	@SuppressWarnings("unchecked")

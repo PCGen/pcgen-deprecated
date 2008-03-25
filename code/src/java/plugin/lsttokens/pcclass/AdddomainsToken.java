@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -46,7 +47,6 @@ import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * Class deals with ADDDOMAINS Token
@@ -193,11 +193,6 @@ public class AdddomainsToken extends AbstractToken implements PCClassLstToken,
 		AssociatedChanges<CDOMReference<CDOMDomain>> changes =
 				context.getListContext().getChangesInList(getTokenName(), po,
 					allowedDomainList);
-		if (changes == null)
-		{
-			// Legal if no ADDDOMAIN was present
-			return null;
-		}
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty()
 				|| changes.includesGlobalClear())

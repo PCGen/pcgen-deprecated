@@ -130,10 +130,6 @@ public class LangautoLst extends AbstractToken implements GlobalLstToken,
 	{
 		AssociatedChanges<CDOMLanguage> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, LANGUAGE_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		StringBuilder sb = new StringBuilder();
 		boolean needComma = false;

@@ -151,10 +151,6 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken, CDOM
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					race, ChooseActionContainer.class);
-		if (grantChanges == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{

@@ -33,6 +33,7 @@ import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMap;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
@@ -53,7 +54,6 @@ import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * @author djones4
@@ -428,10 +428,6 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 	{
 		AssociatedChanges<CDOMSpell> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, CDOMSpell.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())

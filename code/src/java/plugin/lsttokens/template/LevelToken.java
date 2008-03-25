@@ -192,10 +192,6 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDO
 		AssociatedChanges<CDOMTemplate> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, CDOMTemplate.class);
-		if (changes == null)
-		{
-			return null;
-		}
 
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty()){

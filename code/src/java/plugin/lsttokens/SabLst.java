@@ -297,10 +297,6 @@ public class SabLst extends AbstractToken implements GlobalLstToken,
 		AssociatedChanges<CDOMSpecialAbility> changes = context
 				.getGraphContext().getChangesFromToken(getTokenName(), obj,
 						SA_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())

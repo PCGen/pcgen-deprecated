@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -54,7 +55,6 @@ import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -398,11 +398,6 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken, C
 			AssociatedChanges changes =
 					context.getListContext().getChangesInList(getTokenName(),
 						obj, ref);
-			if (changes == null)
-			{
-				// Legal if no COMPANIONLIST was present
-				continue;
-			}
 			Collection<LSTWriteable> removedItems = changes.getRemoved();
 			if (removedItems != null && !removedItems.isEmpty()
 					|| changes.includesGlobalClear())

@@ -2,9 +2,9 @@ package pcgen.rules.context;
 
 import java.util.Collection;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.util.MapToList;
 
 public class AssociatedCollectionChanges<T> implements AssociatedChanges<T>
 {

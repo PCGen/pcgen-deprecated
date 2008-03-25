@@ -88,10 +88,6 @@ public class SrLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		AssociatedChanges<SpellResistance> changes = context
 				.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, SpellResistance.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())

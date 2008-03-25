@@ -159,5 +159,4 @@ public class ConsolidatedObjectCommitStrategy implements ObjectCommitStrategy
 		return new CollectionChanges<Prerequisite>(obj.getPrerequisiteList(),
 				null, false);
 	}
-
 }

@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -49,7 +50,6 @@ import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 public class EquipToken extends AbstractToken implements AutoLstToken,
 		CDOMSecondaryToken<CDOMObject>
@@ -195,10 +195,6 @@ public class EquipToken extends AbstractToken implements AutoLstToken,
 
 		AssociatedChanges<CDOMEquipment> changes = context.getGraphContext()
 				.getChangesFromToken(getFullName(), obj, EQUIPMENT_CLASS);
-		if (list.isEmpty() && changes == null)
-		{
-			return null;
-		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (list.isEmpty() && (mtl == null || mtl.isEmpty()))

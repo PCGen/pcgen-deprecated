@@ -507,10 +507,6 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 	{
 		AssociatedChanges<CDOMEquipment> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, CDOMEquipment.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

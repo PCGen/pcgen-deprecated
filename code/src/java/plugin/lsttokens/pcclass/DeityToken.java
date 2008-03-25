@@ -98,10 +98,6 @@ CDOMPrimaryToken<CDOMPCClass>
 		AssociatedChanges<CDOMDeity> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, DEITY_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

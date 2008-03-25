@@ -195,10 +195,6 @@ public class FeatToken extends AbstractToken implements AddLstToken,
 		AssociatedChanges<ChooseActionContainer> grantChanges = context
 				.getGraphContext().getChangesFromToken(getFullName(), obj,
 						ChooseActionContainer.class);
-		if (grantChanges == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{

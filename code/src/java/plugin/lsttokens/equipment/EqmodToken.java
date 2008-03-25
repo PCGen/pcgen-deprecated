@@ -31,6 +31,7 @@ import java.util.Map.Entry;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -46,7 +47,6 @@ import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * Deals with EQMOD token
@@ -184,10 +184,6 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken, CDOM
 		AssociatedChanges<CDOMEqMod> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					head, EQUIPMENT_MODIFIER_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
 		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
 				changes.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())

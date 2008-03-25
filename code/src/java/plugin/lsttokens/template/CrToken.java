@@ -78,10 +78,6 @@ public class CrToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplat
 		AssociatedChanges<ChallengeRating> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pct, ChallengeRating.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

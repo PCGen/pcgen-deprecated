@@ -99,10 +99,6 @@ public class ArmortypeToken implements EquipmentModifierLstToken, CDOMPrimaryTok
 		AssociatedChanges<ChangeArmorType> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					mod, ChangeArmorType.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

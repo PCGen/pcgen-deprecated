@@ -206,10 +206,6 @@ public class VisionLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		AssociatedChanges<Vision> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, VISION_CLASS);
-		if (changes == null)
-		{
-			return null;
-		}
 		StringBuilder returnString = new StringBuilder();
 		boolean needsBar = false;
 		if (changes.includesGlobalClear())

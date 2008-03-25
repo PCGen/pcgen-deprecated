@@ -63,7 +63,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	 * modifying the maps. All modifications should be done through direct calls
 	 * to the methods of TripleKeyMapToList.
 	 */
-	private final DoubleKeyMap<K1, K2, HashMapToList<K3, V>> map;
+	private final DoubleKeyMap<K1, K2, MapToList<K3, V>> map;
 
 	/**
 	 * Constructs a new (empty) TripleKeyMapToList
@@ -72,7 +72,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	{
 		super();
 		firstClass = secondClass = thirdClass = HashMap.class;
-		map = new DoubleKeyMap<K1, K2, HashMapToList<K3, V>>(firstClass,
+		map = new DoubleKeyMap<K1, K2, MapToList<K3, V>>(firstClass,
 				secondClass);
 	}
 
@@ -86,7 +86,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 		firstClass = cl1;
 		secondClass = cl2;
 		thirdClass = cl3;
-		map = new DoubleKeyMap<K1, K2, HashMapToList<K3, V>>(firstClass,
+		map = new DoubleKeyMap<K1, K2, MapToList<K3, V>>(firstClass,
 				secondClass);
 	}
 
@@ -114,10 +114,10 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	 */
 	public void addToListFor(K1 key1, K2 key2, K3 key3, V value)
 	{
-		HashMapToList<K3, V> localMap = map.get(key1, key2);
+		MapToList<K3, V> localMap = map.get(key1, key2);
 		if (localMap == null)
 		{
-			localMap = new HashMapToList<K3, V>(thirdClass);
+			localMap = GenericMapToList.getMapToList(thirdClass);
 			map.put(key1, key2, localMap);
 		}
 		localMap.addToListFor(key3, value);
@@ -144,7 +144,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	 */
 	public List<V> getListFor(K1 key1, K2 key2, K3 key3)
 	{
-		HashMapToList<K3, V> localMap = map.get(key1, key2);
+		MapToList<K3, V> localMap = map.get(key1, key2);
 		return localMap == null ? null : localMap.getListFor(key3);
 	}
 
@@ -167,7 +167,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	 */
 	public boolean containsListFor(K1 key1, K2 key2, K3 key3)
 	{
-		HashMapToList<K3, V> localMap = map.get(key1, key2);
+		MapToList<K3, V> localMap = map.get(key1, key2);
 		return localMap == null ? false : localMap.containsListFor(key3);
 	}
 
@@ -189,7 +189,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	 */
 	public List<V> removeListFor(K1 key1, K2 key2, K3 key3)
 	{
-		HashMapToList<K3, V> localMap = map.get(key1, key2);
+		MapToList<K3, V> localMap = map.get(key1, key2);
 		return localMap == null ? null : localMap.removeListFor(key3);
 	}
 
@@ -269,7 +269,7 @@ public class TripleKeyMapToList<K1, K2, K3, V> implements Cloneable
 	 */
 	public Set<K3> getTertiaryKeySet(K1 key1, K2 key2)
 	{
-		HashMapToList<K3, V> localMap = map.get(key1, key2);
+		MapToList<K3, V> localMap = map.get(key1, key2);
 		if (localMap == null)
 		{
 			return Collections.emptySet();

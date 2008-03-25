@@ -287,6 +287,6 @@ public class ListKeyMapToList
 
 	public int getSizeOfListFor(ListKey<?> key)
 	{
-		return map.getSizeOfListFor(key);
+		return map.sizeOfListFor(key);
 	}
 }

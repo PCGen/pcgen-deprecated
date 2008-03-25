@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -53,7 +54,6 @@ import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * @author djones4
@@ -427,11 +427,6 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken, CDOM
 			AssociatedChanges changes =
 					context.getListContext().getChangesInList(getTokenName(),
 						obj, listRef);
-			if (changes == null)
-			{
-				// Legal if no SPELLLEVEL was present
-				continue;
-			}
 			Collection<LSTWriteable> removedItems = changes.getRemoved();
 			if (removedItems != null && !removedItems.isEmpty()
 					|| changes.includesGlobalClear())

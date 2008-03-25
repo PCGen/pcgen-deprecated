@@ -139,10 +139,6 @@ public class KitLst extends AbstractToken implements GlobalLstToken,
 		AssociatedChanges<ChooseActionContainer> grantChanges = context
 				.getGraphContext().getChangesFromToken(getTokenName(), obj,
 						ChooseActionContainer.class);
-		if (grantChanges == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{

@@ -193,10 +193,6 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken, CDOM
 		AssociatedChanges<ChangeProf> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, ChangeProf.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

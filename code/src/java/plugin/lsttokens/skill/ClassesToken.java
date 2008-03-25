@@ -28,6 +28,7 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
@@ -47,7 +48,6 @@ import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
-import pcgen.util.MapToList;
 
 /**
  * Class deals with CLASSES Token
@@ -167,11 +167,6 @@ public class ClassesToken extends AbstractToken implements SkillLstToken,
 		{
 			AssociatedChanges<LSTWriteable> changes = context.getListContext()
 					.getChangesInMasterList(getTokenName(), skill, swl);
-			if (changes == null)
-			{
-				// Legal if no CLASSES was present in the Spell
-				continue;
-			}
 			Collection<LSTWriteable> removedItems = changes.getRemoved();
 			if (removedItems != null && !removedItems.isEmpty()
 					|| changes.includesGlobalClear())

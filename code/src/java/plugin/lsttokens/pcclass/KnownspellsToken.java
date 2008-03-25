@@ -50,7 +50,7 @@ import pcgen.util.Logging;
  * Class deals with KNOWNSPELLS Token
  */
 public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
-CDOMPrimaryToken<CDOMPCClass>
+		CDOMPrimaryToken<CDOMPCClass>
 {
 
 	private static final Class<CDOMSpell> SPELL_CLASS = CDOMSpell.class;
@@ -72,8 +72,8 @@ CDOMPrimaryToken<CDOMPCClass>
 			if (".CLEAR".equals(value))
 			{
 				Logging.errorPrint(getTokenName()
-					+ " uses deprecated syntax.  "
-					+ "Use .CLEARALL (not .CLEAR) to clear the values");
+						+ " uses deprecated syntax.  "
+						+ "Use .CLEARALL (not .CLEAR) to clear the values");
 				return true;
 			}
 			else if (".CLEARALL".equals(value))
@@ -90,7 +90,7 @@ CDOMPrimaryToken<CDOMPCClass>
 			{
 				Logging.errorPrint("Invalid KNOWNSPELLS Syntax using .CLEAR");
 				Logging
-					.errorPrint("Please separate .CLEARALL from the rest of the token with a |");
+						.errorPrint("Please separate .CLEARALL from the rest of the token with a |");
 				rest = value.substring(6);
 			}
 			pipeTok = new StringTokenizer(rest, Constants.PIPE);
@@ -133,7 +133,7 @@ CDOMPrimaryToken<CDOMPCClass>
 					// if the argument starts with LEVEL=, compare the level to
 					// the desired spellLevel
 					sf.setSpellLevel(Integer
-						.parseInt(filterString.substring(6)));
+							.parseInt(filterString.substring(6)));
 				}
 				else if (filterString.startsWith("TYPE="))
 				{
@@ -150,7 +150,7 @@ CDOMPrimaryToken<CDOMPCClass>
 			if (sf.isEmpty())
 			{
 				Logging.errorPrint("Illegal (empty) KNOWNSPELLS Filter: "
-					+ totalFilter);
+						+ totalFilter);
 			}
 			pcclass.addKnownSpell(sf);
 		}
@@ -174,9 +174,11 @@ CDOMPrimaryToken<CDOMPCClass>
 			{
 				if (!firstToken)
 				{
-					Logging.errorPrint("Non-sensical situation was "
-						+ "encountered while parsing " + getTokenName()
-						+ ": When used, .CLEARALL must be the first argument");
+					Logging
+							.errorPrint("Non-sensical situation was "
+									+ "encountered while parsing "
+									+ getTokenName()
+									+ ": When used, .CLEARALL must be the first argument");
 					return false;
 				}
 				context.getGraphContext().removeAll(getTokenName(), po);
@@ -187,8 +189,8 @@ CDOMPrimaryToken<CDOMPCClass>
 				return false;
 			}
 
-			StringTokenizer commaTok =
-					new StringTokenizer(totalFilter, Constants.COMMA);
+			StringTokenizer commaTok = new StringTokenizer(totalFilter,
+					Constants.COMMA);
 
 			/*
 			 * This is a rather interesting situation - this takes items that
@@ -212,8 +214,8 @@ CDOMPrimaryToken<CDOMPCClass>
 					if (levelLim != null)
 					{
 						Logging
-							.errorPrint("Cannot have more than one Level limit in "
-								+ getTokenName() + ": " + value);
+								.errorPrint("Cannot have more than one Level limit in "
+										+ getTokenName() + ": " + value);
 						return false;
 					}
 					// if the argument starts with LEVEL=, compare the level to
@@ -225,7 +227,7 @@ CDOMPrimaryToken<CDOMPCClass>
 					catch (NumberFormatException e)
 					{
 						Logging.errorPrint("Invalid Number in "
-							+ getTokenName() + ": " + value);
+								+ getTokenName() + ": " + value);
 						Logging.errorPrint("  Level must be an integer");
 						return false;
 					}
@@ -235,17 +237,16 @@ CDOMPrimaryToken<CDOMPCClass>
 					if (sp != null)
 					{
 						Logging
-							.errorPrint("Cannot have more than one Type/Spell limit in "
-								+ getTokenName() + ": " + value);
+								.errorPrint("Cannot have more than one Type/Spell limit in "
+										+ getTokenName() + ": " + value);
 						return false;
 					}
-					sp =
-							TokenUtilities.getTypeOrPrimitive(context,
-								SPELL_CLASS, filterString);
+					sp = TokenUtilities.getTypeOrPrimitive(context,
+							SPELL_CLASS, filterString);
 					if (sp == null)
 					{
 						Logging.errorPrint("  encountered Invalid limit in "
-							+ getTokenName() + ": " + value);
+								+ getTokenName() + ": " + value);
 						return false;
 					}
 				}
@@ -268,13 +269,9 @@ CDOMPrimaryToken<CDOMPCClass>
 
 	public String[] unparse(LoadContext context, CDOMPCClass po)
 	{
-		AssociatedChanges<KnownSpellIdentifier> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					po, KnownSpellIdentifier.class);
-		if (changes == null)
-		{
-			return null;
-		}
+		AssociatedChanges<KnownSpellIdentifier> changes = context
+				.getGraphContext().getChangesFromToken(getTokenName(), po,
+						KnownSpellIdentifier.class);
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{
@@ -284,47 +281,49 @@ CDOMPrimaryToken<CDOMPCClass>
 		if (removedItems != null && !removedItems.isEmpty())
 		{
 			context.addWriteMessage(getTokenName()
-				+ " does not support .CLEAR.");
+					+ " does not support .CLEAR.");
 			return null;
 		}
 		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		if (added != null && !added.isEmpty())
+		{
+			Map<CDOMReference<?>, Integer> map = new TreeMap<CDOMReference<?>, Integer>(
+					TokenUtilities.REFERENCE_SORTER);
+			for (LSTWriteable lstw : added)
+			{
+				KnownSpellIdentifier ksi = (KnownSpellIdentifier) lstw;
+				CDOMReference<CDOMSpell> ref = ksi.getLimit();
+				Integer i = ksi.getSpellLevel();
+				map.put(ref, i);
+			}
+			for (Entry<CDOMReference<?>, Integer> me : map.entrySet())
+			{
+				StringBuilder sb = new StringBuilder();
+				boolean needComma = false;
+				CDOMReference<?> ref = me.getKey();
+				String refString = ref.getLSTformat();
+				if (!Constants.LST_ALL.equals(refString))
+				{
+					sb.append(refString);
+					needComma = true;
+				}
+				Integer i = me.getValue();
+				if (i != null)
+				{
+					if (needComma)
+					{
+						sb.append(',');
+					}
+					sb.append("LEVEL=").append(i);
+				}
+				list.add(sb.toString());
+			}
+		}
+		if (list.isEmpty())
 		{
 			return null;
 		}
-		Map<CDOMReference<?>, Integer> map =
-				new TreeMap<CDOMReference<?>, Integer>(
-					TokenUtilities.REFERENCE_SORTER);
-		for (LSTWriteable lstw : added)
-		{
-			KnownSpellIdentifier ksi = (KnownSpellIdentifier) lstw;
-			CDOMReference<CDOMSpell> ref = ksi.getLimit();
-			Integer i = ksi.getSpellLevel();
-			map.put(ref, i);
-		}
-		for (Entry<CDOMReference<?>, Integer> me : map.entrySet())
-		{
-			StringBuilder sb = new StringBuilder();
-			boolean needComma = false;
-			CDOMReference<?> ref = me.getKey();
-			String refString = ref.getLSTformat();
-			if (!Constants.LST_ALL.equals(refString))
-			{
-				sb.append(refString);
-				needComma = true;
-			}
-			Integer i = me.getValue();
-			if (i != null)
-			{
-				if (needComma)
-				{
-					sb.append(',');
-				}
-				sb.append("LEVEL=").append(i);
-			}
-			list.add(sb.toString());
-		}
-		return new String[]{StringUtil.join(list, Constants.PIPE)};
+		return new String[] { StringUtil.join(list, Constants.PIPE) };
 	}
 
 	public Class<CDOMPCClass> getTokenClass()

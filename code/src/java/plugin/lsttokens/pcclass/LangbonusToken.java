@@ -170,11 +170,6 @@ CDOMPrimaryToken<CDOMPCClass>
 		AssociatedChanges<CDOMReference<CDOMLanguage>> changes =
 				context.getListContext().getChangesInList(getTokenName(), pcc,
 					swl);
-		if (changes == null)
-		{
-			// Legal if no Language was present in the race
-			return null;
-		}
 		List<String> list = new ArrayList<String>();
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())

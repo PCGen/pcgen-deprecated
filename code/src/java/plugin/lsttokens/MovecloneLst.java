@@ -168,10 +168,6 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken, CDOMP
 		AssociatedChanges<MovementFormulaConstructor> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					obj, MovementFormulaConstructor.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

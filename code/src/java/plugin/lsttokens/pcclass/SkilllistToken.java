@@ -192,10 +192,6 @@ CDOMPrimaryToken<CDOMPCClass>
 		AssociatedChanges<ChooseActionContainer> grantChanges =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, ChooseActionContainer.class);
-		if (grantChanges == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{

@@ -27,6 +27,7 @@ import java.util.Set;
 import pcgen.base.io.FileLocation;
 import pcgen.base.io.FileLocationFactory;
 import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TreeMapToList;
 import pcgen.base.util.TripleKeyMapToList;
 import pcgen.base.util.WeightedCollection;
@@ -38,7 +39,6 @@ import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.rules.persistence.TokenUtilities;
-import pcgen.util.MapToList;
 
 public class GraphContext
 {
@@ -214,6 +214,14 @@ public class GraphContext
 		{
 			SimpleAssociatedObject sao = new SimpleAssociatedObject();
 			added.addToListFor(sourceToken, obj, pro, sao);
+			System.err.println(sourceToken + " " + obj + " " + pro);
+			System.err.println(added.getListFor(sourceToken, obj, pro));
+			System.err.println(System.identityHashCode(sourceToken));
+			System.err.println(System.identityHashCode(obj));
+			System.err.println(System.identityHashCode(pro));
+			System.err.println(added.getKeySet());
+			System.err.println(added.getSecondaryKeySet(sourceToken));
+			System.err.println(added.getTertiaryKeySet(sourceToken, obj));
 			sao.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
 			FileLocation loc = locFac.getFileLocation();
 			sao.setAssociation(AssociationKey.FILE_LOCATION, loc);
@@ -308,8 +316,11 @@ public class GraphContext
 					{
 						if (extractURI != null)
 						{
+							System.err.println(extractURI);
+							System.err.println(assoc
+									.getAssociation(AssociationKey.SOURCE_URI));
 							if (!extractURI.equals(assoc
-								.getAssociation(AssociationKey.SOURCE_URI)))
+									.getAssociation(AssociationKey.SOURCE_URI)))
 							{
 								continue;
 							}

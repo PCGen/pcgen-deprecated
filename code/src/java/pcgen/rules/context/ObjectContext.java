@@ -276,8 +276,10 @@ public class ObjectContext
 	{
 	}
 
-	public class TrackingObjectCommitStrategy implements ObjectCommitStrategy
+	public static class TrackingObjectCommitStrategy implements
+			ObjectCommitStrategy
 	{
+		private static String CLEAR = ".CLEAR";
 
 		private DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject> positiveMap = new DoubleKeyMap<URI, ConcretePrereqObject, CDOMObject>(
 				HashMap.class, IdentityHashMap.class);
@@ -378,7 +380,31 @@ public class ObjectContext
 
 		public String getString(CDOMObject cdo, StringKey sk)
 		{
-			return getPositive(extractURI, cdo).get(sk);
+			String added = getPositive(extractURI, cdo).get(sk);
+			boolean hasClear = CLEAR.equals(getNegative(extractURI, cdo)
+					.get(sk));
+			if (hasClear)
+			{
+				if (added == null)
+				{
+					return Constants.LST_DOT_CLEAR;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			else
+			{
+				if (added == null)
+				{
+					return null;
+				}
+				else
+				{
+					return added;
+				}
+			}
 		}
 
 		public Integer getInteger(CDOMObject cdo, IntegerKey ik)

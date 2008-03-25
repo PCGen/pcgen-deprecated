@@ -8,6 +8,7 @@ import java.util.Set;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.base.util.TreeMapToList;
 import pcgen.base.util.TripleKeyMap;
 import pcgen.cdom.base.AssociatedPrereqObject;
@@ -18,7 +19,6 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.rules.persistence.TokenUtilities;
-import pcgen.util.MapToList;
 
 public class ListContext
 {

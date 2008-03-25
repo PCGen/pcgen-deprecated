@@ -73,10 +73,6 @@ public class CrToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 		AssociatedChanges<ChallengeRating> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(), race,
 					ChallengeRating.class);
-		if (changes == null)
-		{
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{

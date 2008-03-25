@@ -132,11 +132,6 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken, CDO
 		AssociatedChanges<CDOMReference<CDOMWeaponProf>> changes =
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
-		if (changes == null)
-		{
-			// Legal if no WEAPONBONUS was present in the race
-			return null;
-		}
 		Collection<LSTWriteable> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
