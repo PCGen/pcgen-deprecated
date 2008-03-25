@@ -20,17 +20,41 @@
  */
 package pcgen.base.util;
 
+import java.lang.reflect.Constructor;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This is a utility class that create dynamic collections.
+ * Dynamic collections are modifyable "wrappers" for collections that
+ * are not meant to be modified. These dynamic collections will
+ * reference the provided collection for all read-only operations.
+ * The first time a write operation takes place, a copy of the underlying
+ * collection is made and the write operation is carryed out on that copy.
+ * Thus the original collection remains unmodified. Further read and write 
+ * operations will take placd on the copied collection.
+ * <br>
+ * These dynamic wrappers are an efficient way to guarentee the safety of 
+ * reference-semantic collections when those collections are meant to be passed
+ * around and viewed by other classes.
+ * <br>
+ * The dynamic allocation behavior of a dynamic collection is thread safe.
+ * However, this does not mean that read and write operations to the underlying
+ * collection are thread safe. Dynamic collections are only as thread safe as
+ * the underlying collection.
+ * <br>
+ * Unlike java.util.concurrent.CopyOnWriteArrayList, Dynamic Collections will
+ * only make a single copy of the original collection. Even then, that copy is
+ * only made when a write operation takes place. If a dynamic collection is never
+ * modified, then a copy is never created. On the other hand, a CopyOnWriteArrayList
+ * will make an initial copy of the collection upon creation and will make additional
+ * copies each time a write operation takes place.
+ * 
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
 public final class DynamicCollections
@@ -54,50 +78,126 @@ public final class DynamicCollections
         return null;
     }
 
-    public static <T, C extends Collection<T>> Collection<T> createDynamicCollection(Class<C> sharedClass,
-                                                                                      C data)
+    /**
+     * Creates a dynamic collection backed by the <code>data</code> parameter.
+     * The class that is provided as a paramter must have a no-args
+     * constructor, otherwise an IllegalArgumentException will be thrown.
+     * @param copyClass the class of the <code>data</code> parameter
+     * @param data the set that will be wrapped by a dynamic collection
+     * @return a Dynamic collection backed by the <code>data</code> parameter
+     */
+    public static <T, C extends Collection<T>> Collection<T> createDynamicCollection(Class<C> copyClass,
+                                                                                       C data)
     {
-        return new DynamicCollection<T, C>(sharedClass, data);
+        try
+        {
+            Constructor<C> c = copyClass.getConstructor((Class<?>) null);
+            return new DynamicCollection<T, C>(c, data);
+        }
+        catch (Exception ex)
+        {
+            throw new IllegalArgumentException("copyClass must have a public no-arg constructor", ex);
+        }
     }
 
-    public static <T, C extends List<T>> List<T> createDynamicList(Class<C> sharedClass,
-                                                                    C data)
+    /**
+     * Creates a dynamic list backed by the <code>data</code> parameter.
+     * The class that is provided as a paramter must have a no-args
+     * constructor, otherwise an IllegalArgumentException will be thrown.
+     * @param copyClass the class of the <code>data</code> parameter
+     * @param data the set that will be wrapped by a dynamic list
+     * @return a dynamic list backed by the <code>data</code> parameter
+     */
+    public static <T, C extends List<T>> List<T> createDynamicList(Class<C> copyClass,
+                                                                     C data)
     {
-        return new DynamicList<T, C>(sharedClass, data);
+        try
+        {
+            Constructor<C> c = copyClass.getConstructor((Class<?>) null);
+            return new DynamicList<T, C>(c, data);
+        }
+        catch (Exception ex)
+        {
+            throw new IllegalArgumentException("copyClass must have a public no-arg constructor", ex);
+        }
     }
 
-    public static <T, C extends Set<T>> Set<T> createDynamicSet(Class<C> sharedClass,
-                                                                 C data)
+    /**
+     * Creates a dynamic set backed by the <code>data</code> parameter.
+     * The class that is provided as a paramter must have a no-args
+     * constructor, otherwise an IllegalArgumentException will be thrown.
+     * @param copyClass the class of the <code>data</code> parameter
+     * @param data the set that will be wrapped by a Dynamic Set
+     * @return a Dynamic Set backed by the <code>data</code> parameter
+     */
+    public static <T, C extends Set<T>> Set<T> createDynamicSet(Class<C> copyClass,
+                                                                  C data)
     {
-        return new DynamicSet<T, C>(sharedClass, data);
+        try
+        {
+            Constructor<C> c = copyClass.getConstructor((Class<?>) null);
+            return new DynamicSet<T, C>(c, data);
+        }
+        catch (Exception ex)
+        {
+            throw new IllegalArgumentException("copyClass must have a public no-arg constructor", ex);
+        }
+    }
+
+    private static class DynamicSupport<E, C extends Collection<E>>
+    {
+
+        private final Constructor<C> constructor;
+        private boolean modified = false;
+        private C collection;
+
+        public DynamicSupport(Constructor<C> constructor, C collection)
+        {
+            this.constructor = constructor;
+            this.collection = collection;
+        }
+
+        public synchronized C getCollection()
+        {
+            return collection;
+        }
+
+        public synchronized void checkModified()
+        {
+            if (!modified)
+            {
+                modified = true;
+                C copy = createInstance(constructor.getDeclaringClass());
+                copy.addAll(collection);
+                collection = copy;
+            }
+        }
+
     }
 
     private static class DynamicCollection<E, C extends Collection<E>> implements Collection<E>
     {
 
-        protected final Class<C> copyClass;
-        protected C collection;
-        private boolean modified = false;
+        private final DynamicSupport<E, C> support;
 
-        public DynamicCollection(Class<C> copyClass, C collection)
+        public DynamicCollection(Constructor<C> copyClass, C collection)
         {
-            this.copyClass = copyClass;
-            this.collection = collection;
+            this.support = new DynamicSupport<E, C>(copyClass, collection);
         }
 
         public final int size()
         {
-            return collection.size();
+            return support.getCollection().size();
         }
 
         public final boolean isEmpty()
         {
-            return collection.isEmpty();
+            return support.getCollection().isEmpty();
         }
 
         public final boolean contains(Object o)
         {
-            return collection.contains(o);
+            return support.getCollection().contains(o);
         }
 
         public Iterator<E> iterator()
@@ -107,71 +207,60 @@ public final class DynamicCollections
 
         public final Object[] toArray()
         {
-            return collection.toArray();
+            return support.getCollection().toArray();
         }
 
         public final <T> T[] toArray(T[] a)
         {
-            return collection.toArray(a);
+            return support.getCollection().toArray(a);
         }
 
         public final boolean add(E o)
         {
-            checkModified();
-            return collection.add(o);
+            support.checkModified();
+            return support.getCollection().add(o);
         }
 
         public final boolean remove(Object o)
         {
-            checkModified();
-            return collection.remove(o);
+            support.checkModified();
+            return support.getCollection().remove(o);
         }
 
         public final boolean containsAll(Collection<?> c)
         {
-            checkModified();
-            return collection.containsAll(c);
+            support.checkModified();
+            return support.getCollection().containsAll(c);
         }
 
         public final boolean addAll(Collection<? extends E> c)
         {
-            checkModified();
-            return collection.addAll(c);
+            support.checkModified();
+            return support.getCollection().addAll(c);
         }
 
         public final boolean removeAll(Collection<?> c)
         {
-            checkModified();
-            return collection.removeAll(c);
+            support.checkModified();
+            return support.getCollection().removeAll(c);
         }
 
         public final boolean retainAll(Collection<?> c)
         {
-            checkModified();
-            return collection.retainAll(c);
+            support.checkModified();
+            return support.getCollection().retainAll(c);
         }
 
         public final void clear()
         {
-            checkModified();
-            collection.clear();
-        }
-
-        protected final void checkModified()
-        {
-            if (!modified)
-            {
-                modified = true;
-                C copy = createInstance(copyClass);
-                copy.addAll(collection);
-                collection = copy;
-            }
+            support.checkModified();
+            support.getCollection().clear();
         }
 
         private class DynamicCollectionIterator implements Iterator<E>
         {
 
-            private final Iterator<E> it = collection.iterator();
+            private final Iterator<E> it = support.getCollection().iterator();
             private E element = null;
 
             public boolean hasNext()
@@ -195,205 +284,62 @@ public final class DynamicCollections
     private static class DynamicSet<E, C extends Set<E>> extends DynamicCollection<E, C> implements Set<E>
     {
 
-        public DynamicSet(Class<C> copyClass, C set)
+        public DynamicSet(Constructor<C> copyClass, C set)
         {
             super(copyClass, set);
         }
 
     }
 
-    private static class DynamicList<E, C extends List<E>> extends DynamicCollection<E, C> implements List<E>
+    private static class DynamicList<E, C extends List<E>> extends AbstractList<E>
     {
 
-        public DynamicList(Class<C> copyClass, C list)
+        private final DynamicSupport<E, C> support;
+
+        public DynamicList(Constructor<C> copyClass, C list)
         {
-            super(copyClass, list);
+            this.support = new DynamicSupport<E, C>(copyClass, list);
         }
 
-        public boolean addAll(int index, Collection<? extends E> c)
-        {
-            checkModified();
-            return collection.addAll(index, c);
-        }
-
-        public E get(int index)
-        {
-            return collection.get(index);
-        }
-
-        public E set(int index, E element)
-        {
-            checkModified();
-            return collection.set(index, element);
-        }
-
+        @Override
         public void add(int index, E element)
         {
-            checkModified();
-            collection.add(index, element);
+            support.checkModified();
+            support.getCollection().add(index, element);
         }
 
+        @Override
+        public boolean addAll(int index, Collection<? extends E> c)
+        {
+            support.checkModified();
+            return support.getCollection().addAll(index, c);
+        }
+
+        @Override
         public E remove(int index)
         {
-            checkModified();
-            return collection.remove(index);
+            support.checkModified();
+            return support.getCollection().remove(index);
         }
 
-        public int indexOf(Object o)
+        @Override
+        public E set(int index, E element)
         {
-            return collection.indexOf(o);
+            support.checkModified();
+            return support.getCollection().set(index, element);
         }
 
-        public int lastIndexOf(Object o)
+        @Override
+        public E get(int index)
         {
-            return collection.lastIndexOf(o);
+            return support.getCollection().get(index);
         }
 
-        public ListIterator<E> listIterator()
+        @Override
+        public int size()
         {
-            return new DynamicListIterator();
+            return support.getCollection().size();
         }
 
-        public ListIterator<E> listIterator(int index)
-        {
-            return new DynamicListIterator(index);
-        }
-
-        public List<E> subList(int fromIndex, int toIndex)
-        {
-            return new DynamicSubList<E>(this, fromIndex, toIndex);
-        }
-
-        private class DynamicListIterator implements ListIterator<E>
-        {
-
-            private ListIterator<E> it;
-            private int index = -1;
-
-            public DynamicListIterator()
-            {
-                it = collection.listIterator();
-            }
-
-            public DynamicListIterator(int index)
-            {
-                it = collection.listIterator(index);
-            }
-
-            public boolean hasPrevious()
-            {
-                return it.hasPrevious();
-            }
-
-            public E previous()
-            {
-                index = previousIndex();
-                return it.previous();
-            }
-
-            public int nextIndex()
-            {
-                return it.nextIndex();
-            }
-
-            public int previousIndex()
-            {
-                return it.previousIndex();
-            }
-
-            public void set(E o)
-            {
-                DynamicList.this.set(index, o);
-                it = collection.listIterator(index);
-            }
-
-            public void add(E o)
-            {
-                DynamicList.this.add(index, o);
-                it = collection.listIterator(index);
-                index = -1;
-            }
-
-            public boolean hasNext()
-            {
-                return it.hasNext();
-            }
-
-            public E next()
-            {
-                index = nextIndex();
-                return it.next();
-            }
-
-            public void remove()
-            {
-                DynamicList.this.remove(index);
-                it = collection.listIterator(index);
-                index = -1;
-            }
-
-        }
-
-        private static class DynamicSubList<E> extends AbstractList<E>
-        {
-
-            private final DynamicList<E, ? extends List<E>> list;
-            private final int offset;
-            private int size;
-
-            public DynamicSubList(DynamicList<E, ? extends List<E>> list, int fromIndex, int toIndex)
-            {
-                this.list = list;
-                this.offset = fromIndex;
-                this.size = toIndex - fromIndex;
-            }
-
-            public int size()
-            {
-                return size;
-            }
-
-            public E get(int index)
-            {
-                return list.get(index + offset);
-            }
-
-            @Override
-            public E set(int index, E element)
-            {
-                if (index < 0 || index >= size)
-                {
-                    throw new IndexOutOfBoundsException("Index: " + index +
-                                                        ",Size: " + size);
-                }
-                return list.set(index + offset, element);
-            }
-
-            @Override
-            public void add(int index, E element)
-            {
-                if (index < 0 || index > size)
-                {
-                    throw new IndexOutOfBoundsException("Index: " + index +
-                                                        ",Size: " + size);
-                }
-                list.add(index + offset, element);
-                size++;
-            }
-
-            @Override
-            public E remove(int index)
-            {
-                if (index < 0 || index >= size)
-                {
-                    throw new IndexOutOfBoundsException("Index: " + index +
-                                                        ",Size: " + size);
-                }
-                E element = list.remove(index + offset);
-                size--;
-                return element;
-            }
-
-        }
     }
 }
