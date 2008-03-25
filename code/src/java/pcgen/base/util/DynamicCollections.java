@@ -86,12 +86,12 @@ public final class DynamicCollections
      * @param data the set that will be wrapped by a dynamic collection
      * @return a Dynamic collection backed by the <code>data</code> parameter
      */
-    public static <T, C extends Collection<T>> Collection<T> createDynamicCollection(Class<C> copyClass,
+    public static <T, C extends Collection<T>> Collection<T> createDynamicCollection(Class<? extends C> copyClass,
                                                                                        C data)
     {
         try
         {
-            Constructor<C> c = copyClass.getConstructor((Class<?>) null);
+            Constructor<? extends C> c = copyClass.getConstructor((Class<?>) null);
             return new DynamicCollection<T, C>(c, data);
         }
         catch (Exception ex)
@@ -108,12 +108,12 @@ public final class DynamicCollections
      * @param data the set that will be wrapped by a dynamic list
      * @return a dynamic list backed by the <code>data</code> parameter
      */
-    public static <T, C extends List<T>> List<T> createDynamicList(Class<C> copyClass,
+    public static <T, C extends List<T>> List<T> createDynamicList(Class<? extends C> copyClass,
                                                                      C data)
     {
         try
         {
-            Constructor<C> c = copyClass.getConstructor((Class<?>) null);
+            Constructor<? extends C> c = copyClass.getConstructor((Class<?>) null);
             return new DynamicList<T, C>(c, data);
         }
         catch (Exception ex)
@@ -130,12 +130,12 @@ public final class DynamicCollections
      * @param data the set that will be wrapped by a Dynamic Set
      * @return a Dynamic Set backed by the <code>data</code> parameter
      */
-    public static <T, C extends Set<T>> Set<T> createDynamicSet(Class<C> copyClass,
+    public static <T, C extends Set<T>> Set<T> createDynamicSet(Class<? extends C> copyClass,
                                                                   C data)
     {
         try
         {
-            Constructor<C> c = copyClass.getConstructor((Class<?>) null);
+            Constructor<? extends C> c = copyClass.getConstructor((Class<?>) null);
             return new DynamicSet<T, C>(c, data);
         }
         catch (Exception ex)
@@ -147,11 +147,11 @@ public final class DynamicCollections
     private static class DynamicSupport<E, C extends Collection<E>>
     {
 
-        private final Constructor<C> constructor;
+        private final Constructor<? extends C> constructor;
         private boolean modified = false;
         private C collection;
 
-        public DynamicSupport(Constructor<C> constructor, C collection)
+        public DynamicSupport(Constructor<? extends C> constructor, C collection)
         {
             this.constructor = constructor;
             this.collection = collection;
@@ -180,7 +180,7 @@ public final class DynamicCollections
 
         private final DynamicSupport<E, C> support;
 
-        public DynamicCollection(Constructor<C> copyClass, C collection)
+        public DynamicCollection(Constructor<? extends C> copyClass, C collection)
         {
             this.support = new DynamicSupport<E, C>(copyClass, collection);
         }
@@ -284,7 +284,7 @@ public final class DynamicCollections
     private static class DynamicSet<E, C extends Set<E>> extends DynamicCollection<E, C> implements Set<E>
     {
 
-        public DynamicSet(Constructor<C> copyClass, C set)
+        public DynamicSet(Constructor<? extends C> copyClass, C set)
         {
             super(copyClass, set);
         }
@@ -296,7 +296,7 @@ public final class DynamicCollections
 
         private final DynamicSupport<E, C> support;
 
-        public DynamicList(Constructor<C> copyClass, C list)
+        public DynamicList(Constructor<? extends C> copyClass, C list)
         {
             this.support = new DynamicSupport<E, C>(copyClass, list);
         }
