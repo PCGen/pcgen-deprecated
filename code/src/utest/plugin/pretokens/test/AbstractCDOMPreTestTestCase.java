@@ -33,6 +33,7 @@ import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.character.CharacterDataStore;
+import plugin.pretokens.testsupport.SimpleRulesDataStore;
 
 public abstract class AbstractCDOMPreTestTestCase<T extends CDOMObject> extends
 		TestCase

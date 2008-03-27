@@ -746,6 +746,13 @@ pcgen.filepaths=user
 				</fileset>
 			</batchtest>
 			<batchtest todir="${build.dir}/test-results/xml">
+				<fileset dir="${basedir}/code/src/utest">
+				  <include name="plugin/pretokens/**/*.java"/>
+				  <exclude name="**/Abstract*.java"/>
+				  <exclude name="**/testsupport/*.java"/>
+				</fileset>
+			</batchtest>
+			<batchtest todir="${build.dir}/test-results/xml">
 				<fileset dir="${basedir}/code/src/itest">
 				  <include name="plugin/lsttoken/editcontext/**/*.java"/>
 				  <exclude name="**/Abstract*.java"/>

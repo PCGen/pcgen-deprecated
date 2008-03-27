@@ -25,6 +25,7 @@ import org.junit.Test;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
+import plugin.pretokens.testsupport.SimpleRulesDataStore;
 
 public class PreTypeTesterTest extends TestCase
 {

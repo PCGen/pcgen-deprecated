@@ -29,6 +29,7 @@ import pcgen.core.Vision;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
+import plugin.pretokens.testsupport.SimpleRulesDataStore;
 
 public class PreVisionTesterTest extends TestCase
 {

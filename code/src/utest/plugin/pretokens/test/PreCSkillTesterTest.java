@@ -39,6 +39,7 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
+import plugin.pretokens.testsupport.SimpleRulesDataStore;
 
 public class PreCSkillTesterTest extends TestCase
 {

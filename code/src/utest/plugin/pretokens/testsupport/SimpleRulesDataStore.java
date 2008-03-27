@@ -1,4 +1,4 @@
-package plugin.pretokens.test;
+package plugin.pretokens.testsupport;
 
 import java.util.ArrayList;
 import java.util.List;
