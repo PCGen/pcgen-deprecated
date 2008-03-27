@@ -86,7 +86,8 @@ These files can be renamed and used for releases.
 	<property name="project.todo.file" value="TODO" />
 
 	<property name="project.dist.files" value="${project.license.file} ${project.install.file} ${project.readme.file} ${project.todo.file}" />
-
+	<property name="compat.dist.files" value="${comp-jar.bin.file}" />
+	
 	<!-- For installation -->
 	<property name="bin.pcgen.bat" value="pcgen.bat" />
 	<property name="bin.pcgenlowmem.bat" value="pcgen_low_mem.bat" />
@@ -100,6 +101,7 @@ These files can be renamed and used for releases.
 	<property name="zip.jars.file" value="jars.zip" />
 	<property name="zip.manual.file" value="manual.zip" />
 	<property name="zip.autobuild.file" value="autobuild.zip" />
+	<property name="zip.compat.file" value="pcgen-6.0-compat-test.zip" />
 
 	<path id="project.jars">
 		<fileset dir="${lib.dir}" includes="**/*.jar" excludes="**/test/**,javacc.jar,**/emma/**" />
@@ -381,6 +383,28 @@ pcgen.filepaths=user
 	<target name="jar.src">
 		<mkdir dir="${dist.dir}" />
 		<jar jarfile="${dist.dir}/${jar.src.file}" basedir="${src.java.dir}" excludes="**/CVS/*, **/.svn/*, test, **/test/*" />
+	</target>
+
+	<target name="zip.compat">
+		<delete file="${zip.compat.file}" />
+		<zip zipfile="${zip.compat.file}">
+			<fileset dir="." includes="${compat.dist.files}" />
+			<fileset dir=".">
+				<include name="plugins/**" />
+				<include name="system/**" />
+				<exclude name="**/CVS/*, **/.svn/*" />
+			</fileset>
+			<fileset dir=".">
+				<include name="${lib.dir}/jdom.*"/>
+				<include name="${lib.dir}/djep*"/>
+				<include name="${lib.dir}/mrj*"/>
+				<include name="${lib.dir}/MRJ*"/>
+				<include name="${lib.dir}/jep/*.jar"/>
+				<include name="${lib.dir}/jep/*.txt"/>
+				<exclude name="**/test/**,javacc.jar,**/emma/**" />
+			</fileset>
+
+		</zip>
 	</target>
 
 	<target name="zip.bins">
