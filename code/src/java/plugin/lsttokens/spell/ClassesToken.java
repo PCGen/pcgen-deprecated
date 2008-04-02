@@ -121,7 +121,7 @@ public class ClassesToken extends AbstractToken implements SpellLstToken,
 		}
 		else
 		{
-			if (value.indexOf(']') != value.length() - 1)
+			if (value.lastIndexOf(']') != value.length() - 1)
 			{
 				Logging.errorPrint("Invalid " + getTokenName()
 						+ " must end with ']' if it contains a PREREQ tag");
