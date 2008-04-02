@@ -20,9 +20,10 @@ After Installation you will need to load the Perl Package Manager (PPM) either i
 
 
 
---- PRETTYLST 4387 or Higher ---
+--- PRETTYLST 4387 ONLY ---
 To get Prettylst version 4387 to work you have to download a second file 'Ewarn.pm' [Included in the prettylst folder] and place it in your \Perl\lib directory.
 "Ewarn.pm must be placed in your PERL\lib directory"
+NOTE: v1.38 (build 5580) Does not require the Ewarn.pm (The latest build version as of 2008-04)
 
 Default Installation would be
 C:\Perl\lib
