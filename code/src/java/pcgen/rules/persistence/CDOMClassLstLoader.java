@@ -209,13 +209,13 @@ public class CDOMClassLstLoader
 					subParse(context, substitutionLoader,
 							activeSubstitutionClass, restOfLine, uri);
 				}
-				else if ("SUBSTITUTIONCLASSLEVEL".equals(prefix))
+				else if ("SUBSTITUTIONLEVEL".equals(prefix))
 				{
 					isClassActive = false;
 					isSubClassActive = false;
 					if (!isSubstitutionClassActive)
 					{
-						Logging.errorPrint("Found SUBSTITUTIONCLASSLEVEL "
+						Logging.errorPrint("Found SUBSTITUTIONLEVEL "
 								+ "line without SUBSTITUTIONCLASS in "
 								+ "Class LST: " + line);
 						continue;
@@ -230,7 +230,7 @@ public class CDOMClassLstLoader
 					catch (NumberFormatException e)
 					{
 						Logging
-								.errorPrint("Found unparseable SUBSTITUTIONCLASSLEVEL "
+								.errorPrint("Found unparseable SUBSTITUTIONLEVEL "
 										+ "line in Class LST: " + line);
 					}
 				}
