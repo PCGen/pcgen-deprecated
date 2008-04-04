@@ -88,7 +88,7 @@ public class FavoredClassTokenTest extends
 	@Override
 	public char getJoinCharacter()
 	{
-		return ',';
+		return '|';
 	}
 
 	@Test
