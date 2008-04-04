@@ -104,11 +104,25 @@ public class StatToken extends AbstractToken implements ChooseLstToken,
 						+ " arguments may not contain [] : " + value);
 				return null;
 			}
-			if (hasIllegalSeparator('|', value))
+			if (hasIllegalSeparator(',', value))
 			{
 				return null;
 			}
-			newValue = "REMOVE[" + value + "]";
+			StringBuilder sb = new StringBuilder();
+			sb.append("REMOVE[");
+			StringTokenizer st = new StringTokenizer(value, Constants.COMMA);
+			boolean first = true;
+			while (st.hasMoreTokens())
+			{
+				if (!first)
+				{
+					sb.append(',');
+				}
+				sb.append(st.nextToken());
+				first = false;
+			}
+			sb.append(']');
+			newValue = sb.toString();
 		}
 		return context.getChoiceSet(CDOMStat.class, newValue);
 	}
