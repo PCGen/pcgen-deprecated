@@ -284,4 +284,10 @@ public class CustomCampaign implements CampaignInterface
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public List<String> getGameModes()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

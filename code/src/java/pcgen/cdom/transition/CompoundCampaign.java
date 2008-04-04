@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -59,33 +60,6 @@ public class CompoundCampaign implements CampaignInterface
 			}
 		}
 	}
-
-	// public void oomph()
-	// {
-	// lstExcludeFiles.addAll(aCamp.getLstExcludeFiles());
-	// raceFileList.addAll(aCamp.getRaceFiles());
-	// classFileList.addAll(aCamp.getClassFiles());
-	// companionmodFileList.addAll(aCamp.getCompanionModFiles());
-	// skillFileList.addAll(aCamp.getSkillFiles());
-	// abilityCategoryFileList.addAll(aCamp.getAbilityCategoryFiles());
-	// abilityFileList.addAll(aCamp.getAbilityFiles());
-	// featFileList.addAll(aCamp.getFeatFiles());
-	// deityFileList.addAll(aCamp.getDeityFiles());
-	// domainFileList.addAll(aCamp.getDomainFiles());
-	// weaponProfFileList.addAll(aCamp.getWeaponProfFiles());
-	// armorProfFileList.addAll(aCamp.getArmorProfFiles());
-	// shieldProfFileList.addAll(aCamp.getShieldProfFiles());
-	// equipmentFileList.addAll(aCamp.getEquipFiles());
-	// classSkillFileList.addAll(aCamp.getClassSkillFiles());
-	// classSpellFileList.addAll(aCamp.getClassSpellFiles());
-	// spellFileList.addAll(aCamp.getSpellFiles());
-	// languageFileList.addAll(aCamp.getLanguageFiles());
-	// reqSkillFileList.addAll(aCamp.getReqSkillFiles());
-	// templateFileList.addAll(aCamp.getTemplateFiles());
-	// equipmodFileList.addAll(aCamp.getEquipModFiles());
-	// kitFileList.addAll(aCamp.getKitFiles());
-	// bioSetFileList.addAll(aCamp.getBioSetFiles());
-	// }
 
 	public int countTotalFiles()
 	{
@@ -361,6 +335,24 @@ public class CompoundCampaign implements CampaignInterface
 			}
 		}
 		return fileList;
+	}
+
+	public List<String> getGameModes()
+	{
+		List<String> validModes = null;
+		for (CampaignInterface ci : campaignSet)
+		{
+			List<String> theseModes = ci.getGameModes();
+			if (validModes == null)
+			{
+				validModes = theseModes;
+			}
+			else
+			{
+				validModes.retainAll(theseModes);
+			}
+		}
+		return validModes;
 	}
 
 }

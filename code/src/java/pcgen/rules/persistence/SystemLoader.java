@@ -47,7 +47,9 @@ import pcgen.cdom.kit.CDOMKitStat;
 import pcgen.cdom.kit.CDOMKitTable;
 import pcgen.cdom.kit.CDOMKitTemplate;
 import pcgen.cdom.transition.CampaignInterface;
+import pcgen.core.GameMode;
 import pcgen.core.SettingsHandler;
+import pcgen.core.SystemCollections;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.rules.context.LoadContext;
 import pcgen.util.Logging;
@@ -151,19 +153,19 @@ public class SystemLoader extends Observable
 
 	public void loadCampaign(LoadContext context, CampaignInterface campaign)
 	{
-		if (SettingsHandler.getGame() == null)
-		{
-			// Autoload campaigns is set but there
-			// is no current gameMode, so just return
-			return;
-		}
-
 		// The first thing we need to do is load the
 		// correct statsandchecks.lst file for this gameMode
 		File gameModeDir = new File(SettingsHandler.getPcgenSystemDir(),
 				"gameModes");
-		File specificGameModeDir = new File(gameModeDir, SettingsHandler
-				.getGame().getFolderName());
+		List<String> modes = campaign.getGameModes();
+		if (modes.isEmpty())
+		{
+			Logging.errorPrint("Campaigns provided are not compatible");
+			return;
+		}
+		//TODO This is a temporary hack for ReportUnconstructed ... need a better method
+		GameMode mode = SystemCollections.getGameModeNamed(modes.get(0));
+		File specificGameModeDir = new File(gameModeDir, mode.getFolderName());
 		File statsAndChecks = new File(specificGameModeDir,
 				"statsandchecks.lst");
 		statsChecksLoader.loadLstFile(context, statsAndChecks.toURI());

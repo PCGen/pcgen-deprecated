@@ -2,6 +2,7 @@ package pcgen.cdom.transition;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 
 import pcgen.persistence.lst.CampaignSourceEntry;
 
@@ -51,5 +52,7 @@ public interface CampaignInterface
 	public String getDisplayName();
 
 	public Collection<CampaignSourceEntry> getClassFiles();
+
+	public List<String> getGameModes();
 
 }
