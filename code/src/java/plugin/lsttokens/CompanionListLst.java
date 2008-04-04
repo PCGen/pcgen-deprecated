@@ -261,6 +261,10 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken, C
 				foundAny = true;
 				races.add(context.ref.getCDOMAllReference(CDOMRace.class));
 			}
+			else if (tokString.startsWith("RACETYPE="))
+			{
+				//TODO Need to get RACETYPE reference object
+			}
 			else
 			{
 				races.add(context.ref.getCDOMReference(CDOMRace.class, tokString));
