@@ -174,25 +174,19 @@ public class EqBuilderSpellToken extends AbstractToken implements
 			while (st.hasMoreTokens())
 			{
 				String type = st.nextToken();
-				if (!st.hasMoreTokens())
+				int min = 0;
+				if (st.hasMoreTokens())
 				{
-					Logging.errorPrint("Invalid " + getTokenName()
-							+ " was expecting a minimum and maximum "
-							+ "level to follow spell type: " + type);
-					return null;
+					String minLevel = st.nextToken();
+					min = Integer.parseInt(minLevel);
 				}
-				String minLevel = st.nextToken();
-				int min = Integer.parseInt(minLevel);
-				if (!st.hasMoreTokens())
+				int max = Integer.MAX_VALUE;
+				//TODO MAXLEVEL is allowed and that's the default
+				if (st.hasMoreTokens())
 				{
-					Logging.errorPrint("Invalid " + getTokenName()
-							+ " was expecting a maximum "
-							+ "level to follow minimum " + minLevel
-							+ " for spell type: " + type);
-					return null;
+					String maxLevel = st.nextToken();
+					max = Integer.parseInt(maxLevel);
 				}
-				String maxLevel = st.nextToken();
-				int max = Integer.parseInt(maxLevel);
 				CDOMReference<CDOMSpell> ref = context.ref
 						.getCDOMTypeReference(SPELL_CLASS, type);
 				sllList.add(new SpellLevelLimit(ref, min, max));
