@@ -72,7 +72,7 @@ public class FavclassToken extends AbstractToken implements RaceLstToken, CDOMPr
 	public boolean parseFavoredClass(LoadContext context, CDOMObject cdo,
 		String value)
 	{
-		if (isEmpty(value) || hasIllegalSeparator(',', value))
+		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
 			return false;
 		}
@@ -80,7 +80,7 @@ public class FavclassToken extends AbstractToken implements RaceLstToken, CDOMPr
 		boolean foundAny = false;
 		boolean foundOther = false;
 
-		StringTokenizer tok = new StringTokenizer(value, Constants.COMMA);
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		while (tok.hasMoreTokens())
 		{
@@ -152,7 +152,7 @@ public class FavclassToken extends AbstractToken implements RaceLstToken, CDOMPr
 				set.add(ref.getLSTformat());
 			}
 		}
-		return new String[] { StringUtil.join(set, Constants.COMMA) };
+		return new String[] { StringUtil.join(set, Constants.PIPE) };
 	}
 
 	public Class<CDOMRace> getTokenClass()
