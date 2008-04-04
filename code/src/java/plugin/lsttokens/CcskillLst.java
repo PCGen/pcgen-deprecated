@@ -145,8 +145,17 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken,
 				else
 				{
 					foundOther = true;
-					ref = TokenUtilities.getTypeOrPrimitive(context,
-							SKILL_CLASS, tokText);
+					if (Constants.LST_LIST.equals(tokText))
+					{
+						ref = null;
+						//TODO Need to get the Choice reference object
+					}
+					else
+					{
+						ref =
+							TokenUtilities.getTypeOrPrimitive(context,
+								SKILL_CLASS, tokText);
+					}
 				}
 				if (ref == null)
 				{

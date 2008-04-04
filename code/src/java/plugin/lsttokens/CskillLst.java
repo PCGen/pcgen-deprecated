@@ -144,9 +144,17 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 				else
 				{
 					foundOther = true;
-					ref =
+					if (Constants.LST_LIST.equals(tokText))
+					{
+						ref = null;
+						//TODO Need to get the Choice reference object
+					}
+					else
+					{
+						ref =
 							TokenUtilities.getTypeOrPrimitive(context,
 								SKILL_CLASS, tokText);
+					}
 				}
 				if (ref == null)
 				{
