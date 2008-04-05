@@ -109,12 +109,15 @@ my %validfiletype = (
     'SPELL'        => \&FILETYPE_parse,
     'TEMPLATE'     => \&FILETYPE_parse,
     'WEAPONPROF'   => \&FILETYPE_parse,
+    'ARMORPROF'    => \&FILETYPE_parse,
+    'SHIELDPROF'   => \&FILETYPE_parse,
     '#EXTRAFILE'   => 1,
 );
 
 # The file type that will be rewritten.
 my %writefiletype = (
     'ABILITY'      => 1,
+    'ABILITYCATEGORY' => 0,    # Not sure how we want to do this, so leaving off the list for now. - Tir Gwaith
     'BIOSET'       => 1,
     'CLASS'        => 1,
     'CLASS Level'  => 1,
@@ -136,6 +139,8 @@ my %writefiletype = (
     'SPELL'        => 1,
     'TEMPLATE'     => 1,
     'WEAPONPROF'   => 1,
+    'ARMORPROF'    => 1,
+    'SHIELDPROF'   => 1,
     '#EXTRAFILE'   => 0,
 );
 
@@ -1383,6 +1388,28 @@ my %master_file_type = (
             ValidateKeep    => YES,
         },
     ],
+
+    ARMORPROF => [
+        \%SOURCE_file_type_def,
+        {   Linetype        => 'ARMORPROF',
+            RegEx           => qr(^([^\t:]+)),
+            Mode            => MAIN,
+            Format          => BLOCK,
+            Header          => BLOCK_HEADER,
+            ValidateKeep    => YES,
+        },
+    ],
+
+    SHIELDPROF => [
+        \%SOURCE_file_type_def,
+        {   Linetype        => 'SHIELDPROF',
+            RegEx           => qr(^([^\t:]+)),
+            Mode            => MAIN,
+            Format          => BLOCK,
+            Header          => BLOCK_HEADER,
+            ValidateKeep    => YES,
+        },
+    ],
 );
 
 # The PRExxx tags. They are used in many of the line types.
@@ -1757,6 +1784,66 @@ my %master_order = (
         'SPELLLEVEL:CLASS:*',
         'SPELLLEVEL:DOMAIN:*',
         'UNENCUMBEREDMOVE',
+    ],
+
+    'ARMORPROF' => [
+        '000ArmorName',
+        'KEY',
+        'NAMEISPI',
+        'OUTPUTNAME',
+        'TYPE',
+        'HANDS',
+        @PRE_Tags,
+        @SOURCE_Tags,
+        'BONUS:ABILITYPOOL:*',
+        'BONUS:CASTERLEVEL:*',
+        'BONUS:CHECKS:*',
+        'BONUS:COMBAT:*',
+        'BONUS:DAMAGE:*',
+        'BONUS:DEFINE:*',
+        'BONUS:DOMAIN:*',
+        'BONUS:DC:*',
+        'BONUS:DR:*',
+        'BONUS:EQM:*',
+        'BONUS:EQMARMOR:*',
+        'BONUS:EQMWEAPON:*',
+        'BONUS:ESIZE:*',
+        'BONUS:FEAT:*',
+        'BONUS:HD:*',
+        'BONUS:HP:*',
+        'BONUS:LANGUAGES:*',
+        'BONUS:MISC:*',
+        'BONUS:MOVEADD:*',
+        'BONUS:MOVEMULT:*',
+        'BONUS:POSTMOVEADD:*',
+        'BONUS:POSTRANGEADD:*',
+        'BONUS:PCLEVEL:*',
+        'BONUS:RANGEADD:*',
+        'BONUS:RANGEMULT:*',
+        'BONUS:REPUTATION:*',
+        'BONUS:RING:*',
+        'BONUS:SCHOOL:*',
+        'BONUS:SIZEMOD:*',
+        'BONUS:SKILL:*',
+        'BONUS:SKILLPOINTS:*',
+        'BONUS:SKILLPOOL:*',
+        'BONUS:SKILLRANK:*',
+        'BONUS:SPELL:*',
+        'BONUS:SPELLCAST:*',
+        'BONUS:SPELLCASTMULT:*',
+        'BONUS:SPELLKNOWN:*',
+        'BONUS:VISION:*',
+        'BONUS:STAT:*',
+        'BONUS:TOHIT:*',
+        'BONUS:UDAM:*',
+        'BONUS:VAR:*',
+        'BONUS:WEAPON:*',
+        'BONUS:WEAPONPROF:*',
+        'BONUS:WIELDCATEGORY:*',
+        'SA:.CLEAR',
+        'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
     ],
 
     'BIOSET AGESET' => [
@@ -2703,6 +2790,7 @@ my %master_order = (
         'PUBNAMELONG',
         'PUBNAMESHORT',
         'PUBNAMEWEB',
+        'RANK',
         'SETTING',
         'TYPE',
         'SHOWINMENU',            # [ 1718370 ] SHOWINMENU tag missing for PCC files
@@ -2722,9 +2810,12 @@ my %master_order = (
         'BIOSET',
         'HIDETYPE',
         'COMPANIONLIST',        # [ 1672551 ] PCC tag COMPANIONLIST
+        'REQSKILL',
 
         # These tags load files
         'ABILITY',
+        'ABILITYCATEGORY',
+        'ARMORPROF',
         'CLASS',
         'CLASSSKILL',
         'CLASSSPELL',
@@ -2739,12 +2830,10 @@ my %master_order = (
         'LSTEXCLUDE',
         'PCC',
         'RACE',
-        'RANK',
-        'REQSKILL',
+        'SHIELDPROF',
         'SKILL',
         'SPELL',
-        'TEMPLATE:.CLEAR',
-        'TEMPLATE:*',
+        'TEMPLATE',
         'WEAPONPROF',
         '#EXTRAFILE',
     ],
@@ -2863,6 +2952,66 @@ my %master_order = (
         'REGION',
         'SPELLLEVEL:DOMAIN:*',
         'KIT',
+    ],
+
+    'SHIELDPROF' => [
+        '000ShieldName',
+        'KEY',
+        'NAMEISPI',
+        'OUTPUTNAME',
+        'TYPE',
+        'HANDS',
+        @PRE_Tags,
+        @SOURCE_Tags,
+        'BONUS:ABILITYPOOL:*',
+        'BONUS:CASTERLEVEL:*',
+        'BONUS:CHECKS:*',
+        'BONUS:COMBAT:*',
+        'BONUS:DAMAGE:*',
+        'BONUS:DEFINE:*',
+        'BONUS:DOMAIN:*',
+        'BONUS:DC:*',
+        'BONUS:DR:*',
+        'BONUS:EQM:*',
+        'BONUS:EQMARMOR:*',
+        'BONUS:EQMWEAPON:*',
+        'BONUS:ESIZE:*',
+        'BONUS:FEAT:*',
+        'BONUS:HD:*',
+        'BONUS:HP:*',
+        'BONUS:LANGUAGES:*',
+        'BONUS:MISC:*',
+        'BONUS:MOVEADD:*',
+        'BONUS:MOVEMULT:*',
+        'BONUS:POSTMOVEADD:*',
+        'BONUS:POSTRANGEADD:*',
+        'BONUS:PCLEVEL:*',
+        'BONUS:RANGEADD:*',
+        'BONUS:RANGEMULT:*',
+        'BONUS:REPUTATION:*',
+        'BONUS:RING:*',
+        'BONUS:SCHOOL:*',
+        'BONUS:SIZEMOD:*',
+        'BONUS:SKILL:*',
+        'BONUS:SKILLPOINTS:*',
+        'BONUS:SKILLPOOL:*',
+        'BONUS:SKILLRANK:*',
+        'BONUS:SPELL:*',
+        'BONUS:SPELLCAST:*',
+        'BONUS:SPELLCASTMULT:*',
+        'BONUS:SPELLKNOWN:*',
+        'BONUS:VISION:*',
+        'BONUS:STAT:*',
+        'BONUS:TOHIT:*',
+        'BONUS:UDAM:*',
+        'BONUS:VAR:*',
+        'BONUS:WEAPON:*',
+        'BONUS:WEAPONPROF:*',
+        'BONUS:WIELDCATEGORY:*',
+        'SA:.CLEAR',
+        'SA:*',
+        'SAB:.CLEAR',
+        'SAB:*',
     ],
 
     'SKILL' => [
@@ -3522,6 +3671,10 @@ my %column_with_no_tag = (
         '000AbilityName',
     ],
 
+    'ARMORPROF' => [
+        '000ArmorName',
+    ],
+
     'CLASS' => [
         '000ClassName',
     ],
@@ -3564,6 +3717,10 @@ my %column_with_no_tag = (
 
     'RACE' => [
         '000RaceName',
+    ],
+
+    'SHIELDPROF' => [
+        '000ShieldName',
     ],
 
     'SKILL' => [
@@ -3832,6 +3989,8 @@ my %tagheader = (
         '000TemplateName'       => '# Template Name',
 
         '000WeaponName'         => '# Weapon Name',
+        '000ArmorName'          => '# Armor Name',
+        '000ShieldName'         => '# Shield Name',
 
         'ACCHECK'               => 'AC Penalty Check',
         'ACHECK'                => 'Skill Penalty Apply',
@@ -14733,6 +14892,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1935376 ] New files: Armorprof and Shieldprof
 
 KIT FUNDS lines in Kit file
 
