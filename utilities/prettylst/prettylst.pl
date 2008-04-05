@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
 # * Copyright
 
@@ -1228,13 +1228,19 @@ my %master_file_type = (
         {   Linetype        => 'KIT FEAT',
             RegEx           => qr{^FEAT:([^\t]*)},
             Mode            => SUB,
-            Format          => FIRST_COLUMN,
+            Format          => BLOCK,
+            Header          => NO_HEADER,
+        },
+        {   Linetype        => 'KIT FUNDS',
+            RegEx           => qr{^FUNDS:([^\t]*)},
+            Mode            => SUB,
+            Format          => BLOCK,
             Header          => NO_HEADER,
         },
         {   Linetype        => 'KIT GEAR',
             RegEx           => qr{^GEAR:([^\t]*)},
             Mode            => SUB,
-            Format          => FIRST_COLUMN,
+            Format          => BLOCK,
             Header          => NO_HEADER,
         },
         {   Linetype        => 'KIT KIT',
@@ -1264,7 +1270,7 @@ my %master_file_type = (
         {   Linetype        => 'KIT PROF',
             RegEx           => qr{^PROF:([^\t]*)},
             Mode            => SUB,
-            Format          => FIRST_COLUMN,
+            Format          => BLOCK,
             Header          => NO_HEADER,
         },
         {   Linetype        => 'KIT RACE',
@@ -1282,7 +1288,7 @@ my %master_file_type = (
         {   Linetype        => 'KIT SKILL',
             RegEx           => qr{^SKILL:([^\t]*)},
             Mode            => SUB,
-            Format          => FIRST_COLUMN,
+            Format          => BLOCK,
             Header          => NO_HEADER,
         },
         {   Linetype        => 'KIT STAT',
@@ -1294,7 +1300,7 @@ my %master_file_type = (
         {   Linetype        => 'KIT SPELLS',
             RegEx           => qr{^SPELLS:([^\t]*)},
             Mode            => SUB,
-            Format          => FIRST_COLUMN,
+            Format          => BLOCK,
             Header          => NO_HEADER,
         },
         {   Linetype        => 'KIT TABLE',
@@ -1795,6 +1801,7 @@ my %master_order = (
         'HASSUBSTITUTIONLEVEL',
         'EXCLASS',
         @SOURCE_Tags,
+        'LANGAUTO:.CLEAR',
         'LANGAUTO',
         'LANGBONUS',
         'WEAPONBONUS',
@@ -1962,7 +1969,7 @@ my %master_order = (
         'CHOOSE',
         'EXCHANGELEVEL',
         'FEAT',
-        'ABILITY',
+        'ABILITY:*',
         'SPECIALS',
         'SPELL',
         'SPELLS:*',
@@ -2057,7 +2064,7 @@ my %master_order = (
         'KEY',                 # [ 1695877 ] KEY tag is global
         'NAMEISPI',
         'OUTPUTNAME',
-        'DOMAINS',
+        'DOMAINS:*',
         'FOLLOWERALIGN',
         'DESCISPI',
         'DESC',
@@ -2124,6 +2131,7 @@ my %master_order = (
         'SA:*',
         'SAB:.CLEAR',
         'SAB:*',
+        'ABILITY:*',
         'UNENCUMBEREDMOVE',
     ],
 
@@ -2143,6 +2151,7 @@ my %master_order = (
         'VISION',
         'SR',
         'DR',
+        'ABILITY:*',
         'FEAT',
         'VFEAT:*',
         'ADD:FEAT:*',
@@ -2317,7 +2326,8 @@ my %master_order = (
         'AUTO:EQUIP',
         'AUTO:WEAPONPROF',
         'ADD:SPELLCASTER',
-        'DESC',
+        'DESC:*',
+        'TEMPDESC',
         'UNENCUMBEREDMOVE',
     ],
 
@@ -2548,6 +2558,12 @@ my %master_order = (
         'FREE',
         'OPTION',
         @PRE_Tags,
+    ],
+
+    'KIT FUNDS' => [
+        'FUNDS',
+        'QTY',
+        'OPTION',
     ],
 
     'KIT GEAR' => [
@@ -2915,6 +2931,7 @@ my %master_order = (
         'SA',
         'SAB:.CLEAR',
         'SAB:*',
+        'DESC',
         'TEMPDESC',
     ],
 
@@ -3323,6 +3340,7 @@ my %master_order = (
         'ADD:LANGUAGE',
         'ADD:VFEAT',
         'FAVOREDCLASS',
+        'ABILITY:*',
         'FEAT:*',
         'VFEAT:*',
         'AUTO:ARMORPROF',
@@ -9731,7 +9749,7 @@ BEGIN {
         cosh    tanh    asinh   acosh   atanh   ln      log         exp
         abs     rand    mod     sqrt    sum     if      str
 
-        ceil    cl      floor   min     max     roll    skillinfo   var
+        ceil    classlevel      floor   min     max     roll    skillinfo   var
     );
 
     # Definition of a valid Jep identifiers. Note that all functions are
