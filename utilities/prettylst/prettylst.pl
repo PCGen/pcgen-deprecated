@@ -14693,9 +14693,11 @@ key here: <L<http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D5D2>>
 
 Copyright 2002 to 2006 by E<Eacute>ric E<quot>Space MonkeyE<quot> Beaudoin -- <mailto:beaudoer@videotron.ca>
 
-Copyright 2006 to 2007 by Andrew E<quot>Tir GwaithE<quote> McDougall -- <mailto:tir.gwaith@gmail.com>
+Copyright 2006 to 2008 by Andrew E<quot>Tir GwaithE<quote> McDougall -- <mailto:tir.gwaith@gmail.com>
 
 Copyright 2007 by Richard Bowers
+
+Copyright 2008 Phillip Ryan
 
 All rights reserved.  You can redistribute and/or modify
 this program under the same terms as Perl itself.
@@ -14731,6 +14733,12 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+KIT FUNDS lines in Kit file
+
+LANGAUTO:.CLEAR
+
+[ 1774985 ] Exchange cl() with classlevel()
 
 [ 1864711 ] Convert ADD:SA to ADD:SAB
 
