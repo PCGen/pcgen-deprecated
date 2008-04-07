@@ -11527,7 +11527,7 @@ BEGIN {
         ) {
             # .MOD / .FORGET don't need RACETYPE or TYPE'
             my $race_name = $line_ref->{'000RaceName'}[0];
-            if ($race_name =~ /\.(FORGET)|(MOD)$/) {
+            if ($race_name =~ /\.(FORGET|MOD|COPY=.+)$/)  {
            } else { $logging->ewarn (WARNING,
               qq{Race entry missing both TYPE and RACETYPE.},
                   $file_for_error,
