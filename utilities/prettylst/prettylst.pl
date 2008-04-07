@@ -11527,7 +11527,7 @@ BEGIN {
         ) {
             # .MOD / .FORGET don't need RACETYPE or TYPE'
             my $race_name = $line_ref->{'000RaceName'}[0];
-          if ($race_name =~ /.FORGET$|.MOD$/) {
+          if ($race_name =~ /.FORGET$||.MOD$/) {
           } else
           {	$logging->ewarn (WARNING,
               qq{Race entry missing both TYPE and RACETYPE.},
@@ -14975,6 +14975,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1912505 ] Stop Reporting missing TYPE and RACETYPE in racial .MOD
 
 [ 1935376 ] New files: Armorprof and Shieldprof
 
