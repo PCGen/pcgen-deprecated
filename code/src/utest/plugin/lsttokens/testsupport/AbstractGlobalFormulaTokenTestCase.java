@@ -43,7 +43,14 @@ public abstract class AbstractGlobalFormulaTokenTestCase extends
 	@Test
 	public void testInvalidInputEmpty() throws PersistenceLayerException
 	{
-		assertFalse(parse(""));
+		try
+		{
+			assertFalse(parse(""));
+		}
+		catch (IllegalArgumentException e)
+		{
+			// This is okay too
+		}
 		assertNoSideEffects();
 	}
 

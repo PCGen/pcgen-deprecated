@@ -317,7 +317,13 @@ public class LevelTokenTest extends AbstractTokenTestCase<CDOMTemplate>
 	@Test
 	public void testRoundRobinMultiple() throws PersistenceLayerException
 	{
-		runRoundRobin("3:SR:Formula", "4:CR:Formula");
+		runRoundRobin("3:SR:Formula", "4:CR:Formula2");
+	}
+
+	@Test
+	public void testRoundRobinMultipleDifferent() throws PersistenceLayerException
+	{
+		runRoundRobin("4:CR:Formula", "6:SAB:Special Ability, Man!");
 	}
 
 	@Test

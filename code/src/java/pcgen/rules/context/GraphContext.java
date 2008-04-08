@@ -214,14 +214,14 @@ public class GraphContext
 		{
 			SimpleAssociatedObject sao = new SimpleAssociatedObject();
 			added.addToListFor(sourceToken, obj, pro, sao);
-			System.err.println(sourceToken + " " + obj + " " + pro);
-			System.err.println(added.getListFor(sourceToken, obj, pro));
-			System.err.println(System.identityHashCode(sourceToken));
-			System.err.println(System.identityHashCode(obj));
-			System.err.println(System.identityHashCode(pro));
-			System.err.println(added.getKeySet());
-			System.err.println(added.getSecondaryKeySet(sourceToken));
-			System.err.println(added.getTertiaryKeySet(sourceToken, obj));
+//			System.err.println(sourceToken + " " + obj + " " + pro);
+//			System.err.println(added.getListFor(sourceToken, obj, pro));
+//			System.err.println(System.identityHashCode(sourceToken));
+//			System.err.println(System.identityHashCode(obj));
+//			System.err.println(System.identityHashCode(pro));
+//			System.err.println(added.getKeySet());
+//			System.err.println(added.getSecondaryKeySet(sourceToken));
+//			System.err.println(added.getTertiaryKeySet(sourceToken, obj));
 			sao.setAssociation(AssociationKey.SOURCE_URI, sourceURI);
 			FileLocation loc = locFac.getFileLocation();
 			sao.setAssociation(AssociationKey.FILE_LOCATION, loc);
@@ -316,9 +316,9 @@ public class GraphContext
 					{
 						if (extractURI != null)
 						{
-							System.err.println(extractURI);
-							System.err.println(assoc
-									.getAssociation(AssociationKey.SOURCE_URI));
+//							System.err.println(extractURI);
+//							System.err.println(assoc
+//									.getAssociation(AssociationKey.SOURCE_URI));
 							if (!extractURI.equals(assoc
 									.getAssociation(AssociationKey.SOURCE_URI)))
 							{

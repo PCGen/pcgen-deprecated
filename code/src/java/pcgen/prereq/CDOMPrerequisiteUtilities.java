@@ -1,6 +1,6 @@
 package pcgen.prereq;
 
-import java.util.List;
+import java.util.Collection;
 
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Ability;
@@ -86,7 +86,7 @@ public class CDOMPrerequisiteUtilities
 	 * @param caller The object that we are testing qualification for.
 	 * @return True if the character passes all prereqs.
 	 */
-	public static boolean passesAll(final List<Prerequisite> prereqList, final CharacterDataStore character, final PObject caller)
+	public static boolean passesAll(final Collection<Prerequisite> prereqList, final CharacterDataStore character, final PObject caller)
 	{
 		if (prereqList == null || prereqList.isEmpty())
 		{

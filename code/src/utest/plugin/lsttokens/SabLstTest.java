@@ -104,6 +104,13 @@ public class SabLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidDotClear() throws PersistenceLayerException
+	{
+		assertFalse(parse("SA % plus %|Var|.CLEAR|Var2"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidOnlyPre() throws PersistenceLayerException
 	{
 		assertFalse(parse("PRECLASS:1,Fighter"));

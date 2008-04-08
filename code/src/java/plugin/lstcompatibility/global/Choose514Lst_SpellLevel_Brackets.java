@@ -95,12 +95,6 @@ public class Choose514Lst_SpellLevel_Brackets extends AbstractToken implements
 			// Not valid compatibility
 			return false;
 		}
-		if (rest.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not contain , : " + value);
-			return false;
-		}
 		List<String> list = new ArrayList<String>();
 		int bracketLoc;
 		while ((bracketLoc = rest.lastIndexOf('[')) != -1)

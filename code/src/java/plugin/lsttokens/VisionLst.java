@@ -178,6 +178,7 @@ public class VisionLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 			{
 				if (visionString.startsWith(".SET."))
 				{
+					//TODO Need a deprecation warning here
 					context.getGraphContext().removeAll(getTokenName(), obj);
 					visionString = visionString.substring(5);
 				}

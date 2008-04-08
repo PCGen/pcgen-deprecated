@@ -147,7 +147,7 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken,
 		while (tok.hasMoreTokens())
 		{
 			String aProf = tok.nextToken();
-			if ("%LIST".equals(value))
+			if ("%LIST".equals(aProf))
 			{
 				ChooseActionContainer container = obj.getChooseContainer();
 				GrantActor<CDOMArmorProf> actor = new GrantActor<CDOMArmorProf>();

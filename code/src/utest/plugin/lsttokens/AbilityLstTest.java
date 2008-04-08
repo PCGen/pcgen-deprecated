@@ -64,7 +64,7 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidNotANature() throws PersistenceLayerException
 	{
-		assertFalse(parse("Mutation|NotANature|,TestWP1"));
+		assertFalse(parse("FEAT|NotANature|,TestWP1"));
 		assertNoSideEffects();
 	}
 

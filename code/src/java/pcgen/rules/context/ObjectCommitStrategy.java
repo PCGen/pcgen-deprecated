@@ -71,4 +71,6 @@ public interface ObjectCommitStrategy
 	public Changes<Prerequisite> getPrerequisiteChanges(ConcretePrereqObject obj);
 
 	public String getString(CDOMObject cdo, StringKey sk);
+
+	public boolean containsListFor(CDOMObject obj, ListKey<?> lk);
 }

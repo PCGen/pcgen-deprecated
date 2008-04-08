@@ -506,4 +506,9 @@ public class ObjectContext
 		return commit.getPrerequisiteChanges(obj);
 	}
 
+	public boolean containsListFor(CDOMObject obj, ListKey<?> lk)
+	{
+		return commit.containsListFor(obj, lk);
+	}
+
 }

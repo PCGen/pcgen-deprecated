@@ -36,7 +36,7 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
-import pcgen.cdom.helper.ReferenceChoiceSet;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.SpellReferenceChoiceSet;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMSpell;
@@ -171,14 +171,14 @@ CDOMPrimaryToken<CDOMPCClass>
 		}
 
 		StringTokenizer tok = new StringTokenizer(rest, Constants.COMMA);
-		List<CDOMReference<?>> refs = new ArrayList<CDOMReference<?>>();
+		List<CDOMReference<? extends CDOMListObject>> refs = new ArrayList<CDOMReference<? extends CDOMListObject>>();
 		boolean foundAny = false;
 		boolean foundOther = false;
 
 		while (tok.hasMoreTokens())
 		{
 			String token = tok.nextToken();
-			CDOMReference<?> ref;
+			CDOMReference<? extends CDOMListObject> ref;
 			if (Constants.LST_ALL.equals(token))
 			{
 				foundAny = true;
@@ -215,7 +215,7 @@ CDOMPrimaryToken<CDOMPCClass>
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 				.getFormulaFor(Integer.MAX_VALUE));
 
-		ReferenceChoiceSet<? extends CDOMListObject<CDOMSpell>> rcs = new SpellReferenceChoiceSet(
+		PrimitiveChoiceSet<CDOMListObject> rcs = new SpellReferenceChoiceSet(
 				refs);
 		ChoiceSet<? extends CDOMListObject<CDOMSpell>> cs = new ChoiceSet(
 				getTokenName(), rcs);

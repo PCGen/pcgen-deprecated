@@ -120,7 +120,19 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
-	public void testRoundRobinLoad() throws PersistenceLayerException
+	public void testRoundRobinMediumLoad() throws PersistenceLayerException
+	{
+		runRoundRobin("MediumLoad");
+	}
+
+	@Test
+	public void testRoundRobinOverload() throws PersistenceLayerException
+	{
+		runRoundRobin("Overload");
+	}
+
+	@Test
+	public void testRoundRobinHeavyLoad() throws PersistenceLayerException
 	{
 		runRoundRobin("HeavyLoad");
 	}

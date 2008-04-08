@@ -20,6 +20,16 @@ public abstract class AbstractFormulaIntegrationTestCase<T extends CDOMObject>
 	}
 
 	@Test
+	public void testRoundRobinOverwrite() throws PersistenceLayerException
+	{
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "1");
+		commit(testCampaign, tc, "2");
+		completeRoundRobin(tc);
+	}
+
+	@Test
 	public void testRoundRobinIdentical() throws PersistenceLayerException
 	{
 		verifyCleanStart();

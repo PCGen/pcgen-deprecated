@@ -188,11 +188,6 @@ public class AbilityToken extends AbstractToken implements AddLstToken,
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		if (value.length() == 0)
-		{
-			Logging.errorPrint(getFullName() + " may not have empty argument");
-			return false;
-		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
 
 		String nextToken = st.nextToken();

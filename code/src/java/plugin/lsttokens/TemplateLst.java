@@ -111,6 +111,10 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken,
 			PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
 			CDOMSingleRef<PCTemplateChooseList> ref = context.ref
 					.getCDOMDirectReference(tcl);
+			/*
+			 * BUG This can't be parseChoose - it needs to add to the list, not
+			 * modify the global list - otherwise, it can't be unparsed...?
+			 */
 			return parseChoose(context, cdo, ref, value
 					.substring(Constants.LST_ADDCHOICE.length()));
 		}

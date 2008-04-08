@@ -300,9 +300,9 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken, C
 				}
 
 				int faStringLength = FOLLOWERADJUSTMENT.length();
-				if (optArg.length() <= faStringLength)
+				if (optArg.length() <= faStringLength + 1)
 				{
-					Logging.errorPrint("Empty FOLLOWERALIGN value in "
+					Logging.errorPrint("Empty FOLLOWERADJUSTMENT value in "
 						+ getTokenName() + " is prohibited");
 					return false;
 				}

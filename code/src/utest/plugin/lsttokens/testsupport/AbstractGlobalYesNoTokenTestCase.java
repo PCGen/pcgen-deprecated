@@ -58,6 +58,8 @@ public abstract class AbstractGlobalYesNoTokenTestCase extends
 		assertEquals(val, primaryProf.get(getObjectKey()));
 		assertFalse(parse("Yo!"));
 		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertFalse(parse("Now"));
+		assertEquals(val, primaryProf.get(getObjectKey()));
 	}
 
 	@Test

@@ -39,6 +39,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.content.CDOMSpellProhibitor;
+import pcgen.cdom.content.ChallengeRating;
 import pcgen.cdom.content.HitDieCommandFactory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.CDOMAlignment;
@@ -211,6 +212,8 @@ public final class ObjectKey<T>
 	public static final ObjectKey<URI> SOURCE_WEB = new ObjectKey<URI>();
 
 	public static final ObjectKey<Date> SOURCE_DATE = new ObjectKey<Date>();
+
+	public static final ObjectKey<ChallengeRating> CHALLENGE_RATING = new ObjectKey<ChallengeRating>();
 
 	private static CaseInsensitiveMap<ObjectKey<?>> map = null;
 

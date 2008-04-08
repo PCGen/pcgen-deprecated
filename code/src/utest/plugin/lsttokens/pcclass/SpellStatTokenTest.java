@@ -111,4 +111,9 @@ public class SpellStatTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 		runRoundRobin("SPELL");
 	}
 
+	@Test
+	public void testRoundRobinOther() throws PersistenceLayerException
+	{
+		runRoundRobin("OTHER");
+	}
 }

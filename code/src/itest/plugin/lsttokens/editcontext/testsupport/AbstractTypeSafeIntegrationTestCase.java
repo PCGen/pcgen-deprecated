@@ -46,6 +46,21 @@ public abstract class AbstractTypeSafeIntegrationTestCase<T extends CDOMObject>
 	}
 
 	@Test
+	public void testRoundRobinOverwrite() throws PersistenceLayerException
+	{
+		if (requiresPreconstruction())
+		{
+			getConstant("Languedoc-Roussillon");
+			getConstant("Finger Lakes");
+		}
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "Languedoc-Roussillon");
+		commit(testCampaign, tc, "Finger Lakes");
+		completeRoundRobin(tc);
+	}
+
+	@Test
 	public void testRoundRobinSame() throws PersistenceLayerException
 	{
 		if (requiresPreconstruction())

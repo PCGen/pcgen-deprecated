@@ -35,6 +35,32 @@ public abstract class AbstractBigDecimalIntegrationTestCase<T extends CDOMObject
 	}
 
 	@Test
+	public void testRoundRobinSimpleOverwrite() throws PersistenceLayerException
+	{
+		if (isPositiveAllowed())
+		{
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "1.11");
+			commit(testCampaign, tc, "2.4");
+			completeRoundRobin(tc);
+		}
+	}
+
+	@Test
+	public void testRoundRobinNegativeOverwrite() throws PersistenceLayerException
+	{
+		if (isNegativeAllowed())
+		{
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "-1.11");
+			commit(testCampaign, tc, "-2.4");
+			completeRoundRobin(tc);
+		}
+	}
+
+	@Test
 	public void testRoundRobinIdentical() throws PersistenceLayerException
 	{
 		if (isPositiveAllowed())

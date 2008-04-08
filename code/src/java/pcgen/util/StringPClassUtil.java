@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Set;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.cdom.base.Category;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMDomain;
@@ -123,6 +126,15 @@ public final class StringPClassUtil
 	public static String getCDOMStringFor(Class<? extends CDOMObject> cl)
 	{
 		return cdomStringMap.get(cl);
+	}
+
+	public static <T extends CategorizedCDOMObject<T>>  Category<T> getCDOMCategoryFor(Class<T> c, String categoryName)
+	{
+		if (CDOMAbility.class.equals(c))
+		{
+			return (Category) CDOMAbilityCategory.valueOf(categoryName);
+		}
+		return null;
 	}
 
 }

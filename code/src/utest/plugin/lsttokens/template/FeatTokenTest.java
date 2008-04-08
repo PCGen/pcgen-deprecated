@@ -79,6 +79,9 @@ public class FeatTokenTest extends
 	@Override
 	public boolean isTypeLegal()
 	{
+		/*
+		 * TODO Need to change this to true!
+		 */
 		return false;
 	}
 

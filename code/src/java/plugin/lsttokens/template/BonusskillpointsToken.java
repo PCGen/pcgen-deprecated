@@ -21,14 +21,10 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.Collection;
-
-import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.content.ClassSkillPointFactory;
+import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.rules.context.AssociatedChanges;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -36,7 +32,8 @@ import pcgen.util.Logging;
 /**
  * Class deals with BONUSSKILLPOINTS Token
  */
-public class BonusskillpointsToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
+public class BonusskillpointsToken implements PCTemplateLstToken,
+		CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -58,7 +55,8 @@ public class BonusskillpointsToken implements PCTemplateLstToken, CDOMPrimaryTok
 		return true;
 	}
 
-	public boolean parse(LoadContext context, CDOMTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template,
+			String value)
 	{
 		try
 		{
@@ -66,48 +64,35 @@ public class BonusskillpointsToken implements PCTemplateLstToken, CDOMPrimaryTok
 			if (skillCount <= 0)
 			{
 				Logging.errorPrint(getTokenName()
-					+ " must be an integer greater than zero");
+						+ " must be an integer greater than zero");
 				return false;
 			}
-			ClassSkillPointFactory cf = new ClassSkillPointFactory(skillCount);
-			context.getGraphContext().grant(getTokenName(), template, cf);
+			context.getObjectContext().put(template,
+					IntegerKey.BONUS_CLASS_SKILL_POINTS, skillCount);
 			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
 			Logging.errorPrint("Invalid Number in " + getTokenName() + ": "
-				+ value);
+					+ value);
 			return false;
 		}
 	}
 
 	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<ClassSkillPointFactory> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pct, ClassSkillPointFactory.class);
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		Integer points = context.getObjectContext().getInteger(pct,
+				IntegerKey.BONUS_CLASS_SKILL_POINTS);
+		if (points == null)
 		{
-			// Zero indicates no BONUSSKILLPOINTS
 			return null;
 		}
-		if (added.size() > 1)
+		if (points.intValue() <= 0)
 		{
-			context.addWriteMessage("Only one " + getTokenName()
-				+ " may exist in a Template");
+			context.addWriteMessage(getTokenName() + " must be an integer > 0");
 			return null;
 		}
-		ClassSkillPointFactory lcf =
-				(ClassSkillPointFactory) added.iterator().next();
-		int skillPoints = lcf.getSkillPointCount();
-		if (skillPoints <= 0)
-		{
-			context.addWriteMessage("Number of skill points granted in "
-				+ getTokenName() + " must be greater than zero");
-			return null;
-		}
-		return new String[]{Integer.toString(skillPoints)};
+		return new String[] { points.toString() };
 	}
 
 	public Class<CDOMTemplate> getTokenClass()

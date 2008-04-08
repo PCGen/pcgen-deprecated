@@ -64,12 +64,15 @@ public class SpellbookToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCC
 		{
 			if (firstChar != 'N' && firstChar != 'n')
 			{
-				if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
-				{
-					Logging.errorPrint("You should use 'YES' or 'NO' as the "
+				Logging.errorPrint("You should use 'YES' or 'NO' as the "
 						+ getTokenName() + ": " + value);
-					return false;
-				}
+				return false;
+			}
+			if (value.length() > 1 && !value.equalsIgnoreCase("NO"))
+			{
+				Logging.errorPrint("You should use 'YES' or 'NO' as the "
+						+ getTokenName() + ": " + value);
+				return false;
 			}
 			set = Boolean.FALSE;
 		}

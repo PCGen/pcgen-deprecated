@@ -168,12 +168,12 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 		try
 		{
 			assertFalse(parse("SpellBook|TIMES=3"));
-			assertNoSideEffects();
 		}
 		catch (IllegalArgumentException iae)
 		{
 			// OK
 		}
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -194,6 +194,63 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 		{
 			// This is ok too
 		}
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidEmptyTimeUnit() throws PersistenceLayerException
+	{
+		assertFalse(parse("SpellBook|TIMEUNIT=|Fireball"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidTwoTimeUnit() throws PersistenceLayerException
+	{
+		assertFalse(parse("SpellBook|TIMEUNIT=Hour|TIMEUNIT=Day|Fireball"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidTimeUnitNoSpell() throws PersistenceLayerException
+	{
+		try
+		{
+			assertFalse(parse("SpellBook|TIMEUNIT=Day"));
+		}
+		catch (IllegalArgumentException iae)
+		{
+			// This is ok too
+		}
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidEmptyTimes() throws PersistenceLayerException
+	{
+		assertFalse(parse("SpellBook|TIMES=|Fireball"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidEmptyCasterLevel() throws PersistenceLayerException
+	{
+		assertFalse(parse("SpellBook|CASTERLEVEL=|Fireball"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidTwoTimes() throws PersistenceLayerException
+	{
+		assertFalse(parse("SpellBook|TIMES=3|TIMES=4|Fireball"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidTwoCasterLevel() throws PersistenceLayerException
+	{
+		assertFalse(parse("SpellBook|CASTERLEVEL=3|CASTERLEVEL=4|Fireball"));
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -204,7 +261,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
-	public void testInvalidEmptyTimes() throws PersistenceLayerException
+	public void testInvalidDoubleBar() throws PersistenceLayerException
 	{
 		assertFalse(parse("SpellBook||Fireball"));
 		assertNoSideEffects();
@@ -276,6 +333,12 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testRoundRobinTimeUnit() throws PersistenceLayerException
+	{
+		runRoundRobin("SpellBook|TIMEUNIT=Hour|Fireball");
+	}
+
+	@Test
 	public void testRoundRobinCasterLevel() throws PersistenceLayerException
 	{
 		runRoundRobin("SpellBook|CASTERLEVEL=15|Fireball");
@@ -284,7 +347,7 @@ public class SpellsLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinComplex() throws PersistenceLayerException
 	{
-		runRoundRobin("SpellBook|TIMES=2|CASTERLEVEL=15|Fireball,CL+5|Lightning Bolt,25|!PRECLASS:1,Cleric=1|PRERACE:1,Human");
+		runRoundRobin("SpellBook|TIMES=2|TIMEUNIT=Week|CASTERLEVEL=15|Fireball,CL+5|Lightning Bolt,25|!PRECLASS:1,Cleric=1|PRERACE:1,Human");
 	}
 
 	@Test

@@ -29,10 +29,6 @@ public abstract class AbstractItemIntegrationTestCase<T extends CDOMObject, TC e
 
 	public abstract Class<TC> getTargetClass();
 
-	// public abstract boolean isClearLegal();
-	//
-	// public abstract boolean isClearDotLegal();
-
 	@Test
 	public void testRoundRobinAdd() throws PersistenceLayerException
 	{
@@ -48,6 +44,20 @@ public abstract class AbstractItemIntegrationTestCase<T extends CDOMObject, TC e
 	}
 
 	@Test
+	public void testRoundRobinOverwrite() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "TestWP1");
+		commit(testCampaign, tc, "TestWP2");
+		completeRoundRobin(tc);
+	}
+
+	@Test
 	public void testRoundRobinAddSame() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
@@ -59,59 +69,6 @@ public abstract class AbstractItemIntegrationTestCase<T extends CDOMObject, TC e
 		completeRoundRobin(tc);
 	}
 
-	// @Test
-	// public void testRoundRobinDotClear() throws PersistenceLayerException
-	// {
-	// if (isClearLegal())
-	// {
-	// construct(primaryContext, "TestWP2");
-	// construct(secondaryContext, "TestWP2");
-	// verifyCleanStart();
-	// TestContext tc = new TestContext();
-	// commit(testCampaign, tc, "TestWP2");
-	// commit(modCampaign, tc, ".CLEAR");
-	// completeRoundRobin(tc);
-	// }
-	// }
-	//
-	// @Test
-	// public void testRoundRobinDotClearDot() throws PersistenceLayerException
-	// {
-	// if (isClearDotLegal())
-	// {
-	// construct(primaryContext, "TestWP1");
-	// construct(secondaryContext, "TestWP1");
-	// construct(primaryContext, "TestWP2");
-	// construct(secondaryContext, "TestWP2");
-	// verifyCleanStart();
-	// TestContext tc = new TestContext();
-	// commit(testCampaign, tc, "TestWP1" + getJoinCharacter() + "TestWP2");
-	// commit(modCampaign, tc, ".CLEAR.TestWP1");
-	// System.err.println("@" + primaryGraph.getNodeList());
-	// System.err.println("@" + primaryGraph.getEdgeList());
-	// completeRoundRobin(tc);
-	// }
-	// }
-	//
-	// @Test
-	// public void testRoundRobinDotClearDotAll() throws
-	// PersistenceLayerException
-	// {
-	// if (isClearDotLegal())
-	// {
-	// construct(primaryContext, "TestWP1");
-	// construct(secondaryContext, "TestWP1");
-	// construct(primaryContext, "TestWP2");
-	// construct(secondaryContext, "TestWP2");
-	// verifyCleanStart();
-	// TestContext tc = new TestContext();
-	// commit(testCampaign, tc, "TestWP1" + getJoinCharacter() + "TestWP2");
-	// commit(modCampaign, tc, ".CLEAR.TestWP1" + getJoinCharacter()
-	// + ".CLEAR.TestWP2");
-	// completeRoundRobin(tc);
-	// }
-	// }
-	//
 	@Test
 	public void testRoundRobinNoOriginal() throws PersistenceLayerException
 	{

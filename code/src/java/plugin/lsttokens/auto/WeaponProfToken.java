@@ -139,7 +139,7 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken,
 		while (tok.hasMoreTokens())
 		{
 			String aProf = tok.nextToken();
-			if ("%LIST".equals(value))
+			if ("%LIST".equals(aProf))
 			{
 				ChooseActionContainer container = obj.getChooseContainer();
 				GrantActor<CDOMWeaponProf> actor = new GrantActor<CDOMWeaponProf>();

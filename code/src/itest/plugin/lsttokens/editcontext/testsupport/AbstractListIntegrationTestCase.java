@@ -90,6 +90,23 @@ public abstract class AbstractListIntegrationTestCase<T extends CDOMObject, TC e
 	}
 
 	@Test
+	public void testRoundRobinMerge() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		construct(secondaryContext, "TestWP1");
+		construct(secondaryContext, "TestWP2");
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "TestWP1");
+		commit(testCampaign, tc, "TestWP2");
+		tc = new TestContext();
+		tc.putText(testCampaign.getURI(), new String[] { "TestWP1"
+				+ getJoinCharacter() + "TestWP2" });
+		completeRoundRobin(tc);
+	}
+
+	@Test
 	public void testRoundRobinAddSame() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");

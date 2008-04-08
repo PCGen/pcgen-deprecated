@@ -33,6 +33,11 @@ public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>
 	public CDOMCategorizedSingleRef(Class<T> cl, Category<T> cat, String nm)
 	{
 		super(cl, nm);
+		if (cat == null)
+		{
+			throw new IllegalArgumentException(
+					"Cannot built CDOMCategorizedSingleRef with null category");
+		}
 		category = cat;
 	}
 

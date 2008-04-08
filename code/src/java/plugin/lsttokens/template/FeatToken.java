@@ -31,7 +31,7 @@ import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
@@ -46,6 +46,7 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.rules.context.AssociatedChanges;
 import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -98,8 +99,9 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken,
 
 		while (true)
 		{
-			CDOMSingleRef<CDOMAbility> ability = context.ref.getCDOMReference(
-					ABILITY_CLASS, CDOMAbilityCategory.FEAT, token);
+			CDOMReference<CDOMAbility> ability = TokenUtilities
+					.getTypeOrPrimitive(context, ABILITY_CLASS,
+							CDOMAbilityCategory.FEAT, token);
 			AssociatedPrereqObject edge = context.getGraphContext().grant(
 					getTokenName(), obj, ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE,

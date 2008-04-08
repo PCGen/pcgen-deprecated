@@ -21,14 +21,11 @@
  */
 package plugin.lsttokens.template;
 
-import java.util.Collection;
-
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChallengeRating;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.rules.context.AssociatedChanges;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -36,7 +33,8 @@ import pcgen.util.Logging;
 /**
  * Class deals with CR Token
  */
-public class CrToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplate>
+public class CrToken implements PCTemplateLstToken,
+		CDOMPrimaryToken<CDOMTemplate>
 {
 
 	public String getTokenName()
@@ -57,17 +55,19 @@ public class CrToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplat
 		return true;
 	}
 
-	public boolean parse(LoadContext context, CDOMTemplate template, String value)
+	public boolean parse(LoadContext context, CDOMTemplate template,
+			String value)
 	{
 		try
 		{
 			ChallengeRating cr = new ChallengeRating(value);
-			context.getGraphContext().grant(getTokenName(), template, cr);
+			context.getObjectContext().put(template,
+					ObjectKey.CHALLENGE_RATING, cr);
 		}
 		catch (IllegalArgumentException iae)
 		{
 			Logging.errorPrint("Invalid " + getTokenName() + ": "
-				+ iae.getLocalizedMessage());
+					+ iae.getLocalizedMessage());
 			return false;
 		}
 		return true;
@@ -75,23 +75,13 @@ public class CrToken implements PCTemplateLstToken, CDOMPrimaryToken<CDOMTemplat
 
 	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<ChallengeRating> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pct, ChallengeRating.class);
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		ChallengeRating cr = context.getObjectContext().getObject(pct,
+				ObjectKey.CHALLENGE_RATING);
+		if (cr == null)
 		{
-			// Zero indicates no Token present
 			return null;
 		}
-		if (added.size() > 1)
-		{
-			context
-				.addWriteMessage("Only 1 ChallengeRating is allowed per Template");
-			return null;
-		}
-		ChallengeRating cr = (ChallengeRating) added.iterator().next();
-		return new String[]{cr.getLSTformat()};
+		return new String[] { cr.getLSTformat() };
 	}
 
 	public Class<CDOMTemplate> getTokenClass()

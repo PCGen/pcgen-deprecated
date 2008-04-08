@@ -49,7 +49,7 @@ public class CCSkillLstTest extends AbstractGlobalListTokenTestCase<CDOMSkill>
 	@Override
 	public boolean isAllLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

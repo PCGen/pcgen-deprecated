@@ -132,7 +132,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken,
 		{
 			String aProf = tok.nextToken();
 			AssociatedPrereqObject apo;
-			if ("%LIST".equals(value))
+			if ("%LIST".equals(aProf))
 			{
 				ChooseActionContainer container = obj.getChooseContainer();
 				GrantActor<CDOMEquipment> actor = new GrantActor<CDOMEquipment>();

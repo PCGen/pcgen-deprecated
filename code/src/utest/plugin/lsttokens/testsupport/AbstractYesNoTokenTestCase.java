@@ -60,6 +60,8 @@ public abstract class AbstractYesNoTokenTestCase<T extends CDOMObject> extends
 		assertEquals(val, primaryProf.get(getObjectKey()));
 		assertFalse(parse("Yo!"));
 		assertEquals(val, primaryProf.get(getObjectKey()));
+		assertFalse(parse("Now"));
+		assertEquals(val, primaryProf.get(getObjectKey()));
 	}
 
 	@Test

@@ -110,12 +110,6 @@ public class FavclassToken extends AbstractToken implements RaceLstToken, CDOMPr
 							subclass);
 				}
 			}
-			if (ref == null)
-			{
-				Logging.errorPrint("  ...error encountered in "
-					+ getTokenName());
-				return false;
-			}
 			context.getObjectContext().addToList(cdo, ListKey.FAVORED_CLASS,
 				ref);
 		}

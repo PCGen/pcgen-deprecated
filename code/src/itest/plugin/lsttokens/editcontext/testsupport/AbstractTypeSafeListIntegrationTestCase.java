@@ -52,6 +52,24 @@ public abstract class AbstractTypeSafeListIntegrationTestCase<T extends CDOMObje
 	}
 
 	@Test
+	public void testRoundRobinAppend() throws PersistenceLayerException
+	{
+		if (requiresPreconstruction())
+		{
+			getConstant("Languedoc-Roussillon");
+			getConstant("Finger Lakes");
+		}
+		verifyCleanStart();
+		TestContext tc = new TestContext();
+		commit(testCampaign, tc, "Languedoc-Roussillon");
+		commit(testCampaign, tc, "Finger Lakes");
+		tc = new TestContext();
+		tc.putText(testCampaign.getURI(), new String[] { "Languedoc-Roussillon"
+				+ getJoinCharacter() + "Finger Lakes" });
+		completeRoundRobin(tc);
+	}
+
+	@Test
 	public void testRoundRobinAddSame() throws PersistenceLayerException
 	{
 		if (requiresPreconstruction())

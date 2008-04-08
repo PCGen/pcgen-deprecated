@@ -31,6 +31,7 @@ import java.util.TreeSet;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.base.ConcretePrereqObject;
@@ -176,29 +177,81 @@ public class QualifyToken extends AbstractToken implements GlobalLstToken,
 			return false;
 		}
 		StringTokenizer st = new StringTokenizer(value, Constants.PIPE);
-		Class<? extends CDOMObject> c = StringPClassUtil.getCDOMClassFor(st
-				.nextToken());
-		ReferenceManufacturer<? extends CDOMObject, ?> rm = context.ref
-				.getReferenceManufacturer(c);
-		if (rm == null)
+		String firstToken = st.nextToken();
+		int equalLoc = firstToken.indexOf('=');
+		String className;
+		String categoryName;
+		if (equalLoc != firstToken.lastIndexOf('='))
 		{
 			Logging.errorPrint("  Error encountered parsing " + getTokenName());
-			Logging.errorPrint("  Format is: QualifyType|Key[|Key] value was: "
+			Logging.errorPrint("  Found second = in QualifyType=Category");
+			Logging.errorPrint("  Format is: QualifyType[=Category]|Key[|Key] value was: "
 					+ value);
 			Logging.errorPrint("  Valid QualifyTypes are: "
 					+ StringPClassUtil.getValidStrings());
 			return false;
 		}
+		else if (equalLoc == -1)
+		{
+			className = firstToken;
+			categoryName = null;
+		}
+		else
+		{
+			className = firstToken.substring(0, equalLoc);
+			categoryName = firstToken.substring(equalLoc + 1);
+		}
+		Class<? extends CDOMObject> c = StringPClassUtil
+				.getCDOMClassFor(className);
+		ReferenceManufacturer<? extends CDOMObject, ?> rm;
+		if (CategorizedCDOMObject.class.isAssignableFrom(c))
+		{
+			if (categoryName == null)
+			{
+				Logging.errorPrint("  Error encountered parsing " + getTokenName());
+				Logging.errorPrint("  Found Categorized Type without =Category");
+				Logging.errorPrint("  Format is: QualifyType[=Category]|Key[|Key] value was: "
+						+ value);
+				Logging.errorPrint("  Valid QualifyTypes are: "
+						+ StringPClassUtil.getValidStrings());
+				return false;
+			}
+			rm = foo(context, (Class) c, categoryName);
+		}
+		else
+		{
+			if (categoryName != null)
+			{
+				Logging.errorPrint("  Error encountered parsing " + getTokenName());
+				Logging.errorPrint("  Found Non-Categorized Type with =Category");
+				Logging.errorPrint("  Format is: QualifyType[=Category]|Key[|Key] value was: "
+						+ value);
+				Logging.errorPrint("  Valid QualifyTypes are: "
+						+ StringPClassUtil.getValidStrings());
+				return false;
+			}
+			rm = context.ref.getReferenceManufacturer(c);
+		}
 
 		while (st.hasMoreTokens())
 		{
-			CDOMReference<? extends CDOMObject> ref = rm.getReference(st
-					.nextToken());
+			CDOMReference<? extends CDOMObject> ref = rm.getReference(st.nextToken());
 			context.obj.addToList(obj, ListKey.QUALIFY, new Qualifier(rm
 					.getCDOMClass(), ref));
 		}
 
 		return true;
+	}
+
+	private <T extends CDOMObject & CategorizedCDOMObject<T>> ReferenceManufacturer<? extends CDOMObject, ?> foo(LoadContext context, 
+			Class<T> c, String categoryName)
+	{
+		Category<T> cat = StringPClassUtil.getCDOMCategoryFor(c, categoryName);
+		if (cat == null)
+		{
+			return null;
+		}
+		return context.ref.getReferenceManufacturer(c, cat);
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)

@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package utest.plugin.lsttokens;
+package plugin.lsttokens;
 
 import java.net.URISyntaxException;
 
@@ -109,8 +109,29 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidDoubleEquals() throws PersistenceLayerException
+	{
+		assertFalse(parse("ABILITY=FEAT=Mutation|Fireball"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidUnbuiltCategory() throws PersistenceLayerException
+	{
+		try
+		{
+			assertFalse(parse("ABILITY=Crazy|Fireball"));
+		}
+		catch (IllegalArgumentException e)
+		{
+			//OK as well
+		}
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidSpellbookAndSpellBarOnly()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("SPELL|Fireball|"));
 		assertNoSideEffects();
@@ -132,28 +153,43 @@ public class QualifyTokenTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testRoundRobinJustAbility() throws PersistenceLayerException
+	{
+		CDOMAbility a = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "My Feat");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, a);
+		a = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"My Feat");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, a);
+		runRoundRobin("ABILITY=FEAT|My Feat");
+	}
+
+	@Test
 	public void testRoundRobinTwoSpell() throws PersistenceLayerException
 	{
 		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
 		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class,
+				"Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class,
+				"Lightning Bolt");
 		runRoundRobin("SPELL|Fireball|Lightning Bolt");
 	}
 
 	@Test
 	public void testRoundRobinTwoBooksJustSpell()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
-		CDOMAbility a =
-				primaryContext.ref
-					.constructCDOMObject(CDOMAbility.class, "My Feat");
+		CDOMAbility a = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "My Feat");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, a);
-		a = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "My Feat");
+		a = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"My Feat");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, a);
-		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Fireball");
-		primaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
-		secondaryContext.ref.constructCDOMObject(CDOMSpell.class, "Lightning Bolt");
+		primaryContext.ref.constructCDOMObject(CDOMSpell.class,
+				"Lightning Bolt");
+		secondaryContext.ref.constructCDOMObject(CDOMSpell.class,
+				"Lightning Bolt");
 		runRoundRobin("ABILITY=FEAT|My Feat", "SPELL|Lightning Bolt");
 	}
 }

@@ -1,14 +1,24 @@
 package pcgen.cdom.inst;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import pcgen.cdom.base.CDOMObject;
 
 public class CDOMTemplate extends CDOMObject
 {
+	
+	private Map<String, CDOMTemplate> pseudoTemplateMap = new HashMap<String, CDOMTemplate>();
 
 	public CDOMTemplate getPseudoTemplate(String name)
 	{
-		CDOMTemplate pt = new CDOMTemplate();
-		pt.setName(name);
+		CDOMTemplate pt = pseudoTemplateMap.get(name);
+		if (pt == null)
+		{
+			pt = new CDOMTemplate();
+			pt.setName(name);
+			pseudoTemplateMap.put(name, pt);
+		}
 		return pt;
 	}
 

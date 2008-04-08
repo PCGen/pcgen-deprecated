@@ -110,6 +110,7 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testInvalidInputNotAnAbility() throws PersistenceLayerException
 	{
+		CDOMAbilityCategory.getConstant("Mutation");
 		assertTrue(parse(getSubTokenString() + "|1|Mutation|NORMAL|Abil1"));
 		assertFalse(primaryContext.ref.validate());
 	}

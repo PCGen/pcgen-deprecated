@@ -124,6 +124,14 @@ public class KitLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidNaNCount() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("Count|TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidZeroCount() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");

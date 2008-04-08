@@ -155,7 +155,7 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDO
 				+ " in " + getTokenName());
 			return false;
 		}
-		Prerequisite prereq = getPrerequisite("PRELEVEL:" + levelStr);
+		Prerequisite prereq = getPrerequisite("PRELEVEL:MIN=" + levelStr);
 		if (prereq == null)
 		{
 			throw new UnreachableError(
@@ -184,6 +184,9 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDO
 		derivative.put(ObjectKey.PSEUDO_PARENT, template);
 		derivative.addPrerequisite(prereq);
 		context.getGraphContext().grant(getTokenName(), template, derivative);
+		System.err.println(argument);
+		System.err.println(System.identityHashCode(derivative));
+		System.err.println(derivative.getDisplayName());
 		return context.processToken(derivative, typeStr, argument);
 	}
 
@@ -201,6 +204,8 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDO
 		for (LSTWriteable lstw : added)
 		{
 			CDOMTemplate pctChild = CDOMTemplate.class.cast(lstw);
+			System.err.println("#" + System.identityHashCode(added));
+			System.err.println("#" + pctChild.getDisplayName());
 			if (pctChild.getPrerequisiteCount() != 1)
 			{
 				context.addWriteMessage("Only one Prerequisiste allowed on "
@@ -225,6 +230,7 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDO
 			sb.append(prereq.getOperand()).append(':');
 
 			Collection<String> unparse = context.unparse(pctChild);
+			System.err.println("!!" + unparse);
 			if (unparse != null)
 			{
 				int masterLength = sb.length();
@@ -239,6 +245,7 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDO
 		{
 			return null;
 		}
+		System.err.println("!" + set);
 		return set.toArray(new String[set.size()]);
 	}
 

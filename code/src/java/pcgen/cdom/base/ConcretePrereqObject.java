@@ -27,8 +27,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import pcgen.base.lang.UnreachableError;
+import pcgen.base.util.ListSet;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.Constants;
 import pcgen.core.Equipment;
@@ -51,7 +53,7 @@ public class ConcretePrereqObject implements PrereqObject
 	/**
 	 * The list of prerequisites
 	 */
-	private List<Prerequisite> thePrereqs = null;
+	private Set<Prerequisite> thePrereqs = null;
 
 	/**
 	 * Add a <tt>Prerequesite</tt> to the prerequisite list.
@@ -73,7 +75,7 @@ public class ConcretePrereqObject implements PrereqObject
 		{
 			if (thePrereqs == null)
 			{
-				thePrereqs = new ArrayList<Prerequisite>();
+				thePrereqs = new ListSet<Prerequisite>();
 			}
 			thePrereqs.add(preReq);
 		}
@@ -99,7 +101,7 @@ public class ConcretePrereqObject implements PrereqObject
 		}
 		if (thePrereqs == null)
 		{
-			thePrereqs = new ArrayList<Prerequisite>(prereqs.size());
+			thePrereqs = new ListSet<Prerequisite>(prereqs.size());
 		}
 		for (final Prerequisite pre : prereqs)
 		{
@@ -115,7 +117,7 @@ public class ConcretePrereqObject implements PrereqObject
 		}
 		if (thePrereqs == null)
 		{
-			thePrereqs = new ArrayList<Prerequisite>(prereqs.length);
+			thePrereqs = new ListSet<Prerequisite>(prereqs.length);
 		}
 		for (final Prerequisite pre : prereqs)
 		{
@@ -136,7 +138,12 @@ public class ConcretePrereqObject implements PrereqObject
 		{
 			return Collections.emptyList();
 		}
-		return Collections.unmodifiableList(thePrereqs);
+		/*
+		 * TODO This is an ugly facade, but required for easy compatibility with
+		 * 5.14 - to be changed once 5.14 code is gone and this can be changed
+		 * to return Collection or Set (or perhaps ListSet?)
+		 */
+		return Collections.unmodifiableList(new ArrayList<Prerequisite>(thePrereqs));
 	}
 
 	// TODO FACADE
@@ -204,7 +211,7 @@ public class ConcretePrereqObject implements PrereqObject
 	 */
 	public void setPrerequisiteListFrom(PrereqObject prereqObject)
 	{
-		List<Prerequisite> workingList;
+		Collection<Prerequisite> workingList;
 		if (prereqObject.getClass().equals(ConcretePrereqObject.class))
 		{
 			ConcretePrereqObject pro = (ConcretePrereqObject) prereqObject;
@@ -214,7 +221,7 @@ public class ConcretePrereqObject implements PrereqObject
 		{
 			workingList = prereqObject.getPrerequisiteList();
 		}
-		thePrereqs = new ArrayList<Prerequisite>(workingList.size());
+		thePrereqs = new ListSet<Prerequisite>(workingList.size());
 		try
 		{
 			for (Prerequisite element : workingList)
@@ -408,7 +415,7 @@ public class ConcretePrereqObject implements PrereqObject
 		{
 			if (thePrereqs == null)
 			{
-				thePrereqs = new ArrayList<Prerequisite>();
+				thePrereqs = new ListSet<Prerequisite>();
 			}
 			if (levelQualifier > 0)
 			{

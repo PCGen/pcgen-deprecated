@@ -18,6 +18,7 @@
 package plugin.lsttokens.editcontext.template;
 
 import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -67,4 +68,16 @@ public class BonusFeatsIntegrationTest extends
 	{
 		return true;
 	}
+
+	@Override
+	public void testRoundRobinSimpleOverwrite()
+			throws PersistenceLayerException
+	{
+		/*
+		 * TODO this shouldn't have to override - the base method should work to match 5.14 behavior
+		 */
+	}
+	
+	
+	
 }

@@ -15,37 +15,39 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package plugin.lsttokens;
+package plugin.lsttokens.pcclass;
 
-import pcgen.cdom.base.CDOMObject;
+import org.junit.Test;
+
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
-import plugin.lsttokens.testsupport.AbstractGlobalYesNoTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractYesNoTokenTestCase;
 
-public class NameispiLstTest extends AbstractGlobalYesNoTokenTestCase
+public class AllowBaseClassTokenTest extends
+		AbstractYesNoTokenTestCase<CDOMPCClass>
 {
 
-	static CDOMPrimaryToken<CDOMObject> token = new NameispiLst();
-	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
-			CDOMTemplate.class);
+	static AllowBaseClassToken token = new AllowBaseClassToken();
+	static CDOMTokenLoader<CDOMPCClass> loader = new CDOMTokenLoader<CDOMPCClass>(
+			CDOMPCClass.class);
 
 	@Override
-	public CDOMLoader<CDOMTemplate> getLoader()
+	public Class<CDOMPCClass> getCDOMClass()
+	{
+		return CDOMPCClass.class;
+	}
+
+	@Override
+	public CDOMLoader<CDOMPCClass> getLoader()
 	{
 		return loader;
 	}
 
 	@Override
-	public Class<CDOMTemplate> getCDOMClass()
-	{
-		return CDOMTemplate.class;
-	}
-
-	@Override
-	public CDOMPrimaryToken<CDOMObject> getToken()
+	public CDOMPrimaryToken<CDOMPCClass> getToken()
 	{
 		return token;
 	}
@@ -53,6 +55,12 @@ public class NameispiLstTest extends AbstractGlobalYesNoTokenTestCase
 	@Override
 	public ObjectKey<Boolean> getObjectKey()
 	{
-		return ObjectKey.NAME_PI;
+		return ObjectKey.ALLOWBASECLASS;
+	}
+
+	@Test
+	public void dummyTest()
+	{
+		// Just to get Eclipse to recognize this as a JUnit 4.0 Test Case
 	}
 }

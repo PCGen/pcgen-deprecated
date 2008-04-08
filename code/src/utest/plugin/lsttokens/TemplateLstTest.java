@@ -105,7 +105,7 @@ public class TemplateLstTest extends
 
 	@Test
 	public void testChooseInvalidInputJoinedComma()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
@@ -115,7 +115,7 @@ public class TemplateLstTest extends
 
 	@Test
 	public void testChooseInvalidInputJoinedDot()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
@@ -141,18 +141,18 @@ public class TemplateLstTest extends
 
 	@Test
 	public void testChooseInvalidListDoubleJoin()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
 		assertFalse(parse("CHOOSE:TestWP2" + getJoinCharacter()
-			+ getJoinCharacter() + "TestWP1"));
+				+ getJoinCharacter() + "TestWP1"));
 		assertNoSideEffects();
 	}
 
 	@Test
 	public void testChooseInvalidInputCheckMult()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		// Explicitly do NOT build testChooseWP2
 		construct(primaryContext, "TestWP1");
@@ -191,7 +191,108 @@ public class TemplateLstTest extends
 		construct(secondaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP3");
 		runRoundRobin("CHOOSE:TestWP1" + getJoinCharacter() + "TestWP2"
-			+ getJoinCharacter() + "TestWP3");
+				+ getJoinCharacter() + "TestWP3");
 	}
 
+	@Test
+	public void testChooseInvalidInputAddString()
+			throws PersistenceLayerException
+	{
+		assertTrue(parse("ADDCHOICE:String"));
+		assertFalse(primaryContext.ref.validate());
+	}
+
+	@Test
+	public void testChooseInvalidInputAddType()
+			throws PersistenceLayerException
+	{
+		assertTrue(parse("ADDCHOICE:TestType"));
+		assertFalse(primaryContext.ref.validate());
+	}
+
+	@Test
+	public void testChooseInvalidInputAddJoinedComma()
+			throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertTrue(parse("ADDCHOICE:TestWP1,TestWP2"));
+		assertFalse(primaryContext.ref.validate());
+	}
+
+	@Test
+	public void testChooseInvalidInputAddJoinedDot()
+			throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertTrue(parse("ADDCHOICE:TestWP1.TestWP2"));
+		assertFalse(primaryContext.ref.validate());
+	}
+
+	@Test
+	public void testChooseInvalidAddListEnd() throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("ADDCHOICE:TestWP1" + getJoinCharacter()));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testChooseInvalidAddListStart()
+			throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		assertFalse(parse("ADDCHOICE:" + getJoinCharacter() + "TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testChooseInvalidAddListDoubleJoin()
+			throws PersistenceLayerException
+	{
+		construct(primaryContext, "TestWP1");
+		construct(primaryContext, "TestWP2");
+		assertFalse(parse("ADDCHOICE:TestWP2" + getJoinCharacter()
+				+ getJoinCharacter() + "TestWP1"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testChooseInvalidAddInputCheckMult()
+			throws PersistenceLayerException
+	{
+		// Explicitly do NOT build testChooseWP2
+		construct(primaryContext, "TestWP1");
+		assertTrue(parse("ADDCHOICE:TestWP1" + getJoinCharacter() + "TestWP2"));
+		assertFalse(primaryContext.ref.validate());
+	}
+
+	/*
+	 * TODO Need to do tests with ADDCHOICE:
+	 */
+	// @Test
+	// public void testChooseRoundRobinAddOne() throws PersistenceLayerException
+	// {
+	// construct(primaryContext, "TestWP1");
+	// construct(primaryContext, "TestWP2");
+	// construct(secondaryContext, "TestWP1");
+	// construct(secondaryContext, "TestWP2");
+	// runRoundRobin("ADDCHOICE:TestWP1");
+	// }
+	//
+	// @Test
+	// public void testChooseRoundRobinAddThree() throws
+	// PersistenceLayerException
+	// {
+	// construct(primaryContext, "TestWP1");
+	// construct(primaryContext, "TestWP2");
+	// construct(primaryContext, "TestWP3");
+	// construct(secondaryContext, "TestWP1");
+	// construct(secondaryContext, "TestWP2");
+	// construct(secondaryContext, "TestWP3");
+	// runRoundRobin("ADDCHOICE:TestWP1" + getJoinCharacter() + "TestWP2"
+	// + getJoinCharacter() + "TestWP3");
+	// }
+	//
 }

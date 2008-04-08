@@ -168,6 +168,7 @@ public abstract class AbstractIntegrationTestCase<T extends CDOMObject> extends
 						uri);
 				continue;
 			}
+			assertNotNull(unparsed);
 			assertEquals(str.size(), unparsed.length);
 
 			for (int i = 0; i < str.size(); i++)

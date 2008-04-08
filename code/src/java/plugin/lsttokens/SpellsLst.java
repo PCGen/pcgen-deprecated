@@ -233,7 +233,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 		}
 		String token = tok.nextToken();
 
-		while (tok.hasMoreTokens())
+		while (true)
 		{
 			if (token.startsWith("TIMES="))
 			{
@@ -267,7 +267,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 				if (timeunit != null)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-							"Found two TIMES entries in " + getTokenName()
+							"Found two TIMEUNIT entries in " + getTokenName()
 									+ ": invalid: " + sourceLine);
 					return false;
 				}
@@ -276,7 +276,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 				if (timeunit.length() == 0)
 				{
 					Logging.addParseMessage(Logging.LST_ERROR,
-							"Error in Times in " + getTokenName()
+							"Error in TimeUnit in " + getTokenName()
 									+ ": argument was empty");
 					return false;
 				}

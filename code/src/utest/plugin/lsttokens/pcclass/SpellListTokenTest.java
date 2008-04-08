@@ -111,6 +111,13 @@ public class SpellListTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 	}
 
 	@Test
+	public void testInvalidInputUnbuiltDomain() throws PersistenceLayerException
+	{
+		assertTrue(parse("1|DOMAIN.String"));
+		assertFalse(primaryContext.ref.validate());
+	}
+
+	@Test
 	public void testInvalidInputDoublePipe() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
@@ -167,6 +174,47 @@ public class SpellListTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 		assertNoSideEffects();
 	}
 
+	@Test
+	public void testInvalidDomainOnly() throws PersistenceLayerException
+	{
+		if (parse("0|DOMAIN"))
+		{
+			assertFalse(primaryContext.ref.validate());
+		}
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidDomainDotOnly() throws PersistenceLayerException
+	{
+		assertFalse(parse("0|DOMAIN."));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidDomainDoubleDot() throws PersistenceLayerException
+	{
+		constructDomain(primaryContext, "TestWP1");
+		if (parse("0|DOMAIN.TestWP1."))
+		{
+			assertFalse(primaryContext.ref.validate());
+		}
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidDomainSeparatorClarification() throws PersistenceLayerException
+	{
+		constructDomain(primaryContext, "TestWP1");
+		constructDomain(primaryContext, "TestWP2");
+		//This is NOT valid!!! Must list domains separately...
+		if (parse("0|DOMAIN.TestWP1.TestWP2"))
+		{
+			assertFalse(primaryContext.ref.validate());
+		}
+		assertNoSideEffects();
+	}
+	
 	@Test
 	public void testInvalidNegativeCount() throws PersistenceLayerException
 	{
@@ -247,10 +295,16 @@ public class SpellListTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 	public void testRoundRobinOne() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
-		construct(primaryContext, "TestWP2");
 		construct(secondaryContext, "TestWP1");
-		construct(secondaryContext, "TestWP2");
 		runRoundRobin("1|TestWP1");
+	}
+
+	@Test
+	public void testRoundRobinOneDomain() throws PersistenceLayerException
+	{
+		constructDomain(primaryContext, "TestWP1");
+		constructDomain(secondaryContext, "TestWP1");
+		runRoundRobin("1|DOMAIN.TestWP1");
 	}
 
 	@Test
@@ -258,16 +312,21 @@ public class SpellListTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 	{
 		construct(primaryContext, "TestWP1");
 		construct(primaryContext, "TestWP2");
-		construct(primaryContext, "TestWP3");
+		constructDomain(primaryContext, "AestWP3");
 		construct(secondaryContext, "TestWP1");
 		construct(secondaryContext, "TestWP2");
-		construct(secondaryContext, "TestWP3");
-		runRoundRobin("2|TestWP1,TestWP2,TestWP3");
+		constructDomain(secondaryContext, "AestWP3");
+		//Note force of Domain after Classes in alpha ordering
+		runRoundRobin("2|TestWP1,TestWP2,DOMAIN.AestWP3");
 	}
 
 	protected void construct(LoadContext loadContext, String one)
 	{
 		loadContext.ref.constructCDOMObject(ClassSpellList.class, one);
+	}
+
+	protected void constructDomain(LoadContext loadContext, String one)
+	{
 		loadContext.ref.constructCDOMObject(DomainSpellList.class, one);
 	}
 

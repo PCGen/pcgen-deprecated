@@ -18,30 +18,30 @@
 package plugin.lsttokens;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
-import plugin.lsttokens.testsupport.AbstractGlobalYesNoTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractGlobalFormulaTokenTestCase;
 
-public class NameispiLstTest extends AbstractGlobalYesNoTokenTestCase
+public class SelectTokenTest extends AbstractGlobalFormulaTokenTestCase
 {
 
-	static CDOMPrimaryToken<CDOMObject> token = new NameispiLst();
+	static SelectLst token = new SelectLst();
 	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
 			CDOMTemplate.class);
-
-	@Override
-	public CDOMLoader<CDOMTemplate> getLoader()
-	{
-		return loader;
-	}
 
 	@Override
 	public Class<CDOMTemplate> getCDOMClass()
 	{
 		return CDOMTemplate.class;
+	}
+
+	@Override
+	public CDOMLoader<CDOMTemplate> getLoader()
+	{
+		return loader;
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class NameispiLstTest extends AbstractGlobalYesNoTokenTestCase
 	}
 
 	@Override
-	public ObjectKey<Boolean> getObjectKey()
+	public FormulaKey getFormulaKey()
 	{
-		return ObjectKey.NAME_PI;
+		return FormulaKey.SELECT;
 	}
 }

@@ -379,6 +379,16 @@ public abstract class AbstractAutoTokenTestCase extends
 	}
 
 	@Test
+	public void testRoundRobinBecauseUsersAreCreative() throws PersistenceLayerException
+	{
+		if (isListLegal() && isPrereqLegal())
+		{
+			runRoundRobin(getSubTokenString() + "|%LIST[PRERACE:1,Human]");
+		}
+	}
+
+
+	@Test
 	public void testRoundRobinOnePrereq() throws PersistenceLayerException
 	{
 		if (isPrereqLegal())
@@ -388,6 +398,19 @@ public abstract class AbstractAutoTokenTestCase extends
 			construct(secondaryContext, "TestWP1");
 			construct(secondaryContext, "TestWP2");
 			runRoundRobin(getSubTokenString() + "|TestWP1[PRERACE:1,Human]");
+		}
+	}
+
+	@Test
+	public void testRoundRobinTwoPrereq() throws PersistenceLayerException
+	{
+		if (isPrereqLegal())
+		{
+			construct(primaryContext, "TestWP1");
+			construct(primaryContext, "TestWP2");
+			construct(secondaryContext, "TestWP1");
+			construct(secondaryContext, "TestWP2");
+			runRoundRobin(getSubTokenString() + "|TestWP1|TestWP2[PRERACE:1,Human]");
 		}
 	}
 
