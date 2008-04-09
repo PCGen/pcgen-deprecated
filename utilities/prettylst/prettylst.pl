@@ -347,9 +347,9 @@ $logging = Ewarn->new(warning_level=>$cl_options{warning_level});
 #####################################
 # Convertion options
 if ( $cl_options{convert} ) {
-    if ( $cl_options{convert} eq 'ADD:SAB' ) {
-        $conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'} = 1;
-    }
+      if ( $cl_options{convert} eq 'ADD:SAB' ) {
+            $conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'} = 1;
+      }
 elsif ( $cl_options{convert} eq 'RACETYPE' ) {
         $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
 }
@@ -1218,7 +1218,7 @@ my %master_file_type = (
             Format          => FIRST_COLUMN,
             Header          => NO_HEADER,
         },
-         {   Linetype        => 'KIT ALIGN',
+         {  Linetype        => 'KIT ALIGN',
             RegEx           => qr{^ALIGN:([^\t]*)},
             Mode            => SUB,
             Format          => FIRST_COLUMN,
@@ -1680,7 +1680,6 @@ my @QUALIFY_Tags = (
 );
 
 
-
 # Order for the tags for each line type.
 my %master_order = (
     'ABILITY' => [
@@ -1913,6 +1912,7 @@ my %master_order = (
         'ITEMCREATE',
         'KNOWNSPELLSFROMSPECIALTY',
         'PROHIBITED',
+        'PROHIBITSPELL:*',
         'LEVELSPERFEAT',
         'VFEAT:*',
         'MULTIPREREQS',
@@ -2084,6 +2084,7 @@ my %master_order = (
         'AUTO:FEAT:*',
         'AUTO:SHIELDPROF:*',
         'AUTO:WEAPONPROF:*',
+        'CHANGEPROF',
         'LANGAUTO',
         'ADDDOMAINS',
         @QUALIFY_Tags,
@@ -2679,6 +2680,7 @@ my %master_order = (
         'FUNDS',
         'QTY',
         'OPTION',
+        @PRE_Tags,
     ],
 
     'KIT GEAR' => [
@@ -3224,6 +3226,7 @@ my %master_order = (
         'SPELLLIST',
         'KNOWNSPELLSFROMSPECIALTY',
         'PROHIBITED',
+        'PROHIBITSPELL:*',
         'SA',
         'DEFINE',
         @PRE_Tags,
@@ -3258,6 +3261,7 @@ my %master_order = (
         'SPELLLIST',
         'KNOWNSPELLSFROMSPECIALTY',
         'PROHIBITED',
+#        'PROHIBITSPELL:*',
         'SA',
         'DEFINE',
         @PRE_Tags,
@@ -3281,6 +3285,7 @@ my %master_order = (
         'KNOWN',
         'SPECIALTYKNOWN',
         'KNOWNSPELLS',
+#       'PROHIBITSPELL:*',
         'VISION',
         'SR',
         'DR',
@@ -3373,6 +3378,7 @@ my %master_order = (
         'KNOWN',
         'SPECIALTYKNOWN',
         'KNOWNSPELLS',
+#        'PROHIBITSPELL:*',
         'VISION',
         'SR',
         'DR',
@@ -3654,50 +3660,50 @@ my %master_order = (
 # Tags that must be seen as valid to allow convertion.
 
 if ( $conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'} ) {
-    push @{ $master_order{'CLASS'} },         'ADD:SA';
-    push @{ $master_order{'CLASS Level'} },   'ADD:SA';
-    push @{ $master_order{'COMPANIONMOD'} },  'ADD:SA';
-    push @{ $master_order{'DEITY'} },         'ADD:SA';
-    push @{ $master_order{'DOMAIN'} },        'ADD:SA';
-    push @{ $master_order{'EQUIPMENT'} },     'ADD:SA';
-    push @{ $master_order{'EQUIPMOD'} },      'ADD:SA';
-    push @{ $master_order{'FEAT'} },          'ADD:SA';
-    push @{ $master_order{'RACE'} },          'ADD:SA';
-    push @{ $master_order{'SKILL'} },         'ADD:SA';
-    push @{ $master_order{'SUBCLASSLEVEL'} }, 'ADD:SA';
-    push @{ $master_order{'TEMPLATE'} },      'ADD:SA';
-    push @{ $master_order{'WEAPONPROF'} },    'ADD:SA';
+      push @{ $master_order{'CLASS'} },         'ADD:SA';
+      push @{ $master_order{'CLASS Level'} },   'ADD:SA';
+      push @{ $master_order{'COMPANIONMOD'} },  'ADD:SA';
+      push @{ $master_order{'DEITY'} },         'ADD:SA';
+      push @{ $master_order{'DOMAIN'} },        'ADD:SA';
+      push @{ $master_order{'EQUIPMENT'} },     'ADD:SA';
+      push @{ $master_order{'EQUIPMOD'} },      'ADD:SA';
+      push @{ $master_order{'FEAT'} },          'ADD:SA';
+      push @{ $master_order{'RACE'} },          'ADD:SA';
+      push @{ $master_order{'SKILL'} },         'ADD:SA';
+      push @{ $master_order{'SUBCLASSLEVEL'} }, 'ADD:SA';
+      push @{ $master_order{'TEMPLATE'} },      'ADD:SA';
+      push @{ $master_order{'WEAPONPROF'} },    'ADD:SA';
 }
 if ( $conversion_enable{'EQUIP: ALTCRITICAL to ALTCRITMULT'} ) {
-    push @{ $master_order{'EQUIPMENT'} }, 'ALTCRITICAL';
+      push @{ $master_order{'EQUIPMENT'} }, 'ALTCRITICAL';
 }
 
 if ( $conversion_enable{'BIOSET:generate the new files'} ) {
-    push @{ $master_order{'RACE'} }, 'AGE', 'HEIGHT', 'WEIGHT';
+      push @{ $master_order{'RACE'} }, 'AGE', 'HEIGHT', 'WEIGHT';
 }
 
 if ( $conversion_enable{'EQUIPMENT: remove ATTACKS'} ) {
-    push @{ $master_order{'EQUIPMENT'} }, 'ATTACKS';
+      push @{ $master_order{'EQUIPMENT'} }, 'ATTACKS';
 }
 
 if ( $conversion_enable{'PCC:GAME to GAMEMODE'} ) {
-    push @{ $master_order{'PCC'} }, 'GAME';
+      push @{ $master_order{'PCC'} }, 'GAME';
 }
 
 if ( $conversion_enable{'ALL:BONUS:MOVE convertion'} ) {
-    push @{ $master_order{'CLASS'} },         'BONUS:MOVE:*';
-    push @{ $master_order{'CLASS Level'} },   'BONUS:MOVE:*';
-    push @{ $master_order{'COMPANIONMOD'} },  'BONUS:MOVE:*';
-    push @{ $master_order{'DEITY'} },         'BONUS:MOVE:*';
-    push @{ $master_order{'DOMAIN'} },        'BONUS:MOVE:*';
-    push @{ $master_order{'EQUIPMENT'} },     'BONUS:MOVE:*';
-    push @{ $master_order{'EQUIPMOD'} },      'BONUS:MOVE:*';
-    push @{ $master_order{'FEAT'} },          'BONUS:MOVE:*';
-    push @{ $master_order{'RACE'} },          'BONUS:MOVE:*';
-    push @{ $master_order{'SKILL'} },         'BONUS:MOVE:*';
-    push @{ $master_order{'SUBCLASSLEVEL'} }, 'BONUS:MOVE:*';
-    push @{ $master_order{'TEMPLATE'} },      'BONUS:MOVE:*';
-    push @{ $master_order{'WEAPONPROF'} },    'BONUS:MOVE:*';
+      push @{ $master_order{'CLASS'} },         'BONUS:MOVE:*';
+      push @{ $master_order{'CLASS Level'} },   'BONUS:MOVE:*';
+      push @{ $master_order{'COMPANIONMOD'} },  'BONUS:MOVE:*';
+      push @{ $master_order{'DEITY'} },         'BONUS:MOVE:*';
+      push @{ $master_order{'DOMAIN'} },        'BONUS:MOVE:*';
+      push @{ $master_order{'EQUIPMENT'} },     'BONUS:MOVE:*';
+      push @{ $master_order{'EQUIPMOD'} },      'BONUS:MOVE:*';
+      push @{ $master_order{'FEAT'} },          'BONUS:MOVE:*';
+      push @{ $master_order{'RACE'} },          'BONUS:MOVE:*';
+      push @{ $master_order{'SKILL'} },         'BONUS:MOVE:*';
+      push @{ $master_order{'SUBCLASSLEVEL'} }, 'BONUS:MOVE:*';
+      push @{ $master_order{'TEMPLATE'} },      'BONUS:MOVE:*';
+      push @{ $master_order{'WEAPONPROF'} },    'BONUS:MOVE:*';
 }
 
 if ( $conversion_enable{'WEAPONPROF:No more SIZE'} ) {
@@ -4229,6 +4235,7 @@ my %tagheader = (
         'PREDOMAIN'             => 'Required Domain',
         'PREDSIDEPTS'           => 'Req. Dark Side',
         'PREDR'                 => 'Req. Damage Resistance',
+        '!PREDR'                => 'Prohibited Damage Resistance',
         'PREEQUIP'              => 'Req. Equipement',
         'PREEQMOD'              => 'Req. Equipment Mod.',
         '!PREEQMOD'             => 'Prohibited Equipment Mod.',
@@ -4257,6 +4264,7 @@ my %tagheader = (
         '!PREREGION'            => 'Prohibited Region',
         'PRERULE'               => 'Req. Rule (in options)',
         'PRESA'                 => 'Req. Special Ability',
+        '!PRESA'                => 'Prohibite Special Ability',
         'PRESHIELDPROF'         => 'Req. Shield Prof.',
         '!PRESHIELDPROF'        => 'Prohibited Shield Prof.',
         'PRESIZEEQ'             => 'Required Size',
@@ -4264,11 +4272,13 @@ my %tagheader = (
         'PRESIZELT'             => 'Must be Smaller',
         'PRESIZELTEQ'           => 'Maximum Size',
         'PRESKILL'              => 'Required Skill',
+        '!PRESKILL'             => 'Prohibited Skill',
         'PRESKILLMULT'          => 'Special Required Skill',
         'PRESKILLTOT'           => 'Total Skill Points Req.',
         'PRESPELL'              => 'Req. Known Spell',
         'PRESPELLBOOK'          => 'Req. Spellbook',
-        'PRESPELLCAST'          => 'Req. Casting Type',
+        'PRESPELLBOOK'          => 'Req. Spellbook',
+        '!PRESPELLCAST'         => 'Prohibited Casting Type',
         'PRESPELLDESCRIPTOR'    => 'Req. Spell Descriptor',
         'PRESPELLSCHOOL'        => 'Required Spell School',
         'PRESPELLSCHOOLSUB'     => 'Required Sub-school',
@@ -4282,6 +4292,8 @@ my %tagheader = (
         'PRESRNEQ'              => 'Prohibited SR Value',
         'PRESTAT'               => 'Required Stat',
         '!PRESTAT',             => 'Prohibited Stat',
+        'PRESUBCLASS'           => 'Required Subclass',
+        '!PRESUBCLASS'          => 'Prohibited Subclass',
         'PRETEMPLATE'           => 'Required Template',
         '!PRETEMPLATE'          => 'Prohibited Template',
         'PRETEXT'               => 'Required Text',
@@ -4400,7 +4412,7 @@ my %tagheader = (
         'MODTOSKILLS'           => 'Add INT to Skill Points?',
         'MONNONSKILLHD'         => 'Extra Hit Die Skills Limit',
         'MULTIPREREQS'          => 'MULTIPREREQS',
-        'SPECIALS'              => 'Class Special Ability',
+        'SPECIALS'              => 'Class Special Ability',     # Deprecated - Use SA
         'DEITY'                 => 'Deities allowed',
     },
 
@@ -4479,6 +4491,7 @@ my %tagheader = (
 
     'RACE' => {
         '000RaceName'  => '# Race Name',
+        'FAVCLASS'     => 'Favored Class',
         'SKILLMULT'    => 'Skill Multiplier',
         'MONCSKILL'    => 'Racial HD Class Skills',
         'MONCCSKILL'   => 'Racial HD Cross-class Skills',
@@ -5495,12 +5508,12 @@ if ( $cl_options{xcheck} ) {
     # that was added to to_report.
     for my $file ( sort keys %to_report ) {
         for my $line_ref ( sort { $a->[0] <=> $b->[0] } @{ $to_report{$file} } ) {
-        my $message = qq{No $line_ref->[1] entry for "$line_ref->[2]"};
+          my $message = qq{No $line_ref->[1] entry for "$line_ref->[2]"};
 
-        # If it is an EQMOD Key missing, it is less severe
-        my $message_level = $line_ref->[1] eq 'EQUIPMOD Key' ? INFO : NOTICE;
-        $logging->ewarn( $message_level,  $message, $file, $line_ref->[0] );
-    }
+          # If it is an EQMOD Key missing, it is less severe
+          my $message_level = $line_ref->[1] eq 'EQUIPMOD Key' ? INFO : NOTICE;
+          $logging->ewarn( $message_level,  $message, $file, $line_ref->[0] );
+      }
     }
 
     ###############################################
@@ -5654,7 +5667,7 @@ sub FILETYPE_parse {
     for my $line (@ {$lines_ref} ) {
         my $line_info;
         my $new_line = $line;    # We work on a copy
-    study $new_line;         # Make the substitution work.
+      study $new_line;         # Make the substitution work.
 
         # Remove spaces at the end of the line
         $new_line =~ s/\s+$//;
@@ -5662,28 +5675,28 @@ sub FILETYPE_parse {
         # Remove spaces at the begining of the line
         $new_line =~ s/^\s+//;
 
-    ## Gawaine42
-    ## [ 1324519 ] ASCII characters
-    ## Start by replacing the smart quotes and other similar characters.
-    if ($conversion_enable{'ALL:Fix Common Extended ASCII'}) {
-        $new_line =~ s/\x82/,/g;
-        $new_line =~ s/\x84/,,/g;
-        $new_line =~ s/\x85/.../g;
-        $new_line =~ s/\x88/^/g;
-        $new_line =~ s/\x8B/</g;
-        $new_line =~ s/\x8C/Oe/g;
-        $new_line =~ s/\x91/\'/g;
-        $new_line =~ s/\x92/\'/g;
-        $new_line =~ s/\x93/\"/g;
-        $new_line =~ s/\x94/\"/g;
-        $new_line =~ s/\x95/*/g;
-        $new_line =~ s/\x96/-/g;
-        $new_line =~ s/\x97/-/g;
-        $new_line =~ s-\x98-<sup>~</sup>-g;
-        $new_line =~ s-\x99-<sup>TM</sup>-g;
-        $new_line =~ s/\x9B/>/g;
-        $new_line =~ s/\x9C/oe/g;
-    }
+      ## Gawaine42
+      ## [ 1324519 ] ASCII characters
+      ## Start by replacing the smart quotes and other similar characters.
+      if ($conversion_enable{'ALL:Fix Common Extended ASCII'}) {
+          $new_line =~ s/\x82/,/g;
+          $new_line =~ s/\x84/,,/g;
+          $new_line =~ s/\x85/.../g;
+          $new_line =~ s/\x88/^/g;
+          $new_line =~ s/\x8B/</g;
+          $new_line =~ s/\x8C/Oe/g;
+          $new_line =~ s/\x91/\'/g;
+          $new_line =~ s/\x92/\'/g;
+          $new_line =~ s/\x93/\"/g;
+          $new_line =~ s/\x94/\"/g;
+          $new_line =~ s/\x95/*/g;
+          $new_line =~ s/\x96/-/g;
+          $new_line =~ s/\x97/-/g;
+          $new_line =~ s-\x98-<sup>~</sup>-g;
+          $new_line =~ s-\x99-<sup>TM</sup>-g;
+          $new_line =~ s/\x9B/>/g;
+          $new_line =~ s/\x9C/oe/g;
+      }
 
         # Skip comments and empty lines
         if ( length($new_line) == 0 || $new_line =~ /^\#/ ) {
@@ -5842,7 +5855,7 @@ sub FILETYPE_parse {
                                     );
                                 }
                             }
-                $valid_entities{$curent_linetype}{$entry}++;
+                      $valid_entities{$curent_linetype}{$entry}++;
 
                             # Check to see if the entry must be recorded for other
                             # entry types.
@@ -5890,8 +5903,8 @@ sub FILETYPE_parse {
         ############################################################
         ######################## Conversion ########################
         # We manipulate the tags for the line here
-    # This function call will parse individual lines, which will
-    # in turn parse the tags within the lines.
+      # This function call will parse individual lines, which will
+      # in turn parse the tags within the lines.
 
         additionnal_line_parsing(\%line_tokens,
                                  $curent_linetype,
@@ -6643,16 +6656,16 @@ sub parse_ADD_tag {
 
     # Old Format
     if ($tag =~ /\s*ADD:([^\(]+)\((.+)\)(\d*)/) {
-    ($token, $therest, $num_count) = ($1, $2, $3);
-    if (!$num_count) { $num_count = 1; }
+      ($token, $therest, $num_count) = ($1, $2, $3);
+      if (!$num_count) { $num_count = 1; }
         # Is it a known token?
         if ( exists $token_ADD_tag{"ADD:$token"} ) {
-        return ( 1, "ADD:$token", $therest, $num_count );
+          return ( 1, "ADD:$token", $therest, $num_count );
         }
         # Is it the right form? => ADD:any text(any text)
         # Note that no check is done to see if the () are balanced.
         # elsif ( $therest =~ /^\((.*)\)(\d*)\s*$/ ) {
-    else {
+      else {
             return ( 2, "ADD:$token", $therest, $num_count);
         }
     }
@@ -6661,15 +6674,15 @@ sub parse_ADD_tag {
 #    if ($tag =~ /\s*ADD:([^\|]+)(\|[^\|]*)\|(.+)/) {
     if ($tag =~ /\s*ADD:([^\|]+)(\|\d+)?\|(.+)/) {
 
-    ($token, $num_count, $optionlist) = ($1, $2, $3);
-    if (!$num_count) { $num_count = 1; }
+      ($token, $num_count, $optionlist) = ($1, $2, $3);
+      if (!$num_count) { $num_count = 1; }
 
-    if ( exists $token_ADD_tag{"ADD:$token"}) {
-        return ( 3, "ADD:$token", $optionlist, $num_count);
-    }
-    else {
-        return ( 4, "ADD:$token", $optionlist, $num_count);
-    }
+      if ( exists $token_ADD_tag{"ADD:$token"}) {
+          return ( 3, "ADD:$token", $optionlist, $num_count);
+      }
+      else {
+          return ( 4, "ADD:$token", $optionlist, $num_count);
+      }
     }
 
     # Not a good ADD tag.
@@ -6742,40 +6755,40 @@ sub parse_tag {
     # cause a spurious error. I've added them to valid entities to prevent
     # that.
     if ($tag eq 'STARTPACK') {
-    $valid_entities{'KIT STARTPACK'}{"KIT:$value"}++;
-    $valid_entities{'KIT STARTPACK'}{"$value"}++;
+      $valid_entities{'KIT STARTPACK'}{"KIT:$value"}++;
+      $valid_entities{'KIT STARTPACK'}{"$value"}++;
     }
 
     # [ 1678570 ] Correct PRESPELLTYPE syntax
     # PRESPELLTYPE conversion
     if ($conversion_enable{'ALL:PRESPELLTYPE Syntax'} &&
-    $tag eq 'PRESPELLTYPE' &&
-    $tag_text =~ /^PRESPELLTYPE:([^\d]+),(\d+),(\d+)/)
+      $tag eq 'PRESPELLTYPE' &&
+      $tag_text =~ /^PRESPELLTYPE:([^\d]+),(\d+),(\d+)/)
     {
-    my ($spelltype, $num_spells, $num_levels) = ($1, $2, $3);
-    #$tag_text =~ /^PRESPELLTYPE:([^,\d]+),(\d+),(\d+)/;
-    $value = "$num_spells,";
-    # Common homebrew mistake is to include Arcade|Divine, since the
-    # 5.8 documentation had an example that showed this. Might
-    # as well handle it while I'm here.
-    my @spelltypes = split(/\|/,$spelltype);
-    foreach my $st (@spelltypes) {
-        $value .= "$st=$num_levels";
-    }
-    $logging->ewarn( NOTICE,
-           qq{Invalid standalone PRESPELLTYPE tag "$tag_text" found and converted in $linetype.},
-           $file_for_error,
-           $line_for_error
-           );
+      my ($spelltype, $num_spells, $num_levels) = ($1, $2, $3);
+      #$tag_text =~ /^PRESPELLTYPE:([^,\d]+),(\d+),(\d+)/;
+      $value = "$num_spells,";
+      # Common homebrew mistake is to include Arcade|Divine, since the
+      # 5.8 documentation had an example that showed this. Might
+      # as well handle it while I'm here.
+      my @spelltypes = split(/\|/,$spelltype);
+      foreach my $st (@spelltypes) {
+          $value .= "$st=$num_levels";
+      }
+      $logging->ewarn( NOTICE,
+             qq{Invalid standalone PRESPELLTYPE tag "$tag_text" found and converted in $linetype.},
+             $file_for_error,
+             $line_for_error
+             );
     }
     # Continuing the fix - fix it anywhere. This is meant to address PRE tags
     # that are on the end of other tags or in PREMULTS.
     # I'll leave out the pipe-delimited error here, since it's more likely
     # to end up with confusion when the tag isn't standalone.
     elsif ($conversion_enable{'ALL:PRESPELLTYPE Syntax'}
-    && $tag_text =~ /PRESPELLTYPE:([^\d]+),(\d+),(\d+)/)
+      && $tag_text =~ /PRESPELLTYPE:([^\d]+),(\d+),(\d+)/)
     {
-    $value =~ s/PRESPELLTYPE:([^\d,]+),(\d+),(\d+)/PRESPELLTYPE:$2,$1=$3/g;
+      $value =~ s/PRESPELLTYPE:([^\d,]+),(\d+),(\d+)/PRESPELLTYPE:$2,$1=$3/g;
                 $logging->ewarn( NOTICE,
                     qq{Invalid embedded PRESPELLTYPE tag "$tag_text" found and converted $linetype.},
                     $file_for_error,
@@ -6789,17 +6802,17 @@ sub parse_tag {
 
     if ($tag_text =~ '^CHOOSE:SCHOOLS\|') {
         $logging->ewarn(WARNING,
-           qq{Invalid format in "$tag_text", CHOOSE:SCHOOLS does not support any additional arguments or the pipe separator.},
-           $file_for_error,
-           $line_for_error
-           );
+             qq{Invalid format in "$tag_text", CHOOSE:SCHOOLS does not support any additional arguments or the pipe separator.},
+             $file_for_error,
+             $line_for_error
+             );
     }
 
 
     # Special cases like ADD:... and BONUS:...
     if ( $tag eq 'ADD' ) {
         my ( $type, $addtag, $therest, $add_count )
-        = parse_ADD_tag( $tag_text );
+          = parse_ADD_tag( $tag_text );
             #   Return code 0 = no valid ADD tag found,
             #               1 = old format token ADD tag found,
             #               2 = old format adlib ADD tag found.
@@ -6812,14 +6825,14 @@ sub parse_tag {
                 $tag   = $addtag;
                 $value = "($therest)$add_count";
             }
-        if ((($type == 1) || ($type == 2))
-        && ($conversion_enable{'ALL:ADD Syntax Fix'}))
-        {
-        $tag = "ADD:";
-        $addtag =~ s/ADD://;
-        $value =
-            "$addtag|$add_count|$therest";
-        }
+          if ((($type == 1) || ($type == 2))
+            && ($conversion_enable{'ALL:ADD Syntax Fix'}))
+          {
+            $tag = "ADD:";
+            $addtag =~ s/ADD://;
+            $value =
+                "$addtag|$add_count|$therest";
+          }
         }
         else {
             unless ( index( $tag_text, '#' ) == 0 ) {
@@ -6842,25 +6855,25 @@ sub parse_tag {
             $value =~ s/^$qualify_type(.*)/$1/;
        }
        elsif ($qualify_type) {
-        # No valid Qualify type found
-       $count_tags{"Invalid"}{"Total"}{"$tag:$qualify_type"}++;
-       $count_tags{"Invalid"}{$linetype}{"$tag:$qualify_type"}++;
-       $logging->ewarn( NOTICE,
-          qq{Invalid QUALIFY:$qualify_type tag "$tag_text" found in $linetype.},
-          $file_for_error,
-          $line_for_error
-          );
-       $no_more_error = 1;
+             # No valid Qualify type found
+         $count_tags{"Invalid"}{"Total"}{"$tag:$qualify_type"}++;
+         $count_tags{"Invalid"}{$linetype}{"$tag:$qualify_type"}++;
+         $logging->ewarn( NOTICE,
+              qq{Invalid QUALIFY:$qualify_type tag "$tag_text" found in $linetype.},
+              $file_for_error,
+              $line_for_error
+              );
+         $no_more_error = 1;
        }
        else {
-       $count_tags{"Invalid"}{"Total"}{"QUALIFY"}++;
-       $count_tags{"Invalid"}{$linetype}{"QUALIFY"}++;
-       $logging->ewarn( NOTICE,
-          qq{Invalid QUALIFY tag "$tag_text" found in $linetype},
-          $file_for_error,
-          $line_for_error
-          );
-       $no_more_error = 1;
+         $count_tags{"Invalid"}{"Total"}{"QUALIFY"}++;
+         $count_tags{"Invalid"}{$linetype}{"QUALIFY"}++;
+         $logging->ewarn( NOTICE,
+              qq{Invalid QUALIFY tag "$tag_text" found in $linetype},
+              $file_for_error,
+              $line_for_error
+              );
+         $no_more_error = 1;
        }
    }
 
@@ -7004,22 +7017,22 @@ sub parse_tag {
     my $real_tag = ( $negate_pre ? "!" : "" ) . $tag;
 
     if ( !$no_more_error && !exists $valid_tags{$linetype}{$tag} && index( $tag_text, '#' ) != 0 ) {
-    my $do_warn = 1;
-    if ($tag_text =~ /^ADD:([^\(\|]+)[\|\(]+/) {
-        my $tag_text = ($1);
-        if (exists $valid_tags{$linetype}{"ADD:$tag_text"}) {
-        $do_warn = 0;
-        }
-    }
-    if ($do_warn) {
-        $logging->ewarn( NOTICE,
-           qq{The tag "$tag" from "$tag_text" is not in the $linetype tag list\n},
-           $file_for_error,
-           $line_for_error
-           );
-        $count_tags{"Invalid"}{"Total"}{$real_tag}++;
-        $count_tags{"Invalid"}{$linetype}{$real_tag}++;
-    }
+      my $do_warn = 1;
+      if ($tag_text =~ /^ADD:([^\(\|]+)[\|\(]+/) {
+          my $tag_text = ($1);
+          if (exists $valid_tags{$linetype}{"ADD:$tag_text"}) {
+            $do_warn = 0;
+          }
+      }
+      if ($do_warn) {
+          $logging->ewarn( NOTICE,
+               qq{The tag "$tag" from "$tag_text" is not in the $linetype tag list\n},
+               $file_for_error,
+               $line_for_error
+               );
+          $count_tags{"Invalid"}{"Total"}{$real_tag}++;
+          $count_tags{"Invalid"}{$linetype}{$real_tag}++;
+      }
     }
     elsif ( exists $valid_tags{$linetype}{$tag} ) {
 
@@ -7197,13 +7210,13 @@ BEGIN {
 
     sub validate_tag {
         my ( $tag_name, $tag_value, $linetype, $file_for_error, $line_for_error ) = @_;
-    study $tag_value;
+      study $tag_value;
 
-    if ($tag_name eq 'STARTPACK')
-    {
-        $valid_entities{'KIT STARTPACK'}{"KIT:$tag_value"}++;
-        $valid_entities{'KIT'}{"KIT:$tag_value"}++;
-    }
+      if ($tag_name eq 'STARTPACK')
+      {
+          $valid_entities{'KIT STARTPACK'}{"KIT:$tag_value"}++;
+          $valid_entities{'KIT'}{"KIT:$tag_value"}++;
+      }
 
         # Deprecated tags
         if ( $tag_name eq 'HITDICESIZE' ) {
@@ -7227,30 +7240,30 @@ BEGIN {
                 $line_for_error
             );
         }
-    elsif ( $tag_name =~ /^ADD/
-        && $tag_value =~ /^WEAPONBONUS/ )
-    {
-        $logging->ewarn( INFO,
-           qq{ADD:WEAPONBONUS is deprecated, use BONUS instead.},
-           $file_for_error,
-           $line_for_error
-           );
-    }
-    elsif ( $tag_name =~ /^ADD/
-        && $tag_value =~ /^LIST/ ) {
-        $logging->ewarn( INFO,
-           qq{ADD:LIST is deprecated, use BONUS instead.},
-           $file_for_error,
-           $line_for_error
-           );
-    }
-    elsif ( $tag_name =~ /^FOLLOWERALIGN/) {
-        $logging->ewarn( INFO,
-           qq{FOLLOWERALIGN is deprecated, use PREALIGN on Domain instead. Convert using Followeralign to fix this problem.},
-           $file_for_error,
-           $line_for_error
-           );
-    }
+      elsif ( $tag_name =~ /^ADD/
+            && $tag_value =~ /^WEAPONBONUS/ )
+      {
+          $logging->ewarn( INFO,
+               qq{ADD:WEAPONBONUS is deprecated, use BONUS instead.},
+               $file_for_error,
+               $line_for_error
+               );
+      }
+      elsif ( $tag_name =~ /^ADD/
+            && $tag_value =~ /^LIST/ ) {
+          $logging->ewarn( INFO,
+               qq{ADD:LIST is deprecated, use BONUS instead.},
+               $file_for_error,
+               $line_for_error
+               );
+      }
+      elsif ( $tag_name =~ /^FOLLOWERALIGN/) {
+          $logging->ewarn( INFO,
+               qq{FOLLOWERALIGN is deprecated, use PREALIGN on Domain instead. Convert using Followeralign to fix this problem.},
+               $file_for_error,
+               $line_for_error
+               );
+      }
         elsif ( $tag_name =~ /^!?PRE/ ) {
 
             # It's a PRExxx tag, we delegate
@@ -8138,7 +8151,7 @@ BEGIN {
         }
         elsif ( $tag_name eq 'SPELLS' ) {
             if ( $linetype ne 'KIT SPELLS' ) {
- # Syntax: SPELLS:<spellbook>|[TIMES=<time per day>|][CASTERLEVEL=<CL>|]<Spell list>[|<prexxx tags>]
+ # Syntax: SPELLS:<spellbook>|[TIMES=<time per day>|][TIMEUNIT=<unit of time>|][CASTERLEVEL=<CL>|]<Spell list>[|<prexxx tags>]
  # <Spell list> = <Spell name>,<DC> [|<Spell list>]
                 my @list_of_param = split '\|', $tag_value;
                 my @spells;
@@ -8147,9 +8160,10 @@ BEGIN {
                 shift @list_of_param;
 
                 my $nb_times       = 0;
+                my $nb_timeunit    = 0;
                 my $nb_casterlevel = 0;
                 for my $param (@list_of_param) {
-                    if ( $param =~ /^(TIMES)=(.*)/ || $param =~ /^(CASTERLEVEL)=(.*)/ ) {
+                    if ( $param =~ /^(TIMES)=(.*)/ || $param =~ /^(TIMEUNIT)=(.*)/ || $param =~ /^(CASTERLEVEL)=(.*)/ ) {
 
                         # The formulas need to be validated
                         push @xcheck_to_process,
@@ -8167,6 +8181,9 @@ BEGIN {
                              ];
                         if ( $1 eq 'TIMES' ) {
                             $nb_times++;
+                        }
+                        elsif ( $1 eq 'TIMEUNIT' ) {
+                            $nb_timeunit++;
                         }
                         else {
                             $nb_casterlevel++;
@@ -8976,9 +8993,9 @@ sub validate_pre_tag {
                     $tag_name,
                     $file_for_error,
                     $line_for_error,
-          # Pull off the first number.
-          # [ 1776500 ] PREDEITY needs updated
-          (split /[,]/, $tag_value)[1,-1],
+              # Pull off the first number.
+              # [ 1776500 ] PREDEITY needs updated
+              (split /[,]/, $tag_value)[1,-1],
                  ];
         }
     }
@@ -9027,8 +9044,8 @@ sub validate_pre_tag {
     }
     elsif ( $pretag eq 'PREABILITY' ) {
 
-    # [ 1671407 ] xcheck PREABILITY tag
-    # Shamelessly copied from the above FEAT code.
+      # [ 1671407 ] xcheck PREABILITY tag
+      # Shamelessly copied from the above FEAT code.
         # PREABILITY:number,feat,feat,TYPE=type,CATEGORY=category
 
         # We get the list of abilities and ability types
@@ -9227,38 +9244,38 @@ sub validate_pre_tag {
                            $line_for_error
                     );
                 }
-        else {
-            # Don't bother warning if it matches everything.
-            # For now, we warn and do nothing else.
-            if ($race_wild eq '') {
-            ## Matches everything, no reason to warn.
-            }
-            elsif ($valid_entities{'RACE'}{$race_wild}) {
-            ## Matches an existing race, no reason to warn.
-            }
-            elsif ($race_partial_match{$race_wild}) {
-            ## Partial match already confirmed, no need to confirm.
-            }
             else {
-            my $found = 0;
+                # Don't bother warning if it matches everything.
+                # For now, we warn and do nothing else.
+                if ($race_wild eq '') {
+                  ## Matches everything, no reason to warn.
+                }
+                elsif ($valid_entities{'RACE'}{$race_wild}) {
+                  ## Matches an existing race, no reason to warn.
+                }
+                elsif ($race_partial_match{$race_wild}) {
+                  ## Partial match already confirmed, no need to confirm.
+                }
+                else {
+                  my $found = 0;
 
-            while (($found == 0)
-                   && ((my $check_race,my $val) = each(%{$valid_entities{'RACE'}})))
-            {
-                if ( $check_race =~ m/^\Q$race_wild/) {
-                $found=1;
-                $race_partial_match{$race_wild} = 1;
+                  while (($found == 0)
+                         && ((my $check_race,my $val) = each(%{$valid_entities{'RACE'}})))
+                  {
+                      if ( $check_race =~ m/^\Q$race_wild/) {
+                        $found=1;
+                        $race_partial_match{$race_wild} = 1;
+                      }
+                  }
+                  if ($found == 0) {
+                      $logging->ewarn( INFO,
+                           qq{Not able to validate "$race" in "PRERACE:$tag_value." This warning is order dependent. If the race is defined in a later file, this warning may not be accurate.},
+                           $file_for_error,
+                           $line_for_error
+                           );
+                  }
                 }
             }
-            if ($found == 0) {
-                $logging->ewarn( INFO,
-                   qq{Not able to validate "$race" in "PRERACE:$tag_value." This warning is order dependent. If the race is defined in a later file, this warning may not be accurate.},
-                   $file_for_error,
-                   $line_for_error
-                   );
-            }
-            }
-        }
             }
             else {
                 push @races, $race;
@@ -9525,9 +9542,9 @@ BEGIN {
             }
         }
         elsif ( $entry_type eq 'FEAT' ) {
-        # Note - ABILITY code is below. If you need to make changes here
-        # to the FEAT code, please also review the ABILITY code to ensure
-        # that your changes aren't needed there.
+          # Note - ABILITY code is below. If you need to make changes here
+          # to the FEAT code, please also review the ABILITY code to ensure
+          # that your changes aren't needed there.
             FEAT:
             for my $feat (@list) {
 
@@ -9588,9 +9605,9 @@ BEGIN {
             }
         }
         elsif ( $entry_type eq 'ABILITY' ) {
-        #[ 1671407 ] xcheck PREABILITY tag
-        # Note - shamelessly cut/pasting from the FEAT code, as it's
-        # fairly similar.
+          #[ 1671407 ] xcheck PREABILITY tag
+          # Note - shamelessly cut/pasting from the FEAT code, as it's
+          # fairly similar.
             ABILITY:
             for my $feat (@list) {
 
@@ -9644,10 +9661,10 @@ BEGIN {
                     push @{ $referer_types{'ABILITY'}{$1} },
                         [ $message_name, $file_for_error, $line_for_error ];
                 }
-        elsif ( $feat =~ /^CATEGORY[=.](.*)/ ) {
-            push @{ $referer_categories{'ABILITY'}{$1} },
-               [ $message_name, $file_for_error, $line_for_error ];
-        }
+            elsif ( $feat =~ /^CATEGORY[=.](.*)/ ) {
+                push @{ $referer_categories{'ABILITY'}{$1} },
+                   [ $message_name, $file_for_error, $line_for_error ];
+            }
                 else {
                     push @{ $referer{'ABILITY'}{$feat} },
                         [ $message_name, $file_for_error, $line_for_error ];
@@ -10307,34 +10324,34 @@ sub additionnal_tag_parsing {
     # Bonuses associated with a PREDEFAULTMONSTER:N are retained without
     #       the PREDEFAULTMONSTER:N
     if ( $conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'}
-     && $tag_name =~ /BONUS/ ) {
-    if ($tag_value =~ /PREDEFAULTMONSTER:N/ ) {
-        $_[1] =~ s/[|]PREDEFAULTMONSTER:N//;
-        $logging->ewarn ( WARNING,
-            qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
-            $file_for_error,
-            $line_for_error
-            );
-    }
+       && $tag_name =~ /BONUS/ ) {
+      if ($tag_value =~ /PREDEFAULTMONSTER:N/ ) {
+          $_[1] =~ s/[|]PREDEFAULTMONSTER:N//;
+          $logging->ewarn ( WARNING,
+                qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
+                $file_for_error,
+                $line_for_error
+                );
+      }
     }
 
     if ( $conversion_enable{'ALL:Weaponauto simple conversion'}
-     && $tag_name =~ /WEAPONAUTO/)
-     {
-         $_[0] = 'AUTO';
-         $_[1] =~ s/Simple/TYPE.Simple/;
-         $_[1] =~ s/Martial/TYPE.Martial/;
-         $_[1] =~ s/Exotic/TYPE.Exotic/;
-         $_[1] =~ s/SIMPLE/TYPE.Simple/;
-         $_[1] =~ s/MARTIAL/TYPE.Martial/;
-         $_[1] =~ s/EXOTIC/TYPE.Exotic/;
-         $_[1] = "WEAPONPROF|$_[1]";
-         $logging->ewarn ( WARNING,
-             qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
-             $file_for_error,
-             $line_for_error
-             );
-     }
+       && $tag_name =~ /WEAPONAUTO/)
+       {
+           $_[0] = 'AUTO';
+           $_[1] =~ s/Simple/TYPE.Simple/;
+           $_[1] =~ s/Martial/TYPE.Martial/;
+           $_[1] =~ s/Exotic/TYPE.Exotic/;
+           $_[1] =~ s/SIMPLE/TYPE.Simple/;
+           $_[1] =~ s/MARTIAL/TYPE.Martial/;
+           $_[1] =~ s/EXOTIC/TYPE.Exotic/;
+           $_[1] = "WEAPONPROF|$_[1]";
+           $logging->ewarn ( WARNING,
+                 qq(Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"),
+                 $file_for_error,
+                 $line_for_error
+                 );
+       }
 
     ##################################################################
     # [ 1398237 ] ALL: Convert Willpower to Will
@@ -11088,21 +11105,21 @@ sub validate_line {
 
     elsif ( $linetype eq "FEAT" ) {
 
-    # [ 1671410 ] xcheck CATEGORY:Feat in Feat object.
-    my $hasCategory = 0;
-    $hasCategory = 1 if exists $line_ref->{'CATEGORY'};
-    if ($hasCategory) {
-        if ($line_ref->{'CATEGORY'}[0] eq "CATEGORY:Feat") {
-        # Good
-        }
-        else {
-        $logging->ewarn(INFO,
-              qq(The CATEGORY tag must have the value of Feat when present on a FEAT. Remove or replace "$line_ref->{'CATEGORY'}[0]"),
-              $file_for_error,
-              $line_for_error
-              );
-        }
-    }
+      # [ 1671410 ] xcheck CATEGORY:Feat in Feat object.
+      my $hasCategory = 0;
+      $hasCategory = 1 if exists $line_ref->{'CATEGORY'};
+      if ($hasCategory) {
+          if ($line_ref->{'CATEGORY'}[0] eq "CATEGORY:Feat") {
+            # Good
+          }
+          else {
+            $logging->ewarn(INFO,
+                  qq(The CATEGORY tag must have the value of Feat when present on a FEAT. Remove or replace "$line_ref->{'CATEGORY'}[0]"),
+                  $file_for_error,
+                  $line_for_error
+                  );
+          }
+      }
 
         # On a FEAT line type:
         # 1) if it has MULT:YES, it  _has_ to have CHOOSE
@@ -11210,17 +11227,17 @@ sub validate_line {
             }
         }
         else {
-        # [ 1368562 ] .FORGET / .MOD don\'t need KEY entries
-        my $report_tag = $line_ref->{$column_with_no_tag{'EQUIPMOD'}[0]}[0];
-        if ($report_tag =~ /.FORGET$|.MOD$/) {
-        }
-        else {
-        $logging->ewarn(INFO,
-              qq(No KEY tag found for "$report_tag"),
-              $file_for_error,
-              $line_for_error
-              );
-        }
+          # [ 1368562 ] .FORGET / .MOD don\'t need KEY entries
+          my $report_tag = $line_ref->{$column_with_no_tag{'EQUIPMOD'}[0]}[0];
+          if ($report_tag =~ /.FORGET$|.MOD$/) {
+          }
+          else {
+            $logging->ewarn(INFO,
+                  qq(No KEY tag found for "$report_tag"),
+                  $file_for_error,
+                  $line_for_error
+                  );
+          }
         }
     }
     elsif ( $linetype eq "CLASS" ) {
@@ -11291,36 +11308,36 @@ BEGIN {
        if (exists $line_ref->{'TYPE'}
            && $line_ref->{'TYPE'}[0] =~ /Spellbook/)
        {
-       if (exists $line_ref->{'NUMPAGES'}
-           && exists $line_ref->{'PAGEUSAGE'}) {
-           #Nothing to see here, move along.
-       }
-       else {
-           $logging->ewarn (WARNING,
-              qq{You have a Spellbook defined without providing NUMPAGES or PAGEUSAGE. If you want a spellbook of finite capacity, consider adding these tags.},
-              $file_for_error,
-              $line_for_error
-              );
-       }
+         if (exists $line_ref->{'NUMPAGES'}
+             && exists $line_ref->{'PAGEUSAGE'}) {
+             #Nothing to see here, move along.
+         }
+         else {
+             $logging->ewarn (WARNING,
+                  qq{You have a Spellbook defined without providing NUMPAGES or PAGEUSAGE. If you want a spellbook of finite capacity, consider adding these tags.},
+                  $file_for_error,
+                  $line_for_error
+                  );
+         }
        }
        else {
 
-       if (exists $line_ref->{'NUMPAGES'} )
-       {
-           $logging->ewarn (WARNING,
-              qq{Invalid use of NUMPAGES tag in a non-spellbook. Remove this tag, or correct the TYPE.},
-              $file_for_error,
-              $line_for_error
-              );
-       }
-       if  (exists $line_ref->{'PAGEUSAGE'})
-       {
-           $logging->ewarn (WARNING,
-              qq{Invalid use of PAGEUSAGE tag in a non-spellbook. Remove this tag, or correct the TYPE.},
-              $file_for_error,
-              $line_for_error
-              );
-       }
+         if (exists $line_ref->{'NUMPAGES'} )
+         {
+             $logging->ewarn (WARNING,
+                  qq{Invalid use of NUMPAGES tag in a non-spellbook. Remove this tag, or correct the TYPE.},
+                  $file_for_error,
+                  $line_for_error
+                  );
+         }
+         if  (exists $line_ref->{'PAGEUSAGE'})
+         {
+             $logging->ewarn (WARNING,
+                  qq{Invalid use of PAGEUSAGE tag in a non-spellbook. Remove this tag, or correct the TYPE.},
+                  $file_for_error,
+                  $line_for_error
+                  );
+         }
        }
    }
 
@@ -11329,20 +11346,20 @@ BEGIN {
     #
     # In most files, take ADD:SA and replace with ADD:SAB
 
-    if (   $conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'}
-        && exists $line_ref->{'ADD:SA'}
-    ) {
-        $logging->ewarn( WARNING,
-            qq{Change ADD:SA for ADD:SAB in "$line_ref->{'ADD:SA'}[0]"},
-            $file_for_error,
-            $line_for_error
-        );
-        my $satag;
-        $satag = $line_ref->{'ADD:SA'}[0];
-        $satag =~ s/ADD:SA/ADD:SAB/;
-        $line_ref->{'ADD:SAB'}[0] = $satag;
-        delete $line_ref->{'ADD:SA'};
-    }
+      if (   $conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'}
+            && exists $line_ref->{'ADD:SA'}
+      ) {
+            $logging->ewarn( WARNING,
+                  qq{Change ADD:SA for ADD:SAB in "$line_ref->{'ADD:SA'}[0]"},
+                  $file_for_error,
+                  $line_for_error
+            );
+            my $satag;
+            $satag = $line_ref->{'ADD:SA'}[0];
+            $satag =~ s/ADD:SA/ADD:SAB/;
+            $line_ref->{'ADD:SAB'}[0] = $satag;
+            delete $line_ref->{'ADD:SA'};
+      }
 
 
 
@@ -11352,24 +11369,24 @@ BEGIN {
     # Bonuses associated with a PREDEFAULTMONSTER:Y need to be removed
     # This should remove the whole tag.
     if ($conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'}
-        && $filetype eq "RACE"
-    ) {
-    for my $key ( keys %$line_ref ) {
-        my $ary = $line_ref->{$key};
-        my $iCount = 0;
-        foreach (@$ary) {
-        my $ttag = $$ary[$iCount];
-        if ($ttag =~ /PREDEFAULTMONSTER:Y/) {
-            $$ary[$iCount] = "";
-            $logging->ewarn (WARNING,
-               qq{Removing "$ttag".},
-               $file_for_error,
-               $line_for_error
-               );
-        }
-        $iCount++;
-        }
-    }
+             && $filetype eq "RACE"
+      ) {
+      for my $key ( keys %$line_ref ) {
+          my $ary = $line_ref->{$key};
+          my $iCount = 0;
+          foreach (@$ary) {
+            my $ttag = $$ary[$iCount];
+            if ($ttag =~ /PREDEFAULTMONSTER:Y/) {
+                $$ary[$iCount] = "";
+                $logging->ewarn (WARNING,
+                     qq{Removing "$ttag".},
+                     $file_for_error,
+                     $line_for_error
+                     );
+            }
+            $iCount++;
+          }
+      }
     }
 
 
@@ -11457,61 +11474,61 @@ BEGIN {
                 }
          }
 
-    #######################################################
-    ## [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
-    ## Gawaine42
-    ## Note: Makes simplifying assumption that FOLLOWERALIGN
-    ## will occur only once in a given line, although DOMAINS may
-    ## occur multiple times.
-    if (($conversion_enable{'DEITY:Followeralign conversion'})
-        && $filetype eq "DEITY"
-        && (exists $line_ref->{'FOLLOWERALIGN'}))
-    {
-        my $followeralign = $line_ref->{'FOLLOWERALIGN'}[0];
-        $followeralign =~ s/^FOLLOWERALIGN://;
-        my $newprealign = "";
-        my $aligncount = 0;
+      #######################################################
+      ## [ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
+      ## Gawaine42
+      ## Note: Makes simplifying assumption that FOLLOWERALIGN
+      ## will occur only once in a given line, although DOMAINS may
+      ## occur multiple times.
+      if (($conversion_enable{'DEITY:Followeralign conversion'})
+          && $filetype eq "DEITY"
+          && (exists $line_ref->{'FOLLOWERALIGN'}))
+      {
+          my $followeralign = $line_ref->{'FOLLOWERALIGN'}[0];
+          $followeralign =~ s/^FOLLOWERALIGN://;
+          my $newprealign = "";
+          my $aligncount = 0;
 
-        for my $align (split //, $followeralign) {
+          for my $align (split //, $followeralign) {
                 # Is it a number?
                 my $number;
                 if ( (($number) = ($align =~ / \A (\d+) \z /xms))
-             && $number >= 0
-             && $number < scalar @valid_system_alignments)
-        {
+                 && $number >= 0
+                 && $number < scalar @valid_system_alignments)
+            {
                     my $newalign = $valid_system_alignments[$number];
-            if ($aligncount > 0) {
-            $newprealign .= ',';
-            }
-            $aligncount++;
-            $newprealign .= "$newalign";
+                if ($aligncount > 0) {
+                  $newprealign .= ',';
                 }
-        else {
+                $aligncount++;
+                $newprealign .= "$newalign";
+                }
+            else {
                     $logging->ewarn( NOTICE,
-               qq{Invalid value "$align" for tag "$line_ref->{'FOLLOWERALIGN'}[0]"},
-               $file_for_error,
-               $line_for_error
-               );
+                     qq{Invalid value "$align" for tag "$line_ref->{'FOLLOWERALIGN'}[0]"},
+                     $file_for_error,
+                     $line_for_error
+                     );
 
-        }
             }
-        my $dom_count=0;
+            }
+          my $dom_count=0;
 
-        if (exists $line_ref->{'DOMAINS'}) {
-        for my $line ($line_ref->{'DOMAINS'})
-        {
-            $line_ref->{'DOMAINS'}[$dom_count] .= "|PREALIGN:$newprealign";
-            $dom_count++;
-        }
-        $logging->ewarn( NOTICE,
-               qq{Adding PREALIGN to domain information and removing "$line_ref->{'FOLLOWERALIGN'}[0]"},
-               $file_for_error,
-               $line_for_error
-               );
+          if (exists $line_ref->{'DOMAINS'}) {
+            for my $line ($line_ref->{'DOMAINS'})
+            {
+                $line_ref->{'DOMAINS'}[$dom_count] .= "|PREALIGN:$newprealign";
+                $dom_count++;
+            }
+            $logging->ewarn( NOTICE,
+                   qq{Adding PREALIGN to domain information and removing "$line_ref->{'FOLLOWERALIGN'}[0]"},
+                   $file_for_error,
+                   $line_for_error
+                   );
 
-        delete $line_ref->{'FOLLOWERALIGN'};
-        }
-    }
+            delete $line_ref->{'FOLLOWERALIGN'};
+          }
+      }
 
         ##################################################################
         # [ 1353255 ] TYPE to RACETYPE conversion
@@ -11525,10 +11542,10 @@ BEGIN {
            && not ( exists $line_ref->{'RACETYPE'} )
            && not ( exists $line_ref->{'TYPE'}  )
         ) {
-            # .MOD / .FORGET don't need RACETYPE or TYPE'
+            # .MOD / .FORGET / .COPY don't need RACETYPE or TYPE'
             my $race_name = $line_ref->{'000RaceName'}[0];
-            if ($race_name =~ /\.(FORGET|MOD|COPY=.+)$/)  {
-           } else { $logging->ewarn (WARNING,
+          if ($race_name =~ /\.(FORGET|MOD|COPY=.+)$/) {
+          } else { $logging->ewarn (WARNING,
               qq{Race entry missing both TYPE and RACETYPE.},
                   $file_for_error,
                   $line_for_error
@@ -14235,17 +14252,17 @@ my $_is_first_line      = YES;
 
 sub getWarning
 {
-    my $self = shift;
-    my $level = shift;
-    my %warning_level_prefix = (
-           7   => "DBG",   # DEBUG
-           6   => "  -",   # INFO
-           5   => "   ",   # NOTICE
-           4   => "*=>",   # WARNING
-           3   => "***",   # ERROR
-    );
+      my $self = shift;
+      my $level = shift;
+      my %warning_level_prefix = (
+             7   => "DBG",   # DEBUG
+             6   => "  -",   # INFO
+             5   => "   ",   # NOTICE
+             4   => "*=>",   # WARNING
+             3   => "***",   # ERROR
+      );
 
-    return $warning_level_prefix{$level};
+      return $warning_level_prefix{$level};
 
 }
 
@@ -14975,11 +14992,19 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.39 -- -- NOT YET RELEASED
 
+[ 1937985 ] Add TIMEUNIT=<text> parameter to the SPELLS tag
+
+[ 1937852 ] Kit GENDER Support
+
+[ 1937680 ] KIT FUNDS lines in Kit file
+
+[ 1774985 ] Exchange cl() with classlevel()
+
+[ 1750238 ] ABILITY warnings
+
 [ 1912505 ] Stop Reporting missing TYPE and RACETYPE in racial .MOD
 
 [ 1935376 ] New files: Armorprof and Shieldprof
-
-KIT FUNDS lines in Kit file
 
 LANGAUTO:.CLEAR
 
