@@ -58,11 +58,11 @@ public class SourceDateLstTest extends AbstractGlobalTokenTestCase
 		assertFalse(parse("Not a Date"));
 	}
 
-	@Test
-	public void testValidSystemDateMethod() throws PersistenceLayerException
-	{
-		assertTrue(parse("December 2, 2005"));
-	}
+//	@Test
+//	public void testValidSystemDateMethod() throws PersistenceLayerException
+//	{
+//		assertTrue(parse("December 2, 2005"));
+//	}
 
 	@Test
 	public void testRoundRobinBase() throws PersistenceLayerException
