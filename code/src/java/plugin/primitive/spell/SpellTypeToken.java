@@ -1,30 +1,28 @@
 package plugin.primitive.spell;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.SpellType;
 import pcgen.cdom.inst.CDOMSpell;
-import pcgen.cdom.inst.DomainSpellList;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.PrimitiveToken;
 import pcgen.util.Logging;
 
-public class DomainListToken implements PrimitiveToken<CDOMSpell>
+public class SpellTypeToken implements PrimitiveToken<CDOMSpell>
 {
 
-	private CDOMSingleRef<DomainSpellList> ref;
+	private SpellType spellType;
 	private Formula levelMax = null;
 	private Formula levelMin = null;
 	private Boolean known = null;
 
 	public boolean initialize(LoadContext context, String value, String args)
 	{
-		ref = context.ref.getCDOMReference(DomainSpellList.class, value);
+		spellType = SpellType.getConstant(value);
 		boolean ret = true;
 		if (args != null)
 		{
@@ -35,7 +33,7 @@ public class DomainListToken implements PrimitiveToken<CDOMSpell>
 
 	public String getTokenName()
 	{
-		return "DOMAINLIST";
+		return "SPELLTYPE";
 	}
 
 	public Class<CDOMSpell> getReferenceClass()
@@ -45,14 +43,16 @@ public class DomainListToken implements PrimitiveToken<CDOMSpell>
 
 	public Set<CDOMSpell> getSet(CharacterDataStore pc)
 	{
-		return new HashSet<CDOMSpell>(pc.getActiveLists().getListContents(
-				ref.resolvesTo()));
+		/*
+		 * TODO Define how this works
+		 */
+		return null;
 	}
 
 	public String getLSTformat()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(ref.getLSTformat());
+		sb.append(spellType.toString());
 		boolean usedBracket = false;
 		if (known != null)
 		{
@@ -98,7 +98,10 @@ public class DomainListToken implements PrimitiveToken<CDOMSpell>
 
 	public boolean allow(CharacterDataStore pc, CDOMSpell obj)
 	{
-		return pc.getActiveLists().listContains(ref.resolvesTo(), obj);
+		/*
+		 * TODO Define how this works
+		 */
+		return false;
 	}
 
 	private boolean initializeRestriction(String restrString)

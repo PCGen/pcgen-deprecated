@@ -1,5 +1,8 @@
 package plugin.primitive.pcclass;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.character.CharacterDataStore;
@@ -41,5 +44,18 @@ public class SpellcasterToken implements PrimitiveToken<CDOMPCClass>
 	public boolean allow(CharacterDataStore pc, CDOMPCClass obj)
 	{
 		return obj.get(ObjectKey.USE_SPELL_SPELL_STAT) != null;
+	}
+
+	public Set<CDOMPCClass> getSet(CharacterDataStore pc)
+	{
+		HashSet<CDOMPCClass> clSet = new HashSet<CDOMPCClass>();
+		for (CDOMPCClass cl : pc.getRulesData().getAll(CDOMPCClass.class))
+		{
+			if (cl.get(ObjectKey.USE_SPELL_SPELL_STAT) != null)
+			{
+				clSet.add(cl);
+			}
+		}
+		return clSet;
 	}
 }

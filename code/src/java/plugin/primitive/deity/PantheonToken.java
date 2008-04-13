@@ -1,5 +1,8 @@
 package plugin.primitive.deity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Pantheon;
 import pcgen.cdom.inst.CDOMDeity;
@@ -42,4 +45,16 @@ public class PantheonToken implements PrimitiveToken<CDOMDeity>
 		return deity.containsInList(ListKey.PANTHEON, pantheon);
 	}
 
+	public Set<CDOMDeity> getSet(CharacterDataStore pc)
+	{
+		HashSet<CDOMDeity> deitySet = new HashSet<CDOMDeity>();
+		for (CDOMDeity deity : pc.getRulesData().getAll(CDOMDeity.class))
+		{
+			if (deity.containsInList(ListKey.PANTHEON, pantheon))
+			{
+				deitySet.add(deity);
+			}
+		}
+		return deitySet;
+	}
 }

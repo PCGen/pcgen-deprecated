@@ -1,9 +1,5 @@
 package plugin.primitive.spell;
 
-import java.util.List;
-
-import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMSpell;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
@@ -12,7 +8,7 @@ import pcgen.rules.persistence.token.PrimitiveToken;
 public class SpellBookToken implements PrimitiveToken<CDOMSpell>
 {
 
-	private boolean requiresSpellBook;
+	private String spellBook;
 
 	public boolean initialize(LoadContext context, String value, String args)
 	{
@@ -20,19 +16,7 @@ public class SpellBookToken implements PrimitiveToken<CDOMSpell>
 		{
 			return false;
 		}
-		if (value.equals("YES"))
-		{
-			requiresSpellBook = true;
-		}
-		else if (value.equals("NO"))
-		{
-			requiresSpellBook = false;
-		}
-		else
-		{
-			throw new IllegalArgumentException(
-				"Did not understand SpellBook requrirement String: " + value);
-		}
+		spellBook = value;
 		return true;
 	}
 
@@ -48,22 +32,12 @@ public class SpellBookToken implements PrimitiveToken<CDOMSpell>
 
 	public String getLSTformat()
 	{
-		return requiresSpellBook ? "YES" : "NO";
+		return spellBook;
 	}
 
 	public boolean allow(CharacterDataStore pc, CDOMSpell obj)
 	{
-		List<CDOMPCClass> classList =
-				pc.getActiveGraph().getGrantedNodeList(CDOMPCClass.class);
-		for (CDOMPCClass cl : classList)
-		{
-			Boolean spellbook = cl.get(ObjectKey.SPELLBOOK);
-			if (spellbook != null
-				&& (spellbook.booleanValue() == requiresSpellBook))
-			{
-				// TODO use this class
-			}
-		}
+		//Is the spell in the given spell book for the PC?
 		//TODO this is a hack...
 		return false;
 	}

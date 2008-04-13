@@ -17,14 +17,9 @@ import pcgen.util.Logging;
 public class ClassListToken implements PrimitiveToken<CDOMSpell>
 {
 
-	private static final Formula MINFORMULA = FormulaFactory
-			.getFormulaFor(Integer.MIN_VALUE);
-	private static final Formula MAXFORMULA = FormulaFactory
-			.getFormulaFor(Integer.MAX_VALUE);
-
 	private CDOMSingleRef<ClassSpellList> ref;
-	private Formula levelMax = MAXFORMULA;
-	private Formula levelMin = MINFORMULA;
+	private Formula levelMax = null;
+	private Formula levelMin = null;
 	private Boolean known = null;
 
 	public boolean initialize(LoadContext context, String value, String args)
@@ -56,7 +51,49 @@ public class ClassListToken implements PrimitiveToken<CDOMSpell>
 
 	public String getLSTformat()
 	{
-		return ref.getLSTformat();
+		StringBuilder sb = new StringBuilder();
+		sb.append(ref.getLSTformat());
+		boolean usedBracket = false;
+		if (known != null)
+		{
+			sb.append('[');
+			sb.append("KNOWN=");
+			sb.append(known.booleanValue() ? "YES" : "NO");
+			usedBracket = true;
+		}
+		if (levelMin != null)
+		{
+			if (!usedBracket)
+			{
+				sb.append('[');
+			}
+			else
+			{
+				sb.append(';');
+			}
+			sb.append("LEVELMIN=");
+			sb.append(levelMin.toString());
+			usedBracket = true;
+		}
+		if (levelMax != null)
+		{
+			if (!usedBracket)
+			{
+				sb.append('[');
+			}
+			else
+			{
+				sb.append(';');
+			}
+			sb.append("LEVELMAX=");
+			sb.append(levelMax.toString());
+			usedBracket = true;
+		}
+		if (usedBracket)
+		{
+			sb.append(']');
+		}
+		return sb.toString();
 	}
 
 	public boolean allow(CharacterDataStore pc, CDOMSpell obj)

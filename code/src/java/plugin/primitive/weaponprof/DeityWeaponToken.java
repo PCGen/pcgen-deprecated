@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMWeaponProf;
@@ -51,13 +51,13 @@ public class DeityWeaponToken implements PrimitiveToken<CDOMWeaponProf>
 		}
 		for (CDOMDeity deity : deities)
 		{
-			List<CDOMSingleRef<CDOMWeaponProf>> weapons = deity
+			List<CDOMReference<CDOMWeaponProf>> weapons = deity
 					.getListFor(ListKey.DEITYWEAPON);
 			if (weapons != null)
 			{
-				for (CDOMSingleRef<CDOMWeaponProf> wpRef : weapons)
+				for (CDOMReference<CDOMWeaponProf> wpRef : weapons)
 				{
-					wpSet.add(wpRef.resolvesTo());
+					wpSet.addAll(wpRef.getContainedObjects());
 				}
 			}
 		}
@@ -79,11 +79,11 @@ public class DeityWeaponToken implements PrimitiveToken<CDOMWeaponProf>
 		}
 		for (CDOMDeity deity : deities)
 		{
-			List<CDOMSingleRef<CDOMWeaponProf>> weapons = deity
+			List<CDOMReference<CDOMWeaponProf>> weapons = deity
 					.getListFor(ListKey.DEITYWEAPON);
 			if (weapons != null)
 			{
-				for (CDOMSingleRef<CDOMWeaponProf> wpRef : weapons)
+				for (CDOMReference<CDOMWeaponProf> wpRef : weapons)
 				{
 					if (wpRef.contains(obj))
 					{
