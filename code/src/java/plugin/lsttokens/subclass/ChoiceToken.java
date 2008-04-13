@@ -1,7 +1,5 @@
 package plugin.lsttokens.subclass;
 
-import java.math.BigDecimal;
-
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.content.CDOMSpellProhibitor;
 import pcgen.cdom.enumeration.ObjectKey;
