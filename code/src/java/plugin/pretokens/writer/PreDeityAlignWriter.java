@@ -96,7 +96,6 @@ public class PreDeityAlignWriter extends AbstractPrerequisiteWriter implements
 			PrerequisiteOperator oper = null;
 			for (Prerequisite p : prereqList)
 			{
-				System.err.println(p + " " + p.getKey());
 				//
 				// ...with all PREARMORTYPE entries...
 				//
@@ -118,6 +117,11 @@ public class PreDeityAlignWriter extends AbstractPrerequisiteWriter implements
 						return false;
 					}
 				}
+			}
+			if (oper.equals(PrerequisiteOperator.EQ)
+					&& !"1".equals(prereq.getOperand()))
+			{
+				return false;
 			}
 			if (PrerequisiteOperator.LT.equals(prereq.getOperator()))
 			{
