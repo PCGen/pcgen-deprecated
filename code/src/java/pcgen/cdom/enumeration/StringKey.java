@@ -119,5 +119,6 @@ public enum StringKey {
 	 ABB,
 	 SOURCE_SHORT,
 	 SOURCE_LONG,
-	 SOURCE_PAGE;
+	 SOURCE_PAGE,
+	 REPEAT;
 }

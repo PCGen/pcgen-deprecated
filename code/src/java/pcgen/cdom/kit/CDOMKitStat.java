@@ -1,5 +1,7 @@
 package pcgen.cdom.kit;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +15,16 @@ public class CDOMKitStat extends AbstractCDOMKitObject
 	public void addStat(CDOMStat stat, Formula statValue)
 	{
 		statMap.put(stat, statValue);
+	}
+	
+	public Collection<CDOMStat> getStats()
+	{
+		return Collections.unmodifiableSet(statMap.keySet());
+	}
+	
+	public Formula getFormulaFor(CDOMStat s)
+	{
+		return statMap.get(s);
 	}
 
 }

@@ -36,11 +36,14 @@ import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.helper.AttackCycle;
 import pcgen.cdom.helper.Capacity;
 import pcgen.cdom.helper.FollowerLimit;
+import pcgen.cdom.helper.KitTask;
 import pcgen.cdom.helper.Qualifier;
 import pcgen.cdom.helper.Quality;
+import pcgen.cdom.helper.StatLock;
 import pcgen.cdom.inst.CDOMAlignment;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.bonus.BonusObj;
 
@@ -61,8 +64,8 @@ public final class ListKey<T>
 
 	public static final ListKey<Pantheon> PANTHEON = new ListKey<Pantheon>();
 
-	public static final ListKey<CDOMSingleRef<CDOMWeaponProf>> DEITYWEAPON =
-			new ListKey<CDOMSingleRef<CDOMWeaponProf>>();
+	public static final ListKey<CDOMReference<CDOMWeaponProf>> DEITYWEAPON =
+			new ListKey<CDOMReference<CDOMWeaponProf>>();
 
 	public static final ListKey<RacePantheon> RACE_PANTHEON =
 			new ListKey<RacePantheon>();
@@ -120,6 +123,12 @@ public final class ListKey<T>
 	public static final ListKey<Formula> KNOWN = new ListKey<Formula>();
 	
 	public static final ListKey<Formula> SPECIALTYKNOWN = new ListKey<Formula>();
+
+	public static final ListKey<StatLock> STAT_LOCKS = new ListKey<StatLock>();
+
+	public static final ListKey<CDOMStat> UNLOCKED_STATS = new ListKey<CDOMStat>();
+
+	public static final ListKey<KitTask<?>> KIT_TASKS = new ListKey<KitTask<?>>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey()

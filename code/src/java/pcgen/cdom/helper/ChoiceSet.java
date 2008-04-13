@@ -56,7 +56,7 @@ public class ChoiceSet<T> extends ConcretePrereqObject implements PrereqObject,
 		return pcs.getLSTformat();
 	}
 
-	public Class<T> getChoiceClass()
+	public Class<? super T> getChoiceClass()
 	{
 		return pcs.getChoiceClass();
 	}

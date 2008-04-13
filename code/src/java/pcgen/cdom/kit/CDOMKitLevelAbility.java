@@ -8,14 +8,24 @@ public class CDOMKitLevelAbility extends AbstractCDOMKitObject
 	private CDOMReference<CDOMPCClass> applyClass;
 	private Integer applyLevel;
 
-	public void setClass(CDOMReference<CDOMPCClass> cl)
+	public void setApplyClass(CDOMReference<CDOMPCClass> cl)
 	{
 		applyClass = cl;
 	}
 
-	public void setLevel(Integer lvl)
+	public void setApplyLevel(Integer lvl)
 	{
 		applyLevel = lvl;
+	}
+
+	public CDOMReference<CDOMPCClass> getApplyClass()
+	{
+		return applyClass;
+	}
+
+	public Integer getApplyLevel()
+	{
+		return applyLevel;
 	}
 
 }

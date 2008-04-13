@@ -29,7 +29,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.character.CharacterDataStore;
+import pcgen.rules.persistence.TokenUtilities;
 
 public class RetainingChooser<T extends CDOMObject> implements
 		PrimitiveChoiceSet<T>
@@ -91,28 +95,15 @@ public class RetainingChooser<T extends CDOMObject> implements
 
 	public String getLSTformat()
 	{
-		StringBuilder sb = new StringBuilder();
-		// sb.append(baseSet.getLSTformat()).append('[');
-		Set<String> sortSet = new TreeSet<String>();
+		Set<LSTWriteable> sortSet = new TreeSet<LSTWriteable>(TokenUtilities.WRITEABLE_SORTER);
 		for (PrimitiveChoiceFilter<? super T> cf : retainingSet)
 		{
-			sortSet.add(cf.getLSTformat());
+			sortSet.add(cf);
 		}
-		boolean needPipe = false;
-		for (String s : sortSet)
-		{
-			if (needPipe)
-			{
-				sb.append('|');
-			}
-			needPipe = true;
-			sb.append(s);
-		}
-		// sb.append(']');
-		return sb.toString();
+		return ReferenceUtilities.joinLstFormat(sortSet, Constants.PIPE);
 	}
 
-	public Class<T> getChoiceClass()
+	public Class<? super T> getChoiceClass()
 	{
 		return baseSet.getChoiceClass();
 	}

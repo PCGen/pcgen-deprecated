@@ -16,7 +16,7 @@ public class ChainedChoiceSet<T> implements PrimitiveChoiceSet<T>
 		secondSet = otherSet;
 	}
 
-	public Class<T> getChoiceClass()
+	public Class<? super T> getChoiceClass()
 	{
 		return baseSet.getChoiceClass();
 	}

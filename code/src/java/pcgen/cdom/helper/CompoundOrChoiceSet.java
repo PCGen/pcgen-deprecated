@@ -62,7 +62,7 @@ public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
 		return ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 	}
 
-	public Class<T> getChoiceClass()
+	public Class<? super T> getChoiceClass()
 	{
 		return set == null ? null : set.iterator().next().getChoiceClass();
 	}

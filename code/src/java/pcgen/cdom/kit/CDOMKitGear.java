@@ -95,4 +95,23 @@ public class CDOMKitGear extends AbstractCDOMKitObject
 	{
 		this.equipment = equipment;
 	}
+
+	private String lookupName;
+	private Formula lookupFormula;
+	
+	public void loadLookup(String tableEntry, Formula f)
+	{
+		lookupName = tableEntry;
+		lookupFormula = f;
+	}
+
+	public String getLookupName()
+	{
+		return lookupName;
+	}
+
+	public Formula getLookupFormula()
+	{
+		return lookupFormula;
+	}
 }

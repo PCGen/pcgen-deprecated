@@ -1,5 +1,6 @@
 package pcgen.cdom.inst;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,11 +9,13 @@ import java.util.Map;
 
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.StringKey;
 
 public class CDOMPCClass extends AbstractCDOMClassAwareObject
 {
 
 	Map<Integer, CDOMPCClassLevel> levelMap = new HashMap<Integer, CDOMPCClassLevel>();
+	List<CDOMPCClassLevel> repeatLevelObjects = new ArrayList<CDOMPCClassLevel>();
 
 	public CDOMPCClassLevel getClassLevel(int lvl)
 	{
@@ -98,5 +101,22 @@ public class CDOMPCClass extends AbstractCDOMClassAwareObject
 			return other.isCDOMEqual(this) && other.equalsPrereqObject(this);
 		}
 		return false;
+	}
+
+	public CDOMPCClassLevel getRepeatLevel(int level, String objectName)
+	{
+		CDOMPCClassLevel pcl = new CDOMPCClassLevel();
+		repeatLevelObjects.add(pcl);
+		pcl.put(ObjectKey.PARENT, this);
+		pcl.put(ObjectKey.MULTIPLE_ALLOWED, Boolean.TRUE);
+		String originalLevels = level + ":" + objectName;
+		pcl.put(StringKey.REPEAT, originalLevels);
+		pcl.setName(getDisplayName() + "(" + originalLevels + ")");
+		return pcl;
+	}
+	
+	public Collection<CDOMPCClassLevel> getRepeatLevels()
+	{
+		return Collections.unmodifiableList(repeatLevelObjects);
 	}
 }

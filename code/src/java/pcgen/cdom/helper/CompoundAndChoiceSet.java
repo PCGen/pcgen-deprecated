@@ -22,60 +22,67 @@
  */
 package pcgen.cdom.helper;
 
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.Set;
+import java.util.TreeSet;
 
-import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.character.CharacterDataStore;
+import pcgen.rules.persistence.TokenUtilities;
 
-public class FilteringChooser<T extends PrereqObject> implements
-		PrimitiveChoiceSet<T>
+public class CompoundAndChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
 
-	private final PrimitiveChoiceFilter<? super T> removingFilter;
+	private final Set<PrimitiveChoiceSet<T>> set = new TreeSet<PrimitiveChoiceSet<T>>(
+			TokenUtilities.WRITEABLE_SORTER);
 
-	private final PrimitiveChoiceSet<T> baseSet;
-
-	public FilteringChooser(PrimitiveChoiceSet<T> base,
-		PrimitiveChoiceFilter<? super T> cf)
+	public CompoundAndChoiceSet(Collection<PrimitiveChoiceSet<T>> coll)
 	{
-		super();
-		if (base == null)
+		if (coll == null)
 		{
 			throw new IllegalArgumentException();
 		}
-		if (cf == null)
-		{
-			throw new IllegalArgumentException();
-		}
-		baseSet = base;
-		removingFilter = cf;
+		set.addAll(coll);
 	}
 
 	public Set<T> getSet(CharacterDataStore pc)
 	{
-		Set<T> choices = new HashSet<T>(baseSet.getSet(pc));
-		for (Iterator<T> it = choices.iterator(); it.hasNext();)
+		Set<T> returnSet = null;
+		for (PrimitiveChoiceSet<T> cs : set)
 		{
-			if (!removingFilter.allow(pc, it.next()))
+			if (returnSet == null)
 			{
-				it.remove();
+				returnSet = cs.getSet(pc);
+			}
+			else
+			{
+				returnSet.retainAll(cs.getSet(pc));
 			}
 		}
-		return choices;
+		return returnSet;
 	}
 
 	public String getLSTformat()
 	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(baseSet.getLSTformat()).append('[');
-		sb.append(removingFilter.getLSTformat()).append(']');
-		return sb.toString();
+		return ReferenceUtilities.joinLstFormat(set, Constants.COMMA);
 	}
 
 	public Class<? super T> getChoiceClass()
 	{
-		return baseSet.getChoiceClass();
+		return set == null ? null : set.iterator().next().getChoiceClass();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return set.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return (o instanceof CompoundAndChoiceSet)
+				&& ((CompoundAndChoiceSet<?>) o).set.equals(set);
 	}
 }
