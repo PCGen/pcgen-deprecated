@@ -387,6 +387,15 @@ public abstract class AbstractAddTokenTestCase extends
 	}
 
 	@Test
+	public void testRoundRobinAll() throws PersistenceLayerException
+	{
+		if (isAllLegal())
+		{
+			runRoundRobin(getSubTokenString() + "|ANY");
+		}
+	}
+
+	@Test
 	public void testRoundRobinOne() throws PersistenceLayerException
 	{
 		construct(primaryContext, "TestWP1");
@@ -655,8 +664,15 @@ public abstract class AbstractAddTokenTestCase extends
 			assertTrue(parseSecondary(getSubTokenString() + "|TestWP1"
 				+ getJoinCharacter() + "TestWP2"));
 			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
-			assertFalse(parse(getSubTokenString() + "|TestWP3"
-				+ getJoinCharacter() + "ANY"));
+			try
+			{
+				assertFalse(parse(getSubTokenString() + "|TestWP3"
+						+ getJoinCharacter() + "ANY"));
+			}
+			catch (IllegalArgumentException e)
+			{
+				//OK too
+			}
 			assertEquals("Bad Add had Side Effects", primaryGraph,
 				secondaryGraph);
 		}

@@ -55,7 +55,7 @@ public class DeityWeapTokenTest extends
 	@Override
 	public boolean isAllLegal()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

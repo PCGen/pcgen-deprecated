@@ -17,6 +17,8 @@
  */
 package plugin.lsttokens;
 
+import java.net.URISyntaxException;
+
 import org.junit.Test;
 
 import pcgen.cdom.base.CDOMObject;
@@ -28,6 +30,9 @@ import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
+import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreRaceParser;
+import plugin.pretokens.writer.PreRaceWriter;
 
 public class AbilityLstTest extends AbstractGlobalTokenTestCase
 {
@@ -35,6 +40,14 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	static CDOMPrimaryToken<CDOMObject> token = new AbilityLst();
 	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
 			CDOMTemplate.class);
+
+	@Override
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		TokenRegistration.register(new PreRaceParser());
+		TokenRegistration.register(new PreRaceWriter());
+	}
 
 	@Override
 	public CDOMLoader<CDOMTemplate> getLoader()
@@ -126,7 +139,7 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 
 	@Test
 	public void testInvalidDoubleBarStartAbility()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("FEAT|NORMAL||Abil1|Abil2"));
 		assertNoSideEffects();
@@ -142,10 +155,11 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinJustSpell() throws PersistenceLayerException
 	{
-		CDOMAbility ab =
-				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1");
 	}
@@ -153,14 +167,16 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoSpell() throws PersistenceLayerException
 	{
-		CDOMAbility ab =
-				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil2");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1|Abil2");
 	}
@@ -168,22 +184,26 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoNature() throws PersistenceLayerException
 	{
-		CDOMAbility ab =
-				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil2");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil3");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil3");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil3");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil4");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil4");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil4");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1|Abil2", "FEAT|VIRTUAL|Abil3|Abil4");
 	}
@@ -191,23 +211,27 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinTwoCategory() throws PersistenceLayerException
 	{
-		CDOMAbility ab =
-				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil2");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil2");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		CDOMAbilityCategory ac = CDOMAbilityCategory.getConstant("NEWCAT");
 		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil3");
 		primaryContext.ref.reassociateCategory(ac, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil3");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil3");
 		secondaryContext.ref.reassociateCategory(ac, ab);
 		ab = primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil4");
 		primaryContext.ref.reassociateCategory(ac, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil4");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil4");
 		secondaryContext.ref.reassociateCategory(ac, ab);
 		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil2", "NEWCAT|VIRTUAL|Abil3|Abil4");
 	}
@@ -215,10 +239,11 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinDupe() throws PersistenceLayerException
 	{
-		CDOMAbility ab =
-				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1");
 	}
@@ -226,55 +251,58 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	@Test
 	public void testRoundRobinDupeDiffNature() throws PersistenceLayerException
 	{
-		CDOMAbility ab =
-				primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
 		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
-		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1", "FEAT|VIRTUAL|Abil1");
 	}
 
-	// @Test
-	// public void testRoundRobinDupeOnePrereq() throws
-	// PersistenceLayerException
-	// {
-	// Ability ab =
-	// primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
-	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
-	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1|PRERACE:1,Human");
-	// assertTrue(primaryContext.ref.validate());
-	// assertTrue(secondaryContext.ref.validate());
-	// }
-	//	
-	// @Test
-	// public void testRoundRobinDupeDiffPrereqs()
-	// throws PersistenceLayerException
-	// {
-	// Ability ab =
-	// primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
-	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
-	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// runRoundRobin("FEAT|VIRTUAL|Abil1",
-	// "FEAT|VIRTUAL|Abil1|PRERACE:1,Human");
-	// assertTrue(primaryContext.ref.validate());
-	// assertTrue(secondaryContext.ref.validate());
-	// }
-	//
-	// @Test
-	// public void testRoundRobinDupeTwoDiffPrereqs()
-	// throws PersistenceLayerException
-	// {
-	// Ability ab =
-	// primaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
-	// primaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class, "Abil1");
-	// secondaryContext.ref.reassociateReference(AbilityCategory.FEAT, ab);
-	// runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1|PRERACE:1,Elf",
-	// "FEAT|VIRTUAL|Abil1|PRERACE:1,Human");
-	// assertTrue(primaryContext.ref.validate());
-	// assertTrue(secondaryContext.ref.validate());
-	// }
+	@Test
+	public void testRoundRobinDupeOnePrereq() throws PersistenceLayerException
+	{
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeDiffPrereqs()
+			throws PersistenceLayerException
+	{
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		runRoundRobin("FEAT|VIRTUAL|Abil1",
+				"FEAT|VIRTUAL|Abil1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
+
+	@Test
+	public void testRoundRobinDupeTwoDiffPrereqs()
+			throws PersistenceLayerException
+	{
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		runRoundRobin("FEAT|VIRTUAL|Abil1|Abil1|PRERACE:1,Elf",
+				"FEAT|VIRTUAL|Abil1|PRERACE:1,Human");
+		assertTrue(primaryContext.ref.validate());
+		assertTrue(secondaryContext.ref.validate());
+	}
 }

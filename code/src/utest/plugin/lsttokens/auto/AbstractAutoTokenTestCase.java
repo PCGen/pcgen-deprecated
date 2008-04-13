@@ -124,9 +124,14 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
-					+ "TYPE="));
-			assertNoSideEffects();
+			if (parse(getSubTokenString() + "|" + getTypePrefix() + "TYPE="))
+			{
+				assertFalse(primaryContext.ref.validate());
+			}
+			else
+			{
+				assertNoSideEffects();
+			}
 		}
 	}
 
@@ -136,9 +141,14 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
-					+ "TYPE=One."));
-			assertNoSideEffects();
+			if (parse(getSubTokenString() + "|" + getTypePrefix() + "TYPE=One."))
+			{
+				assertFalse(primaryContext.ref.validate());
+			}
+			else
+			{
+				assertNoSideEffects();
+			}
 		}
 	}
 
@@ -148,9 +158,15 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
-					+ "TYPE=One..Two"));
-			assertNoSideEffects();
+			if (parse(getSubTokenString() + "|" + getTypePrefix()
+					+ "TYPE=One..Two"))
+			{
+				assertFalse(primaryContext.ref.validate());
+			}
+			else
+			{
+				assertNoSideEffects();
+			}
 		}
 	}
 
@@ -160,9 +176,14 @@ public abstract class AbstractAutoTokenTestCase extends
 	{
 		if (isTypeLegal())
 		{
-			assertFalse(parse(getSubTokenString() + "|" + getTypePrefix()
-					+ "TYPE=.One"));
-			assertNoSideEffects();
+			if (parse(getSubTokenString() + "|" + getTypePrefix() + "TYPE=.One"))
+			{
+				assertFalse(primaryContext.ref.validate());
+			}
+			else
+			{
+				assertNoSideEffects();
+			}
 		}
 	}
 
@@ -379,14 +400,14 @@ public abstract class AbstractAutoTokenTestCase extends
 	}
 
 	@Test
-	public void testRoundRobinBecauseUsersAreCreative() throws PersistenceLayerException
+	public void testRoundRobinBecauseUsersAreCreative()
+			throws PersistenceLayerException
 	{
 		if (isListLegal() && isPrereqLegal())
 		{
 			runRoundRobin(getSubTokenString() + "|%LIST[PRERACE:1,Human]");
 		}
 	}
-
 
 	@Test
 	public void testRoundRobinOnePrereq() throws PersistenceLayerException
@@ -410,7 +431,8 @@ public abstract class AbstractAutoTokenTestCase extends
 			construct(primaryContext, "TestWP2");
 			construct(secondaryContext, "TestWP1");
 			construct(secondaryContext, "TestWP2");
-			runRoundRobin(getSubTokenString() + "|TestWP1|TestWP2[PRERACE:1,Human]");
+			runRoundRobin(getSubTokenString()
+					+ "|TestWP1|TestWP2[PRERACE:1,Human]");
 		}
 	}
 

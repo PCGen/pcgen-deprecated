@@ -17,9 +17,12 @@
  */
 package plugin.lsttokens;
 
+import java.net.URISyntaxException;
+
 import org.junit.Test;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.inst.CDOMStat;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
@@ -33,6 +36,16 @@ public class DefineLstTest extends AbstractGlobalTokenTestCase
 	static DefineLst token = new DefineLst();
 	static CDOMTokenLoader<CDOMTemplate> loader = new CDOMTokenLoader<CDOMTemplate>(
 			CDOMTemplate.class);
+
+	@Override
+	public void setUp() throws PersistenceLayerException, URISyntaxException
+	{
+		super.setUp();
+		CDOMStat ps = primaryContext.ref.constructCDOMObject(CDOMStat.class, "Strength");
+		primaryContext.ref.registerAbbreviation(ps, "STR");
+		CDOMStat ss = secondaryContext.ref.constructCDOMObject(CDOMStat.class, "Strength");
+		secondaryContext.ref.registerAbbreviation(ss, "STR");
+	}
 
 	@Override
 	public CDOMLoader<CDOMTemplate> getLoader()
@@ -112,4 +125,18 @@ public class DefineLstTest extends AbstractGlobalTokenTestCase
 	{
 		runRoundRobin("VariableName|CL(\"Fighter\")");
 	}
+	
+	@Test
+	public void testRoundRobinLock() throws PersistenceLayerException
+	{
+		runRoundRobin("LOCK.STR|10");
+	}
+
+	@Test
+	public void testRoundRobinUnlock() throws PersistenceLayerException
+	{
+		runRoundRobin("UNLOCK.STR");
+	}
+
+
 }

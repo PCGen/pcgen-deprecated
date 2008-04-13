@@ -149,7 +149,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 
 	@Test
 	public void testInvalidNonSensicalAnyLast()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("Familiar|Tiger,Any"));
 		assertNoSideEffects();
@@ -157,7 +157,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 
 	@Test
 	public void testInvalidNonSensicalAnyFirst()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("Familiar|Any,Lion"));
 		assertNoSideEffects();
@@ -172,7 +172,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 
 	@Test
 	public void testInvalidOnlyFOLLOWERADJUSTMENT()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		boolean parse = parse("Familiar|FOLLOWERADJUSTMENT:-3");
 		if (parse)
@@ -187,7 +187,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 
 	@Test
 	public void testInvalidMultipleFOLLOWERADJUSTMENT()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("Familiar|Lion|FOLLOWERADJUSTMENT:-2|FOLLOWERADJUSTMENT:-3"));
 		assertNoSideEffects();
@@ -195,7 +195,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 
 	@Test
 	public void testInvalidOnlyFOLLOWERADJUSTMENTBar()
-		throws PersistenceLayerException
+			throws PersistenceLayerException
 	{
 		assertFalse(parse("Familiar|FOLLOWERADJUSTMENT:-3|"));
 		assertNoSideEffects();
@@ -234,8 +234,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		try
 		{
-			boolean parse =
-					parse("Familiar|FOLLOWERADJUSTMENT:-3|PRERACE:1,Human");
+			boolean parse = parse("Familiar|FOLLOWERADJUSTMENT:-3|PRERACE:1,Human");
 			if (parse)
 			{
 				assertFalse(primaryContext.ref.validate());
@@ -289,8 +288,8 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 		construct(CDOMRace.class, "Lion");
 		construct(CDOMRace.class, "Tiger");
 		runRoundRobin("Familiar|Bear|FOLLOWERADJUSTMENT:-6",
-			"Familiar|Lion|FOLLOWERADJUSTMENT:-4",
-			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
+				"Familiar|Lion|FOLLOWERADJUSTMENT:-4",
+				"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
 	}
 
 	@Test
@@ -299,7 +298,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 		construct(CDOMRace.class, "Lion");
 		construct(CDOMRace.class, "Tiger");
 		runRoundRobin("Companion|Lion|FOLLOWERADJUSTMENT:-5",
-			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
+				"Familiar|Tiger|FOLLOWERADJUSTMENT:-5");
 	}
 
 	@Test
@@ -316,7 +315,7 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 		construct(CDOMRace.class, "Lion");
 		construct(CDOMRace.class, "Tiger");
 		runRoundRobin("Familiar|Lion|FOLLOWERADJUSTMENT:-5",
-			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
+				"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
 	}
 
 	@Test
@@ -324,8 +323,8 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(CDOMRace.class, "Tiger");
 		runRoundRobin(
-			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRECLASS:1,Cleric=1",
-			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
+				"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRECLASS:1,Cleric=1",
+				"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
 	}
 
 	@Test
@@ -333,7 +332,29 @@ public class CompanionListLstTest extends AbstractGlobalTokenTestCase
 	{
 		construct(CDOMRace.class, "Tiger");
 		runRoundRobin(
-			"Familiar|Tiger|FOLLOWERADJUSTMENT:-3|PRECLASS:1,Cleric=1",
-			"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
+				"Familiar|Tiger|FOLLOWERADJUSTMENT:-3|PRECLASS:1,Cleric=1",
+				"Familiar|Tiger|FOLLOWERADJUSTMENT:-5|PRERACE:1,Human");
 	}
+
+	@Test
+	public void testRoundRobinReal() throws PersistenceLayerException
+	{
+		construct(CDOMRace.class, "Psicrystal (Single Minded)");
+		construct(CDOMRace.class, "Psicrystal (Resolved)");
+		construct(CDOMRace.class, "Psicrystal (Bully)");
+		construct(CDOMRace.class, "Psicrystal (Artiste)");
+		construct(CDOMRace.class, "Psicrystal (Liar)");
+		construct(CDOMRace.class, "Psicrystal (Poised)");
+		construct(CDOMRace.class, "Psicrystal (Sage)");
+		construct(CDOMRace.class, "Psicrystal (Meticulous)");
+		construct(CDOMRace.class, "Psicrystal (Sneaky)");
+		construct(CDOMRace.class, "Psicrystal (Sympathetic)");
+		construct(CDOMRace.class, "Psicrystal (Hero)");
+		construct(CDOMRace.class, "Psicrystal (Friendly)");
+		construct(CDOMRace.class, "Psicrystal (Coward)");
+		construct(CDOMRace.class, "Psicrystal (Nimble)");
+		construct(CDOMRace.class, "Psicrystal (Observant)");
+		runRoundRobin("COMPANIONLIST:Psicrystal|Psicrystal (Artiste),Psicrystal (Bully),Psicrystal (Coward),Psicrystal (Friendly),Psicrystal (Hero),Psicrystal (Liar),Psicrystal (Meticulous),Psicrystal (Nimble),Psicrystal (Observant),Psicrystal (Poised),Psicrystal (Resolved),Psicrystal (Sage),Psicrystal (Single Minded),Psicrystal (Sneaky),Psicrystal (Sympathetic)");
+	}
+
 }
