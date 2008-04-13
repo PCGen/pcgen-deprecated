@@ -18,7 +18,7 @@ import pcgen.rules.context.LoadContext;
 
 public class PreCompatibilityToken implements
 		CDOMPrimaryToken<ConcretePrereqObject>,
-		CDOMSubToken<ConcretePrereqObject>
+		CDOMSecondaryToken<ConcretePrereqObject>
 {
 	private static PrerequisiteWriterFactory factory = PrerequisiteWriterFactory
 			.getInstance();

@@ -193,12 +193,6 @@ public abstract class LoadContext
 
 	private TokenSupport support = new TokenSupport();
 
-	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getAtomicChoiceFilter(
-			Class<T> cl, String key)
-	{
-		return support.getAtomicChoiceFilter(this, cl, key);
-	}
-
 	public <T extends CDOMObject> PrimitiveChoiceSet<T> getChoiceSet(
 			Class<T> poClass, String value)
 	{
@@ -208,13 +202,7 @@ public abstract class LoadContext
 	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getPrimitiveChoiceFilter(
 			Class<T> cl, String key)
 	{
-		return support.getPrimitiveChoiceFilter(this, cl, key);
-	}
-
-	public <T extends CDOMObject> PrimitiveChoiceSet<T> getQualifier(
-			Class<T> cl, String key, String value)
-	{
-		return support.getQualifier(this, cl, key, value);
+		return support.getPrimitive(this, cl, key);
 	}
 
 	public <T> boolean processSubToken(T cdo, String tokenName,
@@ -229,20 +217,21 @@ public abstract class LoadContext
 		return support.processToken(this, derivative, typeStr, argument);
 	}
 
-	public String[] unparse(CDOMObject cdo, String tokenName)
+	public <T> String[] unparse(T cdo, String tokenName)
 	{
 		return support.unparse(this, cdo, tokenName);
 	}
 
-	public Collection<String> unparse(CDOMObject cdo)
+	public <T> Collection<String> unparse(T cdo)
 	{
 		return support.unparse(this, cdo);
 	}
 
-	public <T extends CDOMObject> PrimitiveChoiceSet<?> getChoiceSet(T obj,
-			String key, String val) throws PersistenceLayerException
+	public <T extends CDOMObject> PrimitiveChoiceSet<?> getChoiceSet(
+			CDOMObject cdo, String key, String val)
+			throws PersistenceLayerException
 	{
-		return support.getChoiceSet(this, obj, key, val);
+		return support.getChoiceSet(this, cdo, key, val);
 	}
 
 	public Prerequisite getPrerequisite(String string, String value)

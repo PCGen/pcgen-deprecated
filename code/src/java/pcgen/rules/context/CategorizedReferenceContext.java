@@ -51,12 +51,6 @@ public class CategorizedReferenceContext
 		return ref;
 	}
 
-	public <T extends CDOMObject & CategorizedCDOMObject<T>> void registerWithKey(
-			Class<T> cl, Category<T> cat, T obj, String key)
-	{
-		getRefSupport(cl, cat).registerWithKey(obj, key);
-	}
-
 	public <T extends CDOMObject> void reassociateKey(T obj, String key)
 	{
 		Class cl = obj.getClass();

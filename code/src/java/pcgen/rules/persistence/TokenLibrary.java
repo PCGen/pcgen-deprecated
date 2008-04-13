@@ -1,7 +1,6 @@
 package pcgen.rules.persistence;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,7 +20,6 @@ import pcgen.rules.persistence.token.CDOMSubToken;
 import pcgen.rules.persistence.token.CDOMToken;
 import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.rules.persistence.token.ChoiceSetToken;
-import pcgen.rules.persistence.token.ChooseLstGlobalQualifierToken;
 import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.rules.persistence.token.ClassWrappedToken;
 import pcgen.rules.persistence.token.DeferredToken;
@@ -29,6 +27,7 @@ import pcgen.rules.persistence.token.PreCompatibilityToken;
 import pcgen.rules.persistence.token.PrimitiveToken;
 import pcgen.rules.persistence.token.QualifierToken;
 import pcgen.rules.persistence.util.TokenFamily;
+import pcgen.util.Logging;
 
 public class TokenLibrary
 {
@@ -38,9 +37,7 @@ public class TokenLibrary
 
 	private final static List<DeferredToken<? extends CDOMObject>> deferredTokens = new ArrayList<DeferredToken<? extends CDOMObject>>();
 
-	private final static HashMap<String, Class<ChooseLstGlobalQualifierToken<?>>> globalQualifierMap = new HashMap<String, Class<ChooseLstGlobalQualifierToken<?>>>();
-
-	private final static DoubleKeyMap<Class<? extends CDOMObject>, String, Class<ChooseLstQualifierToken<?>>> qualifierMap = new DoubleKeyMap<Class<? extends CDOMObject>, String, Class<ChooseLstQualifierToken<?>>>();
+	private final static DoubleKeyMap<Class<?>, String, Class<ChooseLstQualifierToken<?>>> qualifierMap = new DoubleKeyMap<Class<?>, String, Class<ChooseLstQualifierToken<?>>>();
 
 	private final static DoubleKeyMap<Class<?>, String, Class<PrimitiveToken<?>>> primitiveMap = new DoubleKeyMap<Class<?>, String, Class<PrimitiveToken<?>>>();
 
@@ -101,31 +98,6 @@ public class TokenLibrary
 		}
 	}
 
-	public static <T extends CDOMObject> ChooseLstGlobalQualifierToken<T> getGlobalChooseQualifier(
-			String key)
-	{
-		Class<ChooseLstGlobalQualifierToken<?>> clgqtc = globalQualifierMap
-				.get(key);
-		if (clgqtc == null)
-		{
-			return null;
-		}
-		try
-		{
-			return (ChooseLstGlobalQualifierToken<T>) clgqtc.newInstance();
-		}
-		catch (InstantiationException e)
-		{
-			throw new UnreachableError("new Instance on " + clgqtc
-					+ " should not fail in getGlobalChooseQualifier", e);
-		}
-		catch (IllegalAccessException e)
-		{
-			throw new UnreachableError("new Instance on " + clgqtc
-					+ " should not fail due to access", e);
-		}
-	}
-
 	public static List<DeferredToken<? extends CDOMObject>> getDeferredTokens()
 	{
 		return new ArrayList<DeferredToken<? extends CDOMObject>>(
@@ -137,8 +109,15 @@ public class TokenLibrary
 		Class<? extends PrimitiveToken> newTokClass = p.getClass();
 		if (PrimitiveToken.class.isAssignableFrom(newTokClass))
 		{
-			primitiveMap.put(((PrimitiveToken) p).getReferenceClass(), p
-					.getTokenName(), (Class<PrimitiveToken<?>>) newTokClass);
+			String name = p.getTokenName();
+			Class cl = ((PrimitiveToken) p).getReferenceClass();
+			Class<PrimitiveToken<?>> prev = primitiveMap.put(cl, name,
+					(Class<PrimitiveToken<?>>) newTokClass);
+			if (prev != null)
+			{
+				Logging.errorPrint("Found a second " + name + " Primitive for "
+						+ cl);
+			}
 		}
 	}
 
@@ -147,14 +126,15 @@ public class TokenLibrary
 		Class<? extends QualifierToken> newTokClass = p.getClass();
 		if (ChooseLstQualifierToken.class.isAssignableFrom(newTokClass))
 		{
-			qualifierMap.put(((ChooseLstQualifierToken<?>) p).getChoiceClass(),
-					p.getTokenName(),
+			Class<?> cl = ((ChooseLstQualifierToken<?>) p).getChoiceClass();
+			String name = p.getTokenName();
+			Class<ChooseLstQualifierToken<?>> prev = qualifierMap.put(cl, name,
 					(Class<ChooseLstQualifierToken<?>>) newTokClass);
-		}
-		if (ChooseLstGlobalQualifierToken.class.isAssignableFrom(newTokClass))
-		{
-			globalQualifierMap.put(p.getTokenName(),
-					(Class<ChooseLstGlobalQualifierToken<?>>) newTokClass);
+			if (prev != null)
+			{
+				Logging.errorPrint("Found a second " + name + " Primitive for "
+						+ cl);
+			}
 		}
 	}
 
@@ -335,7 +315,7 @@ public class TokenLibrary
 	}
 
 	static class ChooseTokenIterator<C extends CDOMObject> extends
-			TokenLibrary.AbstractTokenIterator<C, ChoiceSetToken<?>>
+			TokenLibrary.AbstractTokenIterator<C, ChoiceSetToken<? super C>>
 	{
 		public ChooseTokenIterator(Class<C> cl, String key)
 		{
@@ -343,10 +323,47 @@ public class TokenLibrary
 		}
 
 		@Override
-		protected ChoiceSetToken<?> grabToken(TokenFamily family, Class<?> cl,
-				String key)
+		protected ChoiceSetToken<? super C> grabToken(TokenFamily family,
+				Class<?> cl, String key)
 		{
-			return family.getChooseToken(cl, key);
+			return (ChoiceSetToken<? super C>) family.getChooseToken(cl, key);
+		}
+	}
+
+	static class QualifierTokenIterator<C extends CDOMObject, T extends ChooseLstQualifierToken<? super C>>
+			extends TokenLibrary.AbstractTokenIterator<C, T>
+	{
+		public QualifierTokenIterator(Class<C> cl, String key)
+		{
+			super(cl, key);
+		}
+
+		@Override
+		protected T grabToken(TokenFamily family, Class<?> cl, String key)
+		{
+			if (!TokenFamily.CURRENT.equals(family))
+			{
+				return null;
+			}
+			Class<ChooseLstQualifierToken<?>> cl1 = qualifierMap.get(cl, key);
+			if (cl1 == null)
+			{
+				return null;
+			}
+			try
+			{
+				return (T) cl1.newInstance();
+			}
+			catch (InstantiationException e)
+			{
+				throw new UnreachableError("new Instance on " + cl1
+						+ " should not fail", e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new UnreachableError("new Instance on " + cl1
+						+ " should not fail due to access", e);
+			}
 		}
 	}
 

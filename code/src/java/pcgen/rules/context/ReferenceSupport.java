@@ -148,6 +148,10 @@ public class ReferenceSupport<T extends CDOMObject, RT extends CDOMSingleRef<T>>
 		{
 			// TODO Error
 		}
+		/*
+		 * TODO This is a bug - the key name is not necessarily loaded into the
+		 * object, it may have been consumed by the object context... :P
+		 */
 		String key = obj.getKeyName();
 		CaseInsensitiveString ocik = new CaseInsensitiveString(key);
 		CDOMObject act = active.get(ocik);

@@ -1,6 +1,9 @@
 package pcgen.rules.persistence;
 
+import java.util.Collection;
+
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.rules.context.LoadContext;
 
 public class CDOMAbilityCategoryLoader extends CDOMLineLoader<CDOMAbilityCategory>
@@ -16,7 +19,16 @@ public class CDOMAbilityCategoryLoader extends CDOMLineLoader<CDOMAbilityCategor
 	@Override
 	public CDOMAbilityCategory getCDOMObject(LoadContext context, String tok)
 	{
-		return CDOMAbilityCategory.getConstant(tok);
+		CDOMAbilityCategory ac = CDOMAbilityCategory.getConstant(tok);
+		ac.put(ObjectKey.SOURCE_URI, context.ref.getSourceURI());
+		return ac;
+	}
+
+	@Override
+	protected Collection<CDOMAbilityCategory> getConstructedObjects(
+			LoadContext lc)
+	{
+		return CDOMAbilityCategory.getAllConstants();
 	}
 
 }

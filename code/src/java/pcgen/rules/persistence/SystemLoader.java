@@ -89,8 +89,7 @@ public class SystemLoader extends Observable
 	CDOMLoader<CDOMAbilityCategory> abilityCategoryLoader = new CDOMAbilityCategoryLoader();
 	CDOMClassLstLoader classLoader = new CDOMClassLstLoader();
 
-	CDOMLineLoader<CDOMSizeAdjustment> sizeLoader = new CDOMLineLoader<CDOMSizeAdjustment>(
-			"SIZENAME", CDOMSizeAdjustment.class);
+	CDOMLineLoader<CDOMSizeAdjustment> sizeLoader = new CDOMSizeLoader();
 	CDOMKitLoader kitLoader = new CDOMKitLoader();
 
 	private final CDOMCompositeLineLoader statsChecksLoader;
@@ -127,6 +126,8 @@ public class SystemLoader extends Observable
 				"STAT", CDOMKitStat.class));
 		kitLoader.addLineLoader(new CDOMSubLineLoader<CDOMKitAbility>(
 				"*KITTOKEN", "FEAT", CDOMKitAbility.class));
+		kitLoader.addLineLoader(new CDOMSubLineLoader<CDOMKitAbility>(
+				"*KITTOKEN", "ABILITY", CDOMKitAbility.class));
 		kitLoader.addLineLoader(new CDOMSubLineLoader<CDOMKitName>("*KITTOKEN",
 				"NAME", CDOMKitName.class));
 		kitLoader.addLineLoader(new CDOMSubLineLoader<CDOMKitAlignment>(
@@ -269,19 +270,8 @@ public class SystemLoader extends Observable
 	{
 		URI out = new File(outputDirectory).toURI();
 
-		// File gameModeDir = new File(SettingsHandler.getPcgenSystemDir(),
-		// "gameModes");
-		// File specificGameModeDir = new File(gameModeDir, SettingsHandler
-		// .getGame().getFolderName());
-		// File statsAndChecks = new File(specificGameModeDir,
-		// "statsandchecks.lst");
-		// statsChecksLoader.loadLstFile(context, statsAndChecks.toURI());
-		// File sizeAdjustment = new File(specificGameModeDir,
-		// "sizeadjustment.lst");
-		// sizeLoader.loadLstFile(context, sizeAdjustment.toURI());
-
-		// abilityCategoryLoader.loadLstFiles(context, campaign
-		// .getAbilityCategoryFiles());
+		abilityCategoryLoader.unloadLstFiles(context, prepare(campaign
+				.getSourceURI(), out, campaign.getAbilityCategoryFiles()));
 
 		wProfLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(),
 				out, campaign.getWeaponProfFiles()));
@@ -314,9 +304,10 @@ public class SystemLoader extends Observable
 		equipmentLoader.unloadLstFiles(context, prepare(
 				campaign.getSourceURI(), out, campaign.getEquipFiles()));
 
-		// companionModLoader.unloadLstFiles(context, campaign
-		// .getCompanionModFiles());
-		// kitLoader.unloadLstFiles(context, campaign.getKitFiles());
+		companionModLoader.unloadLstFiles(context, prepare(campaign
+				.getSourceURI(), out, campaign.getCompanionModFiles()));
+		kitLoader.unloadLstFiles(context, prepare(campaign.getSourceURI(), out,
+				campaign.getKitFiles()));
 
 		// TODO Auto-generated method stub
 

@@ -1,11 +1,21 @@
 package pcgen.rules.persistence;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
+import pcgen.base.util.TreeMapToList;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.IntegerKey;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.SubClassCategory;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMPCClassLevel;
@@ -251,11 +261,18 @@ public class CDOMClassLstLoader
 									+ "without a Class: " + line);
 							continue;
 						}
-						CDOMPCClassLevel pcl = activePCClass
-								.getClassLevel(level);
-						/*
-						 * TODO NEED TO PROCESS REPEATLEVEL
-						 */
+						CDOMPCClassLevel pcl;
+						if (objectName == null)
+						{
+							pcl = activePCClass.getClassLevel(level);
+						}
+						else
+						{
+							pcl = activePCClass.getRepeatLevel(level, objectName);
+							/*
+							 * TODO NEED TO Load REPEATLEVEL
+							 */
+						}
 						levelLoader.parseLine(context, pcl, restOfLine, uri);
 					}
 					catch (NumberFormatException e)
@@ -300,10 +317,118 @@ public class CDOMClassLstLoader
 	}
 
 	public void unloadLstFiles(LoadContext context,
-			Collection<CampaignSourceEntry> classFiles)
+			Collection<CampaignSourceEntry> files)
 	{
-		// TODO Auto-generated method stub
-		
+		for (CampaignSourceEntry cse : files)
+		{
+			context.setExtractURI(cse.getURI());
+			URI writeURI = cse.getWriteURI();
+			String path = writeURI.getPath().substring(1);
+			File f = new File(path);
+			ensureCreated(f.getParentFile());
+			try
+			{
+				unloadFile(context, cse, f);
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
+	private void unloadFile(LoadContext context, CampaignSourceEntry cse, File f)
+			throws FileNotFoundException
+	{
+		TreeSet<String> set = new TreeSet<String>();
+		for (CDOMPCClass pcc : context.ref
+				.getConstructedCDOMObjects(CDOMPCClass.class))
+		{
+			if (cse.getURI().equals(pcc.get(ObjectKey.SOURCE_URI)))
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.append("CLASS:");
+				sb.append(classLoader.unparseObject(context, cse, pcc));
+				sb.append('\n');
+				SubClassCategory subClCategory = SubClassCategory
+						.getConstant(pcc.getKeyName());
+				for (CDOMSubClass sc : context.ref.getConstructedCDOMObjects(
+						CDOMSubClass.class, subClCategory))
+				{
+					sb.append("SUBCLASS:");
+					sb.append(subClassLoader.unparseObject(context, cse, sc));
+					sb.append('\n');
+					appendLevels(context, sc, sb, "SUBCLASSLEVEL:");
+				}
+				appendLevels(context, pcc, sb, "");
+				sb.append('\n');
+				set.add(sb.toString());
+			}
+		}
+		PrintWriter pw = new PrintWriter(f);
+		pw.println("#~PARAGRAPH");
+		for (String s : set)
+		{
+			pw.print(s);
+		}
+		pw.close();
+	}
+
+	private void appendLevels(LoadContext context, CDOMPCClass pcc,
+			StringBuilder sb, String prefix)
+	{
+		TreeMapToList<Integer, String> levelMap = new TreeMapToList<Integer, String>();
+		for (CDOMPCClassLevel pcl : pcc.getClassLevelCollection())
+		{
+			StringBuilder lsb = new StringBuilder();
+			String cs = StringUtil.join(context.unparse(pcl), "\t");
+			if (cs.length() > 0)
+			{
+				Integer lvl = pcl.get(IntegerKey.LEVEL);
+				lsb.append(prefix);
+				lsb.append(lvl);
+				lsb.append('\t');
+				lsb.append(cs);
+				lsb.append('\n');
+				levelMap.addToListFor(lvl, lsb.toString());
+			}
+		}
+		for (CDOMPCClassLevel pcl : pcc.getRepeatLevels())
+		{
+			StringBuilder lsb = new StringBuilder();
+			String cs = StringUtil.join(context.unparse(pcl), "\t");
+			if (cs.length() > 0)
+			{
+				String rep = pcl.get(StringKey.REPEAT);
+				lsb.append(prefix);
+				lsb.append(rep);
+				lsb.append('\t');
+				lsb.append(cs);
+				lsb.append('\n');
+				int lvl = Integer.parseInt(rep.substring(0, rep.indexOf(':')));
+				levelMap.addToListFor(lvl, lsb.toString());
+			}
+		}
+		for (Integer i : levelMap.getKeySet())
+		{
+			for (String cs : levelMap.getListFor(i))
+			{
+				sb.append(cs);
+			}
+		}
+	}
+
+	private boolean ensureCreated(File rec)
+	{
+		if (!rec.exists())
+		{
+			if (!ensureCreated(rec.getParentFile()))
+			{
+				return false;
+			}
+			return rec.mkdir();
+		}
+		return true;
+	}
 }

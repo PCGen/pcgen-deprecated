@@ -20,7 +20,8 @@ public class CDOMSubLineLoader<T> implements CDOMLoader<T>
 	private final String subTokenType;
 	private final String targetPrefix;
 	private final String targetPrefixColon;
-	//private final int prefixLength;
+
+	// private final int prefixLength;
 
 	public CDOMSubLineLoader(String tokenType, String prefix, Class<T> cl)
 	{
@@ -28,11 +29,11 @@ public class CDOMSubLineLoader<T> implements CDOMLoader<T>
 		targetPrefix = prefix;
 		targetClass = cl;
 		targetPrefixColon = prefix + ":";
-		//prefixLength = targetPrefixColon.length();
+		// prefixLength = targetPrefixColon.length();
 	}
 
-	public void parseLine(LoadContext context, T obj, String val,
-			URI source) throws PersistenceLayerException
+	public void parseLine(LoadContext context, T obj, String val, URI source)
+			throws PersistenceLayerException
 	{
 		if (val == null)
 		{
@@ -118,19 +119,19 @@ public class CDOMSubLineLoader<T> implements CDOMLoader<T>
 			{
 				continue;
 			}
-//			int sepLoc = line.indexOf('\t');
-//			String firstToken;
-//			String restOfLine;
-//			if (sepLoc == -1)
-//			{
-//				firstToken = line;
-//				restOfLine = null;
-//			}
-//			else
-//			{
-//				firstToken = line.substring(0, sepLoc);
-//				restOfLine = line.substring(sepLoc + 1);
-//			}
+			// int sepLoc = line.indexOf('\t');
+			// String firstToken;
+			// String restOfLine;
+			// if (sepLoc == -1)
+			// {
+			// firstToken = line;
+			// restOfLine = null;
+			// }
+			// else
+			// {
+			// firstToken = line.substring(0, sepLoc);
+			// restOfLine = line.substring(sepLoc + 1);
+			// }
 
 			// check for copies, mods, and forgets
 			// TODO - Figure out why we need to check SOURCE in this file
@@ -201,7 +202,34 @@ public class CDOMSubLineLoader<T> implements CDOMLoader<T>
 	public void unloadLstFiles(LoadContext lc,
 			Collection<CampaignSourceEntry> languageFiles)
 	{
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
+	}
+	
+	public Class<T> getLoadedClass()
+	{
+		return targetClass;
+	}
+
+	public void unloadObject(LoadContext lc, T object, StringBuilder sb)
+	{
+		String[] unparse = lc.unparse(object, subTokenType);
+		StringBuilder temp = new StringBuilder();
+		if (unparse != null)
+		{
+			for (String s : unparse)
+			{
+				if (s.startsWith(targetPrefixColon))
+				{
+					sb.append(s);
+				}
+				else
+				{
+					temp.append('\t');
+					temp.append(s);
+				}
+			}
+			sb.append(temp);
+			sb.append('\n');
+		}
 	}
 }

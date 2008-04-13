@@ -1,5 +1,8 @@
 package pcgen.rules.persistence;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
@@ -161,9 +164,42 @@ public class CDOMCompositeLineLoader implements CDOMLoader<CDOMObject>
 	}
 
 	public void unloadLstFiles(LoadContext lc,
-			Collection<CampaignSourceEntry> languageFiles)
+			Collection<CampaignSourceEntry> files)
 	{
-		// TODO Auto-generated method stub
-		
+		for (CampaignSourceEntry cse : files)
+		{
+			lc.setExtractURI(cse.getURI());
+			URI writeURI = cse.getWriteURI();
+			String path = writeURI.getPath().substring(1);
+			File f = new File(path);
+			ensureCreated(f.getParentFile());
+			try
+			{
+				PrintWriter pw = new PrintWriter(f);
+				for (CDOMLineLoader<?> loader : loadMap.values())
+				{
+					loader.unloadLstFile(lc, cse, pw);
+				}
+				pw.close();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private boolean ensureCreated(File rec)
+	{
+		if (!rec.exists())
+		{
+			if (!ensureCreated(rec.getParentFile()))
+			{
+				return false;
+			}
+			return rec.mkdir();
+		}
+		return true;
 	}
 }

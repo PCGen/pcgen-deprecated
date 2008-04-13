@@ -5,11 +5,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.helper.AnyChoiceSet;
+import pcgen.cdom.helper.CompoundAndChoiceSet;
 import pcgen.cdom.helper.CompoundAndFilter;
 import pcgen.cdom.helper.CompoundOrChoiceSet;
 import pcgen.cdom.helper.NegatingFilter;
@@ -23,6 +24,7 @@ import pcgen.persistence.lst.prereq.PrerequisiteParserInterface;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.TokenLibrary.ChooseTokenIterator;
 import pcgen.rules.persistence.TokenLibrary.PreTokenIterator;
+import pcgen.rules.persistence.TokenLibrary.QualifierTokenIterator;
 import pcgen.rules.persistence.TokenLibrary.SubTokenIterator;
 import pcgen.rules.persistence.TokenLibrary.TokenIterator;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -30,7 +32,6 @@ import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.rules.persistence.token.CDOMSubToken;
 import pcgen.rules.persistence.token.CDOMToken;
 import pcgen.rules.persistence.token.ChoiceSetToken;
-import pcgen.rules.persistence.token.ChooseLstGlobalQualifierToken;
 import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.rules.persistence.token.PrimitiveToken;
 import pcgen.rules.persistence.util.TokenFamilyIterator;
@@ -55,203 +56,192 @@ public class TokenSupport
 				return true;
 			}
 			Logging.addParseMessage(Logging.LST_INFO,
-					"Failed in parsing typeStr: " + token);
+					"Failed in parsing typeStr: " + typeStr + " " + argument);
 		}
 		Logging.errorPrint("Illegal Token '" + typeStr + "' '" + argument
 				+ "' for " + cl.getName() + " " + derivative.getDisplayName());
 		return false;
 	}
 
-	public <T extends CDOMObject> PrimitiveChoiceSet<T> getChoiceSet(
-			LoadContext context, Class<T> poClass, String value)
+	public <T> boolean processSubToken(LoadContext context, T cdo,
+			String tokenName, String key, String value)
+			throws PersistenceLayerException
 	{
-		// PC[TYPE=x|<primitive1>|<primitive2>|<primitive3>]|QUALIFIED[!TYPE=y,TYPE=z|<primitive4>]
-		if (value.charAt(0) == '|')
+		for (Iterator<CDOMSubToken<T>> it = new SubTokenIterator<T, CDOMSubToken<T>>(
+				(Class<T>) cdo.getClass(), tokenName, key); it.hasNext();)
 		{
-			Logging.addParseMessage(Logging.LST_ERROR,
-					"CHOOSE arguments may not start with | : " + value);
-		}
-		if (value.charAt(value.length() - 1) == '|')
-		{
-			Logging.addParseMessage(Logging.LST_ERROR,
-					"CHOOSE arguments may not end with | : " + value);
-		}
-		if (value.indexOf("||") != -1)
-		{
-			Logging.addParseMessage(Logging.LST_ERROR,
-					"CHOOSE arguments uses double separator || : " + value);
-		}
-		List<PrimitiveChoiceFilter<T>> pcfList = new ArrayList<PrimitiveChoiceFilter<T>>();
-		List<PrimitiveChoiceSet<T>> pcsList = new ArrayList<PrimitiveChoiceSet<T>>();
-
-		StringBuilder remainingValue = new StringBuilder(value);
-		while (remainingValue.length() > 0)
-		{
-			int pipeLoc = remainingValue.indexOf("|");
-			int openBracketLoc = remainingValue.indexOf("[");
-			if (pipeLoc == -1 && openBracketLoc == -1)
+			CDOMSubToken<T> token = it.next();
+			if (token.parse(context, cdo, value))
 			{
-				// Could be a primitive or a Qualifier...
-				String key = remainingValue.toString();
-				PrimitiveChoiceSet<T> qual = getQualifier(context, poClass,
-						key, null);
+				return true;
+			}
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Failed in parsing typeStr: " + key + " " + value);
+		}
+		/*
+		 * CONSIDER Better option than toString, given that T != CDOMObject
+		 */
+		Logging.errorPrint("Illegal " + tokenName + " subtoken '" + key + "' '"
+				+ value + "' for " + cdo.toString());
+		return false;
+	}
+
+	public <T> String[] unparse(LoadContext context, T cdo, String tokenName)
+	{
+		char separator = tokenName.startsWith("*") ? ':' : '|';
+		Set<String> set = new TreeSet<String>();
+		Class<T> cl = (Class<T>) cdo.getClass();
+		TokenFamilySubIterator<T> it = new TokenFamilySubIterator<T>(cl,
+				tokenName);
+		while (it.hasNext())
+		{
+			CDOMSecondaryToken<? super T> token = it.next();
+			String[] s = token.unparse(context, cdo);
+			if (s != null)
+			{
+				for (String aString : s)
+				{
+					set.add(token.getTokenName() + separator + aString);
+				}
+			}
+		}
+		if (set.isEmpty())
+		{
+			return null;
+		}
+		return set.toArray(new String[set.size()]);
+	}
+
+	public <T> Collection<String> unparse(LoadContext context, T cdo)
+	{
+		Set<String> set = new TreeSet<String>();
+		Class<T> cl = (Class<T>) cdo.getClass();
+		TokenFamilyIterator<T> it = new TokenFamilyIterator<T>(cl);
+		while (it.hasNext())
+		{
+			CDOMPrimaryToken<? super T> token = it.next();
+			String[] s = token.unparse(context, cdo);
+			if (s != null)
+			{
+				for (String aString : s)
+				{
+					set.add(token.getTokenName() + ':' + aString);
+				}
+			}
+		}
+		if (set.isEmpty())
+		{
+			return null;
+		}
+		return set;
+	}
+
+	public Prerequisite getPrerequisite(LoadContext context, String key,
+			String value) throws PersistenceLayerException
+	{
+		for (Iterator<PrerequisiteParserInterface> it = new PreTokenIterator(
+				key); it.hasNext();)
+		{
+			PrerequisiteParserInterface token = it.next();
+			Prerequisite p = token.parse(key, value, false, false);
+			if (p == null)
+			{
+				Logging.addParseMessage(Logging.LST_ERROR,
+						"Failed in parsing Prereq: " + key + " " + value);
+			}
+			return p;
+		}
+		Logging.addParseMessage(Logging.LST_ERROR, "Illegal Choice Token '"
+				+ key + "' '" + value + "'");
+		return null;
+	}
+
+	public <T extends CDOMObject> PrimitiveChoiceSet<T> getChoiceSet(
+			LoadContext context, Class<T> poClass, String joinedOr)
+	{
+		if (joinedOr.equals(Constants.LST_ANY) || joinedOr.equals(Constants.LST_ALL))
+		{
+			/*
+			 * TODO Categorized items break here :(
+			 */
+			return new AnyChoiceSet<T>(poClass);
+		}
+		List<PrimitiveChoiceSet<T>> orList = new ArrayList<PrimitiveChoiceSet<T>>();
+		List<PrimitiveChoiceFilter<T>> pcfOrList = new ArrayList<PrimitiveChoiceFilter<T>>();
+		for (ChooseSeparator pipe = new ChooseSeparator(joinedOr, '|'); pipe
+				.hasNext();)
+		{
+			String joinedAnd = pipe.next();
+			List<PrimitiveChoiceSet<T>> andList = new ArrayList<PrimitiveChoiceSet<T>>();
+			List<PrimitiveChoiceFilter<T>> pcfAndList = new ArrayList<PrimitiveChoiceFilter<T>>();
+			for (ChooseSeparator comma = new ChooseSeparator(joinedAnd, ','); comma
+					.hasNext();)
+			{
+				String primitive = comma.next();
+				ChooseLstQualifierToken<T> qual = getQualifier(context, poClass, primitive);
 				if (qual == null)
 				{
-					PrimitiveChoiceFilter<T> pcf = getPrimitiveChoiceFilter(
-							context, poClass, key);
+					PrimitiveChoiceFilter<T> pcf = getPrimitive(context, poClass,
+							primitive);
 					if (pcf == null)
 					{
 						Logging.addParseMessage(Logging.LST_ERROR,
-								"Choice argument was not valid : " + value);
+								"Choice argument was not valid : " + primitive);
 						return null;
 					}
 					else
 					{
-						pcfList.add(pcf);
+						pcfAndList.add(pcf);
 					}
 				}
 				else
 				{
-					pcsList.add(qual);
+					andList.add(qual);
 				}
-				remainingValue.setLength(0);
 			}
-			else if (openBracketLoc == -1 || pipeLoc > 0
-					&& pipeLoc < openBracketLoc)
+			if (!pcfAndList.isEmpty())
 			{
-				// Still could be a primitive or a Qualifier...
-				String key = remainingValue.substring(0, pipeLoc);
-				PrimitiveChoiceSet<T> qual = getQualifier(context, poClass,
-						key, null);
-				if (qual == null)
+				if (pcfAndList.size() == 1 && andList.isEmpty())
 				{
-					PrimitiveChoiceFilter<T> pcf = getPrimitiveChoiceFilter(
-							context, poClass, key);
-					pcfList.add(pcf);
+					pcfOrList.add(pcfAndList.get(0));
 				}
 				else
 				{
-					pcsList.add(qual);
+					RetainingChooser<T> ret = new RetainingChooser<T>(poClass);
+					ret.addRetainingChoiceFilter(new CompoundAndFilter<T>(pcfAndList));
+					andList.add(ret);
 				}
-				remainingValue.delete(0, pipeLoc + 1);
 			}
-			else
+			if (andList.size() == 1)
 			{
-				// bracket before pipe :)
-				int closeBracketLoc = remainingValue.indexOf("]");
-				if (remainingValue.lastIndexOf("[", closeBracketLoc) != openBracketLoc)
-				{
-					Logging.errorPrint("Found two Open Brackets in Choice: "
-							+ value);
-					return null;
-				}
-				String key = remainingValue.substring(0, openBracketLoc);
-				String args = remainingValue.substring(openBracketLoc + 1,
-						remainingValue.length() - 1);
-				if (closeBracketLoc == remainingValue.length() - 1)
-				{
-					remainingValue.setLength(0);
-				}
-				else if (remainingValue.charAt(closeBracketLoc + 1) != '|')
-				{
-					Logging.errorPrint("Close Bracket was not "
-							+ "followed by the end or by a pipe: " + value);
-					return null;
-				}
-				else
-				{
-					remainingValue.delete(0, closeBracketLoc + 1);
-				}
-				PrimitiveChoiceSet<T> qual = getQualifier(context, poClass,
-						key, args);
-				if (qual == null)
-				{
-					Logging.errorPrint("Unable to Get Choice Qualifier, "
-							+ "input was invalid: " + value);
-					return null;
-				}
-				pcsList.add(qual);
+				orList.add(andList.get(0));
+			}
+			else if (!andList.isEmpty())
+			{
+				orList.add(new CompoundAndChoiceSet<T>(andList));
 			}
 		}
-		if (!pcfList.isEmpty())
+		if (!pcfOrList.isEmpty())
 		{
-			RetainingChooser<T> fc = new RetainingChooser<T>(poClass);
-			fc.addAllRetainingChoiceFilters(pcfList);
-			pcsList.add(fc);
+			RetainingChooser<T> ret = new RetainingChooser<T>(poClass);
+			ret.addAllRetainingChoiceFilters(pcfOrList);
+			orList.add(ret);
 		}
-		if (pcsList.isEmpty())
+		if (orList.isEmpty())
 		{
-			Logging.errorPrint("Choice resulted in no choices from input: "
-					+ value);
 			return null;
 		}
-		else if (pcsList.size() == 1)
+		else if (orList.size() == 1)
 		{
-			return pcsList.get(0);
+			return orList.get(0);
 		}
 		else
 		{
-			return new CompoundOrChoiceSet<T>(pcsList);
+			return new CompoundOrChoiceSet<T>(orList);
 		}
 	}
 
-	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getPrimitiveChoiceFilter(
-			LoadContext context, Class<T> cl, String key)
-	{
-		if (key.indexOf(',') == -1)
-		{
-			return getAtomicChoiceFilter(context, cl, key);
-		}
-		StringTokenizer st = new StringTokenizer(key, ",");
-		List<PrimitiveChoiceFilter<T>> filterList = new ArrayList<PrimitiveChoiceFilter<T>>();
-		while (st.hasMoreTokens())
-		{
-			filterList.add(getAtomicChoiceFilter(context, cl, st.nextToken()));
-		}
-		return new CompoundAndFilter<T>(filterList);
-	}
-
-	public <T extends CDOMObject> PrimitiveChoiceSet<T> getQualifier(
-			LoadContext context, Class<T> cl, String key, String value)
-	{
-		/*
-		 * TODO This splits TYPE= before it goes into getGlobalChooseQualifier !
-		 */
-		int equalLoc = key.indexOf('=');
-		String condition = null;
-		if (equalLoc != -1)
-		{
-			condition = key.substring(equalLoc + 1);
-			key = key.substring(0, equalLoc);
-		}
-		ChooseLstQualifierToken<T> qual = TokenLibrary.getChooseQualifier(cl,
-				key);
-		if (qual == null)
-		{
-			ChooseLstGlobalQualifierToken<T> potoken = TokenLibrary
-					.getGlobalChooseQualifier(key);
-			if (potoken == null)
-			{
-				Logging.addParseMessage(Logging.LST_ERROR,
-						"Invalid Qualifier: " + cl + " " + key + " " + value);
-				return null;
-			}
-			potoken.initialize(context, cl, condition, value);
-			return potoken;
-		}
-		else
-		{
-			if (!qual.initialize(context, cl, condition, value))
-			{
-				Logging.errorPrint("Failed to Initialize Qualifier: " + cl
-						+ " " + key + " " + value);
-				return null;
-			}
-			return qual;
-		}
-	}
-
-	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getAtomicChoiceFilter(
+	public <T extends CDOMObject> PrimitiveChoiceFilter<T> getPrimitive(
 			LoadContext context, Class<T> cl, String key)
 	{
 		int openBracketLoc = key.indexOf('[');
@@ -295,7 +285,7 @@ public class TokenSupport
 						+ "following the close bracket");
 				return null;
 			}
-			if (equalLoc == -1)
+			if (equalLoc == -1 || equalLoc > openBracketLoc)
 			{
 				tokKey = key.substring(0, openBracketLoc);
 				tokValue = null;
@@ -313,19 +303,35 @@ public class TokenSupport
 		PrimitiveToken<T> prim = TokenLibrary.getPrimitive(cl, tokKey);
 		if (prim == null)
 		{
-			if (key.startsWith(Constants.LST_TYPE_OLD)
-					|| key.startsWith(Constants.LST_TYPE))
+			if (tokRestriction != null)
+			{
+				Logging.errorPrint("Didn't expect tokRestriction here: "
+						+ tokRestriction);
+			}
+			if ("TYPE".equals(tokKey))
+			{
+				return TokenUtilities.getTypeReference(context, cl, tokValue);
+			}
+			else if ("!TYPE".equals(tokKey))
+			{
+				return new NegatingFilter<T>(TokenUtilities.getTypeReference(
+						context, cl, tokValue));
+			}
+			if (tokValue != null)
+			{
+				Logging.errorPrint("Didn't expect Arguments here: " + tokValue);
+			}
+			if (key.startsWith(Constants.LST_TYPE_OLD))
 			{
 				return TokenUtilities.getTypeReference(context, cl, key
 						.substring(5));
 			}
-			else if (key.startsWith(Constants.LST_NOT_TYPE_OLD)
-					|| key.startsWith(Constants.LST_NOT_TYPE))
+			else if (key.startsWith(Constants.LST_NOT_TYPE_OLD))
 			{
 				return new NegatingFilter<T>(TokenUtilities.getTypeReference(
 						context, cl, key.substring(6)));
 			}
-			else if (key.indexOf('%') != -1)
+			if (key.indexOf('%') != -1)
 			{
 				return new PatternMatchFilter<T>(cl, key);
 			}
@@ -344,119 +350,101 @@ public class TokenSupport
 		return prim;
 	}
 
-	public <T> boolean processSubToken(LoadContext context, T cdo,
-			String tokenName, String key, String value)
-			throws PersistenceLayerException
+	public <T extends CDOMObject> ChooseLstQualifierToken<T> getQualifier(
+			LoadContext loadContext, Class<T> cl, String key)
 	{
-		for (Iterator<CDOMSubToken<T>> it = new SubTokenIterator<T, CDOMSubToken<T>>(
-				(Class<T>) cdo.getClass(), tokenName, key); it.hasNext();)
+		int openBracketLoc = key.indexOf('[');
+		int closeBracketLoc = key.indexOf(']');
+		int equalLoc = key.indexOf('=');
+		String tokKey;
+		String tokValue;
+		String tokRestriction;
+		if (openBracketLoc == -1)
 		{
-			CDOMSubToken<T> token = it.next();
-			if (token.parse(context, cdo, value))
+			if (closeBracketLoc != -1)
 			{
-				return true;
+				Logging.errorPrint("Found error in Primitive Choice: " + key
+						+ " has a close bracket but no open bracket");
+				return null;
 			}
-			Logging.addParseMessage(Logging.LST_INFO,
-					"Failed in parsing typeStr: " + token);
+			if (equalLoc == -1)
+			{
+				tokKey = key;
+				tokValue = null;
+			}
+			else
+			{
+				tokKey = key.substring(0, equalLoc);
+				tokValue = key.substring(equalLoc + 1);
+			}
+			tokRestriction = null;
+		}
+		else
+		{
+			if (closeBracketLoc == -1)
+			{
+				Logging.errorPrint("Found error in Primitive Choice: " + key
+						+ " has an open bracket but no close bracket");
+				return null;
+			}
+			if (closeBracketLoc != key.length() - 1)
+			{
+				Logging.errorPrint("Found error in Primitive Choice: " + key
+						+ " had close bracket, but had characters "
+						+ "following the close bracket");
+				return null;
+			}
+			if (equalLoc == -1 || equalLoc > openBracketLoc)
+			{
+				tokKey = key.substring(0, openBracketLoc);
+				tokValue = null;
+				tokRestriction = key.substring(openBracketLoc + 1,
+						closeBracketLoc);
+			}
+			else
+			{
+				tokKey = key.substring(0, equalLoc);
+				tokValue = key.substring(equalLoc + 1, openBracketLoc);
+				tokRestriction = key.substring(openBracketLoc + 1,
+						closeBracketLoc);
+			}
+		}
+		for (Iterator<ChooseLstQualifierToken<T>> it = new QualifierTokenIterator<T, ChooseLstQualifierToken<T>>(
+				cl, tokKey); it.hasNext();)
+		{
+			ChooseLstQualifierToken<T> token = it.next();
+			if (token.initialize(loadContext, cl, tokValue, tokRestriction))
+			{
+				return token;
+			}
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Failed in parsing typeStr: " + key);
+		}
+		return null;
+	}
+
+	public <T extends CDOMObject> PrimitiveChoiceSet<?> getChoiceSet(LoadContext loadContext,
+			T cdo, String key, String val) throws PersistenceLayerException
+	{
+		Class<T> cl = (Class<T>) cdo.getClass();
+		
+		for (Iterator<ChoiceSetToken<? super T>> it = new ChooseTokenIterator<T>(
+				cl, key); it.hasNext();)
+		{
+			ChoiceSetToken<? super T> token = it.next();
+			PrimitiveChoiceSet<?> ret = token.parse(loadContext, cdo, val);
+			if (ret != null)
+			{
+				return ret;
+			}
+			Logging.addParseMessage(Logging.LST_ERROR,
+					"Failed in parsing typeStr: " + key + " " + val);
 		}
 		/*
 		 * CONSIDER Better option than toString, given that T != CDOMObject
 		 */
-		Logging.errorPrint("Illegal " + tokenName + " subtoken '" + key + "' '"
-				+ value + "' for " + cdo.toString());
-		return false;
-	}
-
-	public <T extends CDOMObject> String[] unparse(LoadContext context, T cdo,
-			String tokenName)
-	{
-		Set<String> set = new TreeSet<String>();
-		Class<T> cl = (Class<T>) cdo.getClass();
-		TokenFamilySubIterator<T> it = new TokenFamilySubIterator<T>(cl, tokenName);
-		while (it.hasNext())
-		{
-			CDOMSecondaryToken<? super T> token = it.next();
-			String[] s = token.unparse(context, cdo);
-			if (s != null)
-			{
-				for (String aString : s)
-				{
-					set.add(token.getTokenName() + '|' + aString);
-				}
-			}
-		}
-		if (set.isEmpty())
-		{
-			return null;
-		}
-		return set.toArray(new String[set.size()]);
-	}
-
-	public <T extends CDOMObject> Collection<String> unparse(
-			LoadContext context, T cdo)
-	{
-		Set<String> set = new TreeSet<String>();
-		Class<T> cl = (Class<T>) cdo.getClass();
-		TokenFamilyIterator<T> it = new TokenFamilyIterator<T>(cl);
-		while (it.hasNext())
-		{
-			CDOMPrimaryToken<? super T> token = it.next();
-			String[] s = token.unparse(context, cdo);
-			if (s != null)
-			{
-				for (String aString : s)
-				{
-					set.add(token.getTokenName() + ':' + aString);
-				}
-			}
-		}
-		if (set.isEmpty())
-		{
-			return null;
-		}
-		return set;
-	}
-
-	public <T extends CDOMObject> PrimitiveChoiceSet<?> getChoiceSet(
-			LoadContext context, T obj, String key, String val)
-			throws PersistenceLayerException
-	{
-		for (Iterator<ChoiceSetToken<?>> it = new ChooseTokenIterator<CDOMObject>(
-				(Class) obj.getClass(), key); it.hasNext();)
-		{
-			ChoiceSetToken token = it.next();
-			PrimitiveChoiceSet<?> pcs = token.parse(context, obj, val);
-			if (pcs == null)
-			{
-				Logging.addParseMessage(Logging.LST_INFO,
-						"Failed in parsing typeStr: " + token);
-			}
-			return pcs;
-		}
-		Class<? extends CDOMObject> cl = obj.getClass();
-		Logging.addParseMessage(Logging.LST_ERROR, "Illegal Choice Token '"
-				+ key + "' '" + val + "' for " + cl.getName() + " "
-				+ obj.getDisplayName());
-		return null;
-	}
-
-	public Prerequisite getPrerequisite(LoadContext context, String key,
-			String value) throws PersistenceLayerException
-	{
-		for (Iterator<PrerequisiteParserInterface> it = new PreTokenIterator(
-				key); it.hasNext();)
-		{
-			PrerequisiteParserInterface token = it.next();
-			Prerequisite p = token.parse(key, value, false, false);
-			if (p == null)
-			{
-				Logging.addParseMessage(Logging.LST_INFO,
-						"Failed in parsing Prereq: " + key + " " + value);
-			}
-			return p;
-		}
-		Logging.addParseMessage(Logging.LST_ERROR, "Illegal Choice Token '"
-				+ key + "' '" + value + "'");
+		Logging.addParseMessage(Logging.LST_ERROR, "Illegal subtoken '" + key
+				+ "' '" + val + "' for " + cdo.toString());
 		return null;
 	}
 }

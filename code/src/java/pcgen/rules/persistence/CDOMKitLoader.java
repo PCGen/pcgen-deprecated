@@ -1,17 +1,28 @@
 package pcgen.rules.persistence;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
+import pcgen.base.util.HashMapToList;
+import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.helper.KitTask;
 import pcgen.cdom.inst.CDOMKit;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.persistence.lst.LstFileLoader;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
@@ -216,6 +227,8 @@ public class CDOMKitLoader implements CDOMLoader<CDOMKit>
 			throws PersistenceLayerException
 	{
 		CC obj = loader.getCDOMObject(context);
+		Class cl = obj.getClass();
+		context.obj.addToList(activeKit, ListKey.KIT_TASKS, new KitTask<CC>(cl, obj));
 		loader.parseLine(context, obj, line, uri);
 	}
 
@@ -236,9 +249,89 @@ public class CDOMKitLoader implements CDOMLoader<CDOMKit>
 	}
 
 	public void unloadLstFiles(LoadContext lc,
-			Collection<CampaignSourceEntry> languageFiles)
+			Collection<CampaignSourceEntry> files)
 	{
-		// TODO Auto-generated method stub
-		
+		HashMapToList<Class<?>, CDOMSubLineLoader<?>> loaderMap = new HashMapToList<Class<?>, CDOMSubLineLoader<?>>();
+		for (CDOMSubLineLoader<?> loader : loadMap.values())
+		{
+			loaderMap.addToListFor(loader.getLoadedClass(), loader);
+		}
+		for (CampaignSourceEntry cse : files)
+		{
+			lc.setExtractURI(cse.getURI());
+			URI writeURI = cse.getWriteURI();
+			String path = writeURI.getPath().substring(1);
+			File f = new File(path);
+			ensureCreated(f.getParentFile());
+			try
+			{
+				TreeSet<String> set = new TreeSet<String>();
+				for (CDOMKit k : lc.ref
+						.getConstructedCDOMObjects(CDOMKit.class))
+				{
+					if (cse.getURI().equals(k.get(ObjectKey.SOURCE_URI)))
+					{
+						StringBuilder sb = new StringBuilder();
+						String[] unparse = lc.unparse(k, "*KITTOKEN");
+						sb.append("STARTPACK:");
+						sb.append(k.getDisplayName());
+						if (unparse != null)
+						{
+							sb.append("\t").append(StringUtil.join(unparse, "\t"));
+						}
+						sb.append("\n");
+
+						Changes<KitTask<?>> changes = lc.getObjectContext()
+								.getListChanges(k, ListKey.KIT_TASKS);
+						Collection<KitTask<?>> tasks = changes.getAdded();
+						if (tasks == null)
+						{
+							continue;
+						}
+						for (KitTask kt : tasks)
+						{
+							List<CDOMSubLineLoader<?>> loaders = loaderMap
+									.getListFor(kt.getUnderlyingClass());
+							for (CDOMSubLineLoader<?> loader : loaders)
+							{
+								processTask(lc, kt, loader, sb);
+							}
+						}
+						sb.append("\n");
+						set.add(sb.toString());
+					}
+				}
+				PrintWriter pw = new PrintWriter(f);
+				pw.println("#~PARAGRAPH");
+				for (String s : set)
+				{
+					pw.print(s);
+				}
+				pw.close();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private <T> void processTask(LoadContext lc, KitTask<T> kt, CDOMSubLineLoader<T> loader, StringBuilder pw)
+	{
+		loader.unloadObject(lc, kt.getObject(), pw);
+	}
+
+	private boolean ensureCreated(File rec)
+	{
+		if (!rec.exists())
+		{
+			if (!ensureCreated(rec.getParentFile()))
+			{
+				return false;
+			}
+			return rec.mkdir();
+		}
+		return true;
 	}
 }

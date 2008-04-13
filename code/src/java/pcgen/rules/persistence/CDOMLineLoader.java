@@ -1,12 +1,17 @@
 package pcgen.rules.persistence;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CampaignSourceEntry;
 import pcgen.persistence.lst.LstFileLoader;
@@ -30,8 +35,8 @@ public class CDOMLineLoader<T extends CDOMObject> implements CDOMLoader<T>
 		prefixLength = targetPrefixColon.length();
 	}
 
-	public void parseLine(LoadContext context, T obj, String val,
-			URI source) throws PersistenceLayerException
+	public void parseLine(LoadContext context, T obj, String val, URI source)
+			throws PersistenceLayerException
 	{
 		StringTokenizer st = new StringTokenizer(val, "\t");
 		while (st.hasMoreTokens())
@@ -171,13 +176,7 @@ public class CDOMLineLoader<T extends CDOMObject> implements CDOMLoader<T>
 
 	public T getCDOMObject(LoadContext context, String name)
 	{
-		T obj = context.ref.silentlyGetConstructedCDOMObject(
-				targetClass, name);
-		if (obj == null)
-		{
-			obj = context.ref.constructCDOMObject(targetClass, name);
-		}
-		return obj;
+		return context.ref.constructCDOMObject(targetClass, name);
 	}
 
 	public String getPrefix()
@@ -186,9 +185,65 @@ public class CDOMLineLoader<T extends CDOMObject> implements CDOMLoader<T>
 	}
 
 	public void unloadLstFiles(LoadContext lc,
-			Collection<CampaignSourceEntry> languageFiles)
+			Collection<CampaignSourceEntry> files)
 	{
-		// TODO Auto-generated method stub
-		
+		for (CampaignSourceEntry cse : files)
+		{
+			lc.setExtractURI(cse.getURI());
+			URI writeURI = cse.getWriteURI();
+			String path = writeURI.getPath().substring(1);
+			File f = new File(path);
+			ensureCreated(f.getParentFile());
+			try
+			{
+				PrintWriter pw = new PrintWriter(f);
+				unloadLstFile(lc, cse, pw);
+				pw.close();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void unloadLstFile(LoadContext lc, CampaignSourceEntry cse,
+			PrintWriter pw)
+	{
+		for (T obj : getConstructedObjects(lc))
+		{
+			String unparse = StringUtil.join(lc.unparse(obj), "\t");
+			if (cse.getURI().equals(obj.get(ObjectKey.SOURCE_URI)))
+			{
+				pw.println(new StringBuilder(targetPrefixColon).append(
+						obj.getDisplayName()).append('\t').append(unparse)
+						.toString());
+			}
+			else if (unparse.length() != 0)
+			{
+				// TODO This should be an error?!?
+				System.err.println(obj.getDisplayName() + " " + unparse);
+				System.err.println(cse.getURI() + " " + obj.get(ObjectKey.SOURCE_URI));
+			}
+		}
+	}
+
+	protected Collection<T> getConstructedObjects(LoadContext lc)
+	{
+		return lc.ref.getConstructedCDOMObjects(targetClass);
+	}
+
+	private boolean ensureCreated(File rec)
+	{
+		if (!rec.exists())
+		{
+			if (!ensureCreated(rec.getParentFile()))
+			{
+				return false;
+			}
+			return rec.mkdir();
+		}
+		return true;
 	}
 }

@@ -442,8 +442,8 @@ public class ListContext
 				CDOMObject owner, Class<? extends CDOMList<?>> cl)
 		{
 			ArrayList<CDOMReference<? extends CDOMList<? extends CDOMObject>>> list = new ArrayList<CDOMReference<? extends CDOMList<? extends CDOMObject>>>();
-			for (CDOMReference<? extends CDOMList<? extends CDOMObject>> ref : owner
-					.getModifiedLists())
+			for (CDOMReference<? extends CDOMList<? extends CDOMObject>> ref : getPositive(
+					extractURI, owner).getModifiedLists())
 			{
 				if (cl.equals(ref.getReferenceClass()))
 				{

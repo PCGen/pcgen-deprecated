@@ -186,7 +186,7 @@ public class CDOMTokenLoader<T extends CDOMObject> implements CDOMLoader<T>
 				String message = PropertyFactory.getFormattedString(
 						"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
 						uri, i + 1, ple.getMessage());
-				Logging.addParseMessage(Logging.LST_ERROR, message);
+				Logging.errorPrint(message);
 				Logging.debugPrint("Parse error:", ple); //$NON-NLS-1$
 			}
 			catch (Throwable t)
@@ -194,10 +194,11 @@ public class CDOMTokenLoader<T extends CDOMObject> implements CDOMLoader<T>
 				String message = PropertyFactory.getFormattedString(
 						"Errors.LstFileLoader.ParseError", //$NON-NLS-1$
 						uri, i + 1, t.getMessage());
-				Logging.addParseMessage(Logging.LST_ERROR, message);
-				Logging.addParseMessage(Logging.LST_ERROR, PropertyFactory
+				Logging.errorPrint(message);
+				Logging.errorPrint(PropertyFactory
 						.getString("Errors.LstFileLoader.Ignoring")
 						+ "\n" + t);
+				t.printStackTrace();
 			}
 		}
 	}
@@ -280,25 +281,18 @@ public class CDOMTokenLoader<T extends CDOMObject> implements CDOMLoader<T>
 				PrintWriter pw = new PrintWriter(f);
 				Collection<T> objects = lc.ref
 						.getConstructedCDOMObjects(targetClass);
-//				System.err.println(objects.size());
-//				Set<T> set = new TreeSet<T>(TokenUtilities.WRITEABLE_SORTER);
-//				set.addAll(objects);
-//				System.err.println(set.size());
-//				List<T> out = new ArrayList<T>();
-//				out.addAll(objects);
-//				out.removeAll(set);
-//				System.err.println(out);
+				Set<String> set = new TreeSet<String>();
 				for (T obj : objects)
 				{
-					String unparse = StringUtil.join(lc.unparse(obj), "\t");
-					if (cse.getURI().equals(obj.get(ObjectKey.SOURCE_URI)))
+					String s = unparseObject(lc, cse, obj);
+					if (s != null)
 					{
-						pw.println(obj.getDisplayName() + '\t' + unparse);
+						set.add(s);
 					}
-					else if (unparse.length() != 0)
-					{
-						pw.println(obj.getKeyName() + ".MOD\t" + unparse);
-					}
+				}
+				for (String s : set)
+				{
+					pw.println(s);
 				}
 				pw.close();
 			}
@@ -308,6 +302,24 @@ public class CDOMTokenLoader<T extends CDOMObject> implements CDOMLoader<T>
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public String unparseObject(LoadContext lc, CampaignSourceEntry cse, T obj)
+	{
+		String unparse = StringUtil.join(lc.unparse(obj), "\t");
+		/*
+		 * TODO This isn't good enough - you can .MOD in the
+		 * original file, and that needs to be remembered
+		 */
+		if (cse.getURI().equals(obj.get(ObjectKey.SOURCE_URI)))
+		{
+			return obj.getDisplayName() + '\t' + unparse;
+		}
+		else if (unparse.length() != 0)
+		{
+			return obj.getKeyName() + ".MOD\t" + unparse;
+		}
+		return null;
 	}
 
 	private boolean ensureCreated(File rec)
