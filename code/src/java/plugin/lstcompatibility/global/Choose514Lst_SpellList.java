@@ -101,11 +101,11 @@ public class Choose514Lst_SpellList extends AbstractToken implements
 		String args;
 		if (rest.equals("Y") || rest.equals("1"))
 		{
-			args = "PC[SPELLBOOK=YES]";
+			args = "PC[HASBOOK=YES]";
 		}
 		else if (rest.equals("N") || rest.equals("0"))
 		{
-			args = "PC[SPELLBOOK=NO]";
+			args = "PC[HASBOOK=NO]";
 		}
 		else
 		{
