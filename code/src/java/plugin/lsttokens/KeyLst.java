@@ -56,6 +56,10 @@ public class KeyLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		 * method FUTURE isn't this redundant with the set above?!
 		 */
 		context.getObjectContext().put(obj, StringKey.KEY_NAME, value);
+		/*
+		 * TODO This bypasses a but when using the editor context :P
+		 */
+		obj.put(StringKey.KEY_NAME, value);
 		return true;
 	}
 

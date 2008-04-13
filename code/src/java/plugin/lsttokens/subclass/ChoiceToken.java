@@ -1,5 +1,7 @@
 package plugin.lsttokens.subclass;
 
+import java.math.BigDecimal;
+
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.content.CDOMSpellProhibitor;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -14,7 +16,8 @@ import pcgen.util.Logging;
 /**
  * Class deals with CHOICE Token
  */
-public class ChoiceToken implements SubClassLstToken, CDOMPrimaryToken<CDOMSubClass>
+public class ChoiceToken implements SubClassLstToken,
+		CDOMPrimaryToken<CDOMSubClass>
 {
 
 	public String getTokenName()
@@ -89,8 +92,8 @@ public class ChoiceToken implements SubClassLstToken, CDOMPrimaryToken<CDOMSubCl
 		}
 	}
 
-	private <T> CDOMSpellProhibitor<T> getSpellProhib(ProhibitedSpellType<T> pst,
-			String arg)
+	private <T> CDOMSpellProhibitor<T> getSpellProhib(
+			ProhibitedSpellType<T> pst, String arg)
 	{
 		CDOMSpellProhibitor<T> spSchool = new CDOMSpellProhibitor<T>();
 		spSchool.setType(pst);
@@ -100,8 +103,13 @@ public class ChoiceToken implements SubClassLstToken, CDOMPrimaryToken<CDOMSubCl
 
 	public String[] unparse(LoadContext context, CDOMSubClass obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		CDOMSpellProhibitor<?> bd = context.getObjectContext().getObject(obj,
+				ObjectKey.SELETED_SPELLS);
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
 	}
 
 	public Class<CDOMSubClass> getTokenClass()

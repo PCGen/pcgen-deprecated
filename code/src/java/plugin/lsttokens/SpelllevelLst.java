@@ -38,7 +38,6 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.CDOMSpell;
 import pcgen.cdom.inst.ClassSpellList;
@@ -403,8 +402,21 @@ public class SpelllevelLst extends AbstractToken implements GlobalLstToken, CDOM
 				sb.append(Constants.EQUALS);
 				sb.append(level);
 				sb.append(Constants.PIPE);
-				sb.append(ReferenceUtilities.joinLstFormat(domainMap
-					.getListFor(prereqs, level, list), Constants.COMMA));
+				List<LSTWriteable> refs = domainMap.getListFor(prereqs, level, list);
+				boolean first = true;
+				for (LSTWriteable lw : refs)
+				{
+					if (!first)
+					{
+						sb.append(',');
+					}
+					String lsts = lw.getLSTformat();
+					if (lsts.startsWith("TYPE="))
+					{
+						lsts = "SPELLCASTER." + lsts.substring(5);
+					}
+					sb.append(lsts);
+				}
 			}
 		}
 		if (prereqs != null)

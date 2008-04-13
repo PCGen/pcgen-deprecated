@@ -87,7 +87,8 @@ public class FavoredclassToken extends AbstractToken implements
 		{
 			String token = tok.nextToken();
 			CDOMReference<? extends CDOMPCClass> ref;
-			if (Constants.LST_ALL.equals(token))
+			if (Constants.LST_ALL.equalsIgnoreCase(token)
+					|| Constants.LST_ANY.equalsIgnoreCase(token))
 			{
 				foundAny = true;
 				ref = context.ref.getCDOMAllReference(PCCLASS_CLASS);

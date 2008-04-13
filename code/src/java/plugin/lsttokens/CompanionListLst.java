@@ -416,7 +416,7 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken, C
 			{
 				// Zero indicates no Token
 				// TODO Error message - unexpected?
-				return null;
+				continue;
 			}
 			for (LSTWriteable added : mtl.getKeySet())
 			{
@@ -437,7 +437,6 @@ public class CompanionListLst extends AbstractToken implements GlobalLstToken, C
 			// Legal if no COMPANIONMOD Tokens
 			return null;
 		}
-
 		Set<String> set = new TreeSet<String>();
 		StringBuilder sb = new StringBuilder();
 		for (Set<Prerequisite> prereqs : m.getKeySet())

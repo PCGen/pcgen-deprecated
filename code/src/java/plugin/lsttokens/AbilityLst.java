@@ -31,6 +31,7 @@ import java.util.TreeSet;
 
 import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.MapToList;
+import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSingleRef;
@@ -261,7 +262,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken,
 			return false;
 		}
 
-		final StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 
 		CDOMAbilityCategory ac;
 		String cat = tok.nextToken();
@@ -307,14 +308,58 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken,
 			return false;
 		}
 
-		while (tok.hasMoreTokens())
+		String token = tok.nextToken();
+
+		if (token.startsWith("PRE") || token.startsWith("!PRE"))
+		{
+			Logging.errorPrint("Cannot have only PRExxx subtoken in "
+					+ getTokenName() + ": " + value);
+			return false;
+		}
+
+		ArrayList<AssociatedPrereqObject> edgeList = new ArrayList<AssociatedPrereqObject>();
+
+		while (true)
 		{
 			CDOMSingleRef<CDOMAbility> ability = context.ref.getCDOMReference(
-					ABILITY_CLASS, ac, tok.nextToken());
+					ABILITY_CLASS, ac, token);
 			AssociatedPrereqObject edge = context.getGraphContext().grant(
 					getTokenName(), obj, ability);
 			edge.setAssociation(AssociationKey.ABILITY_NATURE, an);
+			edgeList.add(edge);
+
+			if (!tok.hasMoreTokens())
+			{
+				// No prereqs, so we're done
+				return true;
+			}
+			token = tok.nextToken();
+			if (token.startsWith("PRE") || token.startsWith("!PRE"))
+			{
+				break;
+			}
 		}
+
+		while (true)
+		{
+			Prerequisite prereq = getPrerequisite(token);
+			if (prereq == null)
+			{
+				Logging.errorPrint("   (Did you put feats after the "
+						+ "PRExxx tags in " + getTokenName() + ":?)");
+				return false;
+			}
+			for (AssociatedPrereqObject edge : edgeList)
+			{
+				edge.addPrerequisite(prereq);
+			}
+			if (!tok.hasMoreTokens())
+			{
+				break;
+			}
+			token = tok.nextToken();
+		}
+
 		return true;
 	}
 
@@ -329,7 +374,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken,
 			// Zero indicates no Token
 			return null;
 		}
-		DoubleKeyMapToList<AbilityNature, Category<CDOMAbility>, LSTWriteable> m = new DoubleKeyMapToList<AbilityNature, Category<CDOMAbility>, LSTWriteable>();
+		TripleKeyMapToList<AbilityNature, Category<CDOMAbility>, List<Prerequisite>, LSTWriteable> m = new TripleKeyMapToList<AbilityNature, Category<CDOMAbility>, List<Prerequisite>, LSTWriteable>();
 		for (LSTWriteable ab : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
@@ -338,7 +383,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken,
 						.getAssociation(AssociationKey.ABILITY_NATURE);
 				m.addToListFor(nature,
 						((CategorizedCDOMReference<CDOMAbility>) ab)
-								.getCDOMCategory(), ab);
+								.getCDOMCategory(), assoc.getPrerequisiteList(), ab);
 			}
 		}
 
@@ -347,12 +392,20 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken,
 		{
 			for (Category<CDOMAbility> category : m.getSecondaryKeySet(nature))
 			{
-				StringBuilder sb = new StringBuilder();
-				sb.append(category).append(Constants.PIPE);
-				sb.append(nature).append(Constants.PIPE);
-				sb.append(ReferenceUtilities.joinLstFormat(m.getListFor(nature,
-						category), Constants.PIPE));
-				returnSet.add(sb.toString());
+				for (List<Prerequisite> prereqs : m.getTertiaryKeySet(nature, category))
+				{
+					StringBuilder sb = new StringBuilder();
+					sb.append(category).append(Constants.PIPE);
+					sb.append(nature).append(Constants.PIPE);
+					sb.append(ReferenceUtilities.joinLstFormat(m.getListFor(nature,
+							category, prereqs), Constants.PIPE));
+					if (prereqs != null && !prereqs.isEmpty())
+					{
+						sb.append(Constants.PIPE);
+						sb.append(getPrerequisiteString(context, prereqs));
+					}
+					returnSet.add(sb.toString());
+				}
 			}
 		}
 		return returnSet.toArray(new String[returnSet.size()]);

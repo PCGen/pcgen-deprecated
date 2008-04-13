@@ -78,11 +78,13 @@ public class LookupToken implements BaseKitLstToken,
 		}
 		String tableEntry = value.substring(0, commaLoc);
 		Formula f = FormulaFactory.getFormulaFor(value.substring(commaLoc + 1));
+		kitGear.loadLookup(tableEntry, f);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMKitGear kitGear)
 	{
-		return null;
+		return new String[] { kitGear.getLookupName() + ","
+				+ kitGear.getLookupFormula() };
 	}
 }

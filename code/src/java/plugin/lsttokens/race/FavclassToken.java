@@ -86,7 +86,8 @@ public class FavclassToken extends AbstractToken implements RaceLstToken, CDOMPr
 		{
 			CDOMReference<? extends CDOMPCClass> ref;
 			String token = tok.nextToken();
-			if (Constants.LST_ALL.equals(token))
+			if (Constants.LST_ALL.equalsIgnoreCase(token)
+					|| Constants.LST_ANY.equalsIgnoreCase(token))
 			{
 				foundAny = true;
 				ref = context.ref.getCDOMAllReference(PCCLASS_CLASS);

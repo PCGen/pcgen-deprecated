@@ -85,6 +85,12 @@ public class LevelAbilityToken implements KitLevelAbilityLstToken,
 			Logging.errorPrint(getTokenName() + " requires an =: " + value);
 			return false;
 		}
+		if (equalLoc != value.lastIndexOf('='))
+		{
+			Logging.errorPrint(getTokenName() + " requires a single =: "
+					+ value);
+			return false;
+		}
 		String className = value.substring(0, equalLoc);
 		String level = value.substring(equalLoc + 1);
 		CDOMReference<CDOMPCClass> cl = context.ref.getCDOMReference(
@@ -97,7 +103,7 @@ public class LevelAbilityToken implements KitLevelAbilityLstToken,
 				Logging.errorPrint(getTokenName() + " expected an integer > 0");
 				return false;
 			}
-			kitLA.setLevel(lvl);
+			kitLA.setApplyLevel(lvl);
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -106,12 +112,14 @@ public class LevelAbilityToken implements KitLevelAbilityLstToken,
 					+ getTokenName() + ":<int>");
 			return false;
 		}
-		kitLA.setClass(cl);
+		kitLA.setApplyClass(cl);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMKitLevelAbility kitLA)
 	{
-		return null;
+		CDOMReference<CDOMPCClass> cl = kitLA.getApplyClass();
+		Integer lvl = kitLA.getApplyLevel();
+		return new String[] { cl.getLSTformat() + '=' + lvl };
 	}
 }

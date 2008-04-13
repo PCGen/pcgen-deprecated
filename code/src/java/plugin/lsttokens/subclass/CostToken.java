@@ -13,7 +13,8 @@ import pcgen.util.Logging;
 /**
  * Class deals with COST Token
  */
-public class CostToken implements SubClassLstToken, CDOMPrimaryToken<CDOMSubClass>
+public class CostToken implements SubClassLstToken,
+		CDOMPrimaryToken<CDOMSubClass>
 {
 
 	public String getTokenName()
@@ -42,7 +43,7 @@ public class CostToken implements SubClassLstToken, CDOMPrimaryToken<CDOMSubClas
 			if (cost.compareTo(BigDecimal.ZERO) < 0)
 			{
 				Logging.errorPrint(getTokenName()
-					+ " must be a positive number: " + value);
+						+ " must be a positive number: " + value);
 				return false;
 			}
 			context.getObjectContext().put(sc, ObjectKey.COST, cost);
@@ -57,8 +58,13 @@ public class CostToken implements SubClassLstToken, CDOMPrimaryToken<CDOMSubClas
 
 	public String[] unparse(LoadContext context, CDOMSubClass obj)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		BigDecimal bd = context.getObjectContext()
+				.getObject(obj, ObjectKey.COST);
+		if (bd == null)
+		{
+			return null;
+		}
+		return new String[] { bd.toString() };
 	}
 
 	public Class<CDOMSubClass> getTokenClass()

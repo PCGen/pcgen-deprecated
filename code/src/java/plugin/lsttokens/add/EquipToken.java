@@ -221,7 +221,9 @@ public class EquipToken extends AbstractToken implements AddLstToken,
 				{
 					sb.append(fString).append(Constants.PIPE);
 				}
-				sb.append(cs.getLSTformat());
+				String lst = cs.getLSTformat();
+				sb.append(lst.equals(Constants.LST_ALL) ? Constants.LST_ANY
+						: lst);
 				addStrings.add(sb.toString());
 
 				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);

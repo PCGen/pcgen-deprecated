@@ -166,7 +166,8 @@ public class ArmorProfToken extends AbstractToken implements AutoLstToken,
 							.grant(getFullName(), obj, ref);
 					applyList.add(edge);
 				}
-				else if (aProf.startsWith("ARMORTYPE="))
+				else if (aProf.startsWith("ARMORTYPE=")
+						|| aProf.startsWith("ARMORTYPE."))
 				{
 					foundOther = true;
 					PrimitiveChoiceSet<CDOMArmorProf> pcs = context

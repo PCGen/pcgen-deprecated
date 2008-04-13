@@ -30,10 +30,13 @@ import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
+import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.VariableKey;
+import pcgen.cdom.helper.StatLock;
 import pcgen.cdom.inst.CDOMStat;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -104,11 +107,9 @@ public class DefineLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		{
 			if (value.startsWith("UNLOCK."))
 			{
-				CDOMStat stat = context.ref.getAbbreviatedObject(
-						PCSTAT_CLASS, value.substring(7));
-				/*
-				 * TODO Unlock the stat here
-				 */
+				CDOMStat stat = context.ref.getAbbreviatedObject(PCSTAT_CLASS,
+						value.substring(7));
+				context.obj.addToList(obj, ListKey.UNLOCKED_STATS, stat);
 				return true;
 			}
 			else
@@ -121,7 +122,7 @@ public class DefineLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		}
 		else
 		{
-			
+
 		}
 		String var = value.substring(0, barLoc);
 		if (var.length() == 0)
@@ -136,11 +137,10 @@ public class DefineLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 					.substring(barLoc + 1));
 			if (value.startsWith("LOCK."))
 			{
-				CDOMStat stat = context.ref.getAbbreviatedObject(
-						PCSTAT_CLASS, value.substring(5, barLoc));
-				/*
-				 * TODO Lock the stat here
-				 */
+				CDOMStat stat = context.ref.getAbbreviatedObject(PCSTAT_CLASS,
+						value.substring(5, barLoc));
+				context.getObjectContext().addToList(obj, ListKey.STAT_LOCKS,
+						new StatLock(stat, f));
 			}
 			else
 			{
@@ -159,16 +159,55 @@ public class DefineLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
+		Changes<StatLock> changes = context.getObjectContext().getListChanges(
+				obj, ListKey.STAT_LOCKS);
+		Changes<CDOMStat> ulchanges = context.getObjectContext()
+				.getListChanges(obj, ListKey.UNLOCKED_STATS);
 		Set<VariableKey> keys = context.getObjectContext().getVariableKeys(obj);
-		if (keys == null || keys.isEmpty())
+		TreeSet<String> set = new TreeSet<String>();
+		if (keys != null && !keys.isEmpty())
+		{
+			for (VariableKey key : keys)
+			{
+				set.add(key.toString() + Constants.PIPE
+						+ context.getObjectContext().getVariable(obj, key));
+			}
+		}
+		if (changes != null && !changes.isEmpty())
+		{
+			if (changes.includesGlobalClear())
+			{
+				context.addWriteMessage("DEFINE:LOCK does not support .CLEAR");
+				return null;
+			}
+			if (changes.hasAddedItems())
+			{
+				for (StatLock sl : changes.getAdded())
+				{
+					set.add("LOCK." + sl.getLockedStat().getLSTformat() + "|"
+							+ sl.getLockValue());
+				}
+			}
+		}
+		if (ulchanges != null && !ulchanges.isEmpty())
+		{
+			if (ulchanges.includesGlobalClear())
+			{
+				context.addWriteMessage("DEFINE:UNLOCK "
+						+ "does not support .CLEAR");
+				return null;
+			}
+			if (ulchanges.hasAddedItems())
+			{
+				for (CDOMStat st : ulchanges.getAdded())
+				{
+					set.add("UNLOCK." + st.getLSTformat());
+				}
+			}
+		}
+		if (set.isEmpty())
 		{
 			return null;
-		}
-		TreeSet<String> set = new TreeSet<String>();
-		for (VariableKey key : keys)
-		{
-			set.add(key.toString() + Constants.PIPE
-					+ context.getObjectContext().getVariable(obj, key));
 		}
 		return set.toArray(new String[set.size()]);
 	}

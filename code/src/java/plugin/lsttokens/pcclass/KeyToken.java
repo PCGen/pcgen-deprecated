@@ -53,6 +53,10 @@ public class KeyToken implements CDOMPrimaryToken<CDOMPCClass>
 		 */
 		context.getObjectContext().put(pcc, StringKey.KEY_NAME, value);
 		/*
+		 * TODO This bypasses a but when using the editor context :P
+		 */
+		pcc.put(StringKey.KEY_NAME, value);
+		/*
 		 * Note the additional work done here for PCClass, because the PCClass
 		 * key is used as a CATEGORY for SubClasses.
 		 */

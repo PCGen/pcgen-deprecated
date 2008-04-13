@@ -26,6 +26,7 @@
 package plugin.lsttokens.kit;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
@@ -145,7 +146,21 @@ public class StatToken extends KitLstToken implements
 
 	public String[] unparse(LoadContext context, CDOMKitStat kitStat)
 	{
-		return null;
+		Collection<CDOMStat> stats = kitStat.getStats();
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (CDOMStat stat : stats)
+		{
+			if (!first)
+			{
+				sb.append('|');
+			}
+			sb.append(stat.getLSTformat());
+			sb.append('=');
+			sb.append(kitStat.getFormulaFor(stat).toString());
+			first = false;
+		}
+		return new String[] { sb.toString() };
 	}
 
 }

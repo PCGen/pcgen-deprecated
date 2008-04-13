@@ -162,7 +162,8 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 							.grant(getFullName(), obj, ref);
 					applyList.add(edge);
 				}
-				else if (aProf.startsWith("SHIELDTYPE="))
+				else if (aProf.startsWith("SHIELDTYPE=")
+						|| aProf.startsWith("SHIELDTYPE."))
 				{
 					foundOther = true;
 					PrimitiveChoiceSet<CDOMShieldProf> pcs = context

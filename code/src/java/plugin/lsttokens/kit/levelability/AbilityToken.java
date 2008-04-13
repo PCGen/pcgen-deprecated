@@ -148,6 +148,6 @@ public class AbilityToken implements KitLevelAbilityLstToken,
 
 	public String[] unparse(LoadContext context, CDOMKitLevelAbility kitAbility)
 	{
-		return null;
+		return new String[] { "PROMPT:" };
 	}
 }

@@ -25,6 +25,8 @@
 
 package plugin.lsttokens.kit.table;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
@@ -32,6 +34,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.kit.CDOMKitGear;
 import pcgen.cdom.kit.CDOMKitTable;
+import pcgen.cdom.kit.CDOMKitTable.RangeLimited;
 import pcgen.core.Kit;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.KitTableLstToken;
@@ -137,7 +140,7 @@ public class ValuesToken extends AbstractToken implements KitTableLstToken,
 				return false;
 			}
 			String range = st.nextToken();
-			if (!processRange(range))
+			if (!processRange(kitTable, optionInfo, range))
 			{
 				Logging.errorPrint("Invalid Range in Value: " + range
 						+ " within " + value);
@@ -148,7 +151,8 @@ public class ValuesToken extends AbstractToken implements KitTableLstToken,
 		return true;
 	}
 
-	private boolean processRange(String range)
+	private boolean processRange(CDOMKitTable kitTable, CDOMKitGear optionInfo,
+			String range)
 	{
 		int commaLoc = range.indexOf(',');
 		String minString;
@@ -169,11 +173,41 @@ public class ValuesToken extends AbstractToken implements KitTableLstToken,
 		}
 		Formula min = FormulaFactory.getFormulaFor(minString);
 		Formula max = FormulaFactory.getFormulaFor(maxString);
+		kitTable.addGear(optionInfo, min, max);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMKitTable kitTable)
 	{
-		return null;
+		StringBuilder sb = new StringBuilder();
+		List<RangeLimited> list = kitTable.getList();
+		boolean first = false;
+		for (RangeLimited rl : list)
+		{
+			if (!first)
+			{
+				sb.append(Constants.PIPE);
+			}
+			String[] unparse = context.unparse(rl.gear, getParentToken());
+			if (unparse.length == 1)
+			{
+				sb.append(unparse[0]);
+			}
+			else
+			{
+				for (String s : unparse)
+				{
+					sb.append('[');
+					sb.append(s);
+					sb.append(']');
+				}
+			}
+			sb.append(Constants.PIPE);
+			sb.append(rl.lowRange.toString());
+			sb.append(',');
+			sb.append(rl.highRange.toString());
+			first = false;
+		}
+		return new String[] { sb.toString() };
 	}
 }

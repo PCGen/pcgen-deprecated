@@ -20,10 +20,9 @@ package plugin.lsttokens.add;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMReference;
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
@@ -31,7 +30,7 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.ReferenceChoiceSet;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.AbstractCDOMClassAwareObject;
 import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.PCClass;
@@ -39,7 +38,6 @@ import pcgen.core.PObject;
 import pcgen.persistence.lst.AddLstToken;
 import pcgen.rules.context.AssociatedChanges;
 import pcgen.rules.context.LoadContext;
-import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMSecondaryToken;
 import pcgen.util.Logging;
@@ -140,45 +138,12 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken,
 		{
 			return false;
 		}
-		StringTokenizer tok = new StringTokenizer(items, Constants.COMMA);
-
-		List<CDOMReference<CDOMSkill>> refs = new ArrayList<CDOMReference<CDOMSkill>>();
-
-		boolean foundAny = false;
-		boolean foundOther = false;
-
-		while (tok.hasMoreTokens())
+		String possibilities = StringUtil.replaceAll(items, Constants.COMMA, Constants.PIPE);
+		PrimitiveChoiceSet<CDOMSkill> pcs = context.getChoiceSet(SKILL_CLASS, possibilities);
+		if (pcs == null)
 		{
-			String token = tok.nextToken();
-			CDOMReference<CDOMSkill> ref;
-			if (Constants.LST_ANY.equals(token))
-			{
-				foundAny = true;
-				ref = context.ref.getCDOMAllReference(SKILL_CLASS);
-			}
-			else
-			{
-				foundOther = true;
-				ref = TokenUtilities.getTypeOrPrimitive(context, SKILL_CLASS,
-						token);
-				if (ref == null)
-				{
-					Logging.errorPrint("  Error was encountered while parsing "
-							+ getFullName() + ": " + token
-							+ " is not a valid reference: " + value);
-					return false;
-				}
-			}
-			refs.add(ref);
-		}
-
-		if (foundAny && foundOther)
-		{
-			Logging.errorPrint("Non-sensical " + getFullName()
-					+ ": Contains ANY and a specific reference: " + value);
 			return false;
 		}
-
 		// ClassSkillList csl = ((ClassContext) obj).getCDOMClassSkillList();
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		// container.addActor(new AllowActor<CDOMSkill>(csl));
@@ -191,9 +156,7 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken,
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
 				.getFormulaFor(Integer.MAX_VALUE));
 		container.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
-		ReferenceChoiceSet<CDOMSkill> rcs = new ReferenceChoiceSet<CDOMSkill>(
-				refs);
-		ChoiceSet<CDOMSkill> cs = new ChoiceSet<CDOMSkill>("ADD", rcs);
+		ChoiceSet<CDOMSkill> cs = new ChoiceSet<CDOMSkill>("ADD", pcs);
 		container.setChoiceSet(cs);
 		return true;
 	}
@@ -229,7 +192,6 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken,
 				{
 					context.addWriteMessage("Unable to find " + getFullName()
 							+ " Count");
-					System.err.println("!!!");
 					return null;
 				}
 				String fString = f.toString();
@@ -238,7 +200,8 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken,
 				{
 					sb.append(fString).append(Constants.PIPE);
 				}
-				sb.append(cs.getLSTformat());
+				sb.append(StringUtil.replaceAll(cs.getLSTformat(),
+						Constants.PIPE, Constants.COMMA));
 				addStrings.add(sb.toString());
 
 				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);

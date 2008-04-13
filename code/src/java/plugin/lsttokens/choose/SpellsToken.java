@@ -115,18 +115,6 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken,
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
 			String value) throws PersistenceLayerException
 	{
-		if (value.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not contain , : " + value);
-			return null;
-		}
-		if (value.indexOf('[') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-					+ " arguments may not contain [] : " + value);
-			return null;
-		}
 		if (hasIllegalSeparator('|', value))
 		{
 			return null;
@@ -160,11 +148,7 @@ public class SpellsToken extends AbstractToken implements ChooseLstToken,
 			}
 			else
 			{
-				Logging.errorPrint("CHOOSE:" + getTokenName()
-						+ " argument must start with CLASS= or DOMAIN= : "
-						+ tokText);
-				Logging.errorPrint("  Entire Token was: " + value);
-				return null;
+				sb.append(tokText);
 			}
 			needPipe = true;
 		}

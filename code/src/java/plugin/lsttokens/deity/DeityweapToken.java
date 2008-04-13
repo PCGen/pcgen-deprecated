@@ -23,7 +23,7 @@ package plugin.lsttokens.deity;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
@@ -35,6 +35,7 @@ import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
 /**
  * Class deals with DEITYWEAP Token
@@ -64,20 +65,41 @@ public class DeityweapToken extends AbstractToken implements DeityLstToken,
 			return false;
 		}
 
+		boolean foundAny = false;
+		boolean foundOther = false;
+
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
+
 		while (tok.hasMoreTokens())
 		{
-			CDOMSingleRef<CDOMWeaponProf> ref = context.ref.getCDOMReference(
-					WEAPONPROF_CLASS, tok.nextToken());
+			String token = tok.nextToken();
+			CDOMReference<CDOMWeaponProf> ref;
+			if (Constants.LST_ALL.equalsIgnoreCase(token)
+					|| Constants.LST_ANY.equalsIgnoreCase(token))
+			{
+				foundAny = true;
+				ref = context.ref.getCDOMAllReference(WEAPONPROF_CLASS);
+			}
+			else
+			{
+				foundOther = true;
+				ref = context.ref.getCDOMReference(WEAPONPROF_CLASS, token);
+			}
 			context.getObjectContext().addToList(deity, ListKey.DEITYWEAPON,
 					ref);
+		}
+		if (foundAny && foundOther)
+		{
+			Logging.errorPrint("Non-sensical " + getTokenName()
+					+ ": Contains ANY and a specific reference: " + value);
+			return false;
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMDeity deity)
 	{
-		Changes<CDOMSingleRef<CDOMWeaponProf>> changes = context
+		Changes<CDOMReference<CDOMWeaponProf>> changes = context
 				.getObjectContext().getListChanges(deity, ListKey.DEITYWEAPON);
 		if (changes == null || changes.isEmpty())
 		{
