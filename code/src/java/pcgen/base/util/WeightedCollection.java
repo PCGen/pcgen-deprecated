@@ -266,6 +266,29 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		}
 		return false;
 	}
+	
+	/**
+	 * Returns the weight for the given object in this WeightedCollection. If
+	 * the given object is not in this collection, zero is returned.
+	 * 
+	 * @param o
+	 *            The object for which the weight in this WeightedCollection
+	 *            will be returned.
+	 * @return the weight of the given object in this WeightedCollection, or
+	 *         zero if the object is not in this WeightedCollection
+	 */
+	public int getWeight(Object o)
+	{
+		for (final WeightedItem<E> wi : theData)
+		{
+			E wie = wi.getElement();
+			if (wie == null && o == null || wie != null && wie.equals(o))
+			{
+				return wi.theWeight;
+			}
+		}
+		return 0;
+	}
 
 	/**
 	 * Removes the object from the WeightedCollection if it is present. This
