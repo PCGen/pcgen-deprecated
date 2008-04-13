@@ -123,12 +123,6 @@ These files can be renamed and used for releases.
 	<property name="test.jar.file" value="pcgen-tests.jar" />
 	<property name="test.manifest.file" value="code/manifest-tests" />
 	<property name="test.framework.class" value="AllJUnitTests" />
-	<property name="base.utest.class" value="pcgen.base.AllBaseUnitTests" />
-	<property name="base.utest.file" value="pcgen/base/AllBaseUnitTests*" />
-	<property name="token.utest.class" value="plugin.lsttokens.AllTokenUnitTests" />
-	<property name="token.utest.file" value="plugin/lsttokens/AllTokenUnitTests*" />
-	<property name="token.itest.class" value="plugin.lsttokens.AllTokenIntegrationTests" />
-	<property name="token.itest.file" value="plugin/lsttokens/AllTokenIntegrationTests*" />
 	<property name="test.manifest.extra.jars" value="${manifest.extra.jars} ${s}/test/junit-4.1.jar ${lib.dir}/test/xmlunit1.0.jar" />
 	<property name="test.all-output.file" value="TEST-test.AllJUnitTests.txt" />
 
@@ -713,26 +707,16 @@ pcgen.filepaths=user
 				<path refid="test.project.classpath" />
 				<path refid="emma.lib" />
 			</classpath>
-			<!--
-				<batchtest todir="${build.dir}/test-results/xml">
-					<fileset dir="${basedir}/code/src/utest">
-					  <include name="${base.utest.file}"/>
-					</fileset>
-				</batchtest>
-				<batchtest todir="${build.dir}/test-results/xml">
-					<fileset dir="${basedir}/code/src/utest">
-					  <include name="${token.utest.file}"/>
-					</fileset>
-				</batchtest>
-				<batchtest todir="${build.dir}/test-results/xml">
-					<fileset dir="${basedir}/code/src/itest">
-					  <include name="${token.itest.file}"/>
-					</fileset>
-				</batchtest>
-			-->
 			<batchtest todir="${build.dir}/test-results/xml">
 				<fileset dir="${basedir}/code/src/utest">
 				  <include name="pcgen/base/**/*.java"/>
+				  <exclude name="**/Abstract*.java"/>
+				  <exclude name="**/testsupport/*.java"/>
+				</fileset>
+			</batchtest>
+			<batchtest todir="${build.dir}/test-results/xml">
+				<fileset dir="${basedir}/code/src/utest">
+				  <include name="pcgen/rules/**/*.java"/>
 				  <exclude name="**/Abstract*.java"/>
 				  <exclude name="**/testsupport/*.java"/>
 				</fileset>

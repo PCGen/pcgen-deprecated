@@ -6704,10 +6704,24 @@ jar-all-plugins - Generate the plugin jar files
 				</patternset>
 			</fileset>
 		</jar>
+		<jar jarfile="${lstplugins.dir}/SpellPrimitive-HASBOOK.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/spell/HasBookToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/SpellPrimitive-SPELLBOOK.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/primitive/spell/SpellBookToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SpellPrimitive-SPELLTYPE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/primitive/spell/SpellTypeToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
@@ -6783,6 +6797,13 @@ jar-all-plugins - Generate the plugin jar files
 
 	<target name="jar-qualifier-skill-plugins" depends="makeplugindirs" description="Build (Link) Spell Qualifier Token plugin jar files">
 		<!-- Skill Qualifier tokens-->
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-ANY.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/AnyToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
 		<jar jarfile="${lstplugins.dir}/SkillQualifier-ALLOWED.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
 			<fileset dir="${build.classes.dir}">
 				<patternset>
@@ -6829,6 +6850,13 @@ jar-all-plugins - Generate the plugin jar files
 			<fileset dir="${build.classes.dir}">
 				<patternset>
 					<include name="plugin/qualifier/skill/NotCrossClassToken.class" />
+				</patternset>
+			</fileset>
+		</jar>
+		<jar jarfile="${lstplugins.dir}/SkillQualifier-NONEXCLUSIVE.jar" manifest="${src.java.dir}/plugin/lsttokens/manifest.mf">
+			<fileset dir="${build.classes.dir}">
+				<patternset>
+					<include name="plugin/qualifier/skill/NonExclusiveToken.class" />
 				</patternset>
 			</fileset>
 		</jar>
