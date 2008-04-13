@@ -166,7 +166,7 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken,
 				CDOMGroupRef<ClassSkillList> aref = context.ref
 						.getCDOMAllReference(CLASSSKILLLIST_CLASS);
 				AssociatedPrereqObject edge = context.getListContext()
-						.addToMasterList(getTokenName(), obj, aref, ref);
+						.addToList(getTokenName(), obj, aref, ref);
 				edge.setAssociation(AssociationKey.SKILL_COST,
 						SkillCost.CROSS_CLASS);
 			}
@@ -185,8 +185,8 @@ public class CcskillLst extends AbstractToken implements GlobalLstToken,
 	{
 		CDOMGroupRef<ClassSkillList> listRef = context.ref
 				.getCDOMAllReference(CLASSSKILLLIST_CLASS);
-		AssociatedChanges<LSTWriteable> changes = context.getListContext()
-				.getChangesInMasterList(getTokenName(), obj, listRef);
+		AssociatedChanges<CDOMReference<CDOMSkill>> changes = context.getListContext()
+				.getChangesInList(getTokenName(), obj, listRef);
 		List<String> list = new ArrayList<String>();
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())

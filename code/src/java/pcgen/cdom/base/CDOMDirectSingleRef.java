@@ -81,4 +81,9 @@ public class CDOMDirectSingleRef<T extends PrereqObject> extends
 	{
 		return Collections.singleton(referencedObject);
 	}
+
+	public static <R extends PrereqObject> CDOMDirectSingleRef<R> getRef(R obj)
+	{
+		return new CDOMDirectSingleRef<R>(obj);
+	}
 }

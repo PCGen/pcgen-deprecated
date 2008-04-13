@@ -12,9 +12,9 @@ import pcgen.cdom.base.LSTWriteable;
 public interface ListCommitStrategy
 {
 
-	public AssociatedPrereqObject addToMasterList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<?>> list,
-		LSTWriteable allowed);
+	public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(String tokenName,
+		CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
+		T allowed);
 
 	public Changes<CDOMReference> getMasterListChanges(
 		String tokenName, CDOMObject owner, Class<? extends CDOMList<?>> cl);

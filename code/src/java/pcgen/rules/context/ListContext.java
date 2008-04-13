@@ -63,9 +63,9 @@ public class ListContext
 		commit.setExtractURI(extractURI);
 	}
 
-	public AssociatedPrereqObject addToMasterList(String tokenName,
-			CDOMObject owner, CDOMReference<? extends CDOMList<?>> list,
-			LSTWriteable allowed)
+	public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(String tokenName,
+			CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
+			T allowed)
 	{
 		return edits.addToMasterList(tokenName, owner, list, allowed);
 	}
@@ -103,36 +103,9 @@ public class ListContext
 
 	public void commit()
 	{
-		// for (CDOMReference<? extends CDOMList<?>> list : masterClearSet
-		// .getKeySet())
-		// {
-		// for (OwnerURI ou : masterClearSet.getListFor(list))
-		// {
-		// context.commitClearMasterList("FOO", ou.owner, list);
-		// }
-		// }
-		for (CDOMReference<? extends CDOMList<?>> list : edits.positiveMasterMap
-				.getKeySet())
+		for (CDOMReference list : edits.positiveMasterMap.getKeySet())
 		{
-			for (OwnerURI ou : edits.positiveMasterMap.getSecondaryKeySet(list))
-			{
-				for (LSTWriteable child : edits.positiveMasterMap
-						.getTertiaryKeySet(list, ou))
-				{
-					AssociatedPrereqObject assoc = edits.positiveMasterMap.get(
-							list, ou, child);
-					AssociatedPrereqObject edge = commit.addToMasterList(assoc
-							.getAssociation(AssociationKey.TOKEN), ou.owner,
-							list, child);
-					Collection<AssociationKey<?>> associationKeys = assoc
-							.getAssociationKeys();
-					for (AssociationKey<?> ak : associationKeys)
-					{
-						setAssoc(assoc, edge, ak);
-					}
-					edge.addAllPrerequisites(assoc.getPrerequisiteList());
-				}
-			}
+			commitDirect(list);
 		}
 		for (URI uri : edits.globalClearSet.getKeySet())
 		{
@@ -180,6 +153,30 @@ public class ListContext
 			}
 		}
 		decommit();
+	}
+
+	private <T extends CDOMObject> void commitDirect(
+			CDOMReference<? extends CDOMList<T>> list)
+	{
+		for (OwnerURI ou : edits.positiveMasterMap.getSecondaryKeySet(list))
+		{
+			for (CDOMObject child : edits.positiveMasterMap.getTertiaryKeySet(
+					list, ou))
+			{
+				AssociatedPrereqObject assoc = edits.positiveMasterMap.get(
+						list, ou, child);
+				AssociatedPrereqObject edge = commit.addToMasterList(assoc
+						.getAssociation(AssociationKey.TOKEN), ou.owner, list,
+						(T) child);
+				Collection<AssociationKey<?>> associationKeys = assoc
+						.getAssociationKeys();
+				for (AssociationKey<?> ak : associationKeys)
+				{
+					setAssoc(assoc, edge, ak);
+				}
+				edge.addAllPrerequisites(assoc.getPrerequisiteList());
+			}
+		}
 	}
 
 	public void decommit()
@@ -304,15 +301,15 @@ public class ListContext
 		 * TODO These maps (throughout this entire class) are probably problems
 		 * because they are not using Identity characteristics
 		 */
-		private TripleKeyMap<CDOMReference<? extends CDOMList<?>>, OwnerURI, LSTWriteable, AssociatedPrereqObject> positiveMasterMap = new TripleKeyMap<CDOMReference<? extends CDOMList<?>>, OwnerURI, LSTWriteable, AssociatedPrereqObject>();
+		private TripleKeyMap<CDOMReference<? extends CDOMList<?>>, OwnerURI, CDOMObject, AssociatedPrereqObject> positiveMasterMap = new TripleKeyMap<CDOMReference<? extends CDOMList<?>>, OwnerURI, CDOMObject, AssociatedPrereqObject>();
 
 		private HashMapToList<CDOMReference<? extends CDOMList<?>>, OwnerURI> masterClearSet = new HashMapToList<CDOMReference<? extends CDOMList<?>>, OwnerURI>();
 
 		private HashMapToList<String, OwnerURI> masterAllClear = new HashMapToList<String, OwnerURI>();
 
-		public AssociatedPrereqObject addToMasterList(String tokenName,
-				CDOMObject owner, CDOMReference<? extends CDOMList<?>> list,
-				LSTWriteable allowed)
+		public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(String tokenName,
+				CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
+				T allowed)
 		{
 			SimpleAssociatedObject a = new SimpleAssociatedObject();
 			a.setAssociation(AssociationKey.OWNER, owner);
@@ -337,7 +334,7 @@ public class ListContext
 					{
 						continue;
 					}
-					for (LSTWriteable allowed : positiveMasterMap
+					for (CDOMObject allowed : positiveMasterMap
 							.getTertiaryKeySet(ref, lo))
 					{
 						AssociatedPrereqObject assoc = positiveMasterMap.get(
@@ -364,9 +361,9 @@ public class ListContext
 			MapToList<LSTWriteable, AssociatedPrereqObject> map = new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
 					TokenUtilities.WRITEABLE_SORTER);
 			OwnerURI lo = new OwnerURI(extractURI, owner);
-			Set<LSTWriteable> added = positiveMasterMap.getTertiaryKeySet(swl,
+			Set<CDOMObject> added = positiveMasterMap.getTertiaryKeySet(swl,
 					lo);
-			for (LSTWriteable lw : added)
+			for (CDOMObject lw : added)
 			{
 				AssociatedPrereqObject apo = positiveMasterMap.get(swl, lo, lw);
 				if (tokenName.equals(apo.getAssociation(AssociationKey.TOKEN)))

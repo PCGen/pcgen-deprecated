@@ -47,9 +47,9 @@ public class ConsolidatedListCommitStrategy implements ListCommitStrategy
 	private final DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject> masterList =
 			new DoubleKeyMapToList<CDOMReference, LSTWriteable, AssociatedPrereqObject>();
 
-	public AssociatedPrereqObject addToMasterList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<?>> list,
-		LSTWriteable allowed)
+	public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(String tokenName,
+		CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
+		T allowed)
 	{
 		SimpleAssociatedObject a = new SimpleAssociatedObject();
 		a.setAssociation(AssociationKey.OWNER, owner);

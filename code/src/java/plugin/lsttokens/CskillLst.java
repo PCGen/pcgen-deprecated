@@ -163,7 +163,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 					return false;
 				}
 				AssociatedPrereqObject edge =
-						context.getListContext().addToMasterList(
+						context.getListContext().addToList(
 							getTokenName(), obj,
 							context.ref.getCDOMAllReference(SKILLLIST_CLASS),
 							ref);
@@ -184,8 +184,8 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 	{
 		CDOMGroupRef<ClassSkillList> listRef =
 				context.ref.getCDOMAllReference(SKILLLIST_CLASS);
-		AssociatedChanges<LSTWriteable> changes =
-				context.getListContext().getChangesInMasterList(getTokenName(),
+		AssociatedChanges<CDOMReference<CDOMSkill>> changes =
+				context.getListContext().getChangesInList(getTokenName(),
 					obj, listRef);
 		List<String> list = new ArrayList<String>();
 		Collection<LSTWriteable> removedItems = changes.getRemoved();
