@@ -39,7 +39,7 @@ import pcgen.cdom.constructor.MovementFormulaConstructor;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -159,16 +159,16 @@ public class MovecloneLst extends AbstractToken implements GlobalLstToken, CDOMP
 		MovementFormulaConstructor fc =
 				new MovementFormulaConstructor(oldType, newType, form);
 
-		context.getGraphContext().grant(getTokenName(), obj, fc);
+		context.getObjectContext().give(getTokenName(), obj, fc);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<MovementFormulaConstructor> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<MovementFormulaConstructor> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					obj, MovementFormulaConstructor.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<MovementFormulaConstructor> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token

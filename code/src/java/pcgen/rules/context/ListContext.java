@@ -15,7 +15,6 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.rules.persistence.TokenUtilities;
@@ -197,9 +196,9 @@ public class ListContext
 		return commit.getChangesInList(tokenName, owner, swl);
 	}
 
-	public AssociatedChanges<LSTWriteable> getChangesInMasterList(
+	public <T extends CDOMObject> AssociatedChanges<T> getChangesInMasterList(
 			String tokenName, CDOMObject owner,
-			CDOMReference<? extends CDOMList<?>> swl)
+			CDOMReference<? extends CDOMList<T>> swl)
 	{
 		return commit.getChangesInMasterList(tokenName, owner, swl);
 	}
@@ -354,11 +353,11 @@ public class ListContext
 					masterAllClear.containsInList(tokenName, lo));
 		}
 
-		public AssociatedChanges<LSTWriteable> getChangesInMasterList(
+		public <T extends CDOMObject> AssociatedChanges<T> getChangesInMasterList(
 				String tokenName, CDOMObject owner,
-				CDOMReference<? extends CDOMList<?>> swl)
+				CDOMReference<? extends CDOMList<T>> swl)
 		{
-			MapToList<LSTWriteable, AssociatedPrereqObject> map = new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
+			MapToList<T, AssociatedPrereqObject> map = new TreeMapToList<T, AssociatedPrereqObject>(
 					TokenUtilities.WRITEABLE_SORTER);
 			OwnerURI lo = new OwnerURI(extractURI, owner);
 			Set<CDOMObject> added = positiveMasterMap.getTertiaryKeySet(swl,
@@ -368,10 +367,10 @@ public class ListContext
 				AssociatedPrereqObject apo = positiveMasterMap.get(swl, lo, lw);
 				if (tokenName.equals(apo.getAssociation(AssociationKey.TOKEN)))
 				{
-					map.addToListFor(lw, apo);
+					map.addToListFor((T) lw, apo);
 				}
 			}
-			return new AssociatedCollectionChanges<LSTWriteable>(map, null,
+			return new AssociatedCollectionChanges<T>(map, null,
 					masterClearSet.containsInList(swl, lo));
 		}
 

@@ -31,7 +31,6 @@ import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
@@ -172,7 +171,7 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken,
 		AssociatedChanges<CDOMReference<CDOMSkill>> changes = context
 				.getListContext().getChangesInList(getTokenName(), race, swl);
 		List<String> list = new ArrayList<String>();
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		Collection<CDOMReference<CDOMSkill>> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())
 		{
 			if (changes.includesGlobalClear())
@@ -190,12 +189,12 @@ public class MoncskillToken extends AbstractToken implements RaceLstToken,
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> map = changes
+		MapToList<CDOMReference<CDOMSkill>, AssociatedPrereqObject> map = changes
 				.getAddedAssociations();
 		if (map != null && !map.isEmpty())
 		{
-			Set<LSTWriteable> added = map.getKeySet();
-			for (LSTWriteable ab : added)
+			Set<CDOMReference<CDOMSkill>> added = map.getKeySet();
+			for (CDOMReference<CDOMSkill> ab : added)
 			{
 				for (AssociatedPrereqObject assoc : map.getListFor(ab))
 				{

@@ -30,9 +30,9 @@ import java.util.StringTokenizer;
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.inst.CDOMDomain;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.Domain;
@@ -188,26 +188,26 @@ public class DomainToken extends AbstractToken implements PCClassLstToken,
 
 	public String[] unparse(LoadContext context, CDOMPCClass po)
 	{
-		AssociatedChanges<CDOMDomain> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMDomain>> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), po, DOMAIN_CLASS);
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		Collection<CDOMReference<CDOMDomain>> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())
 		{
 			context.addWriteMessage(getTokenName()
 					+ " does not support .CLEAR.");
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMDomain>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl != null && !mtl.isEmpty())
 		{
 			PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
-			for (LSTWriteable ab : mtl.getKeySet())
+			for (CDOMReference<CDOMDomain> ab : mtl.getKeySet())
 			{
 				List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
 				if (assocList.size() != 1)

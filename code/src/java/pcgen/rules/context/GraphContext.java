@@ -34,7 +34,6 @@ import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
@@ -90,13 +89,13 @@ public class GraphContext
 		commit.setLine(i);
 	}
 
-	public AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
-		PrereqObject pro)
+	public <T extends CDOMObject> AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
+			CDOMReference<T> pro)
 	{
 		return edits.grant(sourceToken, obj, pro);
 	}
 
-	public void remove(String sourceToken, CDOMObject obj, PrereqObject pro)
+	public <T extends CDOMObject> void remove(String sourceToken, CDOMObject obj, CDOMReference<T> pro)
 	{
 		edits.remove(sourceToken, obj, pro);
 	}
@@ -120,7 +119,7 @@ public class GraphContext
 		{
 			for (CDOMObject owner : edits.removed.getSecondaryKeySet(token))
 			{
-				for (PrereqObject child : edits.removed.getTertiaryKeySet(
+				for (CDOMReference<? extends CDOMObject> child : edits.removed.getTertiaryKeySet(
 					token, owner))
 				{
 					commit.remove(token, owner, child);
@@ -131,7 +130,7 @@ public class GraphContext
 		{
 			for (CDOMObject owner : edits.added.getSecondaryKeySet(token))
 			{
-				for (PrereqObject child : edits.added.getTertiaryKeySet(token,
+				for (CDOMReference<? extends CDOMObject> child : edits.added.getTertiaryKeySet(token,
 					owner))
 				{
 					for (AssociatedPrereqObject assoc : edits.added.getListFor(
@@ -164,7 +163,7 @@ public class GraphContext
 		edits.decommit();
 	}
 
-	public <T extends PrereqObject & LSTWriteable> AssociatedChanges<T> getChangesFromToken(
+	public <T extends CDOMObject> AssociatedChanges<CDOMReference<T>> getChangesFromToken(
 		String tokenName, CDOMObject pct, Class<T> name)
 	{
 		return commit.getChangesFromToken(tokenName, pct, name);
@@ -176,11 +175,11 @@ public class GraphContext
 		private DoubleKeyMapToList<String, CDOMObject, URI> globalRemoveSet =
 				new DoubleKeyMapToList<String, CDOMObject, URI>(HashMap.class, IdentityHashMap.class);
 
-		private TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject> added =
-				new TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject>(HashMap.class, IdentityHashMap.class, IdentityHashMap.class);
+		private TripleKeyMapToList<String, CDOMObject, CDOMReference<? extends CDOMObject>, AssociatedPrereqObject> added =
+				new TripleKeyMapToList<String, CDOMObject, CDOMReference<? extends CDOMObject>, AssociatedPrereqObject>(HashMap.class, IdentityHashMap.class, IdentityHashMap.class);
 
-		private TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject> removed =
-				new TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject>(HashMap.class, IdentityHashMap.class, IdentityHashMap.class);
+		private TripleKeyMapToList<String, CDOMObject, CDOMReference<? extends CDOMObject>, AssociatedPrereqObject> removed =
+				new TripleKeyMapToList<String, CDOMObject, CDOMReference<? extends CDOMObject>, AssociatedPrereqObject>(HashMap.class, IdentityHashMap.class, IdentityHashMap.class);
 
 		private URI sourceURI;
 
@@ -209,8 +208,8 @@ public class GraphContext
 			return extractURI;
 		}
 
-		public AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
-			PrereqObject pro)
+		public <T extends CDOMObject> AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
+				CDOMReference<T> pro)
 		{
 			SimpleAssociatedObject sao = new SimpleAssociatedObject();
 			added.addToListFor(sourceToken, obj, pro, sao);
@@ -228,7 +227,7 @@ public class GraphContext
 			return sao;
 		}
 
-		public void remove(String sourceToken, CDOMObject obj, PrereqObject pro)
+		public <T extends CDOMObject> void remove(String sourceToken, CDOMObject obj, CDOMReference<T> pro)
 		{
 			SimpleAssociatedObject sao = new SimpleAssociatedObject();
 			removed.addToListFor(sourceToken, obj, pro, sao);
@@ -240,9 +239,9 @@ public class GraphContext
 
 		public void removeAll(String tokenName, CDOMObject obj)
 		{
-			Set<PrereqObject> children =
+			Set<CDOMReference<? extends CDOMObject>> children =
 					added.getTertiaryKeySet(tokenName, obj);
-			for (PrereqObject child : children)
+			for (CDOMReference<? extends CDOMObject> child : children)
 			{
 				List<AssociatedPrereqObject> assoc =
 						added.getListFor(tokenName, obj, child);
@@ -262,13 +261,13 @@ public class GraphContext
 			globalRemoveSet.addToListFor(tokenName, obj, sourceURI);
 		}
 
-		public <T extends PrereqObject & LSTWriteable> AssociatedChanges<T> getChangesFromToken(
+		public <T extends CDOMObject> AssociatedChanges<CDOMReference<T>> getChangesFromToken(
 			String tokenName, CDOMObject pct, Class<T> name)
 		{
 			return new EditorGraphChanges<T>(tokenName, pct, name);
 		}
 
-		public class EditorGraphChanges<T> implements AssociatedChanges<T>
+		public class EditorGraphChanges<T extends PrereqObject> implements AssociatedChanges<CDOMReference<T>>
 		{
 
 			private final String token;
@@ -285,24 +284,24 @@ public class GraphContext
 				source = cdo;
 			}
 
-			public Collection<LSTWriteable> getAdded()
+			public Collection<CDOMReference<T>> getAdded()
 			{
 				return getSimple(added);
 			}
 
-			private Collection<LSTWriteable> getSimple(
-				TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject> mtl)
+			private Collection<CDOMReference<T>> getSimple(
+				TripleKeyMapToList<String, CDOMObject, CDOMReference<? extends CDOMObject>, AssociatedPrereqObject> mtl)
 			{
-				Collection<LSTWriteable> coll =
-						new WeightedCollection<LSTWriteable>(
-							TokenUtilities.WRITEABLE_SORTER);
-				Set<PrereqObject> children =
+				Collection<CDOMReference<T>> coll =
+						new WeightedCollection<CDOMReference<T>>(
+								TokenUtilities.REFERENCE_SORTER);
+				Set<CDOMReference<? extends CDOMObject>> children =
 						mtl.getTertiaryKeySet(token, source);
 				if (children == null)
 				{
 					return coll;
 				}
-				for (PrereqObject child : children)
+				for (CDOMReference<? extends CDOMObject> child : children)
 				{
 					List<AssociatedPrereqObject> assocs =
 							mtl.getListFor(token, source, child);
@@ -325,24 +324,24 @@ public class GraphContext
 								continue;
 							}
 						}
-						coll.add((LSTWriteable) child);
+						coll.add((CDOMReference<T>) child);
 					}
 				}
 				return coll;
 			}
 
-			public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations()
+			public MapToList<CDOMReference<T>, AssociatedPrereqObject> getAddedAssociations()
 			{
-				TreeMapToList<LSTWriteable, AssociatedPrereqObject> coll =
-						new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
-							TokenUtilities.WRITEABLE_SORTER);
-				Set<PrereqObject> children =
+				TreeMapToList<CDOMReference<T>, AssociatedPrereqObject> coll =
+						new TreeMapToList<CDOMReference<T>, AssociatedPrereqObject>(
+								TokenUtilities.REFERENCE_SORTER);
+				Set<CDOMReference<? extends CDOMObject>> children =
 						added.getTertiaryKeySet(token, source);
 				if (children == null)
 				{
 					return coll;
 				}
-				for (PrereqObject child : children)
+				for (CDOMReference<? extends CDOMObject> child : children)
 				{
 					List<AssociatedPrereqObject> assocs =
 							added.getListFor(token, source, child);
@@ -363,18 +362,18 @@ public class GraphContext
 								continue;
 							}
 						}
-						coll.addToListFor((LSTWriteable) child, assoc);
+						coll.addToListFor((CDOMReference<T>) child, assoc);
 					}
 				}
 				return coll;
 			}
 
-			public Collection<LSTWriteable> getRemoved()
+			public Collection<CDOMReference<T>> getRemoved()
 			{
 				return getSimple(removed);
 			}
 
-			public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations()
+			public MapToList<CDOMReference<T>, AssociatedPrereqObject> getRemovedAssociations()
 			{
 				return null;
 			}
@@ -385,15 +384,15 @@ public class GraphContext
 			}
 
 			private boolean getPossess(
-				TripleKeyMapToList<String, CDOMObject, PrereqObject, AssociatedPrereqObject> mtl)
+				TripleKeyMapToList<String, CDOMObject, CDOMReference<? extends CDOMObject>, AssociatedPrereqObject> mtl)
 			{
-				Set<PrereqObject> children =
+				Set<CDOMReference<? extends CDOMObject>> children =
 						mtl.getTertiaryKeySet(token, source);
 				if (children == null)
 				{
 					return false;
 				}
-				for (PrereqObject child : children)
+				for (CDOMReference<? extends CDOMObject> child : children)
 				{
 					List<AssociatedPrereqObject> assocs =
 							mtl.getListFor(token, source, child);

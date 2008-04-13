@@ -39,7 +39,7 @@ import pcgen.cdom.inst.CDOMKit;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -124,7 +124,7 @@ public class KitLst extends AbstractToken implements GlobalLstToken,
 			return false;
 		}
 		ChooseActionContainer container = new ChooseActionContainer("KIT");
-		context.getGraphContext().grant(getTokenName(), obj, container);
+		context.getObjectContext().give(getTokenName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -136,10 +136,10 @@ public class KitLst extends AbstractToken implements GlobalLstToken,
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges = context
-				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+		Changes<ChooseActionContainer> grantChanges = context
+				.getObjectContext().getGivenChanges(getTokenName(), obj,
 						ChooseActionContainer.class);
-		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		Collection<ChooseActionContainer> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token

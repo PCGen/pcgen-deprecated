@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;

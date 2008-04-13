@@ -35,7 +35,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.SpellResistance;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
@@ -72,7 +72,7 @@ public class SrLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		}
 		else
 		{
-			context.getGraphContext().grant(getTokenName(), obj,
+			context.getObjectContext().give(getTokenName(), obj,
 					getSpellResistance(value));
 		}
 		return true;
@@ -85,10 +85,9 @@ public class SrLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<SpellResistance> changes = context
-				.getGraphContext()
-				.getChangesFromToken(getTokenName(), obj, SpellResistance.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Changes<SpellResistance> changes = context
+				.getObjectContext().getGivenChanges(getTokenName(), obj, SpellResistance.class);
+		Collection<SpellResistance> added = changes.getAdded();
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{

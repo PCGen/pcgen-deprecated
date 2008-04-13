@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMPCClass;
@@ -95,10 +94,10 @@ CDOMPrimaryToken<CDOMPCClass>
 
 	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<CDOMDeity> changes =
+		AssociatedChanges<CDOMReference<CDOMDeity>> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					pcc, DEITY_CLASS);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<CDOMReference<CDOMDeity>> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token

@@ -25,13 +25,12 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMSingleRef;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelExchange;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -113,7 +112,7 @@ public class ExchangelevelToken extends AbstractToken implements
 		try
 		{
 			LevelExchange le = new LevelExchange(cl, mindl, maxdl, minrem);
-			context.getGraphContext().grant(getTokenName(), pcc, le);
+			context.getObjectContext().give(getTokenName(), pcc, le);
 			return true;
 		}
 		catch (IllegalArgumentException e)
@@ -127,9 +126,9 @@ public class ExchangelevelToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<LevelExchange> changes = context.getGraphContext()
-				.getChangesFromToken(getTokenName(), pcc, LevelExchange.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Changes<LevelExchange> changes = context.getObjectContext()
+				.getGivenChanges(getTokenName(), pcc, LevelExchange.class);
+		Collection<LevelExchange> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token present
@@ -141,7 +140,7 @@ public class ExchangelevelToken extends AbstractToken implements
 					.addWriteMessage("Only 1 LevelExchange is allowed per Class");
 			return null;
 		}
-		LevelExchange le = (LevelExchange) added.iterator().next();
+		LevelExchange le = added.iterator().next();
 		StringBuilder sb = new StringBuilder();
 		sb.append(le.getLSTformat()).append(Constants.PIPE);
 		sb.append(le.getMinDonatingLevel()).append(Constants.PIPE);

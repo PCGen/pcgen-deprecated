@@ -31,7 +31,6 @@ import java.util.TreeSet;
 import pcgen.base.lang.UnreachableError;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
@@ -41,7 +40,7 @@ import pcgen.persistence.lst.LstToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.persistence.lst.PObjectLoader;
 import pcgen.persistence.lst.TokenStore;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -181,22 +180,19 @@ public class LevelToken extends AbstractToken implements PCTemplateLstToken, CDO
 				getPrerequisiteString(context, Collections
 					.singletonList(prereq));
 		CDOMTemplate derivative = template.getPseudoTemplate(standardizedPrereq);
-		derivative.put(ObjectKey.PSEUDO_PARENT, template);
+		//derivative.put(ObjectKey.PSEUDO_PARENT, template);
 		derivative.addPrerequisite(prereq);
-		context.getGraphContext().grant(getTokenName(), template, derivative);
-		System.err.println(argument);
-		System.err.println(System.identityHashCode(derivative));
-		System.err.println(derivative.getDisplayName());
+		context.getObjectContext().give(getTokenName(), template, derivative);
 		return context.processToken(derivative, typeStr, argument);
 	}
 
 	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<CDOMTemplate> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<CDOMTemplate> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					pct, CDOMTemplate.class);
 
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<CDOMTemplate> added = changes.getAdded();
 		if (added == null || added.isEmpty()){
 			return null;
 		}

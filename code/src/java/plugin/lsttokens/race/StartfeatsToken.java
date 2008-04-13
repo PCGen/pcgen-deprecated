@@ -29,9 +29,9 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
@@ -44,7 +44,7 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -116,7 +116,7 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken, CDOM
 		ChooseActionContainer container =
 				new ChooseActionContainer(getTokenName());
 		container.addActor(new GrantActor<CDOMAbility>());
-		context.getGraphContext().grant(getTokenName(), race, container);
+		context.getObjectContext().give(getTokenName(), race, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -148,10 +148,10 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken, CDOM
 
 	public String[] unparse(LoadContext context, CDOMRace race)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<ChooseActionContainer> grantChanges =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					race, ChooseActionContainer.class);
-		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		Collection<ChooseActionContainer> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token

@@ -32,7 +32,6 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.AutomaticActionContainer;
 import pcgen.cdom.content.ChooseActionContainer;
@@ -49,6 +48,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.AutoLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMSecondaryToken;
@@ -221,10 +221,8 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 					"AUTO:SHIELDPROF");
 			aac.setChoiceSet(cs);
 			aac.addActor(new GrantActor<CDOMShieldProf>());
-			AssociatedPrereqObject edge = context.getGraphContext().grant(
-					getFullName(), obj, aac);
-			applyList.add(edge);
-
+			context.getObjectContext().give(getFullName(), obj, aac);
+			applyList.add(aac);
 		}
 
 		if (prereq != null)
@@ -267,18 +265,18 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 			}
 		}
 
-		AssociatedChanges<CDOMShieldProf> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMShieldProf>> changes = context.getGraphContext()
 				.getChangesFromToken(getFullName(), obj, SHIELDPROF_CLASS);
-		AssociatedChanges<AutomaticActionContainer> typechanges = context
-				.getGraphContext().getChangesFromToken(getFullName(), obj,
+		Changes<AutomaticActionContainer> typechanges = context
+				.getObjectContext().getGivenChanges(getFullName(), obj,
 						AutomaticActionContainer.class);
 		HashMapToList<Set<Prerequisite>, String> m = new HashMapToList<Set<Prerequisite>, String>();
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMShieldProf>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl != null && !mtl.isEmpty())
 		{
 			// Zero indicates no Content, others processed here
-			for (LSTWriteable ab : mtl.getKeySet())
+			for (CDOMReference<CDOMShieldProf> ab : mtl.getKeySet())
 			{
 				List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
 				if (assocList.size() != 1)
@@ -292,27 +290,19 @@ public class ShieldProfToken extends AbstractToken implements AutoLstToken,
 						.getPrerequisiteList()), ab.getLSTformat());
 			}
 		}
-		mtl = typechanges.getAddedAssociations();
-		if (mtl != null && !mtl.isEmpty())
+		Collection<AutomaticActionContainer> tcadded = typechanges.getAdded();
+		if (tcadded != null && !tcadded.isEmpty())
 		{
 			// Zero indicates no Content, others processed here
-			for (LSTWriteable ab : mtl.getKeySet())
+			for (AutomaticActionContainer ab : tcadded)
 			{
-				List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
-				if (assocList.size() != 1)
-				{
-					context
-							.addWriteMessage("Only one Association to AUTO can be made per object");
-					return null;
-				}
-				AssociatedPrereqObject assoc = assocList.get(0);
 				String lstFormat = ab.getLSTformat();
 				if (lstFormat.startsWith("EQUIPMENT[")
 						&& lstFormat.endsWith("]"))
 				{
 					String temp = lstFormat.substring(10,
 							lstFormat.length() - 1);
-					m.addToListFor(new HashSet<Prerequisite>(assoc
+					m.addToListFor(new HashSet<Prerequisite>(ab
 							.getPrerequisiteList()), "SHIELD"
 							+ StringUtil.replaceAll(temp, "]|EQUIPMENT[",
 									"|SHIELD"));

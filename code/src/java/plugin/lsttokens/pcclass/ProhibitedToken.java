@@ -23,6 +23,7 @@ package plugin.lsttokens.pcclass;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -35,11 +36,10 @@ import pcgen.cdom.content.CDOMSpellProhibitor;
 import pcgen.cdom.enumeration.ProhibitedSpellType;
 import pcgen.cdom.enumeration.SpellSchool;
 import pcgen.cdom.enumeration.SpellSubSchool;
-import pcgen.cdom.inst.Aggregator;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -73,21 +73,19 @@ CDOMPrimaryToken<CDOMPCClass>
 
 	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
-		List<CDOMSpellProhibitor<?>> spList = subParse(context, pcc, value);
+		List<CDOMSpellProhibitor<?>> spList = subParse(context, value);
 		if (spList == null || spList.isEmpty())
 		{
 			return false;
 		}
-		Aggregator agg = new Aggregator(pcc, pcc, getTokenName());
-		context.getGraphContext().grant(getTokenName(), pcc, agg);
 		for (CDOMSpellProhibitor<?> sp : spList)
 		{
-			context.getGraphContext().grant(getTokenName(), agg, sp);
+			context.getObjectContext().give(getTokenName(), pcc, sp);
 		}
 		return true;
 	}
 
-	public List<CDOMSpellProhibitor<?>> subParse(LoadContext context, CDOMPCClass pcc,
+	public List<CDOMSpellProhibitor<?>> subParse(LoadContext context, 
 		String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator(',', value))
@@ -119,45 +117,23 @@ CDOMPrimaryToken<CDOMPCClass>
 
 	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<Aggregator> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					pcc, Aggregator.class);
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
-		{
-			return null;
-		}
-		if (added.size() != 1)
-		{
-			context.addWriteMessage("Can only have one Aggregator from "
-				+ getTokenName());
-			return null;
-		}
-		Aggregator agg = (Aggregator) added.iterator().next();
-
-		AssociatedChanges<CDOMSpellProhibitor> aggChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
-					agg, CDOMSpellProhibitor.class);
+		Changes<CDOMSpellProhibitor> aggChanges =
+				context.getObjectContext().getGivenChanges(getTokenName(),
+					pcc, CDOMSpellProhibitor.class);
 		if (aggChanges == null)
 		{
 			context.addWriteMessage("Invalid Aggregator in " + getTokenName()
 				+ " must have changes");
 			return null;
 		}
-		Collection<LSTWriteable> aggAdded = aggChanges.getAdded();
+		Collection<CDOMSpellProhibitor> aggAdded = aggChanges.getAdded();
 		if (aggAdded == null)
 		{
 			context.addWriteMessage("Invalid Aggregator in " + getTokenName()
 				+ " must have added changes");
 			return null;
 		}
-		if (aggAdded.size() != 2)
-		{
-			context.addWriteMessage("Invalid Aggregator in " + getTokenName()
-				+ " must have two children");
-			return null;
-		}
-		String retString = null;
+		Set<String> returnSet = new HashSet<String>();
 		for (LSTWriteable lstw : aggAdded)
 		{
 			CDOMSpellProhibitor<?> sp = CDOMSpellProhibitor.class.cast(lstw);
@@ -168,22 +144,13 @@ CDOMPrimaryToken<CDOMPCClass>
 				stringSet.add(o.toString());
 			}
 			String st = StringUtil.join(stringSet, Constants.COMMA);
-			if (retString == null)
-			{
-				retString = st;
-			}
-			else
-			{
-				if (!st.equals(retString))
-				{
-					context
-						.addWriteMessage("Child Spell Prohibitors of Aggregator for "
-							+ getTokenName() + " must prohibit the same items");
-					return null;
-				}
-			}
+			returnSet.add(st);
 		}
-		return new String[]{retString};
+		if (returnSet.isEmpty())
+		{
+			return null;
+		}
+		return returnSet.toArray(new String[returnSet.size()]);
 	}
 
 	public Class<CDOMPCClass> getTokenClass()

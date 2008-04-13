@@ -30,7 +30,6 @@ import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.inst.CDOMDomain;
 import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.cdom.inst.DomainList;
@@ -192,7 +191,7 @@ CDOMPrimaryToken<CDOMPCClassLevel>
 		AssociatedChanges<CDOMReference<CDOMDomain>> changes =
 				context.getListContext().getChangesInList(getTokenName(), po,
 					allowedDomainList);
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		Collection<CDOMReference<CDOMDomain>> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty()
 				|| changes.includesGlobalClear())
 		{
@@ -200,7 +199,7 @@ CDOMPrimaryToken<CDOMPCClassLevel>
 				.addWriteMessage(getTokenName() + " does not support .CLEAR");
 			return null;
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+		MapToList<CDOMReference<CDOMDomain>, AssociatedPrereqObject> mtl =
 				changes.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
@@ -209,7 +208,7 @@ CDOMPrimaryToken<CDOMPCClassLevel>
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
-		for (LSTWriteable domain : mtl.getKeySet())
+		for (CDOMReference<CDOMDomain> domain : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(domain))
 			{

@@ -34,7 +34,7 @@ import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.modifier.ChangeArmorType;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -85,7 +85,7 @@ public class ArmortypeToken implements EquipmentModifierLstToken, CDOMPrimaryTok
 			 * does the above throw exceptions, etc.
 			 */
 			ChangeArmorType cat = new ChangeArmorType(oldType, newType);
-			context.getGraphContext().grant(getTokenName(), mod, cat);
+			context.getObjectContext().give(getTokenName(), mod, cat);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -96,10 +96,10 @@ public class ArmortypeToken implements EquipmentModifierLstToken, CDOMPrimaryTok
 
 	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
-		AssociatedChanges<ChangeArmorType> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<ChangeArmorType> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					mod, ChangeArmorType.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<ChangeArmorType> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token

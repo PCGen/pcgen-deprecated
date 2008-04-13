@@ -29,13 +29,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -53,7 +51,7 @@ import pcgen.core.Race;
 import pcgen.core.WeaponProf;
 import pcgen.core.bonus.BonusObj;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.GraphContext;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.context.ObjectContext;
@@ -361,17 +359,10 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 					.put(anEquip, IntegerKey.OUTPUT_INDEX, Integer.valueOf(0));
 			objContext.put(anEquip, IntegerKey.OUTPUT_SUBINDEX, Integer
 					.valueOf(count));
-			AssociatedPrereqObject apo = context.getGraphContext().grant(
-					getTokenName(), obj, anEquip);
-
-			apo.setAssociation(AssociationKey.QUANTITY, Integer.valueOf(1));
-			apo.setAssociation(AssociationKey.NUMBER_CARRIED, Integer
+			objContext.put(anEquip, IntegerKey.QUANTITY, Integer.valueOf(1));
+			objContext.put(anEquip, IntegerKey.NUMBER_CARRIED, Integer
 					.valueOf(1));
-			List<AssociationKey<?>> lockedItems = new ArrayList<AssociationKey<?>>();
-			lockedItems.add(AssociationKey.QUANTITY);
-			lockedItems.add(AssociationKey.NUMBER_CARRIED);
-			apo.setAssociation(AssociationKey.LOCK, lockedItems);
-
+			context.getObjectContext().give(getTokenName(), obj, anEquip);
 			count++;
 		}
 		return true;
@@ -458,7 +449,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 			int bonusAttacks = Integer.parseInt(numAttacks) - 1;
 			BonusObj bonus = BonusTokenLoader.getBonus(context, anEquip,
 					"WEAPON", "ATTACKS", Integer.toString(bonusAttacks));
-			graphContext.grant(getTokenName(), anEquip, bonus);
+			context.getObjectContext().give(getTokenName(), anEquip, bonus);
 		}
 		catch (NumberFormatException exc)
 		{
@@ -498,23 +489,23 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 		equipHead.put(IntegerKey.CRIT_RANGE, Integer.valueOf(1));
 		equipHead.put(IntegerKey.CRIT_MULT, Integer.valueOf(2));
 
-		graphContext.grant(Constants.VT_EQ_HEAD, anEquip, equipHead);
+		context.getObjectContext().give(Constants.VT_EQ_HEAD, anEquip, equipHead);
 		graphContext.grant(getTokenName(), anEquip, size);
 		return anEquip;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<CDOMEquipment> changes = context.getGraphContext()
-				.getChangesFromToken(getTokenName(), obj, CDOMEquipment.class);
-		Collection<LSTWriteable> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		Changes<CDOMEquipment> changes = context.getObjectContext()
+				.getGivenChanges(getTokenName(), obj, CDOMEquipment.class);
+		Collection<CDOMEquipment> eqadded = changes.getAdded();
+		if (eqadded == null || eqadded.isEmpty())
 		{
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
-		for (LSTWriteable lstw : added)
+		for (LSTWriteable lstw : eqadded)
 		{
 			if (!first)
 			{
@@ -550,8 +541,8 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 			{
 				sb.append(Constants.CHAR_ASTERISK);
 			}
-			AssociatedChanges<BonusObj> bonusChanges = context
-					.getGraphContext().getChangesFromToken(getTokenName(), eq,
+			Changes<BonusObj> bonusChanges = context
+					.getObjectContext().getGivenChanges(getTokenName(), eq,
 							BonusObj.class);
 			if (bonusChanges == null)
 			{
@@ -559,22 +550,22 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 			}
 			else
 			{
-				added = bonusChanges.getAdded();
-				if (added == null || added.isEmpty())
+				Collection<BonusObj> bonadded = bonusChanges.getAdded();
+				if (bonadded == null || bonadded.isEmpty())
 				{
 					sb.append("1");
 				}
 				else
 				{
-					if (added.size() != 1)
+					if (bonadded.size() != 1)
 					{
 						context.addWriteMessage(getTokenName()
 								+ " expected only one BONUS on Equipment: "
-								+ added);
+								+ bonadded);
 						return null;
 					}
 					// TODO Validate BONUS type?
-					String extraAttacks = added.iterator().next()
+					String extraAttacks = bonadded.iterator().next()
 							.getLSTformat();
 					sb.append(Integer.parseInt(extraAttacks) + 1);
 				}

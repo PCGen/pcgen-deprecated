@@ -35,7 +35,7 @@ public class ContextQueue
 	public AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
 		PrereqObject pro)
 	{
-		return graph.grant(sourceToken, obj, pro);
+		return null;//TODO return graph.grant(sourceToken, obj, pro);
 	}
 
 }

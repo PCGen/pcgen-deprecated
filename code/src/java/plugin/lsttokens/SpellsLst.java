@@ -426,9 +426,9 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<CDOMSpell> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMSpell>> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, CDOMSpell.class);
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMSpell>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
@@ -437,7 +437,7 @@ public class SpellsLst extends AbstractToken implements GlobalLstToken,
 		}
 
 		TripleKeyMap<Set<Prerequisite>, Map<AssociationKey<?>, String>, LSTWriteable, String> m = new TripleKeyMap<Set<Prerequisite>, Map<AssociationKey<?>, String>, LSTWriteable, String>();
-		for (LSTWriteable lw : mtl.getKeySet())
+		for (CDOMReference<CDOMSpell> lw : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(lw))
 			{

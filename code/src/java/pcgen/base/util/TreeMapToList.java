@@ -57,7 +57,7 @@ import java.util.TreeSet;
 public class TreeMapToList<K, V> extends AbstractMapToList<K, V>
 {
 
-	private final Comparator<K> comparator;
+	private final Comparator<? super K> comparator;
 
 	/**
 	 * Creates a new TreeMapToList
@@ -76,7 +76,7 @@ public class TreeMapToList<K, V> extends AbstractMapToList<K, V>
 	 *            The Comparator to be used as the Comparator for the keys in
 	 *            this TreeMapToList
 	 */
-	public TreeMapToList(Comparator<K> comp)
+	public TreeMapToList(Comparator<? super K> comp)
 	{
 		super(new TreeMap<K, List<V>>(comp));
 		comparator = comp;

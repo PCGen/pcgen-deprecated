@@ -35,7 +35,6 @@ import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.inst.CDOMEquipment;
@@ -181,10 +180,10 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken, CDOM
 			return null;
 		}
 
-		AssociatedChanges<CDOMEqMod> changes =
+		AssociatedChanges<CDOMReference<CDOMEqMod>> changes =
 				context.getGraphContext().getChangesFromToken(getTokenName(),
 					head, EQUIPMENT_MODIFIER_CLASS);
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
+		MapToList<CDOMReference<CDOMEqMod>, AssociatedPrereqObject> mtl =
 				changes.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
@@ -192,7 +191,7 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken, CDOM
 			return null;
 		}
 		TreeSet<String> set = new TreeSet<String>();
-		for (LSTWriteable mod : mtl.getKeySet())
+		for (CDOMReference<CDOMEqMod> mod : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(mod))
 			{
@@ -203,6 +202,7 @@ public class EqmodToken extends AbstractToken implements EquipmentLstToken, CDOM
 					Collection<AssociationKey<?>> akColl =
 							assoc.getAssociationKeys();
 					akColl.remove(AssociationKey.SOURCE_URI);
+					akColl.remove(AssociationKey.TOKEN);
 					akColl.remove(AssociationKey.FILE_LOCATION);
 					if (!akColl.isEmpty())
 					{

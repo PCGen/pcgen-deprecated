@@ -19,7 +19,7 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -222,7 +222,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken,
 
 		if (!tok.hasMoreTokens())
 		{
-			context.getGraphContext().grant(getTokenName(), obj, sa);
+			context.getObjectContext().give(getTokenName(), obj, sa);
 			sa.setName(firstToken);
 			return true;
 		}
@@ -254,7 +254,7 @@ public class SabLst extends AbstractToken implements GlobalLstToken,
 				// No prereqs, so we're done
 				// CONSIDER This is a HACK and not the long term strategy of SA:
 				sa.setName(saName.toString());
-				context.getGraphContext().grant(getTokenName(), obj, sa);
+				context.getObjectContext().give(getTokenName(), obj, sa);
 				return true;
 			}
 			token = tok.nextToken();
@@ -288,16 +288,16 @@ public class SabLst extends AbstractToken implements GlobalLstToken,
 			}
 			token = tok.nextToken();
 		}
-		context.getGraphContext().grant(getTokenName(), obj, sa);
+		context.getObjectContext().give(getTokenName(), obj, sa);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<CDOMSpecialAbility> changes = context
-				.getGraphContext().getChangesFromToken(getTokenName(), obj,
+		Changes<CDOMSpecialAbility> changes = context
+				.getObjectContext().getGivenChanges(getTokenName(), obj,
 						SA_CLASS);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<CDOMSpecialAbility> added = changes.getAdded();
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{

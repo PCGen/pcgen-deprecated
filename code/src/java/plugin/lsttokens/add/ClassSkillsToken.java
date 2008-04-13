@@ -36,7 +36,7 @@ import pcgen.cdom.inst.CDOMSkill;
 import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMSecondaryToken;
@@ -150,7 +150,7 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken,
 		/*
 		 * TODO Need to actually add an Actor here (See above)
 		 */
-		context.getGraphContext().grant(getFullName(), obj, container);
+		context.getObjectContext().give(getFullName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -164,10 +164,10 @@ public class ClassSkillsToken extends AbstractToken implements AddLstToken,
 	public String[] unparse(LoadContext context,
 			AbstractCDOMClassAwareObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges = context
-				.getGraphContext().getChangesFromToken(getFullName(), obj,
+		Changes<ChooseActionContainer> grantChanges = context
+				.getObjectContext().getGivenChanges(getFullName(), obj,
 						ChooseActionContainer.class);
-		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		Collection<ChooseActionContainer> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token

@@ -9,7 +9,6 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.rules.persistence.TokenUtilities;
 
@@ -46,10 +45,10 @@ public class ListChanges<T extends CDOMObject> implements
 		return !clear && !hasAddedItems() && !hasRemovedItems();
 	}
 
-	public Collection<LSTWriteable> getAdded()
+	public Collection<CDOMReference<T>> getAdded()
 	{
-		TreeSet<LSTWriteable> set = new TreeSet<LSTWriteable>(
-				TokenUtilities.WRITEABLE_SORTER);
+		TreeSet<CDOMReference<T>> set = new TreeSet<CDOMReference<T>>(
+				TokenUtilities.REFERENCE_SORTER);
 		Collection<CDOMReference<T>> listMods = positive.getListMods(list);
 		if (listMods != null)
 		{
@@ -78,10 +77,10 @@ public class ListChanges<T extends CDOMObject> implements
 				&& !positive.getListMods(list).isEmpty();
 	}
 
-	public Collection<LSTWriteable> getRemoved()
+	public Collection<CDOMReference<T>> getRemoved()
 	{
-		TreeSet<LSTWriteable> set = new TreeSet<LSTWriteable>(
-				TokenUtilities.WRITEABLE_SORTER);
+		TreeSet<CDOMReference<T>> set = new TreeSet<CDOMReference<T>>(
+				TokenUtilities.REFERENCE_SORTER);
 		if (negative == null)
 		{
 			return set;
@@ -114,10 +113,10 @@ public class ListChanges<T extends CDOMObject> implements
 				&& !negative.getListMods(list).isEmpty();
 	}
 
-	public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations()
+	public MapToList<CDOMReference<T>, AssociatedPrereqObject> getAddedAssociations()
 	{
-		MapToList<LSTWriteable, AssociatedPrereqObject> owned = new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
-				TokenUtilities.WRITEABLE_SORTER);
+		MapToList<CDOMReference<T>, AssociatedPrereqObject> owned = new TreeMapToList<CDOMReference<T>, AssociatedPrereqObject>(
+				TokenUtilities.REFERENCE_SORTER);
 		Collection<CDOMReference<T>> mods = positive.getListMods(list);
 		if (mods == null)
 		{
@@ -143,11 +142,11 @@ public class ListChanges<T extends CDOMObject> implements
 		return owned;
 	}
 
-	public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations()
+	public MapToList<CDOMReference<T>, AssociatedPrereqObject> getRemovedAssociations()
 	{
 		Collection<CDOMReference<T>> mods = negative.getListMods(list);
-		MapToList<LSTWriteable, AssociatedPrereqObject> owned = new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
-				TokenUtilities.WRITEABLE_SORTER);
+		MapToList<CDOMReference<T>, AssociatedPrereqObject> owned = new TreeMapToList<CDOMReference<T>, AssociatedPrereqObject>(
+				TokenUtilities.REFERENCE_SORTER);
 		for (CDOMReference<T> lw : mods)
 		{
 			Collection<AssociatedPrereqObject> assocs = negative

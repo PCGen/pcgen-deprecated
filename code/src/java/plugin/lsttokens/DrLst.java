@@ -39,7 +39,7 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -176,15 +176,15 @@ public class DrLst extends AbstractToken implements GlobalLstToken,
 			}
 			dr.addPrerequisite(prereq);
 		}
-		context.getGraphContext().grant(getTokenName(), obj, dr);
+		context.getObjectContext().give(getTokenName(), obj, dr);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<DamageReduction> changes = context.getGraphContext()
-				.getChangesFromToken(getTokenName(), obj, DR_CLASS);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Changes<DamageReduction> changes = context.getObjectContext()
+				.getGivenChanges(getTokenName(), obj, DR_CLASS);
+		Collection<DamageReduction> added = changes.getAdded();
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{

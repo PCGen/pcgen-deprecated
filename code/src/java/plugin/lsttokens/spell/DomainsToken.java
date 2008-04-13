@@ -249,9 +249,9 @@ public class DomainsToken extends AbstractToken implements SpellLstToken,
 		}
 		for (CDOMReference<DomainSpellList> swl : masterChanges.getAdded())
 		{
-			AssociatedChanges<LSTWriteable> changes = context.getListContext()
+			AssociatedChanges<CDOMSpell> changes = context.getListContext()
 					.getChangesInMasterList(getTokenName(), spell, swl);
-			Collection<LSTWriteable> removedItems = changes.getRemoved();
+			Collection<CDOMSpell> removedItems = changes.getRemoved();
 			if (removedItems != null && !removedItems.isEmpty()
 					|| changes.includesGlobalClear())
 			{
@@ -259,11 +259,11 @@ public class DomainsToken extends AbstractToken implements SpellLstToken,
 						+ " does not support .CLEAR.");
 				return null;
 			}
-			MapToList<LSTWriteable, AssociatedPrereqObject> map = changes
+			MapToList<CDOMSpell, AssociatedPrereqObject> map = changes
 					.getAddedAssociations();
 			if (map != null && !map.isEmpty())
 			{
-				for (LSTWriteable added : map.getKeySet())
+				for (CDOMSpell added : map.getKeySet())
 				{
 					if (!spell.getLSTformat().equals(added.getLSTformat()))
 					{

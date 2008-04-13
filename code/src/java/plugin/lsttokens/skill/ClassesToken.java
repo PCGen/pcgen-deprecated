@@ -33,7 +33,6 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.inst.CDOMSkill;
@@ -165,9 +164,9 @@ public class ClassesToken extends AbstractToken implements SkillLstToken,
 		}
 		for (CDOMReference<ClassSkillList> swl : masterChanges.getAdded())
 		{
-			AssociatedChanges<LSTWriteable> changes = context.getListContext()
+			AssociatedChanges<CDOMSkill> changes = context.getListContext()
 					.getChangesInMasterList(getTokenName(), skill, swl);
-			Collection<LSTWriteable> removedItems = changes.getRemoved();
+			Collection<CDOMSkill> removedItems = changes.getRemoved();
 			if (removedItems != null && !removedItems.isEmpty()
 					|| changes.includesGlobalClear())
 			{
@@ -175,11 +174,11 @@ public class ClassesToken extends AbstractToken implements SkillLstToken,
 						+ " does not support .CLEAR.");
 				return null;
 			}
-			MapToList<LSTWriteable, AssociatedPrereqObject> map = changes
+			MapToList<CDOMSkill, AssociatedPrereqObject> map = changes
 					.getAddedAssociations();
 			if (map != null && !map.isEmpty())
 			{
-				for (LSTWriteable added : map.getKeySet())
+				for (CDOMSkill added : map.getKeySet())
 				{
 					if (!skill.getLSTformat().equals(added.getLSTformat()))
 					{

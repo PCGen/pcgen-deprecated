@@ -19,13 +19,12 @@ package plugin.lsttokens.choose;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
@@ -36,11 +35,9 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
-import pcgen.rules.persistence.token.ChoiceSetCompatibilityToken;
 import pcgen.util.Logging;
 
-public class FeatAddToken extends AbstractToken implements ChooseLstToken,
-		ChoiceSetCompatibilityToken<CDOMObject>
+public class FeatAddToken extends AbstractToken implements ChooseLstToken
 {
 
 	public boolean parse(PObject po, String prefix, String value)
@@ -115,23 +112,25 @@ public class FeatAddToken extends AbstractToken implements ChooseLstToken,
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
 			String value) throws PersistenceLayerException
 	{
+		/*
+		 * TODO This can't be a ChoiceSetCompatibilityToken because it needs to do funky stuff
+		 */
 		ChooseActionContainer container = cdo.getChooseContainer();
-		AssociatedPrereqObject edge = context.getGraphContext().grant(
-				getTokenName(), cdo, container);
-		container.addActor(new GrantActor<CDOMAbility>());
-		edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-				.getFormulaFor(1));
-		edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-				.getFormulaFor(1));
-		edge.setAssociation(AssociationKey.ABILITY_CATEGORY,
+		GrantActor<CDOMAbility> grantActor = new GrantActor<CDOMAbility>();
+		container.addActor(grantActor);
+		grantActor.setAssociation(AssociationKey.ABILITY_CATEGORY,
 				CDOMAbilityCategory.FEAT);
-		edge
-				.setAssociation(AssociationKey.ABILITY_NATURE,
-						AbilityNature.NORMAL);
+		grantActor.setAssociation(AssociationKey.ABILITY_NATURE,
+				AbilityNature.NORMAL);
+		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+				.getFormulaFor(1));
+		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
+				.getFormulaFor(1));
 		PrimitiveChoiceSet<CDOMAbility> pcs = context.getChoiceSet(
 				CDOMAbility.class, "QUALIFIED[" + value + "]");
 		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>("ADD", pcs);
-		edge.setAssociation(AssociationKey.CHOICE, cs);
+		container.setChoiceSet(cs);
+		context.getObjectContext().give(getTokenName(), cdo, container);
 		return pcs;
 	}
 

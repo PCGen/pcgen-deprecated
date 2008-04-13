@@ -31,6 +31,7 @@ import java.util.TreeSet;
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Constants;
@@ -169,9 +170,9 @@ public class VfeatToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMPCClassLevel pct)
 	{
-		AssociatedChanges<CDOMAbility> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMAbility>> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), pct, ABILITY_CLASS);
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMAbility>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
@@ -179,7 +180,7 @@ public class VfeatToken extends AbstractToken implements
 			return null;
 		}
 		MapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : mtl.getKeySet())
+		for (CDOMReference<CDOMAbility> ab : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 			{

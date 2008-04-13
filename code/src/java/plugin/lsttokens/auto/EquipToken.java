@@ -193,9 +193,9 @@ public class EquipToken extends AbstractToken implements AutoLstToken,
 			}
 		}
 
-		AssociatedChanges<CDOMEquipment> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMEquipment>> changes = context.getGraphContext()
 				.getChangesFromToken(getFullName(), obj, EQUIPMENT_CLASS);
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMEquipment>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (list.isEmpty() && (mtl == null || mtl.isEmpty()))
 		{
@@ -203,7 +203,7 @@ public class EquipToken extends AbstractToken implements AutoLstToken,
 			return null;
 		}
 		HashMapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable lstw : mtl.getKeySet())
+		for (CDOMReference<CDOMEquipment> lstw : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(lstw))
 			{

@@ -42,7 +42,7 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -153,7 +153,7 @@ public class ProhibitspellToken extends AbstractToken implements
 		{
 			return false;
 		}
-		context.getGraphContext().grant(getTokenName(), pcc, sp);
+		context.getObjectContext().give(getTokenName(), pcc, sp);
 		return true;
 	}
 
@@ -283,10 +283,10 @@ public class ProhibitspellToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<CDOMSpellProhibitor> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<CDOMSpellProhibitor> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					pcc, CDOMSpellProhibitor.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<CDOMSpellProhibitor> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token present

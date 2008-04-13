@@ -27,13 +27,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -92,17 +90,16 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken,
 				ChooseActionContainer container = new ChooseActionContainer(
 						getTokenName());
 				container.addActor(new GrantActor<CDOMTemplate>());
-				AssociatedPrereqObject edge = context.getGraphContext().grant(
-						getTokenName(), cdo, container);
-				edge.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
+				container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 						.getFormulaFor(1));
-				edge.setAssociation(AssociationKey.CHOICE_MAXCOUNT,
+				container.setAssociation(AssociationKey.CHOICE_MAXCOUNT,
 						FormulaFactory.getFormulaFor(1));
 				ListChoiceSet<CDOMTemplate> rcs = new ListChoiceSet<CDOMTemplate>(
 						tcl);
-				ChoiceSet<CDOMTemplate> cs = new ChoiceSet<CDOMTemplate>("ADD",
+				ChoiceSet<CDOMTemplate> cs = new ChoiceSet<CDOMTemplate>("TEMPLATE",
 						rcs);
-				edge.setAssociation(AssociationKey.CHOICE, cs);
+				container.setChoiceSet(cs);
+				context.getObjectContext().give(getTokenName(), cdo, container);
 			}
 			return returnval;
 		}
@@ -160,7 +157,7 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken,
 
 	public String[] unparse(LoadContext context, CDOMObject cdo)
 	{
-		AssociatedChanges<CDOMTemplate> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMTemplate>> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), cdo, PCTEMPLATE_CLASS);
 
 		PCTemplateChooseList tcl = cdo.getCDOMTemplateChooseList();
@@ -176,22 +173,22 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken,
 
 		List<String> list = new ArrayList<String>();
 
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
-		if (removedItems != null && !removedItems.isEmpty()
+		Collection<CDOMReference<CDOMTemplate>> chRemoved = changes.getRemoved();
+		if (chRemoved != null && !chRemoved.isEmpty()
 				|| changes.includesGlobalClear())
 		{
 			context.addWriteMessage(getTokenName() + "does not support .CLEAR");
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<CDOMReference<CDOMTemplate>> added = changes.getAdded();
 		if (added != null && !added.isEmpty())
 		{
 			list.add(ReferenceUtilities.joinLstFormat(added, Constants.PIPE));
 		}
 
-		Collection<LSTWriteable> addedItems = tctChanges.getAdded();
-		removedItems = tctChanges.getRemoved();
-		if (removedItems != null && !removedItems.isEmpty()
+		Collection<CDOMReference<CDOMTemplate>> addedItems = tctChanges.getAdded();
+		Collection<CDOMReference<CDOMTemplate>> tctRemoved = tctChanges.getRemoved();
+		if (tctRemoved != null && !tctRemoved.isEmpty()
 				|| tctChanges.includesGlobalClear())
 		{
 			context.addWriteMessage(getTokenName() + "does not support .CLEAR");
@@ -204,8 +201,8 @@ public class TemplateLst extends AbstractToken implements GlobalLstToken,
 							Constants.PIPE));
 		}
 		addedItems = allChanges.getAdded();
-		removedItems = allChanges.getRemoved();
-		if (removedItems != null && !removedItems.isEmpty()
+		tctRemoved = allChanges.getRemoved();
+		if (tctRemoved != null && !tctRemoved.isEmpty()
 				|| allChanges.includesGlobalClear())
 		{
 			context.addWriteMessage(getTokenName() + "does not support .CLEAR");

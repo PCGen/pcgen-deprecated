@@ -25,9 +25,11 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
@@ -44,8 +46,8 @@ import pcgen.util.Logging;
 public abstract class AbstractTokenTestCase<T extends CDOMObject> extends
 		TestCase
 {
-	protected PCGenGraph primaryGraph;
-	protected PCGenGraph secondaryGraph;
+	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> primaryGraph;
+	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
 	protected T primaryProf;
@@ -73,8 +75,8 @@ public abstract class AbstractTokenTestCase<T extends CDOMObject> extends
 		}
 		// Yea, this causes warnings...
 		TokenRegistration.register(getToken());
-		primaryGraph = new PCGenGraph();
-		secondaryGraph = new PCGenGraph();
+		primaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
+		secondaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
 		primaryContext = new RuntimeLoadContext(primaryGraph);
 		secondaryContext = new RuntimeLoadContext(secondaryGraph);
 		URI testURI = testCampaign.getURI();

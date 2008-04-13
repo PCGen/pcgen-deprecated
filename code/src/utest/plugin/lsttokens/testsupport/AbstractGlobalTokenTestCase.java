@@ -25,8 +25,10 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.core.Campaign;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
@@ -42,8 +44,8 @@ import pcgen.util.Logging;
 
 public abstract class AbstractGlobalTokenTestCase extends TestCase
 {
-	protected PCGenGraph primaryGraph;
-	protected PCGenGraph secondaryGraph;
+	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> primaryGraph;
+	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
 	protected CDOMObject primaryProf;
@@ -69,8 +71,8 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 			classSetUp();
 		}
 		TokenRegistration.register(getToken());
-		primaryGraph = new PCGenGraph();
-		secondaryGraph = new PCGenGraph();
+		primaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
+		secondaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
 		primaryContext = new RuntimeLoadContext(primaryGraph);
 		secondaryContext = new RuntimeLoadContext(secondaryGraph);
 		primaryProf = primaryContext.ref.constructCDOMObject(getCDOMClass(),
@@ -117,6 +119,8 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 		// Get back the appropriate token:
 		String[] unparsed = getToken().unparse(primaryContext, primaryProf);
 
+		assertNotNull(str);
+		assertNotNull(unparsed);
 		assertEquals(str.length, unparsed.length);
 
 		for (int i = 0; i < str.length; i++)

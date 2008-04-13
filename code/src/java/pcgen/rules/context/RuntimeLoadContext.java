@@ -1,12 +1,15 @@
 package pcgen.rules.context;
 
-import pcgen.cdom.graph.PCGenGraph;
+import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 
 public class RuntimeLoadContext extends LoadContext
 {
 	private final String contextType;
 
-	public RuntimeLoadContext(PCGenGraph pgg)
+	public RuntimeLoadContext(DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> pgg)
 	{
 		super(new GraphContext(new ConsolidatedGraphCommitStrategy(pgg)),
 			new ListContext(new ConsolidatedListCommitStrategy()),

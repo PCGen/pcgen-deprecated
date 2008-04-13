@@ -27,7 +27,6 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMRace;
 import pcgen.cdom.inst.CDOMWeaponProf;
@@ -132,7 +131,7 @@ public class WeaponbonusToken extends AbstractToken implements RaceLstToken, CDO
 		AssociatedChanges<CDOMReference<CDOMWeaponProf>> changes =
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<CDOMReference<CDOMWeaponProf>> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no add

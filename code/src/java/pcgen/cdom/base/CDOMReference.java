@@ -22,8 +22,8 @@ import java.util.Collection;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.character.CharacterDataStore;
 
-public abstract class CDOMReference<T extends PrereqObject> extends
-		ConcretePrereqObject implements LSTWriteable, PrimitiveChoiceFilter<T>
+public abstract class CDOMReference<T extends PrereqObject> implements
+		LSTWriteable, PrimitiveChoiceFilter<T>
 {
 
 	private final String name;
@@ -41,7 +41,6 @@ public abstract class CDOMReference<T extends PrereqObject> extends
 		return name;
 	}
 
-	@Override
 	public Class<T> getReferenceClass()
 	{
 		return clazz;

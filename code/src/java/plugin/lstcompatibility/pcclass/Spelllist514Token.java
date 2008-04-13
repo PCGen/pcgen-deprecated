@@ -130,7 +130,7 @@ public class Spelllist514Token extends AbstractToken implements
 		ChooseActionContainer container = new ChooseActionContainer(
 				getTokenName());
 		container.addActor(new GrantActor<CDOMListObject<CDOMSpell>>());
-		context.getGraphContext().grant(getTokenName(), pcc, container);
+		context.getObjectContext().give(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory

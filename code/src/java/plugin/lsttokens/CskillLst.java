@@ -34,7 +34,6 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
@@ -188,7 +187,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 				context.getListContext().getChangesInList(getTokenName(),
 					obj, listRef);
 		List<String> list = new ArrayList<String>();
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		Collection<CDOMReference<CDOMSkill>> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())
 		{
 			if (changes.includesGlobalClear())
@@ -206,12 +205,12 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> map = changes
+		MapToList<CDOMReference<CDOMSkill>, AssociatedPrereqObject> map = changes
 				.getAddedAssociations();
 		if (map != null && !map.isEmpty())
 		{
-			Set<LSTWriteable> addedSet = map.getKeySet();
-			for (LSTWriteable added : addedSet)
+			Set<CDOMReference<CDOMSkill>> addedSet = map.getKeySet();
+			for (CDOMReference<CDOMSkill> added : addedSet)
 			{
 				for (AssociatedPrereqObject assoc : map.getListFor(added))
 				{

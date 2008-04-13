@@ -30,7 +30,6 @@ import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -43,7 +42,7 @@ import pcgen.core.utils.CoreUtility;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLoader;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -253,14 +252,15 @@ public class ChooseLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		cac.setChoiceSet(choiceSet);
 		cac.setAssociation(AssociationKey.CHOICE_COUNT, countFormula);
 		cac.setAssociation(AssociationKey.CHOICE_MAXCOUNT, maxFormula);
+		context.getObjectContext().give(getTokenName(), obj, cac);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChoiceSet> changes = context.getGraphContext()
-				.getChangesFromToken(getTokenName(), obj, ChoiceSet.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Changes<ChoiceSet> changes = context.getObjectContext()
+				.getGivenChanges(getTokenName(), obj, ChoiceSet.class);
+		Collection<ChoiceSet> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token

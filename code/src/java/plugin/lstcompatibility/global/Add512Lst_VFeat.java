@@ -5,7 +5,6 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMCompatibilityToken;
-import pcgen.rules.persistence.token.CDOMSecondaryToken;
 
 public class Add512Lst_VFeat extends AbstractToken implements
 		CDOMCompatibilityToken<CDOMObject>

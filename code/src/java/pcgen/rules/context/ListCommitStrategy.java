@@ -7,7 +7,6 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.LSTWriteable;
 
 public interface ListCommitStrategy
 {
@@ -21,9 +20,9 @@ public interface ListCommitStrategy
 
 	public boolean hasMasterLists();
 
-	public AssociatedChanges<LSTWriteable> getChangesInMasterList(
+	public <T extends CDOMObject> AssociatedChanges<T> getChangesInMasterList(
 		String tokenName, CDOMObject owner,
-		CDOMReference<? extends CDOMList<?>> swl);
+		CDOMReference<? extends CDOMList<T>> swl);
 
 	public <T extends CDOMObject> AssociatedPrereqObject addToList(
 		String tokenName, CDOMObject owner,

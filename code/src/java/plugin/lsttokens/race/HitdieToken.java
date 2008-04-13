@@ -23,7 +23,6 @@ package plugin.lsttokens.race;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import pcgen.base.formula.AddingFormula;
@@ -32,7 +31,6 @@ import pcgen.base.formula.MultiplyingFormula;
 import pcgen.base.formula.SubtractingFormula;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.AbstractHitDieModifier;
 import pcgen.cdom.content.HitDie;
 import pcgen.cdom.content.HitDieCommandFactory;
@@ -43,7 +41,7 @@ import pcgen.cdom.modifier.HitDieLock;
 import pcgen.cdom.modifier.HitDieStep;
 import pcgen.core.Race;
 import pcgen.persistence.lst.RaceLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -277,7 +275,7 @@ public class HitdieToken extends AbstractToken implements RaceLstToken, CDOMPrim
 			}
 
 			HitDieCommandFactory cf = new HitDieCommandFactory(owner, hdm);
-			context.getGraphContext().grant(getTokenName(), race, cf);
+			context.getObjectContext().give(getTokenName(), race, cf);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -291,22 +289,21 @@ public class HitdieToken extends AbstractToken implements RaceLstToken, CDOMPrim
 
 	public String[] unparse(LoadContext context, CDOMRace race)
 	{
-		AssociatedChanges<HitDieCommandFactory> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<HitDieCommandFactory> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					race, HitDieCommandFactory.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<HitDieCommandFactory> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		for (Iterator<LSTWriteable> it = added.iterator(); it.hasNext();)
+		for (HitDieCommandFactory hdcf : added)
 		{
 			StringBuilder sb = new StringBuilder();
-			HitDieCommandFactory lcf = (HitDieCommandFactory) it.next();
-			AbstractHitDieModifier mod = lcf.getModifier();
+			AbstractHitDieModifier mod = hdcf.getModifier();
 			sb.append(mod.getLSTform());
-			String lcfString = lcf.getLSTformat();
+			String lcfString = hdcf.getLSTformat();
 			if (!lcfString.equals(Constants.LST_ALL))
 			{
 				sb.append("|CLASS");

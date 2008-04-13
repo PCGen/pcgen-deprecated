@@ -25,8 +25,10 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.graph.PCGenGraph;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.core.Campaign;
@@ -42,8 +44,8 @@ import plugin.lsttokens.testsupport.TokenRegistration;
 
 public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 {
-	protected PCGenGraph primaryGraph;
-	protected PCGenGraph secondaryGraph;
+	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> primaryGraph;
+	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
 	protected CDOMPCClass primaryProf;
@@ -79,8 +81,8 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		}
 		// Yea, this causes warnings...
 		TokenRegistration.register(getToken());
-		primaryGraph = new PCGenGraph();
-		secondaryGraph = new PCGenGraph();
+		primaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
+		secondaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
 		primaryContext = new RuntimeLoadContext(primaryGraph);
 		secondaryContext = new RuntimeLoadContext(secondaryGraph);
 		primaryProf = 

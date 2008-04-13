@@ -29,11 +29,11 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.base.util.TripleKeyMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
@@ -365,9 +365,9 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken,
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<CDOMAbility> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMAbility>> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), obj, ABILITY_CLASS);
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMAbility>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
@@ -375,7 +375,7 @@ public class AbilityLst extends AbstractToken implements GlobalLstToken,
 			return null;
 		}
 		TripleKeyMapToList<AbilityNature, Category<CDOMAbility>, List<Prerequisite>, LSTWriteable> m = new TripleKeyMapToList<AbilityNature, Category<CDOMAbility>, List<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : mtl.getKeySet())
+		for (CDOMReference<CDOMAbility> ab : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 			{

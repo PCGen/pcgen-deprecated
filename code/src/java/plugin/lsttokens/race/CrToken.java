@@ -23,12 +23,11 @@ package plugin.lsttokens.race;
 
 import java.util.Collection;
 
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChallengeRating;
 import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.Race;
 import pcgen.persistence.lst.RaceLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 
@@ -64,16 +63,16 @@ public class CrToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 	public boolean parse(LoadContext context, CDOMRace race, String value)
 	{
 		ChallengeRating cr = new ChallengeRating(value);
-		context.getGraphContext().grant(getTokenName(), race, cr);
+		context.getObjectContext().give(getTokenName(), race, cr);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMRace race)
 	{
-		AssociatedChanges<ChallengeRating> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(), race,
+		Changes<ChallengeRating> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(), race,
 					ChallengeRating.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<ChallengeRating> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token present
@@ -85,8 +84,7 @@ public class CrToken implements RaceLstToken, CDOMPrimaryToken<CDOMRace>
 				.addWriteMessage("Only 1 ChallengeRating is allowed per Race");
 			return null;
 		}
-		ChallengeRating cr = (ChallengeRating) added.iterator().next();
-		return new String[]{cr.getLSTformat()};
+		return new String[]{added.iterator().next().getLSTformat()};
 	}
 
 	public Class<CDOMRace> getTokenClass()

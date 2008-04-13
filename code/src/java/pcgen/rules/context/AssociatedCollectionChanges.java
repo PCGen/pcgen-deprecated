@@ -4,17 +4,17 @@ import java.util.Collection;
 
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.PrereqObject;
 
-public class AssociatedCollectionChanges<T> implements AssociatedChanges<T>
+public class AssociatedCollectionChanges<T extends PrereqObject> implements AssociatedChanges<T>
 {
-	private MapToList<LSTWriteable, AssociatedPrereqObject> positive;
-	private MapToList<LSTWriteable, AssociatedPrereqObject> negative;
+	private MapToList<T, AssociatedPrereqObject> positive;
+	private MapToList<T, AssociatedPrereqObject> negative;
 	private boolean clear;
 
 	public AssociatedCollectionChanges(
-		MapToList<LSTWriteable, AssociatedPrereqObject> added,
-		MapToList<LSTWriteable, AssociatedPrereqObject> removed,
+		MapToList<T, AssociatedPrereqObject> added,
+		MapToList<T, AssociatedPrereqObject> removed,
 		boolean globallyCleared)
 	{
 		positive = added;
@@ -32,7 +32,7 @@ public class AssociatedCollectionChanges<T> implements AssociatedChanges<T>
 		return !clear && !hasAddedItems() && !hasRemovedItems();
 	}
 
-	public Collection<LSTWriteable> getAdded()
+	public Collection<T> getAdded()
 	{
 		return positive.getKeySet();
 	}
@@ -42,7 +42,7 @@ public class AssociatedCollectionChanges<T> implements AssociatedChanges<T>
 		return positive != null && !positive.isEmpty();
 	}
 
-	public Collection<LSTWriteable> getRemoved()
+	public Collection<T> getRemoved()
 	{
 		return negative == null ? null : negative.getKeySet();
 	}
@@ -52,12 +52,12 @@ public class AssociatedCollectionChanges<T> implements AssociatedChanges<T>
 		return negative != null && !negative.isEmpty();
 	}
 
-	public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations()
+	public MapToList<T, AssociatedPrereqObject> getAddedAssociations()
 	{
 		return positive;
 	}
 
-	public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations()
+	public MapToList<T, AssociatedPrereqObject> getRemovedAssociations()
 	{
 		return negative;
 	}

@@ -130,7 +130,7 @@ public class Moveclone512Lst_Zero extends AbstractToken implements
 		MovementFormulaConstructor fc = new MovementFormulaConstructor(oldType,
 				newType, form);
 
-		context.getGraphContext().grant(getTokenName(), obj, fc);
+		context.getObjectContext().give(getTokenName(), obj, fc);
 		return true;
 	}
 

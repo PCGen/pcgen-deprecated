@@ -216,9 +216,9 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken,
 			}
 		}
 
-		AssociatedChanges<CDOMWeaponProf> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMWeaponProf>> changes = context.getGraphContext()
 				.getChangesFromToken(getFullName(), obj, WEAPONPROF_CLASS);
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMWeaponProf>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (list.isEmpty() && (mtl == null || mtl.isEmpty()))
 		{
@@ -226,7 +226,7 @@ public class WeaponProfToken extends AbstractToken implements AutoLstToken,
 			return null;
 		}
 		HashMapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : mtl.getKeySet())
+		for (CDOMReference<CDOMWeaponProf> ab : mtl.getKeySet())
 		{
 			List<AssociatedPrereqObject> assocList = mtl.getListFor(ab);
 			if (assocList.size() != 1)

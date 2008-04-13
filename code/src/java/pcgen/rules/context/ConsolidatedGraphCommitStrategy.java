@@ -3,20 +3,18 @@ package pcgen.rules.context;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
-import pcgen.base.graph.core.DirectionalEdge;
 import pcgen.base.io.FileLocationFactory;
+import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.base.util.TreeMapToList;
 import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.graph.PCGenGraph;
-import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.graph.PCGraphGrantsEdge;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.rules.persistence.TokenUtilities;
 
 public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
@@ -25,13 +23,20 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 
 	private URI extractURI;
 
-	private final PCGenGraph graph;
-
+	private final DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> grants;
+	
 	private FileLocationFactory locFac = new FileLocationFactory();
 
-	public ConsolidatedGraphCommitStrategy(PCGenGraph pgg)
+	public ConsolidatedGraphCommitStrategy(DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> thing)
 	{
-		graph = pgg;
+		if (thing == null)
+		{
+			grants = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
+		}
+		else
+		{
+			grants = thing;
+		}
 	}
 
 	public URI getExtractURI()
@@ -59,47 +64,39 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 	{
 		locFac.setLine(line);
 	}
+	/*
+	 * TODO need to translate this over to give in ObjectContext...??
+	 */
+//
+//	private PrereqObject getInternalizedNode(PrereqObject pro)
+//	{
+//		PrereqObject node = graph.getInternalizedNode(pro);
+//		if (node == null)
+//		{
+//			node = pro;
+//		}
+//		return node;
+//	}
 
-	private PrereqObject getInternalizedNode(PrereqObject pro)
+	public <T extends CDOMObject> AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
+			CDOMReference<T> pro)
 	{
-		PrereqObject node = graph.getInternalizedNode(pro);
-		if (node == null)
-		{
-			node = pro;
-		}
-		return node;
+		AssociatedPrereqObject a = new SimpleAssociatedObject();
+		a.setAssociation(AssociationKey.TOKEN, sourceToken);
+		grants.addToListFor(obj, pro, a);
+		return a;
 	}
 
-	public PCGraphGrantsEdge grant(String sourceToken, CDOMObject obj,
-		PrereqObject pro)
+	public <T extends CDOMObject> void remove(String tokenName, CDOMObject obj, CDOMReference<T> child)
 	{
-		PrereqObject node = getInternalizedNode(pro);
-		graph.addNode(node);
-		PCGraphGrantsEdge edge = new PCGraphGrantsEdge(obj, node, sourceToken);
-		graph.addEdge(edge);
-		return edge;
-	}
-
-	public void remove(String tokenName, CDOMObject obj, PrereqObject child)
-	{
-		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
-		if (outwardEdgeList != null)
+		List<AssociatedPrereqObject> assoc = grants.getListFor(obj, child);
+		if (assoc != null)
 		{
-			for (PCGraphEdge edge : outwardEdgeList)
+			for (AssociatedPrereqObject apo : assoc)
 			{
-				if (edge.getSourceToken().equals(tokenName))
+				if (tokenName.equals(apo.getAssociation(AssociationKey.TOKEN)))
 				{
-					for (PrereqObject node : edge.getAdjacentNodes())
-					{
-						if (edge.getNodeInterfaceType(node) == DirectionalEdge.SINK
-							&& node.equals(child))
-						{
-							// CONSIDER Clean up parent/child if no remaining
-							// links?
-							graph.removeEdge(edge);
-							break;
-						}
-					}
+					grants.removeFromListFor(obj, child, apo);
 				}
 			}
 		}
@@ -107,27 +104,30 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 
 	public void removeAll(String tokenName, CDOMObject obj)
 	{
-		List<PCGraphEdge> outwardEdgeList = graph.getOutwardEdgeList(obj);
-		if (outwardEdgeList != null)
+		Set<CDOMReference<?>> targets = grants.getSecondaryKeySet(obj);
+		if (targets != null)
 		{
-			for (PCGraphEdge edge : outwardEdgeList)
+			for (CDOMReference<?> target : targets)
 			{
-				if (edge.getSourceToken().equals(tokenName))
+				for (AssociatedPrereqObject apo : grants.getListFor(obj, target))
 				{
-					graph.removeEdge(edge);
+					if (tokenName.equals(apo.getAssociation(AssociationKey.TOKEN)))
+					{
+						grants.removeFromListFor(obj, target, apo);
+					}
 				}
 			}
 		}
 	}
 
-	public <T extends PrereqObject & LSTWriteable> AssociatedChanges<T> getChangesFromToken(
+	public <T extends CDOMObject> AssociatedChanges<CDOMReference<T>> getChangesFromToken(
 		String tokenName, CDOMObject pct, Class<T> name)
 	{
 		return new GraphChangesFacade<T>(tokenName, pct, name);
 	}
 
-	private class GraphChangesFacade<T extends PrereqObject & LSTWriteable>
-			implements AssociatedChanges<T>
+	private class GraphChangesFacade<T extends CDOMObject>
+			implements AssociatedChanges<CDOMReference<T>>
 	{
 
 		private final String token;
@@ -144,125 +144,87 @@ public class ConsolidatedGraphCommitStrategy implements GraphCommitStrategy
 			source = cdo;
 		}
 
-		public Collection<LSTWriteable> getAdded()
+		public Collection<CDOMReference<T>> getAdded()
 		{
-			Collection<LSTWriteable> coll =
-					new WeightedCollection<LSTWriteable>(
-						TokenUtilities.WRITEABLE_SORTER);
-			List<PCGraphEdge> outwardEdgeList =
-					graph.getOutwardEdgeList(source);
-			if (outwardEdgeList == null)
+			Collection<CDOMReference<T>> coll =
+					new WeightedCollection<CDOMReference<T>>(
+							TokenUtilities.REFERENCE_SORTER);
+			Set<CDOMReference<?>> targets = grants.getSecondaryKeySet(source);
+			if (targets == null)
 			{
 				return coll;
 			}
-			for (PCGraphEdge edge : outwardEdgeList)
+			for (CDOMReference<?> target : targets)
 			{
-				if (!edge.getSourceToken().equals(token))
+				if (!target.getReferenceClass().equals(childClass))
 				{
 					continue;
 				}
-				for (PrereqObject node : edge.getAdjacentNodes())
+				for (AssociatedPrereqObject apo : grants.getListFor(source, target))
 				{
-					if (edge.getNodeInterfaceType(node) != DirectionalEdge.SINK)
+					if (token.equals(apo.getAssociation(AssociationKey.TOKEN)))
 					{
-						continue;
-					}
-					if (childClass.isAssignableFrom(node.getClass()))
-					{
-						// TODO Can the edge actually return an LSTWriteable?
-						coll.add((LSTWriteable) node);
+						coll.add((CDOMReference<T>) target);
 						break;
-					}
-					else if (node instanceof CDOMReference)
-					{
-						CDOMReference<?> cdr = (CDOMReference) node;
-						if (cdr.getReferenceClass().equals(childClass))
-						{
-							coll.add((LSTWriteable) node);
-							break;
-						}
 					}
 				}
 			}
 			return coll;
 		}
 
-		public MapToList<LSTWriteable, AssociatedPrereqObject> getAddedAssociations()
+		public MapToList<CDOMReference<T>, AssociatedPrereqObject> getAddedAssociations()
 		{
-			TreeMapToList<LSTWriteable, AssociatedPrereqObject> coll =
-					new TreeMapToList<LSTWriteable, AssociatedPrereqObject>(
-						TokenUtilities.WRITEABLE_SORTER);
-			List<PCGraphEdge> outwardEdgeList =
-					graph.getOutwardEdgeList(source);
-			if (outwardEdgeList == null)
+			TreeMapToList<CDOMReference<T>, AssociatedPrereqObject> coll =
+					new TreeMapToList<CDOMReference<T>, AssociatedPrereqObject>(
+							TokenUtilities.REFERENCE_SORTER);
+			Set<CDOMReference<?>> targets = grants.getSecondaryKeySet(source);
+			if (targets == null)
 			{
 				return coll;
 			}
-			for (PCGraphEdge edge : outwardEdgeList)
+			for (CDOMReference<?> target : targets)
 			{
-				if (!edge.getSourceToken().equals(token))
+				if (!target.getReferenceClass().equals(childClass))
 				{
 					continue;
 				}
-				for (PrereqObject node : edge.getAdjacentNodes())
+				for (AssociatedPrereqObject apo : grants.getListFor(source, target))
 				{
-					if (edge.getNodeInterfaceType(node) != DirectionalEdge.SINK)
+					if (token.equals(apo.getAssociation(AssociationKey.TOKEN)))
 					{
-						continue;
-					}
-					if (childClass.isAssignableFrom(node.getClass()))
-					{
-						// TODO Can the edge actually return an LSTWriteable?
-						coll.addToListFor((LSTWriteable) node, edge);
-						break;
-					}
-					else if (node instanceof CDOMReference)
-					{
-						CDOMReference<?> cdr = (CDOMReference) node;
-						if (cdr.getReferenceClass().equals(childClass))
-						{
-							coll.addToListFor((LSTWriteable) node, edge);
-							break;
-						}
+						coll.addToListFor((CDOMReference<T>) target, apo);
 					}
 				}
 			}
 			return coll;
 		}
 
-		public Collection<LSTWriteable> getRemoved()
+		public Collection<CDOMReference<T>> getRemoved()
 		{
 			return null;
 		}
 
-		public MapToList<LSTWriteable, AssociatedPrereqObject> getRemovedAssociations()
+		public MapToList<CDOMReference<T>, AssociatedPrereqObject> getRemovedAssociations()
 		{
 			return null;
 		}
 
 		public boolean hasAddedItems()
 		{
-			List<PCGraphEdge> outwardEdgeList =
-					graph.getOutwardEdgeList(source);
-			if (outwardEdgeList == null)
+			Set<CDOMReference<?>> targets = grants.getSecondaryKeySet(source);
+			if (targets == null)
 			{
 				return false;
 			}
-			for (PCGraphEdge edge : outwardEdgeList)
+			for (CDOMReference<?> target : targets)
 			{
-				if (!edge.getSourceToken().equals(token))
+				if (!target.getReferenceClass().equals(childClass))
 				{
 					continue;
 				}
-				for (PrereqObject node : edge.getAdjacentNodes())
+				for (AssociatedPrereqObject apo : grants.getListFor(source, target))
 				{
-					if (edge.getNodeInterfaceType(node) != DirectionalEdge.SINK)
-					{
-						continue;
-					}
-					if (childClass.isAssignableFrom(node.getClass())
-						|| (node instanceof CDOMReference && ((CDOMReference) node)
-							.getReferenceClass().equals(childClass)))
+					if (token.equals(apo.getAssociation(AssociationKey.TOKEN)))
 					{
 						return true;
 					}

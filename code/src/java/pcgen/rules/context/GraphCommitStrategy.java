@@ -21,8 +21,7 @@ import java.net.URI;
 
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.CDOMReference;
 
 public interface GraphCommitStrategy
 {
@@ -33,13 +32,14 @@ public interface GraphCommitStrategy
 
 	public void setLine(int line);
 	
-	public AssociatedPrereqObject grant(String sourceToken, CDOMObject obj,
-		PrereqObject pro);
+	public <T extends CDOMObject> AssociatedPrereqObject grant(
+			String sourceToken, CDOMObject obj, CDOMReference<T> pro);
 
-	public void remove(String tokenName, CDOMObject obj, PrereqObject child);
+	public <T extends CDOMObject> void remove(String tokenName, CDOMObject obj,
+			CDOMReference<T> child);
 
 	public void removeAll(String tokenName, CDOMObject obj);
 
-	public <T extends PrereqObject & LSTWriteable> AssociatedChanges<T> getChangesFromToken(
-		String tokenName, CDOMObject pct, Class<T> name);
+	public <T extends CDOMObject> AssociatedChanges<CDOMReference<T>> getChangesFromToken(
+			String tokenName, CDOMObject pct, Class<T> name);
 }

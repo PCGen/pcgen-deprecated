@@ -22,14 +22,12 @@
 package plugin.lsttokens.pcclass;
 
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import pcgen.base.util.MapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
 import pcgen.core.bonus.BonusObj;
@@ -38,7 +36,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.BonusTokenLoader;
 import pcgen.rules.persistence.token.AbstractToken;
@@ -83,57 +81,52 @@ CDOMPrimaryToken<CDOMPCClass>
 				BonusTokenLoader.getBonus(context, pcc, "MONSKILLPTS", "NUMBER",
 					bonusString);
 		bonus.addPrerequisite(getPrerequisite("PRELEVELMAX:1"));
-		AssociatedPrereqObject assoc =
-				context.getGraphContext().grant(getTokenName(), pcc, bonus);
 		while (st.hasMoreTokens())
 		{
-			assoc.addPrerequisite(getPrerequisite(st.nextToken()));
+			bonus.addPrerequisite(getPrerequisite(st.nextToken()));
 		}
+		context.getObjectContext().give(getTokenName(), pcc, bonus);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<BonusObj> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<BonusObj> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					pcc, BonusObj.class);
 		PrerequisiteWriter prereqWriter = new PrerequisiteWriter();
 		Set<String> set = new TreeSet<String>();
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl =
-				changes.getAddedAssociations();
-		if (mtl != null && !mtl.isEmpty())
+		Collection<BonusObj> added = changes.getAdded();
+		if (added != null && !added.isEmpty())
 		{
-			for (LSTWriteable ab : mtl.getKeySet())
+			for (BonusObj ab : added)
 			{
-				// TODO Validate MONSKILLPTS?
+				// TODO Validate MONNONSKILLHD?
 				// TODO Validate NUMBER?
 				// TODO Validate PRExxx?
-				for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
+				StringBuilder sb = new StringBuilder();
+				sb.append(ab.getLSTformat());
+				if (ab.hasPrerequisites())
 				{
-					StringBuilder sb = new StringBuilder();
-					sb.append(ab.getLSTformat());
-					if (assoc.hasPrerequisites())
+					for (Prerequisite prereq : ab.getPrerequisiteList())
 					{
-						for (Prerequisite prereq : assoc.getPrerequisiteList())
+						sb.append(Constants.PIPE);
+						StringWriter swriter = new StringWriter();
+						try
 						{
-							sb.append(Constants.PIPE);
-							StringWriter swriter = new StringWriter();
-							try
-							{
-								prereqWriter.write(swriter, prereq);
-							}
-							catch (PersistenceLayerException e)
-							{
-								context
-									.addWriteMessage("Error writing Prerequisite: "
-										+ e);
-								return null;
-							}
-							sb.append(swriter.toString());
+							prereqWriter.write(swriter, prereq);
 						}
+						catch (PersistenceLayerException e)
+						{
+							context
+								.addWriteMessage("Error writing Prerequisite: "
+									+ e);
+							return null;
+						}
+						sb.append(swriter.toString());
 					}
-					set.add(sb.toString());
 				}
+				set.add(sb.toString());
 			}
 		}
 		if (set.isEmpty())

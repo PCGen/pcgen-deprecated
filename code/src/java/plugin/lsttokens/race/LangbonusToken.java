@@ -28,7 +28,6 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.inst.CDOMRace;
@@ -169,7 +168,7 @@ public class LangbonusToken extends AbstractToken implements RaceLstToken, CDOMP
 				context.getListContext().getChangesInList(getTokenName(), race,
 					swl);
 		List<String> list = new ArrayList<String>();
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		Collection<CDOMReference<CDOMLanguage>> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())
 		{
 			if (changes.includesGlobalClear())
@@ -187,7 +186,7 @@ public class LangbonusToken extends AbstractToken implements RaceLstToken, CDOMP
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		Collection<LSTWriteable> addedItems = changes.getAdded();
+		Collection<CDOMReference<CDOMLanguage>> addedItems = changes.getAdded();
 		if (addedItems != null && !addedItems.isEmpty())
 		{
 			list.add(ReferenceUtilities.joinLstFormat(addedItems,

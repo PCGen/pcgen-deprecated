@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
-import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.transition.CompoundCampaign;
 import pcgen.cdom.transition.CustomCampaign;
 import pcgen.core.Campaign;
@@ -128,7 +127,7 @@ public class ReportUnconstructed
 				}
 			}
 			cc.addCampaign(new CustomCampaign());
-			new SystemLoader().loadCampaign(new RuntimeLoadContext(new PCGenGraph()), cc);
+			new SystemLoader().loadCampaign(new RuntimeLoadContext(null), cc);
 		}
 		catch (PersistenceLayerException e)
 		{

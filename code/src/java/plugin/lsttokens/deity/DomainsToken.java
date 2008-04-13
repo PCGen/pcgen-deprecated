@@ -223,7 +223,7 @@ public class DomainsToken extends AbstractToken implements DeityLstToken,
 		AssociatedChanges<CDOMReference<CDOMDomain>> changes = context
 				.getListContext().getChangesInList(getTokenName(), deity, dl);
 		List<String> list = new ArrayList<String>();
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		Collection<CDOMReference<CDOMDomain>> removedItems = changes.getRemoved();
 		if (changes.includesGlobalClear())
 		{
 			if (removedItems != null && !removedItems.isEmpty())
@@ -241,12 +241,12 @@ public class DomainsToken extends AbstractToken implements DeityLstToken,
 					+ ReferenceUtilities.joinLstFormat(removedItems,
 							",.CLEAR."));
 		}
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMDomain>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl != null && !mtl.isEmpty())
 		{
 			MapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-			for (LSTWriteable ab : mtl.getKeySet())
+			for (CDOMReference<CDOMDomain> ab : mtl.getKeySet())
 			{
 				for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 				{

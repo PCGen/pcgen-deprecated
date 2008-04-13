@@ -46,7 +46,7 @@ import pcgen.core.Globals;
 import pcgen.core.PCClass;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -209,7 +209,7 @@ CDOMPrimaryToken<CDOMPCClass>
 		ChooseActionContainer container = new ChooseActionContainer(
 				getTokenName());
 		container.addActor(new GrantActor<PCTemplate>());
-		context.getGraphContext().grant(getTokenName(), pcc, container);
+		context.getObjectContext().give(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -225,10 +225,10 @@ CDOMPrimaryToken<CDOMPCClass>
 
 	public String[] unparse(LoadContext context, CDOMPCClass pcc)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges = context
-				.getGraphContext().getChangesFromToken(getTokenName(), pcc,
+		Changes<ChooseActionContainer> grantChanges = context
+				.getObjectContext().getGivenChanges(getTokenName(), pcc,
 						ChooseActionContainer.class);
-		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		Collection<ChooseActionContainer> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token

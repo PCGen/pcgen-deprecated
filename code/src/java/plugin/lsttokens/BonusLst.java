@@ -27,19 +27,12 @@ import java.util.regex.Pattern;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.enumeration.ListKey;
 import pcgen.core.Constants;
 import pcgen.core.PObject;
-import pcgen.core.bonus.BonusObj;
-import pcgen.core.bonus.BonusObj.StackType;
-import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.rules.context.LoadContext;
-import pcgen.rules.persistence.BonusTokenLoader;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
-import pcgen.util.Logging;
 
 /**
  * @author djones4

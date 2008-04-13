@@ -31,6 +31,7 @@ import pcgen.cdom.base.Category;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.DamageReduction;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.inst.Aggregator;

@@ -34,7 +34,6 @@ import org.junit.BeforeClass;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.graph.PCGenGraph;
 import pcgen.core.Campaign;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.CampaignSourceEntry;
@@ -53,7 +52,6 @@ import pcgen.rules.persistence.token.CDOMPrimaryToken;
  */
 public abstract class AbstractTokenLoaderTestCase<T extends CDOMObject> extends TestCase
 {
-	protected PCGenGraph graph;
 	protected LoadContext context;
 	protected T prof;
 
@@ -82,8 +80,7 @@ public abstract class AbstractTokenLoaderTestCase<T extends CDOMObject> extends 
 		{
 			classSetUp();
 		}
-		graph = new PCGenGraph();
-		context = new RuntimeLoadContext(graph);
+		context = new RuntimeLoadContext(null);
 		prof = context.ref.constructCDOMObject(getCDOMClass(), "TestObj");
 
 		URI sourceURI = sourceCampaign.getURI();

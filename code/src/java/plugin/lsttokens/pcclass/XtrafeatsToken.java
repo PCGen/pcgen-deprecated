@@ -29,9 +29,9 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
@@ -39,7 +39,7 @@ import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -106,7 +106,7 @@ public class XtrafeatsToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCC
 		ChooseActionContainer container =
 				new ChooseActionContainer(getTokenName());
 		container.addActor(new GrantActor<CDOMAbility>());
-		context.getGraphContext().grant(getTokenName(), pcc, container);
+		context.getObjectContext().give(getTokenName(), pcc, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -132,10 +132,10 @@ public class XtrafeatsToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCC
 
 	public String[] unparse(LoadContext context, CDOMPCClass obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<ChooseActionContainer> grantChanges =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					obj, ChooseActionContainer.class);
-		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		Collection<ChooseActionContainer> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token

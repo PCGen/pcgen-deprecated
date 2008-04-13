@@ -41,7 +41,7 @@ import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.cdom.modifier.ChangeProf;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
@@ -183,17 +183,17 @@ public class ChangeprofLst extends AbstractToken implements GlobalLstToken, CDOM
 		}
 		for (ChangeProf cp : list)
 		{
-			context.getGraphContext().grant(getTokenName(), obj, cp);
+			context.getObjectContext().give(getTokenName(), obj, cp);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChangeProf> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<ChangeProf> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					obj, ChangeProf.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<ChangeProf> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token

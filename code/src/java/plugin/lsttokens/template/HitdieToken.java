@@ -31,7 +31,6 @@ import pcgen.base.formula.MultiplyingFormula;
 import pcgen.base.formula.SubtractingFormula;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.AbstractHitDieModifier;
 import pcgen.cdom.content.HitDie;
 import pcgen.cdom.content.HitDieCommandFactory;
@@ -42,7 +41,7 @@ import pcgen.cdom.modifier.HitDieLock;
 import pcgen.cdom.modifier.HitDieStep;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -275,7 +274,7 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken, CD
 			}
 
 			HitDieCommandFactory cf = new HitDieCommandFactory(owner, hdm);
-			context.getGraphContext().grant(getTokenName(), template, cf);
+			context.getObjectContext().give(getTokenName(), template, cf);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -289,22 +288,21 @@ public class HitdieToken extends AbstractToken implements PCTemplateLstToken, CD
 
 	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<HitDieCommandFactory> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<HitDieCommandFactory> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					pct, HitDieCommandFactory.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<HitDieCommandFactory> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		for (LSTWriteable lw : added)
+		for (HitDieCommandFactory hdcf : added)
 		{
 			StringBuilder sb = new StringBuilder();
-			HitDieCommandFactory hdcf = (HitDieCommandFactory) lw;
 			AbstractHitDieModifier mod = hdcf.getModifier();
 			sb.append(mod.getLSTform());
-			String lcfString = lw.getLSTformat();
+			String lcfString = hdcf.getLSTformat();
 			if (!lcfString.equals(Constants.LST_ALL))
 			{
 				sb.append("|CLASS");

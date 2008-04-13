@@ -11,6 +11,7 @@ import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Constants;
@@ -124,9 +125,9 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken,
 
 	public String[] unparse(LoadContext context, CDOMObject cdo)
 	{
-		AssociatedChanges<CDOMAbility> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMAbility>> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), cdo, ABILITY_CLASS);
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMAbility>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
@@ -134,7 +135,7 @@ public class VFeatLst extends AbstractToken implements GlobalLstToken,
 			return null;
 		}
 		MapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : mtl.getKeySet())
+		for (CDOMReference<CDOMAbility> ab : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 			{

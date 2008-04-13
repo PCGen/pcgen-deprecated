@@ -34,7 +34,7 @@ import pcgen.core.PCClass;
 import pcgen.core.PObject;
 import pcgen.core.Vision;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -164,7 +164,7 @@ public class VisionLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 				try
 				{
 					Vision vis = Vision.getVision(visionString.substring(7));
-					context.getGraphContext().remove(getTokenName(), obj, vis);
+					context.getObjectContext().revoke(getTokenName(), obj, vis);
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -197,15 +197,15 @@ public class VisionLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 		}
 		for (Vision vis : list)
 		{
-			context.getGraphContext().grant(getTokenName(), obj, vis);
+			context.getObjectContext().give(getTokenName(), obj, vis);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<Vision> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<Vision> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					obj, VISION_CLASS);
 		StringBuilder returnString = new StringBuilder();
 		boolean needsBar = false;
@@ -214,8 +214,8 @@ public class VisionLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 			returnString.append(Constants.LST_DOT_CLEAR);
 			needsBar = true;
 		}
-		Collection<LSTWriteable> removed = changes.getRemoved();
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<Vision> removed = changes.getRemoved();
+		Collection<Vision> added = changes.getAdded();
 		if (removed != null && !removed.isEmpty())
 		{
 			for (LSTWriteable lstw : removed)

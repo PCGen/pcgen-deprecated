@@ -23,18 +23,16 @@ package plugin.lsttokens.template;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.LevelCommandFactory;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -96,7 +94,7 @@ public class AddLevelToken implements PCTemplateLstToken,
 				return false;
 			}
 			LevelCommandFactory cf = new LevelCommandFactory(cl, lvls);
-			context.getGraphContext().grant(getTokenName(), template, cf);
+			context.getObjectContext().give(getTokenName(), template, cf);
 			return true;
 		}
 		catch (NumberFormatException nfe)
@@ -111,19 +109,18 @@ public class AddLevelToken implements PCTemplateLstToken,
 
 	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<LevelCommandFactory> changes = context
-				.getGraphContext().getChangesFromToken(getTokenName(), pct,
+		Changes<LevelCommandFactory> changes = context
+				.getObjectContext().getGivenChanges(getTokenName(), pct,
 						LevelCommandFactory.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<LevelCommandFactory> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		for (Iterator<LSTWriteable> it = added.iterator(); it.hasNext();)
+		for (LevelCommandFactory lcf : added)
 		{
 			StringBuilder sb = new StringBuilder();
-			LevelCommandFactory lcf = (LevelCommandFactory) it.next();
 			int lvls = lcf.getLevelCount();
 			if (lvls <= 0)
 			{

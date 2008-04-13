@@ -34,7 +34,7 @@ import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.Equipment;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.lst.EquipmentLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -83,7 +83,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken, CDOM
 		{
 			return false;
 		}
-		context.getGraphContext().grant(getTokenName(), eq, sa);
+		context.getObjectContext().give(getTokenName(), eq, sa);
 		return true;
 	}
 
@@ -173,10 +173,10 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken, CDOM
 
 	public String[] unparse(LoadContext context, CDOMEquipment eq)
 	{
-		AssociatedChanges<SpecialProperty> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<SpecialProperty> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					eq, SpecialProperty.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<SpecialProperty> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token

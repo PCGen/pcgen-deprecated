@@ -145,9 +145,9 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken,
 
 	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<CDOMAbility> changes = context.getGraphContext()
+		AssociatedChanges<CDOMReference<CDOMAbility>> changes = context.getGraphContext()
 				.getChangesFromToken(getTokenName(), pct, ABILITY_CLASS);
-		MapToList<LSTWriteable, AssociatedPrereqObject> mtl = changes
+		MapToList<CDOMReference<CDOMAbility>, AssociatedPrereqObject> mtl = changes
 				.getAddedAssociations();
 		if (mtl == null || mtl.isEmpty())
 		{
@@ -155,7 +155,7 @@ public class FeatToken extends AbstractToken implements PCTemplateLstToken,
 			return null;
 		}
 		MapToList<Set<Prerequisite>, LSTWriteable> m = new HashMapToList<Set<Prerequisite>, LSTWriteable>();
-		for (LSTWriteable ab : mtl.getKeySet())
+		for (CDOMReference<CDOMAbility> ab : mtl.getKeySet())
 		{
 			for (AssociatedPrereqObject assoc : mtl.getListFor(ab))
 			{

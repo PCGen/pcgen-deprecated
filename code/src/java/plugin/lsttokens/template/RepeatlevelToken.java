@@ -32,14 +32,13 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.IntegerKey;
-import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -327,7 +326,7 @@ public class RepeatlevelToken extends AbstractToken implements
 		consolidator.put(IntegerKey.START_LEVEL, Integer.valueOf(iLevel));
 		consolidator.put(StringKey.TOKEN, getTokenName());
 
-		context.getGraphContext().grant(getTokenName(), template, consolidator);
+		context.getObjectContext().give(getTokenName(), template, consolidator);
 
 		for (int count = consecutive; iLevel <= maxLevel; iLevel +=
 				lvlIncrement)
@@ -340,9 +339,9 @@ public class RepeatlevelToken extends AbstractToken implements
 							.singletonList(prereq));
 				CDOMTemplate derivative =
 						consolidator.getPseudoTemplate(standardizedPrereq);
-				derivative.put(ObjectKey.PSEUDO_PARENT, consolidator);
+				//derivative.put(ObjectKey.PSEUDO_PARENT, consolidator);
 				derivative.addPrerequisite(prereq);
-				context.getGraphContext().grant(getTokenName(), consolidator,
+				context.getObjectContext().give(getTokenName(), consolidator,
 					derivative);
 				if (!context.processToken(derivative, typeStr, contentStr))
 				{
@@ -366,10 +365,10 @@ public class RepeatlevelToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMTemplate pct)
 	{
-		AssociatedChanges<CDOMTemplate> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<CDOMTemplate> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					pct, PCTEMPLATE_CLASS);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<CDOMTemplate> added = changes.getAdded();
 		if (added == null || added.isEmpty()){
 			return null;
 		}
@@ -390,10 +389,10 @@ public class RepeatlevelToken extends AbstractToken implements
 			sb.append(consecutive).append(Constants.PIPE);
 			sb.append(maxLevel).append(Constants.COLON);
 			sb.append(iLevel).append(Constants.COLON);
-			AssociatedChanges<CDOMTemplate> subchanges =
-					context.getGraphContext().getChangesFromToken(
+			Changes<CDOMTemplate> subchanges =
+					context.getObjectContext().getGivenChanges(
 						getTokenName(), agg, PCTEMPLATE_CLASS);
-			Collection<LSTWriteable> perAddCollection = subchanges.getAdded();
+			Collection<CDOMTemplate> perAddCollection = subchanges.getAdded();
 			if (perAddCollection == null || perAddCollection.isEmpty())
 			{
 				context.addWriteMessage("Invalid Consolidator built in "

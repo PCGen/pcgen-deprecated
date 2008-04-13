@@ -33,6 +33,7 @@ import pcgen.base.formula.Formula;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.base.SourceWrapper;
 import pcgen.cdom.helper.AttackCycle;
 import pcgen.cdom.helper.Capacity;
 import pcgen.cdom.helper.FollowerLimit;
@@ -129,6 +130,8 @@ public final class ListKey<T>
 	public static final ListKey<CDOMStat> UNLOCKED_STATS = new ListKey<CDOMStat>();
 
 	public static final ListKey<KitTask<?>> KIT_TASKS = new ListKey<KitTask<?>>();
+
+	public static final ListKey<SourceWrapper> GIVEN = new ListKey<SourceWrapper>();
 
 	/** Private constructor to prevent instantiation of this class */
 	private ListKey()

@@ -83,7 +83,7 @@ public class Vision514Lst implements CDOMCompatibilityToken<CDOMObject>
 				try
 				{
 					Vision vis = getVision(visionString.substring(7));
-					context.getGraphContext().remove(getTokenName(), obj, vis);
+					context.getObjectContext().revoke(getTokenName(), obj, vis);
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -115,7 +115,7 @@ public class Vision514Lst implements CDOMCompatibilityToken<CDOMObject>
 		}
 		for (Vision vis : list)
 		{
-			context.getGraphContext().grant(getTokenName(), obj, vis);
+			context.getObjectContext().give(getTokenName(), obj, vis);
 		}
 		return true;
 	}

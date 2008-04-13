@@ -39,7 +39,7 @@ import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.PCClass;
 import pcgen.core.SpellFilter;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
@@ -262,29 +262,29 @@ public class KnownspellsToken extends AbstractToken implements PCClassLstToken,
 				sp = context.ref.getCDOMAllReference(SPELL_CLASS);
 			}
 			KnownSpellIdentifier ksi = new KnownSpellIdentifier(sp, levelLim);
-			context.getGraphContext().grant(getTokenName(), po, ksi);
+			context.getObjectContext().give(getTokenName(), po, ksi);
 		}
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMPCClass po)
 	{
-		AssociatedChanges<KnownSpellIdentifier> changes = context
-				.getGraphContext().getChangesFromToken(getTokenName(), po,
+		Changes<KnownSpellIdentifier> changes = context
+				.getObjectContext().getGivenChanges(getTokenName(), po,
 						KnownSpellIdentifier.class);
 		List<String> list = new ArrayList<String>();
 		if (changes.includesGlobalClear())
 		{
 			list.add(Constants.LST_DOT_CLEARALL);
 		}
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		Collection<KnownSpellIdentifier> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())
 		{
 			context.addWriteMessage(getTokenName()
 					+ " does not support .CLEAR.");
 			return null;
 		}
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<KnownSpellIdentifier> added = changes.getAdded();
 		if (added != null && !added.isEmpty())
 		{
 			Map<CDOMReference<?>, Integer> map = new TreeMap<CDOMReference<?>, Integer>(

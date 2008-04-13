@@ -28,14 +28,13 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.content.SimpleMovement;
 import pcgen.core.Equipment;
 import pcgen.core.Movement;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -128,7 +127,7 @@ public class MoveLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 						+ " was negative");
 					return false;
 				}
-				context.getGraphContext().grant(getTokenName(), obj,
+				context.getObjectContext().give(getTokenName(), obj,
 					new SimpleMovement(moveType, distance));
 			}
 			catch (NumberFormatException e)
@@ -145,10 +144,10 @@ public class MoveLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<SimpleMovement> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<SimpleMovement> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					obj, SimpleMovement.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<SimpleMovement> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token

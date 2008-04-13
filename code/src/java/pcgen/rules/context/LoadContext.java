@@ -79,11 +79,6 @@ public abstract class LoadContext
 		return writeMessageCount;
 	}
 
-	public ContextQueue getContextQueue()
-	{
-		return new ContextQueue(getGraphContext());
-	}
-
 	/**
 	 * Sets the extract URI. This is a shortcut for setting the URI on both the
 	 * graph and obj members.

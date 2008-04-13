@@ -34,7 +34,7 @@ import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -85,7 +85,7 @@ public class SpropToken extends AbstractToken implements
 		{
 			return false;
 		}
-		context.getGraphContext().grant(getTokenName(), mod, sa);
+		context.getObjectContext().give(getTokenName(), mod, sa);
 		return true;
 	}
 
@@ -175,10 +175,10 @@ public class SpropToken extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMEqMod mod)
 	{
-		AssociatedChanges<SpecialProperty> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<SpecialProperty> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					mod, SpecialProperty.class);
-		Collection<LSTWriteable> added = changes.getAdded();
+		Collection<SpecialProperty> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token

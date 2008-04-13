@@ -18,6 +18,9 @@
 package pcgen.rules.context;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Set;
@@ -28,6 +31,8 @@ import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.SourceWrapper;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
@@ -111,6 +116,16 @@ public class ObjectContext
 	public void put(CDOMObject cdo, VariableKey vk, Formula f)
 	{
 		edits.put(cdo, vk, f);
+	}
+
+	public void give(String sourceToken, CDOMObject cdo, PrereqObject target)
+	{
+		edits.addToList(cdo, ListKey.GIVEN, new SourceWrapper(target, sourceToken));
+	}
+	
+	public void revoke(String sourceToken, CDOMObject cdo, PrereqObject target)
+	{
+		edits.removeFromList(cdo, ListKey.GIVEN, new SourceWrapper(target, sourceToken));
 	}
 
 	public <T> void removeFromList(CDOMObject cdo, ListKey<T> lk, T val)
@@ -245,6 +260,11 @@ public class ObjectContext
 	public <T> Changes<T> getListChanges(CDOMObject cdo, ListKey<T> lk)
 	{
 		return commit.getListChanges(cdo, lk);
+	}
+
+	public <T> Changes<T> getGivenChanges(String sourceToken, CDOMObject cdo, Class<T> cl)
+	{
+		return new GivenChanges<T>(cl, sourceToken, commit.getListChanges(cdo, ListKey.GIVEN));
 	}
 
 	public <T> T getObject(CDOMObject cdo, ObjectKey<T> ik)
@@ -511,4 +531,76 @@ public class ObjectContext
 		return commit.containsListFor(obj, lk);
 	}
 
+	private class GivenChanges<T> implements Changes<T>
+	{
+
+		private final ArrayList<T> added = new ArrayList<T>();
+		private final ArrayList<T> removed = new ArrayList<T>();
+		private final String token;
+		private final Class<T> targetClass;
+		
+		public GivenChanges(Class<T> cl, String sourceToken,
+				Changes<SourceWrapper> listChanges)
+		{
+			targetClass = cl;
+			token = sourceToken;
+			Collection<SourceWrapper> allAdded = listChanges.getAdded();
+			if (allAdded != null)
+			{
+				for (SourceWrapper add : allAdded)
+				{
+					PrereqObject target = add.getTarget();
+					if (targetClass.equals(target.getClass())
+							&& token.equals(add.getSourceToken()))
+					{
+						added.add((T) target);
+					}
+				}
+			}
+			Collection<SourceWrapper> allRemoved = listChanges.getRemoved();
+			if (allRemoved != null)
+			{
+				for (SourceWrapper rem : allRemoved)
+				{
+					PrereqObject target = rem.getTarget();
+					if (targetClass.equals(target.getClass())
+							&& token.equals(rem.getSourceToken()))
+					{
+						removed.add((T) target);
+					}
+				}
+			}
+		}
+
+		public Collection<T> getAdded()
+		{
+			return Collections.unmodifiableList(added);
+		}
+
+		public Collection<T> getRemoved()
+		{
+			return Collections.unmodifiableList(removed);
+		}
+
+		public boolean hasAddedItems()
+		{
+			return !added.isEmpty();
+		}
+
+		public boolean hasRemovedItems()
+		{
+			return !removed.isEmpty();
+		}
+
+		public boolean includesGlobalClear()
+		{
+			return false;
+		}
+
+		public boolean isEmpty()
+		{
+			return added.isEmpty() && removed.isEmpty();
+		}
+		
+	}
 }

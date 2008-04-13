@@ -29,16 +29,16 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.AddLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.TokenUtilities;
 import pcgen.rules.persistence.token.AbstractToken;
@@ -186,16 +186,16 @@ public class FeatToken extends AbstractToken implements AddLstToken,
 				refs);
 		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>("ADD", rcs);
 		container.setChoiceSet(cs);
-		context.getGraphContext().grant(getFullName(), obj, container);
+		context.getObjectContext().give(getFullName(), obj, container);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges = context
-				.getGraphContext().getChangesFromToken(getFullName(), obj,
+		Changes<ChooseActionContainer> grantChanges = context
+				.getObjectContext().getGivenChanges(getFullName(), obj,
 						ChooseActionContainer.class);
-		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		Collection<ChooseActionContainer> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token

@@ -37,7 +37,7 @@ import pcgen.core.prereq.Prerequisite;
 import pcgen.io.EntityEncoder;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.persistence.lst.prereq.PreParserFactory;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -153,7 +153,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 		{
 			return false;
 		}
-		context.getGraphContext().grant(getTokenName(), obj, d);
+		context.getObjectContext().give(getTokenName(), obj, d);
 		return true;
 	}
 
@@ -231,11 +231,11 @@ public class DescLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		AssociatedChanges<Description> changes =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<Description> changes =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					obj, Description.class);
 		List<String> list = new ArrayList<String>();
-		Collection<LSTWriteable> removedItems = changes.getRemoved();
+		Collection<Description> removedItems = changes.getRemoved();
 		if (removedItems != null && !removedItems.isEmpty())
 		{
 			if (changes.includesGlobalClear())
@@ -253,7 +253,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 		{
 			list.add(Constants.LST_DOT_CLEAR);
 		}
-		Collection<LSTWriteable> addedItems = changes.getAdded();
+		Collection<Description> addedItems = changes.getAdded();
 		if (addedItems != null)
 		{
 			for (LSTWriteable lw : addedItems)

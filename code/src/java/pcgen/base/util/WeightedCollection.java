@@ -100,7 +100,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 * @param comp
 	 *            The Comparator this Set will use to determine equality
 	 */
-	public WeightedCollection(Comparator<E> comp)
+	public WeightedCollection(Comparator<? super E> comp)
 	{
 		if (comp == null)
 		{
@@ -621,9 +621,9 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 			Comparator<WeightedItem<WICT>>
 	{
 
-		private final Comparator<WICT> delegateComparator;
+		private final Comparator<? super WICT> delegateComparator;
 
-		public WeightedItemComparator(Comparator<WICT> comp)
+		public WeightedItemComparator(Comparator<? super WICT> comp)
 		{
 			delegateComparator = comp;
 		}

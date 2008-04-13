@@ -81,7 +81,7 @@ public class SA514Lst extends AbstractToken implements
 
 		if (!tok.hasMoreTokens())
 		{
-			context.getGraphContext().grant(getTokenName(), obj, sa);
+			context.getObjectContext().give(getTokenName(), obj, sa);
 			return true;
 		}
 
@@ -112,7 +112,7 @@ public class SA514Lst extends AbstractToken implements
 				// No prereqs, so we're done
 				// CONSIDER This is a HACK and not the long term strategy of SA:
 				sa.setName(saName.toString());
-				context.getGraphContext().grant(getTokenName(), obj, sa);
+				context.getObjectContext().give(getTokenName(), obj, sa);
 				return true;
 			}
 			token = tok.nextToken();
@@ -146,7 +146,7 @@ public class SA514Lst extends AbstractToken implements
 			}
 			token = tok.nextToken();
 		}
-		context.getGraphContext().grant(getTokenName(), obj, sa);
+		context.getObjectContext().give(getTokenName(), obj, sa);
 		return true;
 	}
 

@@ -29,9 +29,9 @@ import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
@@ -40,7 +40,7 @@ import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCTemplateLstToken;
-import pcgen.rules.context.AssociatedChanges;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -104,7 +104,7 @@ public class BonusfeatsToken implements PCTemplateLstToken, CDOMPrimaryToken<CDO
 		ChooseActionContainer container =
 				new ChooseActionContainer(getTokenName());
 		container.addActor(new GrantActor<CDOMAbility>());
-		context.getGraphContext().grant(getTokenName(), template, container);
+		context.getObjectContext().give(getTokenName(), template, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 			.getFormulaFor(featCount));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -125,10 +125,10 @@ public class BonusfeatsToken implements PCTemplateLstToken, CDOMPrimaryToken<CDO
 
 	public String[] unparse(LoadContext context, CDOMTemplate template)
 	{
-		AssociatedChanges<ChooseActionContainer> grantChanges =
-				context.getGraphContext().getChangesFromToken(getTokenName(),
+		Changes<ChooseActionContainer> grantChanges =
+				context.getObjectContext().getGivenChanges(getTokenName(),
 					template, ChooseActionContainer.class);
-		Collection<LSTWriteable> addedItems = grantChanges.getAdded();
+		Collection<ChooseActionContainer> addedItems = grantChanges.getAdded();
 		if (addedItems == null || addedItems.isEmpty())
 		{
 			// Zero indicates no Token
