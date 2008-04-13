@@ -26,11 +26,11 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
-import pcgen.rules.persistence.token.ChooseLstGlobalQualifierToken;
+import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
 public class UniqueToken<T extends CDOMObject> implements
-		ChooseLstGlobalQualifierToken<T>
+		ChooseLstQualifierToken<T>
 {
 
 	private Class<T> refClass;
@@ -42,7 +42,8 @@ public class UniqueToken<T extends CDOMObject> implements
 		return "UNIQUE";
 	}
 
-	public boolean initialize(LoadContext context, Class<T> cl, String condition, String value)
+	public boolean initialize(LoadContext context, Class<T> cl,
+			String condition, String value)
 	{
 		if (condition != null)
 		{
@@ -64,9 +65,16 @@ public class UniqueToken<T extends CDOMObject> implements
 		return true;
 	}
 
-	public Class<T> getChoiceClass()
+	public Class<? super T> getChoiceClass()
 	{
-		return refClass;
+		if (refClass == null)
+		{
+			return CDOMObject.class;
+		}
+		else
+		{
+			return refClass;
+		}
 	}
 
 	public Set<T> getSet(CharacterDataStore pc)

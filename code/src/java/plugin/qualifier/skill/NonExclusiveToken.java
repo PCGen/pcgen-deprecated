@@ -15,69 +15,44 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package plugin.qualifier.weaponprof;
+package plugin.qualifier.skill;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.enumeration.ListKey;
+import pcgen.cdom.base.AssociatedObject;
+import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
-import pcgen.cdom.inst.CDOMDeity;
-import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.cdom.inst.CDOMSkill;
+import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.lists.PCGenLists;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
-public class DeityWeaponToken implements
-		ChooseLstQualifierToken<CDOMWeaponProf>
+public class NonExclusiveToken implements ChooseLstQualifierToken<CDOMSkill>
 {
 
-	private PrimitiveChoiceFilter<CDOMWeaponProf> pcs = null;
+	private PrimitiveChoiceFilter<CDOMSkill> pcs = null;
 
 	public String getTokenName()
 	{
-		return "DEITYWEAPON";
+		return "NONEXCLUSIVE";
 	}
 
-	public Class<CDOMWeaponProf> getChoiceClass()
+	public Class<CDOMSkill> getChoiceClass()
 	{
-		return CDOMWeaponProf.class;
-	}
-
-	public Set<CDOMWeaponProf> getSet(CharacterDataStore pc)
-	{
-		Set<CDOMWeaponProf> set = new HashSet<CDOMWeaponProf>();
-		List<CDOMDeity> list = pc.getActiveGraph().getGrantedNodeList(
-				CDOMDeity.class);
-		if (list != null)
-		{
-			for (CDOMDeity deity : list)
-			{
-				List<CDOMReference<CDOMWeaponProf>> weapons = deity
-						.getListFor(ListKey.DEITYWEAPON);
-				for (CDOMReference<CDOMWeaponProf> weapon : weapons)
-				{
-					for (CDOMWeaponProf wp : weapon.getContainedObjects())
-					{
-						if (pcs == null || pcs.allow(pc, wp))
-						{
-							set.add(wp);
-						}
-					}
-				}
-			}
-		}
-		return set;
+		return CDOMSkill.class;
 	}
 
 	public String getLSTformat()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName());
+		sb.append("!EXCLUSIVE");
 		if (pcs != null)
 		{
 			sb.append('[').append(pcs.getLSTformat()).append(']');
@@ -85,8 +60,7 @@ public class DeityWeaponToken implements
 		return sb.toString();
 	}
 
-	public boolean initialize(LoadContext context, Class<CDOMWeaponProf> cl,
-			String condition, String value)
+	public boolean initialize(LoadContext context, Class<CDOMSkill> cl, String condition, String value)
 	{
 		if (condition != null)
 		{
@@ -101,5 +75,31 @@ public class DeityWeaponToken implements
 			return pcs != null;
 		}
 		return true;
+	}
+
+	public Set<CDOMSkill> getSet(CharacterDataStore pc)
+	{
+		Set<CDOMSkill> skillSet = new HashSet<CDOMSkill>();
+		PCGenLists activeLists = pc.getActiveLists();
+		Set<ClassSkillList> lists = activeLists.getLists(ClassSkillList.class);
+		SkillCost exclusiveCost = SkillCost.EXCLUSIVE;
+		if (lists != null)
+		{
+			for (ClassSkillList csl : lists)
+			{
+				Collection<CDOMSkill> contents = activeLists.getListContents(csl);
+				for (CDOMSkill sk : contents)
+				{
+					AssociatedObject assoc =
+							activeLists.getListAssociation(csl, sk);
+					if (!exclusiveCost.equals(assoc
+						.getAssociation(AssociationKey.SKILL_COST)))
+					{
+						skillSet.add(sk);
+					}
+				}
+			}
+		}
+		return skillSet;
 	}
 }

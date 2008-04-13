@@ -15,34 +15,35 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package plugin.qualifier.pobject;
+package plugin.qualifier.skill;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.inst.CDOMSkill;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.ChooseLstQualifierToken;
 import pcgen.util.Logging;
 
-public class AllToken<T extends CDOMObject> implements
-		ChooseLstQualifierToken<T>
+public class AnyToken implements ChooseLstQualifierToken<CDOMSkill>
 {
 
-	private Class<T> refClass;
-
-	private PrimitiveChoiceFilter<T> pcs = null;
+	private PrimitiveChoiceFilter<CDOMSkill> pcs = null;
 
 	public String getTokenName()
 	{
-		return "ALL";
+		return "ANY";
 	}
 
-	public boolean initialize(LoadContext context, Class<T> cl,
-			String condition, String value)
+	public Class<CDOMSkill> getChoiceClass()
+	{
+		return CDOMSkill.class;
+	}
+
+	public boolean initialize(LoadContext context, Class<CDOMSkill> cl, String condition, String value)
 	{
 		if (condition != null)
 		{
@@ -55,7 +56,6 @@ public class AllToken<T extends CDOMObject> implements
 		{
 			throw new IllegalArgumentException();
 		}
-		refClass = cl;
 		if (value != null)
 		{
 			pcs = context.getPrimitiveChoiceFilter(cl, value);
@@ -64,25 +64,13 @@ public class AllToken<T extends CDOMObject> implements
 		return true;
 	}
 
-	public Class<? super T> getChoiceClass()
+	public Set<CDOMSkill> getSet(CharacterDataStore pc)
 	{
-		if (refClass == null)
-		{
-			return CDOMObject.class;
-		}
-		else
-		{
-			return refClass;
-		}
-	}
-
-	public Set<T> getSet(CharacterDataStore pc)
-	{
-		Set<T> objects = pc.getRulesData().getAll(refClass);
-		Set<T> returnSet = new HashSet<T>();
+		Set<CDOMSkill> objects = pc.getRulesData().getAll(CDOMSkill.class);
+		Set<CDOMSkill> returnSet = new HashSet<CDOMSkill>();
 		if (objects != null && pcs != null)
 		{
-			for (T po : objects)
+			for (CDOMSkill po : objects)
 			{
 				if (pcs.allow(pc, po))
 				{
@@ -96,7 +84,7 @@ public class AllToken<T extends CDOMObject> implements
 	public String getLSTformat()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName());
+		sb.append("ALL");
 		if (pcs != null)
 		{
 			sb.append('[').append(pcs.getLSTformat()).append(']');
