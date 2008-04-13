@@ -25,7 +25,6 @@ import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMCompatibilityToken;
@@ -54,8 +53,8 @@ public class Preracetype512Token extends AbstractToken implements
 	{
 		try
 		{
-			PreParserFactory factory = PreParserFactory.getInstance();
-			pcc.addPreReq(factory.parse("PRERACE:1,RACETYPE=" + value));
+			context.obj.put(pcc, context.getPrerequisite("RACE", "1,RACETYPE="
+					+ value));
 			return true;
 		}
 		catch (PersistenceLayerException ple)
