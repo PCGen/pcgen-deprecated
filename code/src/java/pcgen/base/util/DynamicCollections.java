@@ -96,7 +96,8 @@ public final class DynamicCollections
         }
         catch (Exception ex)
         {
-            throw new IllegalArgumentException("copyClass must have a public no-arg constructor", ex);
+            throw new IllegalArgumentException("copyClass must have a public no-arg constructor",
+                                               ex);
         }
     }
 
@@ -118,7 +119,8 @@ public final class DynamicCollections
         }
         catch (Exception ex)
         {
-            throw new IllegalArgumentException("copyClass must have a public no-arg constructor", ex);
+            throw new IllegalArgumentException("copyClass must have a public no-arg constructor",
+                                               ex);
         }
     }
 
@@ -140,7 +142,8 @@ public final class DynamicCollections
         }
         catch (Exception ex)
         {
-            throw new IllegalArgumentException("copyClass must have a public no-arg constructor", ex);
+            throw new IllegalArgumentException("copyClass must have a public no-arg constructor",
+                                               ex);
         }
     }
 
@@ -148,39 +151,48 @@ public final class DynamicCollections
     {
 
         private final Constructor<? extends C> constructor;
-        private boolean modified = false;
-        private C collection;
+        private volatile boolean modified = false;
+        private volatile C collection;
 
-        public DynamicSupport(Constructor<? extends C> constructor, C collection)
+        public DynamicSupport(Constructor<? extends C> constructor,
+                               C collection)
         {
             this.constructor = constructor;
             this.collection = collection;
         }
 
-        public synchronized C getCollection()
+        public C getCollection()
         {
             return collection;
         }
 
-        public synchronized void checkModified()
+        public void checkModified()
         {
             if (!modified)
             {
-                modified = true;
-                C copy = createInstance(constructor.getDeclaringClass());
-                copy.addAll(collection);
-                collection = copy;
+                synchronized (this)
+                {
+                    if (!modified)
+                    {
+                        modified = true;
+                        C copy = createInstance(constructor.getDeclaringClass());
+                        copy.addAll(collection);
+                        collection = copy;
+                    }
+                }
             }
         }
 
     }
 
-    private static class DynamicCollection<E, C extends Collection<E>> implements Collection<E>
+    private static class DynamicCollection<E, C extends Collection<E>>
+            implements Collection<E>
     {
 
         private final DynamicSupport<E, C> support;
 
-        public DynamicCollection(Constructor<? extends C> copyClass, C collection)
+        public DynamicCollection(Constructor<? extends C> copyClass,
+                                  C collection)
         {
             this.support = new DynamicSupport<E, C>(copyClass, collection);
         }
@@ -281,7 +293,8 @@ public final class DynamicCollections
         }
     }
 
-    private static class DynamicSet<E, C extends Set<E>> extends DynamicCollection<E, C> implements Set<E>
+    private static class DynamicSet<E, C extends Set<E>> extends DynamicCollection<E, C>
+            implements Set<E>
     {
 
         public DynamicSet(Constructor<? extends C> copyClass, C set)
