@@ -14,6 +14,7 @@ public class RollStatsToken extends KitLstToken
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "ROLLSTATS";

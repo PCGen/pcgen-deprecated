@@ -46,6 +46,7 @@ public class RegionToken extends KitLstToken
 	 * 
 	 * @return Name of the tag this class handles
 	 */
+	@Override
 	public String getTokenName()
 	{
 		return "REGION";

@@ -38,7 +38,6 @@ import pcgen.character.CharacterDataStore;
 import pcgen.core.AbilityCategory;
 import pcgen.core.Equipment;
 import pcgen.core.GameMode;
-import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.SettingsHandler;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
