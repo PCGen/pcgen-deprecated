@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import pcgen.base.formula.Formula;
+import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
@@ -157,20 +158,12 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken, CDOM
 			// Zero indicates no Token
 			return null;
 		}
-		String returnString = null;
+		WeightedCollection<String> coll = new WeightedCollection<String>(
+				String.CASE_INSENSITIVE_ORDER);
 		for (LSTWriteable lstw : addedItems)
 		{
 			ChooseActionContainer container = (ChooseActionContainer) lstw;
-			if (getTokenName().equals(container.getName()))
-			{
-				if (returnString != null)
-				{
-					context.addWriteMessage("Found two CHOOSE containers for: "
-						+ container.getName());
-					continue;
-				}
-			}
-			else
+			if (!getTokenName().equals(container.getName()))
 			{
 				context.addWriteMessage("Unexpected CHOOSE container found: "
 					+ container.getName());
@@ -210,12 +203,12 @@ public class StartfeatsToken extends AbstractToken implements RaceLstToken, CDOM
 						+ " Count");
 					return null;
 				}
-				returnString = f.toString();
+				coll.add(f.toString());
 
 				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
 			}
 		}
-		return new String[]{returnString};
+		return coll.toArray(new String[coll.size()]);
 	}
 
 	public Class<CDOMRace> getTokenClass()

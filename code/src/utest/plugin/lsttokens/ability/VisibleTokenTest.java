@@ -74,9 +74,10 @@ public class VisibleTokenTest extends AbstractTokenTestCase<CDOMAbility>
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("EXPORT"));
+		assertTrue(parseSecondary("EXPORT"));
 		assertEquals(Visibility.EXPORT, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.EXPORT);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val) throws PersistenceLayerException

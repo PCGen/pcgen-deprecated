@@ -54,9 +54,10 @@ public abstract class AbstractGlobalIntegerTokenTestCase extends
 			con = Integer.valueOf(-3);
 		}
 		assertTrue(parse(con.toString()));
+		assertTrue(parseSecondary(con.toString()));
 		assertEquals(con, primaryProf.get(getIntegerKey()));
 		testInvalidInputs(con);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void testInvalidInputs(Integer val) throws PersistenceLayerException

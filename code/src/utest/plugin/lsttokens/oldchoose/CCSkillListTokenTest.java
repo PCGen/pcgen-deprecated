@@ -85,7 +85,7 @@ public class CCSkillListTokenTest extends AbstractChooseTokenTestCase
 			construct(primaryContext, "TestWP1");
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + "|ANY" + getJoinCharacter() + "LIST"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -97,7 +97,7 @@ public class CCSkillListTokenTest extends AbstractChooseTokenTestCase
 			construct(primaryContext, "TestWP1");
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + "|LIST" + getJoinCharacter() + "ANY"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -109,7 +109,7 @@ public class CCSkillListTokenTest extends AbstractChooseTokenTestCase
 			construct(primaryContext, "TestWP1");
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + "|LIST" + getJoinCharacter() + "TestWP1"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -121,7 +121,7 @@ public class CCSkillListTokenTest extends AbstractChooseTokenTestCase
 			construct(primaryContext, "TestWP1");
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + "|TestWP1" + getJoinCharacter() + "LIST"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 

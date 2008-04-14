@@ -80,7 +80,7 @@ public abstract class AbstractTokenLoaderTestCase<T extends CDOMObject> extends 
 		{
 			classSetUp();
 		}
-		context = new RuntimeLoadContext(null);
+		context = new RuntimeLoadContext();
 		prof = context.ref.constructCDOMObject(getCDOMClass(), "TestObj");
 
 		URI sourceURI = sourceCampaign.getURI();

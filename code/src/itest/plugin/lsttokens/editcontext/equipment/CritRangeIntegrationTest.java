@@ -31,4 +31,10 @@ public class CritRangeIntegrationTest extends AbstractCritRangeIntegrationTestCa
 		return token;
 	}
 
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

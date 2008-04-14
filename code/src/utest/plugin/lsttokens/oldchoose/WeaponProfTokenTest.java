@@ -117,7 +117,7 @@ public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + getPrefix() + "|!TYPE="));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -129,7 +129,7 @@ public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + getPrefix() + "|!TYPE=One."));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -141,7 +141,7 @@ public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + getPrefix() + "|!TYPE=One..Two"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -153,7 +153,7 @@ public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + getPrefix() + "|!TYPE=.One"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -167,7 +167,7 @@ public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 				primaryProf,
 				getSubTokenString() + getPrefix() + "|ANY" + getJoinCharacter()
 					+ "!TYPE=TestType"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -181,7 +181,7 @@ public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 				primaryProf,
 				getSubTokenString() + getPrefix() + "|!TYPE=TestType"
 					+ getJoinCharacter() + "ANY"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -192,7 +192,7 @@ public class WeaponProfTokenTest extends AbstractChooseTokenTestCase
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + getPrefix() + "|!TYPE=TestType"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 

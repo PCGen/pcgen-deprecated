@@ -73,9 +73,10 @@ public class VisibleTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("NO"));
+		assertTrue(parseSecondary("NO"));
 		assertEquals(Visibility.NO, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.NO);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val)

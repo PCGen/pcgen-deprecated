@@ -80,7 +80,7 @@ public class DomainTokenTest extends AbstractChooseTokenTestCase
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + "|DEITY="));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 

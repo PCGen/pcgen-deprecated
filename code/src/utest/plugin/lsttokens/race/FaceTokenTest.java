@@ -65,12 +65,13 @@ public class FaceTokenTest extends AbstractTokenTestCase<CDOMRace>
 	public void testInvalidInputSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("15,20"));
+		assertTrue(parseSecondary("15,20"));
 		BigDecimal w = new BigDecimal(15);
 		assertEquals(w, primaryProf.get(ObjectKey.FACE_WIDTH));
 		BigDecimal h = new BigDecimal(20);
 		assertEquals(h, primaryProf.get(ObjectKey.FACE_HEIGHT));
 		internalTestInvalidInputs(w, h);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputs(BigDecimal w, BigDecimal h)

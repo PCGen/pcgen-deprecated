@@ -78,7 +78,7 @@ public class StatTokenTest extends AbstractChooseTokenTestCase
 		construct(primaryContext, "TestWP1");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1" + getJoinCharacter() + "TestWP1"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -88,6 +88,6 @@ public class StatTokenTest extends AbstractChooseTokenTestCase
 		construct(primaryContext, "TestWP2");
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|TestWP1" + getJoinCharacter() + "TestWP2"));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 }

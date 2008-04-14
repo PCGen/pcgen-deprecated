@@ -502,11 +502,9 @@ public abstract class AbstractListTokenTestCase<T extends CDOMObject, TC extends
 			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
 				+ "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse("TestWP3" + getJoinCharacter() + ".CLEAR.TestWP2"
 				+ getJoinCharacter() + "ALL"));
-			assertEquals("Bad Clear had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 
@@ -523,11 +521,9 @@ public abstract class AbstractListTokenTestCase<T extends CDOMObject, TC extends
 			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
 				+ "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertTrue(parse("ALL"));
 			assertTrue(parse(".CLEAR.ALL"));
-			assertEquals("Bad Clear had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 
@@ -546,10 +542,8 @@ public abstract class AbstractListTokenTestCase<T extends CDOMObject, TC extends
 			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
 				+ "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse("TestWP3" + getJoinCharacter() + "TYPE="));
-			assertEquals("Bad Add had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 
@@ -567,10 +561,9 @@ public abstract class AbstractListTokenTestCase<T extends CDOMObject, TC extends
 		construct(secondaryContext, "TestWP4");
 		assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 		assertTrue(parseSecondary("TestWP1" + getJoinCharacter() + "TestWP2"));
-		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 		assertFalse(parse("TestWP3" + getJoinCharacter() + getJoinCharacter()
 			+ "TestWP4"));
-		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -588,10 +581,8 @@ public abstract class AbstractListTokenTestCase<T extends CDOMObject, TC extends
 			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
 				+ "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse("TestWP3" + getJoinCharacter() + "ALL"));
-			assertEquals("Bad Add had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 
@@ -610,11 +601,9 @@ public abstract class AbstractListTokenTestCase<T extends CDOMObject, TC extends
 			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
 				+ "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse(getClearString() + getJoinCharacter() + "TestWP3"
 				+ getJoinCharacter() + "ALL"));
-			assertEquals("Bad Clear had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 
@@ -633,11 +622,9 @@ public abstract class AbstractListTokenTestCase<T extends CDOMObject, TC extends
 			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
 				+ "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse("TestWP3" + getJoinCharacter() + ".CLEAR.TestWP1"
 				+ getJoinCharacter() + ".CLEAR.TYPE="));
-			assertEquals("Bad Clear had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 

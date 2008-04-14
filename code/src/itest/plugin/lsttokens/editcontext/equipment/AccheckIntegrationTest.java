@@ -67,4 +67,10 @@ public class AccheckIntegrationTest extends
 	{
 		return false;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

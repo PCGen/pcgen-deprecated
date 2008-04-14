@@ -21,25 +21,10 @@
  */
 package plugin.lsttokens.pcclass;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMGroupRef;
-import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.content.ChooseActionContainer;
-import pcgen.cdom.enumeration.AbilityNature;
-import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.enumeration.CDOMAbilityCategory;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.GrantActor;
-import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.PCClassLstToken;
-import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
@@ -49,8 +34,6 @@ import pcgen.util.Logging;
  */
 public class XtrafeatsToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCClass>
 {
-
-	private static final Class<CDOMAbility> ABILITY_CLASS = CDOMAbility.class;
 
 	/**
 	 * Get Token name
@@ -95,6 +78,8 @@ public class XtrafeatsToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCC
 					+ " must be greater than zero: " + value);
 				return false;
 			}
+			context.obj.put(pcc, IntegerKey.START_FEATS, featCount);
+			return true;
 		}
 		catch (NumberFormatException nfe)
 		{
@@ -102,104 +87,24 @@ public class XtrafeatsToken implements PCClassLstToken, CDOMPrimaryToken<CDOMPCC
 				+ value);
 			return false;
 		}
-
-		ChooseActionContainer container =
-				new ChooseActionContainer(getTokenName());
-		container.addActor(new GrantActor<CDOMAbility>());
-		context.getObjectContext().give(getTokenName(), pcc, container);
-		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
-			.getFormulaFor(featCount));
-		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
-			.getFormulaFor(featCount));
-		container.setAssociation(AssociationKey.ABILITY_CATEGORY,
-			CDOMAbilityCategory.FEAT);
-		container.setAssociation(AssociationKey.ABILITY_NATURE,
-			AbilityNature.NORMAL);
-		CDOMGroupRef<CDOMAbility> ref =
-				context.ref.getCDOMAllReference(ABILITY_CLASS,
-					CDOMAbilityCategory.FEAT);
-		ReferenceChoiceSet<CDOMAbility> rcs =
-				new ReferenceChoiceSet<CDOMAbility>(Collections.singletonList(ref));
-		ChoiceSet<CDOMAbility> cs = new ChoiceSet<CDOMAbility>(getTokenName(), rcs);
-		container.setChoiceSet(cs);
-		/*
-		 * Unlike Race's STARTFEATS, no prereq is required here since this in a
-		 * PCClass, it guarantees the Character is at least level 1. - Tom
-		 * Parker Apr 7, 2007
-		 */
-		return true;
 	}
 
 	public String[] unparse(LoadContext context, CDOMPCClass obj)
 	{
-		Changes<ChooseActionContainer> grantChanges =
-				context.getObjectContext().getGivenChanges(getTokenName(),
-					obj, ChooseActionContainer.class);
-		Collection<ChooseActionContainer> addedItems = grantChanges.getAdded();
-		if (addedItems == null || addedItems.isEmpty())
+		Integer feats = context.getObjectContext().getInteger(obj,
+				IntegerKey.START_FEATS);
+		if (feats == null)
 		{
-			// Zero indicates no Token
 			return null;
 		}
-		String returnString = null;
-		for (LSTWriteable lstw : addedItems)
+		if (feats.intValue() <= 0)
 		{
-			ChooseActionContainer container = (ChooseActionContainer) lstw;
-			if (getTokenName().equals(container.getName()))
-			{
-				if (returnString != null)
-				{
-					context.addWriteMessage("Found two CHOOSE containers for: "
-						+ container.getName());
-					continue;
-				}
-			}
-			else
-			{
-				context.addWriteMessage("Unexpected CHOOSE container found: "
-					+ container.getName());
-				continue;
-			}
-			ChoiceSet<?> cs = container.getChoiceSet();
-			if (ABILITY_CLASS.equals(cs.getChoiceClass()))
-			{
-				AbilityNature nat =
-						container.getAssociation(AssociationKey.ABILITY_NATURE);
-				if (nat == null)
-				{
-					context
-						.addWriteMessage("Unable to find Nature for GrantFactory");
-					return null;
-				}
-				CDOMAbilityCategory cat =
-						container
-							.getAssociation(AssociationKey.ABILITY_CATEGORY);
-				if (cat == null)
-				{
-					context
-						.addWriteMessage("Unable to find Category for GrantFactory");
-					return null;
-				}
-				if (!CDOMAbilityCategory.FEAT.equals(cat)
-					|| !AbilityNature.NORMAL.equals(nat))
-				{
-					// can't handle those here!
-					continue;
-				}
-				Formula f =
-						container.getAssociation(AssociationKey.CHOICE_COUNT);
-				if (f == null)
-				{
-					context.addWriteMessage("Unable to find " + getTokenName()
-						+ " Count");
-					return null;
-				}
-				returnString = f.toString();
-
-				// assoc.getAssociation(AssociationKey.CHOICE_MAXCOUNT);
-			}
+			context
+					.addWriteMessage(getTokenName()
+							+ " must be an integer > 0");
+			return null;
 		}
-		return new String[]{returnString};
+		return new String[] { feats.toString() };
 	}
 
 	public Class<CDOMPCClass> getTokenClass()

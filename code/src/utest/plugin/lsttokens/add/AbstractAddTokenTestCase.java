@@ -617,11 +617,9 @@ public abstract class AbstractAddTokenTestCase extends
 				+ getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary(getSubTokenString() + "|TestWP1"
 				+ getJoinCharacter() + "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse(getSubTokenString() + "|TestWP3"
 				+ getJoinCharacter() + "TYPE="));
-			assertEquals("Bad Add had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 
@@ -641,10 +639,9 @@ public abstract class AbstractAddTokenTestCase extends
 			+ "TestWP2"));
 		assertTrue(parseSecondary(getSubTokenString() + "|TestWP1"
 			+ getJoinCharacter() + "TestWP2"));
-		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 		assertFalse(parse(getSubTokenString() + "|TestWP3" + getJoinCharacter()
 			+ getJoinCharacter() + "TestWP4"));
-		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -663,7 +660,6 @@ public abstract class AbstractAddTokenTestCase extends
 				+ getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary(getSubTokenString() + "|TestWP1"
 				+ getJoinCharacter() + "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			try
 			{
 				assertFalse(parse(getSubTokenString() + "|TestWP3"
@@ -673,8 +669,7 @@ public abstract class AbstractAddTokenTestCase extends
 			{
 				//OK too
 			}
-			assertEquals("Bad Add had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 }

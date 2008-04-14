@@ -85,7 +85,7 @@ public class WeaponProfsTokenTest extends AbstractChooseTokenTestCase
 			construct(primaryContext, "TestWP1");
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + "|ANY" + getJoinCharacter() + "LIST"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -97,7 +97,7 @@ public class WeaponProfsTokenTest extends AbstractChooseTokenTestCase
 			construct(primaryContext, "TestWP1");
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + "|LIST" + getJoinCharacter() + "ANY"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 

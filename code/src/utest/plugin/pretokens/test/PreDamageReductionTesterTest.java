@@ -3,7 +3,6 @@ package plugin.pretokens.test;
 import org.junit.Test;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.content.DamageReduction;
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.inst.CDOMRace;
 import pcgen.core.prereq.Prerequisite;

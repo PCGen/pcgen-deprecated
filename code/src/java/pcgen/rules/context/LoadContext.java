@@ -36,18 +36,15 @@ import pcgen.rules.persistence.token.DeferredToken;
 public abstract class LoadContext
 {
 
-	public final GraphContext graph;
-
 	public final ListContext list;
 
 	public final ObjectContext obj;
 
 	public final ReferenceContext ref;
 
-	public LoadContext(GraphContext gc, ListContext lc, ObjectContext oc)
+	public LoadContext(ListContext lc, ObjectContext oc)
 	{
 		ref = new ReferenceContext();
-		graph = gc;
 		list = lc;
 		obj = oc;
 	}
@@ -112,14 +109,9 @@ public abstract class LoadContext
 	 */
 	public abstract String getContextType();
 
-	public void setLine(int i)
+	public ListContext getGraphContext()
 	{
-		getGraphContext().setLine(i);
-	}
-
-	public GraphContext getGraphContext()
-	{
-		return graph;
+		return list;
 	}
 
 	public ObjectContext getObjectContext()

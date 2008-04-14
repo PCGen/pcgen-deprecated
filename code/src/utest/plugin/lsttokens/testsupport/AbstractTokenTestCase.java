@@ -25,10 +25,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.core.Campaign;
 import pcgen.core.bonus.Bonus;
@@ -46,8 +43,6 @@ import pcgen.util.Logging;
 public abstract class AbstractTokenTestCase<T extends CDOMObject> extends
 		TestCase
 {
-	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> primaryGraph;
-	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
 	protected T primaryProf;
@@ -75,10 +70,8 @@ public abstract class AbstractTokenTestCase<T extends CDOMObject> extends
 		}
 		// Yea, this causes warnings...
 		TokenRegistration.register(getToken());
-		primaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
-		secondaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
-		primaryContext = new RuntimeLoadContext(primaryGraph);
-		secondaryContext = new RuntimeLoadContext(secondaryGraph);
+		primaryContext = new RuntimeLoadContext();
+		secondaryContext = new RuntimeLoadContext();
 		URI testURI = testCampaign.getURI();
 		primaryContext.getObjectContext().setSourceURI(testURI);
 		primaryContext.getObjectContext().setExtractURI(testURI);
@@ -126,8 +119,6 @@ public abstract class AbstractTokenTestCase<T extends CDOMObject> extends
 	{
 		// Default is not to write out anything
 		assertNull(getToken().unparse(primaryContext, primaryProf));
-		// Ensure the graphs are the same at the start
-		assertEquals(primaryGraph, secondaryGraph);
 
 		// Set value
 		for (String s : str)
@@ -161,9 +152,6 @@ public abstract class AbstractTokenTestCase<T extends CDOMObject> extends
 		// Ensure the objects are the same
 		isCDOMEqual(primaryProf, secondaryProf);
 
-		// Ensure the graphs are the same
-		assertEquals(primaryGraph, secondaryGraph);
-
 		// And that it comes back out the same again
 		String[] sUnparsed = getToken()
 				.unparse(secondaryContext, secondaryProf);
@@ -188,10 +176,8 @@ public abstract class AbstractTokenTestCase<T extends CDOMObject> extends
 
 	public void assertNoSideEffects()
 	{
-		assertTrue(primaryGraph.isEmpty());
 		isCDOMEqual(primaryProf, secondaryProf);
 		assertFalse(primaryContext.getListContext().hasMasterLists());
-		assertEquals(primaryGraph, secondaryGraph);
 	}
 
 	public boolean parse(String str) throws PersistenceLayerException

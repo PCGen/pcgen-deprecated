@@ -67,4 +67,10 @@ public class SpellFailureIntegrationTest extends
 	{
 		return true;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

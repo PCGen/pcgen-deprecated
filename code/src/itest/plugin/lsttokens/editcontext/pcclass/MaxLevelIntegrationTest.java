@@ -120,4 +120,10 @@ public class MaxLevelIntegrationTest extends
 	{
 		return false;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

@@ -68,7 +68,7 @@ public class SrLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 	{
 		if (".CLEAR".equals(value))
 		{
-			context.getGraphContext().removeAll(getTokenName(), obj);
+			context.getObjectContext().revokeAll(getTokenName(), obj);
 		}
 		else
 		{

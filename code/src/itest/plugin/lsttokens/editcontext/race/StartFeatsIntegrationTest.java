@@ -67,4 +67,10 @@ public class StartFeatsIntegrationTest extends
 	{
 		return false;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return false;
+	}
 }

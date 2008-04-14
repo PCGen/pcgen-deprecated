@@ -67,4 +67,10 @@ public class BonusSkillPointsIntegrationTest extends
 	{
 		return true;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

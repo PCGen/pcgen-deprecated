@@ -320,11 +320,9 @@ public abstract class AbstractTypeSafeListTestCase<T extends CDOMObject> extends
 			assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary("TestWP1" + getJoinCharacter()
 				+ "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse("TestWP3" + getJoinCharacter() + ".CLEAR.TestWP2"
 				+ getJoinCharacter() + "ALL"));
-			assertEquals("Bad Clear had Side Effects", primaryGraph,
-				secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 
@@ -334,10 +332,9 @@ public abstract class AbstractTypeSafeListTestCase<T extends CDOMObject> extends
 	{
 		assertTrue(parse("TestWP1" + getJoinCharacter() + "TestWP2"));
 		assertTrue(parseSecondary("TestWP1" + getJoinCharacter() + "TestWP2"));
-		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 		assertFalse(parse("TestWP3" + getJoinCharacter() + getJoinCharacter()
 			+ "TestWP4"));
-		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+		assertNoSideEffects();
 	}
 
 	// TODO This is only invalid if ALL is legal

@@ -25,10 +25,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.core.Campaign;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
@@ -44,8 +41,6 @@ import pcgen.util.Logging;
 
 public abstract class AbstractGlobalTokenTestCase extends TestCase
 {
-	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> primaryGraph;
-	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
 	protected CDOMObject primaryProf;
@@ -71,10 +66,8 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 			classSetUp();
 		}
 		TokenRegistration.register(getToken());
-		primaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
-		secondaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
-		primaryContext = new RuntimeLoadContext(primaryGraph);
-		secondaryContext = new RuntimeLoadContext(secondaryGraph);
+		primaryContext = new RuntimeLoadContext();
+		secondaryContext = new RuntimeLoadContext();
 		primaryProf = primaryContext.ref.constructCDOMObject(getCDOMClass(),
 				"TestObj");
 		secondaryProf = secondaryContext.ref.constructCDOMObject(
@@ -108,8 +101,6 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 	{
 		// Default is not to write out anything
 		assertNull(getToken().unparse(primaryContext, primaryProf));
-		// Ensure the graphs are the same at the start
-		assertEquals(primaryGraph, secondaryGraph);
 
 		// Set value
 		for (String s : str)
@@ -141,9 +132,6 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
-
-		// Ensure the graphs are the same
-		assertEquals(primaryGraph, secondaryGraph);
 
 		// And that it comes back out the same again
 		String[] sUnparsed = getToken()
@@ -203,10 +191,8 @@ public abstract class AbstractGlobalTokenTestCase extends TestCase
 
 	public void assertNoSideEffects()
 	{
-		assertTrue(primaryGraph.isEmpty());
 		isCDOMEqual(primaryProf, secondaryProf);
 		assertFalse(primaryContext.getListContext().hasMasterLists());
-		assertEquals(primaryGraph, secondaryGraph);
 	}
 
 	public abstract CDOMPrimaryToken<CDOMObject> getToken();

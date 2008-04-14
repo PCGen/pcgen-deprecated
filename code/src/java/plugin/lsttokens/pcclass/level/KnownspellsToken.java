@@ -178,7 +178,7 @@ CDOMPrimaryToken<CDOMPCClassLevel>
 						+ ": When used, .CLEARALL must be the first argument");
 					return false;
 				}
-				context.getGraphContext().removeAll(getTokenName(), po);
+				context.getObjectContext().revokeAll(getTokenName(), po);
 				continue;
 			}
 			if (hasIllegalSeparator(',', totalFilter))

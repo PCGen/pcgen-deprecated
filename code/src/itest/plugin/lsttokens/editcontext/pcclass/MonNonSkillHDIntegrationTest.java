@@ -79,4 +79,10 @@ public class MonNonSkillHDIntegrationTest extends
 	{
 		return true;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return false;
+	}
 }

@@ -132,7 +132,7 @@ public class DescLst extends AbstractToken implements GlobalLstToken, CDOMPrimar
 
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.getGraphContext().removeAll(getTokenName(), obj);
+			context.getObjectContext().revokeAll(getTokenName(), obj);
 			return true;
 		}
 		if (value.startsWith(Constants.LST_DOT_CLEAR_DOT))

@@ -69,7 +69,7 @@ public class SpellsTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|CLASS="));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class SpellsTokenTest extends AbstractGlobalTokenTestCase
 	{
 		assertFalse(getToken().parse(primaryContext, primaryProf,
 			getSubTokenString() + "|DOMAIN="));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test

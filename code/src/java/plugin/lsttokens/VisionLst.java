@@ -155,7 +155,7 @@ public class VisionLst implements GlobalLstToken, CDOMPrimaryToken<CDOMObject>
 
 			if (".CLEAR".equals(visionString))
 			{
-				context.getGraphContext().removeAll(getTokenName(), obj);
+				context.getObjectContext().revokeAll(getTokenName(), obj);
 				continue;
 			}
 

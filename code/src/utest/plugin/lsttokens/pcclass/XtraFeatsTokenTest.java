@@ -17,16 +17,14 @@
  */
 package plugin.lsttokens.pcclass;
 
-import org.junit.Test;
-
+import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.inst.CDOMPCClass;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractIntegerTokenTestCase;
 
-public class XtraFeatsTokenTest extends AbstractTokenTestCase<CDOMPCClass>
+public class XtraFeatsTokenTest extends AbstractIntegerTokenTestCase<CDOMPCClass>
 {
 
 	static XtrafeatsToken token = new XtrafeatsToken();
@@ -51,52 +49,28 @@ public class XtraFeatsTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 		return token;
 	}
 
-	@Test
-	public void testInvalidInput() throws PersistenceLayerException
+	@Override
+	public IntegerKey getIntegerKey()
 	{
-		// Always ensure get is unchanged
-		// since no invalid item should set or reset the value
-		assertNoSideEffects();
-		assertFalse(parse("TestWP"));
-		assertNoSideEffects();
-		assertFalse(parse("String"));
-		assertNoSideEffects();
-		assertFalse(parse("TYPE=TestType"));
-		assertNoSideEffects();
-		assertFalse(parse("TYPE.TestType"));
-		assertNoSideEffects();
-		assertFalse(parse("ALL"));
-		assertNoSideEffects();
-		assertFalse(parse("ANY"));
-		assertNoSideEffects();
-		assertFalse(parse("FIVE"));
-		assertNoSideEffects();
-		assertFalse(parse("4.5"));
-		assertNoSideEffects();
-		assertFalse(parse("1/2"));
-		assertNoSideEffects();
-		assertFalse(parse("1+3"));
-		assertNoSideEffects();
-		// Require Integer greater than zero
-		assertFalse(parse("-1"));
-		assertNoSideEffects();
-		assertFalse(parse("0"));
-		assertNoSideEffects();
+		return IntegerKey.START_FEATS;
 	}
 
-	@Test
-	public void testValidInputs() throws PersistenceLayerException
+	@Override
+	public boolean isNegativeAllowed()
 	{
-		assertTrue(parse("5"));
-
-		assertTrue(parse("1"));
-
+		return false;
 	}
 
-	@Test
-	public void testRoundRobinFive() throws PersistenceLayerException
+	@Override
+	public boolean isPositiveAllowed()
 	{
-		runRoundRobin("5");
+		return true;
+	}
+
+	@Override
+	public boolean isZeroAllowed()
+	{
+		return false;
 	}
 
 }

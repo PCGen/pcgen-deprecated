@@ -77,4 +77,10 @@ public class XtraFeatsIntegrationTest extends
 	{
 		return false;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

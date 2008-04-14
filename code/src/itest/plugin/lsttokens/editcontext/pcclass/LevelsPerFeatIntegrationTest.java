@@ -77,4 +77,10 @@ public class LevelsPerFeatIntegrationTest extends
 	{
 		return true;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

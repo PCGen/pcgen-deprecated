@@ -475,10 +475,9 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 				+ "|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertTrue(parseSecondary(getSubTokenString()
 				+ "|Mutation|NORMAL|TestWP1,TestWP2"));
-		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 		assertFalse(parse(getSubTokenString()
 				+ "|Mutation|NORMAL|TestWP3,TYPE="));
-		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -497,10 +496,9 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 				+ "|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertTrue(parseSecondary(getSubTokenString()
 				+ "|Mutation|NORMAL|TestWP1,TestWP2"));
-		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 		assertFalse(parse(getSubTokenString()
 				+ "|Mutation|NORMAL|TestWP3,,TestWP4"));
-		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -517,9 +515,8 @@ public class AbilityTokenTest extends AbstractGlobalTokenTestCase
 				+ "|Mutation|NORMAL|TestWP1,TestWP2"));
 		assertTrue(parseSecondary(getSubTokenString()
 				+ "|Mutation|NORMAL|TestWP1,TestWP2"));
-		assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 		assertFalse(parse(getSubTokenString() + "|Mutation|NORMAL|TestWP3,ANY"));
-		assertEquals("Bad Add had Side Effects", primaryGraph, secondaryGraph);
+		assertNoSideEffects();
 	}
 
 	@Test

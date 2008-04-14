@@ -74,7 +74,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken, CDOM
 		}
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.getGraphContext().removeAll(getTokenName(), eq);
+			context.getObjectContext().revokeAll(getTokenName(), eq);
 			return true;
 		}
 
@@ -96,7 +96,7 @@ public class SpropToken extends AbstractToken implements EquipmentLstToken, CDOM
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.getGraphContext().removeAll(getTokenName(), eq);
+			context.getObjectContext().revokeAll(getTokenName(), eq);
 			firstToken = tok.nextToken();
 		}
 

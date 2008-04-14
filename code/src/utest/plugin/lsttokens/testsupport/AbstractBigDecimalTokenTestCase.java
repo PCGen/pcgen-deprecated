@@ -57,9 +57,10 @@ public abstract class AbstractBigDecimalTokenTestCase<T extends CDOMObject>
 			con = new BigDecimal(-3);
 		}
 		assertTrue(parse(con.toString()));
+		assertTrue(parseSecondary(con.toString()));
 		assertEquals(con, primaryProf.get(getObjectKey()));
 		testInvalidInputs(con);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void testInvalidInputs(BigDecimal val)

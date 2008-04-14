@@ -31,4 +31,9 @@ public class AltCritRangeIntegrationTest extends AbstractCritRangeIntegrationTes
 		return token;
 	}
 
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

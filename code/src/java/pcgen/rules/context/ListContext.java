@@ -12,15 +12,21 @@ import pcgen.base.util.MapToList;
 import pcgen.base.util.TreeMapToList;
 import pcgen.base.util.TripleKeyMap;
 import pcgen.cdom.base.AssociatedPrereqObject;
+import pcgen.cdom.base.CDOMDirectSingleRef;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
+import pcgen.cdom.inst.GrantedList;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.rules.persistence.TokenUtilities;
 
 public class ListContext
 {
+
+	private static final CDOMReference<? extends CDOMList<CDOMObject>> GRANTED = new CDOMDirectSingleRef<CDOMList<CDOMObject>>(
+			new GrantedList());
 
 	private final TrackingListCommitStrategy edits = new TrackingListCommitStrategy();
 
@@ -62,9 +68,9 @@ public class ListContext
 		commit.setExtractURI(extractURI);
 	}
 
-	public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(String tokenName,
-			CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
-			T allowed)
+	public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(
+			String tokenName, CDOMObject owner,
+			CDOMReference<? extends CDOMList<T>> list, T allowed)
 	{
 		return edits.addToMasterList(tokenName, owner, list, allowed);
 	}
@@ -82,13 +88,15 @@ public class ListContext
 
 	public <T extends CDOMObject> AssociatedPrereqObject addToList(
 			String tokenName, CDOMObject owner,
-			CDOMReference<? extends CDOMList<T>> list, CDOMReference<T> allowed)
+			CDOMReference<? extends CDOMList<? super T>> list,
+			CDOMReference<T> allowed)
 	{
 		return edits.addToList(tokenName, owner, list, allowed);
 	}
 
 	public <T extends CDOMObject> void removeFromList(String tokenName,
-			CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
+			CDOMObject owner,
+			CDOMReference<? extends CDOMList<? super T>> list,
 			CDOMReference<T> ref)
 	{
 		edits.removeFromList(tokenName, owner, list, ref);
@@ -98,6 +106,62 @@ public class ListContext
 			CDOMReference<? extends CDOMList<?>> swl)
 	{
 		edits.removeAllFromList(tokenName, owner, swl);
+	}
+
+	public <T extends CDOMObject> AssociatedPrereqObject grant(
+			String sourceToken, CDOMObject obj, CDOMReference<T> pro)
+	{
+		return addToList(sourceToken, obj, GRANTED, pro);
+	}
+
+	public <T extends CDOMObject> void remove(String sourceToken,
+			CDOMObject obj, CDOMReference<T> pro)
+	{
+		removeFromList(sourceToken, obj, GRANTED, pro);
+	}
+
+	public void removeAll(String tokenName, CDOMObject obj)
+	{
+		removeAllFromList(tokenName, obj, GRANTED);
+	}
+
+	public <T extends PrereqObject> AssociatedChanges<CDOMReference<T>> getChangesFromToken(
+			String tokenName, CDOMObject source, Class<T> cl)
+	{
+		AssociatedChanges<CDOMReference<CDOMObject>> assoc = getChangesInList(
+				tokenName, source, GRANTED);
+		boolean globalClear = assoc.includesGlobalClear();
+		MapToList<CDOMReference<CDOMObject>, AssociatedPrereqObject> added = assoc
+				.getAddedAssociations();
+		MapToList<CDOMReference<T>, AssociatedPrereqObject> add = new TreeMapToList<CDOMReference<T>, AssociatedPrereqObject>(
+				TokenUtilities.REFERENCE_SORTER);
+		if (added != null)
+		{
+			for (CDOMReference<CDOMObject> key : added.getKeySet())
+			{
+				if (cl.equals(key.getReferenceClass()))
+				{
+					add.addAllToListFor((CDOMReference<T>) key, added.getListFor(key));
+				}
+			}
+		}
+
+		MapToList<CDOMReference<T>, AssociatedPrereqObject> remove = new TreeMapToList<CDOMReference<T>, AssociatedPrereqObject>(
+				TokenUtilities.REFERENCE_SORTER);
+		MapToList<CDOMReference<CDOMObject>, AssociatedPrereqObject> removed = assoc
+				.getRemovedAssociations();
+		if (removed != null)
+		{
+			for (CDOMReference<CDOMObject> key : removed.getKeySet())
+			{
+				if (cl.equals(key.getReferenceClass()))
+				{
+					remove.addAllToListFor((CDOMReference<T>) key, removed.getListFor(key));
+				}
+			}
+		}
+
+		return new AssociatedCollectionChanges<CDOMReference<T>>(add, remove, globalClear);
 	}
 
 	public void commit()
@@ -306,9 +370,9 @@ public class ListContext
 
 		private HashMapToList<String, OwnerURI> masterAllClear = new HashMapToList<String, OwnerURI>();
 
-		public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(String tokenName,
-				CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
-				T allowed)
+		public <T extends CDOMObject> AssociatedPrereqObject addToMasterList(
+				String tokenName, CDOMObject owner,
+				CDOMReference<? extends CDOMList<T>> list, T allowed)
 		{
 			SimpleAssociatedObject a = new SimpleAssociatedObject();
 			a.setAssociation(AssociationKey.OWNER, owner);
@@ -360,8 +424,8 @@ public class ListContext
 			MapToList<T, AssociatedPrereqObject> map = new TreeMapToList<T, AssociatedPrereqObject>(
 					TokenUtilities.WRITEABLE_SORTER);
 			OwnerURI lo = new OwnerURI(extractURI, owner);
-			Set<CDOMObject> added = positiveMasterMap.getTertiaryKeySet(swl,
-					lo);
+			Set<CDOMObject> added = positiveMasterMap
+					.getTertiaryKeySet(swl, lo);
 			for (CDOMObject lw : added)
 			{
 				AssociatedPrereqObject apo = positiveMasterMap.get(swl, lo, lw);
@@ -370,8 +434,8 @@ public class ListContext
 					map.addToListFor((T) lw, apo);
 				}
 			}
-			return new AssociatedCollectionChanges<T>(map, null,
-					masterClearSet.containsInList(swl, lo));
+			return new AssociatedCollectionChanges<T>(map, null, masterClearSet
+					.containsInList(swl, lo));
 		}
 
 		public <T extends CDOMObject> void clearMasterList(String tokenName,
@@ -416,7 +480,7 @@ public class ListContext
 
 		public <T extends CDOMObject> AssociatedPrereqObject addToList(
 				String tokenName, CDOMObject owner,
-				CDOMReference<? extends CDOMList<T>> list,
+				CDOMReference<? extends CDOMList<? super T>> list,
 				CDOMReference<T> allowed)
 		{
 			SimpleAssociatedObject a = new SimpleAssociatedObject();
@@ -426,7 +490,8 @@ public class ListContext
 		}
 
 		public <T extends CDOMObject> void removeFromList(String tokenName,
-				CDOMObject owner, CDOMReference<? extends CDOMList<T>> list,
+				CDOMObject owner,
+				CDOMReference<? extends CDOMList<? super T>> list,
 				CDOMReference<T> ref)
 		{
 			SimpleAssociatedObject a = new SimpleAssociatedObject();
@@ -524,5 +589,4 @@ public class ListContext
 			return false;
 		}
 	}
-
 }

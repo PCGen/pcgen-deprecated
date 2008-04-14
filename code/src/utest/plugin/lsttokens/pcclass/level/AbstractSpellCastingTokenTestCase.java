@@ -32,8 +32,6 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 		assertNull(getToken().unparse(primaryContext, primaryProf1));
 		assertNull(getToken().unparse(primaryContext, primaryProf2));
 		assertNull(getToken().unparse(primaryContext, primaryProf3));
-		// Ensure the graphs are the same at the start
-		assertEquals(primaryGraph, secondaryGraph);
 
 		// Set value
 		for (String s : str)
@@ -68,9 +66,6 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
-
-		// Ensure the graphs are the same
-		assertEquals(primaryGraph, secondaryGraph);
 
 		// And that it comes back out the same again
 		// Doesn't pollute other levels
@@ -113,7 +108,7 @@ public abstract class AbstractSpellCastingTokenTestCase extends
 	public void testInvalidListDoubleJoin() throws PersistenceLayerException
 	{
 		assertFalse(parse("1,,2", 2));
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test

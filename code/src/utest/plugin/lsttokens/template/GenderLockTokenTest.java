@@ -64,9 +64,10 @@ public class GenderLockTokenTest extends AbstractTokenTestCase<CDOMTemplate>
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("Male"));
+		assertTrue(parseSecondary("Male"));
 		assertEquals(Gender.Male, primaryProf.get(ObjectKey.GENDER_LOCK));
 		internalTestInvalidInputString(Gender.Male);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val)

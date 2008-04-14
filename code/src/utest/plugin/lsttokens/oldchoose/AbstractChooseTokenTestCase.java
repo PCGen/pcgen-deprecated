@@ -186,7 +186,7 @@ public abstract class AbstractChooseTokenTestCase extends
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + prefix + "|TYPE="));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -198,7 +198,7 @@ public abstract class AbstractChooseTokenTestCase extends
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + prefix + "|TYPE=One."));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -210,7 +210,7 @@ public abstract class AbstractChooseTokenTestCase extends
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + prefix + "|TYPE=One..Two"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -222,7 +222,7 @@ public abstract class AbstractChooseTokenTestCase extends
 		{
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + prefix + "|TYPE=.One"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -237,7 +237,7 @@ public abstract class AbstractChooseTokenTestCase extends
 				primaryProf,
 				getSubTokenString() + prefix + "|ANY" + getJoinCharacter()
 					+ "TestWP1"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -252,7 +252,7 @@ public abstract class AbstractChooseTokenTestCase extends
 				primaryProf,
 				getSubTokenString() + prefix + "|TestWP1" + getJoinCharacter()
 					+ "ANY"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -266,7 +266,7 @@ public abstract class AbstractChooseTokenTestCase extends
 				primaryProf,
 				getSubTokenString() + prefix + "|ANY" + getJoinCharacter()
 					+ "TYPE=TestType"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -280,7 +280,7 @@ public abstract class AbstractChooseTokenTestCase extends
 				primaryProf,
 				getSubTokenString() + prefix + "|TYPE=TestType"
 					+ getJoinCharacter() + "ANY"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -301,7 +301,7 @@ public abstract class AbstractChooseTokenTestCase extends
 			construct(primaryContext, "TestWP1");
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + prefix + "|TestWP1[]"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -313,7 +313,7 @@ public abstract class AbstractChooseTokenTestCase extends
 			construct(primaryContext, "TestWP1");
 			assertFalse(getToken().parse(primaryContext, primaryProf,
 				getSubTokenString() + prefix + "|TestWP1" + getJoinCharacter()));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -328,7 +328,7 @@ public abstract class AbstractChooseTokenTestCase extends
 				primaryProf,
 				getSubTokenString() + prefix + "|" + getJoinCharacter()
 					+ "TestWP1"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -344,7 +344,7 @@ public abstract class AbstractChooseTokenTestCase extends
 				primaryProf,
 				getSubTokenString() + prefix + "|TestWP2" + getJoinCharacter()
 					+ getJoinCharacter() + "TestWP1"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 
@@ -361,7 +361,7 @@ public abstract class AbstractChooseTokenTestCase extends
 				primaryProf,
 				getSubTokenString() + getJoinCharacter() + prefix + "|TestWP2"
 					+ getJoinCharacter() + "TestWP1"));
-			assertTrue(primaryGraph.isEmpty());
+			assertNoSideEffects();
 		}
 	}
 

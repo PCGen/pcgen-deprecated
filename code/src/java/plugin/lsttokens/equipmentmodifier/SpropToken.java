@@ -76,7 +76,7 @@ public class SpropToken extends AbstractToken implements
 		}
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
-			context.getGraphContext().removeAll(getTokenName(), mod);
+			context.getObjectContext().revokeAll(getTokenName(), mod);
 			return true;
 		}
 
@@ -98,7 +98,7 @@ public class SpropToken extends AbstractToken implements
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.getGraphContext().removeAll(getTokenName(), mod);
+			context.getObjectContext().revokeAll(getTokenName(), mod);
 			firstToken = tok.nextToken();
 		}
 

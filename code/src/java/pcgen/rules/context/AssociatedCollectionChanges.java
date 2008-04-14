@@ -4,9 +4,8 @@ import java.util.Collection;
 
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.PrereqObject;
 
-public class AssociatedCollectionChanges<T extends PrereqObject> implements AssociatedChanges<T>
+public class AssociatedCollectionChanges<T> implements AssociatedChanges<T>
 {
 	private MapToList<T, AssociatedPrereqObject> positive;
 	private MapToList<T, AssociatedPrereqObject> negative;

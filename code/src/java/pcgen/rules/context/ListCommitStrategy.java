@@ -26,7 +26,7 @@ public interface ListCommitStrategy
 
 	public <T extends CDOMObject> AssociatedPrereqObject addToList(
 		String tokenName, CDOMObject owner,
-		CDOMReference<? extends CDOMList<T>> list, CDOMReference<T> allowed);
+		CDOMReference<? extends CDOMList<? super T>> list, CDOMReference<T> allowed);
 
 	public Collection<CDOMReference<? extends CDOMList<? extends CDOMObject>>> getChangedLists(
 		CDOMObject owner, Class<? extends CDOMList<?>> cl);
@@ -35,7 +35,7 @@ public interface ListCommitStrategy
 		CDOMReference<? extends CDOMList<?>> swl);
 
 	public <T extends CDOMObject> void removeFromList(String tokenName,
-		CDOMObject owner, CDOMReference<? extends CDOMList<T>> swl,
+		CDOMObject owner, CDOMReference<? extends CDOMList<? super T>> swl,
 		CDOMReference<T> ref);
 
 	public <T extends CDOMObject> AssociatedChanges<CDOMReference<T>> getChangesInList(

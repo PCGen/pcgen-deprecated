@@ -52,7 +52,7 @@ import pcgen.core.WeaponProf;
 import pcgen.core.bonus.BonusObj;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.rules.context.Changes;
-import pcgen.rules.context.GraphContext;
+import pcgen.rules.context.ListContext;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.context.ObjectContext;
 import pcgen.rules.persistence.BonusTokenLoader;
@@ -420,7 +420,7 @@ public class NaturalattacksLst extends AbstractToken implements GlobalLstToken,
 		 * guarantee uniqueness of the key?? - that's too paranoid
 		 */
 
-		GraphContext graphContext = context.getGraphContext();
+		ListContext graphContext = context.getGraphContext();
 		EquipmentHead equipHead = anEquip.getEquipmentHead(1);
 
 		String profType = commaTok.nextToken();

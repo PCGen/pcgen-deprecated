@@ -25,10 +25,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMPCClassLevel;
 import pcgen.core.Campaign;
@@ -44,8 +41,6 @@ import plugin.lsttokens.testsupport.TokenRegistration;
 
 public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 {
-	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> primaryGraph;
-	protected DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject> secondaryGraph;
 	protected LoadContext primaryContext;
 	protected LoadContext secondaryContext;
 	protected CDOMPCClass primaryProf;
@@ -81,10 +76,8 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		}
 		// Yea, this causes warnings...
 		TokenRegistration.register(getToken());
-		primaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
-		secondaryGraph = new DoubleKeyMapToList<CDOMObject, CDOMReference<?>, AssociatedPrereqObject>();
-		primaryContext = new RuntimeLoadContext(primaryGraph);
-		secondaryContext = new RuntimeLoadContext(secondaryGraph);
+		primaryContext = new RuntimeLoadContext();
+		secondaryContext = new RuntimeLoadContext();
 		primaryProf = 
 			primaryContext.ref.constructCDOMObject(CDOMPCClass.class,
 					"TestObj");
@@ -115,8 +108,6 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		assertNull(getToken().unparse(primaryContext, primaryProf1));
 		assertNull(getToken().unparse(primaryContext, primaryProf2));
 		assertNull(getToken().unparse(primaryContext, primaryProf3));
-		// Ensure the graphs are the same at the start
-		assertEquals(primaryGraph, secondaryGraph);
 
 		// Set value
 		for (String s : str)
@@ -150,9 +141,6 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 		// Ensure the objects are the same
 		assertEquals(primaryProf, secondaryProf);
 
-		// Ensure the graphs are the same
-		assertEquals(primaryGraph, secondaryGraph);
-
 		// And that it comes back out the same again
 		// Doesn't pollute other levels
 		assertNull(getToken().unparse(secondaryContext, secondaryProf1));
@@ -181,10 +169,8 @@ public abstract class AbstractPCClassLevelTokenTestCase extends TestCase
 
 	public void assertNoSideEffects()
 	{
-		assertTrue(primaryGraph.isEmpty());
 		isCDOMEqual(primaryProf, secondaryProf);
 		assertFalse(primaryContext.getListContext().hasMasterLists());
-		assertEquals(primaryGraph, secondaryGraph);
 	}
 
 	public boolean parse(String str, int level)

@@ -50,7 +50,7 @@ public class Choice512Token implements CDOMCompatibilityToken<CDOMSubClass>,
 		{
 			sc.put(StringKey.COMPAT_CHOICE, value);
 			sc.put(StringKey.COMPAT_CHOICE_SOURCE, sc.getKeyName()
-					+ " in file " + context.graph.getSourceURI());
+					+ " in file " + context.getGraphContext().getSourceURI());
 			return true;
 		}
 		return false;

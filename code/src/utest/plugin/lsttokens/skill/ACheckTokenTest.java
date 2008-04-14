@@ -64,10 +64,11 @@ public class ACheckTokenTest extends AbstractTokenTestCase<CDOMSkill>
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("YES"));
+		assertTrue(parseSecondary("YES"));
 		assertEquals(SkillArmorCheck.YES, primaryProf
 			.get(ObjectKey.ARMOR_CHECK));
 		internalTestInvalidInputString(SkillArmorCheck.YES);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val)

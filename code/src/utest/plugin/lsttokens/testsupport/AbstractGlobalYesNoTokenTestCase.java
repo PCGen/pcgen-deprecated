@@ -39,9 +39,10 @@ public abstract class AbstractGlobalYesNoTokenTestCase extends
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("YES"));
+		assertTrue(parseSecondary("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(getObjectKey()));
 		internalTestInvalidInputString(Boolean.TRUE);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val)

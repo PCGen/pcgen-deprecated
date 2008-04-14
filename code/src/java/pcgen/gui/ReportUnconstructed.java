@@ -127,7 +127,7 @@ public class ReportUnconstructed
 				}
 			}
 			cc.addCampaign(new CustomCampaign());
-			new SystemLoader().loadCampaign(new RuntimeLoadContext(null), cc);
+			new SystemLoader().loadCampaign(new RuntimeLoadContext(), cc);
 		}
 		catch (PersistenceLayerException e)
 		{

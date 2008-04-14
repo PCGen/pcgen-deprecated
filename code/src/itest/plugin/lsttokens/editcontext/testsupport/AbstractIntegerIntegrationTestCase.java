@@ -15,6 +15,8 @@ public abstract class AbstractIntegerIntegrationTestCase<T extends CDOMObject>
 
 	public abstract boolean isPositiveAllowed();
 
+	public abstract boolean doesOverwrite();
+
 	@Test
 	public void testArchitectire() throws PersistenceLayerException
 	{
@@ -37,7 +39,7 @@ public abstract class AbstractIntegerIntegrationTestCase<T extends CDOMObject>
 	@Test
 	public void testRoundRobinSimpleOverwrite() throws PersistenceLayerException
 	{
-		if (isPositiveAllowed())
+		if (isPositiveAllowed() && doesOverwrite())
 		{
 			verifyCleanStart();
 			TestContext tc = new TestContext();
@@ -50,12 +52,40 @@ public abstract class AbstractIntegerIntegrationTestCase<T extends CDOMObject>
 	@Test
 	public void testRoundRobinNegativeOverwrite() throws PersistenceLayerException
 	{
-		if (isNegativeAllowed())
+		if (isNegativeAllowed() && doesOverwrite())
 		{
 			verifyCleanStart();
 			TestContext tc = new TestContext();
 			commit(testCampaign, tc, "-1");
 			commit(testCampaign, tc, "-2");
+			completeRoundRobin(tc);
+		}
+	}
+
+	@Test
+	public void testRoundRobinSimpleAppend() throws PersistenceLayerException
+	{
+		if (isPositiveAllowed() && !doesOverwrite())
+		{
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "1");
+			commit(testCampaign, tc, "2");
+			tc.putText(testCampaign.getURI(), new String[] {"1", "2"});
+			completeRoundRobin(tc);
+		}
+	}
+
+	@Test
+	public void testRoundRobinNegativeAppend() throws PersistenceLayerException
+	{
+		if (isNegativeAllowed() && !doesOverwrite())
+		{
+			verifyCleanStart();
+			TestContext tc = new TestContext();
+			commit(testCampaign, tc, "-1");
+			commit(testCampaign, tc, "-2");
+			tc.putText(testCampaign.getURI(), new String[] {"-1", "-2"});
 			completeRoundRobin(tc);
 		}
 	}

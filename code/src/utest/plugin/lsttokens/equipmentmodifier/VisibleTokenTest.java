@@ -74,9 +74,10 @@ public class VisibleTokenTest extends AbstractTokenTestCase<CDOMEqMod>
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("QUALIFY"));
+		assertTrue(parseSecondary("QUALIFY"));
 		assertEquals(Visibility.QUALIFY, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.QUALIFY);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val)

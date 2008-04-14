@@ -67,4 +67,10 @@ public class NonPPIntegrationTest extends
 	{
 		return false;
 	}
+
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

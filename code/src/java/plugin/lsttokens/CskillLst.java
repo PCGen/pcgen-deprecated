@@ -89,6 +89,8 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 		boolean first = true;
 		boolean foundAny = false;
 		boolean foundOther = false;
+		CDOMGroupRef<ClassSkillList> list = context.ref
+				.getCDOMAllReference(SKILLLIST_CLASS);
 
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
 		while (tok.hasMoreTokens())
@@ -102,7 +104,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 						+ ": .CLEAR was not the first list item");
 					return false;
 				}
-				context.getGraphContext().removeAll(getTokenName(), obj);
+				context.getListContext().removeAllFromList(getTokenName(), obj, list);
 			}
 			else if (tokText.startsWith(Constants.LST_DOT_CLEAR_DOT))
 			{
@@ -124,7 +126,7 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 						+ getTokenName());
 					return false;
 				}
-				context.getGraphContext().remove(getTokenName(), obj, ref);
+				context.getListContext().removeFromList(getTokenName(), obj, list, ref);
 			}
 			else
 			{
@@ -161,11 +163,8 @@ public class CskillLst extends AbstractToken implements GlobalLstToken, CDOMPrim
 						+ getTokenName());
 					return false;
 				}
-				AssociatedPrereqObject edge =
-						context.getListContext().addToList(
-							getTokenName(), obj,
-							context.ref.getCDOMAllReference(SKILLLIST_CLASS),
-							ref);
+				AssociatedPrereqObject edge = context.getListContext()
+						.addToList(getTokenName(), obj, list, ref);
 				edge.setAssociation(AssociationKey.SKILL_COST, SkillCost.CLASS);
 			}
 			first = false;

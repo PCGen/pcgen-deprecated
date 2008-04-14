@@ -43,7 +43,7 @@ public abstract class AbstractYesNoTokenTestCase<T extends CDOMObject> extends
 		assertTrue(parseSecondary("YES"));
 		assertEquals(Boolean.TRUE, primaryProf.get(getObjectKey()));
 		internalTestInvalidInputString(Boolean.TRUE);
-		assertEquals(primaryGraph, secondaryGraph);
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val)

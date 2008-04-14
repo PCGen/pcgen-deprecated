@@ -78,6 +78,9 @@ public class BonusFeatsIntegrationTest extends
 		 */
 	}
 	
-	
-	
+	@Override
+	public boolean doesOverwrite()
+	{
+		return true;
+	}
 }

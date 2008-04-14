@@ -346,6 +346,12 @@ public abstract class CDOMObject extends ConcretePrereqObject implements
 			// System.err.println(cdomListMods + " " + cdo.cdomListMods);
 			// System.err.println(cdomListMods.getKeySet() + " "
 			// + cdo.cdomListMods.getKeySet());
+			// for (CDOMReference<? extends CDOMList<? extends CDOMObject>> key
+			// : cdomListMods.getKeySet())
+			// {
+			// System.err.println(cdomListMods.getSecondaryKeySet(key));
+			// System.err.println(cdo.cdomListMods.getSecondaryKeySet(key));
+			//			 }
 			return false;
 		}
 		return true;
@@ -356,6 +362,13 @@ public abstract class CDOMObject extends ConcretePrereqObject implements
 			CDOMReference<T> granted, AssociatedPrereqObject associations)
 	{
 		cdomListMods.addToListFor(list, granted, associations);
+	}
+	
+	public <T extends CDOMObject> void removeFromList(
+			CDOMReference<? extends CDOMList<? extends CDOMObject>> list,
+			CDOMReference<T> granted)
+	{
+		cdomListMods.removeListFor(list, granted);
 	}
 
 	public boolean hasListMods(

@@ -53,7 +53,7 @@ public class Proficiency512Token implements
 		{
 			eq.put(StringKey.COMPAT_PROFICIENCY, value);
 			eq.put(StringKey.COMPAT_PROFICIENCY_SOURCE, eq.getKeyName()
-					+ " in file " + context.graph.getSourceURI());
+					+ " in file " + context.getGraphContext().getSourceURI());
 			return true;
 		}
 		return false;

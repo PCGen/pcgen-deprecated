@@ -22,13 +22,10 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.content.SpellResistance;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.character.CharacterDataStore;
-import pcgen.core.Equipment;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;

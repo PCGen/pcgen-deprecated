@@ -74,7 +74,7 @@ public class Vision514Lst implements CDOMCompatibilityToken<CDOMObject>
 
 			if (".CLEAR".equals(visionString))
 			{
-				context.getGraphContext().removeAll(getTokenName(), obj);
+				context.getObjectContext().revokeAll(getTokenName(), obj);
 				continue;
 			}
 
@@ -97,7 +97,7 @@ public class Vision514Lst implements CDOMCompatibilityToken<CDOMObject>
 			{
 				if (visionString.startsWith(".SET."))
 				{
-					context.getGraphContext().removeAll(getTokenName(), obj);
+					context.getObjectContext().revokeAll(getTokenName(), obj);
 					visionString = visionString.substring(5);
 				}
 				try

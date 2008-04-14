@@ -58,9 +58,10 @@ public class VisibleTokenTest extends AbstractTokenTestCase<CDOMTemplate>
 	{
 		assertTrue(primaryContext.getWriteMessageCount() == 0);
 		primaryProf.put(ObjectKey.VISIBILITY, Visibility.QUALIFY);
+		secondaryProf.put(ObjectKey.VISIBILITY, Visibility.QUALIFY);
 		assertNull(token.unparse(primaryContext, primaryProf));
 		assertFalse(primaryContext.getWriteMessageCount() == 0);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	@Test
@@ -74,9 +75,10 @@ public class VisibleTokenTest extends AbstractTokenTestCase<CDOMTemplate>
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("EXPORT"));
+		assertTrue(parseSecondary("EXPORT"));
 		assertEquals(Visibility.EXPORT, primaryProf.get(ObjectKey.VISIBILITY));
 		internalTestInvalidInputString(Visibility.EXPORT);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val)

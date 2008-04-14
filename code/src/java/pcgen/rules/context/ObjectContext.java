@@ -120,12 +120,21 @@ public class ObjectContext
 
 	public void give(String sourceToken, CDOMObject cdo, PrereqObject target)
 	{
-		edits.addToList(cdo, ListKey.GIVEN, new SourceWrapper(target, sourceToken));
+		addToList(cdo, ListKey.GIVEN, new SourceWrapper(target, sourceToken));
 	}
 	
 	public void revoke(String sourceToken, CDOMObject cdo, PrereqObject target)
 	{
-		edits.removeFromList(cdo, ListKey.GIVEN, new SourceWrapper(target, sourceToken));
+		removeFromList(cdo, ListKey.GIVEN, new SourceWrapper(target, sourceToken));
+	}
+
+	public void revokeAll(final String tokenName, CDOMObject cdo)
+	{
+		/*
+		 * TODO This is broken for the ConsolidatedObjectCommitStrategy, as it 
+		 * doesn't properly filter by tokenName...
+		 */
+		removeList(cdo, ListKey.GIVEN);
 	}
 
 	public <T> void removeFromList(CDOMObject cdo, ListKey<T> lk, T val)
@@ -538,19 +547,21 @@ public class ObjectContext
 		private final ArrayList<T> removed = new ArrayList<T>();
 		private final String token;
 		private final Class<T> targetClass;
+		private final boolean clear;
 		
 		public GivenChanges(Class<T> cl, String sourceToken,
 				Changes<SourceWrapper> listChanges)
 		{
 			targetClass = cl;
 			token = sourceToken;
+			clear = listChanges.includesGlobalClear();
 			Collection<SourceWrapper> allAdded = listChanges.getAdded();
 			if (allAdded != null)
 			{
 				for (SourceWrapper add : allAdded)
 				{
 					PrereqObject target = add.getTarget();
-					if (targetClass.equals(target.getClass())
+					if (targetClass.isAssignableFrom(target.getClass())
 							&& token.equals(add.getSourceToken()))
 					{
 						added.add((T) target);
@@ -594,7 +605,7 @@ public class ObjectContext
 
 		public boolean includesGlobalClear()
 		{
-			return false;
+			return clear;
 		}
 
 		public boolean isEmpty()
@@ -602,5 +613,10 @@ public class ObjectContext
 			return added.isEmpty() && removed.isEmpty();
 		}
 		
+	}
+	
+	public interface Remover<T>
+	{
+		public boolean matches(T obj);
 	}
 }

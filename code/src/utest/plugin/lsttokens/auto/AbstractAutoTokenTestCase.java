@@ -573,11 +573,9 @@ public abstract class AbstractAutoTokenTestCase extends
 					+ getJoinCharacter() + "TestWP2"));
 			assertTrue(parseSecondary(getSubTokenString() + "|TestWP1"
 					+ getJoinCharacter() + "TestWP2"));
-			assertEquals("Test setup failed", primaryGraph, secondaryGraph);
 			assertFalse(parse(getSubTokenString() + "|TestWP3"
 					+ getJoinCharacter() + "ALL"));
-			assertEquals("Bad Add had Side Effects", primaryGraph,
-					secondaryGraph);
+			assertNoSideEffects();
 		}
 	}
 

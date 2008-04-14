@@ -62,7 +62,7 @@ public class SA514Lst extends AbstractToken implements
 
 		if (Constants.LST_DOT_CLEAR.equals(firstToken))
 		{
-			context.getGraphContext().removeAll(getTokenName(), obj);
+			context.getObjectContext().revokeAll(getTokenName(), obj);
 			if (!tok.hasMoreTokens())
 			{
 				return true;

@@ -144,9 +144,17 @@ public class ListChanges<T extends CDOMObject> implements
 
 	public MapToList<CDOMReference<T>, AssociatedPrereqObject> getRemovedAssociations()
 	{
-		Collection<CDOMReference<T>> mods = negative.getListMods(list);
 		MapToList<CDOMReference<T>, AssociatedPrereqObject> owned = new TreeMapToList<CDOMReference<T>, AssociatedPrereqObject>(
 				TokenUtilities.REFERENCE_SORTER);
+		if (negative == null)
+		{
+			return owned;
+		}
+		Collection<CDOMReference<T>> mods = negative.getListMods(list);
+		if (mods == null)
+		{
+			return owned;
+		}
 		for (CDOMReference<T> lw : mods)
 		{
 			Collection<AssociatedPrereqObject> assocs = negative

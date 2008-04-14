@@ -65,9 +65,10 @@ public class FormatcatTokenTest extends
 	public void testInvalidInputStringSet() throws PersistenceLayerException
 	{
 		assertTrue(parse("FRONT"));
+		assertTrue(parseSecondary("FRONT"));
 		assertEquals(EqModFormatCat.FRONT, primaryProf.get(ObjectKey.FORMAT));
 		internalTestInvalidInputString(EqModFormatCat.FRONT);
-		assertTrue(primaryGraph.isEmpty());
+		assertNoSideEffects();
 	}
 
 	public void internalTestInvalidInputString(Object val)
