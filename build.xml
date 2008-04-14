@@ -726,7 +726,6 @@ pcgen.filepaths=user
 				  <include name="plugin/lsttokens/**/*.java"/>
 				  <exclude name="**/Abstract*.java"/>
 				  <exclude name="**/testsupport/*.java"/>
-				  <exclude name="plugin/lsttokens/oldchoose/*.java" />
 				</fileset>
 			</batchtest>
 			<batchtest todir="${build.dir}/test-results/xml">
