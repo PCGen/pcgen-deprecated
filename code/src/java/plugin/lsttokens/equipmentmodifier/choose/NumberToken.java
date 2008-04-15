@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.NumberChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.helper.SimpleCollectionChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;
@@ -281,7 +281,7 @@ public class NumberToken extends AbstractToken implements EqModChooseLstToken,
 		{
 			if (min == null)
 			{
-				cs = new CollectionChoiceSet<Integer>(intList);
+				cs = new SimpleCollectionChoiceSet<Integer>(intList);
 			}
 			else
 			{

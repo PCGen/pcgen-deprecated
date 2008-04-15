@@ -15,14 +15,20 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.rules.context;
+package pcgen.cdom.reference;
 
+import pcgen.cdom.base.CDOMAllRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.base.CDOMTypeRef;
 
 public interface ReferenceManufacturer<T extends CDOMObject, RT extends CDOMSingleRef<T>>
 {
 	public RT getReference(String key);
 
+	public CDOMTypeRef<T> getTypeReference(String... types);
+	
+	public CDOMAllRef<T> getAllReference();
+	
 	public Class<T> getCDOMClass();
 }

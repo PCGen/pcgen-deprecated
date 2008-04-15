@@ -30,6 +30,7 @@ import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMSubClass;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
 /**
  * @author djones4
@@ -45,6 +46,12 @@ public class KeyToken implements CDOMPrimaryToken<CDOMPCClass>
 
 	public boolean parse(LoadContext context, CDOMPCClass pcc, String value)
 	{
+		if (value == null || value.length() == 0)
+		{
+			Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " must not be null and must not be an empty String");
+			return false;
+		}
 		// THIS IS ORDER DEPENDENT, MUST BE DONE BEFORE resetting the key
 		context.ref.reassociateKey(value, (pcc));
 		/*

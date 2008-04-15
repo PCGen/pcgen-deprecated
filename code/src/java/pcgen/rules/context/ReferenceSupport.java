@@ -31,6 +31,7 @@ import pcgen.base.util.HashMapToInstanceList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.reference.ReferenceManufacturer;
 import pcgen.core.PCClass;
 import pcgen.core.SettingsHandler;
 import pcgen.util.Logging;

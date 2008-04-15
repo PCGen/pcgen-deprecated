@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.helper.SimpleCollectionChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.PersistenceLayerException;
@@ -119,7 +119,7 @@ public class StringToken extends AbstractToken implements EqModChooseLstToken,
 		{
 			list.add(st.nextToken());
 		}
-		return new CollectionChoiceSet<String>(list);
+		return new SimpleCollectionChoiceSet<String>(list);
 	}
 
 	public Class<CDOMEqMod> getTokenClass()

@@ -47,7 +47,7 @@ import pcgen.util.Logging;
  * Class deals with MONSKILL Token
  */
 public class MonskillToken extends AbstractToken implements PCClassLstToken,
-CDOMPrimaryToken<CDOMPCClass>
+		CDOMPrimaryToken<CDOMPCClass>
 {
 
 	@Override

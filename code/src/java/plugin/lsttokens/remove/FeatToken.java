@@ -178,6 +178,7 @@ public class FeatToken extends AbstractToken implements RemoveLstToken,
 			}
 			else if (token.regionMatches(true, 0, "CLASS.", 0, 6))
 			{
+				//String className = token.substring(6);
 				// FIXME Need to parse CLASS.*
 				// Hack (to allow compilation)
 				CDOMReference<CDOMAbility> ref;

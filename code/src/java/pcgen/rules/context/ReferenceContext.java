@@ -44,6 +44,7 @@ import pcgen.cdom.inst.CDOMSubClass;
 import pcgen.cdom.inst.ClassSkillList;
 import pcgen.cdom.inst.ClassSpellList;
 import pcgen.cdom.inst.DomainSpellList;
+import pcgen.cdom.reference.ReferenceManufacturer;
 
 public class ReferenceContext
 {
@@ -53,7 +54,6 @@ public class ReferenceContext
 	private static final Class<ClassSpellList> CLASSSPELLLIST_CLASS = ClassSpellList.class;
 	private static final Class<ClassSkillList> CLASSSKILLLIST_CLASS = ClassSkillList.class;
 	private static final Class<DomainSpellList> DOMAINSPELLLIST_CLASS = DomainSpellList.class;
-	private GroupReferenceContext group = new GroupReferenceContext();
 	private SimpleReferenceContext simple = new SimpleReferenceContext();
 	private CategorizedReferenceContext categorized = new CategorizedReferenceContext();
 	private Map<Class<?>, OneToOneMap<CDOMObject, String>> abbMap = new HashMap<Class<?>, OneToOneMap<CDOMObject, String>>();
@@ -67,7 +67,6 @@ public class ReferenceContext
 	{
 		simple.clear();
 		categorized.clear();
-		group.clear();
 	}
 
 	public boolean validate()
@@ -75,27 +74,27 @@ public class ReferenceContext
 		return simple.validate() && categorized.validate();
 	}
 
-	public <T extends CategorizedCDOMObject<T>> CDOMGroupRef<T> getCDOMAllReference(
+	public <T extends CDOMObject & CategorizedCDOMObject<T>> CDOMGroupRef<T> getCDOMAllReference(
 			Class<T> c, Category<T> cat)
 	{
-		return group.getCategorizedCDOMAllReference(c, cat);
+		return categorized.getManufacturer(c, cat).getAllReference();
 	}
 
-	public <T extends CategorizedCDOMObject<T>> CDOMGroupRef<T> getCDOMTypeReference(
+	public <T extends CDOMObject & CategorizedCDOMObject<T>> CDOMGroupRef<T> getCDOMTypeReference(
 			Class<T> c, Category<T> cat, String... val)
 	{
-		return group.getCategorizedCDOMTypeReference(c, cat, val);
+		return categorized.getManufacturer(c, cat).getTypeReference(val);
 	}
 
 	public <T extends CDOMObject> CDOMGroupRef<T> getCDOMAllReference(Class<T> c)
 	{
-		return group.getCDOMAllReference(c);
+		return simple.getManufacturer(c).getAllReference();
 	}
 
 	public <T extends CDOMObject> CDOMGroupRef<T> getCDOMTypeReference(
 			Class<T> c, String... val)
 	{
-		return group.getCDOMTypeReference(c, val);
+		return simple.getManufacturer(c).getTypeReference(val);
 	}
 
 	public <T extends CDOMObject> T constructCDOMObject(Class<T> c, String val)
@@ -192,13 +191,13 @@ public class ReferenceContext
 	public <T extends CDOMObject> ReferenceManufacturer<T, CDOMSimpleSingleRef<T>> getReferenceManufacturer(
 			Class<T> c)
 	{
-		return simple.getReferenceManufacturer(c);
+		return simple.getManufacturer(c);
 	}
 
 	public <T extends CDOMObject & CategorizedCDOMObject<T>> ReferenceManufacturer<T, CDOMCategorizedSingleRef<T>> getReferenceManufacturer(
 			Class<T> c, Category<T> cat)
 	{
-		return categorized.getReferenceManufacturer(c, cat);
+		return categorized.getManufacturer(c, cat);
 	}
 
 	public <T extends CDOMObject> Collection<T> getConstructedCDOMObjects(

@@ -73,7 +73,14 @@ public class AddingFormula implements ReferenceFormula<Integer>
 	@Override
 	public String toString()
 	{
-		return "+" + add;
+		if (add >= 0)
+		{
+			return "+" + add;
+		}
+		else
+		{
+			return Integer.toString(add);
+		}
 	}
 
 	/**

@@ -74,7 +74,14 @@ public class SubtractingFormula implements ReferenceFormula<Integer>
 	@Override
 	public String toString()
 	{
-		return "-" + sub;
+		if (sub >= 0)
+		{
+			return "-" + sub;
+		}
+		else
+		{
+			return "+" + -sub;
+		}
 	}
 
 	/**

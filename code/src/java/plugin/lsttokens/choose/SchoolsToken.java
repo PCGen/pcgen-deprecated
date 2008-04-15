@@ -19,8 +19,8 @@ package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.enumeration.SpellSchool;
-import pcgen.cdom.helper.CollectionChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.helper.SimpleCollectionChoiceSet;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;
@@ -73,7 +73,7 @@ public class SchoolsToken implements ChooseLstToken,
 	public PrimitiveChoiceSet<?> parse(LoadContext context, CDOMObject cdo,
 			String value) throws PersistenceLayerException
 	{
-		return new CollectionChoiceSet<SpellSchool>(SpellSchool
+		return new SimpleCollectionChoiceSet<SpellSchool>(SpellSchool
 				.getAllConstants());
 	}
 

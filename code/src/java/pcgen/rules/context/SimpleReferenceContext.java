@@ -28,10 +28,25 @@ import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.CDOMSingleRef;
-import pcgen.core.PCClass;
+import pcgen.cdom.reference.SimpleReferenceManufacturer;
 
 public class SimpleReferenceContext
 {
+
+	private Map<Class<?>, SimpleReferenceManufacturer<?>> map = 
+		new HashMap<Class<?>, SimpleReferenceManufacturer<?>>();
+	
+	public <T extends CDOMObject> SimpleReferenceManufacturer<T> getManufacturer(Class<T> cl)
+	{
+		SimpleReferenceManufacturer<T> mfg = (SimpleReferenceManufacturer<T>) map.get(cl);
+		if (mfg == null)
+		{
+			mfg = new SimpleReferenceManufacturer<T>(cl);
+			map.put(cl, mfg);
+		}
+		return mfg;
+	}
+
 
 	private Map<Class<?>, ReferenceSupport<?, ?>> refMap = new HashMap<Class<?>, ReferenceSupport<?, ?>>();
 
@@ -68,7 +83,7 @@ public class SimpleReferenceContext
 		if (ref == null)
 		{
 			ref = new ReferenceSupport<T, CDOMSimpleSingleRef<T>>(
-					new SimpleReferenceManufacturer<T>(cl));
+					getManufacturer(cl));
 			refMap.put(cl, ref);
 		}
 		return ref;
@@ -147,12 +162,6 @@ public class SimpleReferenceContext
 		refMap.clear();
 	}
 
-	public <T extends CDOMObject> ReferenceManufacturer<T, CDOMSimpleSingleRef<T>> getReferenceManufacturer(
-			final Class<T> c)
-	{
-		return getRefSupport(c).getReferenceManufacturer();
-	}
-
 	public <T extends CDOMObject> CDOMAddressedSingleRef<T> getAddressedReference(
 			CDOMObject obj, Class<T> name, String addressName)
 	{
@@ -173,98 +182,5 @@ public class SimpleReferenceContext
 			set.addAll(ref.getAllConstructedCDOMObjects());
 		}
 		return set;
-	}
-
-	public class SimpleReferenceManufacturer<T extends CDOMObject> implements
-			ReferenceManufacturer<T, CDOMSimpleSingleRef<T>>
-	{
-		private final Class<T> refClass;
-
-		public SimpleReferenceManufacturer(Class<T> cl)
-		{
-			refClass = cl;
-		}
-
-		public CDOMSimpleSingleRef<T> getReference(String val)
-		{
-			// TODO Auto-generated method stub
-			// TODO This is incorrect, but a hack for now :)
-			if (val.equals(""))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			try
-			{
-				Integer.parseInt(val);
-				throw new IllegalArgumentException(val);
-			}
-			catch (NumberFormatException nfe)
-			{
-				// ok
-			}
-			if (val.startsWith("TYPE"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.equalsIgnoreCase("ANY"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.equalsIgnoreCase("ALL"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.startsWith("PRE"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.startsWith("CHOOSE"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.startsWith("TIMES="))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.startsWith("TIMEUNIT="))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.startsWith("CASTERLEVEL="))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (refClass.equals(PCClass.class))
-			{
-				if (val.startsWith("CLASS"))
-				{
-					throw new IllegalArgumentException(val);
-				}
-				else if (val.startsWith("SUB"))
-				{
-					throw new IllegalArgumentException(val);
-				}
-				else
-				{
-					try
-					{
-						Integer.parseInt(val);
-						throw new IllegalArgumentException(val);
-					}
-					catch (NumberFormatException nfe)
-					{
-						// Want this!
-					}
-				}
-			}
-
-			return new CDOMSimpleSingleRef<T>(refClass, val);
-		}
-
-		public Class<T> getCDOMClass()
-		{
-			return refClass;
-		}
-
 	}
 }

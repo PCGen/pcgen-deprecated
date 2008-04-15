@@ -29,7 +29,7 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
-import pcgen.core.PCClass;
+import pcgen.cdom.reference.CategorizedReferenceManufacturer;
 import pcgen.util.Logging;
 
 public class CategorizedReferenceContext
@@ -140,12 +140,6 @@ public class CategorizedReferenceContext
 		refMap.clear();
 	}
 
-	public <T extends CDOMObject & CategorizedCDOMObject<T>> ReferenceManufacturer<T, CDOMCategorizedSingleRef<T>> getReferenceManufacturer(
-			final Class<T> c, Category<T> cat)
-	{
-		return getRefSupport(c, cat).getReferenceManufacturer();
-	}
-
 	public Collection<CDOMObject> getAllConstructedCDOMObjects()
 	{
 		Set<CDOMObject> set = new HashSet<CDOMObject>();
@@ -179,90 +173,18 @@ public class CategorizedReferenceContext
 		newSupt.registerWithKey(obj, obj.getKeyName());
 	}
 
-	public class CategorizedReferenceManufacturer<T extends CDOMObject & CategorizedCDOMObject<T>>
-			implements ReferenceManufacturer<T, CDOMCategorizedSingleRef<T>>
+	private DoubleKeyMap<Class<?>, Category<?>, CategorizedReferenceManufacturer<?>> map = 
+		new DoubleKeyMap<Class<?>, Category<?>, CategorizedReferenceManufacturer<?>>();
+	
+	public <T extends CDOMObject & CategorizedCDOMObject<T>> CategorizedReferenceManufacturer<T> getManufacturer(Class<T> cl, Category<T> cat)
 	{
-		private final Class<T> refClass;
-		private final Category<T> category;
-
-		public CategorizedReferenceManufacturer(Class<T> cl, Category<T> cat)
+		CategorizedReferenceManufacturer<T> mfg = (CategorizedReferenceManufacturer<T>) map.get(cl, cat);
+		if (mfg == null)
 		{
-			refClass = cl;
-			category = cat;
+			mfg = new CategorizedReferenceManufacturer<T>(cl, cat);
+			map.put(cl, cat, mfg);
 		}
-
-		public CDOMCategorizedSingleRef<T> getReference(String val)
-		{
-			// TODO Auto-generated method stub
-			// TODO This is incorrect, but a hack for now :)
-			if (val.equals(""))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			try
-			{
-				Integer.parseInt(val);
-				throw new IllegalArgumentException(val);
-			}
-			catch (NumberFormatException nfe)
-			{
-				// ok
-			}
-			if (val.startsWith("TYPE"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.equalsIgnoreCase("ANY"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.equalsIgnoreCase("ALL"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.startsWith("PRE"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.startsWith("CHOOSE"))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (val.startsWith("TIMES="))
-			{
-				throw new IllegalArgumentException(val);
-			}
-			if (refClass.equals(PCClass.class))
-			{
-				if (val.startsWith("CLASS"))
-				{
-					throw new IllegalArgumentException(val);
-				}
-				else if (val.startsWith("SUB"))
-				{
-					throw new IllegalArgumentException(val);
-				}
-				else
-				{
-					try
-					{
-						Integer.parseInt(val);
-						throw new IllegalArgumentException(val);
-					}
-					catch (NumberFormatException nfe)
-					{
-						// Want this!
-					}
-				}
-			}
-
-			return new CDOMCategorizedSingleRef<T>(refClass, category, val);
-		}
-
-		public Class<T> getCDOMClass()
-		{
-			return refClass;
-		}
-
+		return mfg;
 	}
+
 }

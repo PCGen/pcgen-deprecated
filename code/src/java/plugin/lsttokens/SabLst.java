@@ -222,8 +222,8 @@ public class SabLst extends AbstractToken implements GlobalLstToken,
 
 		if (!tok.hasMoreTokens())
 		{
-			context.getObjectContext().give(getTokenName(), obj, sa);
 			sa.setName(firstToken);
+			context.getObjectContext().give(getTokenName(), obj, sa);
 			return true;
 		}
 

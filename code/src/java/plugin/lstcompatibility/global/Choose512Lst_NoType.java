@@ -10,7 +10,7 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.CollectionChoiceSet;
+import pcgen.cdom.helper.SimpleCollectionChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.chooser.ChooserUtilities;
@@ -127,7 +127,7 @@ public class Choose512Lst_NoType extends AbstractToken implements
 			}
 		}
 
-		CollectionChoiceSet<String> ccs = new CollectionChoiceSet<String>(list);
+		SimpleCollectionChoiceSet<String> ccs = new SimpleCollectionChoiceSet<String>(list);
 		ChoiceSet<String> chooser = new ChoiceSet<String>("Choose", ccs);
 		ChooseActionContainer container = cdo.getChooseContainer();
 		container.setChoiceSet(chooser);
@@ -165,7 +165,7 @@ public class Choose512Lst_NoType extends AbstractToken implements
 			list.add(st.nextToken());
 		}
 
-		CollectionChoiceSet<String> ccs = new CollectionChoiceSet<String>(list);
+		SimpleCollectionChoiceSet<String> ccs = new SimpleCollectionChoiceSet<String>(list);
 		ChoiceSet<String> chooser = new ChoiceSet<String>("Choose", ccs);
 		ChooseActionContainer container = cdo.getChooseContainer();
 		container.setChoiceSet(chooser);

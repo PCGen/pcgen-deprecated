@@ -152,6 +152,7 @@ public class SABToken extends AbstractToken implements AddLstToken,
 		{
 			String token = tok.nextToken();
 			CDOMSpecialAbility sab = new CDOMSpecialAbility(token);
+			sab.setName(token);
 			refs.add(sab);
 		}
 
