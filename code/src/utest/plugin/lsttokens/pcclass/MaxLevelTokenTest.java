@@ -61,7 +61,7 @@ public class MaxLevelTokenTest extends AbstractIntegerTokenTestCase<CDOMPCClass>
 	@Override
 	public IntegerKey getIntegerKey()
 	{
-		return IntegerKey.MAX_LEVEL;
+		return IntegerKey.LEVEL_LIMIT;
 	}
 
 	@Override
