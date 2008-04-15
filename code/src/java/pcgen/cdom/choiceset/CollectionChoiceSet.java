@@ -26,10 +26,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrimitiveChoiceSet;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.character.CharacterDataStore;
 
-public class CollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
+public class CollectionChoiceSet<T extends LSTWriteable> implements PrimitiveChoiceSet<T>
 {
 
 	private final Collection<T> c;
@@ -47,8 +50,7 @@ public class CollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
 
 	public String getLSTformat()
 	{
-		// TODO Need to think about how to define this...
-		return null;
+		return ReferenceUtilities.joinLstFormat(c, Constants.COMMA);
 	}
 
 	public Class<T> getChoiceClass()

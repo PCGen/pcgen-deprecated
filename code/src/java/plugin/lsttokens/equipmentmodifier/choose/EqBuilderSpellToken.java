@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.PrimitiveChoiceSet;
-import pcgen.cdom.choiceset.CollectionChoiceSet;
+import pcgen.cdom.choiceset.SimpleCollectionChoiceSet;
 import pcgen.cdom.helper.SpellLevelLimit;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.inst.CDOMSpell;
@@ -192,7 +192,7 @@ public class EqBuilderSpellToken extends AbstractToken implements
 				sllList.add(new SpellLevelLimit(ref, min, max));
 			}
 		}
-		return new CollectionChoiceSet<SpellLevelLimit>(sllList);
+		return new SimpleCollectionChoiceSet<SpellLevelLimit>(sllList);
 	}
 
 	public Class<CDOMEqMod> getTokenClass()

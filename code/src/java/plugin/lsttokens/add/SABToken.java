@@ -158,7 +158,6 @@ public class SABToken extends AbstractToken implements AddLstToken,
 
 		ChooseActionContainer container = new ChooseActionContainer("ADD");
 		container.addActor(new GrantActor<CDOMSpecialAbility>());
-		context.getObjectContext().give(getFullName(), obj, container);
 		container.setAssociation(AssociationKey.CHOICE_COUNT, FormulaFactory
 				.getFormulaFor(count));
 		container.setAssociation(AssociationKey.CHOICE_MAXCOUNT, FormulaFactory
@@ -168,6 +167,7 @@ public class SABToken extends AbstractToken implements AddLstToken,
 		ChoiceSet<CDOMSpecialAbility> cs = new ChoiceSet<CDOMSpecialAbility>(
 				name, rcs);
 		container.setChoiceSet(cs);
+		context.getObjectContext().give(getFullName(), obj, container);
 		return true;
 	}
 
