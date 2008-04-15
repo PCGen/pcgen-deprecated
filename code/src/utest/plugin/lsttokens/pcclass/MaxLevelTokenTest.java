@@ -19,14 +19,15 @@ package plugin.lsttokens.pcclass;
 
 import org.junit.Test;
 
+import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractIntegerTokenTestCase;
 
-public class MaxLevelTokenTest extends AbstractTokenTestCase<CDOMPCClass>
+public class MaxLevelTokenTest extends AbstractIntegerTokenTestCase<CDOMPCClass>
 {
 
 	static MaxlevelToken token = new MaxlevelToken();
@@ -52,57 +53,33 @@ public class MaxLevelTokenTest extends AbstractTokenTestCase<CDOMPCClass>
 	}
 
 	@Test
-	public void testInvalidInput() throws PersistenceLayerException
-	{
-		// Always ensure get is unchanged
-		// since no invalid item should set or reset the value
-		assertNoSideEffects();
-		assertFalse(parse("TestWP"));
-		assertNoSideEffects();
-		assertFalse(parse("String"));
-		assertNoSideEffects();
-		assertFalse(parse("TYPE=TestType"));
-		assertNoSideEffects();
-		assertFalse(parse("TYPE.TestType"));
-		assertNoSideEffects();
-		assertFalse(parse("ALL"));
-		assertNoSideEffects();
-		assertFalse(parse("ANY"));
-		assertNoSideEffects();
-		assertFalse(parse("FIVE"));
-		assertNoSideEffects();
-		assertFalse(parse("4.5"));
-		assertNoSideEffects();
-		assertFalse(parse("1/2"));
-		assertNoSideEffects();
-		assertFalse(parse("1+3"));
-		assertNoSideEffects();
-		// Require Integer greater than zero
-		assertFalse(parse("-1"));
-		assertNoSideEffects();
-		assertFalse(parse("0"));
-		assertNoSideEffects();
-	}
-
-	@Test
-	public void testValidInputs() throws PersistenceLayerException
-	{
-		assertTrue(parse("5"));
-
-		assertTrue(parse("1"));
-
-	}
-
-	@Test
-	public void testRoundRobinFive() throws PersistenceLayerException
-	{
-		runRoundRobin("5");
-	}
-
-	@Test
 	public void testRoundRobinNoLimit() throws PersistenceLayerException
 	{
 		runRoundRobin("NOLIMIT");
+	}
+
+	@Override
+	public IntegerKey getIntegerKey()
+	{
+		return IntegerKey.MAX_LEVEL;
+	}
+
+	@Override
+	public boolean isNegativeAllowed()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isPositiveAllowed()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isZeroAllowed()
+	{
+		return false;
 	}
 
 }

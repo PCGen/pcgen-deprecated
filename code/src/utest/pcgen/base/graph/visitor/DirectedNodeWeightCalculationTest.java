@@ -47,6 +47,7 @@ public class DirectedNodeWeightCalculationTest extends TestCase
 	TestDirectionalEdge dedge1, dedge2, dedge3, dedge4, dedge5, dedge6, dedge7;
 
 	DirectedNodeWeightCalculation d;
+	DirectedNodeWeightCalculation d2;
 
 	DefaultMap<Edge, Integer> map = new DefaultMap<Edge, Integer>();
 
@@ -106,6 +107,7 @@ public class DirectedNodeWeightCalculationTest extends TestCase
 		assertTrue(g.addEdge(dedge5));
 		assertTrue(g.addEdge(dedge6));
 		assertTrue(g.addEdge(dedge7));
+		d2 = new DirectedNodeWeightCalculation(g);
 		d = new DirectedNodeWeightCalculation(g)
 		{
 			@Override
@@ -263,42 +265,50 @@ public class DirectedNodeWeightCalculationTest extends TestCase
 	public void testMissingNode()
 	{
 		assertEquals(-1, d.calculateNodeWeight(node8));
+		assertEquals(-1, d2.calculateNodeWeight(node8));
 	}
 
 	public void testMissingEdge()
 	{
 		assertEquals(-1, d.calculateEdgeWeight(edge8));
+		assertEquals(-1, d2.calculateEdgeWeight(edge8));
 	}
 
 	public void testSimpleEdgeDistance()
 	{
 		assertEquals(1, d.calculateEdgeWeight(dedge3));
+		assertEquals(1, d2.calculateEdgeWeight(dedge3));
 	}
 
 	public void testComplexEdgeDistance()
 	{
 		assertEquals(3, d.calculateEdgeWeight(dedge6));
+		assertEquals(3, d2.calculateEdgeWeight(dedge6));
 	}
 
 	public void testSimpleNodeDistance()
 	{
 		assertEquals(1, d.calculateNodeWeight(node1));
+		assertEquals(1, d2.calculateNodeWeight(node1));
 	}
 
 	public void testComplexNodeDistance()
 	{
 		assertEquals(3, d.calculateNodeWeight(node3));
+		assertEquals(3, d2.calculateNodeWeight(node3));
 	}
 
 	public void testCycleError()
 	{
 		assertEquals(-1, d.calculateNodeWeight(node4));
+		assertEquals(-1, d2.calculateNodeWeight(node4));
 	}
 
 	public void testWeighted()
 	{
 		map.put(dedge6, 2);
 		assertEquals(6, d.calculateNodeWeight(node7));
+		assertEquals(3, d2.calculateNodeWeight(node7));
 	}
 
 	public void testWeightedComplex()

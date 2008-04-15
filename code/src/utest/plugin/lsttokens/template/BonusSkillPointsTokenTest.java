@@ -17,17 +17,15 @@
  */
 package plugin.lsttokens.template;
 
-import org.junit.Test;
-
+import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.inst.CDOMTemplate;
-import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
-import plugin.lsttokens.testsupport.AbstractTokenTestCase;
+import plugin.lsttokens.testsupport.AbstractIntegerTokenTestCase;
 
 public class BonusSkillPointsTokenTest extends
-		AbstractTokenTestCase<CDOMTemplate>
+		AbstractIntegerTokenTestCase<CDOMTemplate>
 {
 
 	static BonusskillpointsToken token = new BonusskillpointsToken();
@@ -52,49 +50,27 @@ public class BonusSkillPointsTokenTest extends
 		return token;
 	}
 
-	@Test
-	public void testInvalidInput() throws PersistenceLayerException
+	@Override
+	public IntegerKey getIntegerKey()
 	{
-		// Always ensure get is unchanged
-		// since no invalid item should set or reset the value
-		assertFalse(parse("TestWP"));
-		assertNoSideEffects();
-		assertFalse(parse("String"));
-		assertNoSideEffects();
-		assertFalse(parse("TYPE=TestType"));
-		assertNoSideEffects();
-		assertFalse(parse("TYPE.TestType"));
-		assertNoSideEffects();
-		assertFalse(parse("ALL"));
-		assertNoSideEffects();
-		assertFalse(parse("ANY"));
-		assertNoSideEffects();
-		assertFalse(parse("FIVE"));
-		assertNoSideEffects();
-		assertFalse(parse("4.5"));
-		assertNoSideEffects();
-		assertFalse(parse("1/2"));
-		assertNoSideEffects();
-		assertFalse(parse("1+3"));
-		assertNoSideEffects();
-		// Require Integer greater than zero
-		assertFalse(parse("-1"));
-		assertNoSideEffects();
-		assertFalse(parse("0"));
-		assertNoSideEffects();
+		return IntegerKey.BONUS_CLASS_SKILL_POINTS;
 	}
 
-	@Test
-	public void testValidInputs() throws PersistenceLayerException
+	@Override
+	public boolean isNegativeAllowed()
 	{
-		assertTrue(parse("5"));
-		assertTrue(parse("1"));
+		return false;
 	}
 
-	@Test
-	public void testRoundRobinFive() throws PersistenceLayerException
+	@Override
+	public boolean isPositiveAllowed()
 	{
-		runRoundRobin("5");
+		return true;
 	}
 
+	@Override
+	public boolean isZeroAllowed()
+	{
+		return false;
+	}
 }

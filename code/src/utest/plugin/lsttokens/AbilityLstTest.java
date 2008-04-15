@@ -31,7 +31,9 @@ import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import plugin.lsttokens.testsupport.AbstractGlobalTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
+import plugin.pretokens.parser.PreLevelParser;
 import plugin.pretokens.parser.PreRaceParser;
+import plugin.pretokens.writer.PreLevelWriter;
 import plugin.pretokens.writer.PreRaceWriter;
 
 public class AbilityLstTest extends AbstractGlobalTokenTestCase
@@ -47,6 +49,8 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 		super.setUp();
 		TokenRegistration.register(new PreRaceParser());
 		TokenRegistration.register(new PreRaceWriter());
+		TokenRegistration.register(new PreLevelParser());
+		TokenRegistration.register(new PreLevelWriter());
 	}
 
 	@Override
@@ -131,9 +135,23 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
+	public void testInvalidOnlyPre() throws PersistenceLayerException
+	{
+		assertFalse(parse("FEAT|NORMAL|PRERACE:1,Human"));
+		assertNoSideEffects();
+	}
+
+	@Test
 	public void testInvalidDoubleBarAbility() throws PersistenceLayerException
 	{
 		assertFalse(parse("FEAT|NORMAL|Abil1||Abil2"));
+		assertNoSideEffects();
+	}
+
+	@Test
+	public void testInvalidInsertedPre() throws PersistenceLayerException
+	{
+		assertFalse(parse("FEAT|NORMAL|Abil1|PRELEVEL:MIN=4|Abil2"));
 		assertNoSideEffects();
 	}
 
@@ -162,6 +180,18 @@ public class AbilityLstTest extends AbstractGlobalTokenTestCase
 				"Abil1");
 		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
 		runRoundRobin("FEAT|NORMAL|Abil1");
+	}
+
+	@Test
+	public void testRoundRobinJustTwoPrereq() throws PersistenceLayerException
+	{
+		CDOMAbility ab = primaryContext.ref.constructCDOMObject(
+				CDOMAbility.class, "Abil1");
+		primaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		ab = secondaryContext.ref.constructCDOMObject(CDOMAbility.class,
+				"Abil1");
+		secondaryContext.ref.reassociateCategory(CDOMAbilityCategory.FEAT, ab);
+		runRoundRobin("FEAT|NORMAL|Abil1|PRELEVEL:MIN=5|PRERACE:1,Human");
 	}
 
 	@Test

@@ -17,9 +17,12 @@
  */
 package plugin.lsttokens;
 
+import org.junit.Test;
+
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.inst.CDOMSkill;
 import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -85,4 +88,21 @@ public class CSkillLstTest extends AbstractGlobalListTokenTestCase<CDOMSkill>
 	{
 		return token;
 	}
+
+	/*
+	 * TODO Need to enable these
+	 */
+	// @Test
+	// public void testRoundRobinList() throws PersistenceLayerException
+	// {
+	// runRoundRobin("LIST");
+	// }
+	//
+	// @Test
+	// public void testRoundRobinListPlus() throws PersistenceLayerException
+	// {
+	// construct(primaryContext, "Foo");
+	// construct(secondaryContext, "Foo");
+	// runRoundRobin("Foo|LIST");
+	//	}
 }

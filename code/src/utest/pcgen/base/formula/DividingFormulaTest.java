@@ -5,6 +5,13 @@ import junit.framework.TestCase;
 public class DividingFormulaTest extends TestCase
 {
 
+	public void testToString()
+	{
+		assertEquals("/1", new DividingFormula(1).toString());
+		assertEquals("/3", new DividingFormula(3).toString());
+		assertEquals("/-3", new DividingFormula(-3).toString());
+	}
+	
 	public void testIdentity()
 	{
 		DividingFormula f = new DividingFormula(1);

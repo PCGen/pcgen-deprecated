@@ -17,9 +17,12 @@
  */
 package plugin.lsttokens.remove;
 
+import org.junit.Test;
+
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.RemoveLstToken;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.CDOMLoader;
@@ -76,4 +79,14 @@ public class FeatTokenTest extends AbstractRemoveTokenTestCase
 	{
 		return true;
 	}
+
+	/*
+	 * TODO Need to enable this
+	 */
+	// @Test
+	// public void testRoundRobinChoice() throws PersistenceLayerException
+	// {
+	// runRoundRobin(getSubTokenString() + "|CHOICE");
+	// }
+
 }

@@ -5,6 +5,15 @@ import junit.framework.TestCase;
 public class AddingFormulaTest extends TestCase
 {
 
+	public void testToString()
+	{
+		assertEquals("+1", new AddingFormula(1).toString());
+		assertEquals("+0", new AddingFormula(0).toString());
+		assertEquals("+3", new AddingFormula(3).toString());
+		assertEquals("-3", new AddingFormula(-3).toString());
+	}
+	
+
 	public void testIdentity()
 	{
 		AddingFormula f = new AddingFormula(1);

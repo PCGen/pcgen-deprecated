@@ -5,6 +5,14 @@ import junit.framework.TestCase;
 public class MultiplyingFormulaTest extends TestCase
 {
 
+	public void testToString()
+	{
+		assertEquals("*1", new MultiplyingFormula(1).toString());
+		assertEquals("*3", new MultiplyingFormula(3).toString());
+		assertEquals("*0", new MultiplyingFormula(0).toString());
+		assertEquals("*-3", new MultiplyingFormula(-3).toString());
+	}
+	
 	public void testIdentity()
 	{
 		MultiplyingFormula f = new MultiplyingFormula(1);

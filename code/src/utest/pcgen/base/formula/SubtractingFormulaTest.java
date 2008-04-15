@@ -6,6 +6,14 @@ import junit.framework.TestCase;
 public class SubtractingFormulaTest extends TestCase
 {
 
+	public void testToString()
+	{
+		assertEquals("-1", new SubtractingFormula(1).toString());
+		assertEquals("-3", new SubtractingFormula(3).toString());
+		assertEquals("+3", new SubtractingFormula(-3).toString());
+		assertEquals("-0", new SubtractingFormula(0).toString());
+	}
+	
 	public void testIdentity()
 	{
 		SubtractingFormula f = new SubtractingFormula(1);

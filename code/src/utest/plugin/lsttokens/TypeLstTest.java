@@ -80,4 +80,8 @@ public class TypeLstTest extends AbstractGlobalTypeSafeListTestCase
 	{
 		return true;
 	}
+	
+	/*
+	 * TODO TEST .ADD. and .REMOVE.
+	 */
 }
