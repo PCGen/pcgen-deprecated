@@ -1,8 +1,9 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
 import java.util.Collections;
 import java.util.Set;
 
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
 public class NoChoiceSet implements PrimitiveChoiceSet<Integer>

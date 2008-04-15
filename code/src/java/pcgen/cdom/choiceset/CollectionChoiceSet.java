@@ -20,22 +20,21 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.Constants;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
-public class SimpleCollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
+public class CollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
 
 	private final Collection<T> c;
 
-	public SimpleCollectionChoiceSet(Collection<T> col)
+	public CollectionChoiceSet(Collection<T> col)
 	{
 		super();
 		if (col == null)
@@ -48,7 +47,8 @@ public class SimpleCollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
 
 	public String getLSTformat()
 	{
-		return StringUtil.join(c, Constants.COMMA);
+		// TODO Need to think about how to define this...
+		return null;
 	}
 
 	public Class<T> getChoiceClass()
@@ -74,9 +74,9 @@ public class SimpleCollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
 		{
 			return true;
 		}
-		if (o instanceof SimpleCollectionChoiceSet)
+		if (o instanceof CollectionChoiceSet)
 		{
-			SimpleCollectionChoiceSet<?> other = (SimpleCollectionChoiceSet<?>) o;
+			CollectionChoiceSet<?> other = (CollectionChoiceSet<?>) o;
 			return c.equals(other.c);
 		}
 		return false;

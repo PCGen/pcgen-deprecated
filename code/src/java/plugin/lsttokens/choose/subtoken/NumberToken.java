@@ -21,7 +21,7 @@ import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
-import pcgen.cdom.helper.FormulaChoiceSet;
+import pcgen.cdom.choiceset.FormulaChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.context.LoadContext;

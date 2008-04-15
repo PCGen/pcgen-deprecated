@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.choiceset.SimpleCollectionChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.cdom.helper.SimpleCollectionChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.PersistenceLayerException;

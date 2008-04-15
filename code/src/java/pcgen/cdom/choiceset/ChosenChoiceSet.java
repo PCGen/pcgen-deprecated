@@ -20,7 +20,7 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +32,8 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.AssociationListKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
+import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
 public class ChosenChoiceSet<T> implements PrimitiveChoiceSet<T>

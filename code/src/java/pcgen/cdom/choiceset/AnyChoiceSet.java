@@ -20,64 +20,67 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
-public class CollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
+public class AnyChoiceSet<T extends CDOMObject> implements
+		PrimitiveChoiceSet<T>
 {
 
-	private final Collection<T> c;
+	private Class<T> choiceClass;
 
-	public CollectionChoiceSet(Collection<T> col)
+	public static <T extends CDOMObject> AnyChoiceSet<T> getAnyChooser(
+			Class<T> cl)
+	{
+		return new AnyChoiceSet<T>(cl);
+	}
+
+	public AnyChoiceSet(Class<T> cl)
 	{
 		super();
-		if (col == null)
+		if (cl == null)
+		{
+			throw new IllegalArgumentException("Choice Class cannot be null");
+		}
+		if (CategorizedCDOMObject.class.isAssignableFrom(cl))
 		{
 			throw new IllegalArgumentException(
-				"Choice Collection cannot be null");
+					"Cannot use Categorized Class without a Category");
 		}
-		c = col;
-	}
-
-	public String getLSTformat()
-	{
-		// TODO Need to think about how to define this...
-		return null;
-	}
-
-	public Class<T> getChoiceClass()
-	{
-		return (Class<T>) (c.isEmpty() ? null : c.iterator().next().getClass());
+		choiceClass = cl;
 	}
 
 	public Set<T> getSet(CharacterDataStore pc)
 	{
-		return new HashSet<T>(c);
+		return pc.getRulesData().getAll(choiceClass);
+	}
+
+	public String getLSTformat()
+	{
+		return "ANY";
+	}
+
+	public Class<T> getChoiceClass()
+	{
+		return choiceClass;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return c.size();
+		return choiceClass.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o == this)
-		{
-			return true;
-		}
-		if (o instanceof CollectionChoiceSet)
-		{
-			CollectionChoiceSet<?> other = (CollectionChoiceSet<?>) o;
-			return c.equals(other.c);
-		}
-		return false;
+		return o instanceof AnyChoiceSet
+				&& choiceClass.equals(((AnyChoiceSet<?>) o).choiceClass);
 	}
 }

@@ -20,66 +20,64 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
-import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
+import pcgen.rules.persistence.TokenUtilities;
 
-public class AnyChoiceSet<T extends CDOMObject> implements
-		PrimitiveChoiceSet<T>
+public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
 
-	private Class<T> choiceClass;
+	private final Set<PrimitiveChoiceSet<T>> set = new TreeSet<PrimitiveChoiceSet<T>>(
+			TokenUtilities.WRITEABLE_SORTER);
 
-	public static <T extends CDOMObject> AnyChoiceSet<T> getAnyChooser(
-			Class<T> cl)
+	public CompoundOrChoiceSet(Collection<PrimitiveChoiceSet<T>> coll)
 	{
-		return new AnyChoiceSet<T>(cl);
-	}
-
-	public AnyChoiceSet(Class<T> cl)
-	{
-		super();
-		if (cl == null)
+		if (coll == null)
 		{
-			throw new IllegalArgumentException("Choice Class cannot be null");
+			throw new IllegalArgumentException();
 		}
-		if (CategorizedCDOMObject.class.isAssignableFrom(cl))
-		{
-			throw new IllegalArgumentException(
-					"Cannot use Categorized Class without a Category");
-		}
-		choiceClass = cl;
+		set.addAll(coll);
 	}
 
 	public Set<T> getSet(CharacterDataStore pc)
 	{
-		return pc.getRulesData().getAll(choiceClass);
+		Set<T> returnSet = new HashSet<T>();
+		for (PrimitiveChoiceSet<T> cs : set)
+		{
+			returnSet.addAll(cs.getSet(pc));
+		}
+		return returnSet;
 	}
 
 	public String getLSTformat()
 	{
-		return "ANY";
+		return ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
 	}
 
-	public Class<T> getChoiceClass()
+	public Class<? super T> getChoiceClass()
 	{
-		return choiceClass;
+		return set == null ? null : set.iterator().next().getChoiceClass();
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return choiceClass.hashCode();
+		return set.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		return o instanceof AnyChoiceSet
-				&& choiceClass.equals(((AnyChoiceSet<?>) o).choiceClass);
+		return (o instanceof CompoundOrChoiceSet)
+				&& ((CompoundOrChoiceSet<?>) o).set.equals(set);
 	}
 }

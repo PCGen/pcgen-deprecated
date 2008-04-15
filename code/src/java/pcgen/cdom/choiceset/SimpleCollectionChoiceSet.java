@@ -20,63 +20,66 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
+import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
-import pcgen.rules.persistence.TokenUtilities;
 
-public class CompoundOrChoiceSet<T> implements PrimitiveChoiceSet<T>
+public class SimpleCollectionChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
 
-	private final Set<PrimitiveChoiceSet<T>> set = new TreeSet<PrimitiveChoiceSet<T>>(
-			TokenUtilities.WRITEABLE_SORTER);
+	private final Collection<T> c;
 
-	public CompoundOrChoiceSet(Collection<PrimitiveChoiceSet<T>> coll)
+	public SimpleCollectionChoiceSet(Collection<T> col)
 	{
-		if (coll == null)
+		super();
+		if (col == null)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Choice Collection cannot be null");
 		}
-		set.addAll(coll);
-	}
-
-	public Set<T> getSet(CharacterDataStore pc)
-	{
-		Set<T> returnSet = new HashSet<T>();
-		for (PrimitiveChoiceSet<T> cs : set)
-		{
-			returnSet.addAll(cs.getSet(pc));
-		}
-		return returnSet;
+		c = col;
 	}
 
 	public String getLSTformat()
 	{
-		return ReferenceUtilities.joinLstFormat(set, Constants.PIPE);
+		return StringUtil.join(c, Constants.COMMA);
 	}
 
-	public Class<? super T> getChoiceClass()
+	public Class<T> getChoiceClass()
 	{
-		return set == null ? null : set.iterator().next().getChoiceClass();
+		return (Class<T>) (c.isEmpty() ? null : c.iterator().next().getClass());
+	}
+
+	public Set<T> getSet(CharacterDataStore pc)
+	{
+		return new HashSet<T>(c);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return set.hashCode();
+		return c.size();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		return (o instanceof CompoundOrChoiceSet)
-				&& ((CompoundOrChoiceSet<?>) o).set.equals(set);
+		if (o == this)
+		{
+			return true;
+		}
+		if (o instanceof SimpleCollectionChoiceSet)
+		{
+			SimpleCollectionChoiceSet<?> other = (SimpleCollectionChoiceSet<?>) o;
+			return c.equals(other.c);
+		}
+		return false;
 	}
 }

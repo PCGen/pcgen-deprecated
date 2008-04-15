@@ -20,70 +20,64 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
-import pcgen.cdom.base.CDOMList;
-import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
-public class ListChoiceSet<T extends CDOMObject> implements
+public class FilteringChooser<T extends PrereqObject> implements
 		PrimitiveChoiceSet<T>
 {
 
-	private final CDOMList<T> list;
+	private final PrimitiveChoiceFilter<? super T> removingFilter;
 
-	public ListChoiceSet(CDOMList<T> cdomList)
+	private final PrimitiveChoiceSet<T> baseSet;
+
+	public FilteringChooser(PrimitiveChoiceSet<T> base,
+		PrimitiveChoiceFilter<? super T> cf)
 	{
 		super();
-		if (cdomList == null)
+		if (base == null)
 		{
-			throw new IllegalArgumentException(
-				"Choice Collection cannot be null");
+			throw new IllegalArgumentException();
 		}
-		list = cdomList;
-	}
-
-	public String getLSTformat()
-	{
-		return "LIST:" + list.toString();
-	}
-
-	public Class<T> getChoiceClass()
-	{
-		return list.getListClass();
+		if (cf == null)
+		{
+			throw new IllegalArgumentException();
+		}
+		baseSet = base;
+		removingFilter = cf;
 	}
 
 	public Set<T> getSet(CharacterDataStore pc)
 	{
-		/*
-		 * FUTURE This seems to be wrapping a Collection into a Set... can
-		 * getSet relax to a Collection or can getCODMListContents tighten to a
-		 * set?
-		 */
-		return new HashSet<T>(pc.getCDOMListContents(list));
+		Set<T> choices = new HashSet<T>(baseSet.getSet(pc));
+		for (Iterator<T> it = choices.iterator(); it.hasNext();)
+		{
+			if (!removingFilter.allow(pc, it.next()))
+			{
+				it.remove();
+			}
+		}
+		return choices;
 	}
 
-	@Override
-	public int hashCode()
+	public String getLSTformat()
 	{
-		return list.hashCode();
+		StringBuilder sb = new StringBuilder();
+		sb.append(baseSet.getLSTformat()).append('[');
+		sb.append(removingFilter.getLSTformat()).append(']');
+		return sb.toString();
 	}
 
-	@Override
-	public boolean equals(Object o)
+	public Class<? super T> getChoiceClass()
 	{
-		if (o == this)
-		{
-			return true;
-		}
-		if (o instanceof ListChoiceSet)
-		{
-			ListChoiceSet<?> other = (ListChoiceSet<?>) o;
-			return list.equals(other.list);
-		}
-		return false;
+		return baseSet.getChoiceClass();
 	}
 }

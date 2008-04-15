@@ -20,83 +20,70 @@
  * Current Ver: $Revision: 1111 $ Last Editor: $Author: boomer70 $ Last Edited:
  * $Date: 2006-06-22 21:22:44 -0400 (Thu, 22 Jun 2006) $
  */
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.persistence.TokenUtilities;
 
-public class ReferenceChoiceSet<T extends PrereqObject> implements
-		PrimitiveChoiceSet<T>
+public class CompoundAndChoiceSet<T> implements PrimitiveChoiceSet<T>
 {
 
-	private final Set<CDOMReference<T>> set;
+	private final Set<PrimitiveChoiceSet<T>> set = new TreeSet<PrimitiveChoiceSet<T>>(
+			TokenUtilities.WRITEABLE_SORTER);
 
-	public ReferenceChoiceSet(Collection<? extends CDOMReference<T>> col)
+	public CompoundAndChoiceSet(Collection<PrimitiveChoiceSet<T>> coll)
 	{
-		super();
-		if (col == null)
+		if (coll == null)
 		{
-			throw new IllegalArgumentException(
-				"Choice Collection cannot be null");
+			throw new IllegalArgumentException();
 		}
-		if (col.isEmpty())
-		{
-			throw new IllegalArgumentException(
-				"Choice Collection cannot be empty");
-		}
-		set = new HashSet<CDOMReference<T>>(col);
-	}
-
-	public String getLSTformat()
-	{
-		Set<CDOMReference<?>> sortedSet =
-				new TreeSet<CDOMReference<?>>(TokenUtilities.REFERENCE_SORTER);
-		sortedSet.addAll(set);
-		return ReferenceUtilities.joinLstFormat(sortedSet, Constants.COMMA);
-	}
-
-	public Class<T> getChoiceClass()
-	{
-		return set == null ? null : set.iterator().next().getReferenceClass();
+		set.addAll(coll);
 	}
 
 	public Set<T> getSet(CharacterDataStore pc)
 	{
-		Set<T> returnSet = new HashSet<T>();
-		for (CDOMReference<T> ref : set)
+		Set<T> returnSet = null;
+		for (PrimitiveChoiceSet<T> cs : set)
 		{
-			returnSet.addAll(ref.getContainedObjects());
+			if (returnSet == null)
+			{
+				returnSet = cs.getSet(pc);
+			}
+			else
+			{
+				returnSet.retainAll(cs.getSet(pc));
+			}
 		}
 		return returnSet;
+	}
+
+	public String getLSTformat()
+	{
+		return ReferenceUtilities.joinLstFormat(set, Constants.COMMA);
+	}
+
+	public Class<? super T> getChoiceClass()
+	{
+		return set == null ? null : set.iterator().next().getChoiceClass();
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return set.size();
+		return set.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o == this)
-		{
-			return true;
-		}
-		if (o instanceof ReferenceChoiceSet)
-		{
-			ReferenceChoiceSet<?> other = (ReferenceChoiceSet<?>) o;
-			return set.equals(other.set);
-		}
-		return false;
+		return (o instanceof CompoundAndChoiceSet)
+				&& ((CompoundAndChoiceSet<?>) o).set.equals(set);
 	}
 }

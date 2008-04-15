@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.helper.CollectionChoiceSet;
+import pcgen.cdom.choiceset.CollectionChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.SpellLevelLimit;
 import pcgen.cdom.inst.CDOMEqMod;

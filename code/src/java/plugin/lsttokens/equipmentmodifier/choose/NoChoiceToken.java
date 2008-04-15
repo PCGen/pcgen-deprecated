@@ -17,7 +17,7 @@
  */
 package plugin.lsttokens.equipmentmodifier.choose;
 
-import pcgen.cdom.helper.NoChoiceSet;
+import pcgen.cdom.choiceset.NoChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.EquipmentModifier;

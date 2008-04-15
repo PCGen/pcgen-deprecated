@@ -1,8 +1,9 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
 import java.util.Set;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
 public class FormulaChoiceSet implements PrimitiveChoiceSet<Integer>

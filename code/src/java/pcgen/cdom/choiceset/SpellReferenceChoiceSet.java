@@ -1,4 +1,4 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.choiceset;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +11,7 @@ import pcgen.cdom.base.CDOMListObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.DomainSpellList;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.persistence.TokenUtilities;

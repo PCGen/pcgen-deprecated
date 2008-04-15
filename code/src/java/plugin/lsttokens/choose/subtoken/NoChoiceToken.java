@@ -18,7 +18,7 @@
 package plugin.lsttokens.choose.subtoken;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.helper.NoChoiceSet;
+import pcgen.cdom.choiceset.NoChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.context.LoadContext;

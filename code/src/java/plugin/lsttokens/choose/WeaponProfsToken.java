@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.helper.CompoundOrChoiceSet;
+import pcgen.cdom.choiceset.CompoundOrChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.PObject;

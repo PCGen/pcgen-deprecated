@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.helper.ChainedChoiceSet;
-import pcgen.cdom.helper.CollectionChoiceSet;
-import pcgen.cdom.helper.NumberChoiceSet;
+import pcgen.cdom.choiceset.ChainedChoiceSet;
+import pcgen.cdom.choiceset.CollectionChoiceSet;
+import pcgen.cdom.choiceset.NumberChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.inst.CDOMSkill;
