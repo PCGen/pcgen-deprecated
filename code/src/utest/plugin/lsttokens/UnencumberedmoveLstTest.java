@@ -102,9 +102,9 @@ public class UnencumberedmoveLstTest extends AbstractGlobalTokenTestCase
 	}
 
 	@Test
-	public void testRoundRobinLightArmor() throws PersistenceLayerException
+	public void testValidInputDoubleArmor() throws PersistenceLayerException
 	{
-		runRoundRobin("LightArmor");
+		assertTrue(parse("LightArmor"));
 	}
 
 	@Test
