@@ -7,8 +7,8 @@ import java.util.Set;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.inst.CDOMSizeAdjustment;
-import pcgen.cdom.inst.DomainList;
 import pcgen.cdom.inst.CDOMPCLevel;
+import pcgen.cdom.list.DomainList;
 
 public class ConcreteRulesDataStore
 {

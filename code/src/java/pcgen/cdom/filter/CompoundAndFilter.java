@@ -1,4 +1,4 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.filter;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -6,6 +6,7 @@ import java.util.Set;
 
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.character.CharacterDataStore;
 
 public class CompoundAndFilter<T> implements PrimitiveChoiceFilter<T>

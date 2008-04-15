@@ -1,5 +1,6 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.filter;
 
+import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.character.CharacterDataStore;
 
 public class NegatingFilter<T> implements PrimitiveChoiceFilter<T>

@@ -12,7 +12,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
-import pcgen.cdom.inst.DomainSpellList;
+import pcgen.cdom.list.DomainSpellList;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.persistence.TokenUtilities;
 

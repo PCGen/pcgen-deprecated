@@ -23,7 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pcgen.cdom.inst.CDOMSpell;
-import pcgen.cdom.inst.DomainSpellList;
+import pcgen.cdom.list.DomainSpellList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;

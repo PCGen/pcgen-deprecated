@@ -18,8 +18,8 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.inst.GrantedList;
 import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.cdom.list.GrantedList;
 import pcgen.rules.persistence.TokenUtilities;
 
 public class ListContext

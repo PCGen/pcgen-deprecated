@@ -10,6 +10,7 @@ import java.util.Map;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
+import pcgen.cdom.list.ClassSkillList;
 
 public class CDOMPCClass extends AbstractCDOMClassAwareObject
 {

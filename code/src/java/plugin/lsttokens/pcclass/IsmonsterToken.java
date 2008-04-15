@@ -24,7 +24,7 @@ package plugin.lsttokens.pcclass;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMPCClass;
-import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.list.ClassSkillList;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.rules.context.LoadContext;

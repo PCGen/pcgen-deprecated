@@ -42,7 +42,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.CDOMRace;
-import pcgen.cdom.inst.CompanionList;
+import pcgen.cdom.list.CompanionList;
 import pcgen.core.FollowerOption;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;

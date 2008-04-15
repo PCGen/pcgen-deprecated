@@ -41,7 +41,7 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMDomain;
-import pcgen.cdom.inst.DomainList;
+import pcgen.cdom.list.DomainList;
 import pcgen.core.Deity;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;

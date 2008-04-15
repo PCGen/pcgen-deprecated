@@ -33,7 +33,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.helper.FollowerLimit;
-import pcgen.cdom.inst.CompanionList;
+import pcgen.cdom.list.CompanionList;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.GlobalLstToken;

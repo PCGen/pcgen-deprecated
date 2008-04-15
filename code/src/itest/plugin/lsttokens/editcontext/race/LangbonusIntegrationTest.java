@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.inst.CDOMRace;
-import pcgen.cdom.inst.LanguageList;
+import pcgen.cdom.list.LanguageList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;

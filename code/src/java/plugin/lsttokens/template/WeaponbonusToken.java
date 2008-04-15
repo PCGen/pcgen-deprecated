@@ -29,7 +29,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.cdom.inst.CDOMWeaponProf;
-import pcgen.cdom.inst.WeaponProfList;
+import pcgen.cdom.list.WeaponProfList;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.rules.context.AssociatedChanges;

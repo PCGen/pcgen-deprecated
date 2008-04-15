@@ -27,7 +27,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMSkill;
-import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.list.ClassSkillList;
 import pcgen.cdom.lists.PCGenLists;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;

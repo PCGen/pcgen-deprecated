@@ -31,7 +31,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.inst.CDOMPCClass;
-import pcgen.cdom.inst.LanguageList;
+import pcgen.cdom.list.LanguageList;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.rules.context.AssociatedChanges;

@@ -37,7 +37,7 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.CDOMPCClass;
-import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.list.ClassSkillList;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.PCClassLstToken;
 import pcgen.rules.context.Changes;

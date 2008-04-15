@@ -34,7 +34,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMDomain;
-import pcgen.cdom.inst.DomainList;
+import pcgen.cdom.list.DomainList;
 import pcgen.character.CharacterDataStore;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;

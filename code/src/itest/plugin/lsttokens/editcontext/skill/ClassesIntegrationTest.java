@@ -24,7 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pcgen.cdom.inst.CDOMSkill;
-import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.list.ClassSkillList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;

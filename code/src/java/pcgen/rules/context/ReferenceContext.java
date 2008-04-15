@@ -41,9 +41,9 @@ import pcgen.cdom.inst.CDOMDomain;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMSpellProgressionInfo;
 import pcgen.cdom.inst.CDOMSubClass;
-import pcgen.cdom.inst.ClassSkillList;
-import pcgen.cdom.inst.ClassSpellList;
-import pcgen.cdom.inst.DomainSpellList;
+import pcgen.cdom.list.ClassSkillList;
+import pcgen.cdom.list.ClassSpellList;
+import pcgen.cdom.list.DomainSpellList;
 import pcgen.cdom.reference.ReferenceManufacturer;
 
 public class ReferenceContext

@@ -32,7 +32,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.inst.CDOMDomain;
 import pcgen.cdom.inst.CDOMPCClass;
-import pcgen.cdom.inst.DomainList;
+import pcgen.cdom.list.DomainList;
 import pcgen.core.Domain;
 import pcgen.core.Globals;
 import pcgen.core.PCClass;

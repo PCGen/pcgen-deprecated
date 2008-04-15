@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.inst.CDOMTemplate;
-import pcgen.cdom.inst.CompanionList;
+import pcgen.cdom.list.CompanionList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;

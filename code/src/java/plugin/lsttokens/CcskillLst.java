@@ -38,7 +38,7 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.inst.CDOMSkill;
-import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.list.ClassSkillList;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.rules.context.AssociatedChanges;

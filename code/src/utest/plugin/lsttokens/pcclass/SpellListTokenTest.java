@@ -20,8 +20,8 @@ package plugin.lsttokens.pcclass;
 import org.junit.Test;
 
 import pcgen.cdom.inst.CDOMPCClass;
-import pcgen.cdom.inst.ClassSpellList;
-import pcgen.cdom.inst.DomainSpellList;
+import pcgen.cdom.list.ClassSpellList;
+import pcgen.cdom.list.DomainSpellList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.CDOMLoader;

@@ -8,7 +8,7 @@ import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.inst.CDOMSpell;
-import pcgen.cdom.inst.DomainSpellList;
+import pcgen.cdom.list.DomainSpellList;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.PrimitiveToken;

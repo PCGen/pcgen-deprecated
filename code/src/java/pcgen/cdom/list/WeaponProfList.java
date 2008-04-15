@@ -1,6 +1,7 @@
-package pcgen.cdom.inst;
+package pcgen.cdom.list;
 
 import pcgen.cdom.base.CDOMListObject;
+import pcgen.cdom.inst.CDOMWeaponProf;
 
 public class WeaponProfList extends CDOMListObject<CDOMWeaponProf>
 {

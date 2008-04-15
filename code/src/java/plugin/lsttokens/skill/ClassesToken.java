@@ -36,7 +36,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.inst.CDOMSkill;
-import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.list.ClassSkillList;
 import pcgen.core.Skill;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.lst.SkillLstToken;

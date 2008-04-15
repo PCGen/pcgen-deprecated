@@ -31,7 +31,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.inst.CDOMRace;
-import pcgen.cdom.inst.LanguageList;
+import pcgen.cdom.list.LanguageList;
 import pcgen.core.Race;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.rules.context.AssociatedChanges;

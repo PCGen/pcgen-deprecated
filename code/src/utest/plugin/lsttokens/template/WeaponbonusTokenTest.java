@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.cdom.inst.CDOMWeaponProf;
-import pcgen.cdom.inst.WeaponProfList;
+import pcgen.cdom.list.WeaponProfList;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;

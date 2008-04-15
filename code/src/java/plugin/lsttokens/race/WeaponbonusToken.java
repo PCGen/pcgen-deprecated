@@ -30,7 +30,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMRace;
 import pcgen.cdom.inst.CDOMWeaponProf;
-import pcgen.cdom.inst.WeaponProfList;
+import pcgen.cdom.list.WeaponProfList;
 import pcgen.core.Race;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.rules.context.AssociatedChanges;

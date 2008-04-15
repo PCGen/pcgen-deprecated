@@ -37,7 +37,7 @@ import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.CDOMSpell;
-import pcgen.cdom.inst.ClassSpellList;
+import pcgen.cdom.list.ClassSpellList;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.PersistenceLayerException;

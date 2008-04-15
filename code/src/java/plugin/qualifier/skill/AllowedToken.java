@@ -23,7 +23,7 @@ import java.util.logging.Level;
 
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMSkill;
-import pcgen.cdom.inst.ClassSkillList;
+import pcgen.cdom.list.ClassSkillList;
 import pcgen.cdom.lists.PCGenLists;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
