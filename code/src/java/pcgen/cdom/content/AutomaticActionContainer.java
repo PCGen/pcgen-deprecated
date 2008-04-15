@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.Set;
 
 import pcgen.base.util.ListSet;
+import pcgen.cdom.base.ActionContainer;
 import pcgen.cdom.base.AssociationSupport;
+import pcgen.cdom.base.ChoiceSet;
+import pcgen.cdom.base.ChooseActor;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.ChooseActor;
 
 public class AutomaticActionContainer extends ConcretePrereqObject implements
 		LSTWriteable, ActionContainer

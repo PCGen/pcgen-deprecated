@@ -28,13 +28,13 @@ import java.util.List;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.ChoiceSet;
+import pcgen.cdom.base.ChooseActionContainer;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.content.ChooseActionContainer;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMKit;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;

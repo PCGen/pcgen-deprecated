@@ -24,13 +24,13 @@ import org.junit.Test;
 
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.SimpleAssociatedObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.inst.CDOMSkill;
-import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.cdom.list.ClassSkillList;
 import pcgen.cdom.list.LanguageList;
 import pcgen.cdom.reference.CDOMSimpleSingleRef;

@@ -1,8 +1,8 @@
 package pcgen.cdom.actor;
 
+import pcgen.cdom.base.ChooseActor;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.helper.ChooseActor;
-import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.cdom.base.SimpleAssociatedObject;
 import pcgen.core.PlayerCharacter;
 
 public class GrantBonusActor extends SimpleAssociatedObject implements

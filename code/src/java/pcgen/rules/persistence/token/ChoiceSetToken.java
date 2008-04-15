@@ -1,6 +1,6 @@
 package pcgen.rules.persistence.token;
 
-import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.LstToken;
 import pcgen.rules.context.LoadContext;

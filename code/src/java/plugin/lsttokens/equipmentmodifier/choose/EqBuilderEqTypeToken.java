@@ -24,7 +24,7 @@ package plugin.lsttokens.equipmentmodifier.choose;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.core.Constants;
 import pcgen.core.EquipmentModifier;

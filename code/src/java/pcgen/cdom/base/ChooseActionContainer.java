@@ -1,15 +1,10 @@
-package pcgen.cdom.content;
+package pcgen.cdom.base;
 
 import java.util.Collection;
 import java.util.Set;
 
 import pcgen.base.util.ListSet;
-import pcgen.cdom.base.AssociationSupport;
-import pcgen.cdom.base.ConcretePrereqObject;
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.ChooseActor;
 
 public class ChooseActionContainer extends ConcretePrereqObject implements
 		LSTWriteable, ActionContainer

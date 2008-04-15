@@ -27,7 +27,7 @@ import java.util.Set;
 
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
 public class ListChoiceSet<T extends CDOMObject> implements

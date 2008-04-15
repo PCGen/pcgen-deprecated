@@ -23,8 +23,8 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.choiceset.CompoundOrChoiceSet;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;

@@ -27,8 +27,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.base.PrimitiveChoiceFilter;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
 public class FilteringChooser<T extends PrereqObject> implements

@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.base.PrimitiveChoiceFilter;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.ChooseLstQualifierToken;

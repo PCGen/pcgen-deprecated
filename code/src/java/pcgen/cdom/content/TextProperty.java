@@ -15,12 +15,13 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.cdom.base;
+package pcgen.cdom.content;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.base.ConcretePrereqObject;
 
 public class TextProperty extends ConcretePrereqObject
 {

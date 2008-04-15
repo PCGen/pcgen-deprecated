@@ -26,14 +26,14 @@ import java.util.Collections;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.actor.GrantActor;
+import pcgen.cdom.base.ChoiceSet;
+import pcgen.cdom.base.ChooseActionContainer;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.choiceset.ReferenceChoiceSet;
-import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
-import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.cdom.reference.CDOMGroupRef;

@@ -9,6 +9,8 @@ import java.util.TreeSet;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.PrimitiveChoiceFilter;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.choiceset.AnyChoiceSet;
 import pcgen.cdom.choiceset.CompoundAndChoiceSet;
 import pcgen.cdom.choiceset.CompoundOrChoiceSet;
@@ -16,8 +18,6 @@ import pcgen.cdom.choiceset.RetainingChooser;
 import pcgen.cdom.filter.CompoundAndFilter;
 import pcgen.cdom.filter.NegatingFilter;
 import pcgen.cdom.filter.PatternMatchFilter;
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.prereq.PrerequisiteParserInterface;

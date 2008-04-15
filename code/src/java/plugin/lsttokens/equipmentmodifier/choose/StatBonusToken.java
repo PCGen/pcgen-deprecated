@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.choiceset.ChainedChoiceSet;
 import pcgen.cdom.choiceset.CollectionChoiceSet;
 import pcgen.cdom.choiceset.NumberChoiceSet;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.inst.CDOMStat;
 import pcgen.core.Constants;

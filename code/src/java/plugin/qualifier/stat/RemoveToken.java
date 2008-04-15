@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.base.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMStat;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;

@@ -13,8 +13,8 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.SimpleAssociatedObject;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.rules.persistence.TokenUtilities;
 
 public class ConsolidatedListCommitStrategy implements ListCommitStrategy

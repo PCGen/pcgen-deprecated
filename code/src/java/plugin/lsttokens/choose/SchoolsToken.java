@@ -18,9 +18,9 @@
 package plugin.lsttokens.choose;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.choiceset.SimpleCollectionChoiceSet;
 import pcgen.cdom.enumeration.SpellSchool;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.ChooseLstToken;

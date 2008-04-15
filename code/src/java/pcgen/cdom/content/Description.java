@@ -19,7 +19,6 @@ package pcgen.cdom.content;
 
 import java.util.ArrayList;
 
-import pcgen.cdom.base.TextProperty;
 import pcgen.util.Logging;
 
 public final class Description extends TextProperty

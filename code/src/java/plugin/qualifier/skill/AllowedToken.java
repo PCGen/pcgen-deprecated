@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.base.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMSkill;
 import pcgen.cdom.list.ClassSkillList;
 import pcgen.cdom.lists.PCGenLists;

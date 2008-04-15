@@ -23,7 +23,6 @@ import java.util.List;
 import pcgen.base.graph.core.DirectionalSetMapGraph;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
-import pcgen.cdom.helper.CharacterDescription;
 
 public class PCGenGraph extends
 		DirectionalSetMapGraph<PrereqObject, PCGraphEdge>

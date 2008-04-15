@@ -17,7 +17,6 @@
  */
 package pcgen.cdom.content;
 
-import pcgen.cdom.base.TextProperty;
 
 public class SpecialAbility extends TextProperty
 {

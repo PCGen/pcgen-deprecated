@@ -1,6 +1,6 @@
-package pcgen.cdom.inst;
+package pcgen.cdom.base;
 
-import pcgen.cdom.base.CDOMListObject;
+import pcgen.cdom.inst.CDOMTemplate;
 
 public class PCTemplateChooseList extends CDOMListObject<CDOMTemplate>
 {

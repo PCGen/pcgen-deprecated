@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMSpellProgressionInfo;
 import pcgen.character.CharacterDataStore;
 

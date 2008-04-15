@@ -2,7 +2,7 @@ package pcgen.cdom.choiceset;
 
 import java.util.Set;
 
-import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
 public class NumberChoiceSet implements PrimitiveChoiceSet<Integer>

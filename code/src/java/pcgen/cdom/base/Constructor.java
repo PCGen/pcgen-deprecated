@@ -15,15 +15,13 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package pcgen.cdom.content;
+package pcgen.cdom.base;
 
-import java.util.Collection;
-
-import pcgen.cdom.helper.ChooseActor;
-
-public interface ActionContainer
+public interface Constructor<T>
 {
-	public void addActor(ChooseActor a);
-	public Collection<ChooseActor> getActors();
+
+	public T constructFrom(T obj);
+
+	public Class<T> getConstructedClass();
 
 }

@@ -33,7 +33,7 @@ import pcgen.base.formula.Formula;
 import pcgen.base.io.FileLocation;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.helper.ChoiceSet;
+import pcgen.cdom.base.ChoiceSet;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>

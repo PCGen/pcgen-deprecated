@@ -23,8 +23,8 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.PrimitiveChoiceFilter;
 import pcgen.cdom.enumeration.ListKey;
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.character.CharacterDataStore;

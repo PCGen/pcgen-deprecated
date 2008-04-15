@@ -20,7 +20,7 @@ package plugin.lsttokens.choose;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMSpell;
 import pcgen.core.Constants;
 import pcgen.core.PObject;

@@ -1,8 +1,7 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.base;
 
 import java.util.Set;
 
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.character.CharacterDataStore;
 
 public interface PrimitiveChoiceSet<T> extends LSTWriteable

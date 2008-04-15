@@ -18,7 +18,6 @@
 package pcgen.cdom.content;
 
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.TextProperty;
 
 public class SpecialProperty extends TextProperty implements LSTWriteable
 {

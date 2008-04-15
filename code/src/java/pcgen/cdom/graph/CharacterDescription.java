@@ -1,4 +1,4 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.graph;
 
 public class CharacterDescription
 {

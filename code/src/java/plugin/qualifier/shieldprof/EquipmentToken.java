@@ -21,10 +21,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
+import pcgen.cdom.base.PrimitiveChoiceFilter;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.Type;
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.cdom.inst.CDOMShieldProf;
 import pcgen.cdom.reference.CDOMSingleRef;

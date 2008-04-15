@@ -1,6 +1,5 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.base;
 
-import pcgen.cdom.base.LSTWriteable;
 import pcgen.character.CharacterDataStore;
 
 public interface PrimitiveChoiceFilter<T> extends LSTWriteable

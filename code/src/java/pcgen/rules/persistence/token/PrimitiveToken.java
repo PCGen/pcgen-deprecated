@@ -1,6 +1,6 @@
 package pcgen.rules.persistence.token;
 
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
+import pcgen.cdom.base.PrimitiveChoiceFilter;
 import pcgen.rules.context.LoadContext;
 
 public interface PrimitiveToken<T> extends PrimitiveChoiceFilter<T>

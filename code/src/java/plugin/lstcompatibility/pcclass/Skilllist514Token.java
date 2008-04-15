@@ -27,12 +27,12 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.actor.GrantActor;
 import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.ChoiceSet;
+import pcgen.cdom.base.ChooseActionContainer;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.choiceset.ReferenceChoiceSet;
-import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.list.ClassSkillList;
 import pcgen.rules.context.LoadContext;

@@ -27,14 +27,12 @@ import java.util.Set;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.util.DoubleKeyMapToList;
-import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.FormulaKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.VariableKey;
-import pcgen.cdom.inst.PCTemplateChooseList;
 import pcgen.cdom.util.ListKeyMapToList;
 import pcgen.core.SourceEntry;
 

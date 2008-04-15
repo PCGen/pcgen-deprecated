@@ -28,7 +28,7 @@ import java.util.Set;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
 public class SimpleCollectionChoiceSet<T> implements PrimitiveChoiceSet<T>

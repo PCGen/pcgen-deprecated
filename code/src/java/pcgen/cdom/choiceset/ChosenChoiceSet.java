@@ -27,13 +27,13 @@ import java.util.List;
 import java.util.Set;
 
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.ChoiceSet;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.base.PrimitiveChoiceSet;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.AssociationListKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphEdge;
-import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.character.CharacterDataStore;
 
 public class ChosenChoiceSet<T> implements PrimitiveChoiceSet<T>

@@ -5,12 +5,12 @@ import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.ChoiceSet;
+import pcgen.cdom.base.ChooseActionContainer;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.choiceset.SimpleCollectionChoiceSet;
-import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.core.chooser.ChooserUtilities;

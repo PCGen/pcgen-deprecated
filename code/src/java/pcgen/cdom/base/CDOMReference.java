@@ -19,7 +19,6 @@ package pcgen.cdom.base;
 
 import java.util.Collection;
 
-import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.character.CharacterDataStore;
 
 public abstract class CDOMReference<T extends PrereqObject> implements

@@ -21,8 +21,8 @@ import java.math.BigDecimal;
 
 import pcgen.base.formula.ReferenceFormula;
 import pcgen.cdom.base.ConcretePrereqObject;
+import pcgen.cdom.base.Constructor;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.content.Constructor;
 import pcgen.cdom.content.SimpleMovement;
 
 public class MovementFormulaConstructor extends ConcretePrereqObject implements
