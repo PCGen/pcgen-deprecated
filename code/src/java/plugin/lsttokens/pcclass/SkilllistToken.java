@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.actor.GrantActor;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
@@ -34,7 +35,6 @@ import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.ClassSkillList;

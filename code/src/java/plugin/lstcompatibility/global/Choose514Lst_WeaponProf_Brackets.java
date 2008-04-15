@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.actor.GrantActor;
+import pcgen.cdom.actor.GrantAssociationActor;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.FormulaFactory;
@@ -11,8 +13,6 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.GrantActor;
-import pcgen.cdom.helper.GrantAssociationActor;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMWeaponProf;

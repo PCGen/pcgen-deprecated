@@ -4,6 +4,7 @@ import javax.swing.undo.UndoableEdit;
 
 import pcgen.base.graph.monitor.GraphEditMonitor;
 import pcgen.base.lang.Command;
+import pcgen.cdom.actor.GrantActor;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.PrereqObject;
@@ -14,7 +15,6 @@ import pcgen.cdom.graph.PCGraphEdge;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.helper.AnyChoiceSet;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.inst.CDOMAlignment;
 import pcgen.cdom.inst.CDOMRace;
 import pcgen.character.CharacterDataStore;

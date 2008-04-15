@@ -1,9 +1,10 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.actor;
 
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
+import pcgen.cdom.helper.ChooseActor;
 import pcgen.core.PlayerCharacter;
 
 public class AllowActor<T extends CDOMObject> extends ConcretePrereqObject

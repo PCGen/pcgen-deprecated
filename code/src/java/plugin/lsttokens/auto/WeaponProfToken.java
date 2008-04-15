@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.MapToList;
+import pcgen.cdom.actor.GrantActor;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -36,7 +37,6 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChooseActor;
-import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;

@@ -1,8 +1,9 @@
-package pcgen.cdom.helper;
+package pcgen.cdom.actor;
 
 import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
+import pcgen.cdom.helper.ChooseActor;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.core.PlayerCharacter;
 

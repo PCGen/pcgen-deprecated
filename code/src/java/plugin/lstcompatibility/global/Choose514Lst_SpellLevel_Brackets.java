@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.actor.GrantBonusActor;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.FormulaFactory;
@@ -12,7 +13,6 @@ import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.CompoundOrChoiceSet;
-import pcgen.cdom.helper.GrantBonusActor;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.SpellLevelChoiceSet;
 import pcgen.cdom.inst.CDOMSpellProgressionInfo;

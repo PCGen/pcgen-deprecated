@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.actor.GrantActor;
 import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
@@ -33,7 +34,6 @@ import pcgen.cdom.enumeration.AbilityNature;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ReferenceChoiceSet;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMTemplate;

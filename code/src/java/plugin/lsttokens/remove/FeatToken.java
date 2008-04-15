@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
+import pcgen.cdom.actor.RemoveActor;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
@@ -36,7 +37,6 @@ import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.helper.CompoundOrChoiceSet;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.helper.ReferenceChoiceSet;
-import pcgen.cdom.helper.RemoveActor;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.core.PObject;
 import pcgen.persistence.PersistenceLayerException;

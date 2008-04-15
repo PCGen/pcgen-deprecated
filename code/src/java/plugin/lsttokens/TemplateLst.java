@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pcgen.cdom.actor.GrantActor;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.CDOMSingleRef;
@@ -36,7 +37,6 @@ import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.cdom.helper.GrantActor;
 import pcgen.cdom.helper.ListChoiceSet;
 import pcgen.cdom.inst.CDOMTemplate;
 import pcgen.cdom.inst.PCTemplateChooseList;
