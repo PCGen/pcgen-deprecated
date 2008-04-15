@@ -16,7 +16,10 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  */
-package pcgen.cdom.base;
+package pcgen.cdom.reference;
+
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.PrereqObject;
 
 public abstract class CDOMGroupRef<T extends PrereqObject> extends
 		CDOMReference<T>

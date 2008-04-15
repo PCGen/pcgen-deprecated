@@ -1,10 +1,10 @@
 package plugin.primitive.domain;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMDomain;
 import pcgen.cdom.list.DomainList;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.PrimitiveToken;

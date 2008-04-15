@@ -15,20 +15,26 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.cdom.base;
+package pcgen.cdom.reference;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class CDOMSimpleSingleRef<T extends PrereqObject> extends
+import pcgen.cdom.base.CDOMObject;
+import pcgen.cdom.base.PrereqObject;
+
+public class CDOMAddressedSingleRef<T extends PrereqObject> extends
 		CDOMSingleRef<T>
 {
 
+	private final CDOMObject parentObj;
+
 	private T referencedObject = null;
 
-	public CDOMSimpleSingleRef(Class<T> cl, String nm)
+	public CDOMAddressedSingleRef(CDOMObject obj, Class<T> cl, String nm)
 	{
 		super(cl, nm);
+		parentObj = obj;
 	}
 
 	@Override
@@ -68,9 +74,9 @@ public class CDOMSimpleSingleRef<T extends PrereqObject> extends
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o instanceof CDOMSimpleSingleRef)
+		if (o instanceof CDOMAddressedSingleRef)
 		{
-			CDOMSimpleSingleRef<?> ref = (CDOMSimpleSingleRef) o;
+			CDOMAddressedSingleRef<?> ref = (CDOMAddressedSingleRef) o;
 			return getReferenceClass().equals(ref.getReferenceClass())
 				&& getName().equals(ref.getName());
 		}

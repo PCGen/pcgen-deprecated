@@ -25,11 +25,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.content.LevelCommandFactory;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.rules.context.Changes;

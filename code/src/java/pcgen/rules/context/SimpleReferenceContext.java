@@ -24,10 +24,10 @@ import java.util.Map;
 import java.util.Set;
 
 import pcgen.base.util.DoubleKeyMap;
-import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
-import pcgen.cdom.base.CDOMSingleRef;
+import pcgen.cdom.reference.CDOMAddressedSingleRef;
+import pcgen.cdom.reference.CDOMSimpleSingleRef;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.cdom.reference.SimpleReferenceManufacturer;
 
 public class SimpleReferenceContext

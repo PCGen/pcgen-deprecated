@@ -15,7 +15,10 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.cdom.base;
+package pcgen.cdom.reference;
+
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.PrereqObject;
 
 public abstract class CDOMSingleRef<T extends PrereqObject> extends
 		CDOMReference<T>

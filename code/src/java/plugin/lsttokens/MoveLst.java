@@ -28,8 +28,8 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.content.SimpleMovement;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.Equipment;
 import pcgen.core.Movement;
 import pcgen.core.PObject;

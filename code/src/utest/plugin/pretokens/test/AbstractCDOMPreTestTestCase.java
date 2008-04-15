@@ -25,13 +25,13 @@ import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.graph.PCGenGraph;
 import pcgen.cdom.graph.PCGraphGrantsEdge;
 import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.cdom.reference.CDOMSimpleSingleRef;
 import pcgen.character.CharacterDataStore;
 import plugin.pretokens.testsupport.SimpleRulesDataStore;
 

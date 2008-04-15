@@ -32,13 +32,13 @@ import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
 import pcgen.base.util.HashMapToList;
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.cdom.modifier.ChangeProf;
+import pcgen.cdom.reference.CDOMGroupRef;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.rules.context.Changes;

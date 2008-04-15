@@ -26,11 +26,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.content.LevelCommandFactory;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMRace;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.Race;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.rules.context.Changes;

@@ -17,12 +17,12 @@
  */
 package pcgen.cdom.modifier;
 
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.Modifier;
 import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.cdom.reference.CDOMGroupRef;
 
 public class ChangeProf extends ConcretePrereqObject implements
 		Modifier<CDOMWeaponProf>, LSTWriteable

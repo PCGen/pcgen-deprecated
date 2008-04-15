@@ -26,9 +26,9 @@
 package plugin.lsttokens.kit.deity;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.kit.CDOMKitDeity;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.kit.KitDeity;
 import pcgen.persistence.lst.KitDeityLstToken;
 import pcgen.rules.context.LoadContext;

@@ -1,10 +1,10 @@
 package pcgen.cdom.actor;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.helper.ChooseActor;
 import pcgen.cdom.inst.SimpleAssociatedObject;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.PlayerCharacter;
 
 public class GrantAssociationActor<T extends PrereqObject> extends

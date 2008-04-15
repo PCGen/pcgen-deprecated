@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Set;
 
 import pcgen.base.util.DoubleKeyMap;
-import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
+import pcgen.cdom.reference.CDOMCategorizedSingleRef;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.cdom.reference.CategorizedReferenceManufacturer;
 import pcgen.util.Logging;
 

@@ -3,10 +3,10 @@ package pcgen.cdom.kit;
 import java.util.ArrayList;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.reference.CDOMSingleRef;
 
 public class CDOMKitSpells extends AbstractCDOMKitObject
 {

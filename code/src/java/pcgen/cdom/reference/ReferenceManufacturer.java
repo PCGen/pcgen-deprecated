@@ -17,10 +17,7 @@
  */
 package pcgen.cdom.reference;
 
-import pcgen.cdom.base.CDOMAllRef;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSingleRef;
-import pcgen.cdom.base.CDOMTypeRef;
 
 public interface ReferenceManufacturer<T extends CDOMObject, RT extends CDOMSingleRef<T>>
 {

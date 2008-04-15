@@ -22,9 +22,9 @@
  */
 package plugin.lsttokens.gamemode.abilitycategory;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.AbilityCategory;
 import pcgen.persistence.lst.AbilityCategoryLstToken;
 import pcgen.rules.context.LoadContext;

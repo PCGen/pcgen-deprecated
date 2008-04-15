@@ -23,7 +23,6 @@ package plugin.lstcompatibility.equipment;
 
 import java.util.List;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.enumeration.StringKey;
@@ -32,6 +31,7 @@ import pcgen.cdom.inst.CDOMArmorProf;
 import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.cdom.inst.CDOMShieldProf;
 import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.Constants;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMCompatibilityToken;

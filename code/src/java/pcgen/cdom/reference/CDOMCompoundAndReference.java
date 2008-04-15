@@ -15,12 +15,16 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.cdom.base;
+package pcgen.cdom.reference;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import pcgen.cdom.base.CDOMReference;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.PrereqObject;
 
 public class CDOMCompoundAndReference<T extends PrereqObject> extends
 		CDOMGroupRef<T>

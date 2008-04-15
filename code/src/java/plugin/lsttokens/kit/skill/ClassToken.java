@@ -26,9 +26,9 @@
 package plugin.lsttokens.kit.skill;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.kit.CDOMKitSkill;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.kit.KitSkill;
 import pcgen.persistence.lst.KitSkillLstToken;
 import pcgen.rules.context.LoadContext;

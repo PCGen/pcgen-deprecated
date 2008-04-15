@@ -25,13 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import pcgen.base.util.OneToOneMap;
-import pcgen.cdom.base.CDOMAddressedSingleRef;
-import pcgen.cdom.base.CDOMCategorizedSingleRef;
-import pcgen.cdom.base.CDOMDirectSingleRef;
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -44,6 +38,12 @@ import pcgen.cdom.inst.CDOMSubClass;
 import pcgen.cdom.list.ClassSkillList;
 import pcgen.cdom.list.ClassSpellList;
 import pcgen.cdom.list.DomainSpellList;
+import pcgen.cdom.reference.CDOMAddressedSingleRef;
+import pcgen.cdom.reference.CDOMCategorizedSingleRef;
+import pcgen.cdom.reference.CDOMDirectSingleRef;
+import pcgen.cdom.reference.CDOMGroupRef;
+import pcgen.cdom.reference.CDOMSimpleSingleRef;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.cdom.reference.ReferenceManufacturer;
 
 public class ReferenceContext

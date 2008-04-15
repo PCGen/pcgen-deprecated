@@ -2,7 +2,6 @@ package plugin.lstcompatibility.global;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.choiceset.ChooseChoiceSet;
@@ -11,6 +10,7 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.CDOMAbility;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;

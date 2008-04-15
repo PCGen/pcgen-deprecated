@@ -30,15 +30,15 @@ import java.util.StringTokenizer;
 
 import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.cdom.inst.CDOMSkill;
 import pcgen.cdom.list.ClassSkillList;
+import pcgen.cdom.reference.CDOMGroupRef;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.PObject;
 import pcgen.persistence.lst.GlobalLstToken;
 import pcgen.rules.context.AssociatedChanges;

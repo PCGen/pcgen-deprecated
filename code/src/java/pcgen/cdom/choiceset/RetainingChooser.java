@@ -31,9 +31,9 @@ import java.util.TreeSet;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.persistence.TokenUtilities;
 

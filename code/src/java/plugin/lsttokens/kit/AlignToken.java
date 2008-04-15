@@ -30,9 +30,9 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMAlignment;
 import pcgen.cdom.kit.CDOMKitAlignment;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitAlignment;
 import pcgen.persistence.PersistenceLayerException;

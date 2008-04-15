@@ -20,14 +20,14 @@ package plugin.pretokens.test;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.cdom.base.CDOMAllRef;
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMDomain;
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.list.DomainList;
+import pcgen.cdom.reference.CDOMAllRef;
+import pcgen.cdom.reference.CDOMGroupRef;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
 import pcgen.core.prereq.PrerequisiteOperator;

@@ -15,11 +15,13 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.cdom.base;
+package pcgen.cdom.reference;
 
 import java.util.Collection;
 import java.util.Collections;
 
+import pcgen.cdom.base.CategorizedCDOMObject;
+import pcgen.cdom.base.Category;
 import pcgen.core.SourceEntry;
 
 public class CDOMCategorizedSingleRef<T extends CategorizedCDOMObject<T>>

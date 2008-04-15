@@ -25,10 +25,10 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.inst.CDOMDeity;
 import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.Deity;
 import pcgen.persistence.lst.DeityLstToken;
 import pcgen.rules.context.Changes;

@@ -30,9 +30,9 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMSkill;
 import pcgen.cdom.kit.CDOMKitSkill;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.kit.KitSkill;
 import pcgen.persistence.lst.KitSkillLstToken;
 import pcgen.rules.context.LoadContext;

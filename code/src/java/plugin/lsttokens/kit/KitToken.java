@@ -30,11 +30,11 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMKit;
 import pcgen.cdom.kit.CDOMKitKit;
+import pcgen.cdom.reference.CDOMSingleRef;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitKit;
 import pcgen.persistence.PersistenceLayerException;

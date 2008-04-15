@@ -24,9 +24,9 @@ package plugin.lsttokens.pcclass;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.content.LevelExchange;
 import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.Constants;
 import pcgen.core.PCClass;
 import pcgen.persistence.lst.PCClassLstToken;

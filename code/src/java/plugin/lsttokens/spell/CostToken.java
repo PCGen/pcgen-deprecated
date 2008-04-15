@@ -25,11 +25,11 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.util.DefaultMap;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.spell.Spell;
 import pcgen.persistence.lst.SpellLstToken;
 import pcgen.rules.context.LoadContext;

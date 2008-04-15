@@ -21,17 +21,17 @@ import java.util.Comparator;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMCompoundAndReference;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.CategorizedCDOMObject;
-import pcgen.cdom.base.CategorizedCDOMReference;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.content.DamageReduction;
+import pcgen.cdom.reference.CDOMCompoundAndReference;
+import pcgen.cdom.reference.CDOMSingleRef;
+import pcgen.cdom.reference.CategorizedCDOMReference;
 import pcgen.rules.context.LoadContext;
 import pcgen.util.Logging;
 

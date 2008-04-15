@@ -21,9 +21,9 @@
  */
 package plugin.lsttokens.equipment;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMEquipment;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.Equipment;
 import pcgen.persistence.lst.EquipmentLstToken;
 import pcgen.rules.context.LoadContext;

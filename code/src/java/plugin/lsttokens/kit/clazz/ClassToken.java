@@ -26,9 +26,9 @@
 package plugin.lsttokens.kit.clazz;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.kit.CDOMKitClass;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.kit.KitClass;
 import pcgen.persistence.lst.KitClassLstToken;
 import pcgen.rules.context.LoadContext;

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import pcgen.cdom.base.CDOMAllRef;
-import pcgen.cdom.base.CDOMTypeRef;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.util.Logging;
 

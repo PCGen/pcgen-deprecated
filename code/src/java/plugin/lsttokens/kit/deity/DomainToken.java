@@ -29,11 +29,11 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMDomain;
 import pcgen.cdom.kit.CDOMKitDeity;
+import pcgen.cdom.reference.CDOMSingleRef;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.kit.KitDeity;
 import pcgen.persistence.lst.KitDeityLstToken;
 import pcgen.rules.context.LoadContext;

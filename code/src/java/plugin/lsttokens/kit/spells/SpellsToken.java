@@ -28,13 +28,13 @@ package plugin.lsttokens.kit.spells;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMSpell;
 import pcgen.cdom.kit.CDOMKitSpells;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.Globals;
 import pcgen.core.kit.KitSpells;
 import pcgen.persistence.lst.KitSpellsLstToken;

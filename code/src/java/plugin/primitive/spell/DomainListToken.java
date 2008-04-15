@@ -5,10 +5,10 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.inst.CDOMSpell;
 import pcgen.cdom.list.DomainSpellList;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.PrimitiveToken;

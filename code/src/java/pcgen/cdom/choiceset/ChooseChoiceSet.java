@@ -3,8 +3,8 @@ package pcgen.cdom.choiceset;
 import java.util.Set;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.character.CharacterDataStore;
 
 public class ChooseChoiceSet<T extends CDOMObject> implements

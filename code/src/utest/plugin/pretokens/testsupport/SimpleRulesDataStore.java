@@ -7,9 +7,9 @@ import java.util.Set;
 import pcgen.base.util.DoubleKeyMap;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.cdom.inst.CDOMPCLevel;
 import pcgen.cdom.inst.CDOMSizeAdjustment;
+import pcgen.cdom.reference.CDOMSimpleSingleRef;
 import pcgen.rules.RulesDataStore;
 
 public class SimpleRulesDataStore implements RulesDataStore

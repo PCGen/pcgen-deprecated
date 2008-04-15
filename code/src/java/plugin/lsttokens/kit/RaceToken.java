@@ -29,9 +29,9 @@ import java.net.URI;
 import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.inst.CDOMRace;
 import pcgen.cdom.kit.CDOMKitRace;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.Kit;
 import pcgen.core.kit.KitRace;
 import pcgen.persistence.PersistenceLayerException;

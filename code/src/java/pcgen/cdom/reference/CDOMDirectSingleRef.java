@@ -15,44 +15,34 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.cdom.base;
+package pcgen.cdom.reference;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class CDOMAddressedSingleRef<T extends PrereqObject> extends
+import pcgen.cdom.base.PrereqObject;
+
+public class CDOMDirectSingleRef<T extends PrereqObject> extends
 		CDOMSingleRef<T>
 {
 
-	private final CDOMObject parentObj;
+	private final T referencedObject;
 
-	private T referencedObject = null;
-
-	public CDOMAddressedSingleRef(CDOMObject obj, Class<T> cl, String nm)
+	public CDOMDirectSingleRef(T obj)
 	{
-		super(cl, nm);
-		parentObj = obj;
+		super((Class<T>) obj.getClass(), "*Direct");
+		referencedObject = obj;
 	}
 
 	@Override
 	public boolean contains(T obj)
 	{
-		if (referencedObject == null)
-		{
-			throw new IllegalStateException(
-				"Cannot ask for contains: Reference has not been resolved");
-		}
 		return referencedObject.equals(obj);
 	}
 
 	@Override
 	public T resolvesTo()
 	{
-		if (referencedObject == null)
-		{
-			throw new IllegalStateException(
-				"Cannot ask for resolution: Reference has not been resolved");
-		}
 		return referencedObject;
 	}
 
@@ -71,47 +61,31 @@ public class CDOMAddressedSingleRef<T extends PrereqObject> extends
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o instanceof CDOMAddressedSingleRef)
-		{
-			CDOMAddressedSingleRef<?> ref = (CDOMAddressedSingleRef) o;
-			return getReferenceClass().equals(ref.getReferenceClass())
-				&& getName().equals(ref.getName());
-		}
-		return false;
+		return o instanceof CDOMDirectSingleRef
+			&& getReferenceClass().equals(
+				((CDOMDirectSingleRef) o).getReferenceClass());
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return getReferenceClass().hashCode() ^ getName().hashCode();
+		return getReferenceClass().hashCode();
 	}
 
 	@Override
 	public void addResolution(T obj)
 	{
-		if (referencedObject == null)
-		{
-			if (obj.getClass().equals(getReferenceClass()))
-			{
-				referencedObject = obj;
-			}
-			else
-			{
-				throw new IllegalArgumentException("Cannot resolve a "
-					+ getReferenceClass().getSimpleName() + " Reference to a "
-					+ obj.getClass().getSimpleName());
-			}
-		}
-		else
-		{
-			throw new IllegalStateException(
-				"Cannot resolve a Single Reference twice");
-		}
+		throw new IllegalStateException("Cannot resolve a Direct Reference");
 	}
 
 	@Override
 	public Collection<T> getContainedObjects()
 	{
 		return Collections.singleton(referencedObject);
+	}
+
+	public static <R extends PrereqObject> CDOMDirectSingleRef<R> getRef(R obj)
+	{
+		return new CDOMDirectSingleRef<R>(obj);
 	}
 }

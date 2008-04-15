@@ -15,32 +15,41 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
-package pcgen.cdom.base;
+package pcgen.cdom.reference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public final class CDOMAllRef<T extends PrereqObject> extends CDOMGroupRef<T>
+import pcgen.base.lang.StringUtil;
+import pcgen.cdom.base.PrereqObject;
+
+public final class CDOMTypeRef<T extends PrereqObject> extends CDOMGroupRef<T>
 {
+
 	private List<T> referencedList = null;
 
-	public CDOMAllRef(Class<T> cl)
-	{
-		super(cl, "ALL: " + cl.getSimpleName());
-	}
+	private String[] types;
 
-	@Override
-	public String getLSTformat()
+	public CDOMTypeRef(Class<T> cl, String[] val)
 	{
-		return "ALL";
+		super(cl, cl.getSimpleName() + " " + Arrays.deepToString(val));
+		types = new String[val.length];
+		System.arraycopy(val, 0, types, 0, val.length);
 	}
 
 	@Override
 	public String getPrimitiveFormat()
 	{
-		return "ALL";
+		return StringUtil.join(types, ".");
+	}
+
+	@Override
+	public String getLSTformat()
+	{
+		return "TYPE=" + getPrimitiveFormat();
 	}
 
 	@Override
@@ -57,14 +66,20 @@ public final class CDOMAllRef<T extends PrereqObject> extends CDOMGroupRef<T>
 	@Override
 	public boolean equals(Object o)
 	{
-		return o instanceof CDOMAllRef
-			&& getReferenceClass().equals(((CDOMAllRef) o).getReferenceClass());
+		if (o instanceof CDOMTypeRef)
+		{
+			CDOMTypeRef<?> ref = (CDOMTypeRef) o;
+			return getReferenceClass().equals(ref.getReferenceClass())
+				&& getName().equals(ref.getName())
+				&& Arrays.deepEquals(types, ref.types);
+		}
+		return false;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return getReferenceClass().hashCode();
+		return getReferenceClass().hashCode() ^ getName().hashCode();
 	}
 
 	@Override

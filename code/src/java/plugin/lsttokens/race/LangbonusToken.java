@@ -28,10 +28,10 @@ import java.util.StringTokenizer;
 
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.inst.CDOMLanguage;
 import pcgen.cdom.inst.CDOMRace;
 import pcgen.cdom.list.LanguageList;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.Race;
 import pcgen.persistence.lst.RaceLstToken;
 import pcgen.rules.context.AssociatedChanges;

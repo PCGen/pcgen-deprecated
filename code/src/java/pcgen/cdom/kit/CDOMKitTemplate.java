@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.reference.CDOMSingleRef;
 
 public class CDOMKitTemplate extends AbstractCDOMKitObject
 {

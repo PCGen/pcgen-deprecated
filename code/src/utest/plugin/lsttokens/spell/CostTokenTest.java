@@ -20,10 +20,10 @@ package plugin.lsttokens.spell;
 import org.junit.Test;
 
 import pcgen.base.util.DefaultMap;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMSpell;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.CDOMLoader;
 import pcgen.rules.persistence.CDOMTokenLoader;

@@ -32,7 +32,6 @@ import java.util.Map;
 import pcgen.base.formula.Formula;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMReference;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.SourceWrapper;
 import pcgen.cdom.helper.AttackCycle;
 import pcgen.cdom.helper.Capacity;
@@ -46,6 +45,7 @@ import pcgen.cdom.inst.CDOMEqMod;
 import pcgen.cdom.inst.CDOMPCClass;
 import pcgen.cdom.inst.CDOMStat;
 import pcgen.cdom.inst.CDOMWeaponProf;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.bonus.BonusObj;
 
 /**

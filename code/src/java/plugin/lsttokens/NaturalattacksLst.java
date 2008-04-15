@@ -29,9 +29,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import pcgen.base.lang.StringUtil;
-import pcgen.cdom.base.CDOMAddressedSingleRef;
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.enumeration.IntegerKey;
@@ -43,6 +41,8 @@ import pcgen.cdom.inst.CDOMEquipment;
 import pcgen.cdom.inst.CDOMSizeAdjustment;
 import pcgen.cdom.inst.CDOMWeaponProf;
 import pcgen.cdom.inst.EquipmentHead;
+import pcgen.cdom.reference.CDOMAddressedSingleRef;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.Equipment;
 import pcgen.core.Globals;
 import pcgen.core.PCTemplate;

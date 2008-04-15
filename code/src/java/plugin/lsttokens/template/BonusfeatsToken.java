@@ -26,7 +26,6 @@ import java.util.Collections;
 
 import pcgen.base.formula.Formula;
 import pcgen.cdom.actor.GrantActor;
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.choiceset.ReferenceChoiceSet;
@@ -37,6 +36,7 @@ import pcgen.cdom.enumeration.CDOMAbilityCategory;
 import pcgen.cdom.helper.ChoiceSet;
 import pcgen.cdom.inst.CDOMAbility;
 import pcgen.cdom.inst.CDOMTemplate;
+import pcgen.cdom.reference.CDOMGroupRef;
 import pcgen.core.PCTemplate;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PCTemplateLstToken;

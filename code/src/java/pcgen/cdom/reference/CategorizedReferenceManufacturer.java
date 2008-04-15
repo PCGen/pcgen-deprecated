@@ -3,7 +3,6 @@
  */
 package pcgen.cdom.reference;
 
-import pcgen.cdom.base.CDOMCategorizedSingleRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;

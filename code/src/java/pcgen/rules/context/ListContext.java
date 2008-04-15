@@ -12,7 +12,6 @@ import pcgen.base.util.MapToList;
 import pcgen.base.util.TreeMapToList;
 import pcgen.base.util.TripleKeyMap;
 import pcgen.cdom.base.AssociatedPrereqObject;
-import pcgen.cdom.base.CDOMDirectSingleRef;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
@@ -20,6 +19,7 @@ import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.inst.SimpleAssociatedObject;
 import pcgen.cdom.list.GrantedList;
+import pcgen.cdom.reference.CDOMDirectSingleRef;
 import pcgen.rules.persistence.TokenUtilities;
 
 public class ListContext

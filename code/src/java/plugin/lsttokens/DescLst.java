@@ -30,7 +30,7 @@ import java.util.StringTokenizer;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.LSTWriteable;
-import pcgen.cdom.base.ReferenceUtilities;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.Description;
 import pcgen.core.PObject;
 import pcgen.core.prereq.Prerequisite;

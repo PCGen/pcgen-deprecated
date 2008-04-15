@@ -20,13 +20,13 @@ package pcgen.rules.context;
 import java.net.URI;
 import java.util.Collection;
 
-import pcgen.cdom.base.CDOMGroupRef;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.content.ChooseActionContainer;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.helper.PrimitiveChoiceFilter;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
+import pcgen.cdom.reference.CDOMGroupRef;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.rules.persistence.TokenLibrary;

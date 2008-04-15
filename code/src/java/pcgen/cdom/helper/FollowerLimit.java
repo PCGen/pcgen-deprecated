@@ -1,8 +1,8 @@
 package pcgen.cdom.helper;
 
 import pcgen.base.formula.Formula;
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.list.CompanionList;
+import pcgen.cdom.reference.CDOMSingleRef;
 
 public class FollowerLimit
 {

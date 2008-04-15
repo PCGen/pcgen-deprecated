@@ -17,10 +17,10 @@
  */
 package pcgen.cdom.content;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.ConcretePrereqObject;
 import pcgen.cdom.base.LSTWriteable;
 import pcgen.cdom.inst.CDOMPCClass;
+import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.rules.persistence.TokenUtilities;
 
 public class LevelCommandFactory extends ConcretePrereqObject implements

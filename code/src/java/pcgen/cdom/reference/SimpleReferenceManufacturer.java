@@ -4,7 +4,6 @@
 package pcgen.cdom.reference;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.cdom.base.CDOMSimpleSingleRef;
 import pcgen.core.PCClass;
 
 public class SimpleReferenceManufacturer<T extends CDOMObject> extends

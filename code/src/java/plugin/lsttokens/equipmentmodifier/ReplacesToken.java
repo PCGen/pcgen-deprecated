@@ -23,11 +23,11 @@ package plugin.lsttokens.equipmentmodifier;
 
 import java.util.StringTokenizer;
 
-import pcgen.cdom.base.CDOMSingleRef;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.inst.CDOMEqMod;
+import pcgen.cdom.reference.CDOMSingleRef;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.core.EquipmentModifier;
 import pcgen.persistence.lst.EquipmentModifierLstToken;
 import pcgen.rules.context.Changes;

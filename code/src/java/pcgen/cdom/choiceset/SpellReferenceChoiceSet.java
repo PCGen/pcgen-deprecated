@@ -10,9 +10,9 @@ import java.util.TreeSet;
 import pcgen.cdom.base.CDOMListObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
-import pcgen.cdom.base.ReferenceUtilities;
 import pcgen.cdom.helper.PrimitiveChoiceSet;
 import pcgen.cdom.list.DomainSpellList;
+import pcgen.cdom.reference.ReferenceUtilities;
 import pcgen.character.CharacterDataStore;
 import pcgen.rules.persistence.TokenUtilities;
 
