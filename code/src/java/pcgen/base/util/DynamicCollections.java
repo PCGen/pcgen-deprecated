@@ -60,6 +60,7 @@ import java.util.logging.Logger;
 public final class DynamicCollections
 {
 
+    private static final Class[] EmptyClassArray = new Class[0];
     private DynamicCollections()
     {
     }
@@ -91,7 +92,7 @@ public final class DynamicCollections
     {
         try
         {
-            Constructor<? extends C> c = copyClass.getConstructor((Class<?>) null);
+            Constructor<? extends C> c = copyClass.getConstructor(EmptyClassArray);
             return new DynamicCollection<T, C>(c, data);
         }
         catch (Exception ex)
@@ -114,7 +115,7 @@ public final class DynamicCollections
     {
         try
         {
-            Constructor<? extends C> c = copyClass.getConstructor((Class<?>) null);
+            Constructor<? extends C> c = copyClass.getConstructor(EmptyClassArray);
             return new DynamicList<T, C>(c, data);
         }
         catch (Exception ex)
@@ -137,7 +138,7 @@ public final class DynamicCollections
     {
         try
         {
-            Constructor<? extends C> c = copyClass.getConstructor((Class<?>) null);
+            Constructor<? extends C> c = copyClass.getConstructor(EmptyClassArray);
             return new DynamicSet<T, C>(c, data);
         }
         catch (Exception ex)
