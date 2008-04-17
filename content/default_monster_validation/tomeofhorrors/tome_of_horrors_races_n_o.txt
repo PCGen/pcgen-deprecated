@@ -1,0 +1,32 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+
+Necrophidius
+
+Necrophidius (Rattler)
+
+Nereid
+
+Nilbog
+
+Obsidian Minotaur
+
+Ogre (Half)
+
+Ogrillon
+
+Oliphant
+
+Ooze (Crystal)
+
+Ooze (Magma)
+
+Ooze (Mercury)
+
+Ooze (Undead)
+
+Ooze (Vampiric)
+
+Orog
+
+

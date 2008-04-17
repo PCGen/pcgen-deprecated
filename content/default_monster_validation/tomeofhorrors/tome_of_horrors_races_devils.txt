@@ -1,0 +1,43 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+Devil (Amon)
+
+Devil (Amon).MOD
+
+Devil (Baaphel)
+
+Devil (Bael)
+
+Devil (Bael).MOD
+
+Devil (Geryon)
+
+Devil (Geryon).MOD
+
+Devil (Ghaddar)
+
+Devil (Gorson)
+
+Devil (Gorson).MOD
+
+Devil (Hutijin)
+
+Devil (Hutijin).MOD
+
+Devil (Lucifer)
+
+Devil (Lucifer).MOD
+
+Devil (Moloch)
+
+Devil (Moloch).MOD
+
+Devil (Nupperibo)
+
+Devil (Titivilus)
+
+Devil (Titivilus).MOD
+
+Devil (Tormentor)
+
+

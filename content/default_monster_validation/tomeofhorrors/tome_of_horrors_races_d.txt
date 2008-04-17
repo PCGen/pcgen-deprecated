@@ -1,0 +1,99 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+Daemon (Cacodaemon)
+
+Daemon (Cacodaemon).MOD
+
+Daemon (Charon)
+
+Daemon (Charon).MOD
+
+Daemon (Charonadaemon)
+
+Daemon (Charonadaemon).MOD
+
+Daemon (Derghodaemon)
+
+Daemon (Derghodaemon).MOD
+
+Daemon (Hydrodaemon)
+
+Daemon (Hydrodaemon).MOD
+
+Daemon (The Oinodaemon)
+
+Daemon (The Oinodaemon).MOD
+
+Daemon (Piscodaemon)
+
+Daemon (Piscodaemon).MOD
+
+Dakon
+
+Dark Creeper
+
+Dark Stalker
+
+Darnoc
+
+Death Dog
+
+Death Worm
+
+Decapus
+
+Demiurge
+
+Demodand (Shaggy)
+
+Demodand (Slime)
+
+Demodand (Tarry)
+
+Demonic Knight
+
+Demonic Knight.MOD
+
+Devil Dog
+
+Diger
+
+Dire Corby
+
+Disenchanter
+
+Dracolisk (Black)
+
+Dracolisk (Blue)
+
+Dracolisk (Green)
+
+Dracolisk (Red)
+
+Dracolisk (White)
+
+Dragon (Cloud)
+
+Dragon (Faerie)
+
+Dragon Horse
+
+Dragonfish
+
+Dragonfly (Giant)
+
+Dragonnel
+
+Drake (Fire)
+
+Drake (Ice)
+
+Drake (Salt)
+
+Draug
+
+Drelb
+
+Dust Digger
+
+

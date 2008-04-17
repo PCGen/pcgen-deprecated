@@ -1,0 +1,76 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+Demon (Aeshma)
+
+Demon (Alu)
+
+Demon (Baphomet)
+
+Demon (Baphomet).MOD
+
+Demon (Beluiri)
+
+Demon (Beluiri).MOD
+
+Demon (Cambion)
+
+Demon (Dagon)
+
+Demon (Dagon).MOD
+
+Demon of Corruption (Barizou)
+
+Demon of Corruption (Azizou)
+
+Demon of Corruption (Geruzou)
+
+Demon (Daraka)
+
+Demon (Daraka).MOD
+
+Demon (Fraz-Urb'luu)
+
+Demon (Fraz-Urb'luu).MOD
+
+Demon (Gharros)
+
+Demon (Jubilex)
+
+Demon (Jubilex).MOD
+
+Demon (Kostchtchie)
+
+Demon (Kostchtchie).MOD
+
+Demon (Maphistal)
+
+Demon (Maphistal).MOD
+
+Demon (Nabasu (Demonling))
+
+Demon (Nabasu (Mature))
+
+Demon (Nerizo)
+
+Demon (Orcus)
+
+Demon (Orcus).MOD
+
+Demon (Pazuzu)
+
+Demon (Pazuzu).MOD
+
+Demon (Shadow)
+
+Demon (Sonechard)
+
+Demon (Sonechard).MOD
+
+Demon (Stirge)
+
+Demon (Stirge).MOD
+
+Demon (Tsathogga)
+
+Demon (Tsathogga).MOD
+

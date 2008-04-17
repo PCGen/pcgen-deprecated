@@ -1,0 +1,66 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+Sandling
+
+Sandman
+
+Scarecrow
+
+Screaming Devilkin
+
+Scythe Tree
+
+Shadow (Lesser)
+
+Shedu
+
+Shedu (Greater)
+
+Shedu (Greater).MOD
+
+Skeleton (Lead)
+
+Skulk
+
+Skull Spider
+
+Skulleton
+
+Slaad Lord (Lord of Entropy)
+
+Slaad Lord (Lord of the Insane)
+
+Slime Crawler
+
+Slithering Tracker
+
+Slug (Giant)
+
+Soul Eater
+
+Soul Nibbler
+
+Spriggan
+
+Sprite
+
+Sea Sprite
+
+Squealer
+
+Stegocentipede
+
+Stench Kow
+
+Stone Roper
+
+Stormwarden
+
+Strange Weed
+
+Stunjelly
+
+Stymphalian Bird
+
+Swarm (Scarlet Spider)
+

@@ -1,0 +1,41 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+Barracuda (Small)
+
+Barracuda (Medium)
+
+Barracuda (Large)
+
+Caribe (Giant)
+
+Deer
+
+Deer (Black-Tailed)
+
+Eel (Electric)
+
+Fox
+
+Hamster (Giant)
+
+Hippopotamus
+
+Lizard (Giant Rock-Horned)
+
+Marmoset (Giant)
+
+Moose
+
+Quipper
+
+Sheep
+
+Sheep (Ram)
+
+Skunk
+
+Tiger Barb (Giant)
+
+Turtle (Giant Snapping)
+
+

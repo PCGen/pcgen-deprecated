@@ -1,0 +1,48 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+
+Gambado
+
+Gargoyle (Four-Armed)
+
+Gargoyle (Green Guardian)
+
+Gargoyle (Margoyle)
+
+Ghoul-Stirge
+
+Giant (Sand)
+
+Giant (Wood)
+
+Gloomwing
+
+Golem (Blood)
+
+Golem (Ice)
+
+Golem (Stone Guardian)
+
+Golem (Tallow)
+
+Golem (Wood)
+
+Gorbel
+
+Gorgimera
+
+Gorgon (True/Sthenno)
+
+Gorgon (True/Euryale)
+
+Gorilla Bear
+
+Grippli
+
+Groaning Spirit
+
+Gryph
+
+Guardian Daemon
+
+

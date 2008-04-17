@@ -1,0 +1,58 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+Carbuncle
+
+Carrion Moth
+
+Caryatid Column
+
+Caterwaul
+
+Cave Cricket
+
+Cave Fisher
+
+Cave Moray
+
+Cerberus
+
+Chrystone
+
+Clam (Giant)
+
+Clockwork (Drone)
+
+Clockwork (Scout)
+
+Clockwork (Overseer)
+
+Clockwork (Warrior)
+
+Clockwork (Parasite)
+
+Clockwork (Swarm)
+
+Clockwork (Titan)
+
+Clockwork (Brain Gear)
+
+Clubnek
+
+Cobra Flower
+
+Coffer Corpse
+
+Cooshee
+
+Crab (Monstrous)
+
+Crabman
+
+Crayfish (Monstrous)
+
+Crystalline Horror
+
+Crypt Thing
+
+Crypt Guardian
+

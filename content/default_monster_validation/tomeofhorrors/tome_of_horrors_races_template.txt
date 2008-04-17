@@ -1,0 +1,30 @@
+SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
+
+Abomination (Owlephant)
+
+Abomination (Tigrilla)
+
+Dire Bison
+
+Dire Goat
+
+Dire Hippopotamus
+
+Dire Porcupine
+
+Dire Ram
+
+Dire Sloth
+
+Foo Dog
+
+Slime Zombie
+
+Spectral Troll
+
+Asswere (Donkey Form)
+
+Asswere (Human Form)
+
+Asswere (Hybrid Form)
+
