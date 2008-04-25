@@ -2,7 +2,7 @@ SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.nec
 
 Hangman Tree
 
-Haunt
+Haunt: Valid
 
 Hell Moth
 

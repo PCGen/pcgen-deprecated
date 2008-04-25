@@ -1,10 +1,10 @@
 SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
 
-Babbler
+Babbler: Valid
 
-Banderlog
+Banderlog: Valid
 
-Baric
+Baric: Bite damage should be 1d3, source has it as 1d3+1
 
 Barrow Wight
 

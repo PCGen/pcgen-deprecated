@@ -12,26 +12,29 @@ Amphisbaena: Valid
 
 Angel (Monadic Deva): Valid
 
-Angel (Movanic Deva)
+Angel (Movanic Deva): Valid
 
-Animal Lord (Cat Lord)
+Animal Lord (Cat Lord): Valid
 
-Animal Lord (Mouse Lord)
+Animal Lord (Mouse Lord): Source matches Cat Lord exactly but LST is very differnt, there must be some errata I don't have as this must be a mistake.
 
-Ant Lion
+Ant Lion: Valid
 
-Apparition
+Apparition: Source lists Reflex as +3 but should be +4
 
-Archer Bush
+Archer Bush: Valid
 
-Ascomoid
+Ascomoid: Valid
 
-Astral Shark
+Astral Shark: Valid
 
-Atomie
+Atomie: 
+### ERRATA: There is no Perform (Melody) should be Perform (Sing)
+### ERRATA: Hide is listed as +6 but Tiny size gives a +8 on hide checks making that impossible.  Probably should be +14.
+### ERRATA: 7 Skill Points left to spend.
 
-Aurumvorax
+Aurumvorax: Source lists Grapple at +16 but should be +12 due to special size modifier
 
-Axe Beak
+Axe Beak: Valid
 
 
