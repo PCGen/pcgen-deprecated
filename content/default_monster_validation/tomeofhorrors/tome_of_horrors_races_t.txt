@@ -1,24 +1,24 @@
 SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
 
-Tabaxi
+Tabaxi: Valid
 
-Taer
+Taer: Valid
 
-Tenebrous Worm
+Tenebrous Worm: Valid
 
-Tentamort
+Tentamort: Valid
 
-Thorny
+Thorny: Valid
 
-Thunder Beast
+Thunder Beast: Source lists Hit Dice: 6d10+20 (53 hp), should be 6d10+30 (63 hp)
 
-Tick (Giant)
+Tick (Giant): Valid
 
-Transposer
+Transposer: Valid
 
-Trapper
+Trapper: Valid
 
-Tri Flower Frond
+Tri Flower Frond: Valid
 
 Troll (Cave)
 

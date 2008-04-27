@@ -1,18 +1,18 @@
 SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
 
 
-Land Lamprey
+Land Lamprey: Valid
 
-Lava Child
+Lava Child: Source lists Fort +5, Ref +1, but this should be: Fort +2, Ref +4,
 
-Leech (Giant)
+Leech (Giant): Valid
 
-Leprechaun
+Leprechaun: Valid
 
-Livestone
+Livestone: Source lists Hit Dice: 5d8+25 (62 hp), should be: 5d10+25 (52 hp)
 
-Lurker Above
+Lurker Above: Valid
 
-Lurker Below
+Lurker Below: Valid
 
 

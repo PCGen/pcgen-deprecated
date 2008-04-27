@@ -1,14 +1,14 @@
 SOURCELONG:The Tome of Horrors Revised	SOURCESHORT:ToHr	SOURCEWEB:http://www.necromancergames.com/
 
-Quasi Elemental (Lightning/Small)
+Quasi Elemental (Lightning/Small): Source lists one more feat than they should have, one of the feats that all the Quasi Elementals get is probably a bonus feat, I made Flyby Attack a bonus feat as the have perfect flight
 
-Quasi Elemental (Lightning/Medium)
+Quasi Elemental (Lightning/Medium): Source lists one more feat than they should have, one of the feats that all the Quasi Elementals get is probably a bonus feat, I made Flyby Attack a bonus feat as the have perfect flight
 
-Quasi Elemental (Lightning/Large)
+Quasi Elemental (Lightning/Large): Source lists one more feat than they should have, one of the feats that all the Quasi Elementals get is probably a bonus feat, I made Flyby Attack a bonus feat as the have perfect flight
 
-Quickling
+Quickling: Valid
 
-Quickwood
+Quickwood: Valid
 
 Rat (Brain)
 
