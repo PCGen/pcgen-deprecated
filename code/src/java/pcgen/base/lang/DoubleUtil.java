@@ -65,7 +65,12 @@ public final class DoubleUtil
 	public static boolean compareDouble(double a, double b, double eps)
 	{
 		// If the difference is less than epsilon, treat as equal.
-		return Math.abs(a - b) < eps;
+		double absoluteValue = Math.abs(a - b);
+		if (absoluteValue < eps)
+		{
+			return true;
+		}
+		return false;
 	}
 
 }
