@@ -174,4 +174,15 @@ public class GraphHeapComponentTest extends TestCase
 		// note do not care if the edge or node order changes - not really
 		// important
 	}
+
+	public void testToString()
+	{
+		String expectedResult = "GraphHeapComponent: [pcgen.base.graph.visitor.GraphHeapComponentTest$TestGraphNode@6,pcgen.base.graph.visitor.GraphHeapComponentTest$TestGraphEdge@5,0.0]";
+		TestGraphNode gna = new TestGraphNode(6);
+		TestGraphEdge gea = new TestGraphEdge(gn6, gn7, 5);
+		GraphHeapComponent ghc = new GraphHeapComponent(0, gea, gna);
+		String result = ghc.toString();
+		assertTrue(result.equals(expectedResult));
+	}
+
 }

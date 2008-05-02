@@ -24,7 +24,7 @@ public class TestSupport
 		}
 		catch (NoSuchMethodException e)
 		{
-			System.out.println("Constructor for [" + clazz.getName() + "] does not exist");
+			System.err.println("Constructor for [" + clazz.getName() + "] does not exist");
 		}
 		
 		constructor.setAccessible(true);
@@ -36,15 +36,15 @@ public class TestSupport
 		}
 		catch (InvocationTargetException ite)
 		{
-			System.out.println("Instance creation failed with [" + ite.getCause() + "]");
+			System.err.println("Instance creation failed with [" + ite.getCause() + "]");
 		}
 		catch (IllegalAccessException iae)
 		{
-			System.out.println("Instance creation failed due to access violation.");
+			System.err.println("Instance creation failed due to access violation.");
 		}
 		catch (InstantiationException ie)
 		{
-			System.out.println("Instance creation failed with [" + ie.getCause() + "]");
+			System.err.println("Instance creation failed with [" + ie.getCause() + "]");
 		}
 		
 		return instance;
