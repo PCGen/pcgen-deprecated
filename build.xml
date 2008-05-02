@@ -613,7 +613,7 @@ pcgen.filepaths=user
 
 
 
-	<!-- Dump the EMMA code coverate stats in a variety of formats.
+	<!-- Dump the EMMA code coverage stats in a variety of formats.
 
 		 If instrumenting has been switched on the output should look
 		 something like this:
