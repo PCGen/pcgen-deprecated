@@ -2,10 +2,19 @@ package pcgen.base.lang;
 
 import org.junit.Test;
 
+import pcgen.util.TestSupport;
+
 import junit.framework.TestCase;
 
 public class InternationalizationTest extends TestCase {
 
+	@Test
+	public void testPrivateConstructor()
+	{
+		Object instance = TestSupport.invokePrivateConstructor(Internationalization.class);
+		assertTrue(instance instanceof Internationalization);
+	}
+	
 	@Test
 	public void testSetGetCountry()
 	{

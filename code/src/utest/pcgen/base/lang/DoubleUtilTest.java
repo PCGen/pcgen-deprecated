@@ -2,10 +2,19 @@ package pcgen.base.lang;
 
 import org.junit.Test;
 
+import pcgen.util.TestSupport;
+
 import junit.framework.TestCase;
 
 public class DoubleUtilTest extends TestCase {
 
+	@Test
+	public void testPrivateConstructor()
+	{
+		Object instance = TestSupport.invokePrivateConstructor(DoubleUtil.class);
+		assertTrue(instance instanceof DoubleUtil);
+	}
+	
 	@Test
 	public void testDoublesEqual()
 	{
