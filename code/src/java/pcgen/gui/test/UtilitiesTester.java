@@ -3,7 +3,7 @@
  *
  * Created on February 14, 2008, 8:31 PM
  */
-package pcgen.gui.proto.editor;
+package pcgen.gui.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;

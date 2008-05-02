@@ -4,7 +4,7 @@
  * Created on March 4, 2008, 2:43 PM
  */
 
-package pcgen.gui.editor;
+package pcgen.gui.proto.editor;
 
 /**
  *
