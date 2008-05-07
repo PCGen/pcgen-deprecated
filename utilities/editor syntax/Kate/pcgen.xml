@@ -94,6 +94,7 @@
       <item> LEGS </item>
       <item> LEVELADJUSTMENT </item>
       <item> LEVELSPERFEAT </item>
+      <item> LOCATION </item>
       <item> MASTERBONUSRACE </item>
       <item> MAXDEX </item>
       <item> MAXLEVEL </item>
@@ -192,11 +193,13 @@
     <list name="pcc-tags">
       <item> ABILITY </item>
       <item> ABILITYCATEGORY </item>
+      <item> BIOSET </item>
       <item> BOOKTYPE </item>
       <item> CAMPAIGN </item>
       <item> CLASS </item>
       <item> COMPANIONMOD </item>
       <item> COPYRIGHT </item>
+      <item> COVER </item>
       <item> DEITY </item>
       <item> DOMAIN </item>
       <item> EQUIPMENT </item>
