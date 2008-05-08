@@ -7,7 +7,7 @@ import org.junit.Test;
 public class IllegalGraphStateExceptionTest extends TestCase {
 
 	@Test
-	public void testEmptyConstructor()
+	public void testConstructor()
 	{
 		String expectedResult = "Message"; 
 		IllegalGraphStateException illegalGraphStateException = new IllegalGraphStateException("Message");
