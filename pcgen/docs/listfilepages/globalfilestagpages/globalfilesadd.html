@@ -142,28 +142,23 @@
 	<p class="indent3">Add one of &quot;Sarishan Steel Dagger&quot; to the character.</p>
 	<p class="indent2"><code>ADD:EQUIP|TYPE=Thrown</code></p>
 	<p class="indent3">Add one piece of equipment of type &quot;Thrown&quot; to the character.</p>
-	<p class="indent1"><strong>Deprecated Syntax:</strong> <a href="#EQUIP(">ADD:EQUIP(y,y)x</a></p>
-	<p></p>
-
-<hr>
-
-	<p class="new">*** Deprecated 5.11.11 - Remove 5.16 - Use <a href="#EQUIP|">ADD:EQUIP|</a> tag instead.</p>
-	<p class="indent0"><strong><a name="EQUIP(">Tag Name:</a></strong> ADD:EQUIP(y,y)z</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> EQUIP</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Text (Name of item)</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> TYPE.EquipmentType (Type of item)</p>
-	<p class="indent1"><strong>Variables Used (z):</strong> Number, Variable or Formula (Number of choices
+	<p class="indent1"><strong>Deprecated Syntax:</strong><span class="new"> Deprecated 5.11.11 - Remove 5.16</p>
+	<p class="indent2"><code>ADD:EQUIP(y,y)z</code></p>
+	<p class="indent2">Variables Used (x): EQUIP</p>
+	<p class="indent2">Variables Used (y): Text (Name of item)</p>
+	<p class="indent2">Variables Used (y): TYPE.Text (Equipment type)</p>
+	<p class="indent2">Variables Used (z): Number, Variable or Formula (Number of choices
 		granted)</p>
-	<p class="indent1"><strong>What it does:</strong></p>
+	<p class="indent2">What it does:</p>
 	<ul class="indent2">
 		<li>EQUIP with no additional parameters will increase the quantity of the items by 1.</li>
 		<li>EQUIP with parameters will give the character a choice of one from the items listed in the
 			parenthesis.</li>
 		<li>EQUIP listed in the parenthesis are all &quot;,&quot; (comma) delimited</li>
 	</ul>
-	<p class="indent1"><strong>Example:</strong></p>
-	<p class="indent2"><code>ADD:EQUIP(Torch,TYPE=Goods,Lantern)1</code></p>
-	<p class="indent3">Add one of either a &quot;Torch&quot;, any &quot;Goods&quot; type equipment or a
+	<p class="indent2">Example:</p>
+	<p class="indent3"><code>ADD:EQUIP(Torch,TYPE=Goods,Lantern)1</code></p>
+	<p class="indent4">Add one of either a &quot;Torch&quot;, any &quot;Goods&quot; type equipment or a
 		&quot;Lantern&quot;.</p>
 	<p></p>
 
@@ -267,30 +262,25 @@
 	<p class="indent3">Adds two of any Imperial or Infernal type languages to the list of languages known.</p>
 	<p class="indent2"><code>ADD:Language|2|ALL</code></p>
 	<p class="indent3">Adds two of any language to the list of languages known.</p>
-	<p class="indent1"><strong>Deprecated Syntax:</strong> <a href="#LANGUAGE(">ADD:Language(y,y)z</a></p>
-	<p></p>
-
-<hr>
-
-	<p class="new">*** Deprecated 5.11.11 - Remove 5.16 - Use <a href="LANGUAGE|">ADD:LANGUAGE|</a> tag instead.</p>
-	<p class="indent0"><strong><a name="LANGUAGE(">Tag Name:</a></strong> ADD:Language(y,y)z</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> Language</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Text (Name of defined language)</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> TYPE=LanguageType (Language type)</p>
-	<p class="indent1"><strong>Variables Used (z):</strong> Number, Variable or Formula (Number of choices
+	<p class="indent1"><strong>Deprecated Syntax:</strong> <span class="new"> Deprecated 5.11.11 - Remove 5.16</p>
+	<p class="indent2"><code>ADD:Language(y,y)z</code></p>
+	<p class="indent2">Variables Used (x): Language</p>
+	<p class="indent2">Variables Used (y): Text (Name of defined language)</p>
+	<p class="indent2">Variables Used (y): TYPE=Text (Language type)</p>
+	<p class="indent2">Variables Used (z): Number, Variable or Formula (Number of choices
 		granted)</p>
-	<p class="indent1"><strong>What it does:</strong></p>
-	<p class="indent2">This is a &quot;,&quot; (comma) delimited list of language choices that
+	<p class="indent2">What it does:</p>
+	<p class="indent3">This is a &quot;,&quot; (comma) delimited list of language choices that
 		the character can choose from. The choice is added to their Known Languages.</p>
-	<p class="indent2">The list will also accept language types as in &quot;TYPE=Spoken&quot;.</p>
-	<p class="indent1"><strong>Example:</strong></p>
-	<p class="indent2"><code>ADD:Language(Draconic,Elven,Undercommon)1</code></p>
-	<p class="indent3">Add &quot;Draconic&quot;, &quot;Elven&quot; or &quot;Undercommon&quot; to the list
+	<p class="indent3">The list will also accept language types as in &quot;TYPE=Spoken&quot;.</p>
+	<p class="indent2">Example:</p>
+	<p class="indent3"><code>ADD:Language(Draconic,Elven,Undercommon)1</code></p>
+	<p class="indent4">Add &quot;Draconic&quot;, &quot;Elven&quot; or &quot;Undercommon&quot; to the list
 		of languages known.</p>
-	<p class="indent2"><code>ADD:Language(TYPE=Spoken)2</code></p>
-	<p class="indent3">Adds two of any spoken type languages to the list of languages known.</p>
-	<p class="indent2"><code>ADD:Language(TYPE=Imperial,TYPE=Infernal)2</code></p>
-	<p class="indent3">Adds two of any Imperial or Infernal type languages to the list of languages known.</p>
+	<p class="indent3"><code>ADD:Language(TYPE=Spoken)2</code></p>
+	<p class="indent4">Adds two of any spoken type languages to the list of languages known.</p>
+	<p class="indent3"><code>ADD:Language(TYPE=Imperial,TYPE=Infernal)2</code></p>
+	<p class="indent4">Adds two of any Imperial or Infernal type languages to the list of languages known.</p>
 	<p></p>
 
 <hr>
@@ -371,22 +361,17 @@
 	<p class="indent3">Add five skill levels of "Balance" or "Craft (Structural)" or "Demolitions".</p>
 	<p class="indent2"><code>ADD:SKILL|2|Speak Language</code></p>
 	<p class="indent3">Add two of "Speak Language".</p>
-	<p class="indent1"><strong>Deprecated Syntax:</strong> <a href="#SKILL(">ADD:SKILL(</a></p>
-	<p></p>
-
-<hr>
-
-	<p class="new">*** Deprecated 5.11.11 - Remove 5.16 - Use <a href="#SKILL|">ADD:SKILL|</a> tag instead.</p>
-	<p class="indent0"><strong><a name="SKILL(">Tag Name:</a></strong> ADD:SKILL(y,y)z</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> SKILL</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Text (Name of skill)</p>
-	<p class="indent1"><strong>Variables Used (z):</strong> Number, Variable or Formula (Number of choices
+	<p class="indent1"><strong>Deprecated Syntax:</strong> <span class="new">*** Deprecated 5.11.11 - Remove 5.16</p>
+	<p class="indent2"><code>ADD:SKILL(y,y)z</code></p>
+	<p class="indent2">Variables Used (x): SKILL</p>
+	<p class="indent2">Variables Used (y): Text (Name of skill)</p>
+	<p class="indent2">Variables Used (z): Number, Variable or Formula (Number of choices
 		granted)</p>
-	<p class="indent1"><strong>What it does:</strong></p>
-	<p class="indent2">Give the character a choice of the skills listed within the parenthesis.</p>
-	<p class="indent1"><strong>Example:</strong></p>
-	<p class="indent2"><code>ADD:SKILL(Ride,Spellcraft,Listen)2</code></p>
-	<p class="indent3">Adds a skill point to two of these skills: &quot;Ride&quot;, &quot;Spellcraft&quot;
+	<p class="indent2">What it does:</p>
+	<p class="indent3">Give the character a choice of the skills listed within the parenthesis.</p>
+	<p class="indent2">Example:</p>
+	<p class="indent3"><code>ADD:SKILL(Ride,Spellcraft,Listen)2</code></p>
+	<p class="indent4">Adds a skill point to two of these skills: &quot;Ride&quot;, &quot;Spellcraft&quot;
 		or &quot;Listen&quot;.</p>
 	<p></p>
 
@@ -437,22 +422,17 @@
 		has levels in.</p>
 	<p class="indent2"><code>ADD:SPELLCASTER|Bard,Sorcerer</code></p>
 	<p class="indent3">Adds a bonus level of spellcasting of either Bard or Sorcerer.</p>
-	<p class="indent1"><strong>Deprecated Syntax:</strong> <a href="#SPELLCASTER(">ADD:SPELLCASTER(y,y)z</a></p>
-	<p></p>
-
-<hr>
-
-	<p class="new">*** Deprecated 5.11.11 - Remove 5.16 - Use <a href="#SPELLCASTER|">ADD:SPELLCASTER|</a> tag instead.</p>
-	<p class="indent0"><strong><a name="SPELLCASTER(">Tag Name:</a></strong> ADD:SPELLCASTER(y,y)z</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> SPELLCASTER</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Text (Class name)</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Type (Spellcasting class type such as Arcane or
+	<p class="indent1"><strong>Deprecated Syntax:</strong><span class="new"> Deprecated 5.11.11 - Remove 5.16</p>
+	<p class="indent2"><code>ADD:SPELLCASTER(y,y)z</code></p>
+	<p class="indent2">Variables Used (x):</strong> SPELLCASTER</p>
+	<p class="indent2">Variables Used (y):</strong> Text (Class name)</p>
+	<p class="indent2">Variables Used (y):</strong> Type (Spellcasting class type such as Arcane or
 		Divine)</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> ANY (Any spellcasting class the character has
+	<p class="indent2">Variables Used (y):</strong> ANY (Any spellcasting class the character has
 		levels in)</p>
-	<p class="indent1"><strong>Variables Used (z):</strong> Number (Number of choices granted, Optional)</p>
-	<p class="indent1"><strong>What it does:</strong></p>
-	<ul>
+	<p class="indent2">Variables Used (z):</strong> Number (Number of choices granted, Optional)</p>
+	<p class="indent2">What it does:</p>
+	<ul class="indent2">
 		<li>This grants a one bonus level to the spell casting class chosen.</li>
 		<li>The bonus level confers only it's spellcasting capabilities, no other bonuses or benefits from
 			the class are granted.</li>
@@ -471,18 +451,18 @@
 			the same class cannot be selected twice.</li>
 		<li>If that is desired you should simply use two tags.</li>
 	</ul>
-	<p class="indent1"><strong>Examples:</strong></p>
-	<p class="indent2"><code>ADD:SPELLCASTER(ANY)</code></p>
-	<p class="indent3">Adds a bonus level of spellcasting to any spellcasting class the character has
+	<p class="indent2">Examples:</p>
+	<p class="indent3"><code>ADD:SPELLCASTER(ANY)</code></p>
+	<p class="indent4">Adds a bonus level of spellcasting to any spellcasting class the character has
 		levels in.</p>
-	<p class="indent2"><code>ADD:SPELLCASTER(Divine)</code></p>
-	<p class="indent3">Adds a bonus level of spellcasting to any Divine spellcasting class the character
+	<p class="indent3"><code>ADD:SPELLCASTER(Divine)</code></p>
+	<p class="indent4">Adds a bonus level of spellcasting to any Divine spellcasting class the character
 		has levels in.</p>
-	<p class="indent2"><code>ADD:SPELLCASTER(Arcane)</code></p>
-	<p class="indent3">Adds a bonus level of spellcasting to any Arcane spellcasting class the character
+	<p class="indent3"><code>ADD:SPELLCASTER(Arcane)</code></p>
+	<p class="indent4">Adds a bonus level of spellcasting to any Arcane spellcasting class the character
 		has levels in.</p>
-	<p class="indent2"><code>ADD:SPELLCASTER(Bard,Sorcerer)</code></p>
-	<p class="indent3">Adds a bonus level of spellcasting of either Bard or Sorcerer.</p>
+	<p class="indent3"><code>ADD:SPELLCASTER(Bard,Sorcerer)</code></p>
+	<p class="indent4">Adds a bonus level of spellcasting of either Bard or Sorcerer.</p>
 	<p></p>
 
 <hr>
@@ -557,18 +537,13 @@
 		and &quot;ItemCreation&quot; type feats.</p>
 	<p class="indent2"><code>ADD:VFEAT|2|ALL</code></p>
 	<p class="indent3">Add two virtual feats selected from among all feats.</p>
-	<p class="indent1"><strong>Deprecated Syntax:</strong> <a href="#VFEAT">ADD:VFEAT(y,y)z</a></p>
-	<p></p>
-
-<hr>
-
-	<p class="new">*** Deprecated 5.11.11 - Remove 5.16 - Use <a href="#VFEAT|">ADD:VFEAT|</a> tag instead.</p>
-	<p class="indent0"><strong><a name="VFEAT">Tag Name:</a></strong> ADD:VFEAT(y,y)z</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> VFEAT</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Text (Name of feat)</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> TYPE.FeatType (Type of feat)</p>
-	<p class="indent1"><strong>Variables Used (z):</strong> Number, Variable or Formula (Number of choices granted)</p>
-	<p class="indent1"><strong>What it does:</strong></p>
+	<p class="indent1"><strong>Deprecated Syntax:</strong><span class="new"> Deprecated 5.11.11 - Remove 5.16</p>
+	<p class="indent2"><code>ADD:VFEAT(y,y)z</code></p>
+	<p class="indent2">Variables Used (x): VFEAT</p>
+	<p class="indent2">Variables Used (y): Text (Name of feat)</p>
+	<p class="indent2">Variables Used (y): TYPE.Text (Type of feat)</p>
+	<p class="indent2">Variables Used (z): Number, Variable or Formula (Number of choices granted)</p>
+	<p class="indent2">What it does:</p>
 	<ul class="indent2">
 		<li>VFEAT will give the character a choice of one from the feats listed in
 			the parenthesis WITHOUT checking PRExxx of the feats.</li>
@@ -576,13 +551,13 @@
 		<li>Valid TYPE's are TYPE=REGION, TYPE=SUBREGION, TYPE=ALLREGION, and
 			TYPE=&lt;feattype&gt; (i.e. the type of feat, not the word &quot;feattype&quot;).</li>
 	</ul>
-	<p class="indent1"><strong>Example:</strong></p>
-	<p class="indent2"><code>ADD:VFEAT(Alertness,TYPE=Fighter,Electric Boogalo)2</code></p>
-	<p class="indent3">Add two virtual feats from &quot;Alertness&quot;, any &quot;Fighter&quot; type
+	<p class="indent2">Example:</p>
+	<p class="indent3"><code>ADD:VFEAT(Alertness,TYPE=Fighter,Electric Boogalo)2</code></p>
+	<p class="indent4">Add two virtual feats from &quot;Alertness&quot;, any &quot;Fighter&quot; type
 		feats or &quot;Electric Boogalo&quot; regardless if the PC qualifies. These cannot be removed
 		after selection.</p>
-	<p class="indent2"><code>ADD:VFEAT(Weapon Master(TYPE=Weapon))1</code></p>
-	<p class="indent3">Add one virtual feat with any &quot;Weapon&quot; type regardless if the PC
+	<p class="indent3"><code>ADD:VFEAT(Weapon Master(TYPE=Weapon))1</code></p>
+	<p class="indent4">Add one virtual feat with any &quot;Weapon&quot; type regardless if the PC
 		qualifies. These cannot be removed after selection.</p>
 	<p></p>
 

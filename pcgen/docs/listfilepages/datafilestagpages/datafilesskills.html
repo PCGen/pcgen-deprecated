@@ -12,6 +12,7 @@
 		Shane Molnar - shaneATcliftonmotelDOTcomDOTau
 		Eddy Anthony - eddybaATmindspringDOTcom
 		Terry FitzSimons - fitzsimonsATmintelDOTnet
+		Eric C. Smith - mareduddATblackrootDOTorg
 
 		Description:
 		Provides information on the content of PCGen Skill Files.
@@ -53,24 +54,24 @@
 <hr>
 
 	<p class="indent0"><strong><a name="ACHECK"></a>Tag Name:</strong> ACHECK:x</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> Text (YES, NO, PROFICIENT, DOUBLE, WEIGHT)</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> YES</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> NO</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> PROFICIENT</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> DOUBLE</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> WEIGHT</p>
 	<p class="indent1"><strong>What it does:</strong></p>
 	<ul class="indent2">
 		<li>This tells PCGen whether any penalties from equipped armor are applied.</li>
-		<li>NO - Armor check penalty does not apply (Default).</li>
-		<li>YES - Armor check penalty applies to this skill.</li>
-		<li>PROFICIENT - Armor check penalty applies if the character is not proficient in it.</li>
-		<li>DOUBLE - Armor check penalty of double normal applies to this skill.</li>
-		<li>WEIGHT - Weight carried penalty applies to the skill check.</li>
+		<li><code>NO</code> - Armor check penalty does not apply (Default).</li>
+		<li><code>YES</code> - Armor check penalty applies to this skill.</li>
+		<li><code>PROFICIENT</code> - Armor check penalty applies if the character is not proficient in it.</li>
+		<li><code>DOUBLE</code> - Armor check penalty of double normal applies to this skill.</li>
+		<li><code>WEIGHT</code> - Weight carried penalty applies to the skill check.</li>
 	</ul>
 	<p class="indent1"><strong>Example:</strong></p>
 	<p class="indent2"><code>ACHECK:YES</code></p>
 	<p class="indent3">Armor check penalty applies to this skill.</p>
 	<p></p>
-
-<hr>
-	<p class="new">*** Deprecated - Remove 5.16 - Use <a href="#CHOOSE_LANGUAGE">CHOOSE:LANGUAGE</a></p>
-	<p class="indent0"><strong><a name="CHOOSELanguage">Tag Name:</a></strong> CHOOSE:Language(x.y,x.y)</p>
 
 <hr>
 	<p class="new">*** New 5.13.5</p>
@@ -218,6 +219,8 @@
 	<p class="indent3">Shows the skill name on the Output sheet but not in PCGen.</p>
 	<p class="indent2"><code>VISIBLE:ALWAYS|READONLY</code></p>
 	<p class="indent3">Shows the skill name in PCGen and on the Output sheet but prohibits the user from adding ranks to it.</p>
+
+<hr>
 
 	<p>
 	<a href="http://validator.w3.org/check?uri=referer"><img

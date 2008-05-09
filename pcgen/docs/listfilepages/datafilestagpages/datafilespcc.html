@@ -40,7 +40,7 @@
 	<p class="indent1"><strong><a href="#OTHERPCCTAGS">Other .pcc file tags</a></strong> - are used to provide additional functionality.</p>
 	<p></p>
 
-	<p class="sidebar"><strong>Note:</strong> You cannot use a colon (:) in the in the PCC file anywhere other 
+	<p class="sidebar1"><strong>Note:</strong> You cannot use a colon (:) in the in the PCC file anywhere other 
 	than immediately after the CAMPAIGN tag. Doing so will cause PCGen to report errors and not load correctly.</p>
 		
 <hr>
@@ -58,7 +58,7 @@
 	<p class="indent2">This <em>MUST</em> be the first line in the file. The standard format used is Company Short Name (Foo) - Campaign Name - Name of material</p>
 	<p class="indent1"><strong>Example:</strong></p>
 	<p class="indent2"><code>CAMPAIGN:FGI - FooB Core Rulebook I - FHB</code></p>
-	<p class="indent3"><span class="new">WARNING:</span> The use of the ampersand (&amp;) sign will cause significant problems with PCGen, so recommended usage is to replace with the word &quot;and&quot; or the letter &quot;n&quot; to avoid this.</p>
+	<p class="sidebar1"><span class="new">WARNING:</span> The use of the ampersand (&amp;) sign will cause significant problems with PCGen, so recommended usage is to replace with the word &quot;and&quot; or the letter &quot;n&quot; to avoid this.</p>
 	<p></p>
 
 <hr>
@@ -421,20 +421,18 @@
 	<p class="indent3">Loads the source file from a web site.</p>
 
 
-	<p><span class="new">WARNING:</span> Do not use backslashes (\) for directory separators in file paths,
+	<p class="sidebar1"><span class="new">WARNING:</span> Do not use backslashes (\) for directory separators in file paths,
 		use only forward slashes (/). backslashes work correctly on Windows systems but cause problems on Unix
 		flavored systems such as Linux and Max OS X.</p>
 
-	<p><span class="new">IMPORTANT NOTE:</span> The following tags can (and it is recommended for equipment)
-		have multiple lines.
-		The names of the list files in the example column are also only suggestions.
-		To include the same type of files from the same directory on the same line
-		you would separate each file to be loaded (of the appropriate type, i.e., <code>fhbarmorshields.lst|fhbequip|etc</code>).
-		Sometimes, not all of these tags are required by a source material.
-		If a tag is not required, it cannot be left blank, it must be commented out or deleted entirely.
-		These tags only tell PCGen where to go to get the information it needs, it points it to the right spot.
-		Each list file will be fully explained below, separated by the list file name, with a full list of the
-		tags that can be used in each one.</p>
+	<p class="indent0">The following tags can, and it is recommended for equipment, have multiple lines.
+		The names of the list files in the example column are also only suggestions. To include the same 
+		type of files from the same directory on the same line you would separate each file to be loaded, 
+		of the appropriate type, i.e., <code>fhbarmorshields.lst|fhbequip|etc</code>. Sometimes, not all 
+		of these tags are required by a source material. If a tag is not required, it cannot be left blank, 
+		it must be commented out or deleted entirely. These tags only tell PCGen where to go to get the 
+		information it needs, it points it to the right spot. Each list file will be fully explained below, 
+		separated by the list file name, with a full list of the tags that can be used in each one.</p>
 	<p></p>
 
 <hr>
@@ -787,6 +785,8 @@
 	<p class="indent2">If this tag is included it should be after the <code>SKILL:</code> tag.</p>
 	<p class="indent1"><strong>Example:</strong></p>
 	<p class="indent2"><code>REQSKILL:Alchemy|Bluff|Diplomacy|etc</code></p>
+
+<hr>
 
 	<p>
 	<a href="http://validator.w3.org/check?uri=referer"><img
