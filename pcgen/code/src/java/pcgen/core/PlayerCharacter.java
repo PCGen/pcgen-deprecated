@@ -13000,7 +13000,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 
 		// Equipment
-		for (Equipment eq : getEquipmentList())
+		final List<Equipment> eqList =
+				new ArrayList<Equipment>(getEquipmentList());
+		for (Equipment eq : eqList)
 		{
 			// Include natural weapons by default as they have an effect even if
 			// not equipped.
@@ -17421,7 +17423,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			abilities = theAbilities.get(aCategory, Ability.Nature.VIRTUAL);
 		}
 
-		return Collections.unmodifiableList(abilities);
+		return abilities;
 	}
 
 	public List<Ability> featAutoList()
