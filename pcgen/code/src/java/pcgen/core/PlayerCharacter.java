@@ -4121,7 +4121,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public void cacheOutputIndex(String key, int index)
 	{
-		Logging.errorPrint("Caching " + key + " - " + index + " direct");
+		Logging.debugPrint("Caching " + key + " - " + index + " direct");
 		autoEquipOutputOrderCache.put(key, index);
 	}
 
@@ -4133,7 +4133,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	{
 		if (item.isAutomatic())
 		{
-			Logging.errorPrint("Caching " + item.getKeyName() + " - "
+			Logging.debugPrint("Caching " + item.getKeyName() + " - "
 				+ item.getOutputIndex() + " item");
 			autoEquipOutputOrderCache.put(item.getKeyName(), item
 				.getOutputIndex());
