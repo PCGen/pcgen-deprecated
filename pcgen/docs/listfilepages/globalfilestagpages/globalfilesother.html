@@ -127,7 +127,7 @@
 
 <hr>
 
-	<p class="new">*** New 5.13.0*** Updated 5.13.6 - Replaces FEATAUTO:x|x</p>
+	<p class="new">*** Updated 5.13.6</p>
 	<p class="indent0"><strong><a name="AUTOFEAT">Tag Name:</a></strong> AUTO:FEAT|x|x</p>
 		<p class="indent1"><strong>Variables Used (x):</strong> Text (&lt;Feat Name&gt;)</p>
 		<p class="indent1"><strong>What it does:</strong></p>
@@ -174,19 +174,22 @@
 	<p class="new">*** Updated 5.11.1</p>
 	<p class="indent0"><strong><a name="AUTOWEAPONPROF">Tag Name:</a></strong> AUTO:WEAPONPROF|x|x</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (Weapon name)</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> Text (Weapon Type)</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> DEITYWEAPONS</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> TYPE=Text (Weapon Type)</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> TYPE.Text (Weapon Type)</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> DEITYWEAPONS (Deity's favored weapon)</p>
 	<p class="indent1"><strong>What it does:</strong></p>
 	<ul class="indent2">
 		<li>This is a pipe-delimited (|) list of weapons, by name or weapon type, that are granted
 			as free weapon proficiencies.</li>
 		<li>You can specify individual weapons or all weapons of a weapon proficiency type.</li>
-		<li>When including the <code>TYPE=</code> sub-tag you may use a period-delimted (.) list
-			of weapon types. This will grant the character proficiency with weapons that meet all of the
-			listed weapon types.</li>
+		<li>When including the <code>TYPE=Text</code> or <code>TYPE,Text</code> sub-tag you may 
+			use a period-delimted (.) list of weapon types. This will grant the character proficiency 
+			with weapons that meet all of the listed weapon types.</li>
+		<li>When using the <code>DEITYWEAPONS</code> sub-tag, all of the deities favored weapons, except 
+			for natural weapons, are added.  If the deity specifies &quot;ALL&quot; or &quot;ANY&quot; for
+			its favored weapon, no weapons will be added.</li>
 		<li>Only one PRExxx tag is allowed, but it can be a PREMULT statement.</li>
 		<li>PRExxx tags must be enclosed within brackets. (i.e. [PRExxx]).</li>
-		<li>TYPE.xxx for reference, TYPE=xxx for assignment.</li>
 	</ul>
 	<p class="indent1"><strong>Examples:</strong></p>
 	<p class="indent2"><code>AUTO:WEAPONPROF|Sword (Long)|Shortbow (Composite)</code></p>
@@ -217,7 +220,7 @@
 
 <hr>
 
-	<p class="new">*** Updated 5.9.5*** Updated 5.13.6</p>
+	<p class="new">*** Updated 5.13.6</p>
 	<p class="indent0"><strong><a name="CSKILL">Tag Name:</a></strong> CSKILL:x|x</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (&lt;Skill Name&gt;)</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (Type=&lt;Skill Type&gt;)</p>
@@ -729,7 +732,7 @@
 
 <hr>
 
-	<p class="new">*** *** Deprecated 5.x.x - Remove 5.16 -use <a href="#SAB">SAB</a></p>
+	<p class="new">*** *** Deprecated 5.x.x - Remove 6.0 -use <a href="#SAB">SAB</a></p>
 	<p class="indent0"><strong><a name="SA">Tag Name:</a></strong> SA:x</p>
 	<p><strong> Variables Used (x):</strong>Text (Special Ability Name)</p>
 	<p><strong> Variables Used (x):</strong>.CLEAR.Text (Clear Special Ability Totals)</p>
@@ -936,7 +939,7 @@
 
 <hr>
 
-	<p class="new">*** *** Deprecated 5.x.x - Remove 5.16 -use <a href="#SPELLS">SPELLS</a></p>
+	<p class="new">*** *** Deprecated 5.x.x - Remove 6.0 -use <a href="#SPELLS">SPELLS</a></p>
 	<p class="indent0"><strong><a name="SPELL">Tag Name:</a></strong> SPELL:x|y|z|x|y|z</p>
 	<p><strong> Variables Used (x):</strong>Text (name of spell)</p>
 	<p><strong> Variables Used (y):</strong>Number (number of times per day)</p>
@@ -1005,13 +1008,13 @@
 
 <hr>
 
-	<p class="new">*** Deprecated 5.11.4 - Remove 5.16 - Use <a href="#SPELLLEVEL">SPELLLEVEL</a></p>
+	<p class="new">*** Deprecated 5.11.4 - Use <a href="#SPELLLEVEL">SPELLLEVEL</a></p>
 	<p class="indent0"><strong><a name="SPELLLEVELCLASS">Tag Name:</a></strong> SPELLLEVEL:CLASS|x|y,y|x|y,y</p>
 	<p></p>
 
 <hr>
 
-	<p class="new">*** Deprecated 5.11.4 - Remove 5.16 - Use <a href="#SPELLLEVEL">SPELLLEVEL</a></p>
+	<p class="new">*** Deprecated 5.11.4 - Use <a href="#SPELLLEVEL">SPELLLEVEL</a></p>
 	<p class="indent0"><strong><a name="SPELLLEVELDOMAIN">Tag Name:</a></strong> SPELLLEVEL:DOMAIN|x|y,y|x|y,y</p>
 	<p></p>
 
@@ -1267,12 +1270,6 @@
 	<p class="indent2"><code>VISION:Darkvision (0')&lt;tab&gt;BONUS:VISION|Darkvision|30</code></p>
 	<p class="indent3">If character does not have Darkvision, receives it at 30, or extends Darkvision by
 		30 if it already has it.</p>
-	<p></p>
-
-<hr>
-
-	<p class="new">*** Deprecated 5.11.11 - Remove 5.16 - Use <a href="AUTOWEAPONPROF">AUTO:WEAPONPROF</a> tag instead.</p>
-	<p class="indent0"><strong><a name="WEAPONAUTO">Tag Name:</a></strong> WEAPONAUTO:x</p>
 	<p></p>
 
 <hr>
