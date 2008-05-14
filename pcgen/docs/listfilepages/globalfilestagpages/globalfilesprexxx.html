@@ -357,17 +357,23 @@
 
 <hr>
 
-	<p class="indent0"><strong><a name="PRECLASSLEVELMAX">Tag Name:</a></strong>PRECLASSLEVELMAX:x,x=y</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> Text (Class name or names).</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> TYPE.ClassType (A Class type such as Base or Prestige).</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> SPELLCASTER (Any spellcaster).</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> SPELLCASTER.Type (A spellcaster type such as Arcane or Divine).</p>
-	<p class="indent1"><strong>Variables Used (y):</strong> Number
-		(The maximum number of levels in the specified classes allowed. If there is more than one class listed, it is treated as an AND statement).</p>
+	<p class="indent0"><strong><a name="PRECLASSLEVELMAX">Tag Name:</a></strong>PRECLASSLEVELMAX:x,y,y=z</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> Number (Number of listed classes required)</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> Text (Class name)</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> TYPE.Text (Class type)</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> SPELLCASTER</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> SPELLCASTER.Text (Spellcaster type)</p>
+	<p class="indent1"><strong>Variables Used (z):</strong> Number (Maximum class level)</p>
 	<p class="indent1"><strong>What it does:</strong></p>
-	<p class="indent2">Sets maximum class level limits.</p>
+	<ul class="indent2">
+		<li>Sets maximum class level limits.</li>
+		<li>Class types are defined in the loaded datasets.  Examples from the RSRD are &quot;Base&quot;, 
+			&quot;PC&quot;, or &quot;Prestige&quot;.</li>
+		<li><code>SPELLCATER</code> will check against all spellcasting classes.</li>
+		<li><code>SPELLCASTER.Text</code> will check against spellcaster types, e.g. Arcane or Divine.</li>
+	</ul>
 	<p class="indent1"><strong>Example:</strong></p>
-	<p class="indent2"><code>PRECLASSLEVELMAX:Fighter,SPELLCASTER=2</code></p>
+	<p class="indent2"><code>PRECLASSLEVELMAX:2,Fighter,SPELLCASTER=2</code></p>
 	<p class="indent3">Character cannot have more than 2 levels of fighter and cannot have more than 2 levels in any spellcasting class.</p>
 	<p></p>
 
