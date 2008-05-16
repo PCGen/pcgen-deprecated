@@ -20,14 +20,10 @@ package pcgen.base.graph.core;
 import java.util.Collection;
 import java.util.Collections;
 
+import pcgen.util.TestSupport;
+
 import junit.framework.TestCase;
 
-/**
- * @author Me
- * 
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
 public class GraphUtilitiesTest extends TestCase {
 	private Integer node1, node2, node3, node4, node5;
 
@@ -71,6 +67,12 @@ public class GraphUtilitiesTest extends TestCase {
 		assertTrue(graph2.addEdge(dedge5));
 	}
 
+	public void testPrivateConstructor()
+	{
+		Object instance = TestSupport.invokePrivateConstructor(GraphUtilities.class);
+		assertTrue(instance instanceof GraphUtilities);
+	}
+
 	public void testGetDescendentNodes() {
 		Collection<Integer> s = GraphUtilities.getDescendentNodes(graph2, node1);
 		assertTrue(s.remove(node1));
@@ -97,4 +99,6 @@ public class GraphUtilitiesTest extends TestCase {
 		}
 		assertNull(GraphUtilities.getDescendentNodes(graph2, null));
 	}
+	
+	
 }
