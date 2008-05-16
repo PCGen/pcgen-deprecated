@@ -137,6 +137,11 @@ public class TypeSafeMapTest extends TestCase {
 		} catch (IllegalArgumentException iae) {
 			// This is expected
 		}
+		try {
+			TypeSafeMap value = new TypeSafeMap(tsm);
+		} catch (IllegalArgumentException iae) {
+			fail();
+		}
 	}
 
 	@Test
