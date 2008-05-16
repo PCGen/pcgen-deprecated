@@ -113,7 +113,7 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 
 	/**
 	 * Constructs a new TypeSafeMap using the contents of the given TypeSafeMap
-	 * to initilize the TypeSafeMap. The Class used as keys in the TypeSafeMap
+	 * to initialize the TypeSafeMap. The Class used as keys in the TypeSafeMap
 	 * will match the class in the given TypeSafeMap.
 	 * 
 	 * @param value
@@ -126,6 +126,7 @@ public class TypeSafeMap<K extends TypeSafeConstant, V> implements Map<K, V>
 			throw new IllegalArgumentException("TypeSafeMap must not be null");
 		}
 		keyClass = value.keyClass;
+		array = new Object[value.array.length];
 		System.arraycopy(value.array, 0, array, 0, value.array.length);
 	}
 
