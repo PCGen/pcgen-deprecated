@@ -276,7 +276,7 @@ else {
         partial_destination         => "$DEST_PARTIAL_FOLDER/lib",
         partial_files_to_keep_ref   => [
             # directory
-            qr{ [/] (?: cobra [/] }xmsi, 			# Needed for the character sheet
+            qr{ [/] cobra [/] }xmsi, 			# Needed for the character sheet
 
             # files
             qr{ [/]
