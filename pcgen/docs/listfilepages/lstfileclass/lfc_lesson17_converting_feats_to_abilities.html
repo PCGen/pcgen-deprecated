@@ -51,13 +51,10 @@
 			sections, the Basic Conversion and the Advanced Conversion. Within each of these 
 			sections you will find discussion of each file that must be modified, and the tags 
 			required to accomplish the conversion of your homebrew feats.</p>
-		<p class="indent0">What this lesson will not tell you is how to create either Feats or Abilities. 
-			Both are very similar in construction, using the same set of general tags to provide the 
-			functionality required to implement varied game rules used. To get an idea of how to build 
-			feats you can look up <a href="lfc_lesson12_feat1.html">LST File Class #12</a> and 
-			<a href="lfc_lesson13_feat2.html">LST File Class #13</a>, Feat LST Classes parts 1 and 2. 
-			There will eventually be a LST FIle Class for Abilities so you can check back periodically 
-			to see if its been released yet.</p>
+		<p class="indent0">What this lesson will not tell you is how to create either Feats or 
+			Abilities. Both are very similar in construction, using the same set of general tags 
+			to provide the functionality required to implement varied game rules used. The specific 
+			differences are covered below.</p>
 		<p class="indent0">For those of you that have gone through the previous LST Classes, some of 
 			the global tags will be repetitive. feel free to skip those portions if you like. These 
 			classes are being written for the new LST-Monkey, so there will be some overlap, but a 
@@ -104,8 +101,15 @@
 <hr style="height:3px">
 
 		<h3>Ability.lst File</h3>
-		<p class="indent0">This file is where your converted feat will be placed. You will 
-			need to add <code>CATEGORY</code> to your feat to make it an ability.</p>
+		<p class="indent0">This file is where your converted feat will be placed. In fact, 
+			the <span class="lstobj">ability.lst</span> file, and the tags you use in it, 
+			are very similar to the <span class="lstobj">feat.lst</span> file. The major 
+			diference between the two is that you will need to add the <code>CATEGORY</code> 
+			tag to your feat to make it an ability.  To get an idea of how to build feats, 
+			you can look up <a href="lfc_lesson12_feat1.html">LST File Class #12</a> and 
+			<a href="lfc_lesson13_feat2.html">LST File Class #13</a>, Feat LST Classes Parts 
+			1 and 2. There will eventually be a LST FIle Class for Abilities so you can check 
+			back periodically to see if its been released yet.</p>
 		<p></p>
 
 <hr>
