@@ -18,6 +18,7 @@ public class BonusfeatsToken implements PCTemplateLstToken
 	// number of additional feats to spend
 	public boolean parse(PCTemplate template, String value)
 	{
+		Logging.errorPrint("Template token BONUSFEATS is not used - you should use a BONUS: token.  This may (or may not) be fixed in a later revision of PCGen");
 		try
 		{
 			int featCount = Integer.parseInt(value);
