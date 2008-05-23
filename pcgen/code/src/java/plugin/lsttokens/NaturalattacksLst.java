@@ -79,7 +79,7 @@ public class NaturalattacksLst implements GlobalLstToken
 			aSize = ((Race) obj).getSize();
 		}
 
-		if (aSize == null)
+		if (aSize == null || aSize.length() == 0)
 		{
 			aSize = "M";
 		}
