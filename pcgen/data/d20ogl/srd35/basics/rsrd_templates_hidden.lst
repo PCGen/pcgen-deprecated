@@ -84,7 +84,7 @@ Disease Damage (Slimy doom)			VISIBLE:NO	SOURCEPAGE:AbilitiesandConditions.rtf	B
 # put this on class line one of any class that gets Uncanny Dodge
 #	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.STACK
 # Template Name	Visible	Define										Ability
-Uncanny Dodge	VISIBLE:NO	DEFINE:UncannyDodgeFlankingLevel|0	DEFINE:UncannyDodgeLevel|0	ABILITY:Special Ability|AUTOMATIC|Uncanny Dodge|PREVAREQ:UncannyDodgeLevel,1	ABILITY:Special Ability|AUTOMATIC|Improved Uncanny Dodge|PREVARGTEQ:UncannyDodgeLevel,2
+Uncanny Dodge	VISIBLE:NO	DEFINE:UncannyDodgeFlankingLevel|0	DEFINE:UncannyDodgeLevel|0	ABILITY:Special Ability|VIRTUAL|Uncanny Dodge|PREVAREQ:UncannyDodgeLevel,1	ABILITY:Special Ability|VIRTUAL|Improved Uncanny Dodge|PREVARGTEQ:UncannyDodgeLevel,2
 
 #
 # End
