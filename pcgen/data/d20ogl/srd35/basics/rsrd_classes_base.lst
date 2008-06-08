@@ -46,10 +46,10 @@ CLASS:Ex Barbarian	STARTSKILLPTS:4	CSKILL:Climb|TYPE.Craft|Handle Animal|Intimid
 #	Currently, this does not take into account the removal using Skill points.
 1	BONUS:VAR|IllteracyLVL|CL	DEFINE:IllteracyLVL|0	VFEAT:Illiteracy|PREVAREQ:TL,IlliteracyLVL
 ###Block: Level progression
-1																							AUTO:FEAT|Barbarian Fast Movement
-2	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.REPLACE	BONUS:VAR|UncannyDodgeLevel|(CL+1)/3	TEMPLATE:Uncanny Dodge
-3	BONUS:VAR|TrapSense|CL/3																		AUTO:FEAT|Trap Sense Ability
-7	BONUS:VAR|BarbarianDRLVL|CL																		AUTO:FEAT|Barbarian DR
+1																													AUTO:FEAT|Barbarian Fast Movement
+2	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.REPLACE	BONUS:VAR|UncannyDodgeLevel|(CL+1)/3	ABILITY:Special Ability|AUTOMATIC|Uncanny Dodge ~ Base
+3	BONUS:VAR|TrapSense|CL/3																								AUTO:FEAT|Trap Sense Ability
+7	BONUS:VAR|BarbarianDRLVL|CL																								AUTO:FEAT|Barbarian DR
 
 # Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page			Save checks bonus											Combat bonus
 CLASS:Bard		HD:6		TYPE:Base.PC	ABB:Brd		MAXLEVEL:20	SOURCEPAGE:ClassesI.rtf	BONUS:CHECKS|BASE.Fortitude|CL/3	BONUS:CHECKS|BASE.Reflex,BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
