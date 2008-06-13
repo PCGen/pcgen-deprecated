@@ -4,6 +4,7 @@
 
 # Copyright 2002 to 2006 by Eric Beaudoin <beaudoer@videotron.ca>.
 # Copyright 2006 to 2007 by Andrew McDougall <tir.gwaith@gmail.com>
+# Copyright 2008 by Phillip Ryan <philryan49@hotmail.com>
 
 # All rights reserved.  You can redistribute and/or modify
 # this program under the same terms as Perl itself.
@@ -47,8 +48,6 @@ use File::Find	();
 use File::Basename ();
 use Text::Balanced ();
 use lib '.';
-
-
 
 #use Data::Dump qw(dump);
 
@@ -593,7 +592,7 @@ if ( $cl_options{system_path} ne q{} ) {
 }
 
 # Valid check name
-my %valid_check_name = map { $_ => 1} @valid_system_check_names;
+my %valid_check_name = map { $_ => 1} @valid_system_check_names, '%LIST', '%CHOICE';
 
 # Valid game type (for the .PCC files)
 my %valid_game_modes = map { $_ => 1 } (
@@ -621,37 +620,37 @@ my %valid_game_modes = map { $_ => 1 } (
 # Limited choice tags
 my %tag_fix_value = (
 	ACHECK		=> { YES => 1, NO => 1, WEIGHT => 1, PROFICIENT => 1, DOUBLE => 1 },
-	ALIGN		=> { map { $_ => 1 } @valid_system_alignments },
-	APPLY		=> { INSTANT => 1, PERMANENT => 1 },
-	BONUSSPELLSTAT => { map { $_ => 1 } ( @valid_system_stats, 'NONE' ) },
+	ALIGN			=> { map { $_ => 1 } @valid_system_alignments },
+	APPLY			=> { INSTANT => 1, PERMANENT => 1 },
+	BONUSSPELLSTAT	=> { map { $_ => 1 } ( @valid_system_stats, 'NONE' ) },
 	DESCISIP		=> { YES => 1, NO => 1 },
-	EXCLUSIVE	=> { YES => 1, NO => 1 },
-	FORMATCAT	=> { FRONT => 1, MIDDLE => 1, PARENS => 1 },		# [ 1594671 ] New tag: equipmod FORMATCAT
-	FREE		=> { YES => 1, NO => 1 },
+	EXCLUSIVE		=> { YES => 1, NO => 1 },
+	FORMATCAT		=> { FRONT => 1, MIDDLE => 1, PARENS => 1 },		# [ 1594671 ] New tag: equipmod FORMATCAT
+	FREE			=> { YES => 1, NO => 1 },
 	KEYSTAT		=> { map { $_ => 1 } @valid_system_stats },
-	HASSUBCLASS	=> { YES => 1, NO => 1 },
-	ALLOWBASECLASS => { YES => 1, NO => 1 },
-	HASSUBSTITUTIONLEVEL => { YES => 1, NO => 1 },
-	ISD20		=> { YES => 1, NO => 1 },
-	ISLICENSED	=> { YES => 1, NO => 1 },
-	ISOGL		=> { YES => 1, NO => 1 },
+	HASSUBCLASS		=> { YES => 1, NO => 1 },
+	ALLOWBASECLASS	=> { YES => 1, NO => 1 },
+	HASSUBSTITUTIONLEVEL	=> { YES => 1, NO => 1 },
+	ISD20			=> { YES => 1, NO => 1 },
+	ISLICENSED		=> { YES => 1, NO => 1 },
+	ISOGL			=> { YES => 1, NO => 1 },
 	ISMATURE		=> { YES => 1, NO => 1 },
 	MEMORIZE		=> { YES => 1, NO => 1 },
-	MULT		=> { YES => 1, NO => 1 },
-	MODS		=> { YES => 1, NO => 1, REQUIRED => 1 },
-	MODTOSKILLS	=> { YES => 1, NO => 1 },
+	MULT			=> { YES => 1, NO => 1 },
+	MODS			=> { YES => 1, NO => 1, REQUIRED => 1 },
+	MODTOSKILLS		=> { YES => 1, NO => 1 },
 	NAMEISPI		=> { YES => 1, NO => 1 },
 	RACIAL		=> { YES => 1, NO => 1 },
-	REMOVABLE	=> { YES => 1, NO => 1 },
+	REMOVABLE		=> { YES => 1, NO => 1 },
 	RESIZE		=> { YES => 1, NO => 1 },	# [ 1956719 ] Add RESIZE tag to Equipment file
 	PREALIGN		=> { map { $_ => 1 } @valid_system_alignments },
-	PRESPELLBOOK   => { YES => 1, NO => 1 },
-	SHOWINMENU	=> { YES => 1, NO => 1 },	# [ 1718370 ] SHOWINMENU tag missing for PCC files
-	STACK		=> { YES => 1, NO => 1 },
-	SPELLBOOK	=> { YES => 1, NO => 1 },
-	SPELLSTAT	=> { map { $_ => 1 } ( @valid_system_stats, 'SPELL', 'NONE', 'OTHER' ) },
-	USEUNTRAINED   => { YES => 1, NO => 1 },
-	USEMASTERSKILL => { YES => 1, NO => 1 },
+	PRESPELLBOOK	=> { YES => 1, NO => 1 },
+	SHOWINMENU		=> { YES => 1, NO => 1 },	# [ 1718370 ] SHOWINMENU tag missing for PCC files
+	STACK			=> { YES => 1, NO => 1 },
+	SPELLBOOK		=> { YES => 1, NO => 1 },
+	SPELLSTAT		=> { map { $_ => 1 } ( @valid_system_stats, 'SPELL', 'NONE', 'OTHER' ) },
+	USEUNTRAINED	=> { YES => 1, NO => 1 },
+	USEMASTERSKILL	=> { YES => 1, NO => 1 },
 	VISIBLE		=> { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1, CSHEET => 1, GUI => 1 }, #[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
 );
 
@@ -1806,6 +1805,7 @@ my %master_order = (
 		'ADD:SKILL',
 		'ADD:WEAPONPROFS',
 		'ADDSPELLLEVEL',
+		'REMOVE',
 		'LANGAUTO:.CLEAR',
 		'LANGAUTO:*',
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
@@ -1926,7 +1926,7 @@ my %master_order = (
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'CHANGEPROF',
-		'DOMAIN',			# [ 1973526 ] DOMAIN is supported on Class line
+		'DOMAIN:*',			# [ 1973526 ] DOMAIN is supported on Class line
 		'ADDDOMAINS:*',
 		'REMOVE',
 		'BONUS:HD',			# Class Lines
@@ -1946,6 +1946,7 @@ my %master_order = (
 		'SKILLLIST',
 		'CSKILL:.CLEAR',
 		'CSKILL',
+		'CCSKILL:.CLEAR',
 		'CCSKILL',
 		'MONSKILL',
 		'MONNONSKILLHD:*',
@@ -1983,6 +1984,8 @@ my %master_order = (
 		'DEFINE:*',
 		'CSKILL:.CLEAR',
 		'CSKILL',
+		'CCSKILL:.CLEAR',
+		'CCSKILL',
 		'ADD:*',
 		'ADD:CLASSSKILLS',
 		'ADD:DOMAIN',
@@ -2010,7 +2013,7 @@ my %master_order = (
 		'AUTO:FEAT:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
-		'CHANGEPROF',
+		'CHANGEPROF:*',
 		'LANGAUTO:.CLEAR',
 		'LANGAUTO:*',
 		'ADDDOMAINS',			# [ 1973660 ] ADDDOMAINS is supported on Class Level lines
@@ -2149,7 +2152,7 @@ my %master_order = (
 		@PRE_Tags,
 		@QUALIFY_Tags,
 		'DEFINE:*',
-		'ACCHECK',
+		'ACCHECK:*',
 		'BASEITEM',
 		'BASEQTY',
 		'CHOOSE',
@@ -2177,7 +2180,7 @@ my %master_order = (
 		'ADD:FEAT',
 		'VFEAT:.CLEAR',
 		'VFEAT:*',
-		'ABILITY',
+		'ABILITY:*',
 		'VISION',
 		'SR',
 		'DR',
@@ -2192,7 +2195,8 @@ my %master_order = (
 		'BONUS:WEAPON:*',
 		'LANGAUTO:.CLEAR',
 		'LANGAUTO:*',
-		'QUALITY:*',				# [ 1593868 ] New equipment tag "QUALITY"
+		'QUALITY:*',		# [ 1593868 ] New equipment tag "QUALITY"
+		'SPROP:.CLEAR',
 		'SPROP:*',
 		'SA:.CLEAR',
 		'SA:*',
@@ -2296,7 +2300,7 @@ my %master_order = (
 		'AUTO:WEAPONPROF:*',
 		'UDAM',
 		'VFEAT:*',
-		'ABILITY',
+		'ABILITY:*',
 		'ADD:*',
 		'ADD:CLASSSKILLS',
 		'ADD:FAVOREDCLASS',
@@ -2312,7 +2316,7 @@ my %master_order = (
 		'LANGAUTO:.CLEAR',
 		'LANGAUTO:*',
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
-		'CHANGEPROF',
+		'CHANGEPROF:*',
 		'FOLLOWERS',
 		'COMPANIONLIST:*',
 		'CSKILL:.CLEAR',
@@ -2601,7 +2605,7 @@ my %master_order = (
 		'LANGBONUS:.CLEAR',
 		'LANGBONUS:*',
 		'WEAPONBONUS:*',
-		'CHANGEPROF',
+		'CHANGEPROF:*',
 		'PROF',
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
 		'CSKILL:.CLEAR',
@@ -2616,9 +2620,9 @@ my %master_order = (
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'VFEAT:*',
-		'FEAT',
-		'ABILITY',
-		'MFEAT',
+		'FEAT:*',
+		'ABILITY:*',
+		'MFEAT:*',
 		'LEGS',
 		'HANDS',
 		'GENDER',
@@ -2726,19 +2730,25 @@ my %master_order = (
 		'DOMAINS',
 		'STAT:*',
 		'PPCOST',
+#		'SPELLPOINTCOST';			# Delay implementing this until SPELLPOINTCOST is documented
 		'SCHOOL:.CLEAR',
-		'SCHOOL',
+		'SCHOOL:*',
 		'SUBSCHOOL',
-		'DESCRIPTOR',
-		'VARIANTS',
+		'DESCRIPTOR:.CLEAR',
+		'DESCRIPTOR:*',
+		'VARIANTS:.CLEAR',
+		'VARIANTS:*',
 		'TYPE',
 		'COMPS',
-		'CASTTIME',
+		'CASTTIME:.CLEAR',
+		'CASTTIME:*',
 		'RANGE:.CLEAR',
-		'RANGE',
+		'RANGE:*',
 		'ITEM:*',
-		'TARGETAREA',
-		'DURATION',
+		'TARGETAREA:.CLEAR',
+		'TARGETAREA:*',
+		'DURATION:.CLEAR',
+		'DURATION:*',
 		'CT',
 		'SAVEINFO',
 		'SPELLRES',
@@ -2746,10 +2756,11 @@ my %master_order = (
 		'XPCOST',
 		@PRE_Tags,
 		'DESCISPI',
-		'DESC',
+		'DESC:.CLEAR',
+		'DESC:*',
 		'DEFINE',
 #		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
-		'BONUS:PPCOST',
+		'BONUS:PPCOST',		# SPELL has a short list of BONUS tags
 		'BONUS:CASTERLEVEL:*',
 		'BONUS:CHECKS',
 		'BONUS:COMBAT:*',
@@ -2792,28 +2803,38 @@ my %master_order = (
 		'CHOICE',
 		'SPELLSTAT',
 		'SPELLTYPE',
+		'LANGAUTO:.CLEAR',
+		'LANGAUTO:*',
+		'LANGBONUS:.CLEAR',
+		'LANGBONUS:*',
 		'BONUS:ABILITYPOOL:*',	# SubClass has a short list of BONUS tags
 		'BONUS:CASTERLEVEL:*',
 		'BONUS:CHECKS:*',
 		'BONUS:COMBAT:*',
 		'BONUS:DC:*',
 		'BONUS:FEAT:*',
+		'BONUS:HD',
 		'BONUS:SKILL:*',
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
 		'BONUS:WIELDCATEGORY:*',
+		'REMOVE',
 		'SPELLLIST',
 		'KNOWNSPELLSFROMSPECIALTY',
 		'PROHIBITED',
 		'PROHIBITSPELL:*',
+		'STARTSKILLPTS',
 		'SA',
 		'DEFINE',
 		@PRE_Tags,
 		'CSKILL:.CLEAR',
 		'CSKILL',
+		'CCSKILL:.CLEAR',
+		'CCSKILL',
+		'DOMAIN:*',			# [ 1973526 ] DOMAIN is supported on Class line
 		'ADDDOMAINS',
 		'UNENCUMBEREDMOVE',
-		'SOURCEPAGE',
+		@SOURCE_Tags,
 	],
 
 	'SUBSTITUTIONCLASS' => [
@@ -2837,6 +2858,7 @@ my %master_order = (
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
 		'BONUS:WIELDCATEGORY:*',
+		'REMOVE',
 		'SPELLLIST',
 		'KNOWNSPELLSFROMSPECIALTY',
 		'PROHIBITED',
@@ -2846,9 +2868,11 @@ my %master_order = (
 		@PRE_Tags,
 		'CSKILL:.CLEAR',
 		'CSKILL',
+		'CCSKILL:.CLEAR',
+		'CCSKILL',
 		'ADDDOMAINS',
 		'UNENCUMBEREDMOVE',
-		'SOURCEPAGE',
+		@SOURCE_Tags,
 	],
 
 	'SUBCLASSLEVEL' => [
@@ -2869,7 +2893,7 @@ my %master_order = (
 		'VISION',
 		'SR',
 		'DR',
-		'DOMAIN',
+		'DOMAIN:*',
 		'SA:.CLEAR:*',
 		'SA:*',
 		'SAB:.CLEAR',
@@ -2879,6 +2903,8 @@ my %master_order = (
 		'DEFINE:*',
 		'CSKILL:.CLEAR',
 		'CSKILL',
+		'CCSKILL:.CLEAR',
+		'CCSKILL',
 		'LANGAUTO.CLEAR',
 		'LANGAUTO:*',
 		'ADD:*',
@@ -2900,6 +2926,8 @@ my %master_order = (
 		'AUTO:FEAT:*',
 		'AUTO:SHIELDPROF',
 		'AUTO:WEAPONPROF:*',
+		'CHANGEPROF:*',
+		'REMOVE',
 		'ADDDOMAINS',
 		'WEAPONBONUS',
 		'FEATAUTO:.CLEAR',
@@ -2940,6 +2968,8 @@ my %master_order = (
 		'DEFINE:*',
 		'CSKILL:.CLEAR',
 		'CSKILL',
+		'CCSKILL:.CLEAR',
+		'CCSKILL',
 		'LANGAUTO.CLEAR',
 		'LANGAUTO:*',
 		'ADD:*',
@@ -2960,6 +2990,8 @@ my %master_order = (
 		'AUTO:FEAT:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
+		'CHANGEPROF:*',
+		'REMOVE',
 		'ADDDOMAINS',
 		'WEAPONBONUS',
 		'FEATAUTO:.CLEAR',
@@ -3030,7 +3062,7 @@ my %master_order = (
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'REMOVE:*',
-		'CHANGEPROF',
+		'CHANGEPROF:*',
 #		'HEIGHT',		# Deprecated
 		'KIT',
 		'LANGAUTO:.CLEAR',
@@ -3054,7 +3086,7 @@ my %master_order = (
 		'HD:*',
 		'WEAPONBONUS',
 		'GENDERLOCK',
-		'SPELL:*',
+		'SPELL:*',		# Deprecated 5.x.x - Remove 6.0 -use SPELLS
 		'SPELLS:*',
 		'SPELLLEVEL:CLASS:*',
 		'ADD:SPELLCASTER',
@@ -3062,6 +3094,8 @@ my %master_order = (
 		'UNENCUMBEREDMOVE',
 		'COMPANIONLIST',
 		'FOLLOWERS',
+		'DESC:.CLEAR',
+		'DESC:*',
 		'TEMPDESC',
 	],
 
@@ -3275,10 +3309,11 @@ my %token_BONUS_tag = map { $_ => 1 } (
 	'EQMWEAPON',
 	'ESIZE',		# Not listed in the Docs
 	'FEAT',
+	'FOLLOWERS',
 	'HD',
 	'HP',
 	'ITEMCOST',
-	'LANGUAGES',
+	'LANGUAGES',	# Not listed in the Docs
 	'MISC',
 	'MONSKILLPTS',
 	'MOVE',
@@ -3559,6 +3594,7 @@ my %tagheader = (
 		'BONUS:EQMWEAPON'	=> 'Bonus Weapon Modifiers',
 		'BONUS:ESIZE'	=> 'Modify size',
 		'BONUS:FEAT'	=> 'Bonus Number of Feats',
+		'BONUS:FOLLOWERS'	=> 'Bonus Number of Followers',
 		'BONUS:HD'		=> 'Modify HD type',
 		'BONUS:HP'		=> 'Bonus to HP',
 		'BONUS:ITEMCOST'	=> 'Modify the item cost',
@@ -3593,9 +3629,11 @@ my %tagheader = (
 		'BONUS:WIELDCATEGORY'	=> 'Wield Category bonus',
 		'CAST'		=> 'Cast',
 		'CASTAS'		=> 'Cast As',
+		'CASTTIME:.CLEAR'	=> 'Clear Casting Time',
 		'CASTTIME'		=> 'Casting Time',
 		'CATEGORY'		=> 'Category of Ability',
-		'CCSKILL'		=> 'Cross-class Skill',
+		'CSKILL:.CLEAR'	=> 'Remove Cross-Class Skill',
+		'CCSKILL'		=> 'Cross-Class Skill',
 		'CHANGEPROF'	=> 'Change Weapon Prof. Category',
 		'CHOOSE'		=> 'Choose',
 		'CLASSES'		=> 'Classes',
@@ -3606,7 +3644,7 @@ my %tagheader = (
 		'CR'			=> 'Challenge Rating',
 		'CRITMULT'		=> 'Critical Hit Multiplier',
 		'CRITRANGE'		=> 'Critical Hit Range',
-		'CSKILL:.CLEAR'	=> 'Removed Class Skill',
+		'CSKILL:.CLEAR'	=> 'Remove Class Skill',
 		'CSKILL'		=> 'Class Skill',
 		'CT'			=> 'Casting Threshold',
 		'DAMAGE'		=> 'Damage',
@@ -3616,11 +3654,13 @@ my %tagheader = (
 		'DESC'		=> 'Description',
 		'DESC:.CLEAR'	=> 'Clear Description',
 		'DESCISPI'		=> 'Desc is PI?',
+		'DESCRIPTOR:.CLEAR'	=> 'Clear Spell Descriptors',
 		'DESCRIPTOR'	=> 'Spell Descriptors',
 		'DOMAIN'		=> 'Domain',
 		'DOMAINS'		=> 'Domains',
 		'DR:.CLEAR'		=> 'Remove Damage Reduction',
 		'DR'			=> 'Damage Reduction',
+		'DURATION:.CLEAR'	=> 'Clear Duration',
 		'DURATION'		=> 'Duration',
 #		'EFFECTS'		=> 'Description',		# Deprecated a long time ago for TARGETAREA
 		'EQMOD'		=> 'Modifier',
@@ -3701,6 +3741,7 @@ my %tagheader = (
 		'!PREDEITY'		=> 'Prohibited Deity',
 		'PREDEITYDOMAIN'	=> 'Required Deitys Domain',
 		'PREDOMAIN'		=> 'Required Domain',
+		'!PREDOMAIN'	=> 'Prohibited Domain',
 		'PREDSIDEPTS'	=> 'Req. Dark Side',
 		'PREDR'		=> 'Req. Damage Resistance',
 		'!PREDR'		=> 'Prohibited Damage Resistance',
@@ -3714,6 +3755,7 @@ my %tagheader = (
 		'PREHANDSEQ'	=> 'Req. nb of Hands',
 		'PREHANDSGT'	=> 'Min. nb of Hands',
 		'PREHANDSGTEQ'	=> 'Min. nb of Hands',
+		'PREHD'		=> 'Required Hit Dice',
 		'PREITEM'		=> 'Required Item',
 		'PRELANG'		=> 'Required Language',
 		'PRELEVEL'		=> 'Required Lvl',
@@ -3802,6 +3844,7 @@ my %tagheader = (
 		'RACESUBTYPE'		=> 'Race Subtype',
 		'RACETYPE:.CLEAR'	=> 'Clear Main Racial Type',
 		'RACETYPE'		=> 'Main Race Type',
+		'RANGE:.CLEAR'	=> 'Clear Range',
 		'RANGE'		=> 'Range',
 		'RATEOFFIRE'	=> 'Rate of Fire',
 		'REACH'		=> 'Reach',
@@ -3839,6 +3882,7 @@ my %tagheader = (
 		'SPELLS'		=> 'Innate Spells',
 		'SPELLSTAT'		=> 'Spell Stat',
 		'SPELLTYPE'		=> 'Spell Type',
+		'SPROP:.CLEAR'	=> 'Clear Special Property',
 		'SPROP'		=> 'Special Property',
 		'SR'			=> 'Spell Res.',
 		'STACK'		=> 'Stackable?',
@@ -3850,6 +3894,7 @@ my %tagheader = (
 		'SUBSCHOOL'		=> 'Sub-School',
 		'SUBSTITUTIONLEVEL'	=> 'Substitution Level',
 		'SYNERGY'		=> 'Synergy Skill',
+		'TARGETAREA:.CLEAR'	=> 'Clear Target Area or Effect',
 		'TARGETAREA'	=> 'Target Area or Effect',
 		'TEMPDESC'		=> 'Temporary effect description',
 		'TEMPLATE'		=> 'Template',
@@ -6523,20 +6568,23 @@ sub parse_tag {
 	# change the tag name but we give a warning.
 	#ewarn( DEBUG, qq{parse_tag:$tag_text}, $file_for_error, $line_for_error );
 	if ( defined $value && $value =~ /^.CLEAR/i ) {
-		if ( !exists $valid_tags{$linetype}{"$tag:.CLEAR"} ) {
-		$logging->ewarn( NOTICE,
-			qq{The tag "$tag:.CLEAR" from "$tag_text" is not in the $linetype tag list\n},
-			$file_for_error,
-			$line_for_error
-		);
-		$count_tags{"Invalid"}{"Total"}{"$tag:.CLEAR"}++;
-		$count_tags{"Invalid"}{$linetype}{"$tag:.CLEAR"}++;
-		$no_more_error = 1;
+		if ( exists $valid_tags{$linetype}{"$tag:.CLEARALL"} ) {
+			# Nothing to see here. Move on.
 		}
-		else {
-		$value =~ s/^.CLEAR//i;
-		$tag .= ':.CLEAR';
+		elsif ( !exists $valid_tags{$linetype}{"$tag:.CLEAR"} ) {
+			$logging->ewarn( NOTICE,
+				qq{The tag "$tag:.CLEAR" from "$tag_text" is not in the $linetype tag list\n},
+				$file_for_error,
+				$line_for_error
+			);
+			$count_tags{"Invalid"}{"Total"}{"$tag:.CLEAR"}++;
+			$count_tags{"Invalid"}{$linetype}{"$tag:.CLEAR"}++;
+			$no_more_error = 1;
 		}
+			else {
+				$value =~ s/^.CLEAR//i;
+				$tag .= ':.CLEAR';
+			}
 	}
 
 	# Verify if the tag is valid for the line type
@@ -7197,11 +7245,16 @@ BEGIN {
 				}
 				}
 				else {
-				$logging->ewarn( WARNING,
-					qq{Missing "=level" after "$tag_name:$level"},
-					$file_for_error,
-					$line_for_error
-				);
+					if ( "$tag_name:$level" eq 'CLASSES:.CLEARALL' ) {
+						# Nothing to see here. Move on.
+					}
+					else {
+						$logging->ewarn( WARNING,
+							qq{Missing "=level" after "$tag_name:$level"},
+							$file_for_error,
+							$line_for_error
+						);
+					}
 				}
 			}
 		}
@@ -14627,7 +14680,7 @@ PCGEN. This only changes the path values in the .PCC, the files stay in the dire
 
 =head2 B<-old_source_tag>
 
->From PCGen version 5.9.6, there is a new format for the SOURCExxx tag that use the tab instead of the |. prettylst.pl
+From PCGen version 5.9.6, there is a new format for the SOURCExxx tag that use the tab instead of the |. prettylst.pl
 automaticaly converts the SOURCExxx tags to the new format. The B<-old_source_tag> option must be used if
 you want to keep the old format in place.
 
@@ -14814,11 +14867,17 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head2 v1.39 -- -- NOT YET RELEASED
 
+[ 1992156 ] CHANGEPROF may be used more than once on a line
+
+[ 1991974 ] PL incorectly reports CLEARALL as CLEAR
+
+[ 1991300 ] Allow %LIST as a substitution value on BONUS:CHECKS
+
 [ 1973526 ] DOMAIN is supported on Class line
 
 [ 1973660 ] ADDDOMAINS is supported on Class lines
 
-[ 1956721 ] Add SERVESAS tag to Abilllity, Class, Feat, Race, Skill files
+[ 1956721 ] Add SERVESAS tag to Ability, Class, Feat, Race, Skill files
 
 [ 1956719 ] Add RESIZE tag to Equipment file
 
