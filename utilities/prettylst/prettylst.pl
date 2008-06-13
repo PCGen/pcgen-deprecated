@@ -6633,12 +6633,7 @@ sub parse_tag {
 		my $slip_patern = $tag eq 'PREALIGN' ? qr{[,]}xms : qr{[|]}xms;
 
 		for my $align (split $slip_patern, $newvalue) {
-			if ( $value eq 'Deity' ) {
-				$newvalue = $value;
-			}
-			else {
-				$newvalue = uc($value);
-			}
+			if ( $align eq 'DEITY' ) { $align = 'Deity'; }
 			# Is it a number?
 			my $number;
 			if ( (($number) = ($align =~ / \A (\d+) \z /xms))
