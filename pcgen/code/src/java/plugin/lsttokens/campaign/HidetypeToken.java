@@ -43,6 +43,13 @@ public class HidetypeToken implements CampaignLstToken
 			{
 				gm.setHiddenSkillTypes(value.substring(6));
 			}
+			else
+			{
+				Logging.errorPrint("Campaign " + sourceUri.toString()
+						+ " has invalid " + getTokenName() + " argument: "
+						+ value);
+				return false;
+			}
 		}
 		return true;
 	}
