@@ -33,6 +33,8 @@ import pcgen.core.utils.ShowMessageDelegate;
 import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.PObjectLoader;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
+import pcgen.persistence.lst.prereq.PreParserFactory;
+import pcgen.persistence.lst.prereq.PrerequisiteParserInterface;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
 import javax.swing.*;
@@ -661,64 +663,18 @@ public final class EditorMainForm extends JDialog
 				}
 				else
 				{
+					List<Prerequisite> followerPrereqs = buildFollowerPrereqs(pnlFollowers.getSelectedList());
 					sel = pnlDomains.getSelectedList();
 					List<QualifiedObject<Domain>> qualDomains =
 						new ArrayList<QualifiedObject<Domain>>();
 					for (Object object : sel)
 					{
 						qualDomains.add(new QualifiedObject<Domain>(
-							(Domain) object));
+							(Domain) object, new ArrayList<Prerequisite>(
+									followerPrereqs)));
 					}
 					deity.setDomainList(qualDomains);
 				}
-
-				//
-				// Save follower alignments
-				//
-				sel = pnlFollowers.getSelectedList();
-
-				StringBuffer tbuf = new StringBuffer(100);
-
-				for (int i = 0; i < sel.length; ++i)
-				{
-					String qualifier = null;
-					aString = (String) sel[i];
-
-					int idx = aString.indexOf(" [VARDEFINED:");
-
-					if (idx >= 0)
-					{
-						qualifier = aString.substring(idx + 1);
-
-						if (qualifier.endsWith("]"))
-						{
-							qualifier = qualifier.substring(0, qualifier.length() - 1);
-						}
-
-						qualifier = qualifier.replace(':', '=');
-						aString = aString.substring(0, idx);
-					}
-
-					for (int align = 0; align < SettingsHandler.getGame().getUnmodifiableAlignmentList().size(); ++align)
-					{
-						if (aString.equals(SettingsHandler.getGame().getLongAlignmentAtIndex(align)))
-						{
-							if (qualifier != null)
-							{
-								tbuf.append(qualifier).append('=');
-							}
-
-							tbuf.append(align);
-
-							if (qualifier != null)
-							{
-								tbuf.append(']');
-							}
-						}
-					}
-				}
-
-				((Deity) thisPObject).setFollowerAlignments(tbuf.toString());
 
 				//
 				// Save racial worshippers (no need to explicitly clear)
@@ -1209,6 +1165,65 @@ public final class EditorMainForm extends JDialog
 		}
 	}
 
+	/**
+	 * Builds the follower prereqs based on the list of selected alignments.
+	 * 
+	 * @param selectedList the selected alignments
+	 * 
+	 * @return the list of Prerequisites
+	 */
+	private List<Prerequisite> buildFollowerPrereqs(Object[] selectedList)
+	{
+		List<Prerequisite> prereqs = new ArrayList<Prerequisite>();
+		StringBuffer tbuf = new StringBuffer(100);
+		for (Object selItem : selectedList)
+		{
+			String alignName = (String) selItem;
+			boolean found = false;
+
+			for (int align = 0; align < SettingsHandler.getGame()
+				.getUnmodifiableAlignmentList().size(); ++align)
+			{
+				if (alignName.equals(SettingsHandler.getGame()
+					.getLongAlignmentAtIndex(align)))
+				{
+					if (tbuf.length() > 0)
+					{
+						tbuf.append(',');
+					}
+					tbuf.append(SettingsHandler.getGame()
+						.getShortAlignmentAtIndex(align));
+					found = true;
+					break;
+				}
+			}
+			
+			if (!found)
+			{
+				Logging.errorPrint("Alignment " + alignName
+					+ " could not be found. Ignoring.");
+			}
+		}
+		
+		if (tbuf.length() > 0)
+		{
+			try
+			{
+				final PrerequisiteParserInterface parser =
+						PreParserFactory.getInstance().getParser("ALIGN");
+				Prerequisite prereq = parser.parse("align", tbuf.toString(), false, false);
+				prereqs.add(prereq);
+			}
+			catch (PersistenceLayerException e)
+			{
+				Logging.errorPrint("Unable to create PREALIGN for " + tbuf.toString()
+					+ ". Ignoring.", e);
+			}
+		}
+		
+		return prereqs;
+	}
+
 	//TODO: I'm in the process of breaking this method up (and removing a lot of duplicated code.) 1122 lines is just TOO LONG. Heck, it's long for a class, never mind a method... JK070110
 	private void initComponentContents()
 	{
@@ -1250,12 +1265,21 @@ public final class EditorMainForm extends JDialog
 
 					if (anAlignment.isValidForFollower())
 					{
-						availableFollowerAlignmentList.add(anAlignment.getKeyName());
+						availableFollowerAlignmentList.add(anAlignment.getDisplayName());
 					}
 				}
 
 				final String followerAlignments = ((Deity) thisPObject).getFollowerAlignments();
 				parseAlignment(availableFollowerAlignmentList, selectedFollowerAlignmentList, followerAlignments, null);
+				if (((Deity) thisPObject).getDomainList() != null
+						&& !((Deity) thisPObject).getDomainList().isEmpty())
+				{
+					Prerequisite prereq =
+							((Deity) thisPObject).getDomainList().get(0)
+								.getPrereqs().get(0);
+					parseAlignAbbrev(availableFollowerAlignmentList,
+						selectedFollowerAlignmentList, prereq);
+				}
 
 				pnlFollowers.setAvailableList(availableFollowerAlignmentList, true);
 				pnlFollowers.setSelectedList(selectedFollowerAlignmentList, true);
@@ -2980,6 +3004,37 @@ public final class EditorMainForm extends JDialog
 				availableList.remove(SettingsHandler.getGame().getLongAlignmentAtIndex(idx));
 				selectedList.add(SettingsHandler.getGame().getLongAlignmentAtIndex(idx) + ((qualifier == null) ? "" : qualifier));
 			}
+		}
+	}
+
+	/**
+	 * Parses the prerequisite to obtain the selected alignments.
+	 * 
+	 * @param availableList the available list
+	 * @param selectedList the selected list
+	 * @param prereq the prereq
+	 */
+	private void parseAlignAbbrev(List<String> availableList,
+		List<String> selectedList, Prerequisite prereq)
+	{
+		if (prereq == null)
+		{
+			return;
+		}
+		if (prereq.getPrerequisites() != null)
+		{
+			for (Prerequisite childPrereq : prereq.getPrerequisites())
+			{
+				parseAlignAbbrev(availableList, selectedList, childPrereq);
+			}
+		}
+		
+		String key = prereq.getKey();
+		PCAlignment align = SettingsHandler.getGame()
+			.getAlignment(key);
+		if (align != null)
+		{
+			selectedList.add(align.getDisplayName());
 		}
 	}
 
