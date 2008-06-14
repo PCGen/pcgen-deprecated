@@ -57,7 +57,7 @@ sub parse_ADD_tag;
 sub parse_tag;
 sub validate_tag;
 sub validate_pre_tag;
-sub scan_for_deprecated_tags;
+# sub scan_for_deprecated_tags;
 sub add_to_xcheck_tables;
 sub extract_var_name;
 sub parse_jep;
@@ -5335,7 +5335,7 @@ sub FILETYPE_parse {
 		}
 
 		# Identify the deprecated tags.
-		# scan_for_deprecated_tags( $new_line, $curent_linetype, $file_for_error, $line_for_error );
+		&scan_for_deprecated_tags( $new_line, $curent_linetype, $file_for_error, $line_for_error );
 
 		# Split the line in tokens
 		my %line_tokens;
@@ -6637,8 +6637,8 @@ sub parse_tag {
 			# Is it a number?
 			my $number;
 			if ( (($number) = ($align =~ / \A (\d+) \z /xms))
-			&& $number >= 0
-			&& $number < scalar @valid_system_alignments
+				&& $number >= 0
+				&& $number < scalar @valid_system_alignments
 			) {
 				$align = $valid_system_alignments[$number];
 				$newvalue =~ s{ (?<! \d ) ($number) (?! \d ) }{$align}xms;
@@ -9025,104 +9025,104 @@ sub validate_pre_tag {
 #			$line_for_error	= The currrent line's number within the file
 #
 sub scan_for_deprecated_tags {
-	my ( $line, $linetype, $file_for_error, $line_for_error ) = ("", "", "", 0);
-	my $error_level = 'NOTICE';
+	my ( $line, $linetype, $file_for_error, $line_for_error ) = @_ ;
+	my $error_level = INFO;
 
 	# Deprecated tags
 	if ( $line =~ /\scl\(/ ) {
 		$logging->ewarn( $error_level,
-			qq{The Jep function cl() is deprecated, use classlevel() instead.},
+			qq{The Jep function cl() is deprecated, use classlevel() instead},
 			$file_for_error,
 			$line_for_error
 		);
 	}
 
 	# [ 1938933 ] BONUS:DAMAGE and BONUS:TOHIT should be Deprecated
-	if ( $line =~ /\sBONUS:DAMAGE/ ) {
+	if ( $line =~ /\sBONUS:DAMAGE\s/ ) {
 		$logging->ewarn( $error_level,
-			qq{BONUS:DAMAGE is deprecated 5.5.8 - Remove 5.16.0 - Use BONUS:COMBAT|DAMAGE.x|y instead.},
+			qq{BONUS:DAMAGE is deprecated 5.5.8 - Remove 5.16.0 - Use BONUS:COMBAT|DAMAGE.x|y instead},
 			$file_for_error,
 			$line_for_error
 		);
 	}
 
 	# [ 1938933 ] BONUS:DAMAGE and BONUS:TOHIT should be Deprecated
-	if ( $line =~ /\sBONUS:TOHIT/ ) {
+	if ( $line =~ /\sBONUS:TOHIT\s/ ) {
 		$logging->ewarn( $error_level,
-			qq{BONUS:TOHIT is deprecated 5.3.12 - Remove 5.16.0 - Use BONUS:COMBAT|TOHIT|x instead.},
+			qq{BONUS:TOHIT is deprecated 5.3.12 - Remove 5.16.0 - Use BONUS:COMBAT|TOHIT|x instead},
 			$file_for_error,
 			$line_for_error
 		);
 	}
 
-	# [ 1973497 ] HASSPELLFORMULA is deprecated
-	if ( $line =~ /\sHASSPELLFORMULA/ ) {
-		$logging->ewarn( $error_level,
-			qq{HASSPELLFORMULA is no longer needed and is deprecated in PCGen 5.15.},
-			$file_for_error,
-			$line_for_error
-		);
-	}
+#	# [ 1973497 ] HASSPELLFORMULA is deprecated
+#	if ( $line =~ /\sHASSPELLFORMULA\s/ ) {
+#		$logging->ewarn( $error_level,
+#			qq{HASSPELLFORMULA is no longer needed and is deprecated in PCGen 5.15},
+#			$file_for_error,
+#			$line_for_error
+#		);
+#	}
 
-	if ( $line =~ /[\d+|\)]'MAX'\d+/ ) {
+	if ( $line =~ /[\d+|\)]MAX\d+/ ) {
 		$logging->ewarn( $error_level,
-			qq{The function aMAXb is deprecated, use the Jep function max(a,b) instead.},
+			qq{The function aMAXb is deprecated, use the Jep function max(a,b) instead},
 			$file_for_error,
 			$line_for_error
            );
 	}
 
-	if ( $line =~ /MIN\d+/ ) {
+	if ( $line =~ /[\d+|\)]MIN\d+/ ) {
 		$logging->ewarn( $error_level,
-			qq{The function aMINb is deprecated, use the Jep function min(a,b) instead.},
+			qq{The function aMINb is deprecated, use the Jep function min(a,b) instead},
 			$file_for_error,
 			$line_for_error
            );
 	}
 
-	if ( $line =~ /\sTRUNC/ ) {
+	if ( $line =~ /[\s|\.]TRUNC[\(|\)|\s]/ ) {
 		$logging->ewarn( $error_level,
-			qq{The function TRUNC is deprecated, use the Jep function floor(a) instead.},
+			qq{The function TRUNC is deprecated, use the Jep function floor(a) instead},
 			$file_for_error,
 			$line_for_error
            );
 	}
 
-	if ( $line =~ /\sHITDICESIZE/ ) {
+	if ( $line =~ /\sHITDICESIZE\s/ ) {
 		$logging->ewarn( $error_level,
-			qq{HITDICESIZE is deprecated, use HITDIE instead.},
+			qq{HITDICESIZE is deprecated, use HITDIE instead},
 			$file_for_error,
 			$line_for_error
 		);
 	}
 
-	if ( $line =~ /\sSPELL/ && $linetype ne 'PCC' ) {
+	if ( $line =~ /\sSPELl\s/ && $linetype ne 'PCC' ) {
 		$logging->ewarn( $error_level,
-			qq{SPELL is deprecated, use SPELLS instead.},
+			qq{SPELL is deprecated, use SPELLS instead},
 			$file_for_error,
 			$line_for_error
 		);
 	}
 
-	if ( $line =~ /\sWEAPONAUTO/ ) {
+	if ( $line =~ /\sWEAPONAUTO\s/ ) {
 		$logging->ewarn( $error_level,
-			qq{WEAPONAUTO is deprecated, use AUTO:WEAPONPROF instead.},
+			qq{WEAPONAUTO is deprecated, use AUTO:WEAPONPROF instead},
 			$file_for_error,
 			$line_for_error
 		);
 	}
 
-	if ( $line =~ /\sADD:WEAPONBONUS/ ) {
+	if ( $line =~ /\sADD:WEAPONBONUS\s/ ) {
 		$logging->ewarn( $error_level,
-			qq{ADD:WEAPONBONUS is deprecated, use BONUS instead.},
+			qq{ADD:WEAPONBONUS is deprecated, use BONUS instead},
 			$file_for_error,
 			$line_for_error
 		);
 	}
 
-	if ( $line =~ /\sADD:LIST/ ) {
+	if ( $line =~ /\sADD:LIST\s/ ) {
 		$logging->ewarn( $error_level,
-			qq{ADD:LIST is deprecated, use BONUS instead.},
+			qq{ADD:LIST is deprecated, use BONUS instead},
 			$file_for_error,
 			$line_for_error
 		);
@@ -9130,14 +9130,14 @@ sub scan_for_deprecated_tags {
 
 	if ( $line =~ /\sFOLLOWERALIGN/) {
 		$logging->ewarn( $error_level,
-			qq{FOLLOWERALIGN is deprecated, use PREALIGN on Domain instead. Convert using Followeralign to fix this problem.},
+			qq{FOLLOWERALIGN is deprecated, use PREALIGN on Domain instead. Use the -c=pcgen5120 command line switch to fix this problem},
 			$file_for_error,
 			$line_for_error
 		);
 	}
 
 	# [ 1905481 ] Deprecate CompanionMod SWITCHRACE
-	if ( $line =~ /\sSWITCHRACE/) {
+	if ( $line =~ /\sSWITCHRACE\s/) {
 		$logging->ewarn( $error_level,
 			qq{SWITCHRACE is deprecated 5.13.11 - Remove 6.0 - Use RACETYPE:x tag instead },
 			$file_for_error,
@@ -9157,7 +9157,7 @@ sub scan_for_deprecated_tags {
 	# [ 1804780 ] Deprecate CHOOSE:EQBUILDER|1
 	if ( $line =~ /\sCHOOSE:EQBUILDER\|1/) {
 		$logging->ewarn( $error_level,
-			qq{CHOOSE:EQBUILDER|1 s deprecated use CHOOSE:NOCHOICE },
+			qq{CHOOSE:EQBUILDER|1 is deprecated use CHOOSE:NOCHOICE instead },
 			$file_for_error,
 			$line_for_error
 		);
@@ -9167,7 +9167,7 @@ sub scan_for_deprecated_tags {
 	# [ 1864704 ] AUTO:ARMORPROF|TYPE=x is deprecated
 	if ( $line =~ /\sAUTO:ARMORPROF\|TYPE\=/) {
 		$logging->ewarn( $error_level,
-			qq{AUTO:ARMORPROF|TYPE=x is deprecated Use AUTO:ARMORPROF|ARMORTYPE=x instead. },
+			qq{AUTO:ARMORPROF|TYPE=x is deprecated Use AUTO:ARMORPROF|ARMORTYPE=x instead},
 			$file_for_error,
 			$line_for_error
 		);
@@ -9176,7 +9176,7 @@ sub scan_for_deprecated_tags {
 	# [ 1870482 ] AUTO:SHIELDPROF changes
 	if ( $line =~ /\sAUTO:SHIELDPROF\|TYPE\=/) {
 		$logging->ewarn( $error_level,
-			qq{AUTO:SHIELDPROF|TYPE=x is deprecated Use AUTO:SHIELDPROF|SHIELDTYPE=x instead. },
+			qq{AUTO:SHIELDPROF|TYPE=x is deprecated Use AUTO:SHIELDPROF|SHIELDTYPE=x instead},
 			$file_for_error,
 			$line_for_error
 		);
@@ -9185,7 +9185,7 @@ sub scan_for_deprecated_tags {
 	# [ 1888288 ] CHOOSE:COUNT= is deprecated
 	if ( $line =~ /\sCHOOSE:COUNT\=/) {
 		$logging->ewarn( $error_level,
-			qq{CHOOSE:COUNT= is deprecated 5.13.9 - Remove 6.0. Use SELECT instead. },
+			qq{CHOOSE:COUNT= is deprecated 5.13.9 - Remove 6.0. Use SELECT instead},
 			$file_for_error,
 			$line_for_error
 		);
@@ -14861,6 +14861,20 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1938933 ] BONUS:DAMAGE and BONUS:TOHIT should be Deprecated
+
+[ 1905481 ] Deprecate CompanionMod SWITCHRACE
+
+[ 1888288 ] CHOOSE:COUNT= is deprecated
+
+[ 1870482 ] AUTO:SHIELDPROF changes
+
+[ 1864704 ] AUTO:ARMORPROF|TYPE=x is deprecated
+
+[ 1804786 ] Deprecate SA: replace with SAB:
+
+[ 1804780 ] Deprecate CHOOSE:EQBUILDER|1
 
 [ 1992156 ] CHANGEPROF may be used more than once on a line
 
