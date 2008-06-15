@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat May 17 17:46:58 2008 -- reformated by prettylst.pl v1.38 (build 5869)
+# CVS $Revision$ $Author$ -- Sun Jun 15 15:33:11 2008 -- reformated by prettylst.pl v1.38 (build 6600)
 # Entered by GldDragon35
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 
@@ -63,14 +63,14 @@ CLASS:Assassin	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|Assa
 1	AUTO:FEAT|Assassin Weapon Proficiencies
 1	AUTO:FEAT|Armor Proficiency (Light)
 ###Block: Normal Level Progression
-1	CAST:0,0		KNOWN:0,2		BONUS:VAR|DeathAttack|CL	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.REPLACE	BONUS:VAR|SneakAttack|(CL+1)/2					AUTO:FEAT|Sneak Attack|Death Attack|Poison Use
-2	CAST:0,1		KNOWN:0,3		BONUS:VAR|AssassinPoisonSave|CL/2	BONUS:VAR|UncannyDodgeLevel|(CL+1)/3										TEMPLATE:Uncanny Dodge	AUTO:FEAT|Save against Poisons
+1	CAST:0,0		KNOWN:0,2		BONUS:VAR|DeathAttack|CL	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.REPLACE	BONUS:VAR|SneakAttack|(CL+1)/2											AUTO:FEAT|Sneak Attack|Death Attack|Poison Use
+2	CAST:0,1		KNOWN:0,3		BONUS:VAR|AssassinPoisonSave|CL/2	BONUS:VAR|UncannyDodgeLevel|(CL+1)/3										ABILITY:Special Ability|AUTOMATIC|Uncanny Dodge ~ Base	AUTO:FEAT|Save against Poisons
 3	CAST:0,2,0		KNOWN:0,3,2
 4	CAST:0,3,1		KNOWN:0,4,3
 5	CAST:0,3,2,0	KNOWN:0,4,3,2
 6	CAST:0,3,3,1	KNOWN:0,4,4,3
 7	CAST:0,3,3,2,0	KNOWN:0,4,4,3,2
-8	CAST:0,3,3,3,1	KNOWN:0,4,4,4,3																											AUTO:FEAT|Hide in Plain Sight (Assassin)
+8	CAST:0,3,3,3,1	KNOWN:0,4,4,4,3																																	AUTO:FEAT|Hide in Plain Sight (Assassin)
 9	CAST:0,3,3,3,2	KNOWN:0,4,4,4,3
 10	CAST:0,3,3,3,3	KNOWN:0,4,4,4,4
 
@@ -117,7 +117,7 @@ CLASS:Blackguard	SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=0|LEVEL=1|LEVE
 
 # Class Name		Hit Dice	Type			Abbreviation	Max Level	Subclass?		Base class as subclass?	Source Page					Save checks bonus											Combat bonus
 CLASS:Dragon Disciple	HD:12		TYPE:PC.Prestige	ABB:DrD		MAXLEVEL:10	HASSUBCLASS:YES	ALLOWBASECLASS:NO		SOURCEPAGE:PrestigeClasses.rtf	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
-# Class Name		Required Language		Prohibited Race		Required Skill				PRESPELLCAST								Prohibited Template
+# Class Name		Required Language		Prohibited Race		Required Skill				Required Casting Type							Prohibited Template
 CLASS:Dragon Disciple	PRELANG:1,Draconic	!PRERACE:1,TYPE=Dragon	PRESKILL:1,Knowledge (Arcana)=8	PRESPELLCAST:MEMORIZE=NO	PRESPELLCAST:TYPE.Arcane	!PRETEMPLATE:1,Half Dragon
 # Class Name		Skill Pts/Lvl	Class Skill
 CLASS:Dragon Disciple	STARTSKILLPTS:2	CSKILL:Concentration|TYPE.Craft|Diplomacy|Escape Artist|Gather Information|TYPE.Knowledge|Listen|TYPE.Profession|Search|Speak Language|Spellcraft|Spot
@@ -162,16 +162,16 @@ SUBCLASSLEVEL:10	SAB:Immune to Fire
 SUBCLASS:Silver Dragon Disciple	COST:0
 SUBCLASSLEVEL:3	SAB:Cone of Cold (%d8 ~ DC %)|BreathWeaponDice|BreathWeaponDC
 SUBCLASSLEVEL:10	SAB:Immune to Cold
-1																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1	BONUS:VAR|BreathWeaponDC|10+CL+CON	BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE							DEFINE:BreathWeaponDC|0
-2																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1															BONUS:STAT|STR|2																	TEMPLATE:Dragon Disciple Attacks
-3																										BONUS:VAR|BreathWeaponDice|2																DEFINE:BreathWeaponDice|0
-4																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1							BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|2
+1																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1	BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE							BONUS:VAR|BreathWeaponDC|10+CL+CON	DEFINE:BreathWeaponDC|0
+2																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1									BONUS:STAT|STR|2																							TEMPLATE:Dragon Disciple Attacks
+3																																								BONUS:VAR|BreathWeaponDice|2		DEFINE:BreathWeaponDice|0
+4																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1	BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|2
 5	VISION:Blindsense (30')														BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1
-6																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1															BONUS:STAT|CON|2
-7																										BONUS:VAR|BreathWeaponDice|2		BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE
-8																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1															BONUS:STAT|INT|2
+6																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1									BONUS:STAT|CON|2
+7																										BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE							BONUS:VAR|BreathWeaponDice|2
+8																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1									BONUS:STAT|INT|2
 9																		BONUS:ABILITYPOOL|Dragon Disciple Bonus Spell|1																										ABILITY:Special Ability|AUTOMATIC|Dragon Wings
-10	VISION:Blindsense (60')|Low-light|Darkvision (60')	SAB:Immune to Sleep	SAB:Immune to Paralysis									BONUS:VAR|BreathWeaponDice|2		BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|4	BONUS:STAT|CHA|2
+10	VISION:Blindsense (60')|Low-light|Darkvision (60')	SAB:Immune to Sleep	SAB:Immune to Paralysis									BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|4	BONUS:STAT|CHA|2	BONUS:VAR|BreathWeaponDice|2
 
 
 # Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page					Save checks bonus												Combat bonus
@@ -205,11 +205,11 @@ CLASS:Dwarven Defender	STARTSKILLPTS:2	CSKILL:TYPE.Craft|Listen|Sense Motive|Spo
 1	AUTO:FEAT|Armor Proficiency (Light)|Armor Proficiency (Medium)|Armor Proficiency (Heavy)
 1	AUTO:FEAT|Shield Proficiency|Tower Shield Proficiency
 ###Block: Normal Level Progression
-1	BONUS:VAR|DefensiveStanceTimes|(CL+1)/2	BONUS:VAR|DefensiveStanceDuration|5	BONUS:VAR|DwarvenDefenderACBonus|(CL+2)/3					AUTO:FEAT|Defensive Stance|Dwarven Defender AC Bonus
-2	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.REPLACE	BONUS:VAR|UncannyDodgeLevel|(CL+2)/4			TEMPLATE:Uncanny Dodge
-4	BONUS:VAR|TrapSense|CL/4																				AUTO:FEAT|Trap Sense Ability
-6	BONUS:VAR|DwarvenDefenderDRLVL|CL																			AUTO:FEAT|Dwarven Defender DR
-8																									AUTO:FEAT|Dwarven Defender Mobile Defense
+1	BONUS:VAR|DefensiveStanceTimes|(CL+1)/2	BONUS:VAR|DefensiveStanceDuration|5	BONUS:VAR|DwarvenDefenderACBonus|(CL+2)/3											AUTO:FEAT|Defensive Stance|Dwarven Defender AC Bonus
+2	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.REPLACE	BONUS:VAR|UncannyDodgeLevel|(CL+2)/4			ABILITY:Special Ability|AUTOMATIC|Uncanny Dodge ~ Base
+4	BONUS:VAR|TrapSense|CL/4																										AUTO:FEAT|Trap Sense Ability
+6	BONUS:VAR|DwarvenDefenderDRLVL|CL																									AUTO:FEAT|Dwarven Defender DR
+8																															AUTO:FEAT|Dwarven Defender Mobile Defense
 
 
 # Class Name		Hit Dice	Type			Abbreviation	Max Level	Source Page					Save checks bonus											Combat bonus
@@ -295,13 +295,13 @@ CLASS:Shadowdancer	STARTSKILLPTS:6	CSKILL:Balance|Bluff|Decipher Script|Diplomac
 1	AUTO:FEAT|Shadowdancer Weapon Proficiencies
 1	AUTO:FEAT|Armor Proficiency (Light)
 ###Block: Normal Level Progression
-1																																				AUTO:FEAT|Hide in Plain Sight (Assassin)
-2	VISION:Darkvision (60')	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.REPLACE	BONUS:VAR|UncannyDodgeLevel|(CL+1)/3										TEMPLATE:Uncanny Dodge	AUTO:FEAT|Evasion
-3					BONUS:VAR|ShadowIllusionLVL,ShadowCompanion|CL																								AUTO:FEAT|Shadow Illusion|Summon Shadow
-4					BONUS:VAR|ShadowJump|20																												AUTO:FEAT|Shadow Jump
-5																																				AUTO:FEAT|Defensive Roll
+1																																	AUTO:FEAT|Hide in Plain Sight (Assassin)
+2	VISION:Darkvision (60')	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.REPLACE	BONUS:VAR|UncannyDodgeLevel|(CL+1)/3	ABILITY:Special Ability|AUTOMATIC|Uncanny Dodge ~ Base	AUTO:FEAT|Evasion
+3					BONUS:VAR|ShadowIllusionLVL,ShadowCompanion|CL																					AUTO:FEAT|Shadow Illusion|Summon Shadow
+4					BONUS:VAR|ShadowJump|20																									AUTO:FEAT|Shadow Jump
+5																																	AUTO:FEAT|Defensive Roll
 6					BONUS:VAR|ShadowJump|20
-7																																				AUTO:FEAT|Slippery Mind
+7																																	AUTO:FEAT|Slippery Mind
 8					BONUS:VAR|ShadowJump|40
 10					BONUS:VAR|ShadowJump|80															ABILITY:Special Ability|AUTOMATIC|Improved Evasion
 
