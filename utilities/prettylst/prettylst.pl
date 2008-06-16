@@ -107,7 +107,7 @@ my %validfiletype = (
 	'SOURCELONG'	=> 0,
 	'SOURCESHORT'	=> 0,
 	'SOURCEWEB'		=> 0,
-	'SOURCEDATE'	=> 0,			#[ 1584007 ] New Tag: SOURCEDATE in PCC
+	'SOURCEDATE'	=> 0,				#[ 1584007 ] New Tag: SOURCEDATE in PCC
 	'SPELL'		=> \&FILETYPE_parse,
 	'TEMPLATE'		=> \&FILETYPE_parse,
 	'WEAPONPROF'	=> \&FILETYPE_parse,
@@ -168,7 +168,7 @@ my %conversion_enable =
 	'RACE:BONUS SKILL Climb and Swim'	=> 0,			# Fix for Barak files
 	'WEAPONPROF:No more SIZE'		=> 0,			#[ 845853 ] SIZE is no longer valid in the weaponprof files
 	'EQUIP:no more MOVE'			=> 0,			#[ 865826 ] Remove the deprecated MOVE tag in EQUIPMENT files
-#	'ALL:EQMOD has new keys'		=> 0,			#[ 892746 ] KEYS entries were changed in the main files
+	'ALL:EQMOD has new keys'		=> 0,			#[ 892746 ] KEYS entries were changed in the main files
 	'CLASS:CASTERLEVEL for all casters'	=> 0,			#[ 876536 ] All spell casting classes need CASTERLEVEL
 	'ALL:MOVE:nn to MOVE:Walk,nn'		=> 0,			#[ 1006285 ] Convertion MOVE:<number> to MOVE:Walk,<Number>
 	'ALL:Convert SPELL to SPELLS'		=> 0,			#[ 1070084 ] Convert SPELL to SPELLS
@@ -373,7 +373,8 @@ elsif ( $cl_options{convert} eq 'pcgen5120' ) {
 	$conversion_enable{'DEITY:Followeralign conversion'} =1;
 	$conversion_enable{'ALL:ADD Syntax Fix'} = 1;
 	$conversion_enable{'ALL:PRESPELLTYPE Syntax'} = 1;
-	$conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
+	# $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
+	$conversion_enable{'ALL:EQMOD has new keys'} = 1;
 #	Commenting out for use in possible KIT conversion of old Default monster data.
 #	$conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;
 
@@ -524,7 +525,10 @@ $cl_options{basepath} =~ tr{\\}{/};
 # Redirect STDERR if needed
 
 if ($cl_options{output_error}) {
+#	my $directory = ? ($cl_options{ input_path } eq '.') : 'current' : $cl_options{ input_path };
 	open STDERR, '>', $cl_options{output_error};
+	print STDERR "Error log for ", $VERSION_LONG, "\n";
+	print STDERR "At ", $today, " on the data files in the \'", $cl_options{ input_path } , "\' directory\n";
 }
 
 # List of default for values defined in system files
@@ -743,7 +747,9 @@ my %PREALIGN_conversion_5715 = qw(
 	10	Deity
 ) if $conversion_enable{'ALL:PREALIGN conversion'};
 
-#my %Key_conversion_56 = qw(
+my %Key_conversion_56 = qw(
+	BIND		BLIND
+) if $conversion_enable{'ALL:EQMOD has new keys'};
 #  ABENHABON	BNS_ENHC_AB
 #  ABILITYMINUS	BNS_ENHC_AB
 #  ABILITYPLUS	BNS_ENHC_AB
@@ -792,7 +798,7 @@ my %PREALIGN_conversion_5715 = qw(
 #  BANER		BANE_R
 #  BASHH		BASH_H
 #  BASHL		BASH_L
-#  BIND		BLIND
+#	BIND		BLIND
 #  BONSPELL	BNS_SPELL
 #  BONUSSPELL	BNS_SPELL
 #  BRIENAI	BRI_EN_A
@@ -940,20 +946,19 @@ my %PREALIGN_conversion_5715 = qw(
 #  WEAPMITH	MTHRL
 #  WILDA		WILD_A
 #  WILDS		WILD_S
-#   ) if $conversion_enable{'ALL:EQMOD has new keys'};
+#	) if $conversion_enable{'ALL:EQMOD has new keys'};
 
-#if($conversion_enable{'ALL:EQMOD has new keys'})
-#{
-#  my ($old_key,$new_key);
-#  while (($old_key,$new_key) = each %Key_conversion_56)
-#  {
-#	if($old_key eq $new_key)
-#	{
-#	print "==> $old_key\n";
-#	delete $Key_conversion_56{$old_key};
-#	}
-#  }
-#}
+if($conversion_enable{'ALL:EQMOD has new keys'})
+{
+	my ($old_key,$new_key);
+	while (($old_key,$new_key) = each %Key_conversion_56)
+	{
+		if($old_key eq $new_key) {
+			print "==> $old_key\n";
+			delete $Key_conversion_56{$old_key};
+		}
+	}
+}
 
 my %srd_weapon_name_convertion_433 = (
 	q{Sword (Great)}			=> q{Greatsword},
@@ -970,12 +975,12 @@ my %srd_weapon_name_convertion_433 = (
 	q{Sword (Luck Blade)}		=> q{Luck Blade},
 	q{Sword (Subtlety)}		=> q{Sword of Subtlety},
 	q{Sword (Holy Avenger)}		=> q{Holy Avenger},
-	q{Sword (Life Stealing)}		=> q{Sword of Life Stealing},
-	q{Sword (Nine Lives Stealer)}  => q{Nine Lives Stealer},
+	q{Sword (Life Stealing)}	=> q{Sword of Life Stealing},
+	q{Sword (Nine Lives Stealer)}	=> q{Nine Lives Stealer},
 	q{Sword (Frost Brand)}		=> q{Frost Brand},
 	q{Trident (Fish Command)}	=> q{Trident of Fish Command},
 	q{Trident (Warning)}		=> q{Trident of Warning},
-	q{Warhammer (Dwarven Thrower)} => q{Dwarven Thrower},
+	q{Warhammer (Dwarven Thrower)}	=> q{Dwarven Thrower},
 ) if $conversion_enable{'ALL: 4.3.3 Weapon name change'};
 
 
@@ -1795,9 +1800,11 @@ my %master_order = (
 		'VFEAT:*',
 		'ABILITY:*',
 		'ADD:*',
+		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
 		'ADD:FAVOREDCLASS',
-		'ADD:FEAT',
+		'ADD:FEAT:*',
+		'ADD:VFEAT:*',
 		'ADD:FORCEPOINT',
 		'ADD:LANGUAGE',				# Now uppercase
 		'ADD:SPECIAL',
@@ -1925,12 +1932,15 @@ my %master_order = (
 		'AUTO:FEAT:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
+		'ADD:FEAT:.CLEAR',
+		'ADD:FEAT:*',
 		'CHANGEPROF',
 		'DOMAIN:*',			# [ 1973526 ] DOMAIN is supported on Class line
 		'ADDDOMAINS:*',
 		'REMOVE',
 		'BONUS:HD',			# Class Lines
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
+		'BONUS:WEAPON:*',
 		'REP:*',
 		'SPELLLIST',
 		'GENDER',
@@ -1980,6 +1990,7 @@ my %master_order = (
 		'SAB:.CLEAR',
 		'SAB:*',
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
+		'BONUS:WEAPON:*',
 		'TEMPDESC',
 		'DEFINE:*',
 		'CSKILL:.CLEAR',
@@ -1987,12 +1998,13 @@ my %master_order = (
 		'CCSKILL:.CLEAR',
 		'CCSKILL',
 		'ADD:*',
+		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
-		'ADD:DOMAIN',
-		'ADD:FEAT',
+		'ADD:DOMAIN:*',
+		'ADD:FEAT:*',
 		'ADD:LANGUAGE',
 		'ADD:SPECIAL',
-		'ADD:VFEAT',
+		'ADD:VFEAT:*',
 		'ADD:EQUIP',
 		'REMOVE',
 		'LANGBONUS:.CLEAR',
@@ -2038,6 +2050,8 @@ my %master_order = (
 		'HD',
 		'DR',
 		'SR',
+		'ABILITY:.CLEAR',
+		'ABILITY:*',
 		'VFEAT:*',
 		'COPYMASTERBAB',
 		'COPYMASTERCHECK',
@@ -2111,9 +2125,10 @@ my %master_order = (
 		'SR',
 		'DR',
 		'ABILITY:*',
-		'FEAT',
+		'FEAT:*',
 		'VFEAT:*',
 		'ADD:FEAT:*',
+		'ADD:VFEAT:*',
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
@@ -2302,13 +2317,14 @@ my %master_order = (
 		'VFEAT:*',
 		'ABILITY:*',
 		'ADD:*',
+		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
 		'ADD:FAVOREDCLASS',
-		'ADD:FEAT',
-		'ADD:VFEAT',
+		'ADD:FEAT:*',
+		'ADD:VFEAT:*',
 		'ADD:FORCEPOINT',
-		'ADD:LANGUAGE',
-		'ADD:SPECIAL',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated
 		'ADD:SPELLCASTER',
 		'ADD:SKILL',
 		'ADD:WEAPONPROFS',
@@ -2316,6 +2332,7 @@ my %master_order = (
 		'LANGAUTO:.CLEAR',
 		'LANGAUTO:*',
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
+		'BONUS:WEAPON:*',
 		'CHANGEPROF:*',
 		'FOLLOWERS',
 		'COMPANIONLIST:*',
@@ -2517,8 +2534,10 @@ my %master_order = (
 		'BONUS:STAT:*',
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
+		'ADD:LANGUAGE',
 		'VFEAT:*',
-		'SA',
+		'SA:.CLEAR',
+		'SA:*',
 		'SAB:.CLEAR',
 		'SAB:*',
 
@@ -2655,8 +2674,10 @@ my %master_order = (
 		'SPELLS:*',
 		'CHOOSE',
 		'ADD:*',
-		'ADD:FEAT',
-		'ADD:SPELLCASTER',
+		'ADD:ABILITY:*',
+		'ADD:FEAT:*',
+		'ADD:VFEAT:*',
+		'ADD:SPELLCASTER:*',
 		'REGION',
 		'SUBREGION',
 		'SPELLLEVEL:DOMAIN:*',
@@ -2701,12 +2722,14 @@ my %master_order = (
 		'AUTO:EQUIP:*',
 		'ABILITY',
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
+		'BONUS:WEAPON:*',
 		'CSKILL:.CLEAR',
 		'CSKILL',
 		'CCSKILL:.CLEAR',
 		'CCSKILL',
 		'REQ',
-		'SA',
+		'SA:.CLEAR:*',
+		'SA:*',
 		'SAB:.CLEAR',
 		'SAB:*',
 		'DESC',
@@ -2779,7 +2802,7 @@ my %master_order = (
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
 		'BONUS:VISION',
-		'BONUS:WEAPON',
+		'BONUS:WEAPON:*',
 		'BONUS:WEAPONPROF:*',
 		'BONUS:WIELDCATEGORY:*',
 		'DR:.CLEAR',
@@ -2813,18 +2836,24 @@ my %master_order = (
 		'BONUS:COMBAT:*',
 		'BONUS:DC:*',
 		'BONUS:FEAT:*',
-		'BONUS:HD',
+		'BONUS:HD:*',
 		'BONUS:SKILL:*',
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
+		'BONUS:WEAPON:*',
 		'BONUS:WIELDCATEGORY:*',
+		'ADD:FEAT:.CLEAR',
+		'ADD:FEAT:*',
 		'REMOVE',
 		'SPELLLIST',
 		'KNOWNSPELLSFROMSPECIALTY',
 		'PROHIBITED',
 		'PROHIBITSPELL:*',
 		'STARTSKILLPTS',
-		'SA',
+		'SA:.CLEAR:*',
+		'SA:*',
+		'SAB:.CLEAR',
+		'SAB:*',
 		'DEFINE',
 		@PRE_Tags,
 		'CSKILL:.CLEAR',
@@ -2854,16 +2883,24 @@ my %master_order = (
 		'BONUS:COMBAT:*',
 		'BONUS:DC:*',
 		'BONUS:FEAT:*',
+		'BONUS:HD:*',
 		'BONUS:SKILL:*',
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
+		'BONUS:WEAPON:*',
 		'BONUS:WIELDCATEGORY:*',
+		'ADD:FEAT:.CLEAR',
+		'ADD:FEAT:*',
 		'REMOVE',
 		'SPELLLIST',
 		'KNOWNSPELLSFROMSPECIALTY',
 		'PROHIBITED',
 		'PROHIBITSPELL:*',
-		'SA',
+		'STARTSKILLPTS',
+		'SA:.CLEAR:*',
+		'SA:*',
+		'SAB:.CLEAR',
+		'SAB:*',
 		'DEFINE',
 		@PRE_Tags,
 		'CSKILL:.CLEAR',
@@ -2898,25 +2935,29 @@ my %master_order = (
 		'SA:*',
 		'SAB:.CLEAR',
 		'SAB:*',
+		'BONUS:HD',			# Class Lines
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
+		'BONUS:WEAPON:*',
 		'ABILITY:*',
 		'DEFINE:*',
 		'CSKILL:.CLEAR',
-		'CSKILL',
+		'CSKILL:*',
 		'CCSKILL:.CLEAR',
-		'CCSKILL',
+		'CCSKILL:*',
 		'LANGAUTO.CLEAR',
 		'LANGAUTO:*',
 		'ADD:*',
-		'ADD:CLASSSKILLS',
-		'ADD:DOMAIN',
-		'ADD:FEAT',
-		'ADD:LANGUAGE',
-		'ADD:EQUIP',
-		'ADD:SPECIAL',
+		'ADD:ABILITY:*',
+		'ADD:CLASSSKILLS:*',
+		'ADD:DOMAIN:*',
+		'ADD:FEAT:*',
+		'ADD:VFEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:EQUIP:*',
+		'ADD:SPECIAL:*',		# Deprecated
 		'EXCHANGELEVEL',
-		'SPECIALS',
-		'SPELL',
+		'SPECIALS',			# Deprecated
+		'SPELL',			# Deprecated
 		'SPELLS:*',
 		'TEMPLATE:.CLEAR',
 		'TEMPLATE:*',
@@ -2924,7 +2965,7 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
-		'AUTO:SHIELDPROF',
+		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'CHANGEPROF:*',
 		'REMOVE',
@@ -2963,7 +3004,9 @@ my %master_order = (
 		'SA:*',
 		'SAB:.CLEAR',
 		'SAB:*',
+		'BONUS:HD',			# Class Lines
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
+		'BONUS:WEAPON:*',
 		'ABILITY:*',
 		'DEFINE:*',
 		'CSKILL:.CLEAR',
@@ -2973,9 +3016,11 @@ my %master_order = (
 		'LANGAUTO.CLEAR',
 		'LANGAUTO:*',
 		'ADD:*',
+		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
-		'ADD:DOMAIN',
-		'ADD:FEAT',
+		'ADD:DOMAIN:*',
+		'ADD:FEAT:*',
+		'ADD:VFEAT:*',
 		'ADD:LANGUAGE',
 		'ADD:SPECIAL',
 		'EXCHANGELEVEL',
@@ -3039,6 +3084,7 @@ my %master_order = (
 		'BONUSFEATS',		# Template Bonus
 		'BONUS:MONSKILLPTS',	# Template Bonus
 		'BONUSSKILLPOINTS',	# Template Bonus
+		'BONUS:WEAPON:*',
 		'NONPP',
 		'SELECT',
 		'CHOOSE',
@@ -3047,11 +3093,12 @@ my %master_order = (
 		'CCSKILL:.CLEAR',
 		'CCSKILL',
 		'ADD:*',
+		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
 		'ADD:EQUIP',
-		'ADD:FEAT',
+		'ADD:FEAT:*',
 		'ADD:LANGUAGE',
-		'ADD:VFEAT',
+		'ADD:VFEAT:*',
 		'FAVOREDCLASS',
 		'ABILITY:*',
 		'FEAT:*',
@@ -4226,14 +4273,15 @@ if ($cl_options{input_path}) {
 	# Regular expressions for the files that must be skiped by mywanted.
 	my @filetoskip = (
 		qr(^\.\#),			# Files begining with .# (CVS conflict and deleted files)
-		qr(^custom),			# Customxxx files generated by PCGEN
+		qr(^custom),		# Customxxx files generated by PCGEN
 		qr(placeholder\.txt$),	# The CMP directories are full of these
-		qr(\.zip$)i,			# Archives present in the directories
+		qr(\.zip$)i,		# Archives present in the directories
 		qr(\.rar$)i,
 		qr(\.jpg$),			# JPEG files present in the directories
-
-#	qr(readme\.txt$),		# Readme files
-#	qr(notes\.txt$),		# Notes files
+		qr(\.png$),			# PNG files present in the directories
+#		gr(Thumbs\.db$),		# thumbnails image files used with Win32 OS
+		qr(readme\.txt$),		# Readme files
+#		qr(notes\.txt$),		# Notes files
 		qr(\.bak$),			# Backup files
 
 		qr(\.DS_Store$),		# Used with Mac OS
@@ -4243,7 +4291,7 @@ if ($cl_options{input_path}) {
 	my @dirtoskip = (
 		qr(cvs$)i,			# /cvs directories
 		qr([.]svn[/])i,		# All .svn directories
-		qr([.]svn$)i,			# All .svn directories
+		qr([.]svn$)i,		# All .svn directories
 		qr(customsources$)i,	# /customsources (for files generated by PCGEN)
 		qr(gamemodes)i,		# for the system gameModes directories
 #		qr(alpha)i
@@ -8247,12 +8295,12 @@ BEGIN {
 		}
 		}
 		elsif ( $tag_name eq 'TYPE' ) {
-		# The types go into valid_types
-		$valid_types{$linetype}{$_}++ for ( split '\.', $tag_value );
+			# The types go into valid_types
+			$valid_types{$linetype}{$_}++ for ( split '\.', $tag_value );
 		}
 		elsif ( $tag_name eq 'CATEGORY' ) {
-		# The types go into valid_types
-		$valid_categories{$linetype}{$_}++ for ( split '\.', $tag_value );
+			# The types go into valid_types
+			$valid_categories{$linetype}{$_}++ for ( split '\.', $tag_value );
 		}
 		######################################################################
 		# Tag with numerical values
@@ -8337,29 +8385,29 @@ BEGIN {
 				# Are there any PRE tags in the SA tag.
 				if ( $formula =~ /(^!?PRE[A-Z]*):(.*)/ ) {
 
-				# A PRExxx tag is present
-				validate_pre_tag($1,
-							$2,
-							"$tag_name:$tag_value",
-							$linetype,
-							$file_for_error,
-							$line_for_error
-				);
-				next FORMULA;
+					# A PRExxx tag is present
+					validate_pre_tag($1,
+						$2,
+						"$tag_name:$tag_value",
+						$linetype,
+						$file_for_error,
+						$line_for_error
+					);
+					next FORMULA;
 				}
 
 				push @xcheck_to_process,
 					[
-					'DEFINE Variable',
-					qq(@@" in "$tag_name:$tag_value),
-					$file_for_error,
-					$line_for_error,
-					parse_jep(
-						$formula,
-						"$tag_name:$tag_value",
+						'DEFINE Variable',
+						qq(@@" in "$tag_name:$tag_value),
 						$file_for_error,
-						$line_for_error
-					)
+						$line_for_error,
+						parse_jep(
+							$formula,
+							"$tag_name:$tag_value",
+							$file_for_error,
+							$line_for_error
+						)
 					];
 			}
 		}
@@ -10420,19 +10468,22 @@ sub additionnal_tag_parsing {
 	# All the EQMOD and PRETYPE:EQMOD tags must be scanned for
 	# possible KEY replacement.
 
-#  if($conversion_enable{'ALL:EQMOD has new keys'} &&
-#	($tag_name eq "EQMOD" || $tag_name eq "REPLACES" || ($tag_name eq "PRETYPE" && $tag_value =~ /^(\d+,)?EQMOD/)))
-#  {
-#	for my $old_key (keys %Key_conversion_56)
-#	{
-#	if($tag_value =~ /\Q$old_key\E/)
-#	{
-#		@_[1] =~ s/\Q$old_key\E/$Key_conversion_56{$old_key}/;
-#		ewarn( NOTICE,  qq(=> Replacing "$old_key" by "$Key_conversion_56{$old_key}" in "$tag_name:$tag_value"),
-#		$file_for_error,$line_for_error );
-#	}
-#	}
-#  }
+	if($conversion_enable{'ALL:EQMOD has new keys'} &&
+		($tag_name eq "EQMOD" || $tag_name eq "REPLACES" || ($tag_name eq "PRETYPE" && $tag_value =~ /^(\d+,)?EQMOD/)))
+	{
+		for my $old_key (keys %Key_conversion_56)
+		{
+			if($tag_value =~ /\Q$old_key\E/)
+			{
+				$_[1] =~ s/\Q$old_key\E/$Key_conversion_56{$old_key}/;
+				$logging->ewarn( NOTICE,
+					qq(=> Replacing "$old_key" with "$Key_conversion_56{$old_key}" in "$tag_name:$tag_value"),
+					$file_for_error,
+					$line_for_error
+				);
+			}
+		}
+	}
 
 	##################################################################
 	# [ 831569 ] RACE:CSKILL to MONCSKILL
@@ -10857,7 +10908,7 @@ sub validate_line {
 		my $MOD_Line = $line_ref->{'000AbilityName'}[0];
 		study $MOD_Line;
 
-		if ( $MOD_Line =~ /\.(MOD|FORGET)/ ) {
+		if ( $MOD_Line =~ /\.(MOD|FORGET|COPY=)/ ) {
 		# Nothing to see here. Move on.
 		}
 		# Find the Abilities lines without Categories
@@ -10954,12 +11005,13 @@ sub validate_line {
 	my $hasCategory = 0;
 	$hasCategory = 1 if exists $line_ref->{'CATEGORY'};
 	if ($hasCategory) {
-		if ($line_ref->{'CATEGORY'}[0] eq "CATEGORY:Feat") {
+		if ($line_ref->{'CATEGORY'}[0] eq "CATEGORY:Feat" ||
+		    $line_ref->{'CATEGORY'}[0] eq "CATEGORY:Special Ability") {
 		# Good
 		}
 		else {
 		$logging->ewarn(INFO,
-			qq(The CATEGORY tag must have the value of Feat when present on a FEAT. Remove or replace "$line_ref->{'CATEGORY'}[0]"),
+			qq(The CATEGORY tag must have the value of Feat or Special Ability when present on a FEAT. Remove or replace "$line_ref->{'CATEGORY'}[0]"),
 			$file_for_error,
 			$line_for_error
 			);
@@ -14861,6 +14913,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1995252 ] Header for the Error Log
+
+[ 1994059 ] Convert EQMOD "BIND" to "BLIND"
 
 [ 1938933 ] BONUS:DAMAGE and BONUS:TOHIT should be Deprecated
 
