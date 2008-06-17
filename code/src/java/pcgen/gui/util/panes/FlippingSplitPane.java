@@ -32,6 +32,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import pcgen.gui.util.ResourceManager;
+import pcgen.gui.util.ResourceManager.Icons;
 
 /**
  * <code>FlippingSplitPane</code> is an improved version of
@@ -74,19 +76,19 @@ public class FlippingSplitPane extends JSplitPane
     /**
      * Icon for Center item in popup menu.
      */
-    private static final ImageIcon CENTER_ICON = Utilities.getImageIcon("resources/MediaStop16.gif");
+    private static final ImageIcon CENTER_ICON = ResourceManager.getImageIcon(Icons.MediaStop16);
     /**
      * Icon for Flip item in popup menu.
      */
-    private static final ImageIcon FLIP_ICON = Utilities.getImageIcon("resources/Refresh16.gif");
+    private static final ImageIcon FLIP_ICON = ResourceManager.getImageIcon(Icons.Refresh16);
     /**
      * Icon for Reset item in popup menu.
      */
-    private static final ImageIcon RESET_ICON = Utilities.getImageIcon("resources/Redo16.gif");
+    private static final ImageIcon RESET_ICON = ResourceManager.getImageIcon(Icons.Redo16);
     /**
      * Icon for Lock/Unlock item in popup menu
      */
-    private static final ImageIcon LOCK_ICON = Utilities.getImageIcon("resources/Bookmarks16.gif");
+    private static final ImageIcon LOCK_ICON = ResourceManager.getImageIcon(Icons.Bookmarks16);
     /**
      * Is the split pane locked?
      */

@@ -119,6 +119,16 @@ public class ResourceManager
     {
     }
 
+    /**
+     * Fetch an <code>ImageIcon</code> relative to the calling
+     * location.
+     *
+     * @param location <code>String</code>, the path to the
+     * <code>IconImage> source
+     *
+     * @return <code>ImageIcon</code>, the icon or <code>null</code>
+     * on failure
+     */
     public static ImageIcon getImageIcon(String fileName)
     {
         fileName = RESOURCE_URL + fileName;

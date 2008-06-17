@@ -22,7 +22,6 @@
  */
 package pcgen.gui.util.panes; // hm.binkley.gui;
 
-import pcgen.gui.util.IconUtilities;
 
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -102,21 +101,6 @@ final class Utilities implements SwingConstants
 	}
 
 	/**
-	 * Fetch an <code>ImageIcon</code> relative to the calling
-	 * location.
-	 *
-	 * @param location <code>String</code>, the path to the
-	 * <code>IconImage> source
-	 *
-	 * @return <code>ImageIcon</code>, the icon or <code>null</code>
-	 * on failure
-	 */
-	static ImageIcon getImageIcon(String location)
-	{
-		return getImageIcon(location, null);
-	}
-
-	/**
 	 * Work around bug in W32; it returns false even on right-mouse
 	 * clicks.
 	 *
@@ -142,26 +126,4 @@ final class Utilities implements SwingConstants
 		return ((e.getModifiers() & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) && e.isShiftDown();
 	}
 
-	/**
-	 * Fetch an <code>ImageIcon</code> relative to the calling
-	 * location and using a description.
-	 *
-	 * @param location <code>String</code>, the path to the
-	 * <code>IconImage> source
-	 * @param description <code>String</code>, the description
-	 *
-	 * @return <code>ImageIcon</code>, the icon or <code>null</code>
-	 * on failure
-	 */
-	private static ImageIcon getImageIcon(String location, String description)
-	{
-		String prefix = "resources/";
-
-		if (location.startsWith(prefix))
-		{
-			location = location.substring(prefix.length());
-		}
-
-		return IconUtilities.getImageIcon(location, description);
-	}
 }
