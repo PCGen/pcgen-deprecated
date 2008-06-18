@@ -718,7 +718,7 @@ if ( $cl_options{html_help} ) {
 }
 
 my %source_tags			= ()	if $conversion_enable{'SOURCE line replacement'};
-my $source_curent_file	= q{}   if $conversion_enable{'SOURCE line replacement'};
+my $source_curent_file		= q{}	if $conversion_enable{'SOURCE line replacement'};
 
 my %classskill_files		= ()	if $conversion_enable{'CLASSSKILL convertion to CLASS'};
 
@@ -731,7 +731,7 @@ my %Spells_For_EQMOD		= ()	if $conversion_enable{'EQUIPMENT: generate EQMOD'};
 my %Spell_Files			= ()	if $conversion_enable{'EQUIPMENT: generate EQMOD'}
 							|| $conversion_enable{'CLASS: SPELLLIST from Spell.MOD'};
 
-my %bonus_prexxx_tag_report = ()	if $conversion_enable{'Generate BONUS and PRExxx report'};
+my %bonus_prexxx_tag_report	= ()	if $conversion_enable{'Generate BONUS and PRExxx report'};
 
 my %PREALIGN_conversion_5715 = qw(
 	0	LG
@@ -987,21 +987,21 @@ my %srd_weapon_name_convertion_433 = (
 # Constants for master_line_type
 
 # Line importance (Mode)
-use constant MAIN		=> 1;   # Main line type for the file
-use constant SUB		=> 2;   # Sub line type, must be linked to a MAIN
-use constant SINGLE		=> 3;   # Idependant line type
-use constant COMMENT		=> 4;   # Comment or empty line.
+use constant MAIN		=> 1;	   # Main line type for the file
+use constant SUB		=> 2;	   # Sub line type, must be linked to a MAIN
+use constant SINGLE	=> 3;	   # Idependant line type
+use constant COMMENT	=> 4;	   # Comment or empty line.
 
 # Line formatting option
-use constant LINE		=> 1;   # Every line formatted by itself
-use constant BLOCK		=> 2;   # Lines formatted as a block
-use constant FIRST_COLUMN   => 3;   # Only the first column of the block
+use constant LINE			=> 1;	# Every line formatted by itself
+use constant BLOCK		=> 2;	# Lines formatted as a block
+use constant FIRST_COLUMN	=> 3;	# Only the first column of the block
 						# gets aligned
 
 # Line header option
-use constant NO_HEADER	=> 1;   # No header
-use constant LINE_HEADER	=> 2;   # One header before each line
-use constant BLOCK_HEADER   => 3;   # One header for the block
+use constant NO_HEADER		=> 1;	# No header
+use constant LINE_HEADER	=> 2;	# One header before each line
+use constant BLOCK_HEADER	=> 3;	# One header for the block
 
 # Standard YES NO constants
 use constant NO  => 0;
@@ -1009,13 +1009,13 @@ use constant YES => 1;
 
 # The SOURCE line is use in nearly all file type
 my %SOURCE_file_type_def = (
-		Linetype		=> 'SOURCE',
+		Linetype	=> 'SOURCE',
 		RegEx		=> qr(^SOURCE\w*:([^\t]*)),
 		Mode		=> SINGLE,
-		Format		=> LINE,
-		Header		=> NO_HEADER,
-#		Sep			=> q{|},					# use | instead of [tab] to split
-		SepRegEx		=> qr{ (?: [|] ) | (?: \t+ ) }xms,  # Catch both | and tab
+		Format	=> LINE,
+		Header	=> NO_HEADER,
+#		Sep		=> q{|},					# use | instead of [tab] to split
+		SepRegEx	=> qr{ (?: [|] ) | (?: \t+ ) }xms,  # Catch both | and tab
 );
 
 # Some ppl may still want to use the old ways (for PCGen v5.9.5 and older)
@@ -1923,6 +1923,7 @@ my %master_order = (
 		'PROHIBITED',
 		'PROHIBITSPELL:*',
 		'LEVELSPERFEAT',
+		'ABILITY:*',
 		'VFEAT:*',
 		'MULTIPREREQS',
 		'VISIBLE',
@@ -6837,105 +6838,20 @@ BEGIN {
 
 		if ($tag_name eq 'STARTPACK')
 		{
-		$valid_entities{'KIT STARTPACK'}{"KIT:$tag_value"}++;
-		$valid_entities{'KIT'}{"KIT:$tag_value"}++;
+			$valid_entities{'KIT STARTPACK'}{"KIT:$tag_value"}++;
+			$valid_entities{'KIT'}{"KIT:$tag_value"}++;
 		}
 
-		# Deprecated tags
-		if ( $tag_name eq 'cl' ) {
-		$logging->ewarn( NOTICE,
-			qq{The Jep function cl() is deprecated, use classlevel() instead.},
-			$file_for_error,
-			$line_for_error
-		);
-		}
-
-		if ( $tag_name eq 'HASSPELLFORMULA' ) {
-		$logging->ewarn( NOTICE,
-			qq{HASSPELLFORMULA is no longer needed and is deprecated in PCGen 5.15.},
-			$file_for_error,
-			$line_for_error
-		);
-		}
-
-		if ( $tag_name =~ /\d+MAX\d+/ ) {
-		$logging->ewarn( NOTICE,
-			qq{The function aMAXb is deprecated, use max(a,b) instead.},
-			$file_for_error,
-			$line_for_error
-		);
-		}
-
-		if ( $tag_name =~ /\d*MIN\d+/ ) {
-		$logging->ewarn( NOTICE,
-			qq{The function aMINb is deprecated, use min(a,b) instead.},
-			$file_for_error,
-			$line_for_error
-		);
-		}
-
-		if ( $tag_name =~ /TRUNC/ ) {
-		$logging->ewarn( NOTICE,
-			qq{The function TRUNC is deprecated, use floor(a) instead.},
-			$file_for_error,
-			$line_for_error
-		);
-		}
-
-		if ( $tag_name eq 'HITDICESIZE' ) {
-		$logging->ewarn( INFO,
-			qq{HITDICESIZE is deprecated, use HITDIE instead.},
-			$file_for_error,
-			$line_for_error
-		);
-		}
-		elsif ( $tag_name eq 'SPELL' && $linetype ne 'PCC' ) {
-		$logging->ewarn( INFO,
-			qq{SPELL is deprecated, use SPELLS instead.},
-			$file_for_error,
-			$line_for_error
-		);
-		}
-		elsif ( $tag_name eq 'WEAPONAUTO' ) {
-		$logging->ewarn( INFO,
-			qq{WEAPONAUTO is deprecated, use AUTO:WEAPONPROF instead.},
-			$file_for_error,
-			$line_for_error
-		);
-		}
-	elsif ( $tag_name =~ /^ADD/
-		&& $tag_value =~ /^WEAPONBONUS/ ) {
-		$logging->ewarn( INFO,
-			qq{ADD:WEAPONBONUS is deprecated, use BONUS instead.},
-			$file_for_error,
-			$line_for_error
-			);
-	}
-	elsif ( $tag_name =~ /^ADD/
-		&& $tag_value =~ /^LIST/ ) {
-		$logging->ewarn( INFO,
-			qq{ADD:LIST is deprecated, use BONUS instead.},
-			$file_for_error,
-			$line_for_error
-			);
-	}
-	elsif ( $tag_name =~ /^FOLLOWERALIGN/) {
-		$logging->ewarn( INFO,
-			qq{FOLLOWERALIGN is deprecated, use PREALIGN on Domain instead. Convert using Followeralign to fix this problem.},
-			$file_for_error,
-			$line_for_error
-			);
-	}
 		elsif ( $tag_name =~ /^!?PRE/ ) {
 
-		# It's a PRExxx tag, we delegate
-		return validate_pre_tag($tag_name,
-						$tag_value,
-						"",
-						$linetype,
-						$file_for_error,
-						$line_for_error
-				);
+			# It's a PRExxx tag, we delegate
+			return validate_pre_tag( $tag_name,
+				$tag_value,
+				"",
+				$linetype,
+				$file_for_error,
+				$line_for_error
+			);
 		}
 		elsif ( index( $tag_name, 'BONUS' ) == 0 ) {
 
@@ -7827,9 +7743,9 @@ BEGIN {
 			shift @list_of_param;
 
 			my $nb_times		= 0;
-			my $nb_timeunit	= 0;
-			my $nb_casterlevel = 0;
-			my $AtWill_Flag	= NO;
+			my $nb_timeunit		= 0;
+			my $nb_casterlevel	= 0;
+			my $AtWill_Flag		= NO;
 			for my $param (@list_of_param) {
 				if ( $param =~ /^(TIMES)=(.*)/ || $param =~ /^(TIMEUNIT)=(.*)/ || $param =~ /^(CASTERLEVEL)=(.*)/ ) {
 
@@ -7841,10 +7757,10 @@ BEGIN {
 						$file_for_error,
 						$line_for_error,
 						parse_jep(
-						$2,
-						"$tag_name:$tag_value",
-						$file_for_error,
-						$line_for_error
+							$2,
+							"$tag_name:$tag_value",
+							$file_for_error,
+							$line_for_error
 						)
 					];
 				if ( $1 eq 'TIMES' ) {
@@ -7916,41 +7832,41 @@ BEGIN {
 			# Validate the number of TIMES, TIMEUNIT, and CASTERLEVEL parameters
 			if ( $nb_times != 1 ) {
 				if ($nb_times) {
-				$logging->ewarn( NOTICE,
-					qq{TIMES= should not be used more then once in "$tag_name:$tag_value"},
-					$file_for_error,
-					$line_for_error
-				);
+					$logging->ewarn( NOTICE,
+						qq{TIMES= should not be used more then once in "$tag_name:$tag_value"},
+						$file_for_error,
+						$line_for_error
+					);
 				}
 				else {
-				$logging->ewarn( INFO,
-					qq(the TIMES= parameter is missing in "$tag_name:$tag_value"),
-					$file_for_error,
-					$line_for_error
-				);
+					$logging->ewarn( INFO,
+						qq(the TIMES= parameter is missing in "$tag_name:$tag_value"),
+						$file_for_error,
+						$line_for_error
+					);
 				}
 			}
 
 			if ( $nb_timeunit != 1 ) {
 				if ($nb_timeunit) {
-				$logging->ewarn( NOTICE,
-					qq{TIMEUNIT= should not be used more then once in "$tag_name:$tag_value"},
-					$file_for_error,
-					$line_for_error
-				);
+					$logging->ewarn( NOTICE,
+						qq{TIMEUNIT= should not be used more then once in "$tag_name:$tag_value"},
+						$file_for_error,
+						$line_for_error
+					);
 				}
 				else {
-				if ( $AtWill_Flag ) {
-				# Do not need a TIMEUNIT tag if the TIMES tag equals AtWill
-				# Nothing to see here. Move along.
-				}
-				else {
-				$logging->ewarn( INFO,
-					qq(the TIMEUNIT= parameter is missing in "$tag_name:$tag_value"),
-					$file_for_error,
-					$line_for_error
-				);
-				}
+					if ( $AtWill_Flag ) {
+						# Do not need a TIMEUNIT tag if the TIMES tag equals AtWill
+						# Nothing to see here. Move along.
+					}
+					else {
+						$logging->ewarn( INFO,
+							qq(the TIMEUNIT= parameter is missing in "$tag_name:$tag_value"),
+							$file_for_error,
+							$line_for_error
+						);
+					}
 				}
 			}
 
@@ -8050,51 +7966,57 @@ BEGIN {
 			#
 			# ex. SPELLLEVEL:CLASS|Wizard=0|Detect Magic,Read Magic|Wizard=1|Burning Hands
 
+			# [ 1958872 ] trim PRExxx before checking SPELLLEVEL
+			# Work with a copy because we do not want to change the original
+			my $tag_line = $tag_value;
+			study $tag_line;
+			# Remove the PRExxx tags at the end of the line.
+			$tag_line =~ s/\|PREFEAT\:.+$//;
+
 			# We extract the classes and the spell names
-			if ( my $working_value = $tag_value ) {
+			if ( my $working_value = $tag_line ) {
 				while ($working_value) {
-				if ( $working_value =~ s/\|([^|]+)\|([^|]+)// ) {
-					my $class  = $1;
-					my $spells = $2;
+					if ( $working_value =~ s/\|([^|]+)\|([^|]+)// ) {
+						my $class  = $1;
+						my $spells = $2;
 
-					# The CLASS
-					if ( $class =~ /([^=]+)\=(\d+)/ ) {
+						# The CLASS
+						if ( $class =~ /([^=]+)\=(\d+)/ ) {
 
-						# [ 849369 ] SPELLCASTER.Arcane=1
-						# SPELLCASTER.Arcane and SPELLCASTER.Divine are specials
-						# CLASS names that should not be cross-referenced.
+							# [ 849369 ] SPELLCASTER.Arcane=1
+							# SPELLCASTER.Arcane and SPELLCASTER.Divine are specials
+							# CLASS names that should not be cross-referenced.
+							# To be processed later
+							push @xcheck_to_process, [
+								'CLASS', qq(@@" in "$tag_name$tag_value),
+								$file_for_error, $line_for_error, $1
+							];
+						}
+						else {
+							$logging->ewarn( NOTICE,
+								qq{Invalid syntax for "$class" in "$tag_name$tag_value"},
+								$file_for_error,
+								$line_for_error
+							);
+						}
+
+						# The SPELL names
 						# To be processed later
 						push @xcheck_to_process,
-						[
-						'CLASS', qq(@@" in "$tag_name$tag_value),
-						$file_for_error, $line_for_error, $1
-						];
+							[
+							'SPELL',		qq(@@" in "$tag_name$tag_value),
+							$file_for_error, $line_for_error,
+							split ',',		$spells
+							];
 					}
 					else {
 						$logging->ewarn( NOTICE,
-						qq{Invalid syntax for "$class" in "$tag_name$tag_value"},
-						$file_for_error,
-						$line_for_error
+							qq{Invalid class/spell list paring in "$tag_name$tag_value"},
+							$file_for_error,
+							$line_for_error
 						);
+						$working_value = "";
 					}
-
-					# The SPELL names
-					# To be processed later
-					push @xcheck_to_process,
-						[
-						'SPELL',		qq(@@" in "$tag_name$tag_value),
-						$file_for_error, $line_for_error,
-						split ',',		$spells
-						];
-				}
-				else {
-					$logging->ewarn( NOTICE,
-						qq{Invalid class/spell list paring in "$tag_name$tag_value"},
-						$file_for_error,
-						$line_for_error
-					);
-					$working_value = "";
-				}
 				}
 			}
 			else {
@@ -9128,7 +9050,7 @@ sub scan_for_deprecated_tags {
            );
 	}
 
-	if ( $line =~ /[\s|\.]TRUNC[\(|\)|\s]/ ) {
+	if ( $line =~ /\b]TRUNC\b/ ) {
 		$logging->ewarn( $error_level,
 			qq{The function TRUNC is deprecated, use the Jep function floor(a) instead},
 			$file_for_error,
@@ -9341,69 +9263,69 @@ BEGIN {
 		}
 		}
 		elsif ( $entry_type eq 'DEFINE Variable' ) {
-		VARIABLE:
-		for my $var (@list) {
+			VARIABLE:
+			for my $var (@list) {
 
-			# We skip, the COUNT[] thingy must not be validated
-			next VARIABLE if $var =~ /^COUNT\[/;
+				# We skip, the COUNT[] thingy must not be validated
+				next VARIABLE if $var =~ /^COUNT\[/;
 
-			# Put the entry name in place
-			my $message_name = $tag_name;
-			$message_name =~ s/@@/$var/;
+				# Put the entry name in place
+				my $message_name = $tag_name;
+				$message_name =~ s/@@/$var/;
 
-			push @{ $referer{'DEFINE Variable'}{$var} },
-				[ $message_name, $file_for_error, $line_for_error ]
-				unless $Hardcoded_Variables{$var};
-		}
+				push @{ $referer{'DEFINE Variable'}{$var} },
+					[ $message_name, $file_for_error, $line_for_error ]
+					unless $Hardcoded_Variables{$var};
+			}
 		}
 		elsif ( $entry_type eq 'DEITY' ) {
-		for my $deity (@list) {
-			# Put the entry name in place
-			my $message_name = $tag_name;
-			$message_name =~ s/@@/$deity/;
+			for my $deity (@list) {
+				# Put the entry name in place
+				my $message_name = $tag_name;
+				$message_name =~ s/@@/$deity/;
 
-			push @{ $referer{'DEITY'}{$deity} },
-				[ $message_name, $file_for_error, $line_for_error ];
-		}
+				push @{ $referer{'DEITY'}{$deity} },
+					[ $message_name, $file_for_error, $line_for_error ];
+			}
 		}
 		elsif ( $entry_type eq 'DOMAIN' ) {
-		for my $domain (@list) {
+			for my $domain (@list) {
 
-			# Put the entry name in place
-			my $message_name = $tag_name;
-			$message_name =~ s/@@/$domain/;
+				# Put the entry name in place
+				my $message_name = $tag_name;
+				$message_name =~ s/@@/$domain/;
 
-			push @{ $referer{'DOMAIN'}{$domain} },
-				[ $message_name, $file_for_error, $line_for_error ];
-		}
+				push @{ $referer{'DOMAIN'}{$domain} },
+					[ $message_name, $file_for_error, $line_for_error ];
+			}
 		}
 		elsif ( $entry_type eq 'EQUIPMENT' ) {
-		for my $equipment (@list) {
+			for my $equipment (@list) {
 
-			# Put the entry name in place
-			my $message_name = $tag_name;
-			$message_name =~ s/@@/$equipment/;
+				# Put the entry name in place
+				my $message_name = $tag_name;
+				$message_name =~ s/@@/$equipment/;
 
-			if ( $equipment =~ /^TYPE=(.*)/ ) {
-				push @{ $referer_types{'EQUIPMENT'}{$1} },
-				[ $message_name, $file_for_error, $line_for_error ];
+				if ( $equipment =~ /^TYPE=(.*)/ ) {
+					push @{ $referer_types{'EQUIPMENT'}{$1} },
+					[ $message_name, $file_for_error, $line_for_error ];
+				}
+				else {
+					push @{ $referer{'EQUIPMENT'}{$equipment} },
+					[ $message_name, $file_for_error, $line_for_error ];
+				}
 			}
-			else {
-				push @{ $referer{'EQUIPMENT'}{$equipment} },
-				[ $message_name, $file_for_error, $line_for_error ];
-			}
-		}
 		}
 		elsif ( $entry_type eq 'EQUIPMENT TYPE' ) {
-		for my $type (@list) {
+			for my $type (@list) {
 
-			# Put the entry name in place
-			my $message_name = $tag_name;
-			$message_name =~ s/@@/$type/;
+				# Put the entry name in place
+				my $message_name = $tag_name;
+				$message_name =~ s/@@/$type/;
 
-			push @{ $referer_types{'EQUIPMENT'}{$type} },
-				[ $message_name, $file_for_error, $line_for_error ];
-		}
+				push @{ $referer_types{'EQUIPMENT'}{$type} },
+					[ $message_name, $file_for_error, $line_for_error ];
+			}
 		}
 		elsif ( $entry_type eq 'EQUIPMOD Key' ) {
 		for my $key (@list) {
@@ -9956,219 +9878,206 @@ BEGIN {
 
 		return () if !defined $formula;
 
-		my @variables_found = ();		# Will contain the return values
+		my @variables_found = ();	# Will contain the return values
 		my $last_token	= q{};	# Only use for error messages
 		my $last_token_type = q{};
 
 		pos $formula = 0;
 
 		while ( pos $formula < length $formula ) {
-		# Identifiers are only valid after an operator or a separator
-		if ( my ($ident) = ( $formula =~ / \G ( $is_ident ) /xmsgc ) ) {
-			# It's an identifier or a function
-			if (   $last_token_type
-				&& $last_token_type ne 'operator'
-				&& $last_token_type ne 'separator'
-			) {
-				# We "eat" the rest of the string and report an error
-				my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-				$logging->ewarn( NOTICE,
-					qq{Jep syntax error near "$ident$bogus_text" found in "$tag"},
-					$file_for_error,
-					$line_for_error
-				);
-			}
-			# Indentificator followed by bracket = function
-			elsif ( $formula =~ / \G [(] /xmsgc ) {
-				# It's a function, is it valid?
-				if ( !$is_jep_function{$ident} ) {
-				$logging->ewarn ( NOTICE,
-					qq{Not a valid Jep function: $ident() found in $tag},
-					$file_for_error,
-					$line_for_error
-				);
-				# Deprecated tags
-				if ( $ident eq 'cl' ) {
-					$logging->ewarn( INFO,
-					qq{The Jep function cl() is deprecated, use classlevel() instead.},
-					$file_for_error,
-					$line_for_error
+			# Identifiers are only valid after an operator or a separator
+			if ( my ($ident) = ( $formula =~ / \G ( $is_ident ) /xmsgc ) ) {
+				# It's an identifier or a function
+				if ( $last_token_type && $last_token_type ne 'operator' && $last_token_type ne 'separator' ) {
+					# We "eat" the rest of the string and report an error
+					my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
+					$logging->ewarn( NOTICE,
+						qq{Jep syntax error near "$ident$bogus_text" found in "$tag"},
+						$file_for_error,
+						$line_for_error
 					);
 				}
+				# Indentificator followed by bracket = function
+				elsif ( $formula =~ / \G [(] /xmsgc ) {
+					# It's a function, is it valid?
+					if ( !$is_jep_function{$ident} ) {
+						$logging->ewarn ( NOTICE,
+							qq{Not a valid Jep function: $ident() found in $tag},
+							$file_for_error,
+							$line_for_error
+						);
+					}
 
+					# Reset the regex position just before the parantesis
+					pos $formula = pos($formula) - 1;
+
+					# We extract the function parameters
+					my ($extracted_text) = Text::Balanced::extract_bracketed( $formula, '(")' );
+
+					carp $formula if !$extracted_text;
+
+					$last_token = "$ident$extracted_text";
+					$last_token_type = 'function';
+
+					# We remove the enclosing brackets
+					($extracted_text) = ( $extracted_text =~ / \A [(] ( .* ) [)] \z /xms );
+
+					# For the var() function, we call the old parser
+					if ( $ident eq 'var' ) {
+						my ($var_text,$reminder) = Text::Balanced::extract_delimited( $extracted_text );
+
+						# Verify that the values are between ""
+						if ( $var_text ne q{} && $reminder eq q{} ) {
+							# Revove the ""
+							($var_text) = ( $var_text =~ / \A [\"] ( .* ) [\"] \z /xms );
+
+							push @variables_found,
+								extract_var_name(
+									$var_text,
+									$tag,
+									$file_for_error,
+									$line_for_error
+								);
+						}
+						else {
+							$logging->ewarn( NOTICE,
+								qq{Quote missing for the var() parameter in "$tag"},
+								$file_for_error,
+								$line_for_error
+							);
+
+							# We use the original extracted text with the old var parser
+							push @variables_found,
+								extract_var_name(
+									$extracted_text,
+									$tag,
+									$file_for_error,
+									$line_for_error
+								);
+						}
+					}
+					else {
+						# Otherwise, each of the function parameters should be a valid Jep expression
+						push @variables_found,
+						parse_jep_rec( $extracted_text, $tag, $file_for_error, $line_for_error, YES );
+					}
+				}
+				else {
+					# It's an identifier
+					push @variables_found, $ident;
+					$last_token = $ident;
+					$last_token_type = 'ident';
+				}
+			}
+			elsif ( my ($operator) = ( $formula =~ / \G ( $is_operator ) /xmsgc ) ) {
+				# It's an operator
+
+				if ( $operator eq '=' ) {
+					if ( $last_token_type eq 'ident' ) {
+						$logging->ewarn( NOTICE,
+							qq{Forgot to use var()? Dubious use of Jep variable assignation near }
+								. qq{"$last_token$operator" in "$tag"},
+							$file_for_error,
+							$line_for_error
+						);
+					}
+					else {
+						$logging->ewarn( NOTICE,
+							qq{Did you want the logical "=="? Dubious use of Jep variable assignation near }
+								. qq{"$last_token$operator" in "$tag"},
+							$file_for_error,
+							$line_for_error
+						);
+					}
 				}
 
-				# Reset the regex position just before the parantesis
+				$last_token = $operator;
+				$last_token_type = 'operator';
+			}
+			elsif ( $formula =~ / \G [(] /xmsgc ) {
+				# Reset the regex position just before the bracket
 				pos $formula = pos($formula) - 1;
 
-				# We extract the function parameters
+				# Extract what is between the () and call recursivly
 				my ($extracted_text)
-				= Text::Balanced::extract_bracketed( $formula, '(")' );
+					= Text::Balanced::extract_bracketed( $formula, '(")' );
 
-				carp $formula if !$extracted_text;
+				if ($extracted_text) {
+					$last_token = $extracted_text;
+					$last_token_type = 'expression';
 
-				$last_token = "$ident$extracted_text";
-				$last_token_type = 'function';
+					# Remove the outside brackets
+					($extracted_text) = ( $extracted_text =~ / \A [(] ( .* ) [)] \z /xms );
 
-				# We remove the enclosing brackets
-				($extracted_text) = ( $extracted_text =~ / \A [(] ( .* ) [)] \z /xms );
-
-				# For the var() function, we call the old parser
-				if ( $ident eq 'var' ) {
-				my ($var_text,$reminder) = Text::Balanced::extract_delimited( $extracted_text );
-
-				# Verify that the values are between ""
-				if ( $var_text ne q{} && $reminder eq q{} ) {
-					# Revove the ""
-					($var_text) = ( $var_text =~ / \A [\"] ( .* ) [\"] \z /xms );
-
+					# Recursive call
 					push @variables_found,
-						extract_var_name(
-						$var_text,
-						$tag,
-						$file_for_error,
-						$line_for_error
-						);
+						parse_jep_rec( $extracted_text, $tag, $file_for_error, $line_for_error, NO );
 				}
 				else {
+					# We "eat" the rest of the string and report an error
+					my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
 					$logging->ewarn( NOTICE,
-						qq{Quote missing for the var() parameter in "$tag"},
+						qq{Unbalance () in "$bogus_text" found in "$tag"},
 						$file_for_error,
 						$line_for_error
 					);
+				}
+			}
+			elsif ( my ($number) = ( $formula =~ / \G ( $is_number ) /xmsgc ) ) {
+				# It's a number
+				$last_token = $number;
+				$last_token_type = 'number';
+			}
+			elsif ( $formula =~ / \G [\"'] /xmsgc ) {
+				# It's a string
+				# Reset the regex position just before the quote
+				pos $formula = pos($formula) - 1;
 
-					# We use the original extracted text with the old var parser
-					push @variables_found,
-						extract_var_name(
-						$extracted_text,
-						$tag,
+				# Extract what is between the () and call recursivly
+				my ($extracted_text)
+					= Text::Balanced::extract_delimited( $formula );
+
+				if ($extracted_text) {
+					$last_token = $extracted_text;
+					$last_token_type = 'string';
+				}
+				else {
+					# We "eat" the rest of the string and report an error
+					my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
+					$logging->ewarn( NOTICE,
+						qq{Unbalance quote in "$bogus_text" found in "$tag"},
 						$file_for_error,
 						$line_for_error
-						);
+					);
 				}
+			}
+			elsif ( my ($separator) = ( $formula =~ / \G ( [,] ) /xmsgc ) ) {
+				# It's a comma
+				if ( $is_param == NO ) {
+					# Commas are allowed only as parameter separator
+					my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
+					$logging->ewarn ( NOTICE,
+						qq{Jep syntax error found near "$separator$bogus_text" in "$tag"},
+						$file_for_error,
+						$line_for_error
+					);
 				}
-				else {
-				# Otherwise, each of the function parameters should be a valid Jep expression
-				push @variables_found,
-					parse_jep_rec( $extracted_text, $tag, $file_for_error, $line_for_error, YES );
-				}
+
+				$last_token = $separator;
+				$last_token_type = 'separator';
+			}
+			elsif ( $formula =~ / \G \s+ /xmsgc ) {
+				# Spaces are allowed in Jep expressions, we simply ignore them
 			}
 			else {
-				# It's an identifier
-				push @variables_found, $ident;
-				$last_token = $ident;
-				$last_token_type = 'ident';
-			}
-		}
-		elsif ( my ($operator) = ( $formula =~ / \G ( $is_operator ) /xmsgc ) ) {
-			# It's an operator
-
-			if ( $operator eq '=' ) {
-				if ( $last_token_type eq 'ident' ) {
-				$logging->ewarn( NOTICE,
-					qq{Forgot to use var()? Dubious use of Jep variable assignation near }
-						. qq{"$last_token$operator" in "$tag"},
-					$file_for_error,
-					$line_for_error
-				);
-				}
-				else {
-				$logging->ewarn( NOTICE,
-					qq{Did you want the logical "=="? Dubious use of Jep variable assignation near }
-						. qq{"$last_token$operator" in "$tag"},
-					$file_for_error,
-					$line_for_error
-				);
-				}
-			}
-
-			$last_token = $operator;
-			$last_token_type = 'operator';
-		}
-		elsif ( $formula =~ / \G [(] /xmsgc ) {
-			# Reset the regex position just before the bracket
-			pos $formula = pos($formula) - 1;
-
-			# Extract what is between the () and call recursivly
-			my ($extracted_text)
-				= Text::Balanced::extract_bracketed( $formula, '(")' );
-
-			if ($extracted_text) {
-				$last_token = $extracted_text;
-				$last_token_type = 'expression';
-
-				# Remove the outside brackets
-				($extracted_text) = ( $extracted_text =~ / \A [(] ( .* ) [)] \z /xms );
-
-				# Recursive call
-				push @variables_found,
-					parse_jep_rec( $extracted_text, $tag, $file_for_error, $line_for_error, NO );
-			}
-			else {
-				# We "eat" the rest of the string and report an error
-				my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-				$logging->ewarn( NOTICE,
-				qq{Unbalance () in "$bogus_text" found in "$tag"},
-				$file_for_error,
-				$line_for_error
-				);
-			}
-		}
-		elsif ( my ($number) = ( $formula =~ / \G ( $is_number ) /xmsgc ) ) {
-			# It's a number
-			$last_token = $number;
-			$last_token_type = 'number';
-		}
-		elsif ( $formula =~ / \G [\"'] /xmsgc ) {
-			# It's a string
-			# Reset the regex position just before the quote
-			pos $formula = pos($formula) - 1;
-
-			# Extract what is between the () and call recursivly
-			my ($extracted_text)
-				= Text::Balanced::extract_delimited( $formula );
-
-			if ($extracted_text) {
-				$last_token = $extracted_text;
-				$last_token_type = 'string';
-			}
-			else {
-				# We "eat" the rest of the string and report an error
-				my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-				$logging->ewarn( NOTICE,
-				qq{Unbalance quote in "$bogus_text" found in "$tag"},
-				$file_for_error,
-				$line_for_error
-				);
-			}
-		}
-		elsif ( my ($separator) = ( $formula =~ / \G ( [,] ) /xmsgc ) ) {
-			# It's a comma
-			if ( $is_param == NO ) {
-				# Commas are allowed only as parameter separator
+				# If we are here, all is not well
 				my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
 				$logging->ewarn ( NOTICE,
-				qq{Jep syntax error found near "$separator$bogus_text" in "$tag"},
-				$file_for_error,
-				$line_for_error
+					qq{Jep syntax error found near "$bogus_text" in "$tag"},
+					$file_for_error,
+					$line_for_error
 				);
 			}
-
-			$last_token = $separator;
-			$last_token_type = 'separator';
-		}
-		elsif ( $formula =~ / \G \s+ /xmsgc ) {
-			# Spaces are allowed in Jep expressions, we simply ignore them
-		}
-		else {
-			# If we are here, all is not well
-			my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-			$logging->ewarn ( NOTICE,
-				qq{Jep syntax error found near "$bogus_text" in "$tag"},
-				$file_for_error,
-				$line_for_error
-			);
-		}
 		}
 
 		return @variables_found;
@@ -10670,7 +10579,7 @@ sub additionnal_tag_parsing {
 		if ( $new_value ne $tag_value ) {
 			$_[1] = $new_value;
 			$logging->ewarn( WARNING,
-				qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
+				qq{Replacing "$tag_name:$tag_value" with "$_[0]:$_[1]"},
 				$file_for_error,
 				$line_for_error
 			);
@@ -10687,7 +10596,7 @@ sub additionnal_tag_parsing {
 		unless ( $tag_value =~ /^\d+,/ ) {
 			$_[1] = '1,' . $_[1];
 			$logging->ewarn( WARNING,
-				qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
+				qq{Replacing "$tag_name:$tag_value" with "$_[0]:$_[1]"},
 				$file_for_error,
 				$line_for_error
 			);
@@ -10701,7 +10610,7 @@ sub additionnal_tag_parsing {
 			$_[1] =~ s/PRECLASS:(?!\d)/PRECLASS:1,/g;
 
 			$logging->ewarn( WARNING,
-				qq{Replacing "$tag_name$tag_value" by "$_[0]$_[1]"},
+				qq{Replacing "$tag_name$tag_value" with "$_[0]$_[1]"},
 				$file_for_error,
 				$line_for_error
 			);
@@ -10717,7 +10626,7 @@ sub additionnal_tag_parsing {
 			$_[1] =~ s/PRECLASS:(?!\d)/PRECLASS:1,/g;
 
 			$logging->ewarn( WARNING,
-				qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
+				qq{Replacing "$tag_name:$tag_value" with "$_[0]:$_[1]"},
 				$file_for_error,
 				$line_for_error
 			);
@@ -10732,18 +10641,16 @@ sub additionnal_tag_parsing {
 	# except EQUIPMENT and EQUIPMOD where it most be replaced by
 	# BONUS:POSTMOVEADD
 
-	if (   $conversion_enable{'ALL:BONUS:MOVE convertion'}
-		&& $tag_name eq 'BONUS:MOVE'
-	) {
+	if (   $conversion_enable{'ALL:BONUS:MOVE convertion'} && $tag_name eq 'BONUS:MOVE' ){
 		if ( $linetype eq "EQUIPMENT" || $linetype eq "EQUIPMOD" ) {
-		$_[0] = "BONUS:POSTMOVEADD";
+			$_[0] = "BONUS:POSTMOVEADD";
 		}
 		else {
-		$_[0] = "BONUS:MOVEADD";
+			$_[0] = "BONUS:MOVEADD";
 		}
 
 		$logging->ewarn( WARNING,
-		qq{Replacing "$tag_name$tag_value" by "$_[0]$_[1]"},
+		qq{Replacing "$tag_name$tag_value" with "$_[0]$_[1]"},
 		$file_for_error,
 		$line_for_error
 		);
@@ -10757,17 +10664,15 @@ sub additionnal_tag_parsing {
 	# [ 728038 ] BONUS:VISION must replace VISION:.ADD
 	# Now doing the VISION:.ADD convertion
 
-	if (   $conversion_enable{'ALL: , to | in VISION'}
-		&& $tag_name eq 'VISION'
-	) {
+	if (   $conversion_enable{'ALL: , to | in VISION'} && $tag_name eq 'VISION' ) {
 		unless ( $tag_value =~ /(\.ADD,|1,)/i ) {
-		if ( $_[1] =~ tr{,}{|} ) {
-			$logging->ewarn( WARNING,
-				qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
-				$file_for_error,
-				$line_for_error
-			);
-		}
+			if ( $_[1] =~ tr{,}{|} ) {
+				$logging->ewarn( WARNING,
+					qq{Replacing "$tag_name:$tag_value" with "$_[0]:$_[1]"},
+					$file_for_error,
+					$line_for_error
+				);
+			}
 		}
 	}
 
@@ -10775,18 +10680,15 @@ sub additionnal_tag_parsing {
 	# PRESTAT now only accepts the format PRESTAT:1,<stat>=<n>
 	# All the PRESTAT tags must be reformated to use the default way.
 
-	if (   $conversion_enable{'ALL:PRESTAT needs a ,'}
-		&& $tag_name eq 'PRESTAT'
-	) {
+	if ( $conversion_enable{'ALL:PRESTAT needs a ,'} && $tag_name eq 'PRESTAT' ) {
 		if ( index( $tag_value, ',' ) == -1 ) {
-
-		# There is no ',', we need to add one
-		$_[1] = '1,' . $_[1];
-		$logging->ewarn( WARNING,
-			qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
-			$file_for_error,
-			$line_for_error
-		);
+			# There is no ',', we need to add one
+			$_[1] = '1,' . $_[1];
+			$logging->ewarn( WARNING,
+				qq{Replacing "$tag_name:$tag_value" with "$_[0]:$_[1]"},
+				$file_for_error,
+				$line_for_error
+			);
 		}
 	}
 
@@ -10794,18 +10696,17 @@ sub additionnal_tag_parsing {
 	# [ 686169 ] remove ATTACKS: tag
 	# ATTACKS:<attacks> must be replaced by BONUS:COMBAT|ATTACKS|<attacks>
 
-	if (   $conversion_enable{'EQUIPMENT: remove ATTACKS'}
+	if ( $conversion_enable{'EQUIPMENT: remove ATTACKS'}
 		&& $tag_name eq 'ATTACKS'
-		&& $linetype eq 'EQUIPMENT'
-	) {
+		&& $linetype eq 'EQUIPMENT' ) {
 		my $number_attacks = $tag_value;
 		$_[0] = 'BONUS:COMBAT';
 		$_[1] = '|ATTACKS|' . $number_attacks;
 
 		$logging->ewarn( WARNING,
-		qq{Replacing "$tag_name:$tag_value" by "$_[0]$_[1]"},
-		$file_for_error,
-		$line_for_error
+			qq{Replacing "$tag_name:$tag_value" with "$_[0]$_[1]"},
+			$file_for_error,
+			$line_for_error
 		);
 	}
 
@@ -10823,13 +10724,13 @@ sub additionnal_tag_parsing {
 		|| $tag_name eq 'MFEAT' )
 	) {
 		for ( keys %srd_weapon_name_convertion_433 ) {
-		if ( $_[1] =~ s/\Q$_\E/$srd_weapon_name_convertion_433{$_}/ig ) {
-			$logging->ewarn( WARNING,
-				qq{Replacing "$tag_name:$tag_value" by "$_[0]:$_[1]"},
-				$file_for_error,
-				$line_for_error
-			);
-		}
+			if ( $_[1] =~ s/\Q$_\E/$srd_weapon_name_convertion_433{$_}/ig ) {
+				$logging->ewarn( WARNING,
+					qq{Replacing "$tag_name:$tag_value" with "$_[0]:$_[1]"},
+					$file_for_error,
+					$line_for_error
+				);
+			}
 		}
 	}
 }
@@ -14913,6 +14814,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1958872 ] trim PREXXX before checking SPELLLEVEL
 
 [ 1995252 ] Header for the Error Log
 
