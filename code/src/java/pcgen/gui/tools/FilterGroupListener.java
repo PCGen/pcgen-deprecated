@@ -1,5 +1,5 @@
 /*
- * FilterGroup.java
+ * FilterGroupListener.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,26 +16,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 17, 2008, 11:42:12 PM
+ * Created on Jun 18, 2008, 3:38:24 PM
  */
 
 package pcgen.gui.tools;
 
-import java.util.Collection;
+import java.util.EventListener;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterGroup {
-    private Collection<Filter> filters;
-    public void addFilterGroupListener(FilterGroupListener listener)
-    {
-        
-    }
-    
-    public void removeFilterGroupListener(FilterGroupListener listener)
-    {
-        
-    }
+public interface FilterGroupListener extends EventListener {
+    public void filterAdded(Filter filter);
+    public void filterRemoved(Filter filter);
 }
