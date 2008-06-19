@@ -18,13 +18,13 @@
 
 use 5.008_001;				# Perl 5.8.1 or better is now mandantory
 use strict;
-use warnings;
+# use warnings;
 use Fatal qw( open close );		# Force some built-ins to die on error
 use English qw( -no_match_vars );   # No more funky punctuation variables
 
 # Version information			# Converting to SVN Id parsing using array - Tir Gwaith
-my $SVN_id = '$Id$';
 # my $SVN_id = '$Id$';
+my $SVN_id = '$Id$';
 my @SVN_array = split ' ', $SVN_id;
 my $SVN_build = $SVN_array[2];
 my $SVN_date = $SVN_array[3];
@@ -568,7 +568,7 @@ my @valid_system_var_names   = qw(
 	INSPIRATIONMISC		LOADSCORE				MAXLEVELSTAT
 	MAXVEHICLEMODS		MISSIONBUDGET			MUSCLE
 	MXDXEN			NATIVELANGUAGES			NORMALMOUNT
-	OFFHANDLIGHTBONUS		PSIONLEVEL			Reputation
+	OFFHANDLIGHTBONUS		PSIONLEVEL				Reputation
 	TWOHANDDAMAGEDIVISOR	TotalDefenseAC			TotalDefenseACBonus
 	UseAlternateDamage	VEHICLECRUISINGMPH		VEHICLEDEFENSE
 	VEHICLEHANDLING		VEHICLEHARDNESS			VEHICLESPEED
@@ -577,10 +577,10 @@ my @valid_system_var_names   = qw(
 	SynergyBonus		NoTypeProficiencies		NormalMount
 	CHOICE			BAB					NormalFollower
 
-	Action				ActionLVL				ArmorQui
-	ClassDefense			DamageThreshold			DenseMuscle
-	FIGHTINGDEFENSIVELYACBONUS  Giantism				INITCOMP
-	LOADSCORE				MAXLEVELSTAT			MUSCLE
+	Action				ActionLVL			ArmorQui
+	ClassDefense			DamageThreshold		DenseMuscle
+	FIGHTINGDEFENSIVELYACBONUS	Giantism			INITCOMP
+	LOADSCORE				MAXLEVELSTAT		MUSCLE
 	MXDXEN				Mount				OFFHANDLIGHTBONUS
 	TOTALDEFENSEACBONUS		TWOHANDDAMAGEDIVISOR
 );
@@ -10062,7 +10062,6 @@ BEGIN {
 						$line_for_error
 					);
 				}
-
 				$last_token = $separator;
 				$last_token_type = 'separator';
 			}
@@ -10070,13 +10069,18 @@ BEGIN {
 				# Spaces are allowed in Jep expressions, we simply ignore them
 			}
 			else {
-				# If we are here, all is not well
-				my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
-				$logging->ewarn ( NOTICE,
-					qq{Jep syntax error found near "$bogus_text" in "$tag"},
-					$file_for_error,
-					$line_for_error
-				);
+				if ( $formula =~ /\G\[.+\]/gc ) {
+					# Allow COUNT[something]
+				}
+				else {
+					# If we are here, all is not well
+					my ($bogus_text) = ( $formula =~ / \G (.*) /xmsgc );
+					$logging->ewarn ( NOTICE,
+						qq{Jep syntax error found near unknown function "$bogus_text" in "$tag"},
+						$file_for_error,
+						$line_for_error
+					);
+				}
 			}
 		}
 
@@ -14814,6 +14818,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1958876 ] PL not dealing with JEP syntax correctly
 
 [ 1958872 ] trim PREXXX before checking SPELLLEVEL
 
