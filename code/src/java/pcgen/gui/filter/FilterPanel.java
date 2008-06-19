@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import pcgen.gui.core.UIContext;
 import pcgen.gui.util.TextIcon;
 import pcgen.util.PropertyFactory;
 
@@ -44,16 +45,34 @@ public class FilterPanel extends JPanel
             ":";
     private static final String clear = PropertyFactory.getString("in_clear");
     private static final String advanced = PropertyFactory.getString("in_demAdv");
-    private final JTextField textfield;
     private final FilterPanelListener listener;
+    private final JTextField textfield;
+    private final FilterList filters;
 
-    public FilterPanel(FilterPanelListener listener)
+    public FilterPanel(UIContext context, Class<?> filterclass,
+                        FilterPanelListener listener)
     {
+        this.filters = context.getToggleFilters(filterclass);
+        filters.addFilterListListener(
+                new FilterListListener()
+                {
+
+                    public void filtersChanged(FilterListEvent event)
+                    {
+                        //event
+                    }
+
+                });
         this.textfield = new JTextField();
         this.listener = listener;
         initComponents();
     }
 
+    private void initFilters()
+    {
+        
+    }
+    
     private void initComponents()
     {
         JToolBar toolbar = new JToolBar();
@@ -110,6 +129,8 @@ public class FilterPanel extends JPanel
         toolbar.add(button);
 
         toolbar.addSeparator();
+
+        add(toolbar);
     }
 
     private void updateFilter()

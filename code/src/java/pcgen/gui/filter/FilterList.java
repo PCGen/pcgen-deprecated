@@ -20,9 +20,9 @@
  */
 package pcgen.gui.filter;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -31,26 +31,43 @@ import java.util.Set;
 public class FilterList
 {
 
-    private List<Filter> filterList;
+    private List<FilterListListener> listeners;
+    private List<Filter> filters;
 
     public FilterList()
     {
-
+        this.listeners = new ArrayList<FilterListListener>();
+        this.filters = Collections.emptyList();
     }
 
-    public void setFilters(Set<Filter> filters)
+    public void setFilters(List<Filter> filters)
     {
-
+        FilterListEvent event = new FilterListEvent(this, this.filters, filters);
+        this.filters = filters;
+        fireFiltersChanged(event);
     }
 
-    public void addFilterCollectionListener(FilterListListener listener)
+    private void fireFiltersChanged(FilterListEvent event)
     {
-
+        for (FilterListListener listener : listeners)
+        {
+            listener.filtersChanged(event);
+        }
     }
 
-    public void removeFilterCollectionListener(FilterListListener listener)
+    public void addFilterListListener(FilterListListener listener)
     {
+        listeners.add(listener);
+    }
 
+    public void removeFilterListListener(FilterListListener listener)
+    {
+        listeners.remove(listener);
+    }
+
+    public List<Filter> getFilters()
+    {
+        return filters;
     }
 
 }

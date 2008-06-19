@@ -21,12 +21,10 @@
 
 package pcgen.gui.filter;
 
-import java.util.EventListener;
-
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface FilterPanelListener extends EventListener{
+public interface FilterPanelListener extends FilterListListener{
     public void updateQFilter(String filter);
 }

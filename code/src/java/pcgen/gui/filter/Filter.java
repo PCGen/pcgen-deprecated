@@ -25,6 +25,7 @@ package pcgen.gui.filter;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class Filter {
-
+public interface Filter {
+    public String getDisplayedName();
+    public String getDescription();
 }
