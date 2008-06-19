@@ -1,5 +1,5 @@
 /*
- * FilterSetEvent.java
+ * FilterListEvent.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -27,12 +27,12 @@ import java.util.List;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterSetEvent extends EventObject
+public class FilterListEvent extends EventObject
 {
     private List<Filter> oldFilters;
     private List<Filter> newFilters;
 
-    public FilterSetEvent(FilterSet source, List<Filter> oldFilters, List<Filter> newFilters)
+    public FilterListEvent(FilterList source, List<Filter> oldFilters, List<Filter> newFilters)
     {
         super(source);
         this.oldFilters = oldFilters;
@@ -40,9 +40,9 @@ public class FilterSetEvent extends EventObject
     }
 
     @Override
-    public FilterSet getSource()
+    public FilterList getSource()
     {
-        return (FilterSet) super.getSource();
+        return (FilterList) super.getSource();
     }
 
     public List<Filter> getOldFilters()

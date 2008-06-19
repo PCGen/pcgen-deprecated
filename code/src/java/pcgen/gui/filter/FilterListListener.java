@@ -1,5 +1,5 @@
 /*
- * FilterSet.java
+ * FilterListListener.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,41 +16,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 18, 2008, 8:36:09 PM
+ * Created on Jun 18, 2008, 8:36:22 PM
  */
+
 package pcgen.gui.filter;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.EventListener;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterSet
-{
-
-    private List<Filter> filterList;
-
-    public FilterSet()
-    {
-
-    }
-
-    public void setFilters(Set<Filter> filters)
-    {
-
-    }
-
-    public void addFilterCollectionListener(FilterSetListener listener)
-    {
-
-    }
-
-    public void removeFilterCollectionListener(FilterSetListener listener)
-    {
-
-    }
-
+public interface FilterListListener extends EventListener{
+    public void filtersChanged(FilterListEvent event);
 }
