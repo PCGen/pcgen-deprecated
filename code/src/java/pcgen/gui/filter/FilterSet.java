@@ -18,30 +18,39 @@
  * 
  * Created on Jun 18, 2008, 8:36:09 PM
  */
-
 package pcgen.gui.filter;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterSet {
+public class FilterSet
+{
+
+    private List<Filter> filterList;
+
     public FilterSet()
     {
-        
+
     }
-    public void setFilters(Collection<Filter> filters)
+
+    public void setFilters(Set<Filter> filters)
     {
-        
+
     }
+
     public void addFilterCollectionListener(FilterSetListener listener)
     {
-        
+
     }
+
     public void removeFilterCollectionListener(FilterSetListener listener)
     {
-        
+
     }
+
 }

@@ -20,8 +20,8 @@
  */
 package pcgen.gui.filter;
 
-import java.util.Collection;
 import java.util.EventObject;
+import java.util.List;
 
 /**
  *
@@ -29,10 +29,10 @@ import java.util.EventObject;
  */
 public class FilterSetEvent extends EventObject
 {
-    private Collection<Filter> oldFilters;
-    private Collection<Filter> newFilters;
+    private List<Filter> oldFilters;
+    private List<Filter> newFilters;
 
-    public FilterSetEvent(FilterSet source, Collection<Filter> oldFilters, Collection<Filter> newFilters)
+    public FilterSetEvent(FilterSet source, List<Filter> oldFilters, List<Filter> newFilters)
     {
         super(source);
         this.oldFilters = oldFilters;
@@ -45,11 +45,11 @@ public class FilterSetEvent extends EventObject
         return (FilterSet) super.getSource();
     }
 
-    public Collection<Filter> getOldFilters()
+    public List<Filter> getOldFilters()
     {
         return oldFilters;
     }
-    public Collection<Filter> getNewFilters()
+    public List<Filter> getNewFilters()
     {
         return newFilters;
     }
