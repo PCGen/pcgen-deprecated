@@ -653,6 +653,7 @@ my %tag_fix_value = (
 	STACK			=> { YES => 1, NO => 1 },
 	SPELLBOOK		=> { YES => 1, NO => 1 },
 	SPELLSTAT		=> { map { $_ => 1 } ( @valid_system_stats, 'SPELL', 'NONE', 'OTHER' ) },
+	TIMEUNIT		=> { map { $_ => 1 } qw( Month Week Day Hour Minute Round Encounter ) },
 	USEUNTRAINED	=> { YES => 1, NO => 1 },
 	USEMASTERSKILL	=> { YES => 1, NO => 1 },
 	VISIBLE		=> { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1, CSHEET => 1, GUI => 1 }, #[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
@@ -7861,11 +7862,12 @@ BEGIN {
 						# Nothing to see here. Move along.
 					}
 					else {
-						$logging->ewarn( INFO,
-							qq(the TIMEUNIT= parameter is missing in "$tag_name:$tag_value"),
-							$file_for_error,
-							$line_for_error
-						);
+						# [ 1997408 ] False positive: TIMEUNIT= parameter is missing
+						# $logging->ewarn( INFO,
+						#	qq(the TIMEUNIT= parameter is missing in "$tag_name:$tag_value"),
+						#	$file_for_error,
+						#	$line_for_error
+						# );
 					}
 				}
 			}
@@ -14818,6 +14820,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1997408 ] False positive: TIMEUNIT= parameter is missing
 
 [ 1958876 ] PL not dealing with JEP syntax correctly
 
