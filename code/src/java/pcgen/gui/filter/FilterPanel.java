@@ -45,9 +45,9 @@ public class FilterPanel extends JPanel
     private static final String clear = PropertyFactory.getString("in_clear");
     private static final String advanced = PropertyFactory.getString("in_demAdv");
     private final JTextField textfield;
-    private final FilterListener listener;
+    private final FilterPanelListener listener;
 
-    public FilterPanel(FilterListener listener)
+    public FilterPanel(FilterPanelListener listener)
     {
         this.textfield = new JTextField();
         this.listener = listener;

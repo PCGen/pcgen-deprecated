@@ -1,5 +1,5 @@
 /*
- * FilterListener.java
+ * FilterPanelListener.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -27,6 +27,6 @@ import java.util.EventListener;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface FilterListener extends EventListener{
+public interface FilterPanelListener extends EventListener{
     public void updateQFilter(String filter);
 }
