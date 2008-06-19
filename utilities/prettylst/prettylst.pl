@@ -575,7 +575,7 @@ my @valid_system_var_names   = qw(
 	VEHICLETOPMPH		VEHICLEWOUNDPOINTS		Wealth
 	CR				CL					ECL
 	SynergyBonus		NoTypeProficiencies		NormalMount
-	CHOICE								NormalFollower
+	CHOICE			BAB					NormalFollower
 
 	Action				ActionLVL				ArmorQui
 	ClassDefense			DamageThreshold			DenseMuscle
