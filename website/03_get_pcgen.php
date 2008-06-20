@@ -116,7 +116,7 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         </p>
         
         <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5140_win_install.exe">Download PCGen 5.14.0 for Windows<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5140_mac_install.dmg">Download PCGen 5.14.0 for Mac<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5140_mac_build.dmg">Download PCGen 5.14.0 for Mac<small>&nbsp;</small></a></div><br />
         <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5140_full.zip">Download PCGen 5.14.0 for Other Systems<small>&nbsp;</small></a></div><br/>
 
         <h2>Option 2. Download Alpha Releases<a class="" title="alpha" name="alpha"></a></h2>
