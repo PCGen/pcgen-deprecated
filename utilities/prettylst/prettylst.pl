@@ -653,7 +653,7 @@ my %tag_fix_value = (
 	STACK			=> { YES => 1, NO => 1 },
 	SPELLBOOK		=> { YES => 1, NO => 1 },
 	SPELLSTAT		=> { map { $_ => 1 } ( @valid_system_stats, 'SPELL', 'NONE', 'OTHER' ) },
-	TIMEUNIT		=> { map { $_ => 1 } qw( Month Week Day Hour Minute Round Encounter ) },
+	TIMEUNIT		=> { map { $_ => 1 } qw( Month Week Day Hour Minute Round Encounter Charges ) },
 	USEUNTRAINED	=> { YES => 1, NO => 1 },
 	USEMASTERSKILL	=> { YES => 1, NO => 1 },
 	VISIBLE		=> { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1, CSHEET => 1, GUI => 1 }, #[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
@@ -661,14 +661,14 @@ my %tag_fix_value = (
 
 # This hash is used to convert 1 character choices to proper fix values.
 my %tag_proper_value_for = (
-	'Y'	=>  'YES',
-	'N'	=>  'NO',
-	'W'	=>  'WEIGHT',
-	'Q'	=>  'QUALIFY',
-	'P'	=>  'PROFICIENT',
-	'R'	=>  'REQUIRED',
-	'true'  =>  'YES',
-	'false' =>  'NO',
+	'Y'		=>  'YES',
+	'N'		=>  'NO',
+	'W'		=>  'WEIGHT',
+	'Q'		=>  'QUALIFY',
+	'P'		=>  'PROFICIENT',
+	'R'		=>  'REQUIRED',
+	'true'	=>  'YES',
+	'false'	=>  'NO',
 );
 
 #####################################
@@ -4568,23 +4568,23 @@ if ($cl_options{input_path}) {
 		close $pcc_fh;
 
 		if ( $conversion_enable{'CLASSSPELL convertion to SPELL'}
-		&& $found_filetype{'CLASSSPELL'}
-		&& !$found_filetype{'SPELL'}
-		) {
-		$logging->ewarn(WARNING,
-			'No SPELL file found, create one.',
-			$pcc_file_name
-		);
+			&& $found_filetype{'CLASSSPELL'}
+			&& !$found_filetype{'SPELL'} )
+		{
+			$logging->ewarn(WARNING,
+				'No SPELL file found, create one.',
+				$pcc_file_name
+			);
 		}
 
 		if ( $conversion_enable{'CLASSSKILL convertion to CLASS'}
-		&& $found_filetype{'CLASSSKILL'}
-		&& !$found_filetype{'CLASS'}
-		) {
-		$logging->ewarn(WARNING,
-			'No CLASS file found, create one.',
-			$pcc_file_name
-		);
+			&& $found_filetype{'CLASSSKILL'}
+			&& !$found_filetype{'CLASS'} )
+		{
+			$logging->ewarn(WARNING,
+				'No CLASS file found, create one.',
+				$pcc_file_name
+			);
 		}
 
 		if ( !$BOOKTYPE_found && $LST_found ) {
@@ -4629,12 +4629,12 @@ if ($cl_options{input_path}) {
 	# Is there anything to parse?
 	if ( !keys %files_to_parse ) {
 		$logging->ewarn( ERROR,
-		qq{Could not find any .lst file to parse.},
-		$cl_options{input_path}
+			qq{Could not find any .lst file to parse.},
+			$cl_options{input_path}
 		);
 		$logging->ewarn( ERROR,
-		qq{Is your -inputpath parameter valid? ($cl_options{input_path})},
-		$cl_options{input_path}
+			qq{Is your -inputpath parameter valid? ($cl_options{input_path})},
+			$cl_options{input_path}
 		);
 		if ( $cl_options{gamemode} ) {
 		$logging->ewarn( ERROR,
@@ -4666,11 +4666,10 @@ if ($cl_options{input_path}) {
 				. "List of files that are not referenced by any .PCC files\n"
 				. "----------------------------------------------------------------\n"
 		);
-
 		for my $file ( sort keys %filelist_notpcc ) {
-		$file =~ s/$cl_options{basepath}//i;
-		$file =~ tr{/}{\\} if $^O eq "MSWin32";
-		$logging->ewarn( NOTICE,  "$file\n", "" );
+			$file =~ s/$cl_options{basepath}//i;
+			$file =~ tr{/}{\\} if $^O eq "MSWin32";
+			$logging->ewarn( NOTICE,  "$file\n", "" );
 		}
 	}
 }
@@ -6697,9 +6696,9 @@ sub parse_tag {
 			# Is it a valid alignment?
 			if (!exists $tag_fix_value{$tag}{$align}) {
 				$logging->ewarn( NOTICE,
-				qq{Invalid value "$align" for tag "$real_tag"},
-				$file_for_error,
-				$line_for_error
+					qq{Invalid value "$align" for tag "$real_tag"},
+					$file_for_error,
+					$line_for_error
 				);
 				$is_valid = 0;
 			}
@@ -7771,6 +7770,15 @@ BEGIN {
 				}
 				elsif ( $1 eq 'TIMEUNIT' ) {
 					$nb_timeunit++;
+					# Is it a valid alignment?
+					if (!exists $tag_fix_value{$1}{$2}) {
+						$logging->ewarn( NOTICE,
+							qq{Invalid value "$2" for tag "$1"},
+							$file_for_error,
+							$line_for_error
+						);
+#						$is_valid = 0;
+					}
 				}
 				else {
 					$nb_casterlevel++;
@@ -14820,6 +14828,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 1998298 ] SPELLS TIMEUNIT checking bug
 
 [ 1997408 ] False positive: TIMEUNIT= parameter is missing
 
