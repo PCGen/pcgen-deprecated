@@ -58,9 +58,6 @@ public class RaceBasePanel extends BasePanel
 				"Large", "Huge", "Gargantuan", "Colossal"};
 	private static final String[] sizeAbbrev =
 			new String[]{"F", "D", "T", "S", "M", "L", "H", "G", "C"};
-	private static final String[] hitDiceSizeValues =
-			new String[]{"1", "2", "4", "6", "8", "10", "12", "14", "16", "18",
-				"20"};
 	private static final String[] crValues =
 			{"1/10", "1/8", "1/6", "1/4", "1/3", "1/2", "0", "1", "2", "3",
 				"4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14",
@@ -70,11 +67,10 @@ public class RaceBasePanel extends BasePanel
 
 	private JComboBoxEx cmbCR;
 	private JComboBoxEx cmbHands;
-	private JComboBoxEx cmbHitDiceNumber;
-	private JComboBoxEx cmbHitDiceSize;
 	private JComboBoxEx cmbLegs;
 	private JComboBoxEx cmbMonsterClass;
 	private JComboBoxEx cmbMonsterLevel;
+	private JComboBoxEx cmbRaceType;
 	private JComboBoxEx cmbReach;
 	private JComboBoxEx cmbSize;
 	private JComboBoxEx cmbSkillMult;
@@ -265,32 +261,6 @@ public class RaceBasePanel extends BasePanel
 		return false;
 	}
 
-	public void setHitDiceNumber(final int aNumber)
-	{
-		if ((aNumber >= 0) && (aNumber < cmbMonsterLevel.getItemCount()))
-		{
-			cmbHitDiceNumber.setSelectedItem(String.valueOf(aNumber));
-		}
-	}
-
-	public int getHitDiceNumber()
-	{
-		return Integer.parseInt((String) cmbHitDiceNumber.getSelectedItem());
-	}
-
-	public void setHitDiceSize(final int aNumber)
-	{
-		if ((aNumber >= 0) && (aNumber < cmbMonsterLevel.getItemCount()))
-		{
-			cmbHitDiceSize.setSelectedItem(String.valueOf(aNumber));
-		}
-	}
-
-	public int getHitDiceSize()
-	{
-		return Integer.parseInt((String) cmbHitDiceSize.getSelectedItem());
-	}
-
 	public void setLegs(final int aNumber)
 	{
 		if ((aNumber >= 0) && (aNumber < cmbLegs.getItemCount()))
@@ -375,6 +345,17 @@ public class RaceBasePanel extends BasePanel
 		return "";
 	}
 
+	public void setRaceType(final String aString)
+	{
+		cmbRaceType.setSelectedItem(aString);
+	}
+
+	public String getRaceType()
+	{
+		return (String) cmbRaceType.getSelectedItem();
+	}
+
+	
 	public void setReach(final int aNumber)
 	{
 		cmbReach.setSelectedItem(String.valueOf(aNumber));
@@ -445,12 +426,11 @@ public class RaceBasePanel extends BasePanel
 		{
 			thisRace.setInitialSkillMultiplier(getSkillMultiplier());
 		}
-		thisRace.setHitDice(getHitDiceNumber());
-		thisRace.setHitDiceSize(getHitDiceSize());
 
 		//
 		// Save types
 		//
+		thisRace.setRaceType((String) cmbRaceType.getSelectedItem());
 		Object[] sel = getTypesSelectedList();
 		thisPObject.setTypeInfo(".CLEAR");
 
@@ -486,6 +466,9 @@ public class RaceBasePanel extends BasePanel
 				}
 			}
 		}
+
+		cmbRaceType.setModel(new DefaultComboBoxModel(availableList.toArray()));
+		cmbRaceType.setSelectedItem(thisRace.getRaceType());
 
 		// remove this race's type from the available list and place into selected list
 		for (String type : thisRace.getTypeList(false))
@@ -531,8 +514,6 @@ public class RaceBasePanel extends BasePanel
 		setRaceSize(thisRace.getSize());
 		setReach(thisRace.getReach());
 		setSkillMultiplier(thisRace.getInitialSkillMultiplier());
-		setHitDiceNumber(thisRace.hitDice(null, false));
-		setHitDiceSize(thisRace.getHitDiceSize(null, false));
 	}
 
 	private static GridBagConstraints buildConstraints(int gridx, int gridy)
@@ -583,9 +564,6 @@ public class RaceBasePanel extends BasePanel
 		}
 
 		cmbMonsterLevel.setModel(new DefaultComboBoxModel(values));
-		cmbHitDiceNumber.setModel(new DefaultComboBoxModel(values));
-
-		cmbHitDiceSize.setModel(new DefaultComboBoxModel(hitDiceSizeValues));
 
 		cmbCR.setModel(new DefaultComboBoxModel(crValues));
 	}
@@ -606,12 +584,11 @@ public class RaceBasePanel extends BasePanel
 		txtDisplayName = new JTextField();
 		cmbHands = new JComboBoxEx();
 		txtHitDiceAdvancement = new JTextField();
-		cmbHitDiceNumber = new JComboBoxEx();
-		cmbHitDiceSize = new JComboBoxEx();
 		cmbLegs = new JComboBoxEx();
 		txtLevelAdj = new JTextField();
 		cmbMonsterClass = new JComboBoxEx();
 		cmbMonsterLevel = new JComboBoxEx();
+		cmbRaceType = new JComboBoxEx();
 		cmbReach = new JComboBoxEx();
 		cmbSize = new JComboBoxEx();
 		cmbSkillMult = new JComboBoxEx();
@@ -733,21 +710,22 @@ public class RaceBasePanel extends BasePanel
 		gridBagConstraints.weightx = 0.4;
 		pnlTemplateMisc.add(cmbMonsterLevel, gridBagConstraints);
 
-		tempLabel = new JLabel("Number of Hit Dice");
+		tempLabel = new JLabel("Race Type");
 		gridBagConstraints = buildConstraints(0, 7);
 		pnlTemplateMisc.add(tempLabel, gridBagConstraints);
 
+		cmbRaceType.setEditable(true);
 		gridBagConstraints = buildConstraints(1, 7);
 		gridBagConstraints.weightx = 0.4;
-		pnlTemplateMisc.add(cmbHitDiceNumber, gridBagConstraints);
-
-		tempLabel = new JLabel("Hit Dice Size");
-		gridBagConstraints = buildConstraints(2, 7);
-		pnlTemplateMisc.add(tempLabel, gridBagConstraints);
-
-		gridBagConstraints = buildConstraints(3, 7);
-		gridBagConstraints.weightx = 0.4;
-		pnlTemplateMisc.add(cmbHitDiceSize, gridBagConstraints);
+		pnlTemplateMisc.add(cmbRaceType, gridBagConstraints);
+//
+//		tempLabel = new JLabel("Hit Dice Size");
+//		gridBagConstraints = buildConstraints(2, 7);
+//		pnlTemplateMisc.add(tempLabel, gridBagConstraints);
+//
+//		gridBagConstraints = buildConstraints(3, 7);
+//		gridBagConstraints.weightx = 0.4;
+//		pnlTemplateMisc.add(cmbHitDiceSize, gridBagConstraints);
 
 		gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.gridy = 2;

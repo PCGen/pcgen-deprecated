@@ -892,12 +892,11 @@ public final class Race extends PObject
 			txt.append("\tFEAT:").append(featList);
 		}
 
-		if ((hitDice != 0) || (hitDiceSize != 0))
+		if (raceType != null && raceType.length() > 0)
 		{
-			txt.append("\tHITDICE:").append(hitDice).append(',').append(
-				hitDiceSize);
+			txt.append("\tRACETYPE:").append(raceType);
 		}
-
+		
 		if (initMod.intValue() != 0)
 		{
 			txt.append("\tINIT:").append(initMod.toString());
