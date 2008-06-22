@@ -1,5 +1,5 @@
 /*
- * ObjectFilter.java
+ * Filter.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 18, 2008, 3:37:22 PM
+ * Created on Jun 21, 2008, 7:44:50 PM
  */
 
 package pcgen.gui.filter;
@@ -25,8 +25,6 @@ package pcgen.gui.filter;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface ObjectFilter<E> extends Filter<E>{
-    public String getName();
-    public String getShortDescription();
-    public String getLongDescription();
+public interface Filter<E> {
+    public boolean accept(E object);
 }

@@ -20,8 +20,8 @@
  */
 package pcgen.gui.filter;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,12 +31,12 @@ import java.util.List;
 public class FilterList
 {
 
-    private List<FilterListListener> listeners;
-    private List<ObjectFilter> filters;
+    private final List<FilterListListener> listeners;
+    private List<ObjectFilter> filters = null;
 
     public FilterList()
     {
-        this.listeners = new ArrayList<FilterListListener>();
+        this.listeners = new LinkedList<FilterListListener>();
         this.filters = Collections.emptyList();
     }
 
