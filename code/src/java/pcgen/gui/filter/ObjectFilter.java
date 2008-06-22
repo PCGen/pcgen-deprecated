@@ -1,5 +1,5 @@
 /*
- * Filter.java
+ * ObjectFilter.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -25,7 +25,8 @@ package pcgen.gui.filter;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface Filter {
-    public String getDisplayedName();
-    public String getDescription();
+public interface ObjectFilter {
+    public String getName();
+    public String getShortDescription();
+    public String getLongDescription();
 }

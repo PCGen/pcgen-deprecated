@@ -22,11 +22,14 @@ package pcgen.gui.filter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -41,17 +44,22 @@ import pcgen.util.PropertyFactory;
 public class FilterPanel extends JPanel
 {
 
-    private static final String filter = PropertyFactory.getString("in_filter") +
+    private static final String filterString = PropertyFactory.getString("in_filter") +
             ":";
-    private static final String clear = PropertyFactory.getString("in_clear");
-    private static final String advanced = PropertyFactory.getString("in_demAdv");
+    private static final String clearString = PropertyFactory.getString("in_clear");
+    private static final String advancedString = PropertyFactory.getString("in_demAdv");
     private final FilterPanelListener listener;
     private final JTextField textfield;
-    private final FilterList filters;
+    private List<JToggleButton> filterbuttons;
+    private FilterList filters;
 
     public FilterPanel(UIContext context, Class<?> filterclass,
                         FilterPanelListener listener)
     {
+        this.textfield = new JTextField();
+        this.listener = listener;
+        initComponents();
+        
         this.filters = context.getToggleFilters(filterclass);
         filters.addFilterListListener(
                 new FilterListListener()
@@ -59,20 +67,67 @@ public class FilterPanel extends JPanel
 
                     public void filtersChanged(FilterListEvent event)
                     {
-                        //event
+                        setFilterButtons(event.getNewFilters());
                     }
 
                 });
-        this.textfield = new JTextField();
-        this.listener = listener;
-        initComponents();
+        setFilterButtons(filters.getFilters());
     }
 
-    private void initFilters()
+    private void setFilterButtons(List<ObjectFilter> filters)
     {
-        
+        List<ObjectFilter> toggledfilters = new LinkedList<ObjectFilter>();
+        if (filterbuttons == null)
+        {
+            filterbuttons = new LinkedList<JToggleButton>();
+        }
+        else
+        {
+            for (JToggleButton button : filterbuttons)
+            {
+                if (button.isSelected())
+                {
+                    toggledfilters.add(((FilterAction)button.getAction()).getFilter());
+                }
+                remove(button);
+            }
+            filterbuttons.clear();
+        }
+
+        for (ObjectFilter filter : filters)
+        {
+            JToggleButton button = new JToggleButton(new FilterAction(filter));
+            button.setSelected(toggledfilters.contains(filter));
+            filterbuttons.add(button);
+            add(button);
+        }
     }
-    
+
+    private class FilterAction extends AbstractAction
+    {
+
+        private ObjectFilter filter;
+
+        public FilterAction(ObjectFilter filter)
+        {
+            this.filter = filter;
+            putValue(NAME, filter.getName());
+            putValue(SHORT_DESCRIPTION, filter.getShortDescription());
+            putValue(LONG_DESCRIPTION, filter.getLongDescription());
+        }
+
+        public ObjectFilter getFilter()
+        {
+            return filter;
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
     private void initComponents()
     {
         JToolBar toolbar = new JToolBar();
@@ -83,10 +138,10 @@ public class FilterPanel extends JPanel
         JButton button = new JButton();
         button.setFocusable(false);
 
-        Icon icon = new TextIcon(button, filter);
+        Icon icon = new TextIcon(button, filterString);
         button.setIcon(icon);
 
-        icon = new TextIcon(button, clear);
+        icon = new TextIcon(button, clearString);
         button.setRolloverIcon(icon);
         button.setPressedIcon(icon);
 
@@ -138,11 +193,11 @@ public class FilterPanel extends JPanel
         String text = textfield.getText();
         if (text.length() == 0)
         {
-            listener.updateQFilter(null);
+            listener.filtersChanged();
         }
         else
         {
-            listener.updateQFilter(text);
+            listener.filtersChanged();
         }
     }
 
@@ -151,7 +206,7 @@ public class FilterPanel extends JPanel
 
         public AdvancedAction()
         {
-            super(advanced);
+            super(advancedString);
         }
 
         public void actionPerformed(ActionEvent e)

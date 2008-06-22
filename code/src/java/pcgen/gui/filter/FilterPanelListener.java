@@ -26,5 +26,5 @@ package pcgen.gui.filter;
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
 public interface FilterPanelListener extends FilterListListener{
-    public void updateQFilter(String filter);
+    public void filtersChanged();
 }

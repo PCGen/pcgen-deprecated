@@ -29,10 +29,10 @@ import java.util.List;
  */
 public class FilterListEvent extends EventObject
 {
-    private List<Filter> oldFilters;
-    private List<Filter> newFilters;
+    private List<ObjectFilter> oldFilters;
+    private List<ObjectFilter> newFilters;
 
-    public FilterListEvent(FilterList source, List<Filter> oldFilters, List<Filter> newFilters)
+    public FilterListEvent(FilterList source, List<ObjectFilter> oldFilters, List<ObjectFilter> newFilters)
     {
         super(source);
         this.oldFilters = oldFilters;
@@ -45,11 +45,11 @@ public class FilterListEvent extends EventObject
         return (FilterList) super.getSource();
     }
 
-    public List<Filter> getOldFilters()
+    public List<ObjectFilter> getOldFilters()
     {
         return oldFilters;
     }
-    public List<Filter> getNewFilters()
+    public List<ObjectFilter> getNewFilters()
     {
         return newFilters;
     }
