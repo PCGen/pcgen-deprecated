@@ -74,9 +74,9 @@ public class FilterPanel extends JPanel
         setFilterButtons(filters.getFilters());
     }
 
-    private void setFilterButtons(List<ObjectFilter> filters)
+    private void setFilterButtons(List<NamedFilter> filters)
     {
-        List<ObjectFilter> toggledfilters = new LinkedList<ObjectFilter>();
+        List<NamedFilter> toggledfilters = new LinkedList<NamedFilter>();
         if (filterbuttons == null)
         {
             filterbuttons = new LinkedList<JToggleButton>();
@@ -94,7 +94,7 @@ public class FilterPanel extends JPanel
             filterbuttons.clear();
         }
 
-        for (ObjectFilter filter : filters)
+        for (NamedFilter filter : filters)
         {
             JToggleButton button = new JToggleButton(new FilterAction(filter));
             button.setSelected(toggledfilters.contains(filter));
@@ -106,9 +106,9 @@ public class FilterPanel extends JPanel
     private class FilterAction extends AbstractAction
     {
 
-        private ObjectFilter filter;
+        private NamedFilter filter;
 
-        public FilterAction(ObjectFilter filter)
+        public FilterAction(NamedFilter filter)
         {
             this.filter = filter;
             putValue(NAME, filter.getName());
@@ -116,7 +116,7 @@ public class FilterPanel extends JPanel
             putValue(LONG_DESCRIPTION, filter.getLongDescription());
         }
 
-        public ObjectFilter getFilter()
+        public NamedFilter getFilter()
         {
             return filter;
         }

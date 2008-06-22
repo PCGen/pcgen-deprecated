@@ -32,7 +32,7 @@ public class FilterList
 {
 
     private final List<FilterListListener> listeners;
-    private List<ObjectFilter> filters = null;
+    private List<NamedFilter> filters = null;
 
     public FilterList()
     {
@@ -40,7 +40,7 @@ public class FilterList
         this.filters = Collections.emptyList();
     }
 
-    public void setFilters(List<ObjectFilter> filters)
+    public void setFilters(List<NamedFilter> filters)
     {
         FilterListEvent event = new FilterListEvent(this, this.filters, filters);
         this.filters = filters;
@@ -65,7 +65,7 @@ public class FilterList
         listeners.remove(listener);
     }
 
-    public List<ObjectFilter> getFilters()
+    public List<NamedFilter> getFilters()
     {
         return filters;
     }

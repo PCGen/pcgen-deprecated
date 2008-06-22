@@ -25,7 +25,7 @@ package pcgen.gui.filter;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface ObjectFilter<E> extends Filter<E>{
+public interface NamedFilter<E> extends Filter<E>{
     public String getName();
     public String getShortDescription();
     public String getLongDescription();
