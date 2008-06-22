@@ -299,11 +299,10 @@ if ( scalar @ARGV ) {
 		$error_message = "\nUnknown option:";
 
 		while (@ARGV) {
-		$error_message .= q{ };
-		$error_message .= shift;
+			$error_message .= q{ };
+			$error_message .= shift;
 		}
 		$error_message .= "\n";
-
 		$cl_options{help} = 1;
 	}
 }
@@ -331,9 +330,9 @@ if ( exists $numeric_warning_level_for{ $cl_options{warning_level} } ) {
 	$cl_options{warning_level} = $numeric_warning_level_for{ $cl_options{warning_level} };
 }
 else {
-		$error_message .= "\nInvalid warning level: $cl_options{warning_level}\n"
-				.  "Valid options are: error, warning, notice, info and debug\n";
-		$cl_options{help} = 1;
+	$error_message .= "\nInvalid warning level: $cl_options{warning_level}\n"
+			.  "Valid options are: error, warning, notice, info and debug\n";
+	$cl_options{help} = 1;
 }
 
 
@@ -351,126 +350,122 @@ if ( $cl_options{convert} ) {
 	if ( $cl_options{convert} eq 'ADD:SAB' ) {
 		$conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'} = 1;
 	}
-elsif ( $cl_options{convert} eq 'RACETYPE' ) {
-		$conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
-}
-elsif ( $cl_options{convert} eq 'Followeralign') {
-	$conversion_enable{'DEITY:Followeralign conversion'} = 1;
-}
-elsif ( $cl_options{convert} eq 'Willpower' ) {
-	$conversion_enable{'ALL:Willpower to Will'} = 1;
-}
-elsif ( $cl_options{convert} eq 'ASCII' ) {
-	$conversion_enable{'ALL:Fix Common Extended ASCII'} =1; # [1324519 ] ASCII characters
-}
-elsif ( $cl_options{convert} eq 'Weaponauto' ) {
-	$conversion_enable{'ALL:Weaponauto simple conversion'} = 1; # [ 1223873 ] WEAPONAUTO is no longer valid
-}
-elsif ( $cl_options{convert} eq 'pcgen5120' ) {
-	#[1678577 ] ADD: syntax no longer uses parens
-	#[1514765] Conversion to remove old defaultmonster tags
-	#[1678570 ] Correct PRESPELLTYPE syntax
-	$conversion_enable{'DEITY:Followeralign conversion'} =1;
-	$conversion_enable{'ALL:ADD Syntax Fix'} = 1;
-	$conversion_enable{'ALL:PRESPELLTYPE Syntax'} = 1;
-	# $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
-	$conversion_enable{'ALL:EQMOD has new keys'} = 1;
-#	Commenting out for use in possible KIT conversion of old Default monster data.
-#	$conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;
+	elsif ( $cl_options{convert} eq 'RACETYPE' ) {
+			$conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
+	}
+	elsif ( $cl_options{convert} eq 'Followeralign') {
+		$conversion_enable{'DEITY:Followeralign conversion'} = 1;
+	}
+	elsif ( $cl_options{convert} eq 'Willpower' ) {
+		$conversion_enable{'ALL:Willpower to Will'} = 1;
+	}
+	elsif ( $cl_options{convert} eq 'ASCII' ) {
+		$conversion_enable{'ALL:Fix Common Extended ASCII'} =1; # [1324519 ] ASCII characters
+	}
+	elsif ( $cl_options{convert} eq 'Weaponauto' ) {
+		$conversion_enable{'ALL:Weaponauto simple conversion'} = 1; # [ 1223873 ] WEAPONAUTO is no longer valid
+	}
+	elsif ( $cl_options{convert} eq 'pcgen5120' ) {
+		#[1678577 ] ADD: syntax no longer uses parens
+		#[1514765] Conversion to remove old defaultmonster tags
+		#[1678570 ] Correct PRESPELLTYPE syntax
+		$conversion_enable{'DEITY:Followeralign conversion'} =1;
+		$conversion_enable{'ALL:ADD Syntax Fix'} = 1;
+		$conversion_enable{'ALL:PRESPELLTYPE Syntax'} = 1;
+		# $conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
+		$conversion_enable{'ALL:EQMOD has new keys'} = 1;
+	#	Commenting out for use in possible KIT conversion of old Default monster data.
+	#	$conversion_enable{'RACE:Fix PREDEFAULTMONSTER bonuses'} = 1;
 
-}
-	elsif ( $cl_options{convert} eq 'pcgen595' ) {
-#		$conversion_enable{'ALL:PRERACE needs a ,'} = 1;
 	}
-	elsif ( $cl_options{convert} eq 'pcgen580' ) {
-		$conversion_enable{'ALL:PREALIGN conversion'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen5713' ) {
-		$conversion_enable{'ALL:Convert SPELL to SPELLS'}	= 1;
-		$conversion_enable{'TEMPLATE:HITDICESIZE to HITDIE'} = 1;
-		$conversion_enable{'ALL:PRECLASS needs a ,'}		= 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen574' ) {
-		$conversion_enable{'CLASS:CASTERLEVEL for all casters'} = 1;
-		$conversion_enable{'ALL:MOVE:nn to MOVE:Walk,nn'}		= 1;
-	}
+		elsif ( $cl_options{convert} eq 'pcgen595' ) {
+	#		$conversion_enable{'ALL:PRERACE needs a ,'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen580' ) {
+			$conversion_enable{'ALL:PREALIGN conversion'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen5713' ) {
+			$conversion_enable{'ALL:Convert SPELL to SPELLS'}	= 1;
+			$conversion_enable{'TEMPLATE:HITDICESIZE to HITDIE'} = 1;
+			$conversion_enable{'ALL:PRECLASS needs a ,'}		= 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen574' ) {
+			$conversion_enable{'CLASS:CASTERLEVEL for all casters'} = 1;
+			$conversion_enable{'ALL:MOVE:nn to MOVE:Walk,nn'}		= 1;
+		}
+		#  elsif($cl_options{convert} eq 'pcgen56') {
+		#	$conversion_enable{'ALL:EQMOD has new keys'} = 1;
+		#  }
+		elsif ( $cl_options{convert} eq 'pcgen555' ) {
+			$conversion_enable{'EQUIP:no more MOVE'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen541' ) {
+			$conversion_enable{'WEAPONPROF:No more SIZE'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen54' ) {
+			$conversion_enable{'PCC:GAMEMODE DnD to 3e'}	= 1;
+			$conversion_enable{'PCC:GAME to GAMEMODE'}	= 1;
+			$conversion_enable{'ALL:Add TYPE=Base.REPLACE'} = 1;
+			$conversion_enable{'RACE:CSKILL to MONCSKILL'}  = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen54cmp' ) {
+			$conversion_enable{'PCC:GAME to GAMEMODE'}	= 1;
+			$conversion_enable{'ALL:Add TYPE=Base.REPLACE'} = 1;
+			$conversion_enable{'RACE:CSKILL to MONCSKILL'}  = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen534' ) {
+			#	$conversion_enable{'ALL:COUNT[FEATTYPE=...'} = 1;
+			$conversion_enable{'PCC:GAME to GAMEMODE'}	= 1;
+			$conversion_enable{'ALL:Add TYPE=Base.REPLACE'} = 1;
+			#	$conversion_enable{'CLASS: SPELLLIST from Spell.MOD'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen511' ) {
+			$conversion_enable{'ALL: , to | in VISION'}  = 1;
+			$conversion_enable{'ALL:PRECLASS needs a ,'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen438' ) {
+			$conversion_enable{'ALL:PRESTAT needs a ,'}		= 1;
+			$conversion_enable{'EQUIPMENT: remove ATTACKS'}	= 1;
+			$conversion_enable{'EQUIPMENT: SLOTS:2 for plurals'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'pcgen433' ) {
+			$conversion_enable{'ALL: 4.3.3 Weapon name change'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'rmprealign' ) {
+			$conversion_enable{'ALL:CMP remove PREALIGN'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'natattackfix' ) {
+			$conversion_enable{'ALL:CMP NatAttack fix'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'skillbonusfix' ) {
+			$conversion_enable{'RACE:BONUS SKILL Climb and Swim'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'noprofreq' ) {
 
-	#  elsif($cl_options{convert} eq 'pcgen56')
-	#  {
-	#	$conversion_enable{'ALL:EQMOD has new keys'} = 1;
-	#  }
-	elsif ( $cl_options{convert} eq 'pcgen555' ) {
-		$conversion_enable{'EQUIP:no more MOVE'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen541' ) {
-		$conversion_enable{'WEAPONPROF:No more SIZE'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen54' ) {
-		$conversion_enable{'PCC:GAMEMODE DnD to 3e'}	= 1;
-		$conversion_enable{'PCC:GAME to GAMEMODE'}	= 1;
-		$conversion_enable{'ALL:Add TYPE=Base.REPLACE'} = 1;
-		$conversion_enable{'RACE:CSKILL to MONCSKILL'}  = 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen54cmp' ) {
-		$conversion_enable{'PCC:GAME to GAMEMODE'}	= 1;
-		$conversion_enable{'ALL:Add TYPE=Base.REPLACE'} = 1;
-		$conversion_enable{'RACE:CSKILL to MONCSKILL'}  = 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen534' ) {
-
-		#	$conversion_enable{'ALL:COUNT[FEATTYPE=...'} = 1;
-		$conversion_enable{'PCC:GAME to GAMEMODE'}	= 1;
-		$conversion_enable{'ALL:Add TYPE=Base.REPLACE'} = 1;
-
-		#	$conversion_enable{'CLASS: SPELLLIST from Spell.MOD'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen511' ) {
-		$conversion_enable{'ALL: , to | in VISION'}  = 1;
-		$conversion_enable{'ALL:PRECLASS needs a ,'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen438' ) {
-		$conversion_enable{'ALL:PRESTAT needs a ,'}		= 1;
-		$conversion_enable{'EQUIPMENT: remove ATTACKS'}	= 1;
-		$conversion_enable{'EQUIPMENT: SLOTS:2 for plurals'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'pcgen433' ) {
-		$conversion_enable{'ALL: 4.3.3 Weapon name change'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'rmprealign' ) {
-		$conversion_enable{'ALL:CMP remove PREALIGN'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'natattackfix' ) {
-		$conversion_enable{'ALL:CMP NatAttack fix'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'skillbonusfix' ) {
-		$conversion_enable{'RACE:BONUS SKILL Climb and Swim'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'noprofreq' ) {
-
-		# [ 832164 ] Adding NoProfReq to AUTO:WEAPONPROF for most races
-		$conversion_enable{'RACE:NoProfReq'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'classspell' ) {
-		$conversion_enable{'CLASSSPELL convertion to SPELL'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'classskill' ) {
-		$conversion_enable{'CLASSSKILL convertion to CLASS'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'notready' ) {
-		$conversion_enable{'ALL:BONUS:MOVE convertion'} = 1;
-	}
-	elsif ($cl_options{convert} eq 'foldbacklines'
-		|| $cl_options{convert} eq 'ml21' )
-	{
-		$conversion_enable{'ALL:Multiple lines to one'} = 1;
-	}
-	elsif ( $cl_options{convert} eq 'gmconv' ) {
-		$conversion_enable{'PCC:GAMEMODE Add to the CMP DnD_'} = 1;
-	}
-	else {
-		$error_message .= "\nUnknown convertion option: $cl_options{convert}\n";
-		$cl_options{help} = 1;
-	}
+			# [ 832164 ] Adding NoProfReq to AUTO:WEAPONPROF for most races
+			$conversion_enable{'RACE:NoProfReq'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'classspell' ) {
+			$conversion_enable{'CLASSSPELL convertion to SPELL'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'classskill' ) {
+			$conversion_enable{'CLASSSKILL convertion to CLASS'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'notready' ) {
+			$conversion_enable{'ALL:BONUS:MOVE convertion'} = 1;
+		}
+		elsif ($cl_options{convert} eq 'foldbacklines'
+			|| $cl_options{convert} eq 'ml21' )
+		{
+			$conversion_enable{'ALL:Multiple lines to one'} = 1;
+		}
+		elsif ( $cl_options{convert} eq 'gmconv' ) {
+			$conversion_enable{'PCC:GAMEMODE Add to the CMP DnD_'} = 1;
+		}
+		else {
+			$error_message .= "\nUnknown convertion option: $cl_options{convert}\n";
+			$cl_options{help} = 1;
+		}
 }
 
 #####################################
@@ -501,7 +496,7 @@ if ( $cl_options{noxcheck} ) {
 #####################################
 # Path options
 
-if (   !$cl_options{input_path}
+if ( !$cl_options{input_path}
 	&& !$cl_options{file_type}
 	&& !( $cl_options{man} || $cl_options{html_help} ) )
 {
@@ -3167,7 +3162,7 @@ my %master_order = (
 
 #################################################################
 ######################## Conversion #############################
-# Tags that must be seen as valid to allow convertion.
+# Tags that must be seen as valid to allow conversion.
 
 if ( $conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'} ) {
 	push @{ $master_order{'CLASS'} },		'ADD:SA';
@@ -6842,7 +6837,7 @@ BEGIN {
 			$valid_entities{'KIT'}{"KIT:$tag_value"}++;
 		}
 
-		elsif ( $tag_name =~ /^!?PRE/ ) {
+		elsif ( $tag_name =~ /^\!?PRE/ ) {
 
 			# It's a PRExxx tag, we delegate
 			return validate_pre_tag( $tag_name,
@@ -6969,7 +6964,7 @@ BEGIN {
 			# For the rest, we need to check if it is a PRExxx tag or a TYPE=
 			my $type_present = 0;
 			for my $param (@list_of_param) {
-				if ( $param =~ /^(PRE[A-Z]+):(.*)/ ) {
+				if ( $param =~ /^(!?PRE[A-Z]+):(.*)/ ) {
 
 				# It's a PRExxx tag, we delegate the validation
 				validate_pre_tag($1,
@@ -8014,9 +8009,9 @@ BEGIN {
 						# To be processed later
 						push @xcheck_to_process,
 							[
-							'SPELL',		qq(@@" in "$tag_name$tag_value),
-							$file_for_error, $line_for_error,
-							split ',',		$spells
+								'SPELL',		qq(@@" in "$tag_name$tag_value),
+								$file_for_error, $line_for_error,
+								split ',',		$spells
 							];
 					}
 					else {
@@ -8108,7 +8103,7 @@ BEGIN {
 
 			STAT:
 			for my $stat_expression (split /[|]/, $tag_value) {
-				my ($stat) = ( $stat_expression =~ / \A ([A-Z]{3}) [=] \d+ \z /xms );
+				my ($stat) = ( $stat_expression =~ / \A ([A-Z]{3}) [=] (\d+|roll\(\"\w+\"\)((\+|\-)var\(\"STAT.*\"\))*) \z /xms );
 				if ( !defined $stat ) {
 				# Syntax error
 				$logging->ewarn( NOTICE,
@@ -9201,7 +9196,7 @@ BEGIN {
 		# Real hardcoded variables
 		'ACCHECK',
 #		'ARMORACCHECK',
-#		'BAB',
+		'BAB',
 		'BASESPELLSTAT',
 		'%CHOICE',
 		'CASTERLEVEL',
@@ -9739,47 +9734,41 @@ sub extract_var_name {
 		my @values = split '=', $1;
 		if ( @values > 2 ) {
 
-		# There should only be one = per variable
-		$logging->ewarn( WARNING,
-			qq{Too many = in "$1" found in "$tag"},
-			$file_for_error,
-			$line_for_error
-		);
+			# There should only be one = per variable
+			$logging->ewarn( WARNING,
+				qq{Too many = in "$1" found in "$tag"},
+				$file_for_error,
+				$line_for_error
+			);
 		}
-		elsif (
-		$values[0] eq 'BL' ||	# [ 1104117 ] BL is a valid variable, like CL
-		$values[0] eq 'CL' || $values[0] eq 'CLASS' || $values[0] eq 'CLASSLEVEL'
-		)
-		{
-
-		# Convert {} to () for proper validation
-		$values[1] =~ tr/{}/()/;
-		push @xcheck_to_process,
-			[
-				'CLASS',		qq(@@" in "$tag),
-				$file_for_error, $line_for_error,
-				$values[1]
-			];
+		# [ 1104117 ] BL is a valid variable, like CL
+		elsif ( $values[0] eq 'BL' || $values[0] eq 'CL' ||
+				$values[0] eq 'CLASS' || $values[0] eq 'CLASSLEVEL' ) {
+			# Convert {} to () for proper validation
+			$values[1] =~ tr/{}/()/;
+			push @xcheck_to_process,
+				[
+					'CLASS',		qq(@@" in "$tag),
+					$file_for_error, $line_for_error,
+					$values[1]
+				];
 		}
-		elsif ($values[0] eq 'SKILLRANK'
-		|| $values[0] eq 'SKILLTOTAL' )
-		{
-
-		# Convert {} to () for proper validation
-		$values[1] =~ tr/{}/()/;
-		push @xcheck_to_process,
-			[
-				'SKILL',		qq(@@" in "$tag),
-				$file_for_error, $line_for_error,
-				$values[1]
-			];
+		elsif ($values[0] eq 'SKILLRANK' || $values[0] eq 'SKILLTOTAL' ) {
+			# Convert {} to () for proper validation
+			$values[1] =~ tr/{}/()/;
+			push @xcheck_to_process,
+				[
+					'SKILL',		qq(@@" in "$tag),
+					$file_for_error, $line_for_error,
+					$values[1]
+				];
 		}
 		else {
-		$logging->ewarn( NOTICE,
-			qq{Invalid variable "$values[0]" before the = in "$1" found in "$tag"},
-			$file_for_error,
-			$line_for_error
-		);
+			$logging->ewarn( NOTICE,
+				qq{Invalid variable "$values[0]" before the = in "$1" found in "$tag"},
+				$file_for_error,
+				$line_for_error
+			);
 		}
 	}
 
@@ -9807,7 +9796,7 @@ sub extract_var_name {
 ####
 
 BEGIN {
-	# List of keywords Jep functions names. The fourth row is for
+	# List of keywords Jep functions names. The fourth and fifth rows are for
 	# functions defined by the PCGen libraries that do not exists in
 	# the standard Jep library.
 	my %is_jep_function = map { $_ => 1 } qw(
@@ -9815,7 +9804,8 @@ BEGIN {
 		cosh	tanh	asinh	acosh	atanh	ln	log	exp
 		abs	rand	mod	sqrt	sum	if	str
 
-		ceil	cl	classlevel	count	floor	min	max	roll	skillinfo	var
+		ceil	cl	classlevel	count	floor	min
+		max	roll	skillinfo	var
 	);
 
 	# Definition of a valid Jep identifiers. Note that all functions are
@@ -9855,15 +9845,14 @@ BEGIN {
 		if !wantarray;
 
 		# Sanity check on the number of parameters
-		croak q{Wrong number of parameters for parse_jep}
-		if scalar @_ != 4;
+		croak q{Wrong number of parameters for parse_jep} if scalar @_ != 4;
 		# If the -nojep command line option was used, we
 		# call the old parser
 		if ( $cl_options{nojep} ) {
-		return extract_var_name(@_);
+			return extract_var_name(@_);
 		}
-		elso {
-		return parse_jep_rec( @_, NO );
+		else {
+			return parse_jep_rec( @_, NO );
 		}
 	}
 
@@ -13485,22 +13474,22 @@ sub embedded_coma_split {
 			elsif ( $line =~ / \A STATNAME: /xms ) {
 				LINE_TAG:
 				for my $line_tag (split /\t+/, $line) {
-				# STATNAME lines have more then one interesting tags
-				if ( my ($stat) = ( $line_tag =~ / \A ABB: ( .* ) /xms ) ) {
-					push @verified_stats, $stat;
-				}
-				elsif ( my ($define_expression) = ( $line_tag =~ / \A DEFINE: ( .* ) /xms ) ) {
-					if ( my ($var_name) = ( $define_expression =~ / \A ( [^=|]* ) /xms ) ) {
-						push @verified_var_names, $var_name;
+					# STATNAME lines have more then one interesting tags
+					if ( my ($stat) = ( $line_tag =~ / \A ABB: ( .* ) /xms ) ) {
+						push @verified_stats, $stat;
 					}
-					else {
-						$logging->ewarn( ERROR,
-						qq{Cannot find the variable name in "$define_expression"},
-						$system_file,
-						$INPUT_LINE_NUMBER
-						);
+					elsif ( my ($define_expression) = ( $line_tag =~ / \A DEFINE: ( .* ) /xms ) ) {
+						if ( my ($var_name) = ( $define_expression =~ / \A ( [\t=|]* ) /xms ) ) {
+							push @verified_var_names, $var_name;
+						}
+						else {
+							$logging->ewarn( ERROR,
+								qq{Cannot find the variable name in "$define_expression"},
+								$system_file,
+								$INPUT_LINE_NUMBER
+							);
+						}
 					}
-				}
 				}
 			}
 			# ex. ALIGNMENTNAME:Lawful Good ABB:LG
@@ -13538,24 +13527,24 @@ sub embedded_coma_split {
 
 		# Now we bitch if we are not happy
 		if ( scalar @verified_stats == 0 ) {
-		$logging->ewarn( ERROR,
-			q{Could not find any STATNAME: tag in the system files},
-			$original_system_file_path
-		);
+			$logging->ewarn( ERROR,
+				q{Could not find any STATNAME: tag in the system files},
+				$original_system_file_path
+			);
 		}
 
 		if ( scalar @valid_system_game_modes == 0 ) {
-		$logging->ewarn( ERROR,
-			q{Could not find any ALLOWEDMODES: tag in the system files},
-			$original_system_file_path
-		);
+			$logging->ewarn( ERROR,
+				q{Could not find any ALLOWEDMODES: tag in the system files},
+				$original_system_file_path
+			);
 		}
 
 		if ( scalar @valid_system_check_names == 0 ) {
-		$logging->ewarn( ERROR,
-			q{Could not find any valid CHECKNAME: tag in the system files},
-			$original_system_file_path
-		);
+			$logging->ewarn( ERROR,
+				q{Could not find any valid CHECKNAME: tag in the system files},
+				$original_system_file_path
+			);
 		}
 
 		# If the -exportlist option was used, we generate a system.csv file
@@ -14163,40 +14152,40 @@ sub new
 		$_file_name_previous = $file_name;
 }
 
-   ###############################################################
-   # set_ewarn_filename
-   # -------------------
-   #
-   # Replace the curent $_file_name_previous with a specific value.
+###############################################################
+# set_ewarn_filename
+# -------------------
+#
+# Replace the curent $_file_name_previous with a specific value.
 
 sub set_ewarn_filename
 {
-		my $self = shift;
-		$_file_name_previous = $_[0];
+	my $self = shift;
+	$_file_name_previous = $_[0];
 }
 
-   ###############################################################
-   # set_ewarn_header
-   # -----------------
-   #
-   # Set the header for the error message and reset the
-   # $_is_first_error to make the header display on the first
-   # ewarn call for this header.
+###############################################################
+# set_ewarn_header
+# -----------------
+#
+# Set the header for the error message and reset the
+# $_is_first_error to make the header display on the first
+# ewarn call for this header.
 
 sub set_ewarn_header
 {
-		my $self = shift;
-		$_is_first_error = YES;
+	my $self = shift;
+	$_is_first_error = YES;
 
-		$_header		= $_[0];
+	$_header		= $_[0];
 
-		# There is at last line feed unless we are at the very
-		# start of the log
-		$_header		= "\n" . $_header unless $_is_first_line;
+	# There is at last line feed unless we are at the very
+	# start of the log
+	$_header		= "\n" . $_header unless $_is_first_line;
 
-		# We blank the file name to make sure it will be printed
-		# with the first message after the header.
-		$self->set_ewarn_filename('');
+	# We blank the file name to make sure it will be printed
+	# with the first message after the header.
+	$self->set_ewarn_filename('');
 }
 
 
@@ -14207,13 +14196,6 @@ sub set_ewarn_header
 ###
 ###############################################################
 ###############################################################
-
-
-
-
-
-
-
 
 
 
