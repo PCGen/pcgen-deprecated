@@ -28,44 +28,45 @@ import java.util.List;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterList
+public class FilterList<E>
 {
 
-    private final List<FilterListListener> listeners;
-    private List<NamedFilter> filters = null;
+    private final List<FilterListListener<E>> listeners;
+    private List<NamedFilter<? super E>> filters = null;
 
     public FilterList()
     {
-        this.listeners = new LinkedList<FilterListListener>();
+        this.listeners = new LinkedList<FilterListListener<E>>();
         this.filters = Collections.emptyList();
     }
 
-    public void setFilters(List<NamedFilter> filters)
+    public void setFilters(List<NamedFilter<? super E>> filters)
     {
-        FilterListEvent event = new FilterListEvent(this, this.filters, filters);
+        FilterListEvent<E> event = new FilterListEvent<E>(this, this.filters,
+                                                          filters);
         this.filters = filters;
         fireFiltersChanged(event);
     }
 
-    private void fireFiltersChanged(FilterListEvent event)
+    private void fireFiltersChanged(FilterListEvent<E> event)
     {
-        for (FilterListListener listener : listeners)
+        for (FilterListListener<E> listener : listeners)
         {
             listener.filtersChanged(event);
         }
     }
 
-    public void addFilterListListener(FilterListListener listener)
+    public void addFilterListListener(FilterListListener<E> listener)
     {
         listeners.add(listener);
     }
 
-    public void removeFilterListListener(FilterListListener listener)
+    public void removeFilterListListener(FilterListListener<E> listener)
     {
         listeners.remove(listener);
     }
 
-    public List<NamedFilter> getFilters()
+    public List<NamedFilter<? super E>> getFilters()
     {
         return filters;
     }

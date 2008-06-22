@@ -28,5 +28,5 @@ import pcgen.gui.filter.FilterList;
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
 public interface UIContext {
-    public FilterList getToggleFilters(Class<?> c);
+    public <T> FilterList<T> getToggleFilters(Class<T> c);
 }

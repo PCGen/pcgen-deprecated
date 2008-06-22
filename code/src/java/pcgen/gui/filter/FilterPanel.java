@@ -22,6 +22,7 @@ package pcgen.gui.filter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -41,91 +42,70 @@ import pcgen.util.PropertyFactory;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterPanel extends JPanel
+public class FilterPanel<E> extends JPanel
 {
 
     private static final String filterString = PropertyFactory.getString("in_filter") +
             ":";
     private static final String clearString = PropertyFactory.getString("in_clear");
     private static final String advancedString = PropertyFactory.getString("in_demAdv");
-    private final FilterPanelListener listener;
+    private final List<Filter<? super E>> selectedFilters;
+    private final List<JToggleButton> filterbuttons;
+    private final FilterPanelListener<E> listener;
     private final JTextField textfield;
-    private List<JToggleButton> filterbuttons;
-    private FilterList filters;
 
-    public FilterPanel(UIContext context, Class<?> filterclass,
-                        FilterPanelListener listener)
+    public FilterPanel(UIContext context, Class<E> filterclass,
+                        FilterPanelListener<E> listener)
     {
         this.textfield = new JTextField();
         this.listener = listener;
         initComponents();
-        
-        this.filters = context.getToggleFilters(filterclass);
+
+        FilterList<E> filters = context.getToggleFilters(filterclass);
         filters.addFilterListListener(
-                new FilterListListener()
+                new FilterListListener<E>()
                 {
 
-                    public void filtersChanged(FilterListEvent event)
+                    public void filtersChanged(FilterListEvent<E> event)
                     {
                         setFilterButtons(event.getNewFilters());
                     }
 
                 });
+        this.selectedFilters = new ArrayList<Filter<? super E>>();
+        this.filterbuttons = new LinkedList<JToggleButton>();
         setFilterButtons(filters.getFilters());
     }
 
-    private void setFilterButtons(List<NamedFilter> filters)
+    private void setFilterButtons(List<NamedFilter<? super E>> filters)
     {
-        List<NamedFilter> toggledfilters = new LinkedList<NamedFilter>();
-        if (filterbuttons == null)
+        for (JToggleButton button : filterbuttons)
         {
-            filterbuttons = new LinkedList<JToggleButton>();
+            remove(button);
         }
-        else
-        {
-            for (JToggleButton button : filterbuttons)
-            {
-                if (button.isSelected())
-                {
-                    toggledfilters.add(((FilterAction)button.getAction()).getFilter());
-                }
-                remove(button);
-            }
-            filterbuttons.clear();
-        }
+        filterbuttons.clear();
 
-        for (NamedFilter filter : filters)
+        boolean updateFilters = selectedFilters.retainAll(filters);
+
+        for (NamedFilter<? super E> filter : filters)
         {
             JToggleButton button = new JToggleButton(new FilterAction(filter));
-            button.setSelected(toggledfilters.contains(filter));
+            button.setSelected(selectedFilters.contains(filter));
             filterbuttons.add(button);
             add(button);
         }
+
+        if (updateFilters)
+        {
+            fireApplyFilter();
+        }
     }
 
-    private class FilterAction extends AbstractAction
+    private void fireApplyFilter()
     {
-
-        private NamedFilter filter;
-
-        public FilterAction(NamedFilter filter)
-        {
-            this.filter = filter;
-            putValue(NAME, filter.getName());
-            putValue(SHORT_DESCRIPTION, filter.getShortDescription());
-            putValue(LONG_DESCRIPTION, filter.getLongDescription());
-        }
-
-        public NamedFilter getFilter()
-        {
-            return filter;
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
+        String text = textfield.getText();
+        boolean qFilter = text != null && !text.equals("");
+        listener.applyFilter(new ObjectFilter(text, qFilter), qFilter);
     }
 
     private void initComponents()
@@ -162,17 +142,17 @@ public class FilterPanel extends JPanel
 
                     public void insertUpdate(DocumentEvent e)
                     {
-                        updateFilter();
+                        fireApplyFilter();
                     }
 
                     public void removeUpdate(DocumentEvent e)
                     {
-                        updateFilter();
+                        fireApplyFilter();
                     }
 
                     public void changedUpdate(DocumentEvent e)
                     {
-                        updateFilter();
+                        fireApplyFilter();
                     }
 
                 });
@@ -188,17 +168,61 @@ public class FilterPanel extends JPanel
         add(toolbar);
     }
 
-    private void updateFilter()
+    private class ObjectFilter implements Filter<E>
     {
-        String text = textfield.getText();
-        if (text.length() == 0)
+
+        private final boolean qFilter;
+        private final String text;
+
+        public ObjectFilter(String text, boolean qFilter)
         {
-            listener.filtersChanged();
+            this.qFilter = qFilter;
+            this.text = text;
         }
-        else
+
+        public boolean accept(E object)
         {
-            listener.filtersChanged();
+            boolean accept = qFilter && text.equals(object.toString());
+            if (accept)
+            {
+                for (Filter<? super E> filter : selectedFilters)
+                {
+                    if (!filter.accept(object))
+                    {
+                        accept = false;
+                        break;
+                    }
+                }
+            }
+            return accept;
         }
+
+    }
+
+    private class FilterAction extends AbstractAction
+    {
+
+        private NamedFilter<? super E> filter;
+
+        public FilterAction(NamedFilter<? super E> filter)
+        {
+            this.filter = filter;
+            putValue(NAME, filter.getName());
+            putValue(SHORT_DESCRIPTION, filter.getShortDescription());
+            putValue(LONG_DESCRIPTION, filter.getLongDescription());
+        }
+
+        public NamedFilter getFilter()
+        {
+            return filter;
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            selectedFilters.add(filter);
+            fireApplyFilter();
+        }
+
     }
 
     private class AdvancedAction extends AbstractAction

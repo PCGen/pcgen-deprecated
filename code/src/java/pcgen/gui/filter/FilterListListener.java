@@ -27,6 +27,6 @@ import java.util.EventListener;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface FilterListListener extends EventListener{
-    public void filtersChanged(FilterListEvent event);
+public interface FilterListListener<E> extends EventListener{
+    public void filtersChanged(FilterListEvent<E> event);
 }

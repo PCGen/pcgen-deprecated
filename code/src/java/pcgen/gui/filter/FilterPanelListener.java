@@ -25,6 +25,6 @@ package pcgen.gui.filter;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface FilterPanelListener extends FilterListListener{
-    public void filtersChanged();
+public interface FilterPanelListener<E>{
+    public void applyFilter(Filter<E> filter, boolean quicksearch);
 }
