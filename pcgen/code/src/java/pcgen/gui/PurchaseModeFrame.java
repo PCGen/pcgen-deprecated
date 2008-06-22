@@ -229,6 +229,22 @@ final class PurchaseModeFrame extends JDialog
 
 		purchaseScoreMinEdit.setHorizontalAlignment(SwingConstants.RIGHT);
 		purchaseScoreMinEdit.setPreferredSize(new Dimension(30, 20));
+		purchaseScoreMinEdit.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				purchaseScoreMinValueActionPerformed();
+			}
+		});
+		purchaseScoreMinEdit.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				purchaseScoreMinValueActionPerformed();
+			}
+			
+		});
 		jPanel1.add(purchaseScoreMinEdit);
 
 		purchaseScoreMinIncreaseButton.setText("+");
@@ -276,6 +292,22 @@ final class PurchaseModeFrame extends JDialog
 
 		purchaseScoreMaxEdit.setHorizontalAlignment(SwingConstants.RIGHT);
 		purchaseScoreMaxEdit.setPreferredSize(new Dimension(30, 20));
+		purchaseScoreMaxEdit.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				purchaseScoreMaxValueActionPerformed();
+			}
+		});
+		purchaseScoreMaxEdit.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				purchaseScoreMaxValueActionPerformed();
+			}
+			
+		});
 		jPanel2.add(purchaseScoreMaxEdit);
 
 		purchaseScoreMaxIncreaseButton.setText("+");
@@ -547,7 +579,7 @@ final class PurchaseModeFrame extends JDialog
 
 		if (!Globals.checkRule(RuleConstants.ABILRANGE))
 		{
-			if (value == STANDARD_MAX_PURCHASE_SCORE)
+			if (value >= STANDARD_MAX_PURCHASE_SCORE)
 			{
 				statusBar.setText("May not increase score past " + STANDARD_MAX_PURCHASE_SCORE + " in standard mode");
 
@@ -565,6 +597,49 @@ final class PurchaseModeFrame extends JDialog
 		{
 			// increase the value in the model
 			updateOk = purchaseModel.setPurchaseScoreMax(value + 1);
+		}
+
+		// ensure the edit value gets updated correctly
+		updatePurchaseScoreMax(oldValue);
+
+		if (updateOk)
+		{
+			purchaseModel.setValueAt(Integer.valueOf(purchaseModel.predictNextPurchaseCostMax()),
+			    purchaseModel.getRowCount() - 1, 1);
+		}
+	}
+
+	private void purchaseScoreMaxValueActionPerformed()
+	{
+		int oldValue = purchaseModel.getPurchaseScoreMax();
+
+		// get the current value from the edit field
+		String valueString = purchaseScoreMaxEdit.getText();
+
+		// convert it to an integer
+		int value = convertStringToInt(valueString);
+		boolean updateOk = false;
+
+		if (!Globals.checkRule(RuleConstants.ABILRANGE))
+		{
+			if (value > STANDARD_MAX_PURCHASE_SCORE)
+			{
+				statusBar.setText("May not increase score past " + STANDARD_MAX_PURCHASE_SCORE + " in standard mode");
+
+				return;
+			}
+		}
+
+		// bad value?
+		if (value == -1)
+		{
+			// set a status message
+			statusBar.setText("Bad value for purchase maximum score, fixing...");
+		}
+		else
+		{
+			// increase the value in the model
+			updateOk = purchaseModel.setPurchaseScoreMax(value);
 		}
 
 		// ensure the edit value gets updated correctly
@@ -653,6 +728,36 @@ final class PurchaseModeFrame extends JDialog
 		updatePurchaseScoreMin(oldValue);
 	}
 
+	private void purchaseScoreMinValueActionPerformed()
+	{
+		int oldValue = purchaseModel.getPurchaseScoreMin();
+
+		// get the current value from the edit field
+		String valueString = purchaseScoreMinEdit.getText();
+
+		// convert it to an integer
+		int value = convertStringToInt(valueString);
+
+		// bad value?
+		if (value == -1)
+		{
+			// set a status message
+			statusBar.setText("Bad value for purchase minimum score, fixing...");
+		}
+		else
+		{
+			// change the value in the model
+			if (!purchaseModel.setPurchaseScoreMin(value))
+			{
+				// set a status message
+				statusBar.setText("Purchase Score Minimum value can not exceed Purchase Score Maximum Value!");
+			}
+		}
+
+		// ensure the edit value gets updated correctly
+		updatePurchaseScoreMin(oldValue);
+	}
+
 	/**
 	 * Remove the current selection from the list of purchase methods.
 	 */
@@ -707,6 +812,7 @@ final class PurchaseModeFrame extends JDialog
 		if ((oldValue != -1) && (oldValue != score))
 		{
 			purchaseModel.prependRows(score - oldValue);
+			purchaseModel.resetAllCosts();
 			purchaseModel.fireTableStructureChanged();
 		}
 	}
@@ -717,7 +823,7 @@ final class PurchaseModeFrame extends JDialog
 		private String[] columnHeaders = new String[]{ "Ability Score", "Cost" };
 		private Object[][] currentValues = null;
 		private Object[][] savedValues = null;
-		private Class[] types = new Class[]{ Integer.class, Integer.class };
+		private Class<?>[] types = new Class[]{ Integer.class, Integer.class };
 		private int currentPurchaseScoreMax = 10;
 		private int currentPurchaseScoreMin = 10; // Start at the average stat
 		private int savedPurchaseScoreMax = 0;
@@ -1022,6 +1128,19 @@ final class PurchaseModeFrame extends JDialog
 			}
 
 			currentValues = newValues;
+		}
+
+
+		/**
+		 * Reset the cost of all rows, starting from 0 for the lowest.
+		 */
+		void resetAllCosts()
+		{
+			int cost = 0;
+			for (int i = 0; i < currentValues.length; i++)
+			{
+				currentValues[i][1] = cost++;
+			}
 		}
 	}
 }
