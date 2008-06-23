@@ -61,7 +61,7 @@ public class FilterList<E>
         listeners.add(listener);
     }
 
-    public void removeFilterListListener(FilterListListener<E> listener)
+    public void removeFilterListListener(FilterListListener<?> listener)
     {
         listeners.remove(listener);
     }

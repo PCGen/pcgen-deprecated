@@ -20,11 +20,14 @@
  */
 package pcgen.gui.tools;
 
+import java.awt.BorderLayout;
 import java.util.List;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
 import pcgen.gui.core.UIContext;
+import pcgen.gui.filter.Filter;
 import pcgen.gui.filter.FilterPanel;
+import pcgen.gui.filter.FilterPanelListener;
+import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.treeview.AbstractTreeViewModel;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.TreeView;
@@ -37,26 +40,39 @@ import pcgen.gui.util.treeview.TreeViewModel;
 public class FilteredTreeViewDisplay extends JPanel
 {
 
+    private final UIContext context;
     private FilterPanel filterPanel;
+    private JTreeViewPane treeViewPane;
 
     public FilteredTreeViewDisplay(UIContext context)
     {
+        this.context = context;
         initComponents();
-        
     }
 
     private void initComponents()
     {
-        SpringLayout layout = new SpringLayout();
-        setLayout(layout);
+        setLayout(new BorderLayout());
+
+        filterPanel = new FilterPanel(context);
+        add(filterPanel, BorderLayout.PAGE_START);
+
+        treeViewPane = new JTreeViewPane();
+        add(treeViewPane, BorderLayout.CENTER);
     }
 
-    private <T> void setFilterPanel(UIContext context, Class<T> c)
+    public <T> void setTreeViewModel(Class<T> filterClass,
+                                      TreeViewModel<T> model)
     {
+        filterPanel.setFilterClass(filterClass);
         
+        TreeViewDisplay<T> displayModel = new TreeViewDisplay<T>(model);
+        treeViewPane.setTreeViewModel(displayModel);
+        filterPanel.setFilterPanelListener(displayModel);
     }
-    
+
     private class TreeViewDisplay<E> extends AbstractTreeViewModel<E>
+            implements FilterPanelListener
     {
 
         private TreeViewModel<E> model;
@@ -85,6 +101,11 @@ public class FilteredTreeViewDisplay extends JPanel
         public int getQuickSearchTreeViewIndex()
         {
             return model.getQuickSearchTreeViewIndex();
+        }
+
+        public void applyFilter(Filter filter, boolean quicksearch)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }

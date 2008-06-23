@@ -47,39 +47,39 @@ import pcgen.util.PropertyFactory;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterPanel<E> extends JPanel
+public class FilterPanel extends JPanel
 {
 
     private static final String filterString = PropertyFactory.getString("in_filter") +
             ":";
     private static final String clearString = PropertyFactory.getString("in_clear");
     private static final String advancedString = PropertyFactory.getString("in_demAdv");
-    private final List<Filter<? super E>> selectedFilters;
-    private final List<JToggleButton> filterbuttons;
-    private final FilterPanelListener<E> listener;
     private final JTextField textfield;
+    private final UIContext context;
+    private List<JToggleButton> filterbuttons;
+    private List<Filter> selectedFilters;
+    private FilterPanelListener panelListener;
+    private FilterListListener<?> listListener;
+    private Class<?> filterClass;
 
-    public FilterPanel(UIContext context, Class<E> filterclass,
-                        FilterPanelListener<E> listener)
+    public FilterPanel(UIContext context)
     {
+        this(null, null);
+    }
+
+    public <T> FilterPanel(UIContext context, Class<T> filterclass)
+    {
+        this(context, filterclass, null);
+    }
+
+    public <T> FilterPanel(UIContext context, Class<T> filterClass,
+                            FilterPanelListener listener)
+    {
+        this.context = context;
         this.textfield = new JTextField();
-        this.listener = listener;
+        this.panelListener = listener;
         initComponents();
-
-        FilterList<E> filters = context.getToggleFilters(filterclass);
-        filters.addFilterListListener(
-                new FilterListListener<E>()
-                {
-
-                    public void filtersChanged(FilterListEvent<E> event)
-                    {
-                        setFilterButtons(event.getNewFilters());
-                    }
-
-                });
-        this.selectedFilters = new ArrayList<Filter<? super E>>();
-        this.filterbuttons = new LinkedList<JToggleButton>();
-        setFilterButtons(filters.getFilters());
+        setFilterClass(filterClass);
     }
 
     private void initComponents()
@@ -143,7 +143,39 @@ public class FilterPanel<E> extends JPanel
         add(toolbar);
     }
 
-    private void setFilterButtons(List<NamedFilter<? super E>> filters)
+    public <T> void setFilterClass(Class<T> filterClass)
+    {
+        if (filterClass != null && !filterClass.equals(this.filterClass))
+        {
+            if (this.filterClass != null)
+            {
+                context.getToggleFilters(this.filterClass).removeFilterListListener(listListener);
+            }
+            this.filterClass = filterClass;
+            FilterList<T> filters = context.getToggleFilters(filterClass);
+            FilterListListener<T> listener = new FilterListListener<T>()
+            {
+
+                public void filtersChanged(FilterListEvent<T> event)
+                {
+                    setFilterButtons(event.getNewFilters());
+                }
+
+            };
+            filters.addFilterListListener(listener);
+            listListener = listener;
+            this.selectedFilters = new ArrayList<Filter>();
+            this.filterbuttons = new LinkedList<JToggleButton>();
+            setFilterButtons(filters.getFilters());
+        }
+    }
+
+    public void setFilterPanelListener(FilterPanelListener listener)
+    {
+        this.panelListener = listener;
+    }
+
+    private <T> void setFilterButtons(List<NamedFilter<? super T>> filters)
     {
         for (JToggleButton button : filterbuttons)
         {
@@ -153,7 +185,7 @@ public class FilterPanel<E> extends JPanel
 
         boolean updateFilters = selectedFilters.retainAll(filters);
 
-        for (NamedFilter<? super E> filter : filters)
+        for (NamedFilter<? super T> filter : filters)
         {
             JToggleButton button = new JToggleButton(new FilterAction(filter));
             button.setSelected(selectedFilters.contains(filter));
@@ -171,10 +203,13 @@ public class FilterPanel<E> extends JPanel
     {
         String text = textfield.getText();
         boolean qFilter = text != null && !text.equals("");
-        listener.applyFilter(new ObjectFilter(text, qFilter), qFilter);
+        if (panelListener != null)
+        {
+            panelListener.applyFilter(new ObjectFilter(text, qFilter), qFilter);
+        }
     }
 
-    private class ObjectFilter implements Filter<E>
+    private class ObjectFilter implements Filter
     {
 
         private final boolean qFilter;
@@ -186,12 +221,13 @@ public class FilterPanel<E> extends JPanel
             this.text = text;
         }
 
-        public boolean accept(E object)
+        @SuppressWarnings("unchecked")
+        public boolean accept(Object object)
         {
             boolean accept = !qFilter || text.equals(object.toString());
             if (accept)
             {
-                for (Filter<? super E> filter : selectedFilters)
+                for (Filter filter : selectedFilters)
                 {
                     if (!filter.accept(object))
                     {
@@ -208,9 +244,9 @@ public class FilterPanel<E> extends JPanel
     private class FilterAction extends AbstractAction
     {
 
-        private NamedFilter<? super E> filter;
+        private NamedFilter<?> filter;
 
-        public FilterAction(NamedFilter<? super E> filter)
+        public FilterAction(NamedFilter<?> filter)
         {
             this.filter = filter;
             putValue(SHORT_DESCRIPTION, filter.getShortDescription());
