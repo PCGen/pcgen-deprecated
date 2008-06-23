@@ -77,6 +77,24 @@ public class LevelAbility extends PObject implements LevelAbilityInterface
 	}
 
 	/**
+	 * The entry in the LST file with ADD: stripped off the front of it, this
+	 * needs parsed and processed before it's useful for adding stuff to a PC
+	 *
+	 * @return  the the string that specifies what this adds to a character
+	 */
+	public final String getTagDataExternalFormat()
+	{
+		// The internal representation needs to be converted to the 
+		// external format before it is returned
+		String extFormat = rawTagData;
+		if (extFormat.startsWith("("))
+		{
+			
+		}
+		return extFormat;
+	}
+
+	/**
 	 * The Character Level that this LevelAbility was added to the character at.
 	 *
 	 * @return  The level that this applies to
