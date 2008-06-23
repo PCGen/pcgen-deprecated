@@ -20,6 +20,11 @@
  */
 package pcgen.gui.filter;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -77,41 +82,11 @@ public class FilterPanel<E> extends JPanel
         setFilterButtons(filters.getFilters());
     }
 
-    private void setFilterButtons(List<NamedFilter<? super E>> filters)
-    {
-        for (JToggleButton button : filterbuttons)
-        {
-            remove(button);
-        }
-        filterbuttons.clear();
-
-        boolean updateFilters = selectedFilters.retainAll(filters);
-
-        for (NamedFilter<? super E> filter : filters)
-        {
-            JToggleButton button = new JToggleButton(new FilterAction(filter));
-            button.setSelected(selectedFilters.contains(filter));
-            filterbuttons.add(button);
-            add(button);
-        }
-
-        if (updateFilters)
-        {
-            fireApplyFilter();
-        }
-    }
-
-    private void fireApplyFilter()
-    {
-        String text = textfield.getText();
-        boolean qFilter = text != null && !text.equals("");
-        listener.applyFilter(new ObjectFilter(text, qFilter), qFilter);
-    }
-
     private void initComponents()
     {
-        JToolBar toolbar = new JToolBar();
+        setLayout(new FilterLayout());
 
+        JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
         toolbar.setFloatable(false);
 
@@ -168,6 +143,37 @@ public class FilterPanel<E> extends JPanel
         add(toolbar);
     }
 
+    private void setFilterButtons(List<NamedFilter<? super E>> filters)
+    {
+        for (JToggleButton button : filterbuttons)
+        {
+            remove(button);
+        }
+        filterbuttons.clear();
+
+        boolean updateFilters = selectedFilters.retainAll(filters);
+
+        for (NamedFilter<? super E> filter : filters)
+        {
+            JToggleButton button = new JToggleButton(new FilterAction(filter));
+            button.setSelected(selectedFilters.contains(filter));
+            filterbuttons.add(button);
+            add(button);
+        }
+
+        if (updateFilters)
+        {
+            fireApplyFilter();
+        }
+    }
+
+    private void fireApplyFilter()
+    {
+        String text = textfield.getText();
+        boolean qFilter = text != null && !text.equals("");
+        listener.applyFilter(new ObjectFilter(text, qFilter), qFilter);
+    }
+
     private class ObjectFilter implements Filter<E>
     {
 
@@ -182,7 +188,7 @@ public class FilterPanel<E> extends JPanel
 
         public boolean accept(E object)
         {
-            boolean accept = qFilter && text.equals(object.toString());
+            boolean accept = !qFilter || text.equals(object.toString());
             if (accept)
             {
                 for (Filter<? super E> filter : selectedFilters)
@@ -207,19 +213,20 @@ public class FilterPanel<E> extends JPanel
         public FilterAction(NamedFilter<? super E> filter)
         {
             this.filter = filter;
-            putValue(NAME, filter.getName());
             putValue(SHORT_DESCRIPTION, filter.getShortDescription());
             putValue(LONG_DESCRIPTION, filter.getLongDescription());
         }
 
-        public NamedFilter getFilter()
-        {
-            return filter;
-        }
-
         public void actionPerformed(ActionEvent e)
         {
-            selectedFilters.add(filter);
+            if (selectedFilters.contains(filter))
+            {
+                selectedFilters.remove(filter);
+            }
+            else
+            {
+                selectedFilters.add(filter);
+            }
             fireApplyFilter();
         }
 
@@ -236,6 +243,106 @@ public class FilterPanel<E> extends JPanel
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private static class FilterLayout extends FlowLayout
+    {
+
+        public FilterLayout()
+        {
+            super(FlowLayout.LEFT);
+        }
+
+        @Override
+        public Dimension preferredLayoutSize(Container target)
+        {
+            synchronized (target.getTreeLock())
+            {
+                Dimension dim = new Dimension(0, 0);
+                int nmembers = target.getComponentCount();
+
+                Insets insets = target.getInsets();
+                int maxwidth = target.getWidth() - (insets.left + insets.right +
+                        getHgap() * 2);
+                int width = 0;
+                int height = 0;
+                int component = 0;
+                for (int i = 0; i < nmembers; i++, component++)
+                {
+                    Component m = target.getComponent(i);
+                    if (m.isVisible())
+                    {
+                        Dimension d = m.getPreferredSize();
+                        if (component > 0)
+                        {
+                            if (width + d.width > maxwidth)
+                            {
+                                dim.width = Math.max(dim.width, width);
+                                dim.height += height + getVgap();
+                                width = 0;
+                                height = 0;
+                                component = 0;
+                            }
+                            width += getHgap();
+                        }
+                        height = Math.max(height, d.height);
+                        width += d.width;
+                    }
+                }
+                dim.width = Math.max(dim.width, width);
+                dim.height += height;
+
+                dim.width += insets.left + insets.right + getHgap() * 2;
+                dim.height += insets.top + insets.bottom + getVgap() * 2;
+                return dim;
+            }
+        }
+
+        @Override
+        public Dimension minimumLayoutSize(Container target)
+        {
+            synchronized (target.getTreeLock())
+            {
+                Dimension dim = new Dimension(0, 0);
+                int nmembers = target.getComponentCount();
+
+                Insets insets = target.getInsets();
+                int maxwidth = target.getWidth() - (insets.left + insets.right +
+                        getHgap() * 2);
+                int width = 0;
+                int height = 0;
+                int component = 0;
+                for (int i = 0; i < nmembers; i++, component++)
+                {
+                    Component m = target.getComponent(i);
+                    if (m.isVisible())
+                    {
+                        Dimension d = m.getMinimumSize();
+                        if (component > 0)
+                        {
+                            if (width + d.width > maxwidth)
+                            {
+                                dim.width = Math.max(dim.width, width);
+                                dim.height += height + getVgap();
+                                width = 0;
+                                height = 0;
+                                component = 0;
+                            }
+                            width += getHgap();
+                        }
+                        height = Math.max(height, d.height);
+                        width += d.width;
+                    }
+                }
+                dim.width = Math.max(dim.width, width);
+                dim.height += height;
+
+                dim.width += insets.left + insets.right + getHgap() * 2;
+                dim.height += insets.top + insets.bottom + getVgap() * 2;
+                return dim;
+            }
         }
 
     }

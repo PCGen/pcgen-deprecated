@@ -22,7 +22,9 @@ public interface TreeViewModel<E>
 
     List<? extends TreeView<E>> getTreeViews();
 
-    int getStartingIndex();
+    int getDefaultTreeViewIndex();
+
+    int getQuickSearchTreeViewIndex();
 
     DataView<E> getDataView();
 

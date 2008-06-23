@@ -97,7 +97,7 @@ public class JTreeViewPane extends JTablePane
         treeviewMenu = new JPopupMenu();
         ButtonGroup group = new ButtonGroup();
         List<? extends TreeView<T>> views = viewModel.getTreeViews();
-        TreeView<T> startingView = views.get(viewModel.getStartingIndex());
+        TreeView<T> startingView = views.get(viewModel.getDefaultTreeViewIndex());
         for (TreeView<?> treeview : views)
         {
             JMenuItem item = new JRadioButtonMenuItem(new ChangeViewAction(treeview));
