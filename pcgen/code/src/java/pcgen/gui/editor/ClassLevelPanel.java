@@ -155,39 +155,38 @@ public class ClassLevelPanel extends JPanel implements PObjectUpdater
 		levelTagList.clear();
 		obj = (PCClass) po;
 
-		List aList = obj.getLevelAbilityList();
+		List<LevelAbility> aList = obj.getLevelAbilityList();
 
 		if (aList != null)
 		{
-			for (Iterator i = aList.iterator(); i.hasNext();)
+			for (Iterator<LevelAbility> i = aList.iterator(); i.hasNext();)
 			{
-				LevelAbility la = (LevelAbility) i.next();
+				LevelAbility la = i.next();
 				LevelTag lt = new LevelTag(la.level(), LevelTag.TAG_ADD, la.getTagData());
 				levelTagList.add(lt);
 			}
 		}
 
-		aList = obj.getAddDomains();
+		List<LevelProperty<Domain>> domainList = obj.getAddDomains();
 
-		if (aList != null)
+		if (domainList != null)
 		{
-			for (Iterator i = aList.iterator(); i.hasNext();)
+			for (Iterator<LevelProperty<Domain>> i = domainList.iterator(); i.hasNext();)
 			{
-				String v = (String) i.next();
-				final int sepPos = v.indexOf('|');
-				String l = v.substring(0, sepPos);
-				String t = v.substring(sepPos + 1);
+				LevelProperty<Domain> lpd = i.next();
+				int l = lpd.getLevel();
+				String t = lpd.getObject().getKeyName();
 				LevelTag lt = new LevelTag(l, LevelTag.TAG_ADDDOMAINS, t);
 				levelTagList.add(lt);
 			}
 		}
 
-		final Iterator bonusIter = obj.getBonusList().iterator();
+		final Iterator<BonusObj> bonusIter = obj.getBonusList().iterator();
 
 		while (bonusIter.hasNext())
 		{
 			// updated 29 Jul 2003 -- sage_sam
-			BonusObj bonus = (BonusObj) bonusIter.next();
+			BonusObj bonus =  bonusIter.next();
 			String bonusValue = bonus.toString();
 			final String levelString = String.valueOf(bonus.getPCLevel());
 
@@ -228,11 +227,11 @@ public class ClassLevelPanel extends JPanel implements PObjectUpdater
 		// Output the list of spells associated with the class.
 		for (int i=0;i<=obj.getSpellSupport().getMaxSpellListLevel();i++)
 		{
-			final List spellList = obj.getSpellSupport().getSpellListForLevel(i);
+			final List<PCSpell> spellList = obj.getSpellSupport().getSpellListForLevel(i);
 
 			if (spellList != null)
 			{
-				for (Iterator li = spellList.iterator(); li.hasNext();)
+				for (Iterator<PCSpell> li = spellList.iterator(); li.hasNext();)
 				{
 					String src = ((PCSpell) li.next()).getPCCText();
 					LevelTag lt = new LevelTag(String.valueOf(i), LevelTag.TAG_SPELLS, src);
@@ -242,12 +241,12 @@ public class ClassLevelPanel extends JPanel implements PObjectUpdater
 
 		}
 
-		List drList = obj.getDRList();
-		for (Iterator i = drList.iterator(); i.hasNext();)
+		List<DamageReduction> drList = obj.getDRList();
+		for (Iterator<DamageReduction> i = drList.iterator(); i.hasNext();)
 		{
-			DamageReduction dr = (DamageReduction) i.next();
-			List preList = dr.getPreReqList();
-			for (Iterator j = preList.iterator(); j.hasNext();)
+			DamageReduction dr = i.next();
+			List<Prerequisite> preList = dr.getPreReqList();
+			for (Iterator<Prerequisite> j = preList.iterator(); j.hasNext();)
 			{
 				Prerequisite prereq = (Prerequisite) j.next();
 				if (DamageReduction.isPrereqForClassLevel(prereq, obj
@@ -261,13 +260,13 @@ public class ClassLevelPanel extends JPanel implements PObjectUpdater
 			}
 		}
 		
-		aList = obj.getListFor(ListKey.SPECIAL_ABILITY);
+		List<SpecialAbility> saList = obj.getListFor(ListKey.SPECIAL_ABILITY);
 
-		if ((aList != null) && (aList.size() != 0))
+		if ((saList != null) && (saList.size() != 0))
 		{
-			for (Iterator se = aList.iterator(); se.hasNext();)
+			for (Iterator<SpecialAbility> se = saList.iterator(); se.hasNext();)
 			{
-				final SpecialAbility sa = (SpecialAbility) se.next();
+				final SpecialAbility sa = se.next();
 				String src = sa.getSASource();
 				String lev = src.substring(src.lastIndexOf('|') + 1);
 
@@ -276,12 +275,12 @@ public class ClassLevelPanel extends JPanel implements PObjectUpdater
 			}
 		}
 
-		aList = new ArrayList<SpecialAbility>();
-		obj.addSABToList(aList, null);
+		List<SpecialAbility> sabList = new ArrayList<SpecialAbility>();
+		obj.addSABToList(sabList, null);
 
-		if (!aList.isEmpty())
+		if (!sabList.isEmpty())
 		{
-			for (Iterator<SpecialAbility> e = aList.iterator(); e.hasNext();)
+			for (Iterator<SpecialAbility> e = sabList.iterator(); e.hasNext();)
 			{
 				SpecialAbility sa = e.next();
 				String src = sa.getSASource();
@@ -322,9 +321,9 @@ public class ClassLevelPanel extends JPanel implements PObjectUpdater
 		   }
 		 */
 
-		for (Iterator it = obj.getSafeListFor(ListKey.KITS).iterator(); it.hasNext();)
+		for (Iterator<String> it = obj.getSafeListFor(ListKey.KITS).iterator(); it.hasNext();)
 		{
-			String s = (String) it.next();
+			String s = it.next();
 			int y = s.indexOf('|');
 			String l = "1";
 
@@ -361,26 +360,26 @@ public class ClassLevelPanel extends JPanel implements PObjectUpdater
 			levelTagList.add(lt);
 		}
 
-		aList = obj.getListFor(ListKey.UMULT);
+		List<String> umultList = obj.getListFor(ListKey.UMULT);
 
-		if ((aList != null) && (aList.size() != 0))
+		if ((umultList != null) && (umultList.size() != 0))
 		{
-			for (Iterator se = aList.iterator(); se.hasNext();)
+			for (Iterator<String> se = umultList.iterator(); se.hasNext();)
 			{
-				String c = (String) se.next();
+				String c = se.next();
 				int y = c.indexOf('|');
 				LevelTag lt = new LevelTag(c.substring(0, y), LevelTag.TAG_UMULT, c.substring(y + 1));
 				levelTagList.add(lt);
 			}
 		}
 
-		aList = obj.getListFor(ListKey.UDAM);
+		List<String> udamList = obj.getListFor(ListKey.UDAM);
 
-		if (aList != null)
+		if (udamList != null)
 		{
-			for (int x = 0; x < aList.size(); ++x)
+			for (int x = 0; x < udamList.size(); ++x)
 			{
-				String c = (String) aList.get(x);
+				String c = udamList.get(x);
 
 				if (!c.equals(""))
 				{
