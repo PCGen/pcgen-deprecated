@@ -23,6 +23,7 @@ package pcgen.gui.util;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
@@ -37,6 +38,7 @@ import pcgen.gui.util.event.TreeViewModelListener;
 import pcgen.gui.util.table.SortableTableModel;
 import pcgen.gui.util.treeview.TreeView;
 import pcgen.gui.util.treeview.TreeViewModel;
+import pcgen.gui.util.treeview.TreeViewPath;
 import pcgen.gui.util.treeview.TreeViewTableModel;
 
 /**
@@ -46,10 +48,27 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
 public class JTreeViewPane extends JTablePane
 {
 
+    private static final TreeView searchView = new TreeView()
+    {
+
+        public String getViewName()
+        {
+            return "Search";
+        }
+
+        @SuppressWarnings("unchecked")
+        public List getPaths(Object pobj)
+        {
+            return Collections.singletonList(new TreeViewPath(pobj));
+        }
+
+    };
     private TreeViewModelListener listener;
     private TreeViewTableModel<?> treetableModel;
     private TreeViewModel<?> viewModel;
     private JPopupMenu treeviewMenu;
+    private TreeView tempView;
+    private boolean searchMode = false;
 
     public JTreeViewPane()
     {
@@ -110,6 +129,38 @@ public class JTreeViewPane extends JTablePane
         getTable().setTreeTableModel(model);
     }
 
+    @SuppressWarnings("unchecked")
+    public void setQuickSearchMode(boolean searchMode)
+    {
+        if (this.searchMode != searchMode)
+        {
+            this.searchMode = searchMode;
+            if (searchMode)
+            {
+                tempView = treetableModel.getSelectedTreeView();
+                setTreeView(searchView);
+            }
+            else
+            {
+                setTreeView(tempView);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setTreeView(TreeView view)
+    {
+        //make sure that the original dynamictableModel is not changed
+        JTreeTable table = getTable();
+        TableColumnModel old = table.getColumnModel();
+        table.setColumnModel(new DefaultTableColumnModel());
+        TableColumn viewColumn = old.getColumn(old.getColumnIndex(treetableModel.getSelectedTreeView().getViewName()));
+        treetableModel.setSelectedTreeView(view);
+        viewColumn.setHeaderValue(view.getViewName());
+        table.setColumnModel(old);
+        table.sortModel();
+    }
+
     private class JTreeViewHeader extends JTableSortingHeader
     {
 
@@ -144,7 +195,7 @@ public class JTreeViewPane extends JTablePane
 
         private void maybeShowPopup(MouseEvent e)
         {
-            if (e.isPopupTrigger() && getTrackedColumn().getHeaderValue() ==
+            if (!searchMode && e.isPopupTrigger() && getTrackedColumn().getHeaderValue() ==
                     treetableModel.getSelectedTreeView().getViewName())
             {
                 TableColumnModel columnmodel = getColumnModel();
@@ -158,7 +209,6 @@ public class JTreeViewPane extends JTablePane
 
     }
 
-    @SuppressWarnings("unchecked")
     private class ChangeViewAction extends AbstractAction
     {
 
@@ -172,15 +222,7 @@ public class JTreeViewPane extends JTablePane
 
         public void actionPerformed(ActionEvent e)
         {
-            //make sure that the original dynamictableModel is not changed
-            JTreeTable table = getTable();
-            TableColumnModel old = table.getColumnModel();
-            table.setColumnModel(new DefaultTableColumnModel());
-            TableColumn viewColumn = old.getColumn(old.getColumnIndex(treetableModel.getSelectedTreeView().getViewName()));
-            treetableModel.setSelectedTreeView(view);
-            viewColumn.setHeaderValue(view.getViewName());
-            table.setColumnModel(old);
-            table.sortModel();
+            setTreeView(view);
         }
 
     }

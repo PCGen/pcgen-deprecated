@@ -64,7 +64,7 @@ public class FilterPanel extends JPanel
 
     public FilterPanel(UIContext context)
     {
-        this(null, null);
+        this(context, null, null);
     }
 
     public <T> FilterPanel(UIContext context, Class<T> filterclass)
