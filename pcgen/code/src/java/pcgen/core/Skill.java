@@ -206,23 +206,6 @@ public final class Skill extends PObject
 			}
 		}
 
-		for (String aString : classList)
-		{
-			if ((aString.length() > 0) && (aString.charAt(0) == '!')
-				&& (aString.substring(1).equalsIgnoreCase(aClass.getKeyName())
-				|| aString.substring(1).equalsIgnoreCase(aClass.getSubClassKey())))
-			{
-				return false; // this is an excluded-from-class-skill list
-			}
-
-			if ("ALL".equals(aString) || aString.equalsIgnoreCase(aClass.getKeyName())
-				|| aString.equalsIgnoreCase(aClass.getSubClassKey())
-				|| ((aClass.getClassSkillList() != null) && aClass.getClassSkillList().contains(aString)))
-			{
-				return true;
-			}
-		}
-
 		for (CharacterDomain aCD : aPC.getCharacterDomainList())
 		{
 			if ((aCD.getDomain() != null) && aCD.isFromPCClass(aClass.getKeyName()) && aCD.getDomain().hasCSkill(keyName))
@@ -285,6 +268,23 @@ public final class Skill extends PObject
 		for (PCTemplate aTemplate : aPC.getTemplateList())
 		{
 			if (aTemplate.hasCSkill(keyName))
+			{
+				return true;
+			}
+		}
+
+		for (String aString : classList)
+		{
+			if ((aString.length() > 0) && (aString.charAt(0) == '!')
+				&& (aString.substring(1).equalsIgnoreCase(aClass.getKeyName())
+				|| aString.substring(1).equalsIgnoreCase(aClass.getSubClassKey())))
+			{
+				return false; // this is an excluded-from-class-skill list
+			}
+
+			if ("ALL".equals(aString) || aString.equalsIgnoreCase(aClass.getKeyName())
+				|| aString.equalsIgnoreCase(aClass.getSubClassKey())
+				|| ((aClass.getClassSkillList() != null) && aClass.getClassSkillList().contains(aString)))
 			{
 				return true;
 			}
