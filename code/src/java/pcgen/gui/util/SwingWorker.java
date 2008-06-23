@@ -14,9 +14,9 @@ import javax.swing.SwingUtilities;
  * You must now invoke start() on the SwingWorker after
  * creating it.
  */
-public abstract class SwingWorker
+public abstract class SwingWorker<T>
 {
-	private Object value; // see getValue(), setValue()
+	private T value; // see getValue(), setValue()
 
 	/** 
 	 * Class to maintain reference to current worker thread
@@ -49,7 +49,7 @@ public abstract class SwingWorker
 	 * hasn't been constructed yet
 	 * @return value
 	 */
-	protected synchronized Object getValue()
+	protected synchronized T getValue()
 	{
 		return value;
 	}
@@ -58,7 +58,7 @@ public abstract class SwingWorker
 	 * Set the value produced by worker thread 
 	 * @param x
 	 */
-	private synchronized void setValue(Object x)
+	private synchronized void setValue(T x)
 	{
 		value = x;
 	}
@@ -67,7 +67,7 @@ public abstract class SwingWorker
 	 * Compute the value to be returned by the <code>get</code> method 
 	 * @return Object
 	 */
-	public abstract Object construct();
+	public abstract T construct();
 
 	/**
 	 * Called on the event dispatching thread (not on the worker thread)
@@ -100,7 +100,7 @@ public abstract class SwingWorker
 	 * 
 	 * @return the value created by the <code>construct</code> method
 	 */
-	public Object get()
+	public T get()
 	{
 		while (true)
 		{

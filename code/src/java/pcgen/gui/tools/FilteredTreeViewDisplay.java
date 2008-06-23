@@ -21,6 +21,8 @@
 package pcgen.gui.tools;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.JPanel;
 import pcgen.gui.core.UIContext;
@@ -28,10 +30,10 @@ import pcgen.gui.filter.Filter;
 import pcgen.gui.filter.FilterPanel;
 import pcgen.gui.filter.FilterPanelListener;
 import pcgen.gui.util.JTreeViewPane;
-import pcgen.gui.util.treeview.AbstractTreeViewModel;
-import pcgen.gui.util.treeview.DataView;
-import pcgen.gui.util.treeview.TreeView;
+import pcgen.gui.util.SwingWorker;
+import pcgen.gui.util.event.TreeViewModelEvent;
 import pcgen.gui.util.treeview.TreeViewModel;
+import pcgen.gui.util.treeview.TreeViewModelWrapper;
 
 /**
  *
@@ -40,17 +42,10 @@ import pcgen.gui.util.treeview.TreeViewModel;
 public class FilteredTreeViewDisplay extends JPanel
 {
 
-    private final UIContext context;
     private FilterPanel filterPanel;
     private JTreeViewPane treeViewPane;
 
     public FilteredTreeViewDisplay(UIContext context)
-    {
-        this.context = context;
-        initComponents();
-    }
-
-    private void initComponents()
     {
         setLayout(new BorderLayout());
 
@@ -61,52 +56,86 @@ public class FilteredTreeViewDisplay extends JPanel
         add(treeViewPane, BorderLayout.CENTER);
     }
 
+    public JTreeViewPane getTreeViewPane()
+    {
+        return treeViewPane;
+    }
+
     public <T> void setTreeViewModel(Class<T> filterClass,
                                       TreeViewModel<T> model)
     {
         filterPanel.setFilterClass(filterClass);
-        
+
         TreeViewDisplay<T> displayModel = new TreeViewDisplay<T>(model);
         treeViewPane.setTreeViewModel(displayModel);
         filterPanel.setFilterPanelListener(displayModel);
     }
 
-    private class TreeViewDisplay<E> extends AbstractTreeViewModel<E>
+    private class TreeViewDisplay<E> extends TreeViewModelWrapper<E>
             implements FilterPanelListener
     {
 
-        private TreeViewModel<E> model;
+        private Filter oldfilter = null;
 
         public TreeViewDisplay(TreeViewModel<E> model)
         {
-            super(model.getData());
-            this.model = model;
+            super(model);
         }
 
-        public List<? extends TreeView<E>> getTreeViews()
-        {
-            return model.getTreeViews();
-        }
-
-        public int getDefaultTreeViewIndex()
-        {
-            return model.getDefaultTreeViewIndex();
-        }
-
-        public DataView<E> getDataView()
-        {
-            return model.getDataView();
-        }
-
-        public int getQuickSearchTreeViewIndex()
-        {
-            return model.getQuickSearchTreeViewIndex();
-        }
-
+        @SuppressWarnings("unchecked")
         public void applyFilter(Filter filter, boolean quicksearch)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            new FilterUpdater(getModel().getData(), filter, quicksearch).start();
         }
 
+        @Override
+        public void dataChanged(TreeViewModelEvent<E> event)
+        {
+            if (oldfilter != null)
+            {
+                new FilterUpdater(event.getNewData(), oldfilter,
+                                  treeViewPane.getQuickSearchMode()).start();
+            }
+        }
+
+        private class FilterUpdater extends SwingWorker<List<E>>
+        {
+
+            private Collection<E> modelData;
+            private boolean quicksearch;
+            private Filter filter;
+
+            public FilterUpdater(Collection<E> modelData, Filter filter,
+                                  boolean quicksearch)
+            {
+                this.modelData = modelData;
+                this.filter = filter;
+                this.quicksearch = quicksearch;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public List<E> construct()
+            {
+                List<E> data = new ArrayList<E>();
+                for (E element : modelData)
+                {
+                    if (filter.accept(element))
+                    {
+                        data.add(element);
+                    }
+                }
+                return data;
+            }
+
+            @Override
+            public void finished()
+            {
+                oldfilter = filter;
+                treeViewPane.setQuickSearchMode(quicksearch);
+                setData(getValue());
+            }
+
+        }
     }
 }

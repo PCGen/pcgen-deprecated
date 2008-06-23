@@ -21,6 +21,7 @@
 package pcgen.gui.util.treeview;
 
 import java.util.Collection;
+import java.util.Collections;
 import javax.swing.event.EventListenerList;
 import pcgen.gui.util.event.TreeViewModelEvent;
 import pcgen.gui.util.event.TreeViewModelListener;
@@ -31,6 +32,11 @@ import pcgen.gui.util.event.TreeViewModelListener;
  */
 public abstract class AbstractTreeViewModel<E> implements TreeViewModel<E>
 {
+
+    protected AbstractTreeViewModel()
+    {
+        this(null);
+    }
 
     protected AbstractTreeViewModel(Collection<E> data)
     {
@@ -51,7 +57,8 @@ public abstract class AbstractTreeViewModel<E> implements TreeViewModel<E>
     }
 
     @SuppressWarnings("unchecked")
-    protected final void fireDataChanged(Collection<E> oldData, Collection<E> newData)
+    protected final void fireDataChanged(Collection<E> oldData,
+                                           Collection<E> newData)
     {
         TreeViewModelEvent<E> event = null;
         // Guaranteed to return a non-null array
@@ -74,7 +81,14 @@ public abstract class AbstractTreeViewModel<E> implements TreeViewModel<E>
 
     public final Collection<E> getData()
     {
-        return data;
+        if (data == null)
+        {
+            return Collections.emptySet();
+        }
+        else
+        {
+            return data;
+        }
     }
 
     protected final void setData(Collection<E> data)

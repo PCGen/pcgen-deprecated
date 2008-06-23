@@ -23,6 +23,7 @@ package pcgen.gui.util;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -33,6 +34,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import pcgen.gui.util.event.TreeViewModelEvent;
 import pcgen.gui.util.event.TreeViewModelListener;
 import pcgen.gui.util.table.SortableTableModel;
@@ -91,7 +94,19 @@ public class JTreeViewPane extends JTablePane
     @Override
     public void setModel(SortableTableModel model)
     {
-    //TODO: log something
+        throw new UnsupportedOperationException();
+    }
+
+    public List<Object> getSelectedData()
+    {
+        TreePath[] paths = getTable().getTree().getSelectionPaths();
+        List<Object> data = new ArrayList<Object>();
+        for (TreePath path : paths)
+        {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            data.add(node.getUserObject());
+        }
+        return data;
     }
 
     @SuppressWarnings("unchecked")
@@ -127,6 +142,11 @@ public class JTreeViewPane extends JTablePane
         model.setData(viewModel.getData());
         model.setSelectedTreeView(startingView);
         getTable().setTreeTableModel(model);
+    }
+
+    public boolean getQuickSearchMode()
+    {
+        return searchMode;
     }
 
     @SuppressWarnings("unchecked")

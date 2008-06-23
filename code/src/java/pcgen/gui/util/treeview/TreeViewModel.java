@@ -24,8 +24,6 @@ public interface TreeViewModel<E>
 
     int getDefaultTreeViewIndex();
 
-    int getQuickSearchTreeViewIndex();
-
     DataView<E> getDataView();
 
     Collection<E> getData();

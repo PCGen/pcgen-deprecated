@@ -199,13 +199,19 @@ public class FilterPanel extends JPanel
         }
     }
 
-    private void fireApplyFilter()
+    public Filter getFilter()
     {
         String text = textfield.getText();
         boolean qFilter = text != null && !text.equals("");
+        return new ObjectFilter(text, qFilter);
+    }
+
+    private void fireApplyFilter()
+    {
         if (panelListener != null)
         {
-            panelListener.applyFilter(new ObjectFilter(text, qFilter), qFilter);
+            ObjectFilter filter = (ObjectFilter) getFilter();
+            panelListener.applyFilter(filter, filter.isQuickSearch());
         }
     }
 
@@ -219,6 +225,11 @@ public class FilterPanel extends JPanel
         {
             this.qFilter = qFilter;
             this.text = text;
+        }
+
+        public boolean isQuickSearch()
+        {
+            return qFilter;
         }
 
         @SuppressWarnings("unchecked")
@@ -249,6 +260,7 @@ public class FilterPanel extends JPanel
         public FilterAction(NamedFilter<?> filter)
         {
             this.filter = filter;
+            putValue(NAME, filter.getName());
             putValue(SHORT_DESCRIPTION, filter.getShortDescription());
             putValue(LONG_DESCRIPTION, filter.getLongDescription());
         }

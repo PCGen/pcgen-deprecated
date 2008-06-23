@@ -31,11 +31,9 @@ import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import pcgen.gui.util.table.DefaultSortableTableModel;
-import pcgen.gui.util.table.DynamicTableColumnModel;
 import pcgen.gui.util.table.SortableTableModel;
 import pcgen.util.Comparators;
 
