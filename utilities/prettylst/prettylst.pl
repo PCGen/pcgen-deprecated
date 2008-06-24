@@ -553,12 +553,12 @@ my @valid_system_stats		= qw(
 	DVR WEA AGI QUI SDI REA INS PRE
 );
 
-my @valid_system_var_names   = qw(
+my @valid_system_var_names	= qw(
 	ACTIONDICE			ACTIONDIEBONUS			ACTIONDIETYPE
 	Action			ActionLVL				BUDGETPOINTS
 	CURRENTVEHICLEMODS	ClassDefense			DamageThreshold
 	EDUCATION			EDUCATIONMISC			FAVORCHECK
-	FIGHTINGDEFENSIVELYAC   FightingDefensivelyAC		FightingDefensivelyACBonus
+	FIGHTINGDEFENSIVELYAC	FightingDefensivelyAC		FightingDefensivelyACBonus
 	GADGETPOINTS		INITCOMP				INSPIRATION
 	INSPIRATIONMISC		LOADSCORE				MAXLEVELSTAT
 	MAXVEHICLEMODS		MISSIONBUDGET			MUSCLE
@@ -578,6 +578,11 @@ my @valid_system_var_names   = qw(
 	LOADSCORE				MAXLEVELSTAT		MUSCLE
 	MXDXEN				Mount				OFFHANDLIGHTBONUS
 	TOTALDEFENSEACBONUS		TWOHANDDAMAGEDIVISOR
+
+	ACCHECK		ARMORACCHECK	BASESPELLSTAT	CASTERLEVEL		INITIATIVEMISC
+	INITIATIVEMOD	MOVEBASE		SHIELDACCHECK	SIZE			SKILLRANK
+	SKILLTOTAL		SPELLFAILURE	SR			TL			LIST
+
 );
 
 #####################################
@@ -1449,8 +1454,8 @@ my @PRE_Tags = (
 	'!PREABILITY',
 	'PREAGESET',
 	'!PREAGESET',
-	'PREALIGN',
-	'!PREALIGN',
+	'PREALIGN:*',
+	'!PREALIGN:*',
 	'PREARMORPROF:*',
 	'!PREARMORPROF',
 	'PREARMORTYPE',
@@ -1764,7 +1769,7 @@ my %master_order = (
 		'OUTPUTNAME',
 		'CATEGORY',
 		'TYPE:.CLEAR',
-		'TYPE',
+		'TYPE:*',
 		'VISIBLE',
 		@PRE_Tags,
 		@QUALIFY_Tags,
@@ -1935,7 +1940,7 @@ my %master_order = (
 		'DOMAIN:*',			# [ 1973526 ] DOMAIN is supported on Class line
 		'ADDDOMAINS:*',
 		'REMOVE',
-		'BONUS:HD',			# Class Lines
+		'BONUS:HD:*',		# Class Lines
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
 		'BONUS:WEAPON:*',
 		'REP:*',
@@ -1986,6 +1991,7 @@ my %master_order = (
 		'SA:*',
 		'SAB:.CLEAR',
 		'SAB:*',
+		'BONUS:HD:*',		# Class Lines
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
 		'BONUS:WEAPON:*',
 		'TEMPDESC',
@@ -2049,7 +2055,11 @@ my %master_order = (
 		'SR',
 		'ABILITY:.CLEAR',
 		'ABILITY:*',
+		'FEAT:.CLEAR',
+		'FEAT:*',
 		'VFEAT:*',
+		'AUTO:FEAT:.CLEAR',
+		'AUTO:FEAT:*',
 		'COPYMASTERBAB',
 		'COPYMASTERCHECK',
 		'COPYMASTERHP',
@@ -2150,7 +2160,7 @@ my %master_order = (
 		'KEY',
 		'NAMEISPI',
 		'OUTPUTNAME',
-		'PROFICIENCY',
+		'PROFICIENCY:*',
 		'TYPE:.CLEAR',
 		'TYPE:*',
 		'ALTTYPE',
@@ -2186,6 +2196,8 @@ my %master_order = (
 		'REACH',
 		'REACHMULT',
 		'SIZE',
+		'MOVE',
+		'MOVECLONE',
 		@SOURCE_Tags,
 		'SPELLFAILURE',
 		'ADD:DOMAIN',
@@ -2524,7 +2536,7 @@ my %master_order = (
 		'BONUS:DC:*',
 		'BONUS:FEAT:*',
 		'BONUS:MOVEADD:*',
-		'BONUS:HP',
+		'BONUS:HP:*',
 		'BONUS:MOVEMULT:*',
 		'BONUS:POSTMOVEADD:*',
 		'BONUS:SKILL:*',
@@ -2609,6 +2621,7 @@ my %master_order = (
 		'STARTFEATS',
 		'SIZE',
 		'MOVE',
+		'MOVECLONE',
 		'UNENCUMBEREDMOVE',
 		'FACE',
 		'REACH',
@@ -2790,7 +2803,7 @@ my %master_order = (
 		'BONUS:HP',
 		'BONUS:MISC:*',
 		'BONUS:MOVEADD',
-		'BONUS:MOVEMULT',
+		'BONUS:MOVEMULT:*',
 		'BONUS:POSTMOVEADD',
 		'BONUS:RANGEMULT',
 		'BONUS:SIZEMOD',
@@ -2932,9 +2945,10 @@ my %master_order = (
 		'SA:*',
 		'SAB:.CLEAR',
 		'SAB:*',
-		'BONUS:HD',			# Class Lines
+		'BONUS:HD:*',		# Class Lines
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
 		'BONUS:WEAPON:*',
+		'HITDIE',
 		'ABILITY:*',
 		'DEFINE:*',
 		'CSKILL:.CLEAR',
@@ -3001,9 +3015,10 @@ my %master_order = (
 		'SA:*',
 		'SAB:.CLEAR',
 		'SAB:*',
-		'BONUS:HD',			# Class Lines
+		'BONUS:HD:*',		# Class Lines
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
 		'BONUS:WEAPON:*',
+		'HITDIE',
 		'ABILITY:*',
 		'DEFINE:*',
 		'CSKILL:.CLEAR',
@@ -3130,7 +3145,7 @@ my %master_order = (
 		'HD:*',
 		'WEAPONBONUS',
 		'GENDERLOCK',
-		'SPELL:*',		# Deprecated 5.x.x - Remove 6.0 -use SPELLS
+		'SPELL:*',		# Deprecated 5.x.x - Remove 6.0 - use SPELLS
 		'SPELLS:*',
 		'SPELLLEVEL:CLASS:*',
 		'ADD:SPELLCASTER',
@@ -5031,34 +5046,32 @@ if ( $cl_options{xcheck} ) {
 				# There is no key but it might be just a warning
 				if ( exists $valid_entities{'EQUIPMOD'}{$entry} ) {
 
-				# It's a warning
-				for my $array ( @{ $referer{$linetype}{$entry} } ) {
+					# It's a warning
+					for my $array ( @{ $referer{$linetype}{$entry} } ) {
 
-					# It's not a warning, not EQUIPMOD were found.
-					push @{ $to_report{ $array->[1] } },
-						[ $array->[2], 'EQUIPMOD Key', $array->[0] ];
-				}
+						# It's not a warning, not EQUIPMOD were found.
+						push @{ $to_report{ $array->[1] } },
+							[ $array->[2], 'EQUIPMOD Key', $array->[0] ];
+					}
 				}
 				else {
-				for my $array ( @{ $referer{$linetype}{$entry} } ) {
+					for my $array ( @{ $referer{$linetype}{$entry} } ) {
 
-					# It's not a warning, no EQUIPMOD were found.
-					push @{ $to_report{ $array->[1] } },
-						[ $array->[2], 'EQUIPMOD Key or EQUIPMOD', $array->[0] ];
-				}
+						# It's not a warning, no EQUIPMOD were found.
+						push @{ $to_report{ $array->[1] } },
+							[ $array->[2], 'EQUIPMOD Key or EQUIPMOD', $array->[0] ];
+					}
 				}
 			}
 		}
-#		elsif (	$linetype eq 'RACE'
-#				&& $entry =~ / [%] /xms
-#			) {
+#		elsif ( $linetype eq 'RACE' && $entry =~ / [%] /xms ) {
 #			# Special PRERACE:xxx% case
 #			my $race_text	= $1;
 #			my $after_wildcard = $2;
 #
 #			for my $array ( @{ $referer{$linetype}{$entry} } ) {
 #				if ( $after_wildcard ne q{} ) {
-#				ewarn( NOTICE,
+#					ewarn( NOTICE,
 #						qq{Wildcard context for %, nothing should follow the % in }
 #						. ,
 #
@@ -5135,11 +5148,11 @@ if ( $cl_options{xcheck} ) {
 	%to_report = ();
 	for my $linetype ( sort %referer_types ) {
 		for my $entry ( sort keys %{ $referer_types{$linetype} } ) {
-		unless ( exists $valid_types{$linetype}{$entry} ) {
-			for my $array ( @{ $referer_types{$linetype}{$entry} } ) {
-				push @{ $to_report{ $array->[1] } }, [ $array->[2], $linetype, $array->[0] ];
+			unless ( exists $valid_types{$linetype}{$entry} ) {
+				for my $array ( @{ $referer_types{$linetype}{$entry} } ) {
+					push @{ $to_report{ $array->[1] } }, [ $array->[2], $linetype, $array->[0] ];
+				}
 			}
-		}
 		}
 	}
 
@@ -7084,7 +7097,7 @@ BEGIN {
 
 			# First we store the DEFINE variable name
 			for my $var_name ( split ',', $var_name_list ) {
-				if ( $var_name =~ /^[a-z][a-z0-9_]*$/i ) {
+				if ( $var_name =~ /^[a-z][a-z0-9_\s]*$/i ) {
 				# LIST is filtered out as it may not be valid for the
 				# other places were a variable name is used.
 				if ( $var_name ne 'LIST' ) {
@@ -7976,7 +7989,7 @@ BEGIN {
 			my $tag_line = $tag_value;
 			study $tag_line;
 			# Remove the PRExxx tags at the end of the line.
-			$tag_line =~ s/\|PREFEAT\:.+$//;
+			$tag_line =~ s/\|PRE\w+\:.+$//;
 
 			# We extract the classes and the spell names
 			if ( my $working_value = $tag_line ) {
@@ -8261,10 +8274,10 @@ BEGIN {
 				#####################################################
 				# Export a list of variable names if requested
 				if ( $conversion_enable{'Export lists'} ) {
-				my $file = $file_for_error;
-				$file =~ tr{/}{\\};
-				print { $filehandle_for{VARIABLE} }
-					qq{"$var_name","$line_for_error","$file"\n};
+					my $file = $file_for_error;
+					$file =~ tr{/}{\\};
+					print { $filehandle_for{VARIABLE} }
+						qq{"$var_name","$line_for_error","$file"\n};
 				}
 
 			}
