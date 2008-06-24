@@ -51,7 +51,7 @@ public abstract class AbstractTreeViewModel<E> implements TreeViewModel<E>
         listenerList.add(TreeViewModelListener.class, listener);
     }
 
-    public final void removeTreeViewModelListener(TreeViewModelListener<E> listener)
+    public final void removeTreeViewModelListener(TreeViewModelListener<?> listener)
     {
         listenerList.remove(TreeViewModelListener.class, listener);
     }
@@ -79,7 +79,7 @@ public abstract class AbstractTreeViewModel<E> implements TreeViewModel<E>
         }
     }
 
-    public final Collection<E> getData()
+    public Collection<E> getData()
     {
         if (data == null)
         {
@@ -91,7 +91,7 @@ public abstract class AbstractTreeViewModel<E> implements TreeViewModel<E>
         }
     }
 
-    protected final void setData(Collection<E> data)
+    protected void setData(Collection<E> data)
     {
         Collection<E> oldData = this.data;
         this.data = data;

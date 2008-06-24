@@ -32,7 +32,7 @@ public class TreeViewModelWrapper<E> extends AbstractTreeViewModel<E>
         implements TreeViewModelListener<E>
 {
 
-    private TreeViewModel<E> model;
+    protected TreeViewModel<E> model;
 
     public TreeViewModelWrapper(TreeViewModel<E> model)
     {

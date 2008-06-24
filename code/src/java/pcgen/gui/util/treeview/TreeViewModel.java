@@ -18,7 +18,7 @@ public interface TreeViewModel<E>
 
     void addTreeViewModelListener(TreeViewModelListener<E> listener);
 
-    void removeTreeViewModelListener(TreeViewModelListener<E> listener);
+    void removeTreeViewModelListener(TreeViewModelListener<?> listener);
 
     List<? extends TreeView<E>> getTreeViews();
 
