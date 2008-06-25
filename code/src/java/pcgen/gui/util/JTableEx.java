@@ -24,11 +24,13 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import java.awt.Component;
+import java.awt.Container;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
+import javax.swing.JViewport;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumnModel;
@@ -95,6 +97,23 @@ public class JTableEx extends JTable
     protected List<? extends SortingPriority> createDefaultSortingPriority()
     {
         return Collections.emptyList();
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportHeight()
+    {
+        // fetch the table's parent
+        Container viewport = getParent();
+
+        // if the parent is not a viewport, calling this isn't useful
+        if (!(viewport instanceof JViewport))
+        {
+            return false;
+        }
+
+        // return true if the table's preferred height is smaller
+        // than the viewport height, else false
+        return getPreferredSize().height < viewport.getHeight();
     }
 
     @Override

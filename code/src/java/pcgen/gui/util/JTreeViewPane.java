@@ -95,6 +95,11 @@ public class JTreeViewPane extends JTablePane
         throw new UnsupportedOperationException();
     }
 
+    public void setDragEnabled(boolean b)
+    {
+        getTable().setDragEnabled(b);
+    }
+
     @Override
     public void setTransferHandler(TransferHandler newHandler)
     {

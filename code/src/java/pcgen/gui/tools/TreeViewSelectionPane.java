@@ -58,7 +58,10 @@ public class TreeViewSelectionPane extends JSplitPane
         super(JSplitPane.VERTICAL_SPLIT, true);
         availableView = new FilteredTreeViewDisplay(context);
         selectedView = new FilteredTreeViewDisplay(context);
-
+        
+        availableView.getTreeViewPane().setDragEnabled(true);
+        selectedView.getTreeViewPane().setDragEnabled(true);
+        
         setTopComponent(selectedView);
         setBottomComponent(availableView);
     }
