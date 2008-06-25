@@ -8555,24 +8555,30 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		final int minLevel, final int maxLevel)
 	{
 		final List<Spell> retList = new ArrayList<Spell>();
-
-		for (PCClass pcClass : classList)
+		final boolean isAny = "Any".equalsIgnoreCase(aType);
+		
+		for (PObject pObj : getSpellClassList())
 		{
-			String cName = pcClass.getKeyName();
-
-			if (pcClass.getCastAs().length() > 0)
+			String cName = pObj.getKeyName();
+			String spellType = "";
+			if (pObj instanceof PCClass)
 			{
-				cName = pcClass.getCastAs();
+				PCClass pcClass = (PCClass) pObj;
+				spellType = pcClass.getSpellType();
+				if (pcClass.getCastAs().length() > 0)
+				{
+					cName = pcClass.getCastAs();
+				}
 			}
 
-			if ("Any".equalsIgnoreCase(aType)
-				|| aType.equalsIgnoreCase(pcClass.getSpellType())
+			if (isAny
+				|| aType.equalsIgnoreCase(spellType)
 				|| aType.equalsIgnoreCase(cName))
 			{
 				for (int a = minLevel; a <= maxLevel; a++)
 				{
 					final List<CharacterSpell> aList =
-							pcClass.getSpellSupport().getCharacterSpell(null,
+							pObj.getSpellSupport().getCharacterSpell(null,
 								"", a);
 
 					for (CharacterSpell cs : aList)
