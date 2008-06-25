@@ -20,6 +20,7 @@
  */
 package pcgen.gui.util.treeview;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import javax.swing.event.EventListenerList;
@@ -87,7 +88,7 @@ public abstract class AbstractTreeViewModel<E> implements TreeViewModel<E>
         }
         else
         {
-            return data;
+            return new ArrayList<E>(data);
         }
     }
 

@@ -31,7 +31,11 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 import javax.swing.TransferHandler;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import pcgen.gui.core.UIContext;
+import pcgen.gui.util.JTreeTable;
+import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.event.TreeViewModelEvent;
 import pcgen.gui.util.event.TreeViewModelListener;
 import pcgen.gui.util.treeview.TreeViewModel;
@@ -46,11 +50,9 @@ public class TreeViewSelectionPane extends JSplitPane
 
     private FilteredTreeViewDisplay availableView;
     private FilteredTreeViewDisplay selectedView;
-    private ElementTreeViewModel<?> availableTreeView;
-    private ElementTreeViewModel<?> selectedTreeView;
     private TreeViewModel<?> masterTreeView;
     private TreeViewModelListener<?> masterTreeViewListener;
-    //private Collection<?> availableElements;
+
     public TreeViewSelectionPane(UIContext context)
     {
         super(JSplitPane.VERTICAL_SPLIT, true);
@@ -65,14 +67,7 @@ public class TreeViewSelectionPane extends JSplitPane
                                        TreeViewModel<T> masterModel,
                                        Collection<T> selectedData)
     {
-        setTreeViewModels(masterModel, selectedData);
-        
-    }
-
-    private <T> void setTreeViewModels(TreeViewModel<T> masterModel,
-                                        final Collection<T> selectedData)
-    {
-        List<T> availableElements = new ArrayList<T>(masterModel.getData());
+        Collection<T> availableElements = masterModel.getData();
         availableElements.removeAll(selectedData);
 
         final ElementTreeViewModel<T> availableModel = new ElementTreeViewModel<T>(masterModel,
@@ -84,7 +79,7 @@ public class TreeViewSelectionPane extends JSplitPane
             masterTreeView.removeTreeViewModelListener(masterTreeViewListener);
         }
         masterTreeView = masterModel;
-        
+
         TreeViewModelListener<T> listener = new TreeViewModelListener<T>()
         {
 
@@ -97,9 +92,18 @@ public class TreeViewSelectionPane extends JSplitPane
         };
         masterTreeViewListener = listener;
         masterModel.addTreeViewModelListener(listener);
-        
-        availableTreeView = availableModel;
-        selectedTreeView = selectedModel;
+
+        availableView.setTreeViewModel(elementClass, availableModel);
+        selectedView.setTreeViewModel(elementClass, selectedModel);
+
+        JTreeViewPane availablePane = availableView.getTreeViewPane();
+        JTreeViewPane selectedPane = selectedView.getTreeViewPane();
+
+        ElementTransferHandler<T> handler = new ElementTransferHandler<T>(elementClass,
+                                                                          availablePane,
+                                                                          selectedPane);
+        availablePane.setTransferHandler(handler);
+        selectedPane.setTransferHandler(handler);
     }
 
     private <T> void setModelData(ElementTreeViewModel<T> availableModel,
@@ -139,14 +143,36 @@ public class TreeViewSelectionPane extends JSplitPane
 
     }
 
-    private class ElementTransferHandler extends TransferHandler
+    private static class ElementTransferHandler<E> extends TransferHandler
     {
 
-        private Class<?> elementClass;
+        private final DataFlavor dataFlavor;
+        private Class<E> elementClass;
+        private JTreeViewPane pane1;
+        private JTreeViewPane pane2;
 
-        public ElementTransferHandler(Class<?> elementClass)
+        public ElementTransferHandler(Class<E> elementClass,
+                                       JTreeViewPane pane1,
+                                       JTreeViewPane pane2)
         {
             this.elementClass = elementClass;
+            String type = DataFlavor.javaJVMLocalObjectMimeType + ";class=" +
+                    elementClass.getName();
+            this.dataFlavor = new DataFlavor(type, null);
+            this.pane1 = pane1;
+            this.pane2 = pane2;
+        }
+
+        public List<Object> getSelectedData(JTreeTable table)
+        {
+            TreePath[] paths = table.getTree().getSelectionPaths();
+            List<Object> data = new ArrayList<Object>();
+            for (TreePath path : paths)
+            {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                data.add(node.getUserObject());
+            }
+            return data;
         }
 
         @Override
@@ -156,11 +182,11 @@ public class TreeViewSelectionPane extends JSplitPane
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected Transferable createTransferable(JComponent c)
         {
-            FilteredTreeViewDisplay view = (FilteredTreeViewDisplay) c;
-            List<?> data = view.getTreeViewPane().getSelectedData();
-            Iterator<?> it = data.iterator();
+            List<Object> data = getSelectedData((JTreeTable) c);
+            Iterator<Object> it = data.iterator();
             while (it.hasNext())
             {
                 if (!elementClass.isInstance(it.next()))
@@ -168,55 +194,104 @@ public class TreeViewSelectionPane extends JSplitPane
                     it.remove();
                 }
             }
-            return new ElementSelection(elementClass, data);
+            return new ElementSelection(c, (List<E>) data);
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void exportDone(JComponent source, Transferable data,
                                    int action)
         {
-
-        }
-
-    }
-
-    private static class ElementSelection implements Transferable
-    {
-
-        private final DataFlavor dataFlavor;
-        private final List<?> data;
-
-        public ElementSelection(Class<?> elementClass, List<?> data)
-        {
-            String type = DataFlavor.javaJVMLocalObjectMimeType + ";class=" +
-                    elementClass.getName();
-            this.dataFlavor = new DataFlavor(type, null);
-            this.data = data;
-        }
-
-        public DataFlavor[] getTransferDataFlavors()
-        {
-            return new DataFlavor[]{dataFlavor};
-        }
-
-        public boolean isDataFlavorSupported(DataFlavor flavor)
-        {
-            return dataFlavor.match(flavor);
-        }
-
-        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
-        {
-            if (!isDataFlavorSupported(flavor))
+            JTreeViewPane pane;
+            if (pane1.isAncestorOf(source))
             {
-                throw new UnsupportedFlavorException(flavor);
+                pane = pane1;
             }
-            return data;
+            else
+            {
+                pane = pane2;
+            }
+            ElementSelection selection = (ElementSelection) data;
+            ElementTreeViewModel<E> model = (ElementTreeViewModel<E>) pane.getTreeViewModel();
+            Collection<E> elements = model.getData();
+            elements.removeAll(selection.getData());
+            model.setData(elements);
         }
 
-        public List<?> getData()
+        @Override
+        public boolean canImport(JComponent comp, DataFlavor[] transferFlavors)
         {
-            return data;
+            return dataFlavor == transferFlavors[0];
         }
 
+        @Override
+        public boolean importData(JComponent comp, Transferable t)
+        {
+            ElementSelection selection = (ElementSelection) t;
+            if (comp == selection.getSource())
+            {
+                return false;
+            }
+
+            JTreeViewPane pane;
+            if (pane1.isAncestorOf(comp))
+            {
+                pane = pane1;
+            }
+            else
+            {
+                pane = pane2;
+            }
+            @SuppressWarnings("unchecked")
+            ElementTreeViewModel<E> model = (ElementTreeViewModel<E>) pane.getTreeViewModel();
+            Collection<E> elements = model.getData();
+            elements.addAll(selection.getData());
+            model.setData(elements);
+
+            return true;
+        }
+
+        private class ElementSelection implements Transferable
+        {
+
+            private final List<E> data;
+            private JComponent source;
+
+            public ElementSelection(JComponent source, List<E> data)
+            {
+                this.source = source;
+                this.data = data;
+            }
+
+            public DataFlavor[] getTransferDataFlavors()
+            {
+                return new DataFlavor[]{dataFlavor};
+            }
+
+            public boolean isDataFlavorSupported(DataFlavor flavor)
+            {
+                return dataFlavor == flavor;
+            }
+
+            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
+            {
+                if (!isDataFlavorSupported(flavor))
+                {
+                    throw new UnsupportedFlavorException(flavor);
+                }
+                return data;
+            }
+
+            public JComponent getSource()
+            {
+                return source;
+            }
+
+            public List<E> getData()
+            {
+                return data;
+            }
+
+        }
     }
 }
