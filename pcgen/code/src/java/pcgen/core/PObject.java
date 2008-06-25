@@ -1314,7 +1314,7 @@ public class PObject extends PrereqObject implements Cloneable, Serializable, Co
 //			retVal.sourceMap = new HashMap<String, String>();
 //			retVal.sourceMap.putAll(this.sourceMap);
 //		}
-		retVal.theSource = theSource;
+		retVal.theSource = theSource.clone();
 
 		retVal.changeProfMap = new HashMap<String, String>(changeProfMap);
 

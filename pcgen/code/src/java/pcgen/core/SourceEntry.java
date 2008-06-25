@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * This class represents the information about the source
- * of an objcet.
+ * of an object.
  * 
  * <p>This includes the <tt>Source</tt> information as well as Page information.
  * 
@@ -36,7 +36,7 @@ import java.util.Map;
  * @since 5.11
  *
  */
-public class SourceEntry
+public class SourceEntry implements Cloneable
 {
 	/** The source book this source represents */
 	private Source theSourceBook = new Source();
@@ -367,4 +367,18 @@ public class SourceEntry
 			return false;
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	protected SourceEntry clone() throws CloneNotSupportedException
+	{
+		SourceEntry entry = new SourceEntry();
+		entry.theSourceBook = this.theSourceBook;
+		entry.thePageNumber = this.thePageNumber;
+
+		return entry;
+	}
+	
 }
