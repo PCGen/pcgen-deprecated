@@ -40,7 +40,7 @@ import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import pcgen.gui.core.UIContext;
-import pcgen.gui.util.TextIcon;
+import pcgen.gui.util.SimpleTextIcon;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -93,10 +93,10 @@ public class FilterPanel extends JPanel
         JButton button = new JButton();
         button.setFocusable(false);
 
-        Icon icon = new TextIcon(button, filterString);
+        Icon icon = new SimpleTextIcon(button, filterString);
         button.setIcon(icon);
 
-        icon = new TextIcon(button, clearString);
+        icon = new SimpleTextIcon(button, clearString);
         button.setRolloverIcon(icon);
         button.setPressedIcon(icon);
 

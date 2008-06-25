@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 import javax.swing.TransferHandler;
@@ -36,6 +37,7 @@ import javax.swing.tree.TreePath;
 import pcgen.gui.core.UIContext;
 import pcgen.gui.util.JTreeTable;
 import pcgen.gui.util.JTreeViewPane;
+import pcgen.gui.util.MultiLineTextIcon;
 import pcgen.gui.util.event.TreeViewModelEvent;
 import pcgen.gui.util.event.TreeViewModelListener;
 import pcgen.gui.util.treeview.TreeViewModel;
@@ -58,10 +60,10 @@ public class TreeViewSelectionPane extends JSplitPane
         super(JSplitPane.VERTICAL_SPLIT, true);
         availableView = new FilteredTreeViewDisplay(context);
         selectedView = new FilteredTreeViewDisplay(context);
-        
+
         availableView.getTreeViewPane().setDragEnabled(true);
         selectedView.getTreeViewPane().setDragEnabled(true);
-        
+
         setTopComponent(selectedView);
         setBottomComponent(availableView);
     }
@@ -252,6 +254,14 @@ public class TreeViewSelectionPane extends JSplitPane
             model.setData(elements);
 
             return true;
+        }
+
+        @Override
+        public Icon getVisualRepresentation(Transferable t)
+        {
+            ElementSelection selection = (ElementSelection) t;
+            return new MultiLineTextIcon(selection.getSource(),
+                                         selection.getData());
         }
 
         private class ElementSelection implements Transferable

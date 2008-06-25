@@ -1,5 +1,5 @@
 /*
- * TextIcon.java
+ * SimpleTextIcon.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -30,19 +30,19 @@ import javax.swing.Icon;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class TextIcon implements Icon
+public class SimpleTextIcon implements Icon
 {
 
     private final String text;
     private final FontMetrics metrics;
     private final Color color;
 
-    public TextIcon(Component c, String text)
+    public SimpleTextIcon(Component c, String text)
     {
         this(c, text, Color.BLACK);
     }
 
-    public TextIcon(Component c, String text, Color color)
+    public SimpleTextIcon(Component c, String text, Color color)
     {
         this.text = text;
         this.metrics = c.getFontMetrics(c.getFont());
