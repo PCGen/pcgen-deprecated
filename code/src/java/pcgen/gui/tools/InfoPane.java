@@ -1,5 +1,5 @@
 /*
- * InfoPanel.java
+ * InfoPane.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@ package pcgen.gui.tools;
 
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -32,27 +31,37 @@ import javax.swing.border.TitledBorder;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class InfoPanel extends JPanel
+public class InfoPane extends JScrollPane
 {
 
     private JTextPane textPane;
+    private String title;
 
-    public InfoPanel()
+    public InfoPane()
     {
         this("Info");
     }
 
-    public InfoPanel(String title)
+    public InfoPane(String title)
     {
-        super(new BorderLayout());
+        super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+              JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        setTitle(title);
+        this.textPane = new JTextPane();
+        this.setViewportView(textPane);
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
         setBorder(BorderFactory.createTitledBorder(null, title,
                                                    TitledBorder.CENTER,
                                                    TitledBorder.DEFAULT_POSITION));
-        this.textPane = new JTextPane();
-        JScrollPane scrollPane = new JScrollPane(textPane,
-                                                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        add(scrollPane, BorderLayout.CENTER);
     }
 
 }
