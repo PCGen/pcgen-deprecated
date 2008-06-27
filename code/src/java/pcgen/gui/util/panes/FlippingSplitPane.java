@@ -29,7 +29,6 @@ import javax.swing.plaf.SplitPaneUI;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import pcgen.gui.util.ResourceManager;
@@ -179,6 +178,19 @@ public class FlippingSplitPane extends JSplitPane
                                           newContinuousLayout);
     }
 
+    @Override
+    public void setDividerSize(int newSize)
+    {
+        if (newSize == getDividerSize())
+        {
+            return;
+        }
+
+        super.setDividerSize(newSize);
+        maybeSetDividerSizeComponent(getLeftComponent(), newSize);
+        maybeSetDividerSizeComponent(getRightComponent(), newSize);
+    }
+
     /**
      * <code>setDividerLocation</code> calls {@link JSplitPane#setDividerLocation(int)}
      * unless the <code>FlippingSplitPane</code> is locked.
@@ -257,6 +269,14 @@ public class FlippingSplitPane extends JSplitPane
         fixedResetToPreferredSizes();
         maybeResetToPreferredSizesComponent(getLeftComponent());
         maybeResetToPreferredSizesComponent(getRightComponent());
+    }
+
+    private static void maybeSetDividerSizeComponent(Component c, int newSize)
+    {
+        if (c instanceof FlippingSplitPane)
+        {
+            ((FlippingSplitPane) c).setDividerSize(newSize);
+        }
     }
 
     /**

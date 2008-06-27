@@ -44,8 +44,6 @@ public class ClassTab extends javax.swing.JPanel {
 
         flippingSplitPane2.setDividerSize(7);
         flippingSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        flippingSplitPane2.setContinuousLayout(true);
-        flippingSplitPane2.setOneTouchExpandable(true);
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
