@@ -33,9 +33,7 @@ public class ClassTab extends javax.swing.JPanel {
         jSpinner1 = new javax.swing.JSpinner();
         jButton2 = new javax.swing.JButton();
         jTablePane1 = new pcgen.gui.util.JTablePane();
-        jPanel3 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
+        infoPane1 = new pcgen.gui.tools.InfoPane();
         jPanel2 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -92,17 +90,8 @@ public class ClassTab extends javax.swing.JPanel {
 
         flippingSplitPane2.setBottomComponent(jPanel1);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Class Info", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        jPanel3.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        jEditorPane1.setEditable(false);
-        jScrollPane1.setViewportView(jEditorPane1);
-
-        jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        flippingSplitPane2.setTopComponent(jPanel3);
+        infoPane1.setTitle("Class Info");
+        flippingSplitPane2.setLeftComponent(infoPane1);
 
         flippingSplitPane1.setRightComponent(flippingSplitPane2);
         flippingSplitPane1.setLeftComponent(jPanel2);
@@ -114,13 +103,11 @@ public class ClassTab extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane1;
     private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane2;
+    private pcgen.gui.tools.InfoPane infoPane1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
     private pcgen.gui.util.JTablePane jTablePane1;
     // End of variables declaration//GEN-END:variables

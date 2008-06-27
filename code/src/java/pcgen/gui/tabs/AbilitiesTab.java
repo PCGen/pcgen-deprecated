@@ -1,7 +1,7 @@
 /*
- * SkillsTab.java
+ * AbilitiesTab.java
  *
- * Created on June 26, 2008, 8:49 PM
+ * Created on June 26, 2008, 11:02 PM
  */
 
 package pcgen.gui.tabs;
@@ -10,10 +10,10 @@ package pcgen.gui.tabs;
  *
  * @author  Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class SkillsTab extends javax.swing.JPanel {
+public class AbilitiesTab extends javax.swing.JPanel {
     
-    /** Creates new form SkillsTab */
-    public SkillsTab() {
+    /** Creates new form AbilitiesTab */
+    public AbilitiesTab() {
         initComponents();
     }
     
@@ -29,14 +29,25 @@ public class SkillsTab extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         flippingSplitPane2 = new pcgen.gui.util.panes.FlippingSplitPane();
         infoPane1 = new pcgen.gui.tools.InfoPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
         flippingSplitPane1.setDividerSize(7);
         flippingSplitPane1.setContinuousLayout(true);
         flippingSplitPane1.setOneTouchExpandable(true);
+
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 205, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 280, Short.MAX_VALUE)
+        );
+
         flippingSplitPane1.setLeftComponent(jPanel1);
 
         flippingSplitPane2.setDividerSize(7);
@@ -44,38 +55,21 @@ public class SkillsTab extends javax.swing.JPanel {
         flippingSplitPane2.setContinuousLayout(true);
         flippingSplitPane2.setOneTouchExpandable(true);
 
-        infoPane1.setTitle("Skill Info");
+        infoPane1.setTitle("Feat Info");
         flippingSplitPane2.setTopComponent(infoPane1);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {new Integer(1), null, null, null},
-                {new Integer(2), null, null, null},
-                {new Integer(3), null, null, null},
-                {new Integer(4), null, null, null}
-            },
-            new String [] {
-                "Level", "Class", "Skill Points", "Points Left"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 184, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 160, Short.MAX_VALUE)
+        );
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        flippingSplitPane2.setRightComponent(jScrollPane1);
+        flippingSplitPane2.setRightComponent(jPanel2);
 
         flippingSplitPane1.setRightComponent(flippingSplitPane2);
 
@@ -88,8 +82,7 @@ public class SkillsTab extends javax.swing.JPanel {
     private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane2;
     private pcgen.gui.tools.InfoPane infoPane1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
     
 }

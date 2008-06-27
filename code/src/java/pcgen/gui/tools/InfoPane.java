@@ -20,11 +20,10 @@
  */
 package pcgen.gui.tools;
 
-import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 /**
@@ -35,7 +34,7 @@ public class InfoPane extends JScrollPane
 {
 
     private JTextPane textPane;
-    private String title;
+    private TitledBorder titledBorder;
 
     public InfoPane()
     {
@@ -46,22 +45,24 @@ public class InfoPane extends JScrollPane
     {
         super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
               JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        setTitle(title);
+        this.titledBorder = BorderFactory.createTitledBorder(null, title,
+                                                             TitledBorder.CENTER,
+                                                             TitledBorder.DEFAULT_POSITION);
+        setBorder(BorderFactory.createCompoundBorder(titledBorder, getBorder()));
         this.textPane = new JTextPane();
-        this.setViewportView(textPane);
+        textPane.setEditable(false);
+        setViewportView(textPane);
     }
 
     public String getTitle()
     {
-        return title;
+        return titledBorder.getTitle();
     }
 
     public void setTitle(String title)
     {
-        this.title = title;
-        setBorder(BorderFactory.createTitledBorder(null, title,
-                                                   TitledBorder.CENTER,
-                                                   TitledBorder.DEFAULT_POSITION));
+        titledBorder.setTitle(title);
+        validate();
     }
 
 }

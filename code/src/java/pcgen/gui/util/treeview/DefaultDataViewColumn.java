@@ -20,8 +20,6 @@
  */
 package pcgen.gui.util.treeview;
 
-import java.util.Comparator;
-
 /**
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
