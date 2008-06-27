@@ -19,7 +19,7 @@
  * Created on Jun 17, 2008, 3:52:41 PM
  */
 
-package pcgen.gui.core;
+package pcgen.gui;
 
 import pcgen.gui.filter.FilterList;
 

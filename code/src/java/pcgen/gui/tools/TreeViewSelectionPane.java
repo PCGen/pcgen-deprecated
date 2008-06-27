@@ -34,12 +34,13 @@ import javax.swing.JSplitPane;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import pcgen.gui.core.UIContext;
+import pcgen.gui.UIContext;
 import pcgen.gui.util.JTreeTable;
 import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.MultiLineTextIcon;
 import pcgen.gui.util.event.TreeViewModelEvent;
 import pcgen.gui.util.event.TreeViewModelListener;
+import pcgen.gui.util.panes.FlippingSplitPane;
 import pcgen.gui.util.treeview.TreeViewModel;
 import pcgen.gui.util.treeview.TreeViewModelWrapper;
 
@@ -47,7 +48,7 @@ import pcgen.gui.util.treeview.TreeViewModelWrapper;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class TreeViewSelectionPane extends JSplitPane
+public class TreeViewSelectionPane extends FlippingSplitPane
 {
 
     private FilteredTreeViewDisplay availableView;

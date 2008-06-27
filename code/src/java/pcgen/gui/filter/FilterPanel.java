@@ -39,7 +39,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import pcgen.gui.core.UIContext;
+import pcgen.gui.UIContext;
 import pcgen.gui.util.SimpleTextIcon;
 import pcgen.util.PropertyFactory;
 

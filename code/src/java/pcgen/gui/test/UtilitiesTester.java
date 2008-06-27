@@ -144,7 +144,7 @@ public class UtilitiesTester extends javax.swing.JFrame
             return views;
         }
 
-        public int getStartingIndex()
+        public int getDefaultTreeViewIndex()
         {
             return 0;
         }

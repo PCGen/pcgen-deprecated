@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.JPanel;
-import pcgen.gui.core.UIContext;
+import pcgen.gui.UIContext;
 import pcgen.gui.filter.Filter;
 import pcgen.gui.filter.FilterPanel;
 import pcgen.gui.filter.FilterPanelListener;
