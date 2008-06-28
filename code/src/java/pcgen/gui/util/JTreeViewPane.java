@@ -30,7 +30,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.TransferHandler;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -77,7 +76,7 @@ public class JTreeViewPane extends JTablePane
         getTable().setTableHeader(new JTreeViewHeader());
     }
 
-    public <T> JTreeViewPane(TreeViewModel<T> viewModel)
+    public JTreeViewPane(TreeViewModel<?> viewModel)
     {
         this();
         setTreeViewModel(viewModel);
@@ -95,23 +94,6 @@ public class JTreeViewPane extends JTablePane
         throw new UnsupportedOperationException();
     }
 
-    public void setDragEnabled(boolean b)
-    {
-        getTable().setDragEnabled(b);
-    }
-
-    @Override
-    public void setTransferHandler(TransferHandler newHandler)
-    {
-        getTable().setTransferHandler(newHandler);
-    }
-
-    @Override
-    public TransferHandler getTransferHandler()
-    {
-        return getTable().getTransferHandler();
-    }
-
     public TreeViewModel<?> getTreeViewModel()
     {
         return viewModel;
@@ -127,15 +109,16 @@ public class JTreeViewPane extends JTablePane
             this.viewModel.removeTreeViewModelListener(listener);
         }
         this.viewModel = viewModel;
-        this.viewModel.addTreeViewModelListener(listener = new TreeViewModelListener<T>()
-                                        {
+        this.viewModel.addTreeViewModelListener(
+                listener = new TreeViewModelListener<T>()
+        {
 
-                                            public void dataChanged(TreeViewModelEvent<T> event)
-                                            {
-                                                model.setData(event.getNewData());
-                                            }
+            public void dataChanged(TreeViewModelEvent<T> event)
+            {
+                model.setData(event.getNewData());
+            }
 
-                                        });
+        });
         treeviewMenu = new JPopupMenu();
         ButtonGroup group = new ButtonGroup();
         List<? extends TreeView<T>> views = viewModel.getTreeViews();

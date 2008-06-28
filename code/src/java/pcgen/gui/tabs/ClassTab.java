@@ -63,7 +63,6 @@ public class ClassTab extends javax.swing.JPanel {
         jSpinner1.setPreferredSize(new java.awt.Dimension(50, 18));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.ipadx = 12;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         jPanel1.add(jSpinner1, gridBagConstraints);
 

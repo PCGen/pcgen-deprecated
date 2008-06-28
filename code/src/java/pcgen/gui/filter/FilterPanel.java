@@ -67,13 +67,13 @@ public class FilterPanel extends JPanel
         this(context, null, null);
     }
 
-    public <T> FilterPanel(UIContext context, Class<T> filterclass)
+    public FilterPanel(UIContext context, Class<?> filterclass)
     {
         this(context, filterclass, null);
     }
 
-    public <T> FilterPanel(UIContext context, Class<T> filterClass,
-                            FilterPanelListener listener)
+    public FilterPanel(UIContext context, Class<?> filterClass,
+                        FilterPanelListener listener)
     {
         this.context = context;
         this.textfield = new JTextField();

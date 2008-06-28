@@ -27,6 +27,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.table.TableColumn;
 import pcgen.gui.util.event.DynamicTableColumnModelListener;
@@ -52,7 +54,7 @@ public class JTablePane extends JScrollPane
      */
     public JTablePane()
     {
-        this((SortableTableModel)null);
+        this((SortableTableModel) null);
     }
 
     /**
@@ -70,7 +72,7 @@ public class JTablePane extends JScrollPane
         setTable(table);
         setColumnModel(createDefaultDynamicTableColumnModel());
     }
-    
+
     protected DynamicTableColumnModel createDefaultDynamicTableColumnModel()
     {
         return new DefaultDynamicTableColumnModel(table.getColumnModel(), 1);
@@ -119,7 +121,29 @@ public class JTablePane extends JScrollPane
     {
         return table;
     }
-    
+
+    public void setDragEnabled(boolean b)
+    {
+        table.setDragEnabled(b);
+    }
+
+    @Override
+    public void setTransferHandler(TransferHandler newHandler)
+    {
+        table.setTransferHandler(newHandler);
+    }
+
+    @Override
+    public TransferHandler getTransferHandler()
+    {
+        return table.getTransferHandler();
+    }
+
+    public ListSelectionModel getSelectionModel()
+    {
+        return table.getSelectionModel();
+    }
+
     private class CornerAction extends AbstractAction
     {
 

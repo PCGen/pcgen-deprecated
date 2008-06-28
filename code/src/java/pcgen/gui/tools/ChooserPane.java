@@ -46,12 +46,12 @@ public class ChooserPane extends FlippingSplitPane
         setOneTouchExpandable(true);
     }
 
-    public void setPrimarySelectionComponent(Component c)
+    public void setPrimaryChooserComponent(Component c)
     {
         setLeftComponent(c);
     }
 
-    public void setSecondarySelectionComponent(Component c)
+    public void setSecondaryChooserComponent(Component c)
     {
         subSplitPane.setBottomComponent(c);
     }
