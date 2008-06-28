@@ -25,14 +25,17 @@ package pcgen.io;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import pcgen.AbstractCharacterTestCase;
 import pcgen.core.Ability;
 import pcgen.core.Equipment;
-import pcgen.core.GameMode;
 import pcgen.core.Globals;
 import pcgen.core.LevelInfo;
 import pcgen.core.PCClass;
@@ -42,7 +45,6 @@ import pcgen.core.Race;
 import pcgen.core.SettingsHandler;
 import pcgen.core.Skill;
 import pcgen.core.character.EquipSet;
-import pcgen.util.Logging;
 
 /**
  * <code>SkillTokenTest</code> contains tests to verify that the
@@ -424,6 +426,24 @@ public class ExportHandlerTest extends AbstractCharacterTestCase
 		
 	}
 
+	public void testPartyFor() throws IOException
+	{
+		String outputToken =
+				"   <combatants>\n"
+					+ "|FOR.0,50,1,\n"
+					+ "	<name>\\\\%.NAME\\\\</name>\n"
+					+ "	<skills>\\\\%.FOR.0,COUNT[SKILLS],1,\\SKILL.%\\: \\SKILL.%.TOTAL.SIGN\\, ,; ,1\\\\</skills>\n"
+					+ ",<combatant>,</combatant>,1|\n" + "   </combatants>";
+		List<PlayerCharacter> pcs = new ArrayList<PlayerCharacter>();
+		pcs.add(getCharacter());
+		String result = evaluatePartyToken(outputToken, pcs).trim();
+		assertEquals(
+			"Party skills output",
+			"<combatants>\r\n" + 
+			"<combatant>	<name></name>	<skills> Balance: +9;  KNOWLEDGE (ARCANA): +11;  KNOWLEDGE (RELIGION): +8;  Tumble: +10; </skills></combatant>   </combatants>",
+			result);
+	}
+	
 	private String evaluateToken(String token, PlayerCharacter pc)
 		throws IOException
 	{
@@ -431,6 +451,31 @@ public class ExportHandlerTest extends AbstractCharacterTestCase
 		BufferedWriter bufWriter = new BufferedWriter(retWriter);
 		ExportHandler export = new ExportHandler(new File(""));
 		export.replaceToken(token, bufWriter, pc);
+		retWriter.flush();
+
+		bufWriter.flush();
+
+		return retWriter.toString();
+	}
+	
+	private String evaluatePartyToken(String token, List<PlayerCharacter> pcs)
+		throws IOException
+	{
+        // Create temp file.
+        File temp = File.createTempFile("testTemplate", ".txt");
+    
+        // Delete temp file when program exits.
+        temp.deleteOnExit();
+    
+        // Write to temp file
+        BufferedWriter out = new BufferedWriter(new FileWriter(temp));
+        out.write(token);
+        out.close();
+		
+		StringWriter retWriter = new StringWriter();
+		BufferedWriter bufWriter = new BufferedWriter(retWriter);
+		ExportHandler export = new ExportHandler(temp);
+		export.write(pcs, bufWriter);
 		retWriter.flush();
 
 		bufWriter.flush();
