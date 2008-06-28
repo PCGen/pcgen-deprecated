@@ -16179,7 +16179,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 	// pool of feats remaining to distribute
 	private double feats = 0;
-	private boolean rebuildingAbilities = false;
 
 	/**
 	 * Set aggregate Feats stable
@@ -17506,14 +17505,30 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	private synchronized void rebuildAggregateAbilityList()
 	{
-		if (rebuildingAbilities)
-		{
-			Logging.errorPrint("Second entry into rebuildAggregateAbilityList by ", new Throwable());
-			return;
-		}
-		rebuildingAbilities  = true;
 		getVariableProcessor().pauseCache();
 		
+		try
+		{
+			rebuildAggregateAbilityListWorker();
+		}
+		catch (Exception e)
+		{
+			Logging.errorPrint(
+				"Encountered error while rebuilding abiltiies list - ignoring",
+				e);
+		}
+		finally
+		{
+			getVariableProcessor().restartCache();
+		}
+	}
+
+	/**
+	 * Do the actual rebuilding of the feats. Split out to allow more 
+	 * readable error handling. 
+	 */
+	private synchronized void rebuildAggregateAbilityListWorker()
+	{
 		GameMode gm = SettingsHandler.getGame();
 		Set<AbilityCategory> catSet = new HashSet<AbilityCategory>();
 		catSet.addAll(gm.getAllAbilityCategories());
@@ -17598,8 +17613,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 		cachedWeaponProfs = null;
 		rebuildFeatAggreagateList();
-		getVariableProcessor().restartCache();
-		rebuildingAbilities  = false;
 	}
 
 	private List<Ability> getStableAggregateFeatList()
