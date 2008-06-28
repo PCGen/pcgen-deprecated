@@ -18,8 +18,9 @@
  * 
  * Created on Jun 27, 2008, 12:53:57 PM
  */
-package pcgen.gui.tools;
+package pcgen.gui.tabs;
 
+import pcgen.gui.tools.*;
 import java.awt.Component;
 import pcgen.gui.util.panes.FlippingSplitPane;
 

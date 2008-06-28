@@ -36,11 +36,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.UIContext;
 import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.facade.ClassFacade;
-import pcgen.gui.tools.ChooserPane;
+import pcgen.gui.tabs.ChooserPane;
 import pcgen.gui.tools.FilteredTreeViewDisplay;
 import pcgen.gui.util.JTablePane;
-import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
 import pcgen.util.PropertyFactory;
@@ -69,6 +67,7 @@ public class ClassChooserPane extends ChooserPane implements Tab
 
     private void initComponents()
     {
+        setPrimaryChooserComponent(treeviewDisplay);
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
@@ -185,8 +184,10 @@ public class ClassChooserPane extends ChooserPane implements Tab
     {
         if (this.character != character)
         {
-            saveModels();
+            if(this.character != null)
+                context.putUIData(this.character, "classTab", saveModels());
             this.character = character;
+            
         }
 
     }
