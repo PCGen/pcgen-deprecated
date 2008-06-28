@@ -1,5 +1,5 @@
 /*
- * ClassChooserPane.java
+ * ClassChooserTab.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.UIContext;
 import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.tabs.ChooserPane;
+import pcgen.gui.tabs.ChooserTab;
 import pcgen.gui.tools.FilteredTreeViewDisplay;
 import pcgen.gui.util.JTablePane;
 import pcgen.gui.util.table.DefaultSortableTableModel;
@@ -47,7 +47,7 @@ import pcgen.util.PropertyFactory;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class ClassChooserPane extends ChooserPane implements Tab
+public class ClassChooserTab extends ChooserTab implements Tab
 {
 
     private final FilteredTreeViewDisplay treeviewDisplay;
@@ -57,7 +57,7 @@ public class ClassChooserPane extends ChooserPane implements Tab
     private CharacterFacade character;
     private int spinnerValue;
 
-    public ClassChooserPane(UIContext context)
+    public ClassChooserTab(UIContext context)
     {
         this.treeviewDisplay = new FilteredTreeViewDisplay(context);
         this.tablePane = new JTablePane();
