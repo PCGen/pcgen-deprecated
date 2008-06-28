@@ -22,22 +22,28 @@ package pcgen.gui.tabs;
 
 import pcgen.gui.tools.*;
 import java.awt.Component;
+import java.util.Map;
+import pcgen.gui.UIContext;
+import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.util.panes.FlippingSplitPane;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class ChooserTab extends FlippingSplitPane
+public abstract class ChooserTab extends FlippingSplitPane implements CharacterInfoTab
 {
 
+    protected final UIContext context;
+    protected CharacterFacade character;
     private FlippingSplitPane subSplitPane;
     private InfoPane infoPane;
 
-    public ChooserTab()
+    protected ChooserTab(UIContext context)
     {
         this.subSplitPane = new FlippingSplitPane(VERTICAL_SPLIT);
         this.infoPane = new InfoPane();
+        this.context = context;
 
         subSplitPane.setTopComponent(infoPane);
         setRightComponent(subSplitPane);
@@ -60,6 +66,23 @@ public class ChooserTab extends FlippingSplitPane
     public void setInfoPaneTitle(String title)
     {
         infoPane.setTitle(title);
+    }
+
+    public abstract Map<String, Object> saveModels();
+
+    public abstract void loadModels(Map<String, Object> map);
+
+    public void setCharacter(CharacterFacade character)
+    {
+        if (character != null && this.character != character)
+        {
+            if (this.character != null)
+            {
+                context.putUIData(this.character, getName(), saveModels());
+            }
+            this.character = character;
+            loadModels(context.getUIData(character, getName()));
+        }
     }
 
 }

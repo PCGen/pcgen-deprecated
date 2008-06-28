@@ -35,8 +35,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.UIContext;
-import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.tabs.ChooserTab;
 import pcgen.gui.tools.FilteredTreeViewDisplay;
 import pcgen.gui.util.JTablePane;
 import pcgen.gui.util.table.DefaultSortableTableModel;
@@ -52,16 +50,14 @@ public class ClassChooserTab extends ChooserTab implements Tab
 
     private final FilteredTreeViewDisplay treeviewDisplay;
     private final JTablePane tablePane;
-    private final UIContext context;
     private SortableTableModel tableModel;
-    private CharacterFacade character;
     private int spinnerValue;
 
     public ClassChooserTab(UIContext context)
     {
+        super(context);
         this.treeviewDisplay = new FilteredTreeViewDisplay(context);
         this.tablePane = new JTablePane();
-        this.context = context;
         initComponents();
     }
 
@@ -136,12 +132,12 @@ public class ClassChooserTab extends ChooserTab implements Tab
         setSecondaryChooserComponent(panel);
     }
 
-    private Map<String, Object> saveModels()
+    public Map<String, Object> saveModels()
     {
         return null;
     }
 
-    private void loadModels(Map<String, Object> map)
+    public void loadModels(Map<String, Object> map)
     {
 
     }
@@ -179,17 +175,4 @@ public class ClassChooserTab extends ChooserTab implements Tab
     private class ClassTableModel extends DefaultSortableTableModel
     {
     }
-
-    public void setCharacter(CharacterFacade character)
-    {
-        if (this.character != character)
-        {
-            if(this.character != null)
-                context.putUIData(this.character, "classTab", saveModels());
-            this.character = character;
-            
-        }
-
-    }
-
 }
