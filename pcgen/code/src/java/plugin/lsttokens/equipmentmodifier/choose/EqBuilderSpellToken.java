@@ -34,12 +34,6 @@ public class EqBuilderSpellToken implements EqModChooseLstToken
 			po.setChoiceString(getTokenName());
 			return true;
 		}
-		if (value.indexOf(',') != -1)
-		{
-			Logging.errorPrint("CHOOSE:" + getTokenName()
-				+ " arguments may not contain , : " + value);
-			return false;
-		}
 		if (value.indexOf('[') != -1)
 		{
 			Logging.errorPrint("CHOOSE:" + getTokenName()
@@ -65,12 +59,6 @@ public class EqBuilderSpellToken implements EqModChooseLstToken
 			return false;
 		}
 		StringTokenizer tok = new StringTokenizer(value, Constants.PIPE);
-		if (tok.countTokens() != 3)
-		{
-			Logging.errorPrint("COUNT:" + getTokenName()
-				+ " requires three arguments: " + value);
-			return false;
-		}
 		tok.nextToken();
 		if (tok.hasMoreTokens())
 		{
