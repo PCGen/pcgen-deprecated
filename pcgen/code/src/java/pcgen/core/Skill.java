@@ -1254,23 +1254,24 @@ public final class Skill extends PObject
 			}
 			for ( Equipment eq : itemList )
 			{
-				// For when the new BONUS'es are implmented
+				// For when the new BONUS'es are implemented
 				/*
 				 String qsString = "EQ:" + eq.getName();
 				 maxBonus += aPC.getVariableValue(Globals.getNonProfPenaltyFormula(), eqString);
 				 */
-				if ((aCheck == ACHECK_YES)
+				if ((aCheck == ACHECK_YES) || (aCheck == ACHECK_DOUBLE)
 					|| ((aCheck == ACHECK_NONPROF) && !aPC.isProficientWith(eq)))
 				{
 					maxBonus += eq.acCheck(aPC).intValue();
 				}
-				else if (aCheck == ACHECK_DOUBLE)
-				{
-					maxBonus += 2 * eq.acCheck(aPC).intValue();
-				}
 			}
 		}
 		maxBonus += (int) aPC.getTotalBonusTo("MISC", "ACCHECK");
+
+		if (aCheck == ACHECK_DOUBLE)
+		{
+			maxBonus *= 2;
+		}
 
 		return Math.min(maxBonus, minBonus);
 	}
