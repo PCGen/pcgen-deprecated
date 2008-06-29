@@ -17579,6 +17579,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			prevHashCode = theAbilities.size(); 
 			i++;
 			List<String> templateList = new ArrayList<String>();
+			List<Equipment> naturalWeaponsList = new ArrayList<Equipment>();
 			List<? extends PObject> pobjectList = getPObjectList();
 			for (AbilityCategory cat : catSet)
 			{
@@ -17601,6 +17602,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 								{
 									added.setFeatType(nature);
 									templateList.addAll(added.getTemplateList());
+									naturalWeaponsList.addAll(added.getNaturalWeapons());
 								}
 							}
 						}
@@ -17623,6 +17625,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			}
 			// May have added templates, so scan for them
 			addTemplatesIfMissing(templateList);
+			addNaturalWeaponsIfMissing(naturalWeaponsList);
 		}
 		cachedWeaponProfs = null;
 		rebuildFeatAggreagateList();
@@ -17634,6 +17637,20 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			addTemplateKeyed(key);
 		}
+	}
+
+	private void addNaturalWeaponsIfMissing(List<Equipment> naturalWeaponsList)
+	{
+		for (Iterator<Equipment> iterator = naturalWeaponsList.iterator(); iterator
+			.hasNext();)
+		{
+			Equipment wpn = iterator.next();
+			if (equipmentList.contains(wpn))
+			{
+				iterator.remove();
+			}
+		}
+		addNaturalWeapons(naturalWeaponsList);
 	}
 
 	private List<Ability> getStableAggregateFeatList()
