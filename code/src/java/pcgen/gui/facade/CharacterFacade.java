@@ -18,13 +18,19 @@
  * 
  * Created on Jun 12, 2008, 8:27:12 PM
  */
-
 package pcgen.gui.facade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface CharacterFacade {
-    
+public interface CharacterFacade
+{
+
+    public ClassFacade getSelectedClass(int level);
+
+    public int getCharacterLevel();
+
+    public int getClassLevel(ClassFacade c);
+
 }

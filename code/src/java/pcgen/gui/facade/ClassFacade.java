@@ -20,6 +20,8 @@
  */
 package pcgen.gui.facade;
 
+import pcgen.gui.filter.Filter;
+
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
@@ -28,5 +30,15 @@ public interface ClassFacade
 {
 
     public String getInfo();
+
+    public Filter<CharacterFacade> getPrerequisites();
+
+    public String getHD();
+
+    public String getSpellType();
+
+    public String getBaseStat();
+
+    public String getSource();
 
 }

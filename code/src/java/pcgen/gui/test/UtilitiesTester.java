@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
-import pcgen.gui.util.treetable.DefaultSortableTreeTableModel;
 import pcgen.gui.util.treeview.AbstractTreeViewModel;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;

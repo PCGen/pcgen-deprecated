@@ -43,8 +43,34 @@ import pcgen.gui.util.table.SortableTableModel;
 public class JTablePane extends JScrollPane
 {
 
+    private final DynamicTableColumnModelListener listener = new DynamicTableColumnModelListener()
+    {
+
+        public void availableColumnAdded(TableColumnModelEvent event)
+        {
+            int index = event.getToIndex();
+            TableColumn column = columnModel.getAvailableColumns().get(index);
+            JCheckBoxMenuItem item = new JCheckBoxMenuItem();
+            item.setSelected(columnModel.isVisible(column));
+            item.setAction(new MenuAction(column));
+            menu.insert(item, index);
+            if (getCorner(JScrollPane.UPPER_RIGHT_CORNER) == null)
+            {
+                setCorner(JScrollPane.UPPER_RIGHT_CORNER, cornerButton);
+            }
+        }
+
+        public void availableColumnRemove(TableColumnModelEvent event)
+        {
+            menu.remove(event.getFromIndex());
+            if (menu.getComponentCount() == 0)
+            {
+                setCorner(JScrollPane.UPPER_RIGHT_CORNER, null);
+            }
+        }
+
+    };
     private final JButton cornerButton = new JButton(new CornerAction());
-    private final ModelListener listener = new ModelListener();
     private JPopupMenu menu = new JPopupMenu();
     private DynamicTableColumnModel columnModel;
     private JTableEx table;
@@ -162,6 +188,7 @@ public class JTablePane extends JScrollPane
     private class MenuAction extends AbstractAction
     {
 
+        private boolean visible = false;
         private TableColumn column;
 
         public MenuAction(TableColumn column)
@@ -172,35 +199,7 @@ public class JTablePane extends JScrollPane
 
         public void actionPerformed(ActionEvent e)
         {
-            columnModel.toggleVisible(column);
-        }
-
-    }
-
-    private class ModelListener implements DynamicTableColumnModelListener
-    {
-
-        public void availableColumnAdded(TableColumnModelEvent event)
-        {
-            int index = event.getToIndex();
-            TableColumn column = columnModel.getAvailableColumns().get(index);
-            JCheckBoxMenuItem item = new JCheckBoxMenuItem();
-            item.setSelected(columnModel.isVisible(column));
-            item.setAction(new MenuAction(column));
-            menu.insert(item, index);
-            if (getCorner(JScrollPane.UPPER_RIGHT_CORNER) == null)
-            {
-                setCorner(JScrollPane.UPPER_RIGHT_CORNER, cornerButton);
-            }
-        }
-
-        public void availableColumnRemove(TableColumnModelEvent event)
-        {
-            menu.remove(event.getFromIndex());
-            if (menu.getComponentCount() == 0)
-            {
-                setCorner(JScrollPane.UPPER_RIGHT_CORNER, null);
-            }
+            columnModel.setVisible(column, visible = !visible);
         }
 
     }

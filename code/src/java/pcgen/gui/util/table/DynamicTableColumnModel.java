@@ -40,6 +40,6 @@ public interface DynamicTableColumnModel extends TableColumnModel
 
     public boolean isVisible(TableColumn column);
 
-    public void toggleVisible(TableColumn column);
+    public void setVisible(TableColumn column, boolean visible);
 
 }

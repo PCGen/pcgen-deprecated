@@ -184,17 +184,17 @@ public class DefaultDynamicTableColumnModel extends DefaultTableColumnModel
         return tableColumns.contains(column);
     }
 
-    public void toggleVisible(TableColumn column)
+    public void setVisible(TableColumn column, boolean visible)
     {
-        if (availableColumns.contains(column))
+        if (availableColumns.contains(column) && isVisible(column) != visible)
         {
-            if (isVisible(column))
+            if (visible)
             {
-                super.removeColumn(column);
+                super.addColumn(column);
             }
             else
             {
-                super.addColumn(column);
+                super.removeColumn(column);
             }
         }
     }
