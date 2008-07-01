@@ -1,5 +1,5 @@
 /*
- * CharacterFacade.java
+ * AbilityCatagoryFacade.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,23 +16,38 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 12, 2008, 8:27:12 PM
+ * Created on Jun 30, 2008, 5:01:57 PM
  */
 package pcgen.gui.facade;
+
+import java.util.List;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface CharacterFacade
+public interface AbilityCatagoryFacade
 {
 
-    public ClassFacade getSelectedClass(int level);
+    public List<AbilityFacade> getAbilities();
 
-    public int getCharacterLevel();
+    /**
+     * 
+     * @return "Feats", "Class Abilities", or "Salient Divine Ability"
+     */
+    public String getType();
 
-    public int getClassLevel(ClassFacade c);
+    /**
+     * 
+     * @return the singular name of the Catagory
+     */
+    public String getName();
 
-    public int getAvailableSelections(AbilityCatagoryFacade catagory);
+    /**
+     * 
+     * @return the plural name of the Catagory
+     */
+    @Override
+    public String toString();
 
 }

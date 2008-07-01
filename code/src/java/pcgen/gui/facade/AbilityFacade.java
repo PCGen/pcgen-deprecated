@@ -1,5 +1,5 @@
 /*
- * CharacterFacade.java
+ * AbilityFacade.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,23 +16,26 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 12, 2008, 8:27:12 PM
+ * Created on Jun 30, 2008, 12:16:54 AM
  */
 package pcgen.gui.facade;
+
+import java.util.List;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface CharacterFacade
+public interface AbilityFacade
 {
 
-    public ClassFacade getSelectedClass(int level);
+    public List<String> getTypes();
 
-    public int getCharacterLevel();
+    public String getDescription();
 
-    public int getClassLevel(ClassFacade c);
+    public String getSource();
 
-    public int getAvailableSelections(AbilityCatagoryFacade catagory);
+    @Override
+    public String toString();
 
 }

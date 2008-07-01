@@ -43,4 +43,6 @@ public interface TreeViewModel<E>
 
     Collection<E> getData();
 
+    void setData(Collection<E> data);
+
 }

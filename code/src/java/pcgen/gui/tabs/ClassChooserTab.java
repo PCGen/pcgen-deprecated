@@ -62,11 +62,6 @@ import pcgen.util.PropertyFactory;
 public class ClassChooserTab extends ChooserTab
 {
 
-    private final DataFlavor classArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-                                                                 ";class=\"" +
-                                                                 ClassFacade[].class.getName() +
-                                                                 "\"",
-                                                                 null);
     private final FilteredTreeViewDisplay treeviewDisplay;
     private final JTable classTable;
     private int spinnerValue;

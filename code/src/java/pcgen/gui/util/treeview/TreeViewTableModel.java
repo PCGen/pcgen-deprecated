@@ -39,7 +39,7 @@ import pcgen.util.ListMap;
  *
  * @author Connor Petty <mistercpp2000@gmail.com>
  */
-public final class TreeViewTableModel<E> extends AbstractTreeTableModel
+public class TreeViewTableModel<E> extends AbstractTreeTableModel
         implements SortableTreeTableModel
 {
 
@@ -56,7 +56,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         this.datacolumns = dataview.getDataColumns();
     }
 
-    public void setData(Collection<E> data)
+    public final void setData(Collection<E> data)
     {
         populateDataMap(data);
         viewMap.clear();
@@ -75,12 +75,12 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
-    public TreeView<E> getSelectedTreeView()
+    public final TreeView<E> getSelectedTreeView()
     {
         return selectedView;
     }
 
-    public void setSelectedTreeView(TreeView<E> view)
+    public final void setSelectedTreeView(TreeView<E> view)
     {
         if (view != null)
         {
@@ -103,19 +103,19 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
-    public int getColumnCount()
+    public final int getColumnCount()
     {
         return datacolumns.size() + 1;
     }
 
     @Override
-    public Class<?> getColumnClass(int column)
+    public final Class<?> getColumnClass(int column)
     {
         return getDataColumn(column).getDataClass();
     }
 
     @Override
-    public String getColumnName(int column)
+    public final String getColumnName(int column)
     {
         return getDataColumn(column).getName();
     }
@@ -131,7 +131,7 @@ public final class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
-    public void sortModel(Comparator<List<?>> comparator)
+    public final void sortModel(Comparator<List<?>> comparator)
     {
         viewMap.get(selectedView).sortChildren(new TreeNodeComparator(comparator));
         reload();

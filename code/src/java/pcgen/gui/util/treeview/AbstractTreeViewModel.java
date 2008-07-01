@@ -92,7 +92,7 @@ public abstract class AbstractTreeViewModel<E> implements TreeViewModel<E>
         }
     }
 
-    protected void setData(Collection<E> data)
+    public void setData(Collection<E> data)
     {
         Collection<E> oldData = this.data;
         this.data = data;
