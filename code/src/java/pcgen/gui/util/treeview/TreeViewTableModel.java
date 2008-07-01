@@ -65,7 +65,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 
     private void populateDataMap(Collection<E> data)
     {
-        dataMap.entrySet().retainAll(data);
+        dataMap.keySet().retainAll(data);
         for (E obj : data)
         {
             if (!dataMap.containsKey(obj))
@@ -78,6 +78,11 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     public final TreeView<E> getSelectedTreeView()
     {
         return selectedView;
+    }
+
+    private void resetSelectedTreeView()
+    {
+
     }
 
     public final void setSelectedTreeView(TreeView<E> view)

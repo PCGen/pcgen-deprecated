@@ -33,6 +33,6 @@ public interface CharacterFacade
 
     public int getClassLevel(ClassFacade c);
 
-    public int getAvailableSelections(AbilityCatagoryFacade catagory);
+    public int getRemainingSelections(AbilityCatagoryFacade catagory);
 
 }

@@ -23,12 +23,13 @@ package pcgen.gui.tabs;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JScrollPane;
+import javax.swing.tree.DefaultMutableTreeNode;
 import pcgen.gui.UIContext;
 import pcgen.gui.facade.AbilityCatagoryFacade;
-import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.tools.FilteredTreeViewDisplay;
-import pcgen.gui.util.JTreeViewPane;
+import pcgen.gui.util.JTreeTable;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
 import pcgen.gui.util.treeview.DefaultDataViewColumn;
@@ -44,21 +45,23 @@ public class AbilityChooserTab extends ChooserTab
 {
 
     private final FilteredTreeViewDisplay treeviewDisplay;
-    private final JTreeViewPane abilityTreeViewPane;
+    private final JTreeTable catagoryTreeTable;
 
     public AbilityChooserTab(UIContext context)
     {
         super(context);
         this.treeviewDisplay = new FilteredTreeViewDisplay(context);
-        this.abilityTreeViewPane = new JTreeViewPane();
+        this.catagoryTreeTable = new JTreeTable();
         initComponents();
     }
 
     private void initComponents()
     {
-
+        JScrollPane catagoryScrollPane = new JScrollPane(catagoryTreeTable,
+                                                         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                                         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         setPrimaryChooserComponent(treeviewDisplay);
-        setSecondaryChooserComponent(abilityTreeViewPane);
+        setSecondaryChooserComponent(catagoryScrollPane);
     }
 
     @Override
@@ -103,7 +106,7 @@ public class AbilityChooserTab extends ChooserTab
 
               public List<?> getData(AbilityCatagoryFacade catagory)
               {
-                  return Collections.singletonList(character.getAvailableSelections(catagory));
+                  return Collections.singletonList(character.getRemainingSelections(catagory));
               }
 
               public List<? extends DataViewColumn> getDataColumns()
@@ -118,7 +121,12 @@ public class AbilityChooserTab extends ChooserTab
         @Override
         public boolean isCellEditable(Object node, int column)
         {
-            return true;
+            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
+            if (treeNode.getUserObject() instanceof AbilityCatagoryFacade)
+            {
+                return true;
+            }
+            return super.isCellEditable(node, column);
         }
 
     }

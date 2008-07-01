@@ -70,34 +70,13 @@ public class TreeViewSelectionPane extends FlippingSplitPane
     }
 
     public <T> void setSelectionModel(Class<T> elementClass,
-                                       TreeViewModel<T> masterModel,
-                                       Collection<T> selectedData)
+                                       TreeViewModel<T> availableModel,
+                                       TreeViewModel<T> selectedModel)
     {
-        Collection<T> availableElements = masterModel.getData();
-        availableElements.removeAll(selectedData);
-
-        final ElementTreeViewModel<T> availableModel = new ElementTreeViewModel<T>(masterModel,
-                                                                                    availableElements);
-        final ElementTreeViewModel<T> selectedModel = new ElementTreeViewModel<T>(masterModel,
-                                                                                   selectedData);
         if (masterTreeView != null)
         {
             masterTreeView.removeTreeViewModelListener(masterTreeViewListener);
         }
-        masterTreeView = masterModel;
-
-        TreeViewModelListener<T> listener = new TreeViewModelListener<T>()
-        {
-
-            public void dataChanged(TreeViewModelEvent<T> event)
-            {
-                setModelData(availableModel, selectedModel,
-                             event.getNewData(), selectedModel.getData());
-            }
-
-        };
-        masterTreeViewListener = listener;
-        masterModel.addTreeViewModelListener(listener);
 
         availableView.setTreeViewModel(elementClass, availableModel);
         selectedView.setTreeViewModel(elementClass, selectedModel);
@@ -110,6 +89,34 @@ public class TreeViewSelectionPane extends FlippingSplitPane
                                                                           selectedPane);
         availablePane.setTransferHandler(handler);
         selectedPane.setTransferHandler(handler);
+    }
+
+    public <T> void setSelectionModel(Class<T> elementClass,
+                                       TreeViewModel<T> masterModel,
+                                       Collection<T> selectedData)
+    {
+        Collection<T> availableElements = masterModel.getData();
+        availableElements.removeAll(selectedData);
+
+        final ElementTreeViewModel<T> availableModel = new ElementTreeViewModel<T>(masterModel,
+                                                                                    availableElements);
+        final ElementTreeViewModel<T> selectedModel = new ElementTreeViewModel<T>(masterModel,
+                                                                                   selectedData);
+        setSelectionModel(elementClass, availableModel, selectedModel);
+
+        masterTreeView = masterModel;
+        TreeViewModelListener<T> listener = new TreeViewModelListener<T>()
+        {
+
+            public void dataChanged(TreeViewModelEvent<T> event)
+            {
+                setModelData(availableModel, selectedModel,
+                             event.getNewData(), selectedModel.getData());
+            }
+
+        };
+        masterTreeViewListener = listener;
+        masterModel.addTreeViewModelListener(listener);
     }
 
     private <T> void setModelData(ElementTreeViewModel<T> availableModel,
@@ -126,7 +133,7 @@ public class TreeViewSelectionPane extends FlippingSplitPane
         selectedModel.setData(availableElements);
     }
 
-    private class ElementTreeViewModel<E> extends TreeViewModelWrapper<E>
+    private static class ElementTreeViewModel<E> extends TreeViewModelWrapper<E>
     {
 
         public ElementTreeViewModel(TreeViewModel<E> model, Collection<E> data)
