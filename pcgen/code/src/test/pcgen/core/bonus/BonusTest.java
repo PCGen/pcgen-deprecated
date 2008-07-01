@@ -33,7 +33,6 @@ import pcgen.core.PlayerCharacter;
 import pcgen.core.Skill;
 import pcgen.core.character.EquipSet;
 import pcgen.core.spell.Spell;
-import pcgen.util.Logging;
 import plugin.bonustokens.Var;
 
 /**
@@ -222,12 +221,50 @@ public class BonusTest extends AbstractCharacterTestCase
 
 		int bonusVal = (int) testBonus.calcPartialBonus(1, bonus, character, "VISION.DARKVISION:MAGICAL BOON", character);
 		assertEquals(14, bonusVal);
-		
-		
+	}
 
-		
-		
-		
-		//Double a = sp.calcBonusFrom(spCost, character, character);
+	public void testBonuswithLISTValueTwoAssoc()
+	{
+		final PlayerCharacter character = getCharacter();
+
+		Globals.setCurrentPC(character);
+		setPCStat(character, "INT", 18);
+		setPCStat(character, "STR", 16);
+		final BonusObj bonus =
+				Bonus.newBonus("VISION|Darkvision|%LIST+10|TYPE=Magical Boon");
+		ArrayList<BonusObj> bonusList = new ArrayList<BonusObj>();
+		bonusList.add(bonus);
+		final Ability testBonus = new Ability();
+		testBonus.addBonusList(bonus);
+		testBonus.addAssociated("INT");
+		testBonus.addAssociated("STR");
+		bonus.setCreatorObject(testBonus);
+		character.addFeat(testBonus, null);
+
+		int bonusVal = (int) testBonus.calcPartialBonus(1, bonus, character, "VISION.DARKVISION:MAGICAL BOON", character);
+		assertEquals(27, bonusVal);
+	}
+
+	public void testBonuswithLISTValueTwoAssocInfoList()
+	{
+		final PlayerCharacter character = getCharacter();
+
+		Globals.setCurrentPC(character);
+		setPCStat(character, "INT", 18);
+		setPCStat(character, "STR", 16);
+		final BonusObj bonus = Bonus.newBonus("STAT|%LIST|%LIST+1");
+		ArrayList<BonusObj> bonusList = new ArrayList<BonusObj>();
+		bonusList.add(bonus);
+		final Ability testBonus = new Ability();
+		testBonus.addBonusList(bonus);
+		testBonus.addAssociated("INT");
+		testBonus.addAssociated("STR");
+		bonus.setCreatorObject(testBonus);
+		character.addFeat(testBonus, null);
+
+		int bonusVal = (int) testBonus.calcPartialBonus(1, bonus, character, "STAT.INT", character);
+		assertEquals(5, bonusVal);
+		bonusVal = (int) testBonus.calcPartialBonus(1, bonus, character, "STAT.STR", character);
+		assertEquals(4, bonusVal);
 	}
 }

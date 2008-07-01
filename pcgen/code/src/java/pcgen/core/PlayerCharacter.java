@@ -6897,7 +6897,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		final List<BonusObj> aList =
 				statList.getBonusListOfType(aType.toUpperCase(), aName
 					.toUpperCase());
-
+System.err.println(aList);
 		return calcBonusFromList(aList);
 	}
 

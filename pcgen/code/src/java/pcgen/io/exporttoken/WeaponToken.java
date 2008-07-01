@@ -2324,8 +2324,10 @@ public class WeaponToken extends Token
 		String damString = getEqDamage(pc, eq);
 		int meleeDamageStatBonus =
 				(int) pc.getStatBonusTo("COMBAT", "DAMAGE.MELEE");
+System.err.println(meleeDamageStatBonus);
 		// TODO: remove this old syntax
 		meleeDamageStatBonus += (int) pc.getStatBonusTo("DAMAGE", "TYPE.MELEE");
+System.err.println(meleeDamageStatBonus);
 		double meleeDamageMult =
 				pc.getTotalBonusTo("COMBAT", "DAMAGEMULT:" + hands);
 		meleeDamageMult +=
@@ -2483,7 +2485,6 @@ public class WeaponToken extends Token
 		{
 			bonus += (int) pc.getTotalBonusTo("COMBAT", "DAMAGE.Finesseable");
 		}
-
 		if (eq.isMelee() && (meleeDamageStatBonus > 0))
 		{
 			// getTotalBonusTo() includes the Stat Bonuses

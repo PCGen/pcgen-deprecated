@@ -42,7 +42,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pcgen.core.Ability.Nature;
 import pcgen.core.bonus.Bonus;
 import pcgen.core.bonus.BonusObj;
 import pcgen.core.bonus.BonusUtilities;
@@ -5203,47 +5202,43 @@ public class PObject extends PrereqObject implements Cloneable, Serializable, Co
 			return 0;
 		}
 
-		if (listString != null)
+		if (aVal.indexOf("%LIST") >= 0)
 		{
-			int listIndex = aVal.indexOf("%LIST");
-			while (listIndex >= 0)
+			StringBuilder sb = new StringBuilder();
+			boolean found = false;
+			/*
+			 * A %LIST substitution also needs to be done in the val section
+			 * first, find out which one this is a bit of a hack but it was the
+			 * best I could figure out so far
+			 */
+			for (int i = 0; i < getAssociatedCount(); ++i)
 			{
-				//A %LIST substitution also needs to be done in the val section
-				//first, find out which one
-				//this is a bit of a hack but it was the best I could figure out so far
-				boolean found = false;
-				final StringBuffer sb = new StringBuffer();
-				for (int i = 0; i < getAssociatedCount(); ++i)
+				final String associatedStr = getAssociated(i).toUpperCase();
+				final String newVal = aVal.replace("%LIST", associatedStr);
+				/*
+				 * TODO This is the best patch supported by 5.14's BONUS
+				 * structure - though it can be fooled. 5.16 solution should be
+				 * to always perform all %LIST substitutions at the same time by
+				 * modifying BonusObj's getStringListFromBonus
+				 */
+				if (listString.indexOf(associatedStr) != -1)
 				{
-					final String associatedStr = getAssociated(i).toUpperCase();
-					
-					if (listString.indexOf(associatedStr) >= 0)
-					{
-						
-						if (listIndex > 0)
-						{
-							sb.append(aVal.substring(0, listIndex));
-						}
-						sb.append(associatedStr);
-						if (aVal.length() > (listIndex + 5))
-						{
-							sb.append(aVal.substring(listIndex + 5));
-						}
-						aVal = sb.toString();
-						found = true;
-						break;
-					}
-					else 
-					{
-                       if (i != 0) 
-                        { 
-                        	sb.append("+"); 
-                        } 
-                        sb.append(associatedStr);
-					}
+					aVal = newVal;
+					found = true;
+					break;
 				}
-				aVal = aVal.replace("%LIST", sb.toString());
-				listIndex = (found) ? aVal.indexOf("%LIST") : -1;
+				else
+				{
+					if (sb.length() != 0)
+					{
+						sb.append('+');
+					}
+					sb.append(newVal);
+				}
+			}
+			if (!found)
+			{
+				aVal = sb.toString();
 			}
 		}
 
