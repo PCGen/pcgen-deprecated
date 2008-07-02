@@ -20,9 +20,8 @@
  */
 package pcgen.gui.util.treeview;
 
-import pcgen.gui.util.event.TreeViewModelListener;
-import java.util.Collection;
 import java.util.List;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
@@ -31,18 +30,12 @@ import java.util.List;
 public interface TreeViewModel<E>
 {
 
-    void addTreeViewModelListener(TreeViewModelListener<E> listener);
-
-    void removeTreeViewModelListener(TreeViewModelListener<?> listener);
-
     List<? extends TreeView<E>> getTreeViews();
 
     int getDefaultTreeViewIndex();
 
     DataView<E> getDataView();
 
-    Collection<E> getData();
-
-    void setData(Collection<E> data);
+    GenericListModel<E> getDataModel();
 
 }

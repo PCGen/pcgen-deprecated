@@ -28,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import javax.swing.JTree;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.treetable.AbstractTreeTableModel;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
 import pcgen.gui.util.treetable.SortableTreeTableNode;
@@ -44,10 +47,30 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 {
 
     private final Map<TreeView<E>, TreeViewNode> viewMap = new HashMap<TreeView<E>, TreeViewNode>();
+    private final ListDataListener listener = new ListDataListener()
+    {
+
+        public void intervalAdded(ListDataEvent e)
+        {
+            setData(model);
+        }
+
+        public void intervalRemoved(ListDataEvent e)
+        {
+            setData(model);
+        }
+
+        public void contentsChanged(ListDataEvent e)
+        {
+            setData(model);
+        }
+
+    };
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     private final NameViewColumn namecolumn = new NameViewColumn();
     private final DataView<E> dataview;
     private final List<? extends DataViewColumn> datacolumns;
+    private GenericListModel<E> model = null;
     private TreeView<E> selectedView = null;
 
     public TreeViewTableModel(DataView<E> dataView)
@@ -56,7 +79,18 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         this.datacolumns = dataview.getDataColumns();
     }
 
-    public final void setData(Collection<E> data)
+    public final void setDataModel(GenericListModel<E> model)
+    {
+        if (this.model != null)
+        {
+            this.model.removeListDataListener(listener);
+        }
+        this.model = model;
+        model.addListDataListener(listener);
+        setData(model);
+    }
+
+    private void setData(Collection<E> data)
     {
         populateDataMap(data);
         viewMap.clear();
