@@ -108,13 +108,13 @@ Listen |SKILL.Listen.TOTAL.SIGN|, Spot |SKILL.Spot.TOTAL.SIGN|,
 
 <!-- Immunity TYPE Abilities -->
 |IIF(count("ABILITIES";"TYPE=Immunity";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
-<b>Immunity </b> |FEATALLLIST.TYPE=Immunity| |ABILITYALLLIST.Special Ability.TYPE=Immunity|<br>
+<b>Immunities </b> |FEATALLLIST.TYPE=Immunity| |ABILITYALLLIST.Special Ability.TYPE=Immunity|<br>
 |ENDIF|
 <!-- End Immunity TYPE Abilities -->
 
 <!-- Resistance TYPE Abilities -->
 |IIF(count("ABILITIES";"TYPE=Resistance";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
-<b>Resistance </b> |FEATALLLIST.TYPE=Aura| |ABILITYALLLIST.Special Ability.TYPE=Resistance|<br>
+<b>Resistances </b> |FEATALLLIST.TYPE=Aura| |ABILITYALLLIST.Special Ability.TYPE=Resistance|<br>
 |ENDIF|
 <!-- End Resistance TYPE Abilities -->
 
@@ -127,7 +127,7 @@ Listen |SKILL.Listen.TOTAL.SIGN|, Spot |SKILL.Spot.TOTAL.SIGN|,
 
 <!-- Weakness TYPE Abilities -->
 |IIF(count("ABILITIES";"TYPE=Weakness";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
-<b>Weakness </b> |FEATALLLIST.TYPE=Aura| |ABILITYALLLIST.Special Ability.TYPE=Weakness|<br>
+<b>Weaknesses </b> |FEATALLLIST.TYPE=Aura| |ABILITYALLLIST.Special Ability.TYPE=Weakness|<br>
 |ENDIF|
 <!-- End Weakness TYPE Abilities -->
 
@@ -373,13 +373,20 @@ at will)
 |TEXT.TITLECASE.STAT.%stat.NAME| |STAT.%stat|
 |ENDFOR|
 <br>
+
+<!-- Special Qualities -->
 |IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialQuality";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
 <b>Special Qualities </b> 
 |FOR,%specialAbilities,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialQuality","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0| 
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.TYPE:Resistance.OR.ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.TYPE:Immunity.OR.ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality.TYPE:Weakness)|
+|ELSE|
 |ABILITYALL.Special Ability.VISIBLE.%specialAbilities.TYPE=SpecialQuality|, 
+|ENDIF|
 |ENDFOR|
 <br>
 |ENDIF|
+<!-- End Special Qualities -->
+
 |%COUNT[SA]|
 <b>Special Abilities </b> |SPECIALLIST|<br>
 |%|
