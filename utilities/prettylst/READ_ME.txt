@@ -67,10 +67,20 @@ Additional useful command line switches:
   -c=pcgen5120	will convert many older tags to PCGen version 5.12.0
   -wl=notice	will display only the more serious error messages.
 
+
+NOTICE: For users without a SVN Client
+If you you downloaded PrettyLst from SVN but you do not have an SVN Client
+you will need to edit the prettylst.pl file. Using the same editor you use for your LST files,
+on the line starting with my $SVN_id replace everything after the =
+with '$Id: prettylst.pl 6887 2008-06-25 18:59:55Z historyphil $';
+Change the 6887 to the current build number and the date and time values
+to the values shown on SVN for this revision.
+
+
 Good Luck and Happy coding.
 
 If you need further assistance, please ask on the PCGen Y! group [http://games.groups.yahoo.com/group/pcgen/] with [PL] in the subject line. Thanks.
 
 Created by: Andrew Maitland on 2008-02-10
-Modified by: Phillip Ryan on 2008-06-14
+Modified by: Phillip Ryan on 2008-07-02
 [Year-Month-Day]
