@@ -27,8 +27,18 @@ package pcgen.gui.util.treeview;
 public interface DataViewColumn
 {
 
+    public static enum Visibility
+    {
+
+        ALWAYS_VISIBLE,
+        INITIALLY_VISIBLE,
+        INITIALLY_INVISIBLE
+    }
+
     public String getName();
 
     public Class<?> getDataClass();
+
+    public Visibility getVisibility();
 
 }

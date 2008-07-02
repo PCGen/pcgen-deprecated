@@ -25,24 +25,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import pcgen.gui.util.event.TreeViewModelEvent;
 import pcgen.gui.util.event.TreeViewModelListener;
+import pcgen.gui.util.table.DefaultDynamicTableColumnModel;
+import pcgen.gui.util.table.DynamicTableColumnModel;
 import pcgen.gui.util.table.SortableTableModel;
-import pcgen.gui.util.treeview.TreeView;
-import pcgen.gui.util.treeview.TreeViewModel;
-import pcgen.gui.util.treeview.TreeViewPath;
-import pcgen.gui.util.treeview.TreeViewTableModel;
+import pcgen.gui.util.treeview.*;
+import pcgen.gui.util.treeview.DataViewColumn.Visibility;
+import pcgen.util.CollectionMaps;
+import pcgen.util.ListMap;
 
 /**
  *
@@ -66,7 +68,7 @@ public class JTreeViewPane extends JTablePane
         }
 
     };
-    private TreeViewModelListener listener;
+    private TreeViewModelListener modelListener;
     private TreeViewTableModel<?> treetableModel;
     private TreeViewModel<?> viewModel;
     private JPopupMenu treeviewMenu;
@@ -76,7 +78,9 @@ public class JTreeViewPane extends JTablePane
     public JTreeViewPane()
     {
         super(new JTreeTable());
-        getTable().setTableHeader(new JTreeViewHeader());
+        JTreeTable table = getTable();
+        table.setTableHeader(new JTreeViewHeader());
+        table.setAutoCreateColumnsFromModel(false);
     }
 
     public JTreeViewPane(TreeViewModel<?> viewModel)
@@ -102,18 +106,17 @@ public class JTreeViewPane extends JTablePane
         return viewModel;
     }
 
-    @SuppressWarnings("unchecked")
     public <T> void setTreeViewModel(TreeViewModel<T> viewModel)
     {
-        final TreeViewTableModel<T> model = new TreeViewTableModel<T>(viewModel.getDataView());
+        DataView<T> dataView = viewModel.getDataView();
+        final TreeViewTableModel<T> model = new TreeViewTableModel<T>(dataView);
         this.treetableModel = model;
         if (this.viewModel != null)
         {
-            this.viewModel.removeTreeViewModelListener(listener);
+            this.viewModel.removeTreeViewModelListener(modelListener);
         }
-        this.viewModel = viewModel;
-        this.viewModel.addTreeViewModelListener(
-                listener = new TreeViewModelListener<T>()
+
+        TreeViewModelListener<T> listener = new TreeViewModelListener<T>()
         {
 
             public void dataChanged(TreeViewModelEvent<T> event)
@@ -121,7 +124,11 @@ public class JTreeViewPane extends JTablePane
                 model.setData(event.getNewData());
             }
 
-        });
+        };
+        this.viewModel = viewModel;
+        this.modelListener = listener;
+        viewModel.addTreeViewModelListener(listener);
+
         treeviewMenu = new JPopupMenu();
         ButtonGroup group = new ButtonGroup();
         List<? extends TreeView<T>> views = viewModel.getTreeViews();
@@ -136,6 +143,61 @@ public class JTreeViewPane extends JTablePane
         model.setData(viewModel.getData());
         model.setSelectedTreeView(startingView);
         getTable().setTreeTableModel(model);
+        setColumnModel(createTableColumnModel(startingView, dataView));
+    }
+
+    private DynamicTableColumnModel createTableColumnModel(TreeView<?> startingView,
+                                                            DataView<?> dataView)
+    {
+        @SuppressWarnings("unchecked")
+        ListMap<Visibility, DataViewColumn, List<DataViewColumn>> listMap =
+                CollectionMaps.createListMap(HashMap.class, ArrayList.class);
+        for ( DataViewColumn column : dataView.getDataColumns())
+        {
+            listMap.add(column.getVisibility(), column);
+        }
+
+        List<DataViewColumn> columns = listMap.get(Visibility.ALWAYS_VISIBLE);
+        if (columns == null)
+        {
+            columns = Collections.emptyList();
+        }
+        DynamicTableColumnModel model = new DefaultDynamicTableColumnModel(columns.size() +
+                                                                           1);
+        TableColumn tableColumn = new TableColumn();
+        tableColumn.setHeaderValue(startingView.getViewName());
+        model.addColumn(tableColumn);
+
+        int index = 1;
+        for ( DataViewColumn column : columns)
+        {
+            tableColumn = new TableColumn(index++);
+            tableColumn.setHeaderValue(column.getName());
+            model.addColumn(tableColumn);
+        }
+
+        columns = listMap.get(Visibility.INITIALLY_VISIBLE);
+        if (columns != null)
+        {
+            for ( DataViewColumn column : columns)
+            {
+                tableColumn = new TableColumn(index++);
+                tableColumn.setHeaderValue(column.getName());
+                model.addColumn(tableColumn);
+                model.setVisible(tableColumn, true);
+            }
+        }
+        columns = listMap.get(Visibility.INITIALLY_INVISIBLE);
+        if (columns != null)
+        {
+            for ( DataViewColumn column : columns)
+            {
+                tableColumn = new TableColumn(index++);
+                tableColumn.setHeaderValue(column.getName());
+                model.addColumn(tableColumn);
+            }
+        }
+        return model;
     }
 
     public boolean getQuickSearchMode()
@@ -178,12 +240,9 @@ public class JTreeViewPane extends JTablePane
     {
         //make sure that the original dynamictableModel is not changed
         JTreeTable table = getTable();
-        TableColumnModel old = table.getColumnModel();
-        table.setColumnModel(new DefaultTableColumnModel());
-        TableColumn viewColumn = old.getColumn(old.getColumnIndex(treetableModel.getSelectedTreeView().getViewName()));
+        TableColumn viewColumn = table.getColumn(treetableModel.getSelectedTreeView().getViewName());
         treetableModel.setSelectedTreeView(view);
         viewColumn.setHeaderValue(view.getViewName());
-        table.setColumnModel(old);
         table.sortModel();
     }
 

@@ -29,11 +29,26 @@ public class DefaultDataViewColumn implements DataViewColumn
 
     private String name;
     private Class<?> dataclass;
+    private Visibility visibility;
 
-    public <T> DefaultDataViewColumn(String name, Class<T> dataclass)
+    public DefaultDataViewColumn(String name, Class<?> dataclass)
+    {
+        this(name, dataclass, false);
+    }
+
+    public DefaultDataViewColumn(String name, Class<?> dataclass,
+                                  boolean visible)
     {
         this.name = name;
         this.dataclass = dataclass;
+        if (visible)
+        {
+            this.visibility = Visibility.INITIALLY_VISIBLE;
+        }
+        else
+        {
+            this.visibility = Visibility.INITIALLY_INVISIBLE;
+        }
     }
 
     public String getName()
@@ -44,6 +59,11 @@ public class DefaultDataViewColumn implements DataViewColumn
     public Class<?> getDataClass()
     {
         return dataclass;
+    }
+
+    public Visibility getVisibility()
+    {
+        return visibility;
     }
 
 }

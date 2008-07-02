@@ -150,6 +150,11 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
             return TreeTableNode.class;
         }
 
+        public Visibility getVisibility()
+        {
+            return Visibility.ALWAYS_VISIBLE;
+        }
+
     }
 
     private final class TreeViewNode extends JTree.DynamicUtilTreeNode
