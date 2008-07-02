@@ -80,11 +80,6 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         return selectedView;
     }
 
-    private void resetSelectedTreeView()
-    {
-
-    }
-
     public final void setSelectedTreeView(TreeView<E> view)
     {
         if (view != null)

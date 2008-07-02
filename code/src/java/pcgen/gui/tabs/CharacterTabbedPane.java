@@ -30,7 +30,7 @@ import pcgen.gui.facade.CharacterFacade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class CharacterTabbedPane extends JTabbedPane implements CharacterInfoTab
+public class CharacterTabbedPane extends JTabbedPane
 {
 
     private CharacterFacade character;
@@ -53,7 +53,7 @@ public class CharacterTabbedPane extends JTabbedPane implements CharacterInfoTab
 
     private void refreshCurrentTab()
     {
-        ((CharacterInfoTab) getSelectedComponent()).setCharacter(character);
+        //((CharacterInfoTab) getSelectedComponent()).setCharacter(character);
     }
 
     public void setCharacter(CharacterFacade character)

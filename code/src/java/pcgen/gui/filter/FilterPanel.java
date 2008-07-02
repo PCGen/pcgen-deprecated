@@ -39,7 +39,10 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import pcgen.gui.UIContext;
+import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.SimpleTextIcon;
 import pcgen.util.PropertyFactory;
 
@@ -59,7 +62,7 @@ public class FilterPanel extends JPanel
     private List<JToggleButton> filterbuttons;
     private List<Filter> selectedFilters;
     private FilterPanelListener panelListener;
-    private FilterListListener<?> listListener;
+    private ListDataListener listListener;
     private Class<?> filterClass;
 
     public FilterPanel(UIContext context)
@@ -149,24 +152,34 @@ public class FilterPanel extends JPanel
         {
             if (this.filterClass != null)
             {
-                context.getToggleFilters(this.filterClass).removeFilterListListener(listListener);
+                context.getRegisteredFilters(this.filterClass).removeListDataListener(listListener);
             }
             this.filterClass = filterClass;
-            FilterList<T> filters = context.getToggleFilters(filterClass);
-            FilterListListener<T> listener = new FilterListListener<T>()
+            final GenericListModel<NamedFilter<? super T>> filters = context.getRegisteredFilters(filterClass);
+            ListDataListener listener = new ListDataListener()
             {
 
-                public void filtersChanged(FilterListEvent<T> event)
+                public void intervalAdded(ListDataEvent e)
                 {
-                    setFilterButtons(event.getNewFilters());
+                    setFilterButtons(filters);
+                }
+
+                public void intervalRemoved(ListDataEvent e)
+                {
+                    setFilterButtons(filters);
+                }
+
+                public void contentsChanged(ListDataEvent e)
+                {
+                    setFilterButtons(filters);
                 }
 
             };
-            filters.addFilterListListener(listener);
+            filters.addListDataListener(listener);
             listListener = listener;
             this.selectedFilters = new ArrayList<Filter>();
             this.filterbuttons = new LinkedList<JToggleButton>();
-            setFilterButtons(filters.getFilters());
+            setFilterButtons(filters);
         }
     }
 

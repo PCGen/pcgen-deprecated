@@ -23,7 +23,8 @@ package pcgen.gui;
 import java.util.HashMap;
 import java.util.Map;
 import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.filter.FilterList;
+import pcgen.gui.filter.NamedFilter;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
@@ -34,7 +35,7 @@ public class UIContext
     //public static final String CLASS_TAB_ID = "classTab";
     private final Map<CharacterFacade, Map<String, Map<String, Object>>> dataMap = new HashMap<CharacterFacade, Map<String, Map<String, Object>>>();
 
-    public <T> FilterList<T> getToggleFilters(Class<T> c)
+    public <T> GenericListModel<NamedFilter<? super T>> getRegisteredFilters(Class<T> c)
     {
         return null;
     }

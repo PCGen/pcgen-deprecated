@@ -29,10 +29,17 @@ public interface CharacterFacade
 
     public ClassFacade getSelectedClass(int level);
 
+    public void addCharacterLevels(ClassFacade[] classes);
+
+    public void removeCharacterLevels(int levels);
+
     public int getCharacterLevel();
 
     public int getClassLevel(ClassFacade c);
 
     public int getRemainingSelections(AbilityCatagoryFacade catagory);
+
+    public void setRemainingSelection(AbilityCatagoryFacade catagory,
+                                       int remaining);
 
 }

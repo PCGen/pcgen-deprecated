@@ -20,15 +20,17 @@
  */
 package pcgen.gui.tabs;
 
+import java.util.Hashtable;
+import javax.swing.undo.StateEditable;
 import pcgen.gui.facade.CharacterFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface CharacterInfoTab
+public interface CharacterInfoTab extends StateEditable
 {
 
-    public void setCharacter(CharacterFacade character);
+    public Hashtable<Object, Object> createState(CharacterFacade character);
 
 }

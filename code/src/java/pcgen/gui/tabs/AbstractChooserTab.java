@@ -1,5 +1,5 @@
 /*
- * ChooserTab.java
+ * AbstractChooserTab.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -22,24 +22,23 @@ package pcgen.gui.tabs;
 
 import pcgen.gui.tools.*;
 import java.awt.Component;
-import java.util.Map;
+import javax.swing.undo.StateEditable;
 import pcgen.gui.UIContext;
-import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.util.panes.FlippingSplitPane;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class ChooserTab extends FlippingSplitPane implements CharacterInfoTab
+public abstract class AbstractChooserTab extends FlippingSplitPane implements CharacterInfoTab,
+                                                                        StateEditable
 {
 
     protected final UIContext context;
-    protected CharacterFacade character;
     private FlippingSplitPane subSplitPane;
     private InfoPane infoPane;
 
-    protected ChooserTab(UIContext context)
+    protected AbstractChooserTab(UIContext context)
     {
         this.subSplitPane = new FlippingSplitPane(VERTICAL_SPLIT);
         this.infoPane = new InfoPane();
@@ -66,23 +65,6 @@ public abstract class ChooserTab extends FlippingSplitPane implements CharacterI
     public void setInfoPaneTitle(String title)
     {
         infoPane.setTitle(title);
-    }
-
-    public abstract Map<String, Object> saveModels();
-
-    public abstract void loadModels(Map<String, Object> map);
-
-    public void setCharacter(CharacterFacade character)
-    {
-        if (character != null && this.character != character)
-        {
-            if (this.character != null)
-            {
-                context.putUIData(this.character, getName(), saveModels());
-            }
-            this.character = character;
-            loadModels(context.getUIData(character, getName()));
-        }
     }
 
 }

@@ -28,9 +28,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
@@ -59,7 +59,7 @@ import pcgen.util.PropertyFactory;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class ClassChooserTab extends ChooserTab
+public class ClassChooserTab extends AbstractChooserTab
 {
 
     private final FilteredTreeViewDisplay treeviewDisplay;
@@ -123,13 +123,15 @@ public class ClassChooserTab extends ChooserTab
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(button, constraints);
 
-        classTable.getSelectionModel().addListSelectionListener(
+        ListSelectionModel model = classTable.getSelectionModel();
+        model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        model.addListSelectionListener(
                 new ListSelectionListener()
                 {
 
                     public void valueChanged(ListSelectionEvent e)
                     {
-                        if (e.getValueIsAdjusting())
+                        if (!e.getValueIsAdjusting())
                         {
 
                         }
@@ -154,19 +156,6 @@ public class ClassChooserTab extends ChooserTab
 
         setPrimaryChooserComponent(treeviewDisplay);
         setSecondaryChooserComponent(panel);
-    }
-
-    public Map<String, Object> saveModels()
-    {
-        return null;
-    }
-
-    public void loadModels(Map<String, Object> map)
-    {
-        if (map == null)
-        {
-            classTable.setModel(new ClassTableModel(character));
-        }
     }
 
     private class AddClassAction extends AbstractAction
@@ -202,19 +191,17 @@ public class ClassChooserTab extends ChooserTab
     private final class ClassTransferHandler extends TransferHandler
     {
 
-        private final DataFlavor classArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-                                                                     ";class=\"" +
-                                                                     ClassFacade[].class.getName() +
-                                                                     "\"",
-                                                                     null);
-        private int[] rows;
+        private final DataFlavor classFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
+                                                                ";class=" +
+                                                                ClassFacade.class.getName(),
+                                                                null);
 
         @Override
         public int getSourceActions(JComponent c)
         {
             if (c == classTable)
             {
-                return MOVE;
+                return NONE;
             }
             else
             {
@@ -225,40 +212,30 @@ public class ClassChooserTab extends ChooserTab
         @Override
         protected Transferable createTransferable(JComponent c)
         {
-            final ClassFacade[] classArray;
-            if (c == classTable)
+            List<Object> data = treeviewDisplay.getTreeViewPane().getSelectedData();
+            if (data.isEmpty())
             {
-                rows = classTable.getSelectedRows();
-                classArray = new ClassFacade[rows.length];
-                for (int i = 0; i < rows.length; i++)
-                {
-                    classArray[i] = character.getSelectedClass(rows[i] + 1);
-                }
+                return null;
             }
-            else
+            Object obj = data.get(0);
+            if (!(obj instanceof ClassFacade))
             {
-                List<Object> data = treeviewDisplay.getTreeViewPane().getSelectedData();
-                Iterator<Object> it = data.iterator();
-                while (it.hasNext())
-                {
-                    if (!ClassFacade.class.isInstance(it.next()))
-                    {
-                        it.remove();
-                    }
-                }
-                classArray = data.toArray(new ClassFacade[0]);
+                return null;
             }
+
+            final ClassFacade selectedClass = (ClassFacade) obj;
+
             return new Transferable()
             {
 
                 public DataFlavor[] getTransferDataFlavors()
                 {
-                    return new DataFlavor[]{classArrayFlavor};
+                    return new DataFlavor[]{classFlavor};
                 }
 
                 public boolean isDataFlavorSupported(DataFlavor flavor)
                 {
-                    return classArrayFlavor == flavor;
+                    return classFlavor == flavor;
                 }
 
                 public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
@@ -267,27 +244,16 @@ public class ClassChooserTab extends ChooserTab
                     {
                         throw new UnsupportedFlavorException(flavor);
                     }
-                    return classArray;
+                    return selectedClass;
                 }
 
             };
         }
 
         @Override
-        protected void exportDone(JComponent source, Transferable data,
-                                   int action)
-        {
-            if (source == classTable)
-            {
-                ClassTableModel model = (ClassTableModel) classTable.getModel();
-                model.removeRows(rows);
-            }
-        }
-
-        @Override
         public boolean canImport(JComponent comp, DataFlavor[] transferFlavors)
         {
-            return transferFlavors[0] != classArrayFlavor;
+            return transferFlavors[0] == classFlavor;
         }
 
         @Override
@@ -297,18 +263,13 @@ public class ClassChooserTab extends ChooserTab
             {
                 try
                 {
-                    ClassFacade[] data = (ClassFacade[]) t.getTransferData(classArrayFlavor);
+                    ClassFacade c = (ClassFacade) t.getTransferData(classFlavor);
                     ClassTableModel model = (ClassTableModel) classTable.getModel();
-                    ClassFacade[] classes = new ClassFacade[spinnerValue *
-                            data.length];
+                    ClassFacade[] classes = new ClassFacade[spinnerValue];
 
-                    int i = 0;
-                    for (ClassFacade c : data)
+                    for (int x = 0; x < spinnerValue; x++)
                     {
-                        for (int x = 0; x < spinnerValue; x++)
-                        {
-                            classes[i++] = c;
-                        }
+                        classes[x] = c;
                     }
 
                     model.addRows(classes);
@@ -340,10 +301,12 @@ public class ClassChooserTab extends ChooserTab
                                                     "Class",
                                                     "Source"
         };
+        private CharacterFacade character;
 
         public ClassTableModel(CharacterFacade character)
         {
             super(columns, 0);
+            this.character = character;
             int characterLevel = character.getCharacterLevel();
             for (int x = 0; x < characterLevel; x++)
             {
@@ -353,6 +316,7 @@ public class ClassChooserTab extends ChooserTab
 
         public void addRows(ClassFacade[] classes)
         {
+            character.addCharacterLevels(classes);
             for (ClassFacade c : classes)
             {
                 addRow(c);
@@ -393,4 +357,23 @@ public class ClassChooserTab extends ChooserTab
         }
 
     }
+
+    public Hashtable<Object, Object> createState(CharacterFacade character)
+    {
+        Hashtable<Object, Object> state = new Hashtable<Object, Object>();
+        state.put("ClassTableModel", new ClassTableModel(character));
+
+        return state;
+    }
+
+    public void storeState(Hashtable<Object, Object> state)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void restoreState(Hashtable<?, ?> state)
+    {
+        classTable.setModel((ClassTableModel) state.get("ClassTableModel"));
+    }
+
 }

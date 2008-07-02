@@ -21,8 +21,8 @@
 package pcgen.gui.tabs;
 
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import pcgen.gui.UIContext;
@@ -41,7 +41,7 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class AbilityChooserTab extends ChooserTab
+public class AbilityChooserTab extends AbstractChooserTab
 {
 
     private final FilteredTreeViewDisplay treeviewDisplay;
@@ -62,18 +62,6 @@ public class AbilityChooserTab extends ChooserTab
                                                          JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         setPrimaryChooserComponent(treeviewDisplay);
         setSecondaryChooserComponent(catagoryScrollPane);
-    }
-
-    @Override
-    public Map<String, Object> saveModels()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void loadModels(Map<String, Object> map)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private static final class AbilityCatagoryTreeViewTableModel extends TreeViewTableModel<AbilityCatagoryFacade>
@@ -97,6 +85,7 @@ public class AbilityChooserTab extends ChooserTab
             }
 
         };
+        private final CharacterFacade character;
 
         public AbilityCatagoryTreeViewTableModel(final CharacterFacade character,
                                                   List<AbilityCatagoryFacade> data)
@@ -115,7 +104,9 @@ public class AbilityChooserTab extends ChooserTab
               }
 
           });
-
+            this.character = character;
+            setSelectedTreeView(treeview);
+            setData(data);
         }
 
         @Override
@@ -129,5 +120,28 @@ public class AbilityChooserTab extends ChooserTab
             return super.isCellEditable(node, column);
         }
 
+        @Override
+        public void setValueAt(Object aValue, Object node, int column)
+        {
+            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
+            character.setRemainingSelection((AbilityCatagoryFacade) treeNode.getUserObject(),
+                                            (Integer) aValue);
+        }
+
+    }
+
+    public Hashtable<Object, Object> createState(CharacterFacade character)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void storeState(Hashtable<Object, Object> state)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void restoreState(Hashtable<?, ?> state)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
