@@ -31,6 +31,7 @@ import javax.swing.JTree;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.event.ListDataAdapter;
 import pcgen.gui.util.treetable.AbstractTreeTableModel;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
 import pcgen.gui.util.treetable.SortableTreeTableNode;
@@ -47,20 +48,11 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 {
 
     private final Map<TreeView<E>, TreeViewNode> viewMap = new HashMap<TreeView<E>, TreeViewNode>();
-    private final ListDataListener listener = new ListDataListener()
+    private final ListDataListener listener = new ListDataAdapter()
     {
 
-        public void intervalAdded(ListDataEvent e)
-        {
-            setData(model);
-        }
-
-        public void intervalRemoved(ListDataEvent e)
-        {
-            setData(model);
-        }
-
-        public void contentsChanged(ListDataEvent e)
+        @Override
+        public void listDataChanged(ListDataEvent e)
         {
             setData(model);
         }
@@ -68,8 +60,8 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     };
     private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     private final NameViewColumn namecolumn = new NameViewColumn();
-    private final DataView<E> dataview;
     private final List<? extends DataViewColumn> datacolumns;
+    private final DataView<E> dataview;
     private GenericListModel<E> model = null;
     private TreeView<E> selectedView = null;
 

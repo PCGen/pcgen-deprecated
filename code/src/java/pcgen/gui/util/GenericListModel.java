@@ -21,12 +21,15 @@
 package pcgen.gui.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EventListener;
 import java.util.Vector;
 import javax.swing.ListModel;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import pcgen.gui.util.event.GenericListDataEvent;
+import pcgen.gui.util.event.GenericListDataListener;
 
 /**
  *
@@ -36,6 +39,7 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
 {
 
     protected EventListenerList listenerList = new EventListenerList();
+    protected volatile boolean isAdjusting = false;
 
     public int getSize()
     {
@@ -57,14 +61,28 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     public void setSize(int newSize)
     {
         int oldSize = size();
+        if (newSize == oldSize)
+        {
+            return;
+        }
+        Vector<E> c;
+        if (oldSize > newSize)
+        {
+            c = new Vector<E>(subList(newSize, oldSize));
+        }
+        else
+        {
+            c = new Vector<E>(newSize - oldSize);
+            c.setSize(newSize - oldSize);
+        }
         super.setSize(newSize);
         if (oldSize > newSize)
         {
-            fireIntervalRemoved(this, newSize, oldSize - 1);
+            fireIntervalRemoved(this, c, isAdjusting, newSize, oldSize - 1);
         }
-        else if (oldSize < newSize)
+        else
         {
-            fireIntervalAdded(this, oldSize, newSize - 1);
+            fireIntervalAdded(this, c, isAdjusting, oldSize, newSize - 1);
         }
     }
 
@@ -89,8 +107,10 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     @Override
     public void setElementAt(E obj, int index)
     {
+        E rv = elementAt(index);
         super.setElementAt(obj, index);
-        fireContentsChanged(this, index, index);
+        fireContentsChanged(this, Collections.singleton(rv), isAdjusting, index,
+                            index);
     }
 
     /**
@@ -111,8 +131,9 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     @Override
     public void removeElementAt(int index)
     {
-        super.removeElementAt(index);
-        fireIntervalRemoved(this, index, index);
+        E o = super.remove(index);
+        fireIntervalRemoved(this, Collections.singleton(o), isAdjusting, index,
+                            index);
     }
 
     /**
@@ -137,7 +158,8 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     public void insertElementAt(E obj, int index)
     {
         super.insertElementAt(obj, index);
-        fireIntervalAdded(this, index, index);
+        fireIntervalAdded(this, Collections.singleton(obj), isAdjusting, index,
+                          index);
     }
 
     @Override
@@ -158,7 +180,8 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     {
         int index = size();
         super.addElement(obj);
-        fireIntervalAdded(this, index, index);
+        fireIntervalAdded(this, Collections.singleton(obj), isAdjusting, index,
+                          index);
     }
 
     /**
@@ -177,7 +200,8 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
         boolean rv = super.removeElement(obj);
         if (index >= 0)
         {
-            fireIntervalRemoved(this, index, index);
+            fireIntervalRemoved(this, Collections.singleton(obj), isAdjusting,
+                                index, index);
         }
         return rv;
     }
@@ -197,10 +221,11 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     public void removeAllElements()
     {
         int index1 = size() - 1;
+        Collection<E> c = new Vector<E>(this);
         super.removeAllElements();
         if (index1 >= 0)
         {
-            fireIntervalRemoved(this, 0, index1);
+            fireIntervalRemoved(this, c, isAdjusting, 0, index1);
         }
     }
 
@@ -224,7 +249,8 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     {
         E rv = elementAt(index);
         super.setElementAt(element, index);
-        fireContentsChanged(this, index, index);
+        fireContentsChanged(this, Collections.singleton(rv), isAdjusting, index,
+                            index);
         return rv;
     }
 
@@ -242,7 +268,8 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     public void add(int index, E element)
     {
         super.insertElementAt(element, index);
-        fireIntervalAdded(this, index, index);
+        fireIntervalAdded(this, Collections.singleton(element), isAdjusting,
+                          index, index);
     }
 
     /**
@@ -260,7 +287,8 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     {
         E rv = elementAt(index);
         super.removeElementAt(index);
-        fireIntervalRemoved(this, index, index);
+        fireIntervalRemoved(this, Collections.singleton(rv), isAdjusting,
+                            index, index);
         return rv;
     }
 
@@ -272,10 +300,11 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     public void clear()
     {
         int index1 = size() - 1;
+        Collection<E> c = new Vector<E>(this);
         super.removeAllElements();
         if (index1 >= 0)
         {
-            fireIntervalRemoved(this, 0, index1);
+            fireIntervalRemoved(this, c, isAdjusting, 0, index1);
         }
     }
 
@@ -301,11 +330,12 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
         {
             throw new IllegalArgumentException("fromIndex must be <= toIndex");
         }
+        Collection<E> c = new Vector<E>(subList(fromIndex, toIndex + 1));
         for (int i = toIndex; i >= fromIndex; i--)
         {
             super.removeElementAt(i);
         }
-        fireIntervalRemoved(this, fromIndex, toIndex);
+        fireIntervalRemoved(this, c, isAdjusting, fromIndex, toIndex);
     }
 
     @Override
@@ -315,7 +345,7 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
         boolean added = super.addAll(c);
         if (added)
         {
-            fireIntervalAdded(this, index, index + c.size() - 1);
+            fireIntervalAdded(this, c, isAdjusting, index, index + c.size() - 1);
         }
         return added;
     }
@@ -326,9 +356,29 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
         boolean added = super.addAll(index, c);
         if (added)
         {
-            fireIntervalAdded(this, index, index + c.size() - 1);
+            fireIntervalAdded(this, c, isAdjusting, index, index + c.size() - 1);
         }
         return added;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c)
+    {
+        isAdjusting = true;
+        boolean ret = super.retainAll(c);
+        isAdjusting = false;
+        fireContentsChanged(this, null, isAdjusting, -1, -1);
+        return ret;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c)
+    {
+        isAdjusting = true;
+        boolean ret = super.removeAll(c);
+        isAdjusting = false;
+        fireContentsChanged(this, null, isAdjusting, -1, -1);
+        return ret;
     }
 
     /**
@@ -343,6 +393,17 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     }
 
     /**
+     * Adds a listener to the list that's notified each time a change
+     * to the data model occurs.
+     *
+     * @param l the <code>GenericListDataListener</code> to be added
+     */
+    public void addGenericListDataListener(GenericListDataListener l)
+    {
+        listenerList.add(GenericListDataListener.class, l);
+    }
+
+    /**
      * Removes a listener from the list that's notified each time a 
      * change to the data model occurs.
      *
@@ -354,8 +415,19 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
     }
 
     /**
+     * Removes a listener from the list that's notified each time a 
+     * change to the data model occurs.
+     *
+     * @param l the <code>GenericListDataListener</code> to be removed
+     */
+    public void removeGenericListDataListener(GenericListDataListener l)
+    {
+        listenerList.remove(GenericListDataListener.class, l);
+    }
+
+    /**
      * Returns an array of all the list data listeners
-     * registered on this <code>AbstractListModel</code>.
+     * registered on this <code>GenericListModel</code>.
      *
      * @return all of this model's <code>ListDataListener</code>s,
      *         or an empty array if no list data listeners
@@ -364,12 +436,29 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
      * @see #addListDataListener
      * @see #removeListDataListener
      * 
-     * @since 1.4
      */
     public ListDataListener[] getListDataListeners()
     {
         return (ListDataListener[]) listenerList.getListeners(
                 ListDataListener.class);
+    }
+
+    /**
+     * Returns an array of all the list data listeners
+     * registered on this <code>GenericListModel</code>.
+     *
+     * @return all of this model's <code>GenericListDataListener</code>s,
+     *         or an empty array if no list data listeners
+     *         are currently registered
+     * 
+     * @see #addGenericListDataListener
+     * @see #removeGenericListDataListener
+     * 
+     */
+    public GenericListDataListener[] getGenericListDataListeners()
+    {
+        return (GenericListDataListener[]) listenerList.getListeners(
+                GenericListDataListener.class);
     }
 
     /**
@@ -386,21 +475,31 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
      * @see EventListenerList
      * @see DefaultListModel
      */
-    protected void fireContentsChanged(Object source, int index0, int index1)
+    protected void fireContentsChanged(Object source,
+                                        Collection<? extends Object> data,
+                                        boolean adjusting, int index0,
+                                        int index1)
     {
         Object[] listeners = listenerList.getListenerList();
-        ListDataEvent e = null;
+        GenericListDataEvent e = null;
 
         for (int i = listeners.length - 2; i >= 0; i -= 2)
         {
-            if (listeners[i] == ListDataListener.class)
+            Object listener = listeners[i];
+            if (e == null && (listener == ListDataListener.class ||
+                    listener == GenericListDataListener.class))
             {
-                if (e == null)
-                {
-                    e = new ListDataEvent(source, ListDataEvent.CONTENTS_CHANGED,
-                                          index0, index1);
-                }
+                e = new GenericListDataEvent(source, data, adjusting,
+                                             ListDataEvent.INTERVAL_REMOVED,
+                                             index0, index1);
+            }
+            if (listener == ListDataListener.class)
+            {
                 ((ListDataListener) listeners[i + 1]).contentsChanged(e);
+            }
+            else if (listener == GenericListDataListener.class)
+            {
+                ((GenericListDataListener) listeners[i + 1]).contentsChanged(e);
             }
         }
     }
@@ -419,21 +518,30 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
      * @see EventListenerList
      * @see DefaultListModel
      */
-    protected void fireIntervalAdded(Object source, int index0, int index1)
+    protected void fireIntervalAdded(Object source,
+                                      Collection<? extends Object> data,
+                                      boolean adjusting, int index0, int index1)
     {
         Object[] listeners = listenerList.getListenerList();
-        ListDataEvent e = null;
+        GenericListDataEvent e = null;
 
         for (int i = listeners.length - 2; i >= 0; i -= 2)
         {
-            if (listeners[i] == ListDataListener.class)
+            Object listener = listeners[i];
+            if (e == null && (listener == ListDataListener.class ||
+                    listener == GenericListDataListener.class))
             {
-                if (e == null)
-                {
-                    e = new ListDataEvent(source, ListDataEvent.INTERVAL_ADDED,
-                                          index0, index1);
-                }
+                e = new GenericListDataEvent(source, data, adjusting,
+                                             ListDataEvent.INTERVAL_ADDED,
+                                             index0, index1);
+            }
+            if (listener == ListDataListener.class)
+            {
                 ((ListDataListener) listeners[i + 1]).intervalAdded(e);
+            }
+            else if (listener == GenericListDataListener.class)
+            {
+                ((GenericListDataListener) listeners[i + 1]).intervalAdded(e);
             }
         }
     }
@@ -453,21 +561,31 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
      * @see EventListenerList
      * @see DefaultListModel
      */
-    protected void fireIntervalRemoved(Object source, int index0, int index1)
+    protected void fireIntervalRemoved(Object source,
+                                        Collection<? extends Object> data,
+                                        boolean adjusting, int index0,
+                                        int index1)
     {
         Object[] listeners = listenerList.getListenerList();
-        ListDataEvent e = null;
+        GenericListDataEvent e = null;
 
         for (int i = listeners.length - 2; i >= 0; i -= 2)
         {
-            if (listeners[i] == ListDataListener.class)
+            Object listener = listeners[i];
+            if (e == null && (listener == ListDataListener.class ||
+                    listener == GenericListDataListener.class))
             {
-                if (e == null)
-                {
-                    e = new ListDataEvent(source, ListDataEvent.INTERVAL_REMOVED,
-                                          index0, index1);
-                }
+                e = new GenericListDataEvent(source, data, adjusting,
+                                             ListDataEvent.INTERVAL_REMOVED,
+                                             index0, index1);
+            }
+            if (listener == ListDataListener.class)
+            {
                 ((ListDataListener) listeners[i + 1]).intervalRemoved(e);
+            }
+            else if (listener == GenericListDataListener.class)
+            {
+                ((GenericListDataListener) listeners[i + 1]).intervalRemoved(e);
             }
         }
     }

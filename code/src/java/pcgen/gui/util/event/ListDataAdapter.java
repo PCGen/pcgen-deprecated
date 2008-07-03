@@ -1,6 +1,6 @@
 /*
- * TreeViewModelEvent.java
- * Copyright 2008 (C) Connor Petty <mistercpp2000@gmail.com>
+ * ListDataAdapter.java
+ * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,40 +16,35 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Feb 29, 2008, 10:54:37 PM
+ * Created on Jul 2, 2008, 4:26:58 PM
  */
 package pcgen.gui.util.event;
 
-import java.util.Collection;
-import java.util.EventObject;
-import pcgen.gui.util.treeview.TreeViewModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 /**
  *
- * @author Connor Petty <mistercpp2000@gmail.com>
+ * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class TreeViewModelEvent<E> extends EventObject
+public abstract class ListDataAdapter implements ListDataListener
 {
 
-    private Collection<E> oldData;
-    private Collection<E> newData;
+    public abstract void listDataChanged(ListDataEvent e);
 
-    public TreeViewModelEvent(TreeViewModel<E> source, Collection<E> oldData,
-                               Collection<E> newData)
+    public void intervalAdded(ListDataEvent e)
     {
-        super(source);
-        this.oldData = oldData;
-        this.newData = newData;
+        listDataChanged(e);
     }
 
-    public Collection<E> getOldData()
+    public void intervalRemoved(ListDataEvent e)
     {
-        return oldData;
+        listDataChanged(e);
     }
 
-    public Collection<E> getNewData()
+    public void contentsChanged(ListDataEvent e)
     {
-        return newData;
+        listDataChanged(e);
     }
 
 }

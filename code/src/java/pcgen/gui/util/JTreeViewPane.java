@@ -32,12 +32,12 @@ import javax.swing.ButtonGroup;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import pcgen.gui.util.event.TreeViewModelEvent;
-import pcgen.gui.util.event.TreeViewModelListener;
 import pcgen.gui.util.table.DefaultDynamicTableColumnModel;
 import pcgen.gui.util.table.DynamicTableColumnModel;
 import pcgen.gui.util.table.SortableTableModel;
@@ -68,9 +68,8 @@ public class JTreeViewPane extends JTablePane
         }
 
     };
-    private TreeViewModelListener modelListener;
-    private TreeViewTableModel<?> treetableModel;
-    private TreeViewModel<?> viewModel;
+    private TreeViewTableModel treetableModel;
+    private TreeViewModel viewModel;
     private JPopupMenu treeviewMenu;
     private TreeView tempView;
     private boolean searchMode = false;
@@ -111,23 +110,8 @@ public class JTreeViewPane extends JTablePane
         DataView<T> dataView = viewModel.getDataView();
         final TreeViewTableModel<T> model = new TreeViewTableModel<T>(dataView);
         this.treetableModel = model;
-        if (this.viewModel != null)
-        {
-            this.viewModel.removeTreeViewModelListener(modelListener);
-        }
 
-        TreeViewModelListener<T> listener = new TreeViewModelListener<T>()
-        {
-
-            public void dataChanged(TreeViewModelEvent<T> event)
-            {
-                model.setData(event.getNewData());
-            }
-
-        };
         this.viewModel = viewModel;
-        this.modelListener = listener;
-        viewModel.addTreeViewModelListener(listener);
 
         treeviewMenu = new JPopupMenu();
         ButtonGroup group = new ButtonGroup();
@@ -140,7 +124,7 @@ public class JTreeViewPane extends JTablePane
             group.add(item);
             treeviewMenu.add(item);
         }
-        model.setData(viewModel.getData());
+        model.setDataModel(viewModel.getDataModel());
         model.setSelectedTreeView(startingView);
         getTable().setTreeTableModel(model);
         setColumnModel(createTableColumnModel(startingView, dataView));
