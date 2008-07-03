@@ -12,9 +12,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
-import pcgen.gui.util.treeview.AbstractTreeViewModel;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
 import pcgen.gui.util.treeview.DefaultDataViewColumn;
@@ -105,9 +105,10 @@ public class UtilitiesTester extends javax.swing.JFrame
     {
         return new DateModel();
     }
-    private static Collection<Date> getData()
+
+    private static GenericListModel<Date> getData()
     {
-        ArrayList<Date> list = new ArrayList<Date>();
+        GenericListModel<Date> list = new GenericListModel<Date>();
         Calendar cal = Calendar.getInstance();
         cal.set(1543, 12, 9);
         list.add(cal.getTime());
@@ -128,16 +129,13 @@ public class UtilitiesTester extends javax.swing.JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private pcgen.gui.util.JTreeViewPane jTreeViewPane1;
     // End of variables declaration//GEN-END:variables
-    private static class DateModel extends AbstractTreeViewModel<Date>
+    private static class DateModel implements TreeViewModel<Date>
     {
 
         private static List<? extends TreeView<Date>> views = Arrays.asList(DateTree.values());
         private static DataView<Date> data = new DateView();
+        private static GenericListModel<Date> datamodel = getData();
 
-        public DateModel()
-        {
-            super(UtilitiesTester.getData());
-        }
         public List<? extends TreeView<Date>> getTreeViews()
         {
             return views;
@@ -151,6 +149,11 @@ public class UtilitiesTester extends javax.swing.JFrame
         public DataView<Date> getDataView()
         {
             return data;
+        }
+
+        public GenericListModel<Date> getDataModel()
+        {
+            return datamodel;
         }
 
     }

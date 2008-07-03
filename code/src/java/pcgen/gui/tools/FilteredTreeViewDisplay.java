@@ -31,7 +31,8 @@ import pcgen.gui.filter.FilterPanel;
 import pcgen.gui.filter.FilterPanelListener;
 import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.SwingWorker;
-import pcgen.gui.util.event.TreeViewModelEvent;
+import pcgen.gui.util.event.GenericListDataEvent;
+import pcgen.gui.util.event.GenericListDataListener;
 import pcgen.gui.util.treeview.TreeViewModel;
 import pcgen.gui.util.treeview.TreeViewModelWrapper;
 
@@ -72,42 +73,55 @@ public class FilteredTreeViewDisplay extends JPanel
     }
 
     private class TreeViewDisplay<E> extends TreeViewModelWrapper<E>
-            implements FilterPanelListener
+            implements FilterPanelListener, GenericListDataListener
     {
-
-        private Filter oldfilter = null;
 
         public TreeViewDisplay(TreeViewModel<E> model)
         {
             super(model);
+            model.getDataModel().addGenericListDataListener(this);
+        }
+
+        public void intervalRemoved(GenericListDataEvent e)
+        {
+            dataModel.removeAll(e.getData());
         }
 
         @SuppressWarnings("unchecked")
-        public void applyFilter(Filter filter, boolean quicksearch)
+        public void intervalAdded(GenericListDataEvent e)
         {
-            new FilterUpdater(getModel().getData(), filter, quicksearch).start();
+            List<E> sublist = dataModel.subList(dataModel.getSize(),
+                                                dataModel.getSize());
+            new FilterUpdater(sublist, (List<E>) e.getData(),
+                              filterPanel.getFilter(),
+                              treeViewPane.getQuickSearchMode()).start();
         }
 
-        @Override
-        public void dataChanged(TreeViewModelEvent<E> event)
+        public void contentsChanged(GenericListDataEvent e)
         {
-            if (oldfilter != null)
-            {
-                new FilterUpdater(event.getNewData(), oldfilter,
-                                  treeViewPane.getQuickSearchMode()).start();
-            }
+            applyFilter(filterPanel.getFilter(),
+                        treeViewPane.getQuickSearchMode());
+        }
+
+        public void applyFilter(Filter filter, boolean quicksearch)
+        {
+            new FilterUpdater(dataModel, treeviewModel.getDataModel(), filter,
+                              quicksearch).start();
         }
 
         private class FilterUpdater extends SwingWorker<List<E>>
         {
 
+            private Collection<E> baseData;
             private Collection<E> modelData;
             private boolean quicksearch;
             private Filter filter;
 
-            public FilterUpdater(Collection<E> modelData, Filter filter,
+            public FilterUpdater(Collection<E> modelData,
+                                  Collection<E> baseData, Filter filter,
                                   boolean quicksearch)
             {
+                this.baseData = baseData;
                 this.modelData = modelData;
                 this.filter = filter;
                 this.quicksearch = quicksearch;
@@ -118,7 +132,7 @@ public class FilteredTreeViewDisplay extends JPanel
             public List<E> construct()
             {
                 List<E> data = new ArrayList<E>();
-                for (E element : modelData)
+                for (E element : baseData)
                 {
                     if (filter.accept(element))
                     {
@@ -131,9 +145,17 @@ public class FilteredTreeViewDisplay extends JPanel
             @Override
             public void finished()
             {
-                oldfilter = filter;
-                treeViewPane.setQuickSearchMode(quicksearch);
-                setData(getValue());
+                List<E> value = getValue();
+                if (value.size() != baseData.size())
+                {
+                    modelData.clear();
+                    treeViewPane.setQuickSearchMode(quicksearch);
+                    modelData.addAll(value);
+                }
+                else
+                {
+                    treeViewPane.setQuickSearchMode(quicksearch);
+                }
             }
 
         }

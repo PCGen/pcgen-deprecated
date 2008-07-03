@@ -24,11 +24,14 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import pcgen.gui.UIContext;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.tools.FilteredTreeViewDisplay;
+import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.JTreeTable;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
@@ -65,6 +68,7 @@ public class AbilityChooserTab extends AbstractChooserTab
     }
 
     private static final class AbilityCatagoryTreeViewTableModel extends TreeViewTableModel<AbilityCatagoryFacade>
+            implements ListDataListener
     {
 
         private static final DataViewColumn column = new DefaultDataViewColumn("Remaining",
@@ -88,7 +92,7 @@ public class AbilityChooserTab extends AbstractChooserTab
         private final CharacterFacade character;
 
         public AbilityCatagoryTreeViewTableModel(final CharacterFacade character,
-                                                  List<AbilityCatagoryFacade> data)
+                                                  GenericListModel<AbilityCatagoryFacade> data)
         {
             super(new DataView<AbilityCatagoryFacade>()
           {
@@ -106,7 +110,7 @@ public class AbilityChooserTab extends AbstractChooserTab
           });
             this.character = character;
             setSelectedTreeView(treeview);
-            setData(data);
+            setDataModel(data);
         }
 
         @Override
@@ -128,6 +132,21 @@ public class AbilityChooserTab extends AbstractChooserTab
                                             (Integer) aValue);
         }
 
+        public void intervalAdded(ListDataEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void intervalRemoved(ListDataEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void contentsChanged(ListDataEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
     }
 
     public Hashtable<Object, Object> createState(CharacterFacade character)
@@ -144,4 +163,5 @@ public class AbilityChooserTab extends AbstractChooserTab
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
 }
