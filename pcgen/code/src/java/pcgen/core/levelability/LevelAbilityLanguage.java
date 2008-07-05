@@ -27,6 +27,7 @@ import pcgen.core.Language;
 import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.pclevelinfo.PCLevelInfo;
+import pcgen.util.Logging;
 import pcgen.util.chooser.ChooserInterface;
 
 import java.util.Collections;
@@ -139,7 +140,7 @@ final class LevelAbilityLanguage extends LevelAbility
 			}
 			else
 			{
-				System.err.println("Language not found: " + aToken);
+				Logging.errorPrint("Language not found: " + aToken);
 			}
 		}
 	}

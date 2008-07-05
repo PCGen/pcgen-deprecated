@@ -29,6 +29,7 @@ import pcgen.core.*;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.utils.CoreUtility;
 import pcgen.util.Delta;
+import pcgen.util.Logging;
 
 import java.io.Serializable;
 import java.util.*;
@@ -761,19 +762,19 @@ public abstract class BonusObj extends PrereqObject implements Serializable, Clo
 
 	protected boolean parseToken(final String token)
 	{
-		System.err.println("Need to override parseToken in " + getClass().getName());
+		Logging.errorPrint("Need to override parseToken in " + getClass().getName());
 		return false;
 	}
 
 	protected String unparseToken(final Object obj)
 	{
-		System.err.println("Need to override unparseToken in " + getClass().getName());
+		Logging.errorPrint("Need to override unparseToken in " + getClass().getName());
 		return "";
 	}
 
 	protected String[] getBonusesHandled()
 	{
-		System.err.println("Need to override getBonusesHandled " + getClass().getName());
+		Logging.errorPrint("Need to override getBonusesHandled " + getClass().getName());
 		return new String[]{ "" };
 	}
 

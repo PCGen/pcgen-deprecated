@@ -6897,7 +6897,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		final List<BonusObj> aList =
 				statList.getBonusListOfType(aType.toUpperCase(), aName
 					.toUpperCase());
-System.err.println(aList);
 		return calcBonusFromList(aList);
 	}
 
@@ -8447,7 +8446,7 @@ System.err.println(aList);
 
 		if (aTemplate == null)
 		{
-			System.err.println("Template not found: '" + templateKey + "'");
+			Logging.errorPrint("Template not found: '" + templateKey + "'");
 		}
 		setDirty(true);
 
@@ -15393,6 +15392,10 @@ System.err.println(aList);
 
 	private Float getEquippedQty(EquipSet eSet, Equipment eqI)
 	{
+		if (eSet == null)
+		{
+			return Float.valueOf(0);
+		}
 		final String rPath = eSet.getIdPath();
 
 		for (EquipSet es : getEquipSet())

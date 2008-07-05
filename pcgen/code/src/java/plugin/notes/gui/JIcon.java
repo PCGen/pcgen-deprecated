@@ -204,7 +204,7 @@ public class JIcon extends JPanel
 				String openCmd = ("/usr/bin/open");
 				String filePath = (launch.getAbsolutePath());
 				String[] args = {openCmd, filePath};
-				System.err.println("Runtime.getRuntime().exec: [" + args[0]
+				Logging.log(Logging.INFO, "Runtime.getRuntime().exec: [" + args[0]
 					+ "] [" + args[1] + "]");
 
 				try

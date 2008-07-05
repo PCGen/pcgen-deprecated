@@ -80,8 +80,7 @@ public class PjepPool
 		}
 		else
 		{
-			System.err
-				.println("Tried to release a PJEP instance that we did not aquire...");
+			Logging.errorPrint("Tried to release a PJEP instance that we did not aquire...");
 		}
 		freeStack.push(interp);
 	}

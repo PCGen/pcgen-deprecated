@@ -32,6 +32,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
+
+import pcgen.util.Logging;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -539,9 +542,7 @@ public class DiceBagView extends JInternalFrame implements Observer
 				}
 				catch (NumberFormatException ex)
 				{
-					System.err
-						.println("Invalid command passed to BagListener.");
-					ex.printStackTrace();
+					Logging.errorPrint("Invalid command passed to BagListener.", ex);
 				}
 			}
 		}

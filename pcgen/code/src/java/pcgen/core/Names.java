@@ -287,7 +287,7 @@ public final class Names
 				{
 					if ((currentLine.length() > 0) && (currentLine.charAt(0) == '['))
 					{
-						System.err.println("Line #" + Integer.toString(lineNumber) + " prereqs not met: " + currentLine);
+						Logging.log(Logging.INFO, "Line #" + Integer.toString(lineNumber) + " prereqs not met: " + currentLine);
 					}
 					continue;
 				}
