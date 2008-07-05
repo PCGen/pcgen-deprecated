@@ -20,8 +20,8 @@
  */
 package pcgen.gui;
 
-import java.util.HashMap;
-import java.util.Map;
+import pcgen.gui.facade.AbilityCatagoryFacade;
+import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.filter.NamedFilter;
 import pcgen.gui.util.GenericListModel;
@@ -30,26 +30,14 @@ import pcgen.gui.util.GenericListModel;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class UIContext
+public interface UIContext
 {
-    //public static final String CLASS_TAB_ID = "classTab";
-    private final Map<CharacterFacade, Map<String, Map<String, Object>>> dataMap = new HashMap<CharacterFacade, Map<String, Map<String, Object>>>();
 
-    public <T> GenericListModel<NamedFilter<? super T>> getRegisteredFilters(Class<T> c)
-    {
-        return null;
-    }
+    public <T> GenericListModel<NamedFilter<? super T>> getRegisteredFilters(Class<T> c);
 
-    public Map<String, Object> getUIData(CharacterFacade facade,
-                                          String dataid)
-    {
-        return dataMap.get(facade).get(dataid);
-    }
+    public GenericListModel<AbilityCatagoryFacade> getAbilityCatagories(CharacterFacade character);
 
-    public void putUIData(CharacterFacade facade, String dataid,
-                           Map<String, Object> map)
-    {
-        dataMap.get(facade).put(dataid, map);
-    }
+    public GenericListModel<AbilityFacade> getAbilitiesForCatagory(CharacterFacade character,
+                                                                    AbilityCatagoryFacade catagory);
 
 }

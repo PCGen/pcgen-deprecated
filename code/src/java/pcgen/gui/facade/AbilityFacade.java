@@ -31,6 +31,10 @@ public interface AbilityFacade
 
     public List<String> getTypes();
 
+    public boolean isMult();
+
+    public boolean isStackable();
+
     public String getDescription();
 
     public String getSource();
