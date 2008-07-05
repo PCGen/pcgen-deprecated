@@ -109,6 +109,11 @@ public class KitStat extends BaseKit implements Serializable, Cloneable
 
 	public void apply(PlayerCharacter aPC)
 	{
+		// Non abilities will be null, so skip those.
+		if (theStat == null)
+		{
+			return;
+		}
 		final StatList aStatList = aPC.getStatList();
 		for (Iterator<PCStat> stat = aStatList.iterator(); stat.hasNext();)
 		{
