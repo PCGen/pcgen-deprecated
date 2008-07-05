@@ -757,7 +757,7 @@ public class NotesView extends JPanel
 			}
 			catch (Exception e)
 			{
-				System.out.println(e.getMessage());
+				Logging.errorPrint(e.getMessage(), e);
 			}
 		}
 	}

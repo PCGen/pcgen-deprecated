@@ -20,6 +20,7 @@ import pcgen.core.SettingsHandler;
 import pcgen.core.StatList;
 import pcgen.core.utils.CoreUtility;
 import pcgen.io.ExportHandler;
+import pcgen.util.Logging;
 import pcgen.util.enumeration.AttackType;
 
 public class PlayerCharacterOutput
@@ -192,7 +193,7 @@ public class PlayerCharacterOutput
 		}
 		catch (Exception e)
 		{
-			System.out.println("Failure fetching token: " + token);
+			Logging.errorPrint("Failure fetching token: " + token);
 			return "";
 		}
 	}

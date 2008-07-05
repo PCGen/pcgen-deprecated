@@ -2317,8 +2317,7 @@ public class InfoSkills extends FilterAdapterPanel implements CharacterInfoTab
 		}
 		catch (Exception e)
 		{
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			Logging.errorPrint(e.getMessage(), e);
 		}
 		selectedTable.expandPathList(pathList);
 	}

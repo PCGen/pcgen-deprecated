@@ -30,6 +30,7 @@ import pcgen.core.PObject;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.SettingsHandler;
 import pcgen.gui.panes.FlippingSplitPane;
+import pcgen.util.Logging;
 import plugin.charactersheet.CharacterSheetPlugin;
 
 /**
@@ -369,7 +370,7 @@ public class CharacterPanel extends FlippingSplitPane
 				{
 					//This is never going to happen, cause no actual io is taking place, besides,
 					//if it did, we couldn't do anything about it anyway
-					System.out.println("The impossible happened");
+					Logging.errorPrint("The impossible happened");
 				}
 				return;
 			}

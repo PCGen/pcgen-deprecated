@@ -176,8 +176,7 @@ public class JIcon extends JPanel
 			}
 			catch (Exception e)
 			{
-				System.out.println(e.getMessage());
-				e.printStackTrace();
+				Logging.errorPrint(e.getMessage(), e);
 			}
 		}
 	}

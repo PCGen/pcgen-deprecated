@@ -11,6 +11,7 @@ import pcgen.core.PlayerCharacter;
 import pcgen.io.exporttoken.StatToken;
 import pcgen.io.exporttoken.VarToken;
 import pcgen.util.Delta;
+import pcgen.util.Logging;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -693,7 +694,7 @@ public class TurnPane extends javax.swing.JPanel
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception in " + turnType);
+			Logging.errorPrint("Exception in " + turnType, e);
 			setVisible(false);
 		}
 	}

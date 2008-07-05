@@ -357,7 +357,7 @@ final class MainPrint extends JPanel
 					Runtime.getRuntime().gc();
 					Logging.memoryReport();
 					new org.apache.fop.apps.Options(); // this must be instantiated for getVersion() to work.
-					System.out.println("Fop Version: " + org.apache.fop.apps.Version.getVersion());
+					Logging.log(Logging.INFO, "Fop Version: " + org.apache.fop.apps.Version.getVersion());
 					fh.run();
 
 					Logging.memoryReport();

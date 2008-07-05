@@ -512,8 +512,7 @@ public final class CharacterInfo extends JPanel {
 							try {
 								tab.refresh();
 							} catch (Exception e) {
-								System.out.println(e.getMessage());
-								e.printStackTrace();
+								Logging.errorPrint(e.getMessage(), e);
 							}
 						}
 						i.remove();
