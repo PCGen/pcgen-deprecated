@@ -2666,6 +2666,12 @@ public final class Equipment extends PObject implements Serializable,
 				eqMod.addAssociated(x.replace('=', '|'));
 			}
 		}
+		
+		if (theWeaponStats == null)
+		{
+			theWeaponStats = new WeaponEquipment(this);
+		}
+
 	}
 
 	/**
@@ -2822,6 +2828,11 @@ public final class Equipment extends PObject implements Serializable,
 		eqModList = Globals.sortPObjectListByName(eqModList);
 
 		setBase(aPC);
+		
+		if (theWeaponStats == null)
+		{
+			theWeaponStats = new WeaponEquipment(this);
+		}
 	}
 
 	/**
