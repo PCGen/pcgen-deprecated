@@ -1,13 +1,15 @@
-package plugin.lsttokens.template;
+package plugin.lsttokens.deprecated;
 
 import pcgen.core.PCTemplate;
+import pcgen.core.PObject;
+import pcgen.persistence.lst.DeprecatedToken;
 import pcgen.persistence.lst.PCTemplateLstToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with BONUSFEATS Token
  */
-public class BonusfeatsToken implements PCTemplateLstToken
+public class BonusfeatsToken implements PCTemplateLstToken, DeprecatedToken
 {
 
 	public String getTokenName()
@@ -18,7 +20,6 @@ public class BonusfeatsToken implements PCTemplateLstToken
 	// number of additional feats to spend
 	public boolean parse(PCTemplate template, String value)
 	{
-		Logging.errorPrint("Template token BONUSFEATS is not used - you should use a BONUS: token.  This may (or may not) be fixed in a later revision of PCGen");
 		try
 		{
 			int featCount = Integer.parseInt(value);
@@ -37,5 +38,14 @@ public class BonusfeatsToken implements PCTemplateLstToken
 			return false;
 		}
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see pcgen.persistence.lst.DeprecatedToken#getMessage(pcgen.core.PObject, java.lang.String)
+	 */
+	@Override
+	public String getMessage(PObject obj, String value)
+	{
+		return "Template token BONUSFEATS is not used - the tag will not do anything. Replaced by: BONUS:FEAT|POOL|<value>";
 	}
 }
