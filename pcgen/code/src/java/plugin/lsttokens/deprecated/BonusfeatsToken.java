@@ -43,7 +43,6 @@ public class BonusfeatsToken implements PCTemplateLstToken, DeprecatedToken
 	/* (non-Javadoc)
 	 * @see pcgen.persistence.lst.DeprecatedToken#getMessage(pcgen.core.PObject, java.lang.String)
 	 */
-	@Override
 	public String getMessage(PObject obj, String value)
 	{
 		return "Template token BONUSFEATS is not used - the tag will not do anything. Replaced by: BONUS:FEAT|POOL|<value>";
