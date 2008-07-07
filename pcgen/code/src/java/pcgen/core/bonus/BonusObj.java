@@ -572,13 +572,14 @@ public abstract class BonusObj extends PrereqObject implements Serializable, Clo
 			{
 				sb.append('|').append(bonusValue.toString());
 			}
-	
-			sb.append(super.getPCCText());
-	
+			
 			if (bonusType.length() != 0)
 			{
 				sb.append("|TYPE=").append(bonusType);
 			}
+
+			// And put the prereqs at the end of the string.
+			sb.append(super.getPCCText());
 	
 			stringRepresentation = sb.toString();
 		}
