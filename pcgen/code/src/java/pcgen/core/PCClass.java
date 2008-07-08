@@ -7049,6 +7049,8 @@ public class PCClass extends PObject
 		columnNames.add("Other");
 
 		List<List> choiceList = new ArrayList<List>();
+		boolean subClassSelected = (!getSubClassKey().equals(Constants.s_NONE) && !getSubClassKey()
+				.equals(""));
 
 		for (SubClass sc : subClassList)
 		{
@@ -7068,16 +7070,12 @@ public class PCClass extends PObject
 			columnList.add(Integer.toString(sc.getCost()));
 			columnList.add(sc.getSupplementalDisplayInfo());
 
-			if (!getSubClassKey().equals(Constants.s_NONE))
+			// If a subclass has already been selected, only add that one 
+			if (!subClassSelected || getSubClassKey().equals(sc.getKeyName()))
 			{
-				// We already have a subclass requested.
-				// If it is legal we will return that.
-				choiceList.clear();
 				choiceList.add(columnList);
-				break;
 			}
 
-			choiceList.add(columnList);
 		}
 
 		Collections.sort(choiceList, new Comparator<List>()
@@ -7097,8 +7095,9 @@ public class PCClass extends PObject
 			}
 		});
 
-		// add base class to the chooser at the TOP
-		if (this.allowBaseClass)
+		// add base class to the chooser at the TOP (if not alreayd excluded)
+		if (this.allowBaseClass
+				&& (!subClassSelected || getKeyName().equals(getSubClassKey())))
 		{
 			final List<Object> columnList2 = new ArrayList<Object>(3);
 			columnList2.add(this);
