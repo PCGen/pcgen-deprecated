@@ -148,6 +148,12 @@ public class JTablePane extends JScrollPane
         return table;
     }
 
+    public void setRowSelectionMode(int mode)
+    {
+        table.clearSelection();
+        table.getSelectionModel().setSelectionMode(mode);
+    }
+
     public boolean getDragEnabled()
     {
         return table.getDragEnabled();

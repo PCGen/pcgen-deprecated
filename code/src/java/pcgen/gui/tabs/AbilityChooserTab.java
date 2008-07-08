@@ -20,6 +20,10 @@
  */
 package pcgen.gui.tabs;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,8 +31,13 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import pcgen.gui.UIContext;
 import pcgen.gui.facade.AbilityCatagoryFacade;
@@ -37,6 +46,7 @@ import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.tools.FilteredTreeViewDisplay;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.JTreeTable;
+import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.gui.util.event.GenericListDataListener;
 import pcgen.gui.util.panes.FlippingSplitPane;
@@ -105,6 +115,10 @@ public class AbilityChooserTab extends AbstractChooserTab
 
     private void initComponents()
     {
+
+        selectedTreeViewDisplay.setRowSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        availableTreeViewDisplay.setRowSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         availableTreeViewDisplay.setTreeViewModel(AbilityFacade.class,
                                                   new AvailableAbilityTreeViewModel());
 
@@ -114,7 +128,9 @@ public class AbilityChooserTab extends AbstractChooserTab
                                                        availableTreeViewDisplay);
         pane.setOneTouchExpandable(true);
         pane.setDividerSize(7);
+        setPrimaryChooserComponent(pane);
 
+        catagoryTreeTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane catagoryScrollPane = new JScrollPane(catagoryTreeTable,
                                                          JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                                                          JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -325,6 +341,142 @@ public class AbilityChooserTab extends AbstractChooserTab
                                             (Integer) aValue);
         }
 
+    }
+
+    private final class AbilityTransferHandler extends TransferHandler
+    {
+
+        private CharacterFacade character;
+
+        public AbilityTransferHandler(CharacterFacade character)
+        {
+            this.character = character;
+        }
+
+        private final DataFlavor abilityFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
+                                                                  ";class=" +
+                                                                  AbilityFacade.class.getName(),
+                                                                  null);
+
+        @Override
+        public int getSourceActions(JComponent c)
+        {
+            if (selectedTreeViewDisplay.isAncestorOf(c))
+            {
+                List<Object> data = selectedTreeViewDisplay.getSelectedData();
+                if (data.isEmpty() || data.get(0).getClass() !=
+                        AbilityFacade.class)
+                {
+                    return NONE;
+                }
+                return MOVE;
+            }
+            else
+            {
+                List<Object> data = availableTreeViewDisplay.getSelectedData();
+                if (data.isEmpty() || data.get(0).getClass() !=
+                        AbilityFacade.class)
+                {
+                    return NONE;
+                }
+                AbilityFacade ability = (AbilityFacade) data.get(0);
+                if (ability.isMult())
+                {
+                    return COPY;
+                }
+                else
+                {
+                    return MOVE;
+                }
+            }
+
+        }
+
+        @Override
+        protected Transferable createTransferable(JComponent c)
+        {
+            JTreeViewPane pane = (JTreeViewPane) c.getParent();
+            final AbilityFacade selectedAbility = (AbilityFacade) pane.getSelectedData().get(0);
+            return new Transferable()
+            {
+
+                public DataFlavor[] getTransferDataFlavors()
+                {
+                    return new DataFlavor[]{abilityFlavor};
+                }
+
+                public boolean isDataFlavorSupported(DataFlavor flavor)
+                {
+                    return abilityFlavor == flavor;
+                }
+
+                public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
+                {
+                    if (!isDataFlavorSupported(flavor))
+                    {
+                        throw new UnsupportedFlavorException(flavor);
+                    }
+                    return selectedAbility;
+                }
+
+            };
+        }
+
+        @Override
+        public boolean canImport(JComponent comp, DataFlavor[] transferFlavors)
+        {
+            return transferFlavors[0] == abilityFlavor;
+        }
+
+        @Override
+        public boolean importData(JComponent comp, Transferable t)
+        {
+            if (selectedTreeViewDisplay.isAncestorOf(comp))
+            {
+                try
+                {
+                    AbilityFacade ability = (AbilityFacade) t.getTransferData(abilityFlavor);
+                    // TODO: add some extra logic
+                    character.addAbility(getSelectedCatagory(), ability);
+                    return true;
+                }
+                catch (UnsupportedFlavorException ex)
+                {
+                    Logger.getLogger(AbilityChooserTab.class.getName()).log(Level.SEVERE,
+                                                                            null,
+                                                                            ex);
+                }
+                catch (IOException ex)
+                {
+                    Logger.getLogger(AbilityChooserTab.class.getName()).log(Level.SEVERE,
+                                                                            null,
+                                                                            ex);
+                }
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void exportDone(JComponent source, Transferable data,
+                                   int action)
+        {
+            if (action == COPY)
+            {
+                return;
+            }
+        }
+
+    }
+
+    public void setSelectedCatagory(AbilityCatagoryFacade catagory)
+    {
+
+    }
+
+    public AbilityCatagoryFacade getSelectedCatagory()
+    {
+        return null;
     }
 
     public Hashtable<Object, Object> createState(CharacterFacade character)

@@ -59,6 +59,15 @@ public class FilteredTreeViewDisplay extends JPanel
     }
 
     /**
+     * delegates to JTablePane.setRowSelectionMode()
+     * @param mode
+     */
+    public void setRowSelectionMode(int mode)
+    {
+        treeViewPane.setRowSelectionMode(mode);
+    }
+
+    /**
      * delegates to JTreeViewPane.getSelectedData()
      * @param b
      */
@@ -68,7 +77,7 @@ public class FilteredTreeViewDisplay extends JPanel
     }
 
     /**
-     * delegates to JTreeViewPane.getTransferHandler()
+     * delegates to JTablePane.getTransferHandler()
      * @param b
      */
     @Override
@@ -78,7 +87,7 @@ public class FilteredTreeViewDisplay extends JPanel
     }
 
     /**
-     * delegates to JTreeViewPane.setTransferHandler()
+     * delegates to JTablePane.setTransferHandler()
      * @param b
      */
     @Override
@@ -88,7 +97,7 @@ public class FilteredTreeViewDisplay extends JPanel
     }
 
     /**
-     * delegates to JTreeViewPane.getDragEnabled()
+     * delegates to JTablePane.getDragEnabled()
      * @param b
      */
     public boolean getDragEnabled()
@@ -97,7 +106,7 @@ public class FilteredTreeViewDisplay extends JPanel
     }
 
     /**
-     * delegates to JTreeViewPane.setDragEnabled()
+     * delegates to JTablePane.setDragEnabled()
      * @param b
      */
     public void setDragEnabled(boolean b)

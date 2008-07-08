@@ -29,6 +29,12 @@ import pcgen.gui.util.GenericListModel;
 public interface CharacterFacade
 {
 
+    public void addAbility(AbilityCatagoryFacade catagory,
+                            AbilityFacade ability);
+
+    public void removeAbility(AbilityCatagoryFacade catagory,
+                               AbilityFacade ability);
+
     /**
      * Note: This method should never return null. If the character does not possess
      * any abilities in the parameter catagory, this method should create a new
