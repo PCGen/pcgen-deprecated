@@ -52,7 +52,6 @@ import pcgen.gui.UIContext;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.tools.FilteredTreeViewDisplay;
-import pcgen.gui.util.JTreeViewPane;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -150,9 +149,8 @@ public class ClassChooserTab extends AbstractChooserTab
         classTable.setDragEnabled(true);
         classTable.setTransferHandler(handler);
 
-        JTreeViewPane treeviewPane = treeviewDisplay.getTreeViewPane();
-        treeviewPane.setDragEnabled(true);
-        treeviewPane.setTransferHandler(handler);
+        treeviewDisplay.setDragEnabled(true);
+        treeviewDisplay.setTransferHandler(handler);
 
         setPrimaryChooserComponent(treeviewDisplay);
         setSecondaryChooserComponent(panel);
@@ -212,7 +210,7 @@ public class ClassChooserTab extends AbstractChooserTab
         @Override
         protected Transferable createTransferable(JComponent c)
         {
-            List<Object> data = treeviewDisplay.getTreeViewPane().getSelectedData();
+            List<Object> data = treeviewDisplay.getSelectedData();
             if (data.isEmpty())
             {
                 return null;

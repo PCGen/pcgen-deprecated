@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.TransferHandler;
 import pcgen.gui.UIContext;
 import pcgen.gui.filter.Filter;
 import pcgen.gui.filter.FilterPanel;
@@ -57,9 +58,51 @@ public class FilteredTreeViewDisplay extends JPanel
         add(treeViewPane, BorderLayout.CENTER);
     }
 
-    public JTreeViewPane getTreeViewPane()
+    /**
+     * delegates to JTreeViewPane.getSelectedData()
+     * @param b
+     */
+    public List<Object> getSelectedData()
     {
-        return treeViewPane;
+        return treeViewPane.getSelectedData();
+    }
+
+    /**
+     * delegates to JTreeViewPane.getTransferHandler()
+     * @param b
+     */
+    @Override
+    public TransferHandler getTransferHandler()
+    {
+        return treeViewPane.getTransferHandler();
+    }
+
+    /**
+     * delegates to JTreeViewPane.setTransferHandler()
+     * @param b
+     */
+    @Override
+    public void setTransferHandler(TransferHandler newHandler)
+    {
+        treeViewPane.setTransferHandler(newHandler);
+    }
+
+    /**
+     * delegates to JTreeViewPane.getDragEnabled()
+     * @param b
+     */
+    public boolean getDragEnabled()
+    {
+        return treeViewPane.getDragEnabled();
+    }
+
+    /**
+     * delegates to JTreeViewPane.setDragEnabled()
+     * @param b
+     */
+    public void setDragEnabled(boolean b)
+    {
+        treeViewPane.setDragEnabled(b);
     }
 
     public <T> void setTreeViewModel(Class<T> filterClass,

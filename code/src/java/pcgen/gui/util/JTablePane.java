@@ -148,6 +148,11 @@ public class JTablePane extends JScrollPane
         return table;
     }
 
+    public boolean getDragEnabled()
+    {
+        return table.getDragEnabled();
+    }
+
     public void setDragEnabled(boolean b)
     {
         table.setDragEnabled(b);

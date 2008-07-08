@@ -20,18 +20,16 @@
  */
 package pcgen.gui.tabs;
 
-import pcgen.gui.tools.*;
 import java.awt.Component;
-import javax.swing.undo.StateEditable;
 import pcgen.gui.UIContext;
+import pcgen.gui.tools.InfoPane;
 import pcgen.gui.util.panes.FlippingSplitPane;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractChooserTab extends FlippingSplitPane implements CharacterInfoTab,
-                                                                        StateEditable
+public abstract class AbstractChooserTab extends FlippingSplitPane implements CharacterInfoTab
 {
 
     protected final UIContext context;

@@ -190,7 +190,7 @@ public class TreeViewPath<E>
         return new TreeViewPath(path, lastElement + 1);
     }
 
-    public TreeViewPath<E> pathByAddingParent(Object singlePath)
+    public TreeViewPath<E> pathByAddingParent(String singlePath)
     {
         Object[] parentPath = new Object[length + 1];
         parentPath[0] = singlePath;
