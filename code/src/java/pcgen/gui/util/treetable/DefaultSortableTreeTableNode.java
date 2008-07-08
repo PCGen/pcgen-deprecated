@@ -38,7 +38,7 @@ public class DefaultSortableTreeTableNode extends DefaultTreeTableNode
         this(Collections.emptyList());
     }
 
-    public DefaultSortableTreeTableNode(List<Object> data)
+    public DefaultSortableTreeTableNode(List<?> data)
     {
         setValues(data);
     }
@@ -56,7 +56,7 @@ public class DefaultSortableTreeTableNode extends DefaultTreeTableNode
             add(new DefaultSortableTreeTableNode(node.getChildAt(x)));
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     public void sortChildren(Comparator<TreeTableNode> comparator)
     {
@@ -70,4 +70,5 @@ public class DefaultSortableTreeTableNode extends DefaultTreeTableNode
             }
         }
     }
+
 }

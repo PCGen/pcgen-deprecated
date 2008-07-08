@@ -20,12 +20,23 @@
  */
 package pcgen.gui.facade;
 
+import pcgen.gui.util.GenericListModel;
+
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
 public interface CharacterFacade
 {
+
+    /**
+     * Note: This method should never return null. If the character does not possess
+     * any abilities in the parameter catagory, this method should create a new
+     * GenericListModel for that catagory and keep a reference to it for future use.
+     * @param catagory
+     * @return a List of Abilities the character posseses in the specified catagory
+     */
+    public GenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
 
     public ClassFacade getSelectedClass(int level);
 

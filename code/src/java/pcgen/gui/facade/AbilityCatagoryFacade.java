@@ -29,8 +29,6 @@ import java.util.List;
 public interface AbilityCatagoryFacade
 {
 
-    public List<AbilityFacade> getAbilities();
-
     /**
      * 
      * @return "Feats", "Class Abilities", or "Salient Divine Ability"

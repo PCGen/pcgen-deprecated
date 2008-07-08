@@ -23,8 +23,10 @@ package pcgen.gui.tabs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import pcgen.gui.UIContext;
@@ -44,6 +46,49 @@ import pcgen.gui.util.treeview.*;
 public class AbilityChooserTab extends AbstractChooserTab
 {
 
+    private static enum AbilityTreeView implements TreeView<AbilityFacade>
+    {
+
+        NAME("Name"),
+        TYPE_NAME("Type/Name"),
+        PREREQ_TREE("Prereq Tree"),
+        SOURCE_NAME("Source/Name");
+        private String name;
+
+        private AbilityTreeView(String name)
+        {
+            this.name = name;
+        }
+
+        public String getViewName()
+        {
+            return name;
+        }
+
+        public List<TreeViewPath<AbilityFacade>> getPaths(AbilityFacade pobj)
+        {
+            switch (this)
+            {
+                case NAME:
+                    return Collections.singletonList(new TreeViewPath<AbilityFacade>(pobj));
+                case TYPE_NAME:
+                    List<TreeViewPath<AbilityFacade>> list = new ArrayList<TreeViewPath<AbilityFacade>>();
+                    for (String type : pobj.getTypes())
+                    {
+                        list.add(new TreeViewPath<AbilityFacade>(pobj, type));
+                    }
+                    return list;
+                case PREREQ_TREE:
+                    return null;
+                case SOURCE_NAME:
+                    return Collections.singletonList(new TreeViewPath<AbilityFacade>(pobj,
+                                                                                     pobj.getSource()));
+                default:
+                    throw new InternalError();
+            }
+        }
+
+    }
     private static final DataView<AbilityFacade> abilityDataView = new DataView<AbilityFacade>()
     {
 
@@ -104,22 +149,43 @@ public class AbilityChooserTab extends AbstractChooserTab
         setSecondaryChooserComponent(catagoryScrollPane);
     }
 
-    private static final class SelectedAbilityTreeViewModel implements TreeViewModel<AbilityFacade>
+    private final class SelectedAbilityTreeViewModel implements TreeViewModel<AbilityFacade>
     {
+
+        private final List<? extends TreeView<AbilityFacade>> treeViews =
+                Arrays.asList(new SelectedAbilityTreeView(AbilityTreeView.NAME),
+                              new SelectedAbilityTreeView(AbilityTreeView.TYPE_NAME),
+                              new SelectedAbilityTreeView(AbilityTreeView.PREREQ_TREE),
+                              new SelectedAbilityTreeView(AbilityTreeView.SOURCE_NAME));
+        private final Map<AbilityFacade, AbilityCatagoryFacade> abilityMap;
+
+        public SelectedAbilityTreeViewModel(CharacterFacade character)
+        {
+            this.abilityMap = new HashMap<AbilityFacade, AbilityCatagoryFacade>();
+
+            GenericListModel<AbilityCatagoryFacade> catagories = context.getAbilityCatagories(character);
+            for (AbilityCatagoryFacade catagory : catagories)
+            {
+                for (AbilityFacade ability : character.getAbilities(catagory))
+                {
+                    abilityMap.put(ability, catagory);
+                }
+            }
+        }
 
         public List<? extends TreeView<AbilityFacade>> getTreeViews()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return treeViews;
         }
 
         public int getDefaultTreeViewIndex()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return 0;
         }
 
         public DataView<AbilityFacade> getDataView()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return abilityDataView;
         }
 
         public GenericListModel<AbilityFacade> getDataModel()
@@ -127,58 +193,40 @@ public class AbilityChooserTab extends AbstractChooserTab
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        private class SelectedAbilityTreeView implements TreeView<AbilityFacade>
+        {
+
+            private AbilityTreeView view;
+
+            public SelectedAbilityTreeView(AbilityTreeView view)
+            {
+                this.view = view;
+            }
+
+            public String getViewName()
+            {
+                return "Catagory/" + view.getViewName();
+            }
+
+            public List<TreeViewPath<AbilityFacade>> getPaths(AbilityFacade pobj)
+            {
+                List<TreeViewPath<AbilityFacade>> paths = new ArrayList<TreeViewPath<AbilityFacade>>();
+                for (TreeViewPath<AbilityFacade> path : view.getPaths(pobj))
+                {
+                    paths.add(path.pathByAddingParent(abilityMap.get(pobj)));
+                }
+                return paths;
+            }
+
+        }
     }
 
     private static final class AvailableAbilityTreeViewModel implements TreeViewModel<AbilityFacade>
     {
 
-        private static enum AvailableTreeView implements TreeView<AbilityFacade>
-        {
-
-            NAME("Name"),
-            TYPE_NAME("Type/Name"),
-            PREREQ_TREE("Prereq Tree"),
-            SOURCE_NAME("Source/Name");
-            private String name;
-
-            private AvailableTreeView(String name)
-            {
-                this.name = name;
-            }
-
-            public String getViewName()
-            {
-                return name;
-            }
-
-            public List<TreeViewPath<AbilityFacade>> getPaths(AbilityFacade pobj)
-            {
-                switch (this)
-                {
-                    case NAME:
-                        return Collections.singletonList(new TreeViewPath<AbilityFacade>(pobj));
-                    case TYPE_NAME:
-                        List<TreeViewPath<AbilityFacade>> list = new ArrayList<TreeViewPath<AbilityFacade>>();
-                        for (String type : pobj.getTypes())
-                        {
-                            list.add(new TreeViewPath<AbilityFacade>(pobj, type));
-                        }
-                        return list;
-                    case PREREQ_TREE:
-                        return null;
-                    case SOURCE_NAME:
-                        return Collections.singletonList(new TreeViewPath<AbilityFacade>(pobj,
-                                                                                         pobj.getSource()));
-                    default:
-                        throw new InternalError();
-                }
-            }
-
-        }
-
         public List<? extends TreeView<AbilityFacade>> getTreeViews()
         {
-            return Arrays.asList(AvailableTreeView.values());
+            return Arrays.asList(AbilityTreeView.values());
         }
 
         public int getDefaultTreeViewIndex()

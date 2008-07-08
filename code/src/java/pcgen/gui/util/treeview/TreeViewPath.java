@@ -42,30 +42,35 @@ public class TreeViewPath<E>
      */
     public TreeViewPath(E pobj, String path)
     {
-	this(new Object[]{path, pobj}, 2);
+        this(new Object[]{path,
+                          pobj
+     }, 2);
     }
 
     @SuppressWarnings("unchecked")
     public TreeViewPath(E pobj, String... path)
     {
-	this(path, pobj);
+        this(path, pobj);
     }
 
     public TreeViewPath(E pobj)
     {
-	this(new Object[]{pobj}, 1);
+        this(new Object[]{pobj}, 1);
     }
 
     public TreeViewPath(E... pobjs)
     {
-	this(pobjs, pobjs.length);
+        this(pobjs, pobjs.length);
     }
 
     public TreeViewPath(String[] path, E... pobjs)
     {
-	if(path == null || path.length == 0 || pobjs == null || pobjs.length == 0)
+        if (path == null || path.length == 0 || pobjs == null || pobjs.length ==
+                0)
+        {
             throw new IllegalArgumentException("path in TreePath must be non null and not empty.");
-        this.length = path.length+pobjs.length;
+        }
+        this.length = path.length + pobjs.length;
         this.path = new Object[length];
         System.arraycopy(path, 0, this.path, 0, path.length);
         System.arraycopy(pobjs, 0, this.path, path.length, pobjs.length);
@@ -73,10 +78,12 @@ public class TreeViewPath<E>
 
     private TreeViewPath(Object[] path, int length)
     {
-	if(path == null || path.length == 0)
+        if (path == null || path.length == 0)
+        {
             throw new IllegalArgumentException("path in TreePath must be non null and not empty.");
-	this.path = path;
-	this.length = length;
+        }
+        this.path = path;
+        this.length = length;
     }
 
     /**
@@ -88,7 +95,7 @@ public class TreeViewPath<E>
      */
     public Object[] getPath()
     {
-	return path.clone();
+        return path.clone();
     }
 
     /**
@@ -98,7 +105,7 @@ public class TreeViewPath<E>
      */
     public int getPathCount()
     {
-	return length;
+        return length;
     }
 
     /**
@@ -113,7 +120,7 @@ public class TreeViewPath<E>
      */
     public Object getPathComponent(int element)
     {
-	return path[element];
+        return path[element];
     }
 
     /**
@@ -126,7 +133,7 @@ public class TreeViewPath<E>
     @SuppressWarnings("unchecked")
     public E getLastPathComponent()
     {
-	return (E) path[length - 1];
+        return (E) path[length - 1];
     }
 
     /**
@@ -138,7 +145,7 @@ public class TreeViewPath<E>
     @Override
     public int hashCode()
     {
-	return getLastPathComponent().hashCode();
+        return getLastPathComponent().hashCode();
     }
 
     /**
@@ -152,21 +159,21 @@ public class TreeViewPath<E>
     @Override
     public boolean equals(Object obj)
     {
-	if (obj == null)
-	{
-	    return false;
-	}
-	if (getClass() != obj.getClass())
-	{
-	    return false;
-	}
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
 
-	final TreeViewPath other = (TreeViewPath) obj;
-	if (this.length != other.length)
-	{
-	    return false;
-	}
-	return Arrays.equals(path, other.path);
+        final TreeViewPath other = (TreeViewPath) obj;
+        if (this.length != other.length)
+        {
+            return false;
+        }
+        return Arrays.equals(path, other.path);
     }
 
     /**
@@ -175,11 +182,20 @@ public class TreeViewPath<E>
      */
     public TreeViewPath getParentPath()
     {
-	return new TreeViewPath(path, length - 1);
+        return new TreeViewPath(path, length - 1);
     }
-    
+
     public TreeViewPath getParentPath(int lastElement)
     {
-	return new TreeViewPath(path, lastElement+1);
+        return new TreeViewPath(path, lastElement + 1);
     }
+
+    public TreeViewPath<E> pathByAddingParent(Object singlePath)
+    {
+        Object[] parentPath = new Object[length + 1];
+        parentPath[0] = singlePath;
+        System.arraycopy(path, 0, parentPath, 1, length);
+        return new TreeViewPath<E>(parentPath, length + 1);
+    }
+
 }

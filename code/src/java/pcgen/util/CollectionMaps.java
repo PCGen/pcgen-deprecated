@@ -103,9 +103,14 @@ public final class CollectionMaps
             C list = get(key);
             if (list == null)
             {
-                put(key, list = createInstance(collectionClass));
+                list = createInstance(collectionClass);
+                list.add(index, value);
+                put(key, list);
             }
-            list.add(index, value);
+            else
+            {
+                list.add(index, value);
+            }
         }
 
         @Override
@@ -114,9 +119,15 @@ public final class CollectionMaps
             C collection = get(key);
             if (collection == null)
             {
-                put(key, collection = createInstance(collectionClass));
+                collection = createInstance(collectionClass);
+                if (collection.addAll(values))
+                {
+                    put(key, collection);
+                    return true;
+                }
+                return false;
             }
-            return collection != null && collection.addAll(values);
+            return collection.addAll(values);
         }
 
         @Override
@@ -211,9 +222,15 @@ public final class CollectionMaps
             C collection = get(key);
             if (collection == null)
             {
-                put(key, collection = createInstance(collectionClass));
+                collection = createInstance(collectionClass);
+                if (collection.add(value))
+                {
+                    put(key, collection);
+                    return true;
+                }
+                return false;
             }
-            return collection != null && collection.add(value);
+            return collection.add(value);
         }
 
         @Override
@@ -222,9 +239,15 @@ public final class CollectionMaps
             C collection = get(key);
             if (collection == null)
             {
-                put(key, collection = createInstance(collectionClass));
+                collection = createInstance(collectionClass);
+                if (collection.addAll(values))
+                {
+                    put(key, collection);
+                    return true;
+                }
+                return false;
             }
-            return collection != null && collection.addAll(values);
+            return collection.addAll(values);
         }
 
         @Override
@@ -283,7 +306,15 @@ public final class CollectionMaps
         public boolean remove(Object key, Object value)
         {
             C collection = get(key);
-            return collection != null && collection.remove(value);
+            if (collection != null && collection.remove(value))
+            {
+                if (collection.isEmpty())
+                {
+                    remove(key);
+                }
+                return true;
+            }
+            return false;
         }
 
     }

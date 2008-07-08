@@ -40,7 +40,7 @@ public class DefaultTreeTableNode extends DefaultMutableTreeNode implements Tree
         this(Collections.emptyList());
     }
 
-    public DefaultTreeTableNode(List<Object> data)
+    public DefaultTreeTableNode(List<?> data)
     {
         setValues(data);
     }
@@ -86,7 +86,7 @@ public class DefaultTreeTableNode extends DefaultMutableTreeNode implements Tree
         return data;
     }
 
-    protected void setValues(List<Object> values)
+    protected void setValues(List<?> values)
     {
         this.data = new ArrayList<Object>(values);
     }
