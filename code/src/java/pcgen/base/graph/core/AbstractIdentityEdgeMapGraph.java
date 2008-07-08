@@ -424,11 +424,6 @@ public abstract class AbstractIdentityEdgeMapGraph<N, ET extends Edge<N>>
 			}
 			System.err.println(al.equals(al2));
 			System.err.println(al2.equals(al));
-			if (al.equals(al2) && al2.equals(al))
-			{
-				System.err
-					.println("Hash code modified after object add to graph");
-			}
 			return false;
 		}
 		// Here, the node lists are identical...
