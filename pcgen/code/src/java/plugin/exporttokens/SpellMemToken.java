@@ -402,6 +402,10 @@ public class SpellMemToken extends Token
 						{
 							retValue.append(aSpell.getXPCost());
 						}
+						else if ("CT".equals(aLabel))
+						{
+							retValue.append(aSpell.getCastingThreshold());
+						}
 						else if ("SPELLPOINTCOST".equals(aLabel))
 						{
 							if("NUMELEMENTS".equals(altLabel))
