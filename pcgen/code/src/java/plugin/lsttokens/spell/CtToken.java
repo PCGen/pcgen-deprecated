@@ -17,9 +17,6 @@ public class CtToken implements SpellLstToken
 
 	public boolean parse(Spell spell, String value)
 	{
-		Logging
-				.errorPrint("You are using a token (CT) that is not fully implemented "
-						+ "- has no effect on PCGen");
 		try
 		{
 			int ct = Integer.parseInt(value);
