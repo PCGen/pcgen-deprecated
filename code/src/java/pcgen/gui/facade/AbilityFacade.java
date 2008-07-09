@@ -29,6 +29,8 @@ import java.util.List;
 public interface AbilityFacade
 {
 
+    public List<AbilityFacade> getRequiredAbilities();
+
     public List<String> getTypes();
 
     public boolean isMult();

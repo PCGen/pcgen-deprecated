@@ -146,20 +146,43 @@ public class AbilityChooserTab extends AbstractChooserTab
                               new SelectedAbilityTreeView(AbilityTreeView.PREREQ_TREE),
                               new SelectedAbilityTreeView(AbilityTreeView.SOURCE_NAME));
         private final Map<AbilityFacade, AbilityCatagoryFacade> abilityMap;
+        private final GenericListModel<AbilityFacade> model;
+        private final CharacterFacade character;
 
         public SelectedAbilityTreeViewModel(CharacterFacade character)
         {
             this.abilityMap = new HashMap<AbilityFacade, AbilityCatagoryFacade>();
+            this.model = new GenericListModel<AbilityFacade>();
+            this.character = character;
 
             AbilityCatagoryFacade[] catagories = context.getAbilityCatagories(character).toArray(new AbilityCatagoryFacade[0]);
-            for (AbilityCatagoryFacade catagory : catagories)
+            for (final AbilityCatagoryFacade catagory : catagories)
             {
-                AbilityFacade[] abilities = character.getAbilities(catagory).toArray(new AbilityFacade[0]);
+                final GenericListModel<AbilityFacade> abilityList = character.getAbilities(catagory);
+                AbilityFacade[] abilities = abilityList.toArray(new AbilityFacade[0]);
                 for (AbilityFacade ability : abilities)
                 {
                     abilityMap.put(ability, catagory);
                 }
+                abilityList.addGenericListDataListener(
+                        new AbilityModelListener()
+                        {
+
+                            public void intervalAdded(GenericListDataEvent e)
+                            {
+                                List<AbilityFacade> sublist =
+                                        abilityList.subList(e.getIndex0(),
+                                                            e.getIndex1() + 1);
+                                for (AbilityFacade ability : sublist)
+                                {
+                                    abilityMap.put(ability, catagory);
+                                }
+                                model.addAll(sublist);
+                            }
+
+                        });
             }
+            model.addAll(abilityMap.keySet());
         }
 
         public List<? extends TreeView<AbilityFacade>> getTreeViews()
@@ -179,7 +202,24 @@ public class AbilityChooserTab extends AbstractChooserTab
 
         public GenericListModel<AbilityFacade> getDataModel()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return model;
+        }
+
+        private abstract class AbilityModelListener implements GenericListDataListener
+        {
+
+            public void intervalRemoved(GenericListDataEvent e)
+            {
+                model.removeAll(e.getData());
+                abilityMap.keySet().removeAll(e.getData());
+            }
+
+            public void contentsChanged(GenericListDataEvent e)
+            {
+                intervalRemoved(e);
+                intervalAdded(e);
+            }
+
         }
 
         private class SelectedAbilityTreeView implements TreeView<AbilityFacade>
@@ -545,6 +585,71 @@ public class AbilityChooserTab extends AbstractChooserTab
                                                                                      pobj.getSource()));
                 default:
                     throw new InternalError();
+            }
+        }
+
+    }
+
+    private class PreReqTreeView implements TreeView<AbilityFacade>
+    {
+
+        private GenericListModel<AbilityFacade> abilities;
+
+        public PreReqTreeView(GenericListModel<AbilityFacade> abilities)
+        {
+            this.abilities = abilities;
+        }
+
+        public String getViewName()
+        {
+            return "Prereq Tree";
+        }
+
+        public List<TreeViewPath<AbilityFacade>> getPaths(AbilityFacade pobj)
+        {
+            List<List<AbilityFacade>> abilityPaths = new ArrayList<List<AbilityFacade>>();
+            addPaths(abilityPaths, pobj.getRequiredAbilities(),
+                     new ArrayList<AbilityFacade>());
+            if (abilityPaths.isEmpty())
+            {
+                return Collections.singletonList(new TreeViewPath<AbilityFacade>(pobj));
+            }
+
+            List<TreeViewPath<AbilityFacade>> paths = new ArrayList<TreeViewPath<AbilityFacade>>();
+            for (List<AbilityFacade> path : abilityPaths)
+            {
+                Collections.reverse(path);
+                Object[] array = path.toArray();
+                for (int x = 0; x < array.length; x++)
+                {
+                    if (!abilities.contains(array[x]))
+                    {
+                        array[x] = array[x].toString();
+                    }
+                }
+                paths.add(new TreeViewPath<AbilityFacade>(array, pobj));
+            }
+            return paths;
+        }
+
+        private void addPaths(List<List<AbilityFacade>> abilityPaths,
+                               List<AbilityFacade> preAbilities,
+                               ArrayList<AbilityFacade> path)
+        {
+            for (AbilityFacade preAbility : preAbilities)
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<AbilityFacade> pathclone = (ArrayList<AbilityFacade>) path.clone();
+                pathclone.add(preAbility);
+                List<AbilityFacade> preAbilities2 = preAbility.getRequiredAbilities();
+                if (preAbilities2.isEmpty())
+                {
+                    abilityPaths.add(pathclone);
+                }
+                else
+                {
+                    addPaths(abilityPaths, preAbilities2, pathclone);
+                }
             }
         }
 

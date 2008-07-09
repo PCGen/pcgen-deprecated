@@ -40,7 +40,7 @@ public class TreeViewPath<E>
      * @param obj the last element in the list
      * @param path the string path leading to the last element
      */
-    public TreeViewPath(E pobj, String path)
+    public TreeViewPath(E pobj, Object path)
     {
         this(new Object[]{path,
                           pobj
@@ -48,7 +48,7 @@ public class TreeViewPath<E>
     }
 
     @SuppressWarnings("unchecked")
-    public TreeViewPath(E pobj, String... path)
+    public TreeViewPath(E pobj, Object... path)
     {
         this(path, pobj);
     }
@@ -63,7 +63,7 @@ public class TreeViewPath<E>
         this(pobjs, pobjs.length);
     }
 
-    public TreeViewPath(String[] path, E... pobjs)
+    public TreeViewPath(Object[] path, E... pobjs)
     {
         if (path == null || path.length == 0 || pobjs == null || pobjs.length ==
                 0)
