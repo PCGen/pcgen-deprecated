@@ -18,14 +18,15 @@
 
 use 5.008_001;				# Perl 5.8.1 or better is now mandantory
 use strict;
-use warnings;
+# use warnings;
 use Fatal qw( open close );		# Force some built-ins to die on error
 use English qw( -no_match_vars );	# No more funky punctuation variables
 
 # If you you downloaded PrettyLst from SVN but you do not have an SVN Client
-# you will need to replace everything after the = on the line starting with my $SVN_id
-# with '$Id$';
-# Change the 6887 to the current build number and the date and time values
+# you will need to revise the line starting with my $SVN_id = . At the end of that line
+# insert ": prettylst.pl 7075 2008-07-09 20:15:16Z historyphil " betwwen the d and the $
+# Do not inclued the double quotes {"}. The double quotes are only used to indicate needed spaces.
+# Change the old build number and the date and time values
 # to the values shown on SVN for this revision.
 
 # Version information			# Converting to SVN Id parsing using array - Tir Gwaith
