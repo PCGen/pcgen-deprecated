@@ -21,6 +21,7 @@
 package pcgen.gui.util;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
@@ -32,7 +33,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import pcgen.gui.util.treeview.DataView;
+import pcgen.gui.util.treeview.TreeViewModel;
 import pcgen.gui.util.treeview.TreeViewTableModel;
 
 /**
@@ -48,12 +51,58 @@ public class JTreeViewSelectionPane extends JTreeViewPane
         RADIO,
         CHECKBOX
     }
-    private JTable rowheaderTable;
     private SelectionType selectionType;
+    private JTable rowheaderTable;
 
     public JTreeViewSelectionPane()
     {
+        this(SelectionType.RADIO);
+    }
 
+    public JTreeViewSelectionPane(SelectionType selectionType)
+    {
+        this.selectionType = selectionType;
+        this.rowheaderTable = new JTable();
+        initComponents();
+    }
+
+    public JTreeViewSelectionPane(TreeViewModel<?> viewModel)
+    {
+        this(viewModel, SelectionType.RADIO);
+    }
+
+    public JTreeViewSelectionPane(TreeViewModel<?> viewModel, SelectionType selectionType)
+    {
+        this(selectionType);
+        setTreeViewModel(viewModel);
+    }
+
+    private void initComponents()
+    {
+        rowheaderTable.setAutoCreateColumnsFromModel(false);
+        rowheaderTable.setModel(getTable().getModel());
+        rowheaderTable.setSelectionModel(getTable().getSelectionModel());
+
+        TableColumn column;
+        if (selectionType == SelectionType.RADIO)
+        {
+            column = new TableColumn(-1, 20, new RadioButtonRenderer(),
+                                     new RadioButtonEditor());
+        }
+        else
+        {
+            column = new TableColumn(-1, 20, rowheaderTable.getDefaultRenderer(Boolean.class),
+                                     rowheaderTable.getDefaultEditor(Boolean.class));
+        }
+        column.setHeaderValue(new Object());
+        rowheaderTable.addColumn(column);
+        rowheaderTable.setPreferredScrollableViewportSize(new Dimension(20, 400));
+    }
+
+    @Override
+    protected <T> TreeViewTableModel<T> createDefaultTreeViewTableModel(DataView<T> dataView)
+    {
+        return new TreeViewSelectionTableModel<T>(dataView);
     }
 
     private class TreeViewSelectionTableModel<E> extends TreeViewTableModel<E>
