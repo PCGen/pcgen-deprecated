@@ -24,12 +24,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.AbstractCellEditor;
+import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
+import javax.swing.JToggleButton;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -84,19 +85,25 @@ public class JTreeViewSelectionPane extends JTreeViewPane
         rowheaderTable.setSelectionModel(getTable().getSelectionModel());
 
         TableColumn column;
+        TableCellRenderer renderer;
+        TableCellEditor editor;
         if (selectionType == SelectionType.RADIO)
         {
-            column = new TableColumn(-1, 20, new RadioButtonRenderer(),
-                                     new RadioButtonEditor());
+            renderer = new ToggleButtonRenderer(new JRadioButton());
+            editor = new RadioButtonEditor();
         }
         else
         {
-            column = new TableColumn(-1, 20, rowheaderTable.getDefaultRenderer(Boolean.class),
-                                     rowheaderTable.getDefaultEditor(Boolean.class));
+            renderer = new ToggleButtonRenderer(new JCheckBox());
+            editor = rowheaderTable.getDefaultEditor(Boolean.class);
         }
+        column = new TableColumn(-1, 20, renderer, editor);
         column.setHeaderValue(new Object());
+
         rowheaderTable.addColumn(column);
         rowheaderTable.setPreferredScrollableViewportSize(new Dimension(20, 400));
+
+        setRowHeaderView(rowheaderTable);
     }
 
     @Override
@@ -117,18 +124,12 @@ public class JTreeViewSelectionPane extends JTreeViewPane
         }
 
         @Override
-        protected void populateDataMap(Collection<E> data)
-        {
-            super.populateDataMap(data);
-            selectedSet.retainAll(data);
-        }
-
-        @Override
         public boolean isCellEditable(Object node, int column)
         {
             if (column < 0)
             {
-                return true;
+                Object obj = super.getValueAt(node, 0);
+                return dataMap.containsKey(obj);
             }
             return super.isCellEditable(node, column);
         }
@@ -161,14 +162,12 @@ public class JTreeViewSelectionPane extends JTreeViewPane
                 E obj = (E) super.getValueAt(node, 0);
                 if ((Boolean) aValue)
                 {
-                    switch (selectionType)
+                    if (selectionType == SelectionType.RADIO)
                     {
-                        case RADIO:
-                            selectedSet.clear();
-                            rowheaderTable.validate();
-                        case CHECKBOX:
-                            selectedSet.add(obj);
+                        selectedSet.clear();
+                        rowheaderTable.validate();
                     }
+                    selectedSet.add(obj);
                 }
                 else
                 {
@@ -223,37 +222,36 @@ public class JTreeViewSelectionPane extends JTreeViewPane
 
     }
 
-    private static class RadioButtonRenderer extends JRadioButton
-            implements TableCellRenderer
+    private static class ToggleButtonRenderer extends DefaultTableCellRenderer
     {
 
-        private final DefaultTableCellRenderer defaultRenderer = new DefaultTableCellRenderer();
+        private JToggleButton button;
 
-        public RadioButtonRenderer()
+        public ToggleButtonRenderer(JToggleButton button)
         {
-            setHorizontalAlignment(JRadioButton.CENTER);
-            setBorderPainted(true);
+            this.button = button;
+            button.setHorizontalAlignment(CENTER);
+            button.setBorderPainted(true);
         }
 
-        public Component getTableCellRendererComponent(JTable table,
-                                                        Object value,
-                                                        boolean isSelected,
-                                                        boolean hasFocus,
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                        boolean isSelected, boolean hasFocus,
                                                         int row,
                                                         int column)
         {
-            defaultRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus,
-                                                          row, column);
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+                                                column);
             if (value == null)
             {
-                return defaultRenderer;
+                return this;
             }
-            setForeground(defaultRenderer.getForeground());
-            setBackground(defaultRenderer.getBackground());
-            setBorder(defaultRenderer.getBorder());
+            button.setForeground(getForeground());
+            button.setBackground(getBackground());
+            button.setBorder(getBorder());
 
-            setSelected(((Boolean) value).booleanValue());
-            return this;
+            button.setSelected(((Boolean) value).booleanValue());
+            return button;
         }
 
     }

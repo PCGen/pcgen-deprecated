@@ -107,7 +107,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         setSelectedTreeView(selectedView);
     }
 
-    protected void populateDataMap(Collection<E> data)
+    private void populateDataMap(Collection<E> data)
     {
         dataMap.keySet().retainAll(data);
         for (E obj : data)
