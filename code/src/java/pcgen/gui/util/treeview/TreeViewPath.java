@@ -58,11 +58,6 @@ public class TreeViewPath<E>
         this(new Object[]{pobj}, 1);
     }
 
-    public TreeViewPath(E... pobjs)
-    {
-        this(pobjs, pobjs.length);
-    }
-
     public TreeViewPath(Object[] path, E... pobjs)
     {
         if (path == null || path.length == 0 || pobjs == null || pobjs.length ==

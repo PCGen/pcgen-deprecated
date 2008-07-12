@@ -58,10 +58,28 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
 
     };
-    private final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
-    private final NameViewColumn namecolumn = new NameViewColumn();
-    private final List<? extends DataViewColumn> datacolumns;
-    private final DataView<E> dataview;
+    private final DataViewColumn namecolumn = new DataViewColumn()
+    {
+
+        public String getName()
+        {
+            return selectedView.getViewName();
+        }
+
+        public Class<?> getDataClass()
+        {
+            return TreeTableNode.class;
+        }
+
+        public Visibility getVisibility()
+        {
+            return Visibility.ALWAYS_VISIBLE;
+        }
+
+    };
+    protected final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
+    protected final List<? extends DataViewColumn> datacolumns;
+    protected final DataView<E> dataview;
     private GenericListModel<E> model = null;
     private TreeView<E> selectedView = null;
 
@@ -89,7 +107,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         setSelectedTreeView(selectedView);
     }
 
-    private void populateDataMap(Collection<E> data)
+    protected void populateDataMap(Collection<E> data)
     {
         dataMap.keySet().retainAll(data);
         for (E obj : data)
@@ -161,26 +179,6 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     {
         viewMap.get(selectedView).sortChildren(new TreeNodeComparator(comparator));
         reload();
-    }
-
-    private final class NameViewColumn implements DataViewColumn
-    {
-
-        public String getName()
-        {
-            return selectedView.getViewName();
-        }
-
-        public Class<?> getDataClass()
-        {
-            return TreeTableNode.class;
-        }
-
-        public Visibility getVisibility()
-        {
-            return Visibility.ALWAYS_VISIBLE;
-        }
-
     }
 
     private final class TreeViewNode extends JTree.DynamicUtilTreeNode

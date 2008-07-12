@@ -32,8 +32,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -88,6 +86,11 @@ public class JTreeViewPane extends JTablePane
         setTreeViewModel(viewModel);
     }
 
+    protected <T> TreeViewTableModel<T> createDefaultTreeViewTableModel(DataView<T> dataView)
+    {
+        return new TreeViewTableModel<T>(dataView);
+    }
+
     @Override
     protected JTreeTable getTable()
     {
@@ -108,7 +111,7 @@ public class JTreeViewPane extends JTablePane
     public <T> void setTreeViewModel(TreeViewModel<T> viewModel)
     {
         DataView<T> dataView = viewModel.getDataView();
-        final TreeViewTableModel<T> model = new TreeViewTableModel<T>(dataView);
+        final TreeViewTableModel<T> model = createDefaultTreeViewTableModel(dataView);
         this.treetableModel = model;
 
         this.viewModel = viewModel;

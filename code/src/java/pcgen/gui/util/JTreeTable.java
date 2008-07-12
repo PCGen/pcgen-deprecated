@@ -47,6 +47,7 @@ import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -466,6 +467,29 @@ public class JTreeTable extends JTableEx
     {
         // Last table/tree row asked to render
         private int visibleRow;
+        private DefaultTableCellRenderer tableCellRenderer;
+
+        public TreeTableCellRenderer()
+        {
+            this.tableCellRenderer = new DefaultTableCellRenderer()
+            {
+
+                @Override
+                public void setBounds(int x, int y, int width, int height)
+                {
+                    super.setBounds(x, y, width, height);
+                    TreeTableCellRenderer.this.setBounds(x, y, width, height);
+                }
+
+                @Override
+                public void paint(final Graphics g)
+                {
+                    TreeTableCellRenderer.this.paint(g);
+                    paintBorder(g);
+                }
+
+            };
+        }
 
         /**
          * This is overridden to set the height
@@ -517,10 +541,13 @@ public class JTreeTable extends JTableEx
          * @return Component
          **/
         public Component getTableCellRendererComponent(JTable table,
+                                                        
                                                         @SuppressWarnings("unused") Object value,
                                                          boolean isSelected,
+                                                        
                                                         @SuppressWarnings("unused") boolean hasFocus,
                                                          int row,
+                                                        
                                                         @SuppressWarnings("unused") int column)
         {
             if (isSelected)
@@ -534,7 +561,10 @@ public class JTreeTable extends JTableEx
 
             visibleRow = row;
 
-            return this;
+            return tableCellRenderer.getTableCellRendererComponent(table, value,
+                                                                   isSelected,
+                                                                   hasFocus, row,
+                                                                   column);
         }
 
         /**
@@ -555,7 +585,8 @@ public class JTreeTable extends JTableEx
         @Override
         public void paint(final Graphics g)
         {
-            g.translate(0, -visibleRow * JTreeTable.this.getRowHeight());
+            int offset = -visibleRow * JTreeTable.this.getRowHeight();
+            g.translate(0, offset);
             try
             {
                 super.paint(g);
@@ -563,6 +594,10 @@ public class JTreeTable extends JTableEx
             catch (Exception e)
             {
             // TODO Handle this?
+            }
+            finally
+            {
+                g.translate(0, -offset);
             }
         }
 
