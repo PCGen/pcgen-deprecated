@@ -23,7 +23,9 @@
   <SubComponents>
     <Component class="pcgen.gui.util.JTreeViewSelectionPane" name="jTreeViewSelectionPane1">
       <Properties>
-        <Property name="quickSearchMode" type="boolean" value="true"/>
+        <Property name="selectionType" type="pcgen.gui.util.JTreeViewSelectionPane$SelectionType" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="SelectionType.CHECKBOX" type="code"/>
+        </Property>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTreeViewSelectionPane1.setTreeViewModel(new DateModel());"/>

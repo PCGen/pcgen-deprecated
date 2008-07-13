@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
 import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
 import pcgen.gui.util.treeview.DataView;
@@ -46,7 +47,7 @@ public class UtilitiesTester extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTreeViewSelectionPane1.setTreeViewModel(new DateModel());
-        jTreeViewSelectionPane1.setQuickSearchMode(true);
+        jTreeViewSelectionPane1.setSelectionType(SelectionType.CHECKBOX);
         getContentPane().add(jTreeViewSelectionPane1, java.awt.BorderLayout.CENTER);
 
         pack();

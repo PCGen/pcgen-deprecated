@@ -46,6 +46,8 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
 public class JTreeViewSelectionPane extends JTreeViewPane
 {
 
+    private static final Object COLUMN_ID = new Object();
+
     public static enum SelectionType
     {
 
@@ -62,9 +64,9 @@ public class JTreeViewSelectionPane extends JTreeViewPane
 
     public JTreeViewSelectionPane(SelectionType selectionType)
     {
-        setSelectionType(selectionType);
         this.rowheaderTable = new JTableEx();
         initComponents();
+        setSelectionType(selectionType);
     }
 
     public JTreeViewSelectionPane(TreeViewModel<?> viewModel)
@@ -88,23 +90,9 @@ public class JTreeViewSelectionPane extends JTreeViewPane
         rowheaderTable.setIntercellSpacing(table.getIntercellSpacing());
         rowheaderTable.setShowGrid(false);
         rowheaderTable.setFocusable(false);
-        
-        TableColumn column;
-        TableCellRenderer renderer;
-        TableCellEditor editor;
-        if (selectionType == SelectionType.RADIO)
-        {
-            renderer = new ToggleButtonRenderer(new JRadioButton());
-            editor = new RadioButtonEditor();
-        }
-        else
-        {
-            renderer = new ToggleButtonRenderer(new JCheckBox());
-            editor = rowheaderTable.getDefaultEditor(Boolean.class);
-        }
-        column = new TableColumn(-1, 20, renderer, editor);
-        column.setHeaderValue(new Object());
 
+        TableColumn column = new TableColumn(-1);
+        column.setHeaderValue(COLUMN_ID);
         rowheaderTable.addColumn(column);
         rowheaderTable.setPreferredScrollableViewportSize(new Dimension(20, 400));
 
@@ -119,13 +107,38 @@ public class JTreeViewSelectionPane extends JTreeViewPane
 
     public void setSelectionType(SelectionType selectionType)
     {
-        this.selectionType = selectionType;
+        if (this.selectionType == null || this.selectionType != selectionType)
+        {
+            this.selectionType = selectionType;
+
+            TableCellRenderer renderer;
+            TableCellEditor editor;
+            if (selectionType == SelectionType.RADIO)
+            {
+                renderer = new ToggleButtonRenderer(new JRadioButton());
+                editor = new RadioButtonEditor();
+            }
+            else
+            {
+                renderer = new ToggleButtonRenderer(new JCheckBox());
+                editor = rowheaderTable.getDefaultEditor(Boolean.class);
+            }
+            TableColumn column = rowheaderTable.getColumn(COLUMN_ID);
+            column.setCellRenderer(renderer);
+            column.setCellEditor(editor);
+        }
+    }
+
+    public Set<Object> getToggledData()
+    {
+        TreeViewSelectionTableModel<?> model = (TreeViewSelectionTableModel<?>) getTable().getTreeTableModel();
+        return new HashSet<Object>(model.selectedSet);
     }
 
     private class TreeViewSelectionTableModel<E> extends TreeViewTableModel<E>
     {
 
-        private Set<E> selectedSet;
+        Set<E> selectedSet;
 
         public TreeViewSelectionTableModel(DataView<E> dataView)
         {
