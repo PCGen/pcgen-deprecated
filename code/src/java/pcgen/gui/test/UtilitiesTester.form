@@ -21,9 +21,12 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
-    <Component class="pcgen.gui.util.JTreeViewPane" name="jTreeViewPane1">
+    <Component class="pcgen.gui.util.JTreeViewSelectionPane" name="jTreeViewSelectionPane1">
+      <Properties>
+        <Property name="quickSearchMode" type="boolean" value="true"/>
+      </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTreeViewPane1.setTreeViewModel(new DateModel());"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTreeViewSelectionPane1.setTreeViewModel(new DateModel());"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

@@ -51,7 +51,7 @@ import pcgen.util.ListMap;
 public class JTreeViewPane extends JTablePane
 {
 
-    private static final TreeView searchView = new TreeView()
+    private static final TreeView<Object> searchView = new TreeView<Object>()
     {
 
         public String getViewName()
@@ -59,10 +59,9 @@ public class JTreeViewPane extends JTablePane
             return "Search";
         }
 
-        @SuppressWarnings("unchecked")
-        public List getPaths(Object pobj)
+        public List<TreeViewPath<Object>> getPaths(Object pobj)
         {
-            return Collections.singletonList(new TreeViewPath(pobj));
+            return Collections.singletonList(new TreeViewPath<Object>(pobj));
         }
 
     };
@@ -119,7 +118,7 @@ public class JTreeViewPane extends JTablePane
         treeviewMenu = new JPopupMenu();
         ButtonGroup group = new ButtonGroup();
         List<? extends TreeView<T>> views = viewModel.getTreeViews();
-        TreeView<T> startingView = views.get(viewModel.getDefaultTreeViewIndex());
+        TreeView<? super T> startingView = views.get(viewModel.getDefaultTreeViewIndex());
         for (TreeView<?> treeview : views)
         {
             JMenuItem item = new JRadioButtonMenuItem(new ChangeViewAction(treeview));
@@ -128,6 +127,11 @@ public class JTreeViewPane extends JTablePane
             treeviewMenu.add(item);
         }
         model.setDataModel(viewModel.getDataModel());
+        if (searchMode)
+        {
+            tempView = startingView;
+            startingView = searchView;
+        }
         model.setSelectedTreeView(startingView);
         getTable().setTreeTableModel(model);
         setColumnModel(createTableColumnModel(startingView, dataView));
@@ -192,20 +196,22 @@ public class JTreeViewPane extends JTablePane
         return searchMode;
     }
 
-    @SuppressWarnings("unchecked")
     public void setQuickSearchMode(boolean searchMode)
     {
         if (this.searchMode != searchMode)
         {
             this.searchMode = searchMode;
-            if (searchMode)
+            if (treetableModel != null)
             {
-                tempView = treetableModel.getSelectedTreeView();
-                setTreeView(searchView);
-            }
-            else
-            {
-                setTreeView(tempView);
+                if (searchMode)
+                {
+                    tempView = treetableModel.getSelectedTreeView();
+                    setTreeView(searchView);
+                }
+                else
+                {
+                    setTreeView(tempView);
+                }
             }
         }
     }
@@ -225,7 +231,6 @@ public class JTreeViewPane extends JTablePane
     @SuppressWarnings("unchecked")
     private void setTreeView(TreeView view)
     {
-        //make sure that the original dynamictableModel is not changed
         JTreeTable table = getTable();
         TableColumn viewColumn = table.getColumn(treetableModel.getSelectedTreeView().getViewName());
         treetableModel.setSelectedTreeView(view);

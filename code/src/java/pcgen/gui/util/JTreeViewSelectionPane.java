@@ -46,14 +46,14 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
 public class JTreeViewSelectionPane extends JTreeViewPane
 {
 
-    public enum SelectionType
+    public static enum SelectionType
     {
 
         RADIO,
         CHECKBOX
     }
     private SelectionType selectionType;
-    private JTable rowheaderTable;
+    private JTableEx rowheaderTable;
 
     public JTreeViewSelectionPane()
     {
@@ -62,8 +62,8 @@ public class JTreeViewSelectionPane extends JTreeViewPane
 
     public JTreeViewSelectionPane(SelectionType selectionType)
     {
-        this.selectionType = selectionType;
-        this.rowheaderTable = new JTable();
+        setSelectionType(selectionType);
+        this.rowheaderTable = new JTableEx();
         initComponents();
     }
 
@@ -80,10 +80,15 @@ public class JTreeViewSelectionPane extends JTreeViewPane
 
     private void initComponents()
     {
+        JTable table = getTable();
         rowheaderTable.setAutoCreateColumnsFromModel(false);
-        rowheaderTable.setModel(getTable().getModel());
-        rowheaderTable.setSelectionModel(getTable().getSelectionModel());
-
+        rowheaderTable.setModel(table.getModel());
+        rowheaderTable.setSelectionModel(table.getSelectionModel());
+        rowheaderTable.setRowHeight(table.getRowHeight());
+        rowheaderTable.setIntercellSpacing(table.getIntercellSpacing());
+        rowheaderTable.setShowGrid(false);
+        rowheaderTable.setFocusable(false);
+        
         TableColumn column;
         TableCellRenderer renderer;
         TableCellEditor editor;
@@ -110,6 +115,11 @@ public class JTreeViewSelectionPane extends JTreeViewPane
     protected <T> TreeViewTableModel<T> createDefaultTreeViewTableModel(DataView<T> dataView)
     {
         return new TreeViewSelectionTableModel<T>(dataView);
+    }
+
+    public void setSelectionType(SelectionType selectionType)
+    {
+        this.selectionType = selectionType;
     }
 
     private class TreeViewSelectionTableModel<E> extends TreeViewTableModel<E>
@@ -165,7 +175,6 @@ public class JTreeViewSelectionPane extends JTreeViewPane
                     if (selectionType == SelectionType.RADIO)
                     {
                         selectedSet.clear();
-                        rowheaderTable.validate();
                     }
                     selectedSet.add(obj);
                 }
@@ -173,7 +182,7 @@ public class JTreeViewSelectionPane extends JTreeViewPane
                 {
                     selectedSet.remove(obj);
                 }
-                rowheaderTable.validate();
+                rowheaderTable.repaint(rowheaderTable.getVisibleRect());
                 return;
             }
             super.setValueAt(aValue, node, column);

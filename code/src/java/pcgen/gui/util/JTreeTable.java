@@ -294,12 +294,11 @@ public class JTreeTable extends JTableEx
      * @author Scott Violet
      */
     private static class TreeTableModelAdapter extends AbstractTableModel
-            implements SortableTableModel
+            implements SortableTableModel, TreeModelListener, TreeExpansionListener
     {
 
         private JTree tree;
         private SortableTreeTableModel treeTableModel;
-        private TreeModelListener modelListener;
 
         /**
          * Constructor
@@ -309,64 +308,25 @@ public class JTreeTable extends JTableEx
         TreeTableModelAdapter(JTree tree)
         {
             this.tree = tree;
-            tree.addTreeExpansionListener(new TreeExpansionListener()
-                                  {
-                                      // Don't use fireTableRowsInserted() here;
-                                      // the selection model would get updated twice.
-                                      public void treeExpanded(TreeExpansionEvent event)
-                                      {
-                                          fireTableDataChanged();
-                                      }
-
-                                      public void treeCollapsed(TreeExpansionEvent event)
-                                      {
-                                          fireTableDataChanged();
-                                      }
-
-                                  });
-
-            /**
-             * Install a TreeModelListener that can update the table when
-             * tree changes. We use delayedFireTableDataChanged as we can
-             * not be guaranteed the tree will have finished processing
-             * the event before us.
-             **/
-            modelListener = new TreeModelListener()
-            {
-
-                public void treeNodesChanged(TreeModelEvent e)
-                {
-                    fireTableDataChanged();
-                }
-
-                public void treeNodesInserted(TreeModelEvent e)
-                {
-                    fireTableDataChanged();
-                }
-
-                public void treeNodesRemoved(TreeModelEvent e)
-                {
-                    fireTableDataChanged();
-                }
-
-                public void treeStructureChanged(TreeModelEvent e)
-                {
-                    fireTableStructureChanged();
-                }
-
-            };
+            tree.addTreeExpansionListener(this);
         }
 
+        /**
+         * Install a TreeModelListener that can update the table when
+         * tree changes. We use delayedFireTableDataChanged as we can
+         * not be guaranteed the tree will have finished processing
+         * the event before us.
+         **/
         public void setTreeTableModel(SortableTreeTableModel model)
         {
             if (treeTableModel != null)
             {
-                treeTableModel.removeTreeModelListener(modelListener);
+                treeTableModel.removeTreeModelListener(this);
             }
             treeTableModel = model;
             if (treeTableModel != null)
             {
-                treeTableModel.addTreeModelListener(modelListener);
+                treeTableModel.addTreeModelListener(this);
             }
             fireTableStructureChanged();
         }
@@ -455,6 +415,47 @@ public class JTreeTable extends JTableEx
                 tree.expandPath(paths.nextElement());
             }
             tree.setSelectionPaths(selectionPaths);
+        }
+
+        public void treeNodesChanged(TreeModelEvent e)
+        {
+            TreePath parentPath = e.getTreePath();
+            int leadingRow = Integer.MAX_VALUE;
+            int trailingRow = -1;
+            for (Object node : e.getChildren())
+            {
+                TreePath childPath = parentPath.pathByAddingChild(node);
+                int row = tree.getRowForPath(childPath);
+                leadingRow = Math.min(leadingRow, row);
+                trailingRow = Math.max(trailingRow, row);
+            }
+            fireTableRowsUpdated(leadingRow, trailingRow);
+        }
+
+        public void treeNodesInserted(TreeModelEvent e)
+        {
+            fireTableDataChanged();
+        }
+
+        public void treeNodesRemoved(TreeModelEvent e)
+        {
+            fireTableDataChanged();
+        }
+
+        public void treeStructureChanged(TreeModelEvent e)
+        {
+            fireTableStructureChanged();
+        }
+        // Don't use fireTableRowsInserted() here;
+        // the selection model would get updated twice.
+        public void treeExpanded(TreeExpansionEvent event)
+        {
+            fireTableDataChanged();
+        }
+
+        public void treeCollapsed(TreeExpansionEvent event)
+        {
+            fireTableDataChanged();
         }
 
     }

@@ -5,10 +5,8 @@
  */
 package pcgen.gui.test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -43,12 +41,13 @@ public class UtilitiesTester extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTreeViewPane1 = new pcgen.gui.util.JTreeViewPane();
+        jTreeViewSelectionPane1 = new pcgen.gui.util.JTreeViewSelectionPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTreeViewPane1.setTreeViewModel(new DateModel());
-        getContentPane().add(jTreeViewPane1, java.awt.BorderLayout.CENTER);
+        jTreeViewSelectionPane1.setTreeViewModel(new DateModel());
+        jTreeViewSelectionPane1.setQuickSearchMode(true);
+        getContentPane().add(jTreeViewSelectionPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -101,7 +100,7 @@ public class UtilitiesTester extends javax.swing.JFrame
         });
     }
 
-    public TreeViewModel<Date> getViewModel()
+    public TreeViewModel getViewModel()
     {
         return new DateModel();
     }
@@ -127,7 +126,7 @@ public class UtilitiesTester extends javax.swing.JFrame
         return list;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private pcgen.gui.util.JTreeViewPane jTreeViewPane1;
+    private pcgen.gui.util.JTreeViewSelectionPane jTreeViewSelectionPane1;
     // End of variables declaration//GEN-END:variables
     private static class DateModel implements TreeViewModel<Date>
     {

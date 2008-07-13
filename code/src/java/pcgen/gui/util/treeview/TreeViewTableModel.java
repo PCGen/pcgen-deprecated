@@ -47,7 +47,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         implements SortableTreeTableModel
 {
 
-    private final Map<TreeView<E>, TreeViewNode> viewMap = new HashMap<TreeView<E>, TreeViewNode>();
+    private final Map<TreeView<? super E>, TreeViewNode> viewMap = new HashMap<TreeView<? super E>, TreeViewNode>();
     private final ListDataListener listener = new ListDataAdapter()
     {
 
@@ -81,7 +81,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     protected final List<? extends DataViewColumn> datacolumns;
     protected final DataView<E> dataview;
     private GenericListModel<E> model = null;
-    private TreeView<E> selectedView = null;
+    private TreeView<? super E> selectedView = null;
 
     public TreeViewTableModel(DataView<E> dataView)
     {
@@ -119,12 +119,12 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
     }
 
-    public final TreeView<E> getSelectedTreeView()
+    public final TreeView<? super E> getSelectedTreeView()
     {
         return selectedView;
     }
 
-    public final void setSelectedTreeView(TreeView<E> view)
+    public final void setSelectedTreeView(TreeView<? super E> view)
     {
         if (view != null)
         {
@@ -132,10 +132,10 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
             TreeViewNode node = viewMap.get(view);
             if (node == null)
             {
-                Vector<TreeViewPath<E>> paths = new Vector<TreeViewPath<E>>();
+                Vector<TreeViewPath<? super E>> paths = new Vector<TreeViewPath<? super E>>();
                 for (E element : dataMap.keySet())
                 {
-                    for (TreeViewPath<E> path : view.getPaths(element))
+                    for (TreeViewPath<? super E> path : view.getPaths(element))
                     {
                         paths.add(path);
                     }
@@ -187,13 +187,13 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 
         private final int level;
 
-        public TreeViewNode(Vector<TreeViewPath<E>> paths)
+        public TreeViewNode(Vector<TreeViewPath<? super E>> paths)
         {
             this(0, null, paths);
         }
 
         private TreeViewNode(int level, Object name,
-                              Vector<TreeViewPath<E>> paths)
+                              Vector<TreeViewPath<? super E>> paths)
         {
             super(name, paths);
             this.level = level;
@@ -212,10 +212,10 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
             loadedChildren = true;
             if (childValue != null)
             {
-                ListMap<Object, TreeViewPath<E>, Vector<TreeViewPath<E>>> vectorMap = CollectionMaps.createListMap(HashMap.class,
+                ListMap<Object, TreeViewPath<? super E>, Vector<TreeViewPath<? super E>>> vectorMap = CollectionMaps.createListMap(HashMap.class,
                                                                                                                    Vector.class);
-                Vector<TreeViewPath<E>> vector = (Vector<TreeViewPath<E>>) childValue;
-                for (TreeViewPath<E> path : vector)
+                Vector<TreeViewPath<? super E>> vector = (Vector<TreeViewPath<? super E>>) childValue;
+                for (TreeViewPath<? super E> path : vector)
                 {
                     if (path.getPathCount() > level)
                     {
