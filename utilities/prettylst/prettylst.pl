@@ -203,7 +203,7 @@ my %conversion_enable =
 	'RACE:TYPE to RACETYPE'			=> 0,			# [ 1353255 ] TYPE to RACETYPE conversion
 	'ALL:CMP NatAttack fix'			=> 0,			# Fix STR bonus for Natural Attacks in CMP files
 	'ALL:CMP remove PREALIGN'		=> 0,			# Remove the PREALIGN tag everywhere (to help my CMP friends)
-	'RACE:Fix PREDEFAULTMONSTER bonuses'	=> 0,			#[1514765] Conversion to remove old defaultmonster tags
+	'RACE:Fix PREDEFAULTMONSTER bonuses'	=> 0,		#[1514765] Conversion to remove old defaultmonster tags
 	'ALL:Fix Common Extended ASCII'	=> 0,			#[1324519 ] ASCII characters
 	'ALL:Weaponauto simple conversion'	=> 0,			#[ 1223873 ] WEAPONAUTO is no longer valid
 	'DEITY:Followeralign conversion'	=> 0,			#[ 1689538 ] Conversion: Deprecation of FOLLOWERALIGN
@@ -526,7 +526,7 @@ $cl_options{basepath} =~ tr{\\}{/};
 # Redirect STDERR if needed
 
 if ($cl_options{output_error}) {
-#	my $directory = ? ($cl_options{ input_path } eq '.') : 'current' : $cl_options{ input_path };
+	# my $dir = ? ($cl_options{ input_path } eq '.') : 'current' : $cl_options{ input_path };
 	open STDERR, '>', $cl_options{output_error};
 	print STDERR "Error log for ", $VERSION_LONG, "\n";
 	print STDERR "At ", $today, " on the data files in the \'", $cl_options{ input_path } , "\' directory\n";
@@ -538,7 +538,17 @@ my @valid_system_alignments  = qw( LG  LN  LE  NG  TN  NE  CG  CN  CE  NONE  Dei
 my @valid_system_check_names = qw( Fortitude Reflex Will );
 
 my @valid_system_game_modes  = qw(
-	35e 3e Deadlands DnD LoE Modern Sidewinder SovereignStoneD20 Spycraft Xcrawl
+	35e
+	3e
+	Deadlands
+	DnD
+	LoE
+	Modern
+	Sidewinder
+	SovereignStoneD20
+	Spycraft
+	Xcrawl
+
 	CMP_D20_Fantasy_v30e
 	CMP_D20_Fantasy_v35e
 	CMP_D20_Fantasy_v35e_Kalamar
@@ -560,23 +570,23 @@ my @valid_system_stats		= qw(
 );
 
 my @valid_system_var_names	= qw(
-	ACTIONDICE			ACTIONDIEBONUS			ACTIONDIETYPE
-	Action			ActionLVL				BUDGETPOINTS
-	CURRENTVEHICLEMODS	ClassDefense			DamageThreshold
-	EDUCATION			EDUCATIONMISC			FAVORCHECK
-	FIGHTINGDEFENSIVELYAC	FightingDefensivelyAC		FightingDefensivelyACBonus
-	GADGETPOINTS		INITCOMP				INSPIRATION
-	INSPIRATIONMISC		LOADSCORE				MAXLEVELSTAT
-	MAXVEHICLEMODS		MISSIONBUDGET			MUSCLE
-	MXDXEN			NATIVELANGUAGES			NORMALMOUNT
-	OFFHANDLIGHTBONUS		PSIONLEVEL				Reputation
-	TWOHANDDAMAGEDIVISOR	TotalDefenseAC			TotalDefenseACBonus
-	UseAlternateDamage	VEHICLECRUISINGMPH		VEHICLEDEFENSE
-	VEHICLEHANDLING		VEHICLEHARDNESS			VEHICLESPEED
-	VEHICLETOPMPH		VEHICLEWOUNDPOINTS		Wealth
-	CR				CL					ECL
-	SynergyBonus		NoTypeProficiencies		NormalMount
-	CHOICE			BAB					NormalFollower
+	ACTIONDICE				ACTIONDIEBONUS		ACTIONDIETYPE
+	Action				ActionLVL			BUDGETPOINTS
+	CURRENTVEHICLEMODS		ClassDefense		DamageThreshold
+	EDUCATION				EDUCATIONMISC		FAVORCHECK
+	FIGHTINGDEFENSIVELYAC		FightingDefensivelyAC	FightingDefensivelyACBonus
+	GADGETPOINTS			INITCOMP			INSPIRATION
+	INSPIRATIONMISC			LOADSCORE			MAXLEVELSTAT
+	MAXVEHICLEMODS			MISSIONBUDGET		MUSCLE
+	MXDXEN				NATIVELANGUAGES		NORMALMOUNT
+	OFFHANDLIGHTBONUS			PSIONLEVEL			Reputation
+	TWOHANDDAMAGEDIVISOR		TotalDefenseAC		TotalDefenseACBonus
+	UseAlternateDamage		VEHICLECRUISINGMPH	VEHICLEDEFENSE
+	VEHICLEHANDLING			VEHICLEHARDNESS		VEHICLESPEED
+	VEHICLETOPMPH			VEHICLEWOUNDPOINTS	Wealth
+	CR					CL				ECL
+	SynergyBonus			NoTypeProficiencies	NormalMount
+	CHOICE				BAB				NormalFollower
 
 	Action				ActionLVL			ArmorQui
 	ClassDefense			DamageThreshold		DenseMuscle
@@ -585,9 +595,11 @@ my @valid_system_var_names	= qw(
 	MXDXEN				Mount				OFFHANDLIGHTBONUS
 	TOTALDEFENSEACBONUS		TWOHANDDAMAGEDIVISOR
 
-	ACCHECK		ARMORACCHECK	BASESPELLSTAT	CASTERLEVEL		INITIATIVEMISC
-	INITIATIVEMOD	MOVEBASE		SHIELDACCHECK	SIZE			SKILLRANK
-	SKILLTOTAL		SPELLFAILURE	SR			TL			LIST
+	ACCHECK				ARMORACCHECK		BASESPELLSTAT
+	CASTERLEVEL				INITIATIVEMISC		INITIATIVEMOD
+	MOVEBASE				SHIELDACCHECK		SIZE
+	SKILLRANK				SKILLTOTAL			SPELLFAILURE
+	SR					TL				LIST
 
 );
 
@@ -757,202 +769,202 @@ my %PREALIGN_conversion_5715 = qw(
 my %Key_conversion_56 = qw(
 	BIND		BLIND
 ) if $conversion_enable{'ALL:EQMOD has new keys'};
-#  ABENHABON	BNS_ENHC_AB
-#  ABILITYMINUS	BNS_ENHC_AB
-#  ABILITYPLUS	BNS_ENHC_AB
-#  ACDEFLBON	BNS_AC_DEFL
-#  ACENHABON	BNS_ENHC_AC
-#  ACINSIBON	BNS_AC_INSI
-#  ACLUCKBON	BNS_AC_LUCK
-#  ACOTHEBON	BNS_AC_OTHE
-#  ACPROFBON	BNS_AC_PROF
-#  ACSACRBON	BNS_AC_SCRD
-#  ADAARH	ADAM
-#  ADAARH	ADAM
-#  ADAARL	ADAM
-#  ADAARM	ADAM
-#  ADAWE		ADAM
-#  AMINAT	ANMATD
-#  AMMO+1	PLUS1W
-#  AMMO+2	PLUS2W
-#  AMMO+3	PLUS3W
-#  AMMO+4	PLUS4W
-#  AMMO+5	PLUS5W
-#  AMMODARK	DARK
-#  AMMOSLVR	SLVR
-#  ARFORH	FRT_HVY
-#  ARFORL	FRT_LGHT
-#  ARFORM	FRT_MOD
-#  ARMFOR	FRT_LGHT
-#  ARMFORH	FRT_HVY
-#  ARMFORM	FRT_MOD
-#  ARMORENHANCE	BNS_ENHC_AC
-#  ARMR+1	PLUS1A
-#  ARMR+2	PLUS2A
-#  ARMR+3	PLUS3A
-#  ARMR+4	PLUS4A
-#  ARMR+5	PLUS5A
-#  ARMRADMH	ADAM
-#  ARMRADML	ADAM
-#  ARMRADMM	ADAM
-#  ARMRMITH	MTHRL
-#  ARMRMITL	MTHRL
-#  ARMRMITM	MTHRL
-#  ARWCAT	ARW_CAT
-#  ARWDEF	ARW_DEF
-#  BANEA		BANE_A
-#  BANEM		BANE_M
-#  BANER		BANE_R
-#  BASHH		BASH_H
-#  BASHL		BASH_L
-#	BIND		BLIND
-#  BONSPELL	BNS_SPELL
-#  BONUSSPELL	BNS_SPELL
-#  BRIENAI	BRI_EN_A
-#  BRIENM	BRI_EN_M
-#  BRIENT	BRI_EN_T
-#  CHAOSA	CHAOS_A
-#  CHAOSM	CHAOS_M
-#  CHAOSR	CHAOS_R
-#  CLDIRNAI	CIRON
-#  CLDIRNW	CIRON
-#  DAGSLVR	SLVR
-#  DEFLECTBONUS	BNS_AC_DEFL
-#  DRGNAR	DRACO
-#  DRGNSH	DRACO
-#  DRKAMI	DARK
-#  DRKSH		DARK
-#  DRKWE		DARK
-#  ENBURM	EN_BUR_M
-#  ENBURR	EN_BUR_R
-#  ENERGM	ENERG_M
-#  ENERGR	ENERG_R
-#  FLAMA		FLM_A
-#  FLAMM		FLM_M
-#  FLAMR		FLM_R
-#  FLBURA	FLM_BR_A
-#  FLBURM	FLM_BR_M
-#  FLBURR	FLM_BR_R
-#  FROSA		FROST_A
-#  FROSM		FROST_M
-#  FROSR		FROST_R
-#  GHTOUA	GHOST_A
-#  GHTOUAM	GHOST_AM
-#  GHTOUM	GHOST_M
-#  GHTOUR	GHOST_R
-#  HCLDIRNW	CIRON/2
-#  HOLYA		HOLY_A
-#  HOLYM		HOLY_M
-#  HOLYR		HOLY_R
-#  ICBURA	ICE_BR_A
-#  ICBURM	ICE_BR_M
-#  ICBURR	ICE_BR_R
-#  LAWA		LAW_A
-#  LAWM		LAW_M
-#  LAWR		LAW_R
-#  LUCKBONUS	BNS_SAV_LUC
-#  LUCKBONUS2	BNS_SKL_LCK
-#  MERCA		MERC_A
-#  MERCM		MERC_M
-#  MERCR		MERC_R
-#  MICLE		MI_CLE
-#  MITHAMI	MTHRL
-#  MITHARH	MTHRL
-#  MITHARL	MTHRL
-#  MITHARM	MTHRL
-#  MITHGO	MTHRL
-#  MITHSH	MTHRL
-#  MITHWE	MTHRL
-#  NATENHA	BNS_ENHC_NAT
-#  NATURALARMOR	BNS_ENHC_NAT
-#  PLUS1AM	PLUS1W
-#  PLUS1AMI	PLUS1W
-#  PLUS1WI	PLUS1W
-#  PLUS2AM	PLUS2W
-#  PLUS2AMI	PLUS2W
-#  PLUS2WI	PLUS2W
-#  PLUS3AM	PLUS3W
-#  PLUS3AMI	PLUS3W
-#  PLUS3WI	PLUS3W
-#  PLUS4AM	PLUS4W
-#  PLUS4AMI	PLUS4W
-#  PLUS4WI	PLUS4W
-#  PLUS5AM	PLUS5W
-#  PLUS5AMI	PLUS5W
-#  PLUS5WI	PLUS5W
-#  RESIMP	RST_IMP
-#  RESIST	RST_IST
-#  RESISTBONUS	BNS_SAV_RES
-#  SAVINSBON	BNS_SAV_INS
-#  SAVLUCBON	BNS_SAV_LUC
-#  SAVOTHBON	BNS_SAV_OTH
-#  SAVPROBON	BNS_SAV_PRO
-#  SAVRESBON	BNS_SAV_RES
-#  SAVSACBON	BNS_SAV_SAC
-#  SE50CST	SPL_CHRG
-#  SECW		SPL_CMD
-#  SESUCAMA	A_1USEMI
-#  SESUCAME	A_1USEMI
-#  SESUCAMI	A_1USEMI
-#  SESUCDMA	D_1USEMI
-#  SESUCDME	D_1USEMI
-#  SESUCDMI	D_1USEMI
-#  SESUUA	SPL_1USE
-#  SEUA		SPL_ACT
-#  SE_1USEACT	SPL_1USE
-#  SE_50TRIGGER	SPL_CHRG
-#  SE_COMMANDWORD	SPL_CMD
-#  SE_USEACT	SPL_ACT
-#  SHBURA	SHK_BR_A
-#  SHBURM	SHK_BR_M
-#  SHBURR	SHK_BR_R
-#  SHDGRT	SHDW_GRT
-#  SHDIMP	SHDW_IMP
-#  SHDOW		SHDW
-#  SHFORH	FRT_HVY
-#  SHFORL	FRT_LGHT
-#  SHFORM	FRT_MOD
-#  SHLDADAM	ADAM
-#  SHLDDARK	DARK
-#  SHLDMITH	MTHRL
-#  SHOCA		SHOCK_A
-#  SHOCM		SHOCK_M
-#  SHOCR		SHOCK_R
-#  SKILLBONUS	BNS_SKL_CIR
-#  SKILLBONUS2	BNS_SKL_CMP
-#  SKLCOMBON	BNS_SKL_CMP
-#  SLICK		SLK
-#  SLKGRT	SLK_GRT
-#  SLKIMP	SLK_IMP
-#  SLMV		SLNT_MV
-#  SLMVGRT	SLNT_MV_GRT
-#  SLMVIM	SLNT_MV_IM
-#  SLVRAMI	ALCHM
-#  SLVRWE1	ALCHM
-#  SLVRWE2	ALCHM
-#  SLVRWEF	ALCHM
-#  SLVRWEH	ALCHM/2
-#  SLVRWEL	ALCHM
-#  SPELLRESI	BNS_SPL_RST
-#  SPELLRESIST	BNS_SPL_RST
-#  SPLRES	SPL_RST
-#  SPLSTR	SPL_STR
-#  THNDRA	THNDR_A
-#  THNDRM	THNDR_M
-#  THNDRR	THNDR_R
-#  UNHLYA	UNHLY_A
-#  UNHLYM	UNHLY_M
-#  UNHLYR	UNHLY_R
-#  WEAP+1	PLUS1W
-#  WEAP+2	PLUS2W
-#  WEAP+3	PLUS3W
-#  WEAP+4	PLUS4W
-#  WEAP+5	PLUS5W
-#  WEAPADAM	ADAM
-#  WEAPDARK	DARK
-#  WEAPMITH	MTHRL
-#  WILDA		WILD_A
-#  WILDS		WILD_S
+#	ABENHABON		BNS_ENHC_AB
+#	ABILITYMINUS	BNS_ENHC_AB
+#	ABILITYPLUS		BNS_ENHC_AB
+#	ACDEFLBON		BNS_AC_DEFL
+#	ACENHABON		BNS_ENHC_AC
+#	ACINSIBON		BNS_AC_INSI
+#	ACLUCKBON		BNS_AC_LUCK
+#	ACOTHEBON		BNS_AC_OTHE
+#	ACPROFBON		BNS_AC_PROF
+#	ACSACRBON		BNS_AC_SCRD
+#	ADAARH		ADAM
+#	ADAARH		ADAM
+#	ADAARL		ADAM
+#	ADAARM		ADAM
+#	ADAWE			ADAM
+#	AMINAT		ANMATD
+#	AMMO+1		PLUS1W
+#	AMMO+2		PLUS2W
+#	AMMO+3		PLUS3W
+#	AMMO+4		PLUS4W
+#	AMMO+5		PLUS5W
+#	AMMODARK		DARK
+#	AMMOSLVR		SLVR
+#	ARFORH		FRT_HVY
+#	ARFORL		FRT_LGHT
+#	ARFORM		FRT_MOD
+#	ARMFOR		FRT_LGHT
+#	ARMFORH		FRT_HVY
+#	ARMFORM		FRT_MOD
+#	ARMORENHANCE	BNS_ENHC_AC
+#	ARMR+1		PLUS1A
+#	ARMR+2		PLUS2A
+#	ARMR+3		PLUS3A
+#	ARMR+4		PLUS4A
+#	ARMR+5		PLUS5A
+#	ARMRADMH		ADAM
+#	ARMRADML		ADAM
+#	ARMRADMM		ADAM
+#	ARMRMITH		MTHRL
+#	ARMRMITL		MTHRL
+#	ARMRMITM		MTHRL
+#	ARWCAT		ARW_CAT
+#	ARWDEF		ARW_DEF
+#	BANEA			BANE_A
+#	BANEM			BANE_M
+#	BANER			BANE_R
+#	BASHH			BASH_H
+#	BASHL			BASH_L
+#	BIND			BLIND
+#	BONSPELL		BNS_SPELL
+#	BONUSSPELL		BNS_SPELL
+#	BRIENAI		BRI_EN_A
+#	BRIENM		BRI_EN_M
+#	BRIENT		BRI_EN_T
+#	CHAOSA		CHAOS_A
+#	CHAOSM		CHAOS_M
+#	CHAOSR		CHAOS_R
+#	CLDIRNAI		CIRON
+#	CLDIRNW		CIRON
+#	DAGSLVR		SLVR
+#	DEFLECTBONUS	BNS_AC_DEFL
+#	DRGNAR		DRACO
+#	DRGNSH		DRACO
+#	DRKAMI		DARK
+#	DRKSH			DARK
+#	DRKWE			DARK
+#	ENBURM		EN_BUR_M
+#	ENBURR		EN_BUR_R
+#	ENERGM		ENERG_M
+#	ENERGR		ENERG_R
+#	FLAMA			FLM_A
+#	FLAMM			FLM_M
+#	FLAMR			FLM_R
+#	FLBURA		FLM_BR_A
+#	FLBURM		FLM_BR_M
+#	FLBURR		FLM_BR_R
+#	FROSA			FROST_A
+#	FROSM			FROST_M
+#	FROSR			FROST_R
+#	GHTOUA		GHOST_A
+#	GHTOUAM		GHOST_AM
+#	GHTOUM		GHOST_M
+#	GHTOUR		GHOST_R
+#	HCLDIRNW		CIRON/2
+#	HOLYA			HOLY_A
+#	HOLYM			HOLY_M
+#	HOLYR			HOLY_R
+#	ICBURA		ICE_BR_A
+#	ICBURM		ICE_BR_M
+#	ICBURR		ICE_BR_R
+#	LAWA			LAW_A
+#	LAWM			LAW_M
+#	LAWR			LAW_R
+#	LUCKBONUS		BNS_SAV_LUC
+#	LUCKBONUS2		BNS_SKL_LCK
+#	MERCA			MERC_A
+#	MERCM			MERC_M
+#	MERCR			MERC_R
+#	MICLE			MI_CLE
+#	MITHAMI		MTHRL
+#	MITHARH		MTHRL
+#	MITHARL		MTHRL
+#	MITHARM		MTHRL
+#	MITHGO		MTHRL
+#	MITHSH		MTHRL
+#	MITHWE		MTHRL
+#	NATENHA		BNS_ENHC_NAT
+#	NATURALARMOR	BNS_ENHC_NAT
+#	PLUS1AM		PLUS1W
+#	PLUS1AMI		PLUS1W
+#	PLUS1WI		PLUS1W
+#	PLUS2AM		PLUS2W
+#	PLUS2AMI		PLUS2W
+#	PLUS2WI		PLUS2W
+#	PLUS3AM		PLUS3W
+#	PLUS3AMI		PLUS3W
+#	PLUS3WI		PLUS3W
+#	PLUS4AM		PLUS4W
+#	PLUS4AMI		PLUS4W
+#	PLUS4WI		PLUS4W
+#	PLUS5AM		PLUS5W
+#	PLUS5AMI		PLUS5W
+#	PLUS5WI		PLUS5W
+#	RESIMP		RST_IMP
+#	RESIST		RST_IST
+#	RESISTBONUS		BNS_SAV_RES
+#	SAVINSBON		BNS_SAV_INS
+#	SAVLUCBON		BNS_SAV_LUC
+#	SAVOTHBON		BNS_SAV_OTH
+#	SAVPROBON		BNS_SAV_PRO
+#	SAVRESBON		BNS_SAV_RES
+#	SAVSACBON		BNS_SAV_SAC
+#	SE50CST		SPL_CHRG
+#	SECW			SPL_CMD
+#	SESUCAMA		A_1USEMI
+#	SESUCAME		A_1USEMI
+#	SESUCAMI		A_1USEMI
+#	SESUCDMA		D_1USEMI
+#	SESUCDME		D_1USEMI
+#	SESUCDMI		D_1USEMI
+#	SESUUA		SPL_1USE
+#	SEUA			SPL_ACT
+#	SE_1USEACT		SPL_1USE
+#	SE_50TRIGGER	SPL_CHRG
+#	SE_COMMANDWORD	SPL_CMD
+#	SE_USEACT		SPL_ACT
+#	SHBURA		SHK_BR_A
+#	SHBURM		SHK_BR_M
+#	SHBURR		SHK_BR_R
+#	SHDGRT		SHDW_GRT
+#	SHDIMP		SHDW_IMP
+#	SHDOW			SHDW
+#	SHFORH		FRT_HVY
+#	SHFORL		FRT_LGHT
+#	SHFORM		FRT_MOD
+#	SHLDADAM		ADAM
+#	SHLDDARK		DARK
+#	SHLDMITH		MTHRL
+#	SHOCA			SHOCK_A
+#	SHOCM			SHOCK_M
+#	SHOCR			SHOCK_R
+#	SKILLBONUS		BNS_SKL_CIR
+#	SKILLBONUS2		BNS_SKL_CMP
+#	SKLCOMBON		BNS_SKL_CMP
+#	SLICK			SLK
+#	SLKGRT		SLK_GRT
+#	SLKIMP		SLK_IMP
+#	SLMV			SLNT_MV
+#	SLMVGRT		SLNT_MV_GRT
+#	SLMVIM		SLNT_MV_IM
+#	SLVRAMI		ALCHM
+#	SLVRWE1		ALCHM
+#	SLVRWE2		ALCHM
+#	SLVRWEF		ALCHM
+#	SLVRWEH		ALCHM/2
+#	SLVRWEL		ALCHM
+#	SPELLRESI		BNS_SPL_RST
+#	SPELLRESIST		BNS_SPL_RST
+#	SPLRES		SPL_RST
+#	SPLSTR		SPL_STR
+#	THNDRA		THNDR_A
+#	THNDRM		THNDR_M
+#	THNDRR		THNDR_R
+#	UNHLYA		UNHLY_A
+#	UNHLYM		UNHLY_M
+#	UNHLYR		UNHLY_R
+#	WEAP+1		PLUS1W
+#	WEAP+2		PLUS2W
+#	WEAP+3		PLUS3W
+#	WEAP+4		PLUS4W
+#	WEAP+5		PLUS5W
+#	WEAPADAM		ADAM
+#	WEAPDARK		DARK
+#	WEAPMITH		MTHRL
+#	WILDA			WILD_A
+#	WILDS			WILD_S
 #	) if $conversion_enable{'ALL:EQMOD has new keys'};
 
 if($conversion_enable{'ALL:EQMOD has new keys'})
@@ -1481,6 +1493,8 @@ my @PRE_Tags = (
 	'PREBASESIZENEQ',
 	'PREBIRTHPLACE',
 	'!PREBIRTHPLACE',
+	'PRECAMPAIGN',
+	'!PRECAMPAIGN',
 	'PRECHECK',
 	'!PRECHECK',
 	'PRECHECKBASE',
@@ -1725,7 +1739,7 @@ my @Global_BONUS_Tags = (
 	'BONUS:HP:*',			# Global
 	'BONUS:MISC:*',			# Global
 	'BONUS:MOVEADD:*',		# Global
-	'BONUS:MOVEMULT:*'	,	# Global
+	'BONUS:MOVEMULT:*',		# Global
 	'BONUS:PCLEVEL:*',		# Global
 	'BONUS:POSTMOVEADD:*',		# Global
 	'BONUS:POSTRANGEADD:*',		# Global
@@ -1806,17 +1820,20 @@ my %master_order = (
 		'UDAM',
 		'VFEAT:*',
 		'ABILITY:*',
+		'ADD:.CLEAR',
 		'ADD:*',
 		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
+		'ADD:EQUIP:*',
 		'ADD:FAVOREDCLASS',
 		'ADD:FEAT:*',
-		'ADD:VFEAT:*',
 		'ADD:FORCEPOINT',
-		'ADD:LANGUAGE',				# Now uppercase
-		'ADD:SPECIAL',
-		'ADD:SPELLCASTER',
-		'ADD:SKILL',
+		'ADD:LANGUAGE:*',
+		'ADD:SKILL:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:SPELLCASTER:*',
+		'ADD:TEMPLATE:*',
+		'ADD:VFEAT:*',
 		'ADD:WEAPONPROFS',
 		'ADDSPELLLEVEL',
 		'REMOVE',
@@ -1940,8 +1957,17 @@ my %master_order = (
 		'AUTO:FEAT:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
-		'ADD:FEAT:.CLEAR',
+		'ADD:.CLEAR',
+		'ADD:*',
+		'ADD:ABILITY:*',
+		'ADD:CLASSSKILLS',
+		'ADD:EQUIP:*',
 		'ADD:FEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:SPELLCASTER:*',
+		'ADD:TEMPLATE:*',
+		'ADD:VFEAT:*',
 		'CHANGEPROF',
 		'DOMAIN:*',			# [ 1973526 ] DOMAIN is supported on Class line
 		'ADDDOMAINS:*',
@@ -2006,15 +2032,16 @@ my %master_order = (
 		'CSKILL',
 		'CCSKILL:.CLEAR',
 		'CCSKILL',
+		'ADD:.CLEAR',
 		'ADD:*',
 		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
-		'ADD:DOMAIN:*',
+		'ADD:EQUIP:*',
 		'ADD:FEAT:*',
-		'ADD:LANGUAGE',
-		'ADD:SPECIAL',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:TEMPLATE:*',
 		'ADD:VFEAT:*',
-		'ADD:EQUIP',
 		'REMOVE',
 		'LANGBONUS:.CLEAR',
 		'LANGBONUS:*',
@@ -2151,7 +2178,16 @@ my %master_order = (
 		'ABILITY:*',
 		'FEAT:*',
 		'VFEAT:*',
+		'ADD:.CLEAR',
+		'ADD:*',
+		'ADD:ABILITY:*',
+		'ADD:CLASSSKILLS',
+		'ADD:EQUIP:*',
 		'ADD:FEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:SPELLCASTER:*',
+		'ADD:TEMPLATE:*',
 		'ADD:VFEAT:*',
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
@@ -2206,7 +2242,7 @@ my %master_order = (
 		'FUMBLERANGE',
 		'DAMAGE',
 		'ALTDAMAGE',
-		'EQMOD',
+		'EQMOD:*',
 		'ALTEQMOD',
 		'HANDS',
 		'WIELD',
@@ -2220,8 +2256,17 @@ my %master_order = (
 		'MOVECLONE',
 		@SOURCE_Tags,
 		'SPELLFAILURE',
-		'ADD:DOMAIN',
-		'ADD:FEAT',
+		'ADD:.CLEAR',
+		'ADD:*',
+		'ADD:ABILITY:*',
+		'ADD:CLASSSKILLS',
+		'ADD:EQUIP:*',
+		'ADD:FEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:SPELLCASTER:*',
+		'ADD:TEMPLATE:*',
+		'ADD:VFEAT:*',
 		'VFEAT:.CLEAR',
 		'VFEAT:*',
 		'ABILITY:*',
@@ -2252,7 +2297,6 @@ my %master_order = (
 		'RATEOFFIRE',
 		'AUTO:EQUIP:*',
 		'AUTO:WEAPONPROF:*',
-		'ADD:SPELLCASTER:*',
 		'DESC:*',
 		'TEMPDESC',
 		'UNENCUMBEREDMOVE',
@@ -2350,16 +2394,19 @@ my %master_order = (
 		'VFEAT:*',
 		'ABILITY:*',
 		'ADD:*',
+		'ADD:.CLEAR',
 		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
+		'ADD:EQUIP:*',
 		'ADD:FAVOREDCLASS',
 		'ADD:FEAT:*',
-		'ADD:VFEAT:*',
 		'ADD:FORCEPOINT',
 		'ADD:LANGUAGE:*',
-		'ADD:SPECIAL',		# Deprecated
-		'ADD:SPELLCASTER',
 		'ADD:SKILL',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:SPELLCASTER:*',
+		'ADD:TEMPLATE:*',
+		'ADD:VFEAT:*',
 		'ADD:WEAPONPROFS',
 		'ADDSPELLLEVEL',
 		'LANGAUTO:.CLEAR',
@@ -2457,8 +2504,8 @@ my %master_order = (
 		@PRE_Tags,
 	],
 
-	'KIT LANGAUTO' => [
-		'LANGAUTO',
+	'KIT LANGBONUS' => [
+		'LANGBONUS',
 		'OPTION',
 		@PRE_Tags,
 	],
@@ -2588,6 +2635,8 @@ my %master_order = (
 		'RANK',
 		'SETTING',
 		'TYPE',
+		'PRECAMPAIGN',
+		'!PRECAMPAIGN',
 		'SHOWINMENU',		# [ 1718370 ] SHOWINMENU tag missing for PCC files
 		'SOURCELONG',
 		'SOURCESHORT',
@@ -2669,7 +2718,6 @@ my %master_order = (
 		'MONCCSKILL',
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
-		'ADD:EQUIP:*',
 		'AUTO:FEAT:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
@@ -2711,11 +2759,17 @@ my %master_order = (
 		'MULT',
 		'CHOOSE',
 		'SELECT',
+		'ADD:.CLEAR',
 		'ADD:*',
 		'ADD:ABILITY:*',
+		'ADD:CLASSSKILLS',
+		'ADD:EQUIP:*',
 		'ADD:FEAT:*',
-		'ADD:VFEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
 		'ADD:SPELLCASTER:*',
+		'ADD:TEMPLATE:*',
+		'ADD:VFEAT:*',
 		'REGION',
 		'SUBREGION',
 		'SPELLLEVEL:DOMAIN:*',
@@ -2884,9 +2938,20 @@ my %master_order = (
 		'BONUS:VAR:*',
 		'BONUS:WEAPON:*',
 		'BONUS:WIELDCATEGORY:*',
-		'ADD:FEAT:.CLEAR',
+		'ADD:.CLEAR',
+		'ADD:*',
+		'ADD:ABILITY:*',
+		'ADD:CLASSSKILLS',
+		'ADD:EQUIP:*',
 		'ADD:FEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:SPELLCASTER:*',
+		'ADD:TEMPLATE:*',
+		'ADD:VFEAT:*',
 		'REMOVE',
+		'TEMPLATE:.CLEAR',
+		'TEMPLATE:*',
 		'SPELLLIST',
 		'KNOWNSPELLSFROMSPECIALTY',
 		'PROHIBITED',
@@ -2931,8 +2996,19 @@ my %master_order = (
 		'BONUS:VAR:*',
 		'BONUS:WEAPON:*',
 		'BONUS:WIELDCATEGORY:*',
-		'ADD:FEAT:.CLEAR',
+		'ADD:.CLEAR',
+		'ADD:*',
+		'ADD:ABILITY:*',
+		'ADD:CLASSSKILLS',
+		'ADD:EQUIP:*',
 		'ADD:FEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:SPELLCASTER:*',
+		'ADD:TEMPLATE:*',
+		'ADD:VFEAT:*',
+		'TEMPLATE:.CLEAR',
+		'TEMPLATE:*',
 		'REMOVE',
 		'SPELLLIST',
 		'KNOWNSPELLSFROMSPECIALTY',
@@ -2989,15 +3065,16 @@ my %master_order = (
 		'CCSKILL:*',
 		'LANGAUTO.CLEAR',
 		'LANGAUTO:*',
+		'ADD:.CLEAR',
 		'ADD:*',
 		'ADD:ABILITY:*',
-		'ADD:CLASSSKILLS:*',
-		'ADD:DOMAIN:*',
-		'ADD:FEAT:*',
-		'ADD:VFEAT:*',
-		'ADD:LANGUAGE:*',
+		'ADD:CLASSSKILLS',
 		'ADD:EQUIP:*',
-		'ADD:SPECIAL:*',		# Deprecated
+		'ADD:FEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:TEMPLATE:*',
+		'ADD:VFEAT:*',
 		'EXCHANGELEVEL',
 		'SPECIALS',			# Deprecated
 		'SPELL',			# Deprecated
@@ -3059,14 +3136,16 @@ my %master_order = (
 		'CCSKILL',
 		'LANGAUTO.CLEAR',
 		'LANGAUTO:*',
+		'ADD:.CLEAR',
 		'ADD:*',
 		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
-		'ADD:DOMAIN:*',
+		'ADD:EQUIP:*',
 		'ADD:FEAT:*',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:TEMPLATE:*',
 		'ADD:VFEAT:*',
-		'ADD:LANGUAGE',
-		'ADD:SPECIAL',
 		'EXCHANGELEVEL',
 		'SPECIALS',
 		'SPELL',
@@ -3138,12 +3217,15 @@ my %master_order = (
 		'CSKILL',
 		'CCSKILL:.CLEAR',
 		'CCSKILL',
+		'ADD:.CLEAR',
 		'ADD:*',
 		'ADD:ABILITY:*',
 		'ADD:CLASSSKILLS',
-		'ADD:EQUIP',
+		'ADD:EQUIP:*',
 		'ADD:FEAT:*',
-		'ADD:LANGUAGE',
+		'ADD:LANGUAGE:*',
+		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+		'ADD:TEMPLATE:*',
 		'ADD:VFEAT:*',
 		'FAVOREDCLASS',
 		'ABILITY:*',
@@ -3372,6 +3454,7 @@ my %column_with_no_tag = (
 );
 
 my %token_ADD_tag = map { $_ => 1 } (
+	'ADD:.CLEAR',
 	'ADD:CLASSSKILLS',
 	'ADD:DOMAIN',
 	'ADD:EQUIP',
@@ -3653,6 +3736,7 @@ my %tagheader = (
 		'ADD:FEAT'			=> 'Choose a Feat',
 		'ADD:SAB'			=> 'Choose a Special Ability',
 		'ADD:SKILL'			=> 'Choose a Skill',
+		'ADD:TEMPLATE'		=> 'Add Template(s)',
 		'ADDDOMAINS'		=> 'Additional Divine Domain',
 		'ADDSPELLLEVEL'		=> 'Add Spell Lvl',
 		'AGE'				=> 'Age',
@@ -3820,6 +3904,8 @@ my %tagheader = (
 		'PREBASESIZELT'		=> 'PREBASESIZELT',
 		'PREBASESIZELTEQ'		=> 'Maximum Size',
 		'PREBASESIZENEQ'		=> 'PREBASESIZENEQ',
+		'PRECAMPAIGN'		=> 'Required Campaign',
+		'!PRECAMPAIGN'		=> 'Prohibited Campaign',
 		'PRECHECK'			=> 'Required Check',
 		'!PRECHECK'			=> 'Prohibited Check',
 		'PRECHECKBASE'		=> 'Required Check Base',
@@ -3850,6 +3936,7 @@ my %tagheader = (
 		'PREHANDSGT'		=> 'Min. nb of Hands',
 		'PREHANDSGTEQ'		=> 'Min. nb of Hands',
 		'PREHD'			=> 'Required Hit Dice',
+		'PREHP'			=> 'Required Hit Points',
 		'PREITEM'			=> 'Required Item',
 		'PRELANG'			=> 'Required Language',
 		'PRELEVEL'			=> 'Required Lvl',
@@ -4324,12 +4411,16 @@ if ($cl_options{input_path}) {
 		qr(placeholder\.txt$),	# The CMP directories are full of these
 		qr(\.zip$)i,		# Archives present in the directories
 		qr(\.rar$)i,
-		qr(\.jpg$),			# JPEG files present in the directories
-		qr(\.png$),			# PNG files present in the directories
+		qr(\.jpg$),			# JPEG image files present in the directories
+		qr(\.png$),			# PNG image files present in the directories
 #		gr(Thumbs\.db$),		# thumbnails image files used with Win32 OS
 		qr(readme\.txt$),		# Readme files
 #		qr(notes\.txt$),		# Notes files
 		qr(\.bak$),			# Backup files
+		qr(\.java$),		# Java code files
+		qr(\.htm$),			# HTML files
+		qr(\.xml$),
+		qr(\.css$),
 
 		qr(\.DS_Store$),		# Used with Mac OS
 	);
@@ -4348,20 +4439,20 @@ if ($cl_options{input_path}) {
 
 		# We skip the files from directory matching the REGEX in @dirtoskip
 		for my $regex (@dirtoskip) {
-		return if $File::Find::dir =~ $regex;
+			return if $File::Find::dir =~ $regex;
 		}
 
 		# We also skip the files that match the REGEX in @filetoskip
 		for my $regex (@filetoskip) {
-		return if $_ =~ $regex;
+			return if $_ =~ $regex;
 		}
 
 		if ( !-d && / [.] pcc \z /xmsi ) {
-		push @filelist, $File::Find::name;
+			push @filelist, $File::Find::name;
 		}
 
 		if ( !-d && !/ [.] pcc \z /xmsi ) {
-		$filelist_notpcc{$File::Find::name} = lc $_;
+			$filelist_notpcc{$File::Find::name} = lc $_;
 		}
 	}
 	File::Find::find( \&mywanted, $cl_options{input_path} );
@@ -4872,16 +4963,16 @@ for my $file (@files_to_parse_sorted) {
 			&& $cvs_present						# CVS head was already present
 			&& scalar(@lines) == scalar(@$newlines_ref)	# Same number of lines
 		) {
-		# We assume the arrays are the same ...
-		$same = YES;
+			# We assume the arrays are the same ...
+			$same = YES;
 
-		# ... but we check every line
-		$index = -1;
-		while ( $same && ++$index < scalar(@lines) ) {
-			if ( $lines[$index] ne $newlines_ref->[$index] ) {
-				$same = NO;
+			# ... but we check every line
+			$index = -1;
+			while ( $same && ++$index < scalar(@lines) ) {
+				if ( $lines[$index] ne $newlines_ref->[$index] ) {
+					$same = NO;
+				}
 			}
-		}
 		}
 
 		next FILE_TO_PARSE if $same;
@@ -4889,20 +4980,20 @@ for my $file (@files_to_parse_sorted) {
 		my $write_fh;
 
 		if ($cl_options{output_path}) {
-		my $newfile = $file;
-		$newfile =~ s/$cl_options{input_path}/$cl_options{output_path}/i;
+			my $newfile = $file;
+			$newfile =~ s/$cl_options{input_path}/$cl_options{output_path}/i;
 
-		# Create the subdirectory if needed
-		create_dir( File::Basename::dirname($newfile), $cl_options{output_path} );
+			# Create the subdirectory if needed
+			create_dir( File::Basename::dirname($newfile), $cl_options{output_path} );
 
-		open $write_fh, '>', $newfile;
+			open $write_fh, '>', $newfile;
 
-		# We keep track of the files we modify
-		push @modified_files, $file;
+			# We keep track of the files we modify
+			push @modified_files, $file;
 		}
 		else {
-		# Output to standard output
-		$write_fh = *STDOUT;
+			# Output to standard output
+			$write_fh = *STDOUT;
 		}
 
 		# The first line of the new file will be a comment line.
@@ -4912,10 +5003,10 @@ for my $file (@files_to_parse_sorted) {
 		# We print the result
 		LINE:
 		for my $line ( @{$newlines_ref} ) {
-		next LINE if $line eq '#$$$ CVS comment $$$';
+			next LINE if $line eq '#$$$ CVS comment $$$';
 
-		#$line =~ s/\s+$//;
-		print {$write_fh} "$line\n" if $cl_options{output_path} || ( *NEWFILE eq *STDOUT );
+			#$line =~ s/\s+$//;
+			print {$write_fh} "$line\n" if $cl_options{output_path} || ( *NEWFILE eq *STDOUT );
 		}
 
 		close $write_fh if $cl_options{output_path};
@@ -4997,11 +5088,11 @@ if ( $cl_options{report} ) {
 		print STDERR "Line Type: $line_type\n";
 
 		for my $tag ( sort report_tag_sort keys %{ $count_tags{"Valid"}{$line_type} } ) {
-		my $tagdisplay = $tag;
-		$tagdisplay .= "*" if $master_mult{$line_type}{$tag};
-		my $line = "	$tagdisplay";
-		$line .= ( " " x ( 26 - length($tagdisplay) ) ) . $count_tags{"Valid"}{$line_type}{$tag};
-		print STDERR "$line\n";
+			my $tagdisplay = $tag;
+			$tagdisplay .= "*" if $master_mult{$line_type}{$tag};
+			my $line = "	$tagdisplay";
+			$line .= ( " " x ( 26 - length($tagdisplay) ) ) . $count_tags{"Valid"}{$line_type}{$tag};
+			print STDERR "$line\n";
 		}
 
 		$first = 0;
@@ -14856,6 +14947,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.39 -- -- NOT YET RELEASED
+
+[ 2016715 ] ADD tags are not as globally applied as they should be
+
+[ 2016696 ] PRECAMPAIGN tag for .pcc and lst files
 
 [ 2012989 ] Kit TYPE tag
 
