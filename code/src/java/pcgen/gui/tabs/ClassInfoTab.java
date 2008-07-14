@@ -1,5 +1,5 @@
 /*
- * ClassChooserTab.java
+ * ClassInfoTab.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -58,14 +58,14 @@ import pcgen.util.PropertyFactory;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class ClassChooserTab extends AbstractChooserTab implements CharacterInfoTab
+public class ClassInfoTab extends AbstractChooserTab implements CharacterInfoTab
 {
 
     private final FilteredTreeViewDisplay treeviewDisplay;
     private final JTable classTable;
     private int spinnerValue;
 
-    public ClassChooserTab(UIContext context)
+    public ClassInfoTab(UIContext context)
     {
         super(context);
         this.treeviewDisplay = new FilteredTreeViewDisplay(context);
@@ -273,15 +273,15 @@ public class ClassChooserTab extends AbstractChooserTab implements CharacterInfo
                     model.addRows(classes);
                     return true;
                 }
+
                 catch (UnsupportedFlavorException ex)
                 {
-                    Logger.getLogger(ClassChooserTab.class.getName()).log(Level.SEVERE,
+                    Logger.getLogger(ClassInfoTab.class.getName()).log(Level.SEVERE,
                                                                           null,
                                                                           ex);
-                }
-                catch (IOException ex)
+                }                catch (IOException ex)
                 {
-                    Logger.getLogger(ClassChooserTab.class.getName()).log(Level.SEVERE,
+                    Logger.getLogger(ClassInfoTab.class.getName()).log(Level.SEVERE,
                                                                           null,
                                                                           ex);
                 }

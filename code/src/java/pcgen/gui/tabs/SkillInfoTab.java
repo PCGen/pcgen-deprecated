@@ -1,5 +1,5 @@
 /*
- * SkillChooserTab.java
+ * SkillInfoTab.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ import javax.swing.table.TableCellRenderer;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class SkillChooserTab
+public class SkillInfoTab
 {
 
     private static class TableCellSpinnerEditor extends AbstractCellEditor implements TableCellEditor
