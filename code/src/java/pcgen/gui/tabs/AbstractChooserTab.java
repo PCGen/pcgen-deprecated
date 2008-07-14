@@ -29,7 +29,7 @@ import pcgen.gui.util.panes.FlippingSplitPane;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractChooserTab extends FlippingSplitPane implements CharacterInfoTab
+public abstract class AbstractChooserTab extends FlippingSplitPane
 {
 
     protected final UIContext context;

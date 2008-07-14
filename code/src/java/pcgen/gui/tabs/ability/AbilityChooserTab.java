@@ -18,8 +18,9 @@
  * 
  * Created on Jun 29, 2008, 10:30:57 PM
  */
-package pcgen.gui.tabs;
+package pcgen.gui.tabs.ability;
 
+import javax.swing.event.ListDataEvent;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -38,11 +39,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.event.ListDataListener;
+import javax.swing.table.AbstractTableModel;
 import pcgen.gui.UIContext;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.tabs.AbstractChooserTab;
 import pcgen.gui.tools.FilteredTreeViewDisplay;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.JTreeTable;
@@ -316,69 +319,95 @@ public class AbilityChooserTab extends AbstractChooserTab
 
     }
 
-    private static final class AbilityCatagoryTreeViewTableModel
-            extends TreeViewTableModel<AbilityCatagoryFacade>
+    private static final class CatagoryTableModel extends AbstractTableModel
+            implements ListDataListener
     {
 
-        private static final DataViewColumn column = new DefaultDataViewColumn("Remaining",
-                                                                                  Integer.class);
-        private static final TreeView<AbilityCatagoryFacade> treeview = new TreeView<AbilityCatagoryFacade>()
+        private CharacterFacade character;
+        private GenericListModel<AbilityCatagoryFacade> catagories;
+
+        public CatagoryTableModel(CharacterFacade character,
+                                   GenericListModel<AbilityCatagoryFacade> catagories)
         {
-
-            public String getViewName()
-            {
-                return "Catagory";
-            }
-
-            public List<TreeViewPath<AbilityCatagoryFacade>> getPaths(AbilityCatagoryFacade pobj)
-            {
-                TreeViewPath<AbilityCatagoryFacade> path = new TreeViewPath<AbilityCatagoryFacade>(pobj,
-                                                                                                   pobj.getType());
-                return Collections.singletonList(path);
-            }
-
-        };
-        private final CharacterFacade character;
-
-        public AbilityCatagoryTreeViewTableModel(final CharacterFacade character,
-                                                  GenericListModel<AbilityCatagoryFacade> data)
-        {
-            super(new DataView<AbilityCatagoryFacade>()
-          {
-
-              public List<?> getData(AbilityCatagoryFacade catagory)
-              {
-                  return Collections.singletonList(character.getRemainingSelections(catagory));
-              }
-
-              public List<? extends DataViewColumn> getDataColumns()
-              {
-                  return Collections.singletonList(column);
-              }
-
-          });
             this.character = character;
-            setSelectedTreeView(treeview);
-            setDataModel(data);
+            this.catagories = catagories;
+            catagories.addListDataListener(this);
+        }
+
+        public int getRowCount()
+        {
+            return catagories.getSize();
+        }
+
+        public int getColumnCount()
+        {
+            return 2;
         }
 
         @Override
-        public boolean isCellEditable(Object node, int column)
+        public boolean isCellEditable(int rowIndex, int columnIndex)
         {
-            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
-            if (treeNode.getUserObject() instanceof AbilityCatagoryFacade)
+            if (columnIndex == 1)
             {
                 return true;
             }
-            return super.isCellEditable(node, column);
+            return false;
+        }
+
+        public Object getValueAt(int rowIndex, int columnIndex)
+        {
+            AbilityCatagoryFacade catagory = catagories.getElementAt(rowIndex);
+            switch (columnIndex)
+            {
+                case 0:
+                    return catagory;
+                case 1:
+                    return character.getRemainingSelections(catagory);
+                default:
+                    throw new IndexOutOfBoundsException();
+            }
         }
 
         @Override
-        public void setValueAt(Object aValue, Object node, int column)
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex)
         {
-            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
-            character.setRemainingSelection((AbilityCatagoryFacade) treeNode.getUserObject(),
+            character.setRemainingSelection(catagories.getElementAt(rowIndex),
                                             (Integer) aValue);
+        }
+
+        @Override
+        public String getColumnName(int column)
+        {
+            if (column == 0)
+            {
+                return "Catagory";
+            }
+            return "Remaining";
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex)
+        {
+            if (columnIndex == 1)
+            {
+                return Integer.class;
+            }
+            return Object.class;
+        }
+
+        public void intervalAdded(ListDataEvent e)
+        {
+            fireTableRowsInserted(e.getIndex0(), e.getIndex1());
+        }
+
+        public void intervalRemoved(ListDataEvent e)
+        {
+            fireTableRowsDeleted(e.getIndex0(), e.getIndex1());
+        }
+
+        public void contentsChanged(ListDataEvent e)
+        {
+            fireTableRowsUpdated(e.getIndex0(), e.getIndex1());
         }
 
     }
@@ -517,17 +546,6 @@ public class AbilityChooserTab extends AbstractChooserTab
     public AbilityCatagoryFacade getSelectedCatagory()
     {
         return null;
-    }
-
-    public Hashtable<Object, Object> createState(CharacterFacade character)
-    {
-        Hashtable<Object, Object> state = new Hashtable<Object, Object>();
-        state.put("CatagoryModel",
-                  new AbilityCatagoryTreeViewTableModel(character,
-                                                        context.getAbilityCatagories(character)));
-        state.put("SelectedModel", new SelectedAbilityTreeViewModel(character));
-
-        return state;
     }
 
     public void storeState(Hashtable<Object, Object> state)
