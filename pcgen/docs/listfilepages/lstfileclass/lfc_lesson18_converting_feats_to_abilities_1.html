@@ -34,24 +34,23 @@
 
 		<p class="indent0"><strong>Tags used:</strong></p>
 
-		<p class="indent1"> <code><a href="../datafilestagpages/datafilesability.html#CATEGORY2">CATEGORY(ability)</a>, 
-			<a href="../globalfilestagpages/globalfilesprexxx.html">PREABILITY</a>, 
-			<a href="../systemfilestagpages/gamemodemiscinfolist.html#ABILITY">ABILITY(pcc)</a>, 
-			<a href="../datafilestagpages/datafilespcc.html#ABILITYCATEGORY">ABILITYCATEGORY(pcc)</a>, 
-			<a href="../systemfilestagpages/gamemodemiscinfolist.html#ABILITYCATEGORY">ABILITYCATEGORY(ability category)</a>, 
-			<a href="../systemfilestagpages/gamemodemiscinfolist.html#CATEGORY">CATEGORY(ability category)</a>, 
-			<a href="../systemfilestagpages/gamemodemiscinfolist.html#PLURAL">PLURAL</a>, 
+		<p class="indent1">Ability File Tags</p>
+		<p class="indent2"><code><a href="../datafilestagpages/datafilesability.html#CATEGORY2">CATEGORY</a></code></p>
+		<p class="indent1">Ability Category File Tags</p>
+		<p class="indent2"><code><a href="../systemfilestagpages/gamemodemiscinfolist.html#ABILITYCATEGORY">ABILITYCATEGORY</a>, 
+			<a href="../systemfilestagpages/gamemodemiscinfolist.html#CATEGORY">CATEGORY</a>, 
 			<a href="../systemfilestagpages/gamemodemiscinfolist.html#EDITABLE">EDITABLE</a>, 
 			<a href="../systemfilestagpages/gamemodemiscinfolist.html#EDITPOOL">EDITPOOL</a>, 
 			<a href="../systemfilestagpages/gamemodemiscinfolist.html#FRACTIONALPOOL">FRACTIONALPOOL</a>, 
-			<a href="../systemfilestagpages/gamemodemiscinfolist.html#POOL">POOL</a>, 
-			<a href="../systemfilestagpages/globalfilesability.html#VISIBLE">VISIBLE</a>, 
-			<a href="../systemfilestagpages/globalfilesdefine.html">DEFINE</a>, 
-			<a href="../systemfilestagpages/gamemodemiscinfolist.html#TYPE">TYPE</a>, 
-			<a href="../globalfilestagpages/globalfilesprexxx.html">PRESKILL</a>, 
-			<a href="../globalfilestagpages/globalfilesprexxx.html">PREVARLT</a>, 
-			<a href="../globalfilesother.html#DESC">DESC</a>, 
-			<a href="../globalfilesbonus.html#VAR">BONUS:VAR</a></code></p>
+			<a href="../systemfilestagpages/gamemodemiscinfolist.html#VISIBLE">VISIBLE</a>, 
+			<a href="../systemfilestagpages/gamemodemiscinfolist.html#DISPLAYLOCATION">DISPLAYLOCATION</a>, 
+			<a href="../systemfilestagpages/gamemodemiscinfolist.html#PLURAL">PLURAL</a>, 
+			<a href="../systemfilestagpages/gamemodemiscinfolist.html#POOL">POOL</a></code></p>
+		<p class="indent1">Miscelaneous Global Tags
+		<p class="indent2"><code><a href="../globalfilestagpages/globalfilestype.html#TYPE">TYPE</a></code></p>
+		<p class="indent1">PCC File Tags
+		<p class="indent2"><code><a href="../datafilestagpages/datafilespcc.html#ABILITYPCC">ABILITY</a>, 
+			<a href="../datafilestagpages/datafilespcc.html#ABILITYCATEGORY">ABILITYCATEGORY</a></code></p>
 		<p></p>
 
 <hr>
@@ -98,7 +97,7 @@
 			to include the object type contained within the file in the name of the file. For the 
 			purposes of this LST File class, we will use the following file names:
 		<p class="indent1"><span class="lstfile">my_abilities.lst</span> file for the converted abilities.</p>
-		<p class="indent1"><span class="lstfile">my_abilitycategpries.lst</span> file for the new abilities categories.</p>
+		<p class="indent1"><span class="lstfile">my_ability_categpries.lst</span> file for the new abilities categories.</p>
 		<p class="indent1"><span class="lstfile">my_campaign.pcc</span> file for the campaign pcc file.</p>
 		<p class="sidebar1">Note: You can name your homebrew files anything you wish as long as you 
 			include them in the your homebrew PCC file.</p>
@@ -114,10 +113,11 @@
 		<p class="indent1">3) Each new line should be considered a <code>&lt;TAB&gt;</code> in the actual file.</p>
 		<blockquote>
 			<p class="indent1">Examples in this lesson will appear as:</p>
-			<p class="indent2"><code>ABILITYCATEGORY:My Super Ability</code></p>
-			<p class="indent2"><code>CATEGORY:Special Ability</code></p>
+		<p class="indent2"><code>Expert Defense</code></p>
+		<p class="indent2"><code>TYPE:Special</code></p>
+		<p class="indent2"><code>VISIBLE:NO</code></p>
 			<p class="indent1">Will in the LST file appear as:</p>
-			<p class="indent2"><code>ABILITYCATEGORY:My Super Ability</code> &lt;tab&gt; <code>CATEGORY:Special Ability</code></p>
+			<p class="indent2"><code>Expert Defense</code> &lt;tab&gt; <code>TYPE:Special</code> &lt;tab&gt; <code>VISIBLE:NO</code></p>
 		</blockquote>
 
 		<h4>Special Note for the LST Student</h4>
@@ -136,7 +136,7 @@
 			the homebrew feats that you wish to convert to the new file and removing them from the 
 			<span class="lstfile">my_feat.lst</span> file. You will then need to add the appropriate 
 			<code>CATEGORY</code> tag to the copied feats, making sure that any new ability categories 
-			are properly defined in the <span class="lstfile">my_abilitycategories.lst</span> file. 
+			are properly defined in the <span class="lstfile">my_ability_categories.lst</span> file. 
 			The next step is to modify your hombrew <span class="lstfile">my_campaign.pcc</span> file 
 			by adding the <code>ABILITY</code> and <code>ABILITYCATEGORY</code> tags. The relevant files 
 			and tags to acomplish this are explained below.</p>
@@ -173,7 +173,7 @@
 
 <hr>
 
-		<h4><code>CATEGORY:Special Ability</code></h4>
+		<h4>CATEGORY:&lt;ability category name&gt;</h4>
 		<p class="indent0">This tag identifies the 'category' in which your new ability 
 			will be placed. In the case of our example ability, we are placing it in the 
 			<span class="lstobj">Special Ability</span> category. Any category, besides 
@@ -183,6 +183,8 @@
 		<p class="sidebar1">Note: While abilitiy categories can be named whatever you decide upon, 
 			when using the hardcoded <span class="lstobj">FEAT</span> category, you must use 
 			all caps as that is the way it is hardcoded within PCGen.</p>
+		<p class="indent0"><strong>Example:</strong></p>
+		<p class="indent1"><code>CATEGORY:Special Ability</code></p>
 		<p></p>
 
 <hr>
@@ -192,7 +194,7 @@
 			Ability object is shown below:</p>
 		<p></p>
 		<p class="indent2"><code>Expert Defense</code></p>
-		<p class="indent2"><code>CATEGORY:My Super Ability</code></p>
+		<p class="indent2"><code>CATEGORY:Special Ability</code></p>
 		<p class="indent2"><code>TYPE:Special</code></p>
 		<p class="indent2"><code>VISIBLE:NO</code></p>
 		<p class="indent2"><code>SAB:Expert Defense ~ Add % bonus to AC|INT</code></p>
@@ -203,7 +205,7 @@
 
 		<h3>The Ability Category  File</h3>
 
-		<p class="indent0">The <span class="lstfile">my_abilitycategories.lst</span> file defines 
+		<p class="indent0">The <span class="lstfile">my_ability_categories.lst</span> file defines 
 			the various ability categories that an ability can be assigned to. These categories 
 			will determine where, within the PCGen user interface, the related abilities will appear. 
 			In general, they will appear in a sub-tab on the &quot;Feats & Abilities&quot; tag.</p>
@@ -212,94 +214,77 @@
 			or the loaded dataset's <span class="lstfile">abilitycategory.lst</span> file. For Homebrews, 
 			you'll need to either use one of these existing ability categories or set up your own &quot;Ability 
 			Category&quot;, which in turn will create a separate &quot;pool&quot; with which to manage 
-			your converted abilities. To demonstrate how this is done, we'll use the 
-			<span class="lstobj">My Super Ability</span> category.</p>
+			your converted abilities. For the purposes of this LST File class, we will use the existing 
+			<span class="lstobj">Special Ability</span> category, found in the RSRD dataset, and will 
+			discuss how it is set up.</p>
 		<p></p>
 
 <hr>
 
-		<h4><code>ABILITYCATEGORY:My Super Ability</code></h4>
-		<p class="indent0">The first entry in the ABILITYCATEGORY line is the name of the new 
-			ability category which identifies the &quot;ABILITYPOOL&quot;. This ability pool 
-			governs how many abilities can be taken, if they cost anything at all. The 
-			&quot;ABILITYCATEGORY&quot; tag is not strictly required as PCGen will take the 
-			first data entry as the name of the ability category, and thus the ability pool, 
-			but current PCGen standard practice is to include the tag.</p>
-		<p class="indent0">If this ability category is defines as &quot;visible&quot; (See the 
-			&quot;VISIBLE&quot; tag below), any ability given this category will appear in the 
-			&quot;Feats & Abilities&quot; tab under a sub-tab of the same name as this ability 
-			category. In this case, <span class="lstobj">My Super Ability</span>.</p>
+		<h4>ABILITYCATEGORY:&lt;ability category name&gt;</h4>
+		<p class="indent0">The first entry in the ABILITYCATEGORY line is the name of the new ability 
+			category, which, besides identifying the new ability category, also identifies the 
+			&quot;ABILITYPOOL&quot; for the new ability category. This ability pool governs how many 
+			abilities can be taken, if they cost anything at all. The <code>ABILITYCATEGORY</code> tag 
+			is not strictly required as PCGen will take the first data entry on the line as the name 
+			of the ability category, but current PCGen standard practice is to include the tag.</p>
+		<p class="indent0">If this ability category is &quot;visible&quot; (See the &quot;VISIBLE&quot; 
+			tag below), any ability given this category will appear in the &quot;Feats & Abilities&quot; 
+			tab under a sub-tab of the same name as this ability category.</p>
+		<p class="indent0"><strong>Example:</strong></p>
+		<p class="indent1"><code>ABILITYCATEGORY:Special Ability</code></p>
 		<p></p>
 
 <hr>
 
-		<h4><code>CATEGORY:Special Ability</code></h4>
+		<h4>CATEGORY:&lt;ability category name&gt;</h4>
 		<p class="indent0">This is a 'super-category', or parent, to which our new ability category 
 			belongs. This tag is optional but if included must list an existing ability category that 
 			has been defined in either the <span class="lstfile">miscinfo.lst</span> or 
-			<span class="lstfile">miscinfo.lst</span> file.</p>
+			<span class="lstfile">my_ability_category.lst</span> file.</p>
+		<p class="indent0"><strong>Example:</strong></p>
+		<p class="indent1"><code>CATEGORY:Special Ability</code></p>
+		<p class="indent2">Note that we are using the same category name as the one we are creating. This 
+			makes our new category a super-category.</p>
 		<p></p>
 
 <hr>
 
-		<h4><code>TYPE:Special</code></h4>
-		<p class="indent0">This is a TYPE, or list of types, assigned to abilities of this catgory. While some 
-			types do not have an effect other than allowing additional filtering in the GUI, as is the case 
-			with the type <span class="lstobj">Special</span>, there are a number of standard ability types 
-			used within PCGen that effect PCGen in different ways. <span class="lstobj">SpecialQuality</span> 
-			and <span class="lstobj">SpecialAttack</span> are used to determine where on the Output Sheet the 
-			associated abilities will be placed. <span class="lstobj">FavoredEnemy</span>, 
-			<span class="lstobj">RogueAbilities</span>,  and <span class="lstobj">General</span> effect which 
-			sub-tab the associated abilities will appear on in the PCGen GUI.</p>
-		<p class="indent0">A complete list of standard feat and ability types can be found on the 
-			<a href="../globalfilestagpages/globalfilestype.html#Feat">Global TYPE</a> page.</p>
+		<h4>EDITABLE:&lt;boolean&gt;</h4>
+		<p class="indent0">This tag defines whether a user can modify the abilities in the category and 
+			will take either &quot;YES&quot; or &quot;NO&quot;. &quot;NO&quot; would be appropriate for 
+			abilities which aren't chosen by the user but are granted automatically.</p>
+		<p class="indent0"><strong>Example:</strong></p>
+		<p class="indent1"><code>EDITABLE:NO</code></p>
 		<p></p>
 
 <hr>
 
-		<h4><code>PLURAL:My Super Abilities</code></h4>
-		<p class="indent0">This has to do with the internationalization. An example is: in_feats which sets the 
-			Category key to 'in_feats'. It also shows up with the 'Plural' of the name. Ex. Feat would be Feats 
-			(Feats would display in the drop down bar).</p>
+		<h4>EDITPOOL:&lt;boolean&gt;</h4>
+		<p class="indent0">This tag defines whether a user can modify the ability pool number or not. As each 
+			ability has a default cost of one (1), if this option is set to &quot;NO&quot; the user cannot add 
+			or subtract from the pool. For FEATs, the default is 'YES'.</p>
+		<p class="indent0"><strong>Example:</strong></p>
+		<p class="indent1"><code>EDITPOOL:NO</code></p>
 		<p></p>
 
 <hr>
 
-		<h4><code>EDITABLE:NO</code></h4>
-		<p class="indent0">This defines whether a user can modify the abilities in the category. NO would be 
-			appropriate for class abilities which aren't chosen by the user.</p>
+		<h4>FRACTIONALPOOL:&lt;boolean&gt;</h4>
+		<p class="indent0">This tag defines whether the pool must be a whole number or can be a fraction and 
+			will take either &quot;YES&quot; or &quot;NO&quot;. Some abilities may have a cost less than one, 
+			e.g. &quot;.5&quot; or &quot;.25&quot;.</p>
+		<p class="indent0"><strong>Example:</strong></p>
+		<p class="indent1"><code>FRACTIONALPOOL:NO</code></p>
 		<p></p>
 
 <hr>
 
-		<h4><code>EDITPOOL:NO</code></h4>
-		<p class="indent0">This defines whether a user can modify the pool number or not. Each ability has a 
-			'cost' (Default is 1) if this option is set to 'NO' the user cannot add or subtract from the pool. 
-			For feats, the default is 'YES'.</p>
-		<p></p>
-
-<hr>
-
-		<h4><code>FRACTIONALPOOL:NO</code></h4>
-		<p class="indent0">This defines whether the pool must be a whole number or can be fractions. Some 
-			abilities may have a cost less than '1' like .5 or .25. &lt;YES / NO&gt;</p>
-		<p></p>
-
-<hr>
-
-		<h4><code>POOL:0</code></h4>
-		<p class="indent0">This tag  establishes the base ability pool for the defined ability category. 
-			It will take a number, formula, or variable. If a variable is used, the variable <strong>MUST</strong>
-			be defined by a <code>DEFINE</code> tag. For our new ability category, we will start with an 
-			ability pool of zero (0).</p>
-		<p></p>
-
-<hr>
-
-		<h4><code>VISIBLE:NO</code></h4>
-		<p class="indent0">Defines whether this category is visible on the UI or hidden. Usefull for hidden 
-			abilities and class abilities that require no interaction from the user. &lt;Options are - YES, 
-			NO, QUALIFY&gt;</p>
+		<h4>VISIBLE:&lt;YES, NO or QUALIFY&gt;</h4>
+		<p class="indent0">This tag defines whether this category is visible in the PCGen GUI or if it is hidden. 
+			Usefull for hidden abilities and class abilities that require no interaction from the user.</p>
+		<p class="indent0"><strong>Example:</strong></p>
+		<p class="indent1"><code>VISIBLE:NO</code></p>
 		<p></p>
 
 <hr>
@@ -317,19 +302,49 @@
 
 <hr>
 
+		<h4>PLURAL:&lt;ability category plural form&gt;</h4>
+		<p class="indent0">This has to do with the internationalization. An example is: in_feats which sets the 
+			Category key to 'in_feats'. It also shows up with the 'Plural' of the name. Ex. Feat would be Feats 
+			(Feats would display in the drop down bar).</p>
+		<p></p>
+
+<hr>
+
+		<h4>POOL:&lt;number, variable or formula&gt;</h4>
+		<p class="indent0">This tag  establishes the base ability pool for the defined ability category. 
+			It will take a number, formula, or variable. If a variable is used, the variable <strong>MUST</strong>
+			be defined by a <code>DEFINE</code> tag. For our new ability category, we will start with an 
+			ability pool of zero (0).</p>
+		<p></p>
+
+<hr>
+
+		<h4>TYPE:&lt;ability type&gt;</h4>
+		<p class="indent0">This is a TYPE, or list of types, assigned to abilities of this catgory. While some 
+			types do not have an effect other than allowing additional filtering in the GUI, as is the case 
+			with the type <span class="lstobj">Special</span>, there are a number of standard ability types 
+			used within PCGen that effect PCGen in different ways. <span class="lstobj">SpecialQuality</span> 
+			and <span class="lstobj">SpecialAttack</span> are used to determine where on the Output Sheet the 
+			associated abilities will be placed. <span class="lstobj">FavoredEnemy</span>, 
+			<span class="lstobj">RogueAbilities</span>,  and <span class="lstobj">General</span> effect which 
+			sub-tab the associated abilities will appear on in the PCGen GUI.</p>
+		<p class="indent0">A complete list of standard feat and ability types can be found on the 
+			<a href="../globalfilestagpages/globalfilestype.html#Feat">Global TYPE</a> page.</p>
+		<p></p>
+
+<hr>
+
 		<h4>Our New Ability Category</h4>
 		<p class="indent0">The new entry in <span class="lstfile">my_abilitycategories.lst</span> is shown below:</p>
 		<p></p>
-		<p class="indent2"><code>ABILITYCATEGORY:My Super Ability</code></p>
+		<p class="indent2"><code>ABILITYCATEGORY:Special Ability</code></p>
 		<p class="indent2"><code>CATEGORY:Special Ability</code></p>
-		<p class="indent2"><code>PLURAL:My Super Abilities</code></p>
-		<p class="indent2"><code>EDITABLE:NO</code></p>
-		<p class="indent2"><code>EDITPOOL:NO</code></p>
-		<p class="indent2"><code>FRACTIONALPOOL:NO</code></p>
-		<p class="indent2"><code>POOL:0</code></p>
 		<p class="indent2"><code>VISIBLE:NO</code></p>
+		<p class="indent2"><code>EDITABLE:NO</code></p>
+		<p class="indent2"><code>EDITPOOL:YES</code></p>
+		<p class="indent2"><code>FRACTIONALPOOL:NO</code></p>
 		<p></p>
-		
+
 <hr style="height:3px">
 
 		<h3>The PCC File</h3>
