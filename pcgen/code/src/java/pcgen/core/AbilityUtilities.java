@@ -835,22 +835,27 @@ public class AbilityUtilities
 
 					if ("DEITYWEAPON".equals(aString))
 					{
-						WeaponProf wp = null;
-
 						if (aPC.getDeity() != null)
 						{
-							wp = Globals.getWeaponProfKeyed(aPC.getDeity().getFavoredWeapon());
-						}
-
-						if (wp != null)
-						{
-							if (addIt)
+							String favoredWeapon = aPC.getDeity().getFavoredWeapon();
+							if (!("ALL".equalsIgnoreCase(favoredWeapon) || "ANY"
+									.equalsIgnoreCase(favoredWeapon)))
 							{
-								anAbility.addAssociated(wp.getKeyName());
-							}
-							else
-							{
-								anAbility.removeAssociated(wp.getKeyName());
+								for (String fw : favoredWeapon.split("\\|"))
+								{
+									WeaponProf wp = Globals.getWeaponProfKeyed(fw);
+									if (wp != null)
+									{
+										if (addIt)
+										{
+											anAbility.addAssociated(wp.getKeyName());
+										}
+										else
+										{
+											anAbility.removeAssociated(wp.getKeyName());
+										}
+									}
+								}
 							}
 						}
 					}
