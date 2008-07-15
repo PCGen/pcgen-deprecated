@@ -18,6 +18,7 @@
 			<li><a href="#WhatsNew">What's new for v5.14.1</a></li>
 			<li><a href="#Chars">Character Changes</a></li>
 			<li><a href="#GMGenIssue">GMGen known issue</a></li>
+			<li><a href="#PDFIssue">PDF Known Issue</a></li>
 			<li><a href="#Installation">Installation</a></li>
 			<li><a href="#CustomDataSets">Custom Data Sets</a></li>
 			<li><a href="#WantToHelp">Want to Help?</a></li>
@@ -178,6 +179,16 @@ result is a better and more stable character generator for your use.
 			The problem will only manifest when using the System Look and Feel, you can
 			change the Look and Feel by going to Preferences/Appearance/Look and Feel and
 			changing it to Java before activating GMGen and then it will work as it should.</p>
+
+		<h2><a name="PDFIssue">PDF Known Issue</a></h2>
+		
+		<p>When exporting to PDF format from any of the fantasy gameModes the console will report the following error:</p>
+
+		<blockquote><p><code>SEVERE Thread-7 PlayerCharacter:8707 Invalid ACType: Equipment</code></p></blockquote>
+
+		<p>This results from the use of an AC type in the base.xml file which does not 
+		  exist in fantasy settings (it's used in d20 Modern). This error does not cause 
+		  any problems generating PDF's and can be safely ignored.</p>
 
 		<h2><a name="Installation">Installation</a></h2>
 
