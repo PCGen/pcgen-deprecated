@@ -48,10 +48,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import pcgen.gui.UIContext;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.ClassFacade;
-import pcgen.gui.tools.FilteredTreeViewDisplay;
+import pcgen.gui.tools.FilteredTreeViewPanel;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -61,14 +60,13 @@ import pcgen.util.PropertyFactory;
 public class ClassInfoTab extends AbstractChooserTab implements CharacterInfoTab
 {
 
-    private final FilteredTreeViewDisplay treeviewDisplay;
+    private final FilteredTreeViewPanel treeviewDisplay;
     private final JTable classTable;
     private int spinnerValue;
 
-    public ClassInfoTab(UIContext context)
+    public ClassInfoTab()
     {
-        super(context);
-        this.treeviewDisplay = new FilteredTreeViewDisplay(context);
+        this.treeviewDisplay = new FilteredTreeViewPanel();
         this.classTable = new JTable();
         initComponents();
     }

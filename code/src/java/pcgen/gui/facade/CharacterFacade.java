@@ -35,6 +35,9 @@ public interface CharacterFacade
     public void removeAbility(AbilityCatagoryFacade catagory,
                                AbilityFacade ability);
 
+    public boolean hasAbility(AbilityCatagoryFacade catagory,
+                               AbilityFacade ability);
+
     /**
      * Note: This method should never return null. If the character does not possess
      * any abilities in the parameter catagory, this method should create a new

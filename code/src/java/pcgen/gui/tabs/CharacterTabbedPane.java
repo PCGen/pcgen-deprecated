@@ -23,7 +23,6 @@ package pcgen.gui.tabs;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import pcgen.gui.UIContext;
 import pcgen.gui.facade.CharacterFacade;
 
 /**
@@ -35,7 +34,7 @@ public class CharacterTabbedPane extends JTabbedPane
 
     private CharacterFacade character;
 
-    public CharacterTabbedPane(UIContext context)
+    public CharacterTabbedPane()
     {
         //initTabs
         getModel().addChangeListener(
@@ -53,7 +52,7 @@ public class CharacterTabbedPane extends JTabbedPane
 
     private void refreshCurrentTab()
     {
-        //((CharacterInfoTab) getSelectedComponent()).setCharacter(character);
+    //((CharacterInfoTab) getSelectedComponent()).setCharacter(character);
     }
 
     public void setCharacter(CharacterFacade character)

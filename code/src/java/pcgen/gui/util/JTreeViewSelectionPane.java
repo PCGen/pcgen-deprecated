@@ -84,6 +84,7 @@ public class JTreeViewSelectionPane extends JTreeViewPane
     {
         JTable table = getTable();
         rowheaderTable.setAutoCreateColumnsFromModel(false);
+        // force the tables to share models
         rowheaderTable.setModel(table.getModel());
         rowheaderTable.setSelectionModel(table.getSelectionModel());
         rowheaderTable.setRowHeight(table.getRowHeight());

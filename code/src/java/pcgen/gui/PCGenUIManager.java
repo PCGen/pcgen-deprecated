@@ -1,5 +1,5 @@
 /*
- * UIContext.java
+ * PCGenUIManager.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 17, 2008, 3:52:41 PM
+ * Created on Jul 14, 2008, 8:43:48 PM
  */
 package pcgen.gui;
 
@@ -30,14 +30,27 @@ import pcgen.gui.util.GenericListModel;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface UIContext
+public final class PCGenUIManager
 {
 
-    public <T> GenericListModel<NamedFilter<? super T>> getRegisteredFilters(Class<T> c);
+    private PCGenUIManager()
+    {
+    }
 
-    public GenericListModel<AbilityCatagoryFacade> getAbilityCatagories(CharacterFacade character);
+    public static <T> GenericListModel<NamedFilter<? super T>> getRegisteredFilters(Class<T> c)
+    {
+        return null;
+    }
 
-    public GenericListModel<AbilityFacade> getAbilitiesForCatagory(CharacterFacade character,
-                                                                    AbilityCatagoryFacade catagory);
+    public static GenericListModel<AbilityCatagoryFacade> getRegisteredAbilityCatagories(CharacterFacade character)
+    {
+        return null;
+    }
+
+    public static GenericListModel<AbilityFacade> getRegisteredAbilities(CharacterFacade character,
+                                                         AbilityCatagoryFacade catagory)
+    {
+        return null;
+    }
 
 }

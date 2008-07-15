@@ -21,7 +21,6 @@
 package pcgen.gui.tabs;
 
 import java.awt.Component;
-import pcgen.gui.UIContext;
 import pcgen.gui.tools.InfoPane;
 import pcgen.gui.util.panes.FlippingSplitPane;
 
@@ -32,15 +31,13 @@ import pcgen.gui.util.panes.FlippingSplitPane;
 public abstract class AbstractChooserTab extends FlippingSplitPane
 {
 
-    protected final UIContext context;
     private FlippingSplitPane subSplitPane;
     private InfoPane infoPane;
 
-    protected AbstractChooserTab(UIContext context)
+    protected AbstractChooserTab()
     {
         this.subSplitPane = new FlippingSplitPane(VERTICAL_SPLIT);
         this.infoPane = new InfoPane();
-        this.context = context;
 
         subSplitPane.setTopComponent(infoPane);
         setRightComponent(subSplitPane);

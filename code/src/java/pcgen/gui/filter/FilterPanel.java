@@ -41,7 +41,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import pcgen.gui.UIContext;
+import pcgen.gui.PCGenUIManager;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.SimpleTextIcon;
 import pcgen.util.PropertyFactory;
@@ -58,27 +58,25 @@ public class FilterPanel extends JPanel
     private static final String clearString = PropertyFactory.getString("in_clear");
     private static final String advancedString = PropertyFactory.getString("in_demAdv");
     private final JTextField textfield;
-    private final UIContext context;
     private List<JToggleButton> filterbuttons;
     private List<Filter> selectedFilters;
     private FilterPanelListener panelListener;
     private ListDataListener listListener;
     private Class<?> filterClass;
 
-    public FilterPanel(UIContext context)
+    public FilterPanel()
     {
-        this(context, null, null);
+        this(null, null);
     }
 
-    public FilterPanel(UIContext context, Class<?> filterclass)
+    public FilterPanel(Class<?> filterclass)
     {
-        this(context, filterclass, null);
+        this(filterclass, null);
     }
 
-    public FilterPanel(UIContext context, Class<?> filterClass,
+    public FilterPanel(Class<?> filterClass,
                         FilterPanelListener listener)
     {
-        this.context = context;
         this.textfield = new JTextField();
         this.panelListener = listener;
         initComponents();
@@ -152,10 +150,10 @@ public class FilterPanel extends JPanel
         {
             if (this.filterClass != null)
             {
-                context.getRegisteredFilters(this.filterClass).removeListDataListener(listListener);
+                PCGenUIManager.getRegisteredFilters(this.filterClass).removeListDataListener(listListener);
             }
             this.filterClass = filterClass;
-            final GenericListModel<NamedFilter<? super T>> filters = context.getRegisteredFilters(filterClass);
+            final GenericListModel<NamedFilter<? super T>> filters = PCGenUIManager.getRegisteredFilters(filterClass);
             ListDataListener listener = new ListDataListener()
             {
 

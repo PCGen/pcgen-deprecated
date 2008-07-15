@@ -1,5 +1,5 @@
 /*
- * FilteredTreeViewDisplay.java
+ * FilteredTreeViewPanel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
-import pcgen.gui.UIContext;
 import pcgen.gui.filter.Filter;
 import pcgen.gui.filter.FilterPanel;
 import pcgen.gui.filter.FilterPanelListener;
@@ -41,17 +40,17 @@ import pcgen.gui.util.treeview.TreeViewModelWrapper;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilteredTreeViewDisplay extends JPanel
+public class FilteredTreeViewPanel extends JPanel
 {
 
     private FilterPanel filterPanel;
     private JTreeViewPane treeViewPane;
 
-    public FilteredTreeViewDisplay(UIContext context)
+    public FilteredTreeViewPanel()
     {
         setLayout(new BorderLayout());
 
-        filterPanel = new FilterPanel(context);
+        filterPanel = new FilterPanel();
         add(filterPanel, BorderLayout.PAGE_START);
 
         treeViewPane = new JTreeViewPane();
@@ -114,11 +113,10 @@ public class FilteredTreeViewDisplay extends JPanel
         treeViewPane.setDragEnabled(b);
     }
 
-    public <T> void setTreeViewModel(Class<T> filterClass,
-                                      TreeViewModel<T> model)
+    public <T> void setTreeViewModel(FilterableTreeViewModel<T> model)
     {
-        filterPanel.setFilterClass(filterClass);
-
+        filterPanel.setFilterClass(model.getFilterClass());
+        
         TreeViewDisplay<T> displayModel = new TreeViewDisplay<T>(model);
         treeViewPane.setTreeViewModel(displayModel);
         filterPanel.setFilterPanelListener(displayModel);

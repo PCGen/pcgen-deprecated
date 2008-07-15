@@ -13,14 +13,12 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JViewport;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import pcgen.gui.util.SimpleTextIcon;
 
 /**
  *
@@ -43,31 +41,14 @@ public class ScrollPaneTest extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane1.setRowHeader(getRowHeader());
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jRadioButton1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        getContentPane().add(jRadioButton1, java.awt.BorderLayout.PAGE_END);
+        jCheckBox1.setText("jCheckBox1");
+        jCheckBox1.setIcon(new SimpleTextIcon(jCheckBox1, "Icon"));
+        jCheckBox1.setSelectedIcon(new SimpleTextIcon(jCheckBox1, "Sel"));
+        getContentPane().add(jCheckBox1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -81,7 +62,7 @@ public class ScrollPaneTest extends javax.swing.JFrame
         table.setFocusable(false);
         //table.setDefaultEditor(Boolean.class, );
         //table.setDefaultRenderer(Boolean.class, );
-        table.setSelectionModel(jTable1.getSelectionModel());
+        //table.setSelectionModel(jTable1.getSelectionModel());
         table.setPreferredScrollableViewportSize(new Dimension(20, 400));
         TableColumn column = new TableColumn(-1, 20, new RadioButtonRenderer(),
                                              new TableCellRadioButtonEditor());
@@ -213,8 +194,6 @@ public class ScrollPaneTest extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JCheckBox jCheckBox1;
     // End of variables declaration//GEN-END:variables
 }
