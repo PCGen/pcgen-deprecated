@@ -62,4 +62,6 @@ public interface CharacterFacade
     public void setRemainingSelection(AbilityCatagoryFacade catagory,
                                        int remaining);
 
+    public int getSkillCost(ClassFacade c, SkillFacade skill);
+
 }

@@ -55,6 +55,7 @@ import pcgen.gui.tabs.AbstractChooserTab;
 import pcgen.gui.tools.FilterableTreeViewModel;
 import pcgen.gui.tools.FilteredTreeViewPanel;
 import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.event.AbstractGenericListDataListener;
 import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.gui.util.event.GenericListDataListener;
 import pcgen.gui.util.panes.FlippingSplitPane;
@@ -228,8 +229,8 @@ public class AbilityChooserTab extends AbstractChooserTab
         setInfoPaneTitle(catagory.getName() + " Info");
     }
 
-    private static final class SelectedAbilityTreeViewModel implements FilterableTreeViewModel<AbilityFacade>,
-                                                                          GenericListDataListener
+    private static final class SelectedAbilityTreeViewModel extends AbstractGenericListDataListener
+            implements FilterableTreeViewModel<AbilityFacade>
     {
 
         private final List<? extends TreeView<AbilityFacade>> treeViews = null;
@@ -309,12 +310,6 @@ public class AbilityChooserTab extends AbstractChooserTab
             removeData(catagories);
         }
 
-        public void contentsChanged(GenericListDataEvent e)
-        {
-            intervalRemoved(e);
-            intervalAdded(e);
-        }
-
         public AbilityCatagoryFacade getCatagoryForAbility(AbilityFacade ability)
         {
             return catagoryMap.get(ability);
@@ -340,19 +335,13 @@ public class AbilityChooserTab extends AbstractChooserTab
             return model;
         }
 
-        private abstract class AbilityModelListener implements GenericListDataListener
+        private abstract class AbilityModelListener extends AbstractGenericListDataListener
         {
 
             public void intervalRemoved(GenericListDataEvent e)
             {
                 model.removeAll(e.getData());
                 catagoryMap.keySet().removeAll(e.getData());
-            }
-
-            public void contentsChanged(GenericListDataEvent e)
-            {
-                intervalRemoved(e);
-                intervalAdded(e);
             }
 
         }
@@ -364,8 +353,8 @@ public class AbilityChooserTab extends AbstractChooserTab
 
     }
 
-    private static final class AvailableAbilityTreeViewModel implements FilterableTreeViewModel<AbilityFacade>,
-                                                                           GenericListDataListener
+    private static final class AvailableAbilityTreeViewModel extends AbstractGenericListDataListener
+            implements FilterableTreeViewModel<AbilityFacade>
     {
 
         private final GenericListModel<AbilityFacade> dataModel;
@@ -439,12 +428,6 @@ public class AbilityChooserTab extends AbstractChooserTab
         public void intervalRemoved(GenericListDataEvent e)
         {
             dataModel.removeAll(e.getData());
-        }
-
-        public void contentsChanged(GenericListDataEvent e)
-        {
-            intervalRemoved(e);
-            intervalAdded(e);
         }
 
         public Class<AbilityFacade> getFilterClass()
