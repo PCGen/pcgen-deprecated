@@ -127,7 +127,6 @@ public class AbilityChooserTab extends AbstractChooserTab
     private void initComponents()
     {
         ListSelectionModel selectionModel;
-        //selectedTreeViewPanel.setRowSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel = selectedTreeViewPanel.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel.addListSelectionListener(
@@ -139,15 +138,23 @@ public class AbilityChooserTab extends AbstractChooserTab
                         if (!e.getValueIsAdjusting())
                         {
                             List<Object> data = selectedTreeViewPanel.getSelectedData();
-                            if (!data.isEmpty() &&
-                                    data.get(0) instanceof AbilityFacade)
+                            AbilityFacade ability = null;
+                            if (!data.isEmpty())
                             {
-                                setSelectedAbility((AbilityFacade) data.get(0));
+                                Object obj = data.get(0);
+                                AbilityCatagoryFacade catagory = selectedCatagory;
+                                if (obj instanceof AbilityFacade)
+                                {
+                                    ability = (AbilityFacade) obj;
+                                    catagory = selectedModel.getCatagoryForAbility(ability);
+                                }
+                                else if (obj instanceof AbilityCatagoryFacade)
+                                {
+                                    catagory = (AbilityCatagoryFacade) obj;
+                                }
+                                setSelectedCatagory(catagory);
                             }
-                            else
-                            {
-                                setSelectedAbility(null);
-                            }
+                            setSelectedAbility(ability);
                         }
                     }
 
@@ -210,56 +217,107 @@ public class AbilityChooserTab extends AbstractChooserTab
     private void setSelectedAbility(AbilityFacade ability)
     {
         this.selectedAbility = ability;
-
+        setInfoPaneText(ability.getInfo());
     }
 
     public void setSelectedCatagory(AbilityCatagoryFacade catagory)
     {
         this.selectedCatagory = catagory;
+
+        availableModel.setAbilityCatagory(catagory);
+        setInfoPaneTitle(catagory.getName() + " Info");
     }
 
-    private static final class SelectedAbilityTreeViewModel implements FilterableTreeViewModel<AbilityFacade>
+    private static final class SelectedAbilityTreeViewModel implements FilterableTreeViewModel<AbilityFacade>,
+                                                                          GenericListDataListener
     {
 
         private final List<? extends TreeView<AbilityFacade>> treeViews = null;
-        private final Map<AbilityFacade, AbilityCatagoryFacade> abilityMap;
+        private final Map<AbilityFacade, AbilityCatagoryFacade> catagoryMap;
+        private final Map<GenericListModel<AbilityFacade>, GenericListDataListener> listenerMap;
         private final GenericListModel<AbilityFacade> model;
         private final CharacterFacade character;
 
-        public SelectedAbilityTreeViewModel(CharacterFacade character)
+        public SelectedAbilityTreeViewModel(CharacterFacade character,
+                                             GenericListModel<AbilityCatagoryFacade> catagories)
         {
-            this.abilityMap = new HashMap<AbilityFacade, AbilityCatagoryFacade>();
+            this.catagoryMap = new HashMap<AbilityFacade, AbilityCatagoryFacade>();
+            this.listenerMap = new HashMap<GenericListModel<AbilityFacade>, GenericListDataListener>();
             this.model = new GenericListModel<AbilityFacade>();
             this.character = character;
 
-            AbilityCatagoryFacade[] catagories = PCGenUIManager.getRegisteredAbilityCatagories(character).toArray(new AbilityCatagoryFacade[0]);
-            for (final AbilityCatagoryFacade catagory : catagories)
+            addData(catagories);
+        }
+
+        private void addData(Collection<AbilityCatagoryFacade> catagories)
+        {
+            AbilityCatagoryFacade[] catagoryArray = catagories.toArray(new AbilityCatagoryFacade[0]);
+            for (final AbilityCatagoryFacade catagory : catagoryArray)
             {
                 final GenericListModel<AbilityFacade> abilityList = character.getAbilities(catagory);
                 AbilityFacade[] abilities = abilityList.toArray(new AbilityFacade[0]);
                 for (AbilityFacade ability : abilities)
                 {
-                    abilityMap.put(ability, catagory);
+                    catagoryMap.put(ability, catagory);
                 }
-                abilityList.addGenericListDataListener(
-                        new AbilityModelListener()
+                GenericListDataListener listener = new AbilityModelListener()
+                {
+
+                    public void intervalAdded(GenericListDataEvent e)
+                    {
+                        List<AbilityFacade> sublist =
+                                abilityList.subList(e.getIndex0(),
+                                                    e.getIndex1() + 1);
+                        for (AbilityFacade ability : sublist)
                         {
+                            catagoryMap.put(ability, catagory);
+                        }
+                        model.addAll(sublist);
+                    }
 
-                            public void intervalAdded(GenericListDataEvent e)
-                            {
-                                List<AbilityFacade> sublist =
-                                        abilityList.subList(e.getIndex0(),
-                                                            e.getIndex1() + 1);
-                                for (AbilityFacade ability : sublist)
-                                {
-                                    abilityMap.put(ability, catagory);
-                                }
-                                model.addAll(sublist);
-                            }
-
-                        });
+                };
+                listenerMap.put(abilityList, listener);
+                abilityList.addGenericListDataListener(listener);
+                model.addAll(abilityList);
             }
-            model.addAll(abilityMap.keySet());
+        }
+
+        private void removeData(Collection<AbilityCatagoryFacade> catagories)
+        {
+            for (AbilityCatagoryFacade catagory : catagories)
+            {
+                GenericListModel<AbilityFacade> abilityList = character.getAbilities(catagory);
+
+                abilityList.removeGenericListDataListener(listenerMap.get(abilityList));
+                listenerMap.remove(abilityList);
+                model.removeAll(abilityList);
+                catagoryMap.keySet().removeAll(abilityList);
+            }
+        }
+
+        public void intervalAdded(GenericListDataEvent e)
+        {
+            @SuppressWarnings("unchecked")
+            GenericListModel<AbilityCatagoryFacade> catagories = (GenericListModel<AbilityCatagoryFacade>) e.getSource();
+            addData(catagories.subList(e.getIndex0(), e.getIndex1() + 1));
+        }
+
+        public void intervalRemoved(GenericListDataEvent e)
+        {
+            @SuppressWarnings("unchecked")
+            Collection<AbilityCatagoryFacade> catagories = (Collection<AbilityCatagoryFacade>) e.getData();
+            removeData(catagories);
+        }
+
+        public void contentsChanged(GenericListDataEvent e)
+        {
+            intervalRemoved(e);
+            intervalAdded(e);
+        }
+
+        public AbilityCatagoryFacade getCatagoryForAbility(AbilityFacade ability)
+        {
+            return catagoryMap.get(ability);
         }
 
         public List<? extends TreeView<AbilityFacade>> getTreeViews()
@@ -288,7 +346,7 @@ public class AbilityChooserTab extends AbstractChooserTab
             public void intervalRemoved(GenericListDataEvent e)
             {
                 model.removeAll(e.getData());
-                abilityMap.keySet().removeAll(e.getData());
+                catagoryMap.keySet().removeAll(e.getData());
             }
 
             public void contentsChanged(GenericListDataEvent e)
@@ -613,7 +671,7 @@ public class AbilityChooserTab extends AbstractChooserTab
         state.put("CatagoryTableModel",
                   new CatagoryTableModel(character, catagories));
         state.put("SelectedAbilityTreeViewModel",
-                  new SelectedAbilityTreeViewModel(character));
+                  new SelectedAbilityTreeViewModel(character, catagories));
         state.put("AvailableAbilityTreeViewModel",
                   new AvailableAbilityTreeViewModel(character));
         state.put("AbilityTransferHandler",

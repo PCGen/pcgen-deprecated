@@ -57,6 +57,11 @@ public abstract class AbstractChooserTab extends FlippingSplitPane
         subSplitPane.setBottomComponent(c);
     }
 
+    public void setInfoPaneText(String text)
+    {
+        infoPane.setText(text);
+    }
+
     public void setInfoPaneTitle(String title)
     {
         infoPane.setTitle(title);

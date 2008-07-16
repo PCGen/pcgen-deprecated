@@ -41,6 +41,8 @@ public interface AbilityFacade
 
     public String getSource();
 
+    public String getInfo();
+
     @Override
     public String toString();
 

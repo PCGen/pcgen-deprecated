@@ -48,8 +48,14 @@ public class InfoPane extends JScrollPane
         this.titledBorder = BorderFactory.createTitledBorder(null, title,
                                                              TitledBorder.CENTER,
                                                              TitledBorder.DEFAULT_POSITION);
-        setBorder(BorderFactory.createCompoundBorder(titledBorder, getBorder()));
         this.textPane = new JTextPane();
+        initComponents();
+    }
+
+    private void initComponents()
+    {
+        setBorder(BorderFactory.createCompoundBorder(titledBorder, getBorder()));
+
         textPane.setEditable(false);
         setViewportView(textPane);
     }
@@ -63,6 +69,11 @@ public class InfoPane extends JScrollPane
     {
         titledBorder.setTitle(title);
         validate();
+    }
+
+    public void setText(String text)
+    {
+        textPane.setText(text);
     }
 
 }
