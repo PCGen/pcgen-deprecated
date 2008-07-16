@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 import pcgen.gui.filter.Filter;
 import pcgen.gui.filter.FilterPanel;
@@ -58,12 +59,12 @@ public class FilteredTreeViewPanel extends JPanel
     }
 
     /**
-     * delegates to JTablePane.setRowSelectionMode()
-     * @param mode
+     * delegates to JTable.getSelectionModel()
+     * @return the row selection model
      */
-    public void setRowSelectionMode(int mode)
+    public ListSelectionModel getSelectionModel()
     {
-        treeViewPane.setRowSelectionMode(mode);
+        return treeViewPane.getSelectionModel();
     }
 
     /**
@@ -116,7 +117,7 @@ public class FilteredTreeViewPanel extends JPanel
     public <T> void setTreeViewModel(FilterableTreeViewModel<T> model)
     {
         filterPanel.setFilterClass(model.getFilterClass());
-        
+
         TreeViewDisplay<T> displayModel = new TreeViewDisplay<T>(model);
         treeViewPane.setTreeViewModel(displayModel);
         filterPanel.setFilterPanelListener(displayModel);

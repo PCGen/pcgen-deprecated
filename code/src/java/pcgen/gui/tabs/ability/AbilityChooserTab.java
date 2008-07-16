@@ -44,6 +44,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.AbilityCatagoryFacade;
@@ -53,7 +55,6 @@ import pcgen.gui.tabs.AbstractChooserTab;
 import pcgen.gui.tools.FilterableTreeViewModel;
 import pcgen.gui.tools.FilteredTreeViewPanel;
 import pcgen.gui.util.GenericListModel;
-import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.gui.util.event.GenericListDataListener;
 import pcgen.gui.util.panes.FlippingSplitPane;
@@ -109,6 +110,11 @@ public class AbilityChooserTab extends AbstractChooserTab
     private final FilteredTreeViewPanel availableTreeViewPanel;
     private final FilteredTreeViewPanel selectedTreeViewPanel;
     private final JTable catagoryTable;
+    private AvailableAbilityTreeViewModel availableModel;
+    private SelectedAbilityTreeViewModel selectedModel;
+    private CatagoryTableModel catagoryModel;
+    private AbilityCatagoryFacade selectedCatagory;
+    private AbilityFacade selectedAbility;
 
     public AbilityChooserTab()
     {
@@ -120,10 +126,57 @@ public class AbilityChooserTab extends AbstractChooserTab
 
     private void initComponents()
     {
+        ListSelectionModel selectionModel;
+        //selectedTreeViewPanel.setRowSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selectionModel = selectedTreeViewPanel.getSelectionModel();
+        selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selectionModel.addListSelectionListener(
+                new ListSelectionListener()
+                {
 
-        selectedTreeViewPanel.setRowSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    public void valueChanged(ListSelectionEvent e)
+                    {
+                        if (!e.getValueIsAdjusting())
+                        {
+                            List<Object> data = selectedTreeViewPanel.getSelectedData();
+                            if (!data.isEmpty() &&
+                                    data.get(0) instanceof AbilityFacade)
+                            {
+                                setSelectedAbility((AbilityFacade) data.get(0));
+                            }
+                            else
+                            {
+                                setSelectedAbility(null);
+                            }
+                        }
+                    }
 
-        availableTreeViewPanel.setRowSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                });
+
+        selectionModel = availableTreeViewPanel.getSelectionModel();
+        selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selectionModel.addListSelectionListener(
+                new ListSelectionListener()
+                {
+
+                    public void valueChanged(ListSelectionEvent e)
+                    {
+                        if (!e.getValueIsAdjusting())
+                        {
+                            List<Object> data = availableTreeViewPanel.getSelectedData();
+                            if (!data.isEmpty() &&
+                                    data.get(0) instanceof AbilityFacade)
+                            {
+                                setSelectedAbility((AbilityFacade) data.get(0));
+                            }
+                            else
+                            {
+                                setSelectedAbility(null);
+                            }
+                        }
+                    }
+
+                });
 
         FlippingSplitPane pane = new FlippingSplitPane(JSplitPane.VERTICAL_SPLIT,
                                                        true,
@@ -133,14 +186,39 @@ public class AbilityChooserTab extends AbstractChooserTab
         pane.setDividerSize(7);
         setPrimaryChooserComponent(pane);
 
-        catagoryTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane catagoryScrollPane = new JScrollPane(catagoryTable,
-                                                         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                                         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        setSecondaryChooserComponent(catagoryScrollPane);
+        selectionModel = catagoryTable.getSelectionModel();
+        selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selectionModel.addListSelectionListener(
+                new ListSelectionListener()
+                {
+
+                    public void valueChanged(ListSelectionEvent e)
+                    {
+                        if (!e.getValueIsAdjusting())
+                        {
+                            setSelectedCatagory(catagoryModel.getCatagory(e.getFirstIndex()));
+                        }
+                    }
+
+                });
+
+        setSecondaryChooserComponent(new JScrollPane(catagoryTable,
+                                                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
     }
 
-    private final class SelectedAbilityTreeViewModel implements FilterableTreeViewModel<AbilityFacade>
+    private void setSelectedAbility(AbilityFacade ability)
+    {
+        this.selectedAbility = ability;
+
+    }
+
+    public void setSelectedCatagory(AbilityCatagoryFacade catagory)
+    {
+        this.selectedCatagory = catagory;
+    }
+
+    private static final class SelectedAbilityTreeViewModel implements FilterableTreeViewModel<AbilityFacade>
     {
 
         private final List<? extends TreeView<AbilityFacade>> treeViews = null;
@@ -333,6 +411,11 @@ public class AbilityChooserTab extends AbstractChooserTab
             catagories.addListDataListener(this);
         }
 
+        public AbilityCatagoryFacade getCatagory(int index)
+        {
+            return catagories.getElementAt(index);
+        }
+
         public int getRowCount()
         {
             return catagories.getSize();
@@ -429,30 +512,19 @@ public class AbilityChooserTab extends AbstractChooserTab
         @Override
         public int getSourceActions(JComponent c)
         {
-            if (selectedTreeViewPanel.isAncestorOf(c))
+            if (selectedAbility != null)
             {
-                List<Object> data = selectedTreeViewPanel.getSelectedData();
-                if (!data.isEmpty() && data.get(0).getClass() ==
-                        AbilityFacade.class)
+                if (selectedTreeViewPanel.isAncestorOf(c))
                 {
                     return MOVE;
                 }
-            }
-            else
-            {
-                List<Object> data = availableTreeViewPanel.getSelectedData();
-                if (!data.isEmpty() && data.get(0).getClass() ==
-                        AbilityFacade.class)
+                if (selectedAbility.isMult())
                 {
-                    AbilityFacade ability = (AbilityFacade) data.get(0);
-                    if (ability.isMult())
-                    {
-                        return COPY;
-                    }
-                    if (!character.hasAbility(getSelectedCatagory(), ability))
-                    {
-                        return MOVE;
-                    }
+                    return COPY;
+                }
+                if (!character.hasAbility(selectedCatagory, selectedAbility))
+                {
+                    return MOVE;
                 }
             }
             return NONE;
@@ -461,8 +533,7 @@ public class AbilityChooserTab extends AbstractChooserTab
         @Override
         protected Transferable createTransferable(JComponent c)
         {
-            JTreeViewPane pane = (JTreeViewPane) c.getParent();
-            final AbilityFacade selectedAbility = (AbilityFacade) pane.getSelectedData().get(0);
+            final AbilityFacade transferAbility = selectedAbility;
             return new Transferable()
             {
 
@@ -482,7 +553,7 @@ public class AbilityChooserTab extends AbstractChooserTab
                     {
                         throw new UnsupportedFlavorException(flavor);
                     }
-                    return selectedAbility;
+                    return transferAbility;
                 }
 
             };
@@ -503,7 +574,7 @@ public class AbilityChooserTab extends AbstractChooserTab
                 {
                     AbilityFacade ability = (AbilityFacade) t.getTransferData(abilityFlavor);
                     // TODO: add some extra logic
-                    character.addAbility(getSelectedCatagory(), ability);
+                    character.addAbility(selectedCatagory, ability);
                     return true;
                 }
                 catch (UnsupportedFlavorException ex)
@@ -535,28 +606,18 @@ public class AbilityChooserTab extends AbstractChooserTab
 
     }
 
-    public void setSelectedCatagory(AbilityCatagoryFacade catagory)
-    {
-
-    }
-
-    public AbilityCatagoryFacade getSelectedCatagory()
-    {
-        return null;
-    }
-
     public Hashtable<Object, Object> createState(CharacterFacade character,
                                                   GenericListModel<AbilityCatagoryFacade> catagories)
     {
         Hashtable<Object, Object> state = new Hashtable<Object, Object>();
-        CatagoryTableModel catagoryModel = new CatagoryTableModel(character,
-                                                                  catagories);
-        SelectedAbilityTreeViewModel selectedModel = new SelectedAbilityTreeViewModel(character);
-        AvailableAbilityTreeViewModel availableModel = new AvailableAbilityTreeViewModel(character);
-
-        state.put("CatagoryTableModel", catagoryModel);
-        state.put("SelectedAbilityTreeViewModel", selectedModel);
-        state.put("AvailableAbilityTreeViewModel", availableModel);
+        state.put("CatagoryTableModel",
+                  new CatagoryTableModel(character, catagories));
+        state.put("SelectedAbilityTreeViewModel",
+                  new SelectedAbilityTreeViewModel(character));
+        state.put("AvailableAbilityTreeViewModel",
+                  new AvailableAbilityTreeViewModel(character));
+        state.put("AbilityTransferHandler",
+                  new AbilityTransferHandler(character));
         return state;
     }
 
@@ -567,13 +628,16 @@ public class AbilityChooserTab extends AbstractChooserTab
 
     public void restoreState(Hashtable<?, ?> state)
     {
-        catagoryTable.setModel((CatagoryTableModel) state.get("CatagoryTableModel"));
-        int selectedCatatoryIndex = (Integer) state.get("SelectedCatagory");
-        catagoryTable.getSelectionModel().setSelectionInterval(selectedCatatoryIndex,
-                                                               selectedCatatoryIndex);
-        selectedTreeViewPanel.setTreeViewModel((SelectedAbilityTreeViewModel) state.get("SelectedAbilityTreeViewModel"));
-        availableTreeViewPanel.setTreeViewModel((AvailableAbilityTreeViewModel) state.get("AvailableAbilityTreeViewModel"));
+        catagoryModel = (CatagoryTableModel) state.get("CatagoryTableModel");
+        selectedModel = (SelectedAbilityTreeViewModel) state.get("SelectedAbilityTreeViewModel");
+        availableModel = (AvailableAbilityTreeViewModel) state.get("AvailableAbilityTreeViewModel");
+        AbilityTransferHandler handler = (AbilityTransferHandler) state.get("AbilityTransferHandler");
 
+        catagoryTable.setModel(catagoryModel);
+        selectedTreeViewPanel.setTreeViewModel(selectedModel);
+        availableTreeViewPanel.setTreeViewModel(availableModel);
+        selectedTreeViewPanel.setTransferHandler(handler);
+        availableTreeViewPanel.setTransferHandler(handler);
     }
 
     private class PreReqTreeView implements TreeView<AbilityFacade>
@@ -605,15 +669,7 @@ public class AbilityChooserTab extends AbstractChooserTab
             for (List<AbilityFacade> path : abilityPaths)
             {
                 Collections.reverse(path);
-                Object[] array = path.toArray();
-                for (int x = 0; x < array.length; x++)
-                {
-                    if (!abilities.contains(array[x]))
-                    {
-                        array[x] = array[x].toString();
-                    }
-                }
-                paths.add(new TreeViewPath<AbilityFacade>(array, pobj));
+                paths.add(new TreeViewPath<AbilityFacade>(path.toArray(), pobj));
             }
             return paths;
         }
