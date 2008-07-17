@@ -141,51 +141,48 @@ public class JTreeViewPane extends JTablePane
                                                             DataView<?> dataView)
     {
         @SuppressWarnings("unchecked")
-        ListMap<Visibility, DataViewColumn, List<DataViewColumn>> listMap =
+        ListMap<Visibility, TableColumn, List<TableColumn>> listMap =
                 CollectionMaps.createListMap(HashMap.class, ArrayList.class);
+        int index = 1;
         for ( DataViewColumn column : dataView.getDataColumns())
         {
-            listMap.add(column.getVisibility(), column);
+            TableColumn tableColumn = new TableColumn(index++);
+            tableColumn.setHeaderValue(column.getName());
+            listMap.add(column.getVisibility(), tableColumn);
         }
 
-        List<DataViewColumn> columns = listMap.get(Visibility.ALWAYS_VISIBLE);
+        List<TableColumn> columns = listMap.get(Visibility.ALWAYS_VISIBLE);
         if (columns == null)
         {
             columns = Collections.emptyList();
         }
         DynamicTableColumnModel model = new DefaultDynamicTableColumnModel(columns.size() +
                                                                            1);
-        TableColumn tableColumn = new TableColumn();
-        tableColumn.setHeaderValue(startingView.getViewName());
-        model.addColumn(tableColumn);
+        TableColumn viewColumn = new TableColumn();
+        viewColumn.setHeaderValue(startingView.getViewName());
+        model.addColumn(viewColumn);
 
-        int index = 1;
-        for ( DataViewColumn column : columns)
+        for ( TableColumn column : columns)
         {
-            tableColumn = new TableColumn(index++);
-            tableColumn.setHeaderValue(column.getName());
-            model.addColumn(tableColumn);
+            model.addColumn(column);
         }
 
         columns = listMap.get(Visibility.INITIALLY_VISIBLE);
         if (columns != null)
         {
-            for ( DataViewColumn column : columns)
+            for ( TableColumn column : columns)
             {
-                tableColumn = new TableColumn(index++);
-                tableColumn.setHeaderValue(column.getName());
-                model.addColumn(tableColumn);
-                model.setVisible(tableColumn, true);
+                model.addColumn(column);
+                model.setVisible(column, true);
             }
         }
+
         columns = listMap.get(Visibility.INITIALLY_INVISIBLE);
         if (columns != null)
         {
-            for ( DataViewColumn column : columns)
+            for ( TableColumn column : columns)
             {
-                tableColumn = new TableColumn(index++);
-                tableColumn.setHeaderValue(column.getName());
-                model.addColumn(tableColumn);
+                model.addColumn(column);
             }
         }
         return model;

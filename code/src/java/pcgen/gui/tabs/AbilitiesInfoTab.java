@@ -47,7 +47,8 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
 {
 
     private final AbilityChooserTab abilityTab;
-    private Map<String, Hashtable<?, ?>> states = null;
+    private Map<String, Hashtable<Object, Object>> tabStates = null;
+    private String selectedTitle;
 
     public AbilitiesInfoTab()
     {
@@ -63,10 +64,11 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
 
                     public void stateChanged(ChangeEvent e)
                     {
+                        abilityTab.storeState(tabStates.get(selectedTitle));
                         if (getSelectedIndex() != -1)
                         {
-                            String title = getTitleAt(getSelectedIndex());
-                            abilityTab.restoreState(states.get(title));
+                            selectedTitle = getTitleAt(getSelectedIndex());
+                            abilityTab.restoreState(tabStates.get(selectedTitle));
                         }
                     }
 
@@ -75,7 +77,7 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
 
     public Hashtable<Object, Object> createState(final CharacterFacade character)
     {
-        HashMap<String, Hashtable<?, ?>> tabs = new HashMap<String, Hashtable<?, ?>>();
+        HashMap<String, Hashtable<Object, Object>> tabs = new HashMap<String, Hashtable<Object, Object>>();
         List<String> titles = new ArrayList<String>();
         @SuppressWarnings("unchecked")
         final ListMap<String, AbilityCatagoryFacade, GenericListModel<AbilityCatagoryFacade>> catagoryListMap =
@@ -147,13 +149,13 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
         Hashtable<Object, Object> state = new Hashtable<Object, Object>();
         state.put("Titles", titles);
         state.put("Tabs", tabs);
-        state.put("SelectedIndex", Integer.valueOf(0));
+        state.put("SelectedTitle", titles.get(0));
         return state;
     }
 
     public void storeState(Hashtable<Object, Object> state)
     {
-        state.put("SelectedIndex", Integer.valueOf(0));
+        state.put("SelectedTitle", selectedTitle);
     }
 
     @SuppressWarnings("unchecked")
@@ -165,8 +167,9 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
         {
             addTab(title, abilityTab);
         }
-        states = (Map<String, Hashtable<?, ?>>) state.get("Tabs");
-        setSelectedIndex((Integer) state.get("SelectedIndex"));
+        tabStates = (Map<String, Hashtable<Object, Object>>) state.get("Tabs");
+        selectedTitle = (String) state.get("SelectedTitle");
+        setSelectedIndex(indexOfTab(selectedTitle));
     }
 
 }
