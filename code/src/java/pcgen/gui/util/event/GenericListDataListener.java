@@ -26,7 +26,7 @@ import java.util.EventListener;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface GenericListDataListener extends EventListener
+public interface GenericListDataListener<E> extends EventListener
 {
 
     /** 
@@ -37,7 +37,7 @@ public interface GenericListDataListener extends EventListener
      * @param e  a <code>ListDataEvent</code> encapsulating the
      *    event information
      */
-    void intervalAdded(GenericListDataEvent e);
+    void intervalAdded(GenericListDataEvent<E> e);
 
     /**
      * Sent after the indices in the index0,index1 interval
@@ -47,7 +47,7 @@ public interface GenericListDataListener extends EventListener
      * @param e  a <code>ListDataEvent</code> encapsulating the
      *    event information
      */
-    void intervalRemoved(GenericListDataEvent e);
+    void intervalRemoved(GenericListDataEvent<E> e);
 
     /** 
      * Sent when the contents of the list has changed in a way 
@@ -58,6 +58,6 @@ public interface GenericListDataListener extends EventListener
      * @param e  a <code>ListDataEvent</code> encapsulating the
      *    event information
      */
-    void contentsChanged(GenericListDataEvent e);
+    void contentsChanged(GenericListDataEvent<E> e);
 
 }

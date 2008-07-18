@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.Vector;
-import javax.swing.ListModel;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -35,7 +34,7 @@ import pcgen.gui.util.event.GenericListDataListener;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
+public class DefaultGenericListModel<E> extends Vector<E> implements GenericListModel<E>
 {
 
     protected EventListenerList listenerList = new EventListenerList();
@@ -194,13 +193,14 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
      * @see Vector#removeElement(Object)
      */
     @Override
+    @SuppressWarnings("unchecked")
     public boolean removeElement(Object obj)
     {
         int index = indexOf(obj);
         boolean rv = super.removeElement(obj);
         if (index >= 0)
         {
-            fireIntervalRemoved(this, Collections.singleton(obj), isAdjusting,
+            fireIntervalRemoved(this, Collections.singleton((E)obj), isAdjusting,
                                 index, index);
         }
         return rv;
@@ -398,7 +398,7 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
      *
      * @param l the <code>GenericListDataListener</code> to be added
      */
-    public void addGenericListDataListener(GenericListDataListener l)
+    public void addGenericListDataListener(GenericListDataListener<? super E> l)
     {
         listenerList.add(GenericListDataListener.class, l);
     }
@@ -420,7 +420,7 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
      *
      * @param l the <code>GenericListDataListener</code> to be removed
      */
-    public void removeGenericListDataListener(GenericListDataListener l)
+    public void removeGenericListDataListener(GenericListDataListener<?> l)
     {
         listenerList.remove(GenericListDataListener.class, l);
     }
@@ -475,13 +475,14 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
      * @see EventListenerList
      * @see DefaultListModel
      */
+    @SuppressWarnings("unchecked")
     protected void fireContentsChanged(Object source,
-                                        Collection<? extends Object> data,
+                                        Collection<? extends E> data,
                                         boolean adjusting, int index0,
                                         int index1)
     {
         Object[] listeners = listenerList.getListenerList();
-        GenericListDataEvent e = null;
+        GenericListDataEvent<E> e = null;
 
         for (int i = listeners.length - 2; i >= 0; i -= 2)
         {
@@ -489,7 +490,7 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
             if (e == null && (listener == ListDataListener.class ||
                     listener == GenericListDataListener.class))
             {
-                e = new GenericListDataEvent(source, data, adjusting,
+                e = new GenericListDataEvent<E>(source, data, adjusting,
                                              ListDataEvent.INTERVAL_REMOVED,
                                              index0, index1);
             }
@@ -518,12 +519,13 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
      * @see EventListenerList
      * @see DefaultListModel
      */
+    @SuppressWarnings("unchecked")
     protected void fireIntervalAdded(Object source,
-                                      Collection<? extends Object> data,
+                                      Collection<? extends E> data,
                                       boolean adjusting, int index0, int index1)
     {
         Object[] listeners = listenerList.getListenerList();
-        GenericListDataEvent e = null;
+        GenericListDataEvent<E> e = null;
 
         for (int i = listeners.length - 2; i >= 0; i -= 2)
         {
@@ -531,7 +533,7 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
             if (e == null && (listener == ListDataListener.class ||
                     listener == GenericListDataListener.class))
             {
-                e = new GenericListDataEvent(source, data, adjusting,
+                e = new GenericListDataEvent<E>(source, data, adjusting,
                                              ListDataEvent.INTERVAL_ADDED,
                                              index0, index1);
             }
@@ -561,13 +563,14 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
      * @see EventListenerList
      * @see DefaultListModel
      */
+    @SuppressWarnings("unchecked")
     protected void fireIntervalRemoved(Object source,
-                                        Collection<? extends Object> data,
+                                        Collection<? extends E> data,
                                         boolean adjusting, int index0,
                                         int index1)
     {
         Object[] listeners = listenerList.getListenerList();
-        GenericListDataEvent e = null;
+        GenericListDataEvent<E> e = null;
 
         for (int i = listeners.length - 2; i >= 0; i -= 2)
         {
@@ -575,7 +578,7 @@ public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
             if (e == null && (listener == ListDataListener.class ||
                     listener == GenericListDataListener.class))
             {
-                e = new GenericListDataEvent(source, data, adjusting,
+                e = new GenericListDataEvent<E>(source, data, adjusting,
                                              ListDataEvent.INTERVAL_REMOVED,
                                              index0, index1);
             }

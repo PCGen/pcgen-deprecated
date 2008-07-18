@@ -27,13 +27,13 @@ import javax.swing.event.ListDataEvent;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class GenericListDataEvent extends ListDataEvent
+public class GenericListDataEvent<E> extends ListDataEvent
 {
 
-    private Collection<? extends Object> data;
+    private Collection<? extends E> data;
     private boolean isAdjusting;
 
-    public GenericListDataEvent(Object source, Collection<? extends Object> data,
+    public GenericListDataEvent(Object source, Collection<? extends E> data,
                                  boolean isAdjusting,
                                  int type, int index0, int index1)
     {
@@ -47,7 +47,7 @@ public class GenericListDataEvent extends ListDataEvent
      * In the case of changed data, this will return the overriden data.
      * @return a collection containing added or removed data
      */
-    public Collection<? extends Object> getData()
+    public Collection<? extends E> getData()
     {
         return data;
     }
