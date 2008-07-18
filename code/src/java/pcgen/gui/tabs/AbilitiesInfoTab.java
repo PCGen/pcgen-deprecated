@@ -33,7 +33,7 @@ import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.tabs.ability.AbilityChooserTab;
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.event.AbstractGenericListDataListener;
 import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.util.CollectionMaps;
@@ -80,11 +80,11 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
         HashMap<String, Hashtable<Object, Object>> tabs = new HashMap<String, Hashtable<Object, Object>>();
         List<String> titles = new ArrayList<String>();
         @SuppressWarnings("unchecked")
-        final ListMap<String, AbilityCatagoryFacade, GenericListModel<AbilityCatagoryFacade>> catagoryListMap =
+        final ListMap<String, AbilityCatagoryFacade, DefaultGenericListModel<AbilityCatagoryFacade>> catagoryListMap =
                 CollectionMaps.createListMap(HashMap.class,
-                                             GenericListModel.class);
+                                             DefaultGenericListModel.class);
 
-        final GenericListModel<AbilityCatagoryFacade> catagories =
+        final DefaultGenericListModel<AbilityCatagoryFacade> catagories =
                 PCGenUIManager.getRegisteredAbilityCatagories(character);
 
         for (AbilityCatagoryFacade catagory : catagories)

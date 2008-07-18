@@ -20,7 +20,7 @@
  */
 package pcgen.gui.facade;
 
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.DefaultGenericListModel;
 
 /**
  *
@@ -41,11 +41,13 @@ public interface CharacterFacade
     /**
      * Note: This method should never return null. If the character does not possess
      * any abilities in the parameter catagory, this method should create a new
-     * GenericListModel for that catagory and keep a reference to it for future use.
+     * DefaultGenericListModel for that catagory and keep a reference to it for future use.
      * @param catagory
      * @return a List of Abilities the character posseses in the specified catagory
      */
-    public GenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
+    public DefaultGenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
+
+    public DefaultGenericListModel<ClassFacade> getClasses();
 
     public ClassFacade getSelectedClass(int level);
 

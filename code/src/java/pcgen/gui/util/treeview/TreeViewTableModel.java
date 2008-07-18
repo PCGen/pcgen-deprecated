@@ -30,7 +30,7 @@ import java.util.Vector;
 import javax.swing.JTree;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.event.ListDataAdapter;
 import pcgen.gui.util.treetable.AbstractTreeTableModel;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
@@ -80,7 +80,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     protected final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     protected final List<? extends DataViewColumn> datacolumns;
     protected final DataView<E> dataview;
-    private GenericListModel<E> model = null;
+    private DefaultGenericListModel<E> model = null;
     private TreeView<? super E> selectedView = null;
 
     public TreeViewTableModel(DataView<E> dataView)
@@ -89,7 +89,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         this.datacolumns = dataview.getDataColumns();
     }
 
-    public final void setDataModel(GenericListModel<E> model)
+    public final void setDataModel(DefaultGenericListModel<E> model)
     {
         if (this.model != null)
         {

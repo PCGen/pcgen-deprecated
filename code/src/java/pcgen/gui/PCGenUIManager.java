@@ -24,7 +24,7 @@ import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.filter.NamedFilter;
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.DefaultGenericListModel;
 
 /**
  *
@@ -37,17 +37,17 @@ public final class PCGenUIManager
     {
     }
 
-    public static <T> GenericListModel<NamedFilter<? super T>> getRegisteredFilters(Class<T> c)
+    public static <T> DefaultGenericListModel<NamedFilter<? super T>> getRegisteredFilters(Class<T> c)
     {
         return null;
     }
 
-    public static GenericListModel<AbilityCatagoryFacade> getRegisteredAbilityCatagories(CharacterFacade character)
+    public static DefaultGenericListModel<AbilityCatagoryFacade> getRegisteredAbilityCatagories(CharacterFacade character)
     {
         return null;
     }
 
-    public static GenericListModel<AbilityFacade> getRegisteredAbilities(CharacterFacade character,
+    public static DefaultGenericListModel<AbilityFacade> getRegisteredAbilities(CharacterFacade character,
                                                          AbilityCatagoryFacade catagory)
     {
         return null;

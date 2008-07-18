@@ -21,7 +21,7 @@
 package pcgen.gui.util.treeview;
 
 import java.util.List;
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.DefaultGenericListModel;
 
 /**
  *
@@ -31,16 +31,16 @@ public class TreeViewModelWrapper<E> implements TreeViewModel<E>
 {
 
     protected final TreeViewModel<E> treeviewModel;
-    protected final GenericListModel<E> dataModel;
+    protected final DefaultGenericListModel<E> dataModel;
 
     public TreeViewModelWrapper(TreeViewModel<E> treeviewModel)
     {
-        this(treeviewModel, new GenericListModel<E>());
+        this(treeviewModel, new DefaultGenericListModel<E>());
         dataModel.addAll(treeviewModel.getDataModel());
     }
 
     public TreeViewModelWrapper(TreeViewModel<E> treeviewModel,
-                                 GenericListModel<E> dataModel)
+                                 DefaultGenericListModel<E> dataModel)
     {
         this.treeviewModel = treeviewModel;
         this.dataModel = dataModel;
@@ -61,7 +61,7 @@ public class TreeViewModelWrapper<E> implements TreeViewModel<E>
         return treeviewModel.getDataView();
     }
 
-    public GenericListModel<E> getDataModel()
+    public DefaultGenericListModel<E> getDataModel()
     {
         return dataModel;
     }

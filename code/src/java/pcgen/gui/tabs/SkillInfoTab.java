@@ -27,13 +27,14 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.tools.FilterableTreeViewModel;
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
 import pcgen.gui.util.treeview.TreeView;
@@ -105,7 +106,7 @@ public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public GenericListModel<SkillFacade> getDataModel()
+        public DefaultGenericListModel<SkillFacade> getDataModel()
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }
@@ -124,6 +125,28 @@ public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
             }
 
         }
+    }
+
+    private static class SkillPointTableModel extends DefaultTableModel
+    {
+
+        private static final Object[] columns = {"Level",
+                                                    "Class",
+                                                    "Points"
+        };
+        private CharacterFacade character;
+
+        public SkillPointTableModel(CharacterFacade character)
+        {
+            super(columns, 0);
+            this.character = character;
+            int characterLevel = character.getCharacterLevel();
+            for (int x = 0; x < characterLevel; x++)
+            {
+                
+            }
+        }
+
     }
 
     private static class TableCellSpinnerEditor extends AbstractCellEditor

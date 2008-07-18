@@ -1,5 +1,5 @@
 /*
- * GenericListModel.java
+ * DefaultGenericListModel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ import pcgen.gui.util.event.GenericListDataListener;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class GenericListModel<E> extends Vector<E> implements ListModel
+public class DefaultGenericListModel<E> extends Vector<E> implements ListModel
 {
 
     protected EventListenerList listenerList = new EventListenerList();
@@ -427,7 +427,7 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
 
     /**
      * Returns an array of all the list data listeners
-     * registered on this <code>GenericListModel</code>.
+     * registered on this <code>DefaultGenericListModel</code>.
      *
      * @return all of this model's <code>ListDataListener</code>s,
      *         or an empty array if no list data listeners
@@ -445,7 +445,7 @@ public class GenericListModel<E> extends Vector<E> implements ListModel
 
     /**
      * Returns an array of all the list data listeners
-     * registered on this <code>GenericListModel</code>.
+     * registered on this <code>DefaultGenericListModel</code>.
      *
      * @return all of this model's <code>GenericListDataListener</code>s,
      *         or an empty array if no list data listeners

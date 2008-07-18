@@ -42,7 +42,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import pcgen.gui.PCGenUIManager;
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.SimpleTextIcon;
 import pcgen.util.PropertyFactory;
 
@@ -153,7 +153,7 @@ public class FilterPanel extends JPanel
                 PCGenUIManager.getRegisteredFilters(this.filterClass).removeListDataListener(listListener);
             }
             this.filterClass = filterClass;
-            final GenericListModel<NamedFilter<? super T>> filters = PCGenUIManager.getRegisteredFilters(filterClass);
+            final DefaultGenericListModel<NamedFilter<? super T>> filters = PCGenUIManager.getRegisteredFilters(filterClass);
             ListDataListener listener = new ListDataListener()
             {
 

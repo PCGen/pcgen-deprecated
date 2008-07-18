@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
 import pcgen.gui.util.table.DefaultSortableTableModel;
 import pcgen.gui.util.table.SortableTableModel;
@@ -106,9 +106,9 @@ public class UtilitiesTester extends javax.swing.JFrame
         return new DateModel();
     }
 
-    private static GenericListModel<Date> getData()
+    private static DefaultGenericListModel<Date> getData()
     {
-        GenericListModel<Date> list = new GenericListModel<Date>();
+        DefaultGenericListModel<Date> list = new DefaultGenericListModel<Date>();
         Calendar cal = Calendar.getInstance();
         cal.set(1543, 12, 9);
         list.add(cal.getTime());
@@ -134,7 +134,7 @@ public class UtilitiesTester extends javax.swing.JFrame
 
         private static List<? extends TreeView<Date>> views = Arrays.asList(DateTree.values());
         private static DataView<Date> data = new DateView();
-        private static GenericListModel<Date> datamodel = getData();
+        private static DefaultGenericListModel<Date> datamodel = getData();
 
         public List<? extends TreeView<Date>> getTreeViews()
         {
@@ -151,7 +151,7 @@ public class UtilitiesTester extends javax.swing.JFrame
             return data;
         }
 
-        public GenericListModel<Date> getDataModel()
+        public DefaultGenericListModel<Date> getDataModel()
         {
             return datamodel;
         }
