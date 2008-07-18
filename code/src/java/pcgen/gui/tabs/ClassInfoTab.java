@@ -45,12 +45,15 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.tools.FilteredTreeViewPanel;
+import pcgen.gui.util.GenericListModel;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -268,20 +271,20 @@ public class ClassInfoTab extends AbstractChooserTab implements CharacterInfoTab
                         classes[x] = c;
                     }
 
-                    model.addRows(classes);
+                    //model.addRows(classes);
                     return true;
                 }
-
                 catch (UnsupportedFlavorException ex)
                 {
                     Logger.getLogger(ClassInfoTab.class.getName()).log(Level.SEVERE,
-                                                                          null,
-                                                                          ex);
-                }                catch (IOException ex)
+                                                                       null,
+                                                                       ex);
+                }
+                catch (IOException ex)
                 {
                     Logger.getLogger(ClassInfoTab.class.getName()).log(Level.SEVERE,
-                                                                          null,
-                                                                          ex);
+                                                                       null,
+                                                                       ex);
                 }
                 return false;
             }
@@ -290,51 +293,37 @@ public class ClassInfoTab extends AbstractChooserTab implements CharacterInfoTab
 
     }
 
-    private static final class ClassTableModel extends DefaultTableModel
+    private static final class ClassTableModel extends AbstractTableModel
+            implements ListDataListener
     {
 
-        private static final Object[] columns = {"Level",
+        private static final String[] columns = {"Level",
                                                     "Class",
                                                     "Source"
         };
         private CharacterFacade character;
+        private GenericListModel<ClassFacade> model;
 
         public ClassTableModel(CharacterFacade character)
         {
-            super(columns, 0);
             this.character = character;
-            int characterLevel = character.getCharacterLevel();
-            for (int x = 0; x < characterLevel; x++)
-            {
-                addRow(character.getSelectedClass(x + 1));
-            }
+            this.model = character.getClasses();
         }
 
-        public void addRows(ClassFacade[] classes)
+        public int getRowCount()
         {
-            character.addCharacterLevels(classes);
-            for (ClassFacade c : classes)
-            {
-                addRow(c);
-            }
+            return model.getSize();
         }
 
-        public void addRow(ClassFacade c)
+        public int getColumnCount()
         {
-            Vector<Object> row = new Vector<Object>();
-            row.add(getRowCount() + 1);
-            row.add(c);
-            row.add(c.getSource());
-            addRow(row);
+            return 3;
         }
 
-        public void removeRows(int[] rows)
+        @Override
+        public String getColumnName(int column)
         {
-            for (int i = rows.length - 1; i >= 0; i--)
-            {
-                dataVector.remove(rows[i]);
-            }
-            fireTableRowsDeleted(rows[0], rows[rows.length - 1]);
+            return columns[column];
         }
 
         @Override
@@ -350,6 +339,39 @@ public class ClassInfoTab extends AbstractChooserTab implements CharacterInfoTab
                     return String.class;
             }
             return null;
+        }
+
+        public Object getValueAt(int rowIndex, int columnIndex)
+        {
+            if (columnIndex == 0)
+            {
+                return rowIndex + 1;
+            }
+            ClassFacade c = model.getElementAt(rowIndex);
+            switch (columnIndex)
+            {
+                case 1:
+                    return c;
+                case 2:
+                    return c.getSource();
+                default:
+                    return null;
+            }
+        }
+
+        public void intervalAdded(ListDataEvent e)
+        {
+            fireTableRowsInserted(e.getIndex0(), e.getIndex1());
+        }
+
+        public void intervalRemoved(ListDataEvent e)
+        {
+            fireTableRowsDeleted(e.getIndex0(), e.getIndex1());
+        }
+
+        public void contentsChanged(ListDataEvent e)
+        {
+            fireTableRowsUpdated(e.getIndex0(), e.getIndex1());
         }
 
     }

@@ -99,10 +99,10 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
                                                   catagoryListMap.get(type)));
         }
         catagories.addGenericListDataListener(
-                new AbstractGenericListDataListener()
+                new AbstractGenericListDataListener<AbilityCatagoryFacade>()
                 {
 
-                    public void intervalAdded(GenericListDataEvent e)
+                    public void intervalAdded(GenericListDataEvent<AbilityCatagoryFacade> e)
                     {
                         List<AbilityCatagoryFacade> subList = catagories.subList(e.getIndex0(),
                                                                                  e.getIndex1() +
@@ -124,10 +124,9 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
                         }
                     }
 
-                    public void intervalRemoved(GenericListDataEvent e)
+                    public void intervalRemoved(GenericListDataEvent<AbilityCatagoryFacade> e)
                     {
-                        @SuppressWarnings("unchecked")
-                        Collection<AbilityCatagoryFacade> data = (Collection<AbilityCatagoryFacade>) e.getData();
+                        Collection<? extends AbilityCatagoryFacade> data = e.getData();
                         @SuppressWarnings("unchecked")
                         ListMap<String, AbilityCatagoryFacade, ArrayList<AbilityCatagoryFacade>> catagorySubListMap =
                                 CollectionMaps.createListMap(HashMap.class,

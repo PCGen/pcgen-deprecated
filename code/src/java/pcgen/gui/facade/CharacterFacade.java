@@ -20,7 +20,7 @@
  */
 package pcgen.gui.facade;
 
-import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
@@ -45,11 +45,9 @@ public interface CharacterFacade
      * @param catagory
      * @return a List of Abilities the character posseses in the specified catagory
      */
-    public DefaultGenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
+    public GenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
 
-    public DefaultGenericListModel<ClassFacade> getClasses();
-
-    public ClassFacade getSelectedClass(int level);
+    public GenericListModel<ClassFacade> getClasses();
 
     public void addCharacterLevels(ClassFacade[] classes);
 

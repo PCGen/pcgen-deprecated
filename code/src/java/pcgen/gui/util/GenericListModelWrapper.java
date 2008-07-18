@@ -1,5 +1,5 @@
 /*
- * AbstractGenericListDataListener.java
+ * GenericListModelWrapper.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,22 +16,36 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jul 15, 2008, 8:14:59 PM
+ * Created on Jul 17, 2008, 9:18:26 PM
  */
-package pcgen.gui.util.event;
+package pcgen.gui.util;
+
+import java.util.AbstractList;
 
 /**
- * This class is only effective if the subclass does not call <code>getData()</code>
- * in its implementation of the <code>intervalAdded()</code> method. 
+ *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractGenericListDataListener<E> implements GenericListDataListener<E>
+public class GenericListModelWrapper<E> extends AbstractList<E>
 {
 
-    public void contentsChanged(GenericListDataEvent<E> e)
+    private GenericListModel<E> model;
+
+    public GenericListModelWrapper(GenericListModel<E> model)
     {
-        intervalRemoved(e);
-        intervalAdded(e);
+        this.model = model;
+    }
+
+    @Override
+    public E get(int index)
+    {
+        return model.getElementAt(index);
+    }
+
+    @Override
+    public int size()
+    {
+        return model.getSize();
     }
 
 }
