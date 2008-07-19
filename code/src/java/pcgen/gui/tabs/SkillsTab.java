@@ -29,6 +29,7 @@ public class SkillsTab extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         flippingSplitPane2 = new pcgen.gui.util.panes.FlippingSplitPane();
         infoPane1 = new pcgen.gui.tools.InfoPane();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -75,7 +76,9 @@ public class SkillsTab extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        flippingSplitPane2.setRightComponent(jScrollPane1);
+        jPanel2.add(jScrollPane1);
+
+        flippingSplitPane2.setRightComponent(jPanel2);
 
         flippingSplitPane1.setRightComponent(flippingSplitPane2);
 
@@ -88,6 +91,7 @@ public class SkillsTab extends javax.swing.JPanel {
     private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane2;
     private pcgen.gui.tools.InfoPane infoPane1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables

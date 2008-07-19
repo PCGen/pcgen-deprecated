@@ -30,7 +30,6 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -51,6 +50,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.facade.CharacterLevelFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.tools.FilteredTreeViewPanel;
 import pcgen.gui.util.GenericListModel;
@@ -302,12 +302,13 @@ public class ClassInfoTab extends AbstractChooserTab implements CharacterInfoTab
                                                     "Source"
         };
         private CharacterFacade character;
-        private GenericListModel<ClassFacade> model;
+        private GenericListModel<CharacterLevelFacade> model;
 
         public ClassTableModel(CharacterFacade character)
         {
             this.character = character;
-            this.model = character.getClasses();
+            this.model = character.getLevels();
+            model.addListDataListener(this);
         }
 
         public int getRowCount()
@@ -347,7 +348,7 @@ public class ClassInfoTab extends AbstractChooserTab implements CharacterInfoTab
             {
                 return rowIndex + 1;
             }
-            ClassFacade c = model.getElementAt(rowIndex);
+            ClassFacade c = model.getElementAt(rowIndex).getSelectedClass();
             switch (columnIndex)
             {
                 case 1:

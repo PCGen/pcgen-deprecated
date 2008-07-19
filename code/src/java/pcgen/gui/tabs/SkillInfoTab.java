@@ -27,14 +27,18 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.facade.CharacterLevelFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.tools.FilterableTreeViewModel;
 import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
 import pcgen.gui.util.treeview.TreeView;
@@ -46,8 +50,11 @@ import pcgen.gui.util.treeview.TreeView;
 public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
 {
 
+    private final JTable skillpointsTable;
+
     public SkillInfoTab()
     {
+        this.skillpointsTable = new JTable();
         initComponents();
     }
 
@@ -127,24 +134,105 @@ public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
         }
     }
 
-    private static class SkillPointTableModel extends DefaultTableModel
+    private static class SkillPointTableModel extends AbstractTableModel
+            implements ListDataListener
     {
 
-        private static final Object[] columns = {"Level",
+        private static final String[] columns = {"Level",
                                                     "Class",
-                                                    "Points"
+                                                    "Spent",
+                                                    "Gained"
         };
-        private CharacterFacade character;
+        private final GenericListModel<CharacterLevelFacade> model;
 
         public SkillPointTableModel(CharacterFacade character)
         {
-            super(columns, 0);
-            this.character = character;
-            int characterLevel = character.getCharacterLevel();
-            for (int x = 0; x < characterLevel; x++)
+            this.model = character.getLevels();
+            model.addListDataListener(this);
+        }
+
+        public int getRowCount()
+        {
+            return model.getSize();
+        }
+
+        public int getColumnCount()
+        {
+            return columns.length;
+        }
+
+        @Override
+        public String getColumnName(int column)
+        {
+            return columns[column];
+        }
+
+        public Object getValueAt(int rowIndex, int columnIndex)
+        {
+            if (columnIndex == 0)
             {
-                
+                return rowIndex + 1;
             }
+            CharacterLevelFacade level = model.getElementAt(rowIndex);
+            switch (rowIndex)
+            {
+                case 1:
+                    return level.getSelectedClass();
+                case 2:
+                    return level.getSpentSkillPoints();
+                case 3:
+                    return level.getGainedSkillPoints();
+                default:
+                    throw new IndexOutOfBoundsException();
+            }
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex)
+        {
+            switch (columnIndex)
+            {
+                case 1:
+                    return ClassFacade.class;
+                case 0:
+                case 2:
+                case 3:
+                    return Integer.class;
+                default:
+                    return Object.class;
+            }
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex)
+        {
+            if (columnIndex == 3)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+        {
+            CharacterLevelFacade level = model.getElementAt(rowIndex);
+            level.setGainedSkillPoints((Integer) aValue);
+        }
+
+        public void intervalAdded(ListDataEvent e)
+        {
+            fireTableRowsInserted(e.getIndex0(), e.getIndex1());
+        }
+
+        public void intervalRemoved(ListDataEvent e)
+        {
+            fireTableRowsDeleted(e.getIndex0(), e.getIndex1());
+        }
+
+        public void contentsChanged(ListDataEvent e)
+        {
+            fireTableRowsUpdated(e.getIndex0(), e.getIndex1());
         }
 
     }

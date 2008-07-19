@@ -47,13 +47,11 @@ public interface CharacterFacade
      */
     public GenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
 
-    public GenericListModel<ClassFacade> getClasses();
+    public GenericListModel<CharacterLevelFacade> getLevels();
 
     public void addCharacterLevels(ClassFacade[] classes);
 
     public void removeCharacterLevels(int levels);
-
-    public int getCharacterLevel();
 
     public int getClassLevel(ClassFacade c);
 
