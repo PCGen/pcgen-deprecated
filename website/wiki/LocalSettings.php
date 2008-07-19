@@ -58,25 +58,27 @@ $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
 
-$wgDBtype           = "mysql";
-$wgDBserver         = "mysql-2.priorweb.be";
-$wgDBname           = "vandaelek3";
-$wgDBuser           = "vandaelek3";
-$wgDBpassword       = "GHDkYsta";
+require_once("DbSettings.php");
+
+# $wgDBtype           = "mysql";
+# $wgDBserver         = "mysql-2.priorweb.be";
+# $wgDBname           = "vandaelek3";
+# $wgDBuser           = "vandaelek3";
+# $wgDBpassword       = "GHDkYsta";
 
 # MySQL specific settings
-$wgDBprefix         = "mw_";
+# $wgDBprefix         = "mw_";
 
 # MySQL table options to use during installation or update
-$wgDBTableOptions   = "TYPE=InnoDB";
+# $wgDBTableOptions   = "TYPE=InnoDB";
 
 # Experimental charset support for MySQL 4.1/5.0.
-$wgDBmysql5 = false;
+# $wgDBmysql5 = false;
 
 # Postgres specific settings
-$wgDBport           = "5432";
-$wgDBmwschema       = "mediawiki";
-$wgDBts2schema      = "public";
+# $wgDBport           = "5432";
+# $wgDBmwschema       = "mediawiki";
+# $wgDBts2schema      = "public";
 
 ## Shared memory settings
 $wgMainCacheType = CACHE_NONE;
@@ -125,3 +127,10 @@ $wgDiff3 = "/usr/bin/diff3";
 $configdate = gmdate( 'YmdHis', @filemtime( __FILE__ ) );
 $wgCacheEpoch = max( $wgCacheEpoch, $configdate );
 	
+# Security/permissions settings
+# Stop anonymous editing
+$wgGroupPermissions['*']['edit'] = false;
+
+# Require approval of new accounts
+require_once("$IP/extensions/ConfirmAccount/SpecialConfirmAccount.php");
+$wgAccountRequestMinWords=10;
