@@ -24,12 +24,15 @@ public class SkillsTab extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         flippingSplitPane1 = new pcgen.gui.util.panes.FlippingSplitPane();
         jPanel1 = new javax.swing.JPanel();
         flippingSplitPane2 = new pcgen.gui.util.panes.FlippingSplitPane();
         infoPane1 = new pcgen.gui.tools.InfoPane();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -47,6 +50,38 @@ public class SkillsTab extends javax.swing.JPanel {
 
         infoPane1.setTitle("Skill Info");
         flippingSplitPane2.setTopComponent(infoPane1);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Class", new Integer(1), new Double(7.0)},
+                {"Cross-Class", new Integer(2), new Double(3.5)},
+                {"Exclusive", new Integer(0), new Double(0.0)}
+            },
+            new String [] {
+                "Skill Cost", "Rank Cost", "Max Ranks"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipady = 60;
+        gridBagConstraints.weightx = 1.0;
+        jPanel2.add(jScrollPane2, gridBagConstraints);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -76,7 +111,12 @@ public class SkillsTab extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel2.add(jScrollPane1, gridBagConstraints);
 
         flippingSplitPane2.setRightComponent(jPanel2);
 
@@ -93,7 +133,9 @@ public class SkillsTab extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
     
 }

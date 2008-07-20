@@ -21,9 +21,13 @@
 package pcgen.gui.tabs;
 
 import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.Hashtable;
 import java.util.List;
 import javax.swing.AbstractCellEditor;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
@@ -50,17 +54,38 @@ import pcgen.gui.util.treeview.TreeView;
 public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
 {
 
-    private final JTable skillpointsTable;
+    private final JTable skillcostTable;
+    private final JTable skillpointTable;
 
     public SkillInfoTab()
     {
-        this.skillpointsTable = new JTable();
+        this.skillcostTable = new JTable();
+        this.skillpointTable = new JTable();
         initComponents();
     }
 
     private void initComponents()
     {
+        JScrollPane tableScrollPane;
+        JPanel tablePanel = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
 
+        constraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        constraints.fill = java.awt.GridBagConstraints.BOTH;
+        constraints.ipady = 60;
+        constraints.weightx = 1.0;
+
+        tableScrollPane = new JScrollPane(skillcostTable,
+                                          JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                                          JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        tablePanel.add(tableScrollPane, constraints);
+
+        constraints.ipady = 0;
+        constraints.weighty = 1.0;
+
+        tableScrollPane = new JScrollPane(skillpointTable);
+        tablePanel.add(tableScrollPane, constraints);
+        setSecondaryChooserComponent(tablePanel);
     }
 
     public Hashtable<Object, Object> createState(CharacterFacade character)
@@ -134,6 +159,65 @@ public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
         }
     }
 
+    private static class SkillCostTableModel extends AbstractTableModel
+    {
+
+        private final CharacterFacade character;
+
+        public SkillCostTableModel(CharacterFacade character)
+        {
+            this.character = character;
+        }
+
+        public int getRowCount()
+        {
+            return 3;
+        }
+
+        public int getColumnCount()
+        {
+            return 3;
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex)
+        {
+            switch (columnIndex)
+            {
+                case 0:
+                    return String.class;
+                case 1:
+                    return Integer.class;
+                case 2:
+                    return Double.class;
+                default:
+                    return Object.class;
+            }
+        }
+
+        @Override
+        public String getColumnName(int column)
+        {
+            switch (column)
+            {
+                case 0:
+                    return "Skill Cost";
+                case 1:
+                    return "Rank Cost";
+                case 2:
+                    return "Max Ranks";
+                default:
+                    throw new IndexOutOfBoundsException();
+            }
+        }
+
+        public Object getValueAt(int rowIndex, int columnIndex)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
     private static class SkillPointTableModel extends AbstractTableModel
             implements ListDataListener
     {
@@ -147,7 +231,7 @@ public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
 
         public SkillPointTableModel(CharacterFacade character)
         {
-            this.model = character.getLevels();
+            model = character.getLevels();
             model.addListDataListener(this);
         }
 
@@ -174,7 +258,7 @@ public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
                 return rowIndex + 1;
             }
             CharacterLevelFacade level = model.getElementAt(rowIndex);
-            switch (rowIndex)
+            switch (columnIndex)
             {
                 case 1:
                     return level.getSelectedClass();
