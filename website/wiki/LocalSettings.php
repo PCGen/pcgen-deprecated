@@ -58,27 +58,9 @@ $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
 
+# Database settings are stored separately
 require_once("DbSettings.php");
 
-# $wgDBtype           = "mysql";
-# $wgDBserver         = "mysql-2.priorweb.be";
-# $wgDBname           = "vandaelek3";
-# $wgDBuser           = "vandaelek3";
-# $wgDBpassword       = "GHDkYsta";
-
-# MySQL specific settings
-# $wgDBprefix         = "mw_";
-
-# MySQL table options to use during installation or update
-# $wgDBTableOptions   = "TYPE=InnoDB";
-
-# Experimental charset support for MySQL 4.1/5.0.
-# $wgDBmysql5 = false;
-
-# Postgres specific settings
-# $wgDBport           = "5432";
-# $wgDBmwschema       = "mediawiki";
-# $wgDBts2schema      = "public";
 
 ## Shared memory settings
 $wgMainCacheType = CACHE_NONE;
