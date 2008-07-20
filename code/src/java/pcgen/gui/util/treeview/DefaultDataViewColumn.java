@@ -30,6 +30,7 @@ public class DefaultDataViewColumn implements DataViewColumn
     private String name;
     private Class<?> dataclass;
     private Visibility visibility;
+    private boolean editable;
 
     public DefaultDataViewColumn(String name, Class<?> dataclass)
     {
@@ -39,8 +40,15 @@ public class DefaultDataViewColumn implements DataViewColumn
     public DefaultDataViewColumn(String name, Class<?> dataclass,
                                   boolean visible)
     {
+
+    }
+
+    public DefaultDataViewColumn(String name, Class<?> dataclass,
+                                  boolean visible, boolean editable)
+    {
         this.name = name;
         this.dataclass = dataclass;
+        this.editable = editable;
         if (visible)
         {
             this.visibility = Visibility.INITIALLY_VISIBLE;
@@ -64,6 +72,11 @@ public class DefaultDataViewColumn implements DataViewColumn
     public Visibility getVisibility()
     {
         return visibility;
+    }
+
+    public boolean isEditable()
+    {
+        return editable;
     }
 
 }

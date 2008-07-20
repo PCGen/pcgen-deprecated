@@ -294,7 +294,8 @@ public class JTreeTable extends JTableEx
      * @author Scott Violet
      */
     private static class TreeTableModelAdapter extends AbstractTableModel
-            implements SortableTableModel, TreeModelListener, TreeExpansionListener
+            implements SortableTableModel, TreeModelListener,
+                       TreeExpansionListener
     {
 
         private JTree tree;
@@ -542,14 +543,11 @@ public class JTreeTable extends JTableEx
          * @return Component
          **/
         public Component getTableCellRendererComponent(JTable table,
-                                                        
-                                                        @SuppressWarnings("unused") Object value,
-                                                         boolean isSelected,
-                                                        
-                                                        @SuppressWarnings("unused") boolean hasFocus,
-                                                         int row,
-                                                        
-                                                        @SuppressWarnings("unused") int column)
+                                                        Object value,
+                                                        boolean isSelected,
+                                                        boolean hasFocus,
+                                                        int row,
+                                                        int column)
         {
             if (isSelected)
             {

@@ -76,6 +76,11 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
             return Visibility.ALWAYS_VISIBLE;
         }
 
+        public boolean isEditable()
+        {
+            return true;
+        }
+
     };
     protected final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     protected final List<? extends DataViewColumn> datacolumns;
@@ -114,7 +119,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         {
             if (!dataMap.containsKey(obj))
             {
-                dataMap.put(obj, dataview.getData(obj));
+                dataMap.put(obj, dataview.getDataList(obj));
             }
         }
     }
@@ -162,6 +167,17 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     public final String getColumnName(int column)
     {
         return getDataColumn(column).getName();
+    }
+
+    @Override
+    public boolean isCellEditable(Object node, int column)
+    {
+        if (getDataColumn(column).isEditable())
+        {
+            return column == 0 ||
+                    dataMap.containsKey(((TreeViewNode) node).getUserObject());
+        }
+        return false;
     }
 
     private DataViewColumn getDataColumn(int column)
@@ -213,7 +229,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
             if (childValue != null)
             {
                 ListMap<Object, TreeViewPath<? super E>, Vector<TreeViewPath<? super E>>> vectorMap = CollectionMaps.createListMap(HashMap.class,
-                                                                                                                   Vector.class);
+                                                                                                                                   Vector.class);
                 Vector<TreeViewPath<? super E>> vector = (Vector<TreeViewPath<? super E>>) childValue;
                 for (TreeViewPath<? super E> path : vector)
                 {
@@ -290,9 +306,10 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
             return null;
         }
 
+        @SuppressWarnings("unchecked")
         public void setValueAt(Object value, int column)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            dataview.setData((E) userObject, column, value);
         }
 
     }

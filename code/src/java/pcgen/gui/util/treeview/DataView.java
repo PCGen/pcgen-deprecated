@@ -29,8 +29,10 @@ import java.util.List;
 public interface DataView<E>
 {
 
-    List<?> getData(E obj);
+    List<?> getDataList(E obj);
 
     List<? extends DataViewColumn> getDataColumns();
+
+    void setData(E obj, int column, Object data);
 
 }

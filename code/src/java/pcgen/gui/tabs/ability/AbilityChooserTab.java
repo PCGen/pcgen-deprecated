@@ -51,7 +51,7 @@ import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.tabs.AbstractChooserTab;
+import pcgen.gui.tabs.ChooserPane;
 import pcgen.gui.tools.FilterableTreeViewModel;
 import pcgen.gui.tools.FilteredTreeViewPanel;
 import pcgen.gui.util.DefaultGenericListModel;
@@ -67,7 +67,7 @@ import pcgen.gui.util.treeview.*;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class AbilityChooserTab extends AbstractChooserTab
+public class AbilityChooserTab extends ChooserPane
 {
 
     private static final DataView<AbilityFacade> abilityDataView = new DataView<AbilityFacade>()
@@ -90,7 +90,7 @@ public class AbilityChooserTab extends AbstractChooserTab
             return dataColumns;
         }
 
-        public List<?> getData(AbilityFacade obj)
+        public List<?> getDataList(AbilityFacade obj)
         {
             return Arrays.asList(getTypes(obj.getTypes()),
                                  obj.isMult(),
@@ -107,6 +107,11 @@ public class AbilityChooserTab extends AbstractChooserTab
                 ret += ", " + types.get(x);
             }
             return ret;
+        }
+
+        public void setData(AbilityFacade obj, int column, Object data)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     };

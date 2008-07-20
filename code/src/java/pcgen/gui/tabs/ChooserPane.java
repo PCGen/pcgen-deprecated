@@ -1,5 +1,5 @@
 /*
- * AbstractChooserTab.java
+ * ChooserPane.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -28,13 +28,13 @@ import pcgen.gui.util.panes.FlippingSplitPane;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractChooserTab extends FlippingSplitPane
+public class ChooserPane extends FlippingSplitPane
 {
 
     private FlippingSplitPane subSplitPane;
     private InfoPane infoPane;
 
-    protected AbstractChooserTab()
+    protected ChooserPane()
     {
         this.subSplitPane = new FlippingSplitPane(VERTICAL_SPLIT);
         this.infoPane = new InfoPane();

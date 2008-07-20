@@ -161,7 +161,7 @@ public class UtilitiesTester extends javax.swing.JFrame
     private static class DateView implements DataView<Date>
     {
 
-        public List<?> getData(Date obj)
+        public List<?> getDataList(Date obj)
         {
             Calendar cal = Calendar.getInstance();
             cal.setTime(obj);
@@ -177,6 +177,11 @@ public class UtilitiesTester extends javax.swing.JFrame
                                  new DefaultDataViewColumn("Week", Integer.class),
                                  new DefaultDataViewColumn("Day of Week",
                                                            Integer.class));
+        }
+
+        public void setData(Date obj, int column, Object data)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }

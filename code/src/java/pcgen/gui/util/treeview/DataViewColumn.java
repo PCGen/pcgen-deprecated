@@ -39,6 +39,12 @@ public interface DataViewColumn
 
     public Class<?> getDataClass();
 
+    /**
+     * 
+     * @return the column's visibility in the JTreePan
+     */
     public Visibility getVisibility();
+
+    public boolean isEditable();
 
 }

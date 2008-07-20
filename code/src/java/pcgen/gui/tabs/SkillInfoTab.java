@@ -26,6 +26,7 @@ import java.awt.GridBagLayout;
 import java.util.Hashtable;
 import java.util.List;
 import javax.swing.AbstractCellEditor;
+import javax.swing.AbstractSpinnerModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -51,7 +52,7 @@ import pcgen.gui.util.treeview.TreeView;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
+public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
 {
 
     private final JTable skillcostTable;
@@ -146,12 +147,17 @@ public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
         private class SkillDataView implements DataView<SkillFacade>
         {
 
-            public List<?> getData(SkillFacade obj)
+            public List<?> getDataList(SkillFacade obj)
             {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
             public List<? extends DataViewColumn> getDataColumns()
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            public void setData(SkillFacade obj, int column, Object data)
             {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
@@ -317,6 +323,31 @@ public class SkillInfoTab extends AbstractChooserTab implements CharacterInfoTab
         public void contentsChanged(ListDataEvent e)
         {
             fireTableRowsUpdated(e.getIndex0(), e.getIndex1());
+        }
+
+    }
+
+    private static class SkillRankSpinnerModel extends AbstractSpinnerModel
+    {
+
+        public Object getValue()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void setValue(Object value)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public Object getNextValue()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public Object getPreviousValue()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }
