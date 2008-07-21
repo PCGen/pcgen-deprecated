@@ -18,12 +18,11 @@
  * 
  * Created on Jun 26, 2008, 9:32:04 PM
  */
-package pcgen.gui.tools;
+package pcgen.gui.util.panes;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 /**

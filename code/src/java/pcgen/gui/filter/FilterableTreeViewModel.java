@@ -18,7 +18,7 @@
  * 
  * Created on Jul 14, 2008, 9:15:34 PM
  */
-package pcgen.gui.tools;
+package pcgen.gui.filter;
 
 import pcgen.gui.util.treeview.TreeViewModel;
 

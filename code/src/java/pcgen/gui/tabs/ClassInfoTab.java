@@ -20,6 +20,7 @@
  */
 package pcgen.gui.tabs;
 
+import pcgen.gui.util.panes.ChooserPane;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -52,7 +53,7 @@ import javax.swing.table.AbstractTableModel;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.CharacterLevelFacade;
 import pcgen.gui.facade.ClassFacade;
-import pcgen.gui.tools.FilteredTreeViewPanel;
+import pcgen.gui.filter.FilteredTreeViewPanel;
 import pcgen.gui.util.GenericListModel;
 import pcgen.util.PropertyFactory;
 

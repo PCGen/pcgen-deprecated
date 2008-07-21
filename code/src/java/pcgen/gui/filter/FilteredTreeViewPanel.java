@@ -18,7 +18,7 @@
  * 
  * Created on Jun 22, 2008, 3:55:32 PM
  */
-package pcgen.gui.tools;
+package pcgen.gui.filter;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -27,9 +27,6 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
-import pcgen.gui.filter.Filter;
-import pcgen.gui.filter.FilterPanel;
-import pcgen.gui.filter.FilterPanelListener;
 import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.SwingWorker;

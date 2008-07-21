@@ -20,6 +20,7 @@
  */
 package pcgen.gui.tabs;
 
+import pcgen.gui.util.panes.ChooserPane;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -44,8 +45,7 @@ import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.CharacterLevelFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
-import pcgen.gui.tools.FilterableTreeViewModel;
-import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.filter.FilterableTreeViewModel;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
@@ -59,7 +59,7 @@ import pcgen.gui.util.treeview.TreeViewPath;
  */
 public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
 {
-
+//private final FilterableTreeViewPane
     private final JTable skillcostTable;
     private final JTable skillpointTable;
 
@@ -112,7 +112,6 @@ public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
     private static final class SkillTreeViewModel implements FilterableTreeViewModel<SkillFacade>,
                                                                 DataView<SkillFacade>
     {
-        private GenericListModel<SkillFacade> model;
 
         private enum SkillTreeView implements TreeView<SkillFacade>
         {
@@ -208,7 +207,6 @@ public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
         public SkillTreeViewModel(CharacterFacade character)
         {
             this.character = character;
-            this.model = PCGenUIManager.getRegisteredSkills(character);
         }
 
         public void setCharacterLevel(CharacterLevelFacade level)
@@ -255,9 +253,9 @@ public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
             return 0;
         }
 
-        public DefaultGenericListModel<SkillFacade> getDataModel()
+        public GenericListModel<SkillFacade> getDataModel()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return PCGenUIManager.getRegisteredSkills(character);
         }
 
     }

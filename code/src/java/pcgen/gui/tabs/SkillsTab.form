@@ -53,7 +53,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
           <SubComponents>
-            <Component class="pcgen.gui.tools.InfoPane" name="infoPane1">
+            <Component class="pcgen.gui.util.panes.InfoPane" name="infoPane1">
               <Properties>
                 <Property name="title" type="java.lang.String" value="Skill Info"/>
               </Properties>
