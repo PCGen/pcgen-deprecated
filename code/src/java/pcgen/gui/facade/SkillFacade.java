@@ -18,13 +18,23 @@
  * 
  * Created on Jul 10, 2008, 8:42:54 PM
  */
-
 package pcgen.gui.facade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface SkillFacade {
+public interface SkillFacade
+{
+
+    public boolean isUntrained();
+
+    public String getType();
+
+    public String getKeyStat();
+
+    public String getInfo();
+
+    public String getSource();
 
 }

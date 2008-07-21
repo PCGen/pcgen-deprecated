@@ -21,7 +21,7 @@
 package pcgen.gui.util.treeview;
 
 import java.util.List;
-import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
@@ -36,6 +36,6 @@ public interface TreeViewModel<E>
 
     DataView<E> getDataView();
 
-    DefaultGenericListModel<E> getDataModel();
+    GenericListModel<E> getDataModel();
 
 }

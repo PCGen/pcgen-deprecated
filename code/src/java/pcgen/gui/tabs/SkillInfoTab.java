@@ -23,6 +23,7 @@ package pcgen.gui.tabs;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import javax.swing.AbstractCellEditor;
@@ -37,6 +38,8 @@ import javax.swing.event.ListDataListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import pcgen.cdom.enumeration.SkillCost;
+import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.CharacterLevelFacade;
 import pcgen.gui.facade.ClassFacade;
@@ -46,7 +49,9 @@ import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
+import pcgen.gui.util.treeview.DefaultDataViewColumn;
 import pcgen.gui.util.treeview.TreeView;
+import pcgen.gui.util.treeview.TreeViewPath;
 
 /**
  *
@@ -104,19 +109,111 @@ public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    private static final class SkillTreeViewModel implements FilterableTreeViewModel<SkillFacade>
+    private static final class SkillTreeViewModel implements FilterableTreeViewModel<SkillFacade>,
+                                                                DataView<SkillFacade>
     {
+        private GenericListModel<SkillFacade> model;
 
+        private enum SkillTreeView implements TreeView<SkillFacade>
+        {
+
+            NAME("Name"),
+            TYPE_NAME("Type/Name"),
+            KEYSTAT_NAME("Key Stat/Name"),
+            KEYSTAT_TYPE_NAME("Key Stat/Type/Name");
+            private String name;
+
+            private SkillTreeView(String name)
+            {
+                this.name = name;
+            }
+
+            public String getViewName()
+            {
+                return name;
+            }
+
+            @SuppressWarnings("unchecked")
+            public List<TreeViewPath<SkillFacade>> getPaths(SkillFacade pobj)
+            {
+                TreeViewPath<SkillFacade> path;
+                switch (this)
+                {
+                    case NAME:
+                        path = new TreeViewPath<SkillFacade>(pobj);
+                        break;
+                    case TYPE_NAME:
+                        path = new TreeViewPath<SkillFacade>(pobj,
+                                                             pobj.getType());
+                        break;
+                    case KEYSTAT_NAME:
+                        path = new TreeViewPath<SkillFacade>(pobj,
+                                                             pobj.getKeyStat());
+                        break;
+                    case KEYSTAT_TYPE_NAME:
+                        path = new TreeViewPath<SkillFacade>(pobj,
+                                                             pobj.getKeyStat(),
+                                                             pobj.getType());
+                        break;
+                    default:
+                        throw new InternalError();
+                }
+                return Arrays.asList(path);
+            }
+
+        }
+        private final TreeView<SkillFacade> COST_NAME = new TreeView<SkillFacade>()
+        {
+
+            public String getViewName()
+            {
+                return "Cost/Name";
+            }
+
+            @SuppressWarnings("unchecked")
+            public List<TreeViewPath<SkillFacade>> getPaths(SkillFacade pobj)
+            {
+                return Arrays.asList(new TreeViewPath<SkillFacade>(pobj,
+                                                                   level.getSkillCost(pobj)));
+            }
+
+        };
+        private final TreeView<SkillFacade> COST_TYPE_NAME = new TreeView<SkillFacade>()
+        {
+
+            public String getViewName()
+            {
+                return "Cost/Type/Name";
+            }
+
+            @SuppressWarnings("unchecked")
+            public List<TreeViewPath<SkillFacade>> getPaths(SkillFacade pobj)
+            {
+                return Arrays.asList(new TreeViewPath<SkillFacade>(pobj,
+                                                                   level.getSkillCost(pobj),
+                                                                   pobj.getType()));
+            }
+
+        };
+        private static final List<? extends DataViewColumn> columns = Arrays.asList(
+                new DefaultDataViewColumn("Total", Integer.class, true),
+                new DefaultDataViewColumn("Modifier", Integer.class, true),
+                new DefaultDataViewColumn("Ranks", Float.class, true, true),
+                new DefaultDataViewColumn("Skill Cost", SkillCost.class,
+                                          true),
+                new DefaultDataViewColumn("Source", String.class));
         private CharacterFacade character;
+        private CharacterLevelFacade level;
 
         public SkillTreeViewModel(CharacterFacade character)
         {
             this.character = character;
+            this.model = PCGenUIManager.getRegisteredSkills(character);
         }
 
-        public void setClass(ClassFacade c)
+        public void setCharacterLevel(CharacterLevelFacade level)
         {
-
+            this.level = level;
         }
 
         public Class<SkillFacade> getFilterClass()
@@ -124,19 +221,38 @@ public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
             return SkillFacade.class;
         }
 
-        public List<? extends TreeView<SkillFacade>> getTreeViews()
+        public List<?> getData(SkillFacade obj)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return Arrays.asList(
+                    character.getSkillTotal(obj),
+                    character.getSkillModifier(obj),
+                    Float.valueOf(character.getSkillRanks(obj)),
+                    level.getSkillCost(obj),
+                    obj.getSource());
         }
 
-        public int getDefaultTreeViewIndex()
+        public List<? extends DataViewColumn> getDataColumns()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return columns;
         }
 
         public DataView<SkillFacade> getDataView()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return this;
+        }
+
+        @SuppressWarnings("unchecked")
+        public List<? extends TreeView<SkillFacade>> getTreeViews()
+        {
+            return Arrays.asList(SkillTreeView.NAME, SkillTreeView.TYPE_NAME,
+                                 SkillTreeView.KEYSTAT_NAME,
+                                 SkillTreeView.KEYSTAT_TYPE_NAME, COST_NAME,
+                                 COST_TYPE_NAME);
+        }
+
+        public int getDefaultTreeViewIndex()
+        {
+            return 0;
         }
 
         public DefaultGenericListModel<SkillFacade> getDataModel()
@@ -144,25 +260,6 @@ public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        private class SkillDataView implements DataView<SkillFacade>
-        {
-
-            public List<?> getDataList(SkillFacade obj)
-            {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            public List<? extends DataViewColumn> getDataColumns()
-            {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            public void setData(SkillFacade obj, int column, Object data)
-            {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-        }
     }
 
     private static class SkillCostTableModel extends AbstractTableModel

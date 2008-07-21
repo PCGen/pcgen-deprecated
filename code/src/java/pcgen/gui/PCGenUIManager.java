@@ -23,8 +23,10 @@ package pcgen.gui;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.filter.NamedFilter;
 import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
@@ -48,7 +50,12 @@ public final class PCGenUIManager
     }
 
     public static DefaultGenericListModel<AbilityFacade> getRegisteredAbilities(CharacterFacade character,
-                                                         AbilityCatagoryFacade catagory)
+                                                                                  AbilityCatagoryFacade catagory)
+    {
+        return null;
+    }
+
+    public static GenericListModel<SkillFacade> getRegisteredSkills(CharacterFacade character)
     {
         return null;
     }

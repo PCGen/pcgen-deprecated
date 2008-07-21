@@ -90,7 +90,7 @@ public class AbilityChooserTab extends ChooserPane
             return dataColumns;
         }
 
-        public List<?> getDataList(AbilityFacade obj)
+        public List<?> getData(AbilityFacade obj)
         {
             return Arrays.asList(getTypes(obj.getTypes()),
                                  obj.isMult(),
@@ -107,11 +107,6 @@ public class AbilityChooserTab extends ChooserPane
                 ret += ", " + types.get(x);
             }
             return ret;
-        }
-
-        public void setData(AbilityFacade obj, int column, Object data)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     };

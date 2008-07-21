@@ -34,13 +34,13 @@ public class DefaultDataViewColumn implements DataViewColumn
 
     public DefaultDataViewColumn(String name, Class<?> dataclass)
     {
-        this(name, dataclass, false);
+        this(name, dataclass, false, false);
     }
 
     public DefaultDataViewColumn(String name, Class<?> dataclass,
                                   boolean visible)
     {
-
+        this(name, dataclass, visible, false);
     }
 
     public DefaultDataViewColumn(String name, Class<?> dataclass,

@@ -30,7 +30,8 @@ import java.util.Vector;
 import javax.swing.JTree;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.event.ListDataAdapter;
 import pcgen.gui.util.treetable.AbstractTreeTableModel;
 import pcgen.gui.util.treetable.SortableTreeTableModel;
@@ -54,7 +55,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         @Override
         public void listDataChanged(ListDataEvent e)
         {
-            setData(model);
+            setData(new GenericListModelWrapper<E>(model));
         }
 
     };
@@ -85,7 +86,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
     protected final Map<E, List<?>> dataMap = new HashMap<E, List<?>>();
     protected final List<? extends DataViewColumn> datacolumns;
     protected final DataView<E> dataview;
-    private DefaultGenericListModel<E> model = null;
+    private GenericListModel<E> model = null;
     private TreeView<? super E> selectedView = null;
 
     public TreeViewTableModel(DataView<E> dataView)
@@ -94,7 +95,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         this.datacolumns = dataview.getDataColumns();
     }
 
-    public final void setDataModel(DefaultGenericListModel<E> model)
+    public final void setDataModel(GenericListModel<E> model)
     {
         if (this.model != null)
         {
@@ -102,26 +103,21 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         }
         this.model = model;
         model.addListDataListener(listener);
-        setData(model);
+        setData(new GenericListModelWrapper<E>(model));
     }
 
     private void setData(Collection<E> data)
-    {
-        populateDataMap(data);
-        viewMap.clear();
-        setSelectedTreeView(selectedView);
-    }
-
-    private void populateDataMap(Collection<E> data)
     {
         dataMap.keySet().retainAll(data);
         for (E obj : data)
         {
             if (!dataMap.containsKey(obj))
             {
-                dataMap.put(obj, dataview.getDataList(obj));
+                dataMap.put(obj, dataview.getData(obj));
             }
         }
+        viewMap.clear();
+        setSelectedTreeView(selectedView);
     }
 
     public final TreeView<? super E> getSelectedTreeView()
@@ -299,7 +295,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
                 return userObject;
             }
             List<?> data = dataMap.get(userObject);
-            if (data != null && data.size() >= column)
+            if (data != null && column <= data.size())
             {
                 return data.get(column - 1);
             }
@@ -309,7 +305,8 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
         @SuppressWarnings("unchecked")
         public void setValueAt(Object value, int column)
         {
-            dataview.setData((E) userObject, column, value);
+            List data = dataMap.get(value);
+            data.set(column - 1, value);
         }
 
     }

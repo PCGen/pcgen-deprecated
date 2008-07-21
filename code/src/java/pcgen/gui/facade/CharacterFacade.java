@@ -60,6 +60,10 @@ public interface CharacterFacade
     public void setRemainingSelection(AbilityCatagoryFacade catagory,
                                        int remaining);
 
-    public int getSkillCost(ClassFacade c, SkillFacade skill);
+    public int getSkillTotal(SkillFacade skill);
+
+    public int getSkillModifier(SkillFacade skill);
+
+    public float getSkillRanks(SkillFacade skill);
 
 }

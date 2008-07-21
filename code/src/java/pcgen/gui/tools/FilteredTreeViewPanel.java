@@ -30,6 +30,7 @@ import javax.swing.TransferHandler;
 import pcgen.gui.filter.Filter;
 import pcgen.gui.filter.FilterPanel;
 import pcgen.gui.filter.FilterPanelListener;
+import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.SwingWorker;
 import pcgen.gui.util.event.GenericListDataEvent;
@@ -124,7 +125,7 @@ public class FilteredTreeViewPanel extends JPanel
     }
 
     private class TreeViewDisplay<E> extends TreeViewModelWrapper<E>
-            implements FilterPanelListener, GenericListDataListener
+            implements FilterPanelListener, GenericListDataListener<E>
     {
 
         public TreeViewDisplay(TreeViewModel<E> model)
@@ -156,7 +157,9 @@ public class FilteredTreeViewPanel extends JPanel
 
         public void applyFilter(Filter filter, boolean quicksearch)
         {
-            new FilterUpdater(dataModel, treeviewModel.getDataModel(), filter,
+            new FilterUpdater(dataModel,
+                              new GenericListModelWrapper<E>(treeviewModel.getDataModel()),
+                              filter,
                               quicksearch).start();
         }
 

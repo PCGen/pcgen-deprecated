@@ -29,10 +29,14 @@ import java.util.List;
 public interface DataView<E>
 {
 
-    List<?> getDataList(E obj);
+    /**
+     * Note: If any of the returned data is editable, make sure that the returned
+     * list is editable as well.
+     * @param obj
+     * @return
+     */
+    List<?> getData(E obj);
 
     List<? extends DataViewColumn> getDataColumns();
-
-    void setData(E obj, int column, Object data);
 
 }

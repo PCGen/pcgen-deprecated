@@ -161,7 +161,7 @@ public class UtilitiesTester extends javax.swing.JFrame
     private static class DateView implements DataView<Date>
     {
 
-        public List<?> getDataList(Date obj)
+        public List<?> getData(Date obj)
         {
             Calendar cal = Calendar.getInstance();
             cal.setTime(obj);

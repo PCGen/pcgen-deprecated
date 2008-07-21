@@ -20,6 +20,8 @@
  */
 package pcgen.gui.facade;
 
+import pcgen.cdom.enumeration.SkillCost;
+
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
@@ -30,6 +32,8 @@ public interface CharacterLevelFacade
     public void investSkillPoints(SkillFacade skill, int points);
 
     public ClassFacade getSelectedClass();
+
+    public SkillCost getSkillCost(SkillFacade skill);
 
     public int getGainedSkillPoints();
 
