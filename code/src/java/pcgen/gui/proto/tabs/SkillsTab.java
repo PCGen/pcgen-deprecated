@@ -4,7 +4,7 @@
  * Created on June 26, 2008, 8:49 PM
  */
 
-package pcgen.gui.tabs;
+package pcgen.gui.proto.tabs;
 
 /**
  *
