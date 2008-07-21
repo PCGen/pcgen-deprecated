@@ -2622,7 +2622,7 @@ REGION
 REMOVABLE
 REPEATLEVEL
 REPLACES
-SA
+SAB
 SAVEINFO
 SAVES
 SIZE
@@ -2677,8 +2677,10 @@ XTRASKILLPTSPERLVL
 /C2"Sub tags"
 ANY
 ARMORPROF
+AUTOMATIC
 BASE
 CASTERLEVEL
+CHECKMULT
 CHECKS
 CHOOSE
 CLASSSKILLS
@@ -2738,6 +2740,7 @@ TEXT
 TIMES
 TOHIT
 VAR
+VIRTUAL
 WEAPON
 WEAPONPROF
 WEAPONPROFS
@@ -2790,7 +2793,6 @@ Chaotic
 Charisma
 CE
 CG
-Concentration
 Cone
 Consumable
 COPY
@@ -2809,7 +2811,6 @@ Conjuration
 Constitution
 Container
 COUNT
-Craft
 Creation
 Crossbow
 CROSSCLASSSKILLS
@@ -2862,7 +2863,6 @@ harmless
 Headgear
 Healing
 Heavy
-Human
 Humanoid
 HMG
 if
@@ -2923,7 +2923,6 @@ One willing creature
 object
 Pattern
 PC
-Perform
 Permanent
 Personal
 PersonalFirearm
@@ -2935,7 +2934,6 @@ Potion
 Prestige
 PRIMARY
 PROJECTILE
-Profession
 Projectile
 Psionic
 Racial
@@ -2967,6 +2965,7 @@ Slashing
 Sonic
 Sp
 Special
+Special Ability
 Species
 Specific
 Spellcaster
@@ -3052,8 +3051,10 @@ PREMOVE
 PREMULT
 PRERACE
 PRERACETYPE
-PRESA
+PRESAB
 PRESHIELDPROF
+PREHP
+PREPCLEVEL
 PRESIZEEQ
 PRESIZEGT
 PRESIZEGTEQ
@@ -3086,6 +3087,8 @@ PREVARNEQ
 PREVISION
 PREWEAPONPROF
 /C6"Data Names"
+Alchemy
+Arcana
 Arcane Archer
 Arcane Trickster
 Archmage
@@ -3094,6 +3097,8 @@ Barbarian
 Bard
 Blackguard
 Cleric
+Concentration
+Craft 
 Dragon Disciple
 Druid
 Duelist
@@ -3106,26 +3111,38 @@ Fighter
 Halfling
 Half Elf
 Half Orc
+Heal
 Hierophant
 Horizon Walker
 Human
+Intimidate
 Kineticist
+Knowledge 
 Loremaster
 Monk
 Mystic Theurge
+Nature
 Nomad
 Paladin
+Perform
+Profession
 Psion
 Psychic Warrior
 Ranger
+Religion
 Rogue
+Search
 Seer
 Shadowdancer
 Shaper
 Sorcerer
 Soulknife
+Spellcraft
+Spot
 Telepath
 Thaumaturgist
+The Planes
+Use Magic Device
 Wilder
 Wizard
 /C7"placeholders"
@@ -3133,6 +3150,8 @@ XfooX
 /L15"PCGen campaign file" File Extensions = PCC Line Comment = # String Chars = "
 /Delimiters =	():[]={}<>;!|,./+-*
 /C1"Main Tags"
+ABILITY
+ABILITYCATEGORY
 BIOSET
 BOOKTYPE
 CAMPAIGN
@@ -3141,6 +3160,7 @@ COMPANIONMOD
 COPYRIGHT
 COVER
 DEITY
+DESC
 DOMAIN
 EQUIPMENT
 EQUIPMOD
@@ -3154,6 +3174,7 @@ ISOGL
 KIT
 LANGUAGE
 LICENSE
+LOGO
 LSTEXCLUDE
 PCC
 PUBNAMELONG
@@ -3170,4 +3191,17 @@ SOURCEWEB
 SPELL
 TEMPLATE
 TYPE
+URL
 WEAPONPROF
+/C2"File Extensions"
+lst
+jpg
+pcc
+png
+/C3"Known URL Subtags"
+Amazon
+http
+com
+RPG Now
+WEBSITE
+www
