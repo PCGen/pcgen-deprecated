@@ -57,7 +57,7 @@ import pcgen.gui.util.treeview.TreeViewPath;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class SkillInfoTab extends ChooserPane implements CharacterInfoTab
+public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 {
 //private final FilterableTreeViewPane
     private final JTable skillcostTable;

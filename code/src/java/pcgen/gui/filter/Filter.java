@@ -18,13 +18,17 @@
  * 
  * Created on Jun 21, 2008, 7:44:50 PM
  */
-
 package pcgen.gui.filter;
+
+import pcgen.gui.facade.CharacterFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface Filter<E> {
-    public boolean accept(E object);
+public interface Filter<E>
+{
+
+    public boolean accept(CharacterFacade character, E object);
+
 }

@@ -648,18 +648,32 @@ public class AbilityChooserTab extends ChooserPane
         }
 
     }
+    private static final String CATAGORY_TABLE_MODEL = "CatagoryTableModel";
+    private static final String SELECTED_TREEVIEW_PANEL_STATE = "SelectedTreeViewPanelState";
+    private static final String SELECTED_ABILITY_TREEVIEW_MODEL = "SelectedAbilityTreeViewModel";
+    private static final String AVAILABLE_TREEVIEW_PANEL_STATE = "AvailableTreeViewPanelState";
+    private static final String AVAILABLE_ABILITY_TREEVIEW_MODEL = "AvailableAbilityTreeViewModel";
+    private static final String ABILITY_TRANSFER_HANDLER = "AbilityTransferHandler";
 
     public Hashtable<Object, Object> createState(CharacterFacade character,
                                                   DefaultGenericListModel<AbilityCatagoryFacade> catagories)
     {
         Hashtable<Object, Object> state = new Hashtable<Object, Object>();
-        state.put("CatagoryTableModel",
+        state.put(CATAGORY_TABLE_MODEL,
                   new CatagoryTableModel(character, catagories));
-        state.put("SelectedAbilityTreeViewModel",
-                  new SelectedAbilityTreeViewModel(character, catagories));
-        state.put("AvailableAbilityTreeViewModel",
-                  new AvailableAbilityTreeViewModel(character));
-        state.put("AbilityTransferHandler",
+        SelectedAbilityTreeViewModel selectedAbilityModel = new SelectedAbilityTreeViewModel(character,
+                                                                                             catagories);
+        AvailableAbilityTreeViewModel availableAbilityModel = new AvailableAbilityTreeViewModel(character);
+
+        state.put(SELECTED_ABILITY_TREEVIEW_MODEL, selectedAbilityModel);
+        state.put(AVAILABLE_ABILITY_TREEVIEW_MODEL, availableAbilityModel);
+        state.put(SELECTED_TREEVIEW_PANEL_STATE,
+                  selectedTreeViewPanel.createState(character,
+                                                    selectedAbilityModel));
+        state.put(AVAILABLE_TREEVIEW_PANEL_STATE,
+                  availableTreeViewPanel.createState(character,
+                                                     availableAbilityModel));
+        state.put(ABILITY_TRANSFER_HANDLER,
                   new AbilityTransferHandler(character));
         return state;
     }
@@ -671,16 +685,17 @@ public class AbilityChooserTab extends ChooserPane
 
     public void restoreState(Hashtable<?, ?> state)
     {
-        catagoryModel = (CatagoryTableModel) state.get("CatagoryTableModel");
-        selectedModel = (SelectedAbilityTreeViewModel) state.get("SelectedAbilityTreeViewModel");
-        availableModel = (AvailableAbilityTreeViewModel) state.get("AvailableAbilityTreeViewModel");
-        AbilityTransferHandler handler = (AbilityTransferHandler) state.get("AbilityTransferHandler");
+        catagoryModel = (CatagoryTableModel) state.get(CATAGORY_TABLE_MODEL);
+        selectedModel = (SelectedAbilityTreeViewModel) state.get(SELECTED_ABILITY_TREEVIEW_MODEL);
+        availableModel = (AvailableAbilityTreeViewModel) state.get(AVAILABLE_ABILITY_TREEVIEW_MODEL);
+        AbilityTransferHandler handler = (AbilityTransferHandler) state.get(ABILITY_TRANSFER_HANDLER);
 
         catagoryTable.setModel(catagoryModel);
-        selectedTreeViewPanel.setTreeViewModel(selectedModel);
-        availableTreeViewPanel.setTreeViewModel(availableModel);
         selectedTreeViewPanel.setTransferHandler(handler);
         availableTreeViewPanel.setTransferHandler(handler);
+
+        selectedTreeViewPanel.restoreState((Hashtable<?, ?>) state.get(SELECTED_TREEVIEW_PANEL_STATE));
+        availableTreeViewPanel.restoreState((Hashtable<?, ?>) state.get(AVAILABLE_TREEVIEW_PANEL_STATE));
     }
 
     private class PreReqTreeView implements TreeView<AbilityFacade>

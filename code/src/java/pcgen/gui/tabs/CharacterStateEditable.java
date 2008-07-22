@@ -1,5 +1,5 @@
 /*
- * CharacterInfoTab.java
+ * CharacterStateEditable.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ import pcgen.gui.facade.CharacterFacade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface CharacterInfoTab extends StateEditable
+public interface CharacterStateEditable extends StateEditable
 {
 
     public Hashtable<Object, Object> createState(CharacterFacade character);

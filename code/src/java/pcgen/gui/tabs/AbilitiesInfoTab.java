@@ -43,7 +43,7 @@ import pcgen.util.ListMap;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class AbilitiesInfoTab extends JTabbedPane implements CharacterInfoTab
+public class AbilitiesInfoTab extends JTabbedPane implements CharacterStateEditable
 {
 
     private final AbilityChooserTab abilityTab;

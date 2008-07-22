@@ -28,6 +28,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -41,46 +42,38 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import javax.swing.undo.StateEditable;
 import pcgen.gui.PCGenUIManager;
-import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.SimpleTextIcon;
+import pcgen.gui.util.event.ListDataAdapter;
 import pcgen.util.PropertyFactory;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterPanel extends JPanel
+public class FilterPanel extends JPanel implements StateEditable
 {
 
     private static final String filterString = PropertyFactory.getString("in_filter") +
             ":";
     private static final String clearString = PropertyFactory.getString("in_clear");
     private static final String advancedString = PropertyFactory.getString("in_demAdv");
+    private final List<JToggleButton> filterbuttons;
     private final JTextField textfield;
-    private List<JToggleButton> filterbuttons;
-    private List<Filter> selectedFilters;
-    private FilterPanelListener panelListener;
+    private FilterPanelListener panelListener = null;
     private ListDataListener listListener;
+    private List<Filter> selectedFilters;
     private Class<?> filterClass;
 
     public FilterPanel()
     {
-        this(null, null);
-    }
-
-    public FilterPanel(Class<?> filterclass)
-    {
-        this(filterclass, null);
-    }
-
-    public FilterPanel(Class<?> filterClass,
-                        FilterPanelListener listener)
-    {
+        this.filterbuttons = new LinkedList<JToggleButton>();
         this.textfield = new JTextField();
-        this.panelListener = listener;
         initComponents();
-        setFilterClass(filterClass);
     }
 
     private void initComponents()
@@ -144,41 +137,28 @@ public class FilterPanel extends JPanel
         add(toolbar);
     }
 
-    public <T> void setFilterClass(Class<T> filterClass)
+    private <T> void setFilterClass(Class<T> filterClass)
     {
-        if (filterClass != null && !filterClass.equals(this.filterClass))
+        if (this.filterClass != null)
         {
-            if (this.filterClass != null)
-            {
-                PCGenUIManager.getRegisteredFilters(this.filterClass).removeListDataListener(listListener);
-            }
-            this.filterClass = filterClass;
-            final DefaultGenericListModel<NamedFilter<? super T>> filters = PCGenUIManager.getRegisteredFilters(filterClass);
-            ListDataListener listener = new ListDataListener()
-            {
-
-                public void intervalAdded(ListDataEvent e)
-                {
-                    setFilterButtons(filters);
-                }
-
-                public void intervalRemoved(ListDataEvent e)
-                {
-                    setFilterButtons(filters);
-                }
-
-                public void contentsChanged(ListDataEvent e)
-                {
-                    setFilterButtons(filters);
-                }
-
-            };
-            filters.addListDataListener(listener);
-            listListener = listener;
-            this.selectedFilters = new ArrayList<Filter>();
-            this.filterbuttons = new LinkedList<JToggleButton>();
-            setFilterButtons(filters);
+            PCGenUIManager.getDisplayedFilters(this.filterClass).removeListDataListener(listListener);
         }
+        this.filterClass = filterClass;
+        GenericListModel<NamedFilter<? super T>> filterModel = PCGenUIManager.getDisplayedFilters(filterClass);
+        final List<NamedFilter<? super T>> filterList = new GenericListModelWrapper<NamedFilter<? super T>>(filterModel);
+        ListDataListener listener = new ListDataAdapter()
+        {
+
+            @Override
+            public void listDataChanged(ListDataEvent e)
+            {
+                setFilterButtons(filterList);
+            }
+
+        };
+        filterModel.addListDataListener(listener);
+        listListener = listener;
+        setFilterButtons(filterList);
     }
 
     public void setFilterPanelListener(FilterPanelListener listener)
@@ -208,6 +188,27 @@ public class FilterPanel extends JPanel
         {
             fireApplyFilter();
         }
+    }
+
+    public Hashtable<Object, Object> createState(Class<?> filterClass)
+    {
+        Hashtable<Object, Object> state = new Hashtable<Object, Object>();
+        state.put("FilterClass", filterClass);
+        state.put("SelectedFilters", new ArrayList<Filter>());
+        return state;
+    }
+
+    public void storeState(Hashtable<Object, Object> state)
+    {
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public void restoreState(Hashtable<?, ?> state)
+    {
+        Class<?> c = (Class<?>) state.get("FilterClass");
+        selectedFilters = (List<Filter>) state.get("SelectedFilters");
+        setFilterClass(c);
     }
 
     public Filter getFilter()
@@ -244,14 +245,14 @@ public class FilterPanel extends JPanel
         }
 
         @SuppressWarnings("unchecked")
-        public boolean accept(Object object)
+        public boolean accept(CharacterFacade character, Object object)
         {
             boolean accept = !qFilter || text.equals(object.toString());
             if (accept)
             {
                 for (Filter filter : selectedFilters)
                 {
-                    if (!filter.accept(object))
+                    if (!filter.accept(character, object))
                     {
                         accept = false;
                         break;

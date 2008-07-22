@@ -61,7 +61,7 @@ import pcgen.util.PropertyFactory;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class ClassInfoTab extends ChooserPane implements CharacterInfoTab
+public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
 {
 
     private final FilteredTreeViewPanel treeviewDisplay;

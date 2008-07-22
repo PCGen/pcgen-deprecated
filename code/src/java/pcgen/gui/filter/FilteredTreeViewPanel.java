@@ -23,10 +23,13 @@ package pcgen.gui.filter;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Hashtable;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
+import javax.swing.undo.StateEditable;
+import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.SwingWorker;
@@ -39,7 +42,7 @@ import pcgen.gui.util.treeview.TreeViewModelWrapper;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilteredTreeViewPanel extends JPanel
+public class FilteredTreeViewPanel extends JPanel implements StateEditable
 {
 
     private FilterPanel filterPanel;
@@ -112,22 +115,39 @@ public class FilteredTreeViewPanel extends JPanel
         treeViewPane.setDragEnabled(b);
     }
 
-    public <T> void setTreeViewModel(FilterableTreeViewModel<T> model)
+    public <T> Hashtable<Object, Object> createState(CharacterFacade character,
+                                                      FilterableTreeViewModel<T> model)
     {
-        filterPanel.setFilterClass(model.getFilterClass());
-
-        TreeViewDisplay<T> displayModel = new TreeViewDisplay<T>(model);
-        treeViewPane.setTreeViewModel(displayModel);
-        filterPanel.setFilterPanelListener(displayModel);
+        Hashtable<Object, Object> state = filterPanel.createState(model.getFilterClass());
+        state.put("FilteredTreeViewModel",
+                  new FilteredTreeViewModel<T>(character, model));
+        return state;
     }
 
-    private class TreeViewDisplay<E> extends TreeViewModelWrapper<E>
+    public void storeState(Hashtable<Object, Object> state)
+    {
+
+    }
+
+    public void restoreState(Hashtable<?, ?> state)
+    {
+        FilteredTreeViewModel<?> model = (FilteredTreeViewModel<?>) state.get("FilteredTreeViewModel");
+        treeViewPane.setTreeViewModel(model);
+        filterPanel.setFilterPanelListener(model);
+        filterPanel.restoreState(state);
+    }
+
+    private class FilteredTreeViewModel<E> extends TreeViewModelWrapper<E>
             implements FilterPanelListener, GenericListDataListener<E>
     {
 
-        public TreeViewDisplay(TreeViewModel<E> model)
+        private CharacterFacade character;
+
+        public FilteredTreeViewModel(CharacterFacade character,
+                                      TreeViewModel<E> model)
         {
             super(model);
+            this.character = character;
             model.getDataModel().addGenericListDataListener(this);
         }
 
@@ -185,7 +205,7 @@ public class FilteredTreeViewPanel extends JPanel
                 List<E> data = new ArrayList<E>();
                 for (E element : baseData)
                 {
-                    if (filter.accept(element))
+                    if (filter.accept(character, element))
                     {
                         data.add(element);
                     }

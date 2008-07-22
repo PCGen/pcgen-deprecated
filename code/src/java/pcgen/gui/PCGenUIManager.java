@@ -39,7 +39,7 @@ public final class PCGenUIManager
     {
     }
 
-    public static <T> DefaultGenericListModel<NamedFilter<? super T>> getRegisteredFilters(Class<T> c)
+    public static <T> GenericListModel<NamedFilter<? super T>> getDisplayedFilters(Class<T> c)
     {
         return null;
     }
