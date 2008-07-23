@@ -52,7 +52,7 @@ import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.util.panes.ChooserPane;
+import pcgen.gui.tools.ChooserPane;
 import pcgen.gui.filter.FilterableTreeViewModel;
 import pcgen.gui.filter.FilteredTreeViewPanel;
 import pcgen.gui.util.DefaultGenericListModel;

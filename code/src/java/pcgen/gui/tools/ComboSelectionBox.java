@@ -1,5 +1,5 @@
 /*
- * ComboSelectionPanel.java
+ * ComboSelectionBox.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -35,13 +35,13 @@ import pcgen.gui.util.JTreeViewSelectionPane;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class ComboSelectionPanel extends JPanel
+public class ComboSelectionBox extends JPanel
 {
 
     private JComboBox comboBox;
     private JButton button;
 
-    public ComboSelectionPanel()
+    public ComboSelectionBox()
     {
         super(new BorderLayout());
         initComponents();

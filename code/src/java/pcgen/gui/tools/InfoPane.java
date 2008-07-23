@@ -18,7 +18,7 @@
  * 
  * Created on Jun 26, 2008, 9:32:04 PM
  */
-package pcgen.gui.util.panes;
+package pcgen.gui.tools;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;

@@ -28,7 +28,7 @@ public class DeityPanel extends javax.swing.JPanel {
 
         flippingSplitPane1 = new pcgen.gui.util.panes.FlippingSplitPane();
         flippingSplitPane2 = new pcgen.gui.util.panes.FlippingSplitPane();
-        infoPane1 = new pcgen.gui.util.panes.InfoPane();
+        infoPane1 = new pcgen.gui.tools.InfoPane();
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
@@ -98,7 +98,7 @@ public class DeityPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane1;
     private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane2;
-    private pcgen.gui.util.panes.InfoPane infoPane1;
+    private pcgen.gui.tools.InfoPane infoPane1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
