@@ -18,7 +18,7 @@
  * 
  * Created on Jul 22, 2008, 4:58:45 PM
  */
-package pcgen.gui.util;
+package pcgen.gui.tools;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -27,7 +27,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
+import pcgen.gui.filter.FilteredTreeViewPanel;
+import pcgen.gui.util.JTreeViewPane;
+import pcgen.gui.util.JTreeViewSelectionPane;
 
 /**
  *
@@ -70,6 +72,17 @@ public class ComboSelectionPanel extends JPanel
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private class FilteredSelectionPanel extends FilteredTreeViewPanel
+    {
+
+        @Override
+        public JTreeViewPane createDefaultTreeViewPane()
+        {
+            return new JTreeViewSelectionPane();
         }
 
     }

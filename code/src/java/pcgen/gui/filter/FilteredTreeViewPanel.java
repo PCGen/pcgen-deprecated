@@ -55,8 +55,13 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
         filterPanel = new FilterPanel();
         add(filterPanel, BorderLayout.PAGE_START);
 
-        treeViewPane = new JTreeViewPane();
+        treeViewPane = createDefaultTreeViewPane();
         add(treeViewPane, BorderLayout.CENTER);
+    }
+
+    public JTreeViewPane createDefaultTreeViewPane()
+    {
+        return new JTreeViewPane();
     }
 
     /**

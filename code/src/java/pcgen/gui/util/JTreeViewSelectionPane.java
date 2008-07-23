@@ -22,8 +22,10 @@ package pcgen.gui.util;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.AbstractCellEditor;
@@ -43,7 +45,7 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class JTreeViewSelectionPane extends JTreeViewPane
+public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelectable
 {
 
     private static final Object COLUMN_ID = new Object();
@@ -74,7 +76,8 @@ public class JTreeViewSelectionPane extends JTreeViewPane
         this(viewModel, SelectionType.RADIO);
     }
 
-    public JTreeViewSelectionPane(TreeViewModel<?> viewModel, SelectionType selectionType)
+    public JTreeViewSelectionPane(TreeViewModel<?> viewModel,
+                                   SelectionType selectionType)
     {
         this(selectionType);
         setTreeViewModel(viewModel);
@@ -128,12 +131,6 @@ public class JTreeViewSelectionPane extends JTreeViewPane
             column.setCellRenderer(renderer);
             column.setCellEditor(editor);
         }
-    }
-
-    public Set<Object> getToggledData()
-    {
-        TreeViewSelectionTableModel<?> model = (TreeViewSelectionTableModel<?>) getTable().getTreeTableModel();
-        return new HashSet<Object>(model.selectedSet);
     }
 
     private class TreeViewSelectionTableModel<E> extends TreeViewTableModel<E>
@@ -204,8 +201,9 @@ public class JTreeViewSelectionPane extends JTreeViewPane
 
     }
 
-    private static class RadioButtonEditor extends AbstractCellEditor implements ActionListener,
-                                                                                   TableCellEditor
+    private static class RadioButtonEditor extends AbstractCellEditor
+            implements ActionListener,
+                       TableCellEditor
     {
 
         private JRadioButton button;
@@ -222,7 +220,8 @@ public class JTreeViewSelectionPane extends JTreeViewPane
             return Boolean.valueOf(button.isSelected());
         }
 
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                      boolean isSelected,
                                                       int row, int column)
         {
             boolean selected = false;
@@ -258,12 +257,15 @@ public class JTreeViewSelectionPane extends JTreeViewPane
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                        boolean isSelected, boolean hasFocus,
+        public Component getTableCellRendererComponent(JTable table,
+                                                        Object value,
+                                                        boolean isSelected,
+                                                        boolean hasFocus,
                                                         int row,
                                                         int column)
         {
-            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+            super.getTableCellRendererComponent(table, value, isSelected,
+                                                hasFocus, row,
                                                 column);
             if (value == null)
             {
@@ -278,4 +280,21 @@ public class JTreeViewSelectionPane extends JTreeViewPane
         }
 
     }
+
+    public Object[] getSelectedObjects()
+    {
+        TreeViewSelectionTableModel<?> model = (TreeViewSelectionTableModel<?>) getTable().getTreeTableModel();
+        return model.selectedSet.toArray();
+    }
+
+    public void addItemListener(ItemListener l)
+    {
+        listenerList.remove(ItemListener.class, l);
+    }
+
+    public void removeItemListener(ItemListener l)
+    {
+        listenerList.add(ItemListener.class, l);
+    }
+
 }
