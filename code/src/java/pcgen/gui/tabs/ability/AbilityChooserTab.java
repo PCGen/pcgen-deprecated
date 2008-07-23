@@ -47,6 +47,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.undo.StateEditable;
 import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
@@ -67,7 +68,7 @@ import pcgen.gui.util.treeview.*;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class AbilityChooserTab extends ChooserPane
+public class AbilityChooserTab extends ChooserPane implements StateEditable
 {
 
     private static final DataView<AbilityFacade> abilityDataView = new DataView<AbilityFacade>()
@@ -223,7 +224,7 @@ public class AbilityChooserTab extends ChooserPane
         setInfoPaneText(ability.getInfo());
     }
 
-    public void setSelectedCatagory(AbilityCatagoryFacade catagory)
+    private void setSelectedCatagory(AbilityCatagoryFacade catagory)
     {
         this.selectedCatagory = catagory;
 

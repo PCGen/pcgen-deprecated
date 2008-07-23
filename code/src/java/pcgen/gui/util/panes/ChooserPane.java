@@ -32,7 +32,7 @@ public class ChooserPane extends FlippingSplitPane
     private FlippingSplitPane subSplitPane;
     private InfoPane infoPane;
 
-    protected ChooserPane()
+    public ChooserPane()
     {
         this.subSplitPane = new FlippingSplitPane(VERTICAL_SPLIT);
         this.infoPane = new InfoPane();
