@@ -3755,11 +3755,11 @@ my %tagheader = (
 		'ALTTYPE'			=> 'Alternative Type',
 		'ATTACKCYCLE'		=> 'Attack Cycle',
 		'AUTO'			=> 'Auto',
-		'AUTO:ARMORPROF'		=> 'Automaticaly Gained Armor Prof.',
-		'AUTO:EQUIP'		=> 'Automaticaly Added to Inventory',
-		'AUTO:FEAT'			=> 'Automaticaly Gained Feat',
-		'AUTO:SHIELDPROF'		=> 'Automaticaly Gained Shield Prof.',
-		'AUTO:WEAPONPROF'		=> 'Automaticaly Gained Weapon Prof.',
+		'AUTO:ARMORPROF'		=> 'Automatically Gained Armor Prof.',
+		'AUTO:EQUIP'		=> 'Automatically Added to Inventory',
+		'AUTO:FEAT'			=> 'Automatically Gained Feat',
+		'AUTO:SHIELDPROF'		=> 'Automatically Gained Shield Prof.',
+		'AUTO:WEAPONPROF'		=> 'Automatically Gained Weapon Prof.',
 		'BASEQTY'			=> 'Base Quantity',
 		'BENEFIT'			=> 'Description of the Benefits',
 		'BONUS'			=> 'Bonus',
@@ -3867,7 +3867,7 @@ my %tagheader = (
 		'KEY'				=> 'Unique Key',
 		'KIT'				=> 'Apply Kit',
 		'KNOWN'			=> 'Known',
-		'KNOWNSPELLS'		=> 'Automaticaly Known Spell Levels',
+		'KNOWNSPELLS'		=> 'Automatically Known Spell Levels',
 		'LANGAUTO'			=> 'Automatic Languages',
 		'LANGAUTO:.CLEAR'		=> 'Clear Automatic Languages',
 		'LANGBONUS'			=> 'Bonus Languages',
@@ -14590,7 +14590,7 @@ to vertion 5.6.
 
 =item * [ 892746 ] KEYS entries were changed in the main files
 
-Attempt at automaticaly conerting the KEYS entries that were changed in the
+Attempt at automatically conerting the KEYS entries that were changed in the
 main xSRD files. Not all the changes were covered though.
 
 <L<http://sourceforge.net/tracker/index.php?func=detail&aid=892746&group_id=36698&atid=578825>>
@@ -14762,7 +14762,7 @@ PCGEN. This only changes the path values in the .PCC, the files stay in the dire
 =head2 B<-old_source_tag>
 
 From PCGen version 5.9.6, there is a new format for the SOURCExxx tag that use the tab instead of the |. prettylst.pl
-automaticaly converts the SOURCExxx tags to the new format. The B<-old_source_tag> option must be used if
+automatically converts the SOURCExxx tags to the new format. The B<-old_source_tag> option must be used if
 you want to keep the old format in place.
 
 =head2 B<-report> or B<-r>
@@ -19721,11 +19721,11 @@ my %tagheader = (
 		'ALTTYPE'			=> 'Alternative Type',
 		'ATTACKCYCLE'		=> 'Attack Cycle',
 		'AUTO'			=> 'Auto',
-		'AUTO:ARMORPROF'		=> 'Automaticaly Gained Armor Prof.',
-		'AUTO:EQUIP'		=> 'Automaticaly Added to Inventory',
-		'AUTO:FEAT'			=> 'Automaticaly Gained Feat',
-		'AUTO:SHIELDPROF'		=> 'Automaticaly Gained Shield Prof.',
-		'AUTO:WEAPONPROF'		=> 'Automaticaly Gained Weapon Prof.',
+		'AUTO:ARMORPROF'		=> 'Automatically Gained Armor Prof.',
+		'AUTO:EQUIP'		=> 'Automatically Added to Inventory',
+		'AUTO:FEAT'			=> 'Automatically Gained Feat',
+		'AUTO:SHIELDPROF'		=> 'Automatically Gained Shield Prof.',
+		'AUTO:WEAPONPROF'		=> 'Automatically Gained Weapon Prof.',
 		'BASEQTY'			=> 'Base Quantity',
 		'BENEFIT'			=> 'Description of the Benefits',
 		'BONUS'			=> 'Bonus',
@@ -19833,7 +19833,7 @@ my %tagheader = (
 		'KEY'				=> 'Unique Key',
 		'KIT'				=> 'Apply Kit',
 		'KNOWN'			=> 'Known',
-		'KNOWNSPELLS'		=> 'Automaticaly Known Spell Levels',
+		'KNOWNSPELLS'		=> 'Automatically Known Spell Levels',
 		'LANGAUTO'			=> 'Automatic Languages',
 		'LANGAUTO:.CLEAR'		=> 'Clear Automatic Languages',
 		'LANGBONUS'			=> 'Bonus Languages',
@@ -30556,7 +30556,7 @@ to vertion 5.6.
 
 =item * [ 892746 ] KEYS entries were changed in the main files
 
-Attempt at automaticaly conerting the KEYS entries that were changed in the
+Attempt at automatically conerting the KEYS entries that were changed in the
 main xSRD files. Not all the changes were covered though.
 
 <L<http://sourceforge.net/tracker/index.php?func=detail&aid=892746&group_id=36698&atid=578825>>
@@ -30728,7 +30728,7 @@ PCGEN. This only changes the path values in the .PCC, the files stay in the dire
 =head2 B<-old_source_tag>
 
 From PCGen version 5.9.6, there is a new format for the SOURCExxx tag that use the tab instead of the |. prettylst.pl
-automaticaly converts the SOURCExxx tags to the new format. The B<-old_source_tag> option must be used if
+automatically converts the SOURCExxx tags to the new format. The B<-old_source_tag> option must be used if
 you want to keep the old format in place.
 
 =head2 B<-report> or B<-r>
