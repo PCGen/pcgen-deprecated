@@ -49,6 +49,7 @@ import pcgen.gui.util.treeview.TreeViewTableModel;
 public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelectable
 {
 
+    private static final long serialVersionUID = -4024848218899529700L;
     private static final Object COLUMN_ID = new Object();
 
     public static enum SelectionType

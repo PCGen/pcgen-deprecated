@@ -37,7 +37,6 @@ import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import pcgen.gui.filter.FilterableTreeViewModel;
 import pcgen.gui.util.treeview.TreeViewModel;
 
 /**
@@ -47,6 +46,7 @@ import pcgen.gui.util.treeview.TreeViewModel;
 public class ComboSelectionBox extends JPanel implements ItemSelectable
 {
 
+    private static final long serialVersionUID = 4240590146578106112L;
     private FilteredSelectionDialog dialog = null;
     private ComboSelectionBoxModel model;
     private JComboBox comboBox;
@@ -60,13 +60,13 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
 
     private void initComponents()
     {
-        model = new ComboSelectionBoxModel();
-        comboBox = new JComboBox(model);
+        comboBox = new JComboBox();
 
         setBorder(comboBox.getBorder());
         comboBox.setBorder(BorderFactory.createEmptyBorder());
 
         button = new JButton(new ButtonAction());
+        button.setEnabled(false);
         button.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         add(comboBox, BorderLayout.CENTER);
@@ -81,10 +81,13 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
         button.setEnabled(enabled);
     }
 
-    public void setTreeViewModel(FilterableTreeViewModel<?> viewmodel)
+    public void setComboSelectionBoxModel(ComboSelectionBoxModel model)
     {
-        model.setTreeViewModel(viewmodel);
-
+        this.model = model;
+        ComboBoxModel boxmodel = new ComboBoxModel(model.getComboBoxData(),
+                                                   model.getTreeViewModel());
+        comboBox.setModel(boxmodel);
+        button.setEnabled(true);
     }
 
     public Object getSelectedItem()
@@ -129,6 +132,8 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
                     dialog = new FilteredSelectionDialog((Dialog) window);
                 }
             }
+            dialog.restoreState(dialog.createState(model.getCharacter(),
+                                                   model.getTreeViewModel()));
             SwingUtilities.invokeLater(
                     new Runnable()
                     {
@@ -148,32 +153,17 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
 
     }
 
-    private static class ComboSelectionBoxModel extends DefaultComboBoxModel
+    private static class ComboBoxModel extends DefaultComboBoxModel
             implements ListDataListener
     {
 
-        private TreeViewModel<?> viewmodel;
         private ListModel model;
 
-        public void setTreeViewModel(TreeViewModel<?> viewmodel)
+        public ComboBoxModel(Object[] items, TreeViewModel<?> viewmodel)
         {
-            this.viewmodel = viewmodel;
-            int comboSize = super.getSize();
-            if (model != null)
-            {
-                model.removeListDataListener(this);
-                int oldsize = getSize();
-                model = null;
-                fireIntervalRemoved(this, comboSize, oldsize - 1);
-            }
+            super(items);
             model = viewmodel.getDataModel();
             model.addListDataListener(this);
-            fireIntervalAdded(this, comboSize, getSize() - 1);
-        }
-
-        public TreeViewModel<?> getTreeViewModel()
-        {
-            return viewmodel;
         }
 
         @Override

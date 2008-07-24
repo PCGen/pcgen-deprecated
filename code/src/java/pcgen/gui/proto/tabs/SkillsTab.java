@@ -24,37 +24,33 @@ public class SkillsTab extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         flippingSplitPane1 = new pcgen.gui.util.panes.FlippingSplitPane();
-        jPanel1 = new javax.swing.JPanel();
         flippingSplitPane2 = new pcgen.gui.util.panes.FlippingSplitPane();
-        infoPane1 = new pcgen.gui.tools.InfoPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        infoPane1 = new pcgen.gui.tools.InfoPane();
+        filteredTreeViewPanel1 = new pcgen.gui.filter.FilteredTreeViewPanel();
 
         setLayout(new java.awt.BorderLayout());
 
         flippingSplitPane1.setDividerSize(7);
         flippingSplitPane1.setContinuousLayout(true);
         flippingSplitPane1.setOneTouchExpandable(true);
-        flippingSplitPane1.setLeftComponent(jPanel1);
 
         flippingSplitPane2.setDividerSize(7);
         flippingSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         flippingSplitPane2.setContinuousLayout(true);
         flippingSplitPane2.setOneTouchExpandable(true);
 
-        infoPane1.setTitle("Skill Info");
-        flippingSplitPane2.setTopComponent(infoPane1);
-
-        jPanel2.setLayout(new java.awt.GridBagLayout());
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(300, 75));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -74,14 +70,10 @@ public class SkillsTab extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        jTable2.setEnabled(false);
         jScrollPane2.setViewportView(jTable2);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipady = 60;
-        gridBagConstraints.weightx = 1.0;
-        jPanel2.add(jScrollPane2, gridBagConstraints);
+        jPanel2.add(jScrollPane2, java.awt.BorderLayout.PAGE_START);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -91,7 +83,7 @@ public class SkillsTab extends javax.swing.JPanel {
                 {new Integer(4), null, null, null}
             },
             new String [] {
-                "Level", "Class", "Skill Points", "Points Left"
+                "Level", "Class", "Points Spent", "Points Gained"
             }
         ) {
             Class[] types = new Class [] {
@@ -111,26 +103,25 @@ public class SkillsTab extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanel2.add(jScrollPane1, gridBagConstraints);
+        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         flippingSplitPane2.setRightComponent(jPanel2);
 
+        infoPane1.setTitle("Skill Info");
+        flippingSplitPane2.setLeftComponent(infoPane1);
+
         flippingSplitPane1.setRightComponent(flippingSplitPane2);
+        flippingSplitPane1.setLeftComponent(filteredTreeViewPanel1);
 
         add(flippingSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private pcgen.gui.filter.FilteredTreeViewPanel filteredTreeViewPanel1;
     private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane1;
     private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane2;
     private pcgen.gui.tools.InfoPane infoPane1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

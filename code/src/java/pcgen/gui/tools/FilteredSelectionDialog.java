@@ -88,6 +88,9 @@ public class FilteredSelectionDialog extends javax.swing.JDialog implements Stat
 
         okButton.setText("OK");
         okButton.setEnabled(false);
+        okButton.setMaximumSize(new java.awt.Dimension(75, 23));
+        okButton.setMinimumSize(new java.awt.Dimension(75, 23));
+        okButton.setPreferredSize(new java.awt.Dimension(75, 23));
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
@@ -100,6 +103,9 @@ public class FilteredSelectionDialog extends javax.swing.JDialog implements Stat
         getContentPane().add(okButton, gridBagConstraints);
 
         cancelButton.setText("Cancel");
+        cancelButton.setMaximumSize(new java.awt.Dimension(75, 23));
+        cancelButton.setMinimumSize(new java.awt.Dimension(75, 23));
+        cancelButton.setPreferredSize(new java.awt.Dimension(75, 23));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);

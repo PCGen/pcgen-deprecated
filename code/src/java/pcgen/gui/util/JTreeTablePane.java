@@ -30,6 +30,8 @@ import pcgen.gui.util.treetable.TreeTableModel;
 public class JTreeTablePane extends JTablePane
 {
 
+    private static final long serialVersionUID = -2581915114516430509L;
+
     public JTreeTablePane()
     {
         this(null);
@@ -49,7 +51,7 @@ public class JTreeTablePane extends JTablePane
     @Override
     public void setModel(SortableTableModel model)
     {
-        //TODO: log something
+    //TODO: log something
     }
 
     public void setTreeTableModel(TreeTableModel model)

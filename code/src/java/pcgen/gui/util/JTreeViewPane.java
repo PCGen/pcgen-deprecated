@@ -51,6 +51,7 @@ import pcgen.util.ListMap;
 public class JTreeViewPane extends JTablePane
 {
 
+    private static final long serialVersionUID = -819160273659674383L;
     private static final TreeView<Object> searchView = new TreeView<Object>()
     {
 

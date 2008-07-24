@@ -71,7 +71,7 @@ import pcgen.gui.util.ResourceManager.Icons;
 public class FlippingSplitPane extends JSplitPane
 {
 
-    static final long serialVersionUID = -6343545558990369582L;
+    private static final long serialVersionUID = -6343545558990369582L;
     /**
      * Icon for Center item in popup menu.
      */

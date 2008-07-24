@@ -30,6 +30,7 @@ import java.awt.Component;
 public class ChooserPane extends FlippingSplitPane
 {
 
+    private static final long serialVersionUID = -8364721218562027273L;
     private FlippingSplitPane subSplitPane;
     private InfoPane infoPane;
 

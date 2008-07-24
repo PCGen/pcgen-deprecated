@@ -43,6 +43,7 @@ import pcgen.gui.util.table.SortableTableModel;
 public class JTablePane extends JScrollPane
 {
 
+    private static final long serialVersionUID = 4706817975828759006L;
     private final DynamicTableColumnModelListener listener = new DynamicTableColumnModelListener()
     {
 

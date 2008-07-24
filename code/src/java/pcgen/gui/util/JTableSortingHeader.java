@@ -45,6 +45,7 @@ import javax.swing.table.TableColumnModel;
 public class JTableSortingHeader extends JTableHeader implements MouseListener
 {
 
+    private static final long serialVersionUID = -2459707147524421794L;
     private static final Icon ASCENDING_ICON = ResourceManager.getImageIcon(ResourceManager.Icons.Down16);
     private static final Icon DESCENDING_ICON = ResourceManager.getImageIcon(ResourceManager.Icons.Up16);
     private static final ButtonModel defaultModel = new DefaultButtonModel();
