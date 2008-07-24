@@ -29,9 +29,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -62,8 +62,8 @@ public class FilterPanel extends JPanel implements StateEditable
             ":";
     private static final String clearString = PropertyFactory.getString("in_clear");
     private static final String advancedString = PropertyFactory.getString("in_demAdv");
-    private final List<JToggleButton> filterbuttons;
     private final JTextField textfield;
+    private final JPanel buttonPanel;
     private FilterPanelListener panelListener = null;
     private ListDataListener listListener;
     private List<Filter> selectedFilters;
@@ -71,14 +71,14 @@ public class FilterPanel extends JPanel implements StateEditable
 
     public FilterPanel()
     {
-        this.filterbuttons = new LinkedList<JToggleButton>();
+        this.buttonPanel = new JPanel(new FilterLayout());
         this.textfield = new JTextField();
         initComponents();
     }
 
     private void initComponents()
     {
-        setLayout(new FilterLayout());
+        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
@@ -135,6 +135,7 @@ public class FilterPanel extends JPanel implements StateEditable
         toolbar.addSeparator();
 
         add(toolbar);
+        add(buttonPanel);
     }
 
     private <T> void setFilterClass(Class<T> filterClass)
@@ -168,11 +169,7 @@ public class FilterPanel extends JPanel implements StateEditable
 
     private <T> void setFilterButtons(List<NamedFilter<? super T>> filters)
     {
-        for (JToggleButton button : filterbuttons)
-        {
-            remove(button);
-        }
-        filterbuttons.clear();
+        buttonPanel.removeAll();
 
         boolean updateFilters = selectedFilters.retainAll(filters);
 
@@ -180,8 +177,7 @@ public class FilterPanel extends JPanel implements StateEditable
         {
             JToggleButton button = new JToggleButton(new FilterAction(filter));
             button.setSelected(selectedFilters.contains(filter));
-            filterbuttons.add(button);
-            add(button);
+            buttonPanel.add(button);
         }
 
         if (updateFilters)

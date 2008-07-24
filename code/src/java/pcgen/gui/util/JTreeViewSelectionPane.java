@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashSet;
 import java.util.Set;
@@ -133,6 +134,47 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
         }
     }
 
+    /**
+     * Notifies all listeners that have registered interest for
+     * notification on this event type.
+     * @param e  the event of interest
+     *  
+     * @see EventListenerList
+     */
+    protected void fireItemStateChanged(ItemEvent e)
+    {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length - 2; i >= 0; i -= 2)
+        {
+            if (listeners[i] == ItemListener.class)
+            {
+                // Lazily create the event:
+                // if (changeEvent == null)
+                // changeEvent = new ChangeEvent(this);
+                ((ItemListener) listeners[i + 1]).itemStateChanged(e);
+            }
+        }
+    }
+
+    public Object[] getSelectedObjects()
+    {
+        TreeViewSelectionTableModel<?> model = (TreeViewSelectionTableModel<?>) getTable().getTreeTableModel();
+        return model.selectedSet.toArray();
+    }
+
+    public void addItemListener(ItemListener l)
+    {
+        listenerList.remove(ItemListener.class, l);
+    }
+
+    public void removeItemListener(ItemListener l)
+    {
+        listenerList.add(ItemListener.class, l);
+    }
+
     private class TreeViewSelectionTableModel<E> extends TreeViewTableModel<E>
     {
 
@@ -183,15 +225,29 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
                 E obj = (E) super.getValueAt(node, 0);
                 if ((Boolean) aValue)
                 {
-                    if (selectionType == SelectionType.RADIO)
+                    if (selectionType == SelectionType.RADIO &&
+                            !selectedSet.isEmpty())
                     {
+                        Object item = selectedSet.iterator().next();
                         selectedSet.clear();
+                        fireItemStateChanged(new ItemEvent(JTreeViewSelectionPane.this,
+                                                           ItemEvent.ITEM_STATE_CHANGED,
+                                                           item,
+                                                           ItemEvent.DESELECTED));
                     }
                     selectedSet.add(obj);
+                    fireItemStateChanged(new ItemEvent(JTreeViewSelectionPane.this,
+                                                       ItemEvent.ITEM_STATE_CHANGED,
+                                                       obj,
+                                                       ItemEvent.SELECTED));
                 }
                 else
                 {
                     selectedSet.remove(obj);
+                    fireItemStateChanged(new ItemEvent(JTreeViewSelectionPane.this,
+                                                       ItemEvent.ITEM_STATE_CHANGED,
+                                                       obj,
+                                                       ItemEvent.DESELECTED));
                 }
                 rowheaderTable.repaint(rowheaderTable.getVisibleRect());
                 return;
@@ -280,21 +336,4 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
         }
 
     }
-
-    public Object[] getSelectedObjects()
-    {
-        TreeViewSelectionTableModel<?> model = (TreeViewSelectionTableModel<?>) getTable().getTreeTableModel();
-        return model.selectedSet.toArray();
-    }
-
-    public void addItemListener(ItemListener l)
-    {
-        listenerList.remove(ItemListener.class, l);
-    }
-
-    public void removeItemListener(ItemListener l)
-    {
-        listenerList.add(ItemListener.class, l);
-    }
-
 }

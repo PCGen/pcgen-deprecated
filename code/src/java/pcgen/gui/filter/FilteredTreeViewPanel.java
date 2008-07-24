@@ -45,8 +45,8 @@ import pcgen.gui.util.treeview.TreeViewModelWrapper;
 public class FilteredTreeViewPanel extends JPanel implements StateEditable
 {
 
-    private FilterPanel filterPanel;
-    private JTreeViewPane treeViewPane;
+    protected final FilterPanel filterPanel;
+    protected final JTreeViewPane treeViewPane;
 
     public FilteredTreeViewPanel()
     {
@@ -59,9 +59,14 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
         add(treeViewPane, BorderLayout.CENTER);
     }
 
-    public JTreeViewPane createDefaultTreeViewPane()
+    protected JTreeViewPane createDefaultTreeViewPane()
     {
         return new JTreeViewPane();
+    }
+
+    protected JTreeViewPane getTreeViewPane()
+    {
+        return treeViewPane;
     }
 
     /**
@@ -70,7 +75,7 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
      */
     public ListSelectionModel getSelectionModel()
     {
-        return treeViewPane.getSelectionModel();
+        return getTreeViewPane().getSelectionModel();
     }
 
     /**
@@ -79,7 +84,7 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
      */
     public List<Object> getSelectedData()
     {
-        return treeViewPane.getSelectedData();
+        return getTreeViewPane().getSelectedData();
     }
 
     /**
@@ -89,7 +94,7 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
     @Override
     public TransferHandler getTransferHandler()
     {
-        return treeViewPane.getTransferHandler();
+        return getTreeViewPane().getTransferHandler();
     }
 
     /**
@@ -99,7 +104,7 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
     @Override
     public void setTransferHandler(TransferHandler newHandler)
     {
-        treeViewPane.setTransferHandler(newHandler);
+        getTreeViewPane().setTransferHandler(newHandler);
     }
 
     /**
@@ -108,7 +113,7 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
      */
     public boolean getDragEnabled()
     {
-        return treeViewPane.getDragEnabled();
+        return getTreeViewPane().getDragEnabled();
     }
 
     /**
@@ -117,7 +122,7 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
      */
     public void setDragEnabled(boolean b)
     {
-        treeViewPane.setDragEnabled(b);
+        getTreeViewPane().setDragEnabled(b);
     }
 
     public <T> Hashtable<Object, Object> createState(CharacterFacade character,
@@ -137,7 +142,7 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
     public void restoreState(Hashtable<?, ?> state)
     {
         FilteredTreeViewModel<?> model = (FilteredTreeViewModel<?>) state.get("FilteredTreeViewModel");
-        treeViewPane.setTreeViewModel(model);
+        getTreeViewPane().setTreeViewModel(model);
         filterPanel.setFilterPanelListener(model);
         filterPanel.restoreState(state);
     }
@@ -168,13 +173,13 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
                                                 dataModel.getSize());
             new FilterUpdater(sublist, (List<E>) e.getData(),
                               filterPanel.getFilter(),
-                              treeViewPane.getQuickSearchMode()).start();
+                              getTreeViewPane().getQuickSearchMode()).start();
         }
 
         public void contentsChanged(GenericListDataEvent e)
         {
             applyFilter(filterPanel.getFilter(),
-                        treeViewPane.getQuickSearchMode());
+                        getTreeViewPane().getQuickSearchMode());
         }
 
         public void applyFilter(Filter filter, boolean quicksearch)
@@ -225,12 +230,12 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
                 if (value.size() != baseData.size())
                 {
                     modelData.clear();
-                    treeViewPane.setQuickSearchMode(quicksearch);
+                    getTreeViewPane().setQuickSearchMode(quicksearch);
                     modelData.addAll(value);
                 }
                 else
                 {
-                    treeViewPane.setQuickSearchMode(quicksearch);
+                    getTreeViewPane().setQuickSearchMode(quicksearch);
                 }
             }
 
