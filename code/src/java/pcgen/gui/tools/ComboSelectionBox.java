@@ -73,9 +73,18 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
         add(button, BorderLayout.LINE_END);
     }
 
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        super.setEnabled(enabled);
+        comboBox.setEnabled(enabled);
+        button.setEnabled(enabled);
+    }
+
     public void setTreeViewModel(FilterableTreeViewModel<?> viewmodel)
     {
         model.setTreeViewModel(viewmodel);
+
     }
 
     public Object getSelectedItem()

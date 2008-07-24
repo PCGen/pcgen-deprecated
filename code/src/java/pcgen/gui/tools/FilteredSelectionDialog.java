@@ -87,6 +87,7 @@ public class FilteredSelectionDialog extends javax.swing.JDialog implements Stat
         getContentPane().add(chooserPane1, gridBagConstraints);
 
         okButton.setText("OK");
+        okButton.setEnabled(false);
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);

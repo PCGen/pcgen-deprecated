@@ -162,7 +162,11 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
     public Object[] getSelectedObjects()
     {
         TreeViewSelectionTableModel<?> model = (TreeViewSelectionTableModel<?>) getTable().getTreeTableModel();
-        return model.selectedSet.toArray();
+        if (model != null)
+        {
+            return model.selectedSet.toArray();
+        }
+        return new Object[0];
     }
 
     public void addItemListener(ItemListener l)
