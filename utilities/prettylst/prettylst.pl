@@ -544,6 +544,7 @@ my @valid_system_game_modes  = qw(
 	DnD
 	LoE
 	Modern
+	Pathfinder
 	Sidewinder
 	SovereignStoneD20
 	Spycraft
@@ -16509,6 +16510,7 @@ my @valid_system_game_modes  = qw(
 	DnD
 	LoE
 	Modern
+	Pathfinder
 	Sidewinder
 	SovereignStoneD20
 	Spycraft
