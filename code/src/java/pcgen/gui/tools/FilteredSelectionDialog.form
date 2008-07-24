@@ -3,9 +3,6 @@
 <Form version="1.5" maxVersion="1.5" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
-      <BindingProperties>
-        <BindingProperty name="text" source="filteredTreeViewSelectionPanel1" sourcePath="${selectedItem}" target="jLabel1" targetPath="text" updateStrategy="1" immediately="false"/>
-      </BindingProperties>
     </Component>
   </NonVisualComponents>
   <SyntheticProperties>
@@ -43,6 +40,9 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
       <SubComponents>
         <Component class="pcgen.gui.tools.FilteredTreeViewSelectionPanel" name="filteredTreeViewSelectionPanel1">
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="filteredTreeViewSelectionPanel1ItemStateChanged"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
               <JSplitPaneConstraints position="left"/>

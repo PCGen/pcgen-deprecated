@@ -5,11 +5,16 @@
  */
 package pcgen.gui.tools;
 
+import java.util.Hashtable;
+import javax.swing.undo.StateEditable;
+import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.filter.FilterableTreeViewModel;
+
 /**
  *
  * @author  Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilteredSelectionDialog extends javax.swing.JDialog
+public class FilteredSelectionDialog extends javax.swing.JDialog implements StateEditable
 {
 
     /** A return status code - returned if Cancel button has been pressed */
@@ -50,16 +55,12 @@ public class FilteredSelectionDialog extends javax.swing.JDialog
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jLabel1 = new javax.swing.JLabel();
         chooserPane1 = new pcgen.gui.tools.ChooserPane();
         filteredTreeViewSelectionPanel1 = new pcgen.gui.tools.FilteredTreeViewSelectionPanel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, filteredTreeViewSelectionPanel1, org.jdesktop.beansbinding.ELProperty.create("${selectedItem}"), jLabel1, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -69,6 +70,12 @@ public class FilteredSelectionDialog extends javax.swing.JDialog
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         chooserPane1.setSecondaryChooserComponent(jLabel1);
+
+        filteredTreeViewSelectionPanel1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filteredTreeViewSelectionPanel1ItemStateChanged(evt);
+            }
+        });
         chooserPane1.setLeftComponent(filteredTreeViewSelectionPanel1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -101,8 +108,6 @@ public class FilteredSelectionDialog extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         getContentPane().add(cancelButton, gridBagConstraints);
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -118,12 +123,25 @@ public class FilteredSelectionDialog extends javax.swing.JDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
+    private void filteredTreeViewSelectionPanel1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filteredTreeViewSelectionPanel1ItemStateChanged
+        boolean selected = evt.getStateChange() ==
+                java.awt.event.ItemEvent.SELECTED;
+        okButton.setEnabled(selected);
+        if (selected)
+        {
+            jLabel1.setText(filteredTreeViewSelectionPanel1.getSelectedItem().toString());
+        }
+        else
+        {
+            jLabel1.setText(null);
+        }
+    }//GEN-LAST:event_filteredTreeViewSelectionPanel1ItemStateChanged
+
     private void doClose(int retStatus)
     {
         returnStatus = retStatus;
         returnItem = filteredTreeViewSelectionPanel1.getSelectedItem();
         setVisible(false);
-        dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -132,8 +150,24 @@ public class FilteredSelectionDialog extends javax.swing.JDialog
     private pcgen.gui.tools.FilteredTreeViewSelectionPanel filteredTreeViewSelectionPanel1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton okButton;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
     private Object returnItem = null;
+
+    public Hashtable<Object, Object> createState(CharacterFacade character,
+                                                  FilterableTreeViewModel<?> model)
+    {
+        return filteredTreeViewSelectionPanel1.createState(character, model);
+    }
+
+    public void storeState(Hashtable<Object, Object> state)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void restoreState(Hashtable<?, ?> state)
+    {
+        filteredTreeViewSelectionPanel1.restoreState(state);
+    }
+
 }

@@ -21,7 +21,10 @@
 package pcgen.gui.tools;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
+import java.awt.Frame;
 import java.awt.ItemSelectable;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
 import javax.swing.AbstractAction;
@@ -31,6 +34,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import pcgen.gui.filter.FilterableTreeViewModel;
@@ -43,6 +47,7 @@ import pcgen.gui.util.treeview.TreeViewModel;
 public class ComboSelectionBox extends JPanel implements ItemSelectable
 {
 
+    private FilteredSelectionDialog dialog = null;
     private ComboSelectionBoxModel model;
     private JComboBox comboBox;
     private JButton button;
@@ -73,6 +78,11 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
         model.setTreeViewModel(viewmodel);
     }
 
+    public Object getSelectedItem()
+    {
+        return comboBox.getSelectedItem();
+    }
+
     public Object[] getSelectedObjects()
     {
         return comboBox.getSelectedObjects();
@@ -88,14 +98,57 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
         comboBox.removeItemListener(l);
     }
 
+    private class ButtonAction extends AbstractAction
+    {
+
+        public ButtonAction()
+        {
+            super("...");
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            if (dialog == null)
+            {
+                Window window = SwingUtilities.getWindowAncestor(ComboSelectionBox.this);
+                if (window instanceof Frame)
+                {
+                    dialog = new FilteredSelectionDialog((Frame) window);
+                }
+                else
+                {
+                    dialog = new FilteredSelectionDialog((Dialog) window);
+                }
+            }
+            SwingUtilities.invokeLater(
+                    new Runnable()
+                    {
+
+                        public void run()
+                        {
+                            dialog.setVisible(true);
+                            if (dialog.getReturnStatus() ==
+                                    FilteredSelectionDialog.RET_OK)
+                            {
+                                comboBox.setSelectedItem(dialog.getReturnItem());
+                            }
+                        }
+
+                    });
+        }
+
+    }
+
     private static class ComboSelectionBoxModel extends DefaultComboBoxModel
             implements ListDataListener
     {
 
+        private TreeViewModel<?> viewmodel;
         private ListModel model;
 
         public void setTreeViewModel(TreeViewModel<?> viewmodel)
         {
+            this.viewmodel = viewmodel;
             int comboSize = super.getSize();
             if (model != null)
             {
@@ -107,6 +160,11 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
             model = viewmodel.getDataModel();
             model.addListDataListener(this);
             fireIntervalAdded(this, comboSize, getSize() - 1);
+        }
+
+        public TreeViewModel<?> getTreeViewModel()
+        {
+            return viewmodel;
         }
 
         @Override
@@ -153,20 +211,4 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
         }
 
     }
-
-    private class ButtonAction extends AbstractAction
-    {
-
-        public ButtonAction()
-        {
-            super("...");
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-    }
-
 }
