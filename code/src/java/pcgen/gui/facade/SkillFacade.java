@@ -24,7 +24,7 @@ package pcgen.gui.facade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface SkillFacade
+public interface SkillFacade extends InfoFacade
 {
 
     public boolean isUntrained();
@@ -32,9 +32,5 @@ public interface SkillFacade
     public String getType();
 
     public String getKeyStat();
-
-    public String getInfo();
-
-    public String getSource();
 
 }

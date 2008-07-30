@@ -96,7 +96,9 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 
     public Hashtable<Object, Object> createState(CharacterFacade character)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        SkillCostTableModel costModel = new SkillCostTableModel();
+        SkillPointTableModel pointModel = new SkillPointTableModel(character.getLevels());
+        return null;
     }
 
     public void storeState(Hashtable<Object, Object> state)
@@ -106,7 +108,12 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 
     public void restoreState(Hashtable<?, ?> state)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        SkillCostTableModel costModel = (SkillCostTableModel) state.get("SkillCostTableModel");
+        SkillPointTableModel pointModel = (SkillPointTableModel) state.get("SkillPointTableModel");
+        CharacterLevelFacade selectedLevel = (CharacterLevelFacade) state.get("SelectedCharacterLevel");
+
+        skillcostTable.setModel(costModel);
+        skillpointTable.setModel(pointModel);
     }
 
     private static final class SkillTreeViewModel implements FilterableTreeViewModel<SkillFacade>,
@@ -263,11 +270,11 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
     private static class SkillCostTableModel extends AbstractTableModel
     {
 
-        private final CharacterFacade character;
+        private CharacterLevelFacade level;
 
-        public SkillCostTableModel(CharacterFacade character)
+        public void setCharacterLevel(CharacterLevelFacade level)
         {
-            this.character = character;
+            this.level = level;
         }
 
         public int getRowCount()
@@ -290,7 +297,7 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
                 case 1:
                     return Integer.class;
                 case 2:
-                    return Double.class;
+                    return Float.class;
                 default:
                     return Object.class;
             }
@@ -314,7 +321,22 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 
         public Object getValueAt(int rowIndex, int columnIndex)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            SkillCost cost = SkillCost.values()[rowIndex];
+            if (level == null)
+            {
+                return null;
+            }
+            switch (columnIndex)
+            {
+                case 0:
+                    return cost;
+                case 1:
+                    return level.getRankCost(cost);
+                case 2:
+                    return level.getMaxRanks(cost);
+                default:
+                    throw new IndexOutOfBoundsException();
+            }
         }
 
     }
@@ -330,9 +352,9 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
         };
         private final GenericListModel<CharacterLevelFacade> model;
 
-        public SkillPointTableModel(CharacterFacade character)
+        public SkillPointTableModel(GenericListModel<CharacterLevelFacade> levels)
         {
-            model = character.getLevels();
+            model = levels;
             model.addListDataListener(this);
         }
 
@@ -425,24 +447,35 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
     private static class SkillRankSpinnerModel extends AbstractSpinnerModel
     {
 
+        private final CharacterFacade character;
+        private CharacterLevelFacade level;
+        private SkillFacade skill;
+
+        public SkillRankSpinnerModel(CharacterFacade character)
+        {
+            this.character = character;
+        }
+
         public Object getValue()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return character.getSkillRanks(skill);
         }
 
         public void setValue(Object value)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+
         }
 
         public Object getNextValue()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            level.investSkillPoints(skill, 1);
+            return character.getSkillRanks(skill);
         }
 
         public Object getPreviousValue()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            level.investSkillPoints(skill, -1);
+            return character.getSkillRanks(skill);
         }
 
     }

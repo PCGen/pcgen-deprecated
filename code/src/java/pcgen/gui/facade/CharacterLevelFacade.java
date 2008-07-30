@@ -35,6 +35,10 @@ public interface CharacterLevelFacade
 
     public SkillCost getSkillCost(SkillFacade skill);
 
+    public float getMaxRanks(SkillCost cost);
+
+    public int getRankCost(SkillCost cost);
+
     public int getGainedSkillPoints();
 
     public void setGainedSkillPoints(int points);

@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface AbilityFacade
+public interface AbilityFacade extends InfoFacade
 {
 
     public List<AbilityFacade> getRequiredAbilities();
@@ -38,12 +38,5 @@ public interface AbilityFacade
     public boolean isStackable();
 
     public String getDescription();
-
-    public String getSource();
-
-    public String getInfo();
-
-    @Override
-    public String toString();
 
 }

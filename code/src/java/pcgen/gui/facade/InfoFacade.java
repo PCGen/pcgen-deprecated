@@ -1,5 +1,5 @@
 /*
- * ClassFacade.java
+ * InfoFacade.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,25 +16,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 27, 2008, 3:22:49 PM
+ * Created on Jul 26, 2008, 4:32:09 PM
  */
 package pcgen.gui.facade;
-
-import pcgen.gui.filter.Filter;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface ClassFacade extends InfoFacade
+public interface InfoFacade
 {
 
-    public Filter<CharacterFacade> getPrerequisites();
+    public String getInfo();
 
-    public String getHD();
+    public String getSource();
 
-    public String getSpellType();
-
-    public String getBaseStat();
+    @Override
+    public String toString();
 
 }
