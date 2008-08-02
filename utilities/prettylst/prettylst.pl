@@ -2687,7 +2687,7 @@ my %master_order = (
 		'SPELL',
 		'TEMPLATE',
 		'WEAPONPROF',
-	#	'EXTRAFILE',
+		'#EXTRAFILE',
 	],
 
 	'RACE' => [
