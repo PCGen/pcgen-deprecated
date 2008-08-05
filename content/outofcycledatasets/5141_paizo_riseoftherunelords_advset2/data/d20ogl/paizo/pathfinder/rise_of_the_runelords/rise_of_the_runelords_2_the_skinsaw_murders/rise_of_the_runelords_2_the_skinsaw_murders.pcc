@@ -23,6 +23,9 @@ COPYRIGHT:Pathfinder 2: The Skinsaw Murders. Copyright 2007 Paizo Publishing LLC
 COPYRIGHT:Advanced Bestiary. Copyright 2004 Green Ronin Publishing LLC. Author Matthew Sernett
 COPYRIGHT:PCGen dataset conversion for "Rise of the Runelords - Chapter 2: The Skinsaw Murders" Copyright 2007-2008, PCGen Data Team (including, but not limited to, Stefan Radermacher.)
 
+#Do Not Remove Comment
+#INFOTEXT:OGL.txt
+
 ABILITY:pf2_abilities_class_prestige.lst
 ABILITY:pf2_abilities_racial.lst
 CLASS:pf2_classes_prestige.lst
