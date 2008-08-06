@@ -30,6 +30,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 import javax.swing.event.TableColumnModelEvent;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import pcgen.gui.util.event.DynamicTableColumnModelListener;
 import pcgen.gui.util.table.DefaultDynamicTableColumnModel;
@@ -174,6 +176,17 @@ public class JTablePane extends JScrollPane
     public ListSelectionModel getSelectionModel()
     {
         return table.getSelectionModel();
+    }
+
+    public void setDefaultRenderer(Class<?> columnClass,
+                                    TableCellRenderer renderer)
+    {
+        table.setDefaultRenderer(columnClass, renderer);
+    }
+
+    public void setDefaultEditor(Class<?> columnClass, TableCellEditor editor)
+    {
+        table.setDefaultEditor(columnClass, editor);
     }
 
     private class CornerAction extends AbstractAction

@@ -20,6 +20,8 @@
  */
 package pcgen.gui;
 
+import java.util.EnumMap;
+import java.util.Map;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
@@ -34,6 +36,17 @@ import pcgen.gui.util.GenericListModel;
  */
 public final class PCGenUIManager
 {
+
+    private static final Map<HouseRule, Boolean> rulesMap;
+
+    static
+    {
+        rulesMap = new EnumMap<HouseRule, Boolean>(HouseRule.class);
+        for (HouseRule key : rulesMap.keySet())
+        {
+            rulesMap.put(key, false);
+        }
+    }
 
     private PCGenUIManager()
     {
@@ -60,4 +73,14 @@ public final class PCGenUIManager
         return null;
     }
 
+    public static boolean isHouseRuleSelected(HouseRule rule)
+    {
+        return rulesMap.get(rule);
+    }
+
+    public static enum HouseRule
+    {
+        //TODO add the rest of the rules
+        SKILLMAX;
+    }
 }

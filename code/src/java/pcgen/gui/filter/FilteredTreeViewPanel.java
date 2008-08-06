@@ -28,6 +28,8 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.undo.StateEditable;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.util.GenericListModelWrapper;
@@ -123,6 +125,17 @@ public class FilteredTreeViewPanel extends JPanel implements StateEditable
     public void setDragEnabled(boolean b)
     {
         getTreeViewPane().setDragEnabled(b);
+    }
+
+    public void setDefaultRenderer(Class<?> columnClass,
+                                    TableCellRenderer renderer)
+    {
+        getTreeViewPane().setDefaultRenderer(columnClass, renderer);
+    }
+
+    public void setDefaultEditor(Class<?> columnClass, TableCellEditor editor)
+    {
+        getTreeViewPane().setDefaultEditor(columnClass, editor);
     }
 
     public <T> Hashtable<Object, Object> createState(CharacterFacade character,

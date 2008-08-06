@@ -20,6 +20,8 @@
  */
 package pcgen.gui.tabs;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
 import pcgen.gui.tools.ChooserPane;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -33,19 +35,23 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.gui.PCGenUIManager;
+import pcgen.gui.PCGenUIManager.HouseRule;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.CharacterLevelFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.filter.FilterableTreeViewModel;
+import pcgen.gui.filter.FilteredTreeViewPanel;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
@@ -59,12 +65,19 @@ import pcgen.gui.util.treeview.TreeViewPath;
  */
 public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 {
-//private final FilterableTreeViewPane
+
+    private final FilteredTreeViewPanel skillPanel;
     private final JTable skillcostTable;
     private final JTable skillpointTable;
+    private SkillTreeViewModel treeviewModel;
+    private SkillPointTableModel skillpointModel;
+    private SkillCostTableModel skillcostModel;
+    private CharacterLevelFacade selectedLevel;
+    private SkillFacade selectedSkill;
 
     public SkillInfoTab()
     {
+        this.skillPanel = new FilteredTreeViewPanel();
         this.skillcostTable = new JTable();
         this.skillpointTable = new JTable();
         initComponents();
@@ -72,6 +85,32 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 
     private void initComponents()
     {
+        skillPanel.setDefaultRenderer(Float.class,
+                                      new SkillRankSpinnerRenderer());
+        ListSelectionModel selectionModel = skillPanel.getSelectionModel();
+        selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selectionModel.addListSelectionListener(
+                new ListSelectionListener()
+                {
+
+                    public void valueChanged(ListSelectionEvent e)
+                    {
+                        if (!e.getValueIsAdjusting())
+                        {
+                            List<Object> data = skillPanel.getSelectedData();
+                            SkillFacade skill = null;
+                            if (!data.isEmpty() &&
+                                    data.get(0) instanceof SkillFacade)
+                            {
+                                skill = (SkillFacade) data.get(0);
+                            }
+                            setSelectedSkill(skill);
+                        }
+                    }
+
+                });
+        setPrimaryChooserComponent(skillPanel);
+
         JScrollPane tableScrollPane;
         JPanel tablePanel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -94,26 +133,93 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
         setSecondaryChooserComponent(tablePanel);
     }
 
+    private void setSelectedSkill(SkillFacade skill)
+    {
+        this.selectedSkill = skill;
+        setInfoPaneText(skill.getInfo());
+    }
+
+    private void setSelectedLevel(CharacterLevelFacade selectedLevel)
+    {
+        this.selectedLevel = selectedLevel;
+        skillcostModel.setCharacterLevel(selectedLevel);
+        treeviewModel.setCharacterLevel(selectedLevel);
+    }
+
     public Hashtable<Object, Object> createState(CharacterFacade character)
     {
+        SkillTreeViewModel viewModel = new SkillTreeViewModel(character);
         SkillCostTableModel costModel = new SkillCostTableModel();
-        SkillPointTableModel pointModel = new SkillPointTableModel(character.getLevels());
-        return null;
+        SkillPointTableModel pointModel = new SkillPointTableModel(character);
+        SkillRankSpinnerEditor rankEditor = new SkillRankSpinnerEditor(character);
+
+        Hashtable<Object, Object> state = skillPanel.createState(character,
+                                                                 viewModel);
+        state.put("SkillTreeViewModel", viewModel);
+        state.put("SkillCostTableModel", costModel);
+        state.put("SkillPointTableModel", pointModel);
+        state.put("SkillRankSpinnerEditor", rankEditor);
+        state.put("SelectedCharacterLevel",
+                  character.getLevels().getElementAt(0));
+        return state;
     }
 
     public void storeState(Hashtable<Object, Object> state)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        state.put("SelectedCharacterLevel", selectedLevel);
+        state.put("SelectedSkill", selectedSkill);
     }
 
     public void restoreState(Hashtable<?, ?> state)
     {
-        SkillCostTableModel costModel = (SkillCostTableModel) state.get("SkillCostTableModel");
-        SkillPointTableModel pointModel = (SkillPointTableModel) state.get("SkillPointTableModel");
-        CharacterLevelFacade selectedLevel = (CharacterLevelFacade) state.get("SelectedCharacterLevel");
+        treeviewModel = (SkillTreeViewModel) state.get("SkillTreeViewModel");
+        skillcostModel = (SkillCostTableModel) state.get("SkillCostTableModel");
+        skillpointModel = (SkillPointTableModel) state.get("SkillPointTableModel");
 
-        skillcostTable.setModel(costModel);
-        skillpointTable.setModel(pointModel);
+        skillcostTable.setModel(skillcostModel);
+        skillpointTable.setModel(skillpointModel);
+
+        skillPanel.restoreState(state);
+        skillPanel.setDefaultEditor(Float.class,
+                                    (SkillRankSpinnerEditor) state.get("SkillRankSpinnerEditor"));
+        setSelectedLevel((CharacterLevelFacade) state.get("SelectedCharacterLevel"));
+        setSelectedSkill((SkillFacade) state.get("SelectedSkill"));
+    }
+
+    private class SkillRankSpinnerEditor extends AbstractCellEditor
+            implements TableCellEditor, ChangeListener
+    {
+
+        private final JSpinner spinner;
+        private final SkillRankSpinnerModel model;
+
+        public SkillRankSpinnerEditor(CharacterFacade character)
+        {
+            this.model = new SkillRankSpinnerModel(character);
+            this.spinner = new JSpinner(model);
+            spinner.addChangeListener(this);
+        }
+
+        public Object getCellEditorValue()
+        {
+            return model.getValue();
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                      boolean isSelected,
+                                                      int row,
+                                                      int column)
+        {
+            model.setSkill(selectedSkill);
+            model.setLevel(selectedLevel);
+            return spinner;
+        }
+
+        public void stateChanged(ChangeEvent e)
+        {
+            stopCellEditing();
+        }
+
     }
 
     private static final class SkillTreeViewModel implements FilterableTreeViewModel<SkillFacade>,
@@ -275,6 +381,7 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
         public void setCharacterLevel(CharacterLevelFacade level)
         {
             this.level = level;
+            fireTableRowsUpdated(0, 2);
         }
 
         public int getRowCount()
@@ -321,11 +428,11 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 
         public Object getValueAt(int rowIndex, int columnIndex)
         {
-            SkillCost cost = SkillCost.values()[rowIndex];
             if (level == null)
             {
                 return null;
             }
+            SkillCost cost = SkillCost.values()[rowIndex];
             switch (columnIndex)
             {
                 case 0:
@@ -352,9 +459,9 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
         };
         private final GenericListModel<CharacterLevelFacade> model;
 
-        public SkillPointTableModel(GenericListModel<CharacterLevelFacade> levels)
+        public SkillPointTableModel(CharacterFacade character)
         {
-            model = levels;
+            model = character.getLevels();
             model.addListDataListener(this);
         }
 
@@ -456,69 +563,83 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
             this.character = character;
         }
 
-        public Object getValue()
+        public Float getValue()
         {
             return character.getSkillRanks(skill);
+        }
+
+        public void setSkill(SkillFacade skill)
+        {
+            this.skill = skill;
+        }
+
+        public void setLevel(CharacterLevelFacade level)
+        {
+            this.level = level;
         }
 
         public void setValue(Object value)
         {
-
+            if (value instanceof Float)
+            {
+                setValue((Float) value);
+            }
         }
 
-        public Object getNextValue()
+        public void setValue(Float value)
         {
-            level.investSkillPoints(skill, 1);
-            return character.getSkillRanks(skill);
+            SkillCost cost = level.getSkillCost(skill);
+            if (value < 0)
+            {
+                value = Float.valueOf(0);
+            }
+            else if (!PCGenUIManager.isHouseRuleSelected(HouseRule.SKILLMAX))
+            {
+                float max = level.getMaxRanks(cost);
+                if (value > max)
+                {
+                    value = max;
+                }
+            }
+            int points = (int) ((value - getValue()) * level.getRankCost(cost));
+
+            if (level.investSkillPoints(skill, points))
+            {
+                fireStateChanged();
+            }
         }
 
-        public Object getPreviousValue()
+        public Float getNextValue()
         {
-            level.investSkillPoints(skill, -1);
-            return character.getSkillRanks(skill);
+            float value = getValue();
+            SkillCost cost = level.getSkillCost(skill);
+            if (!PCGenUIManager.isHouseRuleSelected(HouseRule.SKILLMAX) &&
+                    value == level.getMaxRanks(cost))
+            {
+                return null;
+            }
+            return value + 1f / level.getRankCost(cost);
+        }
+
+        public Float getPreviousValue()
+        {
+            float value = getValue();
+            SkillCost cost = level.getSkillCost(skill);
+            if (value == 0)
+            {
+                return null;
+            }
+            return value - 1f / level.getRankCost(cost);
         }
 
     }
 
-    private static class TableCellSpinnerEditor extends AbstractCellEditor
-            implements TableCellEditor
+    private static class SkillRankSpinnerRenderer extends DefaultTableCellRenderer
     {
 
-        private JSpinner spinner;
+        private JSpinner spinner = new JSpinner();
 
-        public TableCellSpinnerEditor()
-        {
-            SpinnerNumberModel model = new SpinnerNumberModel();
-            model.setMinimum(0);
-            this.spinner = new JSpinner(model);
-        }
-
-        public Object getCellEditorValue()
-        {
-            return spinner.getValue();
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                                                      boolean isSelected,
-                                                      int row,
-                                                      int column)
-        {
-            if (value == null)
-            {
-                spinner.setValue(0);
-            }
-            else
-            {
-                spinner.setValue(value);
-            }
-            return spinner;
-        }
-
-    }
-
-    private static class TableCellSpinnerRenderer extends JSpinner implements TableCellRenderer
-    {
-
+        @Override
         public Component getTableCellRendererComponent(JTable table,
                                                         Object value,
                                                         boolean isSelected,
@@ -526,15 +647,16 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
                                                         int row,
                                                         int column)
         {
+            super.getTableCellRendererComponent(table, value, isSelected,
+                                                hasFocus, row, column);
             if (value == null)
             {
-                setValue(0);
+                return this;
             }
-            else
-            {
-                setValue(value);
-            }
-            return this;
+            spinner.setBackground(getBackground());
+            spinner.setForeground(getForeground());
+            spinner.setValue(value);
+            return spinner;
         }
 
     }

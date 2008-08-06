@@ -29,7 +29,17 @@ import pcgen.cdom.enumeration.SkillCost;
 public interface CharacterLevelFacade
 {
 
-    public void investSkillPoints(SkillFacade skill, int points);
+    /**
+     * 
+     * This method handles adding and removing skill points to the character's
+     * skills. This methods takes into acount the skill cost and spendable skill
+     * points and will call appropriate message dialogs when an inappropriate
+     * action is called.
+     * @param skill the skill to invest points in
+     * @param points the amount of points to invest
+     * @return true if the points were successfuly invested
+     */
+    public boolean investSkillPoints(SkillFacade skill, int points);
 
     public ClassFacade getSelectedClass();
 
