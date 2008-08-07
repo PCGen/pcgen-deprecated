@@ -25,6 +25,7 @@ import java.util.Map;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.filter.NamedFilter;
 import pcgen.gui.util.DefaultGenericListModel;
@@ -50,6 +51,11 @@ public final class PCGenUIManager
 
     private PCGenUIManager()
     {
+    }
+
+    public static boolean isQualified(CharacterFacade character, ClassFacade c)
+    {
+        return false;
     }
 
     public static <T> GenericListModel<NamedFilter<? super T>> getDisplayedFilters(Class<T> c)

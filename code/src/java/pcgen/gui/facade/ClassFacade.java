@@ -20,8 +20,6 @@
  */
 package pcgen.gui.facade;
 
-import pcgen.gui.filter.Filter;
-
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
@@ -29,7 +27,7 @@ import pcgen.gui.filter.Filter;
 public interface ClassFacade extends InfoFacade
 {
 
-    public Filter<CharacterFacade> getPrerequisites();
+    public String[] getTypes();
 
     public String getHD();
 

@@ -29,6 +29,9 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
@@ -53,8 +56,14 @@ import javax.swing.table.AbstractTableModel;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.CharacterLevelFacade;
 import pcgen.gui.facade.ClassFacade;
+import pcgen.gui.filter.FilterableTreeViewModel;
 import pcgen.gui.filter.FilteredTreeViewPanel;
 import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.treeview.DataView;
+import pcgen.gui.util.treeview.DataViewColumn;
+import pcgen.gui.util.treeview.DefaultDataViewColumn;
+import pcgen.gui.util.treeview.TreeView;
+import pcgen.gui.util.treeview.TreeViewPath;
 import pcgen.util.PropertyFactory;
 
 /**
@@ -64,14 +73,19 @@ import pcgen.util.PropertyFactory;
 public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
 {
 
-    private final FilteredTreeViewPanel treeviewDisplay;
+    private final FilteredTreeViewPanel treeviewPanel;
     private final JTable classTable;
+    private final JButton addButton;
+    private final JButton removeButton;
+    private ClassFacade selectedClass;
     private int spinnerValue;
 
     public ClassInfoTab()
     {
-        this.treeviewDisplay = new FilteredTreeViewPanel();
+        this.treeviewPanel = new FilteredTreeViewPanel();
         this.classTable = new JTable();
+        this.addButton = new JButton();
+        this.removeButton = new JButton();
         initComponents();
     }
 
@@ -80,19 +94,17 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        JButton button;
         Dimension buttonSize = new Dimension(100, 23);
 
-        button = new JButton(new AddClassAction());
-        button.setDefaultCapable(false);
-        button.setMinimumSize(buttonSize);
-        button.setPreferredSize(buttonSize);
+        addButton.setDefaultCapable(false);
+        addButton.setMinimumSize(buttonSize);
+        addButton.setPreferredSize(buttonSize);
 
         constraints.fill = GridBagConstraints.VERTICAL;
         constraints.anchor = GridBagConstraints.EAST;
         constraints.weightx = 1.0;
         constraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        panel.add(button, constraints);
+        panel.add(addButton, constraints);
 
         Dimension spinnerSize = new Dimension(50, 18);
         final JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, null,
@@ -114,19 +126,18 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
         constraints.weightx = 0.0;
         panel.add(spinner, constraints);
 
-        button = new JButton(new RemoveClassAction());
-        button.setDefaultCapable(false);
-        button.setMinimumSize(buttonSize);
-        button.setPreferredSize(buttonSize);
+        removeButton.setDefaultCapable(false);
+        removeButton.setMinimumSize(buttonSize);
+        removeButton.setPreferredSize(buttonSize);
 
         constraints.anchor = GridBagConstraints.WEST;
         constraints.weightx = 1.0;
         constraints.gridwidth = GridBagConstraints.REMAINDER;
-        panel.add(button, constraints);
+        panel.add(removeButton, constraints);
 
-        ListSelectionModel model = classTable.getSelectionModel();
-        model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        model.addListSelectionListener(
+        ListSelectionModel selectionModel = classTable.getSelectionModel();
+        selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selectionModel.addListSelectionListener(
                 new ListSelectionListener()
                 {
 
@@ -151,24 +162,63 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
         classTable.setDragEnabled(true);
         classTable.setTransferHandler(handler);
 
-        treeviewDisplay.setDragEnabled(true);
-        treeviewDisplay.setTransferHandler(handler);
+        treeviewPanel.setDragEnabled(true);
+        treeviewPanel.setTransferHandler(handler);
 
-        setPrimaryChooserComponent(treeviewDisplay);
+        setPrimaryChooserComponent(treeviewPanel);
         setSecondaryChooserComponent(panel);
+    }
+
+    private void setSelectedClass(ClassFacade c)
+    {
+
+    }
+
+    private ClassFacade[] createFacadeArray(ClassFacade c)
+    {
+        ClassFacade[] classes = new ClassFacade[spinnerValue];
+        for (int x = 0; x < spinnerValue; x++)
+        {
+            classes[x] = c;
+        }
+        return classes;
+    }
+
+    public Hashtable<Object, Object> createState(CharacterFacade character)
+    {
+        ClassTableModel classModel = new ClassTableModel(character);
+
+        Hashtable<Object, Object> state = treeviewPanel.createState(character,
+                                                                    null);
+        state.put("ClassTableModel", classModel);
+
+        return state;
+    }
+
+    public void storeState(Hashtable<Object, Object> state)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void restoreState(Hashtable<?, ?> state)
+    {
+        classTable.setModel((ClassTableModel) state.get("ClassTableModel"));
     }
 
     private class AddClassAction extends AbstractAction
     {
 
-        public AddClassAction()
+        private CharacterFacade character;
+
+        public AddClassAction(CharacterFacade character)
         {
             super(PropertyFactory.getString("in_add"));
+            this.character = character;
         }
 
         public void actionPerformed(ActionEvent e)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            character.addCharacterLevels(createFacadeArray(selectedClass));
         }
 
     }
@@ -176,14 +226,17 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
     private class RemoveClassAction extends AbstractAction
     {
 
-        public RemoveClassAction()
+        private CharacterFacade character;
+
+        public RemoveClassAction(CharacterFacade character)
         {
             super(PropertyFactory.getString("in_remove"));
+            this.character = character;
         }
 
         public void actionPerformed(ActionEvent e)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            character.removeCharacterLevels(spinnerValue);
         }
 
     }
@@ -212,7 +265,7 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
         @Override
         protected Transferable createTransferable(JComponent c)
         {
-            List<Object> data = treeviewDisplay.getSelectedData();
+            List<Object> data = treeviewPanel.getSelectedData();
             if (data.isEmpty())
             {
                 return null;
@@ -272,7 +325,7 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
                         classes[x] = c;
                     }
 
-                    //model.addRows(classes);
+                    //selectionModel.addRows(classes);
                     return true;
                 }
                 catch (UnsupportedFlavorException ex)
@@ -294,7 +347,103 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
 
     }
 
-    private static final class ClassTableModel extends AbstractTableModel
+    private static class ClassTreeViewModel implements FilterableTreeViewModel<ClassFacade>,
+                                                         DataView<ClassFacade>
+    {
+
+        private static final List<DefaultDataViewColumn> columns =
+                Arrays.asList(new DefaultDataViewColumn("HD", String.class),
+                              new DefaultDataViewColumn("Type", String[].class),
+                              new DefaultDataViewColumn("Base Stat",
+                                                        String.class),
+                              new DefaultDataViewColumn("Spell Type",
+                                                        String.class));
+
+        public Class<ClassFacade> getFilterClass()
+        {
+            return ClassFacade.class;
+        }
+
+        public List<? extends TreeView<ClassFacade>> getTreeViews()
+        {
+            return Arrays.asList(ClassTreeView.values());
+        }
+
+        public int getDefaultTreeViewIndex()
+        {
+            return 0;
+        }
+
+        public DataView<ClassFacade> getDataView()
+        {
+            return this;
+        }
+
+        public GenericListModel<ClassFacade> getDataModel()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public List<?> getData(ClassFacade obj)
+        {
+            return Arrays.asList(obj.getHD(), obj.getTypes(), obj.getBaseStat(),
+                                 obj.getSpellType());
+        }
+
+        public List<? extends DataViewColumn> getDataColumns()
+        {
+            return columns;
+        }
+
+        private static enum ClassTreeView implements TreeView<ClassFacade>
+        {
+
+            NAME("Name"),
+            TYPE_NAME("Type/Name"),
+            SOURCE_NAME("Source/Name");
+            private String name;
+
+            private ClassTreeView(String name)
+            {
+                this.name = name;
+            }
+
+            public String getViewName()
+            {
+                return name;
+            }
+
+            public List<TreeViewPath<ClassFacade>> getPaths(ClassFacade pobj)
+            {
+                switch (this)
+                {
+                    case TYPE_NAME:
+                        String[] types = pobj.getTypes();
+                        if (types != null && types.length > 0)
+                        {
+                            List<TreeViewPath<ClassFacade>> paths = new ArrayList<TreeViewPath<ClassFacade>>(types.length);
+                            for (String type : types)
+                            {
+                                paths.add(new TreeViewPath<ClassFacade>(pobj,
+                                                                        type));
+                            }
+                            return paths;
+                        }
+                    case NAME:
+                        return Collections.singletonList(new TreeViewPath<ClassFacade>(pobj));
+                    case SOURCE_NAME:
+                        return Collections.singletonList(new TreeViewPath<ClassFacade>(pobj,
+                                                                                       pobj.getSource()));
+                    default:
+                        throw new InternalError();
+                }
+
+            }
+
+        }
+    }
+
+    private static class ClassTableModel extends AbstractTableModel
             implements ListDataListener
     {
 
@@ -302,12 +451,10 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
                                                     "Class",
                                                     "Source"
         };
-        private CharacterFacade character;
         private GenericListModel<CharacterLevelFacade> model;
 
         public ClassTableModel(CharacterFacade character)
         {
-            this.character = character;
             this.model = character.getLevels();
             model.addListDataListener(this);
         }
@@ -339,7 +486,7 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
                     return Object.class;
                 case 2:
                     return String.class;
-            }
+                }
             return null;
         }
 
@@ -358,7 +505,7 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
                     return c.getSource();
                 default:
                     return null;
-            }
+                }
         }
 
         public void intervalAdded(ListDataEvent e)
@@ -376,24 +523,5 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
             fireTableRowsUpdated(e.getIndex0(), e.getIndex1());
         }
 
+        }
     }
-
-    public Hashtable<Object, Object> createState(CharacterFacade character)
-    {
-        Hashtable<Object, Object> state = new Hashtable<Object, Object>();
-        state.put("ClassTableModel", new ClassTableModel(character));
-
-        return state;
-    }
-
-    public void storeState(Hashtable<Object, Object> state)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void restoreState(Hashtable<?, ?> state)
-    {
-        classTable.setModel((ClassTableModel) state.get("ClassTableModel"));
-    }
-
-}

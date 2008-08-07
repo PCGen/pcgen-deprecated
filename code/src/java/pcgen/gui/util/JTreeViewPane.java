@@ -35,6 +35,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import pcgen.gui.util.table.DefaultDynamicTableColumnModel;
 import pcgen.gui.util.table.DynamicTableColumnModel;
@@ -106,6 +107,11 @@ public class JTreeViewPane extends JTablePane
     public TreeViewModel<?> getTreeViewModel()
     {
         return viewModel;
+    }
+
+    public void setTreeCellRenderer(TreeCellRenderer renderer)
+    {
+        getTable().setTreeCellRenderer(renderer);
     }
 
     public <T> void setTreeViewModel(TreeViewModel<T> viewModel)

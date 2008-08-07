@@ -198,6 +198,11 @@ public class JTreeTable extends JTableEx
         return tree;
     }
 
+    public void setTreeCellRenderer(TreeCellRenderer renderer)
+    {
+        tree.setCellRenderer(renderer);
+    }
+
     /**
      * Forwards the <code>scrollRectToVisible()</code> message to the
      * <code>JComponent</code>'s parent. Components that can service
