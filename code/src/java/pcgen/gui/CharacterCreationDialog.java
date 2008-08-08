@@ -6,6 +6,10 @@
 
 package pcgen.gui;
 
+import java.awt.Dimension;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
 /**
  *
  * @author  Connor Petty <cpmeister@users.sourceforge.net>
@@ -36,6 +40,8 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jButton3 = new javax.swing.JButton();
+        jTable2 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
@@ -48,9 +54,8 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         comboSelectionBox1 = new pcgen.gui.tools.ComboSelectionBox();
         jPanel5 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
         jComboBox5 = new javax.swing.JComboBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        compactScrollPane1 = new pcgen.gui.util.CompactScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
@@ -69,6 +74,32 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+
+        jButton3.setText("Roll");
+        jButton3.setFocusable(false);
+
+        jTable2.setPreferredScrollableViewportSize(new Dimension(75, 0));
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Strength"},
+                {"Dexterity"},
+                {"Constitution"},
+                {"Intelligence"},
+                {"Wisdom"},
+                {"Charisma"}
+            },
+            new String [] {
+                "Title 1"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -146,11 +177,6 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Stats", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
-        jButton3.setText("Roll");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel5.add(jButton3, gridBagConstraints);
-
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3d6", "4d4", "4d6 drop lowest", "4d6, reroll 1's", "4d6, reroll 1's, drop lowest", "5d6, drop 2 lowest" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -159,28 +185,24 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         jPanel5.add(jComboBox5, gridBagConstraints);
 
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(8, 120));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(375, 120));
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Strength", null, null, null, null},
-                {"Dexterity", null, null, null, null},
-                {"Constitution", null, null, null, null},
-                {"Intelligence", null, null, null, null},
-                {"Wisdom", null, null, null, null},
-                {"Charisma", null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Stat", "Base Score", "Racial Adj", "Total", "Mod"
+                "Base Score", "Racial Adj", "Total", "Mod"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, false
+                true, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -191,13 +213,15 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        compactScrollPane1.setViewportView(jTable1);
+
+        compactScrollPane1.setRowHeaderView(jTable2);
+        compactScrollPane1.setCorner(JScrollPane.UPPER_LEFT_CORNER, jButton3);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
-        jPanel5.add(jScrollPane1, gridBagConstraints);
+        jPanel5.add(compactScrollPane1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -348,6 +372,7 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
     private pcgen.gui.tools.ComboSelectionBox comboSelectionBox2;
     private pcgen.gui.tools.ComboSelectionBox comboSelectionBox3;
     private pcgen.gui.tools.ComboSelectionBox comboSelectionBox4;
+    private pcgen.gui.util.CompactScrollPane compactScrollPane1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
@@ -372,8 +397,8 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton okButton;
     // End of variables declaration//GEN-END:variables

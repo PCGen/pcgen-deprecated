@@ -649,32 +649,28 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
         }
 
     }
-    private static final String CATAGORY_TABLE_MODEL = "CatagoryTableModel";
     private static final String SELECTED_TREEVIEW_PANEL_STATE = "SelectedTreeViewPanelState";
-    private static final String SELECTED_ABILITY_TREEVIEW_MODEL = "SelectedAbilityTreeViewModel";
     private static final String AVAILABLE_TREEVIEW_PANEL_STATE = "AvailableTreeViewPanelState";
-    private static final String AVAILABLE_ABILITY_TREEVIEW_MODEL = "AvailableAbilityTreeViewModel";
-    private static final String ABILITY_TRANSFER_HANDLER = "AbilityTransferHandler";
 
     public Hashtable<Object, Object> createState(CharacterFacade character,
                                                   DefaultGenericListModel<AbilityCatagoryFacade> catagories)
     {
         Hashtable<Object, Object> state = new Hashtable<Object, Object>();
-        state.put(CATAGORY_TABLE_MODEL,
+        state.put(CatagoryTableModel.class,
                   new CatagoryTableModel(character, catagories));
         SelectedAbilityTreeViewModel selectedAbilityModel = new SelectedAbilityTreeViewModel(character,
                                                                                              catagories);
         AvailableAbilityTreeViewModel availableAbilityModel = new AvailableAbilityTreeViewModel(character);
 
-        state.put(SELECTED_ABILITY_TREEVIEW_MODEL, selectedAbilityModel);
-        state.put(AVAILABLE_ABILITY_TREEVIEW_MODEL, availableAbilityModel);
+        state.put(SelectedAbilityTreeViewModel.class, selectedAbilityModel);
+        state.put(AvailableAbilityTreeViewModel.class, availableAbilityModel);
         state.put(SELECTED_TREEVIEW_PANEL_STATE,
                   selectedTreeViewPanel.createState(character,
                                                     selectedAbilityModel));
         state.put(AVAILABLE_TREEVIEW_PANEL_STATE,
                   availableTreeViewPanel.createState(character,
                                                      availableAbilityModel));
-        state.put(ABILITY_TRANSFER_HANDLER,
+        state.put(AbilityTransferHandler.class,
                   new AbilityTransferHandler(character));
         return state;
     }
@@ -686,10 +682,10 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
 
     public void restoreState(Hashtable<?, ?> state)
     {
-        catagoryModel = (CatagoryTableModel) state.get(CATAGORY_TABLE_MODEL);
-        selectedModel = (SelectedAbilityTreeViewModel) state.get(SELECTED_ABILITY_TREEVIEW_MODEL);
-        availableModel = (AvailableAbilityTreeViewModel) state.get(AVAILABLE_ABILITY_TREEVIEW_MODEL);
-        AbilityTransferHandler handler = (AbilityTransferHandler) state.get(ABILITY_TRANSFER_HANDLER);
+        catagoryModel = (CatagoryTableModel) state.get(CatagoryTableModel.class);
+        selectedModel = (SelectedAbilityTreeViewModel) state.get(SelectedAbilityTreeViewModel.class);
+        availableModel = (AvailableAbilityTreeViewModel) state.get(AvailableAbilityTreeViewModel.class);
+        AbilityTransferHandler handler = (AbilityTransferHandler) state.get(AbilityTransferHandler.class);
 
         catagoryTable.setModel(catagoryModel);
         selectedTreeViewPanel.setTransferHandler(handler);

@@ -155,10 +155,10 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 
         Hashtable<Object, Object> state = skillPanel.createState(character,
                                                                  viewModel);
-        state.put("SkillTreeViewModel", viewModel);
-        state.put("SkillCostTableModel", costModel);
-        state.put("SkillPointTableModel", pointModel);
-        state.put("SkillRankSpinnerEditor", rankEditor);
+        state.put(SkillTreeViewModel.class, viewModel);
+        state.put(SkillCostTableModel.class, costModel);
+        state.put(SkillPointTableModel.class, pointModel);
+        state.put(SkillRankSpinnerEditor.class, rankEditor);
         state.put("SelectedCharacterLevel",
                   character.getLevels().getElementAt(0));
         return state;
@@ -172,16 +172,16 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 
     public void restoreState(Hashtable<?, ?> state)
     {
-        treeviewModel = (SkillTreeViewModel) state.get("SkillTreeViewModel");
-        skillcostModel = (SkillCostTableModel) state.get("SkillCostTableModel");
-        skillpointModel = (SkillPointTableModel) state.get("SkillPointTableModel");
+        treeviewModel = (SkillTreeViewModel) state.get(SkillTreeViewModel.class);
+        skillcostModel = (SkillCostTableModel) state.get(SkillCostTableModel.class);
+        skillpointModel = (SkillPointTableModel) state.get(SkillPointTableModel.class);
 
         skillcostTable.setModel(skillcostModel);
         skillpointTable.setModel(skillpointModel);
 
         skillPanel.restoreState(state);
         skillPanel.setDefaultEditor(Float.class,
-                                    (SkillRankSpinnerEditor) state.get("SkillRankSpinnerEditor"));
+                                    (SkillRankSpinnerEditor) state.get(SkillRankSpinnerEditor.class));
         setSelectedLevel((CharacterLevelFacade) state.get("SelectedCharacterLevel"));
         setSelectedSkill((SkillFacade) state.get("SelectedSkill"));
     }

@@ -186,12 +186,14 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
 
     public Hashtable<Object, Object> createState(CharacterFacade character)
     {
+        ClassTreeViewModel treeviewModel = new ClassTreeViewModel(character);
         ClassTableModel classModel = new ClassTableModel(character);
 
         Hashtable<Object, Object> state = treeviewPanel.createState(character,
-                                                                    null);
-        state.put("ClassTableModel", classModel);
-
+                                                                    treeviewModel);
+        state.put(ClassTableModel.class, classModel);
+        state.put(AddClassAction.class, new AddClassAction(character));
+        state.put(RemoveClassAction.class, new RemoveClassAction(character));
         return state;
     }
 
@@ -202,7 +204,10 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
 
     public void restoreState(Hashtable<?, ?> state)
     {
-        classTable.setModel((ClassTableModel) state.get("ClassTableModel"));
+        classTable.setModel((ClassTableModel) state.get(ClassTableModel.class));
+        addButton.setAction((AddClassAction) state.get(AddClassAction.class));
+        removeButton.setAction((RemoveClassAction) state.get(RemoveClassAction.class));
+        treeviewPanel.restoreState(state);
     }
 
     private class AddClassAction extends AbstractAction
@@ -353,11 +358,17 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
 
         private static final List<DefaultDataViewColumn> columns =
                 Arrays.asList(new DefaultDataViewColumn("HD", String.class),
-                              new DefaultDataViewColumn("Type", String[].class),
+                              new DefaultDataViewColumn("Type", String.class),
                               new DefaultDataViewColumn("Base Stat",
                                                         String.class),
                               new DefaultDataViewColumn("Spell Type",
                                                         String.class));
+        private CharacterFacade character;
+
+        public ClassTreeViewModel(CharacterFacade character)
+        {
+            this.character = character;
+        }
 
         public Class<ClassFacade> getFilterClass()
         {
@@ -386,8 +397,23 @@ public class ClassInfoTab extends ChooserPane implements CharacterStateEditable
 
         public List<?> getData(ClassFacade obj)
         {
-            return Arrays.asList(obj.getHD(), obj.getTypes(), obj.getBaseStat(),
+            return Arrays.asList(obj.getHD(), getTypes(obj), obj.getBaseStat(),
                                  obj.getSpellType());
+        }
+
+        private String getTypes(ClassFacade obj)
+        {
+            String ret = "";
+            String[] types = obj.getTypes();
+            if (types != null && types.length > 0)
+            {
+                ret += types[0];
+                for (int x = 1; x < types.length; x++)
+                {
+                    ret += ", " + types[x];
+                }
+            }
+            return ret;
         }
 
         public List<? extends DataViewColumn> getDataColumns()
