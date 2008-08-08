@@ -4,7 +4,7 @@
  * Created on July 24, 2008, 5:18 PM
  */
 
-package pcgen.gui;
+package pcgen.gui.proto;
 
 import java.awt.Dimension;
 import javax.swing.JButton;
