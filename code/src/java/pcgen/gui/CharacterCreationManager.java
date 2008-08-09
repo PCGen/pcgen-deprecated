@@ -56,6 +56,8 @@ public interface CharacterCreationManager
 
     public void setCharacterNameValidity(boolean b);
 
+    public void setValidity(String prop, boolean valid);
+
     public List<Generator<Integer>> getAlignmentGenerators();
 
     public List<Generator<Gender>> getGenderGenerators();
@@ -65,5 +67,7 @@ public interface CharacterCreationManager
     public List<Generator<ClassFacade>> getClassGenerators();
 
     public List<Generator<Integer>> getStatGenerators();
+
+    public List<Generator<Integer>> getClassLevelGenerators();
 
 }

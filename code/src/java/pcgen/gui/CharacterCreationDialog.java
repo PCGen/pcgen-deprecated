@@ -30,10 +30,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -46,10 +48,14 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import pcgen.gui.facade.ClassFacade;
+import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.generator.Generator;
 import pcgen.gui.tools.ComboSelectionBox;
 import pcgen.gui.util.DefaultGenericComboBoxModel;
@@ -172,7 +178,67 @@ public class CharacterCreationDialog extends JDialog
         {//Initialize alignmentPanel
             alignmentPanel.setLayout(new BorderLayout());
             {//Initialize alignmentComboBox
+                alignmentComboBox.addActionListener(
+                        new ActionListener()
+                        {
 
+                            @SuppressWarnings("unchecked")
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                Generator<Integer> alignmentGenerator = (Generator<Integer>) alignmentComboBox.getSelectedItem();
+                                if (alignmentGenerator.isSingleton())
+                                {
+                                    int alignment = alignmentGenerator.getRandom();
+                                    Generator<RaceFacade> raceGenerator = (Generator<RaceFacade>) raceSelectionBox.getSelectedItem();
+                                    if (raceGenerator.isSingleton())
+                                    {
+                                        RaceFacade race = raceGenerator.getRandom();
+                                        creationManager.setValidity(creationManager.RACE_VALIDITY,
+                                                                    race.isAcceptableAlignment(alignment));
+                                    }
+                                    Generator<ClassFacade> classGenerator = (Generator<ClassFacade>) classSelectionBox1.getSelectedItem();
+                                    if (classGenerator.isSingleton())
+                                    {
+                                        ClassFacade c = classGenerator.getRandom();
+                                        boolean accept = c.isAcceptableAlignment(alignment);
+                                        creationManager.setValidity(creationManager.CLASSES_VALIDITY,
+                                                                    accept);
+                                        if (!accept)
+                                        {
+                                            return;
+                                        }
+                                    }
+                                    if (!classSelectionBox2.isEnabled())
+                                    {
+                                        return;
+                                    }
+                                    classGenerator = (Generator<ClassFacade>) classSelectionBox2.getSelectedItem();
+                                    if (classGenerator.isSingleton())
+                                    {
+                                        ClassFacade c = classGenerator.getRandom();
+                                        boolean accept = c.isAcceptableAlignment(alignment);
+                                        creationManager.setValidity(creationManager.CLASSES_VALIDITY,
+                                                                    accept);
+                                        if (!accept)
+                                        {
+                                            return;
+                                        }
+                                    }
+                                    if (!classSelectionBox3.isEnabled())
+                                    {
+                                        return;
+                                    }
+                                    classGenerator = (Generator<ClassFacade>) classSelectionBox3.getSelectedItem();
+                                    if (classGenerator.isSingleton())
+                                    {
+                                        ClassFacade c = classGenerator.getRandom();
+                                        creationManager.setValidity(creationManager.CLASSES_VALIDITY,
+                                                                    c.isAcceptableAlignment(alignment));
+                                    }
+                                }
+                            }
+
+                        });
             }
             alignmentPanel.add(alignmentComboBox, BorderLayout.CENTER);
         }
@@ -367,6 +433,18 @@ public class CharacterCreationDialog extends JDialog
             genderComboBox.setModel(createComboBoxModel(creationManager.getGenderGenerators()));
             raceSelectionBox.setModel(createComboBoxModel(creationManager.getRaceGenerators()));
             statSelectionBox.setModel(createComboBoxModel(creationManager.getStatGenerators()));
+
+            DefaultComboBoxModel classComboBoxModel = new DefaultComboBoxModel(creationManager.getClassGenerators().toArray());
+            classSelectionBox1.setModel(classComboBoxModel);
+            classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
+            classSelectionBox2.setModel(classComboBoxModel);
+            classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
+            classSelectionBox3.setModel(classComboBoxModel);
+
+            List<Generator<Integer>> levelGenerators = creationManager.getClassLevelGenerators();
+            levelComboBox1.setModel(createComboBoxModel(levelGenerators));
+            levelComboBox2.setModel(createComboBoxModel(levelGenerators));
+            levelComboBox3.setModel(createComboBoxModel(levelGenerators));
         }
     }
 
@@ -418,6 +496,89 @@ public class CharacterCreationDialog extends JDialog
             @SuppressWarnings("unchecked")
             Generator<String> nameGenerator = (Generator<String>) namesetComboBox.getSelectedItem();
             nameField.setText(nameGenerator.getRandom());
+        }
+
+    }
+
+    private static class ExclusiveComboBoxModel extends DefaultComboBoxModel
+            implements ListDataListener
+    {
+
+        private int excludedIndex = -1;
+        private DefaultComboBoxModel excludedModel;
+
+        public ExclusiveComboBoxModel(DefaultComboBoxModel excludedModel)
+        {
+            this.excludedModel = excludedModel;
+            excludedModel.addListDataListener(this);
+            for (int index = 0; index < excludedModel.getSize(); index++)
+            {
+                Object item = excludedModel.getElementAt(index);
+                if (item == excludedModel.getSelectedItem())
+                {
+                    excludedIndex = index;
+                }
+                else
+                {
+                    addElement(item);
+                }
+            }
+        }
+
+        public void intervalAdded(ListDataEvent e)
+        {
+            for (int index = e.getIndex0(); index <= e.getIndex1(); index++)
+            {
+                if (excludedIndex != -1 && excludedIndex < index)
+                {
+                    insertElementAt(excludedModel.getElementAt(index), index - 1);
+                }
+                else
+                {
+                    insertElementAt(excludedModel.getElementAt(index), index);
+                    excludedIndex++;
+                }
+            }
+        }
+
+        public void intervalRemoved(ListDataEvent e)
+        {
+            for (int index = e.getIndex0(); index <= e.getIndex1(); index++)
+            {
+                if (excludedIndex != -1 && excludedIndex < e.getIndex0())
+                {
+                    removeElementAt(e.getIndex0() - 1);
+                }
+                else
+                {
+                    removeElementAt(e.getIndex0());
+                    if (excludedIndex != -1)
+                    {
+                        if (excludedIndex == e.getIndex0())
+                        {
+                            excludedIndex = -1;
+                        }
+                        excludedIndex--;
+                    }
+                }
+            }
+        }
+
+        public void contentsChanged(ListDataEvent e)
+        {
+            if (e.getIndex0() < 0)
+            {
+                if (excludedIndex != -1)
+                {
+                    insertElementAt(excludedModel.getElementAt(excludedIndex),
+                                    excludedIndex);
+                }
+                excludedIndex = excludedModel.getIndexOf(excludedModel.getSelectedItem());
+                if (excludedIndex != -1)
+                {
+                    removeElementAt(excludedIndex);
+                }
+            }
         }
 
     }
@@ -517,6 +678,7 @@ public class CharacterCreationDialog extends JDialog
 
             rowTable.setPreferredScrollableViewportSize(new Dimension(75, 0));
             rowTable.setAutoCreateColumnsFromModel(false);
+            rowTable.setFocusable(false);
             rowTable.addColumn(new TableColumn());
             ListSelectionModel selectionModel = rowTable.getSelectionModel();
             selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

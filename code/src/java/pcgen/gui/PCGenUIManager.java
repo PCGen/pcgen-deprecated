@@ -90,7 +90,25 @@ public final class PCGenUIManager
 
     public static enum HouseRule
     {
-        //TODO add the rest of the rules
-        SKILLMAX;
+
+        ABILRANGE, //Allow any range for ability scores
+        AMMOSTACKSWITHWEAPON, // Do ammunition enhancement bonus stack with those of the weapon
+        BONUSSPELLKNOWN, // Add stat bonus to Spells Known
+        CLASSPRE, // Bypass Class Prerequisites
+        EQUIPATTACK, // Treat Weapons In Hand As Equipped For Attacks
+        FEATPRE, // Bypass Feat Prerequisites
+        FREECLOTHES, // Ask For Free Clothing at First Level
+        INTBEFORE, // Increment STAT before calculating skill points when leveling
+        INTBONUSLANG, // Allow Selection of Int bonus Languages after 1st level
+        LEVELCAP, // Ignore Level Cap
+        PROHIBITSPELLS, // Restict Cleric/Druid spells based on alignment
+        SIZECAT, // Use 3.5 Weapon Categories
+        SIZEOBJ, // Use 3.0 Weapon Size
+        SKILLMAX, // Bypass Max Skill Ranks
+        SYS_35WP, // Apply 3.5 Size Category Penalty to Attacks
+        //	SYS_CIP, //Improper tools incure a -2 circumstance penalty
+        //	SYS_DOMAIN, // Apply Casterlevel Bonuses from Domains to Spells
+        SYS_LDPACSK, // Apply Load Penalty to AC and Skills
+        SYS_WTPSK; // Apply Weight Penalty to Skills
     }
 }

@@ -27,6 +27,8 @@ package pcgen.gui.facade;
 public interface ClassFacade extends InfoFacade
 {
 
+    public boolean isAcceptableAlignment(int alignment);
+
     public String[] getTypes();
 
     public String getHD();
