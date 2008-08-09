@@ -21,23 +21,16 @@
 package pcgen.gui.tools;
 
 import java.awt.BorderLayout;
-import java.awt.Dialog;
-import java.awt.Frame;
 import java.awt.ItemSelectable;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import pcgen.gui.util.treeview.TreeViewModel;
 
 /**
  *
@@ -47,8 +40,8 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
 {
 
     private static final long serialVersionUID = 4240590146578106112L;
-    private FilteredSelectionDialog dialog = null;
-    private ComboSelectionBoxModel model;
+    private ComboSelectionDialog dialog;
+    private ComboBoxModel model;
     private JComboBox comboBox;
     private JButton button;
 
@@ -73,21 +66,45 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
         add(button, BorderLayout.LINE_END);
     }
 
+    private void checkButton()
+    {
+        if (dialog != null && model != null)
+        {
+            dialog.setModel(model);
+            button.setEnabled(true);
+        }
+        else
+        {
+            button.setEnabled(false);
+        }
+    }
+
     @Override
     public void setEnabled(boolean enabled)
     {
         super.setEnabled(enabled);
         comboBox.setEnabled(enabled);
-        button.setEnabled(enabled);
+        if (enabled)
+        {
+            checkButton();
+        }
+        else
+        {
+            button.setEnabled(false);
+        }
     }
 
-    public void setComboSelectionBoxModel(ComboSelectionBoxModel model)
+    public void setModel(ComboBoxModel model)
     {
         this.model = model;
-        ComboBoxModel boxmodel = new ComboBoxModel(model.getComboBoxData(),
-                                                   model.getTreeViewModel());
-        comboBox.setModel(boxmodel);
-        button.setEnabled(true);
+        comboBox.setModel(model);
+        checkButton();
+    }
+
+    public void setDialog(ComboSelectionDialog dialog)
+    {
+        this.dialog = dialog;
+        checkButton();
     }
 
     public Object getSelectedItem()
@@ -120,93 +137,17 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
 
         public void actionPerformed(ActionEvent e)
         {
-            if (dialog == null)
-            {
-                Window window = SwingUtilities.getWindowAncestor(ComboSelectionBox.this);
-                if (window instanceof Frame)
-                {
-                    dialog = new FilteredSelectionDialog((Frame) window);
-                }
-                else
-                {
-                    dialog = new FilteredSelectionDialog((Dialog) window);
-                }
-            }
-            dialog.restoreState(dialog.createState(model.getCharacter(),
-                                                   model.getTreeViewModel()));
+
             SwingUtilities.invokeLater(
                     new Runnable()
                     {
 
                         public void run()
                         {
-                            dialog.setVisible(true);
-                            if (dialog.getReturnStatus() ==
-                                    FilteredSelectionDialog.RET_OK)
-                            {
-                                comboBox.setSelectedItem(dialog.getReturnItem());
-                            }
+                            dialog.display();
                         }
 
                     });
-        }
-
-    }
-
-    private static class ComboBoxModel extends DefaultComboBoxModel
-            implements ListDataListener
-    {
-
-        private ListModel model;
-
-        public ComboBoxModel(Object[] items, TreeViewModel<?> viewmodel)
-        {
-            super(items);
-            model = viewmodel.getDataModel();
-            model.addListDataListener(this);
-        }
-
-        @Override
-        public int getSize()
-        {
-            int comboSize = super.getSize();
-            if (model == null)
-            {
-                return comboSize;
-            }
-            return comboSize + model.getSize();
-        }
-
-        @Override
-        public Object getElementAt(int index)
-        {
-            int comboSize = super.getSize();
-            if (index < comboSize)
-            {
-                return super.getElementAt(index);
-            }
-            return model.getElementAt(index - comboSize);
-        }
-
-        public void intervalAdded(ListDataEvent e)
-        {
-            int comboSize = super.getSize();
-            fireIntervalAdded(this, comboSize + e.getIndex0(), comboSize +
-                              e.getIndex1());
-        }
-
-        public void intervalRemoved(ListDataEvent e)
-        {
-            int comboSize = super.getSize();
-            fireIntervalRemoved(this, comboSize + e.getIndex0(), comboSize +
-                                e.getIndex1());
-        }
-
-        public void contentsChanged(ListDataEvent e)
-        {
-            int comboSize = super.getSize();
-            fireContentsChanged(this, comboSize + e.getIndex0(), comboSize +
-                                e.getIndex1());
         }
 
     }

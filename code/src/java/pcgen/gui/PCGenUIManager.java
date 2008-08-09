@@ -21,6 +21,7 @@
 package pcgen.gui;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
@@ -28,6 +29,7 @@ import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.filter.NamedFilter;
+import pcgen.gui.generator.Generator;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
 
@@ -38,16 +40,7 @@ import pcgen.gui.util.GenericListModel;
 public final class PCGenUIManager
 {
 
-    private static final Map<HouseRule, Boolean> rulesMap;
-
-    static
-    {
-        rulesMap = new EnumMap<HouseRule, Boolean>(HouseRule.class);
-        for (HouseRule key : rulesMap.keySet())
-        {
-            rulesMap.put(key, false);
-        }
-    }
+    private static final Map<HouseRule, Boolean> rulesMap = new EnumMap<HouseRule, Boolean>(HouseRule.class);
 
     private PCGenUIManager()
     {
@@ -79,9 +72,20 @@ public final class PCGenUIManager
         return null;
     }
 
+    public static List<Generator<String>> getRegisteredNameGenerators()
+    {
+        return null;
+    }
+
     public static boolean isHouseRuleSelected(HouseRule rule)
     {
-        return rulesMap.get(rule);
+        Boolean b = rulesMap.get(rule);
+        return b != null && b;
+    }
+
+    public static String getDefaultCharacterName()
+    {
+        return null;
     }
 
     public static enum HouseRule

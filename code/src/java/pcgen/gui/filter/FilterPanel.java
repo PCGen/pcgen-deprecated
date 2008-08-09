@@ -39,7 +39,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.undo.StateEditable;
@@ -48,6 +47,7 @@ import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.SimpleTextIcon;
+import pcgen.gui.util.event.DocumentChangeAdapter;
 import pcgen.gui.util.event.ListDataAdapter;
 import pcgen.util.PropertyFactory;
 
@@ -106,20 +106,11 @@ public class FilterPanel extends JPanel implements StateEditable
         toolbar.add(button);
 
         textfield.getDocument().addDocumentListener(
-                new DocumentListener()
+                new DocumentChangeAdapter()
                 {
 
-                    public void insertUpdate(DocumentEvent e)
-                    {
-                        fireApplyFilter();
-                    }
-
-                    public void removeUpdate(DocumentEvent e)
-                    {
-                        fireApplyFilter();
-                    }
-
-                    public void changedUpdate(DocumentEvent e)
+                    @Override
+                    public void documentChanged(DocumentEvent e)
                     {
                         fireApplyFilter();
                     }

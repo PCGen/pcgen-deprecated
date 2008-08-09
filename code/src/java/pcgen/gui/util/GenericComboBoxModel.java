@@ -1,5 +1,5 @@
 /*
- * ComboSelectionBoxModel.java
+ * GenericComboBoxModel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,30 +16,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jul 24, 2008, 2:20:11 PM
+ * Created on Aug 8, 2008, 2:24:32 PM
  */
-package pcgen.gui.tools;
+package pcgen.gui.util;
 
-import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.filter.FilterableTreeViewModel;
+import javax.swing.ComboBoxModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface ComboSelectionBoxModel
+public interface GenericComboBoxModel<E> extends GenericListModel<E>,
+                                                  ComboBoxModel
 {
-
-    /**
-     * Note: The returned data should not be the same as the data used in the
-     * <code>FilterableTreeViewModel</code> returned by <code>getTreeViewModel()</code>
-     * . Data from the <code>FilterableTreeViewModel</code> model is automatically added to the <code>JComboBox</code>'s model.
-     * @return an array of objects
-     */
-    public Object[] getComboBoxData();
-
-    public CharacterFacade getCharacter();
-
-    public FilterableTreeViewModel<?> getTreeViewModel();
 
 }

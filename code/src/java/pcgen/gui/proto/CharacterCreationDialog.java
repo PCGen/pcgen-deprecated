@@ -54,15 +54,15 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         comboSelectionBox1 = new pcgen.gui.tools.ComboSelectionBox();
         jPanel5 = new javax.swing.JPanel();
-        jComboBox5 = new javax.swing.JComboBox();
-        compactScrollPane1 = new pcgen.gui.util.CompactScrollPane();
+        comboSelectionBox5 = new pcgen.gui.tools.ComboSelectionBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jCheckBox2 = new javax.swing.JCheckBox();
         comboSelectionBox2 = new pcgen.gui.tools.ComboSelectionBox();
         jComboBox2 = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
@@ -120,11 +120,15 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         jButton2.setText("Generate Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
         jPanel3.add(jButton2, gridBagConstraints);
 
         jLabel4.setText("Name Set:");
-        jPanel3.add(jLabel4, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 0);
+        jPanel3.add(jLabel4, gridBagConstraints);
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1990uscensus" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -166,7 +170,7 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Race", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel2.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(comboSelectionBox1, java.awt.BorderLayout.PAGE_START);
+        jPanel2.add(comboSelectionBox1, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -176,14 +180,12 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Stats", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel5.setLayout(new java.awt.GridBagLayout());
-
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3d6", "4d4", "4d6 drop lowest", "4d6, reroll 1's", "4d6, reroll 1's, drop lowest", "5d6, drop 2 lowest" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel5.add(jComboBox5, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
+        jPanel5.add(comboSelectionBox5, gridBagConstraints);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -213,15 +215,11 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        compactScrollPane1.setViewportView(jTable1);
-
-        compactScrollPane1.setRowHeaderView(jTable2);
-        compactScrollPane1.setCorner(JScrollPane.UPPER_LEFT_CORNER, jButton3);
+        jScrollPane1.setViewportView(jTable1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        jPanel5.add(compactScrollPane1, gridBagConstraints);
+        jPanel5.add(jScrollPane1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -244,6 +242,7 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 0);
         jPanel6.add(jLabel7, gridBagConstraints);
 
         jLabel5.setText("Level Generation");
@@ -251,26 +250,32 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 0);
         jPanel6.add(jLabel5, gridBagConstraints);
 
-        jLabel1.setText("1st Class:");
-        jPanel6.add(jLabel1, new java.awt.GridBagConstraints());
+        jCheckBox2.setText("1st Class:");
+        jPanel6.add(jCheckBox2, new java.awt.GridBagConstraints());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 4);
         jPanel6.add(comboSelectionBox2, gridBagConstraints);
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
         jPanel6.add(jComboBox2, gridBagConstraints);
 
         jLabel2.setText("2nd Class:");
-        jPanel6.add(jLabel2, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        jPanel6.add(jLabel2, gridBagConstraints);
 
         comboSelectionBox3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 4);
         jPanel6.add(comboSelectionBox3, gridBagConstraints);
 
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -278,20 +283,25 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
         jPanel6.add(jComboBox6, gridBagConstraints);
 
         jLabel3.setText("3rd Class:");
-        jPanel6.add(jLabel3, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        jPanel6.add(jLabel3, gridBagConstraints);
 
         comboSelectionBox4.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 4);
         jPanel6.add(comboSelectionBox4, gridBagConstraints);
 
         jComboBox7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox7.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 2);
         jPanel6.add(jComboBox7, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -372,18 +382,17 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
     private pcgen.gui.tools.ComboSelectionBox comboSelectionBox2;
     private pcgen.gui.tools.ComboSelectionBox comboSelectionBox3;
     private pcgen.gui.tools.ComboSelectionBox comboSelectionBox4;
-    private pcgen.gui.util.CompactScrollPane compactScrollPane1;
+    private pcgen.gui.tools.ComboSelectionBox comboSelectionBox5;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JComboBox jComboBox5;
     private javax.swing.JComboBox jComboBox6;
     private javax.swing.JComboBox jComboBox7;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -397,6 +406,7 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;

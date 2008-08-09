@@ -40,6 +40,16 @@ public class DefaultGenericListModel<E> extends Vector<E> implements GenericList
     protected EventListenerList listenerList = new EventListenerList();
     protected volatile boolean isAdjusting = false;
 
+    public DefaultGenericListModel()
+    {
+        super();
+    }
+
+    public DefaultGenericListModel(Collection<? extends E> c)
+    {
+        super(c);
+    }
+
     public int getSize()
     {
         return size();
@@ -200,7 +210,8 @@ public class DefaultGenericListModel<E> extends Vector<E> implements GenericList
         boolean rv = super.removeElement(obj);
         if (index >= 0)
         {
-            fireIntervalRemoved(this, Collections.singleton((E)obj), isAdjusting,
+            fireIntervalRemoved(this, Collections.singleton((E) obj),
+                                isAdjusting,
                                 index, index);
         }
         return rv;
@@ -491,8 +502,8 @@ public class DefaultGenericListModel<E> extends Vector<E> implements GenericList
                     listener == GenericListDataListener.class))
             {
                 e = new GenericListDataEvent<E>(source, data, adjusting,
-                                             ListDataEvent.INTERVAL_REMOVED,
-                                             index0, index1);
+                                                ListDataEvent.CONTENTS_CHANGED,
+                                                index0, index1);
             }
             if (listener == ListDataListener.class)
             {
@@ -534,8 +545,8 @@ public class DefaultGenericListModel<E> extends Vector<E> implements GenericList
                     listener == GenericListDataListener.class))
             {
                 e = new GenericListDataEvent<E>(source, data, adjusting,
-                                             ListDataEvent.INTERVAL_ADDED,
-                                             index0, index1);
+                                                ListDataEvent.INTERVAL_ADDED,
+                                                index0, index1);
             }
             if (listener == ListDataListener.class)
             {
@@ -579,8 +590,8 @@ public class DefaultGenericListModel<E> extends Vector<E> implements GenericList
                     listener == GenericListDataListener.class))
             {
                 e = new GenericListDataEvent<E>(source, data, adjusting,
-                                             ListDataEvent.INTERVAL_REMOVED,
-                                             index0, index1);
+                                                ListDataEvent.INTERVAL_REMOVED,
+                                                index0, index1);
             }
             if (listener == ListDataListener.class)
             {
