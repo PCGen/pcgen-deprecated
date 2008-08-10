@@ -20,24 +20,20 @@
  */
 package pcgen.gui.util;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.ItemSelectable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
-import javax.swing.JToggleButton;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import pcgen.gui.util.table.TableCellUtils.RadioButtonEditor;
+import pcgen.gui.util.table.TableCellUtils.ToggleButtonRenderer;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.TreeViewModel;
 import pcgen.gui.util.treeview.TreeViewTableModel;
@@ -100,7 +96,7 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
         TableColumn column = new TableColumn(-1);
         column.setHeaderValue(COLUMN_ID);
         rowheaderTable.addColumn(column);
-        rowheaderTable.setPreferredScrollableViewportSize(new Dimension(20, 400));
+        rowheaderTable.setPreferredScrollableViewportSize(new Dimension(20, 0));
 
         setRowHeaderView(rowheaderTable);
     }
@@ -258,86 +254,6 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
                 return;
             }
             super.setValueAt(aValue, node, column);
-        }
-
-    }
-
-    private static class RadioButtonEditor extends AbstractCellEditor
-            implements ActionListener,
-                       TableCellEditor
-    {
-
-        private JRadioButton button;
-
-        public RadioButtonEditor()
-        {
-            this.button = new JRadioButton();
-            button.setHorizontalAlignment(JRadioButton.CENTER);
-            button.addActionListener(this);
-        }
-
-        public Object getCellEditorValue()
-        {
-            return Boolean.valueOf(button.isSelected());
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                                                      boolean isSelected,
-                                                      int row, int column)
-        {
-            boolean selected = false;
-            if (value instanceof Boolean)
-            {
-                selected = ((Boolean) value).booleanValue();
-            }
-            else if (value instanceof String)
-            {
-                selected = value.equals("true");
-            }
-            button.setSelected(selected);
-            return button;
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            stopCellEditing();
-        }
-
-    }
-
-    private static class ToggleButtonRenderer extends DefaultTableCellRenderer
-    {
-
-        private JToggleButton button;
-
-        public ToggleButtonRenderer(JToggleButton button)
-        {
-            this.button = button;
-            button.setHorizontalAlignment(CENTER);
-            button.setBorderPainted(true);
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table,
-                                                        Object value,
-                                                        boolean isSelected,
-                                                        boolean hasFocus,
-                                                        int row,
-                                                        int column)
-        {
-            super.getTableCellRendererComponent(table, value, isSelected,
-                                                hasFocus, row,
-                                                column);
-            if (value == null)
-            {
-                return this;
-            }
-            button.setForeground(getForeground());
-            button.setBackground(getBackground());
-            button.setBorder(getBorder());
-
-            button.setSelected(((Boolean) value).booleanValue());
-            return button;
         }
 
     }

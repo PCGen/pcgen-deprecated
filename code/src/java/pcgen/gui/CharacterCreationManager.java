@@ -71,6 +71,8 @@ public interface CharacterCreationManager
 
     public List<StatFacade> getStats();
 
+    public int getModForScore(int score);
+
     public List<Generator<Integer>> getClassLevelGenerators();
 
 }

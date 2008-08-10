@@ -20,29 +20,22 @@
  */
 package pcgen.gui.tabs;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ListSelectionEvent;
-import pcgen.gui.tools.ChooserPane;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
-import javax.swing.AbstractCellEditor;
 import javax.swing.AbstractSpinnerModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellEditor;
 import pcgen.cdom.enumeration.SkillCost;
 import pcgen.gui.PCGenUIManager;
 import pcgen.gui.PCGenUIManager.HouseRule;
@@ -52,7 +45,10 @@ import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.filter.FilterableTreeViewModel;
 import pcgen.gui.filter.FilteredTreeViewPanel;
+import pcgen.gui.tools.ChooserPane;
 import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.table.TableCellUtils.SpinnerEditor;
+import pcgen.gui.util.table.TableCellUtils.SpinnerRenderer;
 import pcgen.gui.util.treeview.DataView;
 import pcgen.gui.util.treeview.DataViewColumn;
 import pcgen.gui.util.treeview.DefaultDataViewColumn;
@@ -85,8 +81,7 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
 
     private void initComponents()
     {
-        skillPanel.setDefaultRenderer(Float.class,
-                                      new SkillRankSpinnerRenderer());
+        skillPanel.setDefaultRenderer(Float.class, new SpinnerRenderer());
         ListSelectionModel selectionModel = skillPanel.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel.addListSelectionListener(
@@ -186,25 +181,23 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
         setSelectedSkill((SkillFacade) state.get("SelectedSkill"));
     }
 
-    private class SkillRankSpinnerEditor extends AbstractCellEditor
-            implements TableCellEditor, ChangeListener
+    private class SkillRankSpinnerEditor extends SpinnerEditor
     {
 
-        private final JSpinner spinner;
         private final SkillRankSpinnerModel model;
 
         public SkillRankSpinnerEditor(CharacterFacade character)
         {
-            this.model = new SkillRankSpinnerModel(character);
-            this.spinner = new JSpinner(model);
-            spinner.addChangeListener(this);
+            this(new SkillRankSpinnerModel(character));
         }
 
-        public Object getCellEditorValue()
+        private SkillRankSpinnerEditor(SkillRankSpinnerModel model)
         {
-            return model.getValue();
+            super(model);
+            this.model = model;
         }
 
+        @Override
         public Component getTableCellEditorComponent(JTable table, Object value,
                                                       boolean isSelected,
                                                       int row,
@@ -213,11 +206,6 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
             model.setSkill(selectedSkill);
             model.setLevel(selectedLevel);
             return spinner;
-        }
-
-        public void stateChanged(ChangeEvent e)
-        {
-            stopCellEditing();
         }
 
     }
@@ -630,33 +618,6 @@ public class SkillInfoTab extends ChooserPane implements CharacterStateEditable
                 return null;
             }
             return value - 1f / level.getRankCost(cost);
-        }
-
-    }
-
-    private static class SkillRankSpinnerRenderer extends DefaultTableCellRenderer
-    {
-
-        private JSpinner spinner = new JSpinner();
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table,
-                                                        Object value,
-                                                        boolean isSelected,
-                                                        boolean hasFocus,
-                                                        int row,
-                                                        int column)
-        {
-            super.getTableCellRendererComponent(table, value, isSelected,
-                                                hasFocus, row, column);
-            if (value == null)
-            {
-                return this;
-            }
-            spinner.setBackground(getBackground());
-            spinner.setForeground(getForeground());
-            spinner.setValue(value);
-            return spinner;
         }
 
     }

@@ -36,6 +36,8 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractCellEditor;
+import javax.swing.AbstractSpinnerModel;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -45,9 +47,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListDataEvent;
@@ -55,6 +59,8 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumnModel;
@@ -87,6 +93,7 @@ public class CharacterCreationDialog extends JDialog
     private final TitledPanel statPanel;
     private final ComboSelectionBox statSelectionBox;
     private final JButton statRollButton;
+    private final StatPointsLabel statPointsLabel;
     private final StatTablePane statTablePane;
     private final TitledPanel classPanel;
     private final JCheckBox classGenerationCheckBox1;
@@ -116,6 +123,7 @@ public class CharacterCreationDialog extends JDialog
         this.statPanel = new TitledPanel("Stats");
         this.statSelectionBox = new ComboSelectionBox();
         this.statRollButton = new JButton();
+        this.statPointsLabel = new StatPointsLabel();
         this.statTablePane = new StatTablePane();
         this.classPanel = new TitledPanel("Classes");
         this.classGenerationCheckBox1 = new JCheckBox();
@@ -290,11 +298,17 @@ public class CharacterCreationDialog extends JDialog
 
                                     if (statGenerator instanceof PurchaseModeGenerator)
                                     {
-                                        model.setPurchaseMode(true);
+                                        PurchaseModeGenerator purchaseMode = (PurchaseModeGenerator) statGenerator;
+                                        if (model.setPurchaseMode(purchaseMode))
+                                        {
+                                            statPointsLabel.setPoints(purchaseMode.getRandom());
+                                        }
+                                        statTablePane.setUpperLeft(statPointsLabel);
                                     }
                                     else
                                     {
-                                        model.setPurchaseMode(false);
+                                        model.setPurchaseMode(null);
+                                        statTablePane.setUpperLeft(statRollButton);
                                     }
                                 }
                             }
@@ -306,7 +320,6 @@ public class CharacterCreationDialog extends JDialog
             statPanel.add(statSelectionBox, gridBagConstraints);
             {//Initialize statRollButton
                 statRollButton.setAction(new RollStatsAction());
-            //statRollButton.addActionListener(new ActionListener);
             }
             {//Initialize statTablePane
 
@@ -731,21 +744,48 @@ public class CharacterCreationDialog extends JDialog
 
     }
 
-    private class StatTableModel extends AbstractTableModel
+    private static class StatPointsLabel extends JLabel
     {
 
-        private final String[] columns = new String[]{"Base Score",
-                                                        "Racial Adj",
-                                                        "Total",
-                                                        "Mod",
-                                                        "Cost"
+        private int points;
+
+        public int getPoints()
+        {
+            return points;
+        }
+
+        public void setPoints(int points)
+        {
+            this.points = points;
+            repaint();
+        }
+
+        @Override
+        public String getText()
+        {
+            return "Points: " + points;
+        }
+
+    }
+
+    private static class StatTableModel extends AbstractTableModel
+    {
+
+        private static final String[] columns = new String[]{"Base Score",
+                                                                "Racial Adj",
+                                                                "Total",
+                                                                "Mod",
+                                                                "Cost"
         };
-        private List<StatFacade> stats;
-        private boolean purchaseMode;
+        private final CharacterCreationManager manager;
+        private final List<StatFacade> stats;
+        private PurchaseModeGenerator purchaseMode;
+        private RaceFacade race;
 
         public StatTableModel(CharacterCreationManager manager)
         {
-            stats = manager.getStats();
+            this.manager = manager;
+            this.stats = manager.getStats();
         }
 
         @Override
@@ -772,16 +812,32 @@ public class CharacterCreationDialog extends JDialog
             }
         }
 
-        public boolean getPurchaseMode()
+        public PurchaseModeGenerator getPurchaseMode()
         {
             return purchaseMode;
         }
 
-        public void setPurchaseMode(boolean purchaseMode)
+        public boolean setPurchaseMode(PurchaseModeGenerator purchaseMode)
         {
-            //todo
+            if (this.purchaseMode == purchaseMode)
+            {
+                return false;
+            }
+            if (purchaseMode != null)
+            {
+                for (StatFacade stat : stats)
+                {
+                    stat.setBaseScore(purchaseMode.getMinScore());
+                }
+            }
             this.purchaseMode = purchaseMode;
             fireTableStructureChanged();
+            return true;
+        }
+
+        public void setRace(RaceFacade race)
+        {
+            this.race = race;
         }
 
         @Override
@@ -801,7 +857,7 @@ public class CharacterCreationDialog extends JDialog
 
         public int getColumnCount()
         {
-            if (purchaseMode)
+            if (purchaseMode != null)
             {
                 return 6;
             }
@@ -810,13 +866,108 @@ public class CharacterCreationDialog extends JDialog
 
         public Object getValueAt(int rowIndex, int columnIndex)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            StatFacade stat = stats.get(rowIndex);
+            if (columnIndex == 0)
+            {
+                return stat;
+            }
+            int score = stat.getBaseScore();
+            if (columnIndex == 1)
+            {
+                return score;
+            }
+            if (columnIndex == 5)
+            {
+                int cost = purchaseMode.getScoreCost(score + 1);
+                if (cost != 0)
+                {
+                    return cost;
+                }
+                return null;
+            }
+            int adj = 0;
+            if (race != null)
+            {
+                adj = race.getRacialAdj(stat);
+            }
+            if (columnIndex == 2)
+            {
+                return adj;
+            }
+            score += adj;
+            if (columnIndex == 3)
+            {
+                return score;
+            }
+            return manager.getModForScore(score);
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex)
         {
-            super.setValueAt(aValue, rowIndex, columnIndex);
+
+        }
+
+    }
+
+    private class StatSpinnerModel extends AbstractSpinnerModel
+    {
+
+        public Object getValue()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void setValue(Object value)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public Object getNextValue()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public Object getPreviousValue()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private static class SpinnerEditor extends AbstractCellEditor
+            implements TableCellEditor
+    {
+
+        private JSpinner spinner;
+
+        public SpinnerEditor()
+        {
+            SpinnerNumberModel model = new SpinnerNumberModel();
+            model.setMinimum(0);
+            this.spinner = new JSpinner(model);
+        }
+
+        public Object getCellEditorValue()
+        {
+            return spinner.getValue();
+        }
+
+        public Component getTableCellEditorComponent(JTable table,
+                                                      Object value,
+                                                      boolean isSelected,
+                                                      int row,
+                                                      int column)
+        {
+            if (value == null)
+            {
+                spinner.setValue(0);
+            }
+            else
+            {
+                spinner.setValue(value);
+            }
+            return spinner;
         }
 
     }
@@ -933,5 +1084,27 @@ public class CharacterCreationDialog extends JDialog
             }
         }
 
+        private static class SpinnerRenderer extends JSpinner implements TableCellRenderer
+        {
+
+            public Component getTableCellRendererComponent(JTable table,
+                                                            Object value,
+                                                            boolean isSelected,
+                                                            boolean hasFocus,
+                                                            int row,
+                                                            int column)
+            {
+                if (value == null)
+                {
+                    setValue(0);
+                }
+                else
+                {
+                    setValue(value);
+                }
+                return this;
+            }
+
+        }
     }
 }
