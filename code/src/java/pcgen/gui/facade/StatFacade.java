@@ -1,5 +1,5 @@
 /*
- * ComboSelectionDialog.java
+ * StatFacade.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,21 +16,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 8, 2008, 5:46:18 PM
+ * Created on Aug 9, 2008, 8:53:56 PM
  */
-package pcgen.gui.tools;
-
-import javax.swing.ComboBoxModel;
+package pcgen.gui.facade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface ComboSelectionDialog
+public interface StatFacade
 {
 
-    public void setModel(ComboBoxModel model);
+    public int getBaseScore();
 
-    public void display();
+    public void setBaseScore(int score);
+
+    @Override
+    public String toString();
 
 }

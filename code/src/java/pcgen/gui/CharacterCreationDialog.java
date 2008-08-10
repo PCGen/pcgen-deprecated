@@ -20,6 +20,7 @@
  */
 package pcgen.gui;
 
+import java.awt.event.ItemEvent;
 import java.beans.PropertyChangeEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,6 +32,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -50,14 +52,18 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.RaceFacade;
+import pcgen.gui.facade.StatFacade;
 import pcgen.gui.generator.Generator;
-import pcgen.gui.tools.ComboSelectionBox;
+import pcgen.gui.generator.PurchaseModeGenerator;
+import pcgen.gui.util.ComboSelectionBox;
 import pcgen.gui.util.DefaultGenericComboBoxModel;
 import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.event.DocumentChangeAdapter;
@@ -80,6 +86,7 @@ public class CharacterCreationDialog extends JDialog
     private final ComboSelectionBox raceSelectionBox;
     private final TitledPanel statPanel;
     private final ComboSelectionBox statSelectionBox;
+    private final JButton statRollButton;
     private final StatTablePane statTablePane;
     private final TitledPanel classPanel;
     private final JCheckBox classGenerationCheckBox1;
@@ -108,6 +115,7 @@ public class CharacterCreationDialog extends JDialog
         this.raceSelectionBox = new ComboSelectionBox();
         this.statPanel = new TitledPanel("Stats");
         this.statSelectionBox = new ComboSelectionBox();
+        this.statRollButton = new JButton();
         this.statTablePane = new StatTablePane();
         this.classPanel = new TitledPanel("Classes");
         this.classGenerationCheckBox1 = new JCheckBox();
@@ -268,11 +276,38 @@ public class CharacterCreationDialog extends JDialog
         {//Initialize statPanel
             statPanel.setLayout(new GridBagLayout());
             {//Initialize statSelectionBox
+                statSelectionBox.addItemListener(
+                        new ItemListener()
+                        {
 
+                            public void itemStateChanged(ItemEvent e)
+                            {
+                                if (e.getStateChange() == ItemEvent.SELECTED)
+                                {
+                                    @SuppressWarnings("unchecked")
+                                    Generator<Integer> statGenerator = (Generator<Integer>) e.getItem();
+                                    StatTableModel model = statTablePane.getModel();
+
+                                    if (statGenerator instanceof PurchaseModeGenerator)
+                                    {
+                                        model.setPurchaseMode(true);
+                                    }
+                                    else
+                                    {
+                                        model.setPurchaseMode(false);
+                                    }
+                                }
+                            }
+
+                        });
             }
             gridBagConstraints.weightx = 1.0;
             gridBagConstraints.insets = new Insets(2, 0, 2, 0);
             statPanel.add(statSelectionBox, gridBagConstraints);
+            {//Initialize statRollButton
+                statRollButton.setAction(new RollStatsAction());
+            //statRollButton.addActionListener(new ActionListener);
+            }
             {//Initialize statTablePane
 
             }
@@ -285,8 +320,10 @@ public class CharacterCreationDialog extends JDialog
             classPanel.setLayout(new GridBagLayout());
 
             gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridwidth = 2;
             classPanel.add(new JLabel(), gridBagConstraints);
 
+            gridBagConstraints.gridwidth = 1;
             gridBagConstraints.anchor = GridBagConstraints.WEST;
             gridBagConstraints.weightx = 1.0;
             gridBagConstraints.insets = new Insets(0, 4, 0, 0);
@@ -296,9 +333,11 @@ public class CharacterCreationDialog extends JDialog
             gridBagConstraints.weightx = 0.5;
             classPanel.add(new JLabel("Level Generation"), gridBagConstraints);
             SelectClassRowAction rowAction;
+            JLabel label;
             {//Initialize classGenerationCheckBox1
-                classGenerationCheckBox1.setText("1st Class:");
+                label = new JLabel("1st Class:");
                 rowAction = new SelectClassRowAction(classGenerationCheckBox1,
+                                                     label,
                                                      classSelectionBox1,
                                                      levelComboBox1);
                 classGenerationCheckBox1.setAction(rowAction);
@@ -309,11 +348,13 @@ public class CharacterCreationDialog extends JDialog
             {//Initialize levelComboBox1
 
             }
-            initClassSelectionRow(classGenerationCheckBox1, classSelectionBox1,
+            initClassSelectionRow(classGenerationCheckBox1, label,
+                                  classSelectionBox1,
                                   levelComboBox1);
             {//Initialize classGenerationCheckBox2
-                classGenerationCheckBox2.setText("2nd Class:");
+                label = new JLabel("2nd Class:");
                 SelectClassRowAction action = new SelectClassRowAction(classGenerationCheckBox2,
+                                                                       label,
                                                                        classSelectionBox2,
                                                                        levelComboBox2);
                 rowAction.setRowAction(action);
@@ -326,11 +367,13 @@ public class CharacterCreationDialog extends JDialog
             {//Initialize levelComboBox2
 
             }
-            initClassSelectionRow(classGenerationCheckBox2, classSelectionBox2,
+            initClassSelectionRow(classGenerationCheckBox2, label,
+                                  classSelectionBox2,
                                   levelComboBox2);
             {//Initialize classGenerationCheckBox3
-                classGenerationCheckBox3.setText("3rd Class:");
+                label = new JLabel("3rd Class:");
                 SelectClassRowAction action = new SelectClassRowAction(classGenerationCheckBox3,
+                                                                       label,
                                                                        classSelectionBox3,
                                                                        levelComboBox3);
                 rowAction.setRowAction(action);
@@ -343,7 +386,8 @@ public class CharacterCreationDialog extends JDialog
             {//Initialize levelComboBox3
 
             }
-            initClassSelectionRow(classGenerationCheckBox3, classSelectionBox3,
+            initClassSelectionRow(classGenerationCheckBox3, label,
+                                  classSelectionBox3,
                                   levelComboBox3);
         }
         gridBagConstraints = new GridBagConstraints();
@@ -359,15 +403,21 @@ public class CharacterCreationDialog extends JDialog
         gridBagConstraints.insets = new Insets(4, 4, 4, 4);
         initControlButton(okAction, buttonSize, gridBagConstraints);
         initControlButton(cancelAction, buttonSize, gridBagConstraints);
+
+        pack();
     }
 
     private void initClassSelectionRow(JCheckBox classGenerationBox,
+                                        JLabel label,
                                         ComboSelectionBox classSelectionBox,
                                         JComboBox levelComboBox)
     {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.anchor = GridBagConstraints.EAST;
+
         classPanel.add(classGenerationBox, gridBagConstraints);
+
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        classPanel.add(label, gridBagConstraints);
 
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.insets = new Insets(2, 0, 2, 4);
@@ -500,6 +550,27 @@ public class CharacterCreationDialog extends JDialog
 
     }
 
+    private class RollStatsAction extends AbstractAction
+    {
+
+        public RollStatsAction()
+        {
+            super("Roll");
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            @SuppressWarnings("unchecked")
+            Generator<Integer> statGenerator = (Generator<Integer>) statSelectionBox.getSelectedItem();
+            StatTableModel model = statTablePane.getModel();
+            for ( int i = 0; i < model.getRowCount(); i++)
+            {
+                model.setValueAt(statGenerator.getRandom(), i, 1);
+            }
+        }
+
+    }
+
     private static class ExclusiveComboBoxModel extends DefaultComboBoxModel
             implements ListDataListener
     {
@@ -587,16 +658,17 @@ public class CharacterCreationDialog extends JDialog
     {
 
         private JCheckBox actionBox;
+        private JLabel label;
         private ComboSelectionBox selectionBox;
         private JComboBox comboBox;
         private SelectClassRowAction rowAction;
 
-        public SelectClassRowAction(JCheckBox actionBox,
+        public SelectClassRowAction(JCheckBox actionBox, JLabel label,
                                      ComboSelectionBox selectionBox,
                                      JComboBox comboBox)
         {
-            super(actionBox.getText());
             this.actionBox = actionBox;
+            this.label = label;
             this.selectionBox = selectionBox;
             this.comboBox = comboBox;
         }
@@ -610,6 +682,7 @@ public class CharacterCreationDialog extends JDialog
         public void setEnabled(boolean newValue)
         {
             super.setEnabled(newValue);
+            label.setEnabled(newValue);
             newValue &= actionBox.isSelected();
             selectionBox.setEnabled(newValue);
             comboBox.setEnabled(newValue);
@@ -658,11 +731,102 @@ public class CharacterCreationDialog extends JDialog
 
     }
 
-    private static class StatTablePane extends JScrollPane
+    private class StatTableModel extends AbstractTableModel
+    {
+
+        private final String[] columns = new String[]{"Base Score",
+                                                        "Racial Adj",
+                                                        "Total",
+                                                        "Mod",
+                                                        "Cost"
+        };
+        private List<StatFacade> stats;
+        private boolean purchaseMode;
+
+        public StatTableModel(CharacterCreationManager manager)
+        {
+            stats = manager.getStats();
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex)
+        {
+            switch (columnIndex)
+            {
+                case 0:
+                    return StatFacade.class;
+                default:
+                    return Integer.class;
+            }
+        }
+
+        @Override
+        public String getColumnName(int column)
+        {
+            switch (column)
+            {
+                case 0:
+                    return null;
+                default:
+                    return columns[column - 1];
+            }
+        }
+
+        public boolean getPurchaseMode()
+        {
+            return purchaseMode;
+        }
+
+        public void setPurchaseMode(boolean purchaseMode)
+        {
+            //todo
+            this.purchaseMode = purchaseMode;
+            fireTableStructureChanged();
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex)
+        {
+            if (columnIndex == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public int getRowCount()
+        {
+            return stats.size();
+        }
+
+        public int getColumnCount()
+        {
+            if (purchaseMode)
+            {
+                return 6;
+            }
+            return 5;
+        }
+
+        public Object getValueAt(int rowIndex, int columnIndex)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+        {
+            super.setValueAt(aValue, rowIndex, columnIndex);
+        }
+
+    }
+
+    private static class StatTablePane extends JScrollPane implements TableModelListener
     {
 
         private final JTable rowTable;
         private final JTable statTable;
+        private StatTableModel model;
 
         public StatTablePane()
         {
@@ -675,7 +839,6 @@ public class CharacterCreationDialog extends JDialog
 
         private void initComponents()
         {
-
             rowTable.setPreferredScrollableViewportSize(new Dimension(75, 0));
             rowTable.setAutoCreateColumnsFromModel(false);
             rowTable.setFocusable(false);
@@ -689,11 +852,8 @@ public class CharacterCreationDialog extends JDialog
             setViewportView(statTable);
         }
 
-        public void setTableModel(TableModel model)
+        private void createDefaultColumnsFromModel()
         {
-            rowTable.setModel(model);
-            statTable.setModel(model);
-
             TableColumnModel columnModel = statTable.getColumnModel();
             while (columnModel.getColumnCount() > 0)
             {
@@ -706,6 +866,27 @@ public class CharacterCreationDialog extends JDialog
                 TableColumn column = new TableColumn(i);
                 statTable.addColumn(column);
             }
+        }
+
+        public StatTableModel getModel()
+        {
+            return model;
+        }
+
+        public void setTableModel(StatTableModel model)
+        {
+            if (this.model != null)
+            {
+                this.model.removeTableModelListener(this);
+            }
+            this.model = model;
+            if (this.model != null)
+            {
+                this.model.addTableModelListener(this);
+            }
+            rowTable.setModel(model);
+            statTable.setModel(model);
+            createDefaultColumnsFromModel();
         }
 
         public void setUpperLeft(Component upperLeft)
@@ -742,6 +923,14 @@ public class CharacterCreationDialog extends JDialog
                 return size;
             }
             return super.getPreferredSize();
+        }
+
+        public void tableChanged(TableModelEvent e)
+        {
+            if (e.getFirstRow() == TableModelEvent.HEADER_ROW)
+            {
+                createDefaultColumnsFromModel();
+            }
         }
 
     }

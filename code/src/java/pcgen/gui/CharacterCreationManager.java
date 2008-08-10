@@ -25,6 +25,7 @@ import java.util.List;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.RaceFacade;
+import pcgen.gui.facade.StatFacade;
 import pcgen.gui.generator.Generator;
 
 /**
@@ -67,6 +68,8 @@ public interface CharacterCreationManager
     public List<Generator<ClassFacade>> getClassGenerators();
 
     public List<Generator<Integer>> getStatGenerators();
+
+    public List<StatFacade> getStats();
 
     public List<Generator<Integer>> getClassLevelGenerators();
 

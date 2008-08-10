@@ -1,5 +1,5 @@
 /*
- * RaceFacade.java
+ * PurchaseModeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,19 +16,33 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 8, 2008, 4:06:32 PM
+ * Created on Aug 9, 2008, 3:30:17 PM
  */
-package pcgen.gui.facade;
+package pcgen.gui.generator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface RaceFacade extends InfoFacade
+public interface PurchaseModeGenerator extends Generator<Integer>
 {
 
-    public boolean isAcceptableAlignment(int alignment);
+    public int getMinScore();
 
-    public int getRacialAdj(StatFacade stat);
+    public int getMaxScore();
+
+    /**
+     * 
+     * @param score
+     * @return
+     */
+    public int getScoreCost(int score);
+
+    /**
+     * 
+     * 
+     * @return the number of points that can be distrubuted
+     */
+    public Integer getRandom();
 
 }

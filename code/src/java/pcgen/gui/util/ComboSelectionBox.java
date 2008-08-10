@@ -18,7 +18,7 @@
  * 
  * Created on Jul 22, 2008, 4:58:45 PM
  */
-package pcgen.gui.tools;
+package pcgen.gui.util;
 
 import java.awt.BorderLayout;
 import java.awt.ItemSelectable;
