@@ -55,8 +55,6 @@ public interface CharacterCreationManager
 
     public boolean isCharacterNameValid();
 
-    public void setCharacterNameValidity(boolean b);
-
     public void setValidity(String prop, boolean valid);
 
     public List<Generator<Integer>> getAlignmentGenerators();

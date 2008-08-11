@@ -29,6 +29,8 @@ public interface ClassFacade extends InfoFacade
 
     public boolean isAcceptableAlignment(int alignment);
 
+    public boolean isAcceptableRace(RaceFacade race);
+
     public String[] getTypes();
 
     public String getHD();

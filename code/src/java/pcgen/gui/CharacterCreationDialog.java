@@ -20,8 +20,6 @@
  */
 package pcgen.gui;
 
-import java.awt.event.ItemEvent;
-import java.beans.PropertyChangeEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -32,11 +30,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.AbstractAction;
-import javax.swing.AbstractCellEditor;
 import javax.swing.AbstractSpinnerModel;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
@@ -47,7 +46,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -59,10 +57,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumnModel;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.RaceFacade;
@@ -73,6 +68,8 @@ import pcgen.gui.util.ComboSelectionBox;
 import pcgen.gui.util.DefaultGenericComboBoxModel;
 import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.event.DocumentChangeAdapter;
+import pcgen.gui.util.table.TableCellUtils.SpinnerEditor;
+import pcgen.gui.util.table.TableCellUtils.SpinnerRenderer;
 
 /**
  *
@@ -94,6 +91,7 @@ public class CharacterCreationDialog extends JDialog
     private final ComboSelectionBox statSelectionBox;
     private final JButton statRollButton;
     private final StatPointsLabel statPointsLabel;
+    private final StatSpinnerEditor statSpinnerEditor;
     private final StatTablePane statTablePane;
     private final TitledPanel classPanel;
     private final JCheckBox classGenerationCheckBox1;
@@ -124,6 +122,7 @@ public class CharacterCreationDialog extends JDialog
         this.statSelectionBox = new ComboSelectionBox();
         this.statRollButton = new JButton();
         this.statPointsLabel = new StatPointsLabel();
+        this.statSpinnerEditor = new StatSpinnerEditor();
         this.statTablePane = new StatTablePane();
         this.classPanel = new TitledPanel("Classes");
         this.classGenerationCheckBox1 = new JCheckBox();
@@ -155,10 +154,9 @@ public class CharacterCreationDialog extends JDialog
                             public void documentChanged(DocumentEvent e)
                             {
                                 String text = nameField.getText();
-                                creationManager.setCharacterNameValidity(text !=
-                                                                         null &&
-                                                                         text.length() >
-                                                                         0);
+                                creationManager.setValidity(creationManager.NAME_VALIDITY,
+                                                            text != null &&
+                                                            text.length() > 0);
                             }
 
                         });
@@ -201,57 +199,7 @@ public class CharacterCreationDialog extends JDialog
                             @SuppressWarnings("unchecked")
                             public void actionPerformed(ActionEvent e)
                             {
-                                Generator<Integer> alignmentGenerator = (Generator<Integer>) alignmentComboBox.getSelectedItem();
-                                if (alignmentGenerator.isSingleton())
-                                {
-                                    int alignment = alignmentGenerator.getRandom();
-                                    Generator<RaceFacade> raceGenerator = (Generator<RaceFacade>) raceSelectionBox.getSelectedItem();
-                                    if (raceGenerator.isSingleton())
-                                    {
-                                        RaceFacade race = raceGenerator.getRandom();
-                                        creationManager.setValidity(creationManager.RACE_VALIDITY,
-                                                                    race.isAcceptableAlignment(alignment));
-                                    }
-                                    Generator<ClassFacade> classGenerator = (Generator<ClassFacade>) classSelectionBox1.getSelectedItem();
-                                    if (classGenerator.isSingleton())
-                                    {
-                                        ClassFacade c = classGenerator.getRandom();
-                                        boolean accept = c.isAcceptableAlignment(alignment);
-                                        creationManager.setValidity(creationManager.CLASSES_VALIDITY,
-                                                                    accept);
-                                        if (!accept)
-                                        {
-                                            return;
-                                        }
-                                    }
-                                    if (!classSelectionBox2.isEnabled())
-                                    {
-                                        return;
-                                    }
-                                    classGenerator = (Generator<ClassFacade>) classSelectionBox2.getSelectedItem();
-                                    if (classGenerator.isSingleton())
-                                    {
-                                        ClassFacade c = classGenerator.getRandom();
-                                        boolean accept = c.isAcceptableAlignment(alignment);
-                                        creationManager.setValidity(creationManager.CLASSES_VALIDITY,
-                                                                    accept);
-                                        if (!accept)
-                                        {
-                                            return;
-                                        }
-                                    }
-                                    if (!classSelectionBox3.isEnabled())
-                                    {
-                                        return;
-                                    }
-                                    classGenerator = (Generator<ClassFacade>) classSelectionBox3.getSelectedItem();
-                                    if (classGenerator.isSingleton())
-                                    {
-                                        ClassFacade c = classGenerator.getRandom();
-                                        creationManager.setValidity(creationManager.CLASSES_VALIDITY,
-                                                                    c.isAcceptableAlignment(alignment));
-                                    }
-                                }
+                                checkSelectionValidity();
                             }
 
                         });
@@ -275,7 +223,32 @@ public class CharacterCreationDialog extends JDialog
         {//Initialize racePanel
             racePanel.setLayout(new BorderLayout());
             {//Initialize raceSelectionBox
+                raceSelectionBox.addItemListener(
+                        new ItemListener()
+                        {
 
+                            public void itemStateChanged(ItemEvent e)
+                            {
+                                if (e.getStateChange() == ItemEvent.SELECTED)
+                                {
+                                    @SuppressWarnings("unchecked")
+                                    Generator<RaceFacade> raceGenerator = (Generator<RaceFacade>) e.getItem();
+                                    StatTableModel model = statTablePane.getModel();
+                                    if (raceGenerator.isSingleton())
+                                    {
+                                        RaceFacade race = raceGenerator.getRandom();
+                                        model.setRace(race);
+
+                                    }
+                                    else
+                                    {
+                                        model.setRace(null);
+                                    }
+                                    checkSelectionValidity();
+                                }
+                            }
+
+                        });
             }
             racePanel.add(raceSelectionBox, BorderLayout.CENTER);
         }
@@ -302,13 +275,16 @@ public class CharacterCreationDialog extends JDialog
                                         if (model.setPurchaseMode(purchaseMode))
                                         {
                                             statPointsLabel.setPoints(purchaseMode.getRandom());
+                                            statSpinnerEditor.setPurchaseMode(purchaseMode);
                                         }
                                         statTablePane.setUpperLeft(statPointsLabel);
                                     }
                                     else
                                     {
                                         model.setPurchaseMode(null);
+                                        statSpinnerEditor.setPurchaseMode(null);
                                         statTablePane.setUpperLeft(statRollButton);
+                                        statPointsLabel.setPoints(0);
                                     }
                                 }
                             }
@@ -322,7 +298,7 @@ public class CharacterCreationDialog extends JDialog
                 statRollButton.setAction(new RollStatsAction());
             }
             {//Initialize statTablePane
-
+                statTablePane.setStatSpinnerEditor(statSpinnerEditor);
             }
             statPanel.add(statTablePane, gridBagConstraints);
         }
@@ -490,25 +466,108 @@ public class CharacterCreationDialog extends JDialog
                                                       statPanel);
             creationManager.addPropertyChangeListener(CharacterCreationManager.CLASSES_VALIDITY,
                                                       classPanel);
-
-            nameField.setText(PCGenUIManager.getDefaultCharacterName());
-            alignmentComboBox.setModel(createComboBoxModel(creationManager.getAlignmentGenerators()));
-            genderComboBox.setModel(createComboBoxModel(creationManager.getGenderGenerators()));
-            raceSelectionBox.setModel(createComboBoxModel(creationManager.getRaceGenerators()));
-            statSelectionBox.setModel(createComboBoxModel(creationManager.getStatGenerators()));
-
-            DefaultComboBoxModel classComboBoxModel = new DefaultComboBoxModel(creationManager.getClassGenerators().toArray());
-            classSelectionBox1.setModel(classComboBoxModel);
-            classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
-            classSelectionBox2.setModel(classComboBoxModel);
-            classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
-            classSelectionBox3.setModel(classComboBoxModel);
-
-            List<Generator<Integer>> levelGenerators = creationManager.getClassLevelGenerators();
-            levelComboBox1.setModel(createComboBoxModel(levelGenerators));
-            levelComboBox2.setModel(createComboBoxModel(levelGenerators));
-            levelComboBox3.setModel(createComboBoxModel(levelGenerators));
+            initModels();
         }
+    }
+
+    private void initModels()
+    {
+        nameField.setText(PCGenUIManager.getDefaultCharacterName());
+        alignmentComboBox.setModel(createComboBoxModel(creationManager.getAlignmentGenerators()));
+        genderComboBox.setModel(createComboBoxModel(creationManager.getGenderGenerators()));
+        raceSelectionBox.setModel(createComboBoxModel(creationManager.getRaceGenerators()));
+
+        statTablePane.setModel(new StatTableModel(creationManager));
+        statSelectionBox.setModel(createComboBoxModel(creationManager.getStatGenerators()));
+
+        DefaultComboBoxModel classComboBoxModel = new DefaultComboBoxModel(creationManager.getClassGenerators().toArray());
+        classSelectionBox1.setModel(classComboBoxModel);
+        classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
+        classSelectionBox2.setModel(classComboBoxModel);
+        classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
+        classSelectionBox3.setModel(classComboBoxModel);
+
+        List<Generator<Integer>> levelGenerators = creationManager.getClassLevelGenerators();
+        levelComboBox1.setModel(createComboBoxModel(levelGenerators));
+        levelComboBox2.setModel(createComboBoxModel(levelGenerators));
+        levelComboBox3.setModel(createComboBoxModel(levelGenerators));
+    }
+
+    private boolean anyValid(Generator<Integer> alignmentGenerator,
+                              RaceFacade race)
+    {
+        for (Integer alignment : alignmentGenerator.getAll())
+        {
+            if (race.isAcceptableAlignment(alignment))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean anyValid(Generator<Integer> alignmentGenerator,
+                                      ClassFacade c)
+    {
+        for (Integer alignment : alignmentGenerator.getAll())
+        {
+            if (c.isAcceptableAlignment(alignment))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isClassSelectionValid(ComboSelectionBox box,
+                                                   Generator<Integer> alignmentGenerator,
+                                                   RaceFacade race)
+    {
+        boolean accept = true;
+        if (box.isEnabled())
+        {
+            @SuppressWarnings("unchecked")
+            Generator<ClassFacade> classGenerator = (Generator<ClassFacade>) box.getSelectedItem();
+            if (classGenerator.isSingleton())
+            {
+                ClassFacade c = classGenerator.getRandom();
+                accept = anyValid(alignmentGenerator, c);
+                if (race != null)
+                {
+                    accept &= c.isAcceptableRace(race);
+                }
+
+            }
+        }
+        return accept;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void checkSelectionValidity()
+    {
+        Generator<Integer> alignmentGenerator = (Generator<Integer>) alignmentComboBox.getSelectedItem();
+        Generator<RaceFacade> raceGenerator = (Generator<RaceFacade>) raceSelectionBox.getSelectedItem();
+        RaceFacade race = null;
+        if (raceGenerator.isSingleton())
+        {
+            race = raceGenerator.getRandom();
+        }
+        if (race != null)
+        {
+            creationManager.setValidity(creationManager.RACE_VALIDITY,
+                                        anyValid(alignmentGenerator, race));
+        }
+        else
+        {
+            creationManager.setValidity(creationManager.RACE_VALIDITY, true);
+        }
+        boolean accept = isClassSelectionValid(classSelectionBox1,
+                                               alignmentGenerator, race);
+        accept &= isClassSelectionValid(classSelectionBox2,
+                                        alignmentGenerator, race);
+        accept &= isClassSelectionValid(classSelectionBox3,
+                                        alignmentGenerator, race);
+        creationManager.setValidity(creationManager.CLASSES_VALIDITY, accept);
     }
 
     private class OKAction extends AbstractAction implements PropertyChangeListener
@@ -744,7 +803,7 @@ public class CharacterCreationDialog extends JDialog
 
     }
 
-    private static class StatPointsLabel extends JLabel
+    private class StatPointsLabel extends JLabel
     {
 
         private int points;
@@ -757,6 +816,8 @@ public class CharacterCreationDialog extends JDialog
         public void setPoints(int points)
         {
             this.points = points;
+            creationManager.setValidity(creationManager.STATS_VALIDITY,
+                                        points == 0);
             repaint();
         }
 
@@ -764,6 +825,110 @@ public class CharacterCreationDialog extends JDialog
         public String getText()
         {
             return "Points: " + points;
+        }
+
+    }
+
+    private class StatSpinnerModel extends AbstractSpinnerModel
+    {
+
+        private final PurchaseModeGenerator purchaseMode;
+        private Integer score;
+
+        public StatSpinnerModel(PurchaseModeGenerator purchaseMode,
+                                 Integer score)
+        {
+            this.purchaseMode = purchaseMode;
+            this.score = score;
+        }
+
+        public Object getValue()
+        {
+            return score;
+        }
+
+        public void setValue(Object value)
+        {
+            setValue((Integer) value);
+        }
+
+        private void setValue(Integer value)
+        {
+            if (value < purchaseMode.getMinScore() || value >
+                    purchaseMode.getMaxScore())
+            {
+                throw new IllegalArgumentException();
+            }
+            int points = statPointsLabel.getPoints();
+            int cost = purchaseMode.getScoreCost(value) -
+                    purchaseMode.getScoreCost(score);
+            if (cost > points)
+            {
+                throw new IllegalArgumentException();
+            }
+            score = value;
+            statPointsLabel.setPoints(points - cost);
+            fireStateChanged();
+        }
+
+        public Object getNextValue()
+        {
+            if (score == purchaseMode.getMaxScore())
+            {
+                return null;
+            }
+            int value = score + 1;
+            int points = statPointsLabel.getPoints();
+            int cost = purchaseMode.getScoreCost(value) -
+                    purchaseMode.getScoreCost(score);
+            if (cost > points)
+            {
+                return null;
+            }
+            return value;
+        }
+
+        public Object getPreviousValue()
+        {
+            if (score == purchaseMode.getMinScore())
+            {
+                return null;
+            }
+            return score - 1;
+        }
+
+    }
+
+    private class StatSpinnerEditor extends SpinnerEditor
+    {
+
+        private final SpinnerNumberModel defaultModel =
+                new SpinnerNumberModel(0, 0, null, 0);
+        private PurchaseModeGenerator purchaseMode;
+
+        public void setPurchaseMode(PurchaseModeGenerator purchaseMode)
+        {
+            this.purchaseMode = purchaseMode;
+            if (purchaseMode == null)
+            {
+                spinner.setModel(defaultModel);
+            }
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                      boolean isSelected,
+                                                      int row,
+                                                      int column)
+        {
+            if (purchaseMode != null)
+            {
+                spinner.setModel(new StatSpinnerModel(purchaseMode,
+                                                      (Integer) value));
+                return spinner;
+            }
+            return super.getTableCellEditorComponent(table, value, isSelected,
+                                                     row, column);
         }
 
     }
@@ -837,7 +1002,11 @@ public class CharacterCreationDialog extends JDialog
 
         public void setRace(RaceFacade race)
         {
-            this.race = race;
+            if (this.race != race)
+            {
+                this.race = race;
+                fireTableDataChanged();
+            }
         }
 
         @Override
@@ -878,12 +1047,12 @@ public class CharacterCreationDialog extends JDialog
             }
             if (columnIndex == 5)
             {
-                int cost = purchaseMode.getScoreCost(score + 1);
-                if (cost != 0)
+                if (purchaseMode.getMaxScore() == score)
                 {
-                    return cost;
+                    return null;
                 }
-                return null;
+                return purchaseMode.getScoreCost(score + 1) -
+                        purchaseMode.getScoreCost(score);
             }
             int adj = 0;
             if (race != null)
@@ -905,69 +1074,8 @@ public class CharacterCreationDialog extends JDialog
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex)
         {
-
-        }
-
-    }
-
-    private class StatSpinnerModel extends AbstractSpinnerModel
-    {
-
-        public Object getValue()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public void setValue(Object value)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public Object getNextValue()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public Object getPreviousValue()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-    }
-
-    private static class SpinnerEditor extends AbstractCellEditor
-            implements TableCellEditor
-    {
-
-        private JSpinner spinner;
-
-        public SpinnerEditor()
-        {
-            SpinnerNumberModel model = new SpinnerNumberModel();
-            model.setMinimum(0);
-            this.spinner = new JSpinner(model);
-        }
-
-        public Object getCellEditorValue()
-        {
-            return spinner.getValue();
-        }
-
-        public Component getTableCellEditorComponent(JTable table,
-                                                      Object value,
-                                                      boolean isSelected,
-                                                      int row,
-                                                      int column)
-        {
-            if (value == null)
-            {
-                spinner.setValue(0);
-            }
-            else
-            {
-                spinner.setValue(value);
-            }
-            return spinner;
+            stats.get(rowIndex).setBaseScore((Integer) aValue);
+            fireTableRowsUpdated(rowIndex, rowIndex);
         }
 
     }
@@ -977,6 +1085,7 @@ public class CharacterCreationDialog extends JDialog
 
         private final JTable rowTable;
         private final JTable statTable;
+        private StatSpinnerEditor editor;
         private StatTableModel model;
 
         public StatTablePane()
@@ -1012,9 +1121,13 @@ public class CharacterCreationDialog extends JDialog
             }
 
             // Create new columns from the data model info
-            for (int i = 1; i < model.getColumnCount(); i++)
+            TableColumn column = new TableColumn(1);
+            column.setCellRenderer(new SpinnerRenderer());
+            column.setCellEditor(editor);
+            statTable.addColumn(column);
+            for (int i = 2; i < model.getColumnCount(); i++)
             {
-                TableColumn column = new TableColumn(i);
+                column = new TableColumn(i);
                 statTable.addColumn(column);
             }
         }
@@ -1024,7 +1137,7 @@ public class CharacterCreationDialog extends JDialog
             return model;
         }
 
-        public void setTableModel(StatTableModel model)
+        public void setModel(StatTableModel model)
         {
             if (this.model != null)
             {
@@ -1038,6 +1151,11 @@ public class CharacterCreationDialog extends JDialog
             rowTable.setModel(model);
             statTable.setModel(model);
             createDefaultColumnsFromModel();
+        }
+
+        public void setStatSpinnerEditor(StatSpinnerEditor editor)
+        {
+            this.editor = editor;
         }
 
         public void setUpperLeft(Component upperLeft)
@@ -1084,27 +1202,5 @@ public class CharacterCreationDialog extends JDialog
             }
         }
 
-        private static class SpinnerRenderer extends JSpinner implements TableCellRenderer
-        {
-
-            public Component getTableCellRendererComponent(JTable table,
-                                                            Object value,
-                                                            boolean isSelected,
-                                                            boolean hasFocus,
-                                                            int row,
-                                                            int column)
-            {
-                if (value == null)
-                {
-                    setValue(0);
-                }
-                else
-                {
-                    setValue(value);
-                }
-                return this;
-            }
-
-        }
     }
 }

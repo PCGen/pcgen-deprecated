@@ -20,6 +20,8 @@
  */
 package pcgen.gui.generator;
 
+import java.util.List;
+
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
@@ -34,6 +36,8 @@ public interface Generator<E>
      * @return returns a random element from the <code>Generator</code>
      */
     public E getRandom();
+
+    public List<E> getAll();
 
     public boolean isSingleton();
 
