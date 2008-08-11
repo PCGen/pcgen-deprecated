@@ -25,7 +25,6 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder 7: Edge of Anarchy" Copyright
 #EXTRAFILE:OGL.txt
 
 ABILITY:pf7_ability.lst
-FEAT:pf7_feat.lst
 KIT:pf7_kit_monsters.lst
 KIT:pf7_kit_npc.lst
 RACE:pf7_race.lst
