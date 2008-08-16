@@ -20,6 +20,7 @@
  */
 package pcgen.gui;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -27,13 +28,9 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import pcgen.gui.facade.QuickSourceFacade;
 import pcgen.gui.util.GenericListModel;
 
@@ -54,11 +51,14 @@ public class PCGenFrame extends JFrame
 
     private void initComponents()
     {
+        setLayout(new BorderLayout());
+
         JComponent root = getRootPane();
         root.setActionMap(actionMap);
         root.setInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
                          createInputMap(actionMap));
-    //root.getInputMap(root.)
+        setJMenuBar(new PCGenMenuBar(this));
+        add(createToolBar(), BorderLayout.PAGE_START);
     }
 
     private static InputMap createInputMap(ActionMap actionMap)
@@ -66,8 +66,7 @@ public class PCGenFrame extends JFrame
         InputMap inputMap = new InputMap();
         for (Object obj : actionMap.keys())
         {
-            Action action = actionMap.get(obj);
-            KeyStroke key = (KeyStroke) action.getValue(action.ACCELERATOR_KEY);
+            KeyStroke key = (KeyStroke) actionMap.get(obj).getValue(Action.ACCELERATOR_KEY);
             if (key != null)
             {
                 inputMap.put(key, obj);
@@ -76,65 +75,26 @@ public class PCGenFrame extends JFrame
         return inputMap;
     }
 
-    private JMenu createFileMenu()
-    {
-        JMenu menu = new JMenu(actionMap.get(PCGenActionMap.FILE_COMMAND));
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.NEW_COMMAND)));
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.OPEN_COMMAND)));
-        menu.add(new OpenRecentMenu(null));
-        menu.addSeparator();
-
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.CLOSE_COMMAND)));
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.CLOSEALL_COMMAND)));
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.SAVE_COMMAND)));
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.SAVEAS_COMMAND)));
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.SAVEALL_COMMAND)));
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.REVERT_COMMAND)));
-        menu.addSeparator();
-
-        JMenu partyMenu = new JMenu(actionMap.get(PCGenActionMap.PARTY_COMMAND));
-        partyMenu.add(new JMenuItem(actionMap.get(PCGenActionMap.OPEN_PARTY_COMMAND)));
-        partyMenu.add(new OpenRecentMenu(null));
-        partyMenu.add(new JMenuItem(actionMap.get(PCGenActionMap.CLOSE_PARTY_COMMAND)));
-        partyMenu.add(new JMenuItem(actionMap.get(PCGenActionMap.SAVE_PARTY_COMMAND)));
-        partyMenu.add(new JMenuItem(actionMap.get(PCGenActionMap.SAVEAS_PARTY_COMMAND)));
-        menu.add(partyMenu);
-        menu.addSeparator();
-
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.PRINT_PREVIEW_COMMAND)));
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.PRINT_COMMAND)));
-        menu.addSeparator();
-
-        JMenu exportMenu = new JMenu(actionMap.get(PCGenActionMap.EXPORT_COMMAND));
-        exportMenu.add(new JMenuItem(actionMap.get(PCGenActionMap.EXPORT_STANDARD_COMMAND)));
-        exportMenu.add(new JMenuItem(actionMap.get(PCGenActionMap.EXPORT_PDF_COMMAND)));
-        exportMenu.add(new JMenuItem(actionMap.get(PCGenActionMap.EXPORT_TEXT_COMMAND)));
-        menu.add(exportMenu);
-
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.EXIT_COMMAND)));
-        return menu;
-    }
-
-    private JMenu createToolsMenu()
-    {
-        JMenu menu = new JMenu(actionMap.get(PCGenActionMap.TOOLS_COMMAND));
-        menu.add(new QuickSourceMenu(null));
-        menu.addSeparator();
-
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.FILTERS_COMMAND)));
-        menu.addSeparator();
-
-        menu.add(new JMenuItem(actionMap.get(PCGenActionMap.OPTIONS_COMMAND)));
-        return menu;
-    }
-
     private JToolBar createToolBar()
     {
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
         toolbar.setRollover(true);
 
-        //toolbar.add(createToolBarButton(new NewAction()));
+        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.NEW_COMMAND)));
+        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.OPEN_COMMAND)));
+        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.CLOSE_COMMAND)));
+        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.SAVE_COMMAND)));
+        toolbar.addSeparator();
+
+        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.PRINT_PREVIEW_COMMAND)));
+        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.PRINT_COMMAND)));
+        toolbar.addSeparator();
+
+        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.OPTIONS_COMMAND)));
+        toolbar.addSeparator();
+
+        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.HELP_CONTEXT_COMMAND)));
         return toolbar;
     }
 
@@ -149,78 +109,24 @@ public class PCGenFrame extends JFrame
         return button;
     }
 
-    private class OpenRecentMenu extends ListMenu<File>
+    public PCGenActionMap getActionMap()
     {
-
-        public OpenRecentMenu(GenericListModel<File> listModel)
-        {
-            super(actionMap.get(PCGenActionMap.OPEN_RECENT_COMMAND), listModel);
-        }
-
-        @Override
-        protected JMenuItem createMenuItem(File item)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
+        return actionMap;
     }
 
-    private class QuickSourceMenu extends ListMenu<QuickSourceFacade>
+    public GenericListModel<File> getRecentCharacters()
     {
-
-        public QuickSourceMenu(GenericListModel<QuickSourceFacade> listModel)
-        {
-            super(actionMap.get(PCGenActionMap.SOURCES_COMMAND), listModel);
-            addSeparator();
-            add(new JMenuItem(actionMap.get(PCGenActionMap.SOURCES_ADVANCED_COMMAND)));
-        }
-
-        protected JMenuItem createMenuItem(QuickSourceFacade source)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
+        return null;
     }
 
-    private static abstract class ListMenu<E> extends JMenu implements ListDataListener
+    public GenericListModel<File> getRecentParties()
     {
-
-        private GenericListModel<E> listModel;
-
-        public ListMenu(Action action, GenericListModel<E> listModel)
-        {
-            super(action);
-            this.listModel = listModel;
-            for (int x = 0; x < listModel.getSize(); x++)
-            {
-                add(createMenuItem(listModel.getElementAt(x)));
-            }
-            listModel.addListDataListener(this);
-        }
-
-        protected abstract JMenuItem createMenuItem(E item);
-
-        public void intervalAdded(ListDataEvent e)
-        {
-            for (int x = e.getIndex0(); x <= e.getIndex1(); x++)
-            {
-                add(createMenuItem(listModel.getElementAt(x)), x);
-            }
-        }
-
-        public void intervalRemoved(ListDataEvent e)
-        {
-            for (int x = e.getIndex0(); x <= e.getIndex1(); x++)
-            {
-                remove(e.getIndex0());
-            }
-        }
-
-        public void contentsChanged(ListDataEvent e)
-        {
-            intervalRemoved(e);
-            intervalAdded(e);
-        }
-
+        return null;
     }
+
+    public GenericListModel<QuickSourceFacade> getQuickSources()
+    {
+        return null;
+    }
+
 }

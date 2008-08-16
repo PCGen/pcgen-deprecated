@@ -27,6 +27,15 @@ import java.util.StringTokenizer;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.KeyStroke;
+import pcgen.gui.facade.AbilityFacade;
+import pcgen.gui.facade.ClassFacade;
+import pcgen.gui.facade.ItemFacade;
+import pcgen.gui.facade.KitFacade;
+import pcgen.gui.facade.RaceFacade;
+import pcgen.gui.facade.SkillFacade;
+import pcgen.gui.facade.SpellFacade;
+import pcgen.gui.facade.StatFacade;
+import pcgen.gui.facade.TemplateFacade;
 import pcgen.gui.util.ResourceManager;
 import pcgen.gui.util.ResourceManager.Icons;
 import pcgen.util.PropertyFactory;
@@ -52,6 +61,8 @@ public class PCGenActionMap extends ActionMap
             ".reverttosaved";
     public static final String PARTY_COMMAND = FILE_COMMAND + ".party";
     public static final String OPEN_PARTY_COMMAND = PARTY_COMMAND + ".open";
+    public static final String OPEN_RECENT_PARTY_COMMAND = PARTY_COMMAND +
+            ".openrecent";
     public static final String CLOSE_PARTY_COMMAND = PARTY_COMMAND + ".close";
     public static final String SAVE_PARTY_COMMAND = PARTY_COMMAND + ".save";
     public static final String SAVEAS_PARTY_COMMAND =
@@ -65,14 +76,60 @@ public class PCGenActionMap extends ActionMap
     public static final String EXPORT_PDF_COMMAND = EXPORT_COMMAND + ".pdf";
     public static final String EXPORT_TEXT_COMMAND = EXPORT_COMMAND + ".text";
     public static final String EXIT_COMMAND = FILE_COMMAND + ".exit";
+    public static final String VIEW_COMMAND = "view";
+    public static final String FILTERS_COMMAND = VIEW_COMMAND + ".filters";
+    public static final String KIT_FILTERS_COMMAND = FILTERS_COMMAND +
+            ".kit";
+    public static final String RACE_FILTERS_COMMAND = FILTERS_COMMAND +
+            ".race";
+    public static final String TEMPLATE_FILTERS_COMMAND = FILTERS_COMMAND +
+            ".template";
+    public static final String CLASS_FILTERS_COMMAND = FILTERS_COMMAND +
+            ".class";
+    public static final String ABILITY_FILTERS_COMMAND = FILTERS_COMMAND +
+            ".ability";
+    public static final String SKILL_FILTERS_COMMAND = FILTERS_COMMAND +
+            ".skill";
+    public static final String EQUIPMENT_FILTERS_COMMAND = FILTERS_COMMAND +
+            ".equipment";
+    public static final String SPELL_FILTERS_COMMAND = FILTERS_COMMAND +
+            ".spell";
+    public static final String CSHEET_COMMAND = VIEW_COMMAND + ".csheet";
     public static final String TOOLS_COMMAND = "tools";
     public static final String SOURCES_COMMAND = TOOLS_COMMAND + ".sources";
     public static final String SOURCES_ADVANCED_COMMAND = SOURCES_COMMAND +
             ".advanced";
-    public static final String FILTERS_COMMAND = TOOLS_COMMAND + ".filters";
     public static final String GENERATORS_COMMAND = TOOLS_COMMAND +
             ".generators";
+    public static final String TREASURE_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".treasure";
+    public static final String RACE_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".race";
+    public static final String TEMPLATE_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".template";
+    public static final String CLASS_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".class";
+    public static final String STAT_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".stat";
+    public static final String ABILITY_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".ability";
+    public static final String SKILL_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".skill";
+    public static final String EQUIPMENT_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".equipment";
+    public static final String SPELL_GENERATORS_COMMAND = GENERATORS_COMMAND +
+            ".spell";
     public static final String OPTIONS_COMMAND = TOOLS_COMMAND + ".options";
+    public static final String HELP_COMMAND = "help";
+    public static final String HELP_CONTEXT_COMMAND = HELP_COMMAND +
+            ".context";
+    public static final String HELP_DOCS_COMMAND = HELP_COMMAND + ".docs";
+    public static final String HELP_OGL_COMMAND = HELP_COMMAND + ".ogl";
+    public static final String HELP_SPONSORS_COMMAND = HELP_COMMAND +
+            ".sponsors";
+    public static final String HELP_TIPOFTHEDAY_COMMAND = HELP_COMMAND +
+            ".tod";
+    public static final String HELP_ABOUT_COMMAND = HELP_COMMAND + ".about";
     private PCGenFrame frame;
 
     public PCGenActionMap(PCGenFrame frame)
@@ -96,6 +153,7 @@ public class PCGenActionMap extends ActionMap
 
         put(PARTY_COMMAND, new PartyAction());
         put(OPEN_PARTY_COMMAND, new OpenPartyAction());
+        put(OPEN_RECENT_PARTY_COMMAND, new OpenRecentAction());
         put(CLOSE_PARTY_COMMAND, new ClosePartyAction());
         put(SAVE_PARTY_COMMAND, new SavePartyAction());
         put(SAVEAS_PARTY_COMMAND, new SaveAsPartyAction());
@@ -108,12 +166,72 @@ public class PCGenActionMap extends ActionMap
         put(EXPORT_TEXT_COMMAND, new ExportTextAction());
         put(EXIT_COMMAND, new ExitAction());
 
+        put(VIEW_COMMAND, new ViewAction());
+        put(FILTERS_COMMAND, new FiltersAction());
+        put(KIT_FILTERS_COMMAND,
+            new DefaultFiltersAction(null, KIT_FILTERS_COMMAND,
+                                     KitFacade.class));
+        put(RACE_FILTERS_COMMAND,
+            new DefaultFiltersAction(null, RACE_FILTERS_COMMAND,
+                                     RaceFacade.class));
+        put(TEMPLATE_FILTERS_COMMAND,
+            new DefaultFiltersAction(null, TEMPLATE_FILTERS_COMMAND,
+                                     TemplateFacade.class));
+        put(CLASS_FILTERS_COMMAND,
+            new DefaultFiltersAction(null, CLASS_FILTERS_COMMAND,
+                                     ClassFacade.class));
+        put(ABILITY_FILTERS_COMMAND,
+            new DefaultFiltersAction(null, ABILITY_FILTERS_COMMAND,
+                                     AbilityFacade.class));
+        put(SKILL_FILTERS_COMMAND,
+            new DefaultFiltersAction(null, SKILL_FILTERS_COMMAND,
+                                     SkillFacade.class));
+        put(EQUIPMENT_FILTERS_COMMAND,
+            new DefaultFiltersAction(null, EQUIPMENT_FILTERS_COMMAND,
+                                     ItemFacade.class));
+        put(SPELL_FILTERS_COMMAND,
+            new DefaultFiltersAction(null, SPELL_GENERATORS_COMMAND,
+                                     SpellFacade.class));
+        put(CSHEET_COMMAND, new CharacterSheetAction());
+
         put(TOOLS_COMMAND, new ToolsAction());
         put(SOURCES_COMMAND, new SourcesAction());
         put(SOURCES_ADVANCED_COMMAND, new AdvancedSourcesAction());
-        put(FILTERS_COMMAND, new FiltersAction());
         put(GENERATORS_COMMAND, new GeneratorsAction());
+        put(TREASURE_GENERATORS_COMMAND, new TreasureGeneratorsAction());
+        put(STAT_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction(null, STAT_GENERATORS_COMMAND,
+                                        StatFacade.class));
+        put(RACE_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction(null, RACE_GENERATORS_COMMAND,
+                                        RaceFacade.class));
+        put(TEMPLATE_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction(null, TEMPLATE_GENERATORS_COMMAND,
+                                        TemplateFacade.class));
+        put(CLASS_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction(null, CLASS_GENERATORS_COMMAND,
+                                        ClassFacade.class));
+        put(ABILITY_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction(null, ABILITY_GENERATORS_COMMAND,
+                                        AbilityFacade.class));
+        put(SKILL_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction(null, SKILL_GENERATORS_COMMAND,
+                                        SkillFacade.class));
+        put(EQUIPMENT_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction(null, EQUIPMENT_GENERATORS_COMMAND,
+                                        ItemFacade.class));
+        put(SPELL_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction(null, SPELL_GENERATORS_COMMAND,
+                                        SpellFacade.class));
         put(OPTIONS_COMMAND, new OptionsAction());
+
+        put(HELP_COMMAND, new HelpAction());
+        put(HELP_CONTEXT_COMMAND, new ContextHelpAction());
+        put(HELP_DOCS_COMMAND, new DocsHelpAction());
+        put(HELP_OGL_COMMAND, new OGLHelpAction());
+        put(HELP_SPONSORS_COMMAND, new SponsorsHelpAction());
+        put(HELP_TIPOFTHEDAY_COMMAND, new TipOfTheDayHelpAction());
+        put(HELP_ABOUT_COMMAND, new AboutHelpAction());
     }
 
     private class FileAction extends PCGenAction
@@ -448,12 +566,42 @@ public class PCGenActionMap extends ActionMap
 
     }
 
+    private class ViewAction extends PCGenAction
+    {
+
+        public ViewAction()
+        {
+            super(null);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+
+        }
+
+    }
+
+    private class CharacterSheetAction extends PCGenAction
+    {
+
+        public CharacterSheetAction()
+        {
+            super(null);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
     private class ToolsAction extends PCGenAction
     {
 
         public ToolsAction()
         {
-            super("mnuTools");
+            super("mnuTools", TOOLS_COMMAND);
         }
 
         public void actionPerformed(ActionEvent e)
@@ -518,6 +666,21 @@ public class PCGenActionMap extends ActionMap
 
         public void actionPerformed(ActionEvent e)
         {
+
+        }
+
+    }
+
+    private class TreasureGeneratorsAction extends PCGenAction
+    {
+
+        public TreasureGeneratorsAction()
+        {
+            super("mnuToolsTreasure", TREASURE_GENERATORS_COMMAND, "shortcut T");
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -529,6 +692,150 @@ public class PCGenActionMap extends ActionMap
         public OptionsAction()
         {
             super(null);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+
+        }
+
+    }
+
+    private class HelpAction extends PCGenAction
+    {
+
+        public HelpAction()
+        {
+            super("mnuHelp", HELP_COMMAND);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+
+        }
+
+    }
+
+    private class ContextHelpAction extends PCGenAction
+    {
+
+        public ContextHelpAction()
+        {
+            super("mnuHelpContext", HELP_CONTEXT_COMMAND, Icons.ContextualHelp16);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private class DocsHelpAction extends PCGenAction
+    {
+
+        public DocsHelpAction()
+        {
+            super("mnuHelpDocumentation", HELP_DOCS_COMMAND, Icons.Help16);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private class OGLHelpAction extends PCGenAction
+    {
+
+        public OGLHelpAction()
+        {
+            super("mnuHelpOGL", HELP_OGL_COMMAND);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private class SponsorsHelpAction extends PCGenAction
+    {
+
+        public SponsorsHelpAction()
+        {
+            super("mnuHelpSponsors", HELP_SPONSORS_COMMAND);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private class TipOfTheDayHelpAction extends PCGenAction
+    {
+
+        public TipOfTheDayHelpAction()
+        {
+            super("mnuHelpTipOfTheDay", HELP_TIPOFTHEDAY_COMMAND,
+                  Icons.TipOfTheDay16);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private class AboutHelpAction extends PCGenAction
+    {
+
+        public AboutHelpAction()
+        {
+            super("mnuHelpAbout", HELP_ABOUT_COMMAND, Icons.About16);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private class DefaultGeneratorsAction extends PCGenAction
+    {
+
+        private final Class<?> generatorClass;
+
+        public DefaultGeneratorsAction(String prop, String command,
+                                        Class<?> generatorClass)
+        {
+            super(prop, command);
+            this.generatorClass = generatorClass;
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private class DefaultFiltersAction extends PCGenAction
+    {
+
+        private final Class<?> filterClass;
+
+        public DefaultFiltersAction(String prop, String command,
+                                     Class<?> filterClass)
+        {
+            super(prop, command);
+            this.filterClass = filterClass;
         }
 
         public void actionPerformed(ActionEvent e)
