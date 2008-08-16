@@ -493,8 +493,8 @@ public class CharacterCreationDialog extends JDialog
         levelComboBox3.setModel(createComboBoxModel(levelGenerators));
     }
 
-    private boolean anyValid(Generator<Integer> alignmentGenerator,
-                              RaceFacade race)
+    private static boolean anyValid(Generator<Integer> alignmentGenerator,
+                                      RaceFacade race)
     {
         for (Integer alignment : alignmentGenerator.getAll())
         {

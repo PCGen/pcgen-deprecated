@@ -49,10 +49,29 @@ public class CoreFrame extends javax.swing.JFrame
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton12 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButton13 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jButton14 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -138,32 +157,133 @@ public class CoreFrame extends javax.swing.JFrame
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jToolBar1, gridBagConstraints);
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        jEditorPane1.setEditable(false);
-        jScrollPane1.setViewportView(jEditorPane1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipady = 75;
-        getContentPane().add(jScrollPane1, gridBagConstraints);
-
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
 
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 503, Short.MAX_VALUE)
+        jSplitPane1.setDividerSize(7);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setOneTouchExpandable(true);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setText("Race:");
+        jPanel1.add(jLabel1, new java.awt.GridBagConstraints());
+
+        jLabel2.setText("jLabel2");
+        jPanel1.add(jLabel2, new java.awt.GridBagConstraints());
+
+        jLabel3.setText("Alignment:");
+        jPanel1.add(jLabel3, new java.awt.GridBagConstraints());
+
+        jLabel4.setText("jLabel4");
+        jPanel1.add(jLabel4, new java.awt.GridBagConstraints());
+
+        jSplitPane1.setTopComponent(jPanel1);
+
+        jPanel7.setLayout(new java.awt.GridBagLayout());
+
+        jLabel5.setText("Name:");
+        jPanel7.add(jLabel5, new java.awt.GridBagConstraints());
+
+        jTextField1.setText("jTextField1");
+        jPanel7.add(jTextField1, new java.awt.GridBagConstraints());
+
+        jButton12.setText("...");
+        jButton12.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jPanel7.add(jButton12, new java.awt.GridBagConstraints());
+
+        jLabel6.setText("Race:");
+        jPanel7.add(jLabel6, new java.awt.GridBagConstraints());
+
+        jTextField2.setText("jTextField2");
+        jTextField2.setEnabled(false);
+        jPanel7.add(jTextField2, new java.awt.GridBagConstraints());
+
+        jButton13.setText("...");
+        jButton13.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jPanel7.add(jButton13, new java.awt.GridBagConstraints());
+
+        jLabel7.setText("Alignment:");
+        jPanel7.add(jLabel7, new java.awt.GridBagConstraints());
+
+        jTextField3.setText("jTextField3");
+        jTextField3.setEnabled(false);
+        jPanel7.add(jTextField3, new java.awt.GridBagConstraints());
+
+        jButton14.setText("...");
+        jButton14.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jPanel7.add(jButton14, new java.awt.GridBagConstraints());
+
+        jTabbedPane2.addTab("Summary", jPanel7);
+
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 496, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 434, Short.MAX_VALUE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 485, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
+        jTabbedPane2.addTab("Classes", jPanel2);
+
+        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 496, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 485, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Skills", jPanel3);
+
+        org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 496, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 485, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Feats & Abilities", jPanel4);
+
+        org.jdesktop.layout.GroupLayout jPanel5Layout = new org.jdesktop.layout.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 496, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 485, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Spells", jPanel5);
+
+        org.jdesktop.layout.GroupLayout jPanel6Layout = new org.jdesktop.layout.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 496, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 485, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Inventory", jPanel6);
+
+        jSplitPane1.setRightComponent(jTabbedPane2);
+
+        jTabbedPane1.addTab("tab1", jSplitPane1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -319,6 +439,9 @@ public class CoreFrame extends javax.swing.JFrame
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -327,16 +450,32 @@ public class CoreFrame extends javax.swing.JFrame
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
