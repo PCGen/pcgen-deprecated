@@ -20,7 +20,7 @@
  *
  * Created on August 18th, 2002.
  */
-package pcgen.gui.util.panes; // hm.binkley.gui;
+package pcgen.gui.tools; // hm.binkley.gui;
 
 
 import javax.swing.ImageIcon;
@@ -28,8 +28,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import pcgen.gui.util.ResourceManager;
-import pcgen.gui.util.ResourceManager.Icons;
+import pcgen.gui.tools.ResourceManager;
+import pcgen.gui.tools.ResourceManager.Icons;
 
 /**
  * <code>Utilities</code>.

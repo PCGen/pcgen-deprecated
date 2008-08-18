@@ -21,14 +21,11 @@
 package pcgen.gui;
 
 import java.io.File;
-import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import pcgen.gui.facade.QuickSourceFacade;
-import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.AbstractListMenu;
 
 /**
  *
@@ -151,7 +148,7 @@ public class PCGenMenuBar extends JMenuBar
         return menu;
     }
 
-    private class OpenRecentMenu extends ListMenu<File>
+    private class OpenRecentMenu extends AbstractListMenu<File>
     {
 
         public OpenRecentMenu()
@@ -168,7 +165,7 @@ public class PCGenMenuBar extends JMenuBar
 
     }
 
-    private class OpenRecentPartyMenu extends ListMenu<File>
+    private class OpenRecentPartyMenu extends AbstractListMenu<File>
     {
 
         public OpenRecentPartyMenu()
@@ -185,7 +182,7 @@ public class PCGenMenuBar extends JMenuBar
 
     }
 
-    private class QuickSourceMenu extends ListMenu<QuickSourceFacade>
+    private class QuickSourceMenu extends AbstractListMenu<QuickSourceFacade>
     {
 
         public QuickSourceMenu()
@@ -199,55 +196,6 @@ public class PCGenMenuBar extends JMenuBar
         protected JMenuItem createMenuItem(QuickSourceFacade source)
         {
             throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-    }
-
-    private static abstract class ListMenu<E> extends JMenu implements ListDataListener
-    {
-
-        private GenericListModel<E> listModel;
-
-        public ListMenu(Action action, GenericListModel<E> listModel)
-        {
-            super(action);
-            this.listModel = listModel;
-            for (int x = 0; x < listModel.getSize(); x++)
-            {
-                add(createMenuItem(listModel.getElementAt(x)));
-            }
-            listModel.addListDataListener(this);
-        }
-
-        protected abstract JMenuItem createMenuItem(E item);
-
-        protected void checkEnabled()
-        {
-            setEnabled(getComponentCount() != 0);
-        }
-
-        public void intervalAdded(ListDataEvent e)
-        {
-            for (int x = e.getIndex0(); x <= e.getIndex1(); x++)
-            {
-                add(createMenuItem(listModel.getElementAt(x)), x);
-            }
-            checkEnabled();
-        }
-
-        public void intervalRemoved(ListDataEvent e)
-        {
-            for (int x = e.getIndex0(); x <= e.getIndex1(); x++)
-            {
-                remove(e.getIndex0());
-            }
-            checkEnabled();
-        }
-
-        public void contentsChanged(ListDataEvent e)
-        {
-            intervalRemoved(e);
-            intervalAdded(e);
         }
 
     }

@@ -68,8 +68,8 @@ import pcgen.gui.util.ComboSelectionBox;
 import pcgen.gui.util.DefaultGenericComboBoxModel;
 import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.event.DocumentChangeAdapter;
-import pcgen.gui.util.table.TableCellUtils.SpinnerEditor;
-import pcgen.gui.util.table.TableCellUtils.SpinnerRenderer;
+import pcgen.gui.util.table.TableCellUtilities.SpinnerEditor;
+import pcgen.gui.util.table.TableCellUtilities.SpinnerRenderer;
 
 /**
  *

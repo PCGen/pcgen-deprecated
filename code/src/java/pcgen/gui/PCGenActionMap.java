@@ -20,13 +20,8 @@
  */
 package pcgen.gui;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.StringTokenizer;
-import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
-import javax.swing.KeyStroke;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.ItemFacade;
@@ -36,9 +31,8 @@ import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.facade.SpellFacade;
 import pcgen.gui.facade.StatFacade;
 import pcgen.gui.facade.TemplateFacade;
-import pcgen.gui.util.ResourceManager;
-import pcgen.gui.util.ResourceManager.Icons;
-import pcgen.util.PropertyFactory;
+import pcgen.gui.tools.PCGenAction;
+import pcgen.gui.tools.ResourceManager.Icons;
 
 /**
  *
@@ -169,28 +163,34 @@ public class PCGenActionMap extends ActionMap
         put(VIEW_COMMAND, new ViewAction());
         put(FILTERS_COMMAND, new FiltersAction());
         put(KIT_FILTERS_COMMAND,
-            new DefaultFiltersAction(null, KIT_FILTERS_COMMAND,
+            new DefaultFiltersAction("mnuViewFiltersKit", KIT_FILTERS_COMMAND,
                                      KitFacade.class));
         put(RACE_FILTERS_COMMAND,
-            new DefaultFiltersAction(null, RACE_FILTERS_COMMAND,
+            new DefaultFiltersAction("mnuViewFiltersRace", RACE_FILTERS_COMMAND,
                                      RaceFacade.class));
         put(TEMPLATE_FILTERS_COMMAND,
-            new DefaultFiltersAction(null, TEMPLATE_FILTERS_COMMAND,
+            new DefaultFiltersAction("mnuViewFiltersTemplate",
+                                     TEMPLATE_FILTERS_COMMAND,
                                      TemplateFacade.class));
         put(CLASS_FILTERS_COMMAND,
-            new DefaultFiltersAction(null, CLASS_FILTERS_COMMAND,
+            new DefaultFiltersAction("mnuViewFiltersClass",
+                                     CLASS_FILTERS_COMMAND,
                                      ClassFacade.class));
         put(ABILITY_FILTERS_COMMAND,
-            new DefaultFiltersAction(null, ABILITY_FILTERS_COMMAND,
+            new DefaultFiltersAction("mnuViewFiltersAbility",
+                                     ABILITY_FILTERS_COMMAND,
                                      AbilityFacade.class));
         put(SKILL_FILTERS_COMMAND,
-            new DefaultFiltersAction(null, SKILL_FILTERS_COMMAND,
+            new DefaultFiltersAction("mnuViewFiltersSkill",
+                                     SKILL_FILTERS_COMMAND,
                                      SkillFacade.class));
         put(EQUIPMENT_FILTERS_COMMAND,
-            new DefaultFiltersAction(null, EQUIPMENT_FILTERS_COMMAND,
+            new DefaultFiltersAction("mnuViewFiltersEquipment",
+                                     EQUIPMENT_FILTERS_COMMAND,
                                      ItemFacade.class));
         put(SPELL_FILTERS_COMMAND,
-            new DefaultFiltersAction(null, SPELL_GENERATORS_COMMAND,
+            new DefaultFiltersAction("mnuViewFiltersSpell",
+                                     SPELL_GENERATORS_COMMAND,
                                      SpellFacade.class));
         put(CSHEET_COMMAND, new CharacterSheetAction());
 
@@ -200,28 +200,36 @@ public class PCGenActionMap extends ActionMap
         put(GENERATORS_COMMAND, new GeneratorsAction());
         put(TREASURE_GENERATORS_COMMAND, new TreasureGeneratorsAction());
         put(STAT_GENERATORS_COMMAND,
-            new DefaultGeneratorsAction(null, STAT_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction("mnuToolsGeneratorStat",
+                                        STAT_GENERATORS_COMMAND,
                                         StatFacade.class));
         put(RACE_GENERATORS_COMMAND,
-            new DefaultGeneratorsAction(null, RACE_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction("mnuToolsGeneratorRace",
+                                        RACE_GENERATORS_COMMAND,
                                         RaceFacade.class));
         put(TEMPLATE_GENERATORS_COMMAND,
-            new DefaultGeneratorsAction(null, TEMPLATE_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction("mnuToolsGeneratorTemplate",
+                                        TEMPLATE_GENERATORS_COMMAND,
                                         TemplateFacade.class));
         put(CLASS_GENERATORS_COMMAND,
-            new DefaultGeneratorsAction(null, CLASS_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction("mnuToolsGeneratorClass",
+                                        CLASS_GENERATORS_COMMAND,
                                         ClassFacade.class));
         put(ABILITY_GENERATORS_COMMAND,
-            new DefaultGeneratorsAction(null, ABILITY_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction("mnuToolsGeneratorAbility",
+                                        ABILITY_GENERATORS_COMMAND,
                                         AbilityFacade.class));
         put(SKILL_GENERATORS_COMMAND,
-            new DefaultGeneratorsAction(null, SKILL_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction("mnuToolsGeneratorSkill",
+                                        SKILL_GENERATORS_COMMAND,
                                         SkillFacade.class));
         put(EQUIPMENT_GENERATORS_COMMAND,
-            new DefaultGeneratorsAction(null, EQUIPMENT_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction("mnuToolsGeneratorEquipment",
+                                        EQUIPMENT_GENERATORS_COMMAND,
                                         ItemFacade.class));
         put(SPELL_GENERATORS_COMMAND,
-            new DefaultGeneratorsAction(null, SPELL_GENERATORS_COMMAND,
+            new DefaultGeneratorsAction("mnuToolsGeneratorSpell",
+                                        SPELL_GENERATORS_COMMAND,
                                         SpellFacade.class));
         put(OPTIONS_COMMAND, new OptionsAction());
 
@@ -242,11 +250,6 @@ public class PCGenActionMap extends ActionMap
             super("mnuFile");
         }
 
-        public void actionPerformed(ActionEvent e)
-        {
-
-        }
-
     }
 
     private class NewAction extends PCGenAction
@@ -257,6 +260,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileNew", NEW_COMMAND, "shortcut N", Icons.New16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -272,6 +276,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileOpen", OPEN_COMMAND, "shortcut O", Icons.Open16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -287,11 +292,6 @@ public class PCGenActionMap extends ActionMap
             super("mnuOpenRecent");
         }
 
-        public void actionPerformed(ActionEvent e)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
     }
 
     private class CloseAction extends PCGenAction
@@ -302,6 +302,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileClose", CLOSE_COMMAND, "shortcut W", Icons.Close16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -317,6 +318,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileCloseAll", CLOSEALL_COMMAND, Icons.CloseAll16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -332,6 +334,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileSave", SAVE_COMMAND, "shortcut S", Icons.Save16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -348,6 +351,7 @@ public class PCGenActionMap extends ActionMap
                   Icons.SaveAs16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -363,6 +367,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileSaveAll", SAVEALL_COMMAND, Icons.SaveAll16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -378,6 +383,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileRevertToSaved", REVERT_COMMAND, "shortcut R");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -393,11 +399,6 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileParty");
         }
 
-        public void actionPerformed(ActionEvent e)
-        {
-
-        }
-
     }
 
     private class OpenPartyAction extends PCGenAction
@@ -408,6 +409,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFilePartyOpen", OPEN_PARTY_COMMAND, Icons.Open16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -423,6 +425,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFilePartyClose", CLOSE_PARTY_COMMAND, Icons.Close16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -438,6 +441,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFilePartySave", SAVE_PARTY_COMMAND, Icons.Save16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -453,6 +457,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFilePartySaveAs", SAVEAS_PARTY_COMMAND, Icons.SaveAs16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -469,6 +474,7 @@ public class PCGenActionMap extends ActionMap
                   Icons.PrintPreview16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -484,6 +490,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFilePrint", PRINT_COMMAND, "shortcut P", Icons.Print16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -499,11 +506,6 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileExport", Icons.Export16);
         }
 
-        public void actionPerformed(ActionEvent e)
-        {
-
-        }
-
     }
 
     private class ExportStandardAction extends PCGenAction
@@ -514,6 +516,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileExportStandard", EXPORT_STANDARD_COMMAND);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -529,6 +532,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileExportPDF", EXPORT_PDF_COMMAND);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -544,6 +548,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileExportText", EXPORT_TEXT_COMMAND);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -559,6 +564,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuFileExit", EXIT_COMMAND, "shortcut Q");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -571,12 +577,7 @@ public class PCGenActionMap extends ActionMap
 
         public ViewAction()
         {
-            super(null);
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-
+            super("mnuView", VIEW_COMMAND);
         }
 
     }
@@ -589,6 +590,7 @@ public class PCGenActionMap extends ActionMap
             super(null);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -604,11 +606,6 @@ public class PCGenActionMap extends ActionMap
             super("mnuTools", TOOLS_COMMAND);
         }
 
-        public void actionPerformed(ActionEvent e)
-        {
-
-        }
-
     }
 
     private class SourcesAction extends PCGenAction
@@ -619,6 +616,7 @@ public class PCGenActionMap extends ActionMap
             super(null);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -634,6 +632,7 @@ public class PCGenActionMap extends ActionMap
             super(null);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -646,9 +645,10 @@ public class PCGenActionMap extends ActionMap
 
         public FiltersAction()
         {
-            super("mnuToolsFilters");
+            super("mnuViewFilters");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -664,6 +664,7 @@ public class PCGenActionMap extends ActionMap
             super(null);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
 
@@ -676,9 +677,11 @@ public class PCGenActionMap extends ActionMap
 
         public TreasureGeneratorsAction()
         {
-            super("mnuToolsTreasure", TREASURE_GENERATORS_COMMAND, "shortcut T");
+            super("mnuToolsGeneratorTreasure", TREASURE_GENERATORS_COMMAND,
+                  "shortcut T");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -694,9 +697,10 @@ public class PCGenActionMap extends ActionMap
             super(null);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
-
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }
@@ -709,11 +713,6 @@ public class PCGenActionMap extends ActionMap
             super("mnuHelp", HELP_COMMAND);
         }
 
-        public void actionPerformed(ActionEvent e)
-        {
-
-        }
-
     }
 
     private class ContextHelpAction extends PCGenAction
@@ -724,6 +723,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuHelpContext", HELP_CONTEXT_COMMAND, Icons.ContextualHelp16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -739,6 +739,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuHelpDocumentation", HELP_DOCS_COMMAND, Icons.Help16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -754,6 +755,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuHelpOGL", HELP_OGL_COMMAND);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -769,6 +771,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuHelpSponsors", HELP_SPONSORS_COMMAND);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -785,6 +788,7 @@ public class PCGenActionMap extends ActionMap
                   Icons.TipOfTheDay16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -800,6 +804,7 @@ public class PCGenActionMap extends ActionMap
             super("mnuHelpAbout", HELP_ABOUT_COMMAND, Icons.About16);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -819,6 +824,7 @@ public class PCGenActionMap extends ActionMap
             this.generatorClass = generatorClass;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -838,108 +844,10 @@ public class PCGenActionMap extends ActionMap
             this.filterClass = filterClass;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-    }
-
-    private static abstract class PCGenAction extends AbstractAction
-    {
-
-        public PCGenAction(String prop)
-        {
-            this(prop, null, null, null);
-        }
-
-        public PCGenAction(String prop, Icons icon)
-        {
-            this(prop, null, null, icon);
-        }
-
-        public PCGenAction(String prop, String command)
-        {
-            this(prop, command, null, null);
-        }
-
-        public PCGenAction(String prop, String command, Icons icon)
-        {
-            this(prop, command, null, icon);
-        }
-
-        public PCGenAction(String prop, String command, String accelerator)
-        {
-            this(prop, command, accelerator, null);
-        }
-
-        public PCGenAction(String prop, String command, String accelerator,
-                            Icons icon)
-        {
-            putValue(NAME,
-                     PropertyFactory.getString("in_" + prop));
-            putValue(MNEMONIC_KEY,
-                     PropertyFactory.getMnemonic("in_mn_" + prop));
-            putValue(SHORT_DESCRIPTION,
-                     PropertyFactory.getString("in_" + prop + "Tip"));
-
-            if (command != null)
-            {
-                putValue(ACTION_COMMAND_KEY, command);
-            }
-            if (accelerator != null)
-            {
-                // accelerator has three possible forms:
-                // 1) shortcut +
-                // 2) shortcut-alt +
-                // 3) F1
-                // (error checking is for the weak!)
-                int iShortCut = KeyEvent.CTRL_MASK;
-                int menuShortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-                StringTokenizer aTok = new StringTokenizer(accelerator);
-
-                // get the first argument
-                String aString = aTok.nextToken();
-
-                if (aString.equalsIgnoreCase("shortcut"))
-                {
-                    iShortCut = menuShortcutKeyMask;
-                }
-                else if (aString.equalsIgnoreCase("alt"))
-                {
-                    if (System.getProperty("mrj.version") != null)
-                    {
-                        iShortCut = menuShortcutKeyMask | KeyEvent.ALT_MASK;
-                    }
-                    else
-                    {
-                        iShortCut = KeyEvent.ALT_MASK;
-                    }
-                }
-                else if (aString.equalsIgnoreCase("shift-shortcut"))
-                {
-                    iShortCut = menuShortcutKeyMask | KeyEvent.SHIFT_MASK;
-                }
-
-                if (aTok.hasMoreTokens())
-                {
-                    // get the second argument
-                    aString = aTok.nextToken();
-                }
-
-                KeyStroke aKey = KeyStroke.getKeyStroke(aString);
-
-                if (aKey != null)
-                {
-                    int iKeyCode = aKey.getKeyCode();
-                    putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(iKeyCode,
-                                                                     iShortCut));
-                }
-            }
-            if (icon != null)
-            {
-                putValue(SMALL_ICON, ResourceManager.getImageIcon(icon));
-            }
         }
 
     }

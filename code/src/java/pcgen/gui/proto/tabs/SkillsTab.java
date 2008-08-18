@@ -25,8 +25,8 @@ public class SkillsTab extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        flippingSplitPane1 = new pcgen.gui.util.panes.FlippingSplitPane();
-        flippingSplitPane2 = new pcgen.gui.util.panes.FlippingSplitPane();
+        flippingSplitPane1 = new pcgen.gui.tools.FlippingSplitPane();
+        flippingSplitPane2 = new pcgen.gui.tools.FlippingSplitPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -119,8 +119,8 @@ public class SkillsTab extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private pcgen.gui.filter.FilteredTreeViewPanel filteredTreeViewPanel1;
-    private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane1;
-    private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane2;
+    private pcgen.gui.tools.FlippingSplitPane flippingSplitPane1;
+    private pcgen.gui.tools.FlippingSplitPane flippingSplitPane2;
     private pcgen.gui.tools.InfoPane infoPane1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

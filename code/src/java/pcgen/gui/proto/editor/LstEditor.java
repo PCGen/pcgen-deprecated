@@ -31,8 +31,8 @@ public class LstEditor extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        flippingSplitPane1 = new pcgen.gui.util.panes.FlippingSplitPane();
-        spinningTabbedPane1 = new pcgen.gui.util.panes.SpinningTabbedPane();
+        flippingSplitPane1 = new pcgen.gui.tools.FlippingSplitPane();
+        spinningTabbedPane1 = new pcgen.gui.tools.SpinningTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
@@ -120,7 +120,7 @@ public class LstEditor extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane1;
+    private pcgen.gui.tools.FlippingSplitPane flippingSplitPane1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
@@ -135,7 +135,7 @@ public class LstEditor extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private pcgen.gui.util.JTreeTablePane jTreeTablePane1;
-    private pcgen.gui.util.panes.SpinningTabbedPane spinningTabbedPane1;
+    private pcgen.gui.tools.SpinningTabbedPane spinningTabbedPane1;
     // End of variables declaration//GEN-END:variables
     
 }

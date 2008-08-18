@@ -20,6 +20,7 @@
  */
 package pcgen.gui.util;
 
+import pcgen.gui.tools.ResourceManager;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Insets;

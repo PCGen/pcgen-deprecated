@@ -66,4 +66,6 @@ public interface CharacterFacade
 
     public float getSkillRanks(SkillFacade skill);
 
+    public GenericListModel<EquipmentSetFacade> getEquipmentSets();
+
 }

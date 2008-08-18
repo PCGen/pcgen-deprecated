@@ -42,8 +42,8 @@ public class EquipmentTab extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
         jCheckBox1 = new javax.swing.JCheckBox();
-        flippingSplitPane1 = new pcgen.gui.util.panes.FlippingSplitPane();
-        flippingSplitPane2 = new pcgen.gui.util.panes.FlippingSplitPane();
+        flippingSplitPane1 = new pcgen.gui.tools.FlippingSplitPane();
+        flippingSplitPane2 = new pcgen.gui.tools.FlippingSplitPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -188,8 +188,8 @@ public class EquipmentTab extends javax.swing.JPanel {
     private pcgen.gui.tools.ChooserPane chooserPane1;
     private pcgen.gui.filter.FilteredTreeViewPanel filteredTreeViewPanel1;
     private pcgen.gui.filter.FilteredTreeViewPanel filteredTreeViewPanel2;
-    private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane1;
-    private pcgen.gui.util.panes.FlippingSplitPane flippingSplitPane2;
+    private pcgen.gui.tools.FlippingSplitPane flippingSplitPane1;
+    private pcgen.gui.tools.FlippingSplitPane flippingSplitPane2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;

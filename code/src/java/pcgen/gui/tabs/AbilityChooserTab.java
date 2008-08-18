@@ -18,7 +18,7 @@
  * 
  * Created on Jun 29, 2008, 10:30:57 PM
  */
-package pcgen.gui.tabs.ability;
+package pcgen.gui.tabs;
 
 import javax.swing.event.ListDataEvent;
 import java.awt.datatransfer.DataFlavor;
@@ -61,7 +61,7 @@ import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.event.AbstractGenericListDataListener;
 import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.gui.util.event.GenericListDataListener;
-import pcgen.gui.util.panes.FlippingSplitPane;
+import pcgen.gui.tools.FlippingSplitPane;
 import pcgen.gui.util.treeview.*;
 
 /**

@@ -18,7 +18,7 @@
  * 
  * Created on Feb 24, 2008, 9:52:23 PM
  */
-package pcgen.gui.util;
+package pcgen.gui.tools;
 
 import java.net.URL;
 import java.util.HashMap;

@@ -25,14 +25,13 @@ import java.io.File;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import pcgen.gui.facade.QuickSourceFacade;
 import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.ToolBarUtilities;
 
 /**
  *
@@ -77,36 +76,23 @@ public class PCGenFrame extends JFrame
 
     private JToolBar createToolBar()
     {
-        JToolBar toolbar = new JToolBar();
-        toolbar.setFloatable(false);
-        toolbar.setRollover(true);
+        JToolBar toolbar = ToolBarUtilities.createDefaultToolBar();
 
-        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.NEW_COMMAND)));
-        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.OPEN_COMMAND)));
-        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.CLOSE_COMMAND)));
-        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.SAVE_COMMAND)));
+        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.NEW_COMMAND)));
+        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.OPEN_COMMAND)));
+        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.CLOSE_COMMAND)));
+        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.SAVE_COMMAND)));
         toolbar.addSeparator();
 
-        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.PRINT_PREVIEW_COMMAND)));
-        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.PRINT_COMMAND)));
+        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.PRINT_PREVIEW_COMMAND)));
+        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.PRINT_COMMAND)));
         toolbar.addSeparator();
 
-        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.OPTIONS_COMMAND)));
+        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.OPTIONS_COMMAND)));
         toolbar.addSeparator();
 
-        toolbar.add(createToolBarButton(actionMap.get(PCGenActionMap.HELP_CONTEXT_COMMAND)));
+        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.HELP_CONTEXT_COMMAND)));
         return toolbar;
-    }
-
-    private static JButton createToolBarButton(Action action)
-    {
-        JButton button = new JButton();
-        button.putClientProperty("hideActionText", true);
-        button.setFocusable(false);
-        button.setHorizontalTextPosition(SwingConstants.CENTER);
-        button.setVerticalTextPosition(SwingConstants.BOTTOM);
-        button.setAction(action);
-        return button;
     }
 
     public PCGenActionMap getActionMap()

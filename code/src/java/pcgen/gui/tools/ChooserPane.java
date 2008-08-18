@@ -20,7 +20,6 @@
  */
 package pcgen.gui.tools;
 
-import pcgen.gui.util.panes.*;
 import java.awt.Component;
 
 /**

@@ -1,5 +1,5 @@
 /*
- * TableCellUtils.java
+ * TableCellUtilities.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -38,10 +38,10 @@ import javax.swing.table.TableCellEditor;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public final class TableCellUtils
+public final class TableCellUtilities
 {
 
-    private TableCellUtils()
+    private TableCellUtilities()
     {
 
     }

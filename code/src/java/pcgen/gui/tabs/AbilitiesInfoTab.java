@@ -32,7 +32,6 @@ import javax.swing.event.ChangeListener;
 import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.tabs.ability.AbilityChooserTab;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.event.AbstractGenericListDataListener;
 import pcgen.gui.util.event.GenericListDataEvent;
