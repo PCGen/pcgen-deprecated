@@ -20,6 +20,8 @@
  */
 package pcgen.gui;
 
+import java.io.File;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,7 @@ public final class PCGenUIManager
 {
 
     private static final Map<HouseRule, Boolean> rulesMap = new EnumMap<HouseRule, Boolean>(HouseRule.class);
+    private static File pcgenPreviewDir;
 
     private PCGenUIManager()
     {
@@ -77,6 +80,11 @@ public final class PCGenUIManager
         return null;
     }
 
+    public static Collection<File> getCharacterSheets()
+    {
+        return null;
+    }
+
     public static boolean isHouseRuleSelected(HouseRule rule)
     {
         Boolean b = rulesMap.get(rule);
@@ -86,6 +94,16 @@ public final class PCGenUIManager
     public static String getDefaultCharacterName()
     {
         return null;
+    }
+
+    public static void setPcgenPreviewDir(final File aFile)
+    {
+        pcgenPreviewDir = aFile;
+    }
+
+    public static File getPcgenPreviewDir()
+    {
+        return pcgenPreviewDir;
     }
 
     public static enum HouseRule

@@ -20,6 +20,7 @@
  */
 package pcgen.gui.tabs;
 
+import pcgen.gui.tools.CharacterStateEditable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

@@ -68,4 +68,14 @@ public interface CharacterFacade
 
     public GenericListModel<EquipmentSetFacade> getEquipmentSets();
 
+    public void setSelectedEquipmentSet(EquipmentSetFacade equipmentSet);
+
+    public EquipmentSetFacade getSelectedEquipmentSet();
+
+    public GenericListModel<TempBonusFacade> getTempBonuses();
+
+    public void applyTempBonus(TempBonusFacade bonus, boolean apply);
+
+    public boolean isTempBonusApplied(TempBonusFacade bonus);
+
 }

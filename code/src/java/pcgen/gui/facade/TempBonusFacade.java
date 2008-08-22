@@ -1,5 +1,5 @@
 /*
- * CharacterStateEditable.java
+ * TempBonusFacade.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,21 +16,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 27, 2008, 5:59:32 PM
+ * Created on Aug 18, 2008, 6:15:24 PM
  */
-package pcgen.gui.tabs;
 
-import java.util.Hashtable;
-import javax.swing.undo.StateEditable;
-import pcgen.gui.facade.CharacterFacade;
+package pcgen.gui.facade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface CharacterStateEditable extends StateEditable
-{
-
-    public Hashtable<Object, Object> createState(CharacterFacade character);
+public interface TempBonusFacade {
 
 }

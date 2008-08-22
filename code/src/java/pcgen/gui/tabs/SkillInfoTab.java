@@ -20,6 +20,7 @@
  */
 package pcgen.gui.tabs;
 
+import pcgen.gui.tools.CharacterStateEditable;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

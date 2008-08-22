@@ -27,11 +27,10 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import pcgen.gui.facade.QuickSourceFacade;
+import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.GenericListModel;
-import pcgen.gui.util.ToolBarUtilities;
 
 /**
  *
@@ -57,7 +56,7 @@ public class PCGenFrame extends JFrame
         root.setInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
                          createInputMap(actionMap));
         setJMenuBar(new PCGenMenuBar(this));
-        add(createToolBar(), BorderLayout.PAGE_START);
+        add(new PCGenToolBar(this), BorderLayout.PAGE_START);
     }
 
     private static InputMap createInputMap(ActionMap actionMap)
@@ -72,27 +71,6 @@ public class PCGenFrame extends JFrame
             }
         }
         return inputMap;
-    }
-
-    private JToolBar createToolBar()
-    {
-        JToolBar toolbar = ToolBarUtilities.createDefaultToolBar();
-
-        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.NEW_COMMAND)));
-        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.OPEN_COMMAND)));
-        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.CLOSE_COMMAND)));
-        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.SAVE_COMMAND)));
-        toolbar.addSeparator();
-
-        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.PRINT_PREVIEW_COMMAND)));
-        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.PRINT_COMMAND)));
-        toolbar.addSeparator();
-
-        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.OPTIONS_COMMAND)));
-        toolbar.addSeparator();
-
-        toolbar.add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.HELP_CONTEXT_COMMAND)));
-        return toolbar;
     }
 
     public PCGenActionMap getActionMap()
@@ -111,6 +89,11 @@ public class PCGenFrame extends JFrame
     }
 
     public GenericListModel<QuickSourceFacade> getQuickSources()
+    {
+        return null;
+    }
+
+    public GenericComboBoxModel<File> getCharacterSheets()
     {
         return null;
     }
