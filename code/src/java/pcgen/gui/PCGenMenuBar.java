@@ -23,18 +23,16 @@ package pcgen.gui;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.EquipmentSetFacade;
 import pcgen.gui.facade.QuickSourceFacade;
 import pcgen.gui.facade.TempBonusFacade;
 import pcgen.gui.tools.CharacterSelectionListener;
 import pcgen.gui.util.AbstractListMenu;
+import pcgen.gui.util.ComboListMenu;
 
 /**
  *
@@ -122,7 +120,8 @@ public class PCGenMenuBar extends JMenuBar implements CharacterSelectionListener
         menu.addSeparator();
         menu.add(equipmentMenu);
         menu.add(tempMenu);
-        //fileMenu.add(new JMenuItem(actionMap.get(PCGenActionMap.CSHEET_COMMAND)));
+        menu.add(new ComboListMenu<File>(actionMap.get(PCGenActionMap.CSHEET_COMMAND),
+                                         frame.getCharacterSheets()));
         return menu;
     }
 
@@ -223,42 +222,12 @@ public class PCGenMenuBar extends JMenuBar implements CharacterSelectionListener
 
     }
 
-    private class EquipmentSetMenu extends AbstractListMenu<EquipmentSetFacade>
-            implements ItemListener
+    private class EquipmentSetMenu extends ComboListMenu<EquipmentSetFacade>
     {
-
-        private final ButtonGroup group = new ButtonGroup();
 
         public EquipmentSetMenu()
         {
             super(null);
-        }
-
-        @Override
-        protected JMenuItem createMenuItem(EquipmentSetFacade equipset)
-        {
-            EquipmentSetMenuItem item = new EquipmentSetMenuItem(equipset,
-                                                                 character.getSelectedEquipmentSet() ==
-                                                                 equipset, this);
-            group.add(item);
-            return item;
-        }
-
-        @Override
-        public void remove(int index)
-        {
-            EquipmentSetMenuItem item = (EquipmentSetMenuItem) getComponent(index);
-            group.remove(item);
-            super.remove(index);
-        }
-
-        public void itemStateChanged(ItemEvent e)
-        {
-            if (e.getStateChange() == ItemEvent.SELECTED)
-            {
-                EquipmentSetFacade equipset = (EquipmentSetFacade) e.getItemSelectable().getSelectedObjects()[0];
-                character.setSelectedEquipmentSet(equipset);
-            }
         }
 
     }
@@ -275,9 +244,8 @@ public class PCGenMenuBar extends JMenuBar implements CharacterSelectionListener
         @Override
         protected JMenuItem createMenuItem(TempBonusFacade item)
         {
-            return new TempBonusMenuItem(item,
-                                         character.isTempBonusApplied(item),
-                                         this);
+            return new CheckBoxMenuItem(item, character.isTempBonusApplied(item),
+                                        this);
         }
 
         public void itemStateChanged(ItemEvent e)
@@ -285,76 +253,6 @@ public class PCGenMenuBar extends JMenuBar implements CharacterSelectionListener
             TempBonusFacade bonus = (TempBonusFacade) e.getItemSelectable().getSelectedObjects()[0];
             character.applyTempBonus(bonus,
                                      e.getStateChange() == ItemEvent.SELECTED);
-        }
-
-    }
-
-    private class CharacterSheetMenu extends AbstractListMenu<File>
-    {
-
-        public CharacterSheetMenu()
-        {
-            super(null);
-        }
-
-        @Override
-        protected JMenuItem createMenuItem(File item)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-    }
-
-    private static class EquipmentSetMenuItem extends JRadioButtonMenuItem
-    {
-
-        private final EquipmentSetFacade equipmentSet;
-
-        public EquipmentSetMenuItem(EquipmentSetFacade equipset,
-                                     boolean selected, ItemListener listener)
-        {
-            this.equipmentSet = equipset;
-            setSelected(selected);
-            addItemListener(listener);
-        }
-
-        @Override
-        public String getText()
-        {
-            return equipmentSet.toString();
-        }
-
-        @Override
-        public Object[] getSelectedObjects()
-        {
-            return new Object[]{equipmentSet};
-        }
-
-    }
-
-    private static class TempBonusMenuItem extends JCheckBoxMenuItem
-    {
-
-        private final TempBonusFacade bonus;
-
-        public TempBonusMenuItem(TempBonusFacade bonus, boolean selected,
-                                  ItemListener listener)
-        {
-            this.bonus = bonus;
-            setSelected(selected);
-            addItemListener(listener);
-        }
-
-        @Override
-        public String getText()
-        {
-            return bonus.toString();
-        }
-
-        @Override
-        public Object[] getSelectedObjects()
-        {
-            return new Object[]{bonus};
         }
 
     }

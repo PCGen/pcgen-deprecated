@@ -20,6 +20,7 @@
  */
 package pcgen.gui.facade;
 
+import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.GenericListModel;
 
 /**
@@ -66,11 +67,7 @@ public interface CharacterFacade
 
     public float getSkillRanks(SkillFacade skill);
 
-    public GenericListModel<EquipmentSetFacade> getEquipmentSets();
-
-    public void setSelectedEquipmentSet(EquipmentSetFacade equipmentSet);
-
-    public EquipmentSetFacade getSelectedEquipmentSet();
+    public GenericComboBoxModel<EquipmentSetFacade> getEquipmentSets();
 
     public GenericListModel<TempBonusFacade> getTempBonuses();
 

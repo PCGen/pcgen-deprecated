@@ -59,7 +59,7 @@ public class PCGenToolBar extends JToolBar
         add(ToolBarUtilities.createToolBarButton(actionMap.get(PCGenActionMap.PRINT_COMMAND)));
         addSeparator();
         sheetBox.setMaximumSize(new Dimension(200, 22));
-        //sheetBox.setModel(n)
+        sheetBox.setModel(frame.getCharacterSheets());
         add(sheetBox);
         addSeparator();
 

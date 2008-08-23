@@ -20,13 +20,18 @@
  */
 package pcgen.gui.filter;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -38,6 +43,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -47,6 +54,7 @@ import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.SimpleTextIcon;
+import pcgen.gui.util.ToolBarUtilities;
 import pcgen.gui.util.event.DocumentChangeAdapter;
 import pcgen.gui.util.event.ListDataAdapter;
 import pcgen.util.PropertyFactory;
@@ -64,6 +72,7 @@ public class FilterPanel extends JPanel implements StateEditable
     private static final String advancedString = PropertyFactory.getString("in_demAdv");
     private final JTextField textfield;
     private final JPanel buttonPanel;
+    private final JPanel filterPanel;
     private FilterPanelListener panelListener = null;
     private ListDataListener listListener;
     private List<Filter> selectedFilters;
@@ -72,20 +81,19 @@ public class FilterPanel extends JPanel implements StateEditable
     public FilterPanel()
     {
         this.buttonPanel = new JPanel(new FilterLayout());
+        this.filterPanel = new JPanel();
         this.textfield = new JTextField();
         initComponents();
     }
 
     private void initComponents()
     {
-        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.LINE_AXIS));
+        setLayout(new BorderLayout());
 
-        JToolBar toolbar = new JToolBar();
-        toolbar.setRollover(true);
-        toolbar.setFloatable(false);
+        JToolBar toolbar = ToolBarUtilities.createDefaultToolBar();
 
-        JButton button = new JButton();
-        button.setFocusable(false);
+        JButton button = ToolBarUtilities.createToolBarButton(null);
 
         Icon icon = new SimpleTextIcon(button, filterString);
         button.setIcon(icon);
@@ -119,14 +127,39 @@ public class FilterPanel extends JPanel implements StateEditable
 
         toolbar.add(textfield);
 
-        button = new JButton(new AdvancedAction());
-        button.setFocusable(false);
+        button = ToolBarUtilities.createToolBarButton(new AdvancedAction());
+
         toolbar.add(button);
 
         toolbar.addSeparator();
 
-        add(toolbar);
-        add(buttonPanel);
+        filterPanel.add(toolbar);
+        filterPanel.add(buttonPanel);
+        add(filterPanel, BorderLayout.CENTER);
+
+        final ArrowButton arrowbutton = new ArrowButton();
+        arrowbutton.addMouseListener(
+                new MouseAdapter()
+                {
+
+                    @Override
+                    public void mousePressed(MouseEvent e)
+                    {
+                        boolean closed = !arrowbutton.isOpen();
+                        arrowbutton.setOpen(closed);
+                        if (closed)
+                        {
+                            add(filterPanel, BorderLayout.CENTER);
+                        }
+                        else
+                        {
+                            remove(filterPanel);
+                        }
+                        revalidate();
+                    }
+
+                });
+        add(arrowbutton, BorderLayout.SOUTH);
     }
 
     private <T> void setFilterClass(Class<T> filterClass)
@@ -290,6 +323,111 @@ public class FilterPanel extends JPanel implements StateEditable
         public void actionPerformed(ActionEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private static class ArrowButton extends JButton
+    {
+
+        private static final Color background = UIManager.getColor("control");
+        private static final Color shadow = UIManager.getColor("controlShadow");
+        private static final Color darkShadow = UIManager.getColor("controlDkShadow");
+        private static final Color highlight = UIManager.getColor("controlLtHighlight");
+        private boolean entered = false;
+        private boolean open = true;
+
+        public ArrowButton()
+        {
+            setMinimumSize(new Dimension(6, 6));
+            setPreferredSize(new Dimension(6, 6));
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setRequestFocusEnabled(false);
+            addMouseListener(
+                    new MouseAdapter()
+                    {
+
+                        @Override
+                        public void mouseEntered(MouseEvent e)
+                        {
+                            entered = true;
+                            repaint();
+                        }
+
+                        @Override
+                        public void mouseExited(MouseEvent e)
+                        {
+                            entered = false;
+                            repaint();
+                        }
+
+                    });
+        }
+
+        @Override
+        public void setBorder(Border border)
+        {
+
+        }
+
+        private static final int[] yup = {
+            1,
+            4,
+            4
+        };
+        private static final int[] ydown = {
+            4,
+            1,
+            1
+        };
+
+        @Override
+        public void paint(Graphics g)
+        {
+            Color b;
+            Color f;
+            if (entered)
+            {
+                b = darkShadow;
+                f = highlight;
+            }
+            else
+            {
+                b = background;
+                f = shadow;
+            }
+            g.setColor(b);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            int center = getWidth() / 2;
+            int[] xs = {
+                center,
+                center - 3,
+                center + 3
+            };
+            int[] ys;
+            if (open)
+            {
+                ys = yup;
+
+            }
+            else
+            {
+                ys = ydown;
+            }
+            g.setColor(f);
+            g.drawPolygon(xs, ys, 3);
+            g.fillPolygon(xs, ys, 3);
+        }
+
+        public void setOpen(boolean open)
+        {
+            this.open = open;
+        }
+
+        public boolean isOpen()
+        {
+            return open;
         }
 
     }
