@@ -20,7 +20,9 @@
  */
 package pcgen.gui.util;
 
+import java.awt.event.ItemListener;
 import javax.swing.Action;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.event.ListDataEvent;
@@ -100,4 +102,30 @@ public abstract class AbstractListMenu<E> extends JMenu implements ListDataListe
         intervalAdded(e);
     }
 
+    protected static class CheckBoxMenuItem extends JCheckBoxMenuItem
+    {
+
+        private final Object item;
+
+        public CheckBoxMenuItem(Object item, boolean selected,
+                                 ItemListener listener)
+        {
+            this.item = item;
+            setSelected(selected);
+            addItemListener(listener);
+        }
+
+        @Override
+        public String getText()
+        {
+            return item.toString();
+        }
+
+        @Override
+        public Object[] getSelectedObjects()
+        {
+            return new Object[]{item};
+        }
+
+    }
 }
