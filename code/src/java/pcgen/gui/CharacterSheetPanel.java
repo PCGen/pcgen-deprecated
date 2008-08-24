@@ -103,40 +103,40 @@ public class CharacterSheetPanel extends HtmlPanel implements CharacterSelection
         worker.start();
     }
 
-    private String getColorCSS()
-    {
-        int value = 0;// TODO Implement
-        //SettingsHandler.getGMGenOption(CharacterSheetPlugin.LOG_NAME
-        //	+ ".color", CharacterPanel.BLUE);
-        switch (value)
-        {
-            case BLUE:
-                return "preview_color_blue.css";
-            case LIGHTBLUE:
-                return "preview_color_light_blue.css";
-            case GREEN:
-                return "preview_color_green.css";
-            case LIGHTGREEN:
-                return "preview_color_light_green.css";
-            case RED:
-                return "preview_color_red.css";
-            case LIGHTRED:
-                return "preview_color_light_red.css";
-            case YELLOW:
-                return "preview_color_yellow.css";
-            case LIGHTYELLOW:
-                return "preview_color_light_yellow.css";
-            case GREY:
-                return "preview_color_grey.css";
-            case LIGHTGREY:
-                return "preview_color_light_grey.css";
-            default:
-                return "preview_color_blue.css";
-        }
-    }
-
     private class RefreshWorker extends SwingWorker<Document>
     {
+
+        private String getColorCSS()
+        {
+            int value = 0;// TODO Implement
+            //SettingsHandler.getGMGenOption(CharacterSheetPlugin.LOG_NAME
+            //	+ ".color", CharacterPanel.BLUE);
+            switch (value)
+            {
+                case BLUE:
+                    return "preview_color_blue.css";
+                case LIGHTBLUE:
+                    return "preview_color_light_blue.css";
+                case GREEN:
+                    return "preview_color_green.css";
+                case LIGHTGREEN:
+                    return "preview_color_light_green.css";
+                case RED:
+                    return "preview_color_red.css";
+                case LIGHTRED:
+                    return "preview_color_light_red.css";
+                case YELLOW:
+                    return "preview_color_yellow.css";
+                case LIGHTYELLOW:
+                    return "preview_color_light_yellow.css";
+                case GREY:
+                    return "preview_color_grey.css";
+                case LIGHTGREY:
+                    return "preview_color_light_grey.css";
+                default:
+                    return "preview_color_blue.css";
+            }
+        }
 
         @Override
         public Document construct()
@@ -193,7 +193,6 @@ public class CharacterSheetPanel extends HtmlPanel implements CharacterSelection
             if (doc != null)
             {
                 setDocument(doc, theRendererContext);
-                worker = null;
             }
         }
 

@@ -26,10 +26,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.MutableComboBoxModel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -41,7 +41,7 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
 
     private static final long serialVersionUID = 4240590146578106112L;
     private ComboSelectionDialog dialog;
-    private ComboBoxModel model;
+    private MutableComboBoxModel model;
     private JComboBox comboBox;
     private JButton button;
 
@@ -94,7 +94,7 @@ public class ComboSelectionBox extends JPanel implements ItemSelectable
         }
     }
 
-    public void setModel(ComboBoxModel model)
+    public void setModel(MutableComboBoxModel model)
     {
         this.model = model;
         comboBox.setModel(model);

@@ -22,13 +22,12 @@
  */
 package pcgen.gui.tools; // hm.binkley.gui;
 
-
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import pcgen.gui.tools.ResourceManager;
+import javax.swing.JSplitPane;
 import pcgen.gui.tools.ResourceManager.Icons;
 
 /**
@@ -39,91 +38,95 @@ import pcgen.gui.tools.ResourceManager.Icons;
  *
  * @see SwingConstants
  */
-final class Utilities implements SwingConstants
+public final class Utilities implements SwingConstants
 {
-	/** Up direction. */
-	public static final int UP = 14;
 
-	/** Down direction. */
-	public static final int DOWN = 15;
+    /** Up direction. */
+    public static final int UP = 14;
+    /** Down direction. */
+    public static final int DOWN = 15;
+    /** Beginning (far left) direction. */
+    public static final int BEGINNING = 16;
+    /** End (far right) direction. */
+    public static final int END = 17;
+    /** Icons for New item. */
+    public static final ImageIcon NEW_ICON = ResourceManager.getImageIcon(Icons.New16);
+    /** Icons for Close item. */
+    public static final ImageIcon CLOSE_ICON = ResourceManager.getImageIcon(Icons.Close16);
+    /** Icons for Center item. */
+    public static final ImageIcon CENTER_ICON = ResourceManager.getImageIcon(Icons.Stop16);
+    /** Icons for Flip item. */
+    public static final ImageIcon FLIP_ICON = ResourceManager.getImageIcon(Icons.Refresh16);
+    /** Icons for Reset item. */
+    public static final ImageIcon RESET_ICON = ResourceManager.getImageIcon(Icons.Redo16);
+    /** Icons for Locked item. */
+    public static final ImageIcon LOCK_ICON = ResourceManager.getImageIcon(Icons.Bookmarks16);
+    /** Icons for Up item. */
+    public static final ImageIcon UP_ICON = ResourceManager.getImageIcon(Icons.Up16);
+    /** Icons for Left item. */
+    public static final ImageIcon LEFT_ICON = ResourceManager.getImageIcon(Icons.Back16);
+    /** Icons for Down item. */
+    public static final ImageIcon DOWN_ICON = ResourceManager.getImageIcon(Icons.Down16);
+    /** Icons for Right item. */
+    public static final ImageIcon RIGHT_ICON = ResourceManager.getImageIcon(Icons.Forward16);
+    /** Icons for Top item. */
+    public static final ImageIcon TOP_ICON = ResourceManager.getImageIcon(Icons.UUp16);
+    /** Icons for Beginning item. */
+    public static final ImageIcon BEGINNING_ICON = ResourceManager.getImageIcon(Icons.BBack16);
+    /** Icons for Bottom item. */
+    public static final ImageIcon BOTTOM_ICON = ResourceManager.getImageIcon(Icons.DDown16);
+    /** Icons for End item. */
+    public static final ImageIcon END_ICON = ResourceManager.getImageIcon(Icons.FForward16);
 
-	/** Beginning (far left) direction. */
-	public static final int BEGINNING = 16;
+    private Utilities()
+    {
+        super();
+    }
 
-	/** End (far right) direction. */
-	public static final int END = 17;
+    public static FlippingSplitPane createDefaultFlippingSplitPane()
+    {
+        FlippingSplitPane pane = new FlippingSplitPane();
+        pane.setContinuousLayout(true);
+        pane.setOneTouchExpandable(true);
+        pane.setDividerSize(7);
+        return pane;
+    }
 
-	/** Icons for New item. */
-	public static final ImageIcon NEW_ICON = ResourceManager.getImageIcon(Icons.New16);
+    public static FlippingSplitPane createDefaultDualFlippingSplitPane()
+    {
+        FlippingSplitPane pane = new FlippingSplitPane();
+        pane.setRightComponent(new FlippingSplitPane(JSplitPane.VERTICAL_SPLIT));
+        pane.setContinuousLayout(true);
+        pane.setOneTouchExpandable(true);
+        pane.setDividerSize(7);
+        return pane;
+    }
 
-	/** Icons for Close item. */
-	public static final ImageIcon CLOSE_ICON = ResourceManager.getImageIcon(Icons.Close16);
+    /**
+     * Work around bug in W32; it returns false even on right-mouse
+     * clicks.
+     *
+     * @param e <code>MouseEvent</code>, the event
+     *
+     * @return <code>boolean</code>, the condition
+     */
+    static boolean isRightMouseButton(MouseEvent e)
+    {
+        return e.isPopupTrigger() || SwingUtilities.isRightMouseButton(e);
+    }
 
-	/** Icons for Center item. */
-	public static final ImageIcon CENTER_ICON = ResourceManager.getImageIcon(Icons.Stop16);
-
-	/** Icons for Flip item. */
-	public static final ImageIcon FLIP_ICON = ResourceManager.getImageIcon(Icons.Refresh16);
-
-	/** Icons for Reset item. */
-	public static final ImageIcon RESET_ICON = ResourceManager.getImageIcon(Icons.Redo16);
-
-	/** Icons for Locked item. */
-	public static final ImageIcon LOCK_ICON = ResourceManager.getImageIcon(Icons.Bookmarks16);
-
-	/** Icons for Up item. */
-	public static final ImageIcon UP_ICON = ResourceManager.getImageIcon(Icons.Up16);
-
-	/** Icons for Left item. */
-	public static final ImageIcon LEFT_ICON = ResourceManager.getImageIcon(Icons.Back16);
-
-	/** Icons for Down item. */
-	public static final ImageIcon DOWN_ICON = ResourceManager.getImageIcon(Icons.Down16);
-
-	/** Icons for Right item. */
-	public static final ImageIcon RIGHT_ICON = ResourceManager.getImageIcon(Icons.Forward16);
-
-	/** Icons for Top item. */
-	public static final ImageIcon TOP_ICON = ResourceManager.getImageIcon(Icons.UUp16);
-
-	/** Icons for Beginning item. */
-	public static final ImageIcon BEGINNING_ICON = ResourceManager.getImageIcon(Icons.BBack16);
-
-	/** Icons for Bottom item. */
-	public static final ImageIcon BOTTOM_ICON = ResourceManager.getImageIcon(Icons.DDown16);
-
-	/** Icons for End item. */
-	public static final ImageIcon END_ICON = ResourceManager.getImageIcon(Icons.FForward16);
-
-	private Utilities()
-	{
-		super();
-	}
-
-	/**
-	 * Work around bug in W32; it returns false even on right-mouse
-	 * clicks.
-	 *
-	 * @param e <code>MouseEvent</code>, the event
-	 *
-	 * @return <code>boolean</code>, the condition
-	 */
-	static boolean isRightMouseButton(MouseEvent e)
-	{
-		return e.isPopupTrigger() || SwingUtilities.isRightMouseButton(e);
-	}
-
-	/**
-	 * <code>isShiftLeftMouseButton</code> detects SHIFT-BUTTON1
-	 * events for flipping pane shortcuts.
-	 *
-	 * @param e <code>MouseEvent</code>, the event
-	 *
-	 * @return <code>boolean</code>, the condition
-	 */
-	static boolean isShiftLeftMouseButton(MouseEvent e)
-	{
-		return ((e.getModifiers() & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) && e.isShiftDown();
-	}
+    /**
+     * <code>isShiftLeftMouseButton</code> detects SHIFT-BUTTON1
+     * events for flipping pane shortcuts.
+     *
+     * @param e <code>MouseEvent</code>, the event
+     *
+     * @return <code>boolean</code>, the condition
+     */
+    static boolean isShiftLeftMouseButton(MouseEvent e)
+    {
+        return ((e.getModifiers() & InputEvent.BUTTON1_MASK) ==
+                InputEvent.BUTTON1_MASK) && e.isShiftDown();
+    }
 
 }

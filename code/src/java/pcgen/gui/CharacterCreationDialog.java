@@ -475,10 +475,10 @@ public class CharacterCreationDialog extends JDialog
         nameField.setText(PCGenUIManager.getDefaultCharacterName());
         alignmentComboBox.setModel(createComboBoxModel(creationManager.getAlignmentGenerators()));
         genderComboBox.setModel(createComboBoxModel(creationManager.getGenderGenerators()));
-        raceSelectionBox.setModel(createComboBoxModel(creationManager.getRaceGenerators()));
+        //raceSelectionBox.setModel(createComboBoxModel(creationManager.getRaceGenerators()));
 
         statTablePane.setModel(new StatTableModel(creationManager));
-        statSelectionBox.setModel(createComboBoxModel(creationManager.getStatGenerators()));
+        //statSelectionBox.setModel(createComboBoxModel(creationManager.getStatGenerators()));
 
         DefaultComboBoxModel classComboBoxModel = new DefaultComboBoxModel(creationManager.getClassGenerators().toArray());
         classSelectionBox1.setModel(classComboBoxModel);

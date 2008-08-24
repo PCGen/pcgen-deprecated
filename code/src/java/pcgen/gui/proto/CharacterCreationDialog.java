@@ -40,6 +40,8 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
 
         jButton3 = new javax.swing.JButton();
         jTable2 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel7 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
@@ -55,6 +57,7 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         comboSelectionBox5 = new pcgen.gui.util.ComboSelectionBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        titledSeparator1 = new pcgen.gui.util.TitledSeparator();
         jPanel6 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -71,6 +74,21 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         comboSelectionBox4 = new pcgen.gui.util.ComboSelectionBox();
         jComboBox7 = new javax.swing.JComboBox();
+        jPanel10 = new javax.swing.JPanel();
+        comboSelectionBox8 = new pcgen.gui.util.ComboSelectionBox();
+        jCheckBox6 = new javax.swing.JCheckBox();
+        jPanel9 = new javax.swing.JPanel();
+        comboSelectionBox7 = new pcgen.gui.util.ComboSelectionBox();
+        jCheckBox5 = new javax.swing.JCheckBox();
+        jPanel11 = new javax.swing.JPanel();
+        comboSelectionBox9 = new pcgen.gui.util.ComboSelectionBox();
+        jCheckBox7 = new javax.swing.JCheckBox();
+        jPanel12 = new javax.swing.JPanel();
+        comboSelectionBox10 = new pcgen.gui.util.ComboSelectionBox();
+        jCheckBox8 = new javax.swing.JCheckBox();
+        jPanel8 = new javax.swing.JPanel();
+        comboSelectionBox6 = new pcgen.gui.util.ComboSelectionBox();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jLabel8 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -108,6 +126,8 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        jPanel7.setLayout(new java.awt.GridBagLayout());
+
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel3.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -140,9 +160,8 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jPanel3, gridBagConstraints);
+        jPanel7.add(jPanel3, gridBagConstraints);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Alignment", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -152,9 +171,9 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 0, 4);
-        getContentPane().add(jPanel1, gridBagConstraints);
+        jPanel7.add(jPanel1, gridBagConstraints);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gender", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel4.setLayout(new java.awt.BorderLayout());
@@ -164,19 +183,19 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 4, 4, 4);
-        getContentPane().add(jPanel4, gridBagConstraints);
+        jPanel7.add(jPanel4, gridBagConstraints);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Race", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel2.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(comboSelectionBox1, java.awt.BorderLayout.PAGE_START);
+        jPanel2.add(comboSelectionBox1, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jPanel2, gridBagConstraints);
+        jPanel7.add(jPanel2, gridBagConstraints);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Stats", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel5.setLayout(new java.awt.GridBagLayout());
@@ -186,6 +205,8 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         jPanel5.add(comboSelectionBox5, gridBagConstraints);
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(100, 120));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -219,7 +240,6 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipady = 100;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         jPanel5.add(jScrollPane1, gridBagConstraints);
 
@@ -227,7 +247,15 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jPanel5, gridBagConstraints);
+        jPanel7.add(jPanel5, gridBagConstraints);
+
+        titledSeparator1.setTitle("Optional Generators");
+        titledSeparator1.setTitleFont(new java.awt.Font("Tahoma", 1, 12));
+        titledSeparator1.setTitleJustification(2);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel7.add(titledSeparator1, gridBagConstraints);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Classes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
         jPanel6.setLayout(new java.awt.GridBagLayout());
@@ -239,15 +267,14 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 4);
         jPanel6.add(jLabel7, gridBagConstraints);
 
         jLabel5.setText("Level Generation");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 4);
         jPanel6.add(jLabel5, gridBagConstraints);
 
         jCheckBox2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -318,8 +345,74 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jPanel6, gridBagConstraints);
-        getContentPane().add(jLabel8, new java.awt.GridBagConstraints());
+        jPanel7.add(jPanel6, gridBagConstraints);
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Skills", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
+        jPanel10.setLayout(new java.awt.BorderLayout());
+        jPanel10.add(comboSelectionBox8, java.awt.BorderLayout.CENTER);
+        jPanel10.add(jCheckBox6, java.awt.BorderLayout.WEST);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        jPanel7.add(jPanel10, gridBagConstraints);
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Abilities", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
+        jPanel9.setLayout(new java.awt.BorderLayout());
+        jPanel9.add(comboSelectionBox7, java.awt.BorderLayout.CENTER);
+        jPanel9.add(jCheckBox5, java.awt.BorderLayout.WEST);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        jPanel7.add(jPanel9, gridBagConstraints);
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Equipment", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
+        jPanel11.setLayout(new java.awt.BorderLayout());
+        jPanel11.add(comboSelectionBox9, java.awt.BorderLayout.CENTER);
+        jPanel11.add(jCheckBox7, java.awt.BorderLayout.WEST);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        jPanel7.add(jPanel11, gridBagConstraints);
+
+        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Spells", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
+        jPanel12.setLayout(new java.awt.BorderLayout());
+        jPanel12.add(comboSelectionBox10, java.awt.BorderLayout.CENTER);
+        jPanel12.add(jCheckBox8, java.awt.BorderLayout.WEST);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        jPanel7.add(jPanel12, gridBagConstraints);
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Templates", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12)));
+        jPanel8.setLayout(new java.awt.BorderLayout());
+        jPanel8.add(comboSelectionBox6, java.awt.BorderLayout.CENTER);
+        jPanel8.add(jCheckBox1, java.awt.BorderLayout.WEST);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        jPanel7.add(jPanel8, gridBagConstraints);
+
+        jScrollPane2.setViewportView(jPanel7);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jScrollPane2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.weightx = 1.0;
+        getContentPane().add(jLabel8, gridBagConstraints);
 
         okButton.setText("OK");
         okButton.setMaximumSize(new java.awt.Dimension(75, 23));
@@ -389,15 +482,25 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private pcgen.gui.util.ComboSelectionBox comboSelectionBox1;
+    private pcgen.gui.util.ComboSelectionBox comboSelectionBox10;
     private pcgen.gui.util.ComboSelectionBox comboSelectionBox2;
     private pcgen.gui.util.ComboSelectionBox comboSelectionBox3;
     private pcgen.gui.util.ComboSelectionBox comboSelectionBox4;
     private pcgen.gui.util.ComboSelectionBox comboSelectionBox5;
+    private pcgen.gui.util.ComboSelectionBox comboSelectionBox6;
+    private pcgen.gui.util.ComboSelectionBox comboSelectionBox7;
+    private pcgen.gui.util.ComboSelectionBox comboSelectionBox8;
+    private pcgen.gui.util.ComboSelectionBox comboSelectionBox9;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox5;
+    private javax.swing.JCheckBox jCheckBox6;
+    private javax.swing.JCheckBox jCheckBox7;
+    private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
@@ -413,16 +516,24 @@ public class CharacterCreationDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton okButton;
+    private pcgen.gui.util.TitledSeparator titledSeparator1;
     // End of variables declaration//GEN-END:variables
     
     private int returnStatus = RET_CANCEL;

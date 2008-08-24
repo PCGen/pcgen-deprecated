@@ -330,10 +330,6 @@ public class FilterPanel extends JPanel implements StateEditable
     private static class ArrowButton extends JButton
     {
 
-        private static final Color background = UIManager.getColor("control");
-        private static final Color shadow = UIManager.getColor("controlShadow");
-        private static final Color darkShadow = UIManager.getColor("controlDkShadow");
-        private static final Color highlight = UIManager.getColor("controlLtHighlight");
         private boolean entered = false;
         private boolean open = true;
 
@@ -389,13 +385,13 @@ public class FilterPanel extends JPanel implements StateEditable
             Color f;
             if (entered)
             {
-                b = darkShadow;
-                f = highlight;
+                b = UIManager.getColor("controlDkShadow");
+                f = UIManager.getColor("controlLtHighlight");
             }
             else
             {
-                b = background;
-                f = shadow;
+                b = UIManager.getColor("control");
+                f = UIManager.getColor("controlShadow");
             }
             g.setColor(b);
             g.fillRect(0, 0, getWidth(), getHeight());

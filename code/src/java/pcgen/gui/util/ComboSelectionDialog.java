@@ -20,7 +20,7 @@
  */
 package pcgen.gui.util;
 
-import javax.swing.ComboBoxModel;
+import javax.swing.MutableComboBoxModel;
 
 /**
  *
@@ -29,7 +29,7 @@ import javax.swing.ComboBoxModel;
 public interface ComboSelectionDialog
 {
 
-    public void setModel(ComboBoxModel model);
+    public void setModel(MutableComboBoxModel model);
 
     public void display();
 
