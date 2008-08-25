@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.ItemSelectable;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JCheckBox;
@@ -56,6 +57,7 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
     }
     private SelectionType selectionType;
     private JTableEx rowheaderTable;
+    private boolean editable = true;
 
     public JTreeViewSelectionPane()
     {
@@ -166,6 +168,30 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
         return new Object[0];
     }
 
+    public <T> void setSelectedObjects(Collection<T> objs)
+    {
+        @SuppressWarnings("unchecked")
+        TreeViewSelectionTableModel<T> model = (TreeViewSelectionTableModel<T>) getTable().getTreeTableModel();
+        if (model != null)
+        {
+
+            model.selectedSet.clear();
+            if (selectionType == SelectionType.RADIO && objs.size() > 1)
+            {
+                model.selectedSet.add(objs.iterator().next());
+            }
+            else
+            {
+                model.selectedSet.addAll(objs);
+            }
+        }
+    }
+
+    public void setEditable(boolean editable)
+    {
+        this.editable = editable;
+    }
+
     public void addItemListener(ItemListener l)
     {
         listenerList.remove(ItemListener.class, l);
@@ -190,7 +216,7 @@ public class JTreeViewSelectionPane extends JTreeViewPane implements ItemSelecta
         @Override
         public boolean isCellEditable(Object node, int column)
         {
-            if (column < 0)
+            if (editable && column < 0)
             {
                 Object obj = super.getValueAt(node, 0);
                 return dataMap.containsKey(obj);

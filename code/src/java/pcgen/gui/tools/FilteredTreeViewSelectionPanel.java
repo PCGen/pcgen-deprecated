@@ -22,10 +22,12 @@ package pcgen.gui.tools;
 
 import java.awt.ItemSelectable;
 import java.awt.event.ItemListener;
+import java.util.Collection;
 import javax.swing.ListSelectionModel;
 import pcgen.gui.filter.FilteredTreeViewPanel;
 import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.JTreeViewSelectionPane;
+import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
 
 /**
  *
@@ -38,9 +40,13 @@ public class FilteredTreeViewSelectionPanel extends FilteredTreeViewPanel
     @Override
     public JTreeViewPane createDefaultTreeViewPane()
     {
-        JTreeViewSelectionPane pane = new JTreeViewSelectionPane();
-        pane.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        return pane;
+        return new JTreeViewSelectionPane();
+    }
+
+    @Override
+    protected JTreeViewSelectionPane getTreeViewPane()
+    {
+        return (JTreeViewSelectionPane) super.getTreeViewPane();
     }
 
     public Object getSelectedItem()
@@ -53,15 +59,24 @@ public class FilteredTreeViewSelectionPanel extends FilteredTreeViewPanel
         return null;
     }
 
+    public void setSelectedObjects(Collection<?> objects)
+    {
+        getTreeViewPane().setSelectedObjects(objects);
+    }
+
+    public void setSelectionType(SelectionType selectionType)
+    {
+        getTreeViewPane().setSelectionType(selectionType);
+    }
+
+    public void setEditable(boolean editable)
+    {
+        getTreeViewPane().setEditable(editable);
+    }
+
     public Object[] getSelectedObjects()
     {
         return getTreeViewPane().getSelectedObjects();
-    }
-
-    @Override
-    protected JTreeViewSelectionPane getTreeViewPane()
-    {
-        return (JTreeViewSelectionPane) super.getTreeViewPane();
     }
 
     public void addItemListener(ItemListener l)

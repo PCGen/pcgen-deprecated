@@ -24,7 +24,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -32,38 +32,108 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.MutableComboBoxModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import pcgen.gui.tools.FilteredTreeViewSelectionPanel;
+import pcgen.gui.tools.FlippingSplitPane;
 import pcgen.gui.tools.PCGenAction;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.ResourceManager.Icons;
-import pcgen.gui.util.ComboSelectionDialog;
+import pcgen.gui.util.DefaultGenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class GeneratorSelectionDialog extends JDialog implements ComboSelectionDialog
+public class GeneratorSelectionDialog extends JDialog
 {
 
+    private final FilteredTreeViewSelectionPanel selectionPanel;
+    private final JList availableList;
     private final JList selectedList;
     private final NewAction newAction;
     private final DeleteAction deleteAction;
     private final AddAction addAction;
     private final RemoveAction removeAction;
+    private final UpAction upAction;
+    private final DownAction downAction;
+    private DefaultGenericListModel<Generator<?>> availableModel;
+    private DefaultGenericListModel<Generator<?>> selectedModel;
 
     public GeneratorSelectionDialog()
     {
+        this.selectionPanel = new FilteredTreeViewSelectionPanel();
+        this.availableList = new JList();
         this.selectedList = new JList();
         newAction = new NewAction();
         deleteAction = new DeleteAction();
         addAction = new AddAction();
         removeAction = new RemoveAction();
+        upAction = new UpAction();
+        downAction = new DownAction();
         initComponents();
     }
 
     private void initComponents()
     {
+        getContentPane().setLayout(new GridBagLayout());
+        GridBagConstraints gridBagConstraints;
+        FlippingSplitPane subSplitPane = new FlippingSplitPane();
+        JPanel panel;
+        {//Initialize Available Panel
+            panel = new JPanel(new GridBagLayout());
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+            gridBagConstraints.anchor = GridBagConstraints.WEST;
+            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
+            add(new JLabel("Available Generators"), gridBagConstraints);
 
+            availableList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.gridheight = GridBagConstraints.REMAINDER;
+            gridBagConstraints2.fill = GridBagConstraints.BOTH;
+            gridBagConstraints2.weightx = 1.0;
+            gridBagConstraints2.weighty = 1.0;
+            add(new JScrollPane(availableList), gridBagConstraints2);
+
+            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+            add(new JButton(newAction), gridBagConstraints);
+            gridBagConstraints.anchor = GridBagConstraints.NORTH;
+            add(new JButton(deleteAction), gridBagConstraints);
+        }
+        subSplitPane.setLeftComponent(panel);
+        {//Initialize Selected Panel
+            panel = new JPanel(new GridBagLayout());
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+            gridBagConstraints.anchor = GridBagConstraints.WEST;
+            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
+            add(new JLabel("Selected Generators"), gridBagConstraints);
+
+            //Init selectedList
+            selectedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.gridheight = GridBagConstraints.REMAINDER;
+            gridBagConstraints2.fill = GridBagConstraints.BOTH;
+            gridBagConstraints2.weightx = 1.0;
+            gridBagConstraints2.weighty = 1.0;
+            add(new JScrollPane(selectedList), gridBagConstraints2);
+
+            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+            add(new JButton(addAction), gridBagConstraints);
+            add(new JButton(removeAction), gridBagConstraints);
+
+            gridBagConstraints.insets = new Insets(4, 0, 4, 0);
+            add(new JSeparator(), gridBagConstraints);
+            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
+
+            add(new JButton(upAction), gridBagConstraints);
+
+            gridBagConstraints.anchor = GridBagConstraints.NORTH;
+            add(new JButton(downAction), gridBagConstraints);
+        }
+        subSplitPane.setRightComponent(panel);
     }
 
     private class NewAction extends PCGenAction
@@ -104,6 +174,7 @@ public class GeneratorSelectionDialog extends JDialog implements ComboSelectionD
         public AddAction()
         {
             super(null);
+            setEnabled(false);
         }
 
         @Override
@@ -120,6 +191,7 @@ public class GeneratorSelectionDialog extends JDialog implements ComboSelectionD
         public RemoveAction()
         {
             super(null);
+            setEnabled(false);
         }
 
         @Override
@@ -130,52 +202,12 @@ public class GeneratorSelectionDialog extends JDialog implements ComboSelectionD
 
     }
 
-    private class SelectedGeneratorPanel extends JPanel implements ActionListener
+    private class UpAction extends AbstractAction
     {
 
-        public SelectedGeneratorPanel()
+        public UpAction()
         {
-            super(new GridBagLayout());
-
-            initComponents();
-        }
-
-        private void initComponents()
-        {
-            GridBagConstraints gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-            gridBagConstraints.anchor = GridBagConstraints.WEST;
-            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
-            add(new JLabel("Selected Generators"), gridBagConstraints);
-
-            //Init selectedList
-            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-            gridBagConstraints2.gridheight = GridBagConstraints.REMAINDER;
-            gridBagConstraints2.fill = GridBagConstraints.BOTH;
-            gridBagConstraints2.weightx = 1.0;
-            gridBagConstraints2.weighty = 1.0;
-            add(new JScrollPane(selectedList), gridBagConstraints2);
-
-            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-            add(new JButton(addAction), gridBagConstraints);
-            add(new JButton(removeAction), gridBagConstraints);
-
-            gridBagConstraints.insets = new Insets(4, 0, 4, 0);
-            add(new JSeparator(), gridBagConstraints);
-            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
-
-            JButton button = new JButton();
-            button.setActionCommand("UP");
-            button.setIcon(ResourceManager.getImageIcon(Icons.Up16));
-            button.addActionListener(this);
-            add(button, gridBagConstraints);
-
-            button = new JButton();
-            button.setActionCommand("DOWN");
-            button.setIcon(ResourceManager.getImageIcon(Icons.Down16));
-            button.addActionListener(this);
-            gridBagConstraints.anchor = GridBagConstraints.NORTH;
-            add(button, gridBagConstraints);
+            putValue(SMALL_ICON, ResourceManager.getImageIcon(Icons.Up16));
         }
 
         public void actionPerformed(ActionEvent e)
@@ -185,14 +217,68 @@ public class GeneratorSelectionDialog extends JDialog implements ComboSelectionD
 
     }
 
-    public void setModel(MutableComboBoxModel model)
+    private class DownAction extends AbstractAction
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        public DownAction()
+        {
+            putValue(SMALL_ICON, ResourceManager.getImageIcon(Icons.Down16));
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+
+        }
+
     }
 
-    public void display()
+    private class SelectionManager implements ListSelectionListener
     {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
+        public void valueChanged(ListSelectionEvent e)
+        {
+            Object source = e.getSource();
+            if (source instanceof JList)
+            {
+                JList list = (JList) source;
+                Object value = list.getSelectedValue();
+                boolean valid = value != null;
+                if (list == availableList)
+                {
+                    boolean enable = valid && !selectedModel.contains(value);
+                    deleteAction.setEnabled(valid);
+                    if (valid)
+                    {
+                        addAction.setEnabled(enable);
+                        removeAction.setEnabled(!enable);
+                        selectedList.setSelectedValue(value, true);
+                    }
+                    if (enable)
+                    {
+                    //Set RaceTreeViewModel
+                    }
+                }
+                else
+                {
+                    upAction.setEnabled(valid);
+                    downAction.setEnabled(valid);
+                    if (valid)
+                    {
+                        availableList.setSelectedValue(value, true);
+                    }
+                    if (valid && !availableModel.contains(value))
+                    {
+                        addAction.setEnabled(false);
+                        removeAction.setEnabled(true);
+                    }
+                }
+            }
+            else
+            {
+                availableList.clearSelection();
+                selectedList.clearSelection();
+            }
+        }
+
+    }
 }
