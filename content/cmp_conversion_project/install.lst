@@ -1,0 +1,6 @@
+CAMPAIGN:PCGen Conversion Sets for CMP 3.5
+MINVER:5.14.1
+MINDEVVER: 5.15.0
+DEST:DATA
+COPYRIGHT:PCGen dataset conversions Copyright 2008, PCGen Data team
+INFOTEXT:This will install conversion datasets which allow certain open source datasets to be used within CMP's Game Modes
