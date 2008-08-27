@@ -4,6 +4,7 @@ SOURCELONG:Mongoose Publishing - Quintessential Ranger	SOURCESHORT:QR	SOURCEWEB:
 # Modifier Name	Unique Key	Visible
 Ignore this		KEY:WOOD	VISIBLE:NO
 Ignore this		KEY:STEEL	VISIBLE:NO
+Ignore this		KEY:LEATHER	VISIBLE:NO
 
 Ignore this		KEY:PLUS1W	VISIBLE:NO
 Ignore this		KEY:PLUS1A	VISIBLE:NO
@@ -20,6 +21,12 @@ Ignore this		KEY:PLUS4S	VISIBLE:NO
 Ignore this		KEY:PLUS5W	VISIBLE:NO
 Ignore this		KEY:PLUS5A	VISIBLE:NO
 Ignore this		KEY:PLUS5S	VISIBLE:NO
+
+Ignore this		KEY:DISTNC	VISIBLE:NO
+Ignore this		KEY:RETRN	VISIBLE:NO
+Ignore this		KEY:KEEN	VISIBLE:NO
+Ignore this		KEY:BANE_M	VISIBLE:NO
+Ignore this		KEY:DEFEND	VISIBLE:NO
 
 #
 ##EOF
