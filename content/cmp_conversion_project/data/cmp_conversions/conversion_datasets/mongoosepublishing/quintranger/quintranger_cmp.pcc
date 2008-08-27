@@ -19,44 +19,38 @@ COPYRIGHT:Open Game License v 1.0 Copyright 2000, Wizards of the Coast, Inc.
 COPYRIGHT:PCGen dataset conversion for The Quintessential Ranger Copyright 2004, PCGen Data team including, but not limited to, Andrew Maitland
 COPYRIGHT:Open game content from The Quintessential Ranger copyright 2003, Mongoose Publishing Ltd.
 
-COVER:../quintranger.jpg
+COVER:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger.jpg
 LOGO:@/publisher_logos/Mongoose_Publishing.png
 COPYRIGHT:Included artwork is Product Identity and is included by permission. Copyright 2008, Mongoose Publishing
 URL:WEBSITE|http://www.mongoosepublishing.com|Visit Mongoose Publishing.
+URL:RPG Now|http://www.rpgnow.com/product_info.php?products_id=1695&it=1?affiliate_id=200170|Buy this pdf from RPGNow.com!
+URL:Amazon.com|http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FQuintessential-Ranger-Alejandro-Melchor%2Fdp%2F1904577245%3Fpf%5Frd%5Fp%3D258372101%26pf%5Frd%5Fs%3Dcenter-1%26pf%5Frd%5Ft%3D1501%26pf%5Frd%5Fi%3Dlist%26pf%5Frd%5Fm%3DATVPDKIKX0DER%26pf%5Frd%5Fr%3D1YH8NWEFXGK6AGA9ZPCP&tag=httppcgensfne-20&linkCode=ur2&camp=1789&creative=9325|Buy this book from Amazon.com!
 
 
-#URL:RPG Now|http://www.rpgnow.com/product_info.php?products_id=1843&it=1?affiliate_id=200170|Buy this pdf from RPGNow.com!
-#URL:Amazon.com|http://www.amazon.com/gp/product/1904577628?ie=UTF8&tag=httppcgensfne-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1904577628|Buy this book from Amazon.com!
+ABILITY:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_abilities_animalchoices.lst
+ABILITY:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_abilities_class.lst
+ABILITY:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_abilities_concepts.lst
 
-# Do not remove the EXTRAFILE comment.
-#EXTRAFILE:ogl.txt
-#LICENSE:license.txt
-#EXTRAFILE:toc.txt
+ABILITYCATEGORY:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_abilitycategories.lst
 
-ABILITY:../quintranger_abilities_animalchoices.lst
-ABILITY:../quintranger_abilities_concepts.lst
-ABILITY:../quintranger_abilities_hidden.lst
+CLASS:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_classes_prestige.lst
 
-ABILITYCATEGORY:../quintranger_abilitycategories.lst
+COMPANIONMOD:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_companionmods.lst
 
-CLASS:../quintranger_classes_prestige.lst
+EQUIPMOD:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_eqmods.lst
+EQUIPMENT:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_equip.lst
 
-COMPANIONMOD:../quintranger_companionmods.lst
+FEAT:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_feats.lst
+FEAT:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_feat_mods.lst
 
-EQUIPMOD:../quintranger_eqmods.lst
-EQUIPMENT:../quintranger_equip.lst
+KIT:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_kits_animals.lst
 
-FEAT:../quintranger_abilities_feats.lst
-FEAT:../quintranger_feat_mods.lst
+RACE:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_races_animals.lst
 
-KIT:../quintranger_kits_animals.lst
+SPELL:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_spells.lst
 
-RACE:../quintranger_races_animals.lst
-
-SPELL:../quintranger_spells.lst
-
-WEAPONPROF:../quintranger_profs_weapon.lst
-ARMORPROF:../quintranger_profs_armor.lst
+WEAPONPROF:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_profs_weapon.lst
+ARMORPROF:@/d20ogl/mongoosepublishing/collectorsseries/quintranger/quintranger_profs_armor.lst
 
 # Conversion LST
 FEAT:quintranger_abilities_feats_cmp.lst
@@ -68,4 +62,4 @@ EQUIPMENT:quintranger_equip_cmp.lst
 FEAT:@/d20ogl/srd35/basics/rsrd_feats_hidden.lst|(INCLUDE:All Automatic Proficiencies,All Martial Weapon Proficiencies)
 KIT:@/d20ogl/srd35/basics/rsrd_kits_races__animals.lst
 
-PCC:../../conversion_core_35e/conversion_core_35e.pcc
+PCC:@/cmp_conversions/conversion_core_35e/conversion_core_35e.pcc
