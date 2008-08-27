@@ -1,0 +1,13 @@
+# CVS $Revision: 7571 $ $Author: eddyanthony $ -- Wed Aug 27 00:19:25 2008 -- reformated by prettylst.pl v1.38 (build 7233)
+SOURCELONG:Mongoose Publishing - Quintessential Ranger II	SOURCESHORT:QR_II	SOURCEWEB:http://mongoosepublishing.com	SOURCEDATE:2004-01
+
+# Equipment Name				Modifier
+Razor Shield.MOD				EQMOD:SHLD_PLUS_1.SHLD_WOOD
+Salmon Scale.MOD				EQMOD:ARMR_PLUS_2.ARMR_STEEL
+Sylvan Armour.MOD				EQMOD:ARMR_PLUS_1.GOOD_LEATHER
+Bow of the Red Rainbow.MOD		EQMOD:WEAP_PLUS_2.WEAP_DISTANCE.WEAP_WOOD
+Tidebreaker.MOD				EQMOD:WEAP_PLUS_2.WEAP_RETURNING.WEAP_WOOD
+Tree Breaker.MOD				EQMOD:WEAP_PLUS_2.WEAP_KEEN.WEAP_STEEL
+Twin Fangs.MOD				EQMOD:WEAP_PLUS_4.WEAP_DEFENDING.WEAP_BANE
+Twin Fangs (Longsword).MOD		EQMOD:WEAP_PLUS_4.WEAP_BANE
+Twin Fangs (Sword (Short)).MOD	EQMOD:WEAP_PLUS_2.WEAP_DEFENDING

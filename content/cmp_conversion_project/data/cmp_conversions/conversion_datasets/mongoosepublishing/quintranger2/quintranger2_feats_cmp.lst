@@ -1,0 +1,5 @@
+# CVS $Revision: 7596 $ $Author: eddyanthony $ -- Wed Aug 27 00:19:25 2008 -- reformated by prettylst.pl v1.38 (build 7233)
+SOURCELONG:Mongoose Publishing - Quintessential Ranger II	SOURCESHORT:QR_II	SOURCEWEB:http://mongoosepublishing.com	SOURCEDATE:2004-01
+
+# Feat Name		Modify VAR
+Strong Ally.MOD	BONUS:VAR|AnimalCompanionLvl|-(var("CL=Ranger"))

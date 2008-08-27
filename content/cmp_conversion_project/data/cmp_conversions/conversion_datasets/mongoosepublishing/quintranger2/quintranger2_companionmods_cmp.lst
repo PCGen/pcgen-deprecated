@@ -1,0 +1,6 @@
+# CVS $Revision: 7568 $ $Author: eddyanthony $ -- Sun Aug 24 17:53:58 2008 -- reformated by prettylst.pl v1.38 (build 7233)
+SOURCELONG:Mongoose Publishing - Quintessential Ranger II	SOURCESHORT:QR_II	SOURCEWEB:http://mongoosepublishing.com	SOURCEDATE:2004-01
+
+###Block:Specific Animal Companions
+# Class of the Master		Type						Required Race		Apply Kit
+FOLLOWER:AnimalCompLevel=1	TYPE:Wolf Master Dire Companion	PRERACE:1,Dire Wolf	KIT:1|Dire Animal (Dire Wolf) Companion
