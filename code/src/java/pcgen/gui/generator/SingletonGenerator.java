@@ -1,5 +1,5 @@
 /*
- * MutableGenerator.java
+ * SingletonGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,19 +16,40 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 25, 2008, 2:34:36 AM
+ * Created on Aug 26, 2008, 4:13:28 PM
  */
 package pcgen.gui.generator;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableGenerator<E> extends Generator<E>
+public class SingletonGenerator<E> implements Generator<E>
 {
 
-    public void add(E element);
+    private E item;
 
-    public void remove(E element);
+    public SingletonGenerator(E item)
+    {
+        this.item = item;
+    }
+
+    public E getRandom()
+    {
+        return item;
+    }
+
+    public List<E> getAll()
+    {
+        return Collections.singletonList(item);
+    }
+
+    public boolean isSingleton()
+    {
+        return true;
+    }
 
 }

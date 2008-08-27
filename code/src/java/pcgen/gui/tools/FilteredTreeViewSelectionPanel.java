@@ -23,7 +23,6 @@ package pcgen.gui.tools;
 import java.awt.ItemSelectable;
 import java.awt.event.ItemListener;
 import java.util.Collection;
-import javax.swing.ListSelectionModel;
 import pcgen.gui.filter.FilteredTreeViewPanel;
 import pcgen.gui.util.JTreeViewPane;
 import pcgen.gui.util.JTreeViewSelectionPane;
@@ -38,7 +37,7 @@ public class FilteredTreeViewSelectionPanel extends FilteredTreeViewPanel
 {
 
     @Override
-    public JTreeViewPane createDefaultTreeViewPane()
+    protected JTreeViewPane createDefaultTreeViewPane()
     {
         return new JTreeViewSelectionPane();
     }

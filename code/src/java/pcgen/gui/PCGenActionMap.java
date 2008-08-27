@@ -664,12 +664,6 @@ public class PCGenActionMap extends ActionMap
             super(null);
         }
 
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-
-        }
-
     }
 
     private class TreasureGeneratorsAction extends PCGenAction

@@ -1,5 +1,5 @@
 /*
- * MutableGenerator.java
+ * DefaultMutableGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,19 +16,56 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 25, 2008, 2:34:36 AM
+ * Created on Aug 26, 2008, 5:11:13 PM
  */
 package pcgen.gui.generator;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
+import pcgen.base.util.RandomUtil;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableGenerator<E> extends Generator<E>
+public class DefaultMutableGenerator<E> implements MutableGenerator<E>
 {
 
-    public void add(E element);
+    private final Vector<E> vector;
 
-    public void remove(E element);
+    public DefaultMutableGenerator()
+    {
+        this.vector = new Vector<E>();
+    }
+
+    public E getRandom()
+    {
+        if (vector.isEmpty())
+        {
+            return null;
+        }
+        return vector.get(RandomUtil.getRandomInt(vector.size()));
+    }
+
+    public List<E> getAll()
+    {
+        return Collections.unmodifiableList(vector);
+    }
+
+    public boolean isSingleton()
+    {
+        return false;
+    }
+
+    public void add(E element)
+    {
+        vector.add(element);
+    }
+
+    public void remove(E element)
+    {
+        vector.remove(element);
+    }
 
 }
