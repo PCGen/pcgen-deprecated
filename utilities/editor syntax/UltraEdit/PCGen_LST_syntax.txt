@@ -2701,6 +2701,10 @@ FEATTYPE
 FILE
 HP
 INSTANT
+ITEMCAPACITY
+ITEMCOST
+ITEMWEIGHT
+LOADMULT
 LEVEL
 MARTIAL
 MELEE
@@ -2793,6 +2797,7 @@ Chaotic
 Charisma
 CE
 CG
+Circumstance
 Cone
 Consumable
 COPY
@@ -3045,6 +3050,11 @@ PREHANDSLTEQ
 PREHD
 PREITEM
 PRELANG
+PRELEGSEQ
+PRELEGSGT
+PRELEGSGTEQ
+PRELEGSLT
+PRELEGSLTEQ
 PRELEVEL
 PRELEVELMAX
 PREMOVE
@@ -3087,64 +3097,124 @@ PREVARNEQ
 PREVISION
 PREWEAPONPROF
 /C6"Data Names"
+Act
 Alchemy
+Appraise
 Arcana
 Arcane Archer
 Arcane Trickster
+Architecture and Engineering
 Archmage
+Armorsmithing
 Assassin
+Balance
 Barbarian
 Bard
 Blackguard
+Blacksmithing
+Bluff
+Bowmaking
+Carpentry
 Cleric
+Climb
+Comedy
 Concentration
+Control Shape
+Craft
 Craft 
+Dance
+Decipher Script
+Diplomacy
+Disable Device
+Disguise 
 Dragon Disciple
 Druid
 Duelist
+Dungeoneering
 Dwarf
 Dwarven Defender
 Egoist
 Eldritch Knight
 Elf
+Escape Artist
 Fighter
-Halfling
+Forgery
+Gather Information
+Geography
 Half Elf
 Half Orc
+Halfling
+Handle Animal
 Heal
+Hide
 Hierophant
+History
 Horizon Walker
 Human
+Hunter
 Intimidate
+Jump
+Keyboard Instruments
 Kineticist
 Knowledge 
+Leatherworking
+Listen
+Literacy
+Local
 Loremaster
+Miner
 Monk
+Move Silently
 Mystic Theurge
 Nature
+Nobility and Royalty
 Nomad
+Open Lock
+Oratory
+Painting
 Paladin
+Percussion Instruments
 Perform
+Pottery
 Profession
 Psion
 Psychic Warrior
 Ranger
 Religion
+Ride
 Rogue
+Sculpting
 Search
 Seer
+Sense Motive
 Shadowdancer
 Shaper
+Shipmaking
+Siege Engineer
+Sing
+Sleight of Hand
 Sorcerer
 Soulknife
+Speak Language
 Spellcraft
 Spot
+Stonemasonry
+String Instruments
+Survival
+Swim
 Telepath
 Thaumaturgist
 The Planes
+Trapmaking
+Tumble
+Untrained
 Use Magic Device
+Use Rope
+Weaponsmithing
 Wilder
+Wind Instruments
 Wizard
+Woodworking
 /C7"placeholders"
 XfooX
 /L15"PCGen campaign file" File Extensions = PCC Line Comment = # String Chars = "
