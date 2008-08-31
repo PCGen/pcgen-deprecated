@@ -26,6 +26,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.tools.AbstractSelectionDialog;
@@ -84,7 +85,8 @@ public class GeneratorSelectionDialog extends AbstractSelectionDialog
     @Override
     protected Object createNewItem()
     {
-        return new DefaultMutableGenerator();
+        return new DefaultMutableGenerator(JOptionPane.showInputDialog(this,
+                                                                       "Enter name of new Generator"));
     }
 
     @Override

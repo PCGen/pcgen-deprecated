@@ -212,6 +212,10 @@ public class FilterPanel extends JPanel implements StateEditable
         {
             JToggleButton button = new JToggleButton(new FilterAction(filter));
             button.setSelected(selectedFilters.contains(filter));
+            if (filter instanceof MutableFilter)
+            {
+                button.setForeground(Color.BLUE);
+            }
             buttonPanel.add(button);
         }
 

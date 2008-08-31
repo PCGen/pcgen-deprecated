@@ -29,8 +29,14 @@ import pcgen.gui.facade.CharacterFacade;
 public class DefaultMutableFilter implements MutableFilter
 {
 
+    private String name;
     private String code;
     private String description;
+
+    public DefaultMutableFilter(String name)
+    {
+        this.name = name;
+    }
 
     public void setDescription(String description)
     {
@@ -55,6 +61,12 @@ public class DefaultMutableFilter implements MutableFilter
     public boolean accept(CharacterFacade character, Object object)
     {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String toString()
+    {
+        return name;
     }
 
 }

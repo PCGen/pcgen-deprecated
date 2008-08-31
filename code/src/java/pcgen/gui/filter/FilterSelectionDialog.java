@@ -28,6 +28,7 @@ import java.awt.Insets;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -110,7 +111,8 @@ public class FilterSelectionDialog extends AbstractSelectionDialog
     @Override
     protected Object createNewItem()
     {
-        return new DefaultMutableFilter();
+        return new DefaultMutableFilter(JOptionPane.showInputDialog(this,
+                                                                    "Enter name of new Filter"));
     }
 
     @Override

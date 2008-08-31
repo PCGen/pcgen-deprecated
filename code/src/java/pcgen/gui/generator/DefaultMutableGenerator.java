@@ -33,6 +33,12 @@ public class DefaultMutableGenerator<E> implements MutableGenerator<E>
 {
 
     private final Vector<E> vector = new Vector<E>();
+    private final String name;
+
+    public DefaultMutableGenerator(String name)
+    {
+        this.name = name;
+    }
 
     public E getRandom()
     {
@@ -61,6 +67,12 @@ public class DefaultMutableGenerator<E> implements MutableGenerator<E>
     public void remove(E element)
     {
         vector.remove(element);
+    }
+
+    @Override
+    public String toString()
+    {
+        return name;
     }
 
 }
