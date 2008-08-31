@@ -18,13 +18,29 @@
  * 
  * Created on Aug 19, 2008, 3:31:30 PM
  */
-
 package pcgen.gui.facade;
+
+import java.util.List;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface DataSetFacade {
+public interface DataSetFacade
+{
+
+    public List<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
+
+    public List<AbilityCatagoryFacade> getAbilityCatagories();
+
+    public List<SkillFacade> getSkills();
+
+    public List<RaceFacade> getRaces();
+
+    public List<ClassFacade> getClasses();
+
+    public List<TempBonusFacade> getTempBonuses();
+
+    public List<TemplateFacade> getTemplates();
 
 }

@@ -30,7 +30,7 @@ import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
-import pcgen.gui.filter.NamedFilter;
+import pcgen.gui.filter.DisplayableFilter;
 import pcgen.gui.generator.Generator;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
@@ -54,7 +54,7 @@ public final class PCGenUIManager
         return false;
     }
 
-    public static <T> GenericListModel<NamedFilter<? super T>> getDisplayedFilters(Class<T> c)
+    public static <T> GenericListModel<DisplayableFilter<? super T>> getDisplayedFilters(Class<T> c)
     {
         return null;
     }

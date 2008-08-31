@@ -1,5 +1,5 @@
 /*
- * ObjectFilter.java
+ * MutableFilter.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,17 +16,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 18, 2008, 3:37:22 PM
+ * Created on Aug 30, 2008, 11:44:24 PM
  */
-
 package pcgen.gui.filter;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface NamedFilter<E> extends Filter<E>{
-    public String getName();
-    public String getShortDescription();
-    public String getLongDescription();
+public interface MutableFilter<E> extends DisplayableFilter<E>
+{
+
+    public void setDescription(String description);
+
+    public void setCode(String code);
+
 }

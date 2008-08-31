@@ -32,12 +32,7 @@ import pcgen.base.util.RandomUtil;
 public class DefaultMutableGenerator<E> implements MutableGenerator<E>
 {
 
-    private final Vector<E> vector;
-
-    public DefaultMutableGenerator()
-    {
-        this.vector = new Vector<E>();
-    }
+    private final Vector<E> vector = new Vector<E>();
 
     public E getRandom()
     {

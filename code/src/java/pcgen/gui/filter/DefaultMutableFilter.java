@@ -1,5 +1,5 @@
 /*
- * AbilityFacade.java
+ * DefaultMutableFilter.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,25 +16,45 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jun 30, 2008, 12:16:54 AM
+ * Created on Aug 30, 2008, 11:44:39 PM
  */
-package pcgen.gui.facade;
+package pcgen.gui.filter;
 
-import java.util.List;
+import pcgen.gui.facade.CharacterFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface AbilityFacade extends InfoFacade
+public class DefaultMutableFilter implements MutableFilter
 {
 
-    public List<String> getTypes();
+    private String code;
+    private String description;
 
-    public boolean isMult();
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-    public boolean isStackable();
+    public void setCode(String code)
+    {
+        this.code = code;
+    }
 
-    public String getDescription();
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public String getCode()
+    {
+        return code;
+    }
+
+    public boolean accept(CharacterFacade character, Object object)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
 }

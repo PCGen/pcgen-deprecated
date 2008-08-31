@@ -102,15 +102,16 @@ public class FilterPanel extends JPanel implements StateEditable
         button.setRolloverIcon(icon);
         button.setPressedIcon(icon);
 
-        button.addActionListener(new ActionListener()
-                         {
+        button.addActionListener(
+                new ActionListener()
+                {
 
-                             public void actionPerformed(ActionEvent e)
-                             {
-                                 textfield.setText("");
-                             }
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        textfield.setText("");
+                    }
 
-                         });
+                });
         toolbar.add(button);
 
         textfield.getDocument().addDocumentListener(
@@ -127,8 +128,18 @@ public class FilterPanel extends JPanel implements StateEditable
 
         toolbar.add(textfield);
 
-        button = ToolBarUtilities.createToolBarButton(new AdvancedAction());
+        button = ToolBarUtilities.createToolBarButton(null);
+        button.setIcon(new SimpleTextIcon(button, advancedString));
+        button.addActionListener(
+                new ActionListener()
+                {
 
+                    public void actionPerformed(ActionEvent e)
+                    {
+                    //advanced button action
+                    }
+
+                });
         toolbar.add(button);
 
         toolbar.addSeparator();
@@ -169,8 +180,8 @@ public class FilterPanel extends JPanel implements StateEditable
             PCGenUIManager.getDisplayedFilters(this.filterClass).removeListDataListener(listListener);
         }
         this.filterClass = filterClass;
-        GenericListModel<NamedFilter<? super T>> filterModel = PCGenUIManager.getDisplayedFilters(filterClass);
-        final List<NamedFilter<? super T>> filterList = new GenericListModelWrapper<NamedFilter<? super T>>(filterModel);
+        GenericListModel<DisplayableFilter<? super T>> filterModel = PCGenUIManager.getDisplayedFilters(filterClass);
+        final List<DisplayableFilter<? super T>> filterList = new GenericListModelWrapper<DisplayableFilter<? super T>>(filterModel);
         ListDataListener listener = new ListDataAdapter()
         {
 
@@ -191,13 +202,13 @@ public class FilterPanel extends JPanel implements StateEditable
         this.panelListener = listener;
     }
 
-    private <T> void setFilterButtons(List<NamedFilter<? super T>> filters)
+    private <T> void setFilterButtons(List<DisplayableFilter<? super T>> filters)
     {
         buttonPanel.removeAll();
 
         boolean updateFilters = selectedFilters.retainAll(filters);
 
-        for (NamedFilter<? super T> filter : filters)
+        for (DisplayableFilter<? super T> filter : filters)
         {
             JToggleButton button = new JToggleButton(new FilterAction(filter));
             button.setSelected(selectedFilters.contains(filter));
@@ -287,14 +298,13 @@ public class FilterPanel extends JPanel implements StateEditable
     private class FilterAction extends AbstractAction
     {
 
-        private NamedFilter<?> filter;
+        private DisplayableFilter<?> filter;
 
-        public FilterAction(NamedFilter<?> filter)
+        public FilterAction(DisplayableFilter<?> filter)
         {
             this.filter = filter;
-            putValue(NAME, filter.getName());
-            putValue(SHORT_DESCRIPTION, filter.getShortDescription());
-            putValue(LONG_DESCRIPTION, filter.getLongDescription());
+            putValue(NAME, filter.toString());
+            putValue(SHORT_DESCRIPTION, filter.getDescription());
         }
 
         public void actionPerformed(ActionEvent e)
@@ -308,21 +318,6 @@ public class FilterPanel extends JPanel implements StateEditable
                 selectedFilters.add(filter);
             }
             fireApplyFilter();
-        }
-
-    }
-
-    private class AdvancedAction extends AbstractAction
-    {
-
-        public AdvancedAction()
-        {
-            super(advancedString);
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }
