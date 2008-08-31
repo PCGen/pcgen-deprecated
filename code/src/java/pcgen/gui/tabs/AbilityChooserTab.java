@@ -25,10 +25,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -695,60 +693,60 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
         availableTreeViewPanel.restoreState((Hashtable<?, ?>) state.get(AVAILABLE_TREEVIEW_PANEL_STATE));
     }
 
-    private class PreReqTreeView implements TreeView<AbilityFacade>
-    {
-
-        private DefaultGenericListModel<AbilityFacade> abilities;
-
-        public PreReqTreeView(DefaultGenericListModel<AbilityFacade> abilities)
-        {
-            this.abilities = abilities;
-        }
-
-        public String getViewName()
-        {
-            return "Prereq Tree";
-        }
-
-        public List<TreeViewPath<AbilityFacade>> getPaths(AbilityFacade pobj)
-        {
-            List<List<AbilityFacade>> abilityPaths = new ArrayList<List<AbilityFacade>>();
-            addPaths(abilityPaths, pobj.getRequiredAbilities(),
-                     new ArrayList<AbilityFacade>());
-            if (abilityPaths.isEmpty())
-            {
-                return Collections.singletonList(new TreeViewPath<AbilityFacade>(pobj));
-            }
-
-            List<TreeViewPath<AbilityFacade>> paths = new ArrayList<TreeViewPath<AbilityFacade>>();
-            for (List<AbilityFacade> path : abilityPaths)
-            {
-                Collections.reverse(path);
-                paths.add(new TreeViewPath<AbilityFacade>(path.toArray(), pobj));
-            }
-            return paths;
-        }
-
-        private void addPaths(List<List<AbilityFacade>> abilityPaths,
-                               List<AbilityFacade> preAbilities,
-                               ArrayList<AbilityFacade> path)
-        {
-            for (AbilityFacade preAbility : preAbilities)
-            {
-                @SuppressWarnings("unchecked")
-                ArrayList<AbilityFacade> pathclone = (ArrayList<AbilityFacade>) path.clone();
-                pathclone.add(preAbility);
-                List<AbilityFacade> preAbilities2 = preAbility.getRequiredAbilities();
-                if (preAbilities2.isEmpty())
-                {
-                    abilityPaths.add(pathclone);
-                }
-                else
-                {
-                    addPaths(abilityPaths, preAbilities2, pathclone);
-                }
-            }
-        }
-
-    }
+//    private class PreReqTreeView implements TreeView<AbilityFacade>
+//    {
+//
+//        private DefaultGenericListModel<AbilityFacade> abilities;
+//
+//        public PreReqTreeView(DefaultGenericListModel<AbilityFacade> abilities)
+//        {
+//            this.abilities = abilities;
+//        }
+//
+//        public String getViewName()
+//        {
+//            return "Prereq Tree";
+//        }
+//
+//        public List<TreeViewPath<AbilityFacade>> getPaths(AbilityFacade pobj)
+//        {
+//            List<List<AbilityFacade>> abilityPaths = new ArrayList<List<AbilityFacade>>();
+//            addPaths(abilityPaths, pobj.getRequiredAbilities(),
+//                     new ArrayList<AbilityFacade>());
+//            if (abilityPaths.isEmpty())
+//            {
+//                return Collections.singletonList(new TreeViewPath<AbilityFacade>(pobj));
+//            }
+//
+//            List<TreeViewPath<AbilityFacade>> paths = new ArrayList<TreeViewPath<AbilityFacade>>();
+//            for (List<AbilityFacade> path : abilityPaths)
+//            {
+//                Collections.reverse(path);
+//                paths.add(new TreeViewPath<AbilityFacade>(path.toArray(), pobj));
+//            }
+//            return paths;
+//        }
+//
+//        private void addPaths(List<List<AbilityFacade>> abilityPaths,
+//                               List<AbilityFacade> preAbilities,
+//                               ArrayList<AbilityFacade> path)
+//        {
+//            for (AbilityFacade preAbility : preAbilities)
+//            {
+//                @SuppressWarnings("unchecked")
+//                ArrayList<AbilityFacade> pathclone = (ArrayList<AbilityFacade>) path.clone();
+//                pathclone.add(preAbility);
+//                List<AbilityFacade> preAbilities2 = preAbility.getRequiredAbilities();
+//                if (preAbilities2.isEmpty())
+//                {
+//                    abilityPaths.add(pathclone);
+//                }
+//                else
+//                {
+//                    addPaths(abilityPaths, preAbilities2, pathclone);
+//                }
+//            }
+//        }
+//
+//    }
 }
