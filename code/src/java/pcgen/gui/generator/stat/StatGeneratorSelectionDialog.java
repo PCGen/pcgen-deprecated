@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.tools.AbstractSelectionDialog;
+import pcgen.gui.tools.ResourceManager;
 
 /**
  *
@@ -33,6 +34,11 @@ import pcgen.gui.tools.AbstractSelectionDialog;
  */
 public class StatGeneratorSelectionDialog extends AbstractSelectionDialog
 {
+
+    static
+    {
+        ResourceManager.ensureLoaded(ResourceManager.GENERATOR_BUNDLE);
+    }
 
     private final CardLayout cards = new CardLayout();
     private JPanel cardPanel;
@@ -56,13 +62,37 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog
     @Override
     protected String getAvailableListTitle()
     {
-        return "Available Stat Generators";
+        return ResourceManager.getText("availStatGen");
     }
 
     @Override
     protected String getSelectedListTitle()
     {
-        return "Selected Stat Generators";
+        return ResourceManager.getText("selStatGen");
+    }
+
+    @Override
+    protected String getNewActionToolTip()
+    {
+        return ResourceManager.getToolTip("newStatGen");
+    }
+
+    @Override
+    protected String getDeleteActionToolTip()
+    {
+        return ResourceManager.getToolTip("deleteStatGen");
+    }
+
+    @Override
+    protected String getAddActionToolTip()
+    {
+        return ResourceManager.getToolTip("addStatGen");
+    }
+
+    @Override
+    protected String getRemoveActionToolTip()
+    {
+        return ResourceManager.getToolTip("removeStatGen");
     }
 
     @Override

@@ -20,17 +20,24 @@
  */
 package pcgen.gui.generator;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.tools.AbstractSelectionDialog;
 import pcgen.gui.tools.FilteredTreeViewSelectionPanel;
+import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
@@ -42,6 +49,12 @@ import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
 public class GeneratorSelectionDialog extends AbstractSelectionDialog
 {
 
+    static
+    {
+        ResourceManager.ensureLoaded(ResourceManager.GENERATOR_BUNDLE);
+    }
+
+    private Action addAsAction;
     private FilteredTreeViewSelectionPanel selectionPanel;
     private GeneratorSelectionModel model;
 
@@ -66,6 +79,8 @@ public class GeneratorSelectionDialog extends AbstractSelectionDialog
         if (selectionPanel == null)
         {
             selectionPanel = new FilteredTreeViewSelectionPanel();
+            addAsAction = new AddAsAction();
+            selectionPanel.add(new JButton(addAsAction), BorderLayout.SOUTH);
         }
         return selectionPanel;
     }
@@ -73,20 +88,44 @@ public class GeneratorSelectionDialog extends AbstractSelectionDialog
     @Override
     protected String getAvailableListTitle()
     {
-        return "Available Generators";
+        return ResourceManager.getText("availGen");
     }
 
     @Override
     protected String getSelectedListTitle()
     {
-        return "Selected Generators";
+        return ResourceManager.getText("selGen");
+    }
+
+    @Override
+    protected String getNewActionToolTip()
+    {
+        return ResourceManager.getToolTip("newGen");
+    }
+
+    @Override
+    protected String getDeleteActionToolTip()
+    {
+        return ResourceManager.getToolTip("deleteGen");
+    }
+
+    @Override
+    protected String getAddActionToolTip()
+    {
+        return ResourceManager.getToolTip("addGen");
+    }
+
+    @Override
+    protected String getRemoveActionToolTip()
+    {
+        return ResourceManager.getToolTip("removeGen");
     }
 
     @Override
     protected Object createNewItem()
     {
         return new DefaultMutableGenerator(JOptionPane.showInputDialog(this,
-                                                                       "Enter name of new Generator"));
+                                                                       ResourceManager.getText("creategen")));
     }
 
     @Override
@@ -107,6 +146,27 @@ public class GeneratorSelectionDialog extends AbstractSelectionDialog
                                                                model.getTreeViewModel()));
         availableList.setModel(availableModel);
         selectedList.setModel(selectedModel);
+    }
+
+    private class AddAsAction extends AbstractAction
+    {
+
+        public AddAsAction()
+        {
+            putValue(NAME, ResourceManager.getText("addGenAs"));
+            setEnabled(false);
+        }
+
+        @SuppressWarnings("unchecked")
+        public void actionPerformed(ActionEvent e)
+        {
+            DefaultGenericListModel model = selectedModel;
+            for (Object data : selectionPanel.getSelectedData())
+            {
+                model.add(data);
+            }
+        }
+
     }
 
     private class SelectionHandler implements ListSelectionListener,
@@ -141,8 +201,8 @@ public class GeneratorSelectionDialog extends AbstractSelectionDialog
             }
             else
             {
-            //availableList.clearSelection();
-            //selectedList.clearSelection();
+                List<Object> data = selectionPanel.getSelectedData();
+                addAsAction.setEnabled(data != null && !data.isEmpty());
             }
         }
 

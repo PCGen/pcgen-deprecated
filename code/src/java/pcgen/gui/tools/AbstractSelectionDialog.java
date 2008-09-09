@@ -26,18 +26,27 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.util.Collections;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.tools.ResourceManager.Icons;
 import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.event.PopupMouseAdapter;
 
 /**
  *
@@ -46,8 +55,10 @@ import pcgen.gui.util.DefaultGenericListModel;
 public abstract class AbstractSelectionDialog extends JDialog
 {
 
-    protected final GenericListPanel availableList;
-    protected final GenericListPanel selectedList;
+    protected final JList availableList;
+    protected final JList selectedList;
+    protected final JPopupMenu availableListPopup;
+    protected final JPopupMenu selectedListPopup;
     protected final Action newAction;
     protected final Action deleteAction;
     protected final Action addAction;
@@ -59,14 +70,16 @@ public abstract class AbstractSelectionDialog extends JDialog
 
     public AbstractSelectionDialog()
     {
-        availableList = new GenericListPanel();
-        selectedList = new GenericListPanel();
-        newAction = new NewAction();
-        deleteAction = new DeleteAction();
-        addAction = new AddAction();
-        removeAction = new RemoveAction();
-        upAction = new UpAction();
-        downAction = new DownAction();
+        this.availableList = new JList();
+        this.selectedList = new JList();
+        this.availableListPopup = new JPopupMenu();
+        this.selectedListPopup = new JPopupMenu();
+        this.newAction = new NewAction();
+        this.deleteAction = new DeleteAction();
+        this.addAction = new AddAction();
+        this.removeAction = new RemoveAction();
+        this.upAction = new UpAction();
+        this.downAction = new DownAction();
         initComponents();
     }
 
@@ -84,25 +97,26 @@ public abstract class AbstractSelectionDialog extends JDialog
                     }
 
                 });
-        ListSelectionListener listener = new SelectionHandler();
+        ActionHandler handler = new ActionHandler();
         FlippingSplitPane subSplitPane = new FlippingSplitPane(JSplitPane.VERTICAL_SPLIT);
+        ListPanel panel;
         {//Initialize availableList
-            availableList.setTitle(getAvailableListTitle());
-            availableList.addListSelectionListener(listener);
-            availableList.add(newAction);
-            availableList.add(deleteAction);
+            panel = new ListPanel(availableList, availableListPopup, handler,
+                                  getAvailableListTitle());
+            panel.add(newAction);
+            panel.add(deleteAction);
         }
-        subSplitPane.setTopComponent(availableList);
+        subSplitPane.setTopComponent(panel);
         {//Initialize selectedList
-            selectedList.setTitle(getSelectedListTitle());
-            selectedList.addListSelectionListener(listener);
-            selectedList.add(addAction);
-            selectedList.add(removeAction);
-            selectedList.addSeparator();
-            selectedList.add(upAction);
-            selectedList.add(downAction);
+            panel = new ListPanel(selectedList, selectedListPopup, handler,
+                                  getSelectedListTitle());
+            panel.add(addAction);
+            panel.add(removeAction);
+            panel.addSeparator();
+            panel.add(upAction);
+            panel.add(downAction);
         }
-        subSplitPane.setBottomComponent(selectedList);
+        subSplitPane.setBottomComponent(panel);
         FlippingSplitPane splitPane = new FlippingSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                                                             getLeftComponent(),
                                                             subSplitPane);
@@ -158,6 +172,14 @@ public abstract class AbstractSelectionDialog extends JDialog
 
     protected abstract String getSelectedListTitle();
 
+    protected abstract String getNewActionToolTip();
+
+    protected abstract String getDeleteActionToolTip();
+
+    protected abstract String getAddActionToolTip();
+
+    protected abstract String getRemoveActionToolTip();
+
     protected abstract Object createNewItem();
 
     protected abstract void doSave();
@@ -172,15 +194,16 @@ public abstract class AbstractSelectionDialog extends JDialog
         dispose();
     }
 
-    private class NewAction extends PCGenAction
+    private class NewAction extends AbstractAction
     {
 
         public NewAction()
         {
-            super(null);
+            putValue(NAME, ResourceManager.getText("new"));
+            putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("new"));
+            putValue(SHORT_DESCRIPTION, getNewActionToolTip());
         }
 
-        @Override
         @SuppressWarnings("unchecked")
         public void actionPerformed(ActionEvent e)
         {
@@ -190,16 +213,17 @@ public abstract class AbstractSelectionDialog extends JDialog
 
     }
 
-    private class DeleteAction extends PCGenAction
+    private class DeleteAction extends AbstractAction
     {
 
         public DeleteAction()
         {
-            super(null);
+            putValue(NAME, ResourceManager.getText("delete"));
+            putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("delete"));
+            putValue(SHORT_DESCRIPTION, getDeleteActionToolTip());
             setEnabled(false);
         }
 
-        @Override
         public void actionPerformed(ActionEvent e)
         {
             Object value = availableList.getSelectedValue();
@@ -209,16 +233,17 @@ public abstract class AbstractSelectionDialog extends JDialog
 
     }
 
-    private class AddAction extends PCGenAction
+    private class AddAction extends AbstractAction
     {
 
         public AddAction()
         {
-            super(null);
+            putValue(NAME, ResourceManager.getText("add"));
+            putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("add"));
+            putValue(SHORT_DESCRIPTION, getAddActionToolTip());
             setEnabled(false);
         }
 
-        @Override
         @SuppressWarnings("unchecked")
         public void actionPerformed(ActionEvent e)
         {
@@ -228,16 +253,17 @@ public abstract class AbstractSelectionDialog extends JDialog
 
     }
 
-    private class RemoveAction extends PCGenAction
+    private class RemoveAction extends AbstractAction
     {
 
         public RemoveAction()
         {
-            super(null);
+            putValue(NAME, ResourceManager.getText("remove"));
+            putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("remove"));
+            putValue(SHORT_DESCRIPTION, getRemoveActionToolTip());
             setEnabled(false);
         }
 
-        @Override
         public void actionPerformed(ActionEvent e)
         {
             int index = selectedList.getSelectedIndex();
@@ -282,21 +308,34 @@ public abstract class AbstractSelectionDialog extends JDialog
 
     }
 
-    private class SelectionHandler implements ListSelectionListener
+    private class ActionHandler extends PopupMouseAdapter implements ListSelectionListener
     {
+
+        @Override
+        public void showPopup(MouseEvent e)
+        {
+            if (e.getComponent() == availableList)
+            {
+                availableListPopup.show(availableList, e.getX(), e.getY());
+            }
+            else
+            {
+                selectedListPopup.show(selectedList, e.getX(), e.getY());
+            }
+        }
 
         public void valueChanged(ListSelectionEvent e)
         {
             JList list = (JList) e.getSource();
             Object value = list.getSelectedValue();
-            boolean valid = value != null;
+            boolean nonNull = value != null;
             if (list.getParent() == selectedList)
             {
                 int index = e.getFirstIndex();
-                upAction.setEnabled(valid && index > 0);
-                downAction.setEnabled(valid &&
+                upAction.setEnabled(nonNull && index > 0);
+                downAction.setEnabled(nonNull &&
                                       index < selectedModel.getSize() - 1);
-                if (valid)
+                if (nonNull)
                 {
                     availableList.setSelectedValue(value, true);
                     //this checks if the selection is unique to the selectionModel
@@ -307,7 +346,7 @@ public abstract class AbstractSelectionDialog extends JDialog
                     }
                 }
             }
-            else if (valid)
+            else if (nonNull)
             {
                 selectedList.setSelectedValue(value, true);
 
@@ -315,6 +354,57 @@ public abstract class AbstractSelectionDialog extends JDialog
                 addAction.setEnabled(unique);
                 removeAction.setEnabled(!unique);
             }
+        }
+
+    }
+
+    private static class ListPanel extends JPanel
+    {
+
+        private final GridBagConstraints gridBagConstraints;
+        private final JPopupMenu popupMenu;
+
+        public ListPanel(JList list, JPopupMenu popupMenu,
+                          ActionHandler handler, String title)
+        {
+            super(new GridBagLayout());
+            this.gridBagConstraints = new GridBagConstraints();
+            this.popupMenu = popupMenu;
+
+            gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+            gridBagConstraints.anchor = GridBagConstraints.WEST;
+            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
+            add(new JLabel(title), gridBagConstraints);
+
+            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            list.addListSelectionListener(handler);
+            list.addMouseListener(handler);
+
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.gridheight = GridBagConstraints.REMAINDER;
+            gridBagConstraints2.fill = GridBagConstraints.BOTH;
+            gridBagConstraints2.weightx = 1.0;
+            gridBagConstraints2.weighty = 1.0;
+            add(new JScrollPane(list), gridBagConstraints2);
+
+            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints.anchor = GridBagConstraints.NORTH;
+        }
+
+        public void add(Action action)
+        {
+            add(new JButton(action), gridBagConstraints);
+            popupMenu.add(new JMenuItem(action));
+        }
+
+        public void addSeparator()
+        {
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.gridwidth = GridBagConstraints.REMAINDER;
+            gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints2.insets = new Insets(4, 0, 4, 0);
+            add(new JSeparator(), gridBagConstraints2);
+            popupMenu.addSeparator();
         }
 
     }

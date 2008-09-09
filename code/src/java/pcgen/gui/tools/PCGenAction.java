@@ -27,7 +27,6 @@ import java.util.StringTokenizer;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import pcgen.gui.tools.ResourceManager.Icons;
-import pcgen.util.PropertyFactory;
 
 public class PCGenAction extends AbstractAction
 {
@@ -60,12 +59,9 @@ public class PCGenAction extends AbstractAction
     public PCGenAction(String prop, String command, String accelerator,
                         Icons icon)
     {
-        putValue(NAME,
-                 PropertyFactory.getString("in_" + prop));
-        putValue(MNEMONIC_KEY,
-                 PropertyFactory.getMnemonic("in_mn_" + prop));
-        putValue(SHORT_DESCRIPTION,
-                 PropertyFactory.getString("in_" + prop + "Tip"));
+        putValue(NAME, ResourceManager.getText(prop));
+        putValue(MNEMONIC_KEY, ResourceManager.getMnemonic(prop));
+        putValue(SHORT_DESCRIPTION, ResourceManager.getToolTip(prop));
 
         if (command != null)
         {

@@ -51,13 +51,13 @@ import javax.swing.event.ListDataListener;
 import javax.swing.undo.StateEditable;
 import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.SimpleTextIcon;
 import pcgen.gui.util.ToolBarUtilities;
 import pcgen.gui.util.event.DocumentChangeAdapter;
 import pcgen.gui.util.event.ListDataAdapter;
-import pcgen.util.PropertyFactory;
 
 /**
  *
@@ -66,10 +66,6 @@ import pcgen.util.PropertyFactory;
 public class FilterPanel extends JPanel implements StateEditable
 {
 
-    private static final String filterString = PropertyFactory.getString("in_filter") +
-            ":";
-    private static final String clearString = PropertyFactory.getString("in_clear");
-    private static final String advancedString = PropertyFactory.getString("in_demAdv");
     private final JTextField textfield;
     private final JPanel buttonPanel;
     private final JPanel filterPanel;
@@ -95,10 +91,11 @@ public class FilterPanel extends JPanel implements StateEditable
 
         JButton button = ToolBarUtilities.createToolBarButton(null);
 
-        Icon icon = new SimpleTextIcon(button, filterString);
+        Icon icon = new SimpleTextIcon(button,
+                                       ResourceManager.getText("filter") + ":");
         button.setIcon(icon);
 
-        icon = new SimpleTextIcon(button, clearString);
+        icon = new SimpleTextIcon(button, ResourceManager.getText("clear"));
         button.setRolloverIcon(icon);
         button.setPressedIcon(icon);
 
@@ -129,7 +126,8 @@ public class FilterPanel extends JPanel implements StateEditable
         toolbar.add(textfield);
 
         button = ToolBarUtilities.createToolBarButton(null);
-        button.setIcon(new SimpleTextIcon(button, advancedString));
+        button.setIcon(new SimpleTextIcon(button,
+                                          ResourceManager.getText("advanced")));
         button.addActionListener(
                 new ActionListener()
                 {

@@ -22,17 +22,20 @@
  */
 package pcgen.gui.tools; // hm.binkley.gui;
 
-import pcgen.util.PropertyFactory;
-
-import javax.swing.*;
-import javax.swing.plaf.SplitPaneUI;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import pcgen.gui.tools.ResourceManager;
+import javax.swing.AbstractAction;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JSplitPane;
+import javax.swing.plaf.SplitPaneUI;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import pcgen.gui.tools.ResourceManager.Icons;
+import pcgen.gui.util.event.PopupMouseAdapter;
 
 /**
  * <code>FlippingSplitPane</code> is an improved version of
@@ -71,39 +74,16 @@ import pcgen.gui.tools.ResourceManager.Icons;
 public class FlippingSplitPane extends JSplitPane
 {
 
-    private static final long serialVersionUID = -6343545558990369582L;
-    /**
-     * Icon for Center item in popup menu.
-     */
-    private static final ImageIcon CENTER_ICON = ResourceManager.getImageIcon(Icons.MediaStop16);
-    /**
-     * Icon for Flip item in popup menu.
-     */
-    private static final ImageIcon FLIP_ICON = ResourceManager.getImageIcon(Icons.Refresh16);
-    /**
-     * Icon for Reset item in popup menu.
-     */
-    private static final ImageIcon RESET_ICON = ResourceManager.getImageIcon(Icons.Redo16);
-    /**
-     * Icon for Lock/Unlock item in popup menu
-     */
-    private static final ImageIcon LOCK_ICON = ResourceManager.getImageIcon(Icons.Bookmarks16);
-    /**
-     * Is the split pane locked?
-     */
-    private boolean locked = false;
-    /**
-     * Workaround for bug with locking panes; this is easier that big surgery on
-     * BasicSplitPaneDivider.
-     */
-    private boolean wasContinuousLayout = false;
+    static final long serialVersionUID = -6343545558990369582L;
+    private final LockAction lockAction = new LockAction();
+    private JPopupMenu popupMenu = null;
 
     /**
      * Creates a new <code>FlippingSplitPane</code>.  Panes begin as unlocked
      */
     public FlippingSplitPane()
     {
-        setupExtensions();
+        initComponent();
     }
 
     /**
@@ -114,7 +94,7 @@ public class FlippingSplitPane extends JSplitPane
     {
         super(newOrientation);
 
-        setupExtensions();
+        initComponent();
     }
 
     /**
@@ -125,7 +105,7 @@ public class FlippingSplitPane extends JSplitPane
     {
         super(newOrientation, newContinuousLayout);
 
-        setupExtensions();
+        initComponent();
     }
 
     /**
@@ -138,7 +118,7 @@ public class FlippingSplitPane extends JSplitPane
     {
         super(newOrientation, newLeftComponent, newRightComponent);
 
-        setupExtensions();
+        initComponent();
     }
 
     /**
@@ -153,7 +133,7 @@ public class FlippingSplitPane extends JSplitPane
         super(newOrientation, newContinuousLayout, newLeftComponent,
               newRightComponent);
 
-        setupExtensions();
+        initComponent();
     }
 
     /**
@@ -178,19 +158,6 @@ public class FlippingSplitPane extends JSplitPane
                                           newContinuousLayout);
     }
 
-    @Override
-    public void setDividerSize(int newSize)
-    {
-        if (newSize == getDividerSize())
-        {
-            return;
-        }
-
-        super.setDividerSize(newSize);
-        maybeSetDividerSizeComponent(getLeftComponent(), newSize);
-        maybeSetDividerSizeComponent(getRightComponent(), newSize);
-    }
-
     /**
      * <code>setDividerLocation</code> calls {@link JSplitPane#setDividerLocation(int)}
      * unless the <code>FlippingSplitPane</code> is locked.
@@ -208,6 +175,18 @@ public class FlippingSplitPane extends JSplitPane
         {
             super.setDividerLocation(location);
         }
+    }
+
+    @Override
+    public void setDividerSize(int newSize)
+    {
+        if (newSize == getDividerSize())
+        {
+            return;
+        }
+        super.setDividerSize(newSize);
+        maybeSetDividerSizeComponent(getLeftComponent(), newSize);
+        maybeSetDividerSizeComponent(getRightComponent(), newSize);
     }
 
     /**
@@ -269,14 +248,6 @@ public class FlippingSplitPane extends JSplitPane
         fixedResetToPreferredSizes();
         maybeResetToPreferredSizesComponent(getLeftComponent());
         maybeResetToPreferredSizesComponent(getRightComponent());
-    }
-
-    private static void maybeSetDividerSizeComponent(Component c, int newSize)
-    {
-        if (c instanceof FlippingSplitPane)
-        {
-            ((FlippingSplitPane) c).setDividerSize(newSize);
-        }
     }
 
     /**
@@ -374,6 +345,14 @@ public class FlippingSplitPane extends JSplitPane
         resetToPreferredSizes(); // gets munched anyway?  XXX
     }
 
+    private static void maybeSetDividerSizeComponent(Component c, int size)
+    {
+        if (c instanceof FlippingSplitPane)
+        {
+            ((FlippingSplitPane) c).setDividerSize(size);
+        }
+    }
+
     /**
      * Set continuous layout for <code>FlippingSplitPane</code> components; do
      * nothing for other components (not even <code>JSplitPane</code> components).
@@ -431,7 +410,7 @@ public class FlippingSplitPane extends JSplitPane
      */
     private boolean isLocked()
     {
-        return locked;
+        return lockAction.isLocked();
     }
 
     /**
@@ -460,47 +439,14 @@ public class FlippingSplitPane extends JSplitPane
      */
     private void setLocked(boolean locked)
     {
-        if (locked == isLocked())
-        {
-            return;
-        }
-
-        // Workaround so that you can't drag the divider when locked.
-        this.locked = locked;
-
-        if (this.locked)
-        {
-            wasContinuousLayout = isContinuousLayout();
-            setContinuousLayout(true);
-        }
-        else
-        {
-            setContinuousLayout(wasContinuousLayout);
-        }
-
-        maybeSetLockedComponent(getLeftComponent(), isLocked());
-        maybeSetLockedComponent(getRightComponent(), isLocked());
+        lockAction.setLocked(locked);
     }
 
-//     private class KeyboardShiftHomeAction extends AbstractAction
-//     {
-//         public void actionPerformed(ActionEvent e)
-// 	{
-// 	    centerDividerLocations();
-//         }
-//     }
-//     private class KeyboardShiftEndAction extends AbstractAction
-//     {
-//         public void actionPerformed(ActionEvent e)
-// 	{
-// 	    resetToPreferredSizes();
-//         }
-//     }
     /**
-     * <code>setupExtensions</code> installs the mouse listener for the popup menu,
+     * <code>initComponent</code> installs the mouse listener for the popup menu,
      * and fixes some egregious defaults in <code>JSplitPane</code>.
      */
-    private void setupExtensions()
+    private void initComponent()
     {
         SplitPaneUI anUi = getUI();
 
@@ -508,29 +454,105 @@ public class FlippingSplitPane extends JSplitPane
         {
             ((BasicSplitPaneUI) anUi).getDivider().addMouseListener(new PopupListener());
         }
-
-// 	// See source for JSplitPane for this junk.
-// 	ActionMap map = (ActionMap) UIManager.get("SplitPane.actionMap");
-// 	map.put("selectCenter", new KeyboardShiftHomeAction()); // XXX
-// 	map.put("selectReset", new KeyboardShiftEndAction()); // XXX
-// 	SwingUtilities.replaceUIActionMap(this, map);
-        // This is *so* much better than squishing the top/left
-        // component into oblivion.
         setResizeWeight(0.5);
     }
 
-    /**
-     * Action for Center item in popup menu.
-     */
-    private class CenterAction extends BasicAction
+    private class LockAction extends AbstractAction
     {
 
-        public CenterAction()
+        /**
+         * Workaround for bug with locking panes; this is easier that big surgery on
+         * BasicSplitPaneDivider.
+         */
+        private boolean wasContinuousLayout = false;
+        /**
+         * Is the split pane locked?
+         */
+        private boolean locked = false;
+
+        public LockAction()
         {
-            super(PropertyFactory.getString("in_center"), CENTER_ICON,
-                  PropertyFactory.getMnemonic("in_mn_center"));
+            putValue(SMALL_ICON, ResourceManager.getImageIcon(Icons.Bookmarks16));
+            configureProps();
         }
 
+        /**
+         * Configures MenuItem properties based on locked state
+         */
+        private void configureProps()
+        {
+            String prop = locked ? "unlock" : "lock";
+            putValue(NAME, ResourceManager.getText(prop));
+            putValue(MNEMONIC_KEY, ResourceManager.getMnemonic(prop));
+        }
+
+        /**
+         * Action for Lock/Unlock item in popup menu.
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            setLocked(!locked);
+        }
+
+        public boolean isLocked()
+        {
+            return locked;
+        }
+
+        /**
+         * Sets the value of the <code>locked</code> property, which must be
+         * <code>true</code> for the child components to be locked against changes. The
+         * default value of this property is <code>false</code>.
+         *
+         * @param locked <code>int</code>, the setting
+         *
+         * @see #isLocked
+         */
+        public void setLocked(boolean locked)
+        {
+            if (this.locked == locked)
+            {
+                return;
+            }
+
+            // Workaround so that you can't drag the divider when locked.
+            this.locked = locked;
+            configureProps();
+
+            if (locked)
+            {
+                wasContinuousLayout = isContinuousLayout();
+                setContinuousLayout(true);
+            }
+            else
+            {
+                setContinuousLayout(wasContinuousLayout);
+            }
+
+            maybeSetLockedComponent(getLeftComponent(), locked);
+            maybeSetLockedComponent(getRightComponent(), locked);
+        }
+
+    }
+
+    /**
+     * Menu item for Center item in popup menu.
+     */
+    private class CenterMenuItem extends JMenuItem implements ActionListener
+    {
+
+        CenterMenuItem()
+        {
+            super(ResourceManager.getText("center"));
+            setMnemonic(ResourceManager.getMnemonic("center"));
+            setIcon(ResourceManager.getImageIcon(Icons.MediaStop16));
+
+            addActionListener(this);
+        }
+
+        /**
+         * Action for Center item in popup menu.
+         */
         public void actionPerformed(ActionEvent e)
         {
             centerDividerLocations();
@@ -539,18 +561,23 @@ public class FlippingSplitPane extends JSplitPane
     }
 
     /**
-     * Action for Continuous layout item in options menu.
+     * Menu item for Continuous layout item in options menu.
      */
-    private class ContinuousLayoutAction extends BasicAction
+    private class ContinuousLayoutMenuItem extends JCheckBoxMenuItem implements ActionListener
     {
 
-        public ContinuousLayoutAction()
+        ContinuousLayoutMenuItem()
         {
-            super(PropertyFactory.getString("in_smothRes"), null,
-                  PropertyFactory.getMnemonic("in_mn_smothRes"));
+            super(ResourceManager.getText("smothRes"));
+            setMnemonic(ResourceManager.getMnemonic("smothRes"));
+            setSelected(isContinuousLayout());
 
+            addActionListener(this);
         }
 
+        /**
+         * Action for Continuous layout item in options menu.
+         */
         public void actionPerformed(ActionEvent e)
         {
             setContinuousLayout(!isContinuousLayout());
@@ -559,32 +586,24 @@ public class FlippingSplitPane extends JSplitPane
     }
 
     /**
-     * Menu item for Continuous layout item in options menu.
+     * Menu item for Flip item in popup menu.
      */
-    private class ContinuousLayoutMenuItem
-            extends JCheckBoxMenuItem
+    private class FlipMenuItem extends JMenuItem implements ActionListener
     {
 
-        ContinuousLayoutMenuItem()
+        FlipMenuItem()
         {
-            super(new ContinuousLayoutAction());
-            setSelected(isContinuousLayout());
+            super(ResourceManager.getText("flip"));
+
+            setMnemonic(ResourceManager.getMnemonic("flip"));
+            setIcon(ResourceManager.getImageIcon(Icons.Refresh16));
+
+            addActionListener(this);
         }
 
-    }
-
-    /**
-     * Action for Flip item in popup menu.
-     */
-    private class FlipAction extends BasicAction
-    {
-
-        public FlipAction()
-        {
-            super(PropertyFactory.getString("in_flip"), FLIP_ICON,
-                  PropertyFactory.getMnemonic("in_mn_flip"));
-        }
-
+        /**
+         * Action for Flip item in popup menu.
+         */
         public void actionPerformed(ActionEvent e)
         {
             flipOrientation();
@@ -593,51 +612,24 @@ public class FlippingSplitPane extends JSplitPane
     }
 
     /**
-     * Action for Lock/Unlock item in popup menu.
-     */
-    private class LockAction extends BasicAction
-    {
-
-        public LockAction()
-        {
-            super(locked ? PropertyFactory.getString("in_unlock") : PropertyFactory.getString("in_lock"),
-                  LOCK_ICON, PropertyFactory.getMnemonic("in_mn_lock"));
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            setLocked(!locked);
-        }
-
-    }
-
-    /**
      * Menu item for One touch expandable item in options menu.
      */
-    private class OneTouchExpandableMenuItem
-            extends JCheckBoxMenuItem
+    private class OneTouchExpandableMenuItem extends JCheckBoxMenuItem
+            implements ActionListener
     {
 
         OneTouchExpandableMenuItem()
         {
-            super(new OneTouchExpandableAction());
+            super(ResourceManager.getText("oneTouchExp"));
+            setMnemonic(ResourceManager.getMnemonic("oneTouchExp"));
             setSelected(isOneTouchExpandable());
+
+            addActionListener(this);
         }
 
-    }
-
-    /**
-     * Action for One touch expandable item in options menu.
-     */
-    private class OneTouchExpandableAction extends BasicAction
-    {
-
-        public OneTouchExpandableAction()
-        {
-            super(PropertyFactory.getString("in_oneTouchExp"), null,
-                  PropertyFactory.getMnemonic("in_mn_oneTouchExp"));
-        }
-
+        /**
+         * Action for One touch expandable item in options menu.
+         */
         public void actionPerformed(ActionEvent e)
         {
             setOneTouchExpandable(!isOneTouchExpandable());
@@ -648,15 +640,13 @@ public class FlippingSplitPane extends JSplitPane
     /**
      * Menu for Options item in popup menu.
      */
-    private class OptionsMenu
-            extends JMenu
+    private class OptionsMenu extends JMenu
     {
 
         OptionsMenu()
         {
-            super(PropertyFactory.getString("in_options"));
-
-            setMnemonic(PropertyFactory.getMnemonic("in_mn_options"));
+            super(ResourceManager.getText("options"));
+            setMnemonic(ResourceManager.getMnemonic("options"));
 
             this.add(new OneTouchExpandableMenuItem());
             this.add(new ContinuousLayoutMenuItem());
@@ -665,55 +655,18 @@ public class FlippingSplitPane extends JSplitPane
     }
 
     /**
-     * After <code>FlippingSplitPane</code> builds the basic popup menu, subclasses
-     * may modify it here before <code>FlippingSplitPane</code> displays it.
-     * @param popupMenu
-     * @param e
-     */
-    private static void addPopupMenuItems(JPopupMenu popupMenu, MouseEvent e)
-    {
-    // Do Nothing
-    }
-
-    /**
      * Mouse listener for popup menu.
      */
-    private class PopupListener
-            extends MouseAdapter
+    private class PopupListener extends PopupMouseAdapter
     {
 
         @Override
-        public void mousePressed(MouseEvent e)
+        protected void maybeShowPopup(MouseEvent e)
         {
             if (Utilities.isRightMouseButton(e))
             {
-                final int x = e.getX();
-                final int y = e.getY();
-
-                JPopupMenu popupMenu = new JPopupMenu();
-
-                if (!isLocked())
-                {
-                    popupMenu.add(new CenterAction());
-                    popupMenu.add(new FlipAction());
-                    popupMenu.add(new ResetAction());
-                    popupMenu.addSeparator();
-                }
-
-                popupMenu.add(new LockAction());
-
-                if (!isLocked())
-                {
-                    popupMenu.addSeparator();
-                    popupMenu.add(new OptionsMenu());
-                }
-
-                //Commented out as it's an unused empty function.
-                addPopupMenuItems(popupMenu, e);
-                popupMenu.show(e.getComponent(), x, y);
+                showPopup(e);
             }
-
-            // A handy shortcut
             else if (Utilities.isShiftLeftMouseButton(e))
             {
                 if (!isLocked())
@@ -723,34 +676,56 @@ public class FlippingSplitPane extends JSplitPane
             }
         }
 
+        @Override
+        public void showPopup(MouseEvent e)
+        {
+            JPopupMenu menu = null;
+            if (!isLocked())
+            {
+                if (popupMenu == null)
+                {
+                    popupMenu = new JPopupMenu();
+                    popupMenu.add(new CenterMenuItem());
+                    popupMenu.add(new FlipMenuItem());
+                    popupMenu.add(new ResetMenuItem());
+                    popupMenu.addSeparator();
+                    popupMenu.add(new JMenuItem(lockAction));
+                    popupMenu.addSeparator();
+                    popupMenu.add(new OptionsMenu());
+                }
+                menu = popupMenu;
+            }
+            else
+            {
+                menu = new JPopupMenu();
+                menu.add(new JMenuItem(lockAction));
+            }
+            menu.show(e.getComponent(), e.getX(), e.getY());
+        }
+
     }
 
     /**
-     * Action for Reset item in popup menu.
+     * Menu item for Reset item in popup menu.
      */
-    private class ResetAction extends BasicAction
+    private class ResetMenuItem extends JMenuItem implements ActionListener
     {
 
-        public ResetAction()
+        ResetMenuItem()
         {
-            super(PropertyFactory.getString("in_reset"), RESET_ICON,
-                  PropertyFactory.getMnemonic("in_mn_reset"));
+            super(ResourceManager.getText("reset"));
+            setMnemonic(ResourceManager.getMnemonic("reset"));
+            setIcon(ResourceManager.getImageIcon(Icons.Redo16));
+
+            addActionListener(this);
         }
 
+        /**
+         * Action for Reset item in popup menu.
+         */
         public void actionPerformed(ActionEvent e)
         {
             resetToPreferredSizes();
-        }
-
-    }
-
-    private static abstract class BasicAction extends AbstractAction
-    {
-
-        public BasicAction(String name, Icon icon, int mnemonic)
-        {
-            super(name, icon);
-            putValue(MNEMONIC_KEY, mnemonic);
         }
 
     }

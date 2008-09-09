@@ -36,6 +36,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.tools.AbstractSelectionDialog;
 import pcgen.gui.tools.FlippingSplitPane;
+import pcgen.gui.tools.ResourceManager;
 
 /**
  *
@@ -68,12 +69,14 @@ public class FilterSelectionDialog extends AbstractSelectionDialog
         JPanel panel;
         {
             panel = new JPanel();
-            descriptionArea = createTextArea("Description", panel);
+            descriptionArea = createTextArea(ResourceManager.getText("filtDes"),
+                                             panel);
         }
         splitPane.setTopComponent(panel);
         {
             panel = new JPanel();
-            editorArea = createTextArea("Editor", panel);
+            editorArea = createTextArea(ResourceManager.getText("filtEditor"),
+                                        panel);
         }
         splitPane.setBottomComponent(panel);
         return splitPane;
@@ -99,13 +102,37 @@ public class FilterSelectionDialog extends AbstractSelectionDialog
     @Override
     protected String getAvailableListTitle()
     {
-        return "Available Filters";
+        return ResourceManager.getText("availFilt");
     }
 
     @Override
     protected String getSelectedListTitle()
     {
-        return "Selected Filters";
+        return ResourceManager.getText("selFilt");
+    }
+
+    @Override
+    protected String getNewActionToolTip()
+    {
+        return ResourceManager.getToolTip("newFilt");
+    }
+
+    @Override
+    protected String getDeleteActionToolTip()
+    {
+        return ResourceManager.getToolTip("deleteFilt");
+    }
+
+    @Override
+    protected String getAddActionToolTip()
+    {
+        return ResourceManager.getToolTip("addFilt");
+    }
+
+    @Override
+    protected String getRemoveActionToolTip()
+    {
+        return ResourceManager.getToolTip("removeFilt");
     }
 
     @Override
